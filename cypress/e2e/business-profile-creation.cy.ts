@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+import { TEST_CREDENTIALS } from '../support/constants';
 
 describe('Business Profile Creation', () => {
   beforeEach(() => {
@@ -8,8 +9,8 @@ describe('Business Profile Creation', () => {
     
     // Login as a business user and navigate to profile creation
     cy.visit('/login');
-    cy.get('[data-cy="email"]').type('business@example.com');
-    cy.get('[data-cy="password"]').type('password123');
+    cy.get('[data-cy="email"]').type(TEST_CREDENTIALS.PROVIDER.EMAIL);
+    cy.get('[data-cy="password"]').type(TEST_CREDENTIALS.PASSWORD);
     cy.get('[data-cy="login-button"]').click();
     
     // Navigate to business profile creation

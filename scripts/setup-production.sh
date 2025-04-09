@@ -19,6 +19,11 @@ AWS_REGION=us-east-1
 AWS_SECONDARY_REGION=us-west-2
 AWS_ACCOUNT_ID=your_account_id_here
 
+# Terraform Configuration
+TERRAFORM_STATE_BUCKET=vibewell-terraform-state
+TERRAFORM_STATE_KEY=production/terraform.tfstate
+TERRAFORM_STATE_REGION=us-east-1
+
 # VPC Configuration
 VPC_CIDR=10.0.0.0/16
 PUBLIC_SUBNET_CIDRS=10.0.1.0/24,10.0.2.0/24,10.0.3.0/24
@@ -65,9 +70,9 @@ provider "aws" {
 # Set up terraform backend (replace with your actual backend)
 terraform {
   backend "s3" {
-    bucket = "vibewell-terraform-state"
-    key    = "production/terraform.tfstate"
-    region = "us-east-1"
+    bucket = "\${TERRAFORM_STATE_BUCKET}"
+    key    = "\${TERRAFORM_STATE_KEY}"
+    region = "\${TERRAFORM_STATE_REGION}"
     encrypt = true
   }
 }

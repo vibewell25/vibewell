@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+import { TEST_CREDENTIALS } from '../support/constants';
 
 describe('Performance Testing', () => {
   beforeEach(() => {
@@ -83,8 +84,8 @@ describe('Performance Testing', () => {
   it('should check avatar loading performance', () => {
     // Login first (assuming there's a login functionality)
     cy.visit('/login');
-    cy.get('[data-cy="email-input"]').type('test@example.com');
-    cy.get('[data-cy="password-input"]').type('password123');
+    cy.get('[data-cy="email-input"]').type(TEST_CREDENTIALS.CUSTOMER.EMAIL);
+    cy.get('[data-cy="password-input"]').type(TEST_CREDENTIALS.PASSWORD);
     cy.get('[data-cy="login-button"]').click();
     
     // Navigate to profile page

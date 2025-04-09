@@ -40,6 +40,8 @@ Request body:
 }
 ```
 
+> **SECURITY NOTE**: All JWT tokens shown in the examples are non-functional samples used for illustrative purposes only. They are truncated and do not represent actual authentication tokens. Never share real authentication tokens in documentation or code repositories.
+
 Response:
 ```json
 {

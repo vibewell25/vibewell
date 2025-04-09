@@ -1,0 +1,63 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Your rule content key **project principles**, including **security**, **code quality**, **maintainability**, and **scalability**. Here's how the principles apply to more **project-specific** guidelines like **security** and **avoiding hardcoded values**:
+
+### 1. **KISS (Keep It Simple, Stupid)**
+   - **Security**: Simplicity in code reduces the chances of introducing vulnerabilities. Overcomplicated logic can obscure security risks.
+   - **Hardcoding**: A simpler codebase naturally avoids the temptation to hardcode sensitive information, leading to more flexible and secure configurations.
+
+### 2. **YAGNI (You Aren’t Gonna Need It)**
+   - **Security**: By not over-engineering and only implementing what’s absolutely necessary, you reduce the attack surface and avoid unnecessary complexity that could introduce security flaws.
+   - **Hardcoding**: YAGNI encourages building features only when they are necessary, thus avoiding hardcoded values for features you might never use.
+
+### 3. **DRY (Don’t Repeat Yourself)**
+   - **Security**: Redundant code can lead to inconsistencies and errors, which can introduce security issues (like duplicate access control checks or improper validation in multiple places).
+   - **Hardcoding**: Repetitive code often leads to hardcoded values being copied into multiple places. By keeping the code DRY, sensitive data (like API keys) can be stored in configuration files or environment variables.
+
+### 4. **SOLID Principles**
+   - **Security**: SOLID promotes modular, flexible code that makes it easier to implement security features in isolated parts of the system. For example, applying the **Dependency Inversion Principle** can allow for easier substitution of security-related components.
+   - **Hardcoding**: By following SOLID, you can avoid hardcoding values because the system is designed to be more flexible with configurations and environments, reducing reliance on static or fixed values in code.
+
+### 5. **Fail Fast**
+   - **Security**: This principle encourages immediate detection of problems, including security flaws or unexpected behavior. If a security issue arises, the system should halt and raise an alert.
+   - **Hardcoding**: By detecting problems quickly, you can avoid issues related to hardcoded configurations that may not work in different environments.
+
+### 6. **Continuous Integration & Continuous Deployment (CI/CD)**
+   - **Security**: With CI/CD, security checks (like vulnerability scanning and static code analysis) can be automated and run frequently. This ensures that security flaws are detected early and that only secure, tested code is deployed.
+   - **Hardcoding**: Automated tests can check for hardcoded values in configurations and flag them before deployment.
+
+### 7. **Test-Driven Development (TDD)**
+   - **Security**: Writing tests for code behavior ensures that security features (like authentication, authorization, and encryption) are thoroughly tested and work as expected.
+   - **Hardcoding**: TDD leads to more flexible code that is easier to modify. In turn, this avoids the temptation to hardcode values because the system is designed with testing in mind, which requires configurability.
+
+### 8. **Design for Change**
+   - **Security**: Building with flexibility in mind allows security features to evolve and adapt as new vulnerabilities are discovered or as the regulatory landscape changes.
+   - **Hardcoding**: A system designed for change naturally avoids hardcoding since future changes would require flexibility (e.g., dynamic configuration).
+
+### 9. **Principle of Least Astonishment**
+   - **Security**: By ensuring that the system behaves in an intuitive way, you reduce the likelihood of security issues caused by unexpected or confusing behavior (such as exposing sensitive data unintentionally).
+   - **Hardcoding**: When designing for least astonishment, hardcoded values become a liability. They make the system unpredictable or harder to maintain, as changes are not easy to apply universally.
+
+### 10. **Don’t Reinvent the Wheel**
+   - **Security**: Using well-tested libraries or tools (e.g., for encryption or input validation) ensures that you don’t introduce security vulnerabilities by implementing features incorrectly or insecurely.
+   - **Hardcoding**: When relying on established tools or libraries, you don’t have to hardcode values because these tools allow you to configure them dynamically, making your system more adaptable and secure.
+
+---
+
+### **Project-Specific Principles**
+
+#### **Security**
+- **Data Encryption**: Use encryption for sensitive data (e.g., passwords, payment info). This ensures confidentiality and security.
+- **Role-Based Access Control (RBAC)**: Apply role-based access to ensure that only authorized users can access certain pages or features.
+- **Authentication and Authorization**: Implement OAuth, JWT, or other secure authentication methods for user login, protecting both the data and the system.
+- **Environment Variables**: Always store sensitive keys (e.g., API keys, database credentials) in environment variables, not hardcoded in code.
+  
+#### **Avoiding Hardcoding**
+- **Environment Variables**: Store configurations in environment files (`.env`), so they can easily be changed without modifying code.
+- **External Configuration**: Use external configuration files or databases for settings that might change depending on the environment (production, development).
+- **Localization**: Avoid hardcoding texts like strings or dates, use localization libraries that make it easy to change the language or format without touching the code.
+
+

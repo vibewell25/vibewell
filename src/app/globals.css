@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --secondary: #ec4899;
+  --accent: #8b5cf6;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #6366f1;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --primary: #818cf8;
+  --primary-dark: #6366f1;
+  --secondary: #f472b6;
+  --accent: #a78bfa;
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  --border: #334155;
+  --input: #334155;
+  --ring: #818cf8;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  h1 {
+    @apply text-3xl font-bold mb-4;
+  }
+  h2 {
+    @apply text-2xl font-bold mb-3;
+  }
+  h3 {
+    @apply text-xl font-bold mb-2;
+  }
+  h4 {
+    @apply text-lg font-bold mb-1;
+  }
+  p {
+    @apply mb-4;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2 bg-secondary text-white rounded-md hover:opacity-90 transition-opacity;
+  }
+  
+  .card {
+    @apply bg-card rounded-lg border border-border p-6 shadow-sm;
+  }
+  
+  .form-input {
+    @apply w-full rounded-md border border-input px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ring;
+  }
+  
+  .container-app {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+}
+
+
+/* Accessibility Improvements */
+/* Enhanced focus styles for better keyboard navigation */
+:focus-visible {
+  outline: 2px solid #0842A0;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(8, 66, 160, 0.25);
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #0842A0;
+  color: white;
+  padding: 8px;
+  z-index: 100;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Improved form field focus states */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  border-color: #0842A0;
+  box-shadow: 0 0 0 4px rgba(8, 66, 160, 0.25);
+  outline: none;
+}
+
+/* Button focus states */
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #0842A0;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(8, 66, 160, 0.25);
+}

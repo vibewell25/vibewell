@@ -1,5 +1,24 @@
 # Vibewell
 
+![Vibewell Logo](./public/logo.png)
+
+## Project Status
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Authentication | ✅ Complete | Supabase auth with MFA support |
+| User Management | ✅ Complete | Role-based access control |
+| Rate Limiting | ✅ Complete | Dual-mode (memory/Redis) system with specialized limiters |
+| Security Headers | ✅ Complete | CSP and other security headers implemented |
+| Accessibility | ✅ Complete | WCAG compliant components and structure |
+| UI Components | ✅ Complete | Responsive design with dark/light mode |
+| Admin Dashboard | ✅ Complete | Analytics and management features |
+| API Endpoints | ✅ Complete | RESTful and GraphQL APIs |
+| Redis Integration | ✅ Complete | Production-ready implementation with ioredis |
+| Load Testing | ✅ Complete | Implemented with k6 for rate limiting and performance testing |
+
+See [COMPLETED_TASKS.md](./COMPLETED_TASKS.md) for a detailed breakdown of implemented features.
+
 Vibewell is a comprehensive platform designed to connect customers with wellness and beauty service providers. The platform streamlines the booking process, enhances provider discovery, builds trust through a robust review system, and offers a variety of tools to help providers grow their beauty and wellness businesses.
 
 ## Features
@@ -110,6 +129,62 @@ Vibewell features a sophisticated review system designed to enhance trust and im
 - **Virtual Try-On**: AR-powered virtual makeup and hairstyle previews.
 - **Service Visualization**: AR demonstrations of wellness and beauty services.
 - **Personalized Beauty Recommendations**: AI-driven product and service suggestions based on user preferences and skin/hair type.
+
+## Security Features
+
+### Rate Limiting
+
+Vibewell implements a robust rate limiting system to protect against abuse and enhance security. The system provides:
+
+- **API Protection**: Prevents abuse of API endpoints and DoS attacks
+- **Specialized Limiters**: Custom rate limits for authentication, password resets, and financial operations
+- **Dual-Mode Operation**: Works in both development (in-memory) and production (Redis) environments
+- **Monitoring**: Comprehensive logging and analytics for rate limiting events
+
+### Configuration
+
+Rate limiting can be configured through environment variables in `.env`:
+
+```
+# Rate limiting mode (memory or redis)
+RATE_LIMIT_MODE=memory
+
+# Default rate limit (requests per window)
+DEFAULT_RATE_LIMIT_MAX=60
+DEFAULT_RATE_LIMIT_WINDOW=60
+
+# Specialized rate limiters
+AUTH_RATE_LIMIT_MAX=10
+AUTH_RATE_LIMIT_WINDOW=900
+```
+
+See `.env.example` for all available configuration options.
+
+### Documentation
+
+For detailed documentation on rate limiting implementation, usage, and monitoring:
+
+- [Rate Limiting Guide](./docs/rate-limiting.md) - Comprehensive documentation
+- [Load Testing Guide](./docs/load-testing.md) - Performance testing with k6
+- [Security Implementation](./docs/security-implementation.md) - Related security measures
+
+### Usage in Code
+
+Rate limiting can be applied to any API route:
+
+```typescript
+import { applyRateLimit, authRateLimiter } from '@/app/api/auth/rate-limit-middleware';
+
+export async function POST(req: NextRequest) {
+  // Apply rate limiting with specialized auth limiter
+  const rateLimitResult = await applyRateLimit(req, authRateLimiter);
+  if (rateLimitResult) {
+    return rateLimitResult; // Return error response if rate limited
+  }
+  
+  // Continue with normal request handling
+}
+```
 
 ## Getting Started
 
@@ -349,4 +424,3 @@ The following KPIs will be tracked to measure project success:
    - Customer lifetime value
    - Revenue per user
    - Churn rate
-# vibewell

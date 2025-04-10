@@ -12,10 +12,35 @@ env:
   NEXT_PUBLIC_STRIPE_PK: ${{ secrets.NEXT_PUBLIC_STRIPE_PK }}
   NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
   NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  REDIS_URL: redis://localhost:6379
+  REDIS_PASSWORD: ''
+  NEXT_PUBLIC_SITE_URL: http://localhost:3000
 
 jobs:
   lint:
     name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run type check
+        run: npm run type-check
+
+  security-scan:
+    name: Security Scanning
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -30,16 +55,35 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run ESLint
-        run: npm run lint
+      - name: Run npm audit
+        run: npm audit --production
 
-      - name: Run type check
-        run: npm run type-check
+      - name: Run OWASP ZAP scan
+        uses: zaproxy/action-baseline@v0.9.0
+        with:
+          target: 'http://localhost:3000'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+
+      - name: Check for rate limit bypass vulnerabilities
+        run: |
+          npm install -g rate-limit-checker
+          npm run test:rate-limit-bypass
 
   build-and-test:
     name: Build and Test
-    needs: lint
+    needs: [lint, security-scan]
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -59,6 +103,9 @@ jobs:
       - name: Run unit tests
         run: npm run test:ci
 
+      - name: Run rate limiting tests
+        run: npm run test:rate-limiting
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -70,6 +117,16 @@ jobs:
     name: E2E Tests
     needs: build-and-test
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -86,6 +143,7 @@ jobs:
       - name: Setup environment
         run: |
           cp .env.test .env.local
+          echo "REDIS_URL=redis://localhost:6379" >> .env.local
           npm run setup-test-db
 
       - name: Run Cypress tests
@@ -107,9 +165,51 @@ jobs:
           path: cypress/screenshots/
           retention-days: 5
 
+  load-test:
+    name: Load Testing
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup environment
+        run: |
+          cp .env.test .env.local
+          echo "REDIS_URL=redis://localhost:6379" >> .env.local
+          npm run setup-test-db
+
+      - name: Start application
+        run: npm run start &
+
+      - name: Wait for application to be ready
+        run: npx wait-on http://localhost:3000
+
+      - name: Run load tests for rate limiting
+        run: npm run test:load
+
   deploy-staging:
     name: Deploy to Staging
-    needs: [build-and-test, e2e-tests]
+    needs: [build-and-test, e2e-tests, load-test]
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     environment: staging
@@ -132,6 +232,13 @@ jobs:
           name: build-artifacts
           path: .next/
 
+      - name: Create production env file
+        run: |
+          cp .env.production.example .env.production
+          echo "REDIS_URL=${{ secrets.STAGING_REDIS_URL }}" >> .env.production
+          echo "REDIS_PASSWORD=${{ secrets.STAGING_REDIS_PASSWORD }}" >> .env.production
+          echo "REDIS_TLS=true" >> .env.production
+
       - name: Deploy to Vercel (Staging)
         uses: amondnet/vercel-action@v25
         with:
@@ -150,7 +257,7 @@ jobs:
 
   deploy-production:
     name: Deploy to Production
-    needs: [build-and-test, e2e-tests]
+    needs: [build-and-test, e2e-tests, load-test]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: production
@@ -172,6 +279,13 @@ jobs:
         with:
           name: build-artifacts
           path: .next/
+
+      - name: Create production env file
+        run: |
+          cp .env.production.example .env.production
+          echo "REDIS_URL=${{ secrets.PRODUCTION_REDIS_URL }}" >> .env.production
+          echo "REDIS_PASSWORD=${{ secrets.PRODUCTION_REDIS_PASSWORD }}" >> .env.production
+          echo "REDIS_TLS=true" >> .env.production
 
       - name: Deploy to Vercel (Production)
         uses: amondnet/vercel-action@v25
@@ -216,4 +330,9 @@ jobs:
         run: npm run monitor:deployment
         env:
           NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
-          DEPLOYMENT_ID: ${{ github.sha }} 
+          DEPLOYMENT_ID: ${{ github.sha }}
+          
+      - name: Test rate limiting in production
+        run: npm run test:rate-limit-prod
+        env:
+          TEST_URL: 'https://vibewell.com' 

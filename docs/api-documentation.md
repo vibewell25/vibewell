@@ -56,6 +56,80 @@ Response:
 }
 ```
 
+## Rate Limiting
+
+To ensure fair usage and protect our systems, all API endpoints are subject to rate limiting. The specific limits vary by endpoint and user role.
+
+### Rate Limit Headers
+
+Rate limit information is returned in the following HTTP headers:
+
+```
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 99
+X-RateLimit-Reset: 1628537268
+```
+
+If you exceed the rate limit, you'll receive a `429 Too Many Requests` response with a `Retry-After` header indicating how many seconds to wait before retrying.
+
+### Rate Limits by Endpoint Category
+
+| Category | Default Limit | Notes |
+|----------|--------------|-------|
+| General API | 100 requests per minute | Applied to most endpoints |
+| Authentication | 10 requests per minute | Login, signup, password reset |
+| Password Reset | 3 requests per hour | Per email address |
+| User Registration | 5 registrations per day | Per IP address |
+| MFA Operations | Varies | See below |
+| Financial Operations | 10 per 5 minutes | Payment processing, subscriptions |
+
+### MFA-Specific Rate Limits
+
+| Operation | Limit |
+|-----------|-------|
+| MFA Enrollment | 3 enrollments per hour per user |
+| MFA Verification | 5 attempts per 15 minutes per user |
+| MFA Unenrollment | 2 unenrollments per 24 hours per user |
+
+### Best Practices for Handling Rate Limits
+
+1. **Implement exponential backoff**: When receiving a 429 response, use the `Retry-After` header to wait before retrying, and increase the delay for consecutive failures.
+
+2. **Cache responses**: Where appropriate, cache API responses to reduce the number of requests.
+
+3. **Use bulk operations**: Instead of making multiple individual requests, use bulk endpoints where available.
+
+4. **Monitor your usage**: Keep track of your rate limit headers to ensure you're not approaching limits.
+
+### Example: Handling Rate Limits in Client Code
+
+```javascript
+async function makeApiRequest(url) {
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    // Check if rate limited
+    if (response.status === 429) {
+      const retryAfter = parseInt(response.headers.get('Retry-After') || '60');
+      console.log(`Rate limited. Retrying after ${retryAfter} seconds`);
+      
+      // Wait and retry
+      await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
+      return makeApiRequest(url); // Retry the request
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('API request failed:', error);
+    throw error;
+  }
+}
+```
+
 ## Error Handling
 
 All API errors follow this format:
@@ -705,21 +779,6 @@ Response:
   ]
 }
 ```
-
-## Rate Limiting
-
-The API implements rate limiting to ensure fair usage and system stability. Rate limits are applied per API key or IP address.
-
-Default limits:
-- 100 requests per minute for authenticated users
-- 20 requests per minute for unauthenticated requests
-
-Rate limit headers included in responses:
-- `X-RateLimit-Limit`: Maximum requests allowed in the current period
-- `X-RateLimit-Remaining`: Number of requests remaining in the current period
-- `X-RateLimit-Reset`: Time when the current rate limit window resets (Unix timestamp)
-
-When rate limit is exceeded, the API responds with 429 (Too Many Requests) status code.
 
 ## Webhook Notifications
 

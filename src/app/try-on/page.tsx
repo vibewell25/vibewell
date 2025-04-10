@@ -1,107 +1,108 @@
 'use client';
 
-import { useState } from 'react';
-import { VirtualTryOn } from '@/components/ar/virtual-try-on';
+import { useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Skeleton } from '@/components/ui/skeleton';
 
-const tryOnModels = {
-  makeup: {
-    title: 'Virtual Makeup Try-On',
-    description: 'Try on different makeup looks in augmented reality',
-    modelUrl: '/models/makeup.gltf',
-  },
-  hairstyle: {
-    title: 'Virtual Hairstyle Try-On',
-    description: 'See how different hairstyles look on you',
-    modelUrl: '/models/hairstyle.gltf',
-  },
-  accessory: {
-    title: 'Virtual Accessory Try-On',
-    description: 'Try on various accessories in AR',
-    modelUrl: '/models/accessory.gltf',
-  },
+// Dynamically import the AR component with no SSR to prevent hydration issues
+const ARViewer = dynamic(() => import('@/components/ar/ar-viewer').then(mod => ({ default: mod.ARViewer })), {
+  ssr: false,
+  loading: () => (
+    <div className="relative w-full h-[500px] bg-gray-100 flex flex-col items-center justify-center">
+      <Skeleton className="w-full h-full rounded-md" />
+      <p className="absolute text-center text-gray-500">Loading AR experience...</p>
+    </div>
+  )
+});
+
+const modelOptions = {
+  makeup: [
+    { id: 'natural', name: 'Natural Look', url: '/models/makeup/natural.glb' },
+    { id: 'bold', name: 'Bold Makeup', url: '/models/makeup/bold.glb' },
+    { id: 'evening', name: 'Evening Glamour', url: '/models/makeup/evening.glb' },
+  ],
+  hairstyle: [
+    { id: 'short', name: 'Short Style', url: '/models/hairstyle/short.glb' },
+    { id: 'medium', name: 'Medium Length', url: '/models/hairstyle/medium.glb' },
+    { id: 'long', name: 'Long Waves', url: '/models/hairstyle/long.glb' },
+  ],
+  accessory: [
+    { id: 'glasses', name: 'Glasses', url: '/models/accessory/glasses.glb' },
+    { id: 'earrings', name: 'Earrings', url: '/models/accessory/earrings.glb' },
+    { id: 'necklace', name: 'Necklace', url: '/models/accessory/necklace.glb' },
+  ],
 };
 
 export default function TryOnPage() {
-  const [activeTab, setActiveTab] = useState<keyof typeof tryOnModels>('makeup');
+  const [selectedCategory, setSelectedCategory] = useState<'makeup' | 'hairstyle' | 'accessory'>('makeup');
+  const [selectedModel, setSelectedModel] = useState<string>(modelOptions.makeup[0].url);
 
-  const handleTryOn = () => {
-    // Handle try-on action
-    console.log('Trying on:', activeTab);
+  const handleCategoryChange = (value: string) => {
+    setSelectedCategory(value as 'makeup' | 'hairstyle' | 'accessory');
+    setSelectedModel(modelOptions[value as 'makeup' | 'hairstyle' | 'accessory'][0].url);
   };
 
-  const handleShare = () => {
-    // Handle share action
-    console.log('Sharing:', activeTab);
+  const handleModelSelect = (url: string) => {
+    setSelectedModel(url);
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2">Virtual Try-On</h1>
-        <p className="text-muted-foreground">
-          Experience our products in augmented reality before making a purchase
-        </p>
-      </div>
-
-      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as keyof typeof tryOnModels)}>
-        <TabsList className="grid w-full grid-cols-3 mb-8">
+    <div className="container mx-auto py-8 px-4">
+      <h1 className="text-3xl font-bold mb-6">Virtual Try-On</h1>
+      
+      <Tabs value={selectedCategory} onValueChange={handleCategoryChange} className="mb-8">
+        <TabsList className="w-full max-w-md mx-auto">
           <TabsTrigger value="makeup">Makeup</TabsTrigger>
-          <TabsTrigger value="hairstyle">Hairstyle</TabsTrigger>
+          <TabsTrigger value="hairstyle">Hairstyles</TabsTrigger>
           <TabsTrigger value="accessory">Accessories</TabsTrigger>
         </TabsList>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle>{tryOnModels[activeTab].title}</CardTitle>
-                <CardDescription>{tryOnModels[activeTab].description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <VirtualTryOn
-                  modelUrl={tryOnModels[activeTab].modelUrl}
-                  type={activeTab}
-                  onTryOn={handleTryOn}
-                  onShare={handleShare}
-                />
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>How It Works</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ol className="list-decimal list-inside space-y-2">
-                  <li>Allow camera access when prompted</li>
-                  <li>Position your face in the frame</li>
-                  <li>Use the intensity slider to adjust the effect</li>
-                  <li>Try different looks and share your favorites</li>
-                </ol>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Tips for Best Results</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc list-inside space-y-2">
-                  <li>Ensure good lighting in your environment</li>
-                  <li>Keep your face centered in the frame</li>
-                  <li>Try different angles to see the full effect</li>
-                  <li>Use the intensity slider to find your perfect look</li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
+        
+        <div className="mt-4">
+          {['makeup', 'hairstyle', 'accessory'].map((category) => (
+            <TabsContent key={category} value={category} className="mt-0">
+              <div className="flex flex-wrap gap-2 mb-6">
+                {modelOptions[category as 'makeup' | 'hairstyle' | 'accessory'].map((model) => (
+                  <Button 
+                    key={model.id}
+                    variant={selectedModel === model.url ? "default" : "outline"}
+                    onClick={() => handleModelSelect(model.url)}
+                  >
+                    {model.name}
+                  </Button>
+                ))}
+              </div>
+            </TabsContent>
+          ))}
         </div>
       </Tabs>
+      
+      <div className="bg-white rounded-lg shadow-lg p-4">
+        <Suspense fallback={
+          <div className="relative w-full h-[500px] bg-gray-100 flex items-center justify-center">
+            <p className="text-gray-500">Loading AR viewer...</p>
+          </div>
+        }>
+          <ARViewer 
+            modelUrl={selectedModel} 
+            type={selectedCategory}
+            onModelLoaded={() => console.log('Model loaded successfully')}
+            onModelError={(error) => console.error('Model loading error:', error)}
+          />
+        </Suspense>
+        
+        <div className="mt-6 bg-gray-50 rounded p-4">
+          <h2 className="text-xl font-semibold mb-2">How to use:</h2>
+          <ol className="list-decimal list-inside space-y-2">
+            <li>Select a category (Makeup, Hairstyles, or Accessories)</li>
+            <li>Choose a specific look you want to try</li>
+            <li>Position your face in the camera view</li>
+            <li>The virtual look will be applied to your face in real-time</li>
+            <li>Use the capture button to take a photo</li>
+          </ol>
+        </div>
+      </div>
     </div>
   );
 } 

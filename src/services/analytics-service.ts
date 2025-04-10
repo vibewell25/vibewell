@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { randomBytes } from 'crypto';
 
 // Define types for analytics events
 export type EventName = 
@@ -116,8 +117,19 @@ export class AnalyticsService {
   }
   
   private generateSessionId(): string {
-    return Math.random().toString(36).substring(2, 15) + 
-           Math.random().toString(36).substring(2, 15);
+    // Use cryptographically secure random bytes instead of Math.random
+    // This works in both browser and Node.js environments
+    if (typeof window !== 'undefined' && window.crypto) {
+      // Browser environment: use Web Crypto API
+      const buffer = new Uint8Array(16);
+      window.crypto.getRandomValues(buffer);
+      return Array.from(buffer)
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+    } else {
+      // Node.js environment: use crypto module
+      return randomBytes(16).toString('hex');
+    }
   }
   
   // Track an analytics event

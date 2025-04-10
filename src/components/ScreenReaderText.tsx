@@ -1,22 +1,20 @@
 import React from 'react';
+import { cn } from '@/lib/utils';
 
 interface ScreenReaderTextProps {
+  className?: string;
   children: React.ReactNode;
-  as?: keyof JSX.IntrinsicElements;
+  as?: React.ElementType;
 }
 
-export const ScreenReaderText: React.FC<ScreenReaderTextProps> = ({ 
-  children,
-  as: Component = 'span'
-}) => {
+export default function ScreenReaderText({ 
+  className, 
+  children, 
+  as: Component = 'span' 
+}: ScreenReaderTextProps) {
   return (
-    <Component 
-      className="sr-only" 
-      aria-hidden="false"
-    >
+    <Component className={cn('sr-only', className)}>
       {children}
     </Component>
   );
-};
-
-export default ScreenReaderText;
+}

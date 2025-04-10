@@ -9,6 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PlusIcon, CalendarDaysIcon, ListBulletIcon, UsersIcon } from '@heroicons/react/24/outline';
 import { ContentItem, ContentPlatform, ContentStatus, ContentTeamMember } from '@/types/content-calendar';
+import { ContentCalendarCalendar } from '@/components/content-calendar/content-calendar-calendar';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 export default function ContentCalendarPage() {
   const [activeTab, setActiveTab] = useState<string>('board');
@@ -234,15 +237,75 @@ export default function ContentCalendarPage() {
             </TabsContent>
             
             <TabsContent value="calendar" className="mt-0">
-              <p className="text-center text-muted-foreground py-20">
-                Calendar view will be implemented in the next phase.
-              </p>
+              <div className="flex">
+                <ContentCalendarSidebar 
+                  platforms={platforms}
+                  teamMembers={teamMembers}
+                  onAddPlatform={(platform) => setPlatforms([...platforms, platform])}
+                  onAddTeamMember={(member) => setTeamMembers([...teamMembers, member])}
+                />
+                <div className="flex-1 ml-6">
+                  <ContentCalendarCalendar
+                    contentItems={contentItems}
+                    statuses={statuses}
+                    teamMembers={teamMembers}
+                    platforms={platforms}
+                    onEditItem={handleEditContentItem}
+                    onDeleteItem={handleDeleteContentItem}
+                  />
+                </div>
+              </div>
             </TabsContent>
             
             <TabsContent value="team" className="mt-0">
-              <p className="text-center text-muted-foreground py-20">
-                Team collaboration view will be implemented in the next phase.
-              </p>
+              <div className="flex">
+                <ContentCalendarSidebar 
+                  platforms={platforms}
+                  teamMembers={teamMembers}
+                  onAddPlatform={(platform) => setPlatforms([...platforms, platform])}
+                  onAddTeamMember={(member) => setTeamMembers([...teamMembers, member])}
+                />
+                <div className="flex-1 ml-6">
+                  <div className="bg-card rounded-lg border shadow-sm p-6">
+                    <h2 className="text-xl font-semibold mb-4">Team Overview</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {teamMembers.map(member => (
+                        <div key={member.id} className="flex items-start space-x-4 p-4 border rounded-md">
+                          <Avatar className="h-12 w-12">
+                            <AvatarImage src={member.avatar} alt={member.name} />
+                            <AvatarFallback>{member.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <h3 className="font-medium">{member.name}</h3>
+                            <p className="text-sm text-muted-foreground">{member.role}</p>
+                            <div className="mt-2">
+                              <p className="text-sm">Assigned Items: {contentItems.filter(item => item.assignedTo === member.id).length}</p>
+                              <div className="flex gap-1 mt-1">
+                                {statuses.map(status => {
+                                  const count = contentItems.filter(
+                                    item => item.assignedTo === member.id && item.status === status.id
+                                  ).length;
+                                  if (count > 0) {
+                                    return (
+                                      <Badge 
+                                        key={status.id}
+                                        style={{ backgroundColor: `${status.color}20`, color: status.color }}
+                                      >
+                                        {status.name}: {count}
+                                      </Badge>
+                                    );
+                                  }
+                                  return null;
+                                })}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </TabsContent>
           </Tabs>
         </div>

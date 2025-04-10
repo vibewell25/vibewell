@@ -2,6 +2,8 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { apiRateLimiter, applyRateLimit } from '../../auth/rate-limit-middleware';
+import { randomBytes } from 'crypto';
 
 // Schema for validating the request body
 const eventSchema = z.object({
@@ -12,6 +14,12 @@ const eventSchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
+    // Apply rate limiting
+    const rateLimitResponse = await applyRateLimit(req, apiRateLimiter);
+    if (rateLimitResponse) {
+      return rateLimitResponse; // Rate limit exceeded
+    }
+    
     // Parse request body
     const body = await req.json();
     
@@ -35,8 +43,7 @@ export async function POST(req: NextRequest) {
     
     // Generate unique session ID if not provided
     const sessionId = session_id || 
-      Math.random().toString(36).substring(2, 15) + 
-      Math.random().toString(36).substring(2, 15);
+      randomBytes(16).toString('hex');
     
     // Create the analytics event
     const analyticsEvent = {

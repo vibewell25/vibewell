@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { randomBytes } from 'crypto';
 
 /**
  * Combines multiple class values into a single string, with Tailwind-specific merging
@@ -9,12 +10,14 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Generate a unique ID with an optional prefix
+ * Generate a cryptographically secure unique ID with an optional prefix
+ * This function generates IDs suitable for security-sensitive contexts
  */
 export function uniqueId(prefix: string = ''): string {
   const timestamp = Date.now().toString(36);
-  const randomStr = Math.random().toString(36).substring(2, 10);
-  return `${prefix}${timestamp}${randomStr}`;
+  // Use crypto.randomBytes instead of Math.random for better security
+  const secureRandomStr = randomBytes(8).toString('hex');
+  return `${prefix}${timestamp}${secureRandomStr}`;
 }
 
 /**
@@ -136,7 +139,7 @@ export function formatRating(rating: number): string {
 }
 
 /**
- * Get a random color
+ * Get a random color in a cryptographically secure way
  */
 export function getRandomColor(): string {
   const colors = [
@@ -148,5 +151,17 @@ export function getRandomColor(): string {
     "bg-pink-500",
     "bg-indigo-500",
   ];
-  return colors[Math.floor(Math.random() * colors.length)];
+  
+  // Use secure random number generation
+  if (typeof window !== 'undefined' && window.crypto) {
+    // Browser environment
+    const randomIndex = new Uint32Array(1);
+    window.crypto.getRandomValues(randomIndex);
+    return colors[randomIndex[0] % colors.length];
+  } else {
+    // Node.js environment
+    const randomBytes = require('crypto').randomBytes;
+    const randomIndex = randomBytes(1)[0];
+    return colors[randomIndex % colors.length];
+  }
 } 

@@ -9,7 +9,7 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder as any;
 
 // Setup MSW server for API mocking
-const baseUrl = 'http://localhost:3000';
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 export const handlers = [
   // Health endpoint

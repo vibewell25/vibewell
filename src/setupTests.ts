@@ -1,10 +1,19 @@
 import '@testing-library/jest-dom';
 import { TextEncoder, TextDecoder } from 'util';
+import { setupServer } from 'msw/node';
+import { http, HttpResponse } from 'msw';
 import React from 'react';
+import { axe } from 'jest-axe';
 
 // Add TextEncoder and TextDecoder to global scope for Jest
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder as any;
+
+// Add axe to global scope
+global.axe = axe;
+
+// Setup MSW server for API mocking
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 // Mock global Request and Headers for use with Next.js
 global.Request = class MockRequest {

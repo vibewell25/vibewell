@@ -1,5 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { AnalyticsService } from './analytics-service';
+import nodemailer from 'nodemailer';
+import { Twilio } from 'twilio';
 
 // Define the Alert interface
 export interface Alert {
@@ -63,6 +65,24 @@ export interface AlertNotification {
   notificationMethod: string;
   sentAt: string;
 }
+
+// Initialize email and SMS clients
+const emailTransporter = nodemailer.createTransport({
+  host: process.env.EMAIL_HOST || 'smtp.example.com',
+  port: Number(process.env.EMAIL_PORT) || 587,
+  secure: process.env.EMAIL_SECURE === 'true',
+  auth: {
+    user: process.env.EMAIL_USER || '',
+    pass: process.env.EMAIL_PASSWORD || '',
+  },
+});
+
+const twilioClient = process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN 
+  ? new Twilio(
+      process.env.TWILIO_ACCOUNT_SID,
+      process.env.TWILIO_AUTH_TOKEN
+    )
+  : null;
 
 export class AnalyticsAlertService {
   private supabase;
@@ -503,16 +523,97 @@ export class AnalyticsAlertService {
           .from('alert_notifications')
           .insert(notification);
         
-        // Actual sending logic would be here
-        // For email and SMS, you would integrate with external services
+        // Email notification
         if (method.type === 'email' && method.destination) {
-          console.log(`Would send email to ${method.destination}: ${message}`);
-          // TODO: Implement email sending
+          try {
+            // Get user information for a more personalized email
+            const { data: user } = await this.supabase
+              .from('profiles')
+              .select('full_name, email')
+              .eq('id', userId)
+              .single();
+            
+            const userEmail = method.destination || user?.email;
+            const userName = user?.full_name || 'User';
+            
+            if (!userEmail) {
+              console.error('No email destination for alert notification');
+              continue;
+            }
+            
+            // Create a more formatted email with HTML
+            const emailHtml = `
+              <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px;">
+                <h2 style="color: #5c6ac4;">VibeWell Analytics Alert</h2>
+                <div style="border-left: 4px solid #5c6ac4; padding: 15px; background-color: #f9f9f9; margin: 20px 0;">
+                  <p style="margin: 0; font-size: 16px;"><strong>${message}</strong></p>
+                </div>
+                <p>Hello ${userName},</p>
+                <p>This is an automated alert from your VibeWell analytics dashboard.</p>
+                <p><strong>Alert Details:</strong></p>
+                <ul>
+                  <li><strong>Product:</strong> ${productName}</li>
+                  <li><strong>Metric:</strong> ${metricName}</li>
+                  <li><strong>Current Value:</strong> ${formattedValue}</li>
+                  <li><strong>Threshold:</strong> ${threshold.value}${threshold.metricType === 'conversion' ? '%' : ''}</li>
+                  <li><strong>Condition:</strong> ${threshold.condition === 'above' ? 'Above' : 'Below'} threshold</li>
+                </ul>
+                <p>
+                  <a href="${process.env.NEXT_PUBLIC_APP_URL}/analytics/alerts/view/${alert.id}" 
+                     style="background-color: #5c6ac4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block; margin-top: 15px;">
+                    View Alert Details
+                  </a>
+                </p>
+                <p style="color: #666; font-size: 12px; margin-top: 30px;">
+                  This is an automated message. Please do not reply to this email.
+                  You can manage your alert settings in the VibeWell dashboard.
+                </p>
+              </div>
+            `;
+            
+            // Send the email
+            await emailTransporter.sendMail({
+              from: `"VibeWell Analytics" <${process.env.EMAIL_FROM || 'alerts@vibewell.com'}>`,
+              to: userEmail,
+              subject: `VibeWell Alert: ${name}`,
+              text: message,
+              html: emailHtml,
+            });
+            
+            console.log(`Email notification sent to ${userEmail}`);
+          } catch (emailError) {
+            console.error('Error sending email notification:', emailError);
+          }
         }
         
+        // SMS notification
         if (method.type === 'sms' && method.destination) {
-          console.log(`Would send SMS to ${method.destination}: ${message}`);
-          // TODO: Implement SMS sending
+          try {
+            if (!twilioClient) {
+              console.error('Twilio client not initialized');
+              continue;
+            }
+            
+            // Format phone number - ensure it has country code
+            let phoneNumber = method.destination;
+            if (!phoneNumber.startsWith('+')) {
+              phoneNumber = `+1${phoneNumber}`; // Default to US country code
+            }
+            
+            // Keep SMS messages brief
+            const smsMessage = `VibeWell Alert: ${message.substring(0, 140)}`;
+            
+            // Send SMS using Twilio
+            await twilioClient.messages.create({
+              body: smsMessage,
+              from: process.env.TWILIO_PHONE_NUMBER || '',
+              to: phoneNumber
+            });
+            
+            console.log(`SMS notification sent to ${phoneNumber}`);
+          } catch (smsError) {
+            console.error('Error sending SMS notification:', smsError);
+          }
         }
       }
       

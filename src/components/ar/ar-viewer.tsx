@@ -119,9 +119,9 @@ export function ARViewer({ modelUrl, type, onModelLoaded, onModelError }: ARView
   return (
     <ARSupportCheck onARUnsupported={handleARUnsupported}>
       <ModelErrorBoundary onError={onModelError}>
-        <div ref={viewerRef} className="relative w-full h-[500px] bg-gray-100">
+        <div ref={viewerRef} className="relative w-full h-[500px] bg-gray-100" data-testid="ar-viewer">
           {loading && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <div className="absolute inset-0 flex flex-col items-center justify-center" data-testid="loader">
               <Progress value={loadingProgress} className="w-[60%] mb-4" />
               <p className="text-sm text-gray-500">
                 Loading model... {Math.round(loadingProgress)}%
@@ -138,6 +138,7 @@ export function ARViewer({ modelUrl, type, onModelLoaded, onModelError }: ARView
               modelData={modelData}
               type={type}
               onCapture={handleCapture}
+              data-testid="canvas"
             />
           )}
         </div>

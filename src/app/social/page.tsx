@@ -429,7 +429,7 @@ export default function SocialPage() {
               ) : (
                 <div className="card bg-muted/30 mb-6 p-4 text-center">
                   <p className="mb-2">Sign in to share posts and interact with the community</p>
-                  <Link href="/auth/login" className="btn-primary">
+                  <Link href="/auth/sign-in" className="btn-primary">
                     Sign In
                   </Link>
                 </div>

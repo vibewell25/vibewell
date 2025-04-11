@@ -67,4 +67,4 @@ const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
   );
 };
 
-export default AccessibleDialog;
+export default AccessibleDialog; 

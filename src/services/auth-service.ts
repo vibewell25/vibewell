@@ -348,4 +348,7 @@ export class AuthService {
     
     return { success: true };
   }
-} 
+}
+
+// Create and export a singleton instance of the auth service
+export const authService = new AuthService(); 

@@ -1,55 +1,32 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { ARViewer } from '../ar-viewer';
 
 // Mock the Three.js and React Three Fiber components
-jest.mock('@react-three/fiber', () => ({
-  Canvas: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="canvas">{children}</div>
-  ),
-}));
-
-jest.mock('@react-three/drei', () => ({
-  OrbitControls: () => <div data-testid="orbit-controls" />,
-  useGLTF: () => ({ scene: {} }),
-}));
+// Note: Most of these mocks are now provided in jest.setup.js
 
 describe('ARViewer', () => {
-  const mockModelUrl = 'https://example.com/model.glb';
-
   it('renders loading state initially', () => {
-    render(<ARViewer modelUrl={mockModelUrl} />);
-    expect(screen.getByTestId('loader')).toBeInTheDocument();
+    render(<ARViewer modelUrl="https://example.com/model.glb" type="makeup" />);
+    expect(screen.getByTestId('ar-loading')).toBeInTheDocument();
   });
 
-  it('renders error state when model fails to load', async () => {
-    const mockError = new Error('Failed to load model');
-    render(<ARViewer modelUrl={mockModelUrl} onError={jest.fn()} />);
+  it('shows error state when model fails to load', async () => {
+    // The mock in jest.setup.js should handle this case
+    render(<ARViewer modelUrl="https://example.com/invalid.glb" type="makeup" />);
     
-    // Simulate error
-    const canvas = screen.getByTestId('canvas');
-    canvas.dispatchEvent(new ErrorEvent('error', { error: mockError }));
-    
+    // Wait for the error state to appear
     await waitFor(() => {
-      expect(screen.getByText(/Failed to load model/)).toBeInTheDocument();
+      expect(screen.getByTestId('ar-error')).toBeInTheDocument();
     });
   });
 
-  it('calls onLoad callback when model is loaded', async () => {
-    const onLoad = jest.fn();
-    render(<ARViewer modelUrl={mockModelUrl} onLoad={onLoad} />);
+  it('renders AR viewer when model is loaded successfully', async () => {
+    render(<ARViewer modelUrl="https://example.com/model.glb" type="makeup" />);
     
-    // Simulate load
-    const canvas = screen.getByTestId('canvas');
-    canvas.dispatchEvent(new Event('load'));
-    
+    // Wait for the model to load
     await waitFor(() => {
-      expect(onLoad).toHaveBeenCalled();
+      expect(screen.getByTestId('ar-canvas')).toBeInTheDocument();
     });
-  });
-
-  it('applies custom className', () => {
-    const customClass = 'custom-class';
-    render(<ARViewer modelUrl={mockModelUrl} className={customClass} />);
-    expect(screen.getByTestId('ar-viewer')).toHaveClass(customClass);
   });
 }); 

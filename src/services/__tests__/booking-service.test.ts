@@ -4,38 +4,35 @@ import { supabase } from '@/lib/supabase/client';
 // Mock supabase
 jest.mock('@/lib/supabase/client', () => ({
   supabase: {
-    from: jest.fn(() => ({
-      select: jest.fn(() => ({
-        eq: jest.fn(() => ({
-          order: jest.fn(() => ({
-            or: jest.fn(() => ({
-              not: jest.fn(() => Promise.resolve({ data: [], error: null }))
-            })),
-            gte: jest.fn(() => ({
-              lte: jest.fn(() => ({
-                order: jest.fn(() => Promise.resolve({ data: [], error: null }))
-              }))
-            })),
-            single: jest.fn(() => Promise.resolve({ data: {}, error: null })),
-            or: jest.fn(() => ({
-              not: jest.fn(() => Promise.resolve({ data: [], error: null }))
-            }))
-          }))
-        })),
-        single: jest.fn(() => Promise.resolve({ data: {}, error: null }))
-      })),
-      insert: jest.fn(() => ({
-        select: jest.fn(() => ({
-          single: jest.fn(() => Promise.resolve({ data: {}, error: null }))
-        }))
-      })),
-      update: jest.fn(() => ({
-        eq: jest.fn(() => ({
-          select: jest.fn(() => ({
-            single: jest.fn(() => Promise.resolve({ data: {}, error: null }))
-          }))
-        }))
-      }))
+    from: jest.fn().mockReturnValue({
+      select: jest.fn().mockReturnValue({
+        eq: jest.fn().mockReturnValue({
+          order: jest.fn().mockReturnValue({
+            or: jest.fn().mockReturnValue({
+              not: jest.fn().mockResolvedValue({ data: [], error: null })
+            }),
+            gte: jest.fn().mockReturnValue({
+              lte: jest.fn().mockReturnValue({
+                order: jest.fn().mockResolvedValue({ data: [], error: null })
+              })
+            }),
+            single: jest.fn().mockResolvedValue({ data: {}, error: null })
+          })
+        }),
+        single: jest.fn().mockResolvedValue({ data: {}, error: null })
+      }),
+      insert: jest.fn().mockReturnValue({
+        select: jest.fn().mockReturnValue({
+          single: jest.fn().mockResolvedValue({ data: {}, error: null })
+        })
+      }),
+      update: jest.fn().mockReturnValue({
+        eq: jest.fn().mockReturnValue({
+          select: jest.fn().mockReturnValue({
+            single: jest.fn().mockResolvedValue({ data: {}, error: null })
+          })
+        })
+      })
     })
   }
 }));
@@ -51,17 +48,17 @@ describe('BookingService', () => {
   describe('getBookings', () => {
     it('should fetch bookings for a customer', async () => {
       // Mock implementation for this test
-      const mockSelect = jest.fn(() => ({
-        eq: jest.fn(() => ({
-          order: jest.fn(() => Promise.resolve({
+      const mockSelect = jest.fn().mockReturnValue({
+        eq: jest.fn().mockReturnValue({
+          order: jest.fn().mockResolvedValue({
             data: [
               { id: 'booking1', service_id: 'service1', customer_id: 'customer1' },
               { id: 'booking2', service_id: 'service2', customer_id: 'customer1' }
             ],
             error: null
-          }))
-        }))
-      }));
+          })
+        })
+      });
       
       (supabase.from as jest.Mock).mockReturnValue({ select: mockSelect });
       
@@ -80,17 +77,17 @@ describe('BookingService', () => {
     
     it('should fetch bookings for a provider', async () => {
       // Mock implementation for this test
-      const mockSelect = jest.fn(() => ({
-        eq: jest.fn(() => ({
-          order: jest.fn(() => Promise.resolve({
+      const mockSelect = jest.fn().mockReturnValue({
+        eq: jest.fn().mockReturnValue({
+          order: jest.fn().mockResolvedValue({
             data: [
               { id: 'booking1', service_id: 'service1', provider_id: 'provider1' },
               { id: 'booking2', service_id: 'service2', provider_id: 'provider1' }
             ],
             error: null
-          }))
-        }))
-      }));
+          })
+        })
+      });
       
       (supabase.from as jest.Mock).mockReturnValue({ select: mockSelect });
       
@@ -102,27 +99,26 @@ describe('BookingService', () => {
     });
     
     it('should throw an error if the database query fails', async () => {
-      const mockSelect = jest.fn(() => ({
-        eq: jest.fn(() => ({
-          order: jest.fn(() => Promise.resolve({
+      const mockSelect = jest.fn().mockReturnValue({
+        eq: jest.fn().mockReturnValue({
+          order: jest.fn().mockResolvedValue({
             data: null,
             error: new Error('Database error')
-          }))
-        }))
-      }));
+          })
+        })
+      });
       
       (supabase.from as jest.Mock).mockReturnValue({ select: mockSelect });
       
-      await expect(bookingService.getBookings('customer1', 'customer'))
-        .rejects.toThrow('Database error');
+      await expect(bookingService.getBookings('customer1', 'customer')).rejects.toThrow('Database error');
     });
   });
   
   describe('createBooking', () => {
     it('should create a new booking', async () => {
-      const mockInsert = jest.fn(() => ({
-        select: jest.fn(() => ({
-          single: jest.fn(() => Promise.resolve({
+      const mockInsert = jest.fn().mockReturnValue({
+        select: jest.fn().mockReturnValue({
+          single: jest.fn().mockResolvedValue({
             data: {
               id: 'new-booking',
               service_id: 'service1',
@@ -133,9 +129,9 @@ describe('BookingService', () => {
               status: 'pending'
             },
             error: null
-          }))
-        }))
-      }));
+          })
+        })
+      });
       
       (supabase.from as jest.Mock).mockReturnValue({ insert: mockInsert });
       
@@ -158,16 +154,16 @@ describe('BookingService', () => {
   
   describe('checkAvailability', () => {
     it('should return true when a time slot is available', async () => {
-      const mockSelect = jest.fn(() => ({
-        eq: jest.fn(() => ({
-          or: jest.fn(() => ({
-            not: jest.fn(() => Promise.resolve({
+      const mockSelect = jest.fn().mockReturnValue({
+        eq: jest.fn().mockReturnValue({
+          or: jest.fn().mockReturnValue({
+            not: jest.fn().mockResolvedValue({
               data: [], // Empty array means no bookings found (available)
               error: null
-            }))
-          }))
-        }))
-      }));
+            })
+          })
+        })
+      });
       
       (supabase.from as jest.Mock).mockReturnValue({ select: mockSelect });
       
@@ -182,16 +178,16 @@ describe('BookingService', () => {
     });
     
     it('should return false when a time slot is not available', async () => {
-      const mockSelect = jest.fn(() => ({
-        eq: jest.fn(() => ({
-          or: jest.fn(() => ({
-            not: jest.fn(() => Promise.resolve({
+      const mockSelect = jest.fn().mockReturnValue({
+        eq: jest.fn().mockReturnValue({
+          or: jest.fn().mockReturnValue({
+            not: jest.fn().mockResolvedValue({
               data: [{ id: 'existing-booking' }], // Non-empty array means bookings found (not available)
               error: null
-            }))
-          }))
-        }))
-      }));
+            })
+          })
+        })
+      });
       
       (supabase.from as jest.Mock).mockReturnValue({ select: mockSelect });
       

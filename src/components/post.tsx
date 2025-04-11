@@ -201,7 +201,7 @@ export function Post({
             </form>
           ) : (
             <div className="mt-3 text-sm text-center text-muted-foreground p-2 bg-muted/30 rounded">
-              <Link href="/auth/login" className="text-primary hover:underline">Sign in</Link> to add a comment
+              <Link href="/auth/sign-in" className="text-primary hover:underline">Sign in</Link> to add a comment
             </div>
           )}
         </div>

@@ -306,7 +306,7 @@ export default function DeveloperPortal() {
                   ) : (
                     <div className="mb-6">
                       <Button asChild>
-                        <Link href="/login?returnTo=/developer">Sign In to Get Started</Link>
+                        <Link href="/auth/sign-in?returnTo=/developer">Sign In to Get Started</Link>
                       </Button>
                     </div>
                   )}
@@ -336,7 +336,7 @@ export default function DeveloperPortal() {
                 
                 <h4 className="font-medium mb-2">Getting a Token</h4>
                 <div className="bg-muted rounded-md p-4 font-mono text-sm overflow-x-auto mb-4">
-                  <pre>{`POST /auth/login
+                  <pre>{`POST /auth/sign-in
 
 {
   "email": "user@example.com",

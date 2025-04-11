@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { AuthProvider } from '@/contexts/auth-context';
 import { AnalyticsProvider } from '@/providers/analytics-provider';
-import LiveAnnouncer from '@/components/LiveAnnouncer';
+import { LiveAnnouncer } from '@/components/ui/live-announcer';
 import SkipLink from '@/components/SkipLink';
 
 const inter = Inter({ subsets: ['latin'] });

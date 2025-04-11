@@ -1,125 +1,104 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
-import { User } from '@supabase/supabase-js';
+import { User, Session, AuthState } from '@/types/auth';
+import { authService } from '@/services/auth/authService';
 
-export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+export const useAuth = () => {
+  const [state, setState] = useState<AuthState>({
+    user: null,
+    loading: true,
+  });
   const router = useRouter();
 
+  // Check if user is already logged in on mount
   useEffect(() => {
-    // Check for current user session
-    const checkUser = async () => {
+    const checkAuthStatus = async () => {
       try {
-        setLoading(true);
-        const { data: { session } } = await supabase.auth.getSession();
-        setUser(session?.user || null);
+        const user = await authService.getCurrentUser();
+        setState({ user, loading: false });
       } catch (error) {
-        console.error('Error checking auth session:', error);
-      } finally {
-        setLoading(false);
+        setState({ user: null, loading: false });
       }
     };
 
-    checkUser();
-
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user || null);
-      setLoading(false);
-    });
-
-    // Clean up subscription
-    return () => subscription.unsubscribe();
+    checkAuthStatus();
   }, []);
 
-  const signUp = async (email: string, password: string, name: string) => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: name,
-          },
-        },
-      });
-
-      if (error) throw error;
-      
-      // Create profile record
-      if (data.user) {
-        await supabase.from('profiles').insert([
-          { id: data.user.id, full_name: name, email },
-        ]);
+  const signUp = useCallback(
+    async (email: string, password: string, name: string) => {
+      setState((prev) => ({ ...prev, loading: true }));
+      try {
+        const { user, session } = await authService.signUp(email, password, name);
+        setState({ user, loading: false });
+        return { success: true, data: { user, session }, error: null };
+      } catch (error) {
+        setState((prev) => ({ ...prev, loading: false }));
+        return { 
+          success: false, 
+          data: null, 
+          error: error instanceof Error ? error.message : 'Unknown error'
+        };
       }
+    },
+    []
+  );
 
-      return { success: true, data, error: null };
-    } catch (error: any) {
-      console.error('Error signing up:', error);
-      return { success: false, data: null, error: error.message };
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const signIn = async (email: string, password: string) => {
+  const signIn = useCallback(async (email: string, password: string) => {
+    setState((prev) => ({ ...prev, loading: true }));
     try {
-      setLoading(true);
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-      return { success: true, data, error: null };
-    } catch (error: any) {
-      console.error('Error signing in:', error);
-      return { success: false, data: null, error: error.message };
-    } finally {
-      setLoading(false);
+      const { user, session } = await authService.signIn(email, password);
+      setState({ user, loading: false });
+      return { success: true, data: { user, session }, error: null };
+    } catch (error) {
+      setState((prev) => ({ ...prev, loading: false }));
+      return { 
+        success: false, 
+        data: null, 
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
     }
-  };
+  }, []);
 
-  const signOut = async () => {
+  const login = useCallback(async (email: string, password: string) => {
+    return signIn(email, password);
+  }, [signIn]);
+
+  const signOut = useCallback(async () => {
+    setState((prev) => ({ ...prev, loading: true }));
     try {
-      setLoading(true);
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      router.push('/auth/login');
-    } catch (error: any) {
-      console.error('Error signing out:', error);
-    } finally {
-      setLoading(false);
+      await authService.signOut();
+      setState({ user: null, loading: false });
+      return { success: true };
+    } catch (error) {
+      setState((prev) => ({ ...prev, loading: false }));
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
     }
-  };
+  }, []);
 
-  const resetPassword = async (email: string) => {
+  const resetPassword = useCallback(async (email: string) => {
     try {
-      setLoading(true);
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
-      });
-      if (error) throw error;
-      return { success: true, error: null };
-    } catch (error: any) {
-      console.error('Error resetting password:', error);
-      return { success: false, error: error.message };
-    } finally {
-      setLoading(false);
+      await authService.resetPassword(email);
+      return { success: true };
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
     }
-  };
+  }, []);
 
   return {
-    user,
-    loading,
+    user: state.user,
+    loading: state.loading,
     signUp,
     signIn,
+    login,
     signOut,
     resetPassword,
   };
-} 
+}; 

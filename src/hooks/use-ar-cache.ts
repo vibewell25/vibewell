@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { arModelCache } from '@/lib/ar/model-cache';
+import { arModelCache } from '@/lib/cache';
 import { useAnalytics } from './use-analytics';
 
 export interface UseARCacheOptions {

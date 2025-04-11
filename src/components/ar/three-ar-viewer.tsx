@@ -592,8 +592,9 @@ export function ThreeARViewer({
   modelData, 
   type, 
   intensity = 5,
-  onCapture 
-}: ThreeARViewerProps) {
+  onCapture,
+  ...props
+}: ThreeARViewerProps & React.HTMLAttributes<HTMLDivElement>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -608,6 +609,9 @@ export function ThreeARViewer({
   const [isPerformanceMode, setIsPerformanceMode] = useState(false);
   const [webGLError, setWebGLError] = useState<string | null>(null);
   
+  // Extract any test ID for the tests 
+  const { 'data-testid': testId, ...otherProps } = props;
+
   // Initialize renderer, scene, camera
   useEffect(() => {
     if (!containerRef.current) return;
@@ -650,6 +654,10 @@ export function ThreeARViewer({
     renderer.setPixelRatio(window.devicePixelRatio > 2 ? 2 : window.devicePixelRatio);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = !isPerformanceMode;
+    
+    // Add data-testid for canvas element for tests
+    renderer.domElement.setAttribute('data-testid', 'canvas');
+    
     containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
     
@@ -823,41 +831,48 @@ export function ThreeARViewer({
   };
   
   return (
-    <div className="relative w-full h-full">
-      <div ref={containerRef} className="w-full h-full bg-gray-100 rounded-lg overflow-hidden">
-        {webGLError && (
-          <div className="absolute inset-0 flex items-center justify-center bg-red-50 text-red-600 p-4">
-            <div className="text-center">
-              <h3 className="font-bold mb-2">WebGL Error</h3>
-              <p>{webGLError}</p>
-              <p className="text-sm mt-2">Please try using a different browser or device that supports WebGL.</p>
+    <div 
+      ref={containerRef} 
+      className="h-full w-full relative" 
+      data-testid={testId || "ar-viewer"}
+      {...otherProps}
+    >
+      <div className="relative w-full h-full">
+        <div className="w-full h-full bg-gray-100 rounded-lg overflow-hidden">
+          {webGLError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-red-50 text-red-600 p-4">
+              <div className="text-center">
+                <h3 className="font-bold mb-2">WebGL Error</h3>
+                <p>{webGLError}</p>
+                <p className="text-sm mt-2">Please try using a different browser or device that supports WebGL.</p>
+              </div>
             </div>
+          )}
+        </div>
+        
+        {isModelLoaded && onCapture && !webGLError && (
+          <div className="absolute bottom-4 right-4 flex gap-2">
+            <Button
+              variant="default"
+              size="sm"
+              className="rounded-full p-2 h-10 w-10"
+              onClick={captureScreenshot}
+              title="Capture"
+            >
+              <Camera className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className={isPerformanceMode ? 'bg-amber-200' : ''}
+              onClick={togglePerformanceMode}
+              title={isPerformanceMode ? 'Switch to Quality Mode' : 'Switch to Performance Mode'}
+            >
+              {isPerformanceMode ? 'Performance' : 'Quality'}
+            </Button>
           </div>
         )}
       </div>
-      
-      {isModelLoaded && onCapture && !webGLError && (
-        <div className="absolute bottom-4 right-4 flex gap-2">
-          <Button
-            variant="default"
-            size="sm"
-            className="rounded-full p-2 h-10 w-10"
-            onClick={captureScreenshot}
-            title="Capture"
-          >
-            <Camera className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className={isPerformanceMode ? 'bg-amber-200' : ''}
-            onClick={togglePerformanceMode}
-            title={isPerformanceMode ? 'Switch to Quality Mode' : 'Switch to Performance Mode'}
-          >
-            {isPerformanceMode ? 'Performance' : 'Quality'}
-          </Button>
-        </div>
-      )}
     </div>
   );
 } 

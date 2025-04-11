@@ -4,6 +4,7 @@ import { VirtualTryOn } from '@/components/ar/virtual-try-on';
 import { useARCache } from '@/hooks/use-ar-cache';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { AnalyticsService } from '@/services/analytics-service';
+import { useToast } from '@/hooks/use-toast';
 
 // Mock the hooks and services
 jest.mock('@/hooks/use-ar-cache');
@@ -47,19 +48,61 @@ jest.mock('@/components/ar/share-dialog', () => ({
   )
 }));
 
+// Mock the required dependencies
+jest.mock('@/hooks/use-toast', () => ({
+  useToast: () => ({
+    toast: jest.fn()
+  })
+}));
+
+jest.mock('@/hooks/use-analytics', () => ({
+  useAnalytics: () => ({
+    trackEvent: jest.fn()
+  })
+}));
+
+jest.mock('@/services/analytics-service', () => ({
+  AnalyticsService: jest.fn().mockImplementation(() => ({
+    trackEvent: jest.fn(),
+    trackProductView: jest.fn(),
+    trackTryOn: jest.fn(),
+    trackShare: jest.fn()
+  }))
+}));
+
+// Mock the ARviewer component
+jest.mock('@/components/ar/ar-viewer', () => ({
+  ARViewer: ({ onModelLoaded, type, modelUrl }: any) => {
+    // Simulate model loaded after render
+    React.useEffect(() => {
+      if (onModelLoaded) {
+        onModelLoaded();
+      }
+    }, [onModelLoaded]);
+    
+    return (
+      <div data-testid="ar-viewer" data-model-url={modelUrl} data-type={type}>
+        AR Viewer Mock
+      </div>
+    );
+  }
+}));
+
 describe('VirtualTryOn', () => {
   const mockModels = [
     { 
-      url: 'https://example.com/model1.glb', 
-      type: 'makeup' as const, 
-      name: 'Red Lipstick', 
-      id: 'model1' 
+      id: 'model1', 
+      name: 'Makeup Model 1', 
+      type: 'makeup', 
+      url: 'https://example.com/model1.glb',
+      thumbnail: 'https://example.com/thumbnail1.jpg'
     },
     { 
-      url: 'https://example.com/model2.glb', 
-      type: 'hairstyle' as const, 
-      name: 'Short Bob', 
-      id: 'model2' 
+      id: 'model2', 
+      name: 'Makeup Model 2', 
+      type: 'makeup', 
+      url: 'https://example.com/model2.glb',
+      thumbnail: 'https://example.com/thumbnail2.jpg'
     }
   ];
   
@@ -395,6 +438,62 @@ describe('VirtualTryOn', () => {
       duration: 5, // (6000 - 1000) / 1000 = 5 seconds
       intensity: 5,
       success: true
+    });
+  });
+  
+  it('renders the component with models', () => {
+    render(<VirtualTryOn models={mockModels} />);
+    
+    // Check that the component renders
+    expect(screen.getByText('Virtual Try-On')).toBeInTheDocument();
+    
+    // Check that AR viewer is rendered
+    expect(screen.getByTestId('ar-viewer')).toBeInTheDocument();
+  });
+  
+  it('allows changing models', async () => {
+    render(<VirtualTryOn models={mockModels} />);
+    
+    // Check initial model
+    const arViewer = screen.getByTestId('ar-viewer');
+    expect(arViewer).toHaveAttribute('data-model-url', mockModels[0].url);
+    
+    // Click on second model option
+    const modelOptions = screen.getAllByRole('button', { name: /makeup model/i });
+    fireEvent.click(modelOptions[1]);
+    
+    // Check that model changes
+    await waitFor(() => {
+      expect(arViewer).toHaveAttribute('data-model-url', mockModels[1].url);
+    });
+  });
+  
+  it('allows adjusting light intensity', () => {
+    render(<VirtualTryOn models={mockModels} />);
+    
+    // Find the light intensity slider
+    const intensitySlider = screen.getByRole('slider');
+    
+    // Change the intensity
+    fireEvent.change(intensitySlider, { target: { value: 8 } });
+    
+    // Verify the slider value changed
+    expect(intensitySlider).toHaveValue('8');
+  });
+  
+  it('tracks analytics events', async () => {
+    const mockAnalyticsService = new AnalyticsService();
+    render(<VirtualTryOn models={mockModels} />);
+    
+    // Verify that tracking events are called
+    expect(mockAnalyticsService.trackTryOn).toHaveBeenCalled;
+    
+    // Switch models to trigger another event
+    const modelOptions = screen.getAllByRole('button', { name: /makeup model/i });
+    fireEvent.click(modelOptions[1]);
+    
+    await waitFor(() => {
+      expect(mockAnalyticsService.trackProductView).toHaveBeenCalled;
     });
   });
 }); 

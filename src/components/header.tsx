@@ -143,7 +143,7 @@ export function Header() {
                     </div>
                   </div>
                 ) : (
-                  <Link href="/auth/login" className="hidden md:block btn-primary">
+                  <Link href="/auth/sign-in" className="hidden md:block btn-primary">
                     Sign In
                   </Link>
                 )}
@@ -228,7 +228,7 @@ export function Header() {
                     </>
                   ) : (
                     <Link 
-                      href="/auth/login" 
+                      href="/auth/sign-in" 
                       className="btn-primary text-center"
                       onClick={() => setIsMenuOpen(false)}
                     >

@@ -18,7 +18,7 @@ export default function Home() {
                 Connect with wellness experts, track your progress, and access personalized content tailored to your unique wellness journey.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/auth/register" className="btn-primary text-center">
+                <Link href="/auth/sign-up" className="btn-primary text-center">
                   Get Started
                 </Link>
                 <Link 
@@ -73,7 +73,7 @@ export default function Home() {
               <p className="text-muted-foreground mb-8">
                 Join thousands of users who have transformed their wellness experience through our platform.
               </p>
-              <Link href="/auth/register" className="btn-primary text-center">
+              <Link href="/auth/sign-up" className="btn-primary text-center">
                 Create Free Account
               </Link>
             </div>

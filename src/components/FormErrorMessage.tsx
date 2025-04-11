@@ -1,16 +1,13 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
 
 interface FormErrorMessageProps {
   id: string;
   children: React.ReactNode;
-  className?: string;
 }
 
 export const FormErrorMessage: React.FC<FormErrorMessageProps> = ({ 
   id, 
-  children,
-  className
+  children 
 }) => {
   if (!children) return null;
   
@@ -18,11 +15,11 @@ export const FormErrorMessage: React.FC<FormErrorMessageProps> = ({
     <div 
       id={id}
       role="alert"
-      className={cn("text-sm text-red-500 mt-1", className)}
+      className="text-sm text-error mt-1"
     >
       {children}
     </div>
   );
 };
 
-export default FormErrorMessage;
+export default FormErrorMessage; 

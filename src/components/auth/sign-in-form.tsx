@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Link from 'next/link';
-import { Icons } from '@/components/icons';
+import { Icons } from '@/components/ui/icons';
 
 const signInSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -178,7 +178,7 @@ export function SignInForm() {
         <div className="text-sm text-muted-foreground">
           Don't have an account?{' '}
           <Link
-            href="/auth/register"
+            href="/auth/sign-up"
             className="text-primary hover:underline"
           >
             Sign up

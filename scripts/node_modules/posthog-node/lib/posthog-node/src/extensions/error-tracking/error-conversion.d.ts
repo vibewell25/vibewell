@@ -1,0 +1,5 @@
+import { ErrorProperties, EventHint, StackParser } from './types';
+/**
+ * based on the very wonderful MIT licensed Sentry SDK
+ */
+export declare function propertiesFromUnknownInput(stackParser: StackParser, input: unknown, hint?: EventHint): Promise<ErrorProperties>;

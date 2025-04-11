@@ -26,6 +26,9 @@ const config: Config = {
       borderRadius: {
         DEFAULT: 'var(--radius)',
       },
+      borderColor: {
+        DEFAULT: 'var(--border)',
+      },
     },
   },
   darkMode: 'class',

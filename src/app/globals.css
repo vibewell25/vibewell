@@ -37,10 +37,10 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-[color:var(--border)];
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[color:var(--background)] text-[color:var(--foreground)];
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   h1 {
@@ -62,19 +62,19 @@
 
 @layer components {
   .btn-primary {
-    @apply px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors;
+    @apply px-4 py-2 bg-[color:var(--primary)] text-white rounded-md hover:bg-[color:var(--primary-dark)] transition-colors;
   }
   
   .btn-secondary {
-    @apply px-4 py-2 bg-secondary text-white rounded-md hover:opacity-90 transition-opacity;
+    @apply px-4 py-2 bg-[color:var(--secondary)] text-white rounded-md hover:opacity-90 transition-opacity;
   }
   
   .card {
-    @apply bg-card rounded-lg border border-border p-6 shadow-sm;
+    @apply bg-[color:var(--card)] rounded-lg border border-[color:var(--border)] p-6 shadow-sm;
   }
   
   .form-input {
-    @apply w-full rounded-md border border-input px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ring;
+    @apply w-full rounded-md border border-[color:var(--input)] px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--ring)];
   }
   
   .container-app {

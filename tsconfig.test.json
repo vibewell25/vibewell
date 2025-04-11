@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "target": "ES2019",
+    "esModuleInterop": true,
+    "types": ["jest", "node"],
+    "isolatedModules": true
+  },
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "jest.config.js",
+    "jest.e2e.config.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+} 

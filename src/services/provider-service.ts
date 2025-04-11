@@ -1,4 +1,4 @@
-import { cachedFetch } from '@/lib/api/cache';
+import { cachedFetch } from '@/lib/cache';
 import { supabase } from '@/lib/supabase';
 
 export interface Provider {

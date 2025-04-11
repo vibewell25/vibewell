@@ -250,7 +250,7 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
             )
           ) : (
             <p className="text-gray-700">
-              <a href="/auth/login" className="text-blue-600 hover:underline">Sign in</a> to leave a review.
+              <a href="/auth/sign-in" className="text-blue-600 hover:underline">Sign in</a> to leave a review.
             </p>
           )}
         </div>

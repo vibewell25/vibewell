@@ -128,13 +128,13 @@ export function PremiumContentLock({
           Please sign in to access this premium {resourceType}.
         </p>
         <div className="space-y-3">
-          <Link href="/auth/login">
+          <Link href="/auth/sign-in">
             <Button className="bg-amber-600 hover:bg-amber-700">
               Sign In
             </Button>
           </Link>
           <p className="text-sm text-amber-700">
-            Don't have an account? <Link href="/auth/register" className="text-amber-800 underline">Register</Link>
+            Don't have an account? <Link href="/auth/sign-up" className="text-amber-800 underline">Register</Link>
           </p>
         </div>
       </div>

@@ -51,4 +51,4 @@ declare global {
       announce: (message: string) => void;
     };
   }
-}
+} 

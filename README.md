@@ -210,6 +210,66 @@ The load testing suite includes:
 
 See the [Load Testing Guide](./docs/load-testing.md) and [Example Usage](./docs/examples/load-testing-example.md) for more details.
 
+## Testing
+
+Vibewell implements a comprehensive testing suite to ensure the reliability, performance, and security of the application:
+
+### Test Types
+
+#### End-to-End Tests
+- Verify critical user flows from start to finish
+- Test real-world scenarios like business profile creation
+- Simulate user interactions across multiple pages and components
+
+#### Integration Tests
+- Validate the interaction between different system components
+- Test backup and recovery processes
+- Ensure data flows correctly between services
+
+#### Load Tests
+- Measure application performance under high traffic
+- Identify performance bottlenecks
+- Ensure the system can handle expected user loads
+- Test performance monitoring capabilities
+
+### Running Tests
+
+You can run all tests with the provided test script:
+
+```bash
+# Run all tests (unit, integration, e2e, and load tests)
+./scripts/run-tests.sh
+
+# Run specific test types
+npx jest tests/integration
+npx jest tests/post-deploy
+k6 run tests/load-testing/performance-monitoring.test.js
+```
+
+### Test Requirements
+
+- **k6**: Required for load testing. [Installation instructions](https://k6.io/docs/getting-started/installation/)
+- **Jest**: Used for unit, integration, and e2e tests, included in dev dependencies
+
+### Test Results
+
+Test results are saved to the `test-results` directory, including:
+- Detailed test reports
+- Load test performance metrics
+- Code coverage reports
+
+### Continuous Integration
+
+The testing suite is integrated with our CI/CD pipeline, ensuring:
+- Tests run automatically on pull requests
+- Only passing code is merged
+- Performance regression testing
+
+For more details, see the individual test documentation:
+- [End-to-End Testing Guide](./docs/e2e-testing.md)
+- [Integration Testing Guide](./docs/integration-testing.md)
+- [Load Testing Guide](./docs/load-testing.md)
+
 ## Getting Started
 
 ### Installation
@@ -448,3 +508,43 @@ The following KPIs will be tracked to measure project success:
    - Customer lifetime value
    - Revenue per user
    - Churn rate
+
+## Messaging Feature
+
+The Vibewell messaging system allows users to communicate with each other directly through the platform. This feature enables users to:
+
+### Key Functionality
+
+- **Send and receive messages** with other users
+- **View conversation history** for previous communications
+- **Start new conversations** with community members
+- **Delete unwanted conversations**
+- **Search** through conversations by participant name
+- **Read receipts** to know when messages have been seen
+
+### Technical Implementation
+
+The messaging system is built using:
+
+- **Real-time updates** on the frontend to show new messages
+- **API endpoints** for CRUD operations on conversations and messages
+- **Optimistic UI updates** for a responsive experience
+- **In-memory storage** (note: in production this would use a database)
+
+### API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/messages` | GET | Fetch all conversations for the current user |
+| `/api/messages` | POST | Send a new message or start a new conversation |
+| `/api/messages/:id` | GET | Get a specific conversation by ID |
+| `/api/messages/:id` | PATCH | Mark messages as read in a conversation |
+| `/api/messages/:id` | DELETE | Delete a conversation |
+
+### Future Enhancements
+
+- Real-time messaging with WebSockets
+- Message attachments (images, files)
+- Message reactions and replies
+- Group conversations
+- Typing indicators

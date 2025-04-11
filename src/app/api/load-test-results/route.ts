@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { applyRateLimit, adminRateLimiter } from '@/app/api/auth/rate-limit-middleware';
+import { applyRateLimit, adminRateLimiter } from '@/lib/rate-limiter';
 
 // Helper to read a directory and list files
 async function listFiles(dirPath: string) {

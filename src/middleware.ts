@@ -109,46 +109,70 @@ async function redisRateLimit(req: NextRequest): Promise<NextResponse | null> {
   }
 }
 
-export async function middleware(req: NextRequest) {
-  // Try Redis-based rate limiting in production
-  const redisRateLimitResponse = await redisRateLimit(req);
-  if (redisRateLimitResponse) {
-    return redisRateLimitResponse;
+// Generate a random nonce for CSP
+function generateNonce(): string {
+  const crypto = require('crypto');
+  return crypto.randomBytes(16).toString('base64');
+}
+
+// In-memory rate limiting function
+async function inMemoryRateLimit(req: NextRequest): Promise<NextResponse | null> {
+  const ip = req.headers.get('x-real-ip') || 
+             req.headers.get('x-forwarded-for') || 
+             'anonymous';
+  const now = Date.now();
+  const windowStart = now - rateLimit.windowMs;
+  
+  // Get or create entry for this IP
+  if (!rateLimit.store.has(ip)) {
+    rateLimit.store.set(ip, []);
   }
   
-  // Fallback to in-memory rate limiting for development or if Redis fails
-  if (process.env.NODE_ENV !== 'production') {
-    const ip = req.headers.get('x-real-ip') || 
-               req.headers.get('x-forwarded-for') || 
-               'anonymous';
-    const now = Date.now();
-    const windowStart = now - rateLimit.windowMs;
-    
-    // Get or create entry for this IP
-    if (!rateLimit.store.has(ip)) {
-      rateLimit.store.set(ip, []);
-    }
-    
-    // Clean old requests and add current request
-    const requests = rateLimit.store.get(ip) || [];
-    const recentRequests = requests.filter((timestamp: number) => timestamp > windowStart);
-    recentRequests.push(now);
-    rateLimit.store.set(ip, recentRequests);
-    
-    // Check if rate limit exceeded
-    if (recentRequests.length > rateLimit.max) {
-      return new NextResponse('Too Many Requests', {
-        status: 429,
-        headers: {
-          'Retry-After': '60',
-          'Content-Type': 'text/plain',
-        }
-      });
+  // Clean old requests and add current request
+  const requests = rateLimit.store.get(ip) || [];
+  const recentRequests = requests.filter((timestamp: number) => timestamp > windowStart);
+  recentRequests.push(now);
+  rateLimit.store.set(ip, recentRequests);
+  
+  // Check if rate limit exceeded
+  if (recentRequests.length > rateLimit.max) {
+    return new NextResponse('Too Many Requests', {
+      status: 429,
+      headers: {
+        'Retry-After': '60',
+        'Content-Type': 'text/plain',
+      }
+    });
+  }
+  
+  return null;
+}
+
+export async function middleware(req: NextRequest) {
+  // Try Redis-based rate limiting in production
+  const rateLimitResponse = await redisRateLimit(req);
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
+  // Apply rate limits to specific routes
+  if (req.nextUrl.pathname.startsWith('/api/')) {
+    const limitResult = await inMemoryRateLimit(req);
+    if (limitResult) {
+      return limitResult;
     }
   }
 
   // Initialize response with security headers
   const res = NextResponse.next();
+  
+  // Generate a unique nonce for this request
+  const scriptNonce = generateNonce();
+  const styleNonce = generateNonce();
+  
+  // Store nonces in response headers so they can be accessed by the app
+  res.headers.set('X-Script-Nonce', scriptNonce);
+  res.headers.set('X-Style-Nonce', styleNonce);
   
   // Add security headers
   const securityHeaders = {
@@ -157,8 +181,22 @@ export async function middleware(req: NextRequest) {
     'X-Frame-Options': 'SAMEORIGIN',
     'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
-    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://res.cloudinary.com; font-src 'self' data:; connect-src 'self' https://*.supabase.co; frame-src 'self' https://js.stripe.com; object-src 'none'; base-uri 'self';",
-    'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self), interest-cohort=()',
+    'Content-Security-Policy': `
+      default-src 'self';
+      script-src 'self' 'nonce-${scriptNonce}' https://js.stripe.com https://cdn.jsdelivr.net;
+      style-src 'self' 'nonce-${styleNonce}' https://fonts.googleapis.com;
+      img-src 'self' data: https://res.cloudinary.com https://*.stripe.com;
+      font-src 'self' data: https://fonts.gstatic.com;
+      connect-src 'self' https://*.supabase.co https://api.stripe.com wss://*.supabase.co;
+      frame-src 'self' https://js.stripe.com https://hooks.stripe.com;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      frame-ancestors 'self';
+      upgrade-insecure-requests;
+      block-all-mixed-content;
+    `.replace(/\s+/g, ' ').trim(),
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self), interest-cohort=(), payment=(self)',
     'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload'
   };
 

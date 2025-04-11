@@ -3,7 +3,7 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 import Stripe from 'stripe';
-import { financialRateLimiter, applyRateLimit } from '@/app/api/auth/rate-limit-middleware';
+import { financialRateLimiter, applyRateLimit } from '@/lib/rate-limiter';
 
 // Initialize Stripe with the secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {

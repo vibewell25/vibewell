@@ -15,7 +15,7 @@ import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { logger } from '@/lib/logger';
 import typeDefs from '@/lib/graphql/schema';
-import { createRateLimitMiddleware, GraphQLContext } from '@/lib/graphql/rate-limiter';
+import { createGraphQLRateLimitMiddleware, GraphQLContext } from '@/lib/rate-limiter';
 import { resolvers } from '@/lib/graphql/resolvers';
 
 // Create Apollo Server with our schema
@@ -26,7 +26,7 @@ const server = new ApolloServer({
   includeStacktraceInErrorResponses: process.env.NODE_ENV !== 'production',
   plugins: [
     // Add the rate limiting plugin
-    createRateLimitMiddleware(),
+    createGraphQLRateLimitMiddleware(),
     
     // Error logging plugin
     {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authRateLimiter } from '@/app/api/auth/rate-limit-middleware';
+import { authRateLimiter } from '@/lib/rate-limiter';
 
 export async function POST(req: NextRequest) {
   const rateLimitResult = await authRateLimiter(req);

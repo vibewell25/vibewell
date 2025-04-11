@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { applyRateLimit, sensitiveApiRateLimiter } from '@/app/api/auth/rate-limit-middleware';
+import { applyRateLimit, sensitiveApiRateLimiter } from '@/lib/rate-limiter';
 
 export async function POST(req: NextRequest) {
   // Apply sensitive operations rate limiting
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   // Simulate sensitive operation
   return NextResponse.json({ 
     status: 'success', 
-    message: 'Sensitive operations endpoint',
+    message: 'Sensitive operations API endpoint',
     timestamp: new Date().toISOString()
   });
 } 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { applyRateLimit, adminRateLimiter } from '@/app/api/auth/rate-limit-middleware';
+import { applyRateLimit, adminRateLimiter } from '@/lib/rate-limiter';
 
 export async function POST(req: NextRequest) {
   // Use regular API rate limiter but with admin-specific logic
@@ -11,8 +11,7 @@ export async function POST(req: NextRequest) {
   // Simulate admin-only operation
   return NextResponse.json({ 
     status: 'success', 
-    message: 'Admin operations endpoint',
-    timestamp: new Date().toISOString(),
-    requestId: crypto.randomUUID()
+    message: 'Admin operations API endpoint',
+    timestamp: new Date().toISOString()
   });
 } 

@@ -1,0 +1,26 @@
+{
+  "mobile_testing": {
+    "devices": {
+      "ios": ["11.0", "12.0", "13.0", "14.0", "15.0"],
+      "android": ["8.0", "9.0", "10.0", "11.0", "12.0"]
+    },
+    "testing_types": {
+      "functional": true,
+      "performance": true,
+      "accessibility": true,
+      "security": true,
+      "usability": true
+    },
+    "automation": {
+      "appium": true,
+      "detox": true,
+      "maestro": true
+    },
+    "reporting": {
+      "test_results": true,
+      "performance_metrics": true,
+      "accessibility_report": true,
+      "usability_feedback": true
+    }
+  }
+}

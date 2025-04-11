@@ -1,0 +1,29 @@
+{
+  "security_testing": {
+    "automated_scans": {
+      "vulnerability": true,
+      "dependency": true,
+      "code": true,
+      "network": true,
+      "container": true,
+      "secrets": true
+    },
+    "penetration_testing": {
+      "web_application": true,
+      "api": true,
+      "network": true,
+      "mobile": true
+    },
+    "compliance": {
+      "owasp": true,
+      "pci_dss": true,
+      "gdpr": true,
+      "hipaa": true
+    },
+    "reporting": {
+      "vulnerability_report": true,
+      "compliance_report": true,
+      "remediation_guide": true
+    }
+  }
+}

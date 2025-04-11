@@ -1,134 +1,150 @@
-# Load Testing Guide for Redis Rate Limiting
+# Load Testing with k6 for Redis Rate Limiting
 
-This guide covers the approach to load testing the rate limiting functionality in the Vibewell application, with a focus on Redis-based rate limiting.
+This document explains how to perform load testing on the rate limiting functionality using k6, with a focus on testing Redis-based rate limiting in production environments.
 
 ## Overview
 
-Load testing is essential to verify that our rate limiting mechanisms work correctly under various traffic conditions. We use [k6](https://k6.io/) to simulate different traffic patterns and measure how our rate limiting responds.
+Our load testing setup allows you to:
+
+1. Test the performance of rate limiting under various loads
+2. Verify that rate limits are correctly enforced
+3. Measure response times under load
+4. Compare Redis-based vs in-memory rate limiting
 
 ## Prerequisites
 
-- [k6](https://k6.io/docs/getting-started/installation/) installed on your machine
-- Redis server running (for production-mode tests)
-- Node.js environment with the Vibewell application
-
-## Environment Setup
-
-1. **Redis Configuration**
-
-   Ensure your `.env.local` file includes the following settings:
-
-   ```
-   NODE_ENV=production
-   REDIS_URL=redis://localhost:6379
-   REDIS_ENABLED=true
-   ```
-
-2. **Running Redis Locally**
-
-   For local testing, you can run Redis using Docker:
-
-   ```bash
-   docker run --name redis -p 6379:6379 -d redis
-   ```
-
-   Or install and run Redis directly on your machine.
+- [k6](https://k6.io/docs/getting-started/installation/) installed on your system
+- Redis server running (for production-mode testing)
+- The Vibewell application running locally or deployed to a test environment
 
 ## Test Endpoints
 
-We've created dedicated test endpoints that implement various rate limiting strategies:
+We've created dedicated test endpoints for load testing various rate limiters:
 
-1. **General API** (`/api/test/general`): Standard API rate limits (100 requests per minute)
-2. **Authentication** (`/api/test/auth`): Stricter limits for authentication attempts (20 requests per minute)
-3. **Sensitive Operations** (`/api/test/sensitive`): Very strict limits for sensitive operations (10 requests per minute)
-4. **Admin Operations** (`/api/test/admin`): Limits for admin-only operations (50 requests per minute)
+- `/api/test/general` - General API rate limiting (higher limits)
+- `/api/test/auth` - Authentication rate limiting (moderate limits)
+- `/api/test/sensitive` - Sensitive operations rate limiting (strict limits)
+- `/api/test/admin` - Admin operations rate limiting (balanced limits)
 
-## Running the Tests
+Each endpoint applies the appropriate rate limiter middleware to simulate real-world usage.
 
-1. **Start the Application**
+## Running Tests
 
-   ```bash
-   npm run dev
-   ```
+### Basic Usage
 
-2. **Execute Load Tests**
+```bash
+# Make the script executable (first time only)
+chmod +x scripts/load-testing.sh
 
-   ```bash
-   ./scripts/load-testing.sh
-   ```
+# Run the load tests with default settings
+./scripts/load-testing.sh
+```
 
-   This script will:
-   - Create a results directory if it doesn't exist
-   - Run k6 with the Redis rate limiting test script
-   - Save results in JSON, text summary, and HTML dashboard formats
-   - Display a summary after completion
+The script will:
+1. Check if k6 is installed
+2. Verify Redis connection (if in production mode)
+3. Run tests against all endpoints
+4. Generate JSON, CSV, and HTML reports
+
+### Configuration Options
+
+You can customize the test parameters using environment variables:
+
+```bash
+# Run with custom settings
+NODE_ENV=production REDIS_URL=redis://localhost:6379 ./scripts/load-testing.sh
+```
+
+Key environment variables:
+
+- `NODE_ENV`: Set to "production" to use Redis for rate limiting (default: "development")
+- `REDIS_URL`: Redis connection URL (default: "redis://localhost:6379")
+- `REDIS_ENABLED`: Force enable/disable Redis (default: auto-detect based on NODE_ENV)
 
 ## Test Scenarios
 
-The k6 test script (`tests/k6/redis-rate-limit-test.js`) includes several scenarios:
+The k6 test script (`scripts/load-tests/rate-limit-test.js`) includes several test scenarios:
 
-1. **General API Test**: Ramps up to 50 virtual users over 60 seconds
-2. **Auth API Test**: Ramps up to 20 virtual users over 50 seconds
-3. **Sensitive API Test**: Ramps up to 10 virtual users over 40 seconds
-4. **Admin API Test**: Ramps up to 5 virtual users over 40 seconds
+1. **General API Test**: Higher throughput, testing the general API rate limiter
+   - Ramps up to 20 requests per second
+   - Uses multiple virtual users to generate load
 
-Each scenario sends POST requests to the corresponding endpoint and records:
-- Success rate
-- Rate-limited responses (HTTP 429)
-- Response times
+2. **Authentication Test**: Moderate load, testing the auth API rate limiter
+   - Ramps up to 10 requests per second
+   - Uses a different set of virtual users
 
-## Analyzing Results
+3. **Sensitive Operations Test**: Lower throughput, testing stricter rate limits
+   - Ramps up to 5 requests per second
+   - Uses longer sleeps between requests
 
-After running the tests, you can analyze the results in several ways:
+4. **Admin Operations Test**: Balanced load with longer duration
+   - Ramps up to 3 requests per second
+   - Includes authorization headers
 
-1. **Text Summary**: Basic metrics showing request counts, response codes, and timing
-2. **HTML Dashboard**: Interactive visualization of test metrics
-3. **JSON Data**: Raw data for custom analysis
+## Understanding Results
 
-Look for:
-- Percentage of rate-limited responses (should increase as traffic exceeds limits)
-- Response time patterns (should remain consistent even under load)
-- Error rates (should be minimal outside of expected rate limiting)
+The test generates several output files in the `load-test-results` directory:
+
+- **JSON Results**: Raw metrics and data points from the test run
+- **CSV Metrics**: Detailed metrics in CSV format for further analysis
+- **JSON Summary**: Overview of the test results
+- **HTML Report**: Visual representation of the test results
+
+Key metrics to look for:
+
+- **Rate Limit Exceeded Rate**: Percentage of requests that exceeded rate limits (429 responses)
+- **Success Rate**: Percentage of successful requests (200 responses)
+- **HTTP Request Duration**: Response time statistics
+
+## Analyzing Redis Rate Limiting Performance
+
+When running in production mode, you can analyze Redis performance metrics:
+
+1. Check the rate of 429 responses vs. successful responses
+2. Verify that rate limits are properly enforced across endpoints
+3. Analyze response times under heavy load
+4. Monitor Redis memory usage and command throughput
+
+Redis-specific metrics to monitor:
+- Redis memory usage
+- Redis command latency
+- Redis connection count
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Redis Connection Failures**
-   - Check that Redis is running: `docker ps` or `redis-cli ping`
-   - Verify the REDIS_URL in your .env.local file
+1. **Test fails immediately**
+   - Ensure Redis is running (if in production mode)
+   - Check that the application server is running
+   - Verify k6 is correctly installed
 
-2. **Inconsistent Rate Limiting**
-   - In a distributed environment, ensure all nodes use the same Redis instance
-   - Check that clocks are synchronized if using time-based rate limiting
+2. **All requests are rate limited**
+   - Rate limits may be set too low for load testing
+   - Increase the time between requests in the test script
+   - Verify rate limiter configuration
 
-3. **k6 Errors**
-   - Ensure k6 is correctly installed: `k6 version`
-   - Check for JavaScript syntax errors in the test script
+3. **No rate limiting occurs**
+   - Ensure rate limiting is correctly configured
+   - Check Redis connection (if using Redis for rate limiting)
+   - Verify the correct rate limiters are applied to endpoints
 
-## Best Practices
+### Additional Resources
 
-1. **Regular Testing**
-   - Run load tests before major deployments
-   - Periodically test in production-like environments
+- [k6 Documentation](https://k6.io/docs/)
+- [Redis Rate Limiting Guide](https://redis.io/commands/incr#pattern-rate-limiter)
+- [Vibewell Rate Limiting Documentation](./rate-limiting.md)
 
-2. **Realistic Scenarios**
-   - Simulate actual user behavior patterns
-   - Test both sudden traffic spikes and gradual increases
+## Extending the Tests
 
-3. **Monitoring During Tests**
-   - Watch Redis memory usage during tests
-   - Monitor application logs for unexpected errors
+You can extend the load tests by:
 
-## Extended Testing
+1. Adding new endpoints to test
+2. Creating custom scenarios with different traffic patterns
+3. Implementing specialized test cases (e.g., testing blocked IPs)
+4. Adding integration with monitoring systems
 
-For more comprehensive testing:
-
-1. **Distributed Testing**: Use k6 in distributed mode to generate higher loads
-2. **Long-Running Tests**: Extend test duration to detect memory leaks or degradation
-3. **Mixed Workloads**: Combine different endpoint tests to simulate realistic traffic
-
----
-
-For more information on k6, see the [official documentation](https://k6.io/docs/).
-For details on Redis rate limiting implementation, see our [Rate Limiting Guide](./rate-limiting.md).
+To add a new endpoint to test:
+1. Create a new test API route
+2. Add a new test function in `rate-limit-test.js`
+3. Add a new scenario in the options configuration

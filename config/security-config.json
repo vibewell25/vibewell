@@ -1,0 +1,19 @@
+{
+  "security": {
+    "scanning": {
+      "enabled": true,
+      "frequency": "daily",
+      "types": {
+        "vulnerability": true,
+        "dependency": true,
+        "code": true,
+        "network": true
+      }
+    },
+    "alerts": {
+      "email": true,
+      "slack": true,
+      "threshold": "high"
+    }
+  }
+}

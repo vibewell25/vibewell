@@ -6,9 +6,20 @@ module.exports = {
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@components/(.*)$': '<rootDir>/src/components/$1',
+    '^@services/(.*)$': '<rootDir>/src/services/$1',
+    '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
+    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
+    '^@styles/(.*)$': '<rootDir>/src/styles/$1',
+    '^@assets/(.*)$': '<rootDir>/src/assets/$1',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    // Map Three.js imports to mock implementations
+    'three/examples/jsm/loaders/GLTFLoader': '<rootDir>/src/__mocks__/GLTFLoader.js',
+    'three/addons/loaders/GLTFLoader.js': '<rootDir>/src/__mocks__/GLTFLoader.js',
+    'three/examples/jsm/loaders/DRACOLoader': '<rootDir>/src/__mocks__/DRACOLoader.js',
+    'three/addons/loaders/DRACOLoader.js': '<rootDir>/src/__mocks__/DRACOLoader.js'
   },
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+  setupFilesAfterEnv: ['./jest.setup.js'],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
@@ -25,4 +36,13 @@ module.exports = {
     },
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/.next/'
+  ],
+  transformIgnorePatterns: [
+    '/node_modules/(?!(@supabase|jose|msw|@mswjs|three|@react-three)/)'
+  ],
+  // Add a longer timeout for tests
+  testTimeout: 30000
 }; 

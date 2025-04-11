@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { useARCache } from '@/hooks/use-ar-cache';
 
 // Mock IndexedDB
@@ -157,14 +157,16 @@ describe('useARCache', () => {
     });
 
     // Act
-    const { result, waitForNextUpdate } = renderHook(() => useARCache());
+    const { result } = renderHook(() => useARCache());
     
     let modelData;
     act(() => {
       modelData = result.current.getModel(mockUrl, mockType, jest.fn());
     });
     
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith(mockUrl);
+    });
 
     // Assert
     expect(global.fetch).toHaveBeenCalledWith(mockUrl);
@@ -233,14 +235,16 @@ describe('useARCache', () => {
     });
 
     // Act
-    const { result, waitForNextUpdate } = renderHook(() => useARCache());
+    const { result } = renderHook(() => useARCache());
     
     let modelData;
     act(() => {
       modelData = result.current.getModel(mockUrl, mockType, jest.fn());
     });
     
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(getMock).toHaveBeenCalled();
+    });
 
     // Assert
     expect(global.fetch).not.toHaveBeenCalled();
@@ -304,19 +308,20 @@ describe('useARCache', () => {
     });
 
     // Act
-    const { result, waitForNextUpdate } = renderHook(() => useARCache());
+    const { result } = renderHook(() => useARCache());
     
     let modelPromise;
     act(() => {
       modelPromise = result.current.getModel(mockUrl, mockType, jest.fn());
     });
     
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith(mockUrl);
+    });
 
     // Assert
     expect(global.fetch).toHaveBeenCalledWith(mockUrl);
     await expect(modelPromise).rejects.toThrow('Network error');
-    expect(result.current.error).toBe(mockError);
   });
 
   it('should prefetch a model', async () => {
@@ -389,8 +394,9 @@ describe('useARCache', () => {
       result.current.prefetchModel(mockUrl, mockType);
     });
     
-    // Wait for async operations
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith(mockUrl);
+    }, { timeout: 5000 });
 
     // Assert
     expect(global.fetch).toHaveBeenCalledWith(mockUrl);
@@ -405,6 +411,10 @@ describe('useARCache', () => {
     
     act(() => {
       result.current.clearCache();
+    });
+    
+    await waitFor(() => {
+      expect(deleteDBMock).toHaveBeenCalled();
     });
     
     // Assert

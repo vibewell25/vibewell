@@ -12,6 +12,9 @@ import { ServiceForm } from './forms/service-form';
 import { PhotoUploadForm } from './forms/photo-upload-form';
 import { PaymentSettingsForm } from './forms/payment-settings-form';
 import { PoliciesForm } from './forms/policies-form';
+import { supabase } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/use-toast';
 
 // Define the schema for business profile form
 const businessProfileSchema = z.object({
@@ -103,6 +106,8 @@ export interface PoliciesFormProps extends FormComponentProps {}
 export function BusinessProfileWizard() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+  const { toast } = useToast();
 
   // Initialize form with default values
   const form = useForm<BusinessProfileFormValues>({
@@ -203,36 +208,101 @@ export function BusinessProfileWizard() {
     setIsSubmitting(true);
     
     try {
-      const values = form.getValues();
-      console.log("Form submitted:", values);
+      // Get current user
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
       
-      // Create formatted business profile data
+      if (userError) {
+        throw userError;
+      }
+      
+      if (!user) {
+        throw new Error('You must be logged in to create a business profile');
+      }
+      
+      const values = form.getValues();
+      
+      // Format data for database
       const businessProfileData = {
-        ...values,
-        completedSetup: true,
-        updatedAt: new Date().toISOString(),
+        provider_id: user.id,
+        address: values.address,
+        address_line1: values.addressLine1,
+        address_line2: values.addressLine2,
+        city: values.city,
+        state: values.state,
+        zip_code: values.zipCode,
+        country: values.country,
+        latitude: values.latitude ? parseFloat(values.latitude) : null,
+        longitude: values.longitude ? parseFloat(values.longitude) : null,
+        service_radius: values.serviceRadius,
+        business_hours: values.businessHours,
+        offers_virtual_services: values.offersVirtualServices,
+        virtual_services_description: values.virtualServicesDescription,
+        services: values.services,
+        offers_packages: values.offersPackages,
+        offers_special_discounts: values.offersSpecialDiscounts,
+        offers_gift_cards: values.offersGiftCards,
+        special_offers_description: values.specialOffersDescription,
+        business_photos: values.businessPhotos,
+        payment_methods: values.paymentMethods,
+        deposit_type: values.depositType,
+        deposit_amount: values.depositAmount,
+        deposit_percentage: values.depositPercentage,
+        deposit_notes: values.depositNotes,
+        cancellation_policy: values.cancellationPolicy,
+        has_late_arrival_policy: values.hasLateArrivalPolicy,
+        late_arrival_grace_period: values.lateArrivalGracePeriod,
+        late_arrival_policy: values.lateArrivalPolicy,
+        additional_policies: values.additionalPolicies,
+        require_policy_confirmation: values.requirePolicyConfirmation,
+        include_policies_in_emails: values.includePoliciesInEmails,
+        completed_setup: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       };
       
-      // Here you would typically send the data to your API
-      // Example API call
-      // const response = await fetch('/api/business/profile', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(businessProfileData),
-      // });
+      // Check if business profile already exists for this user
+      const { data: existingProfile, error: checkError } = await supabase
+        .from('business_profiles')
+        .select('id')
+        .eq('provider_id', user.id)
+        .maybeSingle();
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      let result;
       
-      // Show success message and redirect
-      alert("Business profile saved successfully!");
-      // Redirect to business dashboard or profile page
-      // router.push('/business/dashboard');
+      if (existingProfile?.id) {
+        // Update existing profile
+        result = await supabase
+          .from('business_profiles')
+          .update(businessProfileData)
+          .eq('id', existingProfile.id);
+      } else {
+        // Insert new profile
+        result = await supabase
+          .from('business_profiles')
+          .insert(businessProfileData);
+      }
+      
+      if (result.error) {
+        throw result.error;
+      }
+      
+      // Show success message
+      toast({
+        title: "Success",
+        description: "Business profile created successfully",
+      });
+      
+      // Redirect to business dashboard
+      setTimeout(() => {
+        router.push('/business-hub');
+      }, 1000);
     } catch (error) {
       console.error("Submission error:", error);
-      alert("There was an error saving your profile. Please try again.");
+      toast({
+        title: "Error",
+        description: "Failed to save business profile. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setIsSubmitting(false);
     }

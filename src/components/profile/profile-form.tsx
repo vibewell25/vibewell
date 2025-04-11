@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,36 +21,56 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import AvatarEditorComponent from 'react-avatar-editor';
 import { Slider } from '@/components/ui/slider';
+import { AvatarEditorDialog } from './avatar-editor';
+import { toast } from '@/components/ui/use-toast';
 
-// Profile form schema
 const profileFormSchema = z.object({
-  username: z.string().min(3, 'Username must be at least 3 characters').max(50),
-  fullName: z.string().min(2, 'Full name must be at least 2 characters').max(100),
-  email: z.string().email('Please enter a valid email address'),
-  bio: z.string().max(300, 'Bio must be less than 300 characters').optional(),
-  website: z.string().url('Please enter a valid URL').or(z.literal('')).optional(),
-  location: z.string().max(100).optional(),
+  username: z.string()
+    .min(3, 'Username must be at least 3 characters')
+    .max(50, 'Username must be less than 50 characters')
+    .regex(/^[a-zA-Z0-9_-]+$/, 'Username can only contain letters, numbers, underscores, and hyphens'),
+  fullName: z.string()
+    .min(2, 'Full name must be at least 2 characters')
+    .max(100, 'Full name must be less than 100 characters')
+    .regex(/^[a-zA-Z\s'-]+$/, 'Full name can only contain letters, spaces, hyphens, and apostrophes'),
+  email: z.string()
+    .email('Please enter a valid email address')
+    .max(255, 'Email must be less than 255 characters'),
+  bio: z.string()
+    .max(300, 'Bio must be less than 300 characters')
+    .nullish()
+    .transform(val => val || ''),
+  website: z.string()
+    .url('Please enter a valid URL')
+    .nullish()
+    .transform(val => val || ''),
+  location: z.string()
+    .max(100, 'Location must be less than 100 characters')
+    .nullish()
+    .transform(val => val || ''),
   visibility: z.enum(['public', 'private', 'contacts']),
-  emailVerified: z.boolean().optional(),
+  emailVerified: z.boolean().default(false),
   privacy: z.object({
     showEmail: z.boolean().default(false),
     showPhone: z.boolean().default(true),
     allowTagging: z.boolean().default(true),
     receiveNotifications: z.boolean().default(true),
-  }),
+  }).default({}),
   notifications: z.object({
     email: z.boolean().default(true),
     sms: z.boolean().default(false),
     push: z.boolean().default(true),
     marketing: z.boolean().default(false),
-  }),
+  }).default({}),
   accountSettings: z.object({
     twoFactorAuth: z.boolean().default(false),
     loginNotifications: z.boolean().default(true),
     autoLogout: z.boolean().default(false),
     dataDownload: z.boolean().default(false),
-  }),
+  }).default({}),
 });
+
+type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 // Notification preferences schema
 const notificationSchema = z.object({
@@ -67,8 +87,34 @@ const notificationSchema = z.object({
   sms_bookings: z.boolean().default(true),
 });
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>;
 type NotificationPreferences = z.infer<typeof notificationSchema>;
+
+type PrivacyField = keyof ProfileFormValues['privacy'];
+type NotificationField = keyof ProfileFormValues['notifications'];
+type AccountSettingField = keyof ProfileFormValues['accountSettings'];
+
+type SwitchField = PrivacyField | NotificationField | AccountSettingField;
+
+// Update the switch handler types
+type SwitchChangeHandler = (checked: boolean) => void;
+
+const handlePrivacyChange = (field: keyof ProfileFormValues['privacy']): SwitchChangeHandler => {
+  return (checked: boolean) => {
+    form.setValue(`privacy.${field}`, checked, { shouldDirty: true });
+  };
+};
+
+const handleNotificationChange = (field: keyof ProfileFormValues['notifications']): SwitchChangeHandler => {
+  return (checked: boolean) => {
+    form.setValue(`notifications.${field}`, checked, { shouldDirty: true });
+  };
+};
+
+const handleAccountSettingChange = (field: keyof ProfileFormValues['accountSettings']): SwitchChangeHandler => {
+  return (checked: boolean) => {
+    form.setValue(`accountSettings.${field}`, checked, { shouldDirty: true });
+  };
+};
 
 interface ProfileFormProps {
   userId?: string;
@@ -78,7 +124,6 @@ interface ProfileFormProps {
 
 export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps) {
   const router = useRouter();
-  const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -113,36 +158,29 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [deleteConfirmationText, setDeleteConfirmationText] = useState('');
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [isVerifyingEmail, setIsVerifyingEmail] = useState(false);
 
   // Initialize form with default values
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues: initialData || {
-      username: '',
-      fullName: '',
-      email: '',
-      bio: '',
-      website: '',
-      location: '',
-      visibility: 'public',
-      emailVerified: false,
+    defaultValues: {
+      username: initialData?.username ?? '',
+      fullName: initialData?.fullName ?? '',
+      email: initialData?.email ?? '',
+      bio: initialData?.bio ?? '',
+      website: initialData?.website ?? '',
+      location: initialData?.location ?? '',
+      visibility: initialData?.visibility ?? 'public',
+      emailVerified: initialData?.emailVerified ?? false,
       privacy: {
-        showEmail: false,
-        showPhone: true,
-        allowTagging: true,
-        receiveNotifications: true,
+        ...initialData?.privacy ?? {},
       },
       notifications: {
-        email: true,
-        sms: false,
-        push: true,
-        marketing: false,
+        ...initialData?.notifications ?? {},
       },
       accountSettings: {
-        twoFactorAuth: false,
-        loginNotifications: true,
-        autoLogout: false,
-        dataDownload: false,
+        ...initialData?.accountSettings ?? {},
       },
     },
   });
@@ -210,92 +248,103 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
     fetchProfile();
   }, [userId, form, supabase]);
 
-  // Handle file selection for avatar upload
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      
-      // Validate file type and size
-      if (!file.type.includes('image/')) {
-        setError('Please select an image file');
-        return;
-      }
-      
-      if (file.size > 5 * 1024 * 1024) { // 5MB max
-        setError('Image must be less than 5MB');
-        return;
-      }
-      
-      setAvatarFile(file);
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
       setShowAvatarEditor(true);
-      setError(null);
     }
   };
 
-  // Save the cropped avatar
-  const handleSaveAvatar = async () => {
-    if (!avatarEditor || !avatarFile || !userId) return;
-    
+  const handleAvatarSave = async (croppedImage: Blob) => {
     try {
       setLoading(true);
       setError(null);
-      
-      // Get the cropped canvas
-      const canvas = avatarEditor.getImageScaledToCanvas();
-      
-      // Convert canvas to blob
-      const blob = await new Promise<Blob>((resolve, reject) => {
-        canvas.toBlob((blob) => {
-          if (blob) resolve(blob);
-          else reject(new Error('Failed to create blob from canvas'));
-        }, 'image/jpeg', 0.9);
-      });
-      
-      // Create a new file from the blob
-      const fileName = `avatar-${Date.now()}.jpg`;
-      const croppedFile = new File([blob], fileName, {
-        type: 'image/jpeg',
-      });
-      
-      // Upload to Supabase Storage
-      const { data: uploadData, error: uploadError } = await supabase.storage
+
+      if (!userId) {
+        throw new Error('User ID is required');
+      }
+
+      // Upload the cropped image to Supabase storage
+      const fileExt = selectedImage?.name.split('.').pop();
+      const fileName = `${userId}-${Date.now()}.${fileExt}`;
+      const filePath = `avatars/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(`${userId}/${fileName}`, croppedFile, {
-          upsert: true,
+        .upload(filePath, croppedImage, {
           contentType: 'image/jpeg',
+          upsert: true,
         });
-        
+
       if (uploadError) throw uploadError;
-      
+
       // Get the public URL
-      const { data: publicUrlData } = supabase.storage
+      const { data: { publicUrl } } = supabase.storage
         .from('avatars')
-        .getPublicUrl(uploadData.path);
-      
-      // Update user metadata with new avatar URL
-      const { error: updateError } = await supabase.auth.updateUser({
-        data: { avatar_url: publicUrlData.publicUrl }
-      });
-      
+        .getPublicUrl(filePath);
+
+      // Update the profile with the new avatar URL
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl })
+        .eq('id', userId);
+
       if (updateError) throw updateError;
-      
-      // Update avatar URL in state
-      setAvatarUrl(publicUrlData.publicUrl);
+
+      setAvatarUrl(publicUrl);
       setShowAvatarEditor(false);
-      
-      // Show success message
-      setSuccess('Profile photo updated successfully');
-      setTimeout(() => setSuccess(null), 3000);
+      setSelectedImage(null);
+
+      toast({
+        title: 'Success',
+        description: 'Profile picture updated successfully',
+      });
     } catch (err) {
       console.error('Error saving avatar:', err);
-      setError('Failed to save profile photo: ' + (err instanceof Error ? err.message : 'Unknown error'));
+      toast({
+        title: 'Error',
+        description: 'Failed to update profile picture',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle form submission
-  const onSubmit = async (values: ProfileFormValues) => {
+  const handleEmailVerification = async () => {
+    try {
+      setIsVerifyingEmail(true);
+      setError(null);
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user?.email) throw new Error('No user email found');
+
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: user.email,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Verification Email Sent',
+        description: 'Please check your inbox for the verification link',
+      });
+    } catch (err) {
+      console.error('Error sending verification email:', err);
+      toast({
+        title: 'Error',
+        description: 'Failed to send verification email',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsVerifyingEmail(false);
+    }
+  };
+
+  // Update the form submission handler
+  const onSubmit: SubmitHandler<ProfileFormValues> = async (values) => {
     try {
       setLoading(true);
       setError(null);
@@ -309,14 +358,13 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
         username: values.username,
         full_name: values.fullName,
         email: values.email,
-        bio: values.bio,
-        website: values.website,
-        location: values.location,
+        bio: values.bio || '',
+        website: values.website || '',
+        location: values.location || '',
         visibility: values.visibility,
         avatar_url: avatarUrl,
-        notification_preferences: notifications,
+        notification_preferences: values.notifications,
         privacy: values.privacy,
-        notifications: values.notifications,
         account_settings: values.accountSettings,
         updated_at: new Date().toISOString(),
       };
@@ -336,52 +384,6 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
     } catch (err) {
       console.error('Error updating profile:', err);
       setError('Failed to update profile');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Send verification email
-  const sendVerificationEmail = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const email = form.getValues('email');
-      
-      // Check if email is different from current auth email
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (user && user.email !== email) {
-        // If email has changed, update auth email
-        const { error: updateError } = await supabase.auth.updateUser({
-          email: email
-        });
-        
-        if (updateError) throw updateError;
-        
-        setSuccess('Email updated. Please check your inbox to verify the new email address.');
-      } else {
-        // Otherwise just resend verification email
-        const { error } = await supabase.auth.resend({
-          type: 'signup',
-          email: email,
-        });
-        
-        if (error) throw error;
-        
-        setSuccess('Verification email sent. Please check your inbox.');
-      }
-      
-      setEmailSent(true);
-      
-      // Auto-clear the email sent state after 60 seconds
-      setTimeout(() => {
-        setEmailSent(false);
-      }, 60000);
-    } catch (err) {
-      console.error('Error sending verification email:', err);
-      setError('Failed to send verification email: ' + (err instanceof Error ? err.message : 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -598,6 +600,38 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
     }
   };
 
+  // Update the form submission handler
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>, form: UseFormReturn<ProfileFormValues>) => {
+    e.preventDefault();
+    try {
+      await form.handleSubmit(onSubmit)(e);
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      setError('Failed to submit form');
+    }
+  };
+
+  // Update the switch handlers with proper type annotations
+  const handleSwitchChange = (
+    field: keyof ProfileFormValues['privacy'] | keyof ProfileFormValues['notifications'] | keyof ProfileFormValues['accountSettings'],
+    checked: boolean,
+    form: UseFormReturn<ProfileFormValues>
+  ): void => {
+    const formValues = form.getValues();
+    
+    if (field in formValues.privacy) {
+      form.setValue(`privacy.${field}`, checked, { shouldDirty: true });
+    } else if (field in formValues.notifications) {
+      form.setValue(`notifications.${field}`, checked, { shouldDirty: true });
+    } else if (field in formValues.accountSettings) {
+      form.setValue(`accountSettings.${field}`, checked, { shouldDirty: true });
+    }
+  };
+
+  const handleVisibilityChange = (value: 'public' | 'private' | 'contacts') => {
+    form.setValue('visibility', value, { shouldDirty: true });
+  };
+
   return (
     <div className="space-y-8">
       <Tabs defaultValue="details" className="w-full">
@@ -651,7 +685,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
             </div>
           </div>
           
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={(e) => handleFormSubmit(e, form)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
@@ -688,20 +722,15 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     variant="outline" 
                     size="sm" 
                     type="button" 
-                    onClick={sendVerificationEmail}
-                    disabled={loading || emailSent}
-                    className={emailSent ? "bg-green-50 text-green-600 border-green-200 hover:bg-green-100" : "text-blue-600 hover:text-blue-700 border-blue-200 hover:bg-blue-50"}
+                    onClick={handleEmailVerification}
+                    disabled={isVerifyingEmail}
+                    className={isVerifyingEmail ? "bg-green-50 text-green-600 border-green-200 hover:bg-green-100" : "text-blue-600 hover:text-blue-700 border-blue-200 hover:bg-blue-50"}
                   >
-                    {loading ? (
+                    {isVerifyingEmail ? (
                       <div className="flex items-center">
                         <span className="h-4 w-4 animate-spin mr-2 border-2 border-current border-t-transparent rounded-full" />
                         Sending...
                       </div>
-                    ) : emailSent ? (
-                      <div className="flex items-center">
-                        <Check className="h-4 w-4 mr-1" />
-                        Email Sent
-                      </div> 
                     ) : (
                       <div className="flex items-center">
                         <Mail className="h-4 w-4 mr-1" />
@@ -742,11 +771,11 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   <div>
                     <p className="font-medium">Email not verified</p>
                     <p className="text-amber-700 mt-1">
-                      {emailSent 
+                      {isVerifyingEmail 
                         ? 'Please check your inbox and click the verification link we sent you.' 
                         : 'Verify your email to unlock all features and receive important notifications.'}
                     </p>
-                    {emailSent && (
+                    {isVerifyingEmail && (
                       <p className="text-xs mt-1 text-amber-700">
                         If you don't see the email, check your spam folder or click the button above to resend.
                       </p>
@@ -831,7 +860,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     name="visibility"
                     value="public"
                     checked={form.watch('visibility') === 'public'}
-                    onChange={() => form.setValue('visibility', 'public', { shouldDirty: true })}
+                    onChange={(e) => handleVisibilityChange('public')}
                     className="h-4 w-4 rounded-full text-primary"
                   />
                   <Label htmlFor="visibility-public" className="font-normal cursor-pointer">
@@ -849,7 +878,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     name="visibility"
                     value="contacts"
                     checked={form.watch('visibility') === 'contacts'}
-                    onChange={() => form.setValue('visibility', 'contacts', { shouldDirty: true })}
+                    onChange={(e) => handleVisibilityChange('contacts')}
                     className="h-4 w-4 rounded-full text-primary"
                   />
                   <Label htmlFor="visibility-contacts" className="font-normal cursor-pointer">
@@ -867,7 +896,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     name="visibility"
                     value="private"
                     checked={form.watch('visibility') === 'private'}
-                    onChange={() => form.setValue('visibility', 'private', { shouldDirty: true })}
+                    onChange={(e) => handleVisibilityChange('private')}
                     className="h-4 w-4 rounded-full text-primary"
                   />
                   <Label htmlFor="visibility-private" className="font-normal cursor-pointer">
@@ -896,7 +925,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('privacy.showEmail')}
-                    onCheckedChange={(checked) => form.setValue('privacy.showEmail', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('showEmail', checked, form)}
                     aria-label="Show email"
                   />
                 </div>
@@ -908,7 +937,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('privacy.showPhone')}
-                    onCheckedChange={(checked) => form.setValue('privacy.showPhone', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('showPhone', checked, form)}
                     aria-label="Show phone number"
                   />
                 </div>
@@ -920,7 +949,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('privacy.allowTagging')}
-                    onCheckedChange={(checked) => form.setValue('privacy.allowTagging', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('allowTagging', checked, form)}
                     aria-label="Allow tagging"
                   />
                 </div>
@@ -932,7 +961,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('privacy.receiveNotifications')}
-                    onCheckedChange={(checked) => form.setValue('privacy.receiveNotifications', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('receiveNotifications', checked, form)}
                     aria-label="Show activity status"
                   />
                 </div>
@@ -955,7 +984,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('notifications.email')}
-                    onCheckedChange={(checked) => form.setValue('notifications.email', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('email', checked, form)}
                     aria-label="Email notifications"
                   />
                 </div>
@@ -967,7 +996,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('notifications.sms')}
-                    onCheckedChange={(checked) => form.setValue('notifications.sms', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('sms', checked, form)}
                     aria-label="SMS notifications"
                   />
                 </div>
@@ -979,7 +1008,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('notifications.push')}
-                    onCheckedChange={(checked) => form.setValue('notifications.push', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('push', checked, form)}
                     aria-label="Push notifications"
                   />
                 </div>
@@ -991,7 +1020,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('notifications.marketing')}
-                    onCheckedChange={(checked) => form.setValue('notifications.marketing', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('marketing', checked, form)}
                     aria-label="Marketing communications"
                   />
                 </div>
@@ -1019,9 +1048,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   <div className="flex items-center space-x-2">
                     <Switch
                       checked={form.watch('accountSettings.twoFactorAuth')}
-                      onCheckedChange={(checked) => 
-                        form.setValue('accountSettings.twoFactorAuth', checked)
-                      }
+                      onCheckedChange={(checked) => handleSwitchChange('twoFactorAuth', checked, form)}
                       id="two-factor-auth"
                     />
                     {form.watch('accountSettings.twoFactorAuth') && 
@@ -1047,9 +1074,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('accountSettings.loginNotifications')}
-                    onCheckedChange={(checked) => 
-                      form.setValue('accountSettings.loginNotifications', checked)
-                    }
+                    onCheckedChange={(checked) => handleSwitchChange('loginNotifications', checked, form)}
                     id="login-notifications"
                   />
                 </div>
@@ -1065,9 +1090,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('accountSettings.autoLogout')}
-                    onCheckedChange={(checked) => 
-                      form.setValue('accountSettings.autoLogout', checked)
-                    }
+                    onCheckedChange={(checked) => handleSwitchChange('autoLogout', checked, form)}
                     id="auto-logout"
                   />
                 </div>
@@ -1084,9 +1107,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   <div className="flex items-center space-x-2">
                     <Switch
                       checked={form.watch('accountSettings.dataDownload')}
-                      onCheckedChange={(checked) => 
-                        form.setValue('accountSettings.dataDownload', checked)
-                      }
+                      onCheckedChange={(checked) => handleSwitchChange('dataDownload', checked, form)}
                       id="data-download"
                     />
                     {form.watch('accountSettings.dataDownload') && 
@@ -1136,7 +1157,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     name="visibility"
                     value="public"
                     checked={form.watch('visibility') === 'public'}
-                    onChange={() => form.setValue('visibility', 'public', { shouldDirty: true })}
+                    onChange={(e) => handleVisibilityChange('public')}
                     className="h-4 w-4 rounded-full text-primary"
                   />
                   <Label htmlFor="visibility-public" className="font-normal cursor-pointer">
@@ -1154,7 +1175,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     name="visibility"
                     value="contacts"
                     checked={form.watch('visibility') === 'contacts'}
-                    onChange={() => form.setValue('visibility', 'contacts', { shouldDirty: true })}
+                    onChange={(e) => handleVisibilityChange('contacts')}
                     className="h-4 w-4 rounded-full text-primary"
                   />
                   <Label htmlFor="visibility-contacts" className="font-normal cursor-pointer">
@@ -1172,7 +1193,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     name="visibility"
                     value="private"
                     checked={form.watch('visibility') === 'private'}
-                    onChange={() => form.setValue('visibility', 'private', { shouldDirty: true })}
+                    onChange={(e) => handleVisibilityChange('private')}
                     className="h-4 w-4 rounded-full text-primary"
                   />
                   <Label htmlFor="visibility-private" className="font-normal cursor-pointer">
@@ -1205,7 +1226,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('privacy.showEmail')}
-                    onCheckedChange={(checked) => form.setValue('privacy.showEmail', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('showEmail', checked, form)}
                     aria-label="Show email"
                   />
                 </div>
@@ -1217,7 +1238,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('privacy.showPhone')}
-                    onCheckedChange={(checked) => form.setValue('privacy.showPhone', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('showPhone', checked, form)}
                     aria-label="Show phone number"
                   />
                 </div>
@@ -1229,7 +1250,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('privacy.allowTagging')}
-                    onCheckedChange={(checked) => form.setValue('privacy.allowTagging', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('allowTagging', checked, form)}
                     aria-label="Allow tagging"
                   />
                 </div>
@@ -1241,7 +1262,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('privacy.receiveNotifications')}
-                    onCheckedChange={(checked) => form.setValue('privacy.receiveNotifications', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('receiveNotifications', checked, form)}
                     aria-label="Show activity status"
                   />
                 </div>
@@ -1268,7 +1289,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('notifications.email')}
-                    onCheckedChange={(checked) => form.setValue('notifications.email', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('email', checked, form)}
                     aria-label="Email notifications"
                   />
                 </div>
@@ -1280,7 +1301,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('notifications.sms')}
-                    onCheckedChange={(checked) => form.setValue('notifications.sms', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('sms', checked, form)}
                     aria-label="SMS notifications"
                   />
                 </div>
@@ -1292,7 +1313,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('notifications.push')}
-                    onCheckedChange={(checked) => form.setValue('notifications.push', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('push', checked, form)}
                     aria-label="Push notifications"
                   />
                 </div>
@@ -1304,7 +1325,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <Switch
                     checked={form.watch('notifications.marketing')}
-                    onCheckedChange={(checked) => form.setValue('notifications.marketing', checked, { shouldDirty: true })}
+                    onCheckedChange={(checked) => handleSwitchChange('marketing', checked, form)}
                     aria-label="Marketing communications"
                   />
                 </div>
@@ -1350,10 +1371,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <p className="text-sm text-muted-foreground">Promotional emails about new features and offers</p>
                   </div>
                   <Switch
-                    checked={notifications.email_marketing}
-                    onCheckedChange={(checked) => 
-                      updateNotification('email_marketing', checked)
-                    }
+                    checked={form.watch('notifications.email_marketing')}
+                    onCheckedChange={(checked) => handleSwitchChange('email_marketing', checked, form)}
                     aria-label="Email marketing"
                   />
                 </div>
@@ -1364,10 +1383,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <p className="text-sm text-muted-foreground">Important updates about your account</p>
                   </div>
                   <Switch
-                    checked={notifications.email_updates}
-                    onCheckedChange={(checked) => 
-                      updateNotification('email_updates', checked)
-                    }
+                    checked={form.watch('notifications.email_updates')}
+                    onCheckedChange={(checked) => handleSwitchChange('email_updates', checked, form)}
                     aria-label="Email updates"
                   />
                 </div>
@@ -1378,10 +1395,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <p className="text-sm text-muted-foreground">Replies to your comments and reviews</p>
                   </div>
                   <Switch
-                    checked={notifications.email_comments}
-                    onCheckedChange={(checked) => 
-                      updateNotification('email_comments', checked)
-                    }
+                    checked={form.watch('notifications.email_comments')}
+                    onCheckedChange={(checked) => handleSwitchChange('email_comments', checked, form)}
                     aria-label="Email comments"
                   />
                 </div>
@@ -1392,10 +1407,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <p className="text-sm text-muted-foreground">Security updates, suspicious activity, and password changes</p>
                   </div>
                   <Switch
-                    checked={notifications.email_security}
-                    onCheckedChange={(checked) => 
-                      updateNotification('email_security', checked)
-                    }
+                    checked={form.watch('notifications.email_security')}
+                    onCheckedChange={(checked) => handleSwitchChange('email_security', checked, form)}
                     aria-label="Email security alerts"
                   />
                 </div>
@@ -1421,10 +1434,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <p className="text-sm text-muted-foreground">Announcements about new platform features</p>
                   </div>
                   <Switch
-                    checked={notifications.push_new_features}
-                    onCheckedChange={(checked) => 
-                      updateNotification('push_new_features', checked)
-                    }
+                    checked={form.watch('notifications.push_new_features')}
+                    onCheckedChange={(checked) => handleSwitchChange('push_new_features', checked, form)}
                     aria-label="Push new features"
                   />
                 </div>
@@ -1435,10 +1446,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <p className="text-sm text-muted-foreground">When someone mentions you in a comment</p>
                   </div>
                   <Switch
-                    checked={notifications.push_mentions}
-                    onCheckedChange={(checked) => 
-                      updateNotification('push_mentions', checked)
-                    }
+                    checked={form.watch('notifications.push_mentions')}
+                    onCheckedChange={(checked) => handleSwitchChange('push_mentions', checked, form)}
                     aria-label="Push mentions"
                   />
                 </div>
@@ -1449,10 +1458,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <p className="text-sm text-muted-foreground">Replies to your comments and reviews</p>
                   </div>
                   <Switch
-                    checked={notifications.push_comments}
-                    onCheckedChange={(checked) => 
-                      updateNotification('push_comments', checked)
-                    }
+                    checked={form.watch('notifications.push_comments')}
+                    onCheckedChange={(checked) => handleSwitchChange('push_comments', checked, form)}
                     aria-label="Push comments"
                   />
                 </div>
@@ -1463,10 +1470,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <p className="text-sm text-muted-foreground">Updates about your appointments and services</p>
                   </div>
                   <Switch
-                    checked={notifications.push_bookings}
-                    onCheckedChange={(checked) => 
-                      updateNotification('push_bookings', checked)
-                    }
+                    checked={form.watch('notifications.push_bookings')}
+                    onCheckedChange={(checked) => handleSwitchChange('push_bookings', checked, form)}
                     aria-label="Push booking updates"
                   />
                 </div>
@@ -1492,10 +1497,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <p className="text-sm text-muted-foreground">Critical security alerts and verification codes</p>
                   </div>
                   <Switch
-                    checked={notifications.sms_security}
-                    onCheckedChange={(checked) => 
-                      updateNotification('sms_security', checked)
-                    }
+                    checked={form.watch('notifications.sms_security')}
+                    onCheckedChange={(checked) => handleSwitchChange('sms_security', checked, form)}
                     aria-label="SMS security alerts"
                   />
                 </div>
@@ -1506,10 +1509,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <p className="text-sm text-muted-foreground">Important updates about your account</p>
                   </div>
                   <Switch
-                    checked={notifications.sms_updates}
-                    onCheckedChange={(checked) => 
-                      updateNotification('sms_updates', checked)
-                    }
+                    checked={form.watch('notifications.sms_updates')}
+                    onCheckedChange={(checked) => handleSwitchChange('sms_updates', checked, form)}
                     aria-label="SMS updates"
                   />
                 </div>
@@ -1520,10 +1521,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <p className="text-sm text-muted-foreground">Appointment confirmations and reminders</p>
                   </div>
                   <Switch
-                    checked={notifications.sms_bookings}
-                    onCheckedChange={(checked) => 
-                      updateNotification('sms_bookings', checked)
-                    }
+                    checked={form.watch('notifications.sms_bookings')}
+                    onCheckedChange={(checked) => handleSwitchChange('sms_bookings', checked, form)}
                     aria-label="SMS booking reminders"
                   />
                 </div>
@@ -1864,78 +1863,17 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
         </TabsContent>
       </Tabs>
       
-      {/* Avatar Editor Dialog */}
-      <Dialog open={showAvatarEditor} onOpenChange={setShowAvatarEditor}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Edit Profile Photo</DialogTitle>
-            <DialogDescription>
-              Drag to position, use the slider to zoom, and click Save when you're happy with your profile photo
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="flex flex-col items-center space-y-6 py-4">
-            {avatarFile && (
-              <div className="relative bg-gray-100 rounded-md p-1">
-                <AvatarEditorComponent
-                  ref={(editor) => setAvatarEditor(editor)}
-                  image={avatarFile}
-                  width={250}
-                  height={250}
-                  border={50}
-                  borderRadius={125}
-                  color={[0, 0, 0, 0.6]}
-                  scale={avatarEditorScale}
-                  rotate={0}
-                />
-                <p className="text-center text-sm text-muted-foreground mt-2">
-                  Drag the image to adjust position
-                </p>
-              </div>
-            )}
-            
-            <div className="w-full space-y-2">
-              <div className="flex justify-between">
-                <Label htmlFor="zoom">Zoom</Label>
-                <span className="text-xs text-muted-foreground">{Math.round(avatarEditorScale * 100)}%</span>
-              </div>
-              <Slider
-                id="zoom"
-                min={1}
-                max={3}
-                step={0.1}
-                value={[avatarEditorScale]}
-                onValueChange={(value) => setAvatarEditorScale(value[0])}
-                className="w-full"
-              />
-            </div>
-          </div>
-          
-          <DialogFooter className="sm:justify-between">
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={() => setShowAvatarEditor(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="button"
-              onClick={handleSaveAvatar}
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                  Saving...
-                </>
-              ) : (
-                'Save Photo'
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {showAvatarEditor && selectedImage && (
+        <AvatarEditorDialog
+          image={selectedImage}
+          onSave={handleAvatarSave}
+          onCancel={() => {
+            setShowAvatarEditor(false);
+            setSelectedImage(null);
+          }}
+          isOpen={showAvatarEditor}
+        />
+      )}
       
       {/* Account Deletion Confirmation Dialog */}
       <Dialog open={showDeleteConfirmation} onOpenChange={setShowDeleteConfirmation}>

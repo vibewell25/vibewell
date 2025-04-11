@@ -406,7 +406,7 @@ export function AlertsDashboard() {
                     <FormLabel>Product</FormLabel>
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      value={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -435,7 +435,7 @@ export function AlertsDashboard() {
                       <FormLabel>Metric</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -462,7 +462,7 @@ export function AlertsDashboard() {
                       <FormLabel>Condition</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>

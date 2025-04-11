@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import QRCode from 'react-qr-code';
+import { Interface, Contract, parseUnits, parseEther, toUtf8Bytes, hexlify } from 'ethers';
 
 interface CryptoOption {
   id: string;
@@ -65,13 +66,47 @@ const CRYPTO_OPTIONS: CryptoOption[] = [
     chainId: 137,
     icon: '/icons/usdc.svg',
     decimals: 6
+  },
+  {
+    id: 'usdt_ethereum',
+    name: 'Tether (Ethereum)',
+    symbol: 'USDT',
+    chainId: 1,
+    icon: '/icons/usdt.svg',
+    decimals: 6
+  },
+  {
+    id: 'dai_ethereum',
+    name: 'Dai (Ethereum)',
+    symbol: 'DAI',
+    chainId: 1,
+    icon: '/icons/dai.svg',
+    decimals: 18
+  },
+  {
+    id: 'wbtc_ethereum',
+    name: 'Wrapped Bitcoin (Ethereum)',
+    symbol: 'WBTC',
+    chainId: 1,
+    icon: '/icons/wbtc.svg',
+    decimals: 8
   }
 ];
 
-// USDC Token addresses on different networks
-const USDC_TOKEN_ADDRESSES: Record<number, string> = {
-  1: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', // Ethereum Mainnet
-  137: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174' // Polygon Mainnet
+// Token addresses on different networks
+const TOKEN_ADDRESSES: Record<number, Record<string, string>> = {
+  1: {
+    USDC: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    DAI: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+    WBTC: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'
+  },
+  137: {
+    USDC: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+    USDT: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
+    DAI: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+    WBTC: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6'
+  }
 };
 
 export function Web3PaymentForm({
@@ -100,9 +135,7 @@ export function Web3PaymentForm({
     const fetchExchangeRates = async () => {
       try {
         setLoadingRates(true);
-        // In production, you would use a real API like CoinGecko or CryptoCompare
-        // This is a placeholder implementation
-        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum,matic-network,usd-coin&vs_currencies=usd');
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum,matic-network,usd-coin,tether,dai,wrapped-bitcoin&vs_currencies=usd');
         
         if (!response.ok) {
           throw new Error('Failed to fetch exchange rates');
@@ -113,7 +146,10 @@ export function Web3PaymentForm({
         const rates: Record<string, number> = {
           ETH: data['ethereum'].usd ? 1 / data['ethereum'].usd : 0,
           MATIC: data['matic-network'].usd ? 1 / data['matic-network'].usd : 0,
-          USDC: data['usd-coin'].usd ? 1 / data['usd-coin'].usd : 1, // USDC should be close to 1 USD
+          USDC: data['usd-coin'].usd ? 1 / data['usd-coin'].usd : 1,
+          USDT: data['tether'].usd ? 1 / data['tether'].usd : 1,
+          DAI: data['dai'].usd ? 1 / data['dai'].usd : 1,
+          WBTC: data['wrapped-bitcoin'].usd ? 1 / data['wrapped-bitcoin'].usd : 0
         };
         
         setExchangeRates(rates);
@@ -126,9 +162,12 @@ export function Web3PaymentForm({
         console.error('Error fetching exchange rates:', err);
         // Use fallback rates
         setExchangeRates({
-          ETH: 0.0004, // ~$2500 per ETH
+          ETH: 0.0004,  // ~$2500 per ETH
           MATIC: 0.8,   // ~$1.25 per MATIC
-          USDC: 1       // 1:1 with USD
+          USDC: 1,      // 1:1 with USD
+          USDT: 1,      // 1:1 with USD
+          DAI: 1,       // 1:1 with USD
+          WBTC: 0.00002 // ~$50,000 per BTC
         });
         setError('Could not fetch latest exchange rates. Using estimated rates.');
       } finally {
@@ -210,49 +249,44 @@ export function Web3PaymentForm({
       setPaymentStatus('processing');
       setError(null);
       
-      const ethersProvider = new ethers.providers.Web3Provider(provider);
-      const signer = ethersProvider.getSigner();
+      const ethersProvider = new ethers.BrowserProvider(provider);
+      const signer = await ethersProvider.getSigner();
       
       let tx;
       
-      // Check if we're paying with a token (USDC) or native currency (ETH/MATIC)
-      if (selectedCrypto.symbol === 'USDC') {
-        // Token payment (USDC)
-        const tokenAddress = USDC_TOKEN_ADDRESSES[selectedCrypto.chainId];
+      // Check if we're paying with a token or native currency
+      if (selectedCrypto.symbol !== 'ETH' && selectedCrypto.symbol !== 'MATIC') {
+        // Token payment (USDC, USDT, DAI, WBTC)
+        const tokenAddress = TOKEN_ADDRESSES[selectedCrypto.chainId][selectedCrypto.symbol];
         if (!tokenAddress) {
           throw new Error(`Token address not found for ${selectedCrypto.symbol} on chain ${selectedCrypto.chainId}`);
         }
         
         // Using ERC20 interface
-        const erc20Interface = new ethers.utils.Interface([
+        const erc20Interface = new Interface([
           'function transfer(address to, uint256 amount) returns (bool)'
         ]);
         
-        const tokenContract = new ethers.Contract(tokenAddress, erc20Interface, signer);
+        const tokenContract = new Contract(tokenAddress, erc20Interface, signer);
         
         // Merchant address would usually come from the backend
         const merchantAddress = process.env.NEXT_PUBLIC_MERCHANT_WALLET_ADDRESS || '0xYourMerchantAddressHere';
         
-        // Amount calculation for tokens (USDC has 6 decimals)
-        const amountInWei = ethers.utils.parseUnits(cryptoAmount, selectedCrypto.decimals);
+        // Amount calculation for tokens
+        const amountInWei = parseUnits(cryptoAmount, selectedCrypto.decimals);
         
         // Send transaction
         tx = await tokenContract.transfer(merchantAddress, amountInWei);
       } else {
         // Native currency payment (ETH/MATIC)
-        
-        // Merchant address would usually come from the backend
         const merchantAddress = process.env.NEXT_PUBLIC_MERCHANT_WALLET_ADDRESS || '0xYourMerchantAddressHere';
-        
-        // Amount calculation for native currency
-        const amountInWei = ethers.utils.parseEther(cryptoAmount);
+        const amountInWei = parseEther(cryptoAmount);
         
         // Send transaction
         tx = await signer.sendTransaction({
           to: merchantAddress,
           value: amountInWei,
-          // In production, include data field with order reference for tracking
-          data: ethers.utils.hexlify(ethers.utils.toUtf8Bytes(`VibeWell Payment: ${orderReference || 'Order'}`))
+          data: hexlify(toUtf8Bytes(`VibeWell Payment: ${orderReference || 'Order'}`))
         });
       }
       
@@ -263,7 +297,6 @@ export function Web3PaymentForm({
       const receipt = await ethersProvider.waitForTransaction(tx.hash, 1); // Wait for 1 confirmation
       
       if (receipt.status === 1) {
-        // Transaction successful
         setPaymentStatus('confirmed');
         setPaymentStep('confirm');
         
@@ -271,7 +304,6 @@ export function Web3PaymentForm({
           onSuccess(tx.hash, selectedCrypto.symbol);
         }
       } else {
-        // Transaction failed
         throw new Error('Transaction failed on the blockchain');
       }
     } catch (err: any) {
@@ -283,6 +315,17 @@ export function Web3PaymentForm({
         onError(err);
       }
     }
+  };
+
+  const handlePaymentSuccess = async (receipt: ethers.TransactionReceipt | null) => {
+    if (!receipt) {
+      console.error('Payment receipt is null');
+      setPaymentStatus('failed');
+      return;
+    }
+    setPaymentStatus('confirmed');
+    setTransactionHash(receipt.hash);
+    // ... existing code ...
   };
 
   // Render payment selection step

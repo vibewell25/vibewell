@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { PaperAirplaneIcon, MagnifyingGlassIcon, EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
+import { PaperAirplaneIcon, MagnifyingGlassIcon, EllipsisHorizontalIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 
@@ -30,6 +30,7 @@ interface MessagingProps {
   currentUserId: string;
   onSendMessage: (conversationId: string, content: string) => void;
   onConversationSelect?: (conversationId: string) => void;
+  onDeleteConversation?: (conversationId: string) => void;
   className?: string;
   height?: string;
   defaultSelectedConversation?: string;
@@ -41,6 +42,7 @@ export function Messaging({
   currentUserId,
   onSendMessage,
   onConversationSelect,
+  onDeleteConversation,
   className = '',
   height = 'h-[70vh]',
   defaultSelectedConversation,
@@ -49,13 +51,19 @@ export function Messaging({
   const [selectedConversation, setSelectedConversation] = useState<string | null>(defaultSelectedConversation || null);
   const [newMessage, setNewMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
 
   useEffect(() => {
     // Default to first conversation if none selected and we have conversations
     if (conversations.length > 0 && !selectedConversation) {
       setSelectedConversation(conversations[0].id);
     }
-  }, [conversations, selectedConversation]);
+    
+    // Update selected conversation if defaultSelectedConversation changes
+    if (defaultSelectedConversation && defaultSelectedConversation !== selectedConversation) {
+      setSelectedConversation(defaultSelectedConversation);
+    }
+  }, [conversations, selectedConversation, defaultSelectedConversation]);
 
   // Filter conversations based on search query
   const filteredConversations = conversations.filter(conv => {
@@ -83,6 +91,28 @@ export function Messaging({
     if (onConversationSelect) {
       onConversationSelect(conversationId);
     }
+  };
+  
+  const handleDeleteClick = (e: React.MouseEvent, conversationId: string) => {
+    e.stopPropagation(); // Prevent triggering conversation selection
+    setShowDeleteConfirm(conversationId);
+  };
+  
+  const confirmDelete = (conversationId: string) => {
+    if (onDeleteConversation) {
+      onDeleteConversation(conversationId);
+    }
+    setShowDeleteConfirm(null);
+    
+    // If deleted conversation was selected, clear selection
+    if (conversationId === selectedConversation) {
+      setSelectedConversation(null);
+    }
+  };
+  
+  const cancelDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowDeleteConfirm(null);
   };
 
   const formatMessageTime = (timestamp: string) => {
@@ -164,7 +194,7 @@ export function Messaging({
                 return (
                   <div 
                     key={conversation.id}
-                    className={`p-4 flex items-center space-x-3 cursor-pointer hover:bg-muted transition-colors ${selectedConversation === conversation.id ? 'bg-muted' : ''}`}
+                    className={`p-4 flex items-center space-x-3 cursor-pointer hover:bg-muted transition-colors relative ${selectedConversation === conversation.id ? 'bg-muted' : ''}`}
                     onClick={() => selectConversation(conversation.id)}
                   >
                     <div className="relative">
@@ -202,6 +232,40 @@ export function Messaging({
                         )}
                       </div>
                     </div>
+                    
+                    {/* Delete button */}
+                    {onDeleteConversation && (
+                      <button
+                        className="text-muted-foreground hover:text-red-500 p-1 absolute right-2 top-2 rounded-full hover:bg-red-50 transition-colors"
+                        onClick={(e) => handleDeleteClick(e, conversation.id)}
+                        aria-label="Delete conversation"
+                      >
+                        <TrashIcon className="h-4 w-4" />
+                      </button>
+                    )}
+                    
+                    {/* Delete confirmation */}
+                    {showDeleteConfirm === conversation.id && (
+                      <div className="absolute inset-0 bg-white/95 flex items-center justify-center z-10">
+                        <div className="p-4 text-center">
+                          <p className="mb-2">Delete this conversation?</p>
+                          <div className="flex space-x-2 justify-center">
+                            <button 
+                              className="px-3 py-1 bg-red-500 text-white rounded-md text-sm"
+                              onClick={() => confirmDelete(conversation.id)}
+                            >
+                              Delete
+                            </button>
+                            <button 
+                              className="px-3 py-1 bg-gray-200 rounded-md text-sm"
+                              onClick={cancelDelete}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -237,9 +301,20 @@ export function Messaging({
                   )}
                 </div>
               </div>
-              <button className="text-muted-foreground hover:text-primary">
-                <EllipsisHorizontalIcon className="h-6 w-6" />
-              </button>
+              <div className="flex items-center space-x-2">
+                {onDeleteConversation && (
+                  <button 
+                    className="text-muted-foreground hover:text-red-500 p-1 rounded-full hover:bg-red-50 transition-colors"
+                    onClick={(e) => handleDeleteClick(e, currentConversation.id)}
+                    aria-label="Delete conversation"
+                  >
+                    <TrashIcon className="h-5 w-5" />
+                  </button>
+                )}
+                <button className="text-muted-foreground hover:text-primary">
+                  <EllipsisHorizontalIcon className="h-6 w-6" />
+                </button>
+              </div>
             </div>
             
             {/* Chat Messages */}

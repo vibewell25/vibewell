@@ -5,7 +5,7 @@
  * rate limiting behavior and Redis performance in production.
  */
 
-import redisClient from './redis-client';
+import redisClient from '../redis-client';
 import { logger } from '../logger';
 
 // Define metrics types

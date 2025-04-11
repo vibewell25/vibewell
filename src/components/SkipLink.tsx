@@ -1,28 +1,24 @@
 'use client';
 
 import React from 'react';
-import { cn } from '@/lib/utils';
 
 interface SkipLinkProps {
-  className?: string;
-  targetId: string;
+  targetId?: string;
   children?: React.ReactNode;
 }
 
-export default function SkipLink({ 
-  className, 
-  targetId, 
-  children = 'Skip to main content' 
-}: SkipLinkProps) {
+export const SkipLink: React.FC<SkipLinkProps> = ({
+  targetId = 'main-content',
+  children = 'Skip to main content'
+}) => {
   return (
-    <a 
+    <a
       href={`#${targetId}`}
-      className={cn(
-        'absolute left-2 top-2 z-50 -translate-y-full transform rounded bg-primary px-4 py-2 text-white transition focus:translate-y-0',
-        className
-      )}
+      className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:bg-white focus:px-4 focus:py-2 focus:text-primary focus:font-medium focus:shadow-lg"
     >
       {children}
     </a>
   );
-}
+};
+
+export default SkipLink;

@@ -1,43 +1,43 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface LiveAnnouncerProps {
   politeness?: 'polite' | 'assertive';
+  children?: React.ReactNode;
 }
 
-// Component for screen reader announcements
-const LiveAnnouncer = ({ politeness = 'polite' }: LiveAnnouncerProps) => {
-  const [message, setMessage] = useState('');
+export const LiveAnnouncer: React.FC<LiveAnnouncerProps> = ({
+  politeness = 'polite',
+  children
+}) => {
+  const [message, setMessage] = useState<string>('');
+  const [announcement, setAnnouncement] = useState<string>('');
 
-  const announce = useCallback((text: string) => {
-    setMessage(''); // Clear first to ensure announcement on repeated messages
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setMessage(text);
-      });
-    });
+  useEffect(() => {
+    // Create a global function to announce messages
+    (window as any).announce = (msg: string, priority: 'polite' | 'assertive' = 'polite') => {
+      setMessage(msg);
+      setAnnouncement(msg);
+      // Clear the announcement after a short delay
+      setTimeout(() => setAnnouncement(''), 100);
+    };
+
+    return () => {
+      // Clean up the global function
+      delete (window as any).announce;
+    };
   }, []);
 
-  // Add the announcer to the window object for global access
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.announcer = { announce };
-    }
-    return () => {
-      if (typeof window !== 'undefined') {
-        delete window.announcer;
-      }
-    };
-  }, [announce]);
-
   return (
-    <div 
+    <div
+      role="status"
       aria-live={politeness}
       aria-atomic="true"
       className="sr-only"
     >
-      {message}
+      {announcement}
+      {children}
     </div>
   );
 };

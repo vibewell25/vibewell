@@ -1,69 +1,94 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import React, { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 
 interface AccessibleDialogProps {
-  title: string;
-  description?: string;
   isOpen: boolean;
   onClose: () => void;
+  title: string;
   children: React.ReactNode;
-  footer?: React.ReactNode;
+  initialFocusRef?: React.RefObject<HTMLElement>;
 }
 
-const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
-  title,
-  description,
+export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
   isOpen,
   onClose,
+  title,
   children,
-  footer
+  initialFocusRef
 }) => {
-  const initialFocusRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const lastFocusedElement = useRef<HTMLElement | null>(null);
 
-  // Store the element that had focus when dialog was opened
   useEffect(() => {
     if (isOpen) {
-      triggerRef.current = document.activeElement as HTMLElement;
-    }
-  }, [isOpen]);
+      // Store the last focused element
+      lastFocusedElement.current = document.activeElement as HTMLElement;
+      
+      // Focus the dialog
+      if (initialFocusRef?.current) {
+        initialFocusRef.current.focus();
+      } else if (dialogRef.current) {
+        dialogRef.current.focus();
+      }
 
-  // Set focus to dialog when opened and return focus when closed
+      // Handle escape key
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          onClose();
+        }
+      };
+
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    } else if (lastFocusedElement.current) {
+      // Restore focus to the last focused element
+      lastFocusedElement.current.focus();
+    }
+  }, [isOpen, onClose, initialFocusRef]);
+
   useEffect(() => {
     if (isOpen) {
-      initialFocusRef.current?.focus();
-    } else if (triggerRef.current) {
-      triggerRef.current.focus();
-    }
-  }, [isOpen]);
+      // Trap focus within the dialog
+      const handleFocus = (e: FocusEvent) => {
+        if (dialogRef.current && !dialogRef.current.contains(e.target as Node)) {
+          e.preventDefault();
+          if (initialFocusRef?.current) {
+            initialFocusRef.current.focus();
+          } else if (dialogRef.current) {
+            dialogRef.current.focus();
+          }
+        }
+      };
 
-  return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent 
-        ref={initialFocusRef}
-        tabIndex={-1}
-        className="focus:outline-none"
-        aria-labelledby="dialog-title"
-        aria-describedby={description ? "dialog-description" : undefined}
-      >
-        <DialogHeader>
-          <DialogTitle id="dialog-title">{title}</DialogTitle>
-          {description && (
-            <p id="dialog-description" className="text-sm text-muted-foreground">
-              {description}
-            </p>
-          )}
-        </DialogHeader>
-        
-        <div>{children}</div>
-        
-        {footer && (
-          <DialogFooter>{footer}</DialogFooter>
-        )}
-      </DialogContent>
-    </Dialog>
+      document.addEventListener('focus', handleFocus, true);
+      return () => document.removeEventListener('focus', handleFocus, true);
+    }
+  }, [isOpen, initialFocusRef]);
+
+  if (!isOpen) return null;
+
+  return createPortal(
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="dialog-title"
+      ref={dialogRef}
+      tabIndex={-1}
+      className="fixed inset-0 z-50 overflow-y-auto"
+    >
+      <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onClose} />
+      <div className="relative min-h-screen flex items-center justify-center p-4">
+        <div className="relative bg-white rounded-lg shadow-xl max-w-lg w-full p-6">
+          <h2 id="dialog-title" className="text-xl font-semibold mb-4">
+            {title}
+          </h2>
+          {children}
+        </div>
+      </div>
+    </div>,
+    document.body
   );
 };
 

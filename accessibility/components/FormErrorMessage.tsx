@@ -1,24 +1,29 @@
+'use client';
+
 import React from 'react';
 
 interface FormErrorMessageProps {
   id: string;
-  children: React.ReactNode;
+  error?: string;
+  className?: string;
 }
 
-export const FormErrorMessage: React.FC<FormErrorMessageProps> = ({ 
-  id, 
-  children 
+export const FormErrorMessage: React.FC<FormErrorMessageProps> = ({
+  id,
+  error,
+  className = ''
 }) => {
-  if (!children) return null;
-  
+  if (!error) return null;
+
   return (
-    <div 
-      id={id}
+    <p
+      id={`${id}-error`}
       role="alert"
-      className="text-sm text-error mt-1"
+      aria-live="polite"
+      className={`text-sm text-red-500 mt-1 ${className}`}
     >
-      {children}
-    </div>
+      {error}
+    </p>
   );
 };
 

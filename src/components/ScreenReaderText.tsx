@@ -2,20 +2,13 @@ import React from 'react';
 
 interface ScreenReaderTextProps {
   children: React.ReactNode;
-  as?: keyof JSX.IntrinsicElements;
 }
 
-export const ScreenReaderText: React.FC<ScreenReaderTextProps> = ({ 
-  children,
-  as: Component = 'span'
-}) => {
+export const ScreenReaderText: React.FC<ScreenReaderTextProps> = ({ children }) => {
   return (
-    <Component 
-      className="sr-only" 
-      aria-hidden="false"
-    >
+    <span className="sr-only">
       {children}
-    </Component>
+    </span>
   );
 };
 

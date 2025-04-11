@@ -1,0 +1,16 @@
+{
+  "performance": {
+    "metrics": {
+      "responseTime": true,
+      "memoryUsage": true,
+      "cpuUsage": true,
+      "networkLatency": true
+    },
+    "alertThresholds": {
+      "responseTime": 1000,
+      "memoryUsage": 80,
+      "cpuUsage": 70
+    },
+    "samplingRate": 1
+  }
+}

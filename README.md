@@ -140,6 +140,7 @@ Vibewell implements a robust rate limiting system to protect against abuse and e
 - **Specialized Limiters**: Custom rate limits for authentication, password resets, and financial operations
 - **Dual-Mode Operation**: Works in both development (in-memory) and production (Redis) environments
 - **Monitoring**: Comprehensive logging and analytics for rate limiting events
+- **Load Testing**: Thorough testing of rate limiting performance with k6
 
 ### Configuration
 
@@ -166,6 +167,8 @@ For detailed documentation on rate limiting implementation, usage, and monitorin
 
 - [Rate Limiting Guide](./docs/rate-limiting.md) - Comprehensive documentation
 - [Load Testing Guide](./docs/load-testing.md) - Performance testing with k6
+- [k6 Installation Guide](./docs/k6-installation.md) - How to install k6
+- [Redis Installation Guide](./docs/redis-installation.md) - How to set up Redis
 - [Security Implementation](./docs/security-implementation.md) - Related security measures
 
 ### Usage in Code
@@ -185,6 +188,27 @@ export async function POST(req: NextRequest) {
   // Continue with normal request handling
 }
 ```
+
+### Load Testing
+
+Vibewell includes comprehensive load testing for the rate limiting system using k6:
+
+```bash
+# Run load tests with default settings
+./scripts/load-testing.sh
+
+# Run load tests with Redis enabled (production mode)
+NODE_ENV=production ./scripts/load-testing.sh
+```
+
+The load testing suite includes:
+
+- **Test Endpoints**: Specialized endpoints for testing different rate limiters
+- **Realistic Scenarios**: Various traffic patterns to simulate real-world usage
+- **Distributed Testing**: Support for simulating requests from multiple IPs
+- **Results Analysis**: Detailed metrics and HTML reports for analyzing performance
+
+See the [Load Testing Guide](./docs/load-testing.md) and [Example Usage](./docs/examples/load-testing-example.md) for more details.
 
 ## Getting Started
 

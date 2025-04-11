@@ -1,0 +1,25 @@
+{
+  "analytics": {
+    "enabled": true,
+    "tracking": {
+      "pageViews": true,
+      "userActions": true,
+      "performance": true,
+      "errors": true
+    },
+    "a_b_testing": {
+      "enabled": true,
+      "variants": {
+        "control": 50,
+        "variant_a": 25,
+        "variant_b": 25
+      }
+    },
+    "metrics": {
+      "conversionRate": true,
+      "bounceRate": true,
+      "timeOnPage": true,
+      "clickThroughRate": true
+    }
+  }
+}

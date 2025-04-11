@@ -1,189 +1,219 @@
-# Rate Limiting Configuration Guide
+# Rate Limiting System Guide
 
 ## Overview
-This guide documents the rate limiting implementation in the Vibewell application. Rate limiting is a critical security feature that protects the application from abuse, denial of service attacks, and ensures fair resource allocation among users.
 
-## Architecture
-Vibewell implements a dual-mode rate limiting system:
-
-1. **In-Memory Mode**: Used for development and testing environments. Simple but doesn't scale across multiple server instances.
-2. **Redis-Based Mode**: Used for production environments. Provides distributed rate limiting across multiple application instances.
-
-## Rate Limiting Middleware
-
-The core rate limiting functionality is implemented in `/src/app/api/auth/rate-limit-middleware.ts`. This middleware provides:
-
-- Configurable limits based on request IP address and path
-- Specialized limiters for different types of operations
-- Detailed logging of rate limiting events
-- Response headers with rate limit information
-
-## Available Limiters
-
-| Limiter | Purpose | Default Limits | Reset Window |
-|---------|---------|----------------|--------------|
-| `defaultRateLimiter` | General API requests | 100 requests | 60 seconds |
-| `authRateLimiter` | Authentication operations | 20 requests | 60 seconds |
-| `signupRateLimiter` | New account registration | 5 requests | 60 seconds |
-| `passwordResetRateLimiter` | Password reset operations | 3 requests | 60 minutes |
-| `mfaRateLimiter` | Multi-factor authentication | 10 requests | 60 seconds |
-| `adminRateLimiter` | Admin operations | 50 requests | 60 seconds |
-| `financialRateLimiter` | Payment and financial operations | 10 requests | 60 seconds |
-| `contentCreationRateLimiter` | Content publishing/editing | 30 requests | 60 seconds |
-
-## Implementation Examples
-
-### Basic Usage
-```typescript
-import { applyRateLimit, defaultRateLimiter } from '@/app/api/auth/rate-limit-middleware';
-
-export async function POST(request: Request) {
-  // Apply rate limiting
-  const rateLimitResult = await applyRateLimit(request, defaultRateLimiter);
-  
-  if (!rateLimitResult.success) {
-    return rateLimitResult.response;
-  }
-  
-  // Process the request normally
-  // ...
-}
-```
-
-### Using Specialized Limiters
-```typescript
-import { applyRateLimit, passwordResetRateLimiter } from '@/app/api/auth/rate-limit-middleware';
-
-export async function POST(request: Request) {
-  // Apply stricter rate limiting for password reset
-  const rateLimitResult = await applyRateLimit(request, passwordResetRateLimiter);
-  
-  if (!rateLimitResult.success) {
-    return rateLimitResult.response;
-  }
-  
-  // Process password reset
-  // ...
-}
-```
+The rate limiting system protects our API endpoints from abuse and ensures fair usage of resources. It uses Redis for distributed rate limiting and supports both in-memory and Redis-backed implementations.
 
 ## Configuration
 
 ### Environment Variables
 
-The following environment variables control rate limiting behavior:
+```bash
+# Rate limiting mode (memory or redis)
+RATE_LIMIT_MODE=redis
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `RATE_LIMIT_MODE` | Mode of operation: `memory` or `redis` | `memory` |
-| `REDIS_URL` | URL for Redis connection (required in Redis mode) | - |
-| `DEFAULT_RATE_LIMIT_MAX` | Default maximum requests | `100` |
-| `DEFAULT_RATE_LIMIT_WINDOW_SEC` | Default time window in seconds | `60` |
-| `SIGNUP_RATE_LIMIT_MAX` | Maximum signup requests | `5` |
-| `AUTH_RATE_LIMIT_MAX` | Maximum authentication requests | `20` |
-| `MFA_RATE_LIMIT_MAX` | Maximum MFA-related requests | `10` |
-| `ADMIN_RATE_LIMIT_MAX` | Maximum admin operations | `50` |
-| `FINANCIAL_RATE_LIMIT_MAX` | Maximum financial operations | `10` |
-| `CONTENT_RATE_LIMIT_MAX` | Maximum content operations | `30` |
+# Default rate limit (requests per window)
+DEFAULT_RATE_LIMIT_MAX=100
+DEFAULT_RATE_LIMIT_WINDOW=60
 
-To configure these variables, add them to your `.env` file or set them in your deployment environment.
-
-### Custom Limiters
-
-To create a custom rate limiter for specific routes:
-
-```typescript
-import { createRateLimiter } from '@/app/api/auth/rate-limit-middleware';
-
-// Create a custom limiter
-export const customAPILimiter = createRateLimiter({
-  name: 'custom-api',
-  maxRequests: 50,
-  windowSizeInSeconds: 30,
-});
-
-// Usage
-const rateLimitResult = await applyRateLimit(request, customAPILimiter);
+# Specialized rate limiters
+AUTH_RATE_LIMIT_MAX=10
+AUTH_RATE_LIMIT_WINDOW=900
 ```
 
-## Redis Configuration for Production
+### Redis Configuration
 
-For production environments, Redis must be properly configured:
+The Redis configuration is located in `config/redis/production.conf`. Key settings include:
 
-1. Install Redis in your server/container or use a managed Redis service
-2. Set the following environment variables:
-   ```
-   RATE_LIMIT_MODE=redis
-   REDIS_URL=redis://username:password@host:port
-   ```
-3. Ensure Redis persistence is configured properly to maintain rate limit data during restarts
-4. Configure Redis maxmemory and eviction policies to prevent memory issues
+- Memory limits
+- Persistence settings
+- Security configurations
+- Performance optimizations
 
-## Logging and Monitoring
+## Implementation Details
 
-Rate limiting events are logged via the application's logger:
+### Rate Limiter Types
 
-- When a rate limit is applied
-- When a rate limit is exceeded
-- When a suspicious pattern of attempts is detected
+1. **Default Rate Limiter**
+   - Applies to all endpoints
+   - Configurable through environment variables
+   - Uses sliding window algorithm
 
-Monitor these logs to:
-- Detect potential attacks
-- Identify legitimate users hitting limits
-- Fine-tune rate limits based on actual usage patterns
+2. **Authentication Rate Limiter**
+   - Stricter limits for auth endpoints
+   - Prevents brute force attacks
+   - Separate configuration
 
-## Client Response
+3. **IP-based Rate Limiter**
+   - Tracks requests by IP address
+   - Prevents DDoS attacks
+   - Configurable thresholds
 
-When rate limits are exceeded, clients receive:
+### Error Handling
 
-- HTTP Status: `429 Too Many Requests`
-- Headers:
-  - `Retry-After`: Seconds until the limit resets
-  - `X-RateLimit-Limit`: Maximum requests allowed
-  - `X-RateLimit-Remaining`: Remaining requests in the current window
-  - `X-RateLimit-Reset`: Unix timestamp when the rate limit resets
+When rate limits are exceeded, the system:
 
-## Load Testing
+1. Returns HTTP 429 (Too Many Requests)
+2. Includes retry-after header
+3. Logs the event
+4. Updates metrics
 
-Use the provided load testing script at `scripts/load-testing.sh` to:
+## Monitoring
 
-1. Test rate limiting effectiveness
-2. Verify proper configuration in different environments
-3. Identify performance bottlenecks
-4. Ensure high availability under heavy load
+### Metrics Collected
 
-## Best Practices
+- Request counts
+- Blocked requests
+- Response times
+- Memory usage
+- Hit rates
 
-1. **Start Conservative**: Begin with strict limits and relax them based on legitimate usage patterns
-2. **Graduated Response**: Use stricter limits for sensitive operations
-3. **Whitelist Critical IPs**: Consider allowing higher limits for trusted IPs
-4. **Monitor False Positives**: Watch for legitimate users hitting limits
-5. **Communicate Clearly**: Ensure your frontend handles 429 responses gracefully
-6. **Use Redis in Production**: In-memory limiting is only suitable for development
+### Alerting
+
+Alerts are triggered for:
+
+- High memory usage (>80%)
+- Unusual request patterns
+- System errors
+- Configuration issues
 
 ## Troubleshooting
 
-### Rate Limits Too Aggressive
-- Check logs for legitimate users hitting limits
-- Increase limits for specific operations via environment variables
-- Ensure Redis is functioning properly in production
+### Common Issues
 
-### Rate Limits Not Working
-- Verify the middleware is correctly applied to routes
-- Check Redis connection in production environments
-- Ensure IP address extraction is working correctly
+1. **Rate Limits Too Strict**
+   - Check current limits
+   - Review traffic patterns
+   - Adjust configuration
 
-### Performance Issues
-- Monitor Redis performance metrics
-- Consider using a dedicated Redis instance for rate limiting
-- Optimize Redis configuration for your workload
+2. **Redis Connection Issues**
+   - Verify Redis is running
+   - Check network connectivity
+   - Review Redis logs
+
+3. **Memory Usage High**
+   - Check key expiration
+   - Review memory limits
+   - Monitor eviction policies
+
+### Debugging Tools
+
+1. **Redis CLI**
+   ```bash
+   redis-cli info
+   redis-cli monitor
+   ```
+
+2. **Metrics Collection**
+   ```bash
+   ./scripts/collect-redis-metrics.sh
+   ```
+
+3. **Security Audit**
+   ```bash
+   ./scripts/security-audit.sh
+   ```
+
+## Best Practices
+
+1. **Configuration**
+   - Set appropriate limits
+   - Use separate limits for different endpoints
+   - Monitor and adjust as needed
+
+2. **Monitoring**
+   - Regular metric collection
+   - Alert setup
+   - Log analysis
+
+3. **Security**
+   - Regular audits
+   - Penetration testing
+   - Configuration reviews
+
+## Maintenance
+
+### Regular Tasks
+
+1. **Daily**
+   - Check metrics
+   - Review alerts
+   - Monitor performance
+
+2. **Weekly**
+   - Clean up old data
+   - Review limits
+   - Update documentation
+
+3. **Monthly**
+   - Security audit
+   - Performance review
+   - Configuration optimization
+
+## API Integration
+
+### Client Implementation
+
+```typescript
+import { RateLimiter } from '@/lib/rate-limiter';
+
+const limiter = new RateLimiter({
+  max: 100,
+  window: 60
+});
+
+// Apply to route
+export default async function handler(req, res) {
+  try {
+    await limiter.check(req.ip);
+    // Process request
+  } catch (error) {
+    if (error instanceof RateLimitError) {
+      res.status(429).json({ error: 'Too many requests' });
+    }
+  }
+}
+```
+
+### Response Headers
+
+Rate-limited responses include:
+
+- `X-RateLimit-Limit`: Maximum requests per window
+- `X-RateLimit-Remaining`: Remaining requests
+- `X-RateLimit-Reset`: Time until reset
+- `Retry-After`: Seconds to wait
 
 ## Security Considerations
 
-Rate limiting is just one layer of protection. Consider complementing it with:
+1. **IP Spoofing**
+   - Use multiple identifiers
+   - Implement IP validation
+   - Monitor for abuse
 
-- Web Application Firewall (WAF)
-- CAPTCHA for sensitive operations
-- IP reputation checking
-- Anomaly detection
-- Session validation 
+2. **Distributed Attacks**
+   - Use Redis for distributed limiting
+   - Implement global limits
+   - Monitor patterns
+
+3. **Resource Exhaustion**
+   - Set memory limits
+   - Implement cleanup
+   - Monitor usage
+
+## Performance Optimization
+
+1. **Redis Optimization**
+   - Use pipelining
+   - Implement connection pooling
+   - Optimize queries
+
+2. **Memory Management**
+   - Set appropriate TTLs
+   - Implement cleanup
+   - Monitor usage
+
+3. **Network Optimization**
+   - Use connection pooling
+   - Implement timeouts
+   - Monitor latency 

@@ -1,64 +1,65 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 
 // GET a single booking
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const cookieStore = cookies();
-  
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get: (name) => cookieStore.get(name)?.value,
-        set: () => {}, // Not needed for GET requests
-        remove: () => {}, // Not needed for GET requests
-      },
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
     }
-  );
-  
-  // Check if user is authenticated
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
+
+    // Fetch the booking with related data
+    const booking = await prisma.booking.findFirst({
+      where: {
+        id: params.id,
+        userId: session.user.id,
+      },
+      include: {
+        service: {
+          select: {
+            name: true,
+            description: true,
+            price: true,
+            duration: true,
+          },
+        },
+        business: {
+          select: {
+            name: true,
+            location: true,
+            phone: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!booking) {
+      return NextResponse.json(
+        { error: 'Booking not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ booking });
+  } catch (error) {
+    console.error('Error fetching booking:', error);
     return NextResponse.json(
-      { error: 'Not authorized' },
-      { status: 401 }
+      { error: 'Failed to fetch booking' },
+      { status: 500 }
     );
   }
-  
-  const { data, error } = await supabase
-    .from('bookings')
-    .select('*, provider:providers(*), customer:profiles(*), service:services(*)')
-    .eq('id', params.id)
-    .single();
-  
-  if (error) {
-    return NextResponse.json(
-      { error: 'Booking not found' },
-      { status: 404 }
-    );
-  }
-  
-  // Make sure the user is authorized to view this booking
-  const isProvider = data.provider_id === session.user.id;
-  const isCustomer = data.customer_id === session.user.id;
-  const isAdmin = session.user.app_metadata?.role === 'admin';
-  
-  if (!isProvider && !isCustomer && !isAdmin) {
-    return NextResponse.json(
-      { error: 'Not authorized to view this booking' },
-      { status: 401 }
-    );
-  }
-  
-  return NextResponse.json({
-    success: true,
-    data
-  });
 }
 
 // Update a booking
@@ -209,77 +210,138 @@ export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const cookieStore = cookies();
-  
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get: (name) => cookieStore.get(name)?.value,
-        set: () => {}, // We'll handle cookie setting in a proper response
-        remove: () => {}, // Not needed for this context
-      },
-    }
-  );
-  
-  // Check if user is authenticated
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
-    return NextResponse.json(
-      { error: 'Not authorized' },
-      { status: 401 }
-    );
-  }
-  
   try {
-    // First check if booking exists
-    const { data: existingBooking, error: bookingError } = await supabase
-      .from('bookings')
-      .select('provider_id, customer_id')
-      .eq('id', params.id)
-      .single();
-    
-    if (bookingError || !existingBooking) {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    // Check if booking exists and belongs to the user
+    const booking = await prisma.booking.findFirst({
+      where: {
+        id: params.id,
+        userId: session.user.id,
+      },
+    });
+
+    if (!booking) {
       return NextResponse.json(
         { error: 'Booking not found' },
         { status: 404 }
       );
     }
-    
-    // Check ownership or admin status
-    const isAdmin = session.user.app_metadata?.role === 'admin';
-    const isCustomer = existingBooking.customer_id === session.user.id;
-    
-    // Only admins and the customer who made the booking can delete it
-    if (!isAdmin && !isCustomer) {
+
+    // Check if booking can be cancelled
+    if (booking.status !== 'PENDING' && booking.status !== 'CONFIRMED') {
       return NextResponse.json(
-        { error: 'Not authorized to delete this booking' },
+        { error: 'Only pending or confirmed bookings can be cancelled' },
+        { status: 400 }
+      );
+    }
+
+    // Update booking status to CANCELLED instead of deleting
+    const cancelledBooking = await prisma.booking.update({
+      where: {
+        id: params.id,
+      },
+      data: {
+        status: 'CANCELLED',
+        cancelledAt: new Date(),
+      },
+      include: {
+        service: {
+          select: {
+            name: true,
+            duration: true,
+          },
+        },
+        business: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json({ booking: cancelledBooking });
+  } catch (error) {
+    console.error('Error cancelling booking:', error);
+    return NextResponse.json(
+      { error: 'Failed to cancel booking' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
         { status: 401 }
       );
     }
-    
-    // Delete the booking
-    const { error: deleteError } = await supabase
-      .from('bookings')
-      .delete()
-      .eq('id', params.id);
-    
-    if (deleteError) {
+
+    const { status } = await request.json();
+
+    // Validate status
+    if (!status || !['PENDING', 'CONFIRMED', 'CANCELLED'].includes(status)) {
       return NextResponse.json(
-        { error: deleteError.message },
-        { status: 500 }
+        { error: 'Invalid status' },
+        { status: 400 }
       );
     }
-    
-    return NextResponse.json({
-      success: true,
-      data: {}
+
+    // Check if booking exists and belongs to the user
+    const booking = await prisma.booking.findFirst({
+      where: {
+        id: params.id,
+        userId: session.user.id,
+      },
     });
+
+    if (!booking) {
+      return NextResponse.json(
+        { error: 'Booking not found' },
+        { status: 404 }
+      );
+    }
+
+    // Update booking status
+    const updatedBooking = await prisma.booking.update({
+      where: {
+        id: params.id,
+      },
+      data: {
+        status,
+      },
+      include: {
+        service: {
+          select: {
+            name: true,
+            duration: true,
+          },
+        },
+        business: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json({ booking: updatedBooking });
   } catch (error) {
-    console.error('Error deleting booking:', error);
+    console.error('Error updating booking:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to update booking' },
       { status: 500 }
     );
   }

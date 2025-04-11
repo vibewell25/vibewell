@@ -1,276 +1,472 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase/client';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Layout } from '@/components/layout';
+import { useAuth } from '@/hooks/useAuth';
+import { ProfileForm } from '@/components/user/ProfileForm';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { UserIcon, BellIcon, ShieldCheckIcon, CogIcon, HeartIcon, CreditCardIcon, GlobeIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { toast } from 'react-hot-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Pencil, User, Mail, Globe, MapPin, Link as LinkIcon, Calendar, Shield } from 'lucide-react';
-import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
-interface ProfileData {
+interface NotificationPreference {
   id: string;
-  username: string;
-  full_name: string;
+  name: string;
+  description: string;
+  email: boolean;
+  push: boolean;
+  inApp: boolean;
+}
+
+interface ConnectedAccount {
+  id: string;
+  provider: string;
   email: string;
-  bio: string | null;
-  website: string | null;
-  location: string | null;
-  avatar_url: string | null;
-  visibility: 'public' | 'private' | 'contacts';
-  email_verified: boolean;
-  created_at: string;
-  notification_preferences: Record<string, boolean>;
+  connectedAt: string;
+  lastUsed: string;
 }
 
 export default function ProfilePage() {
+  const { user, loading } = useAuth();
   const router = useRouter();
-  const [profile, setProfile] = useState<ProfileData | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('profile');
+  const [notificationPreferences, setNotificationPreferences] = useState<NotificationPreference[]>([
+    {
+      id: 'appointments',
+      name: 'Appointment Reminders',
+      description: 'Get notified about upcoming appointments and changes',
+      email: true,
+      push: true,
+      inApp: true,
+    },
+    {
+      id: 'wellness',
+      name: 'Wellness Updates',
+      description: 'Receive updates about your wellness journey',
+      email: true,
+      push: false,
+      inApp: true,
+    },
+    {
+      id: 'promotions',
+      name: 'Promotions & Offers',
+      description: 'Stay informed about special offers and discounts',
+      email: true,
+      push: false,
+      inApp: false,
+    },
+  ]);
+  const [connectedAccounts, setConnectedAccounts] = useState<ConnectedAccount[]>([
+    {
+      id: 'google',
+      provider: 'Google',
+      email: 'user@gmail.com',
+      connectedAt: '2024-01-01',
+      lastUsed: '2024-04-01',
+    },
+  ]);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
 
   useEffect(() => {
-    async function getUserProfile() {
-      try {
-        setLoading(true);
-        
-        // Get current user session
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError) {
-          throw sessionError;
-        }
-        
-        if (!session?.user?.id) {
-          setError('You must be logged in to view your profile');
-          setTimeout(() => router.push('/login'), 3000);
-          return;
-        }
-        
-        setUserId(session.user.id);
-        
-        // Fetch profile data
-        const { data, error: profileError } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-          
-        if (profileError) {
-          throw profileError;
-        }
-        
-        if (data) {
-          setProfile(data as ProfileData);
-        } else {
-          setError('Profile not found');
-        }
-      } catch (err) {
-        console.error('Error fetching profile:', err);
-        setError('Failed to load profile data');
-      } finally {
-        setLoading(false);
-      }
+    if (!loading && !user) {
+      router.push('/auth/signin');
+    }
+  }, [loading, user, router]);
+
+  const handleNotificationToggle = (id: string, type: 'email' | 'push' | 'inApp') => {
+    setNotificationPreferences(prev =>
+      prev.map(pref =>
+        pref.id === id
+          ? { ...pref, [type]: !pref[type] }
+          : pref
+      )
+    );
+    toast.success('Notification preferences updated');
+  };
+
+  const handleDisconnectAccount = (id: string) => {
+    setConnectedAccounts(prev => prev.filter(account => account.id !== id));
+    toast.success('Account disconnected');
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      return;
     }
 
-    getUserProfile();
-  }, [router]);
-
-  // Format date for display
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(date);
+    setIsDeletingAccount(true);
+    try {
+      // Add account deletion logic here
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      toast.success('Account deleted successfully');
+      router.push('/');
+    } catch (error) {
+      toast.error('Failed to delete account');
+    } finally {
+      setIsDeletingAccount(false);
+    }
   };
 
   if (loading) {
     return (
-      <div className="container mx-auto py-10 px-4">
-        <div className="mb-8">
-          <Skeleton className="h-10 w-1/3" />
-          <Skeleton className="h-4 w-1/4 mt-2" />
+      <Layout>
+        <div className="container-app py-12">
+          <div className="animate-pulse space-y-6">
+            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+            <div className="space-y-4">
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+            </div>
+          </div>
         </div>
-        
-        <Card>
-          <CardHeader>
-            <div className="flex items-center">
-              <Skeleton className="h-20 w-20 rounded-full" />
-              <div className="ml-4 space-y-2">
-                <Skeleton className="h-6 w-48" />
-                <Skeleton className="h-4 w-32" />
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              <Skeleton className="h-16 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      </Layout>
     );
   }
 
-  if (error || !userId) {
-    return (
-      <div className="container mx-auto py-10 px-4">
-        <Alert variant="destructive">
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error || 'You must be logged in to view your profile'}</AlertDescription>
-        </Alert>
-      </div>
-    );
+  if (!user) {
+    return null;
   }
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">My Profile</h1>
-            <p className="text-muted-foreground">
-              View and manage your profile information
-            </p>
-          </div>
-          <div className="flex items-center text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-            <Shield className="h-4 w-4 mr-1" />
-            Secure Page
-          </div>
+    <Layout>
+      <div className="container-app py-12">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">Profile Settings</h1>
+          <p className="text-muted-foreground">
+            Manage your account information and preferences
+          </p>
         </div>
-      </div>
-      
-      <Card className="border-none shadow-sm">
-        <CardHeader className="pb-4 flex flex-row justify-between items-start">
-          <div className="flex items-center">
-            <Avatar className="h-20 w-20">
-              <AvatarImage src={profile?.avatar_url || undefined} />
-              <AvatarFallback>{profile?.full_name?.charAt(0) || 'U'}</AvatarFallback>
-            </Avatar>
-            <div className="ml-4">
-              <h2 className="text-2xl font-bold">{profile?.full_name}</h2>
-              <p className="text-muted-foreground">@{profile?.username}</p>
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="profile" className="flex items-center gap-2">
+              <UserIcon className="h-4 w-4" />
+              Profile
+            </TabsTrigger>
+            <TabsTrigger value="notifications" className="flex items-center gap-2">
+              <BellIcon className="h-4 w-4" />
+              Notifications
+            </TabsTrigger>
+            <TabsTrigger value="security" className="flex items-center gap-2">
+              <ShieldCheckIcon className="h-4 w-4" />
+              Security
+            </TabsTrigger>
+            <TabsTrigger value="preferences" className="flex items-center gap-2">
+              <CogIcon className="h-4 w-4" />
+              Preferences
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="profile">
+            <div className="grid gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Profile Information</CardTitle>
+                  <CardDescription>
+                    Update your personal information and profile picture
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-4 mb-6">
+                    <Avatar className="h-20 w-20">
+                      <AvatarImage src={user.avatar} alt={user.name} />
+                      <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <Button variant="outline">Change Photo</Button>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        JPG, GIF or PNG. Max size of 800K
+                      </p>
+                    </div>
+                  </div>
+                  <ProfileForm />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Connected Accounts</CardTitle>
+                  <CardDescription>
+                    Manage your connected social media accounts
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {connectedAccounts.map((account) => (
+                      <div key={account.id} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
+                            <GlobeIcon className="h-5 w-5 text-gray-500" />
+                          </div>
+                          <div>
+                            <p className="font-medium">{account.provider}</p>
+                            <p className="text-sm text-muted-foreground">{account.email}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline">
+                            Connected {new Date(account.connectedAt).toLocaleDateString()}
+                          </Badge>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDisconnectAccount(account.id)}
+                          >
+                            Disconnect
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    <Button variant="outline" className="w-full">
+                      Connect New Account
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-          </div>
-          <Link href="/profile/edit">
-            <Button variant="outline" className="flex items-center">
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Profile
-            </Button>
-          </Link>
-        </CardHeader>
-        
-        <CardContent>
-          <Tabs defaultValue="details" className="w-full">
-            <TabsList className="grid grid-cols-2 w-full mb-6">
-              <TabsTrigger value="details" className="flex items-center gap-2">
-                <User className="h-4 w-4" />
-                Profile Details
-              </TabsTrigger>
-              <TabsTrigger value="visibility" className="flex items-center gap-2">
-                <Globe className="h-4 w-4" />
-                Visibility
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="details" className="space-y-6">
-              {profile?.bio && (
-                <div className="p-4 bg-muted/50 rounded-lg">
-                  <p>{profile.bio}</p>
+          </TabsContent>
+
+          <TabsContent value="notifications">
+            <Card>
+              <CardHeader>
+                <CardTitle>Notification Preferences</CardTitle>
+                <CardDescription>
+                  Choose how you want to receive notifications
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {notificationPreferences.map((preference) => (
+                    <div key={preference.id} className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-medium">{preference.name}</h3>
+                          <p className="text-sm text-muted-foreground">
+                            {preference.description}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id={`${preference.id}-email`}
+                            checked={preference.email}
+                            onCheckedChange={() => handleNotificationToggle(preference.id, 'email')}
+                          />
+                          <Label htmlFor={`${preference.id}-email`}>Email</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id={`${preference.id}-push`}
+                            checked={preference.push}
+                            onCheckedChange={() => handleNotificationToggle(preference.id, 'push')}
+                          />
+                          <Label htmlFor={`${preference.id}-push`}>Push</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id={`${preference.id}-inApp`}
+                            checked={preference.inApp}
+                            onCheckedChange={() => handleNotificationToggle(preference.id, 'inApp')}
+                          />
+                          <Label htmlFor={`${preference.id}-inApp`}>In-App</Label>
+                        </div>
+                      </div>
+                      <Separator />
+                    </div>
+                  ))}
                 </div>
-              )}
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center">
-                  <Mail className="h-5 w-5 mr-2 text-muted-foreground" />
-                  <div>
-                    <p className="text-muted-foreground text-sm">Email</p>
-                    <p>{profile?.email}</p>
-                  </div>
-                </div>
-                
-                {profile?.location && (
-                  <div className="flex items-center">
-                    <MapPin className="h-5 w-5 mr-2 text-muted-foreground" />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="security">
+            <div className="grid gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Security Settings</CardTitle>
+                  <CardDescription>
+                    Manage your account security settings
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
                     <div>
-                      <p className="text-muted-foreground text-sm">Location</p>
-                      <p>{profile.location}</p>
+                      <h3 className="font-medium mb-2">Change Password</h3>
+                      <div className="grid gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="currentPassword">Current Password</Label>
+                          <Input id="currentPassword" type="password" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="newPassword">New Password</Label>
+                          <Input id="newPassword" type="password" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                          <Input id="confirmPassword" type="password" />
+                        </div>
+                        <Button>Update Password</Button>
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    <div>
+                      <h3 className="font-medium mb-2">Two-Factor Authentication</h3>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-muted-foreground">
+                            Add an extra layer of security to your account
+                          </p>
+                        </div>
+                        <Button variant="outline">Enable 2FA</Button>
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    <div>
+                      <h3 className="font-medium mb-2">Active Sessions</h3>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between p-4 border rounded-lg">
+                          <div>
+                            <p className="font-medium">Chrome on macOS</p>
+                            <p className="text-sm text-muted-foreground">
+                              Last active: 2 hours ago
+                            </p>
+                          </div>
+                          <Button variant="ghost" size="sm">
+                            Sign Out
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                )}
-                
-                {profile?.website && (
-                  <div className="flex items-center">
-                    <LinkIcon className="h-5 w-5 mr-2 text-muted-foreground" />
-                    <div>
-                      <p className="text-muted-foreground text-sm">Website</p>
-                      <a 
-                        href={profile.website} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
+                </CardContent>
+              </Card>
+
+              <Card className="border-destructive">
+                <CardHeader>
+                  <CardTitle className="text-destructive">Danger Zone</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-medium">Delete Account</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Permanently delete your account and all associated data
+                        </p>
+                      </div>
+                      <Button
+                        variant="destructive"
+                        onClick={handleDeleteAccount}
+                        disabled={isDeletingAccount}
                       >
-                        {profile.website}
-                      </a>
+                        {isDeletingAccount ? 'Deleting...' : 'Delete Account'}
+                      </Button>
                     </div>
                   </div>
-                )}
-                
-                <div className="flex items-center">
-                  <Calendar className="h-5 w-5 mr-2 text-muted-foreground" />
-                  <div>
-                    <p className="text-muted-foreground text-sm">Member Since</p>
-                    <p>{formatDate(profile?.created_at || '')}</p>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="preferences">
+            <div className="grid gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Appearance</CardTitle>
+                  <CardDescription>
+                    Customize how the app looks and feels
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label>Theme</Label>
+                      <Select defaultValue="system">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select theme" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="light">Light</SelectItem>
+                          <SelectItem value="dark">Dark</SelectItem>
+                          <SelectItem value="system">System</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Language</Label>
+                      <Select defaultValue="en">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="en">English</SelectItem>
+                          <SelectItem value="es">Spanish</SelectItem>
+                          <SelectItem value="fr">French</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="visibility" className="space-y-6">
-              <div className="p-4 bg-muted/50 rounded-lg">
-                <h3 className="font-medium mb-2">Profile Visibility</h3>
-                <p className="text-muted-foreground">
-                  Your profile is currently set to <span className="font-medium">{profile?.visibility}</span>
-                </p>
-                <ul className="mt-4 space-y-2">
-                  {profile?.visibility === 'public' && (
-                    <li className="flex items-start">
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs mr-2 mt-0.5">Public</span>
-                      <span>Your profile is visible to everyone</span>
-                    </li>
-                  )}
-                  {profile?.visibility === 'contacts' && (
-                    <li className="flex items-start">
-                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs mr-2 mt-0.5">Contacts</span>
-                      <span>Your profile is only visible to people in your contacts</span>
-                    </li>
-                  )}
-                  {profile?.visibility === 'private' && (
-                    <li className="flex items-start">
-                      <span className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs mr-2 mt-0.5">Private</span>
-                      <span>Your profile is only visible to you</span>
-                    </li>
-                  )}
-                </ul>
-              </div>
-              
-              <div className="flex justify-end">
-                <Link href="/profile/edit">
-                  <Button variant="outline">
-                    Change Privacy Settings
-                  </Button>
-                </Link>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
-    </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Privacy Settings</CardTitle>
+                  <CardDescription>
+                    Control your privacy and data sharing preferences
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-medium">Profile Visibility</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Control who can see your profile
+                        </p>
+                      </div>
+                      <Select defaultValue="public">
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select visibility" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="public">Public</SelectItem>
+                          <SelectItem value="private">Private</SelectItem>
+                          <SelectItem value="friends">Friends Only</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-medium">Data Collection</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Allow us to collect usage data to improve the app
+                        </p>
+                      </div>
+                      <Switch />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </Layout>
   );
 } 

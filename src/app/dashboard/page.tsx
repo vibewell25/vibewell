@@ -1,63 +1,174 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { useAuth } from '@/hooks/useAuth';
-import { 
-  ArrowRightIcon,
-  ChartBarIcon,
-  CalendarIcon
-} from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { useWellnessData } from '@/hooks/useWellnessData';
-import { parseISO, format } from 'date-fns';
-import { Event } from '@/types/events';
-import { getUpcomingEvents } from '@/lib/api/events';
-import { CommunityEventsSection } from '@/components/community-events-section';
+import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
+import { UpcomingAppointments } from '@/components/dashboard/UpcomingAppointments';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
+import { CalendarIcon, ChartBarIcon, ClockIcon, BellIcon, TargetIcon, HeartIcon, BoltIcon } from '@heroicons/react/24/outline';
+import { format } from 'date-fns';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+interface WellnessProgress {
+  totalContent: number;
+  completedContent: number;
+  percentage: number;
+  goals: Array<{
+    id: string;
+    title: string;
+    target: number;
+    current: number;
+    unit: string;
+  }>;
+}
+
+interface HealthMetrics {
+  heartRate: number;
+  steps: number;
+  sleepHours: number;
+  stressLevel: number;
+  history: Array<{
+    date: string;
+    heartRate: number;
+    steps: number;
+    sleepHours: number;
+    stressLevel: number;
+  }>;
+}
+
+interface Recommendation {
+  id: string;
+  type: 'content' | 'service' | 'product';
+  title: string;
+  description: string;
+  imageUrl: string;
+  relevance: number;
+}
+
+interface DashboardData {
+  wellnessProgress: WellnessProgress;
+  healthMetrics: HealthMetrics;
+  activities: Array<{
+    id: string;
+    type: 'content' | 'booking' | 'purchase' | 'review';
+    title: string;
+    description: string;
+    date: string;
+  }>;
+  upcomingAppointments: Array<{
+    id: string;
+    service: string;
+    provider: string;
+    date: string;
+    time: string;
+  }>;
+  recommendations: Recommendation[];
+  notifications: Array<{
+    id: string;
+    type: 'appointment' | 'achievement' | 'reminder' | 'update';
+    title: string;
+    message: string;
+    date: string;
+    read: boolean;
+  }>;
+}
 
 export default function DashboardPage() {
   const { user, loading } = useAuth();
-  const [greeting, setGreeting] = useState('');
-  const { summary, isLoading: wellnessLoading } = useWellnessData();
-  const [events, setEvents] = useState<Event[]>([]);
+  const router = useRouter();
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
-    // Set greeting based on time of day
-    const hour = new Date().getHours();
-    if (hour < 12) {
-      setGreeting('Good morning');
-    } else if (hour < 18) {
-      setGreeting('Good afternoon');
-    } else {
-      setGreeting('Good evening');
+    if (!loading && !user) {
+      router.push('/auth/signin');
     }
-  }, []);
+  }, [loading, user, router]);
 
   useEffect(() => {
-    // Fetch events
-    const fetchEvents = async () => {
+    const fetchDashboardData = async () => {
+      if (!user) return;
+
       try {
-        // Use our events API instead of a fetch call
-        const upcomingEvents = await getUpcomingEvents(3);
-        setEvents(upcomingEvents);
-        setIsLoading(false);
+        setIsLoading(true);
+        setError(null);
+        const [
+          wellnessProgress,
+          healthMetrics,
+          activities,
+          appointments,
+          recommendations,
+          notifications
+        ] = await Promise.all([
+          fetch('/api/wellness/progress').then(res => res.json()),
+          fetch('/api/health/metrics').then(res => res.json()),
+          fetch('/api/dashboard/activities').then(res => res.json()),
+          fetch('/api/beauty/appointments/upcoming').then(res => res.json()),
+          fetch('/api/recommendations').then(res => res.json()),
+          fetch('/api/notifications').then(res => res.json()),
+        ]);
+
+        setDashboardData({
+          wellnessProgress,
+          healthMetrics,
+          activities: activities.activities,
+          upcomingAppointments: appointments.appointments,
+          recommendations: recommendations.recommendations,
+          notifications: notifications.notifications,
+        });
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error('Error fetching dashboard data:', error);
+        setError('Failed to load dashboard data. Please try again later.');
+      } finally {
         setIsLoading(false);
       }
     };
 
-    fetchEvents();
-  }, []);
+    fetchDashboardData();
+  }, [user]);
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <Layout>
         <div className="container-app py-12">
-          <div className="flex justify-center items-center min-h-[50vh]">
-            <div className="animate-pulse text-muted-foreground">Loading...</div>
+          <div className="animate-pulse space-y-6">
+            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+            </div>
+            <div className="space-y-4">
+              <div className="h-64 bg-gray-200 rounded"></div>
+              <div className="h-64 bg-gray-200 rounded"></div>
+            </div>
           </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="container-app py-12">
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
         </div>
       </Layout>
     );
@@ -67,202 +178,245 @@ export default function DashboardPage() {
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold">
-            {greeting}, {user?.user_metadata?.full_name || 'there'}!
-          </h1>
-          <p className="text-muted-foreground">Welcome to your wellness dashboard</p>
+          <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
+          <p className="text-muted-foreground">
+            Welcome back, {user.name}! Here's your wellness journey overview.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Quick Stats */}
-          <div className="card bg-gradient-to-br from-primary/10 to-primary/5">
-            <h3 className="text-lg font-semibold mb-2">Wellness Score</h3>
-            <div className="text-3xl font-bold mb-2">78/100</div>
-            <p className="text-sm text-muted-foreground">
-              Your score increased by 5 points this week!
-            </p>
-          </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid grid-cols-4">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="health">Health</TabsTrigger>
+            <TabsTrigger value="goals">Goals</TabsTrigger>
+            <TabsTrigger value="notifications">
+              Notifications
+              {dashboardData?.notifications.filter(n => !n.read).length > 0 && (
+                <Badge className="ml-2" variant="secondary">
+                  {dashboardData.notifications.filter(n => !n.read).length}
+                </Badge>
+              )}
+            </TabsTrigger>
+          </TabsList>
 
-          <div className="card bg-gradient-to-br from-secondary/10 to-secondary/5">
-            <h3 className="text-lg font-semibold mb-2">Upcoming Sessions</h3>
-            <div className="text-3xl font-bold mb-2">2</div>
-            <p className="text-sm text-muted-foreground">
-              Next: Yoga with Sarah, tomorrow at 10:00 AM
-            </p>
-          </div>
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Wellness Progress</CardTitle>
+                  <ChartBarIcon className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {dashboardData?.wellnessProgress.completedContent} / {dashboardData?.wellnessProgress.totalContent}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Content completed
+                  </p>
+                  <Progress
+                    value={dashboardData?.wellnessProgress.percentage}
+                    className="mt-2"
+                  />
+                </CardContent>
+              </Card>
 
-          <div className="card bg-gradient-to-br from-accent/10 to-accent/5">
-            <h3 className="text-lg font-semibold mb-2">Activity Streak</h3>
-            <div className="text-3xl font-bold mb-2">
-              {wellnessLoading ? "..." : (summary?.dailyStreak || 0)} days
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Health Score</CardTitle>
+                  <HeartIcon className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {dashboardData?.healthMetrics.stressLevel}%
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Stress level
+                  </p>
+                  <Progress
+                    value={100 - (dashboardData?.healthMetrics.stressLevel || 0)}
+                    className="mt-2"
+                  />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Daily Steps</CardTitle>
+                  <BoltIcon className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {dashboardData?.healthMetrics.steps.toLocaleString()}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Steps today
+                  </p>
+                  <Progress
+                    value={(dashboardData?.healthMetrics.steps || 0) / 10000 * 100}
+                    className="mt-2"
+                  />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Sleep Quality</CardTitle>
+                  <ClockIcon className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {dashboardData?.healthMetrics.sleepHours}h
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Last night
+                  </p>
+                  <Progress
+                    value={(dashboardData?.healthMetrics.sleepHours || 0) / 8 * 100}
+                    className="mt-2"
+                  />
+                </CardContent>
+              </Card>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Keep it going! You're on a roll.
-            </p>
-          </div>
-        </div>
 
-        {/* Progress Widget */}
-        <div className="mt-12">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold">Your Progress</h2>
-            <Link 
-              href="/wellness/progress" 
-              className="text-primary flex items-center hover:underline"
-            >
-              Track All Goals <ArrowRightIcon className="ml-1 h-4 w-4" />
-            </Link>
-          </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div>
+                <h2 className="text-xl font-semibold mb-4">Health Trends</h2>
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="h-[300px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={dashboardData?.healthMetrics.history}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="date" />
+                          <YAxis />
+                          <Tooltip />
+                          <Line type="monotone" dataKey="heartRate" stroke="#8884d8" />
+                          <Line type="monotone" dataKey="steps" stroke="#82ca9d" />
+                          <Line type="monotone" dataKey="sleepHours" stroke="#ffc658" />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
 
-          <div className="card">
-            {wellnessLoading ? (
-              <div className="py-8 text-center text-muted-foreground">Loading your progress...</div>
-            ) : summary ? (
-              <div className="space-y-4">
-                {/* Meditation Progress */}
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <div className="flex items-center gap-2">
-                      <span>🧘‍♂️</span>
-                      <span className="text-sm font-medium">Meditation</span>
-                    </div>
-                    <span className="text-sm">{summary.thisWeekProgress.meditation} mins this week</span>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-purple-500 transition-all duration-500"
-                      style={{ width: `${Math.min(100, (summary.thisWeekProgress.meditation / 120) * 100)}%` }}
-                    />
-                  </div>
-                </div>
-                
-                {/* Workout Progress */}
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <div className="flex items-center gap-2">
-                      <span>🏋️‍♂️</span>
-                      <span className="text-sm font-medium">Workout</span>
-                    </div>
-                    <span className="text-sm">{summary.thisWeekProgress.workout} mins this week</span>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-pink-500 transition-all duration-500"
-                      style={{ width: `${Math.min(100, (summary.thisWeekProgress.workout / 180) * 100)}%` }}
-                    />
-                  </div>
-                </div>
-                
-                {/* Water Progress */}
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <div className="flex items-center gap-2">
-                      <span>💧</span>
-                      <span className="text-sm font-medium">Water</span>
-                    </div>
-                    <span className="text-sm">{summary.thisWeekProgress.water} glasses this week</span>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-blue-500 transition-all duration-500"
-                      style={{ width: `${Math.min(100, (summary.thisWeekProgress.water / 56) * 100)}%` }}
-                    />
-                  </div>
-                </div>
-                
-                {/* Steps Progress */}
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <div className="flex items-center gap-2">
-                      <span>👣</span>
-                      <span className="text-sm font-medium">Steps</span>
-                    </div>
-                    <span className="text-sm">{summary.thisWeekProgress.steps.toLocaleString()} steps this week</span>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-green-500 transition-all duration-500"
-                      style={{ width: `${Math.min(100, (summary.thisWeekProgress.steps / 70000) * 100)}%` }}
-                    />
-                  </div>
+              <div>
+                <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  <Button variant="outline" className="h-24">
+                    <CalendarIcon className="h-6 w-6 mr-2" />
+                    Book Appointment
+                  </Button>
+                  <Button variant="outline" className="h-24">
+                    <TargetIcon className="h-6 w-6 mr-2" />
+                    Set Goals
+                  </Button>
+                  <Button variant="outline" className="h-24">
+                    <HeartIcon className="h-6 w-6 mr-2" />
+                    Track Health
+                  </Button>
+                  <Button variant="outline" className="h-24">
+                    <BellIcon className="h-6 w-6 mr-2" />
+                    View Notifications
+                  </Button>
                 </div>
               </div>
-            ) : (
-              <div className="py-8 text-center">
-                <p className="text-muted-foreground mb-4">No progress data found. Start tracking your wellness journey!</p>
-                <Link href="/wellness/progress" className="btn-primary">
-                  <ChartBarIcon className="h-5 w-5 mr-2" />
-                  Set Up Goals
-                </Link>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div>
+                <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
+                <ActivityFeed activities={dashboardData?.activities || []} />
               </div>
-            )}
-          </div>
-        </div>
-
-        {/* Recommended Activities */}
-        <div className="mt-12">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold">Recommended For You</h2>
-            <Link 
-              href="/wellness" 
-              className="text-primary flex items-center hover:underline"
-            >
-              View all <ArrowRightIcon className="ml-1 h-4 w-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {recommendedActivities.map((activity, index) => (
-              <div key={index} className="card">
-                <div className="h-40 bg-muted rounded-md mb-4 flex items-center justify-center">
-                  <p className="text-muted-foreground">Activity Image</p>
-                </div>
-                <h3 className="text-lg font-semibold mb-1">{activity.title}</h3>
-                <p className="text-sm text-muted-foreground mb-3">{activity.description}</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-primary">{activity.duration}</span>
-                  <Link 
-                    href={activity.link} 
-                    className="btn-primary text-sm py-1"
-                  >
-                    Start
-                  </Link>
-                </div>
+              <div>
+                <h2 className="text-xl font-semibold mb-4">Upcoming Appointments</h2>
+                <UpcomingAppointments appointments={dashboardData?.upcomingAppointments || []} />
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          </TabsContent>
 
-        {/* Community Events */}
-        <CommunityEventsSection
-          title="Community Events"
-          limit={3}
-          showCreateButton={true}
-          showViewAllButton={true}
-          className="mt-12"
-        />
+          <TabsContent value="health" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Heart Rate History</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={dashboardData?.healthMetrics.history}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                        <Tooltip />
+                        <Line type="monotone" dataKey="heartRate" stroke="#8884d8" />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Sleep Patterns</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={dashboardData?.healthMetrics.history}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                        <Tooltip />
+                        <Line type="monotone" dataKey="sleepHours" stroke="#ffc658" />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="goals" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {dashboardData?.wellnessProgress.goals.map((goal) => (
+                <Card key={goal.id}>
+                  <CardHeader>
+                    <CardTitle className="text-lg">{goal.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">
+                      {goal.current} / {goal.target} {goal.unit}
+                    </div>
+                    <Progress
+                      value={(goal.current / goal.target) * 100}
+                      className="mt-2"
+                    />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="notifications" className="space-y-6">
+            <div className="space-y-4">
+              {dashboardData?.notifications.map((notification) => (
+                <Card key={notification.id} className={!notification.read ? 'border-primary' : ''}>
+                  <CardHeader>
+                    <CardTitle className="text-lg">{notification.title}</CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                      {format(new Date(notification.date), 'MMM d, yyyy h:mm a')}
+                    </p>
+                  </CardHeader>
+                  <CardContent>
+                    <p>{notification.message}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </Layout>
   );
-}
-
-const recommendedActivities = [
-  {
-    title: '5-Minute Mindfulness',
-    description: 'A quick mindfulness session to center yourself and reduce stress.',
-    duration: '5 mins',
-    link: '/wellness/mindfulness/quick-session',
-  },
-  {
-    title: 'Morning Stretches',
-    description: 'Simple stretches to wake up your body and prepare for the day.',
-    duration: '10 mins',
-    link: '/wellness/physical/morning-stretches',
-  },
-  {
-    title: 'Breathing Exercises',
-    description: 'Breathing techniques to improve focus and reduce anxiety.',
-    duration: '8 mins',
-    link: '/wellness/breathing/exercises',
-  },
-]; 
+} 

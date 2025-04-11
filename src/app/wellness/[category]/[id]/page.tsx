@@ -19,6 +19,8 @@ import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { ContentProgress } from '@/types/progress';
+import { ContentTypeSelector, type ContentType } from '@/components/wellness/ContentTypeSelector';
+import { WellnessContentModal } from '@/components/wellness/WellnessContentModal';
 
 // Dummy data for the content
 const getContentData = (id: string, category: string) => {
@@ -33,7 +35,7 @@ const getContentData = (id: string, category: string) => {
       level: 'beginner',
       image: '/placeholder.png',
       tags: ['meditation', 'mindfulness', 'beginner'],
-      contentType: 'video',
+      contentType: 'video' as ContentType,
       videoUrl: 'https://example.com/videos/intro-meditation.mp4',
       createdBy: 'Sarah Johnson',
       createdAt: '2023-05-15',
@@ -70,7 +72,7 @@ const getContentData = (id: string, category: string) => {
       level: 'intermediate',
       image: '/placeholder.png',
       tags: ['yoga', 'morning routine', 'energy'],
-      contentType: 'video',
+      contentType: 'video' as ContentType,
       videoUrl: 'https://example.com/videos/morning-yoga.mp4',
       createdBy: 'Emma Chen',
       createdAt: '2023-06-10',
@@ -109,33 +111,27 @@ export default function ContentDetailPage() {
   const { user, loading: authLoading } = useAuth();
   const params = useParams();
   const router = useRouter();
-  
-  const id = params?.id as string;
-  const category = params?.category as string;
-  
+  const { id, category } = params as { id: string; category: string };
   const [content, setContent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [saved, setSaved] = useState(false);
-  const [liked, setLiked] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState<ContentProgress | null>(null);
-  
-  // Fetch content
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [contentType, setContentType] = useState<ContentType>('video');
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   useEffect(() => {
     const fetchContent = async () => {
       setLoading(true);
-      
-      // In a real app, this would be an API call
-      // For now, we're using dummy data
-      const data = getContentData(id, category);
-      setContent(data);
-      
-      // Simulate loading
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
+      const contentData = getContentData(id, category);
+      if (contentData) {
+        setContent(contentData);
+        setContentType(contentData.contentType);
+      }
+      setLoading(false);
     };
-    
+
     if (id && category) {
       fetchContent();
     }
@@ -184,18 +180,18 @@ export default function ContentDetailPage() {
   
   // Handle saving/bookmarking
   const toggleSave = () => {
-    setSaved(!saved);
+    setIsBookmarked(!isBookmarked);
     
     // In a real app, this would be sent to an API
-    console.log(saved ? 'Content removed from saved items' : 'Content saved');
+    console.log(isBookmarked ? 'Content removed from saved items' : 'Content saved');
   };
   
   // Handle liking
   const toggleLike = () => {
-    setLiked(!liked);
+    setIsLiked(!isLiked);
     
     // In a real app, this would be sent to an API
-    console.log(liked ? 'Content unliked' : 'Content liked');
+    console.log(isLiked ? 'Content unliked' : 'Content liked');
   };
   
   // Calculate progress percentage
@@ -215,6 +211,12 @@ export default function ContentDetailPage() {
     }
     
     return 0;
+  };
+
+  const handleEditContent = (updatedContent: any) => {
+    // TODO: Implement content update logic
+    console.log('Updating content:', updatedContent);
+    setIsEditModalOpen(false);
   };
 
   if (loading) {
@@ -280,6 +282,15 @@ export default function ContentDetailPage() {
                     {content.duration}
                   </span>
                 </div>
+
+                {/* Content Type Selector */}
+                <div className="mt-4">
+                  <ContentTypeSelector
+                    value={contentType}
+                    onChange={setContentType}
+                    label="Content Type"
+                  />
+                </div>
               </div>
               
               {/* Content media */}
@@ -319,24 +330,24 @@ export default function ContentDetailPage() {
                     className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
                     onClick={toggleLike}
                   >
-                    {liked ? (
+                    {isLiked ? (
                       <HeartIconSolid className="h-5 w-5 text-red-500" />
                     ) : (
                       <HeartIcon className="h-5 w-5" />
                     )}
-                    <span>{liked ? 'Liked' : 'Like'}</span>
+                    <span>{isLiked ? 'Liked' : 'Like'}</span>
                   </button>
                   
                   <button 
                     className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
                     onClick={toggleSave}
                   >
-                    {saved ? (
+                    {isBookmarked ? (
                       <BookmarkIconSolid className="h-5 w-5 text-primary" />
                     ) : (
                       <BookmarkIcon className="h-5 w-5" />
                     )}
-                    <span>{saved ? 'Saved' : 'Save'}</span>
+                    <span>{isBookmarked ? 'Saved' : 'Save'}</span>
                   </button>
                   
                   <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -551,6 +562,13 @@ export default function ContentDetailPage() {
           </div>
         </div>
       </div>
+
+      <WellnessContentModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onSave={handleEditContent}
+        content={content}
+      />
     </Layout>
   );
 } 

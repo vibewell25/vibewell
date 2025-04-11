@@ -1,108 +1,118 @@
 'use client';
 
-import { useState, Suspense } from 'react';
-import dynamic from 'next/dynamic';
+import React, { useState } from 'react';
+import { Layout } from '@/components/layout';
+import { ProductSelector } from '@/components/virtual-try-on/ProductSelector';
+import { TryOnViewer } from '@/components/virtual-try-on/TryOnViewer';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Skeleton } from '@/components/ui/skeleton';
+import { ArrowLeft } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
 
-// Dynamically import the AR component with no SSR to prevent hydration issues
-const ARViewer = dynamic(() => import('@/components/ar/ar-viewer').then(mod => ({ default: mod.ARViewer })), {
-  ssr: false,
-  loading: () => (
-    <div className="relative w-full h-[500px] bg-gray-100 flex flex-col items-center justify-center">
-      <Skeleton className="w-full h-full rounded-md" />
-      <p className="absolute text-center text-gray-500">Loading AR experience...</p>
-    </div>
-  )
-});
-
-const modelOptions = {
-  makeup: [
-    { id: 'natural', name: 'Natural Look', url: '/models/makeup/natural.glb' },
-    { id: 'bold', name: 'Bold Makeup', url: '/models/makeup/bold.glb' },
-    { id: 'evening', name: 'Evening Glamour', url: '/models/makeup/evening.glb' },
-  ],
-  hairstyle: [
-    { id: 'short', name: 'Short Style', url: '/models/hairstyle/short.glb' },
-    { id: 'medium', name: 'Medium Length', url: '/models/hairstyle/medium.glb' },
-    { id: 'long', name: 'Long Waves', url: '/models/hairstyle/long.glb' },
-  ],
-  accessory: [
-    { id: 'glasses', name: 'Glasses', url: '/models/accessory/glasses.glb' },
-    { id: 'earrings', name: 'Earrings', url: '/models/accessory/earrings.glb' },
-    { id: 'necklace', name: 'Necklace', url: '/models/accessory/necklace.glb' },
-  ],
-};
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  productType: 'glasses' | 'jewelry' | 'makeup' | 'clothing';
+  imageUrl: string;
+  rating: number;
+  reviewCount: number;
+  isNew?: boolean;
+  isTrending?: boolean;
+  price: number;
+}
 
 export default function TryOnPage() {
-  const [selectedCategory, setSelectedCategory] = useState<'makeup' | 'hairstyle' | 'accessory'>('makeup');
-  const [selectedModel, setSelectedModel] = useState<string>(modelOptions.makeup[0].url);
-
-  const handleCategoryChange = (value: string) => {
-    setSelectedCategory(value as 'makeup' | 'hairstyle' | 'accessory');
-    setSelectedModel(modelOptions[value as 'makeup' | 'hairstyle' | 'accessory'][0].url);
+  const { user } = useAuth();
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  
+  // Handle product selection
+  const handleSelectProduct = (product: Product) => {
+    setSelectedProduct(product);
+    setCapturedImage(null);
   };
-
-  const handleModelSelect = (url: string) => {
-    setSelectedModel(url);
+  
+  // Handle going back to product selection
+  const handleBackToProducts = () => {
+    setSelectedProduct(null);
+    setCapturedImage(null);
   };
-
+  
+  // Handle image capture
+  const handleCapture = (imageUrl: string) => {
+    setCapturedImage(imageUrl);
+  };
+  
+  // Handle sharing
+  const handleShare = async (imageUrl: string) => {
+    try {
+      if (navigator.share) {
+        // Web Share API is supported
+        const blob = await fetch(imageUrl).then((r) => r.blob());
+        const file = new File([blob], 'vibewell-try-on.png', { type: 'image/png' });
+        
+        await navigator.share({
+          title: `Vibewell - Try On ${selectedProduct?.name || 'Product'}`,
+          text: 'Check out how this looks on me using Vibewell virtual try-on!',
+          files: [file],
+        });
+      } else {
+        // Web Share API not supported - fallback to clipboard
+        // Create a textarea element to copy the URL to clipboard
+        const textarea = document.createElement('textarea');
+        textarea.value = imageUrl;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        
+        alert('Image URL copied to clipboard!');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      alert('Failed to share. Try downloading the image instead.');
+    }
+  };
+  
   return (
-    <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-6">Virtual Try-On</h1>
-      
-      <Tabs value={selectedCategory} onValueChange={handleCategoryChange} className="mb-8">
-        <TabsList className="w-full max-w-md mx-auto">
-          <TabsTrigger value="makeup">Makeup</TabsTrigger>
-          <TabsTrigger value="hairstyle">Hairstyles</TabsTrigger>
-          <TabsTrigger value="accessory">Accessories</TabsTrigger>
-        </TabsList>
-        
-        <div className="mt-4">
-          {['makeup', 'hairstyle', 'accessory'].map((category) => (
-            <TabsContent key={category} value={category} className="mt-0">
-              <div className="flex flex-wrap gap-2 mb-6">
-                {modelOptions[category as 'makeup' | 'hairstyle' | 'accessory'].map((model) => (
-                  <Button 
-                    key={model.id}
-                    variant={selectedModel === model.url ? "default" : "outline"}
-                    onClick={() => handleModelSelect(model.url)}
-                  >
-                    {model.name}
-                  </Button>
-                ))}
+    <ErrorBoundary>
+      <Layout>
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex flex-col min-h-[80vh]">
+            {!user ? (
+              // User not signed in
+              <div className="flex flex-col items-center justify-center text-center py-12">
+                <h2 className="text-2xl font-bold mb-4">Sign In to Use Virtual Try-On</h2>
+                <p className="text-gray-600 mb-6 max-w-md">
+                  To experience our virtual try-on feature and see how products look on you,
+                  please sign in to your account.
+                </p>
+                <Button href="/auth/sign-in" className="max-w-xs">
+                  Sign In
+                </Button>
               </div>
-            </TabsContent>
-          ))}
-        </div>
-      </Tabs>
-      
-      <div className="bg-white rounded-lg shadow-lg p-4">
-        <Suspense fallback={
-          <div className="relative w-full h-[500px] bg-gray-100 flex items-center justify-center">
-            <p className="text-gray-500">Loading AR viewer...</p>
+            ) : selectedProduct ? (
+              // Try on viewer
+              <div className="flex-grow">
+                <TryOnViewer
+                  productId={selectedProduct.id}
+                  productName={selectedProduct.name}
+                  productType={selectedProduct.productType}
+                  onCapture={handleCapture}
+                  onShare={handleShare}
+                  onBack={handleBackToProducts}
+                />
+                
+                {/* Related products and recommendations could go here */}
+              </div>
+            ) : (
+              // Product selector
+              <ProductSelector onSelectProduct={handleSelectProduct} />
+            )}
           </div>
-        }>
-          <ARViewer 
-            modelUrl={selectedModel} 
-            type={selectedCategory}
-            onModelLoaded={() => console.log('Model loaded successfully')}
-            onModelError={(error) => console.error('Model loading error:', error)}
-          />
-        </Suspense>
-        
-        <div className="mt-6 bg-gray-50 rounded p-4">
-          <h2 className="text-xl font-semibold mb-2">How to use:</h2>
-          <ol className="list-decimal list-inside space-y-2">
-            <li>Select a category (Makeup, Hairstyles, or Accessories)</li>
-            <li>Choose a specific look you want to try</li>
-            <li>Position your face in the camera view</li>
-            <li>The virtual look will be applied to your face in real-time</li>
-            <li>Use the capture button to take a photo</li>
-          </ol>
         </div>
-      </div>
-    </div>
+      </Layout>
+    </ErrorBoundary>
   );
 } 

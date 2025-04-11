@@ -1,5 +1,18 @@
 export type UserRole = 'customer' | 'provider' | 'admin';
 
+export type ProfileVisibility = 'public' | 'private' | 'contacts_only';
+
+export interface NotificationPreferences {
+  email_notifications: boolean;
+  sms_notifications: boolean;
+  push_notifications: boolean;
+  marketing_emails: boolean;
+  booking_reminders: boolean;
+  messages_notifications: boolean;
+  promotional_notifications: boolean;
+  newsletter: boolean;
+}
+
 export interface Profile {
   id: string;
   email: string;
@@ -11,6 +24,14 @@ export interface Profile {
   phone: string | null;
   created_at: string;
   updated_at: string;
+  email_verified: boolean;
+  profile_visibility: ProfileVisibility;
+  notification_preferences: NotificationPreferences;
+  phone_verified: boolean;
+  show_email: boolean;
+  show_phone: boolean;
+  allow_tagging: boolean;
+  receive_messages_from: 'anyone' | 'contacts_only' | 'none';
 }
 
 export interface Service {

@@ -1,6 +1,7 @@
 // This file provides TypeScript type definitions for testing libraries
 
 import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/extend-expect';
 
 declare global {
   namespace jest {
@@ -9,12 +10,12 @@ declare global {
       toBeVisible(): R;
       toBeInvalid(): R;
       toHaveAttribute(attr: string, value?: string): R;
-      toHaveClass(...classNames: string[]): R;
+      toHaveClass(className: string): R;
       toHaveFocus(): R;
-      toHaveFormValues(values: Record<string, any>): R;
-      toHaveStyle(style: Record<string, any> | string): R;
-      toHaveTextContent(content: string | RegExp, options?: { normalizeWhitespace: boolean }): R;
-      toHaveValue(value?: string | string[] | number): R;
+      toHaveFormValues(expectedValues: { [key: string]: any }): R;
+      toHaveStyle(style: string): R;
+      toHaveTextContent(text: string | RegExp, options?: { normalizeWhitespace: boolean }): R;
+      toHaveValue(value: any): R;
       toBeChecked(): R;
       toBeDisabled(): R;
       toBeEnabled(): R;
@@ -22,7 +23,8 @@ declare global {
       toBeEmptyDOMElement(): R;
       toBePartiallyChecked(): R;
       toBeRequired(): R;
-      toContainElement(element: HTMLElement | null): R;
+      toBeValid(): R;
+      toContainElement(element: Element | null): R;
       toContainHTML(htmlText: string): R;
       toHaveDescription(text: string | RegExp): R;
       // Additional matchers used in tests
@@ -55,6 +57,13 @@ declare global {
       stringContaining(str: string): any;
       arrayContaining(arr: any[]): any;
     }
+  }
+}
+
+// For using MSW in tests
+declare namespace NodeJS {
+  interface Global {
+    fetch: any;
   }
 }
 

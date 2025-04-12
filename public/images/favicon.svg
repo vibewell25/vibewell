@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Heart hands icon (centered and optimized for favicon) -->
+  <g fill="#ffffff">
+    <!-- Left hand outline -->
+    <path d="M25 60 C 20 55, 15 45, 20 35 C 25 25, 30 20, 40 25 C 50 30, 60 40, 65 50"/>
+    
+    <!-- Right hand outline -->
+    <path d="M75 60 C 80 55, 85 45, 80 35 C 75 25, 70 20, 60 25 C 50 30, 40 40, 35 50"/>
+    
+    <!-- Heart shape in the middle -->
+    <path d="M50 70 C 35 55, 20 30, 30 10 C 40 -10, 60 0, 50 20 C 40 0, 60 -10, 70 10 C 80 30, 65 55, 50 70 Z"/>
+  </g>
+</svg> 

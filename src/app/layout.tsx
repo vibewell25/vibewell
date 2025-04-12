@@ -12,6 +12,10 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Vibewell',
   description: 'Connect with wellness and beauty service providers',
+  icons: {
+    icon: '/images/favicon.svg',
+    apple: '/images/logo.svg',
+  },
 };
 
 export default function RootLayout({

@@ -1,5 +1,6 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { UserAvatar } from '@/components/user-avatar';
 // Dummy data for recommended connections

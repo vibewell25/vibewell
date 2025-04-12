@@ -1,5 +1,6 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';

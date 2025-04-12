@@ -1,8 +1,10 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+
 const marketingCategories = [
   { name: 'Overview', href: '/business-hub/marketing', icon: <Icons.MegaphoneIcon className="h-5 w-5" /> },
   { name: 'Resources', href: '/business-hub/marketing/resources', icon: <Icons.DocumentTextIcon className="h-5 w-5" /> },
@@ -11,6 +13,7 @@ const marketingCategories = [
   { name: 'Webinars', href: '/business-hub/marketing/webinars', icon: <Icons.PresentationChartBarIcon className="h-5 w-5" /> },
   { name: 'Success Stories', href: '/business-hub/marketing/success-stories', icon: <Icons.UsersIcon className="h-5 w-5" /> },
 ];
+
 export function MarketingNav() {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(true);

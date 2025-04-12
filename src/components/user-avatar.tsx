@@ -1,12 +1,16 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import Image from 'next/image';
+import { User } from 'lucide-react';
+
 interface UserAvatarProps {
   src?: string | null;
   alt?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg';
   fallbackInitials?: string;
 }
+
 export function UserAvatar({ 
   src, 
   alt = 'User avatar', 
@@ -61,7 +65,7 @@ export function UserAvatar({
   // Otherwise, show the default user icon
   return (
     <div className={`${sizeClasses[size]} rounded-full flex-shrink-0 bg-muted flex items-center justify-center`}>
-      <Icons.UserCircleIcon className="h-full w-full text-muted-foreground" />
+      <User className="h-full w-full text-muted-foreground" />
     </div>
   );
 } 

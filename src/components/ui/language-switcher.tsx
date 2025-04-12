@@ -1,29 +1,25 @@
 'use client';
 
+import { Icons } from '@/components/icons';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
-
 interface Language {
   code: string;
   name: string;
   flag: string;
 }
-
 const LANGUAGES: Language[] = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'fr', name: 'Français', flag: '🇫🇷' },
 ];
-
 interface LanguageSwitcherProps {
   className?: string;
   dropdownPosition?: 'top' | 'bottom';
   showFlags?: boolean;
   showLabel?: boolean;
 }
-
 export function LanguageSwitcher({
   className,
   dropdownPosition = 'bottom',
@@ -33,19 +29,16 @@ export function LanguageSwitcher({
   const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<Language | null>(null);
-
   // Set initial language
   useEffect(() => {
     const currentLanguage = LANGUAGES.find(lang => lang.code === i18n.language);
     setSelectedLanguage(currentLanguage || LANGUAGES[0]);
   }, [i18n.language]);
-
   // Handle language change
   const changeLanguage = (language: Language) => {
     i18n.changeLanguage(language.code);
     setSelectedLanguage(language);
     setIsOpen(false);
-    
     // Store language preference
     try {
       localStorage.setItem('vibewell-language', language.code);
@@ -53,27 +46,22 @@ export function LanguageSwitcher({
       console.error('Error saving language preference:', error);
     }
   };
-
   // Toggle dropdown
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = () => {
       setIsOpen(false);
     };
-
     document.addEventListener('click', handleClickOutside);
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
   }, []);
-
   // Don't render until we have a selected language
   if (!selectedLanguage) return null;
-
   return (
     <div 
       className={cn(
@@ -95,14 +83,11 @@ export function LanguageSwitcher({
             {selectedLanguage.flag}
           </span>
         )}
-        
         {showLabel && (
           <span className="text-sm">{selectedLanguage.name}</span>
         )}
-        
-        <ChevronDownIcon className="w-4 h-4 text-gray-500" />
+        <Icons.ChevronDownIcon className="w-4 h-4 text-gray-500" />
       </button>
-
       {isOpen && (
         <div 
           className={cn(

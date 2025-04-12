@@ -1,21 +1,16 @@
 /**
- * GraphQL API endpoint with integrated rate limiting
+ * GraphQL API endpoint for the Next.js App Router
  * 
- * This implements a GraphQL API using Apollo Server integrated with Next.js App Router.
- * It includes comprehensive rate limiting:
- * - Operation-level rate limiting (queries, mutations, subscriptions)
- * - Field-level rate limiting for expensive operations
- * - Query complexity analysis to prevent abuse
+ * This implements a GraphQL API using Apollo Server integrated with Next.js.
+ * It provides query and mutation capabilities for the VibeWell application.
  */
 
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { NextRequest } from 'next/server';
-import { cookies } from 'next/headers';
-import { createServerClient } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
 import { logger } from '@/lib/logger';
-import typeDefs from '@/lib/graphql/schema';
-import { createGraphQLRateLimitMiddleware, GraphQLContext } from '@/lib/rate-limiter';
+import { typeDefs } from '@/lib/graphql/schema';
 import { resolvers } from '@/lib/graphql/resolvers';
 
 // Create Apollo Server with our schema
@@ -24,48 +19,14 @@ const server = new ApolloServer({
   resolvers,
   introspection: process.env.NODE_ENV !== 'production',
   includeStacktraceInErrorResponses: process.env.NODE_ENV !== 'production',
-  plugins: [
-    // Add the rate limiting plugin
-    createGraphQLRateLimitMiddleware(),
-    
-    // Error logging plugin
-    {
-      async requestDidStart() {
-        return {
-          async didEncounterErrors({ errors }) {
-            if (errors) {
-              errors.forEach(error => {
-                // Don't log rate limiting errors at error level
-                if (error.extensions?.code === 'RATE_LIMITED') {
-                  logger.warn('GraphQL rate limit error', 'graphql', { 
-                    message: error.message,
-                    path: error.path?.join('.'),
-                    extensions: error.extensions
-                  });
-                } else {
-                  logger.error('GraphQL error', 'graphql', { 
-                    message: error.message,
-                    path: error.path?.join('.'),
-                    locations: error.locations,
-                    stack: error.stack
-                  });
-                }
-              });
-            }
-          }
-        };
-      }
-    }
-  ]
 });
 
-// IP address extraction utility
+// Helper function to get client IP
 function getClientIp(req: NextRequest): string {
   const forwarded = req.headers.get('x-forwarded-for');
   const realIp = req.headers.get('x-real-ip');
   
   if (forwarded) {
-    // Use the first IP in the X-Forwarded-For header (client IP)
     return forwarded.split(',')[0].trim();
   }
   
@@ -76,45 +37,43 @@ function getClientIp(req: NextRequest): string {
   return 'unknown';
 }
 
-// Create the Next.js API Route handler
+// Create the Next.js API Route handler with context
 const handler = startServerAndCreateNextHandler(server, {
   context: async (req: NextRequest) => {
     try {
-      // Get the Supabase client
-      const supabase = createServerClient(
+      // Create Supabase client
+      const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-          cookies: {
-            get: (name) => cookies().get(name)?.value,
-            set: () => {}, // We don't need to set cookies from the API
-            remove: () => {}, // We don't need to remove cookies from the API
-          },
-        }
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
       );
       
-      // Get the user's session
-      const { data: { session } } = await supabase.auth.getSession();
+      // Get auth token from header if available
+      const authHeader = req.headers.get('authorization');
+      let userId = null;
+      let userRole = 'anonymous';
       
-      // Get client IP for rate limiting
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.substring(7);
+        const { data, error } = await supabase.auth.getUser(token);
+        
+        if (!error && data.user) {
+          userId = data.user.id;
+          userRole = data.user.user_metadata?.role || 'user';
+        }
+      }
+      
+      // Get IP for rate limiting
       const ip = getClientIp(req);
       
-      // Create the GraphQL context
-      const context: GraphQLContext = {
-        ip,
-        userId: session?.user?.id,
-        userRole: session?.user?.user_metadata?.role || 'anonymous',
-      };
-      
-      // Add the Supabase client to the context
+      // Return context for resolvers
       return {
-        ...context,
         supabase,
+        ip,
+        userId,
+        userRole,
       };
     } catch (error) {
       logger.error('Error creating GraphQL context', 'graphql', { error });
-      
-      // Return minimal context with IP for rate limiting
       return {
         ip: getClientIp(req),
       };
@@ -122,7 +81,7 @@ const handler = startServerAndCreateNextHandler(server, {
   },
 });
 
-// Rate-limited API Route handlers
+// Export the API route handlers
 export async function GET(req: NextRequest) {
   return handler(req);
 }
@@ -131,6 +90,6 @@ export async function POST(req: NextRequest) {
   return handler(req);
 }
 
-// CORS headers for the GraphQL API
+// Set runtime options
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic'; 

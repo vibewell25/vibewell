@@ -1,155 +1,98 @@
-'use client'
+export const metadata = {
+  title: "Analytics Dashboard",
+  description: "View your business analytics and performance metrics.",
+}
 
-import { useState } from 'react'
-import { Metadata } from 'next';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { FeedbackDashboard } from '@/components/analytics/feedback-dashboard'
-import { EngagementDashboard } from '@/components/analytics/engagement-dashboard'
-import { RecommendationDashboard } from '@/components/analytics/recommendation-dashboard'
-import { ProductAnalytics } from '@/components/analytics/product-analytics'
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ProductService } from '@/services/product-service'
-import { useEffect } from 'react'
+import { PageHeader } from "@/components/page-header"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Overview } from "./overview"
+import { RecentSales } from "./recent-sales"
+import AdminSidebar from "@/components/admin/sidebar"
 
-export const metadata: Metadata = {
-  title: 'Analytics Dashboard | VibeWell Admin',
-  description: 'View product feedback and user engagement analytics',
-};
-
-export default function AnalyticsPage() {
-  const [timeRange, setTimeRange] = useState('30d')
-  const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
-  const [products, setProducts] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        setLoading(true)
-        const productService = new ProductService()
-        const { data } = await productService.getProducts({
-          limit: 100,
-          page: 1
-        })
-        setProducts(data || [])
-        
-        // Set first product as default if available
-        if (data && data.length > 0 && !selectedProductId) {
-          setSelectedProductId(data[0].id)
-        }
-      } catch (error) {
-        console.error('Error loading products:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadProducts()
-  }, [selectedProductId])
-
+export default function AdminAnalyticsPage() {
   return (
-    <div className="container mx-auto p-4 md:p-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-        <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
-        <div className="flex flex-col sm:flex-row gap-2 mt-4 md:mt-0">
-          <Select 
-            value={timeRange} 
-            onValueChange={setTimeRange}
-          >
-            <SelectTrigger className="w-[150px]">
-              <SelectValue placeholder="Time Period" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="7d">Last 7 days</SelectItem>
-              <SelectItem value="30d">Last 30 days</SelectItem>
-              <SelectItem value="90d">Last 90 days</SelectItem>
-              <SelectItem value="1y">Last year</SelectItem>
-            </SelectContent>
-          </Select>
-          
-          <Button variant="outline">Export Report</Button>
-        </div>
-      </div>
-
-      <Tabs defaultValue="product">
-        <TabsList className="mb-6">
-          <TabsTrigger value="product">Product Performance</TabsTrigger>
-          <TabsTrigger value="feedback">Product Feedback</TabsTrigger>
-          <TabsTrigger value="engagement">User Engagement</TabsTrigger>
-          <TabsTrigger value="recommendations">Recommendation Performance</TabsTrigger>
-        </TabsList>
+    <div className="flex min-h-screen">
+      <AdminSidebar />
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <PageHeader 
+          title="Analytics Dashboard" 
+          description="View your business analytics and performance metrics."
+        />
         
-        <TabsContent value="product">
-          {loading ? (
+        <Tabs defaultValue="overview" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="reports">Reports</TabsTrigger>
+            <TabsTrigger value="notifications">Notifications</TabsTrigger>
+          </TabsList>
+          <TabsContent value="overview" className="space-y-4">
+            <Overview />
+            
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+              <Card className="col-span-4">
+                <CardHeader>
+                  <CardTitle>Weekly Revenue</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[240px]"></div>
+                </CardContent>
+              </Card>
+              <Card className="col-span-3">
+                <CardHeader>
+                  <CardTitle>Recent Sales</CardTitle>
+                  <CardDescription>
+                    You made 265 sales this month.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <RecentSales />
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+          <TabsContent value="analytics" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Loading products...</CardTitle>
+                <CardTitle>Detailed Analytics</CardTitle>
+                <CardDescription>Comprehensive data and advanced metrics</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-[400px] flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                <div className="h-[400px] flex items-center justify-center text-muted-foreground">
+                  Detailed analytics content will be displayed here
                 </div>
               </CardContent>
             </Card>
-          ) : (
-            <>
-              <div className="mb-6">
-                <Select 
-                  value={selectedProductId || ''} 
-                  onValueChange={setSelectedProductId}
-                >
-                  <SelectTrigger className="w-full md:w-[350px]">
-                    <SelectValue placeholder="Select Product" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {products.map(product => (
-                      <SelectItem key={product.id} value={product.id}>
-                        {product.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              {selectedProductId ? (
-                <ProductAnalytics 
-                  productId={selectedProductId} 
-                  timeRange={timeRange} 
-                />
-              ) : (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>No Product Selected</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p>Please select a product to view analytics</p>
-                  </CardContent>
-                </Card>
-              )}
-            </>
-          )}
-        </TabsContent>
-        
-        <TabsContent value="feedback">
-          <FeedbackDashboard timeRange={timeRange} />
-        </TabsContent>
-        
-        <TabsContent value="engagement">
-          <EngagementDashboard timeRange={timeRange} />
-        </TabsContent>
-        
-        <TabsContent value="recommendations">
-          <RecommendationDashboard timeRange={timeRange} />
-        </TabsContent>
-      </Tabs>
+          </TabsContent>
+          <TabsContent value="reports" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Reports</CardTitle>
+                <CardDescription>Generate and view business reports</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[400px] flex items-center justify-center text-muted-foreground">
+                  Reports content will be displayed here
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="notifications" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Notifications</CardTitle>
+                <CardDescription>Manage your notification settings</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[400px] flex items-center justify-center text-muted-foreground">
+                  Notifications content will be displayed here
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   )
 } 

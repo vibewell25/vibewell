@@ -1,8 +1,10 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+
 const businessHubLinks = [
   {
     title: 'Overview',
@@ -35,6 +37,7 @@ const businessHubLinks = [
     icon: <Icons.CalendarIcon className="w-5 h-5" />
   }
 ];
+
 export function BusinessHubSidebar() {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);

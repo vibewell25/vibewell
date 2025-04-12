@@ -7,7 +7,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import redisClient from '@/lib/redis-client';
 import { Spinner } from '@/components/ui/spinner';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -73,6 +72,26 @@ export default function RateLimitDashboard() {
   const [statsData, setStatsData] = useState<any[]>([]);
   const [session, setSession] = useState<any>(null);
   const [authStatus, setAuthStatus] = useState<'loading' | 'authenticated' | 'unauthenticated'>('loading');
+  const [redisClient, setRedisClient] = useState<any>(null);
+
+  // Load Redis client dynamically
+  useEffect(() => {
+    const loadRedisClient = async () => {
+      try {
+        const module = await import('@/lib/redis-client');
+        setRedisClient(module.default);
+      } catch (error) {
+        console.error('Error loading Redis client:', error);
+        toast({
+          title: "Error loading Redis client",
+          description: "Rate limit data may not be available",
+          variant: "destructive"
+        });
+      }
+    };
+    
+    loadRedisClient();
+  }, []);
 
   // Check authentication status
   useEffect(() => {
@@ -102,7 +121,7 @@ export default function RateLimitDashboard() {
           // Check if user is admin
           if (profile?.role !== 'admin') {
             router.push('/forbidden');
-          } else {
+          } else if (redisClient) {
             fetchRateLimitEvents();
           }
         } else {
@@ -117,17 +136,19 @@ export default function RateLimitDashboard() {
     };
     
     checkAuth();
-  }, [router, supabase]);
+  }, [router, supabase, redisClient]);
 
   // Fetch data when filters change
   useEffect(() => {
-    if (authStatus === 'authenticated') {
+    if (authStatus === 'authenticated' && redisClient) {
       fetchRateLimitEvents();
     }
-  }, [timeRange, filter, authStatus]);
+  }, [timeRange, filter, authStatus, redisClient]);
 
   // Fetch rate limit events from Redis
   const fetchRateLimitEvents = async () => {
+    if (!redisClient) return;
+    
     try {
       setLoading(true);
       
@@ -230,6 +251,8 @@ export default function RateLimitDashboard() {
 
   // Clear old events
   const clearOldEvents = async () => {
+    if (!redisClient) return;
+    
     try {
       setLoading(true);
       // Clear events older than the selected time range

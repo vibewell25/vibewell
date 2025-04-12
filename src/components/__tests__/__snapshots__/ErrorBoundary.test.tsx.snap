@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorBoundary matches error snapshot 1`] = `
+<div>
+  <div>
+    Error occurred
+  </div>
+</div>
+`;
+
+exports[`ErrorBoundary matches snapshot 1`] = `
+<div>
+  <div>
+    Normal content
+  </div>
+</div>
+`;

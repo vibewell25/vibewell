@@ -130,4 +130,12 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/auth/signin',
   },
+};
+
+// Export auth object for API routes
+export const auth = {
+  getUserFromRequest,
+  verifyToken,
+  getCurrentUser,
+  authOptions
 }; 

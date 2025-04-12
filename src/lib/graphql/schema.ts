@@ -233,8 +233,15 @@ export const typeDefs = gql`
     updateService(id: ID!, input: UpdateServiceInput!): Service!
     deleteService(id: ID!): Boolean!
 
-    # Booking mutations - omitted from rate-limiting example for brevity
-    # Review mutations - omitted from rate-limiting example for brevity
+    # Booking mutations
+    createBooking(input: CreateBookingInput!): Booking!
+    updateBooking(id: ID!, input: UpdateBookingInput!): Booking!
+    cancelBooking(id: ID!): Boolean!
+
+    # Review mutations
+    createReview(input: CreateReviewInput!): Review!
+    updateReview(id: ID!, input: UpdateReviewInput!): Review!
+    deleteReview(id: ID!): Boolean!
   }
 `;
 

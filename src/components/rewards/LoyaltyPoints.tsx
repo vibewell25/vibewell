@@ -1,11 +1,13 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
+
 interface LoyaltyTransaction {
   id: string;
   points: number;
@@ -13,6 +15,7 @@ interface LoyaltyTransaction {
   description: string;
   date: string;
 }
+
 interface LoyaltyData {
   points: number;
   level: string;
@@ -22,9 +25,11 @@ interface LoyaltyData {
   pointsToNextLevel: number;
   transactions: LoyaltyTransaction[];
 }
+
 export function LoyaltyPoints() {
   const [data, setData] = useState<LoyaltyData | null>(null);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchLoyaltyData = async () => {
       try {
@@ -43,6 +48,7 @@ export function LoyaltyPoints() {
     };
     fetchLoyaltyData();
   }, []);
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -56,6 +62,7 @@ export function LoyaltyPoints() {
       </div>
     );
   }
+
   if (!data) {
     return (
       <div className="text-center py-12">
@@ -63,6 +70,7 @@ export function LoyaltyPoints() {
       </div>
     );
   }
+
   return (
     <div className="space-y-6">
       {/* Points and Level Card */}

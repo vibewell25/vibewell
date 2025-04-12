@@ -1,8 +1,10 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { Goal, GoalType, GoalStatus } from '@/types/progress';
 import { GoalProgressCard } from './GoalProgressCard';
+
 interface GoalListProps {
   goals: Goal[];
   onLogProgress: (goalId: string, value: number) => void;

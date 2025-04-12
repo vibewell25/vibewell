@@ -11,14 +11,44 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
+  emailVerified DateTime?
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
   role          Role      @default(USER)
   content       Content[]
-  bookings      ServiceBooking[]
+  bookings      ServiceBooking[] @relation("UserBookings")
+  providerBookings ServiceBooking[] @relation("ProviderBookings")
   reviews       ServiceReview[]
   progress      ContentProgress[]
+}
+
+model Account {
+  id                 String   @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Content {
@@ -36,13 +66,16 @@ model Content {
 }
 
 model ContentProgress {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
+  content     Content   @relation(fields: [contentId], references: [id])
   contentId   String
+  user        User      @relation(fields: [userId], references: [id])
   userId      String
-  progress    Int
-  lastAccessed DateTime @default(now())
-  content     Content  @relation(fields: [contentId], references: [id])
-  user        User     @relation(fields: [userId], references: [id])
+  completed   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([contentId, userId])
 }
 
 model BeautyService {
@@ -50,40 +83,39 @@ model BeautyService {
   name        String
   description String
   price       Float
-  duration    Int
-  providerId  String
-  provider    User      @relation(fields: [providerId], references: [id])
+  duration    Int       // in minutes
+  image       String?
   bookings    ServiceBooking[]
   reviews     ServiceReview[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model ServiceBooking {
-  id          String    @id @default(cuid())
+  id          String      @id @default(uuid())
   userId      String
-  serviceId   String
   providerId  String
+  serviceId   String
   date        DateTime
-  time        String
+  status      BookingStatus @default(PENDING)
   notes       String?
-  status      BookingStatus @default(CONFIRMED)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation("UserBookings", fields: [userId], references: [id])
+  provider    User      @relation("ProviderBookings", fields: [providerId], references: [id])
   service     BeautyService @relation(fields: [serviceId], references: [id])
-  provider    User      @relation(fields: [providerId], references: [id])
-  review      ServiceReview?
 }
 
 model ServiceReview {
   id          String    @id @default(cuid())
-  bookingId   String    @unique
-  userId      String
   rating      Int
   comment     String?
+  userId      String
+  serviceId   String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  booking     ServiceBooking @relation(fields: [bookingId], references: [id])
   user        User      @relation(fields: [userId], references: [id])
+  service     BeautyService @relation(fields: [serviceId], references: [id])
 }
 
 enum Role {
@@ -100,6 +132,7 @@ enum ContentType {
 }
 
 enum BookingStatus {
+  PENDING
   CONFIRMED
   CANCELLED
   COMPLETED

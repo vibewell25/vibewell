@@ -1,60 +1,59 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { AlertTriangle, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+
 interface DeleteConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  itemName: string;
-  itemType?: string;
+  title?: string;
+  description?: string;
 }
+
 export function DeleteConfirmationModal({
   isOpen,
   onClose,
   onConfirm,
-  itemName,
-  itemType = 'goal'
+  title = 'Delete Item',
+  description = 'Are you sure you want to delete this item? This action cannot be undone.',
 }: DeleteConfirmationModalProps) {
-  if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-card rounded-lg shadow-lg p-6 w-full max-w-md">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-red-500 flex items-center gap-2">
-            <Icons.ExclamationTriangleIcon className="h-6 w-6" />
-            Delete {itemType}
-          </h2>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
-            <Icons.XMarkIcon className="h-6 w-6" />
-          </button>
-        </div>
-        <div className="mb-6">
-          <p className="mb-3">
-            Are you sure you want to delete <span className="font-semibold">"{itemName}"</span>?
-          </p>
-          <p className="text-muted-foreground text-sm">
-            This action cannot be undone. All related progress data will also be permanently deleted.
-          </p>
-        </div>
-        <div className="flex justify-end gap-2">
-          <button
-            type="button"
-            className="btn-secondary"
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader className="flex flex-row items-center gap-2">
+          <AlertTriangle className="h-5 w-5 text-destructive" />
+          <div>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{description}</DialogDescription>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute right-4 top-4"
             onClick={onClose}
           >
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </Button>
+        </DialogHeader>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>
             Cancel
-          </button>
-          <button
-            type="button"
-            className="btn-danger"
-            onClick={() => {
-              onConfirm();
-              onClose();
-            }}
-          >
+          </Button>
+          <Button variant="destructive" onClick={onConfirm}>
             Delete
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 } 

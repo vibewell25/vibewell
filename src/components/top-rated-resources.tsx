@@ -1,9 +1,11 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getHighestRatedItems } from '@/lib/ratings';
 import { StarRating } from '@/components/star-rating';
+
 interface TopResourceItem {
   id: string;
   type: string;
@@ -14,9 +16,11 @@ interface TopResourceItem {
   average: number;
   count: number;
 }
+
 interface TopRatedResourcesProps {
   limit?: number;
 }
+
 export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
   const [resources, setResources] = useState<TopResourceItem[]>([]);
   const [loading, setLoading] = useState(true);

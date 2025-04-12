@@ -1,8 +1,10 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+
 const clientAcquisitionCategories = [
   { name: 'Overview', href: '/business-hub/client-acquisition', icon: <Icons.UserPlusIcon className="h-5 w-5" /> },
   { name: 'Resources', href: '/business-hub/client-acquisition/resources', icon: <Icons.DocumentTextIcon className="h-5 w-5" /> },
@@ -11,6 +13,7 @@ const clientAcquisitionCategories = [
   { name: 'Webinars', href: '/business-hub/client-acquisition/webinars', icon: <Icons.PresentationChartBarIcon className="h-5 w-5" /> },
   { name: 'Success Stories', href: '/business-hub/client-acquisition/success-stories', icon: <Icons.UsersIcon className="h-5 w-5" /> },
 ];
+
 export function ClientAcquisitionNav() {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(true);

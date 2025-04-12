@@ -13,7 +13,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   ChevronRightIcon,
-  SearchIcon,
   ClockIcon,
   ServerIcon,
   ShieldCheckIcon,
@@ -25,8 +24,9 @@ import {
   BuildingStorefrontIcon,
   CubeTransparentIcon,
   DocumentDuplicateIcon,
-  CheckIcon,
-} from '@heroicons/react/24/outline';
+  CheckIcon
+} from "@heroicons/react/24/outline";
+import { Search } from "lucide-react";
 
 // JSON examples for the documentation
 const examples = {
@@ -341,7 +341,7 @@ export default function ApiDocumentation() {
           <div className="md:col-span-1">
             <div className="sticky top-20">
               <div className="relative mb-4">
-                <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <input
                   type="text"
                   placeholder="Search endpoints..."

@@ -1,11 +1,14 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+
 interface SharePostProps {
   postId: string;
   postContent: string;
 }
+
 export function SharePost({ postId, postContent }: SharePostProps) {
   const [showOptions, setShowOptions] = useState(false);
   const [copied, setCopied] = useState(false);

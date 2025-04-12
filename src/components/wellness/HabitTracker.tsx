@@ -1,13 +1,16 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState, useMemo } from 'react';
 import { Goal, HabitLog } from '@/types/progress';
 import { format, parseISO, eachDayOfInterval, subDays, isToday, isSameDay } from 'date-fns';
+
 interface HabitTrackerProps {
   goals: Goal[];
   habitLogs: HabitLog[];
   onLogHabit: (goalId: string, value: number) => void;
 }
+
 export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [activeGoalId, setActiveGoalId] = useState<string | null>(null);

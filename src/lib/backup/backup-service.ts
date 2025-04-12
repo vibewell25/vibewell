@@ -15,6 +15,8 @@ export interface BackupConfig {
   encryptionEnabled: boolean;
   compressionEnabled: boolean;
   storageLocation: 'local' | 's3' | 'gcs';
+  supabaseUrl?: string;
+  supabaseKey?: string;
 }
 
 export interface BackupMetadata {
@@ -36,10 +38,15 @@ export class BackupService {
   private retryDelay: number = 1000; // 1 second
 
   constructor(config: BackupConfig) {
-    this.config = config;
+    this.config = {
+      ...config,
+      // Set default values for Supabase URL and key if not provided
+      supabaseUrl: config.supabaseUrl || process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:3000',
+      supabaseKey: config.supabaseKey || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'mock-key'
+    };
     this.backupBucket = 'backups';
     this.backupClient = supabase;
-    this.encryptionKey = Buffer.from(process.env.BACKUP_ENCRYPTION_KEY || '', 'hex');
+    this.encryptionKey = Buffer.from(this.config.supabaseKey || '', 'hex');
   }
 
   async initializeBackup(): Promise<void> {

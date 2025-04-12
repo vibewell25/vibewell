@@ -6,7 +6,7 @@
  */
 
 import { GraphQLError } from 'graphql';
-import { withRateLimit } from './rate-limiter';
+import { withGraphQLRateLimit } from '@/lib/rate-limiter';
 
 // GraphQL JSON scalar for handling JSON data
 const GraphQLJSON = {
@@ -723,28 +723,28 @@ export const resolvers = {
   
   Query: {
     // Apply rate limiting to each query resolver
-    me: withRateLimit(baseResolvers.Query.me, 'me'),
-    user: withRateLimit(baseResolvers.Query.user, 'user'),
-    provider: withRateLimit(baseResolvers.Query.provider, 'provider'),
-    providers: withRateLimit(baseResolvers.Query.providers, 'providers'),
-    service: withRateLimit(baseResolvers.Query.service, 'service'),
-    services: withRateLimit(baseResolvers.Query.services, 'services'),
-    booking: withRateLimit(baseResolvers.Query.booking, 'booking'),
-    myBookings: withRateLimit(baseResolvers.Query.myBookings, 'myBookings'),
-    providerBookings: withRateLimit(baseResolvers.Query.providerBookings, 'providerBookings'),
-    review: withRateLimit(baseResolvers.Query.review, 'review'),
-    reviewsByProvider: withRateLimit(baseResolvers.Query.reviewsByProvider, 'reviewsByProvider'),
+    me: withGraphQLRateLimit(baseResolvers.Query.me, 'me'),
+    user: withGraphQLRateLimit(baseResolvers.Query.user, 'user'),
+    provider: withGraphQLRateLimit(baseResolvers.Query.provider, 'provider'),
+    providers: withGraphQLRateLimit(baseResolvers.Query.providers, 'providers'),
+    service: withGraphQLRateLimit(baseResolvers.Query.service, 'service'),
+    services: withGraphQLRateLimit(baseResolvers.Query.services, 'services'),
+    booking: withGraphQLRateLimit(baseResolvers.Query.booking, 'booking'),
+    myBookings: withGraphQLRateLimit(baseResolvers.Query.myBookings, 'myBookings'),
+    providerBookings: withGraphQLRateLimit(baseResolvers.Query.providerBookings, 'providerBookings'),
+    review: withGraphQLRateLimit(baseResolvers.Query.review, 'review'),
+    reviewsByProvider: withGraphQLRateLimit(baseResolvers.Query.reviewsByProvider, 'reviewsByProvider'),
   },
   
   Mutation: {
     // Apply rate limiting to each mutation resolver
-    registerUser: withRateLimit(baseResolvers.Mutation.registerUser, 'registerUser'),
-    login: withRateLimit(baseResolvers.Mutation.login, 'login'),
-    updateProfile: withRateLimit(baseResolvers.Mutation.updateProfile, 'updateProfile'),
-    createProvider: withRateLimit(baseResolvers.Mutation.createProvider, 'createProvider'),
-    updateProvider: withRateLimit(baseResolvers.Mutation.updateProvider, 'updateProvider'),
-    createService: withRateLimit(baseResolvers.Mutation.createService, 'createService'),
-    updateService: withRateLimit(baseResolvers.Mutation.updateService, 'updateService'),
-    deleteService: withRateLimit(baseResolvers.Mutation.deleteService, 'deleteService'),
+    registerUser: withGraphQLRateLimit(baseResolvers.Mutation.registerUser, 'registerUser'),
+    login: withGraphQLRateLimit(baseResolvers.Mutation.login, 'login'),
+    updateProfile: withGraphQLRateLimit(baseResolvers.Mutation.updateProfile, 'updateProfile'),
+    createProvider: withGraphQLRateLimit(baseResolvers.Mutation.createProvider, 'createProvider'),
+    updateProvider: withGraphQLRateLimit(baseResolvers.Mutation.updateProvider, 'updateProvider'),
+    createService: withGraphQLRateLimit(baseResolvers.Mutation.createService, 'createService'),
+    updateService: withGraphQLRateLimit(baseResolvers.Mutation.updateService, 'updateService'),
+    deleteService: withGraphQLRateLimit(baseResolvers.Mutation.deleteService, 'deleteService'),
   },
 }; 

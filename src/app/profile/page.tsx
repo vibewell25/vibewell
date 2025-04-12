@@ -12,7 +12,13 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { UserIcon, BellIcon, ShieldCheckIcon, CogIcon, HeartIcon, CreditCardIcon, GlobeIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { 
+  BellIcon, 
+  CogIcon, 
+  ShieldCheckIcon, 
+  UserIcon 
+} from "@heroicons/react/24/outline"
+import { Globe as GlobeIcon } from "lucide-react"
 import { toast } from 'react-hot-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';

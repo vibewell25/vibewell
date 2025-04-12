@@ -1,7 +1,9 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { Goal } from '@/types/progress';
+
 interface GoalProgressCardProps {
   goal: Goal;
   streak?: number;
@@ -10,6 +12,7 @@ interface GoalProgressCardProps {
   onEdit?: (goal: Goal) => void;
   onDelete?: (goalId: string) => void;
 }
+
 export function GoalProgressCard({ 
   goal, 
   streak = 0, 

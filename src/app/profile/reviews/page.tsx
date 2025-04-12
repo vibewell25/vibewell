@@ -65,7 +65,7 @@ export default function MyReviewsPage() {
         {
           id: '2',
           title: 'Great massage',
-          text: 'Michael's deep tissue massage was just what I needed. Helped with my back pain immensely.',
+          text: "Michael's deep tissue massage was just what I needed. Helped with my back pain immensely.",
           rating: 4,
           created_at: '2023-09-22T11:15:00Z',
           provider_id: 'p2',

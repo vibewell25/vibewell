@@ -1,5 +1,6 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 interface StarRatingProps {
   initialRating?: number | null;

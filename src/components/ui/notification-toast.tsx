@@ -1,9 +1,8 @@
 'use client';
 
+import { Icons } from '@/components/icons';
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { BellIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
 import { usePushNotifications } from '@/providers/push-notification-provider';
 
@@ -23,25 +22,21 @@ export function NotificationToast({
   onClose,
 }: NotificationToastProps) {
   const [isVisible, setIsVisible] = useState(true);
-
   // Handle auto-dismiss
   useEffect(() => {
     if (duration) {
       const timer = setTimeout(() => {
         dismiss();
       }, duration);
-      
       return () => clearTimeout(timer);
     }
   }, [duration]);
-
   const dismiss = () => {
     setIsVisible(false);
     setTimeout(() => {
       onClose?.();
     }, 300); // Wait for animation to complete
   };
-
   // Determine toast colors based on type
   const toastStyles = {
     info: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800',
@@ -49,14 +44,12 @@ export function NotificationToast({
     warning: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800',
     error: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800',
   };
-
   const iconStyles = {
     info: 'text-blue-500 dark:text-blue-400',
     success: 'text-green-500 dark:text-green-400',
     warning: 'text-yellow-500 dark:text-yellow-400',
     error: 'text-red-500 dark:text-red-400',
   };
-
   return (
     <AnimatePresence>
       {isVisible && (
@@ -71,21 +64,19 @@ export function NotificationToast({
           )}
         >
           <div className={cn('flex-shrink-0 w-6 h-6', iconStyles[type])}>
-            <BellIcon className="w-6 h-6" />
+            <Icons.BellIcon className="w-6 h-6" />
           </div>
-          
           <div className="ml-3 flex-1">
             <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">{title}</h3>
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{message}</p>
           </div>
-          
           <button
             type="button"
             className="flex-shrink-0 ml-4 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             onClick={dismiss}
             aria-label="Close notification"
           >
-            <XMarkIcon className="w-5 h-5" />
+            <Icons.XMarkIcon className="w-5 h-5" />
           </button>
         </motion.div>
       )}
@@ -95,7 +86,6 @@ export function NotificationToast({
 
 export function NotificationPermissionButton() {
   const { notificationPermission, requestPermission } = usePushNotifications();
-  
   // Button text based on permission status
   const getButtonText = () => {
     switch (notificationPermission.permission) {
@@ -107,7 +97,6 @@ export function NotificationPermissionButton() {
         return 'Enable Notifications';
     }
   };
-
   // Button styles based on permission status
   const getButtonStyles = () => {
     switch (notificationPermission.permission) {
@@ -119,16 +108,13 @@ export function NotificationPermissionButton() {
         return 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-800 dark:text-blue-100 dark:hover:bg-blue-700';
     }
   };
-
   const handleRequestPermission = async () => {
     if (notificationPermission.permission === 'denied') {
       alert('Please enable notifications in your browser settings and refresh the page.');
       return;
     }
-    
     await requestPermission();
   };
-
   return (
     <button
       onClick={handleRequestPermission}
@@ -138,7 +124,7 @@ export function NotificationPermissionButton() {
         getButtonStyles()
       )}
     >
-      <BellIcon className="w-5 h-5" />
+      <Icons.BellIcon className="w-5 h-5" />
       <span>{getButtonText()}</span>
     </button>
   );

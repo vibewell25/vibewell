@@ -1,106 +1,65 @@
 'use client';
 
-import { useState } from 'react';
+import React, { Suspense, useEffect, useState } from "react";
 import { Layout } from '@/components/layout';
-import { 
-  MagnifyingGlassIcon, 
-  AdjustmentsHorizontalIcon,
-  PlusIcon,
-  SparklesIcon,
-  ScissorsIcon,
-  PaintBrushIcon,
-  HandIcon,
-  SparklesIcon as SparklesIconOutline,
-  HeartIcon,
-  StarIcon,
-  CalendarIcon,
-  MapPinIcon
-} from '@heroicons/react/24/outline';
-import { BeautyContentModal } from '@/components/beauty/BeautyContentModal';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Tooltip } from '@/components/ui/tooltip';
+import { PageHeader } from "@/components/page-header";
 import Link from 'next/link';
 
 // Define beauty content categories with enhanced metadata
-const categories = [
-  { 
-    id: 'all', 
-    name: 'All Services', 
-    icon: SparklesIcon,
-    description: 'Explore our complete range of beauty services'
-  },
-  { 
-    id: 'hair', 
-    name: 'Hair', 
-    icon: ScissorsIcon,
-    description: 'Cuts, colors, styling, and treatments'
-  },
-  { 
-    id: 'makeup', 
-    name: 'Makeup', 
-    icon: PaintBrushIcon,
-    description: 'Professional makeup for any occasion'
-  },
-  { 
-    id: 'nails', 
-    name: 'Nails', 
-    icon: HandIcon,
-    description: 'Manicures, pedicures, and nail art'
-  },
-  { 
-    id: 'skincare', 
-    name: 'Skincare', 
-    icon: SparklesIconOutline,
-    description: 'Facials, treatments, and consultations'
-  },
-  { 
-    id: 'spa', 
-    name: 'Spa', 
-    icon: HeartIcon,
-    description: 'Relaxing spa treatments and massages'
-  }
+const beautyCategories = [
+  { id: 'all', name: 'All Services', description: 'Browse all our beauty services' },
+  { id: 'hair', name: 'Hair', description: 'Cutting, styling, coloring, and more' },
+  { id: 'skincare', name: 'Skincare', description: 'Facials, treatments, and consultations' },
+  { id: 'makeup', name: 'Makeup', description: 'Special occasion, everyday, and lessons' },
+  { id: 'nails', name: 'Nails', description: 'Manicures, pedicures, and nail art' },
+  { id: 'massage', name: 'Massage', description: 'Relaxation, deep tissue, and therapeutic' },
 ];
 
-// Enhanced beauty content with more details
-const beautyContent = [
+// Beauty service mock data
+const beautyServices = [
   {
-    id: 1,
-    title: 'Summer Hair Color Trends',
-    description: 'Discover the hottest hair color trends for the summer season.',
+    id: '1',
+    title: 'Haircut & Styling',
+    description: 'Professional haircut and styling service tailored to your preferences.',
+    price: 65,
+    duration: 60,
     category: 'hair',
-    duration: '60 mins',
-    price: '$150+',
-    level: 'Professional Service',
-    image: '/placeholder.png',
-    provider: {
-      name: 'Sarah Johnson',
-      avatar: '/avatars/sarah.jpg',
-      rating: 4.9,
-      reviews: 128,
-      location: 'Downtown Beauty Studio'
-    }
+    image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80',
+    availability: ['Mon', 'Wed', 'Thu', 'Fri'],
+    rating: 4.8,
+    reviews: 124,
+    featured: true,
   },
   {
-    id: 2,
-    title: 'Bridal Makeup Package',
-    description: 'Complete bridal makeup service including trial and wedding day.',
-    category: 'makeup',
-    duration: '120 mins',
-    price: '$250+',
-    level: 'Premium Service',
-    image: '/placeholder.png',
-    provider: {
-      name: 'Emily Chen',
-      avatar: '/avatars/emily.jpg',
-      rating: 5.0,
-      reviews: 89,
-      location: 'Glamour Artistry'
-    }
+    id: '2',
+    title: 'Signature Facial',
+    description: 'Revitalizing facial treatment customized for your skin type.',
+    price: 85,
+    duration: 75,
+    category: 'skincare',
+    image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=800&q=80',
+    availability: ['Tue', 'Wed', 'Sat', 'Sun'],
+    rating: 4.9,
+    reviews: 89,
+    featured: true,
+  },
+  {
+    id: '3',
+    title: 'Gel Manicure',
+    description: 'Long-lasting gel polish application with nail preparation.',
+    price: 45,
+    duration: 45,
+    category: 'nails',
+    image: 'https://images.unsplash.com/photo-1604902396830-aca29e19b067?auto=format&fit=crop&w=800&q=80',
+    availability: ['Mon', 'Thu', 'Fri', 'Sat'],
+    rating: 4.7,
+    reviews: 156,
+    featured: false,
   },
   // Add more services...
 ];
@@ -108,221 +67,142 @@ const beautyContent = [
 export default function BeautyPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [showFilters, setShowFilters] = useState(false);
-  const [activeTab, setActiveTab] = useState('discover');
   const [isLoading, setIsLoading] = useState(true);
+  const [filteredServices, setFilteredServices] = useState(beautyServices);
 
   // Simulate loading state
-  useState(() => {
+  useEffect(() => {
     setTimeout(() => setIsLoading(false), 1000);
-  });
+  }, []);
 
   // Filter content by category and search query
-  const filteredContent = beautyContent.filter((item) => {
-    const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
-    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         item.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  useEffect(() => {
+    let filtered = beautyServices;
+    
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(service => service.category === selectedCategory);
+    }
+    
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(service => 
+        service.title.toLowerCase().includes(query) || 
+        service.description.toLowerCase().includes(query)
+      );
+    }
+    
+    setFilteredServices(filtered);
+  }, [selectedCategory, searchQuery]);
 
   return (
     <Layout>
       <div className="container-app py-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Beauty Services</h1>
-          <p className="text-xl text-muted-foreground">
-            Discover and book professional beauty services
-          </p>
-        </div>
+        <PageHeader
+          title="Beauty Services"
+          description="Browse and book our premium beauty services"
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          <Card className="bg-gradient-to-br from-pink-100 to-purple-100">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CalendarIcon className="h-5 w-5" />
-                Book Now
-              </CardTitle>
-              <CardDescription>
-                Schedule your next beauty appointment
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full" asChild>
-                <Link href="/beauty/book">Find Available Slots</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-blue-100 to-green-100">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <SparklesIcon className="h-5 w-5" />
-                Virtual Try-On
-              </CardTitle>
-              <CardDescription>
-                Preview looks before your appointment
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="secondary" className="w-full" asChild>
-                <Link href="/beauty/virtual-try-on">Try Now</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-yellow-100 to-orange-100">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MapPinIcon className="h-5 w-5" />
-                Find Providers
-              </CardTitle>
-              <CardDescription>
-                Explore top-rated beauty professionals
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="secondary" className="w-full" asChild>
-                <Link href="/beauty/providers">Browse Providers</Link>
-              </Button>
-            </CardContent>
-          </Card>
+          {beautyCategories.map((category) => (
+            <Card 
+              key={category.id}
+              className={`cursor-pointer border-2 hover:border-primary transition-colors ${
+                selectedCategory === category.id ? 'border-primary' : 'border-border'
+              }`}
+              onClick={() => setSelectedCategory(category.id)}
+            >
+              <CardHeader className="pb-2">
+                <CardTitle>{category.name}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>{category.description}</CardDescription>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="discover">Discover</TabsTrigger>
-            <TabsTrigger value="trending">Trending</TabsTrigger>
-            <TabsTrigger value="near-you">Near You</TabsTrigger>
-            <TabsTrigger value="featured">Featured</TabsTrigger>
-          </TabsList>
+        <div className="flex items-center space-x-2 mb-8">
+          <Input
+            type="search"
+            placeholder="Search beauty services..."
+            className="max-w-sm"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
 
-          <TabsContent value="discover">
-            {/* Search and Categories */}
-            <div className="space-y-6">
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="relative flex-grow">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Search beauty services..."
-                    className="form-input pl-10 w-full"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-                <Button
-                  variant="outline"
-                  className="md:hidden"
-                  onClick={() => setShowFilters(!showFilters)}
-                >
-                  <AdjustmentsHorizontalIcon className="h-5 w-5 mr-2" />
-                  Filters
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <Card key={i} className="animate-pulse">
+                <div className="h-48 bg-muted rounded-t-lg"></div>
+                <CardHeader>
+                  <div className="h-5 bg-muted rounded w-3/4"></div>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-4 bg-muted rounded mb-2"></div>
+                  <div className="h-4 bg-muted rounded w-5/6"></div>
+                </CardContent>
+                <CardFooter>
+                  <div className="h-9 bg-muted rounded w-full"></div>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <>
+            {filteredServices.length === 0 ? (
+              <div className="text-center py-12">
+                <h3 className="text-xl font-medium mb-2">No services found</h3>
+                <p className="text-muted-foreground mb-4">Try adjusting your search or category selection</p>
+                <Button onClick={() => {setSelectedCategory('all'); setSearchQuery('');}}>
+                  Clear filters
                 </Button>
               </div>
-
-              <div className={`${showFilters ? 'block' : 'hidden md:block'}`}>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                  {categories.map((category) => {
-                    const Icon = category.icon;
-                    return (
-                      <Card
-                        key={category.id}
-                        className={`cursor-pointer transition-all ${
-                          selectedCategory === category.id ? 'border-primary' : ''
-                        }`}
-                        onClick={() => setSelectedCategory(category.id)}
-                      >
-                        <CardContent className="p-4 text-center">
-                          <Icon className="h-8 w-8 mx-auto mb-2" />
-                          <p className="font-medium">{category.name}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {category.description}
-                          </p>
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Service Listings */}
+            ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {isLoading ? (
-                  // Loading skeletons
-                  Array.from({ length: 6 }).map((_, i) => (
-                    <Card key={i}>
-                      <CardContent className="p-0">
-                        <Skeleton className="h-48 w-full rounded-t-lg" />
-                        <div className="p-6 space-y-4">
-                          <Skeleton className="h-4 w-3/4" />
-                          <Skeleton className="h-4 w-full" />
-                          <Skeleton className="h-4 w-1/2" />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
-                ) : filteredContent.length === 0 ? (
-                  <div className="col-span-full text-center py-12">
-                    <p className="text-muted-foreground">No services found. Try adjusting your filters.</p>
-                  </div>
-                ) : (
-                  filteredContent.map((service) => (
-                    <Card key={service.id} className="group hover:shadow-lg transition-all">
-                      <CardContent className="p-0">
-                        <div className="relative">
-                          <div className="h-48 bg-muted rounded-t-lg flex items-center justify-center">
-                            <p className="text-muted-foreground">Service Image</p>
-                          </div>
-                          <div className="absolute top-4 right-4 flex gap-2">
-                            <Badge variant="secondary" className="bg-white/90">
-                              {service.price}
-                            </Badge>
-                          </div>
-                        </div>
-                        <div className="p-6">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Badge variant="outline">{service.level}</Badge>
-                            <Badge variant="outline">{service.duration}</Badge>
-                          </div>
-                          <h3 className="text-lg font-semibold mb-2">{service.title}</h3>
-                          <p className="text-muted-foreground mb-4">{service.description}</p>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Avatar className="h-8 w-8">
-                                <AvatarImage src={service.provider.avatar} alt={service.provider.name} />
-                                <AvatarFallback>{service.provider.name.charAt(0)}</AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <p className="text-sm font-medium">{service.provider.name}</p>
-                                <p className="text-xs text-muted-foreground">{service.provider.location}</p>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <StarIcon className="h-4 w-4 text-yellow-500" />
-                              <span className="text-sm font-medium">{service.provider.rating}</span>
-                              <span className="text-sm text-muted-foreground">
-                                ({service.provider.reviews})
-                              </span>
-                            </div>
-                          </div>
-                          <Button className="w-full mt-4" asChild>
-                            <Link href={`/beauty/services/${service.id}`}>
-                              Book Now
-                            </Link>
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
-                )}
+                {filteredServices.map((service) => (
+                  <Card key={service.id} className="overflow-hidden">
+                    <div 
+                      className="h-48 bg-cover bg-center" 
+                      style={{ backgroundImage: `url(${service.image})` }}
+                    />
+                    <CardHeader className="pb-2">
+                      {service.featured && (
+                        <Badge className="w-fit mb-2" variant="secondary">Featured</Badge>
+                      )}
+                      <CardTitle>{service.title}</CardTitle>
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <span className="flex items-center mr-4">
+                          <span className="mr-1">⭐</span> 
+                          {service.rating}
+                        </span>
+                        <span>({service.reviews} reviews)</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground mb-4">{service.description}</p>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium text-lg">${service.price}</span>
+                        <span className="text-sm text-muted-foreground">{service.duration} min</span>
+                      </div>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {service.availability.map((day) => (
+                          <Badge key={day} variant="outline">{day}</Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Link href={`/beauty/${service.id}` as any} className="w-full">
+                        <Button className="w-full">Book Now</Button>
+                      </Link>
+                    </CardFooter>
+                  </Card>
+                ))}
               </div>
-            </div>
-          </TabsContent>
-
-          {/* Add content for other tabs */}
-        </Tabs>
+            )}
+          </>
+        )}
       </div>
     </Layout>
   );

@@ -82,8 +82,9 @@ interface IPCountInfo {
   count: number;
 }
 
-// Import Redis dynamically to avoid issues during build time
-let Redis: any;
+// Next.js compatibility check
+const isServer = typeof window === 'undefined';
+const isEdgeRuntime = typeof process.env.NEXT_RUNTIME === 'string' && process.env.NEXT_RUNTIME === 'edge';
 
 /**
  * Mock Redis client for development or when Redis connection fails
@@ -338,17 +339,15 @@ class ProductionRedisClient implements RedisClient {
   private client: any; // ioredis client
   
   constructor(redisUrl: string, options: any = {}) {
-    // Dynamically import Redis to avoid build issues
-    if (!Redis) {
-      try {
-        Redis = require('ioredis');
-      } catch (e) {
-        logger.error('Failed to import ioredis module', 'redis', { error: e });
-        throw new Error('Redis module not available. Please install ioredis.');
-      }
+    if (isEdgeRuntime) {
+      throw new Error('Redis client cannot be used in Edge Runtime');
     }
     
+    // Dynamically import Redis to avoid build issues
     try {
+      // Use require dynamically to avoid webpack issues
+      const Redis = require('ioredis');
+      
       this.client = new Redis(redisUrl, {
         maxRetriesPerRequest: 3,
         enableReadyCheck: true,
@@ -636,7 +635,14 @@ class ProductionRedisClient implements RedisClient {
  * Create a Redis client based on environment configuration
  */
 function createRedisClient(): RedisClient {
-  if (process.env.NODE_ENV === 'production' && process.env.REDIS_URL) {
+  // Always use mock client in Edge Runtime
+  if (isEdgeRuntime) {
+    logger.info('Using in-memory Redis client in Edge Runtime', 'redis');
+    return new MockRedisClient();
+  }
+  
+  // Use real Redis in production if URL is available
+  if (isServer && process.env.NODE_ENV === 'production' && process.env.REDIS_URL) {
     try {
       return new ProductionRedisClient(process.env.REDIS_URL);
     } catch (error) {
@@ -649,12 +655,16 @@ function createRedisClient(): RedisClient {
   }
 }
 
-// Export a singleton instance for use throughout the application
-const redisClient: RedisClient = createRedisClient();
+let redisClient: RedisClient | null = null;
 
-export default redisClient;
-
-// Also export a function to get a fresh client when needed (for tests, etc.)
+// Get or create the Redis client
 export function getRedisClient(): RedisClient {
-  return createRedisClient();
-} 
+  if (!redisClient) {
+    redisClient = createRedisClient();
+  }
+  return redisClient;
+}
+
+// Export default client for backward compatibility
+const defaultClient = getRedisClient();
+export default defaultClient; 

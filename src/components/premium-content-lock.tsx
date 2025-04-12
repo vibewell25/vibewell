@@ -1,15 +1,18 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
+
 interface PremiumContentLockProps {
   children: React.ReactNode;
   resourceName?: string;
   resourceType?: string;
   redirectPath?: string;
 }
+
 export function PremiumContentLock({
   children,
   resourceName = 'content',

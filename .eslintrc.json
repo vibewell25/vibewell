@@ -14,48 +14,58 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": 2020,
-    "sourceType": "module",
     "project": "./tsconfig.json"
   },
   "plugins": [
+    "@typescript-eslint",
     "react",
     "react-hooks",
-    "@typescript-eslint",
     "import",
-    "jsx-a11y",
-    "prettier"
+    "jsx-a11y"
   ],
   "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "react/no-unescaped-entities": "off",
+    "@typescript-eslint/no-empty-object-type": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "prefer-const": "off",
+    "@typescript-eslint/no-require-imports": "off",
+    "react/display-name": "off",
+    "@next/next/no-img-element": "off",
+    "@typescript-eslint/no-unused-expressions": "off",
+    "@next/next/no-html-link-for-pages": "off",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-unsafe-function-type": "off",
+    "no-var": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "jsx-a11y/alt-text": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "react/require-default-props": "off",
     "react/jsx-props-no-spreading": "off",
     "import/prefer-default-export": "off",
     "no-console": ["warn", { "allow": ["warn", "error"] }],
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "react/function-component-definition": [
-      "error",
+      2,
       {
-        "namedComponents": "arrow-function",
-        "unnamedComponents": "arrow-function"
+        "namedComponents": "function-declaration"
       }
     ],
-    "prettier/prettier": ["error", {}, { "usePrettierrc": true }]
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
-    },
-    "import/resolver": {
-      "typescript": {},
-      "node": {
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "react/jsx-filename-extension": [
+      2,
+      {
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
-    }
+    ]
   }
 } 

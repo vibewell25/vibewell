@@ -1,12 +1,15 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useNotifications } from '@/contexts/NotificationContext';
+
 interface NotificationBadgeProps {
   count?: number;
   maxCount?: number;
 }
+
 export function NotificationBadge({ maxCount = 99 }: Partial<NotificationBadgeProps>) {
   const { unreadCount } = useNotifications();
   const [hasAnimated, setHasAnimated] = useState(false);

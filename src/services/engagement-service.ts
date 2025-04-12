@@ -45,7 +45,7 @@ export interface Achievement {
 }
 
 // Define all available badges
-const BADGES: Badge[] = [
+export const BADGES: Badge[] = [
   {
     id: 'first-try-on',
     name: 'Beginner',

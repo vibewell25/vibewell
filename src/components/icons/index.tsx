@@ -1,7 +1,6 @@
 'use client';
 
-import * as OutlineIcons from '@heroicons/react/24/outline';
-import * as SolidIcons from '@heroicons/react/24/solid';
+// Import the Icons from the main icons component
 import { Icons } from '../icons';
 
 // Re-export the Icons object from the main icons component
@@ -49,7 +48,3 @@ export const {
   // Menu icon
   menu,
 } = Icons;
-
-// Export namespaced heroicons for convenience
-export const Outline = OutlineIcons;
-export const Solid = SolidIcons;

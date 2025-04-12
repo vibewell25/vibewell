@@ -107,52 +107,108 @@
     --ring: 260 84% 60%;
     --background: 260 30% 10%;
   }
-}
 
-@layer base {
   * {
-    @apply border-border;
+    border-color: var(--border);
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   h1 {
-    @apply text-3xl font-bold mb-4;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
   }
   h2 {
-    @apply text-2xl font-bold mb-3;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
   }
   h3 {
-    @apply text-xl font-bold mb-2;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
   }
   h4 {
-    @apply text-lg font-bold mb-1;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
   }
   p {
-    @apply mb-4;
+    margin-bottom: 1rem;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply px-4 py-2 bg-[color:var(--primary)] text-white rounded-md hover:bg-[color:var(--primary-dark)] transition-colors;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 0.375rem;
+    transition-property: color, background-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .btn-primary:hover {
+    background-color: var(--primary-dark);
   }
   
   .btn-secondary {
-    @apply px-4 py-2 bg-[color:var(--secondary)] text-white rounded-md hover:opacity-90 transition-opacity;
+    padding: 0.5rem 1rem;
+    background-color: var(--secondary);
+    color: white;
+    border-radius: 0.375rem;
+    transition-property: opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .btn-secondary:hover {
+    opacity: 0.9;
   }
   
   .card {
-    @apply bg-[color:var(--card)] rounded-lg border border-[color:var(--border)] p-6 shadow-sm;
+    background-color: var(--card);
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   }
   
   .form-input {
-    @apply w-full rounded-md border border-[color:var(--input)] px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--ring)];
+    width: 100%;
+    border-radius: 0.375rem;
+    border: 1px solid var(--input);
+    padding: 0.5rem 0.75rem;
+  }
+  .form-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--ring);
   }
   
   .container-app {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container-app {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-app {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
   }
 }
 

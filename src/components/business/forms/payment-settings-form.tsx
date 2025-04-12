@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/components/ui/textarea';
-import { CreditCard, DollarSign, AlertCircle, Bank, CreditCard as CreditCardIcon } from 'lucide-react';
+import { CreditCard, DollarSign, AlertCircle, Building2 as Bank, CreditCard as CreditCardIcon } from 'lucide-react';
 import { 
   Select, 
   SelectContent, 

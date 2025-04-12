@@ -1,5 +1,6 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { ContentPlatform, ContentTeamMember } from '@/types/content-calendar';
 import { Button } from '@/components/ui/button';
@@ -9,12 +10,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ColorPicker } from '@/components/ui/color-picker';
+
 interface ContentCalendarSidebarProps {
   platforms: ContentPlatform[];
   teamMembers: ContentTeamMember[];
   onAddPlatform: (platform: ContentPlatform) => void;
   onAddTeamMember: (member: ContentTeamMember) => void;
 }
+
 export function ContentCalendarSidebar({
   platforms,
   teamMembers,
@@ -25,6 +28,7 @@ export function ContentCalendarSidebar({
   const [newPlatformColor, setNewPlatformColor] = useState('#6200EA');
   const [platformsExpanded, setPlatformsExpanded] = useState(true);
   const [teamExpanded, setTeamExpanded] = useState(true);
+
   const handleAddPlatform = () => {
     if (!newPlatformName.trim()) return;
     onAddPlatform({
@@ -35,6 +39,7 @@ export function ContentCalendarSidebar({
     setNewPlatformName('');
     setNewPlatformColor('#6200EA');
   };
+
   return (
     <div className="w-64 space-y-6">
       {/* Platforms Section */}

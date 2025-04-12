@@ -1,5 +1,6 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
@@ -7,17 +8,20 @@ import { PostReaction, ReactionType } from '@/components/post-reaction';
 import { SharePost } from '@/components/share-post';
 import { UserAvatar } from '@/components/user-avatar';
 import { useAuth } from '@/hooks/useAuth';
+
 export interface PostUser {
   id: string;
   name: string;
   avatar: string;
 }
+
 export interface PostComment {
   id: string;
   user: PostUser;
   content: string;
   createdAt: string;
 }
+
 export interface Post {
   id: number;
   user: PostUser;
@@ -29,6 +33,7 @@ export interface Post {
   };
   comments: PostComment[];
 }
+
 export interface PostProps {
   post: Post;
   currentUserReaction: ReactionType | null;
@@ -40,6 +45,7 @@ export interface PostProps {
   onCommentSubmit: (comment: string) => void;
   customActions?: React.ReactNode;
 }
+
 export function Post({
   post,
   currentUserReaction,
@@ -54,15 +60,18 @@ export function Post({
   const { user: currentUser } = useAuth();
   const [commentText, setCommentText] = useState('');
   const [expandedComments, setExpandedComments] = useState(post.comments.length < 3);
+
   const toggleComments = () => {
     setExpandedComments(!expandedComments);
   };
+
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!commentText.trim() || !isAuthenticated) return;
     onCommentSubmit(commentText);
     setCommentText('');
   };
+
   const formatDateTime = (dateString: string) => {
     if (formatDate) {
       return formatDate(dateString);
@@ -74,6 +83,7 @@ export function Post({
       return 'some time ago';
     }
   };
+
   return (
     <div className="card p-4">
       {/* Post Header */}

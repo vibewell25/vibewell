@@ -23,11 +23,28 @@ const config: Config = {
         input: 'var(--input)',
         ring: 'var(--ring)',
       },
+      backgroundColor: {
+        background: 'var(--background)',
+        muted: 'var(--muted)',
+        primary: 'var(--primary)',
+        secondary: 'var(--secondary)',
+        accent: 'var(--accent)',
+        card: 'var(--card)',
+      },
+      textColor: {
+        foreground: 'var(--foreground)',
+        'muted-foreground': 'var(--muted-foreground)',
+        'primary-foreground': 'var(--primary-foreground)',
+        'secondary-foreground': 'var(--secondary-foreground)',
+        'accent-foreground': 'var(--accent-foreground)',
+        'card-foreground': 'var(--card-foreground)',
+      },
       borderRadius: {
         DEFAULT: 'var(--radius)',
       },
       borderColor: {
         DEFAULT: 'var(--border)',
+        border: 'var(--border)',
       },
     },
   },

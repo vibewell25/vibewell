@@ -1,14 +1,7 @@
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { Event } from '@/types/events';
 import { format, parseISO } from 'date-fns';
-import { 
-  DocumentTextIcon, 
-  VideoCameraIcon,
-  LinkIcon,
-  PhotoIcon,
-  ClockIcon,
-  UserIcon
-} from '@heroicons/react/24/outline';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -16,7 +9,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
 interface EventMaterialsAgendaProps {
   event: Event;
   onMaterialAdd: (material: {
@@ -37,7 +29,6 @@ interface EventMaterialsAgendaProps {
     };
   }) => void;
 }
-
 export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: EventMaterialsAgendaProps) {
   const [activeTab, setActiveTab] = useState('materials');
   const [newMaterial, setNewMaterial] = useState({
@@ -57,7 +48,6 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
       avatar: ''
     }
   });
-
   const handleMaterialSubmit = () => {
     if (newMaterial.title && newMaterial.url) {
       onMaterialAdd(newMaterial);
@@ -69,7 +59,6 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
       });
     }
   };
-
   const handleAgendaSubmit = () => {
     if (newAgendaItem.title && newAgendaItem.startTime && newAgendaItem.endTime) {
       onAgendaAdd(newAgendaItem);
@@ -86,39 +75,36 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
       });
     }
   };
-
   const getMaterialIcon = (type: string) => {
     switch (type) {
       case 'document':
-        return <DocumentTextIcon className="h-5 w-5" />;
+        return <Icons.DocumentTextIcon className="h-5 w-5" />;
       case 'video':
-        return <VideoCameraIcon className="h-5 w-5" />;
+        return <Icons.VideoCameraIcon className="h-5 w-5" />;
       case 'link':
-        return <LinkIcon className="h-5 w-5" />;
+        return <Icons.LinkIcon className="h-5 w-5" />;
       case 'image':
-        return <PhotoIcon className="h-5 w-5" />;
+        return <Icons.PhotoIcon className="h-5 w-5" />;
       default:
         return null;
     }
   };
-
   return (
     <Card>
       <CardHeader>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="materials">
-              <DocumentTextIcon className="h-4 w-4 mr-2" />
+              <Icons.DocumentTextIcon className="h-4 w-4 mr-2" />
               Materials
             </TabsTrigger>
             <TabsTrigger value="agenda">
-              <ClockIcon className="h-4 w-4 mr-2" />
+              <Icons.ClockIcon className="h-4 w-4 mr-2" />
               Agenda
             </TabsTrigger>
           </TabsList>
         </Tabs>
       </CardHeader>
-
       <CardContent>
         <TabsContent value="materials">
           <div className="space-y-4">
@@ -170,7 +156,6 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                 </Button>
               </div>
             </div>
-
             {event.materials && event.materials.length > 0 && (
               <div className="space-y-2">
                 <Label>Event Materials</Label>
@@ -205,7 +190,6 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
             )}
           </div>
         </TabsContent>
-
         <TabsContent value="agenda">
           <div className="space-y-4">
             <div className="space-y-2">
@@ -272,7 +256,6 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                 </Button>
               </div>
             </div>
-
             {event.agenda && event.agenda.length > 0 && (
               <div className="space-y-2">
                 <Label>Event Agenda</Label>
@@ -297,7 +280,7 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                       </div>
                       {item.speaker && (
                         <div className="flex items-center gap-2 mt-2">
-                          <UserIcon className="h-4 w-4 text-muted-foreground" />
+                          <Icons.UserIcon className="h-4 w-4 text-muted-foreground" />
                           <span className="text-sm">
                             {item.speaker.name}
                             {item.speaker.title && `, ${item.speaker.title}`}

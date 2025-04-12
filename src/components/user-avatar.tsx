@@ -1,15 +1,12 @@
+import { Icons } from '@/components/icons';
 'use client';
-
-import { UserCircleIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-
 interface UserAvatarProps {
   src?: string | null;
   alt?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg';
   fallbackInitials?: string;
 }
-
 export function UserAvatar({ 
   src, 
   alt = 'User avatar', 
@@ -23,7 +20,6 @@ export function UserAvatar({
     md: 40, // h-10 w-10
     lg: 48  // h-12 w-12
   };
-  
   // Size mapping for classes
   const sizeClasses = {
     xs: 'h-6 w-6',
@@ -31,11 +27,9 @@ export function UserAvatar({
     md: 'h-10 w-10',
     lg: 'h-12 w-12'
   };
-  
   // Get initials from name
   const getInitials = () => {
     if (!fallbackInitials) return '';
-    
     return fallbackInitials
       .split(' ')
       .map(part => part[0])
@@ -43,7 +37,6 @@ export function UserAvatar({
       .toUpperCase()
       .substring(0, 2);
   };
-  
   // If we have a src, render an Image component
   if (src) {
     return (
@@ -57,7 +50,6 @@ export function UserAvatar({
       </div>
     );
   }
-  
   // If we have fallback initials, show them
   if (fallbackInitials) {
     return (
@@ -66,11 +58,10 @@ export function UserAvatar({
       </div>
     );
   }
-  
   // Otherwise, show the default user icon
   return (
     <div className={`${sizeClasses[size]} rounded-full flex-shrink-0 bg-muted flex items-center justify-center`}>
-      <UserCircleIcon className="h-full w-full text-muted-foreground" />
+      <Icons.UserCircleIcon className="h-full w-full text-muted-foreground" />
     </div>
   );
 } 

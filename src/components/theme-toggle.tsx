@@ -1,7 +1,7 @@
 'use client';
 
 import { useTheme } from '@/components/theme-provider';
-import { SunIcon, MoonIcon, ComputerDesktopIcon } from '@heroicons/react/24/outline';
+import { Icons } from '@/components/icons';
 import { useEffect, useState } from 'react';
 
 export function ThemeToggle() {
@@ -26,7 +26,7 @@ export function ThemeToggle() {
         }`}
         title="Light mode"
       >
-        <SunIcon className="h-5 w-5" />
+        <Icons.SunIcon className="h-5 w-5" />
         <span className="sr-only">Light mode</span>
       </button>
 
@@ -37,7 +37,7 @@ export function ThemeToggle() {
         }`}
         title="Dark mode"
       >
-        <MoonIcon className="h-5 w-5" />
+        <Icons.MoonIcon className="h-5 w-5" />
         <span className="sr-only">Dark mode</span>
       </button>
 
@@ -48,7 +48,7 @@ export function ThemeToggle() {
         }`}
         title="System preference"
       >
-        <ComputerDesktopIcon className="h-5 w-5" />
+        <Icons.ComputerDesktopIcon className="h-5 w-5" />
         <span className="sr-only">System preference</span>
       </button>
     </div>

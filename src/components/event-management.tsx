@@ -1,14 +1,7 @@
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { Event } from '@/types/events';
 import { format, parseISO } from 'date-fns';
-import { 
-  CalendarIcon, 
-  ClockIcon, 
-  UserGroupIcon, 
-  BellIcon,
-  CheckCircleIcon,
-  XCircleIcon
-} from '@heroicons/react/24/outline';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -17,15 +10,12 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
 interface EventManagementProps {
   event: Event;
   onUpdate: (updates: Partial<Event>) => void;
 }
-
 export function EventManagement({ event, onUpdate }: EventManagementProps) {
   const [activeTab, setActiveTab] = useState('recurring');
-  
   // Handle recurring event settings
   const handleRecurringToggle = (enabled: boolean) => {
     onUpdate({
@@ -37,7 +27,6 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
       } : undefined
     });
   };
-
   const handleRecurrenceChange = (field: string, value: any) => {
     onUpdate({
       recurrencePattern: {
@@ -46,7 +35,6 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
       }
     });
   };
-
   // Handle waitlist settings
   const handleWaitlistToggle = (enabled: boolean) => {
     onUpdate({
@@ -56,30 +44,27 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
       waitlistParticipants: enabled ? [] : undefined
     });
   };
-
   const handleWaitlistCapacityChange = (capacity: number) => {
     onUpdate({
       waitlistCapacity: capacity
     });
   };
-
   return (
     <Card>
       <CardHeader>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="recurring">
-              <CalendarIcon className="h-4 w-4 mr-2" />
+              <Icons.CalendarIcon className="h-4 w-4 mr-2" />
               Recurring
             </TabsTrigger>
             <TabsTrigger value="waitlist">
-              <UserGroupIcon className="h-4 w-4 mr-2" />
+              <Icons.UserGroupIcon className="h-4 w-4 mr-2" />
               Waitlist
             </TabsTrigger>
           </TabsList>
         </Tabs>
       </CardHeader>
-      
       <CardContent>
         <TabsContent value="recurring">
           <div className="space-y-4">
@@ -95,7 +80,6 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                 onCheckedChange={handleRecurringToggle}
               />
             </div>
-
             {event.isRecurring && (
               <div className="space-y-4">
                 <div className="space-y-2">
@@ -115,7 +99,6 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                     </SelectContent>
                   </Select>
                 </div>
-
                 <div className="space-y-2">
                   <Label>Interval</Label>
                   <Input
@@ -125,7 +108,6 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                     onChange={(e) => handleRecurrenceChange('interval', parseInt(e.target.value))}
                   />
                 </div>
-
                 {event.recurrencePattern?.frequency === 'weekly' && (
                   <div className="space-y-2">
                     <Label>Days of Week</Label>
@@ -149,7 +131,6 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                     </div>
                   </div>
                 )}
-
                 <div className="space-y-2">
                   <Label>End Date (Optional)</Label>
                   <Input
@@ -162,7 +143,6 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
             )}
           </div>
         </TabsContent>
-
         <TabsContent value="waitlist">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -177,7 +157,6 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                 onCheckedChange={handleWaitlistToggle}
               />
             </div>
-
             {event.waitlistEnabled && (
               <div className="space-y-4">
                 <div className="space-y-2">
@@ -189,7 +168,6 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                     onChange={(e) => handleWaitlistCapacityChange(parseInt(e.target.value))}
                   />
                 </div>
-
                 {event.waitlistParticipants && event.waitlistParticipants.length > 0 && (
                   <div className="space-y-2">
                     <Label>Waitlist Participants</Label>

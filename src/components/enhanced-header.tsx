@@ -1,20 +1,13 @@
+import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
-import { 
-  Bars3Icon, 
-  XMarkIcon, 
-  UserCircleIcon,
-  BellIcon,
-  ChatBubbleLeftIcon
-} from '@heroicons/react/24/outline';
 import { useAuth } from '@/hooks/useAuth';
 import { NotificationBadge } from './notification-badge';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { useResponsive } from '@/hooks/useResponsive';
 import { TouchHandler } from './ui/touch-handler';
 import { cn } from '@/lib/utils';
-
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Wellness', href: '/wellness' },
@@ -23,7 +16,6 @@ const navigation = [
   { name: 'Pricing', href: '/custom-pricing' },
   { name: 'Social', href: '/social' },
 ];
-
 export function EnhancedHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -32,15 +24,12 @@ export function EnhancedHeader() {
   const { user, signOut, loading } = useAuth();
   const { unreadCount } = useNotifications();
   const { isMobile, isTablet } = useResponsive();
-
   const authenticatedNavigation = [
     ...navigation,
     { name: 'Dashboard', href: '/dashboard' },
     { name: 'Messages', href: '/messages' },
   ];
-
   const navItems = user ? authenticatedNavigation : navigation;
-
   // Handle scroll effect for sticky header
   useEffect(() => {
     const handleScroll = () => {
@@ -50,13 +39,11 @@ export function EnhancedHeader() {
         setIsScrolled(false);
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
   // Handle swipe gesture to open/close mobile menu
   const handleSwipe = (direction: 'left' | 'right' | 'up' | 'down') => {
     if (isMobile || isTablet) {
@@ -67,7 +54,6 @@ export function EnhancedHeader() {
       }
     }
   };
-
   // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -75,7 +61,6 @@ export function EnhancedHeader() {
       if (isUserMenuOpen) {
         const userMenuElement = document.getElementById('user-menu');
         const userMenuButton = document.getElementById('user-menu-button');
-        
         if (
           userMenuElement && 
           !userMenuElement.contains(event.target as Node) && 
@@ -86,13 +71,11 @@ export function EnhancedHeader() {
         }
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isUserMenuOpen]);
-
   // Determine header classes based on scroll state
   const headerClasses = cn(
     'fixed w-full top-0 z-50 transition-all duration-200',
@@ -101,7 +84,6 @@ export function EnhancedHeader() {
       : 'bg-background',
     'border-b border-border'
   );
-
   return (
     <TouchHandler onSwipe={handleSwipe}>
       <header className={headerClasses}>
@@ -112,7 +94,6 @@ export function EnhancedHeader() {
                 <span className="text-xl md:text-2xl font-bold text-primary">Vibewell</span>
               </Link>
             </div>
-
             {/* Desktop navigation */}
             <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
               {navItems.map((item) => (
@@ -125,10 +106,8 @@ export function EnhancedHeader() {
                 </Link>
               ))}
             </nav>
-
             <div className="flex items-center space-x-2 md:space-x-4">
               <ThemeToggle />
-              
               {!loading && (
                 <>
                   {user ? (
@@ -136,10 +115,10 @@ export function EnhancedHeader() {
                       {/* Mobile action buttons */}
                       <div className="flex md:hidden space-x-2">
                         <Link href="/messages" className="p-2 rounded-full hover:bg-muted">
-                          <ChatBubbleLeftIcon className="h-5 w-5 text-muted-foreground" />
+                          <Icons.ChatBubbleLeftIcon className="h-5 w-5 text-muted-foreground" />
                         </Link>
                         <Link href="/notifications" className="p-2 rounded-full hover:bg-muted relative">
-                          <BellIcon className="h-5 w-5 text-muted-foreground" />
+                          <Icons.BellIcon className="h-5 w-5 text-muted-foreground" />
                           {unreadCount > 0 && (
                             <span className="absolute top-0 right-0 h-4 w-4 rounded-full bg-secondary flex items-center justify-center text-[10px] text-white font-bold">
                               {unreadCount > 9 ? '9+' : unreadCount}
@@ -147,11 +126,9 @@ export function EnhancedHeader() {
                           )}
                         </Link>
                       </div>
-
                       {/* Desktop full user menu */}
                       <div className="hidden md:flex items-center space-x-4">
                         <NotificationBadge />
-                        
                         <div className="relative">
                           <button
                             id="user-menu-button"
@@ -159,9 +136,8 @@ export function EnhancedHeader() {
                             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                           >
                             <span className="sr-only">Open user menu</span>
-                            <UserCircleIcon className="h-8 w-8 text-muted-foreground hover:text-foreground" />
+                            <Icons.UserCircleIcon className="h-8 w-8 text-muted-foreground hover:text-foreground" />
                           </button>
-                          
                           {isUserMenuOpen && (
                             <div 
                               id="user-menu"
@@ -239,7 +215,6 @@ export function EnhancedHeader() {
                   )}
                 </>
               )}
-
               {/* Mobile menu button */}
               <button
                 className="md:hidden p-2 rounded-md text-muted-foreground hover:text-foreground"
@@ -248,14 +223,13 @@ export function EnhancedHeader() {
                 aria-expanded={isMenuOpen}
               >
                 {isMenuOpen ? (
-                  <XMarkIcon className="h-6 w-6" />
+                  <Icons.XMarkIcon className="h-6 w-6" />
                 ) : (
-                  <Bars3Icon className="h-6 w-6" />
+                  <Icons.Bars3Icon className="h-6 w-6" />
                 )}
               </button>
             </div>
           </div>
-
           {/* Mobile navigation with enhanced animation */}
           <div 
             className={cn(
@@ -276,7 +250,6 @@ export function EnhancedHeader() {
                     {item.name}
                   </Link>
                 ))}
-                
                 {!loading && (
                   <>
                     {user ? (

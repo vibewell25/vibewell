@@ -1,7 +1,6 @@
+import { Icons } from '@/components/icons';
 import React, { useState } from 'react';
-import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
-
 interface InventoryItem {
   id: string;
   name: string;
@@ -12,14 +11,12 @@ interface InventoryItem {
   category: string;
   status: 'active' | 'inactive';
 }
-
 interface InventoryManagementProps {
   items: InventoryItem[];
   onAddItem: (item: Omit<InventoryItem, 'id'>) => Promise<void>;
   onUpdateItem: (id: string, item: Partial<InventoryItem>) => Promise<void>;
   onDeleteItem: (id: string) => Promise<void>;
 }
-
 export const InventoryManagement: React.FC<InventoryManagementProps> = ({
   items,
   onAddItem,
@@ -37,7 +34,6 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
     category: '',
     status: 'active',
   });
-
   const handleAddItem = async () => {
     try {
       await onAddItem(newItem);
@@ -57,7 +53,6 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
       toast.error('Failed to add item');
     }
   };
-
   const handleUpdateItem = async () => {
     if (!editingItem) return;
     try {
@@ -69,7 +64,6 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
       toast.error('Failed to update item');
     }
   };
-
   const handleDeleteItem = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this item?')) return;
     try {
@@ -80,7 +74,6 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
       toast.error('Failed to delete item');
     }
   };
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -89,11 +82,10 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
           onClick={() => setIsAddModalOpen(true)}
           className="btn-primary flex items-center"
         >
-          <PlusIcon className="h-5 w-5 mr-2" />
+          <Icons.PlusIcon className="h-5 w-5 mr-2" />
           Add Item
         </button>
       </div>
-
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
@@ -156,13 +148,13 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                     onClick={() => setEditingItem(item)}
                     className="text-indigo-600 hover:text-indigo-900 mr-4"
                   >
-                    <PencilIcon className="h-5 w-5" />
+                    <Icons.PencilIcon className="h-5 w-5" />
                   </button>
                   <button
                     onClick={() => handleDeleteItem(item.id)}
                     className="text-red-600 hover:text-red-900"
                   >
-                    <TrashIcon className="h-5 w-5" />
+                    <Icons.TrashIcon className="h-5 w-5" />
                   </button>
                 </td>
               </tr>
@@ -170,7 +162,6 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
           </tbody>
         </table>
       </div>
-
       {/* Add Item Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
@@ -252,7 +243,6 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
           </div>
         </div>
       )}
-
       {/* Edit Item Modal */}
       {editingItem && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">

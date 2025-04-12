@@ -1,12 +1,10 @@
+import { Icons } from '@/components/icons';
 import React, { useState } from 'react';
-import { MagnifyingGlassIcon, StarIcon } from '@heroicons/react/24/outline';
 import { Business } from '@/types/business';
-
 interface BusinessDirectoryProps {
   businesses: Business[];
   onBusinessSelect: (business: Business) => void;
 }
-
 export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
   businesses,
   onBusinessSelect,
@@ -14,9 +12,7 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'rating' | 'name'>('rating');
-
   const categories = ['all', 'spa', 'salon', 'wellness', 'fitness'];
-
   const filteredBusinesses = businesses
     .filter(business => {
       const matchesSearch = business.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -30,12 +26,11 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
       }
       return a.name.localeCompare(b.name);
     });
-
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <Icons.MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <input
             type="text"
             placeholder="Search businesses..."
@@ -66,7 +61,6 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
           </select>
         </div>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredBusinesses.map((business) => (
           <div
@@ -81,7 +75,7 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
                 className="w-full h-full object-cover"
               />
               <div className="absolute top-2 right-2 bg-white/90 px-2 py-1 rounded-full flex items-center">
-                <StarIcon className="h-4 w-4 text-yellow-500 mr-1" />
+                <Icons.StarIcon className="h-4 w-4 text-yellow-500 mr-1" />
                 <span className="text-sm font-medium">{business.rating.toFixed(1)}</span>
               </div>
             </div>
@@ -97,7 +91,6 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
           </div>
         ))}
       </div>
-
       {filteredBusinesses.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-500">No businesses found matching your criteria.</p>

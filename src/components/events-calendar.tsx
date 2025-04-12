@@ -1,91 +1,74 @@
+import { Icons } from '@/components/icons';
 import React, { useState, useEffect } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, 
   isSameDay, addMonths, subMonths, parseISO, differenceInCalendarDays, isAfter } from 'date-fns';
 import Link from 'next/link';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Event } from '@/types/events';
 import { Badge } from '@/components/ui/badge';
-
 interface EventsCalendarProps {
   events: Event[];
   onDateSelect?: (date: Date) => void;
   className?: string;
 }
-
 export function EventsCalendar({ events, onDateSelect, className = '' }: EventsCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [calendarDays, setCalendarDays] = useState<Date[]>([]);
   const [displayEvents, setDisplayEvents] = useState<{[dateString: string]: Event[]}>({});
-
   // Generate calendar days and map events to dates
   useEffect(() => {
     const monthStart = startOfMonth(currentDate);
     const monthEnd = endOfMonth(currentDate);
     const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
-    
     // Map events to their dates for quick lookup
     const eventsByDate: {[dateString: string]: Event[]} = {};
-    
     events.forEach(event => {
       const eventDate = parseISO(event.startDate);
       const dateKey = format(eventDate, 'yyyy-MM-dd');
-      
       if (!eventsByDate[dateKey]) {
         eventsByDate[dateKey] = [];
       }
-      
       eventsByDate[dateKey].push(event);
     });
-    
     setCalendarDays(daysInMonth);
     setDisplayEvents(eventsByDate);
   }, [currentDate, events]);
-
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
     if (onDateSelect) {
       onDateSelect(date);
     }
   };
-
   const goToPreviousMonth = () => {
     setCurrentDate(prevDate => subMonths(prevDate, 1));
     setSelectedDate(null);
   };
-
   const goToNextMonth = () => {
     setCurrentDate(prevDate => addMonths(prevDate, 1));
     setSelectedDate(null);
   };
-
   // Get events for the selected date
   const getEventsForDate = (date: Date): Event[] => {
     const dateKey = format(date, 'yyyy-MM-dd');
     return displayEvents[dateKey] || [];
   };
-
   // Check if a date has events
   const hasEvents = (date: Date): boolean => {
     const dateKey = format(date, 'yyyy-MM-dd');
     return !!displayEvents[dateKey]?.length;
   };
-
   // Check if date is today
   const isToday = (date: Date): boolean => {
     return isSameDay(date, new Date());
   };
-
   // Check if date is in the past
   const isPastDate = (date: Date): boolean => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return date < today;
   };
-
   // Get selected date events
   const selectedDateEvents = selectedDate ? getEventsForDate(selectedDate) : [];
-
   return (
     <div className={`rounded-lg overflow-hidden border ${className}`}>
       {/* Calendar Header */}
@@ -100,19 +83,18 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
               className="p-1 rounded-md hover:bg-gray-100"
               aria-label="Previous month"
             >
-              <ChevronLeftIcon className="h-5 w-5" />
+              <Icons.ChevronLeftIcon className="h-5 w-5" />
             </button>
             <button
               onClick={goToNextMonth}
               className="p-1 rounded-md hover:bg-gray-100"
               aria-label="Next month"
             >
-              <ChevronRightIcon className="h-5 w-5" />
+              <Icons.ChevronRightIcon className="h-5 w-5" />
             </button>
           </div>
         </div>
       </div>
-
       {/* Calendar Grid */}
       <div className="bg-white">
         {/* Day Names */}
@@ -123,7 +105,6 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
             </div>
           ))}
         </div>
-
         {/* Calendar Days */}
         <div className="grid grid-cols-7 border-b">
           {calendarDays.map((day, i) => {
@@ -131,7 +112,6 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
             const isSelected = selectedDate && isSameDay(day, selectedDate);
             const isTodayDate = isToday(day);
             const isPast = isPastDate(day);
-            
             return (
               <div
                 key={i}
@@ -155,7 +135,6 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
                     </span>
                   )}
                 </div>
-                
                 {/* Event indicators */}
                 {dateHasEvents && getEventsForDate(day).slice(0, 2).map((event, idx) => (
                   <div
@@ -169,7 +148,6 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
                     {event.title}
                   </div>
                 ))}
-                
                 {getEventsForDate(day).length > 2 && (
                   <div className="text-xs text-gray-500 mt-1">
                     +{getEventsForDate(day).length - 2} more
@@ -180,14 +158,12 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
           })}
         </div>
       </div>
-
       {/* Selected Date Events */}
       {selectedDate && (
         <div className="bg-white p-4 border-t">
           <h3 className="font-medium mb-3">
             Events on {format(selectedDate, 'MMMM d, yyyy')}
           </h3>
-          
           {selectedDateEvents.length === 0 ? (
             <p className="text-sm text-gray-500">No events scheduled for this date.</p>
           ) : (
@@ -197,7 +173,6 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
                 const endDate = parseISO(event.endDate);
                 const durationDays = differenceInCalendarDays(endDate, startDate);
                 const isFuture = isAfter(startDate, new Date());
-                
                 return (
                   <Link 
                     href={`/events/${event.id}`} 

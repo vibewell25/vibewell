@@ -1,9 +1,7 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { useState } from 'react';
 import { UserAvatar } from '@/components/user-avatar';
-import { PlusIcon, CheckIcon } from '@heroicons/react/24/outline';
-
 // Dummy data for recommended connections
 const INITIAL_RECOMMENDATIONS = [
   {
@@ -35,11 +33,9 @@ const INITIAL_RECOMMENDATIONS = [
     mutualConnections: 4,
   }
 ];
-
 export function RecommendedConnections() {
   const [recommendations, setRecommendations] = useState(INITIAL_RECOMMENDATIONS);
   const [connectedUsers, setConnectedUsers] = useState<string[]>([]);
-  
   const handleConnect = (userId: string) => {
     // In a real app, this would make an API call
     if (connectedUsers.includes(userId)) {
@@ -48,12 +44,10 @@ export function RecommendedConnections() {
       setConnectedUsers([...connectedUsers, userId]);
     }
   };
-  
   const handleDismiss = (userId: string) => {
     // Remove the user from recommendations
     setRecommendations(recommendations.filter(user => user.id !== userId));
   };
-  
   // If no recommendations left, show a message
   if (recommendations.length === 0) {
     return (
@@ -65,7 +59,6 @@ export function RecommendedConnections() {
       </div>
     );
   }
-  
   return (
     <div className="card">
       <h2 className="text-xl font-bold mb-4">Recommended Connections</h2>
@@ -86,7 +79,6 @@ export function RecommendedConnections() {
                 </p>
               </div>
             </div>
-            
             <div className="flex items-center space-x-2">
               <button
                 className={`p-1.5 rounded-full ${
@@ -98,12 +90,11 @@ export function RecommendedConnections() {
                 aria-label={connectedUsers.includes(user.id) ? 'Connected' : 'Connect'}
               >
                 {connectedUsers.includes(user.id) ? (
-                  <CheckIcon className="h-4 w-4" />
+                  <Icons.CheckIcon className="h-4 w-4" />
                 ) : (
-                  <PlusIcon className="h-4 w-4" />
+                  <Icons.PlusIcon className="h-4 w-4" />
                 )}
               </button>
-              
               <button
                 className="text-muted-foreground hover:text-foreground text-xs"
                 onClick={() => handleDismiss(user.id)}

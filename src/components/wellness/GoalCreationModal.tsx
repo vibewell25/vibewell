@@ -1,5 +1,5 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { useState, useEffect } from 'react';
 import { 
   Goal,
@@ -8,8 +8,6 @@ import {
   GoalUnit, 
   GoalStatus 
 } from '@/types/progress';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-
 // Color options for goals
 const colorOptions = [
   '#6366F1', // Indigo
@@ -21,14 +19,12 @@ const colorOptions = [
   '#3B82F6', // Blue
   '#F97316', // Orange
 ];
-
 interface GoalCreationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (goal: Omit<Goal, 'id' | 'current' | 'status'>) => void;
   editingGoal?: Goal;
 }
-
 export function GoalCreationModal({ 
   isOpen, 
   onClose, 
@@ -48,7 +44,6 @@ export function GoalCreationModal({
     reminders: false,
     reminderTime: '08:00',
   });
-
   // Initialize form with editing goal data if available
   useEffect(() => {
     if (editingGoal) {
@@ -82,7 +77,6 @@ export function GoalCreationModal({
       });
     }
   }, [editingGoal, isOpen]);
-
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -91,7 +85,6 @@ export function GoalCreationModal({
       [name]: value
     }));
   };
-
   // Handle checkbox changes
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
@@ -100,7 +93,6 @@ export function GoalCreationModal({
       [name]: checked
     }));
   };
-
   // Handle color selection
   const handleColorSelect = (color: string) => {
     setFormData(prev => ({
@@ -108,13 +100,11 @@ export function GoalCreationModal({
       color
     }));
   };
-
   // Handle type selection and update unit accordingly
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newType = e.target.value as GoalType;
     let newUnit: GoalUnit = 'minutes';
     let newTarget = 10;
-
     // Only update unit and target if not editing or if changing from the original type
     if (!editingGoal || editingGoal.type !== newType) {
       // Set default unit based on type
@@ -151,7 +141,6 @@ export function GoalCreationModal({
           newUnit = 'custom';
           newTarget = 1;
       }
-
       setFormData(prev => ({
         ...prev,
         type: newType,
@@ -166,11 +155,9 @@ export function GoalCreationModal({
       }));
     }
   };
-
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     onSave({
       title: formData.title,
       description: formData.description,
@@ -184,12 +171,9 @@ export function GoalCreationModal({
       reminders: formData.reminders,
       reminderTime: formData.reminders ? formData.reminderTime : undefined,
     });
-    
     onClose();
   };
-
   if (!isOpen) return null;
-
   // Helper function to get icon for goal type
   const getGoalIcon = (type: GoalType): string => {
     switch (type) {
@@ -211,7 +195,6 @@ export function GoalCreationModal({
         return '🎯';
     }
   };
-
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-card rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
@@ -220,10 +203,9 @@ export function GoalCreationModal({
             {editingGoal ? 'Edit Goal' : 'Create New Goal'}
           </h2>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
-            <XMarkIcon className="h-6 w-6" />
+            <Icons.XMarkIcon className="h-6 w-6" />
           </button>
         </div>
-
         <form onSubmit={handleSubmit}>
           {/* Title */}
           <div className="mb-4">
@@ -241,7 +223,6 @@ export function GoalCreationModal({
               required
             />
           </div>
-
           {/* Description */}
           <div className="mb-4">
             <label htmlFor="description" className="block text-sm font-medium mb-1">
@@ -257,7 +238,6 @@ export function GoalCreationModal({
               placeholder="Why is this goal important to you?"
             />
           </div>
-
           {/* Goal Type */}
           <div className="mb-4">
             <label htmlFor="type" className="block text-sm font-medium mb-1">
@@ -296,7 +276,6 @@ export function GoalCreationModal({
               </span>
             </div>
           </div>
-
           {/* Target and Unit */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
@@ -339,7 +318,6 @@ export function GoalCreationModal({
               </select>
             </div>
           </div>
-
           {/* Frequency */}
           <div className="mb-4">
             <label htmlFor="frequency" className="block text-sm font-medium mb-1">
@@ -359,7 +337,6 @@ export function GoalCreationModal({
               <option value="one_time">One Time</option>
             </select>
           </div>
-
           {/* Start and End Dates */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
@@ -390,7 +367,6 @@ export function GoalCreationModal({
               />
             </div>
           </div>
-
           {/* Color Selection */}
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2">Color</label>
@@ -410,7 +386,6 @@ export function GoalCreationModal({
               ))}
             </div>
           </div>
-
           {/* Reminders */}
           <div className="mb-6">
             <div className="flex items-center mb-2">
@@ -426,7 +401,6 @@ export function GoalCreationModal({
                 Enable Reminders
               </label>
             </div>
-            
             {formData.reminders && (
               <div>
                 <label htmlFor="reminderTime" className="block text-sm font-medium mb-1">
@@ -443,7 +417,6 @@ export function GoalCreationModal({
               </div>
             )}
           </div>
-
           <div className="flex justify-end gap-2">
             <button
               type="button"

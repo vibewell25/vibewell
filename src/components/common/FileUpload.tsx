@@ -1,13 +1,11 @@
+import { Icons } from '@/components/icons';
 import React, { useRef, useState } from 'react';
-import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
-
 interface FileUploadProps {
   onFileSelect: (file: File) => void;
   accept?: string;
   maxSize?: number;
   className?: string;
 }
-
 export const FileUpload: React.FC<FileUploadProps> = ({
   onFileSelect,
   accept = '*',
@@ -16,38 +14,30 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 }) => {
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-
     if (file.size > maxSize) {
       setError(`File size exceeds ${maxSize / (1024 * 1024)}MB limit`);
       return;
     }
-
     setError(null);
     onFileSelect(file);
   };
-
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const file = event.dataTransfer.files?.[0];
     if (!file) return;
-
     if (file.size > maxSize) {
       setError(`File size exceeds ${maxSize / (1024 * 1024)}MB limit`);
       return;
     }
-
     setError(null);
     onFileSelect(file);
   };
-
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
-
   return (
     <div className={className}>
       <div
@@ -56,7 +46,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         onDragOver={handleDragOver}
       >
         <div className="text-center">
-          <CloudArrowUpIcon
+          <Icons.CloudArrowUpIcon
             className="mx-auto h-12 w-12 text-gray-300"
             aria-hidden="true"
           />

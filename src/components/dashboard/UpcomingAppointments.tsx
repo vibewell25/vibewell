@@ -1,10 +1,8 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { format } from 'date-fns';
-import { CalendarIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-
 interface Appointment {
   id: string;
   service: string;
@@ -12,14 +10,11 @@ interface Appointment {
   date: string;
   time: string;
 }
-
 interface UpcomingAppointmentsProps {
   appointments: Appointment[];
 }
-
 export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps) {
   const router = useRouter();
-
   if (appointments.length === 0) {
     return (
       <div className="bg-muted/20 rounded-lg p-6 text-center">
@@ -30,7 +25,6 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
       </div>
     );
   }
-
   return (
     <div className="space-y-4">
       {appointments.map((appointment) => (
@@ -39,7 +33,7 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
           className="flex items-start gap-4 rounded-lg border p-4"
         >
           <div className="mt-1">
-            <CalendarIcon className="h-5 w-5 text-blue-500" />
+            <Icons.CalendarIcon className="h-5 w-5 text-blue-500" />
           </div>
           <div className="flex-1 space-y-1">
             <p className="font-medium">{appointment.service}</p>

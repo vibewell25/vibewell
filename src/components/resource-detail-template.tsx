@@ -1,23 +1,11 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
-import { 
-  ArrowLeftIcon, 
-  ArrowDownTrayIcon,
-  DocumentTextIcon,
-  CheckCircleIcon,
-  CalculatorIcon,
-  ClipboardDocumentCheckIcon,
-  CalendarIcon,
-  ClockIcon,
-  UserIcon,
-  BookmarkIcon
-} from '@heroicons/react/24/outline';
 import { PremiumContentLock } from '@/components/premium-content-lock';
 import Link from 'next/link';
 import { Layout } from '@/components/layout';
@@ -26,7 +14,6 @@ import { addBookmark, removeBookmark, isBookmarked as checkIsBookmarked, trackRe
 import { getUserRating, saveRating, getAverageRating } from '@/lib/ratings';
 import { StarRating } from '@/components/star-rating';
 import { ResourceReview } from '@/components/resource-review';
-
 // Define the resource interface that can be extended by specific resource types
 export interface BaseResource {
   id: string;
@@ -43,7 +30,6 @@ export interface BaseResource {
   tags?: string[];
   type: 'resource' | 'tool' | 'article';
 }
-
 // Define props for the template component
 interface ResourceDetailTemplateProps {
   resource: BaseResource;
@@ -55,13 +41,11 @@ interface ResourceDetailTemplateProps {
   fetchRelatedResource?: (id: string) => BaseResource | undefined;
   onDownload?: (resource: BaseResource) => void;
 }
-
 // Analytics tracking function
 const trackResourceView = (resourceId: string, resourceName: string) => {
   // In a real app, this would send analytics data to your backend
   if (typeof window !== 'undefined') {
     const now = new Date().toISOString();
-    
     try {
       const viewData = JSON.parse(localStorage.getItem('resource_view_log') || '{}');
       viewData[resourceId] = { 
@@ -76,7 +60,6 @@ const trackResourceView = (resourceId: string, resourceName: string) => {
     }
   }
 };
-
 export function ResourceDetailTemplate({
   resource,
   resourceType,
@@ -92,14 +75,12 @@ export function ResourceDetailTemplate({
   const [averageRating, setAverageRating] = useState({ average: 0, count: 0 });
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isClient, setIsClient] = useState(false);
-
   // On mount, check if the resource is bookmarked and get ratings
   useEffect(() => {
     setIsClient(true);
     if (resource) {
       // Track view
       trackResourceView(resource.id, resource.title);
-      
       // Add to recent views
       trackRecentView({
         id: resource.id,
@@ -109,20 +90,16 @@ export function ResourceDetailTemplate({
         category: resource.category,
         url: window.location.pathname
       });
-      
       // Check if bookmarked
       setIsBookmarked(checkIsBookmarked(resource.id, resourceType));
-      
       // Get user rating if any
       const rating = getUserRating(resource.id, resourceType);
       setUserRating(rating);
-      
       // Get average rating
       const avgRating = getAverageRating(resource.id, resourceType);
       setAverageRating(avgRating);
     }
   }, [resource, resourceType]);
-
   // Handle bookmarking
   const toggleBookmark = () => {
     if (isBookmarked) {
@@ -140,19 +117,15 @@ export function ResourceDetailTemplate({
       setIsBookmarked(true);
     }
   };
-
   // Handle rating change
   const handleRatingChange = (rating: number) => {
     setUserRating(rating);
-    
     // Save the rating
     saveRating(resource.id, resourceType, rating);
-    
     // Update average rating
     const newAverage = getAverageRating(resource.id, resourceType);
     setAverageRating(newAverage);
   };
-
   // Handle download
   const handleDownload = () => {
     if (onDownload) {
@@ -163,11 +136,9 @@ export function ResourceDetailTemplate({
       // In a real app, this would trigger a download
     }
   };
-
   if (!resource) {
     return null;
   }
-
   // Get related resources if available
   const related = resource.relatedResources && Array.isArray(resource.relatedResources)
     ? resource.relatedResources
@@ -181,7 +152,6 @@ export function ResourceDetailTemplate({
       })
       .filter(Boolean) as BaseResource[]
     : [];
-
   // Render the resource detail page
   return (
     <Layout>
@@ -208,16 +178,14 @@ export function ResourceDetailTemplate({
               onClick={() => router.back()} 
               className="inline-flex items-center text-sm text-gray-600 hover:text-blue-600"
             >
-              <ArrowLeftIcon className="h-4 w-4 mr-1" /> Back
+              <Icons.ArrowLeftIcon className="h-4 w-4 mr-1" /> Back
             </button>
           </div>
-          
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Sidebar Navigation */}
             <div className="lg:col-span-1">
               {navigationComponent || <BusinessHubNavigation />}
             </div>
-            
             {/* Main Content */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -239,7 +207,6 @@ export function ResourceDetailTemplate({
                       )}
                     </div>
                   )}
-                  
                   <div className="p-6">
                     <div className="flex flex-wrap justify-between items-start gap-4">
                       <div>
@@ -248,19 +215,18 @@ export function ResourceDetailTemplate({
                         </Badge>
                         <h1 className="text-2xl md:text-3xl font-bold mb-2">{resource.title}</h1>
                         <div className="flex items-center text-sm text-gray-600 mb-4">
-                          <UserIcon className="h-4 w-4 mr-1" />
+                          <Icons.UserIcon className="h-4 w-4 mr-1" />
                           <span className="mr-4">{resource.author}</span>
-                          <CalendarIcon className="h-4 w-4 mr-1" />
+                          <Icons.CalendarIcon className="h-4 w-4 mr-1" />
                           <span className="mr-4">{new Date(resource.date).toLocaleDateString()}</span>
-                          <ClockIcon className="h-4 w-4 mr-1" />
+                          <Icons.ClockIcon className="h-4 w-4 mr-1" />
                           <span>{resource.readTime}</span>
                         </div>
                       </div>
-                      
                       <div className="flex items-center space-x-2">
                         {resource.downloadUrl && (
                           <Button onClick={handleDownload} className="flex items-center">
-                            <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
+                            <Icons.ArrowDownTrayIcon className="h-4 w-4 mr-2" />
                             Download
                           </Button>
                         )}
@@ -269,12 +235,11 @@ export function ResourceDetailTemplate({
                           className={`flex items-center ${isBookmarked ? 'text-yellow-500' : ''}`}
                           onClick={toggleBookmark}
                         >
-                          <BookmarkIcon className="h-4 w-4 mr-2" />
+                          <Icons.BookmarkIcon className="h-4 w-4 mr-2" />
                           {isBookmarked ? 'Saved' : 'Save'}
                         </Button>
                       </div>
                     </div>
-                    
                     <div className="mt-2 mb-6">
                       <div className="flex items-center">
                         <div className="mr-2">
@@ -291,7 +256,6 @@ export function ResourceDetailTemplate({
                         </span>
                       </div>
                     </div>
-                    
                     {/* Resource Tags */}
                     {resource.tags && resource.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-6">
@@ -307,7 +271,6 @@ export function ResourceDetailTemplate({
                     )}
                   </div>
                 </div>
-                
                 {/* Resource Content */}
                 <div className="p-6 border-t border-gray-100">
                   {resource.premium ? (
@@ -324,7 +287,6 @@ export function ResourceDetailTemplate({
                     />
                   )}
                 </div>
-                
                 {/* Reviews Section */}
                 <div className="p-6 border-t border-gray-100">
                   <ResourceReview
@@ -333,7 +295,6 @@ export function ResourceDetailTemplate({
                   />
                 </div>
               </div>
-              
               {/* Related Resources */}
               {related.length > 0 && (
                 <div className="mt-8">
@@ -349,7 +310,7 @@ export function ResourceDetailTemplate({
                           {relatedResource.title}
                         </h3>
                         <div className="flex items-center text-sm text-gray-500 mt-auto">
-                          <DocumentTextIcon className="h-4 w-4 mr-1" />
+                          <Icons.DocumentTextIcon className="h-4 w-4 mr-1" />
                           <span>{relatedResource.category}</span>
                         </div>
                       </Link>

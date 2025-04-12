@@ -1,11 +1,10 @@
+import { Icons } from '@/components/icons';
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { format } from 'date-fns';
-import { CalendarIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-
 interface Appointment {
   id: string;
   serviceName: string;
@@ -14,12 +13,10 @@ interface Appointment {
   providerName: string;
   status: 'confirmed' | 'pending' | 'cancelled';
 }
-
 export function UpcomingAppointments() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -36,10 +33,8 @@ export function UpcomingAppointments() {
         setIsLoading(false);
       }
     };
-
     fetchAppointments();
   }, []);
-
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -54,7 +49,6 @@ export function UpcomingAppointments() {
       </div>
     );
   }
-
   if (appointments.length === 0) {
     return (
       <Card>
@@ -67,7 +61,6 @@ export function UpcomingAppointments() {
       </Card>
     );
   }
-
   return (
     <div className="space-y-4">
       {appointments.map((appointment) => (
@@ -89,9 +82,9 @@ export function UpcomingAppointments() {
               </span>
             </div>
             <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-              <CalendarIcon className="h-4 w-4" />
+              <Icons.CalendarIcon className="h-4 w-4" />
               <span>{format(new Date(appointment.date), 'MMM d, yyyy')}</span>
-              <ClockIcon className="h-4 w-4 ml-2" />
+              <Icons.ClockIcon className="h-4 w-4 ml-2" />
               <span>{appointment.time}</span>
             </div>
           </CardContent>

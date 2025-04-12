@@ -1,13 +1,7 @@
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { Event } from '@/types/events';
 import { format, parseISO } from 'date-fns';
-import { 
-  UserGroupIcon, 
-  ChatBubbleLeftIcon,
-  PhotoIcon,
-  SparklesIcon,
-  MapPinIcon
-} from '@heroicons/react/24/outline';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -15,7 +9,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-
 interface EventGroupsNetworkingProps {
   event: Event;
   onGroupCreate: (name: string, description: string) => void;
@@ -23,7 +16,6 @@ interface EventGroupsNetworkingProps {
   onPhotoUpload: (file: File) => void;
   onNetworkingMatch: () => void;
 }
-
 export function EventGroupsNetworking({ 
   event, 
   onGroupCreate, 
@@ -38,21 +30,18 @@ export function EventGroupsNetworking({
   });
   const [newMessage, setNewMessage] = useState('');
   const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
-
   const handleGroupCreate = () => {
     if (newGroup.name.trim()) {
       onGroupCreate(newGroup.name, newGroup.description);
       setNewGroup({ name: '', description: '' });
     }
   };
-
   const handleMessageSend = () => {
     if (newMessage.trim()) {
       onMessageSend(newMessage);
       setNewMessage('');
     }
   };
-
   const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -60,32 +49,30 @@ export function EventGroupsNetworking({
       onPhotoUpload(file);
     }
   };
-
   return (
     <Card>
       <CardHeader>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="groups">
-              <UserGroupIcon className="h-4 w-4 mr-2" />
+              <Icons.UserGroupIcon className="h-4 w-4 mr-2" />
               Groups
             </TabsTrigger>
             <TabsTrigger value="chat">
-              <ChatBubbleLeftIcon className="h-4 w-4 mr-2" />
+              <Icons.ChatBubbleLeftIcon className="h-4 w-4 mr-2" />
               Chat
             </TabsTrigger>
             <TabsTrigger value="photos">
-              <PhotoIcon className="h-4 w-4 mr-2" />
+              <Icons.PhotoIcon className="h-4 w-4 mr-2" />
               Photos
             </TabsTrigger>
             <TabsTrigger value="networking">
-              <SparklesIcon className="h-4 w-4 mr-2" />
+              <Icons.SparklesIcon className="h-4 w-4 mr-2" />
               Networking
             </TabsTrigger>
           </TabsList>
         </Tabs>
       </CardHeader>
-
       <CardContent>
         <TabsContent value="groups">
           <div className="space-y-4">
@@ -113,7 +100,6 @@ export function EventGroupsNetworking({
                 </Button>
               </div>
             </div>
-
             {event.groupId && (
               <div className="space-y-2">
                 <Label>Event Group</Label>
@@ -130,7 +116,6 @@ export function EventGroupsNetworking({
             )}
           </div>
         </TabsContent>
-
         <TabsContent value="chat">
           <div className="space-y-4">
             {event.chatEnabled ? (
@@ -148,7 +133,6 @@ export function EventGroupsNetworking({
                     </Button>
                   </div>
                 </div>
-
                 <div className="space-y-2">
                   <Label>Chat Messages</Label>
                   <div className="space-y-2">
@@ -175,7 +159,6 @@ export function EventGroupsNetworking({
             )}
           </div>
         </TabsContent>
-
         <TabsContent value="photos">
           <div className="space-y-4">
             {event.photoGalleryEnabled ? (
@@ -188,7 +171,6 @@ export function EventGroupsNetworking({
                     onChange={handlePhotoSelect}
                   />
                 </div>
-
                 {event.photos && event.photos.length > 0 && (
                   <div className="space-y-2">
                     <Label>Event Photos</Label>
@@ -224,7 +206,6 @@ export function EventGroupsNetworking({
             )}
           </div>
         </TabsContent>
-
         <TabsContent value="networking">
           <div className="space-y-4">
             {event.networkingEnabled ? (
@@ -244,11 +225,9 @@ export function EventGroupsNetworking({
                     </div>
                   </div>
                 </div>
-
                 <Button onClick={onNetworkingMatch} className="w-full">
                   Find Networking Matches
                 </Button>
-
                 {/* Sample matches - in a real app, these would come from a matching service */}
                 <div className="space-y-2">
                   <Label>Suggested Matches</Label>

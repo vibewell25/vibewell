@@ -153,8 +153,8 @@ Object.defineProperty(window, 'matchMedia', {
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(), // deprecated
-    removeListener: jest.fn(), // deprecated
+    addListener: jest.fn(), // Deprecated
+    removeListener: jest.fn(), // Deprecated
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
@@ -282,26 +282,13 @@ jest.mock('ioredis', () => {
 
 // Mock Next.js navigation/router
 jest.mock('next/navigation', () => ({
-  useRouter: jest.fn().mockImplementation(() => ({
+  useRouter: () => ({
     push: jest.fn(),
     replace: jest.fn(),
     prefetch: jest.fn(),
-    back: jest.fn(),
-    forward: jest.fn(),
-    refresh: jest.fn(),
-    pathname: '/',
-    query: {},
-  })),
-  useSearchParams: jest.fn().mockImplementation(() => ({
-    get: jest.fn(),
-    getAll: jest.fn(),
-    has: jest.fn(),
-    keys: jest.fn(),
-    values: jest.fn(),
-    entries: jest.fn(),
-    toString: jest.fn(),
-  })),
-  usePathname: jest.fn().mockReturnValue('/'),
+  }),
+  usePathname: () => '/',
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 // Add TextEncoder and TextDecoder if not present
@@ -318,4 +305,18 @@ jest.mock('@/components/ui/use-toast', () => ({
 }));
 
 // Increase timeout for long-running tests
-jest.setTimeout(30000); 
+jest.setTimeout(30000);
+
+// Mock for ResizeObserver
+global.ResizeObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+}));
+
+// Mock for IntersectionObserver
+global.IntersectionObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+})); 

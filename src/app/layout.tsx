@@ -6,6 +6,8 @@ import { AuthProvider } from '@/contexts/auth-context';
 import { AnalyticsProvider } from '@/providers/analytics-provider';
 import { LiveAnnouncer } from '@/components/ui/live-announcer';
 import SkipLink from '@/components/SkipLink';
+import { ThemeProvider } from '@/components/theme-provider';
+import RootErrorBoundary from '@/components/RootErrorBoundary';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,13 +30,17 @@ export default function RootLayout({
       <body className={inter.className}>
         <SkipLink targetId="main-content" />
         <LiveAnnouncer />
-        <AnalyticsProvider>
-          <AuthProvider>
-            <main id="main-content">
-              {children}
-            </main>
-          </AuthProvider>
-        </AnalyticsProvider>
+        <ThemeProvider defaultTheme="system" enableSystem>
+          <AnalyticsProvider>
+            <AuthProvider>
+              <RootErrorBoundary>
+                <main id="main-content">
+                  {children}
+                </main>
+              </RootErrorBoundary>
+            </AuthProvider>
+          </AnalyticsProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

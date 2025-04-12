@@ -1,23 +1,20 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { useState } from 'react';
 import { ContentPlatform, ContentTeamMember } from '@/types/content-calendar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { PlusIcon } from '@heroicons/react/24/outline';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ColorPicker } from '@/components/ui/color-picker';
-
 interface ContentCalendarSidebarProps {
   platforms: ContentPlatform[];
   teamMembers: ContentTeamMember[];
   onAddPlatform: (platform: ContentPlatform) => void;
   onAddTeamMember: (member: ContentTeamMember) => void;
 }
-
 export function ContentCalendarSidebar({
   platforms,
   teamMembers,
@@ -28,20 +25,16 @@ export function ContentCalendarSidebar({
   const [newPlatformColor, setNewPlatformColor] = useState('#6200EA');
   const [platformsExpanded, setPlatformsExpanded] = useState(true);
   const [teamExpanded, setTeamExpanded] = useState(true);
-  
   const handleAddPlatform = () => {
     if (!newPlatformName.trim()) return;
-    
     onAddPlatform({
       id: (platforms.length + 1).toString(),
       name: newPlatformName,
       color: newPlatformColor
     });
-    
     setNewPlatformName('');
     setNewPlatformColor('#6200EA');
   };
-  
   return (
     <div className="w-64 space-y-6">
       {/* Platforms Section */}
@@ -59,7 +52,6 @@ export function ContentCalendarSidebar({
             </Button>
           </div>
         </CardHeader>
-        
         {platformsExpanded && (
           <CardContent className="p-3 pt-0">
             <ScrollArea className="h-40 pr-3">
@@ -75,7 +67,6 @@ export function ContentCalendarSidebar({
                 ))}
               </ul>
             </ScrollArea>
-            
             <div className="mt-3 pt-3 border-t space-y-2">
               <div className="flex space-x-2">
                 <div className="flex-1">
@@ -91,21 +82,19 @@ export function ContentCalendarSidebar({
                   onChange={setNewPlatformColor}
                 />
               </div>
-              
               <Button
                 size="sm"
                 className="w-full h-8"
                 onClick={handleAddPlatform}
                 disabled={!newPlatformName.trim()}
               >
-                <PlusIcon className="h-4 w-4 mr-1" />
+                <Icons.PlusIcon className="h-4 w-4 mr-1" />
                 Add Platform
               </Button>
             </div>
           </CardContent>
         )}
       </Card>
-      
       {/* Team Members Section */}
       <Card>
         <CardHeader className="py-3 px-4">
@@ -121,7 +110,6 @@ export function ContentCalendarSidebar({
             </Button>
           </div>
         </CardHeader>
-        
         {teamExpanded && (
           <CardContent className="p-3 pt-0">
             <ScrollArea className="h-40 pr-3">
@@ -140,7 +128,6 @@ export function ContentCalendarSidebar({
                 ))}
               </ul>
             </ScrollArea>
-            
             <Button
               variant="outline"
               size="sm"
@@ -150,13 +137,12 @@ export function ContentCalendarSidebar({
                 alert("Team member management will be implemented in the next phase");
               }}
             >
-              <PlusIcon className="h-4 w-4 mr-1" />
+              <Icons.PlusIcon className="h-4 w-4 mr-1" />
               Add Team Member
             </Button>
           </CardContent>
         )}
       </Card>
-      
       {/* Content Types Filter */}
       <Card>
         <CardHeader className="py-3 px-4">
@@ -179,7 +165,6 @@ export function ContentCalendarSidebar({
           </div>
         </CardContent>
       </Card>
-      
       {/* Tags Filter */}
       <Card>
         <CardHeader className="py-3 px-4">

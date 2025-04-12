@@ -1,8 +1,7 @@
+import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { BellIcon, CheckIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
-
 interface Notification {
   id: string;
   title: string;
@@ -12,14 +11,12 @@ interface Notification {
   createdAt: string;
   link?: string;
 }
-
 interface Pagination {
   total: number;
   page: number;
   limit: number;
   totalPages: number;
 }
-
 export const NotificationList = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
@@ -30,16 +27,13 @@ export const NotificationList = () => {
   });
   const [loading, setLoading] = useState(true);
   const [selectedNotifications, setSelectedNotifications] = useState<string[]>([]);
-
   const fetchNotifications = async (page: number = 1) => {
     try {
       setLoading(true);
       const response = await fetch(`/api/notifications?page=${page}&limit=${pagination.limit}`);
-      
       if (!response.ok) {
         throw new Error('Failed to fetch notifications');
       }
-
       const data = await response.json();
       setNotifications(data.notifications);
       setPagination(data.pagination);
@@ -50,11 +44,9 @@ export const NotificationList = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchNotifications();
   }, []);
-
   const handleMarkAsRead = async (notificationIds: string[]) => {
     try {
       const response = await fetch('/api/notifications', {
@@ -64,11 +56,9 @@ export const NotificationList = () => {
         },
         body: JSON.stringify({ notificationIds }),
       });
-
       if (!response.ok) {
         throw new Error('Failed to mark notifications as read');
       }
-
       // Update local state
       setNotifications(prev =>
         prev.map(notification =>
@@ -77,7 +67,6 @@ export const NotificationList = () => {
             : notification
         )
       );
-
       setSelectedNotifications([]);
       toast.success('Notifications marked as read');
     } catch (error) {
@@ -85,11 +74,9 @@ export const NotificationList = () => {
       toast.error('Failed to mark notifications as read');
     }
   };
-
   const handlePageChange = (newPage: number) => {
     fetchNotifications(newPage);
   };
-
   const handleSelectNotification = (notificationId: string) => {
     setSelectedNotifications(prev =>
       prev.includes(notificationId)
@@ -97,7 +84,6 @@ export const NotificationList = () => {
         : [...prev, notificationId]
     );
   };
-
   const getNotificationTypeClass = (type: string) => {
     switch (type) {
       case 'success':
@@ -110,7 +96,6 @@ export const NotificationList = () => {
         return 'bg-gray-50 text-gray-700';
     }
   };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -118,7 +103,6 @@ export const NotificationList = () => {
       </div>
     );
   }
-
   return (
     <div className="bg-white shadow rounded-lg">
       <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
@@ -131,17 +115,16 @@ export const NotificationList = () => {
               onClick={() => handleMarkAsRead(selectedNotifications)}
               className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              <CheckIcon className="h-4 w-4 mr-1" />
+              <Icons.CheckIcon className="h-4 w-4 mr-1" />
               Mark as Read
             </button>
           )}
         </div>
       </div>
-
       <div className="divide-y divide-gray-200">
         {notifications.length === 0 ? (
           <div className="text-center py-12">
-            <BellIcon className="mx-auto h-12 w-12 text-gray-400" />
+            <Icons.BellIcon className="mx-auto h-12 w-12 text-gray-400" />
             <h3 className="mt-2 text-sm font-medium text-gray-900">No notifications</h3>
             <p className="mt-1 text-sm text-gray-500">
               You're all caught up!
@@ -192,7 +175,6 @@ export const NotificationList = () => {
           ))
         )}
       </div>
-
       {pagination.totalPages > 1 && (
         <div className="px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
           <div className="flex-1 flex justify-between sm:hidden">

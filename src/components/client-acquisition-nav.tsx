@@ -1,34 +1,22 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  UserPlusIcon, 
-  DocumentTextIcon, 
-  PresentationChartBarIcon,
-  UsersIcon,
-  ArrowTrendingUpIcon,
-  BeakerIcon
-} from '@heroicons/react/24/outline';
-
 const clientAcquisitionCategories = [
-  { name: 'Overview', href: '/business-hub/client-acquisition', icon: <UserPlusIcon className="h-5 w-5" /> },
-  { name: 'Resources', href: '/business-hub/client-acquisition/resources', icon: <DocumentTextIcon className="h-5 w-5" /> },
-  { name: 'Tools', href: '/business-hub/client-acquisition/tools', icon: <BeakerIcon className="h-5 w-5" /> },
-  { name: 'Strategies', href: '/business-hub/client-acquisition/strategies', icon: <ArrowTrendingUpIcon className="h-5 w-5" /> },
-  { name: 'Webinars', href: '/business-hub/client-acquisition/webinars', icon: <PresentationChartBarIcon className="h-5 w-5" /> },
-  { name: 'Success Stories', href: '/business-hub/client-acquisition/success-stories', icon: <UsersIcon className="h-5 w-5" /> },
+  { name: 'Overview', href: '/business-hub/client-acquisition', icon: <Icons.UserPlusIcon className="h-5 w-5" /> },
+  { name: 'Resources', href: '/business-hub/client-acquisition/resources', icon: <Icons.DocumentTextIcon className="h-5 w-5" /> },
+  { name: 'Tools', href: '/business-hub/client-acquisition/tools', icon: <Icons.BeakerIcon className="h-5 w-5" /> },
+  { name: 'Strategies', href: '/business-hub/client-acquisition/strategies', icon: <Icons.ArrowTrendingUpIcon className="h-5 w-5" /> },
+  { name: 'Webinars', href: '/business-hub/client-acquisition/webinars', icon: <Icons.PresentationChartBarIcon className="h-5 w-5" /> },
+  { name: 'Success Stories', href: '/business-hub/client-acquisition/success-stories', icon: <Icons.UsersIcon className="h-5 w-5" /> },
 ];
-
 export function ClientAcquisitionNav() {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(true);
-
   const isActive = (path: string) => {
     return pathname === path || pathname?.startsWith(`${path}/`);
   };
-
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
       <div 
@@ -36,14 +24,13 @@ export function ClientAcquisitionNav() {
         onClick={() => setExpanded(!expanded)}
       >
         <h3 className="font-semibold text-lg flex items-center">
-          <UserPlusIcon className="h-5 w-5 mr-2 text-green-600" />
+          <Icons.UserPlusIcon className="h-5 w-5 mr-2 text-green-600" />
           Client Acquisition
         </h3>
         <button className="text-gray-500 hover:text-gray-700">
           {expanded ? '−' : '+'}
         </button>
       </div>
-      
       {expanded && (
         <nav className="mt-2 space-y-1">
           {clientAcquisitionCategories.map((item) => (

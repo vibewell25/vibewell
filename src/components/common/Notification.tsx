@@ -1,13 +1,11 @@
+import { Icons } from '@/components/icons';
 import React from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-
 interface NotificationProps {
   type?: 'success' | 'error' | 'warning' | 'info';
   message: string;
   onClose?: () => void;
   className?: string;
 }
-
 export const Notification: React.FC<NotificationProps> = ({
   type = 'info',
   message,
@@ -20,7 +18,6 @@ export const Notification: React.FC<NotificationProps> = ({
     warning: 'bg-yellow-50 text-yellow-800 border-yellow-200',
     info: 'bg-blue-50 text-blue-800 border-blue-200',
   };
-
   return (
     <div
       className={`rounded-md p-4 border ${typeClasses[type]} ${className}`}
@@ -37,7 +34,7 @@ export const Notification: React.FC<NotificationProps> = ({
             className="ml-4 flex-shrink-0 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2"
           >
             <span className="sr-only">Close</span>
-            <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+            <Icons.XMarkIcon className="h-5 w-5" aria-hidden="true" />
           </button>
         )}
       </div>

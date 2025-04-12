@@ -1,13 +1,11 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { StarIcon, GiftIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
-
 interface LoyaltyTransaction {
   id: string;
   points: number;
@@ -15,7 +13,6 @@ interface LoyaltyTransaction {
   description: string;
   date: string;
 }
-
 interface LoyaltyData {
   points: number;
   level: string;
@@ -25,11 +22,9 @@ interface LoyaltyData {
   pointsToNextLevel: number;
   transactions: LoyaltyTransaction[];
 }
-
 export function LoyaltyPoints() {
   const [data, setData] = useState<LoyaltyData | null>(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchLoyaltyData = async () => {
       try {
@@ -46,10 +41,8 @@ export function LoyaltyPoints() {
         setLoading(false);
       }
     };
-
     fetchLoyaltyData();
   }, []);
-
   if (loading) {
     return (
       <div className="space-y-6">
@@ -63,7 +56,6 @@ export function LoyaltyPoints() {
       </div>
     );
   }
-
   if (!data) {
     return (
       <div className="text-center py-12">
@@ -71,7 +63,6 @@ export function LoyaltyPoints() {
       </div>
     );
   }
-
   return (
     <div className="space-y-6">
       {/* Points and Level Card */}
@@ -97,30 +88,28 @@ export function LoyaltyPoints() {
           )}
         </CardContent>
       </Card>
-
       {/* Benefits Card */}
       <Card>
         <CardContent className="pt-6">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <GiftIcon className="h-5 w-5" />
+            <Icons.GiftIcon className="h-5 w-5" />
             Current Benefits
           </h3>
           <ul className="space-y-2">
             {data.benefits.map((benefit, index) => (
               <li key={index} className="flex items-center gap-2">
-                <StarIcon className="h-4 w-4 text-yellow-400" />
+                <Icons.StarIcon className="h-4 w-4 text-yellow-400" />
                 <span>{benefit}</span>
               </li>
             ))}
           </ul>
         </CardContent>
       </Card>
-
       {/* Recent Transactions Card */}
       <Card>
         <CardContent className="pt-6">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <ClockIcon className="h-5 w-5" />
+            <Icons.ClockIcon className="h-5 w-5" />
             Recent Transactions
           </h3>
           <div className="space-y-4">

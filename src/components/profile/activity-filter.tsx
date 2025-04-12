@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter, Calendar } from "lucide-react";
-import { DateRangePicker } from "@/components/ui/date-range-picker";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 interface ActivityFilterProps {
@@ -73,9 +73,42 @@ export function ActivityFilter({
 
       <div className="space-y-2">
         <Label htmlFor="date-range">Date Range</Label>
-        <DateRangePicker
-          value={dateRange}
-          onChange={handleDateRangeChange}
-          className="w-full"
-        />
- 
+        <div className="flex items-center gap-2">
+          <Input
+            type="date"
+            value={dateRange.from.toISOString().substring(0, 10)}
+            onChange={(e) => {
+              const newDate = new Date(e.target.value);
+              const newRange = { from: newDate, to: dateRange.to };
+              handleDateRangeChange(newRange);
+            }}
+            className="w-full"
+          />
+          <span className="text-muted-foreground">to</span>
+          <Input
+            type="date"
+            value={dateRange.to.toISOString().substring(0, 10)}
+            onChange={(e) => {
+              const newDate = new Date(e.target.value);
+              const newRange = { from: dateRange.from, to: newDate };
+              handleDateRangeChange(newRange);
+            }}
+            className="w-full"
+          />
+          <Button 
+            variant="outline" 
+            size="icon"
+            onClick={() => {
+              const today = new Date();
+              const thirtyDaysAgo = new Date(today);
+              thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+              handleDateRangeChange({ from: thirtyDaysAgo, to: today });
+            }}
+          >
+            <Calendar className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+} 

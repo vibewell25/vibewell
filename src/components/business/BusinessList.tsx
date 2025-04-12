@@ -1,11 +1,9 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { StarIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import { Badge } from '@/components/ui/badge';
-
 interface Business {
   id: string;
   name: string;
@@ -17,14 +15,11 @@ interface Business {
   location: string;
   services: string[];
 }
-
 interface BusinessListProps {
   businesses: Business[];
 }
-
 export function BusinessList({ businesses }: BusinessListProps) {
   const router = useRouter();
-
   return (
     <div className="space-y-4">
       {businesses.map((business) => (
@@ -43,7 +38,7 @@ export function BusinessList({ businesses }: BusinessListProps) {
                   <h3 className="text-xl font-semibold mb-1">{business.name}</h3>
                   <div className="flex items-center gap-2 mb-2">
                     <div className="flex items-center">
-                      <StarIcon className="h-4 w-4 text-yellow-500" />
+                      <Icons.StarIcon className="h-4 w-4 text-yellow-500" />
                       <span className="ml-1 text-sm font-medium">
                         {business.rating.toFixed(1)}
                       </span>
@@ -55,16 +50,13 @@ export function BusinessList({ businesses }: BusinessListProps) {
                 </div>
                 <Badge variant="outline">{business.category}</Badge>
               </div>
-
               <p className="text-muted-foreground mb-4">{business.description}</p>
-
               <div className="flex items-center gap-2 mb-4">
-                <MapPinIcon className="h-4 w-4 text-muted-foreground" />
+                <Icons.MapPinIcon className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">
                   {business.location}
                 </span>
               </div>
-
               <div className="flex flex-wrap gap-2 mb-4">
                 {business.services.slice(0, 3).map((service) => (
                   <Badge key={service} variant="secondary">
@@ -77,7 +69,6 @@ export function BusinessList({ businesses }: BusinessListProps) {
                   </Badge>
                 )}
               </div>
-
               <div className="flex gap-2">
                 <Button
                   onClick={() => router.push(`/business/${business.id}`)}

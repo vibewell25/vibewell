@@ -1,15 +1,9 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getHighestRatedItems } from '@/lib/ratings';
 import { StarRating } from '@/components/star-rating';
-import { 
-  DocumentTextIcon,
-  CalculatorIcon,
-  NewspaperIcon
-} from '@heroicons/react/24/outline';
-
 interface TopResourceItem {
   id: string;
   type: string;
@@ -20,23 +14,18 @@ interface TopResourceItem {
   average: number;
   count: number;
 }
-
 interface TopRatedResourcesProps {
   limit?: number;
 }
-
 export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
   const [resources, setResources] = useState<TopResourceItem[]>([]);
   const [loading, setLoading] = useState(true);
-  
   // Load top rated resources
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setLoading(true);
-      
       // Get highest rated items
       const highestRated = getHighestRatedItems(limit);
-      
       // We need to fetch item details for these items
       // In a real app, this would be an API call
       // For now, we'll use mock data
@@ -50,35 +39,30 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
         average: rating.average,
         count: rating.count
       }));
-      
       setResources(items);
       setLoading(false);
     }
   }, [limit]);
-  
   // Mock data helpers - in a real app, these would be API calls
   const getMockTitle = (id: string, type: string): string => {
     return `Top Rated ${type.charAt(0).toUpperCase() + type.slice(1)}`;
   };
-  
   const getMockDescription = (id: string, type: string): string => {
     return `A highly rated ${type} with an ID of ${id}`;
   };
-  
   // Render icon based on resource type
   const renderTypeIcon = (type: string) => {
     switch (type) {
       case 'resource':
-        return <DocumentTextIcon className="h-5 w-5 text-blue-500" />;
+        return <Icons.DocumentTextIcon className="h-5 w-5 text-blue-500" />;
       case 'tool':
-        return <CalculatorIcon className="h-5 w-5 text-green-500" />;
+        return <Icons.CalculatorIcon className="h-5 w-5 text-green-500" />;
       case 'article':
-        return <NewspaperIcon className="h-5 w-5 text-purple-500" />;
+        return <Icons.NewspaperIcon className="h-5 w-5 text-purple-500" />;
       default:
-        return <DocumentTextIcon className="h-5 w-5 text-gray-500" />;
+        return <Icons.DocumentTextIcon className="h-5 w-5 text-gray-500" />;
     }
   };
-  
   if (loading) {
     return (
       <div className="p-4 bg-white shadow-sm rounded-lg">
@@ -97,7 +81,6 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
       </div>
     );
   }
-  
   if (resources.length === 0) {
     return (
       <div className="p-4 bg-white shadow-sm rounded-lg">
@@ -108,7 +91,6 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
       </div>
     );
   }
-  
   return (
     <div className="p-4 bg-white shadow-sm rounded-lg">
       <h3 className="text-lg font-medium mb-4">Top Rated Resources</h3>

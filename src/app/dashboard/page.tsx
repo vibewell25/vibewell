@@ -16,6 +16,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { MobileLayout } from '@/components/layout/MobileLayout';
+import Link from 'next/link';
+import { ChevronRightIcon, UserIcon } from '@heroicons/react/24/outline';
 
 interface WellnessProgress {
   totalContent: number;
@@ -81,6 +84,14 @@ interface DashboardData {
   }>;
 }
 
+interface User {
+  name: string;
+  bookingsThisWeek: number;
+  earnings: string;
+  role: string;
+  businessType: string;
+}
+
 export default function DashboardPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -88,6 +99,13 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
+  const [userState, setUserState] = useState<User>({
+    name: 'Maria',
+    bookingsThisWeek: 4,
+    earnings: '€900',
+    role: 'Admin',
+    businessType: 'Web-Based Panel'
+  });
 
   useEffect(() => {
     if (!loading && !user) {
@@ -175,248 +193,73 @@ export default function DashboardPage() {
   }
 
   return (
-    <Layout>
-      <div className="container-app py-12">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
-          <p className="text-muted-foreground">
-            Welcome back, {user.name}! Here's your wellness journey overview.
-          </p>
+    <MobileLayout>
+      <div className="px-5 py-6">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <p className="text-sm text-gray-500">He Kōrero Yourservii</p>
+            <h1 className="text-2xl font-bold">Hi, {user.name}</h1>
+          </div>
+          <div className="relative">
+            <Link href="/notifications">
+              <BellIcon className="w-6 h-6 text-gray-500" />
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                {dashboardData?.notifications.filter(n => !n.read).length}
+              </span>
+            </Link>
+          </div>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid grid-cols-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="health">Health</TabsTrigger>
-            <TabsTrigger value="goals">Goals</TabsTrigger>
-            <TabsTrigger value="notifications">
-              Notifications
-              {dashboardData?.notifications.filter(n => !n.read).length > 0 && (
-                <Badge className="ml-2" variant="secondary">
-                  {dashboardData.notifications.filter(n => !n.read).length}
-                </Badge>
-              )}
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Wellness Progress</CardTitle>
-                  <ChartBarIcon className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {dashboardData?.wellnessProgress.completedContent} / {dashboardData?.wellnessProgress.totalContent}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Content completed
-                  </p>
-                  <Progress
-                    value={dashboardData?.wellnessProgress.percentage}
-                    className="mt-2"
-                  />
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Health Score</CardTitle>
-                  <HeartIcon className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {dashboardData?.healthMetrics.stressLevel}%
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Stress level
-                  </p>
-                  <Progress
-                    value={100 - (dashboardData?.healthMetrics.stressLevel || 0)}
-                    className="mt-2"
-                  />
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Daily Steps</CardTitle>
-                  <BoltIcon className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {dashboardData?.healthMetrics.steps.toLocaleString()}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Steps today
-                  </p>
-                  <Progress
-                    value={(dashboardData?.healthMetrics.steps || 0) / 10000 * 100}
-                    className="mt-2"
-                  />
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Sleep Quality</CardTitle>
-                  <ClockIcon className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {dashboardData?.healthMetrics.sleepHours}h
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Last night
-                  </p>
-                  <Progress
-                    value={(dashboardData?.healthMetrics.sleepHours || 0) / 8 * 100}
-                    className="mt-2"
-                  />
-                </CardContent>
-              </Card>
+        <Card className="mb-4">
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-lg font-semibold">Booking Overview</h2>
+              <Link href="/bookings" className="flex items-center text-primary text-sm">
+                <span>View</span>
+                <ChevronRightIcon className="w-4 h-4 ml-1" />
+              </Link>
             </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div>
-                <h2 className="text-xl font-semibold mb-4">Health Trends</h2>
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="h-[300px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={dashboardData?.healthMetrics.history}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="date" />
-                          <YAxis />
-                          <Tooltip />
-                          <Line type="monotone" dataKey="heartRate" stroke="#8884d8" />
-                          <Line type="monotone" dataKey="steps" stroke="#82ca9d" />
-                          <Line type="monotone" dataKey="sleepHours" stroke="#ffc658" />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div>
-                <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  <Button variant="outline" className="h-24">
-                    <CalendarIcon className="h-6 w-6 mr-2" />
-                    Book Appointment
-                  </Button>
-                  <Button variant="outline" className="h-24">
-                    <TargetIcon className="h-6 w-6 mr-2" />
-                    Set Goals
-                  </Button>
-                  <Button variant="outline" className="h-24">
-                    <HeartIcon className="h-6 w-6 mr-2" />
-                    Track Health
-                  </Button>
-                  <Button variant="outline" className="h-24">
-                    <BellIcon className="h-6 w-6 mr-2" />
-                    View Notifications
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div>
-                <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
-                <ActivityFeed activities={dashboardData?.activities || []} />
+            <div className="mt-4 flex items-center">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                <span className="text-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                  </svg>
+                </span>
               </div>
               <div>
-                <h2 className="text-xl font-semibold mb-4">Upcoming Appointments</h2>
-                <UpcomingAppointments appointments={dashboardData?.upcomingAppointments || []} />
+                <p className="text-sm text-gray-500">Bookings this week</p>
+                <p className="text-xl font-bold">{dashboardData?.earnings}</p>
               </div>
             </div>
-          </TabsContent>
+          </CardContent>
+        </Card>
 
-          <TabsContent value="health" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Heart Rate History</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={dashboardData?.healthMetrics.history}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="date" />
-                        <YAxis />
-                        <Tooltip />
-                        <Line type="monotone" dataKey="heartRate" stroke="#8884d8" />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Sleep Patterns</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={dashboardData?.healthMetrics.history}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="date" />
-                        <YAxis />
-                        <Tooltip />
-                        <Line type="monotone" dataKey="sleepHours" stroke="#ffc658" />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
+        <Card className="mb-4">
+          <CardContent className="p-4">
+            <div className="flex items-center">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                <UserIcon className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">{user.role}</p>
+                <p className="text-base font-medium">{user.businessType}</p>
+              </div>
             </div>
-          </TabsContent>
+          </CardContent>
+        </Card>
 
-          <TabsContent value="goals" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {dashboardData?.wellnessProgress.goals.map((goal) => (
-                <Card key={goal.id}>
-                  <CardHeader>
-                    <CardTitle className="text-lg">{goal.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">
-                      {goal.current} / {goal.target} {goal.unit}
-                    </div>
-                    <Progress
-                      value={(goal.current / goal.target) * 100}
-                      className="mt-2"
-                    />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
+        <div className="mt-8">
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-lg font-semibold">Clients</h2>
+            <p className="text-sm text-gray-500">Notification</p>
+          </div>
 
-          <TabsContent value="notifications" className="space-y-6">
-            <div className="space-y-4">
-              {dashboardData?.notifications.map((notification) => (
-                <Card key={notification.id} className={!notification.read ? 'border-primary' : ''}>
-                  <CardHeader>
-                    <CardTitle className="text-lg">{notification.title}</CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                      {format(new Date(notification.date), 'MMM d, yyyy h:mm a')}
-                    </p>
-                  </CardHeader>
-                  <CardContent>
-                    <p>{notification.message}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+          <div className="space-y-4">
+            {/* This would be a list of clients or notifications */}
+          </div>
+        </div>
       </div>
-    </Layout>
+    </MobileLayout>
   );
 } 

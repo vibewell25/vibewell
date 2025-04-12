@@ -5,6 +5,7 @@ import { rest } from 'msw';
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LoginPage from '@/app/login/page';
+import * as React from 'react';
 
 // Mock API server
 const server = setupServer(
@@ -81,7 +82,7 @@ describe('Login Page', () => {
   });
 
   test('renders login form', async () => {
-    render(<LoginPage />);
+    render(React.createElement(LoginPage));
     
     // Check that form elements are present
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
@@ -90,7 +91,7 @@ describe('Login Page', () => {
   });
 
   test('validates user input', async () => {
-    render(<LoginPage />);
+    render(React.createElement(LoginPage));
     
     // Submit with empty fields
     const submitButton = screen.getByRole('button', { name: /sign in/i });
@@ -106,7 +107,7 @@ describe('Login Page', () => {
   });
 
   test('shows error message for invalid credentials', async () => {
-    render(<LoginPage />);
+    render(React.createElement(LoginPage));
     
     // Fill in form with invalid credentials
     await act(async () => {
@@ -127,7 +128,7 @@ describe('Login Page', () => {
   });
 
   test('successfully logs in with valid credentials', async () => {
-    render(<LoginPage />);
+    render(React.createElement(LoginPage));
     
     // Fill in form with valid credentials
     await act(async () => {

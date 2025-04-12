@@ -1,15 +1,13 @@
+import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
-import { PaperAirplaneIcon, MagnifyingGlassIcon, EllipsisHorizontalIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
-
 export interface Participant {
   id: string;
   name: string;
   avatar?: string;
   lastSeen?: string;
 }
-
 export interface Message {
   id: string;
   senderId: string;
@@ -17,14 +15,12 @@ export interface Message {
   timestamp: string;
   read: boolean;
 }
-
 export interface Conversation {
   id: string;
   participants: Participant[];
   messages: Message[];
   unreadCount: number;
 }
-
 interface MessagingProps {
   conversations: Conversation[];
   currentUserId: string;
@@ -36,7 +32,6 @@ interface MessagingProps {
   defaultSelectedConversation?: string;
   loading?: boolean;
 }
-
 export function Messaging({
   conversations,
   currentUserId,
@@ -52,89 +47,72 @@ export function Messaging({
   const [newMessage, setNewMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
-
   useEffect(() => {
     // Default to first conversation if none selected and we have conversations
     if (conversations.length > 0 && !selectedConversation) {
       setSelectedConversation(conversations[0].id);
     }
-    
     // Update selected conversation if defaultSelectedConversation changes
     if (defaultSelectedConversation && defaultSelectedConversation !== selectedConversation) {
       setSelectedConversation(defaultSelectedConversation);
     }
   }, [conversations, selectedConversation, defaultSelectedConversation]);
-
   // Filter conversations based on search query
   const filteredConversations = conversations.filter(conv => {
     const otherParticipant = conv.participants.find(p => p.id !== currentUserId);
     return otherParticipant?.name.toLowerCase().includes(searchQuery.toLowerCase());
   });
-
   // Get the currently selected conversation
   const currentConversation = conversations.find(conv => conv.id === selectedConversation);
-
   // Get the other participant in the conversation
   const otherParticipant = currentConversation?.participants.find(p => p.id !== currentUserId);
-
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!newMessage.trim() || !selectedConversation || loading) return;
-    
     onSendMessage(selectedConversation, newMessage);
     setNewMessage('');
   };
-
   const selectConversation = (conversationId: string) => {
     setSelectedConversation(conversationId);
     if (onConversationSelect) {
       onConversationSelect(conversationId);
     }
   };
-  
   const handleDeleteClick = (e: React.MouseEvent, conversationId: string) => {
     e.stopPropagation(); // Prevent triggering conversation selection
     setShowDeleteConfirm(conversationId);
   };
-  
   const confirmDelete = (conversationId: string) => {
     if (onDeleteConversation) {
       onDeleteConversation(conversationId);
     }
     setShowDeleteConfirm(null);
-    
     // If deleted conversation was selected, clear selection
     if (conversationId === selectedConversation) {
       setSelectedConversation(null);
     }
   };
-  
   const cancelDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowDeleteConfirm(null);
   };
-
   const formatMessageTime = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();
     const isToday = date.getDate() === now.getDate() &&
                     date.getMonth() === now.getMonth() &&
                     date.getFullYear() === now.getFullYear();
-    
     if (isToday) {
       return format(date, 'HH:mm');
     } else {
       return format(date, 'MMM d');
     }
   };
-
   const formatLastSeen = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
     const diffMins = Math.floor(diffMs / 60000);
-    
     if (diffMins < 1) {
       return 'Just now';
     } else if (diffMins < 60) {
@@ -146,7 +124,6 @@ export function Messaging({
       return format(date, 'MMM d, yyyy');
     }
   };
-
   if (loading) {
     return (
       <div className={twMerge("flex justify-center items-center", height, className)}>
@@ -154,14 +131,13 @@ export function Messaging({
       </div>
     );
   }
-
   return (
     <div className={twMerge("grid grid-cols-1 md:grid-cols-3 gap-6", height, className)}>
       {/* Conversations List */}
       <div className="md:col-span-1 border rounded-lg overflow-hidden flex flex-col h-full">
         <div className="p-4 border-b">
           <div className="relative">
-            <MagnifyingGlassIcon className="absolute top-1/2 left-3 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Icons.MagnifyingGlassIcon className="absolute top-1/2 left-3 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search conversations"
@@ -171,7 +147,6 @@ export function Messaging({
             />
           </div>
         </div>
-        
         <div className="flex-grow overflow-y-auto">
           {filteredConversations.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full p-4 text-center">
@@ -190,7 +165,6 @@ export function Messaging({
               {filteredConversations.map((conversation) => {
                 const otherParticipant = conversation.participants.find(p => p.id !== currentUserId);
                 const lastMessage = conversation.messages[conversation.messages.length - 1];
-                
                 return (
                   <div 
                     key={conversation.id}
@@ -213,7 +187,6 @@ export function Messaging({
                         <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-background"></span>
                       )}
                     </div>
-                    
                     <div className="flex-grow min-w-0">
                       <div className="flex justify-between items-center">
                         <h3 className="font-medium truncate">{otherParticipant?.name}</h3>
@@ -232,7 +205,6 @@ export function Messaging({
                         )}
                       </div>
                     </div>
-                    
                     {/* Delete button */}
                     {onDeleteConversation && (
                       <button
@@ -240,10 +212,9 @@ export function Messaging({
                         onClick={(e) => handleDeleteClick(e, conversation.id)}
                         aria-label="Delete conversation"
                       >
-                        <TrashIcon className="h-4 w-4" />
+                        <Icons.TrashIcon className="h-4 w-4" />
                       </button>
                     )}
-                    
                     {/* Delete confirmation */}
                     {showDeleteConfirm === conversation.id && (
                       <div className="absolute inset-0 bg-white/95 flex items-center justify-center z-10">
@@ -273,7 +244,6 @@ export function Messaging({
           )}
         </div>
       </div>
-
       {/* Chat Area */}
       <div className="md:col-span-2 border rounded-lg overflow-hidden flex flex-col h-full">
         {selectedConversation && currentConversation ? (
@@ -308,15 +278,14 @@ export function Messaging({
                     onClick={(e) => handleDeleteClick(e, currentConversation.id)}
                     aria-label="Delete conversation"
                   >
-                    <TrashIcon className="h-5 w-5" />
+                    <Icons.TrashIcon className="h-5 w-5" />
                   </button>
                 )}
                 <button className="text-muted-foreground hover:text-primary">
-                  <EllipsisHorizontalIcon className="h-6 w-6" />
+                  <Icons.EllipsisHorizontalIcon className="h-6 w-6" />
                 </button>
               </div>
             </div>
-            
             {/* Chat Messages */}
             <div className="flex-grow overflow-y-auto p-4 space-y-4">
               {currentConversation.messages.length === 0 ? (
@@ -328,7 +297,6 @@ export function Messaging({
                 currentConversation.messages.map((message) => {
                   const isCurrentUser = message.senderId === currentUserId;
                   const sender = currentConversation.participants.find(p => p.id === message.senderId);
-                  
                   return (
                     <div key={message.id} className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
                       {!isCurrentUser && (
@@ -358,7 +326,6 @@ export function Messaging({
                 })
               )}
             </div>
-            
             {/* Message Input */}
             <div className="p-4 border-t">
               <form onSubmit={handleSendMessage} className="flex items-center space-x-2">
@@ -374,7 +341,7 @@ export function Messaging({
                   disabled={!newMessage.trim() || loading}
                   className="btn-primary !p-2 disabled:opacity-50"
                 >
-                  <PaperAirplaneIcon className="h-5 w-5" />
+                  <Icons.PaperAirplaneIcon className="h-5 w-5" />
                 </button>
               </form>
             </div>

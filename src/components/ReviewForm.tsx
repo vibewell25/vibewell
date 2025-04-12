@@ -1,19 +1,15 @@
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
-import { StarIcon } from '@heroicons/react/24/solid';
-import { StarIcon as StarOutlineIcon } from '@heroicons/react/24/outline';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-
 // Define form schema with zod
 const reviewSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters').max(100, 'Title must be at most 100 characters'),
   text: z.string().min(10, 'Review text must be at least 10 characters').max(1000, 'Review text must be at most 1000 characters'),
   rating: z.number().min(1, 'Please select a rating').max(5, 'Maximum rating is 5 stars')
 });
-
 type ReviewFormInputs = z.infer<typeof reviewSchema>;
-
 interface ReviewFormProps {
   providerId: string;
   bookingId?: string; // Optional booking ID
@@ -26,7 +22,6 @@ interface ReviewFormProps {
   onSubmit: (data: ReviewFormInputs) => Promise<void>;
   onCancel?: () => void;
 }
-
 export default function ReviewForm({
   providerId,
   bookingId,
@@ -37,7 +32,6 @@ export default function ReviewForm({
 }: ReviewFormProps) {
   const [hover, setHover] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  
   const {
     register,
     handleSubmit,
@@ -52,13 +46,10 @@ export default function ReviewForm({
       rating: 0
     }
   });
-  
   const currentRating = watch('rating');
-  
   const handleRatingClick = (rating: number) => {
     setValue('rating', rating, { shouldValidate: true });
   };
-  
   const submitHandler: SubmitHandler<ReviewFormInputs> = async (data) => {
     setSubmitting(true);
     try {
@@ -69,13 +60,11 @@ export default function ReviewForm({
       setSubmitting(false);
     }
   };
-  
   return (
     <form onSubmit={handleSubmit(submitHandler)} className="bg-white rounded-lg shadow p-6">
       <h2 className="text-xl font-semibold mb-4">
         {isEdit ? 'Edit Your Review' : 'Write a Review'}
       </h2>
-      
       <div className="mb-4">
         <label className="block text-gray-700 font-medium mb-2">Rating</label>
         <div className="flex">
@@ -89,9 +78,9 @@ export default function ReviewForm({
               className="focus:outline-none"
             >
               {rating <= (hover !== null ? hover : currentRating) ? (
-                <StarIcon className="h-8 w-8 text-yellow-400" />
+                <Icons.StarSolid className="h-8 w-8 text-yellow-400" />
               ) : (
-                <StarOutlineIcon className="h-8 w-8 text-yellow-400" />
+                <Icons.StarIcon className="h-8 w-8 text-yellow-400" />
               )}
             </button>
           ))}
@@ -100,7 +89,6 @@ export default function ReviewForm({
           <p className="text-red-500 text-sm mt-1">{errors.rating.message}</p>
         )}
       </div>
-      
       <div className="mb-4">
         <label htmlFor="title" className="block text-gray-700 font-medium mb-2">
           Title
@@ -116,7 +104,6 @@ export default function ReviewForm({
           <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
         )}
       </div>
-      
       <div className="mb-6">
         <label htmlFor="text" className="block text-gray-700 font-medium mb-2">
           Review
@@ -132,7 +119,6 @@ export default function ReviewForm({
           <p className="text-red-500 text-sm mt-1">{errors.text.message}</p>
         )}
       </div>
-      
       <div className="flex justify-end space-x-4">
         {onCancel && (
           <button

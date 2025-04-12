@@ -1,18 +1,7 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { useState } from 'react';
 import { Goal } from '@/types/progress';
-import { 
-  PlusIcon, 
-  CheckIcon, 
-  FireIcon, 
-  ArrowUpIcon, 
-  ArrowDownIcon,
-  PencilIcon,
-  TrashIcon,
-  EllipsisHorizontalIcon
-} from '@heroicons/react/24/outline';
-
 interface GoalProgressCardProps {
   goal: Goal;
   streak?: number;
@@ -21,7 +10,6 @@ interface GoalProgressCardProps {
   onEdit?: (goal: Goal) => void;
   onDelete?: (goalId: string) => void;
 }
-
 export function GoalProgressCard({ 
   goal, 
   streak = 0, 
@@ -38,17 +26,14 @@ export function GoalProgressCard({
     goal.type === 'meditation' ? 10 : 
     goal.type === 'sleep' ? 8 : 0
   );
-
   // Calculate progress percentage
   const progressPercentage = Math.min((goal.current / goal.target) * 100, 100);
-  
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onLogProgress(logValue);
     setShowLogForm(false);
   };
-  
   // Format unit for display
   const formatUnit = (value: number, unit: string) => {
     if (unit === 'minutes' && value >= 60) {
@@ -58,7 +43,6 @@ export function GoalProgressCard({
     }
     return `${value} ${value === 1 ? unit.replace(/s$/, '') : unit}`;
   };
-  
   // Get goal icon
   const getGoalIcon = () => {
     switch (goal.type) {
@@ -80,24 +64,20 @@ export function GoalProgressCard({
         return '🎯';
     }
   };
-
   // Handle closing menus when clicking outside
   const handleClickOutside = () => {
     setShowActions(false);
   };
-
   // Add event listener for clicks outside the menu
   if (typeof window !== 'undefined' && showActions) {
     window.addEventListener('click', handleClickOutside);
   }
-
   return (
     <div className="card overflow-hidden relative">
       <div 
         className="h-2 mb-4" 
         style={{ backgroundColor: goal.color || '#6366F1' }}
       />
-      
       <div className="flex justify-between items-start mb-4">
         <div>
           <div className="flex items-center gap-2">
@@ -106,7 +86,6 @@ export function GoalProgressCard({
           </div>
           <p className="text-sm text-muted-foreground mt-1">{goal.description}</p>
         </div>
-        
         <div className="flex gap-2">
           {/* More Actions Button */}
           <button 
@@ -116,20 +95,18 @@ export function GoalProgressCard({
               setShowActions(!showActions);
             }}
           >
-            <EllipsisHorizontalIcon className="h-5 w-5" />
+            <Icons.EllipsisHorizontalIcon className="h-5 w-5" />
           </button>
-
           {/* Log Progress Button */}
           <button 
             className="btn-primary-outline text-sm py-1 px-3 flex items-center gap-1"
             onClick={() => setShowLogForm(!showLogForm)}
           >
-            <PlusIcon className="h-4 w-4" />
+            <Icons.PlusIcon className="h-4 w-4" />
             Log
           </button>
         </div>
       </div>
-      
       {/* Actions Menu */}
       {showActions && (
         <div className="absolute right-0 top-12 bg-card shadow-lg rounded-md border border-border overflow-hidden z-10">
@@ -142,7 +119,7 @@ export function GoalProgressCard({
                 onEdit(goal);
               }}
             >
-              <PencilIcon className="h-4 w-4" />
+              <Icons.PencilIcon className="h-4 w-4" />
               Edit Goal
             </button>
           )}
@@ -155,13 +132,12 @@ export function GoalProgressCard({
                 onDelete(goal.id);
               }}
             >
-              <TrashIcon className="h-4 w-4" />
+              <Icons.TrashIcon className="h-4 w-4" />
               Delete Goal
             </button>
           )}
         </div>
       )}
-      
       {/* Progress bar */}
       <div className="mb-4">
         <div className="flex justify-between items-center mb-1">
@@ -180,34 +156,30 @@ export function GoalProgressCard({
           />
         </div>
       </div>
-      
       {/* Stats */}
       <div className="flex gap-4 text-sm">
         {streak > 0 && (
           <div className="flex items-center gap-1 text-orange-500">
-            <FireIcon className="h-4 w-4" />
+            <Icons.FireIcon className="h-4 w-4" />
             <span>{streak} day streak</span>
           </div>
         )}
-        
         {improvement !== 0 && (
           <div className={`flex items-center gap-1 ${improvement > 0 ? 'text-green-500' : 'text-red-500'}`}>
             {improvement > 0 ? (
-              <ArrowUpIcon className="h-4 w-4" />
+              <Icons.ArrowUpIcon className="h-4 w-4" />
             ) : (
-              <ArrowDownIcon className="h-4 w-4" />
+              <Icons.ArrowDownIcon className="h-4 w-4" />
             )}
             <span>{Math.abs(improvement)}% vs last week</span>
           </div>
         )}
-        
         {goal.frequency && (
           <div className="text-muted-foreground">
             {goal.frequency.charAt(0).toUpperCase() + goal.frequency.slice(1)}
           </div>
         )}
       </div>
-      
       {/* Log form (conditionally rendered) */}
       {showLogForm && (
         <form onSubmit={handleSubmit} className="mt-4 pt-4 border-t border-border">
@@ -243,7 +215,7 @@ export function GoalProgressCard({
               type="submit"
               className="btn-primary text-sm py-1 flex items-center gap-1"
             >
-              <CheckIcon className="h-4 w-4" />
+              <Icons.CheckIcon className="h-4 w-4" />
               Save
             </button>
           </div>

@@ -1,25 +1,21 @@
+import { Icons } from '@/components/icons';
 import React, { useState } from 'react';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
-
 interface AccordionItem {
   id: string;
   title: string;
   content: React.ReactNode;
 }
-
 interface AccordionProps {
   items: AccordionItem[];
   allowMultiple?: boolean;
   className?: string;
 }
-
 export const Accordion: React.FC<AccordionProps> = ({
   items,
   allowMultiple = false,
   className = '',
 }) => {
   const [openItems, setOpenItems] = useState<string[]>([]);
-
   const toggleItem = (itemId: string) => {
     setOpenItems((prev) => {
       if (allowMultiple) {
@@ -31,7 +27,6 @@ export const Accordion: React.FC<AccordionProps> = ({
       }
     });
   };
-
   return (
     <div className={`divide-y divide-gray-200 ${className}`}>
       {items.map((item) => (
@@ -44,7 +39,7 @@ export const Accordion: React.FC<AccordionProps> = ({
             aria-controls={`accordion-content-${item.id}`}
           >
             <span className="text-sm font-medium text-gray-900">{item.title}</span>
-            <ChevronDownIcon
+            <Icons.ChevronDownIcon
               className={`h-5 w-5 text-gray-400 transition-transform ${
                 openItems.includes(item.id) ? 'rotate-180' : ''
               }`}

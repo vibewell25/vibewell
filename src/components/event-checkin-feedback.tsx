@@ -1,13 +1,7 @@
+import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { Event } from '@/types/events';
 import { format, parseISO } from 'date-fns';
-import { 
-  CheckCircleIcon, 
-  StarIcon, 
-  UserGroupIcon,
-  ClipboardIcon,
-  QrCodeIcon
-} from '@heroicons/react/24/outline';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -16,27 +10,23 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Rating } from '@/components/ui/rating';
-
 interface EventCheckinFeedbackProps {
   event: Event;
   onCheckIn: (code: string) => void;
   onFeedbackSubmit: (rating: number, comment: string) => void;
 }
-
 export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: EventCheckinFeedbackProps) {
   const [activeTab, setActiveTab] = useState('checkin');
   const [checkInCode, setCheckInCode] = useState('');
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [submitting, setSubmitting] = useState(false);
-
   const handleCheckIn = () => {
     if (checkInCode.trim()) {
       onCheckIn(checkInCode);
       setCheckInCode('');
     }
   };
-
   const handleFeedbackSubmit = async () => {
     if (rating > 0 && feedback.trim()) {
       setSubmitting(true);
@@ -49,24 +39,22 @@ export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: Eve
       }
     }
   };
-
   return (
     <Card>
       <CardHeader>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="checkin">
-              <CheckCircleIcon className="h-4 w-4 mr-2" />
+              <Icons.CheckCircleIcon className="h-4 w-4 mr-2" />
               Check-in
             </TabsTrigger>
             <TabsTrigger value="feedback">
-              <StarIcon className="h-4 w-4 mr-2" />
+              <Icons.StarIcon className="h-4 w-4 mr-2" />
               Feedback
             </TabsTrigger>
           </TabsList>
         </Tabs>
       </CardHeader>
-
       <CardContent>
         <TabsContent value="checkin">
           <div className="space-y-4">
@@ -80,17 +68,16 @@ export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: Eve
                   onChange={(e) => setCheckInCode(e.target.value)}
                 />
                 <Button onClick={handleCheckIn}>
-                  <CheckCircleIcon className="h-4 w-4 mr-2" />
+                  <Icons.CheckCircleIcon className="h-4 w-4 mr-2" />
                   Check In
                 </Button>
               </div>
             </div>
-
             {event.checkInCode && (
               <div className="space-y-2">
                 <Label>Event Check-in Code</Label>
                 <div className="flex items-center gap-2 p-2 border rounded-md">
-                  <ClipboardIcon className="h-4 w-4 text-muted-foreground" />
+                  <Icons.ClipboardIcon className="h-4 w-4 text-muted-foreground" />
                   <span className="font-mono">{event.checkInCode}</span>
                   <Button
                     variant="outline"
@@ -102,7 +89,6 @@ export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: Eve
                 </div>
               </div>
             )}
-
             {event.checkedInParticipants && event.checkedInParticipants.length > 0 && (
               <div className="space-y-2">
                 <Label>Checked-in Participants</Label>
@@ -135,7 +121,6 @@ export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: Eve
             )}
           </div>
         </TabsContent>
-
         <TabsContent value="feedback">
           <div className="space-y-4">
             <div className="space-y-2">
@@ -147,7 +132,6 @@ export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: Eve
                 size="lg"
               />
             </div>
-
             <div className="space-y-2">
               <Label>Feedback</Label>
               <Textarea
@@ -157,14 +141,12 @@ export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: Eve
                 rows={4}
               />
             </div>
-
             <Button
               onClick={handleFeedbackSubmit}
               disabled={rating === 0 || !feedback.trim() || submitting}
             >
               {submitting ? 'Submitting...' : 'Submit Feedback'}
             </Button>
-
             {event.averageRating && (
               <div className="space-y-2">
                 <Label>Event Rating</Label>

@@ -1,21 +1,17 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { useState, useMemo } from 'react';
 import { Goal, HabitLog } from '@/types/progress';
 import { format, parseISO, eachDayOfInterval, subDays, isToday, isSameDay } from 'date-fns';
-import { ChevronRightIcon, ChevronLeftIcon, PlusIcon } from '@heroicons/react/24/outline';
-
 interface HabitTrackerProps {
   goals: Goal[];
   habitLogs: HabitLog[];
   onLogHabit: (goalId: string, value: number) => void;
 }
-
 export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [activeGoalId, setActiveGoalId] = useState<string | null>(null);
   const [logValue, setLogValue] = useState<number>(0);
-  
   // Generate days for the habit calendar (last 30 days)
   const days = useMemo(() => {
     return eachDayOfInterval({
@@ -23,7 +19,6 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
       end: currentDate
     });
   }, [currentDate]);
-  
   // Get logs for a specific goal and day
   const getLogForDay = (goalId: string, date: Date): HabitLog | undefined => {
     return habitLogs.find(log => 
@@ -31,12 +26,10 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
       isSameDay(parseISO(log.date), date)
     );
   };
-  
   // Calculate streak for a goal
   const calculateStreak = (goalId: string): number => {
     let streak = 0;
     let currentDay = new Date();
-    
     // Check backwards from today until we find a day with no log
     while (true) {
       const log = getLogForDay(goalId, currentDay);
@@ -47,29 +40,23 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
         break;
       }
     }
-    
     return streak;
   };
-  
   // Handle log submission
   const handleLogSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (activeGoalId && logValue >= 0) {
       onLogHabit(activeGoalId, logValue);
       setActiveGoalId(null);
       setLogValue(0);
     }
   };
-  
   // Get color intensity based on value and target
   const getColorIntensity = (value: number, goalId: string) => {
     const goal = goals.find(g => g.id === goalId);
     if (!goal) return 'bg-muted';
-    
     // Calculate a percentage of target for intensity
     const percentage = Math.min((value / goal.target) * 100, 100);
-    
     if (percentage === 0) return 'bg-muted';
     if (percentage < 25) return `${goal.color}10`;
     if (percentage < 50) return `${goal.color}30`;
@@ -77,7 +64,6 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
     if (percentage < 100) return `${goal.color}70`;
     return `${goal.color}90`;
   };
-
   return (
     <div className="card">
       <div className="flex justify-between items-center mb-6">
@@ -87,7 +73,7 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
             className="p-1 rounded-full hover:bg-muted"
             onClick={() => setCurrentDate(subDays(currentDate, 30))}
           >
-            <ChevronLeftIcon className="h-5 w-5" />
+            <Icons.ChevronLeftIcon className="h-5 w-5" />
           </button>
           <span className="text-sm">
             {format(subDays(currentDate, 29), 'MMM d')} - {format(currentDate, 'MMM d, yyyy')}
@@ -97,11 +83,10 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
             disabled={isToday(currentDate)}
             onClick={() => setCurrentDate(new Date())}
           >
-            <ChevronRightIcon className="h-5 w-5" />
+            <Icons.ChevronRightIcon className="h-5 w-5" />
           </button>
         </div>
       </div>
-      
       <div className="overflow-x-auto">
         <table className="min-w-full">
           <thead>
@@ -147,12 +132,10 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
                     </div>
                   </div>
                 </td>
-                
                 {days.map((day, i) => {
                   const log = getLogForDay(goal.id, day);
                   const value = log ? log.value : 0;
                   const isToday = isSameDay(day, new Date());
-                  
                   return (
                     <td key={i} className="px-1 py-3">
                       <div className="flex justify-center">
@@ -169,7 +152,7 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
                               ));
                             }}
                           >
-                            {value > 0 ? value : <PlusIcon className="h-4 w-4" />}
+                            {value > 0 ? value : <Icons.PlusIcon className="h-4 w-4" />}
                           </button>
                         ) : (
                           <div
@@ -186,7 +169,6 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
                     </td>
                   );
                 })}
-                
                 <td className="py-3 px-3 text-center">
                   <span className="font-medium inline-flex items-center justify-center gap-1">
                     {calculateStreak(goal.id)}
@@ -200,7 +182,6 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
           </tbody>
         </table>
       </div>
-      
       {/* Log modal (simple implementation) */}
       {activeGoalId && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -208,7 +189,6 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
             <h3 className="text-lg font-semibold mb-4">
               Log {goals.find(g => g.id === activeGoalId)?.title}
             </h3>
-            
             <form onSubmit={handleLogSubmit}>
               <div className="mb-4">
                 <label htmlFor="logValue" className="block text-sm font-medium mb-1">
@@ -225,7 +205,6 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
                   required
                 />
               </div>
-              
               <div className="flex justify-end gap-2">
                 <button
                   type="button"

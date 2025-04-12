@@ -1,7 +1,6 @@
+import { Icons } from '@/components/icons';
 import React from 'react';
 import { format } from 'date-fns';
-import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
-
 interface Transaction {
   id: string;
   type: 'earn' | 'redeem';
@@ -10,11 +9,9 @@ interface Transaction {
   date: string;
   source: string;
 }
-
 interface LoyaltyTransactionsProps {
   transactions: Transaction[];
 }
-
 export const LoyaltyTransactions: React.FC<LoyaltyTransactionsProps> = ({
   transactions,
 }) => {
@@ -29,9 +26,9 @@ export const LoyaltyTransactions: React.FC<LoyaltyTransactionsProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 {transaction.type === 'earn' ? (
-                  <ArrowUpIcon className="h-5 w-5 text-green-500" />
+                  <Icons.ArrowUpIcon className="h-5 w-5 text-green-500" />
                 ) : (
-                  <ArrowDownIcon className="h-5 w-5 text-red-500" />
+                  <Icons.ArrowDownIcon className="h-5 w-5 text-red-500" />
                 )}
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-900">

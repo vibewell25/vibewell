@@ -1,17 +1,14 @@
+import { Icons } from '@/components/icons';
 import React from 'react';
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-
 interface BreadcrumbItem {
   label: string;
   href?: string;
 }
-
 interface BreadcrumbsProps {
   items: BreadcrumbItem[];
   className?: string;
 }
-
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   items,
   className = '',
@@ -22,7 +19,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
         {items.map((item, index) => (
           <li key={item.label} className="flex items-center">
             {index > 0 && (
-              <ChevronRightIcon
+              <Icons.ChevronRightIcon
                 className="h-5 w-5 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />

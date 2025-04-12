@@ -1,13 +1,11 @@
+import { Icons } from '@/components/icons';
 import React from 'react';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-
 interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
 }
-
 export const SearchInput: React.FC<SearchInputProps> = ({
   value,
   onChange,
@@ -17,7 +15,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <div className={`relative rounded-md shadow-sm ${className}`}>
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-        <MagnifyingGlassIcon
+        <Icons.MagnifyingGlassIcon
           className="h-5 w-5 text-gray-400"
           aria-hidden="true"
         />

@@ -1,16 +1,13 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { useState } from 'react';
 import { Dialog } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ContentTypeSelector } from '@/components/wellness/ContentTypeSelector';
-
 interface BeautyContentModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (content: any) => void;
 }
-
 export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentModalProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -18,7 +15,6 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
   const [duration, setDuration] = useState('');
   const [level, setLevel] = useState('beginner');
   const [contentType, setContentType] = useState('article');
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSave({
@@ -30,11 +26,9 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
       contentType,
     });
   };
-
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-      
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="mx-auto max-w-2xl w-full bg-white rounded-lg shadow-xl">
           <div className="flex items-center justify-between p-6 border-b">
@@ -45,10 +39,9 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
               onClick={onClose}
               className="text-muted-foreground hover:text-foreground"
             >
-              <XMarkIcon className="h-6 w-6" />
+              <Icons.XMarkIcon className="h-6 w-6" />
             </button>
           </div>
-
           <form onSubmit={handleSubmit} className="p-6">
             <div className="space-y-6">
               <div>
@@ -64,7 +57,6 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                   required
                 />
               </div>
-
               <div>
                 <label htmlFor="description" className="block text-sm font-medium mb-2">
                   Description
@@ -78,7 +70,6 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                   required
                 />
               </div>
-
               <div>
                 <label htmlFor="category" className="block text-sm font-medium mb-2">
                   Category
@@ -99,7 +90,6 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                   <option value="other">Other Services</option>
                 </select>
               </div>
-
               <div>
                 <label htmlFor="duration" className="block text-sm font-medium mb-2">
                   Duration
@@ -114,7 +104,6 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                   required
                 />
               </div>
-
               <div>
                 <label htmlFor="level" className="block text-sm font-medium mb-2">
                   Level
@@ -131,7 +120,6 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                   <option value="advanced">Advanced</option>
                 </select>
               </div>
-
               <div>
                 <label className="block text-sm font-medium mb-2">
                   Content Type
@@ -142,7 +130,6 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                 />
               </div>
             </div>
-
             <div className="mt-8 flex justify-end gap-4">
               <button
                 type="button"

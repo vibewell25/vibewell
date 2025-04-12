@@ -1,14 +1,12 @@
+import { Icons } from '@/components/icons';
 import React from 'react';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { ContentType } from '@/types/content';
-
 interface ContentFilterProps {
   searchQuery: string;
   selectedType: ContentType | 'all';
   onSearchChange: (query: string) => void;
   onTypeChange: (type: ContentType | 'all') => void;
 }
-
 export const ContentFilter: React.FC<ContentFilterProps> = ({
   searchQuery,
   selectedType,
@@ -16,7 +14,6 @@ export const ContentFilter: React.FC<ContentFilterProps> = ({
   onTypeChange,
 }) => {
   const types: (ContentType | 'all')[] = ['all', 'article', 'video', 'audio', 'image'];
-
   return (
     <div className="space-y-4">
       <div className="relative">
@@ -27,9 +24,8 @@ export const ContentFilter: React.FC<ContentFilterProps> = ({
           onChange={(e) => onSearchChange(e.target.value)}
           className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
-        <MagnifyingGlassIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+        <Icons.MagnifyingGlassIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
       </div>
-      
       <div className="flex flex-wrap gap-2">
         {types.map((type) => (
           <button

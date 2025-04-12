@@ -1,15 +1,12 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { MagnifyingGlassIcon, XMarkIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { useDebounce } from '@/hooks/useDebounce';
-
 // Search categories for type-ahead
 export type SearchCategory = 'all' | 'resources' | 'tools' | 'marketing' | 'financial' | 'staff';
-
 // Suggested search item
 interface SuggestedSearch {
   id: string;
@@ -18,7 +15,6 @@ interface SuggestedSearch {
   category: string;
   url: string;
 }
-
 interface HubSearchProps {
   defaultCategory?: SearchCategory;
   placeholder?: string;
@@ -27,7 +23,6 @@ interface HubSearchProps {
   autoFocus?: boolean;
   allowEmptySearch?: boolean;
 }
-
 export function HubSearch({
   defaultCategory = 'all',
   placeholder = 'Search the Business Hub...',
@@ -45,7 +40,6 @@ export function HubSearch({
   const debouncedQuery = useDebounce(query, 300);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-
   // Load recent searches from localStorage on component mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -59,7 +53,6 @@ export function HubSearch({
       }
     }
   }, []);
-
   // Focus input on mount if autoFocus is true
   useEffect(() => {
     if (autoFocus && inputRef.current) {
@@ -68,7 +61,6 @@ export function HubSearch({
       }, 100);
     }
   }, [autoFocus]);
-
   // Listen for keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -77,18 +69,15 @@ export function HubSearch({
         e.preventDefault();
         inputRef.current?.focus();
       }
-      
       // Escape to blur search
       if (e.key === 'Escape' && document.activeElement === inputRef.current) {
         inputRef.current?.blur();
         setShowSuggestions(false);
       }
     };
-    
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
-
   // Update suggestions when query changes
   useEffect(() => {
     if (!debouncedQuery || debouncedQuery.length < 2) {
@@ -96,11 +85,9 @@ export function HubSearch({
       setShowSuggestions(false);
       return;
     }
-    
     // In a real application, this would be an API call
     // For now, we'll create mock suggestions based on the query
     setIsLoading(true);
-    
     // Simulate API call delay
     const timeout = setTimeout(() => {
       const mockSuggestions: SuggestedSearch[] = [
@@ -126,35 +113,28 @@ export function HubSearch({
           url: `/business-hub/financial-management?q=${encodeURIComponent(debouncedQuery)}`
         }
       ];
-      
       setSuggestions(mockSuggestions);
       setShowSuggestions(true);
       setIsLoading(false);
     }, 500);
-    
     return () => clearTimeout(timeout);
   }, [debouncedQuery]);
-
   // Handle search submission
   const handleSearch = () => {
     if (!query && !allowEmptySearch) return;
-    
     // Add to recent searches
     if (query.trim() !== '') {
       const updatedSearches = [
         query,
         ...recentSearches.filter(s => s !== query)
       ].slice(0, 5);
-      
       setRecentSearches(updatedSearches);
-      
       try {
         localStorage.setItem('vibewell_recent_searches', JSON.stringify(updatedSearches));
       } catch (error) {
         console.error('Error saving recent searches:', error);
       }
     }
-    
     // Call the onSearch callback if provided
     if (onSearch) {
       onSearch(query, category);
@@ -162,11 +142,9 @@ export function HubSearch({
       // Otherwise redirect to search page
       router.push(`/business-hub/search?q=${encodeURIComponent(query)}&category=${category}`);
     }
-    
     // Hide suggestions
     setShowSuggestions(false);
   };
-
   // Handle clearing the search
   const handleClearSearch = () => {
     setQuery('');
@@ -174,7 +152,6 @@ export function HubSearch({
       inputRef.current.focus();
     }
   };
-
   // Handle suggestion click
   const handleSuggestionClick = (suggestion: SuggestedSearch) => {
     // Add to recent searches
@@ -182,27 +159,21 @@ export function HubSearch({
       suggestion.title.split(': ')[1] || suggestion.title,
       ...recentSearches.filter(s => s !== suggestion.title)
     ].slice(0, 5);
-    
     setRecentSearches(updatedSearches);
-    
     try {
       localStorage.setItem('vibewell_recent_searches', JSON.stringify(updatedSearches));
     } catch (error) {
       console.error('Error saving recent searches:', error);
     }
-    
     // Navigate to suggestion URL
     router.push(suggestion.url);
-    
     // Hide suggestions
     setShowSuggestions(false);
   };
-
   return (
     <div className={`relative ${className}`}>
       <div className="relative flex items-center">
-        <MagnifyingGlassIcon className="absolute left-3 text-gray-400 h-5 w-5" />
-        
+        <Icons.MagnifyingGlassIcon className="absolute left-3 text-gray-400 h-5 w-5" />
         <Input
           ref={inputRef}
           type="text"
@@ -222,17 +193,15 @@ export function HubSearch({
             }
           }}
         />
-        
         {query && (
           <button
             type="button"
             onClick={handleClearSearch}
             className="absolute right-12 text-gray-400 hover:text-gray-600"
           >
-            <XMarkIcon className="h-5 w-5" />
+            <Icons.XMarkIcon className="h-5 w-5" />
           </button>
         )}
-        
         <Button 
           type="button"
           className="absolute right-0 rounded-l-none"
@@ -241,7 +210,6 @@ export function HubSearch({
           Search
         </Button>
       </div>
-      
       {/* Category selector */}
       <div className="flex mt-2 space-x-2 text-sm">
         <span className="text-gray-500">Search in:</span>
@@ -260,7 +228,6 @@ export function HubSearch({
           </button>
         ))}
       </div>
-      
       {/* Suggestions dropdown */}
       {showSuggestions && (
         <div className="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg border border-gray-200">
@@ -289,7 +256,7 @@ export function HubSearch({
                   onClick={handleSearch}
                 >
                   <div className="font-medium flex items-center">
-                    <MagnifyingGlassIcon className="h-4 w-4 mr-2" />
+                    <Icons.MagnifyingGlassIcon className="h-4 w-4 mr-2" />
                     Search for "{query}"
                   </div>
                 </button>
@@ -315,7 +282,7 @@ export function HubSearch({
                         setTimeout(() => handleSearch(), 0);
                       }}
                     >
-                      <ClockIcon className="h-4 w-4 mr-2 text-gray-400" />
+                      <Icons.ClockIcon className="h-4 w-4 mr-2 text-gray-400" />
                       <span>{search}</span>
                     </button>
                   </li>
@@ -325,7 +292,6 @@ export function HubSearch({
           ) : null}
         </div>
       )}
-      
       {/* Keyboard shortcut hint */}
       <div className="absolute right-0 mt-2 text-xs text-gray-400">
         Press / to search

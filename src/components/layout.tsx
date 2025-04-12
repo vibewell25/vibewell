@@ -1,47 +1,44 @@
 'use client';
 
 import React from 'react';
-import { Header } from './header';
+import { Header } from './layout/Header';
 import { Footer } from './footer';
-import { SkipLink } from './ui/skip-link';
-import { LiveAnnouncer } from './ui/live-announcer';
-import { Container } from './ui/container';
+import SkipLink from '@/components/SkipLink';
 
 interface LayoutProps {
   children: React.ReactNode;
-  hideHeader?: boolean;
-  hideFooter?: boolean;
-  fullWidth?: boolean;
-  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+  showHeader?: boolean;
+  showFooter?: boolean;
+  width?: 'default' | 'full';
+  maxWidth?: string;
 }
 
 export function Layout({
   children,
-  hideHeader = false,
-  hideFooter = false,
-  fullWidth = false,
-  maxWidth = 'xl'
+  showHeader = true,
+  showFooter = true,
+  width = 'default',
+  maxWidth = '1400px',
 }: LayoutProps) {
   return (
-    <>
-      {/* Accessibility components */}
+    <div className="flex flex-col min-h-screen">
       <SkipLink targetId="main-content" />
-      <LiveAnnouncer politeness="polite" />
       
-      {/* Main layout */}
-      {!hideHeader && <Header />}
+      {showHeader && <Header />}
       
-      <main id="main-content" tabIndex={-1}>
-        {fullWidth ? (
-          children
-        ) : (
-          <Container maxWidth={maxWidth} className="py-6">
+      {width === 'full' ? (
+        <main id="main-content" className="flex-1">
+          {children}
+        </main>
+      ) : (
+        <main id="main-content" className="flex-1 px-4 py-8">
+          <div className="mx-auto" style={{ maxWidth }}>
             {children}
-          </Container>
-        )}
-      </main>
+          </div>
+        </main>
+      )}
       
-      {!hideFooter && <Footer />}
-    </>
+      {showFooter && <Footer />}
+    </div>
   );
 } 

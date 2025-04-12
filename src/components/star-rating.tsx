@@ -1,9 +1,6 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { useState, useEffect } from 'react';
-import { StarIcon as StarOutline } from '@heroicons/react/24/outline';
-import { StarIcon as StarSolid } from '@heroicons/react/24/solid';
-
 interface StarRatingProps {
   initialRating?: number | null;
   size?: 'sm' | 'md' | 'lg';
@@ -12,7 +9,6 @@ interface StarRatingProps {
   showCount?: boolean;
   count?: number;
 }
-
 export function StarRating({
   initialRating = null,
   size = 'md',
@@ -23,41 +19,33 @@ export function StarRating({
 }: StarRatingProps) {
   const [rating, setRating] = useState<number | null>(initialRating);
   const [hover, setHover] = useState<number | null>(null);
-  
   useEffect(() => {
     setRating(initialRating);
   }, [initialRating]);
-  
   // Size mapping
   const sizeClasses = {
     sm: 'h-4 w-4',
     md: 'h-5 w-5',
     lg: 'h-6 w-6'
   };
-  
   const starClass = sizeClasses[size];
-  
   // Handle star click
   const handleStarClick = (selectedRating: number) => {
     if (readonly) return;
-    
     setRating(selectedRating);
     onChange && onChange(selectedRating);
   };
-  
   // Format the display of count
   const formatCount = (count: number): string => {
     if (count === 0) return '';
     if (count < 1000) return `(${count})`;
     return `(${(count / 1000).toFixed(1)}k)`;
   };
-  
   return (
     <div className="flex items-center">
       <div className="flex">
         {[1, 2, 3, 4, 5].map((star) => {
           const isHighlighted = (hover || rating || 0) >= star;
-          
           return (
             <button
               key={star}
@@ -70,15 +58,14 @@ export function StarRating({
               aria-label={`Rate ${star} out of 5 stars`}
             >
               {isHighlighted ? (
-                <StarSolid className={`${starClass} text-yellow-400`} />
+                <Icons.StarSolid className={`${starClass} text-yellow-400`} />
               ) : (
-                <StarOutline className={`${starClass} text-gray-300`} />
+                <Icons.StarIcon className={`${starClass} text-gray-300`} />
               )}
             </button>
           );
         })}
       </div>
-      
       {showCount && (
         <span className="ml-2 text-sm text-gray-500">
           {formatCount(count)}

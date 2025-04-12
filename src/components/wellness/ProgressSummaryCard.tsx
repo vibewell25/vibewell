@@ -1,32 +1,26 @@
+import { Icons } from '@/components/icons';
 'use client';
-
 import { ProgressSummary } from '@/types/progress';
-import { ArrowUpIcon, ArrowDownIcon, FireIcon, TrophyIcon } from '@heroicons/react/24/outline';
-
 interface ProgressSummaryCardProps {
   summary: ProgressSummary;
 }
-
 export function ProgressSummaryCard({ summary }: ProgressSummaryCardProps) {
   // Format large numbers with commas
   const formatNumber = (num: number) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
-
   return (
     <div className="card bg-gradient-to-br from-primary/5 to-transparent">
       <h3 className="text-lg font-semibold mb-4">Progress Summary</h3>
-      
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {/* Daily Streak */}
         <div className="p-4 bg-gradient-to-br from-orange-500/10 to-orange-500/5 rounded-lg">
           <div className="flex justify-between items-start">
             <h4 className="text-sm font-medium text-muted-foreground">Streak</h4>
-            <FireIcon className="h-5 w-5 text-orange-500" />
+            <Icons.FireIcon className="h-5 w-5 text-orange-500" />
           </div>
           <p className="text-2xl font-bold mt-2">{summary.dailyStreak} days</p>
         </div>
-        
         {/* Active Goals */}
         <div className="p-4 bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-lg">
           <div className="flex justify-between items-start">
@@ -37,16 +31,14 @@ export function ProgressSummaryCard({ summary }: ProgressSummaryCardProps) {
           </div>
           <p className="text-2xl font-bold mt-2">{summary.activeGoals}</p>
         </div>
-        
         {/* Completed Goals */}
         <div className="p-4 bg-gradient-to-br from-green-500/10 to-green-500/5 rounded-lg">
           <div className="flex justify-between items-start">
             <h4 className="text-sm font-medium text-muted-foreground">Completed</h4>
-            <TrophyIcon className="h-5 w-5 text-green-500" />
+            <Icons.TrophyIcon className="h-5 w-5 text-green-500" />
           </div>
           <p className="text-2xl font-bold mt-2">{summary.completedGoals}</p>
         </div>
-        
         {/* Total Steps */}
         <div className="p-4 bg-gradient-to-br from-purple-500/10 to-purple-500/5 rounded-lg">
           <div className="flex justify-between items-start">
@@ -56,7 +48,6 @@ export function ProgressSummaryCard({ summary }: ProgressSummaryCardProps) {
           <p className="text-2xl font-bold mt-2">{formatNumber(summary.thisWeekProgress.steps)}</p>
         </div>
       </div>
-      
       {/* Weekly Progress */}
       <div className="mt-8">
         <h4 className="text-sm font-medium text-muted-foreground mb-3">Weekly Progress</h4>
@@ -72,9 +63,9 @@ export function ProgressSummaryCard({ summary }: ProgressSummaryCardProps) {
                     summary.improvement.meditation > 0 ? 'text-green-500' : 'text-red-500'
                   }`}>
                     {summary.improvement.meditation > 0 ? (
-                      <ArrowUpIcon className="h-3 w-3 mr-0.5" />
+                      <Icons.ArrowUpIcon className="h-3 w-3 mr-0.5" />
                     ) : (
-                      <ArrowDownIcon className="h-3 w-3 mr-0.5" />
+                      <Icons.ArrowDownIcon className="h-3 w-3 mr-0.5" />
                     )}
                     {Math.abs(summary.improvement.meditation)}%
                   </span>
@@ -90,7 +81,6 @@ export function ProgressSummaryCard({ summary }: ProgressSummaryCardProps) {
               />
             </div>
           </div>
-          
           {/* Workout */}
           <div>
             <div className="flex justify-between mb-1">
@@ -102,9 +92,9 @@ export function ProgressSummaryCard({ summary }: ProgressSummaryCardProps) {
                     summary.improvement.workout > 0 ? 'text-green-500' : 'text-red-500'
                   }`}>
                     {summary.improvement.workout > 0 ? (
-                      <ArrowUpIcon className="h-3 w-3 mr-0.5" />
+                      <Icons.ArrowUpIcon className="h-3 w-3 mr-0.5" />
                     ) : (
-                      <ArrowDownIcon className="h-3 w-3 mr-0.5" />
+                      <Icons.ArrowDownIcon className="h-3 w-3 mr-0.5" />
                     )}
                     {Math.abs(summary.improvement.workout)}%
                   </span>
@@ -120,7 +110,6 @@ export function ProgressSummaryCard({ summary }: ProgressSummaryCardProps) {
               />
             </div>
           </div>
-          
           {/* Water */}
           <div>
             <div className="flex justify-between mb-1">
@@ -132,9 +121,9 @@ export function ProgressSummaryCard({ summary }: ProgressSummaryCardProps) {
                     summary.improvement.water > 0 ? 'text-green-500' : 'text-red-500'
                   }`}>
                     {summary.improvement.water > 0 ? (
-                      <ArrowUpIcon className="h-3 w-3 mr-0.5" />
+                      <Icons.ArrowUpIcon className="h-3 w-3 mr-0.5" />
                     ) : (
-                      <ArrowDownIcon className="h-3 w-3 mr-0.5" />
+                      <Icons.ArrowDownIcon className="h-3 w-3 mr-0.5" />
                     )}
                     {Math.abs(summary.improvement.water)}%
                   </span>
@@ -150,7 +139,6 @@ export function ProgressSummaryCard({ summary }: ProgressSummaryCardProps) {
               />
             </div>
           </div>
-          
           {/* Sleep */}
           <div>
             <div className="flex justify-between mb-1">
@@ -162,9 +150,9 @@ export function ProgressSummaryCard({ summary }: ProgressSummaryCardProps) {
                     summary.improvement.sleep > 0 ? 'text-green-500' : 'text-red-500'
                   }`}>
                     {summary.improvement.sleep > 0 ? (
-                      <ArrowUpIcon className="h-3 w-3 mr-0.5" />
+                      <Icons.ArrowUpIcon className="h-3 w-3 mr-0.5" />
                     ) : (
-                      <ArrowDownIcon className="h-3 w-3 mr-0.5" />
+                      <Icons.ArrowDownIcon className="h-3 w-3 mr-0.5" />
                     )}
                     {Math.abs(summary.improvement.sleep)}%
                   </span>

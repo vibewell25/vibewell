@@ -1,8 +1,7 @@
+import { Icons } from '@/components/icons';
 import React, { useState, useEffect } from 'react';
-import { BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
-
 interface Notification {
   id: string;
   type: 'booking' | 'content' | 'system' | 'reward';
@@ -12,19 +11,15 @@ interface Notification {
   read: boolean;
   link?: string;
 }
-
 interface NotificationCenterProps {
   onClose: () => void;
 }
-
 export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     fetchNotifications();
   }, []);
-
   const fetchNotifications = async () => {
     try {
       setIsLoading(true);
@@ -41,17 +36,14 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
       setIsLoading(false);
     }
   };
-
   const markAsRead = async (notificationId: string) => {
     try {
       const response = await fetch(`/api/notifications/${notificationId}/read`, {
         method: 'PUT',
       });
-
       if (!response.ok) {
         throw new Error('Failed to mark notification as read');
       }
-
       setNotifications(prev =>
         prev.map(notification =>
           notification.id === notificationId
@@ -64,17 +56,14 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
       toast.error('Failed to mark notification as read');
     }
   };
-
   const markAllAsRead = async () => {
     try {
       const response = await fetch('/api/notifications/read-all', {
         method: 'PUT',
       });
-
       if (!response.ok) {
         throw new Error('Failed to mark all notifications as read');
       }
-
       setNotifications(prev =>
         prev.map(notification => ({ ...notification, read: true }))
       );
@@ -83,7 +72,6 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
       toast.error('Failed to mark all notifications as read');
     }
   };
-
   const getNotificationIcon = (type: Notification['type']) => {
     switch (type) {
       case 'booking':
@@ -98,11 +86,9 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
         return '🔔';
     }
   };
-
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
       <div className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={onClose} />
-      
       <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex">
         <div className="w-screen max-w-md">
           <div className="h-full flex flex-col bg-white shadow-xl">
@@ -116,11 +102,10 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
                     onClick={onClose}
                   >
                     <span className="sr-only">Close panel</span>
-                    <XMarkIcon className="h-6 w-6" />
+                    <Icons.XMarkIcon className="h-6 w-6" />
                   </button>
                 </div>
               </div>
-
               <div className="mt-4">
                 {isLoading ? (
                   <div className="animate-pulse space-y-4">
@@ -130,7 +115,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
                   </div>
                 ) : notifications.length === 0 ? (
                   <div className="text-center py-12">
-                    <BellIcon className="mx-auto h-12 w-12 text-gray-400" />
+                    <Icons.BellIcon className="mx-auto h-12 w-12 text-gray-400" />
                     <h3 className="mt-2 text-sm font-medium text-gray-900">No notifications</h3>
                     <p className="mt-1 text-sm text-gray-500">
                       You're all caught up!

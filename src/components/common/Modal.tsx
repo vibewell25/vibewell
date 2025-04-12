@@ -1,6 +1,5 @@
+import { Icons } from '@/components/icons';
 import React, { useEffect } from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -8,7 +7,6 @@ interface ModalProps {
   children: React.ReactNode;
   className?: string;
 }
-
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
@@ -22,20 +20,16 @@ export const Modal: React.FC<ModalProps> = ({
         onClose();
       }
     };
-
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
       document.body.style.overflow = 'hidden';
     }
-
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
   }, [isOpen, onClose]);
-
   if (!isOpen) return null;
-
   return (
     <div
       className="fixed inset-0 z-50 overflow-y-auto"
@@ -49,14 +43,12 @@ export const Modal: React.FC<ModalProps> = ({
           aria-hidden="true"
           onClick={onClose}
         />
-
         <span
           className="hidden sm:inline-block sm:h-screen sm:align-middle"
           aria-hidden="true"
         >
           &#8203;
         </span>
-
         <div
           className={`relative inline-block transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6 sm:align-middle ${className}`}
         >
@@ -67,10 +59,9 @@ export const Modal: React.FC<ModalProps> = ({
               onClick={onClose}
             >
               <span className="sr-only">Close</span>
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              <Icons.XMarkIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-
           {title && (
             <div className="sm:flex sm:items-start">
               <div className="mt-3 text-center sm:mt-0 sm:text-left">
@@ -83,7 +74,6 @@ export const Modal: React.FC<ModalProps> = ({
               </div>
             </div>
           )}
-
           <div className="mt-5">{children}</div>
         </div>
       </div>

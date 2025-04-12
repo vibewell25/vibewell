@@ -1,8 +1,6 @@
-import { StarIcon } from '@heroicons/react/24/solid';
-import { StarIcon as StarOutlineIcon } from '@heroicons/react/24/outline';
+import { Icons } from '@/components/icons';
 import { formatDistanceToNow } from 'date-fns';
 import Image from 'next/image';
-
 interface ReviewCardProps {
   id: string;
   title: string;
@@ -16,7 +14,6 @@ interface ReviewCardProps {
   };
   compact?: boolean;
 }
-
 export default function ReviewCard({
   id,
   title,
@@ -29,22 +26,19 @@ export default function ReviewCard({
   // Function to render stars based on rating
   const renderStars = (rating: number) => {
     const stars = [];
-    
     for (let i = 1; i <= 5; i++) {
       if (i <= rating) {
         stars.push(
-          <StarIcon key={i} className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+          <Icons.StarSolid key={i} className="h-5 w-5 text-yellow-400" aria-hidden="true" />
         );
       } else {
         stars.push(
-          <StarOutlineIcon key={i} className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+          <Icons.StarIcon key={i} className="h-5 w-5 text-yellow-400" aria-hidden="true" />
         );
       }
     }
-    
     return stars;
   };
-  
   return (
     <div className={`bg-white rounded-lg shadow p-4 ${compact ? 'mb-2' : 'mb-4'}`}>
       <div className="flex items-start">
@@ -65,7 +59,6 @@ export default function ReviewCard({
             </div>
           )}
         </div>
-        
         <div className="flex-1">
           <div className="flex items-center justify-between">
             <h3 className="font-medium text-gray-900">{customer.name}</h3>
@@ -73,15 +66,11 @@ export default function ReviewCard({
               {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
             </p>
           </div>
-          
           <div className="flex mt-1 mb-2">{renderStars(rating)}</div>
-          
           <h4 className="font-semibold text-lg text-gray-800 mb-1">{title}</h4>
-          
           {!compact && (
             <p className="text-gray-600">{text}</p>
           )}
-          
           {compact && text.length > 120 ? (
             <p className="text-gray-600">{text.substring(0, 120)}...</p>
           ) : compact && (

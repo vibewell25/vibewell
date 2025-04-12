@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibewell Analytics Report - Sample</title>
+  <style>
+    :root {
+      --primary-color: #4f46e5;
+      --secondary-color: #6366f1;
+      --accent-color: #818cf8;
+      --text-color: #1f2937;
+      --light-gray: #f3f4f6;
+      --border-color: #e5e7eb;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f9fafb;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+    }
+    
+    .logo {
+      height: 40px;
+    }
+    
+    .report-meta {
+      text-align: right;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+    
+    h1, h2, h3, h4 {
+      color: var(--primary-color);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin-top: 0;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    
+    h3 {
+      font-size: 1.2rem;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+    }
+    
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    
+    .metric {
+      background-color: var(--light-gray);
+      border-radius: 0.5rem;
+      padding: 1.25rem;
+    }
+    
+    .metric-title {
+      color: #4b5563;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    
+    .metric-value {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .metric-trend {
+      display: flex;
+      align-items: center;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    
+    .trend-up {
+      color: #10b981;
+    }
+    
+    .trend-down {
+      color: #ef4444;
+    }
+    
+    .chart-container {
+      height: 300px;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+    
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    th {
+      background-color: var(--light-gray);
+      font-weight: 500;
+    }
+    
+    tr:hover {
+      background-color: var(--light-gray);
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+    
+    .text-muted {
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">Vibewell</div>
+      <div class="report-meta">
+        <div><strong>Report Generated:</strong> April 24, 2023</div>
+        <div><strong>Time Period:</strong> March 25, 2023 to April 24, 2023</div>
+        <div><strong>Report Type:</strong> Standard</div>
+      </div>
+    </header>
+
+    <h1>Analytics Report: March 25, 2023 to April 24, 2023</h1>
+    
+    <div class="card">
+      <h2>Executive Summary</h2>
+      <p>This report provides an analysis of user engagement and conversion metrics for the period from March 25, 2023 to April 24, 2023. Overall, user engagement improved during this period compared to the previous 30 days.</p>
+      
+      <div class="metrics-grid">
+        <div class="metric">
+          <div class="metric-title">Total Sessions</div>
+          <div class="metric-value">18,475</div>
+          <div class="metric-trend trend-up">↑ 12% from previous period</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">Unique Users</div>
+          <div class="metric-value">12,836</div>
+          <div class="metric-trend trend-up">↑ 8% from previous period</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">Conversion Rate</div>
+          <div class="metric-value">4.75%</div>
+          <div class="metric-trend trend-down">↓ 2% from previous period</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">Average Session Duration</div>
+          <div class="metric-value">4.2m</div>
+          <div class="metric-trend trend-up">↑ 15% from previous period</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Top Products</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Views</th>
+            <th>Try-Ons</th>
+            <th>Conversion Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Professional Makeup Kit</td>
+            <td>Makeup</td>
+            <td>3,245</td>
+            <td>1,152</td>
+            <td>5.8%</td>
+          </tr>
+          <tr>
+            <td>Smart Hair Styler</td>
+            <td>Hair</td>
+            <td>2,867</td>
+            <td>954</td>
+            <td>4.9%</td>
+          </tr>
+          <tr>
+            <td>Luxury Spa Package</td>
+            <td>Spa</td>
+            <td>2,349</td>
+            <td>687</td>
+            <td>7.2%</td>
+          </tr>
+          <tr>
+            <td>Wellness Retreat</td>
+            <td>Wellness</td>
+            <td>1,876</td>
+            <td>421</td>
+            <td>5.4%</td>
+          </tr>
+          <tr>
+            <td>Advanced Skincare Set</td>
+            <td>Skincare</td>
+            <td>2,578</td>
+            <td>1,065</td>
+            <td>6.1%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Recommendations</h2>
+      <ul>
+        <li>Conversion rate has decreased slightly compared to the previous period. Consider reviewing your product pages and checkout process for potential improvements.</li>
+        <li>Wellness Retreat has high views but lower conversion compared to other offerings. Consider improving product presentation or pricing strategy.</li>
+        <li>Regularly review your top products and optimize their listings to maintain and improve conversion rates.</li>
+        <li>Most of your users access the platform via mobile devices. Ensure your mobile experience is fully optimized.</li>
+      </ul>
+    </div>
+
+    <footer>
+      <p>© 2023 Vibewell. All rights reserved.</p>
+      <p>This report is generated automatically and is intended for internal use only.</p>
+    </footer>
+  </div>
+</body>
+</html> 

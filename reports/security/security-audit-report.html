@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibewell Security Audit Report</title>
+  <style>
+    :root {
+      --primary-color: #4f46e5;
+      --secondary-color: #6366f1;
+      --accent-color: #818cf8;
+      --text-color: #1f2937;
+      --light-gray: #f3f4f6;
+      --border-color: #e5e7eb;
+      --success-color: #10b981;
+      --warning-color: #f59e0b;
+      --danger-color: #ef4444;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f9fafb;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+    }
+    
+    .logo {
+      height: 40px;
+    }
+    
+    .report-meta {
+      text-align: right;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+    
+    h1, h2, h3, h4 {
+      color: var(--primary-color);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin-top: 0;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    
+    h3 {
+      font-size: 1.2rem;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+    }
+    
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    
+    .metric {
+      background-color: var(--light-gray);
+      border-radius: 0.5rem;
+      padding: 1.25rem;
+    }
+    
+    .metric-title {
+      color: #4b5563;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    
+    .metric-value {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .vulnerability {
+      border-left: 4px solid var(--danger-color);
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      background-color: rgba(239, 68, 68, 0.05);
+    }
+    
+    .vulnerability.high {
+      border-left-color: var(--danger-color);
+    }
+    
+    .vulnerability.medium {
+      border-left-color: var(--warning-color);
+    }
+    
+    .vulnerability.low {
+      border-left-color: var(--accent-color);
+    }
+    
+    .vulnerability.none {
+      border-left-color: var(--success-color);
+    }
+    
+    .vulnerability-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .vulnerability-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    
+    .severity {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      color: white;
+    }
+    
+    .severity.high {
+      background-color: var(--danger-color);
+    }
+    
+    .severity.medium {
+      background-color: var(--warning-color);
+    }
+    
+    .severity.low {
+      background-color: var(--accent-color);
+    }
+    
+    .severity.none {
+      background-color: var(--success-color);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+    
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    th {
+      background-color: var(--light-gray);
+      font-weight: 500;
+    }
+    
+    tr:hover {
+      background-color: var(--light-gray);
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+    
+    .text-muted {
+      color: #6b7280;
+    }
+    
+    .recommendation {
+      background-color: var(--light-gray);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    @media print {
+      body {
+        background-color: white;
+      }
+      
+      .container {
+        max-width: 100%;
+        padding: 0;
+      }
+      
+      .card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid var(--border-color);
+      }
+      
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="/path/to/logo.png" alt="Vibewell Logo" class="logo">
+      <div class="report-meta">
+        <div><strong>Report Generated:</strong> June 15, 2023</div>
+        <div><strong>Audit Period:</strong> May 15 - June 15, 2023</div>
+        <div><strong>Report Type:</strong> Security Audit</div>
+      </div>
+    </header>
+
+    <h1>Vibewell Platform Security Audit Report</h1>
+    
+    <div class="card">
+      <h2>Executive Summary</h2>
+      <p>
+        This security audit report provides a comprehensive assessment of the Vibewell platform's security posture. 
+        The audit evaluated authentication mechanisms, data protection measures, API security, and infrastructure security.
+        Overall, the platform demonstrates a solid security foundation with some areas requiring attention to ensure optimal protection 
+        against evolving threats.
+      </p>
+      
+      <div class="metrics-grid">
+        <div class="metric">
+          <div class="metric-title">Vulnerabilities Found</div>
+          <div class="metric-value">7</div>
+        </div>
+        <div class="metric">
+          <div class="metric-title">High Severity</div>
+          <div class="metric-value">1</div>
+        </div>
+        <div class="metric">
+          <div class="metric-title">Medium Severity</div>
+          <div class="metric-value">3</div>
+        </div>
+        <div class="metric">
+          <div class="metric-title">Low Severity</div>
+          <div class="metric-value">3</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>Key Findings</h2>
+      
+      <div class="vulnerability high">
+        <div class="vulnerability-header">
+          <div class="vulnerability-title">Inadequate Password Reset Flow</div>
+          <div class="severity high">High</div>
+        </div>
+        <p>
+          The password reset functionality lacks proper token expiration checks. Tokens remain valid indefinitely, allowing potential account takeover if a token is compromised.
+        </p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Implement a 1-hour expiration time for password reset tokens. Add a database field to track token creation time and validate against it during the reset process.
+        </div>
+      </div>
+      
+      <div class="vulnerability medium">
+        <div class="vulnerability-header">
+          <div class="vulnerability-title">Missing Rate Limiting on Authentication Endpoints</div>
+          <div class="severity medium">Medium</div>
+        </div>
+        <p>
+          Authentication endpoints, including login and password reset, do not implement rate limiting, making them susceptible to brute force attacks.
+        </p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Implement IP-based and account-based rate limiting to limit the number of authentication attempts within a time window (e.g., 10 attempts per minute per IP address).
+        </div>
+      </div>
+      
+      <div class="vulnerability medium">
+        <div class="vulnerability-header">
+          <div class="vulnerability-title">Insecure Direct Object References (IDOR)</div>
+          <div class="severity medium">Medium</div>
+        </div>
+        <p>
+          Several API endpoints allow access to objects based solely on their IDs without proper authorization checks, potentially exposing customer data.
+        </p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Enforce contextual access control on all API endpoints that retrieve data by ID. Implement role-based access control (RBAC) throughout the application.
+        </div>
+      </div>
+      
+      <div class="vulnerability medium">
+        <div class="vulnerability-header">
+          <div class="vulnerability-title">Missing Content Security Policy</div>
+          <div class="severity medium">Medium</div>
+        </div>
+        <p>
+          The application does not implement a Content Security Policy (CSP), leaving it vulnerable to cross-site scripting (XSS) attacks.
+        </p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Implement a strict Content Security Policy to restrict the sources of executable scripts and prevent XSS attacks. Start with a policy that only allows scripts from your own domain.
+        </div>
+      </div>
+      
+      <div class="vulnerability low">
+        <div class="vulnerability-header">
+          <div class="vulnerability-title">Inadequate Session Management</div>
+          <div class="severity low">Low</div>
+        </div>
+        <p>
+          User sessions do not expire and lack proper inactivity timeout. This could lead to session hijacking if a user forgets to log out on a shared device.
+        </p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Implement a 30-minute inactivity timeout for all sessions. Add session identifiers to a redis store with appropriate TTL values.
+        </div>
+      </div>
+      
+      <div class="vulnerability low">
+        <div class="vulnerability-header">
+          <div class="vulnerability-title">HTTP Security Headers Missing</div>
+          <div class="severity low">Low</div>
+        </div>
+        <p>
+          Several important HTTP security headers are missing, including X-Content-Type-Options, X-Frame-Options, and Strict-Transport-Security.
+        </p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Configure the application server to include all recommended security headers with appropriate values. Implement these in the Next.js middleware.
+        </div>
+      </div>
+      
+      <div class="vulnerability low">
+        <div class="vulnerability-header">
+          <div class="vulnerability-title">Verbose Error Messages</div>
+          <div class="severity low">Low</div>
+        </div>
+        <p>
+          API endpoints return verbose error messages that may include sensitive implementation details or stack traces when failures occur.
+        </p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Implement a standardized error handling mechanism that logs detailed errors server-side but returns generic error messages to clients.
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>Compliance Status</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Requirement</th>
+            <th>Status</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GDPR Compliance</td>
+            <td>Partial</td>
+            <td>Data export functionality implemented, but right to be forgotten requires improvements</td>
+          </tr>
+          <tr>
+            <td>CCPA Compliance</td>
+            <td>Partial</td>
+            <td>Privacy policy needs updates to fully address CCPA requirements</td>
+          </tr>
+          <tr>
+            <td>HIPAA Readiness</td>
+            <td>Not Compliant</td>
+            <td>Additional measures needed for PHI handling if applicable to business model</td>
+          </tr>
+          <tr>
+            <td>PCI DSS (Payment Processing)</td>
+            <td>Compliant</td>
+            <td>Using compliant third-party processor with proper integration</td>
+          </tr>
+          <tr>
+            <td>SOC 2 Controls</td>
+            <td>In Progress</td>
+            <td>Documentation and processes being developed for future audit</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="card">
+      <h2>Secure Development Practices</h2>
+      <h3>Current Implementations</h3>
+      <ul>
+        <li><strong>Static Application Security Testing (SAST):</strong> ESLint security plugin implemented for code analysis</li>
+        <li><strong>Dependency Scanning:</strong> npm audit runs in CI pipeline to detect vulnerable dependencies</li>
+        <li><strong>Secret Management:</strong> Environment variables properly used for sensitive configuration</li>
+        <li><strong>Authentication:</strong> JWT implementation with proper signature validation</li>
+      </ul>
+      
+      <h3>Recommended Improvements</h3>
+      <ul>
+        <li><strong>Dynamic Application Security Testing (DAST):</strong> Implement ZAP or similar tool in the CI pipeline</li>
+        <li><strong>Security Code Reviews:</strong> Establish formal security review process for feature deployments</li>
+        <li><strong>Developer Security Training:</strong> Regular training sessions on secure coding practices</li>
+        <li><strong>Security Champions:</strong> Designate security champions within development teams</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h2>Third-Party Dependency Analysis</h2>
+      <p>An analysis of third-party dependencies identified 12 packages with known vulnerabilities. The following table summarizes the findings:</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Package Name</th>
+            <th>Current Version</th>
+            <th>Vulnerabilities</th>
+            <th>Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>lodash</td>
+            <td>4.17.15</td>
+            <td>2 High, 1 Medium</td>
+            <td>Upgrade to 4.17.21 or later</td>
+          </tr>
+          <tr>
+            <td>axios</td>
+            <td>0.21.1</td>
+            <td>1 High</td>
+            <td>Upgrade to 0.21.4 or later</td>
+          </tr>
+          <tr>
+            <td>node-fetch</td>
+            <td>2.6.1</td>
+            <td>1 Medium</td>
+            <td>Upgrade to 2.6.7 or later</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="card">
+      <h2>Infrastructure Security</h2>
+      <h3>Cloud Provider Security</h3>
+      <p>The Vibewell platform utilizes AWS infrastructure with security configurations that are generally aligned with best practices. Some areas for improvement include:</p>
+      <ul>
+        <li>Enable AWS CloudTrail in all regions for comprehensive audit logging</li>
+        <li>Implement automated rotation for IAM access keys</li>
+        <li>Enable VPC Flow Logs for network traffic monitoring</li>
+        <li>Review S3 bucket permissions to ensure proper access controls</li>
+      </ul>
+      
+      <h3>Database Security</h3>
+      <p>The PostgreSQL database is configured with encryption at rest, but several improvements are recommended:</p>
+      <ul>
+        <li>Implement column-level encryption for sensitive personal data</li>
+        <li>Enable audit logging for all database operations</li>
+        <li>Implement automatic database backup verification</li>
+        <li>Review and restrict database user permissions following principle of least privilege</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h2>Next Steps and Remediation Timeline</h2>
+      <p>Based on the findings of this security audit, we recommend the following remediation timeline:</p>
+      
+      <h3>Immediate (0-7 days)</h3>
+      <ul>
+        <li>Address the high-severity password reset vulnerability</li>
+        <li>Implement rate limiting on authentication endpoints</li>
+        <li>Update vulnerable third-party dependencies</li>
+      </ul>
+      
+      <h3>Short-term (8-30 days)</h3>
+      <ul>
+        <li>Fix Insecure Direct Object References (IDOR) issues</li>
+        <li>Implement Content Security Policy (CSP)</li>
+        <li>Add proper session management with timeouts</li>
+      </ul>
+      
+      <h3>Medium-term (31-90 days)</h3>
+      <ul>
+        <li>Implement remaining HTTP security headers</li>
+        <li>Standardize error handling across the application</li>
+        <li>Complete GDPR and CCPA compliance implementation</li>
+      </ul>
+    </div>
+    
+    <footer>
+      <p>Confidential - For internal use only</p>
+      <p>&copy; 2023 Vibewell, Inc. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html> 

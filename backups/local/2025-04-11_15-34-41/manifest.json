@@ -1,0 +1,9 @@
+{
+  "timestamp": "2025-04-11_15-34-41",
+  "backup_type": "local_files",
+  "contents": {
+    "config": true,
+    "scripts": true,
+    "docs": true
+  }
+}

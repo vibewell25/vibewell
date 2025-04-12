@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  role          Role      @default(USER)
+  content       Content[]
+  bookings      ServiceBooking[]
+  reviews       ServiceReview[]
+  progress      ContentProgress[]
+}
+
+model Content {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  type        ContentType
+  content     String
+  tags        String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id])
+  progress    ContentProgress[]
+}
+
+model ContentProgress {
+  id          String   @id @default(cuid())
+  contentId   String
+  userId      String
+  progress    Int
+  lastAccessed DateTime @default(now())
+  content     Content  @relation(fields: [contentId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model BeautyService {
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  duration    Int
+  providerId  String
+  provider    User      @relation(fields: [providerId], references: [id])
+  bookings    ServiceBooking[]
+  reviews     ServiceReview[]
+}
+
+model ServiceBooking {
+  id          String    @id @default(cuid())
+  userId      String
+  serviceId   String
+  providerId  String
+  date        DateTime
+  time        String
+  notes       String?
+  status      BookingStatus @default(CONFIRMED)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id])
+  service     BeautyService @relation(fields: [serviceId], references: [id])
+  provider    User      @relation(fields: [providerId], references: [id])
+  review      ServiceReview?
+}
+
+model ServiceReview {
+  id          String    @id @default(cuid())
+  bookingId   String    @unique
+  userId      String
+  rating      Int
+  comment     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  booking     ServiceBooking @relation(fields: [bookingId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  USER
+  PROVIDER
+  ADMIN
+}
+
+enum ContentType {
+  ARTICLE
+  VIDEO
+  AUDIO
+  IMAGE
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+} 

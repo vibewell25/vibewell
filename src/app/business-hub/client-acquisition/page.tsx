@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -23,9 +24,10 @@ interface Strategy {
   steps: string[];
 }
 
-export default function ClientAcquisitionPage() {
+function ClientAcquisitionContent() {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [activeDifficulty, setActiveDifficulty] = useState<string>('all');
+  const searchParams = useSearchParams();
 
   // Client acquisition strategies
   const strategies: Strategy[] = [
@@ -145,5 +147,13 @@ export default function ClientAcquisitionPage() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function ClientAcquisitionPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading client acquisition strategies...</div>}>
+      <ClientAcquisitionContent />
+    </Suspense>
   );
 } 

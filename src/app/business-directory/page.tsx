@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -29,7 +29,7 @@ interface Business {
   availableSlots: number;
 }
 
-export default function BusinessDirectory() {
+function BusinessDirectoryContent() {
   // State for filters and search
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('all');
@@ -505,5 +505,13 @@ export default function BusinessDirectory() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function BusinessDirectory() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BusinessDirectoryContent />
+    </Suspense>
   );
 } 

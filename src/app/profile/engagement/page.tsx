@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { BadgesDisplay } from '@/components/engagement/badges-display';
 import { LevelProgress } from '@/components/engagement/level-progress';
@@ -9,10 +10,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { EngagementProvider } from '@/hooks/use-engagement';
 import { Trophy, Star, History } from 'lucide-react';
 
-export default function EngagementPage() {
+// Content component that uses session
+function EngagementContent() {
   const { data: session, status } = useSession();
+  const isLoading = status === 'loading';
+  const isAuthenticated = status === 'authenticated';
   
-  if (status === 'loading') {
+  if (isLoading) {
     return (
       <div className="container mx-auto py-8 space-y-6 animate-pulse">
         <div className="h-8 w-48 bg-gray-200 rounded-lg" />
@@ -22,7 +26,7 @@ export default function EngagementPage() {
     );
   }
   
-  if (status === 'unauthenticated') {
+  if (!isAuthenticated) {
     return (
       <div className="container mx-auto py-8">
         <Card>
@@ -99,5 +103,39 @@ export default function EngagementPage() {
         </Tabs>
       </div>
     </EngagementProvider>
+  );
+}
+
+// Export default component with proper client-side protection
+export default function EngagementPage() {
+  // Move the client-state management to the wrapper component
+  const [hasMounted, setHasMounted] = useState(false);
+  
+  // Simple effect to ensure we're only rendering on the client
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+  
+  // Safeguard against server-rendering session-dependent components
+  if (!hasMounted) {
+    return (
+      <div className="container mx-auto py-8 space-y-6 animate-pulse">
+        <div className="h-8 w-48 bg-gray-200 rounded-lg" />
+        <div className="h-24 w-full bg-gray-200 rounded-lg" />
+        <div className="h-64 w-full bg-gray-200 rounded-lg" />
+      </div>
+    );
+  }
+  
+  return (
+    <Suspense fallback={
+      <div className="container mx-auto py-8 space-y-6 animate-pulse">
+        <div className="h-8 w-48 bg-gray-200 rounded-lg" />
+        <div className="h-24 w-full bg-gray-200 rounded-lg" />
+        <div className="h-64 w-full bg-gray-200 rounded-lg" />
+      </div>
+    }>
+      <EngagementContent />
+    </Suspense>
   );
 } 

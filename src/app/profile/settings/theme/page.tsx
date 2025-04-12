@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { ThemeSelector } from '@/components/theme-selector';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { useTheme } from '@/components/theme-provider';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
-export default function ThemeSettingsPage() {
+function ThemeSettingsContent() {
   const { theme } = useTheme();
   const [isSystemPreference, setIsSystemPreference] = useState(theme === 'system');
   const [activeColorTheme, setActiveColorTheme] = useState('default-theme');
@@ -176,5 +176,13 @@ export default function ThemeSettingsPage() {
         </div>
       </div>
     </MobileLayout>
+  );
+}
+
+export default function ThemeSettingsPage() {
+  return (
+    <Suspense fallback={<div>Loading theme settings...</div>}>
+      <ThemeSettingsContent />
+    </Suspense>
   );
 } 

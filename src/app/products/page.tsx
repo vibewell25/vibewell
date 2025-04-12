@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ProductService, Product, ProductFilter, ProductSortOption } from '@/services/product-service';
 import { ProductCard } from '@/components/products/product-card';
@@ -13,7 +13,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle, Search } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export default function ProductsPage() {
+// Content component that uses useSearchParams
+function ProductsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
@@ -35,6 +36,40 @@ export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   
   const productService = new ProductService();
+  
+  // Initialize from URL search params
+  useEffect(() => {
+    if (searchParams) {
+      // Get search term from URL
+      const q = searchParams.get('q');
+      if (q) setSearchTerm(q);
+      
+      // Get page from URL
+      const page = searchParams.get('page');
+      if (page) setCurrentPage(parseInt(page, 10));
+      
+      // Get category, brand, etc. filters from URL
+      const category = searchParams.get('category');
+      const brand = searchParams.get('brand');
+      const minPrice = searchParams.get('minPrice');
+      const maxPrice = searchParams.get('maxPrice');
+      
+      const newFilter: ProductFilter = {};
+      if (category) newFilter.categories = [category];
+      if (brand) newFilter.brands = [brand];
+      if (minPrice) newFilter.minPrice = parseFloat(minPrice);
+      if (maxPrice) newFilter.maxPrice = parseFloat(maxPrice);
+      
+      setFilter(newFilter);
+      
+      // Get sort from URL
+      const sortParam = searchParams.get('sort');
+      if (sortParam) {
+        const [field, direction] = sortParam.split('-') as [any, any];
+        setSort({ field, direction });
+      }
+    }
+  }, [searchParams]);
   
   // Fetch filter options on component mount
   useEffect(() => {
@@ -96,23 +131,75 @@ export default function ProductsPage() {
     e.preventDefault();
     // Reset to first page when searching
     setCurrentPage(1);
+    
+    // Update URL
+    const params = new URLSearchParams(searchParams?.toString());
+    if (searchTerm) {
+      params.set('q', searchTerm);
+    } else {
+      params.delete('q');
+    }
+    params.set('page', '1');
+    router.push(`/products?${params.toString()}`);
   };
   
   // Handle filter changes
   const handleFilterChange = (newFilter: ProductFilter) => {
     setFilter(newFilter);
     setCurrentPage(1); // Reset to first page when filter changes
+    
+    // Update URL
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set('page', '1');
+    
+    // Add filter params to URL
+    if (newFilter.categories && newFilter.categories.length > 0) {
+      params.set('category', newFilter.categories[0]);
+    } else {
+      params.delete('category');
+    }
+    
+    if (newFilter.brands && newFilter.brands.length > 0) {
+      params.set('brand', newFilter.brands[0]);
+    } else {
+      params.delete('brand');
+    }
+    
+    if (newFilter.minPrice) {
+      params.set('minPrice', newFilter.minPrice.toString());
+    } else {
+      params.delete('minPrice');
+    }
+    
+    if (newFilter.maxPrice) {
+      params.set('maxPrice', newFilter.maxPrice.toString());
+    } else {
+      params.delete('maxPrice');
+    }
+    
+    router.push(`/products?${params.toString()}`);
   };
   
   // Handle sort changes
   const handleSortChange = (value: string) => {
     const [field, direction] = value.split('-') as [any, any];
     setSort({ field, direction });
+    
+    // Update URL
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set('sort', value);
+    router.push(`/products?${params.toString()}`);
   };
   
   // Handle pagination
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+    
+    // Update URL
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set('page', page.toString());
+    router.push(`/products?${params.toString()}`);
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
@@ -137,7 +224,7 @@ export default function ProductsPage() {
         <div className="flex items-center gap-2">
           <span className="text-sm whitespace-nowrap">Sort by:</span>
           <Select
-            defaultValue="rating-desc"
+            value={`${sort.field}-${sort.direction}`}
             onValueChange={handleSortChange}
           >
             <SelectTrigger className="min-w-[180px]">
@@ -225,5 +312,35 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Export default with Suspense boundary
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="container mx-auto py-8">
+        <h1 className="text-3xl font-bold mb-6">Browse Products</h1>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="md:col-span-1">
+            <div className="h-96 bg-gray-100 animate-pulse rounded-lg"></div>
+          </div>
+          <div className="md:col-span-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} className="space-y-3">
+                  <Skeleton className="h-40 w-full rounded-lg" />
+                  <Skeleton className="h-4 w-2/3" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-1/3" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   );
 } 

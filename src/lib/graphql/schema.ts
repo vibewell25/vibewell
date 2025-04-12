@@ -12,8 +12,19 @@ export const typeDefs = gql`
   # Custom scalar for JSON data
   scalar JSON
 
+  # Base User type
+  interface UserInterface {
+    id: ID!
+    email: String!
+    fullName: String
+    avatarUrl: String
+    createdAt: String
+    updatedAt: String
+    preferences: JSON
+  }
+
   # User types
-  type User {
+  type User implements UserInterface {
     id: ID!
     email: String!
     fullName: String
@@ -23,6 +34,45 @@ export const typeDefs = gql`
     createdAt: String
     updatedAt: String
     preferences: JSON
+  }
+
+  # Admin type
+  type Admin implements UserInterface {
+    id: ID!
+    email: String!
+    fullName: String
+    avatarUrl: String
+    createdAt: String
+    updatedAt: String
+    preferences: JSON
+    permissions: [String]
+    lastLogin: String
+  }
+
+  # Customer type
+  type Customer implements UserInterface {
+    id: ID!
+    email: String!
+    fullName: String
+    avatarUrl: String
+    createdAt: String
+    updatedAt: String
+    preferences: JSON
+    bookings: [Booking]
+    reviews: [Review]
+  }
+
+  # Service provider type
+  type ServiceProvider implements UserInterface {
+    id: ID!
+    email: String!
+    fullName: String
+    avatarUrl: String
+    createdAt: String
+    updatedAt: String
+    preferences: JSON
+    provider: Provider
+    services: [Service]
   }
 
   type AuthPayload {

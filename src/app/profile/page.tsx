@@ -1,5 +1,6 @@
 'use client';
 
+import React, { Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
@@ -41,7 +42,7 @@ interface ConnectedAccount {
   lastUsed: string;
 }
 
-export default function ProfilePage() {
+function ProfileContent() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('profile');
@@ -474,5 +475,13 @@ export default function ProfilePage() {
         </Tabs>
       </div>
     </Layout>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={<div>Loading profile...</div>}>
+      <ProfileContent />
+    </Suspense>
   );
 } 

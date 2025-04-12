@@ -4,8 +4,9 @@ import { useSearchParams } from 'next/navigation';
 import { BookingList } from '@/components/booking/booking-list';
 import { BookingDetails } from '@/components/booking/booking-details';
 import { useAuth } from '@/hooks/useAuth';
+import { Suspense } from 'react';
 
-export default function BookingsPage() {
+function BookingsContent() {
   const searchParams = useSearchParams();
   const { user } = useAuth();
   const bookingId = searchParams.get('id');
@@ -36,5 +37,13 @@ export default function BookingsPage() {
         role={user.role as 'customer' | 'provider'}
       />
     </div>
+  );
+}
+
+export default function BookingsPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center h-64">Loading bookings...</div>}>
+      <BookingsContent />
+    </Suspense>
   );
 } 

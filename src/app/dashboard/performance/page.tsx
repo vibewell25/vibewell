@@ -1,17 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { Layout } from '@/components/layout';
 import { useAuth } from '@/hooks/useAuth';
 import { PerformanceDashboard } from '@/components/performance/PerformanceDashboard';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 
-export default function PerformancePage() {
+function PerformanceContent() {
   const { user, loading } = useAuth();
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -82,5 +83,13 @@ export default function PerformancePage() {
         <PerformanceDashboard />
       </div>
     </Layout>
+  );
+}
+
+export default function PerformancePage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+      <PerformanceContent />
+    </Suspense>
   );
 } 

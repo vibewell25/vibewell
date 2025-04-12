@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Layout } from '@/components/layout';
 import { useAuth } from '@/hooks/useAuth';
 import { 
@@ -28,7 +28,8 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
-export default function MessagesPage() {
+// Messages page content that uses useSearchParams
+function MessagesPageContent() {
   const { user, loading } = useAuth();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
@@ -199,151 +200,166 @@ export default function MessagesPage() {
     setSelectedConversation(conversationId);
     
     try {
-      // Mark as read through API
-      const response = await fetch(`/api/messages/${conversationId}`, {
-        method: 'PATCH'
-      });
+      // Find the conversation
+      const conversation = conversations.find(c => c.id === conversationId);
+      if (!conversation || !user) return;
       
-      if (!response.ok) {
-        throw new Error('Failed to mark conversation as read');
-      }
+      // Check if there are unread messages from the other user
+      const unreadMessages = conversation.messages.filter(
+        msg => msg.senderId !== user.id && !msg.read
+      );
       
-      // Update local state
+      if (unreadMessages.length === 0) return;
+      
+      // Mark messages as read optimistically
       setConversations(prev => 
         prev.map(conv => {
           if (conv.id === conversationId) {
             return {
               ...conv,
-              messages: conv.messages.map(msg => ({ ...msg, read: true })),
-              unreadCount: 0
+              messages: conv.messages.map(msg => {
+                if (msg.senderId !== user.id) {
+                  return { ...msg, read: true };
+                }
+                return msg;
+              })
             };
           }
           return conv;
         })
       );
       
+      // Send request to mark as read
+      await fetch(`/api/messages/${conversationId}/read`, {
+        method: 'POST'
+      });
+      
     } catch (err) {
       console.error('Error marking conversation as read:', err);
     }
   };
 
-  // Delete conversation
+  // Delete a conversation
   const handleDeleteConversation = async (conversationId: string) => {
     if (!window.confirm('Are you sure you want to delete this conversation?')) {
       return;
     }
     
     try {
-      const response = await fetch(`/api/messages/${conversationId}`, {
+      // Remove conversation from UI optimistically
+      setConversations(prev => prev.filter(c => c.id !== conversationId));
+      
+      // Clear selected conversation if it was the deleted one
+      if (selectedConversation === conversationId) {
+        setSelectedConversation(null);
+      }
+      
+      // Send delete request
+      await fetch(`/api/messages/${conversationId}`, {
         method: 'DELETE'
       });
       
-      if (!response.ok) {
-        throw new Error('Failed to delete conversation');
-      }
-      
-      // Remove from state
-      setConversations(prev => prev.filter(c => c.id !== conversationId));
-      
-      // Select another conversation if available
-      if (conversationId === selectedConversation) {
-        const nextConversation = conversations.find(c => c.id !== conversationId);
-        setSelectedConversation(nextConversation?.id || null);
-      }
-      
       toast.success('Conversation deleted');
-      
     } catch (err) {
       console.error('Error deleting conversation:', err);
       toast.error('Failed to delete conversation');
+      
+      // Restore data on error
+      fetchConversations();
     }
   };
 
-  if (loading) {
-    return (
-      <Layout>
-        <div className="container-app py-12 flex justify-center items-center h-[60vh]">
-          <p>Loading...</p>
-        </div>
-      </Layout>
-    );
-  }
-
-  if (!user) {
-    return (
-      <Layout>
-        <div className="container-app py-12 flex flex-col justify-center items-center h-[60vh]">
-          <h1 className="text-2xl font-bold mb-4">Sign in to access messages</h1>
-          <p className="text-muted-foreground mb-6">You need to be logged in to view and send messages.</p>
-          <a href="/auth/signin" className="btn-primary">Sign In</a>
-        </div>
-      </Layout>
-    );
-  }
-
-  // Convert the API conversation type to the UI component type
-  const uiConversations: UIConversation[] = conversations.map(conv => ({
-    ...conv,
-    participants: conv.participants.map(p => ({
-      ...p,
-      avatar: p.avatar || undefined, // Convert null to undefined for UI component
-    })),
-  }));
+  // Convert conversations to UI format
+  const uiConversations: UIConversation[] = conversations.map(conv => {
+    // Get other participant
+    const otherParticipant = conv.participants.find(p => p.id !== user?.id) || { 
+      id: 'unknown',
+      name: 'Unknown User',
+      avatar: '/placeholder-avatar.jpg'
+    };
+    
+    // Count unread messages
+    const unreadCount = user 
+      ? conv.messages.filter(m => m.senderId !== user.id && !m.read).length 
+      : 0;
+    
+    return {
+      id: conv.id,
+      participants: conv.participants.map(p => ({
+        ...p,
+        avatar: p.avatar || undefined
+      })),
+      messages: conv.messages,
+      unreadCount
+    };
+  });
 
   return (
     <Layout>
-      <div className="container-app py-12">
+      <div className="container-app py-8">
         <Toaster position="top-right" />
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Messages</h1>
-          <p className="text-muted-foreground">
-            Connect with other wellness enthusiasts
-          </p>
-        </div>
-
-        {error ? (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
-            {error}
-            <button 
-              className="ml-2 underline" 
-              onClick={fetchConversations}
-            >
-              Try again
-            </button>
-          </div>
-        ) : null}
-
-        {isLoading ? (
-          <div className="flex justify-center items-center h-[60vh]">
-            <p>Loading conversations...</p>
-          </div>
-        ) : conversations.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-[40vh] bg-muted/20 rounded-lg">
-            <h2 className="text-xl font-bold mb-2">No conversations yet</h2>
-            <p className="text-muted-foreground mb-6">
-              Start connecting with other users to begin messaging
+      
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold mb-2">Messages</h1>
+            <p className="text-muted-foreground">
+              Connect with other wellness enthusiasts
             </p>
-            <a href="/community" className="btn-primary">
-              Explore Community
-            </a>
           </div>
-        ) : (
-          <Messaging
-            conversations={uiConversations}
-            currentUserId={user.id}
-            onSendMessage={(conversationId, content) => {
-              // Set the selected conversation and message content
-              setSelectedConversation(conversationId);
-              setNewMessage(content);
-              // Then send the message
-              handleSendMessage();
-            }}
-            onConversationSelect={handleSelectConversation}
-            onDeleteConversation={handleDeleteConversation}
-            defaultSelectedConversation={selectedConversation || undefined}
-          />
-        )}
+
+          {error ? (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+              {error}
+              <button 
+                className="ml-2 underline" 
+                onClick={fetchConversations}
+              >
+                Try again
+              </button>
+            </div>
+          ) : null}
+
+          {isLoading ? (
+            <div className="flex justify-center items-center h-[60vh]">
+              <p>Loading conversations...</p>
+            </div>
+          ) : conversations.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-[40vh] bg-muted/20 rounded-lg">
+              <h2 className="text-xl font-bold mb-2">No conversations yet</h2>
+              <p className="text-muted-foreground mb-6">
+                Start connecting with other users to begin messaging
+              </p>
+              <a href="/community" className="btn-primary">
+                Explore Community
+              </a>
+            </div>
+          ) : (
+            <Messaging
+              conversations={uiConversations}
+              currentUserId={user?.id || ''}
+              onSendMessage={(conversationId, content) => {
+                // Set the selected conversation and message content
+                setSelectedConversation(conversationId);
+                setNewMessage(content);
+                // Then send the message
+                handleSendMessage();
+              }}
+              onConversationSelect={handleSelectConversation}
+              onDeleteConversation={handleDeleteConversation}
+              defaultSelectedConversation={selectedConversation || undefined}
+            />
+          )}
+        </div>
       </div>
     </Layout>
+  );
+}
+
+// Export wrapper with Suspense boundary
+export default function MessagesPage() {
+  return (
+    <Suspense fallback={<Layout><div className="container-app py-8 flex justify-center items-center min-h-[60vh]"><p>Loading conversations...</p></div></Layout>}>
+      <MessagesPageContent />
+    </Suspense>
   );
 } 

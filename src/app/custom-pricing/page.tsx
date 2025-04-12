@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 
 interface FeatureOption {
   id: string;
@@ -24,7 +25,9 @@ interface PricingTier {
   popular: boolean;
 }
 
-export default function CustomPricing() {
+function CustomPricingContent() {
+  const searchParams = useSearchParams();
+  
   // Define feature options with pricing
   const [featureOptions, setFeatureOptions] = useState<FeatureOption[]>([
     // Core Features
@@ -434,5 +437,13 @@ export default function CustomPricing() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function CustomPricing() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <CustomPricingContent />
+    </Suspense>
   );
 } 

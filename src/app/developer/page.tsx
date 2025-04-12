@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import React, { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -19,12 +20,19 @@ import {
   CubeIcon,
   ArrowPathIcon,
   CpuChipIcon,
+  BeakerIcon,
+  SquaresPlusIcon,
+  CursorArrowRaysIcon,
+  KeyIcon
 } from '@heroicons/react/24/outline';
+import { Input } from '@/components/ui/input';
 
-export default function DeveloperPortal() {
+function DeveloperContent() {
   const { user, loading } = useAuth();
   const [apiKey, setApiKey] = useState<string | null>(null);
   const [isGeneratingKey, setIsGeneratingKey] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchParams = useSearchParams();
 
   // Function to simulate generating an API key
   const generateApiKey = async () => {
@@ -48,6 +56,58 @@ export default function DeveloperPortal() {
     setApiKey(key);
     setIsGeneratingKey(false);
   };
+
+  const resources = [
+    {
+      id: 'documentation',
+      title: 'API Documentation',
+      description: 'Comprehensive guides and reference materials for the Vibewell API',
+      icon: <BookOpenIcon className="h-8 w-8 text-indigo-500" />,
+      href: '/developer/docs'
+    },
+    {
+      id: 'sdk',
+      title: 'SDKs & Libraries',
+      description: 'Official client libraries for various programming languages',
+      icon: <CodeBracketIcon className="h-8 w-8 text-violet-500" />,
+      href: '/developer/sdk'
+    },
+    {
+      id: 'playground',
+      title: 'API Playground',
+      description: 'Interactive environment to test API endpoints and explore responses',
+      icon: <BeakerIcon className="h-8 w-8 text-blue-500" />,
+      href: '/developer/playground'
+    },
+    {
+      id: 'components',
+      title: 'UI Components',
+      description: 'Pre-built components to rapidly build Vibewell-compatible interfaces',
+      icon: <SquaresPlusIcon className="h-8 w-8 text-teal-500" />,
+      href: '/developer/docs/components'
+    },
+    {
+      id: 'webhooks',
+      title: 'Webhooks',
+      description: 'Configure event notifications for real-time updates',
+      icon: <CursorArrowRaysIcon className="h-8 w-8 text-orange-500" />,
+      href: '/developer/webhooks'
+    },
+    {
+      id: 'keys',
+      title: 'API Keys',
+      description: 'Manage your application credentials and access tokens',
+      icon: <KeyIcon className="h-8 w-8 text-red-500" />,
+      href: '/developer/api-keys'
+    }
+  ];
+  
+  const filteredResources = searchQuery
+    ? resources.filter(resource =>
+        resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        resource.description.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : resources;
 
   if (loading) {
     return (
@@ -432,5 +492,13 @@ async function getUserProfile() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function DeveloperPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading developer portal...</div>}>
+      <DeveloperContent />
+    </Suspense>
   );
 } 

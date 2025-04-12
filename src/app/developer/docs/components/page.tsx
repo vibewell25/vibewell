@@ -1,11 +1,12 @@
 'use client';
 
+import React, { Suspense, useState } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@/components/ui/breadcrumb';
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { 
   MagnifyingGlassIcon,
   ChevronRightIcon,
@@ -25,8 +26,9 @@ import {
   ChevronDoubleRightIcon
 } from '@heroicons/react/24/outline';
 
-export default function ComponentsDocumentation() {
+function ComponentsDocumentationContent() {
   const [searchQuery, setSearchQuery] = useState('');
+  const searchParams = useSearchParams();
   
   // List of component categories with their components
   const componentCategories = [
@@ -388,5 +390,13 @@ export default function ComponentsDocumentation() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function ComponentsDocumentation() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+      <ComponentsDocumentationContent />
+    </Suspense>
   );
 }

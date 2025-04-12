@@ -24,7 +24,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const booking = await prisma.booking.findFirst({
+    const booking = await prisma.serviceBooking.findFirst({
       where: {
         id,
         userId: session.user.id,
@@ -38,12 +38,9 @@ export async function GET(
             duration: true,
           },
         },
-        business: {
+        provider: {
           select: {
             name: true,
-            location: true,
-            phone: true,
-            email: true,
           },
         },
       },
@@ -76,7 +73,7 @@ export async function PUT(
     const body = await request.json();
     const { status } = body;
     
-    const booking = await prisma.booking.findFirst({
+    const booking = await prisma.serviceBooking.findFirst({
       where: {
         id,
       },
@@ -86,7 +83,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
     }
     
-    const updatedBooking = await prisma.booking.update({
+    const updatedBooking = await prisma.serviceBooking.update({
       where: {
         id,
       },
@@ -115,7 +112,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const booking = await prisma.booking.findFirst({
+    const booking = await prisma.serviceBooking.findFirst({
       where: {
         id,
         userId: session.user.id,
@@ -126,7 +123,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
     }
 
-    await prisma.booking.update({
+    await prisma.serviceBooking.update({
       where: {
         id,
       },
@@ -162,7 +159,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'Status is required' }, { status: 400 });
     }
 
-    const booking = await prisma.booking.findUnique({
+    const booking = await prisma.serviceBooking.findUnique({
       where: {
         id,
       },
@@ -172,7 +169,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
     }
 
-    const updatedBooking = await prisma.booking.update({
+    const updatedBooking = await prisma.serviceBooking.update({
       where: {
         id,
       },

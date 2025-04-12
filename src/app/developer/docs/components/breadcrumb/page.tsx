@@ -11,11 +11,13 @@ import {
   HomeIcon,
   ChevronRightIcon
 } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@/components/ui/breadcrumb';
+import { useSearchParams } from 'next/navigation';
 
-export default function BreadcrumbDocumentation() {
+function BreadcrumbDocumentationContent() {
   const [copied, setCopied] = useState(false);
+  const searchParams = useSearchParams();
 
   const copyToClipboard = (code: string) => {
     navigator.clipboard.writeText(code);
@@ -391,5 +393,13 @@ export function MyBreadcrumb() {
         </Tabs>
       </div>
     </Layout>
+  );
+}
+
+export default function BreadcrumbDocumentation() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+      <BreadcrumbDocumentationContent />
+    </Suspense>
   );
 } 

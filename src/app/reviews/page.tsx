@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import ReviewsList from '@/components/ReviewsList';
 import ReviewForm from '@/components/ReviewForm';
 import useReviews from '@/hooks/useReviews';
 
-export default function ReviewsPage() {
+function ReviewsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const providerId = searchParams.get('providerId');
@@ -120,5 +120,13 @@ export default function ReviewsPage() {
         <ReviewsList reviews={reviews} isLoading={isLoading} />
       </div>
     </Layout>
+  );
+}
+
+export default function ReviewsPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+      <ReviewsContent />
+    </Suspense>
   );
 } 

@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { useAuth } from '@/hooks/useAuth';
 import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
@@ -92,9 +92,10 @@ interface User {
   businessType: string;
 }
 
-export default function DashboardPage() {
+function DashboardContent() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -261,5 +262,13 @@ export default function DashboardPage() {
         </div>
       </div>
     </MobileLayout>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+      <DashboardContent />
+    </Suspense>
   );
 } 

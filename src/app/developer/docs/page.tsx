@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useSearchParams } from 'next/navigation';
 import { 
   Accordion, 
   AccordionContent, 
@@ -297,9 +298,10 @@ const endpoints = [
   }
 ];
 
-export default function ApiDocumentation() {
+function ApiDocumentationContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEndpoint, setSelectedEndpoint] = useState<string | null>(null);
+  const searchParams = useSearchParams();
   
   // Filter endpoints based on search query
   const filteredEndpoints = searchQuery.length > 0
@@ -311,7 +313,7 @@ export default function ApiDocumentation() {
         )
       })).filter(category => category.endpoints.length > 0)
     : endpoints;
-  
+   
   return (
     <Layout>
       <div className="container-app py-8">
@@ -706,5 +708,13 @@ export default function ApiDocumentation() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function ApiDocumentation() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+      <ApiDocumentationContent />
+    </Suspense>
   );
 } 

@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { VirtualTryOn } from '@/components/ar/virtual-try-on';
+import { useState, Suspense } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,13 +12,11 @@ const mockModels = {
     {
       id: '1',
       name: 'Natural Glow',
-      modelUrl: '/models/makeup/natural-glow.glb',
       thumbnail: '/thumbnails/makeup/natural-glow.jpg',
     },
     {
       id: '2',
       name: 'Evening Glam',
-      modelUrl: '/models/makeup/evening-glam.glb',
       thumbnail: '/thumbnails/makeup/evening-glam.jpg',
     },
   ],
@@ -27,31 +24,19 @@ const mockModels = {
     {
       id: '1',
       name: 'Long Waves',
-      modelUrl: '/models/hairstyle/long-waves.glb',
       thumbnail: '/thumbnails/hairstyle/long-waves.jpg',
     },
     {
       id: '2',
       name: 'Short Bob',
-      modelUrl: '/models/hairstyle/short-bob.glb',
       thumbnail: '/thumbnails/hairstyle/short-bob.jpg',
     },
   ],
 };
 
-export default function VirtualTryOnPage() {
+function VirtualTryOnContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<'makeup' | 'hairstyle'>('makeup');
-
-  const handleTryOn = () => {
-    // Implement AR mode activation
-    console.log('Activating AR mode...');
-  };
-
-  const handleShare = () => {
-    // Implement sharing functionality
-    console.log('Sharing virtual try-on...');
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -86,13 +71,13 @@ export default function VirtualTryOnPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mockModels.makeup.map((model) => (
               <div key={model.id} className="bg-white rounded-lg shadow-md p-4">
-                <VirtualTryOn
-                  modelUrl={model.modelUrl}
-                  type="makeup"
-                  onTryOn={handleTryOn}
-                  onShare={handleShare}
-                />
+                <div className="bg-gray-200 h-[300px] flex items-center justify-center rounded-md">
+                  <p className="text-gray-500">Virtual Try-On Placeholder</p>
+                </div>
                 <h3 className="mt-4 font-medium">{model.name}</h3>
+                <div className="mt-2">
+                  <Button size="sm">Try On</Button>
+                </div>
               </div>
             ))}
           </div>
@@ -102,18 +87,26 @@ export default function VirtualTryOnPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mockModels.hairstyle.map((model) => (
               <div key={model.id} className="bg-white rounded-lg shadow-md p-4">
-                <VirtualTryOn
-                  modelUrl={model.modelUrl}
-                  type="hairstyle"
-                  onTryOn={handleTryOn}
-                  onShare={handleShare}
-                />
+                <div className="bg-gray-200 h-[300px] flex items-center justify-center rounded-md">
+                  <p className="text-gray-500">Virtual Try-On Placeholder</p>
+                </div>
                 <h3 className="mt-4 font-medium">{model.name}</h3>
+                <div className="mt-2">
+                  <Button size="sm">Try On</Button>
+                </div>
               </div>
             ))}
           </div>
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+export default function VirtualTryOnPage() {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-8">Loading virtual try-on experience...</div>}>
+      <VirtualTryOnContent />
+    </Suspense>
   );
 } 

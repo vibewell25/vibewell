@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { 
   PlusIcon, 
   AlertTriangleIcon, 
@@ -23,7 +24,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 
-export default function AlertsPage() {
+function AlertsContent() {
   const [alerts, setAlerts] = useState([]);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +32,7 @@ export default function AlertsPage() {
   const [showDialog, setShowDialog] = useState(false);
   const [editingAlert, setEditingAlert] = useState(null);
   const [activeTab, setActiveTab] = useState('active');
+  const searchParams = useSearchParams();
 
   // Form state
   const [formState, setFormState] = useState({
@@ -450,5 +452,13 @@ export default function AlertsPage() {
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+
+export default function AlertsPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+      <AlertsContent />
+    </Suspense>
   );
 } 

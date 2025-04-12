@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { 
   MagnifyingGlassIcon, 
@@ -172,10 +173,11 @@ const userProgress = {
   nextLevelPoints: 250
 };
 
-export default function BeautyWellnessPage() {
+function BeautyWellnessContent() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('discover');
+  const searchParams = useSearchParams();
 
   const filteredContent = content.filter(item => 
     (selectedCategory === 'all' || item.category === selectedCategory) &&
@@ -629,5 +631,13 @@ export default function BeautyWellnessPage() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function BeautyWellnessPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+      <BeautyWellnessContent />
+    </Suspense>
   );
 } 

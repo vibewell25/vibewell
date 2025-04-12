@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Layout } from '@/components/layout';
 import { EventsCalendar } from '@/components/events-calendar';
 import Link from 'next/link';
@@ -23,7 +23,7 @@ import { Button } from '@/components/ui/button';
 import { EventRecommendations } from '@/components/event-recommendations';
 import { CommunityEventsSection } from '@/components/community-events-section';
 
-export default function EventsPage() {
+function EventsContent() {
   const { user } = useAuth();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
@@ -213,5 +213,13 @@ export default function EventsPage() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function EventsPage() {
+  return (
+    <Suspense fallback={<div>Loading events...</div>}>
+      <EventsContent />
+    </Suspense>
   );
 } 

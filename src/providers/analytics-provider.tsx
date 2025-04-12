@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, Suspense } from 'react';
 import ReactGA from 'react-ga';
 import { usePathname, useSearchParams } from 'next/navigation';
 
@@ -25,10 +25,11 @@ interface AnalyticsProviderProps {
   trackingId?: string;
 }
 
-export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ 
+// The core analytics provider component that uses useSearchParams
+function AnalyticsProviderContent({
   children,
   trackingId = process.env.NEXT_PUBLIC_GA_TRACKING_ID,
-}) => {
+}: AnalyticsProviderProps) {
   const [gaInitialized, setGaInitialized] = useState(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -78,7 +79,7 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
   const trackPageView = (path?: string) => {
     if (!gaInitialized) return;
 
-    ReactGA.pageview(path || pathname);
+    ReactGA.pageview(path || pathname || '');
   };
 
   // Track timing
@@ -120,6 +121,15 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
     >
       {children}
     </AnalyticsContext.Provider>
+  );
+}
+
+// Wrapper component with Suspense boundary
+export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = (props) => {
+  return (
+    <Suspense fallback={<>{props.children}</>}>
+      <AnalyticsProviderContent {...props} />
+    </Suspense>
   );
 };
 

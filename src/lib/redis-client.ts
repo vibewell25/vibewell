@@ -339,33 +339,39 @@ class ProductionRedisClient implements RedisClient {
   private client: any; // ioredis client
   
   constructor(redisUrl: string, options: any = {}) {
-    if (isEdgeRuntime) {
+    // Early return with clear error if in Edge Runtime
+    if (typeof process !== 'undefined' && process.env.NEXT_RUNTIME === 'edge') {
       throw new Error('Redis client cannot be used in Edge Runtime');
     }
     
     // Dynamically import Redis to avoid build issues
     try {
-      // Use require dynamically to avoid webpack issues
-      const Redis = require('ioredis');
-      
-      this.client = new Redis(redisUrl, {
-        maxRetriesPerRequest: 3,
-        enableReadyCheck: true,
-        retryStrategy: (times: number) => {
-          return Math.min(times * 50, 2000); // Exponential backoff with max 2 seconds
-        },
-        ...options
-      });
-      
-      this.client.on('error', (err: Error) => {
-        logger.error(`Redis connection error: ${err.message}`, 'redis', { error: err });
-      });
-      
-      this.client.on('connect', () => {
-        logger.info('Redis connected successfully', 'redis');
-      });
-      
-      logger.info('Redis client initialized for production use', 'redis');
+      // Only load ioredis in Node.js environment, not in browser or Edge
+      if (typeof window === 'undefined' && typeof process !== 'undefined' && process.version) {
+        // Use require dynamically to avoid webpack issues
+        const Redis = require('ioredis');
+        
+        this.client = new Redis(redisUrl, {
+          maxRetriesPerRequest: 3,
+          enableReadyCheck: true,
+          retryStrategy: (times: number) => {
+            return Math.min(times * 50, 2000); // Exponential backoff with max 2 seconds
+          },
+          ...options
+        });
+        
+        this.client.on('error', (err: Error) => {
+          logger.error(`Redis connection error: ${err.message}`, 'redis', { error: err });
+        });
+        
+        this.client.on('connect', () => {
+          logger.info('Redis connected successfully', 'redis');
+        });
+        
+        logger.info('Redis client initialized for production use', 'redis');
+      } else {
+        throw new Error('Redis client can only be used in Node.js environment');
+      }
     } catch (error) {
       logger.error(`Failed to initialize Redis client: ${error}`, 'redis', { error });
       throw new Error('Redis client initialization failed');
@@ -636,13 +642,13 @@ class ProductionRedisClient implements RedisClient {
  */
 function createRedisClient(): RedisClient {
   // Always use mock client in Edge Runtime
-  if (isEdgeRuntime) {
+  if (typeof process !== 'undefined' && process.env.NEXT_RUNTIME === 'edge') {
     logger.info('Using in-memory Redis client in Edge Runtime', 'redis');
     return new MockRedisClient();
   }
   
-  // Use real Redis in production if URL is available
-  if (isServer && process.env.NODE_ENV === 'production' && process.env.REDIS_URL) {
+  // Use real Redis in production if URL is available and in Node.js environment
+  if (typeof window === 'undefined' && process.env.NODE_ENV === 'production' && process.env.REDIS_URL) {
     try {
       return new ProductionRedisClient(process.env.REDIS_URL);
     } catch (error) {

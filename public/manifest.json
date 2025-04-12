@@ -1,27 +1,65 @@
 {
-    "name": "Vibewell",
-    "short_name": "Vibewell",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#000000",
-    "icons": [
-        {
-            "src": "/icons/icon-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "/icons/icon-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ],
-    "prefer_related_applications": false,
-    "offline_enabled": true,
-    "background_sync": {
-        "periodic_sync": {
-            "min_period": 3600
-        }
+  "name": "Vibewell - Wellness and Beauty Services",
+  "short_name": "Vibewell",
+  "description": "Find and book wellness and beauty services, connect with providers, and manage your appointments all in one place.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#38b2ac",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book a Service",
+      "url": "/services",
+      "description": "Browse and book wellness services"
+    },
+    {
+      "name": "My Bookings",
+      "url": "/bookings",
+      "description": "View your upcoming appointments"
+    },
+    {
+      "name": "My Profile",
+      "url": "/profile",
+      "description": "View and edit your profile"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot1.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Vibewell Home Page"
+    },
+    {
+      "src": "/images/screenshot2.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Wellness Services"
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "scope": "/",
+  "categories": ["health", "lifestyle", "wellness", "beauty"]
 }

@@ -1,0 +1,152 @@
+{
+  "common": {
+    "header": {
+      "home": "Accueil",
+      "dashboard": "Tableau de Bord",
+      "services": "Services",
+      "bookings": "Réservations",
+      "profile": "Profil",
+      "messages": "Messages",
+      "settings": "Paramètres",
+      "logout": "Déconnexion",
+      "login": "Connexion",
+      "register": "S'inscrire"
+    },
+    "footer": {
+      "about": "À Propos",
+      "contact": "Contact",
+      "terms": "Conditions d'Utilisation",
+      "privacy": "Politique de Confidentialité",
+      "copyright": "© 2023 Vibewell. Tous droits réservés."
+    },
+    "actions": {
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "submit": "Soumettre",
+      "confirm": "Confirmer",
+      "back": "Retour",
+      "next": "Suivant",
+      "viewAll": "Voir Tout",
+      "search": "Rechercher",
+      "filter": "Filtrer"
+    },
+    "notifications": {
+      "success": "Succès !",
+      "error": "Erreur !",
+      "warning": "Avertissement !",
+      "info": "Information",
+      "loading": "Chargement...",
+      "notFound": "Non Trouvé"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Connectez-vous à votre compte",
+      "emailLabel": "Email",
+      "passwordLabel": "Mot de passe",
+      "forgotPassword": "Mot de passe oublié ?",
+      "noAccount": "Vous n'avez pas de compte ?",
+      "signUp": "S'inscrire",
+      "loginButton": "Se connecter",
+      "emailRequired": "L'email est requis",
+      "passwordRequired": "Le mot de passe est requis"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "nameLabel": "Nom Complet",
+      "emailLabel": "Email",
+      "passwordLabel": "Mot de passe",
+      "confirmPasswordLabel": "Confirmer le mot de passe",
+      "hasAccount": "Vous avez déjà un compte ?",
+      "signIn": "Se connecter",
+      "registerButton": "S'inscrire",
+      "nameRequired": "Le nom est requis",
+      "emailRequired": "L'email est requis",
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordMatch": "Les mots de passe doivent correspondre"
+    }
+  },
+  "dashboard": {
+    "welcome": "Bienvenue, {{name}} !",
+    "upcomingBookings": "Réservations à venir",
+    "noBookings": "Vous n'avez pas de réservations à venir",
+    "recentActivity": "Activité Récente",
+    "analyticsTitle": "Analyse de Performance",
+    "quickActions": "Actions Rapides",
+    "newsAndUpdates": "Actualités et Mises à Jour"
+  },
+  "profile": {
+    "personalInfo": "Informations Personnelles",
+    "preferences": "Préférences",
+    "notifications": "Paramètres de Notification",
+    "security": "Sécurité et Confidentialité",
+    "darkMode": "Mode Sombre",
+    "language": "Langue",
+    "paymentMethods": "Méthodes de Paiement",
+    "addresses": "Adresses",
+    "activityHistory": "Historique d'Activité"
+  },
+  "bookings": {
+    "upcomingTitle": "Réservations à Venir",
+    "pastTitle": "Réservations Passées",
+    "noBookings": "Aucune réservation trouvée",
+    "status": {
+      "confirmed": "Confirmée",
+      "pending": "En attente",
+      "cancelled": "Annulée",
+      "completed": "Terminée"
+    },
+    "actions": {
+      "reschedule": "Reprogrammer",
+      "cancel": "Annuler la Réservation",
+      "viewDetails": "Voir les Détails",
+      "bookAgain": "Réserver à Nouveau",
+      "leaveReview": "Laisser un Avis"
+    }
+  },
+  "services": {
+    "categories": "Catégories",
+    "featured": "Services en Vedette",
+    "popular": "Services Populaires",
+    "searchPlaceholder": "Rechercher des services...",
+    "priceRange": "Fourchette de Prix",
+    "availability": "Disponibilité",
+    "location": "Emplacement",
+    "ratings": "Évaluations"
+  },
+  "reviews": {
+    "writeReview": "Écrire un Avis",
+    "yourRating": "Votre Évaluation",
+    "reviewTitle": "Titre",
+    "reviewContent": "Avis",
+    "submitReview": "Soumettre l'Avis",
+    "editReview": "Modifier l'Avis",
+    "deleteReview": "Supprimer l'Avis",
+    "recentReviews": "Avis Récents",
+    "noReviews": "Pas encore d'avis. Soyez le premier à laisser un avis !",
+    "reviewsCount": "{{count}} Avis"
+  },
+  "settings": {
+    "theme": {
+      "title": "Paramètres de Thème",
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Par Défaut du Système"
+    },
+    "accessibility": {
+      "title": "Accessibilité",
+      "fontSize": "Taille de Police",
+      "contrastMode": "Mode Contraste Élevé",
+      "reduceMotion": "Réduire les Animations"
+    }
+  },
+  "errors": {
+    "pageNotFound": "Page Non Trouvée",
+    "goHome": "Aller à la Page d'Accueil",
+    "somethingWrong": "Quelque chose s'est mal passé",
+    "tryAgain": "Réessayer",
+    "contactSupport": "Contacter le Support"
+  }
+} 

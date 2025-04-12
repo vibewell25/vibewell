@@ -1,39 +1,126 @@
 'use client';
 
-import React, { createContext, useContext, ReactNode } from 'react';
-import { useAnalytics } from '@/hooks/use-analytics';
-import { EventName } from '@/services/analytics-service';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
+import { usePathname, useSearchParams } from 'next/navigation';
 
-// This matches exactly what useAnalytics returns
-type AnalyticsContextType = ReturnType<typeof useAnalytics>;
-
-// Create the context with an undefined initial value
-const AnalyticsContext = createContext<AnalyticsContextType | undefined>(undefined);
-
-// Custom hook to use the analytics context
-export function useAnalyticsContext() {
-  const context = useContext(AnalyticsContext);
-  
-  if (!context) {
-    throw new Error('useAnalyticsContext must be used within an AnalyticsProvider');
-  }
-  
-  return context;
+interface AnalyticsContextType {
+  trackEvent: (category: string, action: string, label?: string, value?: number) => void;
+  trackPageView: (path?: string) => void;
+  trackTiming: (category: string, variable: string, value: number, label?: string) => void;
+  trackException: (description: string, fatal?: boolean) => void;
+  gaInitialized: boolean;
 }
 
-// Props for the provider component
+const AnalyticsContext = createContext<AnalyticsContextType>({
+  trackEvent: () => {},
+  trackPageView: () => {},
+  trackTiming: () => {},
+  trackException: () => {},
+  gaInitialized: false,
+});
+
 interface AnalyticsProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
+  trackingId?: string;
 }
 
-// Provider component
-export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
-  // useAnalytics hook returns all the tracking functions we need
-  const analytics = useAnalytics();
-  
+export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ 
+  children,
+  trackingId = process.env.NEXT_PUBLIC_GA_TRACKING_ID,
+}) => {
+  const [gaInitialized, setGaInitialized] = useState(false);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Initialize Google Analytics
+  useEffect(() => {
+    if (!trackingId || gaInitialized) return;
+
+    try {
+      ReactGA.initialize(trackingId);
+      setGaInitialized(true);
+      console.log('Google Analytics initialized');
+    } catch (error) {
+      console.error('Failed to initialize Google Analytics:', error);
+    }
+  }, [trackingId, gaInitialized]);
+
+  // Track page views
+  useEffect(() => {
+    if (!gaInitialized) return;
+
+    // Combine pathname and search params for full URL
+    const page = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
+
+    // Track page view
+    ReactGA.pageview(page);
+  }, [pathname, searchParams, gaInitialized]);
+
+  // Track events
+  const trackEvent = (
+    category: string, 
+    action: string, 
+    label?: string, 
+    value?: number,
+  ) => {
+    if (!gaInitialized) return;
+
+    ReactGA.event({
+      category,
+      action,
+      label,
+      value,
+    });
+  };
+
+  // Track page views manually
+  const trackPageView = (path?: string) => {
+    if (!gaInitialized) return;
+
+    ReactGA.pageview(path || pathname);
+  };
+
+  // Track timing
+  const trackTiming = (
+    category: string,
+    variable: string,
+    value: number,
+    label?: string,
+  ) => {
+    if (!gaInitialized) return;
+
+    ReactGA.timing({
+      category,
+      variable,
+      value,
+      label,
+    });
+  };
+
+  // Track exceptions
+  const trackException = (description: string, fatal: boolean = false) => {
+    if (!gaInitialized) return;
+
+    ReactGA.exception({
+      description,
+      fatal,
+    });
+  };
+
   return (
-    <AnalyticsContext.Provider value={analytics}>
+    <AnalyticsContext.Provider 
+      value={{ 
+        trackEvent, 
+        trackPageView,
+        trackTiming,
+        trackException,
+        gaInitialized,
+      }}
+    >
       {children}
     </AnalyticsContext.Provider>
   );
-} 
+};
+
+export const useAnalytics = () => useContext(AnalyticsContext); 

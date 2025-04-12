@@ -1,0 +1,152 @@
+{
+  "common": {
+    "header": {
+      "home": "Home",
+      "dashboard": "Dashboard",
+      "services": "Services",
+      "bookings": "Bookings",
+      "profile": "Profile",
+      "messages": "Messages",
+      "settings": "Settings",
+      "logout": "Logout",
+      "login": "Login",
+      "register": "Register"
+    },
+    "footer": {
+      "about": "About Us",
+      "contact": "Contact",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy",
+      "copyright": "© 2023 Vibewell. All rights reserved."
+    },
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "submit": "Submit",
+      "confirm": "Confirm",
+      "back": "Back",
+      "next": "Next",
+      "viewAll": "View All",
+      "search": "Search",
+      "filter": "Filter"
+    },
+    "notifications": {
+      "success": "Success!",
+      "error": "Error!",
+      "warning": "Warning!",
+      "info": "Information",
+      "loading": "Loading...",
+      "notFound": "Not Found"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Login to your account",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot Password?",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "loginButton": "Login",
+      "emailRequired": "Email is required",
+      "passwordRequired": "Password is required"
+    },
+    "register": {
+      "title": "Create an account",
+      "nameLabel": "Full Name",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm Password",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "registerButton": "Register",
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "passwordRequired": "Password is required",
+      "passwordMatch": "Passwords must match"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome, {{name}}!",
+    "upcomingBookings": "Upcoming Bookings",
+    "noBookings": "You have no upcoming bookings",
+    "recentActivity": "Recent Activity",
+    "analyticsTitle": "Performance Analytics",
+    "quickActions": "Quick Actions",
+    "newsAndUpdates": "News & Updates"
+  },
+  "profile": {
+    "personalInfo": "Personal Information",
+    "preferences": "Preferences",
+    "notifications": "Notification Settings",
+    "security": "Security & Privacy",
+    "darkMode": "Dark Mode",
+    "language": "Language",
+    "paymentMethods": "Payment Methods",
+    "addresses": "Addresses",
+    "activityHistory": "Activity History"
+  },
+  "bookings": {
+    "upcomingTitle": "Upcoming Bookings",
+    "pastTitle": "Past Bookings",
+    "noBookings": "No bookings found",
+    "status": {
+      "confirmed": "Confirmed",
+      "pending": "Pending",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "actions": {
+      "reschedule": "Reschedule",
+      "cancel": "Cancel Booking",
+      "viewDetails": "View Details",
+      "bookAgain": "Book Again",
+      "leaveReview": "Leave a Review"
+    }
+  },
+  "services": {
+    "categories": "Categories",
+    "featured": "Featured Services",
+    "popular": "Popular Services",
+    "searchPlaceholder": "Search for services...",
+    "priceRange": "Price Range",
+    "availability": "Availability",
+    "location": "Location",
+    "ratings": "Ratings"
+  },
+  "reviews": {
+    "writeReview": "Write a Review",
+    "yourRating": "Your Rating",
+    "reviewTitle": "Title",
+    "reviewContent": "Review",
+    "submitReview": "Submit Review",
+    "editReview": "Edit Review",
+    "deleteReview": "Delete Review",
+    "recentReviews": "Recent Reviews",
+    "noReviews": "No reviews yet. Be the first to leave a review!",
+    "reviewsCount": "{{count}} Reviews"
+  },
+  "settings": {
+    "theme": {
+      "title": "Theme Settings",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System Default"
+    },
+    "accessibility": {
+      "title": "Accessibility",
+      "fontSize": "Font Size",
+      "contrastMode": "High Contrast Mode",
+      "reduceMotion": "Reduce Motion"
+    }
+  },
+  "errors": {
+    "pageNotFound": "Page Not Found",
+    "goHome": "Go to Home Page",
+    "somethingWrong": "Something went wrong",
+    "tryAgain": "Try Again",
+    "contactSupport": "Contact Support"
+  }
+} 

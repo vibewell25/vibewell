@@ -1,38 +1,39 @@
 'use client';
 
-import { ReactNode, useEffect, useState } from 'react';
-import { Provider } from 'react-redux';
-import { store } from '@/store/store';
+import { AuthProvider } from '@/contexts/auth-context';
+import { AnalyticsProvider } from '@/providers/analytics-provider';
 import { ThemeProvider } from '@/components/theme-provider';
-import { NotificationProvider } from '@/contexts/NotificationContext';
+import { PushNotificationProvider } from '@/providers/push-notification-provider';
+import { useEffect } from 'react';
+import RootErrorBoundary from '@/components/RootErrorBoundary';
 
-interface ProvidersProps {
-  children: ReactNode;
-}
+// Import i18n initialization
+import '@/i18n';
 
-export function Providers({ children }: ProvidersProps) {
-  const [mounted, setMounted] = useState(false);
-
-  // Ensure hydration doesn't cause mismatch with server rendering
+export default function Providers({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // Register service worker
   useEffect(() => {
-    setMounted(true);
+    if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+      const { registerServiceWorker } = require('@/utils/registerServiceWorker');
+      registerServiceWorker();
+    }
   }, []);
 
-  if (!mounted) {
-    return null;
-  }
-
   return (
-    <Provider store={store}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-      >
-        <NotificationProvider>
-          {children}
-        </NotificationProvider>
-      </ThemeProvider>
-    </Provider>
+    <ThemeProvider defaultTheme="system" enableSystem>
+      <AnalyticsProvider>
+        <AuthProvider>
+          <PushNotificationProvider>
+            <RootErrorBoundary>
+              {children}
+            </RootErrorBoundary>
+          </PushNotificationProvider>
+        </AuthProvider>
+      </AnalyticsProvider>
+    </ThemeProvider>
   );
 } 

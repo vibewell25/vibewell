@@ -2,12 +2,9 @@ import './globals.css';
 
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { AuthProvider } from '@/contexts/auth-context';
-import { AnalyticsProvider } from '@/providers/analytics-provider';
 import { LiveAnnouncer } from '@/components/ui/live-announcer';
 import SkipLink from '@/components/SkipLink';
-import { ThemeProvider } from '@/components/theme-provider';
-import RootErrorBoundary from '@/components/RootErrorBoundary';
+import Providers from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,17 +27,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <SkipLink targetId="main-content" />
         <LiveAnnouncer />
-        <ThemeProvider defaultTheme="system" enableSystem>
-          <AnalyticsProvider>
-            <AuthProvider>
-              <RootErrorBoundary>
-                <main id="main-content">
-                  {children}
-                </main>
-              </RootErrorBoundary>
-            </AuthProvider>
-          </AnalyticsProvider>
-        </ThemeProvider>
+        <Providers>
+          <main id="main-content">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );

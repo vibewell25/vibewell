@@ -3,7 +3,8 @@ import { twMerge } from 'tailwind-merge';
 import { randomBytes } from 'crypto';
 
 /**
- * Combines multiple class values into a single string, with Tailwind-specific merging
+ * Combines multiple class names or class name objects together
+ * and merges Tailwind classes properly.
  */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -21,14 +22,28 @@ export function uniqueId(prefix: string = ''): string {
 }
 
 /**
- * Format a date string to a readable format
+ * Format a number with commas for thousands separators
  */
-export function formatDate(date: Date | string): string {
-  return new Date(date).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+export function formatNumber(number: number): string {
+  return new Intl.NumberFormat('en-US').format(number);
+}
+
+/**
+ * Format a date using the browser's Intl.DateTimeFormat
+ */
+export function formatDate(
+  date: Date | string | number,
+  options: Intl.DateTimeFormatOptions = { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  }
+): string {
+  const dateObj = typeof date === 'string' || typeof date === 'number' 
+    ? new Date(date) 
+    : date;
+  
+  return new Intl.DateTimeFormat('en-US', options).format(dateObj);
 }
 
 /**
@@ -49,11 +64,11 @@ export function formatDateTime(date: Date | string): string {
 }
 
 /**
- * Truncate a string to a maximum length with ellipsis
+ * Truncate a string to a specified length and add an ellipsis
  */
-export function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + '...';
+export function truncateString(str: string, len: number): string {
+  if (str.length <= len) return str;
+  return str.slice(0, len) + '...';
 }
 
 /**
@@ -73,15 +88,15 @@ export function debounce<T extends (...args: any[]) => any>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout;
-
-  return function executedFunction(...args: Parameters<T>) {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+  
+  return function(...args: Parameters<T>) {
     const later = () => {
-      clearTimeout(timeout);
+      timeout = null;
       func(...args);
     };
-
-    clearTimeout(timeout);
+    
+    if (timeout) clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
 }
@@ -164,4 +179,41 @@ export function getRandomColor(): string {
     const randomIndex = randomBytes(1)[0];
     return colors[randomIndex % colors.length];
   }
+}
+
+/**
+ * Safely access a deep property in an object using a path string
+ * Example: getNestedValue(user, 'profile.address.city')
+ */
+export function getNestedValue<T = any>(
+  obj: Record<string, any>,
+  path: string,
+  defaultValue?: T
+): T | undefined {
+  const travel = (regexp: RegExp) =>
+    String.prototype.split
+      .call(path, regexp)
+      .filter(Boolean)
+      .reduce(
+        (res, key) => (res !== null && res !== undefined ? res[key] : res),
+        obj
+      );
+  
+  const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
+  return result === undefined || result === obj ? defaultValue : result;
+}
+
+/**
+ * Generate a random string of specified length
+ */
+export function generateRandomString(length: number): string {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  const charactersLength = characters.length;
+  
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  
+  return result;
 } 

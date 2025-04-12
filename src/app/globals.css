@@ -197,3 +197,106 @@ button:focus-visible,
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(8, 66, 160, 0.25);
 }
+
+/* Accessibility enhancements */
+
+/* High contrast mode */
+.high-contrast {
+  --contrast-background: black;
+  --contrast-text: white;
+  --contrast-primary: #ffdd00;
+  --contrast-secondary: #40c0ff;
+  --contrast-border: white;
+}
+
+.high-contrast.dark {
+  --contrast-background: black;
+  --contrast-text: white;
+  --contrast-primary: #ffdd00;
+  --contrast-secondary: #40c0ff;
+  --contrast-border: white;
+}
+
+.high-contrast * {
+  border-color: var(--contrast-border) !important;
+}
+
+.high-contrast button,
+.high-contrast a {
+  color: var(--contrast-primary) !important;
+  background-color: var(--contrast-background) !important;
+  border: 2px solid var(--contrast-border) !important;
+}
+
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast h4,
+.high-contrast h5,
+.high-contrast h6 {
+  color: var(--contrast-primary) !important;
+}
+
+.high-contrast p,
+.high-contrast li,
+.high-contrast td,
+.high-contrast th,
+.high-contrast label,
+.high-contrast input,
+.high-contrast textarea {
+  color: var(--contrast-text) !important;
+}
+
+/* Reduce motion */
+.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 3px solid #1a73e8 !important;
+  outline-offset: 2px !important;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: 8px;
+  z-index: 100;
+  background: #fff;
+  border: 2px solid #1a73e8;
+  color: #1a73e8;
+  font-weight: bold;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Announcement region for screen readers */
+.live-announcer {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+}

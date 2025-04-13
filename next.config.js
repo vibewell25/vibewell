@@ -12,9 +12,7 @@ const nextConfig = {
     "serverActions": {
       "bodySizeLimit": "2mb"
     },
-    "typedRoutes": true,
-    "appDir": true,
-    "serverComponentsExternalPackages": []
+    "typedRoutes": true
   },
   "typescript": {
     "ignoreBuildErrors": false,

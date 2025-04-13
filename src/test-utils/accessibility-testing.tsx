@@ -14,17 +14,11 @@
 import { render, screen, fireEvent } from './testing-lib-adapter';
 import type { ReactElement } from 'react';
 
-// Import custom Jest extensions
-import { extendJestWithCustomMatchers } from './extend-jest';
-
 // Import jest-axe for accessibility testing
 import { axe, toHaveNoViolations } from 'jest-axe';
 
 // Use require for test libraries
 const { expect } = require('@jest/globals');
-
-// Extend Jest with custom matchers
-extendJestWithCustomMatchers();
 
 // Extend Jest with custom matchers
 expect.extend(toHaveNoViolations);

@@ -217,6 +217,9 @@ function extractVersionFromPath(path: string): ApiVersion | null {
 }
 
 export async function middleware(req: NextRequest) {
+  // Fix potential issues with undefined URL by extracting origin early
+  const origin = new URL(req.url).origin;
+
   // Try Redis-based rate limiting in production
   const rateLimitResponse = await redisRateLimit(req);
   if (rateLimitResponse) {
@@ -283,14 +286,14 @@ export async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith('/admin')) {
     if (!session?.user) {
       // Redirect to login if not authenticated
-      return NextResponse.redirect(new URL('/login', req.url));
+      return NextResponse.redirect(new URL('/login', origin));
     }
 
     // Check if the user has admin role
     const isUserAdmin = await isAdmin(session.user.id);
     if (!isUserAdmin) {
       // Redirect to home if not an admin
-      return NextResponse.redirect(new URL('/', req.url));
+      return NextResponse.redirect(new URL('/', origin));
     }
   }
 
@@ -301,11 +304,11 @@ export async function middleware(req: NextRequest) {
 
   // Ensure user is authenticated for protected routes
   if (!session?.user) {
-    return NextResponse.redirect(new URL('/auth/login', req.url));
+    return NextResponse.redirect(new URL('/auth/login', origin));
   }
 
   // Get user role from session
-  const userRole = session.user.user_metadata.role || 'customer';
+  const userRole = session.user.user_metadata?.role || 'customer';
 
   // Check if user has access to the requested route
   const userRoutes = protectedRoutes[userRole] || [];
@@ -314,7 +317,7 @@ export async function middleware(req: NextRequest) {
   if (!hasAccess) {
     // Redirect to appropriate dashboard based on role
     const dashboardPath = `/${userRole}/dashboard`;
-    return NextResponse.redirect(new URL(dashboardPath, req.url));
+    return NextResponse.redirect(new URL(dashboardPath, origin));
   }
 
   // Only apply to API routes except auth and webhooks

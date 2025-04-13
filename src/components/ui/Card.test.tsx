@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './card';
+import { render, screen } from '@/test-utils/testing-lib-adapter';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import React from 'react';
 
 describe('Card Component', () => {
   it('renders card with content', () => {

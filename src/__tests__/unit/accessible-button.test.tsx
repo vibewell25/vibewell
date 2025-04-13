@@ -1,6 +1,6 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen } from "../../test-utils/testing-lib-adapter";
+import { userEvent } from "../../test-utils/testing-lib-adapter";
 import "@testing-library/jest-dom";
 import { axe, toHaveNoViolations } from "jest-axe";
 import { AccessibleButton } from "@/components/AccessibleButton";
@@ -88,16 +88,18 @@ describe("AccessibleButton Component", () => {
 
   test("handles click events", async () => {
     const handleClick = jest.fn();
+    const user = userEvent.setup();
     render(<AccessibleButton onClick={handleClick}>Clickable</AccessibleButton>);
     
     const button = screen.getByRole("button", { name: /clickable/i });
-    await userEvent.click(button);
+    await user.click(button);
     
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
   test("should not trigger onClick when disabled", async () => {
     const handleClick = jest.fn();
+    const user = userEvent.setup();
     render(
       <AccessibleButton onClick={handleClick} disabled>
         Disabled
@@ -105,13 +107,14 @@ describe("AccessibleButton Component", () => {
     );
     
     const button = screen.getByRole("button", { name: /disabled/i });
-    await userEvent.click(button);
+    await user.click(button);
     
     expect(handleClick).not.toHaveBeenCalled();
   });
 
   test("should not trigger onClick when loading", async () => {
     const handleClick = jest.fn();
+    const user = userEvent.setup();
     render(
       <AccessibleButton onClick={handleClick} isLoading>
         Loading
@@ -119,7 +122,7 @@ describe("AccessibleButton Component", () => {
     );
     
     const button = screen.getByRole("button", { name: /loading/i });
-    await userEvent.click(button);
+    await user.click(button);
     
     expect(handleClick).not.toHaveBeenCalled();
   });

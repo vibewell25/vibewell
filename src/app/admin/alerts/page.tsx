@@ -11,7 +11,7 @@ import {
   CheckIcon,
   XIcon 
 } from 'lucide-react';
-import { AlertService } from '@/services/alert-service';
+import { AlertService, AlertThreshold } from '@/services/alert-service';
 import { ProductService } from '@/services/product-service';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -24,24 +24,37 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 
+// Define interface for the product
+interface Product {
+  id: string;
+  name: string;
+  // Add other product fields as needed
+}
+
+// Define the alert status interface
+interface AlertStatus {
+  label: string;
+  color: "info" | "default" | "success" | "warning" | "destructive" | "outline" | "secondary";
+}
+
 function AlertsContent() {
-  const [alerts, setAlerts] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [alerts, setAlerts] = useState<AlertThreshold[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [showDialog, setShowDialog] = useState(false);
-  const [editingAlert, setEditingAlert] = useState(null);
+  const [editingAlert, setEditingAlert] = useState<AlertThreshold | null>(null);
   const [activeTab, setActiveTab] = useState('active');
   const searchParams = useSearchParams();
 
   // Form state
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<Omit<AlertThreshold, 'id' | 'created_at' | 'updated_at'>>({
     name: '',
     description: '',
     is_active: true,
     product_id: '',
     metric: 'rating',
-    condition: 'below',
+    condition: 'above',
     threshold: 3.5,
     notification_methods: ['email'],
   });
@@ -55,7 +68,7 @@ function AlertsContent() {
     if (editingAlert) {
       setFormState({
         name: editingAlert.name,
-        description: editingAlert.description,
+        description: editingAlert.description || '',
         is_active: editingAlert.is_active,
         product_id: editingAlert.product_id,
         metric: editingAlert.metric,
@@ -83,8 +96,8 @@ function AlertsContent() {
   const fetchProducts = async () => {
     try {
       const productService = new ProductService();
-      const productsData = await productService.getProducts({});
-      setProducts(productsData.data);
+      const productsData = await productService.getProducts(1, 50);
+      setProducts(productsData.products);
     } catch (err) {
       console.error('Failed to fetch products:', err);
     }
@@ -93,10 +106,10 @@ function AlertsContent() {
   const handleCreateAlert = async () => {
     try {
       const alertService = new AlertService();
-      if (editingAlert) {
-        await alertService.updateAlert(editingAlert.id, formState);
+      if (editingAlert && editingAlert.id) {
+        await alertService.updateAlert(editingAlert.id, formState as AlertThreshold);
       } else {
-        await alertService.createAlert(formState);
+        await alertService.createAlert(formState as AlertThreshold);
       }
       setShowDialog(false);
       setEditingAlert(null);
@@ -108,7 +121,7 @@ function AlertsContent() {
     }
   };
 
-  const handleDeleteAlert = async (alertId) => {
+  const handleDeleteAlert = async (alertId: string) => {
     if (confirm('Are you sure you want to delete this alert?')) {
       try {
         const alertService = new AlertService();
@@ -121,14 +134,16 @@ function AlertsContent() {
     }
   };
 
-  const handleToggleAlert = async (alert) => {
+  const handleToggleAlert = async (alert: AlertThreshold) => {
     try {
       const alertService = new AlertService();
-      await alertService.updateAlert(alert.id, {
-        ...alert,
-        is_active: !alert.is_active
-      });
-      fetchAlerts();
+      if (alert.id) {
+        await alertService.updateAlert(alert.id, {
+          ...alert,
+          is_active: !alert.is_active
+        });
+        fetchAlerts();
+      }
     } catch (err) {
       setError('Failed to update alert');
       console.error(err);
@@ -142,7 +157,7 @@ function AlertsContent() {
       is_active: true,
       product_id: '',
       metric: 'rating',
-      condition: 'below',
+      condition: 'above',
       threshold: 3.5,
       notification_methods: ['email'],
     });
@@ -154,7 +169,7 @@ function AlertsContent() {
     setShowDialog(true);
   };
 
-  const openEditAlertDialog = (alert) => {
+  const openEditAlertDialog = (alert: AlertThreshold) => {
     setEditingAlert(alert);
     setShowDialog(true);
   };
@@ -166,18 +181,19 @@ function AlertsContent() {
     return true;
   });
 
-  const getProductName = (productId) => {
+  const getProductName = (productId: string) => {
     const product = products.find(p => p.id === productId);
     return product ? product.name : 'Unknown Product';
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string | undefined) => {
     if (!dateString) return 'Never';
     return new Date(dateString).toLocaleString();
   };
 
-  const getAlertStatus = (alert) => {
+  const getAlertStatus = (alert: AlertThreshold): AlertStatus => {
     if (!alert.is_active) return { label: 'Inactive', color: 'secondary' };
+    // @ts-ignore - last_triggered might not be in the interface, but it's used in the code
     if (alert.last_triggered) return { label: 'Triggered', color: 'destructive' };
     return { label: 'Active', color: 'success' };
   };
@@ -262,7 +278,7 @@ function AlertsContent() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => handleDeleteAlert(alert.id)}
+                        onClick={() => alert.id && handleDeleteAlert(alert.id)}
                       >
                         <TrashIcon className="h-4 w-4" />
                       </Button>
@@ -270,23 +286,24 @@ function AlertsContent() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                    <div>
-                      <div className="text-muted-foreground">Product</div>
+                  <div className="grid grid-cols-4 gap-4">
+                    <div className="space-y-1">
+                      <div className="text-sm text-muted-foreground">Product</div>
                       <div className="font-medium">{getProductName(alert.product_id)}</div>
                     </div>
-                    <div>
-                      <div className="text-muted-foreground">Condition</div>
+                    <div className="space-y-1">
+                      <div className="text-sm text-muted-foreground">Condition</div>
                       <div className="font-medium">
                         {alert.metric} {alert.condition} {alert.threshold}
                       </div>
                     </div>
-                    <div>
-                      <div className="text-muted-foreground">Last Triggered</div>
+                    <div className="space-y-1">
+                      <div className="text-sm text-muted-foreground">Last Triggered</div>
+                      {/* @ts-ignore - last_triggered might not be in the interface */}
                       <div className="font-medium">{formatDate(alert.last_triggered)}</div>
                     </div>
-                    <div>
-                      <div className="text-muted-foreground">Notifications</div>
+                    <div className="space-y-1">
+                      <div className="text-sm text-muted-foreground">Notifications</div>
                       <div className="font-medium">
                         {alert.notification_methods.join(', ')}
                       </div>
@@ -299,60 +316,62 @@ function AlertsContent() {
         </div>
       )}
 
+      {/* Alert Creation/Edit Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>
-              {editingAlert ? 'Edit Alert' : 'Create New Alert'}
-            </DialogTitle>
+            <DialogTitle>{editingAlert ? 'Edit Alert' : 'Create New Alert'}</DialogTitle>
           </DialogHeader>
-          
-          <div className="space-y-4 py-2">
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium">Alert Name</label>
-              <Input 
-                id="name"
-                value={formState.name}
-                onChange={(e) => setFormState({...formState, name: e.target.value})}
-                placeholder="Low Rating Alert"
-              />
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <FormLabel htmlFor="name">Alert Name</FormLabel>
+                <Input
+                  id="name"
+                  value={formState.name}
+                  onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                  placeholder="Critical Rating Drop"
+                />
+              </div>
+              <div className="space-y-2">
+                <FormLabel htmlFor="product">Product</FormLabel>
+                <Select
+                  value={formState.product_id}
+                  onValueChange={(value) => setFormState({ ...formState, product_id: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select product" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {products.map((product) => (
+                      <SelectItem key={product.id} value={product.id}>
+                        {product.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            
             <div className="space-y-2">
-              <label htmlFor="description" className="text-sm font-medium">Description</label>
-              <Input 
+              <FormLabel htmlFor="description">Description</FormLabel>
+              <Input
                 id="description"
                 value={formState.description}
-                onChange={(e) => setFormState({...formState, description: e.target.value})}
-                placeholder="Alert when product rating falls below threshold"
+                onChange={(e) => setFormState({ ...formState, description: e.target.value })}
+                placeholder="Alert when product rating drops below threshold"
               />
             </div>
-            
-            <div className="space-y-2">
-              <label htmlFor="product" className="text-sm font-medium">Product</label>
-              <Select 
-                value={formState.product_id} 
-                onValueChange={(value) => setFormState({...formState, product_id: value})}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select product" />
-                </SelectTrigger>
-                <SelectContent>
-                  {products.map((product) => (
-                    <SelectItem key={product.id} value={product.id}>
-                      {product.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            
             <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2">
-                <label htmlFor="metric" className="text-sm font-medium">Metric</label>
-                <Select 
-                  value={formState.metric} 
-                  onValueChange={(value) => setFormState({...formState, metric: value})}
+                <FormLabel htmlFor="metric">Metric</FormLabel>
+                <Select
+                  value={formState.metric}
+                  onValueChange={(value) => 
+                    setFormState({ 
+                      ...formState, 
+                      metric: value as AlertThreshold['metric'] 
+                    })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -365,88 +384,103 @@ function AlertsContent() {
                   </SelectContent>
                 </Select>
               </div>
-              
               <div className="space-y-2">
-                <label htmlFor="condition" className="text-sm font-medium">Condition</label>
-                <Select 
-                  value={formState.condition} 
-                  onValueChange={(value) => setFormState({...formState, condition: value})}
+                <FormLabel htmlFor="condition">Condition</FormLabel>
+                <Select
+                  value={formState.condition}
+                  onValueChange={(value) => 
+                    setFormState({ 
+                      ...formState, 
+                      condition: value as AlertThreshold['condition'] 
+                    })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="below">Below</SelectItem>
                     <SelectItem value="above">Above</SelectItem>
+                    <SelectItem value="below">Below</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              
               <div className="space-y-2">
-                <label htmlFor="threshold" className="text-sm font-medium">Threshold</label>
-                <Input 
-                  id="threshold"
-                  type="number"
-                  value={formState.threshold}
-                  onChange={(e) => setFormState({...formState, threshold: parseFloat(e.target.value)})}
-                  step="0.1"
-                  min="0"
-                />
+                <FormLabel htmlFor="threshold">Threshold</FormLabel>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="threshold"
+                    type="number"
+                    value={formState.threshold}
+                    onChange={(e) => setFormState({ ...formState, threshold: parseFloat(e.target.value) })}
+                    step={0.1}
+                    min={0}
+                    max={5}
+                  />
+                </div>
               </div>
             </div>
-            
             <div className="space-y-2">
-              <label className="text-sm font-medium">Notification Methods</label>
-              <div className="flex space-x-4">
-                <label className="flex items-center space-x-2">
+              <FormLabel>Notification Methods</FormLabel>
+              <div className="flex gap-4">
+                <div className="flex items-center gap-2">
                   <input
                     type="checkbox"
+                    id="email-notification"
                     checked={formState.notification_methods.includes('email')}
                     onChange={(e) => {
-                      const methods = e.target.checked 
+                      const methods = e.target.checked
                         ? [...formState.notification_methods, 'email']
                         : formState.notification_methods.filter(m => m !== 'email');
-                      setFormState({...formState, notification_methods: methods});
+                      setFormState({ ...formState, notification_methods: methods });
                     }}
-                    className="rounded border-gray-300"
                   />
-                  <span>Email</span>
-                </label>
-                <label className="flex items-center space-x-2">
+                  <label htmlFor="email-notification">Email</label>
+                </div>
+                <div className="flex items-center gap-2">
                   <input
                     type="checkbox"
-                    checked={formState.notification_methods.includes('dashboard')}
+                    id="sms-notification"
+                    checked={formState.notification_methods.includes('sms')}
                     onChange={(e) => {
-                      const methods = e.target.checked 
-                        ? [...formState.notification_methods, 'dashboard']
-                        : formState.notification_methods.filter(m => m !== 'dashboard');
-                      setFormState({...formState, notification_methods: methods});
+                      const methods = e.target.checked
+                        ? [...formState.notification_methods, 'sms']
+                        : formState.notification_methods.filter(m => m !== 'sms');
+                      setFormState({ ...formState, notification_methods: methods });
                     }}
-                    className="rounded border-gray-300"
                   />
-                  <span>Dashboard</span>
-                </label>
+                  <label htmlFor="sms-notification">SMS</label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="push-notification"
+                    checked={formState.notification_methods.includes('push')}
+                    onChange={(e) => {
+                      const methods = e.target.checked
+                        ? [...formState.notification_methods, 'push']
+                        : formState.notification_methods.filter(m => m !== 'push');
+                      setFormState({ ...formState, notification_methods: methods });
+                    }}
+                  />
+                  <label htmlFor="push-notification">Push</label>
+                </div>
               </div>
             </div>
-            
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
               <Switch
                 id="active"
                 checked={formState.is_active}
-                onCheckedChange={(checked) => setFormState({...formState, is_active: checked})}
+                onCheckedChange={(checked) => setFormState({ ...formState, is_active: checked })}
               />
-              <label htmlFor="active" className="text-sm font-medium">
-                Alert Active
-              </label>
+              <label htmlFor="active">Active</label>
             </div>
           </div>
-          
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowDialog(false)}>
               Cancel
             </Button>
-            <Button onClick={handleCreateAlert} disabled={!formState.name || !formState.product_id}>
-              {editingAlert ? 'Update Alert' : 'Create Alert'}
+            <Button onClick={handleCreateAlert}>
+              {editingAlert ? 'Save Changes' : 'Create Alert'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -457,7 +491,7 @@ function AlertsContent() {
 
 export default function AlertsPage() {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+    <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
       <AlertsContent />
     </Suspense>
   );

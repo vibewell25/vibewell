@@ -1,10 +1,13 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react/pure';
 import '@testing-library/jest-dom';
 import { ErrorBoundary, withErrorBoundary } from '@/components/ui/error-boundary';
 
-// A component that throws an error
-function BuggyComponent({ shouldThrow = true }: { shouldThrow?: boolean }) {
+interface BuggyComponentProps {
+  shouldThrow?: boolean;
+}
+
+function BuggyComponent({ shouldThrow = true }: BuggyComponentProps) {
   if (shouldThrow) {
     throw new Error('Test error');
   }

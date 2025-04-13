@@ -4,8 +4,7 @@
  */
 
 // Export testing libraries for direct use in tests
-export * from '@testing-library/react';
-export * from '@testing-library/user-event';
+export * from './testing-lib-adapter';
 export { axe, toHaveNoViolations } from 'jest-axe';
 
 // Export our custom test runner
@@ -26,5 +25,11 @@ export * from './performance-testing';
 // Export accessibility testing helpers
 export * from './accessibility-testing';
 
+// Export hook testing utilities
+export * from './hook-testing';
+
 // Export test data and fixtures
-export * from './test-data'; 
+export * from './test-data';
+
+// Export security testing helpers
+export * from './security-testing'; 

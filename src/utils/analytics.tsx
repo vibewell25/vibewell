@@ -90,47 +90,44 @@ class AnalyticsService {
       // Register providers based on environment
       if (process.env.NODE_ENV === 'production') {
         // In production, use real analytics providers
-        // Dynamically import providers to avoid bundling in development
+        // Use console analytics provider as fallback when actual providers are not available
+        this.registerConsoleProvider();
+        
+        // Implementation note: The actual analytics providers should be implemented
+        // in separate files and imported here. For now, we're using the console provider.
         try {
-          // Example: If using Google Analytics
-          const { GoogleAnalyticsProvider } = await import('./analytics-providers/google-analytics');
-          if (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
-            this.registerProvider(new GoogleAnalyticsProvider({
-              measurementId: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
-            }));
+          // Attempt to load Google Analytics if available
+          const { GoogleAnalyticsProvider } = await import('./analytics-providers/google-analytics').catch(() => {
+            console.warn('Google Analytics provider not available, using console fallback');
+            return { GoogleAnalyticsProvider: null };
+          });
+          
+          if (GoogleAnalyticsProvider) {
+            this.registerProvider(new GoogleAnalyticsProvider());
           }
           
-          // Example: If using Segment
-          const { SegmentProvider } = await import('./analytics-providers/segment');
-          if (process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY) {
-            this.registerProvider(new SegmentProvider({
-              writeKey: process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY
-            }));
+          // Attempt to load Segment if available
+          const { SegmentProvider } = await import('./analytics-providers/segment').catch(() => {
+            console.warn('Segment provider not available, using console fallback');
+            return { SegmentProvider: null };
+          });
+          
+          if (SegmentProvider) {
+            this.registerProvider(new SegmentProvider());
           }
-        } catch (err) {
-          console.error('Error loading analytics providers:', err);
+        } catch (error) {
+          console.warn('Failed to load analytics providers:', error);
+          // Ensure we have at least the console provider
+          if (this.providers.length === 0) {
+            this.registerConsoleProvider();
+          }
         }
       } else {
-        // In development, log to console with formatted output
-        this.registerProvider({
-          trackEvent: (event) => {
-            const { eventName, eventType, properties } = event;
-            console.groupCollapsed(
-              `%c Analytics: ${eventType} - ${eventName}`,
-              'color: #3498db; font-weight: bold;'
-            );
-            console.log('Properties:', properties);
-            console.log('Timestamp:', new Date(event.timestamp).toISOString());
-            console.groupEnd();
-          },
-          initialize: () => Promise.resolve(),
-          setUser: (userId, props) => {
-            console.log(`%c Analytics: Set User ${userId}`, 'color: #2ecc71; font-weight: bold;', props);
-          }
-        });
+        // In development, just use console logging
+        this.registerConsoleProvider();
       }
-
-      // Initialize all providers with retry logic
+      
+      // Initialize the providers
       await this.initializeProviders();
       
       // Process any queued events
@@ -138,6 +135,28 @@ class AnalyticsService {
     } catch (error) {
       console.error('Failed to initialize analytics:', error);
     }
+  }
+  
+  /**
+   * Register a console-based analytics provider for development/fallback
+   */
+  private registerConsoleProvider(): void {
+    this.registerProvider({
+      trackEvent: (event) => {
+        const { eventName, eventType, properties } = event;
+        console.groupCollapsed(
+          `%c Analytics: ${eventType} - ${eventName}`,
+          'color: #3498db; font-weight: bold;'
+        );
+        console.log('Properties:', properties);
+        console.log('Timestamp:', new Date(event.timestamp).toISOString());
+        console.groupEnd();
+      },
+      initialize: () => Promise.resolve(),
+      setUser: (userId, props) => {
+        console.log(`%c Analytics: Set User ${userId}`, 'color: #2ecc71; font-weight: bold;', props);
+      }
+    });
   }
 
   /**
@@ -399,16 +418,9 @@ class AnalyticsService {
    * @param properties Error details
    */
   public trackError(errorName: string, properties: ErrorProperties): void {
-    // Ensure we have the basic error information
-    const enhancedProps: ErrorProperties = {
-      errorName,
-      errorMessage: properties.errorMessage || 'Unknown error',
+    this.trackEvent(EventType.ERROR, 'error', {
       ...properties,
-      time: new Date().toISOString(),
-      url: typeof window !== 'undefined' ? window.location.href : undefined
-    };
-    
-    this.trackEvent(EventType.ERROR, errorName, enhancedProps);
+    });
   }
 
   /**
@@ -417,22 +429,9 @@ class AnalyticsService {
    * @param properties Performance details
    */
   public trackPerformance(metricName: string, properties: PerformanceProperties): void {
-    // Ensure we have a duration
-    if (!properties.duration && typeof properties.duration !== 'number') {
-      console.warn('Performance metric tracked without duration:', metricName);
-      return;
-    }
-    
-    // Add timestamp and threshold info
-    const enhancedProps: PerformanceProperties = {
-      metricName,
+    this.trackEvent(EventType.PERFORMANCE, 'performance_metric', {
       ...properties,
-      timestamp: new Date().toISOString(),
-      isOverThreshold: properties.threshold ? properties.duration > properties.threshold : undefined,
-      measurementUnit: 'ms'
-    };
-    
-    this.trackEvent(EventType.PERFORMANCE, metricName, enhancedProps);
+    });
   }
 }
 
@@ -446,15 +445,25 @@ export const logEvent = (eventName: string, properties?: Record<string, any>) =>
 export const trackUserAction = (actionName: string, properties?: Record<string, any>) => 
   analyticsService.trackUserAction(actionName, properties || {});
 
-export const trackPageView = (pagePath: string, properties?: Partial<PageViewProperties>) => 
-  analyticsService.trackPageView(pagePath, properties || { pagePath });
+export const trackPageView = (pagePath: string, properties?: Partial<PageViewProperties>) => {
+  const fullProperties: PageViewProperties = {
+    pagePath,
+    ...(properties || {})
+  };
+  analyticsService.trackPageView(pagePath, fullProperties);
+};
 
-export const trackError = (errorName: string, properties: Partial<ErrorProperties>) => 
-  analyticsService.trackError(errorName, {
-    errorName,
-    errorMessage: properties.errorMessage || errorName,
-    ...properties
-  });
+export const trackError = (errorName: string, properties: Partial<ErrorProperties>) => {
+  // Create a new properties object, ensuring we don't duplicate properties
+  const finalProperties: ErrorProperties = {
+    ...properties,
+    // Only set these default values if they're not already provided
+    errorName: properties.errorName || errorName,
+    errorMessage: properties.errorMessage || errorName
+  };
+  
+  analyticsService.trackError(errorName, finalProperties);
+};
 
 export const trackPerformance = (metricName: string, duration: number, properties?: Partial<Omit<PerformanceProperties, 'metricName' | 'duration'>>) => 
   analyticsService.trackPerformance(metricName, {

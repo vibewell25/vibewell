@@ -1,6 +1,11 @@
 import { EventEmitter } from 'events';
-import performanceMonitor from '../utils/performanceMonitor';
-import { logEvent } from '../utils/analytics';
+import performanceMonitor from '../utils/performanceMonitor.tsx';
+import { logEvent } from '../utils/analytics.tsx';
+
+// Add type to define performance monitor with event emitter functionality
+type PerformanceMonitorType = {
+  on(event: 'performance_issue', listener: (issue: PerformanceIssue) => void): void;
+} & typeof performanceMonitor;
 
 /**
  * Types of performance metrics being monitored
@@ -115,7 +120,7 @@ class PerformanceRemediationService extends EventEmitter {
    */
   private setupEventListeners(): void {
     // Subscribe to performance monitor events
-    performanceMonitor.on('performance_issue', (issue: PerformanceIssue) => {
+    (performanceMonitor as PerformanceMonitorType).on('performance_issue', (issue: PerformanceIssue) => {
       if (this.enabled) {
         this.handlePerformanceIssue(issue);
       }

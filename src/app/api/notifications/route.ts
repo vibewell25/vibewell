@@ -3,7 +3,7 @@ import { getUserFromRequest } from '@/lib/auth';
 import { z } from 'zod';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 // Sample notifications data - In a real app, this would come from a database
 const MOCK_NOTIFICATIONS = [
@@ -148,22 +148,20 @@ export async function POST(request: NextRequest) {
     
     const { title, message, type, link } = validatedData.data;
     
-    // In a real app, you would store the notification in a database
-    const newNotification = {
-      id: `notif-${Date.now()}`,
-      title,
-      message,
-      type,
-      isRead: false,
-      createdAt: new Date().toISOString(),
-      userId: body.userId, // Target user ID
-      link: link || undefined,
-    };
-    
-    // Here we would save the notification to the database
+    // Create the notification in the database
+    const notification = await prisma.notification.create({
+      data: {
+        userId: body.userId,
+        title,
+        message,
+        type,
+        isRead: false,
+        link
+      }
+    });
     
     return NextResponse.json({
-      notification: newNotification,
+      notification,
       success: true,
     }, { status: 201 });
   } catch (error) {
@@ -200,7 +198,7 @@ export async function PUT(request: Request) {
         userId: session.user.id
       },
       data: {
-        read: true
+        isRead: true
       }
     });
 

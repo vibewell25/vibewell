@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { BookingStatus } from '@prisma/client';
 
 export async function POST(request: Request) {
   try {
@@ -26,6 +27,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Check if booking is completed
+    if (booking.status !== BookingStatus.COMPLETED) {
+      return NextResponse.json(
+        { error: 'Cannot review a booking that is not completed' },
+        { status: 400 }
+      );
+    }
+
     if (booking.review) {
       return NextResponse.json(
         { error: 'Review already exists for this booking' },
@@ -33,16 +42,23 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create the review
+    // Create the review with the correct schema fields
     const review = await prisma.serviceReview.create({
       data: {
-        bookingId,
-        userId: session.user.id,
         rating,
         comment,
+        userId: session.user.id,
+        serviceId: booking.serviceId, // Get serviceId from the booking
+        bookingId: booking.id, // Set the bookingId for the relation
       },
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          }
+        },
       },
     });
 
@@ -69,15 +85,29 @@ export async function GET(request: Request) {
       );
     }
 
+    // Build the where clause
+    const whereClause: any = {};
+    
+    if (serviceId) {
+      whereClause.serviceId = serviceId;
+    }
+    
+    if (providerId) {
+      whereClause.booking = {
+        providerId,
+      };
+    }
+
     const reviews = await prisma.serviceReview.findMany({
-      where: {
-        booking: {
-          serviceId,
-          providerId,
-        },
-      },
+      where: whereClause,
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          }
+        },
         booking: {
           include: {
             service: true,

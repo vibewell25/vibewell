@@ -4,6 +4,13 @@
  * This file provides type guard functions to handle type narrowing for nullable and
  * undefined values throughout the application. These functions help TypeScript
  * correctly infer types in conditional blocks and avoid common type errors.
+ * 
+ * NOTE: This file uses TypeScript generics without JSX content, so it has a .ts extension.
+ * When writing TypeScript files with generics:
+ * 1. If the file contains JSX/React elements, use the .tsx extension and be careful with generic syntax
+ *    - Consider using named type parameters (like PromiseType instead of T) to avoid conflict with JSX
+ *    - Extract complex generic functions to separate functions with clear parameter names
+ * 2. If the file contains only TypeScript (no JSX), use the .ts extension
  */
 
 /**

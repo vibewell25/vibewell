@@ -1,0 +1,202 @@
+{
+  "id": "ux_report_1744517430411",
+  "timestamp": 1744517430411,
+  "category": "ux",
+  "issues": [
+    {
+      "id": "d86efb9694fbfd0e2b93ac453ff489d625fe7c1aa58cdf32bc474dddd1904f71",
+      "category": "ux",
+      "severity": "high",
+      "title": "Low Completion Rate for User Flow: Booking Appointment",
+      "description": "The user flow \"Booking Appointment\" has a completion rate of 60%, which is below the minimum threshold of 90%",
+      "component": "User Flow",
+      "datestamp": 1744517430375,
+      "status": "open",
+      "metadata": {
+        "flowName": "Booking Appointment",
+        "completionRate": 60,
+        "threshold": 90,
+        "dropOffPoints": [
+          {
+            "stepName": "Enter payment details",
+            "dropOffCount": 215,
+            "dropOffPercentage": 35
+          },
+          {
+            "stepName": "Choose time slot",
+            "dropOffCount": 42,
+            "dropOffPercentage": 5
+          }
+        ],
+        "timestamp": 1744517430375
+      }
+    },
+    {
+      "id": "2211c8235da20438ef8b54dcb32bfc90920a47fd77834d5c355874ae7a8d295a",
+      "category": "ux",
+      "severity": "medium",
+      "title": "Failed Steps in User Flow: Booking Appointment",
+      "description": "The user flow \"Booking Appointment\" has 2 failed steps: Enter payment details, Confirm booking",
+      "component": "User Flow",
+      "datestamp": 1744517430376,
+      "status": "open",
+      "metadata": {
+        "flowName": "Booking Appointment",
+        "failedSteps": [
+          {
+            "stepName": "Enter payment details",
+            "errorMessage": "Payment form validation failed",
+            "timeSpent": 25000
+          },
+          {
+            "stepName": "Confirm booking",
+            "errorMessage": "Step not reached",
+            "timeSpent": 0
+          }
+        ],
+        "timestamp": 1744517430375
+      }
+    },
+    {
+      "id": "64e77619e64abc0b41bdec2d92ca7702e89104d52985793a513f2845bd87267d",
+      "category": "ux",
+      "severity": "critical",
+      "title": "Critical Accessibility Violations on https://vibewell.com/booking",
+      "description": "Found 1 critical accessibility violations on https://vibewell.com/booking",
+      "component": "Accessibility",
+      "datestamp": 1744517430378,
+      "status": "open",
+      "metadata": {
+        "url": "https://vibewell.com/booking",
+        "standard": "WCAG2AA",
+        "violations": [
+          {
+            "id": "aria-required-attr",
+            "impact": "critical",
+            "description": "Required ARIA attributes must be provided",
+            "tags": [
+              "wcag2a",
+              "wcag412"
+            ],
+            "elements": [
+              "[role=\"slider\"]"
+            ],
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.4/aria-required-attr"
+          }
+        ],
+        "timestamp": 1744517430378
+      }
+    },
+    {
+      "id": "64777bebc39dd3799df5c7ea29092b17952ff9021e903ae233668b83808dbace",
+      "category": "ux",
+      "severity": "high",
+      "title": "Serious Accessibility Violations on https://vibewell.com/booking",
+      "description": "Found 1 serious accessibility violations on https://vibewell.com/booking",
+      "component": "Accessibility",
+      "datestamp": 1744517430378,
+      "status": "open",
+      "metadata": {
+        "url": "https://vibewell.com/booking",
+        "standard": "WCAG2AA",
+        "violations": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "description": "Elements must have sufficient color contrast",
+            "tags": [
+              "wcag2aa",
+              "wcag143"
+            ],
+            "elements": [
+              ".booking-button",
+              ".price-text"
+            ],
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.4/color-contrast"
+          }
+        ],
+        "timestamp": 1744517430378
+      }
+    },
+    {
+      "id": "33ed2d2b88af7a1b344f0b78bbc64de142ef5a199e777b6fb033084265ec2816",
+      "category": "ux",
+      "severity": "critical",
+      "title": "Low Booking Conversion Rate: Standard Booking",
+      "description": "The booking flow \"Standard Booking\" has a conversion rate of 68%, which is below the minimum threshold of 95%",
+      "component": "Booking UX",
+      "datestamp": 1744517430381,
+      "remediation": "Reduce checkout steps from 5 to 3\nRedesign payment form with clearer labeling\nImplement a simpler date picker for mobile",
+      "status": "open",
+      "metadata": {
+        "bookingFlow": "Standard Booking",
+        "conversionRate": 68,
+        "threshold": 95,
+        "abandonment": [
+          {
+            "step": "Payment Information",
+            "percentage": 22
+          },
+          {
+            "step": "Service Selection",
+            "percentage": 10
+          }
+        ],
+        "commonIssues": [
+          {
+            "issue": "Too many steps in checkout process",
+            "count": 87
+          },
+          {
+            "issue": "Payment form is confusing",
+            "count": 65
+          },
+          {
+            "issue": "Calendar interface is hard to use on mobile",
+            "count": 42
+          }
+        ],
+        "timestamp": 1744517430381
+      }
+    },
+    {
+      "id": "7215a21564ac05449022a96629b7dbf117a711da4724429fa3710789e44a473c",
+      "category": "ux",
+      "severity": "high",
+      "title": "Low User Satisfaction for Booking: Standard Booking",
+      "description": "The booking flow \"Standard Booking\" has a user satisfaction rating of 3.7/5, which is below the minimum threshold of 4/5",
+      "component": "Booking UX",
+      "datestamp": 1744517430382,
+      "remediation": "Reduce checkout steps from 5 to 3\nRedesign payment form with clearer labeling\nImplement a simpler date picker for mobile",
+      "status": "open",
+      "metadata": {
+        "bookingFlow": "Standard Booking",
+        "userSatisfaction": 3.7,
+        "threshold": 4,
+        "commonIssues": [
+          {
+            "issue": "Too many steps in checkout process",
+            "count": 87
+          },
+          {
+            "issue": "Payment form is confusing",
+            "count": 65
+          },
+          {
+            "issue": "Calendar interface is hard to use on mobile",
+            "count": 42
+          }
+        ],
+        "timestamp": 1744517430381
+      }
+    }
+  ],
+  "summary": {
+    "critical": 2,
+    "high": 3,
+    "medium": 1,
+    "low": 0,
+    "info": 0,
+    "total": 6
+  }
+}

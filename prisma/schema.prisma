@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -23,6 +24,14 @@ model User {
   providerBookings ServiceBooking[] @relation("ProviderBookings")
   reviews       ServiceReview[]
   progress      ContentProgress[]
+  
+  // Add these fields to support provider functionality
+  bio           String?
+  specialties   String[]  @default([])
+  experience    Int?      // years of experience
+  loyaltyPoints Int       @default(0)
+  phone         String?
+  avatar        String?
 }
 
 model Account {
@@ -97,6 +106,7 @@ model ServiceBooking {
   providerId  String
   serviceId   String
   date        DateTime
+  time        String      // Add time field that appears in API code
   status      BookingStatus @default(PENDING)
   notes       String?
   createdAt   DateTime  @default(now())
@@ -104,6 +114,7 @@ model ServiceBooking {
   user        User      @relation("UserBookings", fields: [userId], references: [id])
   provider    User      @relation("ProviderBookings", fields: [providerId], references: [id])
   service     BeautyService @relation(fields: [serviceId], references: [id])
+  review      ServiceReview? // Make each booking have an optional review
 }
 
 model ServiceReview {
@@ -112,10 +123,62 @@ model ServiceReview {
   comment     String?
   userId      String
   serviceId   String
+  bookingId   String?   @unique // Add bookingId for relation
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   user        User      @relation(fields: [userId], references: [id])
   service     BeautyService @relation(fields: [serviceId], references: [id])
+  booking     ServiceBooking? @relation(fields: [bookingId], references: [id])
+}
+
+// Add missing models referenced in API code
+model Booking {
+  id          String      @id @default(uuid())
+  date        DateTime
+  status      BookingStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Tip {
+  id          String      @id @default(uuid())
+  amount      Float
+  createdAt   DateTime    @default(now())
+  userId      String
+  receiverId  String
+  bookingId   String
+}
+
+model Business {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  address     String?
+  image       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  services    String[]
+  reviews     Json[]      // Array of review objects
+}
+
+model LoyaltyTransaction {
+  id          String      @id @default(uuid())
+  userId      String
+  amount      Int
+  type        String      // "EARN" or "REDEEM"
+  description String?
+  createdAt   DateTime    @default(now())
+}
+
+model Notification {
+  id          String      @id @default(uuid())
+  userId      String
+  title       String
+  message     String
+  isRead      Boolean     @default(false)
+  type        String      // "ALERT", "BOOKING", etc.
+  createdAt   DateTime    @default(now())
+  link        String?     // Add this field to match usage in the routes
 }
 
 enum Role {

@@ -1,6 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { screen, waitFor } from '@testing-library/react/pure';
+import { setup } from '@/test-utils/setup';
 import "@testing-library/jest-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,9 +27,15 @@ const formSchema = z.object({
   }),
 });
 
+type FormData = z.infer<typeof formSchema>;
+
+interface TestFormProps {
+  onSubmit?: (data: FormData) => void;
+}
+
 // Create a test form component using the Form components
-function TestForm({ onSubmit = jest.fn() }) {
-  const form = useForm<z.infer<typeof formSchema>>({
+function TestForm({ onSubmit = jest.fn() }: TestFormProps) {
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
@@ -80,7 +86,7 @@ function TestForm({ onSubmit = jest.fn() }) {
 
 describe("Form Integration", () => {
   test("renders form with all fields and descriptions", () => {
-    render(<TestForm />);
+    setup(<TestForm />);
     
     // Check if form elements are rendered
     expect(screen.getByLabelText(/Username/i)).toBeInTheDocument();
@@ -91,11 +97,11 @@ describe("Form Integration", () => {
   });
 
   test("displays validation errors for empty fields", async () => {
-    render(<TestForm />);
+    const { user } = setup(<TestForm />);
     
     // Submit the empty form
     const submitButton = screen.getByRole("button", { name: /submit/i });
-    await userEvent.click(submitButton);
+    await user.click(submitButton);
     
     // Check if validation errors are displayed
     await waitFor(() => {
@@ -105,16 +111,16 @@ describe("Form Integration", () => {
   });
 
   test("displays validation error for invalid email", async () => {
-    render(<TestForm />);
+    const { user } = setup(<TestForm />);
     
     // Fill in valid username but invalid email
     const usernameInput = screen.getByLabelText(/Username/i);
     const emailInput = screen.getByLabelText(/Email/i);
     const submitButton = screen.getByRole("button", { name: /submit/i });
     
-    await userEvent.type(usernameInput, "johndoe");
-    await userEvent.type(emailInput, "invalid-email");
-    await userEvent.click(submitButton);
+    await user.type(usernameInput, "johndoe");
+    await user.type(emailInput, "invalid-email");
+    await user.click(submitButton);
     
     // Check if only email validation error is displayed
     await waitFor(() => {
@@ -125,16 +131,16 @@ describe("Form Integration", () => {
 
   test("submits form with valid data", async () => {
     const handleSubmit = jest.fn();
-    render(<TestForm onSubmit={handleSubmit} />);
+    const { user } = setup(<TestForm onSubmit={handleSubmit} />);
     
     // Fill in valid data
     const usernameInput = screen.getByLabelText(/Username/i);
     const emailInput = screen.getByLabelText(/Email/i);
     const submitButton = screen.getByRole("button", { name: /submit/i });
     
-    await userEvent.type(usernameInput, "johndoe");
-    await userEvent.type(emailInput, "john@example.com");
-    await userEvent.click(submitButton);
+    await user.type(usernameInput, "johndoe");
+    await user.type(emailInput, "john@example.com");
+    await user.click(submitButton);
     
     // Check if onSubmit was called with correct data
     await waitFor(() => {
@@ -153,12 +159,12 @@ describe("Form Integration", () => {
   });
 
   test("focus state changes label color", async () => {
-    render(<TestForm />);
+    const { user } = setup(<TestForm />);
     
     const usernameInput = screen.getByLabelText(/Username/i);
     
     // Focus the username input
-    await userEvent.click(usernameInput);
+    await user.click(usernameInput);
     
     // When focused, no error class should be applied yet
     const usernameLabel = screen.getByText(/Username/i);
@@ -166,7 +172,7 @@ describe("Form Integration", () => {
     
     // Submit empty form to trigger errors
     const submitButton = screen.getByRole("button", { name: /submit/i });
-    await userEvent.click(submitButton);
+    await user.click(submitButton);
     
     // After error, label should have error class
     await waitFor(() => {

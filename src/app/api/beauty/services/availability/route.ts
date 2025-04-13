@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-
-interface Booking {
-  time: string;
-}
+import { BookingStatus } from '@prisma/client';
 
 export async function GET(request: Request) {
   try {
@@ -32,10 +29,12 @@ export async function GET(request: Request) {
       where: {
         serviceId,
         date: new Date(date),
-        status: { not: 'CANCELLED' },
+        status: { not: BookingStatus.CANCELLED },
       },
       select: {
+        id: true,
         time: true,
+        status: true,
       },
     });
 
@@ -50,7 +49,9 @@ export async function GET(request: Request) {
         const time = `${hour.toString().padStart(2, '0')}:${minute
           .toString()
           .padStart(2, '0')}`;
-        const isBooked = bookings.some((booking: Booking) => booking.time === time);
+        
+        // Now we can safely check the time property since it's part of our schema
+        const isBooked = bookings.some(booking => booking.time === time);
 
         if (!isBooked) {
           availableSlots.push(time);
@@ -61,6 +62,8 @@ export async function GET(request: Request) {
     return NextResponse.json({
       service,
       availableSlots,
+      serviceId,
+      date,
     });
   } catch (error) {
     console.error('Error checking availability:', error);

@@ -9,14 +9,21 @@ on:
     # Run weekly security scan
     - cron: '0 0 * * 0'
 
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
 jobs:
   security-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
@@ -70,4 +77,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: security-scan-results
-          path: security-report.json
+          path: |
+            reports/
+            security-report.json
+          retention-days: 30
+          if-no-files-found: warn

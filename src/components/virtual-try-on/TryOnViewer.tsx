@@ -15,6 +15,7 @@ import {
   ArrowLeft,
   ArrowRight
 } from 'lucide-react';
+import Image from 'next/image';
 
 interface TryOnViewerProps {
   productId: string;
@@ -266,10 +267,13 @@ export function TryOnViewer({
               ) : (
                 // Captured image view
                 <div className="relative h-full">
-                  <img
+                  <Image
                     src={capturedImage}
                     alt="Captured try-on"
-                    className="w-full h-full object-cover"
+                    className="object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
                   />
                 </div>
               )}

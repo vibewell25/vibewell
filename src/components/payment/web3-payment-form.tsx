@@ -14,6 +14,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import QRCode from 'react-qr-code';
 import { Interface, Contract, parseUnits, parseEther, toUtf8Bytes, hexlify } from 'ethers';
+import Image from 'next/image';
 
 interface CryptoOption {
   id: string;
@@ -334,7 +335,7 @@ export function Web3PaymentForm({
       <div className="space-y-2">
         <h3 className="text-lg font-medium">Select Cryptocurrency</h3>
         <p className="text-sm text-muted-foreground">
-          Choose which cryptocurrency you'd like to pay with
+          Choose which cryptocurrency you&apos;d like to pay with
         </p>
       </div>
       
@@ -349,15 +350,19 @@ export function Web3PaymentForm({
               htmlFor={crypto.id}
               className="flex items-center space-x-2 cursor-pointer"
             >
-              <img 
-                src={crypto.icon} 
-                alt={crypto.name} 
-                className="w-6 h-6"
-                onError={(e) => {
-                  // Fallback for missing icons
-                  (e.target as HTMLImageElement).src = '/icons/default-crypto.svg';
-                }}
-              />
+              <div className="relative w-6 h-6">
+                <Image 
+                  src={crypto.icon} 
+                  alt={crypto.name} 
+                  fill
+                  className="object-contain"
+                  sizes="24px"
+                  onError={(e) => {
+                    // Fallback for missing icons
+                    (e.target as any).src = '/icons/default-crypto.svg';
+                  }}
+                />
+              </div>
               <span>{crypto.name}</span>
               {loadingRates ? (
                 <Skeleton className="h-4 w-16" />

@@ -48,6 +48,30 @@ const rateLimit = {
   keyPrefix: 'ratelimit:middleware:',
 };
 
+// Define API versions
+export enum ApiVersion {
+  V1 = 'v1',
+  V2 = 'v2',
+  V3 = 'v3',
+  LEGACY = 'legacy',
+  LATEST = 'latest'
+}
+
+// API version to path mapping
+const API_VERSION_PATHS: Record<string, string> = {
+  [ApiVersion.V1]: 'v1',
+  [ApiVersion.V2]: 'v2',
+  [ApiVersion.V3]: 'v3',
+  [ApiVersion.LEGACY]: 'legacy',
+  [ApiVersion.LATEST]: 'v3' // latest points to most recent version
+};
+
+// Minimum supported version 
+const MIN_SUPPORTED_VERSION = ApiVersion.V1;
+
+// API paths that should be versioned
+const API_PATH_PATTERN = /^\/api\/(?!auth|webhooks)/;
+
 // Helper function for Redis-based rate limiting in production
 async function redisRateLimit(req: NextRequest): Promise<NextResponse | null> {
   try {
@@ -145,6 +169,50 @@ async function inMemoryRateLimit(req: NextRequest): Promise<NextResponse | null>
     });
   }
   
+  return null;
+}
+
+// Helper to parse Accept header for API version
+function parseApiVersionFromAcceptHeader(acceptHeader: string | null): ApiVersion | null {
+  if (!acceptHeader) return null;
+  
+  // Example: application/json; version=v2
+  const versionMatch = acceptHeader.match(/version=([^;]+)/i);
+  if (versionMatch && versionMatch[1]) {
+    // Check if it's a valid version
+    if (Object.values(ApiVersion).includes(versionMatch[1] as ApiVersion)) {
+      return versionMatch[1] as ApiVersion;
+    }
+  }
+  
+  return null;
+}
+
+// Check if a path is a versioned API path
+function isVersionedPath(path: string): boolean {
+  // Check if path matches API pattern and contains version
+  return API_PATH_PATTERN.test(path) && 
+         Object.values(API_VERSION_PATHS).some(version => 
+           path.includes(`/api/${version}/`));
+}
+
+// Normalize path to latest version alias if needed
+function normalizeApiPath(path: string, version: ApiVersion): string {
+  if (version === ApiVersion.LATEST) {
+    // Map LATEST to actual latest version
+    const targetVersion = API_VERSION_PATHS[ApiVersion.LATEST];
+    return path.replace(/\/api\/latest\//, `/api/${targetVersion}/`);
+  }
+  return path;
+}
+
+// Extract version from path
+function extractVersionFromPath(path: string): ApiVersion | null {
+  for (const [version, versionPath] of Object.entries(API_VERSION_PATHS)) {
+    if (path.includes(`/api/${versionPath}/`)) {
+      return version as ApiVersion;
+    }
+  }
   return null;
 }
 
@@ -249,6 +317,48 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(dashboardPath, req.url));
   }
 
+  // Only apply to API routes except auth and webhooks
+  if (!API_PATH_PATTERN.test(req.nextUrl.pathname)) {
+    return res;
+  }
+  
+  // Check if path already contains version
+  if (isVersionedPath(req.nextUrl.pathname)) {
+    const pathVersion = extractVersionFromPath(req.nextUrl.pathname);
+    
+    // Normalize if it's using the "latest" alias
+    if (pathVersion === ApiVersion.LATEST) {
+      const normalizedPath = normalizeApiPath(req.nextUrl.pathname, ApiVersion.LATEST);
+      req.nextUrl.pathname = normalizedPath;
+      return NextResponse.rewrite(req.nextUrl);
+    }
+    
+    // Path already has version, continue
+    return res;
+  }
+  
+  // Handle unversioned API paths
+  let targetVersion: ApiVersion;
+  
+  // Try to extract version from Accept header
+  const acceptHeader = req.headers.get('accept');
+  const headerVersion = parseApiVersionFromAcceptHeader(acceptHeader);
+  
+  if (headerVersion) {
+    // Use version from Accept header
+    targetVersion = headerVersion;
+  } else {
+    // Default to latest version
+    targetVersion = ApiVersion.LATEST;
+  }
+  
+  // Insert version into path
+  const versionedPath = req.nextUrl.pathname.replace('/api/', `/api/${API_VERSION_PATHS[targetVersion]}/`);
+  req.nextUrl.pathname = normalizeApiPath(versionedPath, targetVersion);
+  
+  // Add API version to response headers for tracking
+  res.headers.set('X-API-Version', API_VERSION_PATHS[targetVersion]);
+  
   return res;
 }
 

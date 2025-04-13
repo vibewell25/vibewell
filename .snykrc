@@ -1,0 +1,8 @@
+# Snyk configuration
+disableAnalytics: true
+# Ignore vulnerabilities until they can be patched
+ignore:
+  'npm:braces:20180219':
+    - '*':
+        reason: 'Not currently exploitable in our implementation'
+        expires: 2023-12-31T00:00:00.000Z

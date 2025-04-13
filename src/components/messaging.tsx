@@ -1,13 +1,16 @@
-import { Icons } from '@/components/icons';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
+import Image from 'next/image';
+import { Trash, MoreHorizontal, Search, Send } from 'lucide-react';
+
 export interface Participant {
   id: string;
   name: string;
   avatar?: string;
   lastSeen?: string;
 }
+
 export interface Message {
   id: string;
   senderId: string;
@@ -15,12 +18,14 @@ export interface Message {
   timestamp: string;
   read: boolean;
 }
+
 export interface Conversation {
   id: string;
   participants: Participant[];
   messages: Message[];
   unreadCount: number;
 }
+
 interface MessagingProps {
   conversations: Conversation[];
   currentUserId: string;
@@ -32,6 +37,7 @@ interface MessagingProps {
   defaultSelectedConversation?: string;
   loading?: boolean;
 }
+
 export function Messaging({
   conversations,
   currentUserId,
@@ -47,6 +53,7 @@ export function Messaging({
   const [newMessage, setNewMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
+
   useEffect(() => {
     // Default to first conversation if none selected and we have conversations
     if (conversations.length > 0 && !selectedConversation) {
@@ -57,31 +64,40 @@ export function Messaging({
       setSelectedConversation(defaultSelectedConversation);
     }
   }, [conversations, selectedConversation, defaultSelectedConversation]);
+
   // Filter conversations based on search query
-  const filteredConversations = conversations.filter(conv => {
-    const otherParticipant = conv.participants.find(p => p.id !== currentUserId);
-    return otherParticipant?.name.toLowerCase().includes(searchQuery.toLowerCase());
-  });
+  const searchConversations = () => {
+    return conversations.filter(conv => {
+      const otherParticipant = conv.participants.find(p => p.id !== currentUserId);
+      return otherParticipant?.name.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+  };
+
   // Get the currently selected conversation
   const currentConversation = conversations.find(conv => conv.id === selectedConversation);
+
   // Get the other participant in the conversation
   const otherParticipant = currentConversation?.participants.find(p => p.id !== currentUserId);
+
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim() || !selectedConversation || loading) return;
     onSendMessage(selectedConversation, newMessage);
     setNewMessage('');
   };
+
   const selectConversation = (conversationId: string) => {
     setSelectedConversation(conversationId);
     if (onConversationSelect) {
       onConversationSelect(conversationId);
     }
   };
+
   const handleDeleteClick = (e: React.MouseEvent, conversationId: string) => {
     e.stopPropagation(); // Prevent triggering conversation selection
     setShowDeleteConfirm(conversationId);
   };
+
   const confirmDelete = (conversationId: string) => {
     if (onDeleteConversation) {
       onDeleteConversation(conversationId);
@@ -92,10 +108,12 @@ export function Messaging({
       setSelectedConversation(null);
     }
   };
+
   const cancelDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowDeleteConfirm(null);
   };
+
   const formatMessageTime = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();
@@ -108,6 +126,7 @@ export function Messaging({
       return format(date, 'MMM d');
     }
   };
+
   const formatLastSeen = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();
@@ -124,6 +143,7 @@ export function Messaging({
       return format(date, 'MMM d, yyyy');
     }
   };
+
   if (loading) {
     return (
       <div className={twMerge("flex justify-center items-center", height, className)}>
@@ -131,24 +151,25 @@ export function Messaging({
       </div>
     );
   }
+
   return (
     <div className={twMerge("grid grid-cols-1 md:grid-cols-3 gap-6", height, className)}>
       {/* Conversations List */}
       <div className="md:col-span-1 border rounded-lg overflow-hidden flex flex-col h-full">
         <div className="p-4 border-b">
           <div className="relative">
-            <Icons.MagnifyingGlassIcon className="absolute top-1/2 left-3 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Search className="absolute top-1/2 left-3 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search conversations"
-              className="form-input pl-10 w-full"
+              placeholder="Search conversations..."
+              className="w-full pl-10 pr-4 py-2 bg-muted/50 rounded-md"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
         <div className="flex-grow overflow-y-auto">
-          {filteredConversations.length === 0 ? (
+          {searchConversations().length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full p-4 text-center">
               <p className="text-muted-foreground mb-2">No conversations found</p>
               {searchQuery && (
@@ -162,7 +183,7 @@ export function Messaging({
             </div>
           ) : (
             <div className="divide-y">
-              {filteredConversations.map((conversation) => {
+              {searchConversations().map((conversation) => {
                 const otherParticipant = conversation.participants.find(p => p.id !== currentUserId);
                 const lastMessage = conversation.messages[conversation.messages.length - 1];
                 return (
@@ -174,11 +195,15 @@ export function Messaging({
                     <div className="relative">
                       <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center overflow-hidden">
                         {otherParticipant?.avatar ? (
-                          <img 
-                            src={otherParticipant.avatar} 
-                            alt={otherParticipant.name}
-                            className="w-full h-full object-cover"
-                          />
+                          <div className="relative w-full h-full">
+                            <Image 
+                              src={otherParticipant.avatar} 
+                              alt={otherParticipant.name}
+                              className="object-cover"
+                              fill
+                              sizes="48px"
+                            />
+                          </div>
                         ) : (
                           <p className="text-xs text-muted-foreground">Avatar</p>
                         )}
@@ -212,7 +237,7 @@ export function Messaging({
                         onClick={(e) => handleDeleteClick(e, conversation.id)}
                         aria-label="Delete conversation"
                       >
-                        <Icons.TrashIcon className="h-4 w-4" />
+                        <Trash className="h-4 w-4" />
                       </button>
                     )}
                     {/* Delete confirmation */}
@@ -253,11 +278,15 @@ export function Messaging({
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-muted rounded-full mr-3 flex items-center justify-center overflow-hidden">
                   {otherParticipant?.avatar ? (
-                    <img 
-                      src={otherParticipant.avatar} 
-                      alt={otherParticipant.name}
-                      className="w-full h-full object-cover"
-                    />
+                    <div className="relative w-full h-full">
+                      <Image 
+                        src={otherParticipant.avatar} 
+                        alt={otherParticipant.name}
+                        className="object-cover"
+                        fill
+                        sizes="40px"
+                      />
+                    </div>
                   ) : (
                     <p className="text-xs text-muted-foreground">Avatar</p>
                   )}
@@ -278,11 +307,11 @@ export function Messaging({
                     onClick={(e) => handleDeleteClick(e, currentConversation.id)}
                     aria-label="Delete conversation"
                   >
-                    <Icons.TrashIcon className="h-5 w-5" />
+                    <Trash className="h-5 w-5" />
                   </button>
                 )}
                 <button className="text-muted-foreground hover:text-primary">
-                  <Icons.EllipsisHorizontalIcon className="h-6 w-6" />
+                  <MoreHorizontal className="h-6 w-6" />
                 </button>
               </div>
             </div>
@@ -302,11 +331,15 @@ export function Messaging({
                       {!isCurrentUser && (
                         <div className="w-8 h-8 bg-muted rounded-full mr-2 flex-shrink-0 flex items-center justify-center overflow-hidden">
                           {sender?.avatar ? (
-                            <img 
-                              src={sender.avatar} 
-                              alt={sender.name}
-                              className="w-full h-full object-cover"
-                            />
+                            <div className="relative w-full h-full">
+                              <Image 
+                                src={sender.avatar} 
+                                alt={sender.name}
+                                className="object-cover"
+                                fill
+                                sizes="32px"
+                              />
+                            </div>
                           ) : (
                             <p className="text-xs text-muted-foreground">Avatar</p>
                           )}
@@ -341,7 +374,7 @@ export function Messaging({
                   disabled={!newMessage.trim() || loading}
                   className="btn-primary !p-2 disabled:opacity-50"
                 >
-                  <Icons.PaperAirplaneIcon className="h-5 w-5" />
+                  <Send className="h-5 w-5" />
                 </button>
               </form>
             </div>

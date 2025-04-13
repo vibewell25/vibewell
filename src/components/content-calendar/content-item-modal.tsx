@@ -23,6 +23,7 @@ import { CalendarIcon, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { DateTimePicker } from '@/components/ui/date-time-picker';
 import { FileUpload } from '@/components/ui/file-upload';
+import Image from 'next/image';
 
 interface ContentItemModalProps {
   isOpen: boolean;
@@ -335,10 +336,12 @@ export function ContentItemModal({
                           .filter(file => file.type.startsWith('image/'))
                           .map((file, index) => (
                             <div key={index} className="relative aspect-square rounded-md overflow-hidden border">
-                              <img
+                              <Image
                                 src={URL.createObjectURL(file)}
                                 alt={file.name}
-                                className="w-full h-full object-cover"
+                                className="object-cover"
+                                fill
+                                sizes="(max-width: 640px) 50vw, 33vw"
                               />
                               <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-1">
                                 <p className="text-white text-xs truncate">{file.name}</p>

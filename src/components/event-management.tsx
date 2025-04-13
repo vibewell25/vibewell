@@ -10,6 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Image from 'next/image';
+
 interface EventManagementProps {
   event: Event;
   onUpdate: (updates: Partial<Event>) => void;
@@ -178,11 +180,15 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                           className="flex items-center justify-between p-2 border rounded-md"
                         >
                           <div className="flex items-center gap-2">
-                            <img
-                              src={participant.avatar}
-                              alt={participant.name}
-                              className="h-8 w-8 rounded-full"
-                            />
+                            <div className="relative h-8 w-8">
+                              <Image
+                                src={participant.avatar}
+                                alt={participant.name}
+                                className="rounded-full object-cover"
+                                fill
+                                sizes="32px"
+                              />
+                            </div>
                             <div>
                               <p className="font-medium">{participant.name}</p>
                               <p className="text-sm text-muted-foreground">

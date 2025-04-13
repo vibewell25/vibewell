@@ -7,33 +7,67 @@ import { LineChart, BarChart, PieChart } from '@/components/ui/charts'
 import { Badge } from '@/components/ui/badge'
 import { ArrowUpIcon, ArrowDownIcon, EyeIcon, ShoppingCartIcon, StarIcon, HeartIcon } from 'lucide-react'
 
+/**
+ * Props for the ProductAnalytics component
+ */
 interface ProductAnalyticsProps {
-  productId: string
-  timeRange: string
+  /** ID of the product to display analytics for */
+  productId: string;
+  /** Time range for analytics data (e.g., '7d', '30d', '90d', '1y') */
+  timeRange: string;
 }
 
+/**
+ * Product details interface
+ */
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  subcategory?: string;
+  brand?: string;
+  description?: string;
+}
+
+/**
+ * Metrics for product performance
+ */
 interface ProductMetrics {
-  views: number
-  viewsTrend: number
-  conversions: number
-  conversionsTrend: number
-  averageRating: number
-  ratingTrend: number
-  saveRate: number
-  saveRateTrend: number
+  views: number;
+  viewsTrend: number;
+  conversions: number;
+  conversionsTrend: number;
+  averageRating: number;
+  ratingTrend: number;
+  saveRate: number;
+  saveRateTrend: number;
 }
 
+/**
+ * Time series data for charts
+ */
 interface TimeSeriesData {
-  dates: string[]
-  views: number[]
-  conversions: number[]
-  ratings: number[]
-  saves: number[]
+  dates: string[];
+  views: number[];
+  conversions: number[];
+  ratings: number[];
+  saves: number[];
 }
 
+/**
+ * Device distribution data for pie chart
+ */
+interface DeviceDistribution {
+  labels: string[];
+  values: number[];
+}
+
+/**
+ * ProductAnalytics component displays performance metrics and charts for a product
+ */
 export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps) {
-  const [loading, setLoading] = useState(true)
-  const [product, setProduct] = useState<any>(null)
+  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState<Product | null>(null);
   const [metrics, setMetrics] = useState<ProductMetrics>({
     views: 0,
     viewsTrend: 0,
@@ -43,44 +77,44 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
     ratingTrend: 0,
     saveRate: 0,
     saveRateTrend: 0
-  })
+  });
   const [timeSeriesData, setTimeSeriesData] = useState<TimeSeriesData>({
     dates: [],
     views: [],
     conversions: [],
     ratings: [],
     saves: []
-  })
-  const [ratingDistribution, setRatingDistribution] = useState<number[]>([0, 0, 0, 0, 0])
-  const [deviceDistribution, setDeviceDistribution] = useState<{
-    labels: string[],
-    values: number[]
-  }>({ labels: [], values: [] })
+  });
+  const [ratingDistribution, setRatingDistribution] = useState<number[]>([0, 0, 0, 0, 0]);
+  const [deviceDistribution, setDeviceDistribution] = useState<DeviceDistribution>({ 
+    labels: [], 
+    values: [] 
+  });
 
   useEffect(() => {
     const fetchProductData = async () => {
-      if (!productId) return
+      if (!productId) return;
       
-      setLoading(true)
+      setLoading(true);
       try {
         // Fetch product details
-        const productService = new ProductService()
-        const { data } = await productService.getProductById(productId)
-        setProduct(data)
+        const productService = new ProductService();
+        const { data } = await productService.getProductById(productId);
+        setProduct(data);
         
         // Fetch product analytics data
         // This would be a real API call in production
-        const days = timeRangeToDays(timeRange)
-        const metricsData = await fetchProductMetrics(productId, days)
-        setMetrics(metricsData)
+        const days = timeRangeToDays(timeRange);
+        const metricsData = await fetchProductMetrics(productId, days);
+        setMetrics(metricsData);
         
         // Fetch time series data
-        const timeData = await fetchTimeSeriesData(productId, days)
-        setTimeSeriesData(timeData)
+        const timeData = await fetchTimeSeriesData(productId, days);
+        setTimeSeriesData(timeData);
         
         // Fetch rating distribution
-        const feedbackService = new FeedbackService()
-        const stats = await feedbackService.getProductFeedbackStats(productId)
+        const feedbackService = new FeedbackService();
+        const stats = await feedbackService.getProductFeedbackStats(productId);
         if (stats && stats.ratingDistribution) {
           setRatingDistribution([
             stats.ratingDistribution['1'] || 0,
@@ -88,23 +122,23 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
             stats.ratingDistribution['3'] || 0,
             stats.ratingDistribution['4'] || 0,
             stats.ratingDistribution['5'] || 0
-          ])
+          ]);
         }
         
         // Fetch device distribution (mock data for now)
         setDeviceDistribution({
           labels: ['Mobile', 'Desktop', 'Tablet', 'AR Headset', 'VR Headset'],
           values: [45, 30, 15, 7, 3]
-        })
+        });
       } catch (error) {
-        console.error('Error fetching product analytics:', error)
+        console.error('Error fetching product analytics:', error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
     
-    fetchProductData()
-  }, [productId, timeRange])
+    fetchProductData();
+  }, [productId, timeRange]);
 
   // Helper function to convert timeRange to days
   const timeRangeToDays = (range: string): number => {

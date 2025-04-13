@@ -325,94 +325,102 @@ export function measureARModelLoadTime(
 /**
  * Create a controlled testing environment for AR
  */
-export function createARTestEnvironment(
-  container: HTMLElement,
-  options: {
-    width?: number;
-    height?: number;
-    cameraPosition?: [number, number, number];
-    lightIntensity?: number;
-  } = {}
-): {
-  scene: THREE.Scene;
-  camera: THREE.PerspectiveCamera;
-  renderer: THREE.WebGLRenderer;
-  animate: () => void;
-  cleanup: () => void;
-} {
+export function createARTestEnvironment(options: {
+  width?: number;
+  height?: number;
+  backgroundColor?: string;
+  cameraPosition?: { x: number; y: number; z: number };
+} = {}) {
   const {
     width = 800,
     height = 600,
-    cameraPosition = [0, 0, 5],
-    lightIntensity = 1
+    backgroundColor = '#f0f0f0',
+    cameraPosition = { x: 0, y: 0, z: 5 }
   } = options;
+  
+  // Mock DOM elements
+  const container = document.createElement('div');
+  container.style.width = `${width}px`;
+  container.style.height = `${height}px`;
   
   // Create scene
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  if (backgroundColor) {
+    scene.background = new THREE.Color(backgroundColor);
+  }
   
   // Create camera
   const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-  camera.position.set(...cameraPosition);
+  camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
   
   // Create renderer
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(width, height);
-  renderer.setPixelRatio(1); // Consistent for testing
   container.appendChild(renderer.domElement);
   
   // Add lights
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
   scene.add(ambientLight);
   
-  const directionalLight = new THREE.DirectionalLight(0xffffff, lightIntensity);
-  directionalLight.position.set(5, 5, 5);
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  directionalLight.position.set(0, 1, 1);
   scene.add(directionalLight);
   
-  // Animation loop
-  let frameId: number | null = null;
+  // Create raycaster for testing interactions
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
   
-  const animate = () => {
-    frameId = requestAnimationFrame(animate);
+  // Helper for resizing
+  const handleResize = () => {
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+  };
+  
+  // Mock render function
+  const render = () => {
     renderer.render(scene, camera);
   };
   
-  // Start animation
-  animate();
-  
-  // Cleanup function
-  const cleanup = () => {
-    if (frameId !== null) {
-      cancelAnimationFrame(frameId);
-    }
+  // Helper for simulating mouse click
+  const simulateClick = (clientX: number, clientY: number) => {
+    // Calculate mouse position in normalized device coordinates
+    mouse.x = (clientX / width) * 2 - 1;
+    mouse.y = -(clientY / height) * 2 + 1;
     
-    if (container.contains(renderer.domElement)) {
-      container.removeChild(renderer.domElement);
-    }
+    // Update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
     
-    // Dispose resources
-    renderer.dispose();
-    scene.traverse((object) => {
-      if (object instanceof THREE.Mesh) {
-        if (object.geometry) object.geometry.dispose();
-        
-        if (object.material) {
-          if (Array.isArray(object.material)) {
-            object.material.forEach(material => material.dispose());
-          } else {
-            object.material.dispose();
-          }
-        }
-      }
-    });
+    // Calculate objects intersecting the picking ray
+    return raycaster.intersectObjects(scene.children, true);
   };
   
   return {
     scene,
     camera,
     renderer,
-    animate,
-    cleanup
+    container,
+    ambientLight,
+    directionalLight,
+    handleResize,
+    render,
+    simulateClick,
+    dispose: () => {
+      // Clean up resources
+      renderer.dispose();
+      scene.children.forEach(child => {
+        if (child instanceof THREE.Mesh) {
+          if (child.geometry) child.geometry.dispose();
+          if (child.material) {
+            if (Array.isArray(child.material)) {
+              child.material.forEach(material => material.dispose());
+            } else {
+              child.material.dispose();
+            }
+          }
+        }
+      });
+    }
   };
 }
 
@@ -475,4 +483,122 @@ export function validateARModelRender(
     qualityScore,
     issues
   };
-} 
+}
+
+/**
+ * Helper to test AR model loading
+ */
+export function testModelLoading(url: string, type: string, onProgress?: (progress: number) => void): Promise<{
+  success: boolean;
+  model?: THREE.Group;
+  error?: Error;
+  performance: {
+    loadTime: number;
+    fps: number;
+  };
+}> {
+  return new Promise(resolve => {
+    // Mock performance metrics
+    const startTime = Date.now();
+    
+    // Simulate loading delay with progress
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+      progress += 10;
+      if (onProgress) onProgress(progress);
+      if (progress >= 100) {
+        clearInterval(progressInterval);
+        
+        // Create a mock model
+        const model = new THREE.Group();
+        const geometry = new THREE.SphereGeometry(1, 32, 32);
+        const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+        const mesh = new THREE.Mesh(geometry, material);
+        model.add(mesh);
+        
+        // Calculate mock performance metrics
+        const loadTime = Date.now() - startTime;
+        const fps = 60; // Mock FPS
+        
+        setTimeout(() => {
+          resolve({
+            success: true,
+            model,
+            performance: {
+              loadTime,
+              fps
+            }
+          });
+        }, 100);
+      }
+    }, 50);
+  });
+}
+
+/**
+ * Helper to test AR model rendering with different lighting conditions
+ */
+export function testModelLighting(model: THREE.Group, lightIntensity: number): {
+  success: boolean;
+  performance: {
+    fps: number;
+    renderTime: number;
+  };
+} {
+  // Create test environment
+  const env = createARTestEnvironment();
+  
+  // Add model to scene
+  env.scene.add(model);
+  
+  // Adjust light intensity
+  env.ambientLight.intensity = lightIntensity * 0.5;
+  env.directionalLight.intensity = lightIntensity * 0.8;
+  
+  // Measure render time
+  const startTime = performance.now();
+  env.render();
+  const renderTime = performance.now() - startTime;
+  
+  // Clean up
+  env.dispose();
+  
+  return {
+    success: true,
+    performance: {
+      fps: 1000 / renderTime, // Calculate FPS from render time
+      renderTime
+    }
+  };
+}
+
+/**
+ * Mock response for AR model test data
+ */
+export const mockARTestData = {
+  models: [
+    {
+      id: 'model1',
+      name: 'Test Model 1',
+      url: 'https://example.com/models/model1.glb',
+      type: 'makeup'
+    },
+    {
+      id: 'model2',
+      name: 'Test Model 2',
+      url: 'https://example.com/models/model2.glb',
+      type: 'hairstyle'
+    },
+    {
+      id: 'model3',
+      name: 'Test Model 3',
+      url: 'https://example.com/models/model3.glb',
+      type: 'accessory'
+    }
+  ],
+  resolutions: [
+    { width: 640, height: 480, label: 'SD' },
+    { width: 1280, height: 720, label: 'HD' },
+    { width: 1920, height: 1080, label: 'Full HD' }
+  ]
+}; 

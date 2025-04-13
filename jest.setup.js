@@ -1,7 +1,13 @@
-// Add Jest extended matchers
+// Import global test utils and customizations
 require('@testing-library/jest-dom');
 
-// Mock the fetch API
+// Import custom matcher extension utility
+const extendJestWithCustomMatchers = require('./src/test-utils/extend-jest').default;
+
+// Extend Jest with custom matchers in a type-safe way
+extendJestWithCustomMatchers();
+
+// Set up global mocks
 global.fetch = jest.fn();
 
 // Add polyfills for web APIs if not defined
@@ -153,8 +159,8 @@ Object.defineProperty(window, 'matchMedia', {
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(), // Deprecated
-    removeListener: jest.fn(), // Deprecated
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
@@ -319,4 +325,21 @@ global.IntersectionObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),
   unobserve: jest.fn(),
   disconnect: jest.fn(),
-})); 
+}));
+
+// Mock IntersectionObserver
+class MockIntersectionObserver {
+  constructor(callback) {
+    this.callback = callback;
+  }
+  observe() { return null; }
+  unobserve() { return null; }
+  disconnect() { return null; }
+}
+
+global.IntersectionObserver = MockIntersectionObserver;
+
+// Reset mocks between tests
+beforeEach(() => {
+  jest.clearAllMocks();
+}); 

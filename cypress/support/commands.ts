@@ -10,6 +10,9 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
+// Import cypress-visual-regression
+import { addMatchImageSnapshotCommand } from 'cypress-visual-regression/dist/command';
+
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -61,6 +64,37 @@ Cypress.Commands.add('checkPCICompliance', () => {
   // Check that https is being used
   cy.location().should((loc) => {
     expect(loc.protocol).to.eq('https:');
+  });
+});
+
+// Add the visual regression command
+addMatchImageSnapshotCommand({
+  failureThreshold: 0.03, // threshold for entire image
+  failureThresholdType: 'percent', // percent of image or number of pixels
+  customDiffConfig: { threshold: 0.1 }, // threshold for each pixel
+  capture: 'viewport', // capture viewport or full page
+});
+
+// Add a custom tab command for accessibility testing
+Cypress.Commands.add('tab', { prevSubject: 'optional' }, (subject) => {
+  const focusableElements = 'a[href], button, input, [tabindex]:not([tabindex="-1"])';
+  
+  if (subject) {
+    cy.wrap(subject).trigger('keydown', { keyCode: 9, which: 9 });
+  } else {
+    cy.focused().trigger('keydown', { keyCode: 9, which: 9 });
+  }
+  
+  return cy.document().then(document => {
+    const focusable = Array.from(document.querySelectorAll(focusableElements));
+    const currentFocusIndex = focusable.indexOf(document.activeElement as Element);
+    const nextIndex = currentFocusIndex + 1 < focusable.length ? currentFocusIndex + 1 : 0;
+    
+    if (focusable[nextIndex]) {
+      (focusable[nextIndex] as HTMLElement).focus();
+      return cy.wrap(focusable[nextIndex]);
+    }
+    return cy.wrap(document.body);
   });
 });
 

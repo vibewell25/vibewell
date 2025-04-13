@@ -13,39 +13,43 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "incremental": true,
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
+        "src/*"
       ],
       "@components/*": [
-        "./src/components/*"
-      ],
-      "@services/*": [
-        "./src/services/*"
-      ],
-      "@hooks/*": [
-        "./src/hooks/*"
+        "src/components/*"
       ],
       "@utils/*": [
-        "./src/utils/*"
+        "src/utils/*"
       ],
-      "@styles/*": [
-        "./src/styles/*"
+      "@hooks/*": [
+        "src/hooks/*"
       ],
-      "@assets/*": [
-        "./src/assets/*"
+      "@types/*": [
+        "src/types/*"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ],
+      "@test-utils/*": [
+        "src/test-utils/*"
+      ],
+      "@contexts/*": [
+        "src/contexts/*"
       ]
     },
     "types": [
-      "node",
       "jest",
-      "@testing-library/jest-dom"
+      "node",
+      "@testing-library/jest-dom",
+      "@testing-library/react"
     ],
     "plugins": [
       {
@@ -54,13 +58,20 @@
     ]
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "test/**/*.ts",
+    "test/**/*.tsx",
     "next-env.d.ts",
     "src/types/testing.d.ts",
-    ".next/types/**/*.ts"
+    "src/test-utils/custom-testing-types.d.ts",
+    "src/types/next-routes.d.ts",
+    ".next/types/**/*.ts",
+    "jest.setup.ts",
+    "jest.config.js"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/node_modules/*"
   ]
 }

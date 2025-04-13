@@ -1,6 +1,9 @@
-import { Icons } from '@/components/icons';
 'use client';
+
+import React from 'react';
 import { format } from 'date-fns';
+import { BookOpenIcon, CalendarIcon, ShoppingBagIcon, StarIcon } from '@heroicons/react/24/outline';
+
 interface Activity {
   id: string;
   type: 'content' | 'booking' | 'purchase' | 'review';
@@ -8,50 +11,53 @@ interface Activity {
   description: string;
   date: string;
 }
+
 interface ActivityFeedProps {
   activities: Activity[];
 }
+
 const getActivityIcon = (type: Activity['type']) => {
   switch (type) {
     case 'content':
-      return <Icons.Icons.BookOpenIcon className="h-5 w-5 text-blue-500" />;
+      return <BookOpenIcon className="h-5 w-5 text-blue-500" />;
     case 'booking':
-      return <Icons.Icons.CalendarIcon className="h-5 w-5 text-green-500" />;
+      return <CalendarIcon className="h-5 w-5 text-green-500" />;
     case 'purchase':
-      return <Icons.Icons.ShoppingBagIcon className="h-5 w-5 text-purple-500" />;
+      return <ShoppingBagIcon className="h-5 w-5 text-purple-500" />;
     case 'review':
-      return <Icons.Icons.StarIcon className="h-5 w-5 text-yellow-500" />;
+      return <StarIcon className="h-5 w-5 text-yellow-500" />;
     default:
       return null;
   }
 };
+
 export function ActivityFeed({ activities }: ActivityFeedProps) {
   if (activities.length === 0) {
     return (
-      <Icons.div className="bg-muted/20 rounded-lg p-6 text-center">
-        <Icons.p className="text-muted-foreground">No recent activities<Icons./p>
-      <Icons./div>
+      <div className="bg-muted/20 rounded-lg p-6 text-center">
+        <p className="text-muted-foreground">No recent activities</p>
+      </div>
     );
   }
   return (
-    <Icons.div className="space-y-4">
+    <div className="space-y-4">
       {activities.map((activity) => (
-        <Icons.div
+        <div
           key={activity.id}
           className="flex items-start gap-4 rounded-lg border p-4"
         >
-          <Icons.div className="mt-1">{getActivityIcon(activity.type)}<Icons./div>
-          <Icons.div className="flex-1 space-y-1">
-            <Icons.p className="font-medium">{activity.title}<Icons./p>
-            <Icons.p className="text-sm text-muted-foreground">
+          <div className="mt-1">{getActivityIcon(activity.type)}</div>
+          <div className="flex-1 space-y-1">
+            <p className="font-medium">{activity.title}</p>
+            <p className="text-sm text-muted-foreground">
               {activity.description}
-            <Icons./p>
-            <Icons.p className="text-xs text-muted-foreground">
+            </p>
+            <p className="text-xs text-muted-foreground">
               {format(new Date(activity.date), 'MMM d, yyyy h:mm a')}
-            <Icons./p>
-          <Icons./div>
-        <Icons./div>
+            </p>
+          </div>
+        </div>
       ))}
-    <Icons./div>
+    </div>
   );
 } 

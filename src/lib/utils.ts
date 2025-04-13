@@ -186,21 +186,41 @@ export function getRandomColor(): string {
  * Example: getNestedValue(user, 'profile.address.city')
  */
 export function getNestedValue<T = any>(
-  obj: Record<string, any>,
+  obj: Record<string, any> | null | undefined,
   path: string,
   defaultValue?: T
 ): T | undefined {
-  const travel = (regexp: RegExp) =>
-    String.prototype.split
+  // Early return if object is null or undefined
+  if (obj === null || obj === undefined) {
+    return defaultValue;
+  }
+  
+  // Split the path by dots, brackets, or commas
+  const travel = (regexp: RegExp) => {
+    const result = String.prototype.split
       .call(path, regexp)
       .filter(Boolean)
       .reduce(
-        (res, key) => (res !== null && res !== undefined ? res[key] : res),
+        (res, key) => {
+          // Check for null or undefined at each step
+          if (res === null || res === undefined) {
+            return res;
+          }
+          
+          // Access the property safely
+          return typeof res === 'object' && key in res ? res[key] : undefined;
+        },
         obj
       );
+    
+    return result;
+  };
   
+  // Try with different regex patterns for different path formats
   const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
-  return result === undefined || result === obj ? defaultValue : result;
+  
+  // Return default value if result is undefined or equal to the original object
+  return (result === undefined || result === obj ? defaultValue : result) as T | undefined;
 }
 
 /**

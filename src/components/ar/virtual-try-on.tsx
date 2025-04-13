@@ -170,7 +170,9 @@ export function VirtualTryOn({
       // Clean up on unmount or when model changes
       return () => {
         // Cancel any active loading
-        cancelLoading(selectedModel.url);
+        if (cancelLoading && selectedModel) {
+          cancelLoading(selectedModel.url);
+        }
       };
     }
   }, [selectedModel, selectedModelIndex, getModel, prefetchModels, cancelLoading, onModelLoaded, onModelError, models, intensity, trackEvent, toast, userId, analyticsService, trackAchievement]);

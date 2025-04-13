@@ -134,7 +134,9 @@ export function useARCache(options: UseARCacheOptions = {}) {
         }
         
         // Get total size from content length if available
-        const totalSize = Number(response.headers.get('content-length')) || 0;
+        const totalSize = response.headers && response.headers.get 
+          ? Number(response.headers.get('content-length')) || 0 
+          : 0;
         
         // Set up progress tracking with a reader
         const reader = response.body?.getReader();

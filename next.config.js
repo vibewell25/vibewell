@@ -1,54 +1,29 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  images: {
-    remotePatterns: [
+  "reactStrictMode": true,
+  "images": {
+    "remotePatterns": [
       {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
+        "protocol": "https",
+        "hostname": "**"
+      }
+    ]
   },
-  experimental: {
-    serverActions: {
-      bodySizeLimit: '2mb',
+  "experimental": {
+    "serverActions": {
+      "bodySizeLimit": "2mb"
     },
-    typedRoutes: true,
+    "typedRoutes": true,
+    "appDir": true,
+    "serverComponentsExternalPackages": []
   },
-  // Skip type checking during build for faster builds
-  typescript: {
-    ignoreBuildErrors: true,
+  "typescript": {
+    "ignoreBuildErrors": false,
+    "tsconfigPath": "./tsconfig.json"
   },
-  eslint: {
-    ignoreDuringBuilds: true,
+  "eslint": {
+    "ignoreDuringBuilds": true
   },
-  // Use standalone output
-  output: 'standalone',
-  
-  // Webpack configuration for polyfills
-  webpack: (config, { isServer }) => {
-    // Add polyfills for node modules used by Redis and other services
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-        crypto: false,
-        dns: false,
-        path: false,
-        stream: false,
-        child_process: false,
-        http: false,
-        https: false,
-        zlib: false,
-        os: false,
-        url: false,
-        querystring: false,
-      };
-    }
-    return config;
-  },
+  "output": "standalone"
 };
 
-module.exports = nextConfig; 
+module.exports = nextConfig;

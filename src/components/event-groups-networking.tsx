@@ -9,6 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Image from 'next/image';
+
 interface EventGroupsNetworkingProps {
   event: Event;
   onGroupCreate: (name: string, description: string) => void;
@@ -16,6 +18,7 @@ interface EventGroupsNetworkingProps {
   onPhotoUpload: (file: File) => void;
   onNetworkingMatch: () => void;
 }
+
 export function EventGroupsNetworking({ 
   event, 
   onGroupCreate, 
@@ -30,18 +33,21 @@ export function EventGroupsNetworking({
   });
   const [newMessage, setNewMessage] = useState('');
   const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
+
   const handleGroupCreate = () => {
     if (newGroup.name.trim()) {
       onGroupCreate(newGroup.name, newGroup.description);
       setNewGroup({ name: '', description: '' });
     }
   };
+
   const handleMessageSend = () => {
     if (newMessage.trim()) {
       onMessageSend(newMessage);
       setNewMessage('');
     }
   };
+
   const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -49,6 +55,7 @@ export function EventGroupsNetworking({
       onPhotoUpload(file);
     }
   };
+
   return (
     <Card>
       <CardHeader>
@@ -180,10 +187,12 @@ export function EventGroupsNetworking({
                           key={photo.id}
                           className="relative aspect-square rounded-md overflow-hidden"
                         >
-                          <img
+                          <Image
                             src={photo.url}
                             alt={photo.caption || 'Event photo'}
-                            className="w-full h-full object-cover"
+                            className="object-cover"
+                            fill
+                            sizes="(max-width: 640px) 50vw, 33vw"
                           />
                           <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/50 to-transparent">
                             <p className="text-white text-sm">

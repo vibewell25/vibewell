@@ -8,11 +8,12 @@ import { XRButton, XR, createXRStore } from '@react-three/xr';
 import { Button } from '@/components/ui/button';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { Camera } from 'lucide-react';
+import { PerformanceMonitor } from './PerformanceMonitor';
 
 // Import GLTFLoader
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 // Import Draco decoder for model compression
-import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
 // Create an XR store for managing WebXR state
 const xrStore = createXRStore();
@@ -62,79 +63,6 @@ const optimizationConfig = {
   geometryPrecompute: true, // Precompute geometry attributes for faster rendering
   adaptiveRendering: true, // Use lower resolution rendering on slow devices
 };
-
-// React component for performance monitoring with enhanced metrics
-function PerformanceMonitor() {
-  const { gl } = useThree();
-  const frameRate = useRef<number>(0);
-  const frameCount = useRef<number>(0);
-  const lastUpdate = useRef<number>(Date.now());
-  const [fps, setFps] = useState<number>(0);
-  const [memoryUsage, setMemoryUsage] = useState<number>(0);
-  const [drawCalls, setDrawCalls] = useState<number>(0);
-  const [triangles, setTriangles] = useState<number>(0);
-  const [isPerformanceIssue, setIsPerformanceIssue] = useState(false);
-  const adaptiveQualityTimer = useRef<any>(null);
-
-  useFrame(() => {
-    frameCount.current += 1;
-    const now = Date.now();
-    const delta = now - lastUpdate.current;
-    
-    if (delta > 1000) {
-      frameRate.current = frameCount.current * 1000 / delta;
-      setFps(Math.round(frameRate.current));
-      
-      // Update additional metrics
-      if (gl.info) {
-        setDrawCalls(gl.info.render?.calls || 0);
-        setTriangles(gl.info.render?.triangles || 0);
-        setMemoryUsage((gl.info.memory?.geometries || 0) * 0.25 + (gl.info.memory?.textures || 0) * 2);
-      }
-      
-      frameCount.current = 0;
-      lastUpdate.current = now;
-      
-      // Performance issue detection and adaptive quality
-      const hasPerformanceIssue = frameRate.current < 30;
-      setIsPerformanceIssue(hasPerformanceIssue);
-      
-      // Apply adaptive optimizations for sustained low performance
-      if (hasPerformanceIssue) {
-        if (!adaptiveQualityTimer.current) {
-          adaptiveQualityTimer.current = setTimeout(() => {
-            // Apply progressive optimizations
-            const pixelRatio = Math.max(1, window.devicePixelRatio * 0.75);
-            gl.setPixelRatio(pixelRatio);
-            
-            // Reduce shadow map size
-            if (gl.shadowMap.enabled) {
-              gl.shadowMap.autoUpdate = false;
-              gl.shadowMap.needsUpdate = true;
-            }
-            
-            adaptiveQualityTimer.current = null;
-          }, 2000); // Apply after 2 seconds of poor performance
-        }
-      } else if (adaptiveQualityTimer.current) {
-        clearTimeout(adaptiveQualityTimer.current);
-        adaptiveQualityTimer.current = null;
-      }
-    }
-  });
-
-  // Only render in development mode
-  if (process.env.NODE_ENV !== 'development') return null;
-
-  return (
-    <div className="absolute top-0 left-0 bg-black bg-opacity-50 text-white text-xs p-1 rounded">
-      <div>FPS: {fps} {isPerformanceIssue && '⚠️'}</div>
-      <div>Triangles: {triangles.toLocaleString()}</div>
-      <div>Draw calls: {drawCalls}</div>
-      <div>Memory: {Math.round(memoryUsage)}MB</div>
-    </div>
-  );
-}
 
 // Optimized model controls with memoized calculations
 function ModelControls({ 
@@ -473,9 +401,10 @@ const Model = React.memo(function Model({
         onLoad?.();
       },
       undefined,
-      (error: any) => {
+      (error) => {
         console.error('Error loading model:', error);
-        trackEvent('model_load_error', { type, error: error.message });
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        trackEvent('model_load_error', { type, error: errorMessage });
       }
     );
     
@@ -847,6 +776,14 @@ export function ThreeARViewer({
                 <p className="text-sm mt-2">Please try using a different browser or device that supports WebGL.</p>
               </div>
             </div>
+          )}
+          
+          {!webGLError && rendererRef.current && (
+            <PerformanceMonitor 
+              enableAdaptiveQuality={true}
+              performanceThreshold={30}
+              devModeOnly={process.env.NODE_ENV !== 'production'}
+            />
           )}
         </div>
         

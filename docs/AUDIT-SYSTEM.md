@@ -224,11 +224,11 @@ jobs:
         run: npm ci
       - name: Run comprehensive audit
         run: npm run audit:comprehensive
-      - name: Upload audit reports
-        uses: actions/upload-artifact@v2
+      - name: Upload audit results
+        uses: actions/upload-artifact@v4
         with:
-          name: audit-reports
-          path: reports/audit/
+          name: audit-results
+          path: ${{ github.workspace }}/audit-reports/
 ```
 
 ## Custom Audit Implementation

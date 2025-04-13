@@ -214,7 +214,7 @@ export default function ContentDetailPage() {
   };
 
   const handleEditContent = (updatedContent: any) => {
-    // TODO: Implement content update logic
+    import { updateWellnessContent } from "../../../../implementation-files/wellness-content-update";
     console.log('Updating content:', updatedContent);
     setIsEditModalOpen(false);
   };

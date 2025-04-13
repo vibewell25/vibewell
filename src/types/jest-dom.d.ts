@@ -1,19 +1,25 @@
-/**
- * Type declarations specifically for jest-dom matchers
- * This helps resolve conflicts between different testing libraries
- */
+import '@testing-library/jest-dom';
 
-// Type definitions for jest-dom and jest-axe
-// Project: https://github.com/testing-library/jest-dom
-
-// Extend Jest's Matchers interface with our custom matchers
-declare namespace jest {
-  interface Matchers<R> {
-    // Add just the matchers causing the linter errors
-    toBeInTheDocument(): R;
-    toHaveAttribute(attr: string, value?: string): R;
-    toHaveNoViolations(): R;
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toBeInTheDocument(): R;
+      toHaveAttribute(attr: string, value?: string): R;
+      toHaveClass(...classNames: string[]): R;
+      toHaveStyle(css: string): R;
+      toHaveTextContent(text: string | RegExp): R;
+      toBeVisible(): R;
+      toBeDisabled(): R;
+      toBeEnabled(): R;
+      toBeEmpty(): R;
+      toBeRequired(): R;
+      toHaveFocus(): R;
+      toBeChecked(): R;
+      toBePartiallyChecked(): R;
+      toHaveValue(value?: string | string[] | number): R;
+      toHaveDisplayValue(value: string | string[] | RegExp): R;
+      toBeInvalid(): R;
+      toBeValid(): R;
+    }
   }
 }
-
-export {};

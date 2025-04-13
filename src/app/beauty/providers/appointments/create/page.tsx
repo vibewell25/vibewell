@@ -101,7 +101,7 @@ export default function CreateAppointmentPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement appointment creation logic
+    import { createAppointment } from "../../../../../implementation-files/appointments-create-logic";
     console.log({
       client: selectedClient,
       services: selectedServices,

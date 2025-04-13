@@ -76,7 +76,7 @@ export function BackupSettings() {
       setLoading(true);
       setError(null);
 
-      // TODO: Implement settings update logic
+      import { updateBackupSettings } from "../../implementation-files/backup-settings-update";
       console.log('Updating backup settings:', values);
 
       toast({

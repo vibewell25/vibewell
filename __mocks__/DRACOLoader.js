@@ -1,17 +1,11 @@
-// Mock for DRACOLoader
+// Mock for DRACOLoader from Three.js
 class DRACOLoader {
   constructor() {
-    this.setDecoderPath = jest.fn().mockReturnThis();
-    this.setDecoderConfig = jest.fn().mockReturnThis();
-    this.preload = jest.fn().mockReturnThis();
-    this.load = jest.fn((url, onLoad) => {
-      // Simulate successful loading
-      if (onLoad) {
-        setTimeout(() => {
-          onLoad({});
-        }, 0);
-      }
-    });
+    this.setDecoderPath = jest.fn(() => this);
+    this.setDecoderConfig = jest.fn(() => this);
+    this.setWorkerLimit = jest.fn(() => this);
+    this.preload = jest.fn(() => this);
+    this.dispose = jest.fn();
   }
 }
 

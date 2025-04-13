@@ -25,13 +25,15 @@ declare module 'jest-axe' {
 
   function configureAxe(options: AxeOptions): void;
   function axe(html: Element | string, options?: AxeOptions): Promise<AxeResults>;
-  
-  // Define the matcher function
-  export const toHaveNoViolations: MatcherFunction;
+  function toHaveNoViolations(results: AxeResults): { pass: boolean; message: () => string };
 
-  // Export module functions
-  export { axe, configureAxe };
-  
-  // Type definition for the matcher function
-  type MatcherFunction = (results: AxeResults) => { pass: boolean; message: () => string };
+  global {
+    namespace jest {
+      interface Matchers<R> {
+        toHaveNoViolations(): R;
+      }
+    }
+  }
+
+  export { axe, configureAxe, toHaveNoViolations };
 }

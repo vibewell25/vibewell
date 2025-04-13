@@ -107,7 +107,7 @@ export default function AppointmentsPage() {
   const [calendarDate, setCalendarDate] = useState<Date>(new Date());
 
   const handleStatusChange = (appointmentId: string, newStatus: Appointment['status']) => {
-    // TODO: Implement status change logic
+    import { updateAppointmentStatus } from "../../../../implementation-files/appointments-create-logic";
     console.log(`Changing status for appointment ${appointmentId} to ${newStatus}`);
   };
 

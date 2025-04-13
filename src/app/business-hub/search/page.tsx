@@ -25,6 +25,7 @@ import { StarRating } from '@/components/star-rating';
 import { ResourceReview, Review } from '@/components/resource-review';
 import { addBookmark, removeBookmark, isBookmarked } from '@/lib/bookmarks';
 import { getAverageRating } from '@/lib/ratings';
+import { Skeleton } from '@/components/ui/skeleton';
 
 // Mock search result types
 interface SearchResult {
@@ -41,6 +42,27 @@ interface SearchResult {
   relevanceScore?: number;
 }
 
+// Loading fallback component
+function SearchLoadingSkeleton() {
+  return (
+    <Layout>
+      <div className="container-app py-8">
+        <Skeleton className="h-12 w-1/3 mb-6" />
+        <div className="flex gap-4 mb-8">
+          <Skeleton className="h-10 w-[200px]" />
+          <Skeleton className="h-10 w-[150px]" />
+        </div>
+        <div className="grid gap-6">
+          {Array(5).fill(0).map((_, i) => (
+            <Skeleton key={i} className="h-32 w-full" />
+          ))}
+        </div>
+      </div>
+    </Layout>
+  );
+}
+
+// Search page content that uses useSearchParams
 function SearchPageContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
@@ -622,9 +644,10 @@ function SearchPageContent() {
   );
 }
 
+// Main page component with Suspense
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><p>Loading search results...</p></div>}>
+    <Suspense fallback={<SearchLoadingSkeleton />}>
       <SearchPageContent />
     </Suspense>
   );

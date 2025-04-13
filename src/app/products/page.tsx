@@ -13,6 +13,23 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle, Search } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
+// Loading fallback component
+function ProductsLoadingSkeleton() {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-10 w-[200px]" />
+        <Skeleton className="h-10 w-[150px]" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {Array(8).fill(0).map((_, i) => (
+          <Skeleton key={i} className="h-[300px] w-full" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // Content component that uses useSearchParams
 function ProductsContent() {
   const searchParams = useSearchParams();
@@ -315,31 +332,10 @@ function ProductsContent() {
   );
 }
 
-// Export default with Suspense boundary
+// Main page component with Suspense
 export default function ProductsPage() {
   return (
-    <Suspense fallback={
-      <div className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold mb-6">Browse Products</h1>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="md:col-span-1">
-            <div className="h-96 bg-gray-100 animate-pulse rounded-lg"></div>
-          </div>
-          <div className="md:col-span-3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="space-y-3">
-                  <Skeleton className="h-40 w-full rounded-lg" />
-                  <Skeleton className="h-4 w-2/3" />
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-1/3" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    }>
+    <Suspense fallback={<ProductsLoadingSkeleton />}>
       <ProductsContent />
     </Suspense>
   );

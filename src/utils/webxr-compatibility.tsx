@@ -33,6 +33,14 @@ interface XRCompatibilityInfo {
   hasGyroscope: boolean;
 }
 
+export interface WebXRFeatures {
+  isSupported: boolean;
+  hasARSupport: boolean;
+  hasVRSupport: boolean;
+  hasHandTracking: boolean;
+  hasDepthSensing: boolean;
+}
+
 /**
  * Detects if WebXR is supported in the current browser
  */
@@ -328,6 +336,113 @@ export function getARCompatibleComponent(
       }
     };
   }
+}
+
+export async function checkWebXRFeatures(): Promise<WebXRFeatures> {
+  if (typeof navigator === 'undefined' || !navigator.xr) {
+    return {
+      isSupported: false,
+      hasARSupport: false,
+      hasVRSupport: false,
+      hasHandTracking: false,
+      hasDepthSensing: false
+    };
+  }
+
+  const features: WebXRFeatures = {
+    isSupported: 'xr' in navigator,
+    hasARSupport: false,
+    hasVRSupport: false,
+    hasHandTracking: false,
+    hasDepthSensing: false
+  };
+
+  try {
+    features.hasARSupport = await navigator.xr.isSessionSupported('immersive-ar');
+  } catch (e) {
+    console.warn('AR session check failed:', e);
+  }
+
+  try {
+    features.hasVRSupport = await navigator.xr.isSessionSupported('immersive-vr');
+  } catch (e) {
+    console.warn('VR session check failed:', e);
+  }
+
+  // Check for hand tracking
+  if (features.hasARSupport || features.hasVRSupport) {
+    try {
+      const session = await navigator.xr.requestSession(
+        features.hasARSupport ? 'immersive-ar' : 'immersive-vr',
+        { optionalFeatures: ['hand-tracking'] }
+      );
+      features.hasHandTracking = true;
+      await session.end();
+    } catch (e) {
+      console.warn('Hand tracking check failed:', e);
+    }
+  }
+
+  // Check for depth sensing
+  if (features.hasARSupport) {
+    try {
+      const session = await navigator.xr.requestSession('immersive-ar', {
+        optionalFeatures: ['depth-sensing']
+      });
+      features.hasDepthSensing = true;
+      await session.end();
+    } catch (e) {
+      console.warn('Depth sensing check failed:', e);
+    }
+  }
+
+  return features;
+}
+
+export function getFallbackExperience(features: WebXRFeatures) {
+  if (!features.isSupported) {
+    return {
+      type: '2d',
+      message: 'Your browser does not support WebXR. Please try a compatible browser for the full experience.'
+    };
+  }
+
+  if (!features.hasARSupport && !features.hasVRSupport) {
+    return {
+      type: '2d',
+      message: 'Your device does not support AR or VR. Using fallback 2D experience.'
+    };
+  }
+
+  return {
+    type: features.hasARSupport ? 'ar' : 'vr',
+    message: null
+  };
+}
+
+export function useWebXR() {
+  const [features, setFeatures] = React.useState<WebXRFeatures>({
+    isSupported: false,
+    hasARSupport: false,
+    hasVRSupport: false,
+    hasHandTracking: false,
+    hasDepthSensing: false
+  });
+
+  const [isChecking, setIsChecking] = React.useState(true);
+
+  React.useEffect(() => {
+    checkWebXRFeatures().then(features => {
+      setFeatures(features);
+      setIsChecking(false);
+    });
+  }, []);
+
+  return {
+    features,
+    isChecking,
+    fallback: getFallbackExperience(features)
+  };
 }
 
 export default {

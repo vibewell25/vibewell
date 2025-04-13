@@ -27,6 +27,31 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+
+// Loading fallback component
+function MessagesLoadingSkeleton() {
+  return (
+    <div className="container mx-auto p-4">
+      <div className="flex h-[calc(100vh-200px)] gap-4">
+        <div className="w-1/3">
+          <Skeleton className="h-12 w-full mb-4" />
+          {Array(5).fill(0).map((_, i) => (
+            <Skeleton key={i} className="h-20 w-full mb-2" />
+          ))}
+        </div>
+        <div className="w-2/3">
+          <Skeleton className="h-12 w-full mb-4" />
+          <div className="space-y-4">
+            {Array(8).fill(0).map((_, i) => (
+              <Skeleton key={i} className="h-16 w-full" />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // Messages page content that uses useSearchParams
 function MessagesPageContent() {
@@ -355,10 +380,10 @@ function MessagesPageContent() {
   );
 }
 
-// Export wrapper with Suspense boundary
+// Main page component with Suspense
 export default function MessagesPage() {
   return (
-    <Suspense fallback={<Layout><div className="container-app py-8 flex justify-center items-center min-h-[60vh]"><p>Loading conversations...</p></div></Layout>}>
+    <Suspense fallback={<MessagesLoadingSkeleton />}>
       <MessagesPageContent />
     </Suspense>
   );

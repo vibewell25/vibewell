@@ -497,8 +497,27 @@ async function getUserProfile() {
 
 export default function DeveloperPage() {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading developer portal...</div>}>
+    <Suspense fallback={<DeveloperSkeleton />}>
       <DeveloperContent />
     </Suspense>
+  );
+}
+
+// Add skeleton component for loading state
+function DeveloperSkeleton() {
+  return (
+    <Layout>
+      <div className="container-app py-8">
+        <div className="animate-pulse">
+          <div className="h-10 w-72 bg-gray-200 rounded mb-4"></div>
+          <div className="h-6 w-96 bg-gray-200 rounded mb-8"></div>
+          <div className="grid gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-48 bg-gray-200 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 } 

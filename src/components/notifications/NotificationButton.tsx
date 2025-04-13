@@ -1,8 +1,9 @@
-import { Icons } from '@/components/icons';
 import React, { useState, useEffect } from 'react';
+
 interface NotificationButtonProps {
   onOpen: () => void;
 }
+
 export const NotificationButton: React.FC<NotificationButtonProps> = ({ onOpen }) => {
   const [unreadCount, setUnreadCount] = useState(0);
   useEffect(() => {

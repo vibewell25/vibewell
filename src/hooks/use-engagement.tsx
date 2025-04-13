@@ -2,7 +2,7 @@
 
 import { useState, useEffect, createContext, useContext } from 'react';
 import { useSession } from 'next-auth/react';
-import { EngagementService, UserBadge, UserPoints, Badge } from '@/services/engagement-service';
+import { EngagementService, UserBadge, UserPoints, Badge, BADGES } from '@/services/engagement-service';
 import { useToast } from '@/components/ui/use-toast';
 
 interface EngagementContextType {
@@ -149,7 +149,4 @@ export function useEngagement() {
   }
   
   return context;
-}
-
-// Re-export BADGES from the service for convenience
-import { BADGES } from '@/services/engagement-service'; 
+} 

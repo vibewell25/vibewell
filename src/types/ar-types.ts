@@ -9,12 +9,6 @@ export interface ModelInfo {
   thumbnail?: string;
 }
 
-export interface ARPerformanceMetrics {
-  fps: number;
-  loadTime: number;
-  memoryUsage?: number;
-}
-
 export interface ModelLoadingResult {
   success: boolean;
   model?: any;

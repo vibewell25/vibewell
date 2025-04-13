@@ -5,19 +5,19 @@ import { Facebook, Twitter, Instagram, Linkedin, Share2 } from 'lucide-react';
 
 interface SocialShareButtonsProps {
   imageData: string;
-  type: 'makeup' | 'hairstyle' | 'accessory';
-  productName?: string;
+  type: string;
+  productName: string;
   shareUrl: string;
-  onShare?: (platform: string) => void;
+  onShare: (platform: string) => void;
 }
 
-export function SocialShareButtons({ 
-  imageData, 
-  type, 
-  productName, 
+export const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
+  imageData,
+  type,
+  productName,
   shareUrl,
-  onShare 
-}: SocialShareButtonsProps) {
+  onShare
+}) => {
   const { toast } = useToast();
   const { trackEvent } = useAnalytics();
 
@@ -138,4 +138,4 @@ export function SocialShareButtons({
       </Button>
     </div>
   );
-} 
+}; 

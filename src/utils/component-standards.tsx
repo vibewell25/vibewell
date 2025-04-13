@@ -3,6 +3,8 @@
  * Provides tools for component auditing, guidelines, and refactoring
  */
 
+import React, { ComponentType, ReactNode, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes } from 'react';
+
 // Component categories for organization
 export enum ComponentCategory {
   Layout = 'layout',
@@ -24,7 +26,7 @@ export enum ComponentComplexity {
   Page = 'page'          // Full page components
 }
 
-// Component interface metadata for standardization
+// Enhanced component interface metadata for standardization
 export interface ComponentStandard {
   // Basic component info
   name: string;
@@ -36,11 +38,16 @@ export interface ComponentStandard {
   expectedProps: string[];
   requiredProps: string[];
   
-  // Component patterns
+  // Enhanced component patterns
   shouldUseChildren: boolean;
   shouldUseRenderProps: boolean;
   shouldUseHooks: boolean;
   shouldUseContext: boolean;
+  
+  // React-specific metadata
+  displayName?: string;
+  defaultProps?: Record<string, unknown>;
+  propTypes?: Record<string, unknown>;
   
   // Component architecture
   shouldBeSplitIntoSmaller: boolean;
@@ -68,76 +75,36 @@ export interface ComponentStandard {
   documentationUrl?: string;
 }
 
-// Sample component audit results
-export const COMPONENT_AUDIT_RESULTS: Record<string, Partial<ComponentStandard>> = {
-  'Button': {
-    name: 'Button',
-    category: ComponentCategory.Form,
-    complexity: ComponentComplexity.Simple,
-    description: 'Standard button component with multiple variants',
-    expectedProps: ['variant', 'size', 'disabled', 'onClick', 'children', 'className'],
-    requiredProps: ['children'],
-    shouldUseChildren: true,
-    shouldUseRenderProps: false,
-    shouldUseHooks: false,
-    shouldUseContext: false,
-    shouldBeSplitIntoSmaller: false,
-    shouldBeMemoized: false,
-    hasPotentialPerformanceIssues: false,
-    hasA11yIssues: false,
-    conformsToDesignSystem: true,
-    hasTests: true,
-    testCoverage: 85,
-    complexityScore: 2,
-    hasDocumentation: true
-  },
-  
-  'Card': {
-    name: 'Card',
-    category: ComponentCategory.Display,
-    complexity: ComponentComplexity.Compound,
-    description: 'Container component for displaying grouped content',
-    expectedProps: ['title', 'children', 'footer', 'className'],
-    requiredProps: ['children'],
-    shouldUseChildren: true,
-    shouldUseRenderProps: false,
-    shouldUseHooks: false,
-    shouldUseContext: false,
-    shouldBeSplitIntoSmaller: false,
-    shouldBeMemoized: false,
-    hasPotentialPerformanceIssues: false,
-    hasA11yIssues: false,
-    conformsToDesignSystem: true,
-    hasTests: true,
-    testCoverage: 70,
-    complexityScore: 3,
-    hasDocumentation: true
-  },
-  
-  'ThreeARViewer': {
-    name: 'ThreeARViewer',
-    category: ComponentCategory.AR,
-    complexity: ComponentComplexity.Complex,
-    description: 'Displays 3D models using Three.js',
-    expectedProps: ['modelUrl', 'width', 'height', 'autoRotate', 'controls'],
-    requiredProps: ['modelUrl'],
-    shouldUseChildren: false,
-    shouldUseRenderProps: false,
-    shouldUseHooks: true,
-    shouldUseContext: false,
-    shouldBeSplitIntoSmaller: true,
-    recommendedRefactoring: 'Split into ModelLoader, SceneRenderer, and Controls components',
-    shouldBeMemoized: true,
-    hasPotentialPerformanceIssues: true,
-    hasA11yIssues: true,
-    a11yRecommendations: ['Add appropriate ARIA labels', 'Ensure keyboard navigation'],
-    conformsToDesignSystem: false,
-    designDeviations: ['Custom styling not aligned with design tokens'],
-    hasTests: false,
-    complexityScore: 8,
-    hasDocumentation: false
-  }
+// Improved prop types for standardization
+export type StandardProps<T = unknown> = {
+  children?: ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  'aria-label'?: string;
+  'aria-describedby'?: string;
+  role?: string;
+} & T;
+
+// Define audit result types
+export type ComponentAuditResult = {
+  passed: boolean;
+  message: string;
+  severity: 'error' | 'warning' | 'info';
 };
+
+export const COMPONENT_AUDIT_RESULTS = {
+  MISSING_DISPLAY_NAME: {
+    passed: false,
+    message: 'Component is missing displayName property',
+    severity: 'warning'
+  },
+  MISSING_PROP_TYPES: {
+    passed: false,
+    message: 'Component is missing PropTypes validation',
+    severity: 'warning'
+  },
+  // ... add other audit results as needed
+} as const;
 
 // Component standards checking
 export function checkComponentStandards(componentName: string, componentProps: string[], componentImplementation: string): Partial<ComponentStandard> {
@@ -242,15 +209,17 @@ export function generateRefactoringSuggestions(componentName: string): string[] 
   return suggestions;
 }
 
-// Generate standard component template
-export function generateStandardComponent(name: string, props: string[] = []): string {
-  const propsInterface = `interface ${name}Props {
-  ${props.map(prop => `${prop}: any;`).join('\n  ')}
-  className?: string;
-}`;
+// Enhanced component template generation
+export function generateStandardComponent<P extends StandardProps>(
+  name: string,
+  props: Array<keyof P> = []
+): string {
+  const propsInterface = `interface ${name}Props extends StandardProps {
+    ${props.map(prop => `${String(prop)}: string;`).join('\n    ')}
+  }`;
 
   return `import React from 'react';
-import styles from './${name}.module.css';
+import { StandardProps } from '../utils/component-standards';
 
 ${propsInterface}
 
@@ -260,18 +229,32 @@ ${propsInterface}
  * @param props - Component props
  * @returns ${name} component
  */
-export function ${name}({ ${props.join(', ')}, className }: ${name}Props) {
+export const ${name} = React.memo(function ${name}({ 
+  children,
+  className,
+  style,
+  ${props.join(', ')},
+  ...rest
+}: ${name}Props) {
   return (
-    <div className={\`\${styles.container} \${className || ''}\`}>
-      {/* Component implementation */}
+    <div 
+      className={className}
+      style={style}
+      {...rest}
+    >
+      {children}
     </div>
   );
-}
+});
+
+${name}.displayName = '${name}';
 `;
 }
 
-// Standardize prop names across components
-export function standardizeProps(oldProps: Record<string, any>): Record<string, any> {
+// Enhanced prop standardization with type safety
+export function standardizeProps<T extends Record<string, unknown>>(
+  oldProps: T
+): Record<string, unknown> {
   const standardPropMappings: Record<string, string> = {
     // Common props standardization
     'isDisabled': 'disabled',
@@ -308,25 +291,34 @@ export function standardizeProps(oldProps: Record<string, any>): Record<string, 
     'variant': 'variant',
   };
   
-  const standardizedProps: Record<string, any> = {};
-  
-  // Convert props to standard names
-  for (const [key, value] of Object.entries(oldProps)) {
+  return Object.entries(oldProps).reduce((acc, [key, value]) => {
     const standardKey = standardPropMappings[key] || key;
-    standardizedProps[standardKey] = value;
-  }
+    acc[standardKey] = value;
+    return acc;
+  }, {} as Record<string, unknown>);
+}
+
+// Type-safe component wrapper with proper return type
+export function withStandardization<P extends StandardProps>(
+  WrappedComponent: ComponentType<P>,
+  options: Partial<ComponentStandard> = {}
+): ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<unknown>> {
+  const StandardizedComponent = React.forwardRef<unknown, P>((props, ref) => {
+    const standardizedProps = standardizeProps(props);
+    
+    return <WrappedComponent {...(standardizedProps as P)} ref={ref} />;
+  });
   
-  return standardizedProps;
+  StandardizedComponent.displayName = `Standardized(${
+    options.displayName || WrappedComponent.displayName || WrappedComponent.name
+  })`;
+  
+  return StandardizedComponent;
 }
 
 // Component audit functions
 export function auditComponentDirectory(directoryPath: string): Record<string, Partial<ComponentStandard>> {
-  // In a real implementation, this would:
-  // 1. Scan the directory for component files
-  // 2. Parse and analyze each component
-  // 3. Return audit results for each component
-  
-  return COMPONENT_AUDIT_RESULTS;
+  throw new Error('Not implemented');
 }
 
 // Priority recommendations for standardization

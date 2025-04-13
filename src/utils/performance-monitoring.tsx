@@ -2,8 +2,7 @@
  * Performance monitoring utilities for the Vibewell application
  * Implements real user monitoring and performance budgets
  */
-import React from 'react';
-import { isDefined, exists } from './type-guards';
+import { isDefined } from './type-guards';
 
 // Add these type declarations at the top of the file
 interface PerformanceEntryExtended extends PerformanceEntry {
@@ -204,7 +203,7 @@ export function endComponentRender(componentName: string, startMark?: string | n
   
   try {
     // Use default mark name if startMark is null or undefined
-    const markName = exists(startMark) ? startMark : `component-start-${componentName}`;
+    const markName = startMark ?? `component-start-${componentName}`;
     const endMarkName = `component-end-${componentName}`;
     
     performance.mark(endMarkName);
@@ -218,7 +217,7 @@ export function endComponentRender(componentName: string, startMark?: string | n
       let storedComponentTimes: Record<string, number> = {};
       try {
         const storedData = sessionStorage.getItem('componentRenderTimes');
-        storedComponentTimes = exists(storedData) ? JSON.parse(storedData) : {};
+        storedComponentTimes = storedData ? JSON.parse(storedData) : {};
       } catch (error) {
         console.error('[Performance] Error parsing stored component times:', error);
         storedComponentTimes = {};
@@ -232,7 +231,9 @@ export function endComponentRender(componentName: string, startMark?: string | n
     }
     
     // Clean up marks
-    performance.clearMarks(markName);
+    if (markName) {
+      performance.clearMarks(markName);
+    }
     performance.clearMarks(endMarkName);
     performance.clearMeasures(`component-${componentName}`);
   } catch (error) {
@@ -259,7 +260,7 @@ export function endApiCall(endpoint: string, startMark?: string | null): void {
   
   try {
     // Use default mark name if startMark is null or undefined
-    const markName = exists(startMark) ? startMark : `api-start-${endpoint}`;
+    const markName = startMark ?? `api-start-${endpoint}`;
     const endMarkName = `api-end-${endpoint}`;
     
     performance.mark(endMarkName);
@@ -273,7 +274,7 @@ export function endApiCall(endpoint: string, startMark?: string | null): void {
       let storedApiCalls: Record<string, number> = {};
       try {
         const storedData = sessionStorage.getItem('apiCallDurations');
-        storedApiCalls = exists(storedData) ? JSON.parse(storedData) : {};
+        storedApiCalls = storedData ? JSON.parse(storedData) : {};
       } catch (error) {
         console.error('[Performance] Error parsing stored API calls:', error);
         storedApiCalls = {};
@@ -287,7 +288,9 @@ export function endApiCall(endpoint: string, startMark?: string | null): void {
     }
     
     // Clean up marks
-    performance.clearMarks(markName);
+    if (markName) {
+      performance.clearMarks(markName);
+    }
     performance.clearMarks(endMarkName);
     performance.clearMeasures(`api-${endpoint}`);
   } catch (error) {
@@ -417,7 +420,7 @@ export function getMetrics(): Partial<PerformanceMetrics> {
     // Safely parse JSON items from sessionStorage
     const safeGetItem = (key: string, defaultValue: any): any => {
       const item = sessionStorage.getItem(key);
-      if (!exists(item)) return defaultValue;
+      if (item === null) return defaultValue;
       
       try {
         return JSON.parse(item);
@@ -429,7 +432,7 @@ export function getMetrics(): Partial<PerformanceMetrics> {
     // Safely get numeric values
     const safeGetNumber = (key: string, defaultValue = 0): number => {
       const value = sessionStorage.getItem(key);
-      if (!exists(value)) return defaultValue;
+      if (value === null) return defaultValue;
       
       const num = Number(value);
       return isNaN(num) ? defaultValue : num;

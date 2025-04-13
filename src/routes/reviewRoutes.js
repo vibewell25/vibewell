@@ -1,5 +1,5 @@
-const express = require('express');
-const {
+import express from 'express';
+import {
   getReviews,
   getReview,
   addReview,
@@ -9,11 +9,11 @@ const {
   markHelpful,
   reportReview,
   moderateReview
-} = require('../controllers/reviewController');
+} from '../controllers/reviewController';
 
 const router = express.Router({ mergeParams: true });
 
-const { protect, authorize } = require('../middleware/auth');
+import { protect, authorize } from '../middleware/auth';
 
 // General review routes
 router.route('/')
@@ -38,4 +38,4 @@ router.route('/:id/report')
 router.route('/:id/moderate')
   .put(protect, authorize('admin'), moderateReview);
 
-module.exports = router; 
+export default router; 

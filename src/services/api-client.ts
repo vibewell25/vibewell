@@ -3,6 +3,15 @@
  * This provides a consistent interface for all API calls
  */
 
+// HTTP Methods enum
+export enum HttpMethod {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+  PATCH = 'PATCH'
+}
+
 // Default error message for failed requests
 const DEFAULT_ERROR_MESSAGE = 'An error occurred during the request';
 
@@ -14,10 +23,26 @@ export interface ApiResponse<T> {
   success: boolean;
 }
 
+// API error interface
+export interface ApiError {
+  message: string;
+  code?: string;
+  details?: unknown;
+}
+
 // API client configuration
-interface ApiClientConfig {
+export interface ApiClientConfig {
   baseUrl?: string;
   headers?: Record<string, string>;
+  timeout?: number;
+}
+
+// Request options interface
+export interface RequestOptions<TData = unknown> {
+  method: HttpMethod;
+  path: string;
+  data?: TData;
+  config?: ApiClientConfig;
 }
 
 /**
@@ -27,72 +52,124 @@ export const apiClient = {
   /**
    * Make a GET request
    */
-  async get<T>(path: string, config: ApiClientConfig = {}): Promise<ApiResponse<T>> {
-    return makeRequest<T>('GET', path, undefined, config);
+  async get<TResponse>(
+    path: string, 
+    config: ApiClientConfig = {}
+  ): Promise<ApiResponse<TResponse>> {
+    return makeRequest<never, TResponse>({
+      method: HttpMethod.GET,
+      path,
+      config
+    });
   },
 
   /**
    * Make a POST request
    */
-  async post<T>(path: string, data?: any, config: ApiClientConfig = {}): Promise<ApiResponse<T>> {
-    return makeRequest<T>('POST', path, data, config);
+  async post<TData, TResponse>(
+    path: string, 
+    data?: TData, 
+    config: ApiClientConfig = {}
+  ): Promise<ApiResponse<TResponse>> {
+    return makeRequest<TData, TResponse>({
+      method: HttpMethod.POST,
+      path,
+      data,
+      config
+    });
   },
 
   /**
    * Make a PUT request
    */
-  async put<T>(path: string, data?: any, config: ApiClientConfig = {}): Promise<ApiResponse<T>> {
-    return makeRequest<T>('PUT', path, data, config);
+  async put<TData, TResponse>(
+    path: string, 
+    data?: TData, 
+    config: ApiClientConfig = {}
+  ): Promise<ApiResponse<TResponse>> {
+    return makeRequest<TData, TResponse>({
+      method: HttpMethod.PUT,
+      path,
+      data,
+      config
+    });
   },
 
   /**
    * Make a DELETE request
    */
-  async delete<T>(path: string, config: ApiClientConfig = {}): Promise<ApiResponse<T>> {
-    return makeRequest<T>('DELETE', path, undefined, config);
+  async delete<TResponse>(
+    path: string, 
+    config: ApiClientConfig = {}
+  ): Promise<ApiResponse<TResponse>> {
+    return makeRequest<never, TResponse>({
+      method: HttpMethod.DELETE,
+      path,
+      config
+    });
   },
 
   /**
    * Make a PATCH request
    */
-  async patch<T>(path: string, data?: any, config: ApiClientConfig = {}): Promise<ApiResponse<T>> {
-    return makeRequest<T>('PATCH', path, data, config);
+  async patch<TData, TResponse>(
+    path: string, 
+    data?: TData, 
+    config: ApiClientConfig = {}
+  ): Promise<ApiResponse<TResponse>> {
+    return makeRequest<TData, TResponse>({
+      method: HttpMethod.PATCH,
+      path,
+      data,
+      config
+    });
   }
 };
 
 /**
  * Helper function to make HTTP requests
  */
-async function makeRequest<T>(
-  method: string,
-  path: string,
-  data?: any,
-  config: ApiClientConfig = {}
-): Promise<ApiResponse<T>> {
+async function makeRequest<TData, TResponse>({
+  method,
+  path,
+  data,
+  config = {}
+}: RequestOptions<TData>): Promise<ApiResponse<TResponse>> {
   const { baseUrl = '', headers = {} } = config;
   const url = `${baseUrl}${path}`;
 
   try {
+    const controller = new AbortController();
+    const timeoutId = config.timeout 
+      ? setTimeout(() => controller.abort(), config.timeout)
+      : null;
+
     const response = await fetch(url, {
       method,
       headers: {
         'Content-Type': 'application/json',
         ...headers
       },
-      body: data ? JSON.stringify(data) : undefined
+      body: data ? JSON.stringify(data) : undefined,
+      signal: config.timeout ? controller.signal : undefined
     });
 
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
     // Try to parse the response as JSON
-    let responseData: T | undefined;
+    let responseData: TResponse | undefined;
     let errorMessage: string | undefined;
 
     try {
       if (response.status !== 204) { // No content
-        responseData = await response.json();
+        responseData = await response.json() as TResponse;
       }
-    } catch (e) {
+    } catch (error) {
       // If response is not JSON, handle accordingly
       errorMessage = 'Invalid response format';
+      console.error('Response parsing error:', error instanceof Error ? error.message : 'Unknown error');
     }
 
     // Return a standardized response
@@ -103,11 +180,17 @@ async function makeRequest<T>(
       error: !response.ok ? errorMessage || response.statusText : undefined
     };
   } catch (error) {
-    // Network errors or other exceptions
+    // Handle network errors, timeouts, and other exceptions
+    const isAbortError = error instanceof Error && error.name === 'AbortError';
+    
     return {
       status: 0,
       success: false,
-      error: error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE
+      error: isAbortError 
+        ? 'Request timeout' 
+        : error instanceof Error 
+          ? error.message 
+          : DEFAULT_ERROR_MESSAGE
     };
   }
 } 

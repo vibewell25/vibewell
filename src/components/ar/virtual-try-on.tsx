@@ -203,27 +203,12 @@ export function VirtualTryOn({
     trackAchievement('capture');
   };
 
-  const handleModelChange = (index: number) => {
-    // Track session for previous model
-    if (sessionStartTime && userId) {
-      const duration = Math.floor((Date.now() - sessionStartTime) / 1000);
-      analyticsService.trackTryOnSession({
-        userId,
-        type: selectedModel.type,
-        productId: selectedModel.id,
-        productName: selectedModel.name,
-        duration,
-        intensity,
-        success: !error
-      });
-    }
+  const handleModelChange = (i: number) => {
+    if (!models || models.length === 0) return;
     
-    // Reset for new model
-    setSelectedModelIndex(index);
-    setSessionStartTime(Date.now());
-    setLoading(true);
-    setLoadingProgress(0);
-    setError(null);
+    // Calculate next model index
+    const nextIndex = (selectedModelIndex + i) % models.length;
+    setSelectedModelIndex(nextIndex);
   };
 
   const handleIntensityChange = (newIntensity: number) => {

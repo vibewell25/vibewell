@@ -1,10 +1,10 @@
 // Redis TLS Support Implementation
 
-const fs = require('fs');
-const path = require('path');
-const redis = require('redis');
-const { promisify } = require('util');
-const { spawn } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import redis from 'redis';
+import { promisify } from 'util';
+import { spawn } from 'child_process';
 
 // Helper function to create a Redis client with TLS support
 function createRedisTLSClient(options = {}) {
@@ -155,7 +155,7 @@ function enhancedRedisCLI(options = {}) {
   });
 }
 
-module.exports = {
+export {
   createRedisTLSClient,
   runRedisBenchmarkWithTLS,
   enhancedRedisCLI

@@ -23,12 +23,19 @@ interface ShareDialogProps {
   isOpen: boolean;
   onClose: () => void;
   imageData: string;
-  type: 'makeup' | 'hairstyle' | 'accessory';
-  productName?: string;
-  userId: string;
+  type: string;
+  productName: string;
+  userId?: string;
 }
 
-export function ShareDialog({ isOpen, onClose, imageData, type, productName, userId }: ShareDialogProps) {
+export const ShareDialog: React.FC<ShareDialogProps> = ({
+  isOpen,
+  onClose,
+  imageData,
+  type,
+  productName,
+  userId
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [shareUrl, setShareUrl] = useState('');
@@ -42,17 +49,19 @@ export function ShareDialog({ isOpen, onClose, imageData, type, productName, use
       setIsLoading(true);
       trackEvent('share_attempt', { type, method: 'email' });
 
+      const shareData = {
+        imageData,
+        type,
+        productName,
+        ...(userId && { userId })
+      };
+
       const response = await fetch('/api/share', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email,
-          imageData,
-          type,
-          productName,
-        }),
+        body: JSON.stringify(shareData),
       });
 
       if (!response.ok) {
@@ -241,4 +250,4 @@ export function ShareDialog({ isOpen, onClose, imageData, type, productName, use
       </DialogContent>
     </Dialog>
   );
-} 
+}; 

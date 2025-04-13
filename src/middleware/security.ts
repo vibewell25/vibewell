@@ -2,55 +2,110 @@
  * Security middleware for the Vibewell application
  * Implements various security protections
  */
-import helmet from 'helmet';
-import { rateLimit } from 'express-rate-limit';
-import xss from 'xss-clean';
-import csrf from 'csurf';
 import { NextApiRequest, NextApiResponse } from 'next';
+import crypto from 'crypto';
+import { RateLimiterMemory } from 'rate-limiter-flexible';
+import { Request } from 'express';
 
-export const securityHeaders = {
+// Type definitions
+interface CsrfConfig {
+  cookieName: string;
+  headerName: string;
+  secret: string;
+  cookieOptions: {
+    httpOnly: boolean;
+    secure: boolean;
+    sameSite: 'strict';
+    path: string;
+    maxAge: number;
+  };
+}
+
+interface SecurityHeaders {
+  [key: string]: string;
+}
+
+interface RateLimitError {
+  message: string;
+  remainingPoints: number;
+}
+
+// CSRF configuration with secure defaults
+const csrfConfig: CsrfConfig = {
+  cookieName: 'csrf-token',
+  headerName: 'x-csrf-token',
+  secret: process.env.CSRF_SECRET || crypto.randomBytes(32).toString('hex'),
+  cookieOptions: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/',
+    maxAge: 3600 // 1 hour
+  }
+};
+
+// Generate CSRF token with proper type safety
+function generateToken(secret: string): string {
+  return crypto
+    .createHmac('sha256', secret)
+    .update(crypto.randomBytes(32))
+    .digest('hex');
+}
+
+// Type-safe security headers
+export const securityHeaders: SecurityHeaders = {
   'Content-Security-Policy': 
     "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.supabase.co; frame-src 'self';",
   'X-XSS-Protection': '1; mode=block',
   'X-Frame-Options': 'SAMEORIGIN',
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self), interest-cohort=()'
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self), interest-cohort=()',
+  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload'
 };
 
-// Apply security headers to a response
-export function applySecurityHeaders(res: NextApiResponse) {
-  Object.keys(securityHeaders).forEach((headerName) => {
-    res.setHeader(headerName, securityHeaders[headerName]);
+// Apply security headers with type safety
+export function applySecurityHeaders(res: NextApiResponse): void {
+  Object.entries(securityHeaders).forEach(([name, value]) => {
+    res.setHeader(name, value);
   });
 }
 
-// Rate limiting middleware
-export const apiRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: 'Too many requests, please try again later' }
-});
-
-// Middleware wrapper for Next.js API routes
-export const withSecurity = (handler: Function) => async (req: NextApiRequest, res: NextApiResponse) => {
-  // Apply security headers
-  applySecurityHeaders(res);
-  
-  // Apply XSS protection
-  xss({ enabled: true })(req, res, () => {});
-  
-  // Apply rate limiting
-  if (process.env.NODE_ENV === 'production') {
-    await new Promise((resolve) => {
-      apiRateLimiter(req, res, () => {
-        resolve(true);
+// Type-safe middleware wrapper for Next.js API routes
+export const withSecurity = (handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>) => {
+  return async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+    try {
+      const expressReq = req as unknown as Request;
+      const ipAddress = expressReq.ip || '0.0.0.0'; // Fallback IP if undefined
+      const limiter = new RateLimiterMemory({
+        points: 10,
+        duration: 1
       });
-    });
-  }
-  
-  // Call the original handler
-  return handler(req, res);
+
+      try {
+        await limiter.consume(ipAddress);
+      } catch (error) {
+        const rateLimitError = error as RateLimitError;
+        res.status(429).json({ 
+          error: 'Too many requests, please try again later',
+          retryAfter: rateLimitError.remainingPoints 
+        });
+        return;
+      }
+
+      await handler(req, res);
+    } catch (error) {
+      console.error('Security middleware error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+};
+
+// Type-safe helper to get CSRF token for forms
+export const getToken = async (req: NextApiRequest, res: NextApiResponse): Promise<string> => {
+  const token = generateToken(csrfConfig.secret);
+  res.setHeader('Set-Cookie', `${csrfConfig.cookieName}=${token}; ${Object.entries(csrfConfig.cookieOptions)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('; ')}`);
+  return token;
 };

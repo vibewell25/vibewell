@@ -8,6 +8,7 @@ import { useNotifications } from '@/contexts/NotificationContext';
 import { useResponsive } from '@/hooks/useResponsive';
 import { TouchHandler } from './ui/touch-handler';
 import { cn } from '@/lib/utils';
+
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Wellness', href: '/wellness' },
@@ -16,6 +17,7 @@ const navigation = [
   { name: 'Pricing', href: '/custom-pricing' },
   { name: 'Social', href: '/social' },
 ];
+
 export function EnhancedHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);

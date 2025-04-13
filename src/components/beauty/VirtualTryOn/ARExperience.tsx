@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, memo } from 'react';
 import { TryOnProduct } from '../../../utils/beauty-state';
 import Image from 'next/image';
 
@@ -11,28 +11,31 @@ declare global {
   }
 }
 
-interface ARExperienceProps {
+export interface ARExperienceProps {
   product: TryOnProduct | null;
   colorId: string | undefined;
   arActive: boolean;
   faceDetected: boolean;
   zoomLevel: number;
+  onError?: (error: Error) => void;
 }
 
 /**
  * ARExperience component for rendering the AR try-on experience
  * Handles camera stream, face detection, and product overlay
  */
-const ARExperience: React.FC<ARExperienceProps> = ({
+const ARExperience: React.FC<ARExperienceProps> = memo(({
   product,
   colorId,
   arActive,
   faceDetected,
-  zoomLevel
+  zoomLevel,
+  onError
 }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const requestRef = useRef<number>();
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const requestRef = useRef<number | undefined>();
+  const streamRef = useRef<MediaStream | null>(null);
   
   // Set up camera stream and face detection on component mount
   useEffect(() => {
@@ -40,19 +43,16 @@ const ARExperience: React.FC<ARExperienceProps> = ({
     
     const startCamera = async () => {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: { 
-            facingMode: 'user',
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-          }
-        });
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
         
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
-      } catch (err) {
-        console.error('Error accessing camera:', err);
+      } catch (error) {
+        console.error('Error accessing camera:', error);
+        if (onError) {
+          onError(error instanceof Error ? error : new Error(String(error)));
+        }
       }
     };
     
@@ -70,7 +70,7 @@ const ARExperience: React.FC<ARExperienceProps> = ({
         cancelAnimationFrame(requestRef.current);
       }
     };
-  }, []);
+  }, [videoRef, onError]);
   
   // Handle AR overlay when active
   useEffect(() => {
@@ -198,7 +198,7 @@ const ARExperience: React.FC<ARExperienceProps> = ({
         requestRef.current = undefined;
       }
     };
-  }, [arActive, product, colorId, zoomLevel]);
+  }, [arActive, product, colorId, zoomLevel, videoRef, canvasRef, requestRef]);
   
   return (
     <div className="relative w-full h-full overflow-hidden bg-black">
@@ -241,6 +241,6 @@ const ARExperience: React.FC<ARExperienceProps> = ({
       )}
     </div>
   );
-};
+});
 
 export default ARExperience; 

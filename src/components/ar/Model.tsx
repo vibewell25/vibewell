@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import * as THREE from 'three';
 import { useThree } from '@react-three/fiber';
-import { useAnalytics } from '@/hooks/use-analytics';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { ModelControls } from './ModelControls';
@@ -52,7 +51,6 @@ export const Model = React.memo(function Model({
   intensity?: number
 }) {
   const modelRef = useRef<THREE.Group>(null);
-  const { trackEvent } = useAnalytics();
   const { scene, camera, gl } = useThree();
   
   // Optimize the scene
@@ -232,8 +230,7 @@ export const Model = React.memo(function Model({
         applyStoredTransforms();
       }
       
-      // Track event and call onLoad
-      trackEvent('model_loaded_from_cache', { type });
+      // Call onLoad
       onLoad?.();
       return;
     }
@@ -248,7 +245,6 @@ export const Model = React.memo(function Model({
     const loadingManager = new THREE.LoadingManager();
     loadingManager.onProgress = (url, loaded, total) => {
       const progress = total > 0 ? (loaded / total) * 100 : 0;
-      trackEvent('model_loading_progress', { type, progress: Math.round(progress) });
     };
     
     loader.manager = loadingManager;
@@ -286,21 +282,19 @@ export const Model = React.memo(function Model({
           }
         }
         
-        trackEvent('model_loaded', { type });
         onLoad?.();
       },
       undefined,
       (error) => {
         console.error('Error loading model:', error);
         const errorMessage = error instanceof Error ? error.message : String(error);
-        trackEvent('model_load_error', { type, error: errorMessage });
       }
     );
     
     return () => {
       URL.revokeObjectURL(blobUrl);
     };
-  }, [blobUrl, type, onLoad, trackEvent, applyStoredTransforms, optimizeLoadedModel]);
+  }, [blobUrl, type, onLoad, applyStoredTransforms, optimizeLoadedModel]);
 
   return (
     <group ref={modelRef}>

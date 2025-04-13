@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const ServiceBundleSchema = new mongoose.Schema({
   provider: {
@@ -131,4 +131,4 @@ ServiceBundleSchema.pre('save', async function (next) {
   next();
 });
 
-module.exports = mongoose.model('ServiceBundle', ServiceBundleSchema); 
+export default mongoose.model('ServiceBundle', ServiceBundleSchema); 

@@ -1,19 +1,19 @@
-const express = require('express');
+import express from 'express';
 // Import booking controller functions (to be implemented)
-const {
+import {
   getBookings,
   getBooking,
   createBooking,
   updateBooking,
   deleteBooking
-} = require('../controllers/bookingController');
+} from '../controllers/bookingController';
 
 // Include review router for nested routes
-const reviewRouter = require('./reviewRoutes');
+import reviewRouter from './reviewRoutes';
 
 const router = express.Router();
 
-const { protect, authorize } = require('../middleware/auth');
+import { protect, authorize } from '../middleware/auth';
 
 // Re-route into review router when we have booking/:bookingId/reviews
 router.use('/:bookingId/reviews', reviewRouter);
@@ -28,4 +28,4 @@ router.route('/:id')
   .put(protect, updateBooking)
   .delete(protect, deleteBooking);
 
-module.exports = router; 
+export default router; 

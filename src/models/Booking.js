@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const BookingSchema = new mongoose.Schema({
   provider: {
@@ -175,4 +175,6 @@ BookingSchema.index({ provider: 1, date: 1, startTime: 1 });
 // Create index for customer to get customer bookings
 BookingSchema.index({ customer: 1, date: 1 });
 
-module.exports = mongoose.model('Booking', BookingSchema); 
+const Booking = mongoose.model('Booking', BookingSchema);
+
+export default Booking; 

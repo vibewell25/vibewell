@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle, Search } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Layout } from '@/components/layout';
 
 // Loading fallback component
 function ProductsLoadingSkeleton() {
@@ -335,8 +336,26 @@ function ProductsContent() {
 // Main page component with Suspense
 export default function ProductsPage() {
   return (
-    <Suspense fallback={<ProductsLoadingSkeleton />}>
-      <ProductsContent />
-    </Suspense>
+    <Layout>
+      <Suspense fallback={<ProductsPageSkeleton />}>
+        <ProductsContent />
+      </Suspense>
+    </Layout>
+  );
+}
+
+// Add skeleton component for loading state
+function ProductsPageSkeleton() {
+  return (
+    <div className="container-app py-8">
+      <div className="animate-pulse">
+        <div className="h-8 w-64 bg-gray-200 rounded mb-4"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="h-64 bg-gray-200 rounded"></div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 } 

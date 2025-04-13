@@ -7,22 +7,100 @@
 
 import { GraphQLError } from 'graphql';
 import { withGraphQLRateLimit } from '@/lib/rate-limiter';
+import { ValueNode, Kind } from 'graphql';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js'
+import { Filter } from '@supabase/postgrest-js'
+
+// Type definitions
+interface Context {
+  userId?: string;
+  userRole?: string;
+  supabase: SupabaseClient;
+}
+
+interface Profile {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  email: string;
+  full_name?: string;
+  avatar_url?: string;
+  role: string;
+}
+
+interface Provider {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  user: Profile;
+  categories: string[];
+  description?: string;
+  location?: {
+    lat: number;
+    lng: number;
+  };
+}
+
+interface Service {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  provider_id: string;
+  name: string;
+  description: string;
+  price: number;
+  duration: number;
+  category: string;
+  is_active: boolean;
+}
+
+interface Booking {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  provider_id: string;
+  customer_id: string;
+  service_id: string;
+  start_time: string;
+  end_time: string;
+  status: string;
+  provider?: Provider;
+  customer?: Profile;
+  service?: Service;
+}
+
+interface LocationInput {
+  lat: number;
+  lng: number;
+  radius?: number;
+}
 
 // GraphQL JSON scalar for handling JSON data
 const GraphQLJSON = {
   // Parse value from client
-  parseLiteral(ast: any) {
-    if (ast.kind === 'StringValue') {
-      return JSON.parse(ast.value);
+  parseLiteral(ast: ValueNode): unknown {
+    if (ast.kind === Kind.STRING) {
+      try {
+        return JSON.parse(ast.value);
+      } catch {
+        return null;
+      }
     }
     return null;
   },
+  
   // Parse value from client variables
-  parseValue(value: string) {
-    return JSON.parse(value);
+  parseValue(value: string): unknown {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return null;
+    }
   },
+  
   // Serialize value to client
-  serialize(value: any) {
+  serialize(value: unknown): string {
     return JSON.stringify(value);
   }
 };
@@ -35,7 +113,7 @@ const baseResolvers = {
   // Query resolvers
   Query: {
     // User queries
-    me: async (_parent: any, _args: any, context: any) => {
+    me: async (_parent: unknown, _args: unknown, context: Context): Promise<Profile> => {
       // Ensure the user is authenticated
       if (!context.userId) {
         throw new GraphQLError('Not authenticated', {
@@ -58,7 +136,7 @@ const baseResolvers = {
       return data;
     },
     
-    user: async (_parent: any, args: { id: string }, context: any) => {
+    user: async (_parent: unknown, args: { id: string }, context: Context): Promise<Profile> => {
       const { id } = args;
       
       // Ensure the user is authenticated
@@ -91,7 +169,7 @@ const baseResolvers = {
     },
     
     // Provider queries
-    provider: async (_parent: any, args: { id: string }, context: any) => {
+    provider: async (_parent: unknown, args: { id: string }, context: Context): Promise<Provider> => {
       const { id } = args;
       
       const { data, error } = await context.supabase
@@ -112,7 +190,16 @@ const baseResolvers = {
       return data;
     },
     
-    providers: async (_parent: any, args: { category?: string; location?: { lat: number; lng: number; radius?: number }; limit?: number; offset?: number }, context: any) => {
+    providers: async (
+      _parent: unknown, 
+      args: { 
+        category?: string; 
+        location?: LocationInput; 
+        limit?: number; 
+        offset?: number 
+      }, 
+      context: Context
+    ): Promise<Provider[]> => {
       const { category, location, limit = 10, offset = 0 } = args;
       
       let query = context.supabase
@@ -133,8 +220,7 @@ const baseResolvers = {
       // This is a simplified version that doesn't do actual geo filtering
       if (location) {
         // In a real implementation, you would use a PostGIS query here
-        // This is a placeholder that doesn't do actual filtering
-        console.log('Location filtering requested but not implemented in demo');
+        console.warn('Location filtering requested but not implemented in demo');
       }
       
       const { data, error } = await query;
@@ -149,7 +235,7 @@ const baseResolvers = {
     },
     
     // Service queries
-    service: async (_parent: any, args: { id: string }, context: any) => {
+    service: async (_parent: unknown, args: { id: string }, context: Context): Promise<Service> => {
       const { id } = args;
       
       const { data, error } = await context.supabase
@@ -167,7 +253,16 @@ const baseResolvers = {
       return data;
     },
     
-    services: async (_parent: any, args: { providerId?: string; category?: string; limit?: number; offset?: number }, context: any) => {
+    services: async (
+      _parent: unknown, 
+      args: { 
+        providerId?: string; 
+        category?: string; 
+        limit?: number; 
+        offset?: number 
+      }, 
+      context: Context
+    ): Promise<Service[]> => {
       const { providerId, category, limit = 20, offset = 0 } = args;
       
       let query = context.supabase
@@ -197,7 +292,7 @@ const baseResolvers = {
     },
     
     // Booking queries
-    booking: async (_parent: any, args: { id: string }, context: any) => {
+    booking: async (_parent: unknown, args: { id: string }, context: Context): Promise<Booking> => {
       const { id } = args;
       
       // Ensure the user is authenticated
@@ -218,9 +313,9 @@ const baseResolvers = {
         .eq('id', id)
         .single();
       
-      // Users can only view their own bookings unless they're admins
+      // For admin users, show all bookings. For regular users, only show their own bookings
       if (context.userRole !== 'admin') {
-        query = query.or(`customer_id.eq.${context.userId},provider_id.eq.${context.userId}`);
+        query = query.or('customer_id.eq.' + context.userId + ',provider_id.eq.' + context.userId);
       }
       
       const { data, error } = await query;
@@ -234,7 +329,7 @@ const baseResolvers = {
       return data;
     },
     
-    myBookings: async (_parent: any, args: { status?: string }, context: any) => {
+    myBookings: async (_parent: unknown, args: { status?: string }, context: Context): Promise<Booking[]> => {
       const { status } = args;
       
       // Ensure the user is authenticated
@@ -249,9 +344,14 @@ const baseResolvers = {
         .select(`
           *,
           provider:providers(*),
+          customer:profiles(*),
           service:services(*)
         `)
-        .eq('customer_id', context.userId)
+        .filter(
+          'customer_id',
+          'eq',
+          context.userId
+        ).or('provider_id.eq.' + context.userId)
         .order('start_time', { ascending: true });
       
       if (status) {
@@ -269,7 +369,7 @@ const baseResolvers = {
       return data;
     },
     
-    providerBookings: async (_parent: any, args: { providerId: string; status?: string }, context: any) => {
+    providerBookings: async (_parent: unknown, args: { providerId: string; status?: string }, context: Context): Promise<Booking[]> => {
       const { providerId, status } = args;
       
       // Ensure the user is authenticated
@@ -312,7 +412,7 @@ const baseResolvers = {
     },
     
     // Review queries
-    review: async (_parent: any, args: { id: string }, context: any) => {
+    review: async (_parent: unknown, args: { id: string }, context: Context): Promise<unknown> => {
       const { id } = args;
       
       const { data, error } = await context.supabase
@@ -335,7 +435,7 @@ const baseResolvers = {
       return data;
     },
     
-    reviewsByProvider: async (_parent: any, args: { providerId: string; limit?: number; offset?: number }, context: any) => {
+    reviewsByProvider: async (_parent: unknown, args: { providerId: string; limit?: number; offset?: number }, context: Context): Promise<unknown[]> => {
       const { providerId, limit = 10, offset = 0 } = args;
       
       const { data, error } = await context.supabase
@@ -362,7 +462,7 @@ const baseResolvers = {
   // Mutation resolvers
   Mutation: {
     // User mutations
-    registerUser: async (_parent: any, args: { input: any }, context: any) => {
+    registerUser: async (_parent: unknown, args: { input: any }, context: Context): Promise<unknown> => {
       const { input } = args;
       
       // Register the user with Supabase Auth
@@ -394,7 +494,7 @@ const baseResolvers = {
       };
     },
     
-    login: async (_parent: any, args: { email: string; password: string }, context: any) => {
+    login: async (_parent: unknown, args: { email: string; password: string }, context: Context): Promise<unknown> => {
       const { email, password } = args;
       
       // Sign in the user with Supabase Auth
@@ -420,7 +520,7 @@ const baseResolvers = {
       };
     },
     
-    updateProfile: async (_parent: any, args: { input: any }, context: any) => {
+    updateProfile: async (_parent: unknown, args: { input: any }, context: Context): Promise<unknown> => {
       const { input } = args;
       
       // Ensure the user is authenticated
@@ -453,7 +553,7 @@ const baseResolvers = {
     },
     
     // Provider mutations
-    createProvider: async (_parent: any, args: { input: any }, context: any) => {
+    createProvider: async (_parent: unknown, args: { input: any }, context: Context): Promise<unknown> => {
       const { input } = args;
       
       // Ensure the user is authenticated
@@ -496,7 +596,7 @@ const baseResolvers = {
       return data;
     },
     
-    updateProvider: async (_parent: any, args: { id: string; input: any }, context: any) => {
+    updateProvider: async (_parent: unknown, args: { id: string; input: any }, context: Context): Promise<unknown> => {
       const { id, input } = args;
       
       // Ensure the user is authenticated
@@ -548,7 +648,7 @@ const baseResolvers = {
     },
     
     // Service mutations
-    createService: async (_parent: any, args: { input: any }, context: any) => {
+    createService: async (_parent: unknown, args: { input: any }, context: Context): Promise<unknown> => {
       const { input } = args;
       
       // Ensure the user is authenticated
@@ -598,7 +698,7 @@ const baseResolvers = {
       return data;
     },
     
-    updateService: async (_parent: any, args: { id: string; input: any }, context: any) => {
+    updateService: async (_parent: unknown, args: { id: string; input: any }, context: Context): Promise<unknown> => {
       const { id, input } = args;
       
       // Ensure the user is authenticated
@@ -662,7 +762,7 @@ const baseResolvers = {
       return data;
     },
     
-    deleteService: async (_parent: any, args: { id: string }, context: any) => {
+    deleteService: async (_parent: unknown, args: { id: string }, context: Context): Promise<boolean> => {
       const { id } = args;
       
       // Ensure the user is authenticated
@@ -717,34 +817,5 @@ const baseResolvers = {
   }
 };
 
-// Apply rate limiting to all resolvers
-export const resolvers = {
-  JSON: baseResolvers.JSON,
-  
-  Query: {
-    // Apply rate limiting to each query resolver
-    me: withGraphQLRateLimit(baseResolvers.Query.me, 'me'),
-    user: withGraphQLRateLimit(baseResolvers.Query.user, 'user'),
-    provider: withGraphQLRateLimit(baseResolvers.Query.provider, 'provider'),
-    providers: withGraphQLRateLimit(baseResolvers.Query.providers, 'providers'),
-    service: withGraphQLRateLimit(baseResolvers.Query.service, 'service'),
-    services: withGraphQLRateLimit(baseResolvers.Query.services, 'services'),
-    booking: withGraphQLRateLimit(baseResolvers.Query.booking, 'booking'),
-    myBookings: withGraphQLRateLimit(baseResolvers.Query.myBookings, 'myBookings'),
-    providerBookings: withGraphQLRateLimit(baseResolvers.Query.providerBookings, 'providerBookings'),
-    review: withGraphQLRateLimit(baseResolvers.Query.review, 'review'),
-    reviewsByProvider: withGraphQLRateLimit(baseResolvers.Query.reviewsByProvider, 'reviewsByProvider'),
-  },
-  
-  Mutation: {
-    // Apply rate limiting to each mutation resolver
-    registerUser: withGraphQLRateLimit(baseResolvers.Mutation.registerUser, 'registerUser'),
-    login: withGraphQLRateLimit(baseResolvers.Mutation.login, 'login'),
-    updateProfile: withGraphQLRateLimit(baseResolvers.Mutation.updateProfile, 'updateProfile'),
-    createProvider: withGraphQLRateLimit(baseResolvers.Mutation.createProvider, 'createProvider'),
-    updateProvider: withGraphQLRateLimit(baseResolvers.Mutation.updateProvider, 'updateProvider'),
-    createService: withGraphQLRateLimit(baseResolvers.Mutation.createService, 'createService'),
-    updateService: withGraphQLRateLimit(baseResolvers.Mutation.updateService, 'updateService'),
-    deleteService: withGraphQLRateLimit(baseResolvers.Mutation.deleteService, 'deleteService'),
-  },
-}; 
+// Apply rate limiting to all resolvers with default settings
+export const resolvers = withGraphQLRateLimit(baseResolvers, 'default'); 

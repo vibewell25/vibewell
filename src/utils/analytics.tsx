@@ -12,54 +12,58 @@ export enum EventType {
   PERFORMANCE = 'performance'
 }
 
+// Base properties interface
+interface BaseProperties {
+  timestamp?: number;
+  sessionId?: string;
+  userId?: string | null;
+  [key: string]: unknown;
+}
+
 // Type for analytics event data
 export interface AnalyticsEvent {
   eventName: string;
   eventType: EventType;
   timestamp: number;
-  properties: Record<string, any>;
+  properties: BaseProperties;
 }
 
 // Interface for analytics provider implementation
 export interface AnalyticsProvider {
   trackEvent: (event: AnalyticsEvent) => void;
   initialize: () => Promise<void>;
-  setUser: (userId: string, userProperties?: Record<string, any>) => void;
+  setUser: (userId: string, userProperties?: UserProperties) => void;
 }
 
 // Additional types for analytics
-export interface UserProperties {
+export interface UserProperties extends BaseProperties {
   userType?: string;
   email?: string;
   role?: string;
   accountType?: string;
   subscriptionTier?: string;
-  [key: string]: any;
 }
 
-export interface PageViewProperties {
+export interface PageViewProperties extends BaseProperties {
   pagePath: string;
   pageTitle?: string;
   referrer?: string;
   loadTime?: number;
-  [key: string]: any;
 }
 
-export interface ErrorProperties {
+export interface ErrorProperties extends BaseProperties {
   errorName: string;
   errorMessage: string;
   stackTrace?: string;
   componentName?: string;
   source?: string;
-  [key: string]: any;
 }
 
-export interface PerformanceProperties {
+export interface PerformanceProperties extends BaseProperties {
   metricName: string;
   duration: number;
   threshold?: number;
   resourceType?: string;
-  [key: string]: any;
 }
 
 // Singleton analytics service
@@ -69,7 +73,7 @@ class AnalyticsService {
   private queue: AnalyticsEvent[] = [];
   private userId: string | null = null;
   private sessionId: string = this.generateSessionId();
-  private userProperties: Record<string, any> = {};
+  private userProperties: UserProperties = {};
   private disabled = false;
   private retryCount: number = 0;
   private readonly MAX_RETRIES = 3;
@@ -93,8 +97,6 @@ class AnalyticsService {
         // Use console analytics provider as fallback when actual providers are not available
         this.registerConsoleProvider();
         
-        // Implementation note: The actual analytics providers should be implemented
-        // in separate files and imported here. For now, we're using the console provider.
         try {
           // Attempt to load Google Analytics if available
           const { GoogleAnalyticsProvider } = await import('./analytics-providers/google-analytics').catch(() => {
@@ -116,7 +118,7 @@ class AnalyticsService {
             this.registerProvider(new SegmentProvider());
           }
         } catch (error) {
-          console.warn('Failed to load analytics providers:', error);
+          console.warn('Failed to load analytics providers:', error instanceof Error ? error.message : 'Unknown error');
           // Ensure we have at least the console provider
           if (this.providers.length === 0) {
             this.registerConsoleProvider();
@@ -133,7 +135,7 @@ class AnalyticsService {
       // Process any queued events
       this.processQueue();
     } catch (error) {
-      console.error('Failed to initialize analytics:', error);
+      console.error('Failed to initialize analytics:', error instanceof Error ? error.message : 'Unknown error');
     }
   }
   
@@ -142,7 +144,7 @@ class AnalyticsService {
    */
   private registerConsoleProvider(): void {
     this.registerProvider({
-      trackEvent: (event) => {
+      trackEvent: (event: AnalyticsEvent) => {
         const { eventName, eventType, properties } = event;
         console.groupCollapsed(
           `%c Analytics: ${eventType} - ${eventName}`,
@@ -153,7 +155,7 @@ class AnalyticsService {
         console.groupEnd();
       },
       initialize: () => Promise.resolve(),
-      setUser: (userId, props) => {
+      setUser: (userId: string, props?: UserProperties) => {
         console.log(`%c Analytics: Set User ${userId}`, 'color: #2ecc71; font-weight: bold;', props);
       }
     });
@@ -169,7 +171,9 @@ class AnalyticsService {
       this.retryCount = 0;
     } catch (error) {
       this.retryCount++;
-      console.error(`Analytics initialization failed (attempt ${this.retryCount}/${this.MAX_RETRIES}):`, error);
+      console.error(`Analytics initialization failed (attempt ${this.retryCount}/${this.MAX_RETRIES}):`, 
+        error instanceof Error ? error.message : 'Unknown error'
+      );
       
       if (this.retryCount < this.MAX_RETRIES) {
         // Retry with exponential backoff
@@ -260,16 +264,15 @@ class AnalyticsService {
 
   /**
    * Track an analytics event
-   * @param eventType Type of event
-   * @param eventName Name of the event
-   * @param properties Additional properties
    */
   private trackEvent(
     eventType: EventType,
     eventName: string,
-    properties: Record<string, any> = {}
+    properties: Partial<BaseProperties> = {}
   ): void {
-    if (this.disabled) return;
+    if (this.disabled) {
+      return;
+    }
 
     const event: AnalyticsEvent = {
       eventName,
@@ -278,68 +281,40 @@ class AnalyticsService {
       properties: {
         ...properties,
         sessionId: this.sessionId,
-        userId: this.userId || 'anonymous',
-        userType: this.getUserType(),
-        appVersion: process.env.NEXT_PUBLIC_APP_VERSION || '0.0.0',
-        environment: process.env.NODE_ENV,
-        url: typeof window !== 'undefined' ? window.location.href : undefined,
-        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : undefined
+        userId: this.userId,
+        ...this.userProperties
       }
     };
 
     if (!this.initialized) {
-      // Queue the event to be processed later
       this.queue.push(event);
       return;
     }
 
-    // Send to all providers
     this.providers.forEach(provider => {
       try {
         provider.trackEvent(event);
       } catch (error) {
-        console.error('Error tracking event:', error);
-        // Add to queue if tracking failed
-        this.queue.push(event);
+        console.error('Error tracking event:', error instanceof Error ? error.message : 'Unknown error');
       }
     });
   }
 
   /**
-   * Process the queue of events after initialization
+   * Process queued events
    */
   private processQueue(): void {
-    if (this.queue.length === 0) return;
-    
-    // Display queue information
-    console.log(`Processing ${this.queue.length} queued analytics events`);
-    
-    // Process and clear the queue
-    const failedEvents: AnalyticsEvent[] = [];
-    
-    this.queue.forEach(event => {
-      let eventProcessed = false;
-      
-      this.providers.forEach(provider => {
-        try {
-          provider.trackEvent(event);
-          eventProcessed = true;
-        } catch (error) {
-          console.error('Error processing queued event:', error);
-        }
-      });
-      
-      // Keep track of events that failed processing
-      if (!eventProcessed) {
-        failedEvents.push(event);
+    while (this.queue.length > 0) {
+      const event = this.queue.shift();
+      if (event) {
+        this.providers.forEach(provider => {
+          try {
+            provider.trackEvent(event);
+          } catch (error) {
+            console.error('Error processing queued event:', error instanceof Error ? error.message : 'Unknown error');
+          }
+        });
       }
-    });
-    
-    // Update queue with only failed events
-    this.queue = failedEvents;
-    
-    if (failedEvents.length > 0) {
-      console.warn(`${failedEvents.length} events could not be processed and remain in queue`);
     }
   }
 
@@ -347,137 +322,99 @@ class AnalyticsService {
    * Generate a unique session ID
    */
   private generateSessionId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).substring(2, 10);
+    return Math.random().toString(36).substring(2) + Date.now().toString(36);
   }
 
   /**
-   * Get the current user type based on properties
+   * Get the current user type
    */
   private getUserType(): string {
-    return this.userProperties.userType || 
-           (this.userId ? 'registered' : 'anonymous');
+    return this.userProperties.userType || 'anonymous';
   }
 
   /**
-   * Track a general event
-   * @param eventName Name of the event
-   * @param properties Additional properties
+   * Log a generic event
    */
-  public logEvent(eventName: string, properties: Record<string, any> = {}): void {
+  public logEvent(eventName: string, properties: Partial<BaseProperties> = {}): void {
     this.trackEvent(EventType.SYSTEM, eventName, properties);
   }
 
   /**
    * Track a user action
-   * @param actionName Name of the action
-   * @param properties Additional properties
    */
-  public trackUserAction(actionName: string, properties: Record<string, any> = {}): void {
-    // Add timestamp for user actions to measure time between actions
-    const enhancedProps = {
-      ...properties,
-      actionTime: new Date().toISOString()
-    };
-    
-    this.trackEvent(EventType.USER_ACTION, actionName, enhancedProps);
+  public trackUserAction(actionName: string, properties: Partial<BaseProperties> = {}): void {
+    this.trackEvent(EventType.USER_ACTION, actionName, properties);
   }
 
   /**
    * Track a page view
-   * @param pagePath Path of the page
-   * @param properties Additional properties
    */
-  public trackPageView(pagePath: string, properties: PageViewProperties): void {
-    // Calculate page load time if not provided
-    let enhancedProps: PageViewProperties = {
-      ...properties,
+  public trackPageView(pagePath: string, properties: Partial<PageViewProperties> = { pagePath }): void {
+    const pageViewProps: PageViewProperties = {
       pagePath,
-      pageTitle: properties.pageTitle || (typeof document !== 'undefined' ? document.title : ''),
-      referrer: properties.referrer || (typeof document !== 'undefined' ? document.referrer : '')
+      pageTitle: document.title,
+      referrer: document.referrer,
+      loadTime: window.performance?.timing?.domContentLoadedEventEnd - window.performance?.timing?.navigationStart,
+      ...properties
     };
-    
-    // Add navigation timing data if available
-    if (typeof window !== 'undefined' && window.performance) {
-      const perfData = window.performance.timing;
-      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
-      const domLoadTime = perfData.domContentLoadedEventEnd - perfData.navigationStart;
-      
-      enhancedProps = {
-        ...enhancedProps,
-        loadTime: properties.loadTime || (pageLoadTime > 0 ? pageLoadTime : undefined),
-        domLoadTime: domLoadTime > 0 ? domLoadTime : undefined
-      };
-    }
-    
-    this.trackEvent(EventType.PAGE_VIEW, 'page_viewed', enhancedProps);
+
+    this.trackEvent(EventType.PAGE_VIEW, 'page_view', pageViewProps);
   }
 
   /**
    * Track an error
-   * @param errorName Name or category of the error
-   * @param properties Error details
    */
-  public trackError(errorName: string, properties: ErrorProperties): void {
-    this.trackEvent(EventType.ERROR, 'error', {
-      ...properties,
-    });
+  public trackError(errorName: string, properties: Partial<ErrorProperties>): void {
+    const errorProps: ErrorProperties = {
+      errorName,
+      errorMessage: properties.errorMessage || 'Unknown error',
+      ...properties
+    };
+
+    this.trackEvent(EventType.ERROR, 'error', errorProps);
   }
 
   /**
    * Track a performance metric
-   * @param metricName Name of the metric
-   * @param properties Performance details
    */
-  public trackPerformance(metricName: string, properties: PerformanceProperties): void {
-    this.trackEvent(EventType.PERFORMANCE, 'performance_metric', {
-      ...properties,
-    });
+  public trackPerformance(metricName: string, properties: Partial<PerformanceProperties>): void {
+    const perfProps: PerformanceProperties = {
+      metricName,
+      duration: properties.duration || 0,
+      ...properties
+    };
+
+    this.trackEvent(EventType.PERFORMANCE, 'performance', perfProps);
   }
 }
 
 // Create singleton instance
 const analyticsService = new AnalyticsService();
 
-// Export utility functions that use the singleton service
-export const logEvent = (eventName: string, properties?: Record<string, any>) => 
-  analyticsService.logEvent(eventName, properties || {});
+// Export convenience methods
+export const logEvent = (eventName: string, properties?: Partial<BaseProperties>): void => 
+  analyticsService.logEvent(eventName, properties);
 
-export const trackUserAction = (actionName: string, properties?: Record<string, any>) => 
-  analyticsService.trackUserAction(actionName, properties || {});
+export const trackUserAction = (actionName: string, properties?: Partial<BaseProperties>): void => 
+  analyticsService.trackUserAction(actionName, properties);
 
-export const trackPageView = (pagePath: string, properties?: Partial<PageViewProperties>) => {
-  const fullProperties: PageViewProperties = {
-    pagePath,
-    ...(properties || {})
-  };
-  analyticsService.trackPageView(pagePath, fullProperties);
-};
+export const trackPageView = (pagePath: string, properties?: Partial<PageViewProperties>): void => 
+  analyticsService.trackPageView(pagePath, properties);
 
-export const trackError = (errorName: string, properties: Partial<ErrorProperties>) => {
-  // Create a new properties object, ensuring we don't duplicate properties
-  const finalProperties: ErrorProperties = {
-    ...properties,
-    // Only set these default values if they're not already provided
-    errorName: properties.errorName || errorName,
-    errorMessage: properties.errorMessage || errorName
-  };
-  
-  analyticsService.trackError(errorName, finalProperties);
-};
+export const trackError = (errorName: string, properties: Partial<ErrorProperties>): void => 
+  analyticsService.trackError(errorName, properties);
 
-export const trackPerformance = (metricName: string, duration: number, properties?: Partial<Omit<PerformanceProperties, 'metricName' | 'duration'>>) => 
-  analyticsService.trackPerformance(metricName, {
-    metricName,
-    duration,
-    ...properties || {}
-  });
+export const trackPerformance = (
+  metricName: string, 
+  properties: Partial<PerformanceProperties>
+): void => analyticsService.trackPerformance(metricName, properties);
 
-export const setUser = (userId: string, properties?: UserProperties) => 
+export const setUser = (userId: string, properties?: Partial<UserProperties>): void => 
   analyticsService.setUser(userId, properties);
 
-export const clearUser = () => analyticsService.clearUser();
+export const clearUser = (): void => analyticsService.clearUser();
 
-export const setEnabled = (enabled: boolean) => analyticsService.setEnabled(enabled);
+export const setEnabled = (enabled: boolean): void => analyticsService.setEnabled(enabled);
 
-// Export the service as default
+// Export the service for advanced usage
 export default analyticsService; 

@@ -82,6 +82,25 @@ export interface RecommendationMetrics {
   };
 }
 
+interface TryOnSessionData {
+  userId: string;
+  type: string;
+  productId: string;
+  productName: string;
+  duration: number;
+  intensity: number;
+  success: boolean;
+}
+
+interface ShareData {
+  sessionId: string;
+  userId?: string;
+  platform: string;
+  method: 'email' | 'social' | 'download';
+  success: boolean;
+  error?: string;
+}
+
 // Analytics Service
 export class AnalyticsService {
   private supabase;
@@ -552,6 +571,35 @@ export class AnalyticsService {
     } catch (error) {
       console.error('Error fetching recommendation metrics:', error);
       throw error;
+    }
+  }
+
+  async trackTryOnSession(data: TryOnSessionData): Promise<void> {
+    try {
+      await fetch('/api/analytics/try-on-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      console.error('Error tracking try-on session:', error);
+    }
+  }
+
+  async trackShare(data: ShareData): Promise<void> {
+    try {
+      await this.trackEvent('product_share', {
+        session_id: data.sessionId,
+        user_id: data.userId,
+        platform: data.platform,
+        method: data.method,
+        success: data.success,
+        error: data.error
+      });
+    } catch (error) {
+      console.error('Error tracking share:', error);
     }
   }
 } 

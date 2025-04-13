@@ -1,0 +1,254 @@
+name: Performance Benchmark
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * 1' # Run weekly on Mondays
+
+env:
+  PERFORMANCE_THRESHOLD: 0.9
+  ACCESSIBILITY_THRESHOLD: 0.9
+  SEO_THRESHOLD: 0.9
+  BEST_PRACTICES_THRESHOLD: 0.9
+  FCP_THRESHOLD: 2000 # 2 seconds
+  LCP_THRESHOLD: 2500 # 2.5 seconds
+  CLS_THRESHOLD: 0.1
+  TTI_THRESHOLD: 3500 # 3.5 seconds
+  BUNDLE_SIZE_THRESHOLD: 250 # KB for main bundle
+
+jobs:
+  performance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install additional tools
+        run: |
+          npm install -g lighthouse
+          npm install -g source-map-explorer
+          sudo apt-get update && sudo apt-get install -y jq bc
+
+      - name: Build project
+        run: npm run build
+
+      - name: Start server in background
+        run: |
+          npm run start &
+          echo $! > server.pid
+          sleep 10 # Wait for server to start
+
+      - name: Run performance monitor for multiple pages
+        run: |
+          PAGES=(
+            "/"
+            "/beauty-wellness"
+          )
+          
+          mkdir -p reports/lighthouse
+          
+          for page in "${PAGES[@]}"; do
+            lighthouse "http://localhost:3000${page}" \
+              --output json --output html \
+              --output-path "./reports/lighthouse/$(echo ${page} | sed 's/\//-/g')" \
+              --chrome-flags="--headless --no-sandbox --disable-gpu"
+          done
+
+      - name: Analyze bundle sizes
+        run: |
+          mkdir -p reports/bundle
+          source-map-explorer .next/static/chunks/*.js --html reports/bundle/bundle-analysis.html
+          
+          # Get main bundle size
+          MAIN_BUNDLE_SIZE=$(find .next/static/chunks -name "main-*.js" -exec ls -l {} \; | awk '{print $5}')
+          MAIN_BUNDLE_SIZE_KB=$((MAIN_BUNDLE_SIZE / 1024))
+          
+          if [ $MAIN_BUNDLE_SIZE_KB -gt $BUNDLE_SIZE_THRESHOLD ]; then
+            echo "Main bundle size ($MAIN_BUNDLE_SIZE_KB KB) exceeds threshold ($BUNDLE_SIZE_THRESHOLD KB)"
+            exit 1
+          fi
+
+      - name: Check performance thresholds
+        run: |
+          check_metrics() {
+            local report=$1
+            local page=$2
+            
+            # Core Web Vitals and other metrics
+            FCP=$(jq '.audits["first-contentful-paint"].numericValue' $report)
+            LCP=$(jq '.audits["largest-contentful-paint"].numericValue' $report)
+            CLS=$(jq '.audits["cumulative-layout-shift"].numericValue' $report)
+            TTI=$(jq '.audits["interactive"].numericValue' $report)
+            
+            # Lighthouse scores
+            PERFORMANCE=$(jq '.categories.performance.score' $report)
+            ACCESSIBILITY=$(jq '.categories.accessibility.score' $report)
+            SEO=$(jq '.categories.seo.score' $report)
+            BEST_PRACTICES=$(jq '.categories["best-practices"].score' $report)
+            
+            # Check thresholds
+            FAILED=0
+            
+            if (( $(echo "$FCP > $FCP_THRESHOLD" | bc -l) )); then
+              echo "❌ $page: FCP ($FCP ms) exceeds threshold ($FCP_THRESHOLD ms)"
+              FAILED=1
+            fi
+            
+            if (( $(echo "$LCP > $LCP_THRESHOLD" | bc -l) )); then
+              echo "❌ $page: LCP ($LCP ms) exceeds threshold ($LCP_THRESHOLD ms)"
+              FAILED=1
+            fi
+            
+            if (( $(echo "$CLS > $CLS_THRESHOLD" | bc -l) )); then
+              echo "❌ $page: CLS ($CLS) exceeds threshold ($CLS_THRESHOLD)"
+              FAILED=1
+            fi
+            
+            if (( $(echo "$TTI > $TTI_THRESHOLD" | bc -l) )); then
+              echo "❌ $page: TTI ($TTI ms) exceeds threshold ($TTI_THRESHOLD ms)"
+              FAILED=1
+            fi
+            
+            if (( $(echo "$PERFORMANCE < $PERFORMANCE_THRESHOLD" | bc -l) )); then
+              echo "❌ $page: Performance score ($PERFORMANCE) below threshold ($PERFORMANCE_THRESHOLD)"
+              FAILED=1
+            fi
+            
+            if (( $(echo "$ACCESSIBILITY < $ACCESSIBILITY_THRESHOLD" | bc -l) )); then
+              echo "❌ $page: Accessibility score ($ACCESSIBILITY) below threshold ($ACCESSIBILITY_THRESHOLD)"
+              FAILED=1
+            fi
+            
+            if (( $(echo "$SEO < $SEO_THRESHOLD" | bc -l) )); then
+              echo "❌ $page: SEO score ($SEO) below threshold ($SEO_THRESHOLD)"
+              FAILED=1
+            fi
+            
+            if (( $(echo "$BEST_PRACTICES < $BEST_PRACTICES_THRESHOLD" | bc -l) )); then
+              echo "❌ $page: Best Practices score ($BEST_PRACTICES) below threshold ($BEST_PRACTICES_THRESHOLD)"
+              FAILED=1
+            fi
+            
+            return $FAILED
+          }
+          
+          FAILED=0
+          for report in reports/lighthouse/*.json; do
+            page=$(basename "$report" .json | sed 's/-/\//g')
+            if ! check_metrics "$report" "$page"; then
+              FAILED=1
+            fi
+          done
+          
+          exit $FAILED
+
+      - name: Generate performance dashboard
+        if: always()
+        run: |
+          cat << EOF > reports/dashboard.html
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Performance Dashboard</title>
+            <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+          </head>
+          <body class="bg-gray-100 p-8">
+            <div class="max-w-7xl mx-auto">
+              <h1 class="text-3xl font-bold mb-8">Performance Dashboard</h1>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Performance Reports -->
+                <div class="bg-white p-6 rounded-lg shadow">
+                  <h2 class="text-xl font-semibold mb-4">Lighthouse Reports</h2>
+                  <div class="space-y-4" id="lighthouse-reports">
+                    <!-- Will be populated by script -->
+                  </div>
+                </div>
+                
+                <!-- Bundle Analysis -->
+                <div class="bg-white p-6 rounded-lg shadow">
+                  <h2 class="text-xl font-semibold mb-4">Bundle Analysis</h2>
+                  <iframe src="bundle/bundle-analysis.html" class="w-full h-96 border-0"></iframe>
+                </div>
+              </div>
+            </div>
+            
+            <script>
+              // Populate Lighthouse reports
+              fetch('lighthouse-summary.json')
+                .then(response => response.json())
+                .then(data => {
+                  const container = document.getElementById('lighthouse-reports');
+                  Object.entries(data).forEach(([page, metrics]) => {
+                    container.innerHTML += \`
+                      <div class="border p-4 rounded">
+                        <h3 class="font-medium mb-2">\${page}</h3>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                          <div>Performance: \${metrics.performance}%</div>
+                          <div>FCP: \${metrics.fcp}ms</div>
+                          <div>LCP: \${metrics.lcp}ms</div>
+                          <div>CLS: \${metrics.cls}</div>
+                        </div>
+                      </div>
+                    \`;
+                  });
+                });
+            </script>
+          </body>
+          </html>
+          EOF
+
+      - name: Generate Lighthouse summary
+        if: always()
+        run: |
+          echo "{" > reports/lighthouse-summary.json
+          first=true
+          for report in reports/lighthouse/*.json; do
+            page=$(basename "$report" .json | sed 's/-/\//g')
+            if [ "$first" = true ]; then
+              first=false
+            else
+              echo "," >> reports/lighthouse-summary.json
+            fi
+            jq -r "{
+              \"$page\": {
+                performance: (.categories.performance.score * 100),
+                accessibility: (.categories.accessibility.score * 100),
+                seo: (.categories.seo.score * 100),
+                bestPractices: (.categories[\"best-practices\"].score * 100),
+                fcp: .audits[\"first-contentful-paint\"].numericValue,
+                lcp: .audits[\"largest-contentful-paint\"].numericValue,
+                cls: .audits[\"cumulative-layout-shift\"].numericValue,
+                tti: .audits.interactive.numericValue
+              }
+            }" "$report" >> reports/lighthouse-summary.json
+          done
+          echo "}" >> reports/lighthouse-summary.json
+
+      - name: Upload performance reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-reports
+          path: reports/
+
+      - name: Cleanup
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill $(cat server.pid) || true
+          fi 

@@ -1,14 +1,14 @@
-const Review = require('../models/Review');
-const Booking = require('../models/Booking');
-const ErrorResponse = require('../utils/errorResponse');
-const asyncHandler = require('../middleware/async');
-const Provider = require('../models/Provider');
+import Review from '../models/Review';
+import Booking from '../models/Booking';
+import ErrorResponse from '../utils/errorResponse';
+import asyncHandler from '../middleware/async';
+import Provider from '../models/Provider';
 
 // @desc    Get all reviews
 // @route   GET /api/v1/reviews
 // @route   GET /api/v1/providers/:providerId/reviews
 // @access  Public
-exports.getReviews = asyncHandler(async (req, res, next) => {
+export const getReviews = asyncHandler(async (req, res, next) => {
   if (req.params.providerId) {
     const reviews = await Review.find({ provider: req.params.providerId });
     
@@ -25,7 +25,7 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
 // @desc    Get single review
 // @route   GET /api/v1/reviews/:id
 // @access  Public
-exports.getReview = asyncHandler(async (req, res, next) => {
+export const getReview = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id).populate({
     path: 'provider',
     select: 'name description'
@@ -44,7 +44,7 @@ exports.getReview = asyncHandler(async (req, res, next) => {
 // @desc    Add review
 // @route   POST /api/v1/providers/:providerId/reviews
 // @access  Private
-exports.addReview = asyncHandler(async (req, res, next) => {
+export const addReview = asyncHandler(async (req, res, next) => {
   req.body.provider = req.params.providerId;
   req.body.customer = req.user.id;
 
@@ -78,7 +78,7 @@ exports.addReview = asyncHandler(async (req, res, next) => {
 // @desc    Update review
 // @route   PUT /api/v1/reviews/:id
 // @access  Private
-exports.updateReview = asyncHandler(async (req, res, next) => {
+export const updateReview = asyncHandler(async (req, res, next) => {
   let review = await Review.findById(req.params.id);
 
   if (!review) {
@@ -107,7 +107,7 @@ exports.updateReview = asyncHandler(async (req, res, next) => {
 // @desc    Delete review
 // @route   DELETE /api/v1/reviews/:id
 // @access  Private
-exports.deleteReview = asyncHandler(async (req, res, next) => {
+export const deleteReview = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id);
 
   if (!review) {
@@ -133,7 +133,7 @@ exports.deleteReview = asyncHandler(async (req, res, next) => {
 // @desc      Add provider response to review
 // @route     POST /api/v1/reviews/:id/response
 // @access    Private (Provider only)
-exports.addProviderResponse = asyncHandler(async (req, res, next) => {
+export const addProviderResponse = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id);
 
   if (!review) {
@@ -163,7 +163,7 @@ exports.addProviderResponse = asyncHandler(async (req, res, next) => {
 // @desc      Mark review as helpful
 // @route     PUT /api/v1/reviews/:id/helpful
 // @access    Private
-exports.markHelpful = asyncHandler(async (req, res, next) => {
+export const markHelpful = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id);
 
   if (!review) {
@@ -199,7 +199,7 @@ exports.markHelpful = asyncHandler(async (req, res, next) => {
 // @desc      Report a review
 // @route     POST /api/v1/reviews/:id/report
 // @access    Private
-exports.reportReview = asyncHandler(async (req, res, next) => {
+export const reportReview = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id);
 
   if (!review) {
@@ -230,7 +230,7 @@ exports.reportReview = asyncHandler(async (req, res, next) => {
 // @desc      Moderate review (admin only)
 // @route     PUT /api/v1/reviews/:id/moderate
 // @access    Private (Admin only)
-exports.moderateReview = asyncHandler(async (req, res, next) => {
+export const moderateReview = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id);
 
   if (!review) {

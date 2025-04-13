@@ -383,8 +383,29 @@ function MessagesPageContent() {
 // Main page component with Suspense
 export default function MessagesPage() {
   return (
-    <Suspense fallback={<MessagesLoadingSkeleton />}>
-      <MessagesPageContent />
-    </Suspense>
+    <Layout>
+      <Suspense fallback={<MessagesPageSkeleton />}>
+        <MessagesPageContent />
+      </Suspense>
+    </Layout>
+  );
+}
+
+// Add skeleton component for loading state
+function MessagesPageSkeleton() {
+  return (
+    <div className="container-app py-8">
+      <div className="animate-pulse">
+        <div className="h-8 w-64 bg-gray-200 rounded mb-4"></div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-1">
+            <div className="h-[calc(100vh-12rem)] bg-gray-200 rounded"></div>
+          </div>
+          <div className="lg:col-span-2">
+            <div className="h-[calc(100vh-12rem)] bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 } 

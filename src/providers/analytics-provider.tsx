@@ -125,12 +125,14 @@ function AnalyticsProviderContent({
 }
 
 // Wrapper component with Suspense boundary
-export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = (props) => {
+export function AnalyticsProvider({ children, trackingId }: AnalyticsProviderProps) {
   return (
-    <Suspense fallback={<>{props.children}</>}>
-      <AnalyticsProviderContent {...props} />
+    <Suspense fallback={null}>
+      <AnalyticsProviderContent trackingId={trackingId}>
+        {children}
+      </AnalyticsProviderContent>
     </Suspense>
   );
-};
+}
 
 export const useAnalytics = () => useContext(AnalyticsContext); 

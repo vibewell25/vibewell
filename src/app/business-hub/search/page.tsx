@@ -647,8 +647,27 @@ function SearchPageContent() {
 // Main page component with Suspense
 export default function SearchPage() {
   return (
-    <Suspense fallback={<SearchLoadingSkeleton />}>
-      <SearchPageContent />
-    </Suspense>
+    <Layout>
+      <Suspense fallback={<SearchPageSkeleton />}>
+        <SearchPageContent />
+      </Suspense>
+    </Layout>
+  );
+}
+
+// Add skeleton component for loading state
+function SearchPageSkeleton() {
+  return (
+    <div className="container-app py-8">
+      <div className="animate-pulse">
+        <div className="h-8 w-64 bg-gray-200 rounded mb-4"></div>
+        <div className="h-4 w-full max-w-2xl bg-gray-200 rounded mb-8"></div>
+        <div className="grid gap-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-32 bg-gray-200 rounded"></div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 } 

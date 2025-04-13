@@ -1,13 +1,13 @@
 // Redis TLS Support Implementation
 
-const fs = require('fs');
-const path = require('path');
-const redis = require('redis');
-const { promisify } = require('util');
-const { spawn } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import redis from 'redis';
+import { promisify } from 'util';
+import { spawn } from 'child_process';
 
 // Helper function to create a Redis client with TLS support
-function createRedisTLSClient(options = {}) {
+export function createRedisTLSClient(options = {}) {
   const tlsOptions = {
     host: process.env.REDIS_HOST || 'localhost',
     port: process.env.REDIS_PORT || 6379,
@@ -32,7 +32,7 @@ function createRedisTLSClient(options = {}) {
 }
 
 // Enhanced Redis benchmark with TLS support
-async function runRedisBenchmarkWithTLS(options = {}) {
+export async function runRedisBenchmarkWithTLS(options = {}) {
   const {
     host = process.env.REDIS_HOST || 'localhost',
     port = process.env.REDIS_PORT || 6379,
@@ -93,7 +93,7 @@ async function runRedisBenchmarkWithTLS(options = {}) {
 }
 
 // Enhanced Redis CLI for slave and RDB support with TLS
-function enhancedRedisCLI(options = {}) {
+export function enhancedRedisCLI(options = {}) {
   const {
     host = process.env.REDIS_HOST || 'localhost',
     port = process.env.REDIS_PORT || 6379,
@@ -154,9 +154,3 @@ function enhancedRedisCLI(options = {}) {
     });
   });
 }
-
-module.exports = {
-  createRedisTLSClient,
-  runRedisBenchmarkWithTLS,
-  enhancedRedisCLI
-};

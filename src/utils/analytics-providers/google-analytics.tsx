@@ -6,6 +6,7 @@ import { AnalyticsEvent, AnalyticsProvider } from '../analytics';
 export class GoogleAnalyticsProvider implements AnalyticsProvider {
   private gaTrackingId: string;
   private isInitialized: boolean = false;
+  private ReactGA: any = null;
 
   constructor(trackingId?: string) {
     this.gaTrackingId = trackingId || process.env.NEXT_PUBLIC_GA_TRACKING_ID || '';
@@ -21,8 +22,8 @@ export class GoogleAnalyticsProvider implements AnalyticsProvider {
 
     try {
       // Dynamic import of Google Analytics library to avoid SSR issues
-      const ReactGA = (await import('react-ga')).default;
-      ReactGA.initialize(this.gaTrackingId);
+      this.ReactGA = (await import('react-ga')).default;
+      this.ReactGA.initialize(this.gaTrackingId);
       this.isInitialized = true;
       console.log('Google Analytics initialized successfully');
     } catch (error) {
@@ -35,17 +36,15 @@ export class GoogleAnalyticsProvider implements AnalyticsProvider {
    * Track event in Google Analytics
    */
   trackEvent(event: AnalyticsEvent): void {
-    if (!this.isInitialized || typeof window === 'undefined') {
+    if (!this.isInitialized || typeof window === 'undefined' || !this.ReactGA) {
       return;
     }
 
     try {
-      const ReactGA = require('react-ga');
-      
       const { eventName, eventType, properties } = event;
       
       // Map to GA event format
-      ReactGA.event({
+      this.ReactGA.event({
         category: eventType,
         action: eventName,
         label: properties.label || '',
@@ -61,15 +60,13 @@ export class GoogleAnalyticsProvider implements AnalyticsProvider {
    * Set user ID and properties in Google Analytics
    */
   setUser(userId: string, userProperties?: Record<string, any>): void {
-    if (!this.isInitialized || typeof window === 'undefined') {
+    if (!this.isInitialized || typeof window === 'undefined' || !this.ReactGA) {
       return;
     }
 
     try {
-      const ReactGA = require('react-ga');
-      
       // Set user ID
-      ReactGA.set({ userId });
+      this.ReactGA.set({ userId });
       
       // Set custom dimensions for user properties if provided
       if (userProperties) {
@@ -81,7 +78,7 @@ export class GoogleAnalyticsProvider implements AnalyticsProvider {
           dimensions[`dimension${index + 1}`] = value;
         });
         
-        ReactGA.set(dimensions);
+        this.ReactGA.set(dimensions);
       }
     } catch (error) {
       console.error('Google Analytics set user error:', error);

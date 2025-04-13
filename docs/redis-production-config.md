@@ -13,10 +13,22 @@ In production environments, a distributed Redis setup is used to manage rate lim
 
 ## Environment Configuration
 
-To enable Redis in production, set the following environment variables:
+There are two options for Redis in production:
 
+### 1. Upstash Redis (Recommended for Edge Functions)
+
+For Edge Runtime compatibility (e.g., Vercel Edge Functions), use Upstash Redis:
+
+```env
+UPSTASH_REDIS_REST_URL=https://your-url.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your_token
 ```
-NODE_ENV=production
+
+### 2. Traditional Redis (Node.js Only)
+
+For traditional Node.js environments:
+
+```env
 REDIS_URL=redis://host:port
 REDIS_PASSWORD=your_redis_password  # Optional
 REDIS_TLS=true                      # Set to true for TLS/SSL connections
@@ -26,21 +38,27 @@ REDIS_ENABLED=true                  # Explicitly enable Redis
 
 ### Example Configurations
 
-#### AWS ElastiCache
+#### Upstash Redis on Vercel
+```env
+UPSTASH_REDIS_REST_URL=https://your-instance.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your_token
 ```
+
+#### AWS ElastiCache (Node.js only)
+```env
 REDIS_URL=redis://your-elasticache-instance.region.cache.amazonaws.com:6379
 REDIS_TLS=true
 ```
 
-#### Azure Cache for Redis
-```
+#### Azure Cache for Redis (Node.js only)
+```env
 REDIS_URL=redis://your-azure-cache.redis.cache.windows.net:6380
 REDIS_PASSWORD=your_access_key
 REDIS_TLS=true
 ```
 
 #### Docker Compose Local Setup
-```
+```env
 REDIS_URL=redis://redis:6379
 REDIS_PASSWORD=your_local_password
 REDIS_TLS=false
@@ -48,7 +66,7 @@ REDIS_TLS=false
 
 ## Redis Client Capabilities
 
-The Redis client provided in `src/lib/redis/redis-client.ts` has the following key features:
+The Redis client provided in `src/lib/redis-client.ts` has the following key features:
 
 ### Basic Redis Operations
 
@@ -72,13 +90,21 @@ The Redis client provided in `src/lib/redis/redis-client.ts` has the following k
 - `getBlockedIPs()`: Get a list of all blocked IPs
 - `getSuspiciousIPs(limit)`: Get IPs that have frequently been rate limited
 
+## Edge Runtime Support
+
+The Redis client automatically detects when running in Edge Runtime and:
+
+1. Uses Upstash Redis if configured (recommended)
+2. Falls back to in-memory implementation if Upstash is not configured
+3. Provides consistent API regardless of the underlying implementation
+
 ## Fallback Mechanism
 
 The Redis client includes automatic fallback to in-memory implementation if:
 
-1. Redis connection fails
-2. The `REDIS_URL` is not set
-3. `NODE_ENV` is not 'production'
+1. Running in Edge Runtime without Upstash configuration
+2. Redis connection fails
+3. The environment is not production
 
 This ensures that rate limiting continues to function even if Redis is unavailable.
 
@@ -93,7 +119,7 @@ For effective monitoring, consider:
 
 ## Security Considerations
 
-1. Always use strong passwords for Redis
+1. Always use strong passwords/tokens for Redis
 2. Enable TLS/SSL for Redis connections in production
 3. Use network security groups or firewall rules to limit Redis access
 4. Consider using Redis AUTH 
@@ -103,44 +129,33 @@ For effective monitoring, consider:
 
 ### Common Issues
 
-1. **Connection Timeouts**
-   - Check network connectivity
-   - Verify security group settings
-   - Increase `REDIS_TIMEOUT` value
+1. **Edge Runtime Errors**: 
+   - Ensure Upstash Redis is configured correctly
+   - Check that UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN are set
 
-2. **Authentication Failures**
-   - Verify password in environment variables
-   - Check for special characters that may need escaping
+2. **Connection Timeouts**:
+   - Check network security group rules
+   - Verify TLS configuration
+   - Ensure Redis instance is running and accessible
 
-3. **Memory Issues**
-   - Set appropriate maxmemory policy (e.g., volatile-lru)
-   - Monitor memory usage regularly
-   - Adjust clearOldRateLimitEvents parameters
+3. **Memory Issues**:
+   - Monitor Redis memory usage
+   - Implement proper key expiration policies
+   - Use the cleanup methods provided by the client
 
-4. **High CPU Usage**
-   - Check for expensive operations
-   - Consider Redis caching strategies
-   - Monitor slow log entries
+4. **Rate Limiting Not Working**:
+   - Verify Redis connection is active
+   - Check if fallback to in-memory mode is occurring
+   - Monitor rate limit events using the provided methods
 
-### Debugging
+### Getting Help
 
-For debugging Redis issues:
+If you encounter issues:
 
-1. Enable more verbose logging:
-   ```
-   LOG_LEVEL=debug
-   ```
-
-2. Use Redis CLI to inspect keys:
-   ```
-   redis-cli -h your-redis-host -p 6379 --tls -a your-password
-   ```
-
-3. Check Redis INFO command output for stats:
-   ```
-   INFO memory
-   INFO stats
-   ```
+1. Check the application logs for Redis-related errors
+2. Use the monitoring tools to check Redis health
+3. Verify your configuration against the examples above
+4. Contact the infrastructure team if issues persist
 
 ## Recommended Production Setup
 

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const CustomerProfileSchema = new mongoose.Schema({
   user: {
@@ -113,4 +113,6 @@ CustomerProfileSchema.pre('save', function (next) {
   next();
 });
 
-module.exports = mongoose.model('CustomerProfile', CustomerProfileSchema); 
+const CustomerProfile = mongoose.model('CustomerProfile', CustomerProfileSchema);
+
+export default CustomerProfile; 

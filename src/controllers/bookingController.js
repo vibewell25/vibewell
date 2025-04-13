@@ -1,11 +1,11 @@
-const Booking = require('../models/Booking');
-const asyncHandler = require('../middleware/async');
-const ErrorResponse = require('../utils/errorResponse');
+import Booking from '../models/Booking';
+import asyncHandler from '../middleware/async';
+import ErrorResponse from '../utils/errorResponse';
 
 // @desc    Get all bookings
 // @route   GET /api/v1/bookings
 // @access  Private
-exports.getBookings = asyncHandler(async (req, res, next) => {
+export const getBookings = asyncHandler(async (req, res, next) => {
   let query;
   
   // For providers, show only their bookings
@@ -31,7 +31,7 @@ exports.getBookings = asyncHandler(async (req, res, next) => {
 // @desc    Get single booking
 // @route   GET /api/v1/bookings/:id
 // @access  Private
-exports.getBooking = asyncHandler(async (req, res, next) => {
+export const getBooking = asyncHandler(async (req, res, next) => {
   const booking = await Booking.findById(req.params.id);
   
   if (!booking) {
@@ -56,7 +56,7 @@ exports.getBooking = asyncHandler(async (req, res, next) => {
 // @desc    Create new booking
 // @route   POST /api/v1/bookings
 // @access  Private (Customer only)
-exports.createBooking = asyncHandler(async (req, res, next) => {
+export const createBooking = asyncHandler(async (req, res, next) => {
   // Add customer to req.body
   req.body.customer = req.user.id;
   
@@ -71,7 +71,7 @@ exports.createBooking = asyncHandler(async (req, res, next) => {
 // @desc    Update booking
 // @route   PUT /api/v1/bookings/:id
 // @access  Private
-exports.updateBooking = asyncHandler(async (req, res, next) => {
+export const updateBooking = asyncHandler(async (req, res, next) => {
   let booking = await Booking.findById(req.params.id);
   
   if (!booking) {
@@ -101,7 +101,7 @@ exports.updateBooking = asyncHandler(async (req, res, next) => {
 // @desc    Delete booking
 // @route   DELETE /api/v1/bookings/:id
 // @access  Private
-exports.deleteBooking = asyncHandler(async (req, res, next) => {
+export const deleteBooking = asyncHandler(async (req, res, next) => {
   const booking = await Booking.findById(req.params.id);
   
   if (!booking) {

@@ -254,11 +254,11 @@ export async function middleware(req: NextRequest) {
     'Referrer-Policy': 'strict-origin-when-cross-origin',
     'Content-Security-Policy': `
       default-src 'self';
-      script-src 'self' 'nonce-${scriptNonce}' https://js.stripe.com https://cdn.jsdelivr.net;
+      script-src 'self' 'nonce-${scriptNonce}' https://js.stripe.com https://cdn.jsdelivr.net 'strict-dynamic';
       style-src 'self' 'nonce-${styleNonce}' https://fonts.googleapis.com;
-      img-src 'self' data: https://res.cloudinary.com https://*.stripe.com;
+      img-src 'self' data: https://res.cloudinary.com https://*.stripe.com https: blob:;
       font-src 'self' data: https://fonts.gstatic.com;
-      connect-src 'self' https://*.supabase.co https://api.stripe.com wss://*.supabase.co;
+      connect-src 'self' https://*.supabase.co https://api.stripe.com wss://*.supabase.co https://api.vibewell.com;
       frame-src 'self' https://js.stripe.com https://hooks.stripe.com;
       object-src 'none';
       base-uri 'self';
@@ -266,9 +266,17 @@ export async function middleware(req: NextRequest) {
       frame-ancestors 'self';
       upgrade-insecure-requests;
       block-all-mixed-content;
+      require-trusted-types-for 'script';
+      trusted-types 'none';
     `.replace(/\s+/g, ' ').trim(),
-    'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self), interest-cohort=(), payment=(self)',
-    'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload'
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self), interest-cohort=(), payment=(self), autoplay=(), fullscreen=(self), picture-in-picture=(), display-capture=(), battery=(), accelerometer=(), gyroscope=(), magnetometer=()',
+    'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+    'Cross-Origin-Embedder-Policy': 'require-corp',
+    'Cross-Origin-Opener-Policy': 'same-origin',
+    'Cross-Origin-Resource-Policy': 'same-origin',
+    'Expect-CT': 'max-age=86400, enforce',
+    'NEL': '{"report_to":"default","max_age":31536000,"include_subdomains":true}',
+    'Report-To': '{"group":"default","max_age":31536000,"endpoints":[{"url":"https://vibewell.report-uri.com/a/d/g"}],"include_subdomains":true}'
   };
 
   // Apply security headers to response

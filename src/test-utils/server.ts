@@ -3,8 +3,8 @@
  */
 
 // Import from our local mock instead of from msw
-const { http, HttpResponse } = require('../../__mocks__/msw');
-const { setupServer } = require('../../__mocks__/msw/node');
+import { http, HttpResponse } from '../../__mocks__/msw';
+import { setupServer } from '../../__mocks__/msw/node';
 
 // Create a mock server
 export const server = setupServer();

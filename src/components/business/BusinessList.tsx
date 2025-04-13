@@ -1,9 +1,12 @@
+import React from 'react';
 import { Icons } from '@/components/icons';
 'use client';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+
 interface Business {
   id: string;
   name: string;
@@ -15,21 +18,27 @@ interface Business {
   location: string;
   services: string[];
 }
+
 interface BusinessListProps {
   businesses: Business[];
 }
+
 export function BusinessList({ businesses }: BusinessListProps) {
   const router = useRouter();
+  
   return (
     <div className="space-y-4">
       {businesses.map((business) => (
         <Card key={business.id} className="overflow-hidden">
           <div className="flex flex-col md:flex-row">
-            <div className="md:w-1/3">
-              <img
+            <div className="md:w-1/3 relative h-48 md:h-auto">
+              <Image
                 src={business.imageUrl}
                 alt={business.name}
-                className="w-full h-48 md:h-full object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-cover"
+                priority={businesses.indexOf(business) < 2} // Prioritize loading first two businesses
               />
             </div>
             <CardContent className="flex-1 p-6">

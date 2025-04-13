@@ -20,12 +20,21 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        // Verify against environment variables for demo purposes
         // In a real app, you would verify credentials against a database
-        if (credentials?.email === 'demo@example.com' && credentials.password === 'demo123') {
+        const demoEmail = process.env.DEMO_USER_EMAIL || '';
+        const demoPassword = process.env.DEMO_USER_PASSWORD || '';
+        
+        if (!demoEmail || !demoPassword) {
+          console.error('Demo credentials not configured in environment variables');
+          return null;
+        }
+        
+        if (credentials?.email === demoEmail && credentials.password === demoPassword) {
           return {
             id: '1',
             name: 'Demo User',
-            email: 'demo@example.com',
+            email: demoEmail,
             image: 'https://i.pravatar.cc/150?u=demo@example.com',
           };
         }

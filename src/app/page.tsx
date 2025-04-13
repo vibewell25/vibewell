@@ -1,39 +1,102 @@
-import { Layout } from '@/components/layout';
+import React, { Suspense, lazy } from 'react';
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
+import { Layout } from '@/components/layout';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
+
+// Import critical components normally
+import { FeaturedCategories } from '@/components/home/featured-categories';
+
+// Lazy load non-critical components
+const TestimonialCarousel = lazy(() => import('@/components/home/testimonial-carousel'));
+const RecentBookings = lazy(() => import('@/components/home/recent-bookings'));
+const TrendingServices = lazy(() => import('@/components/home/trending-services'));
+const PopularProviders = lazy(() => import('@/components/home/popular-providers'));
+
+// Fallback components
+const SkeletonLoader = () => (
+  <div className="animate-pulse rounded-lg bg-muted h-48 w-full"></div>
+);
 
 export default function Home() {
   return (
     <Layout>
       <div className="container-app py-12 md:py-24">
         {/* Hero Section */}
-        <section className="py-12 md:py-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                Your Personalized
-                <span className="text-primary"> Wellness</span> Journey
-              </h1>
-              <p className="text-lg text-muted-foreground mb-8">
-                Connect with wellness experts, track your progress, and access personalized content tailored to your unique wellness journey.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/auth/sign-up" className="btn-primary text-center">
-                  Get Started
-                </Link>
-                <Link 
-                  href="/about" 
-                  className="inline-flex items-center justify-center px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary/5 transition-colors"
-                >
-                  Learn More
-                </Link>
-              </div>
+        <section className="relative h-[70vh] flex items-center">
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/hero-background.jpg"
+              alt="Vibewell wellness background"
+              fill
+              priority
+              className="object-cover"
+              quality={90}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40" />
+          </div>
+          <div className="container relative z-10 mx-auto px-4 text-white">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">Find Your Wellness Balance</h1>
+            <p className="text-xl md:text-2xl mb-8 max-w-2xl">
+              Discover and book beauty, wellness, and health services in your area.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Button size="lg" asChild>
+                <Link href="/beauty">Beauty Services</Link>
+              </Button>
+              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10" asChild>
+                <Link href="/wellness">Wellness Services</Link>
+              </Button>
             </div>
-            <div className="flex justify-center">
-              <div className="h-80 w-full bg-gradient-to-br from-primary/30 to-secondary/30 rounded-xl flex items-center justify-center">
-                <p className="text-lg font-semibold">Wellness Image Placeholder</p>
-              </div>
-            </div>
+          </div>
+        </section>
+
+        {/* Featured Categories */}
+        <section className="py-12 bg-background">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">Featured Categories</h2>
+            <FeaturedCategories />
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="py-12 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">What Our Customers Say</h2>
+            <Suspense fallback={<SkeletonLoader />}>
+              <TestimonialCarousel />
+            </Suspense>
+          </div>
+        </section>
+
+        {/* Recent Bookings */}
+        <section className="py-12 bg-background">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">Recent Bookings</h2>
+            <Suspense fallback={<SkeletonLoader />}>
+              <RecentBookings />
+            </Suspense>
+          </div>
+        </section>
+
+        {/* Trending Services */}
+        <section className="py-12 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">Trending Services</h2>
+            <Suspense fallback={<SkeletonLoader />}>
+              <TrendingServices />
+            </Suspense>
+          </div>
+        </section>
+
+        {/* Popular Providers */}
+        <section className="py-12 bg-background">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">Popular Providers</h2>
+            <Suspense fallback={<SkeletonLoader />}>
+              <PopularProviders />
+            </Suspense>
           </div>
         </section>
 

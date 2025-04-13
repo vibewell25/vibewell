@@ -2,20 +2,25 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { BaseInput, BaseInputProps } from "./base-input"
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface InputProps extends Omit<BaseInputProps, 'wrapperClassName'> {}
 
+/**
+ * Input component with shadcn/ui styling
+ * 
+ * This is a wrapper around the BaseInput component that applies the shadcn/ui
+ * style guidelines while maintaining API compatibility with the original Input component.
+ */
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
     return (
-      <input
+      <BaseInput
         type={type}
-        className={cn(
-          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-          className
-        )}
+        className={className}
         ref={ref}
+        wrapperClassName="inline-block w-auto"
+        containerClassName="shadow-none"
         {...props}
       />
     )

@@ -69,12 +69,16 @@ export function useAuth() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
+      // Get admin credentials from environment variables
+      const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+      const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
+      
       // This is a placeholder. In a real app, you'd validate with your backend
-      if (email === 'admin@vibewell.com' && password === 'admin123') {
+      if (adminEmail && adminPassword && email === adminEmail && password === adminPassword) {
         const user = {
           id: '1',
           name: 'Admin User',
-          email: 'admin@vibewell.com',
+          email: adminEmail,
           role: 'admin' as const,
           avatar: '/images/avatars/admin.png',
         };

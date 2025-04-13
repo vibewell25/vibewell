@@ -24,31 +24,66 @@
     "jsx-a11y"
   ],
   "rules": {
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "react/no-unescaped-entities": "off",
-    "@typescript-eslint/no-empty-object-type": "off",
-    "react-hooks/exhaustive-deps": "off",
-    "prefer-const": "off",
-    "@typescript-eslint/no-require-imports": "off",
-    "react/display-name": "off",
-    "@next/next/no-img-element": "off",
-    "@typescript-eslint/no-unused-expressions": "off",
-    "@next/next/no-html-link-for-pages": "off",
-    "@typescript-eslint/no-namespace": "off",
-    "@typescript-eslint/no-unsafe-function-type": "off",
-    "no-var": "off",
-    "react-hooks/rules-of-hooks": "off",
-    "jsx-a11y/alt-text": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/explicit-function-return-type": ["warn", { "allowExpressions": true }],
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "interface",
+        "format": ["PascalCase"],
+        "custom": {
+          "regex": "^[A-Z]",
+          "match": true
+        }
+      },
+      {
+        "selector": "typeAlias",
+        "format": ["PascalCase"],
+        "custom": {
+          "regex": "^[A-Z]",
+          "match": true
+        }
+      }
+    ],
+    "react/display-name": "error",
+    "react-hooks/rules-of-hooks": "error",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "react/jsx-props-no-spreading": "off",
-    "import/prefer-default-export": "off",
-    "no-console": ["warn", { "allow": ["warn", "error"] }],
     "react/function-component-definition": [
-      2,
+      "error",
       {
-        "namedComponents": "function-declaration"
+        "namedComponents": ["function-declaration", "arrow-function"],
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    "react/require-default-props": "off",
+    "react/jsx-pascal-case": ["error", { "allowAllCaps": true }],
+    "import/prefer-default-export": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          ["builtin", "external"],
+          "internal",
+          ["parent", "sibling"],
+          "index"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
       }
     ],
     "import/extensions": [
@@ -61,11 +96,27 @@
         "tsx": "never"
       }
     ],
+    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+    "camelcase": ["error", { "properties": "never" }],
+    "no-var": "error",
+    "prefer-const": "error",
+    "max-len": ["warn", { "code": 100, "ignoreComments": true, "ignoreStrings": true }],
+    "spaced-comment": ["error", "always"],
+    "filenames/match-regex": ["off", "^[a-z][a-z0-9.-]*$", true],
+    "jsx-a11y/alt-text": "error",
     "react/jsx-filename-extension": [
-      2,
+      "error",
       {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        "extensions": [".jsx", ".tsx"]
       }
     ]
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    },
+    "react": {
+      "version": "detect"
+    }
   }
 } 

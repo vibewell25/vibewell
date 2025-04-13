@@ -2,7 +2,27 @@
  * Unified State Manager for Vibewell Platform
  * 
  * This module provides a unified API for state management that works with 
- * different state management libraries (React Context, Redux, Zustand).
+ * different state management libraries.
+ * 
+ * USAGE GUIDELINES:
+ * 
+ * 1. Zustand (DEFAULT): Use for most application state management needs:
+ *    - Complex state with many fields
+ *    - State that needs to be accessed across multiple components
+ *    - Performance-sensitive features (AR, animations)
+ *    - Global state that needs to be accessed outside of React components
+ * 
+ * 2. Context: Use only for:
+ *    - Simple, local UI state
+ *    - Theme/localization providers
+ *    - State that is only shared between a parent and its immediate children
+ *    - Components that don't need frequent updates
+ * 
+ * 3. Redux: Use only for:
+ *    - Very complex state with interdependent slices
+ *    - When you need Redux DevTools for debugging
+ *    - When you need middleware for complex async flows
+ *    - Legacy integrations that require Redux
  */
 import * as React from 'react';
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -120,8 +140,8 @@ export function createReduxStateManager<T>(initialState: T): StateManager<T> & {
   const StateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return React.createElement(
       ReduxProvider,
-      { store: store },
-      children
+      { store: store, children: children },
+      null
     );
   };
 
@@ -208,7 +228,7 @@ export function createZustandStateManager<T>(initialState: T): StateManager<T> &
 // Unified function to create state with any state management solution
 export function createState<T>(
   initialState: T,
-  type: StateManagerType = StateManagerType.CONTEXT
+  type: StateManagerType = StateManagerType.ZUSTAND // Changed default to Zustand
 ): StateManager<T> {
   switch (type) {
     case StateManagerType.CONTEXT:
@@ -218,7 +238,7 @@ export function createState<T>(
     case StateManagerType.ZUSTAND:
       return createZustandStateManager<T>(initialState);
     default:
-      return createContextStateManager<T>(initialState);
+      return createZustandStateManager<T>(initialState); // Default changed to Zustand
   }
 }
 

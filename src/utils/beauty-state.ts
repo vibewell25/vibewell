@@ -124,14 +124,12 @@ const initialCatalogState: BeautyCatalogState = {
  */
 export const createBeautyCatalogState = () => {
   const catalogState = createState<BeautyCatalogState>(
-    initialCatalogState,
-    StateManagerType.ZUSTAND
+    initialCatalogState
   );
   
   // Implement all the methods
-  catalogState.setState(state => ({
-    ...state,
-    fetchProducts: async () => {
+  catalogState.setState({
+    fetchProducts: async (): Promise<void> => {
       catalogState.setState({ isLoading: true, error: null });
       try {
         // In a real implementation, this would be an API call
@@ -149,36 +147,41 @@ export const createBeautyCatalogState = () => {
       }
     },
     
-    setFilter: (key, value) => {
-      catalogState.setState(state => ({
+    setFilter: <K extends keyof BeautyCatalogState['filters']>(
+      key: K, 
+      value: BeautyCatalogState['filters'][K]
+    ): void => {
+      const currentState = catalogState.getState();
+      catalogState.setState({
         filters: {
-          ...state.filters,
+          ...currentState.filters,
           [key]: value
         }
-      }));
+      });
     },
     
-    resetFilters: () => {
+    resetFilters: (): void => {
       catalogState.setState({
         filters: initialCatalogState.filters,
         searchQuery: ''
       });
     },
     
-    setSearchQuery: (query) => {
+    setSearchQuery: (query: string): void => {
       catalogState.setState({ searchQuery: query });
     },
     
-    toggleFavorite: (productId) => {
-      catalogState.setState(state => ({
-        products: state.products.map(product =>
+    toggleFavorite: (productId: string): void => {
+      const currentState = catalogState.getState();
+      catalogState.setState({
+        products: currentState.products.map(product =>
           product.id === productId 
             ? { ...product, isFavorite: !product.isFavorite }
             : product
         )
-      }));
+      });
     }
-  }));
+  });
   
   return catalogState;
 };
@@ -254,14 +257,12 @@ const initialTryOnState: VirtualTryOnState = {
  */
 export const createVirtualTryOnState = () => {
   const tryOnState = createState<VirtualTryOnState>(
-    initialTryOnState,
-    StateManagerType.ZUSTAND // Using Zustand for better performance with camera updates
+    initialTryOnState
   );
   
   // Implement all the methods
-  tryOnState.setState(state => ({
-    ...state,
-    loadTryOnProducts: async () => {
+  tryOnState.setState({
+    loadTryOnProducts: async (): Promise<void> => {
       tryOnState.setState({ isLoading: true, error: null });
       try {
         // In a real implementation, this would be an API call
@@ -387,7 +388,7 @@ export const createVirtualTryOnState = () => {
         return false;
       }
     }
-  }));
+  });
   
   return tryOnState;
 };
@@ -478,20 +479,19 @@ const initialBookingState: BeautyBookingState = {
 
 /**
  * Creates the beauty booking state manager
- * Manages appointment scheduling for beauty services
+ * Manages complex multi-step booking flow
  * 
- * @returns A state manager for beauty booking flow
+ * @returns A state manager for beauty booking
  */
 export const createBeautyBookingState = () => {
   const bookingState = createState<BeautyBookingState>(
     initialBookingState,
-    StateManagerType.REDUX // Using Redux for complex multi-step booking flow
+    StateManagerType.REDUX // Explicitly keep Redux for complex booking flow with middleware
   );
   
   // Implement all the methods
-  bookingState.setState(state => ({
-    ...state,
-    fetchServices: async () => {
+  bookingState.setState({
+    fetchServices: async (): Promise<void> => {
       bookingState.setState({ isLoading: true, error: null });
       try {
         // In a real implementation, this would be an API call
@@ -628,7 +628,7 @@ export const createBeautyBookingState = () => {
       });
     },
     
-    submitBooking: async () => {
+    submitBooking: async (): Promise<boolean> => {
       const {
         selectedService,
         selectedProvider,
@@ -676,7 +676,7 @@ export const createBeautyBookingState = () => {
         return false;
       }
     }
-  }));
+  });
   
   return bookingState;
 };

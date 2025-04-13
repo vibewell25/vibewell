@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from 'react';
+import Image from 'next/image';
 
 // Lazy load the AR component to reduce initial bundle size
 const ARModelViewer = lazy(() => import('./ARModelViewer'));
@@ -75,11 +76,14 @@ export function VirtualTryOn() {
               }`}
               onClick={() => handleModelSelect(product.id)}
             >
-              <div className="aspect-square bg-gray-100 rounded-md mb-2">
-                <img 
+              <div className="aspect-square bg-gray-100 rounded-md mb-2 relative">
+                <Image 
                   src={product.thumbnail} 
                   alt={product.name}
-                  className="w-full h-full object-cover rounded-md"
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                  className="object-cover rounded-md"
+                  priority={modelId === product.id}
                 />
               </div>
               <h3 className="font-medium">{product.name}</h3>

@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { X, Upload, File as FileIcon, Image, Film, Music, Package } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+// Main interface for file upload
 interface FileUploadProps {
   onFilesSelected: (files: File[]) => void;
   selectedFiles: File[];
@@ -16,6 +17,227 @@ interface FileUploadProps {
   disabled?: boolean;
 }
 
+// Utility functions
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return '0 Bytes';
+  
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  
+  return `${parseFloat((bytes / Math.pow(1024, i)).toFixed(2))} ${sizes[i]}`;
+};
+
+const getFileIcon = (file: File) => {
+  const type = file.type.split('/')[0];
+  
+  switch (type) {
+    case 'image':
+      return <Image className="h-8 w-8 text-blue-500" />;
+    case 'video':
+      return <Film className="h-8 w-8 text-purple-500" />;
+    case 'audio':
+      return <Music className="h-8 w-8 text-green-500" />;
+    default:
+      return <FileIcon className="h-8 w-8 text-gray-500" />;
+  }
+};
+
+const getAcceptString = (acceptedFileTypes?: Record<string, string[]>): string => {
+  if (!acceptedFileTypes) return '';
+  
+  return Object.entries(acceptedFileTypes)
+    .flatMap(([mimeType, extensions]) => {
+      // If it's a wildcard mime type like 'image/*', include it
+      if (mimeType.endsWith('/*')) {
+        return [mimeType];
+      }
+      // Otherwise, include all extensions
+      return extensions;
+    })
+    .join(',');
+};
+
+// File Drop Zone Component
+interface FileDropZoneProps {
+  onFilesDrop: (files: File[]) => void;
+  acceptedFileTypes?: Record<string, string[]>;
+  maxFiles: number;
+  currentFileCount: number;
+  maxFileSize: number;
+  disabled: boolean;
+  isDragging: boolean;
+  setIsDragging: (isDragging: boolean) => void;
+  fileInputRef: React.RefObject<HTMLInputElement>;
+}
+
+const FileDropZone: React.FC<FileDropZoneProps> = ({
+  onFilesDrop,
+  acceptedFileTypes,
+  maxFiles,
+  currentFileCount,
+  maxFileSize,
+  disabled,
+  isDragging,
+  setIsDragging,
+  fileInputRef
+}) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!disabled) setIsDragging(true);
+  };
+  
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+  
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    
+    if (disabled) return;
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const droppedFiles = Array.from(e.dataTransfer.files);
+      onFilesDrop(droppedFiles);
+    }
+  };
+  
+  return (
+    <div
+      className={cn(
+        "border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors",
+        isDragging ? "border-primary bg-primary/5" : "border-border hover:border-primary/50",
+        disabled && "opacity-50 cursor-not-allowed"
+      )}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      onClick={() => !disabled && fileInputRef.current?.click()}
+    >
+      <div className="flex flex-col items-center justify-center space-y-2">
+        <Upload className="h-10 w-10 text-muted-foreground mb-2" />
+        <p className="text-sm font-medium">
+          Drag and drop files here, or click to select files
+        </p>
+        <p className="text-xs text-muted-foreground">
+          {acceptedFileTypes
+            ? `Accepted file types: ${Object.keys(acceptedFileTypes)
+                .map(type => type.replace('/*', ''))
+                .join(', ')}`
+            : 'All file types accepted'}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Maximum file size: {maxFileSize}MB ({currentFileCount}/{maxFiles} files)
+        </p>
+      </div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        className="hidden"
+        multiple
+        accept={getAcceptString(acceptedFileTypes)}
+        onChange={e => {
+          if (e.target.files?.length) {
+            onFilesDrop(Array.from(e.target.files));
+            
+            // Reset input value so the same file can be selected again if removed
+            if (fileInputRef.current) {
+              fileInputRef.current.value = '';
+            }
+          }
+        }}
+        disabled={disabled}
+      />
+    </div>
+  );
+};
+
+// File Error Messages Component
+interface FileErrorsProps {
+  errors: string[];
+}
+
+const FileErrors: React.FC<FileErrorsProps> = ({ errors }) => {
+  if (errors.length === 0) return null;
+  
+  return (
+    <div className="bg-destructive/10 text-destructive rounded-md p-3">
+      <p className="font-bold text-sm mb-1">Error:</p>
+      <ul className="text-xs list-disc list-inside">
+        {errors.map((error, index) => (
+          <li key={index}>{error}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+// File Item Component
+interface FileItemProps {
+  file: File;
+  progress: number;
+  onRemove: (file: File) => void;
+}
+
+const FileItem: React.FC<FileItemProps> = ({ file, progress, onRemove }) => {
+  return (
+    <div className="flex items-center justify-between bg-muted/40 rounded-md p-3">
+      <div className="flex items-center space-x-3">
+        {getFileIcon(file)}
+        <div className="space-y-1">
+          <p className="text-sm font-medium truncate max-w-[200px]">{file.name}</p>
+          <p className="text-xs text-muted-foreground">{formatFileSize(file.size)}</p>
+          <Progress value={progress} className="h-1 w-32" />
+        </div>
+      </div>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="h-8 w-8 p-0"
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove(file);
+        }}
+      >
+        <X className="h-4 w-4" />
+        <span className="sr-only">Remove file</span>
+      </Button>
+    </div>
+  );
+};
+
+// File List Component
+interface FileListProps {
+  files: File[];
+  progress: Record<string, number>;
+  onRemove: (file: File) => void;
+}
+
+const FileList: React.FC<FileListProps> = ({ files, progress, onRemove }) => {
+  if (files.length === 0) return null;
+  
+  return (
+    <div className="space-y-2">
+      <p className="text-sm font-medium">Selected Files ({files.length})</p>
+      <div className="space-y-2 max-h-60 overflow-y-auto">
+        {files.map((file, index) => (
+          <FileItem
+            key={`${file.name}-${index}`}
+            file={file}
+            progress={progress[file.name] || 0}
+            onRemove={onRemove}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Main Component
 export function FileUpload({
   onFilesSelected,
   selectedFiles,
@@ -28,32 +250,6 @@ export function FileUpload({
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
   const [errors, setErrors] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
-  // Format file size for display
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(1024));
-    
-    return `${parseFloat((bytes / Math.pow(1024, i)).toFixed(2))} ${sizes[i]}`;
-  };
-  
-  // Get file type icon based on file mime type
-  const getFileIcon = (file: File) => {
-    const type = file.type.split('/')[0];
-    
-    switch (type) {
-      case 'image':
-        return <Image className="h-8 w-8 text-blue-500" />;
-      case 'video':
-        return <Film className="h-8 w-8 text-purple-500" />;
-      case 'audio':
-        return <Music className="h-8 w-8 text-green-500" />;
-      default:
-        return <FileIcon className="h-8 w-8 text-gray-500" />;
-    }
-  };
   
   // Check if file type is accepted
   const isFileTypeAccepted = (file: File): boolean => {
@@ -140,38 +336,12 @@ export function FileUpload({
     }, 200);
   };
   
-  // Handle file drop
-  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-    
-    if (disabled) return;
-    
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const droppedFiles = Array.from(e.dataTransfer.files);
-      const validFiles = validateFiles(droppedFiles);
-      
-      if (validFiles.length > 0) {
-        onFilesSelected([...selectedFiles, ...validFiles]);
-      }
-    }
-  }, [disabled, maxFiles, maxFileSize, onFilesSelected, selectedFiles]);
-  
-  // Handle file selection from input
-  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (disabled || !e.target.files || e.target.files.length === 0) return;
-    
-    const selectedInputFiles = Array.from(e.target.files);
-    const validFiles = validateFiles(selectedInputFiles);
+  // Handle files processing
+  const handleProcessFiles = (files: File[]) => {
+    const validFiles = validateFiles(files);
     
     if (validFiles.length > 0) {
       onFilesSelected([...selectedFiles, ...validFiles]);
-    }
-    
-    // Reset input value so the same file can be selected again if removed
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
     }
   };
   
@@ -188,140 +358,27 @@ export function FileUpload({
     });
   };
   
-  // Generate accepted file types string for the input
-  const getAcceptString = (): string => {
-    if (!acceptedFileTypes) return '';
-    
-    return Object.entries(acceptedFileTypes)
-      .flatMap(([mimeType, extensions]) => {
-        // If it's a wildcard mime type like 'image/*', include it
-        if (mimeType.endsWith('/*')) {
-          return [mimeType];
-        }
-        // Otherwise, include all extensions
-        return extensions;
-      })
-      .join(',');
-  };
-  
   return (
     <div className="space-y-4">
-      {/* File drop area */}
-      <div
-        className={cn(
-          "border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors",
-          isDragging ? "border-primary bg-primary/5" : "border-border hover:border-primary/50",
-          disabled && "opacity-50 cursor-not-allowed"
-        )}
-        onDragOver={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (!disabled) setIsDragging(true);
-        }}
-        onDragLeave={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setIsDragging(false);
-        }}
-        onDrop={handleDrop}
-        onClick={() => !disabled && fileInputRef.current?.click()}
-      >
-        <div className="flex flex-col items-center justify-center space-y-2">
-          <Upload className="h-10 w-10 text-muted-foreground mb-2" />
-          <p className="text-sm font-medium">
-            Drag and drop files here, or click to select files
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {acceptedFileTypes
-              ? `Accepted file types: ${Object.keys(acceptedFileTypes)
-                  .map(type => type.replace('/*', ''))
-                  .join(', ')}`
-              : 'All file types accepted'}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            Maximum file size: {maxFileSize}MB ({selectedFiles.length}/{maxFiles} files)
-          </p>
-        </div>
-        <input
-          ref={fileInputRef}
-          type="file"
-          className="hidden"
-          multiple
-          accept={getAcceptString()}
-          onChange={handleFileInputChange}
-          disabled={disabled}
-        />
-      </div>
+      <FileDropZone
+        onFilesDrop={handleProcessFiles}
+        acceptedFileTypes={acceptedFileTypes}
+        maxFiles={maxFiles}
+        currentFileCount={selectedFiles.length}
+        maxFileSize={maxFileSize}
+        disabled={disabled}
+        isDragging={isDragging}
+        setIsDragging={setIsDragging}
+        fileInputRef={fileInputRef}
+      />
       
-      {/* Error display */}
-      {errors.length > 0 && (
-        <div className="bg-destructive/10 text-destructive rounded-md p-3">
-          <p className="font-bold text-sm mb-1">Error:</p>
-          <ul className="text-xs list-disc list-inside">
-            {errors.map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <FileErrors errors={errors} />
       
-      {/* Selected files list */}
-      {selectedFiles.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm font-medium">Selected Files ({selectedFiles.length})</p>
-          <div className="space-y-2 max-h-60 overflow-y-auto">
-            {selectedFiles.map((file, index) => (
-              <div
-                key={`${file.name}-${index}`}
-                className="flex items-center justify-between bg-muted/40 rounded-md p-3"
-              >
-                <div className="flex items-center space-x-3">
-                  {getFileIcon(file)}
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium truncate max-w-[200px]">{file.name}</p>
-                    <p className="text-xs text-muted-foreground">{formatFileSize(file.size)}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  {uploadProgress[file.name] !== undefined && uploadProgress[file.name] < 100 ? (
-                    <div className="w-20">
-                      <Progress value={uploadProgress[file.name]} className="h-2" />
-                    </div>
-                  ) : (
-                    <span className="text-xs text-green-500">Ready</span>
-                  )}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRemoveFile(file);
-                    }}
-                    disabled={disabled}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      
-      {/* Add more files button when some files are already selected */}
-      {selectedFiles.length > 0 && selectedFiles.length < maxFiles && (
-        <Button
-          variant="outline"
-          size="sm"
-          className="mt-2"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={disabled}
-        >
-          <Upload className="h-4 w-4 mr-2" />
-          Add More Files
-        </Button>
-      )}
+      <FileList
+        files={selectedFiles}
+        progress={uploadProgress}
+        onRemove={handleRemoveFile}
+      />
     </div>
   );
 } 

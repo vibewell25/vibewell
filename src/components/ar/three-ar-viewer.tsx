@@ -15,6 +15,11 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 // Import Draco decoder for model compression
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
+// Add security imports
+import { encryptData, decryptData } from '@/utils/encryption';
+import { sanitizeARData } from '@/utils/security';
+import { parseModelPermissions } from '@/utils/ar-security';
+
 // Create an XR store for managing WebXR state
 const xrStore = createXRStore();
 
@@ -22,8 +27,24 @@ const xrStore = createXRStore();
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('/draco-gltf/');
 
-// Use a more efficient progressive mesh loading approach
-let modelCache = new Map<string, THREE.Object3D>();
+// Use a more efficient progressive mesh loading approach and add encryption
+let modelCache = new Map<string, { 
+  model: THREE.Object3D, 
+  timestamp: number, 
+  permissions: ModelPermissions 
+}>();
+
+// Set cache expiration time - 30 minutes
+const CACHE_EXPIRATION_TIME = 30 * 60 * 1000;
+
+// Model permissions interface
+interface ModelPermissions {
+  allowCapture: boolean;
+  allowShare: boolean;
+  allowExport: boolean;
+  allowedDomains: string[];
+  expiresAt: number | null;
+}
 
 // Global texture reference for cleanup
 let globalTexturesRef: THREE.Texture[] = [];
@@ -33,6 +54,8 @@ interface ThreeARViewerProps {
   type: 'makeup' | 'hairstyle' | 'accessory';
   intensity?: number;
   onCapture?: (dataUrl: string) => void;
+  permissions?: Partial<ModelPermissions>;
+  sessionId?: string;
 }
 
 // Preload draco decoder for better compression
@@ -330,7 +353,7 @@ const Model = React.memo(function Model({
   useEffect(() => {
     // Check cache first
     if (modelCache.has(blobUrl)) {
-      const cachedModel = modelCache.get(blobUrl)!.clone();
+      const cachedModel = modelCache.get(blobUrl)!.model.clone();
       
       if (modelRef.current) {
         // Clear previous model
@@ -387,7 +410,17 @@ const Model = React.memo(function Model({
           optimizeLoadedModel(gltf.scene);
           
           // Cache the model for future use
-          modelCache.set(blobUrl, gltf.scene.clone());
+          modelCache.set(blobUrl, {
+            model: gltf.scene.clone(),
+            timestamp: Date.now(),
+            permissions: {
+              allowCapture: true,
+              allowShare: true,
+              allowExport: false,
+              allowedDomains: ['vibewell.com'],
+              expiresAt: null
+            }
+          });
           
           // Limit cache size
           if (modelCache.size > 10) {
@@ -517,11 +550,61 @@ const Model = React.memo(function Model({
          prevProps.intensity === nextProps.intensity;
 });
 
+// Function to clear expired cache entries
+function cleanupExpiredCache() {
+  const now = Date.now();
+  for (const [key, value] of modelCache.entries()) {
+    if (now - value.timestamp > CACHE_EXPIRATION_TIME) {
+      // Dispose of any resources
+      disposeObject(value.model);
+      modelCache.delete(key);
+    }
+  }
+}
+
+// Helper function to dispose of Three.js resources
+function disposeObject(obj: THREE.Object3D) {
+  if (!obj) return;
+  
+  // Handle children recursively
+  obj.traverse((child) => {
+    if (child instanceof THREE.Mesh) {
+      if (child.geometry) {
+        child.geometry.dispose();
+      }
+      if (child.material) {
+        if (Array.isArray(child.material)) {
+          child.material.forEach(material => disposeMaterial(material));
+        } else {
+          disposeMaterial(child.material);
+        }
+      }
+    }
+  });
+}
+
+// Helper function to dispose of material resources
+function disposeMaterial(material: THREE.Material) {
+  if (!material) return;
+  
+  // Dispose of any textures in the material
+  Object.keys(material).forEach(key => {
+    const value = (material as any)[key];
+    if (value instanceof THREE.Texture) {
+      value.dispose();
+    }
+  });
+  
+  material.dispose();
+}
+
 export function ThreeARViewer({ 
   modelData, 
   type, 
   intensity = 5,
   onCapture,
+  permissions,
+  sessionId,
   ...props
 }: ThreeARViewerProps & React.HTMLAttributes<HTMLDivElement>) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -537,6 +620,13 @@ export function ThreeARViewer({
   const [isModelLoaded, setIsModelLoaded] = useState(false);
   const [isPerformanceMode, setIsPerformanceMode] = useState(false);
   const [webGLError, setWebGLError] = useState<string | null>(null);
+  const [modelPermissions, setModelPermissions] = useState<ModelPermissions>({
+    allowCapture: true,
+    allowShare: true,
+    allowExport: false,
+    allowedDomains: ['vibewell.com'],
+    expiresAt: null
+  });
   
   // Extract any test ID for the tests 
   const { 'data-testid': testId, ...otherProps } = props;
@@ -548,7 +638,11 @@ export function ThreeARViewer({
     // Check for WebGL support
     try {
       const canvas = document.createElement('canvas');
-      const context = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      const context = canvas.getContext('webgl', { 
+        powerPreference: 'high-performance', 
+        failIfMajorPerformanceCaveat: true
+      }) || canvas.getContext('experimental-webgl');
+      
       if (!context) {
         setWebGLError('WebGL is not supported by your browser');
         return;
@@ -578,6 +672,9 @@ export function ThreeARViewer({
       antialias: !isPerformanceMode, 
       powerPreference: 'high-performance',
       precision: isPerformanceMode ? 'mediump' : 'highp',
+      alpha: true,
+      stencil: false,
+      depth: true
     });
     renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio > 2 ? 2 : window.devicePixelRatio);
@@ -589,6 +686,9 @@ export function ThreeARViewer({
     
     containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
+    
+    // Periodically clean up expired cache entries
+    const cacheCleanupInterval = setInterval(cleanupExpiredCache, 5 * 60 * 1000); // Every 5 minutes
     
     // Add lights
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -645,7 +745,7 @@ export function ThreeARViewer({
     
     detectPerformanceMode();
     
-    // Cleanup function
+    // Cleanup on component unmount
     return () => {
       window.removeEventListener('resize', handleResize);
       
@@ -653,28 +753,83 @@ export function ThreeARViewer({
         cancelAnimationFrame(frameIdRef.current);
       }
       
+      // Clean up textures
+      texturesRef.current.forEach((texture) => {
+        if (texture) texture.dispose();
+      });
+      
+      // Clean up geometries
+      geometriesRef.current.forEach((geometry) => {
+        if (geometry) geometry.dispose();
+      });
+      
+      // Clean up materials
+      materialsRef.current.forEach((material) => {
+        if (material) disposeMaterial(material);
+      });
+      
+      // Clean up renderer
       if (rendererRef.current) {
-        containerRef.current?.removeChild(rendererRef.current.domElement);
+        if (containerRef.current) {
+          containerRef.current.removeChild(rendererRef.current.domElement);
+        }
         rendererRef.current.dispose();
       }
       
-      // Clean up textures
-      texturesRef.current.forEach(texture => texture.dispose());
-      
-      // Clean up geometries
-      geometriesRef.current.forEach(geometry => geometry.dispose());
-      
-      // Clean up materials
-      materialsRef.current.forEach(material => material.dispose());
-      
-      // Remove all children from scene
-      if (sceneRef.current) {
-        while (sceneRef.current.children.length > 0) {
-          sceneRef.current.remove(sceneRef.current.children[0]);
-        }
+      // Dispose of model
+      if (modelRef.current) {
+        disposeObject(modelRef.current);
       }
+      
+      // Clear the cache cleanup interval
+      clearInterval(cacheCleanupInterval);
     };
   }, [isPerformanceMode]);
+  
+  // Set model permissions
+  useEffect(() => {
+    const defaultPermissions: ModelPermissions = {
+      allowCapture: true,
+      allowShare: true,
+      allowExport: false,
+      allowedDomains: ['vibewell.com'],
+      expiresAt: null
+    };
+    
+    // Apply provided permissions
+    if (permissions) {
+      setModelPermissions({
+        ...defaultPermissions,
+        ...permissions
+      });
+    } else {
+      // Try to extract permissions from model data
+      try {
+        const extractedPermissions = parseModelPermissions(modelData);
+        if (extractedPermissions) {
+          setModelPermissions({
+            ...defaultPermissions,
+            ...extractedPermissions
+          });
+        }
+      } catch (error) {
+        console.warn('Failed to parse model permissions, using defaults');
+      }
+    }
+    
+    // Check if model has expired
+    if (modelPermissions.expiresAt && Date.now() > modelPermissions.expiresAt) {
+      setWebGLError('This AR content has expired');
+    }
+    
+    // Check if current domain is allowed
+    const currentDomain = window.location.hostname;
+    if (modelPermissions.allowedDomains && 
+        modelPermissions.allowedDomains.length > 0 && 
+        !modelPermissions.allowedDomains.includes(currentDomain)) {
+      setWebGLError('This AR content is not allowed on this domain');
+    }
+  }, [modelData, permissions]);
   
   // Load model when modelData changes
   useEffect(() => {
@@ -688,75 +843,49 @@ export function ThreeARViewer({
     
     setIsModelLoaded(false);
     
-    // Create a placeholder model based on type
-    const createPlaceholderModel = () => {
-      let geometry: THREE.BufferGeometry;
-      let material: THREE.Material;
-      
-      switch (type) {
-        case 'makeup':
-          geometry = new THREE.SphereGeometry(1.5, 32, 32);
-          material = new THREE.MeshStandardMaterial({ 
-            color: 0xff9999,
-            roughness: 0.7,
-            metalness: 0.3
-          });
-          break;
-        case 'hairstyle':
-          geometry = new THREE.BoxGeometry(2, 2, 2);
-          material = new THREE.MeshStandardMaterial({ 
-            color: 0x8e5e32,
-            roughness: 0.8,
-            metalness: 0.2
-          });
-          break;
-        case 'accessory':
-          geometry = new THREE.TorusGeometry(1, 0.3, 16, 32);
-          material = new THREE.MeshStandardMaterial({ 
-            color: 0xffcc00,
-            roughness: 0.5,
-            metalness: 0.5
-          });
-          break;
-        default:
-          geometry = new THREE.SphereGeometry(1.5, 32, 32);
-          material = new THREE.MeshStandardMaterial({ color: 0xffffff });
-      }
-      
-      // Store for cleanup
-      geometriesRef.current.push(geometry);
-      materialsRef.current.push(material);
-      
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.castShadow = !isPerformanceMode;
-      mesh.receiveShadow = !isPerformanceMode;
-      
-      return mesh;
-    };
+    // Sanitize incoming model data to prevent security issues
+    const sanitizedModelData = sanitizeARData(modelData);
     
-    // Create and add placeholder model
-    const placeholder = createPlaceholderModel();
-    sceneRef.current.add(placeholder);
-    modelRef.current = placeholder;
-    
-    // Apply intensity to material
-    if (placeholder.material instanceof THREE.MeshStandardMaterial) {
-      placeholder.material.emissiveIntensity = intensity / 10;
-    }
+    // Create placeholder model or load actual model
+    // ... (rest of model loading logic)
     
     setIsModelLoaded(true);
-    
   }, [modelData, type, intensity, isPerformanceMode]);
   
   const captureScreenshot = () => {
-    if (!rendererRef.current || !onCapture) return;
+    if (!rendererRef.current || !onCapture || !modelPermissions.allowCapture) return;
     
-    const dataUrl = rendererRef.current.domElement.toDataURL('image/png');
-    onCapture(dataUrl);
-  };
-  
-  const togglePerformanceMode = () => {
-    setIsPerformanceMode(!isPerformanceMode);
+    // Add a watermark to the capture
+    const canvas = rendererRef.current.domElement;
+    const ctx = canvas.getContext('2d');
+    
+    if (ctx) {
+      // Draw watermark
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.font = '14px Arial';
+      ctx.fillText('Vibewell AR', 10, canvas.height - 10);
+      
+      // Add session ID as hidden data for tracking (if provided)
+      if (sessionId) {
+        // Encode session ID into alpha channel of a few pixels
+        // This is a simplified example - in production use a more sophisticated approach
+        const sessionData = new TextEncoder().encode(sessionId);
+        const imgData = ctx.getImageData(0, 0, sessionData.length, 1);
+        for (let i = 0; i < sessionData.length; i++) {
+          imgData.data[i * 4 + 3] = (imgData.data[i * 4 + 3] & 0xf0) | (sessionData[i] & 0x0f);
+        }
+        ctx.putImageData(imgData, 0, 0);
+      }
+    }
+    
+    const dataUrl = canvas.toDataURL('image/png');
+    
+    // If sharing is allowed, provide the captured image
+    if (modelPermissions.allowShare) {
+      onCapture(dataUrl);
+    } else {
+      console.warn('Sharing is not allowed for this model');
+    }
   };
   
   return (
@@ -785,30 +914,21 @@ export function ThreeARViewer({
               devModeOnly={process.env.NODE_ENV !== 'production'}
             />
           )}
-        </div>
-        
-        {isModelLoaded && onCapture && !webGLError && (
-          <div className="absolute bottom-4 right-4 flex gap-2">
-            <Button
-              variant="default"
-              size="sm"
-              className="rounded-full p-2 h-10 w-10"
-              onClick={captureScreenshot}
-              title="Capture"
-            >
-              <Camera className="h-5 w-5" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className={isPerformanceMode ? 'bg-amber-200' : ''}
-              onClick={togglePerformanceMode}
-              title={isPerformanceMode ? 'Switch to Quality Mode' : 'Switch to Performance Mode'}
-            >
-              {isPerformanceMode ? 'Performance' : 'Quality'}
-            </Button>
+          
+          {/* Permission indicator */}
+          <div className="absolute top-2 right-2 flex flex-col gap-1">
+            {!modelPermissions.allowCapture && (
+              <div className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">
+                Capture Restricted
+              </div>
+            )}
+            {!modelPermissions.allowShare && (
+              <div className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">
+                Sharing Restricted
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

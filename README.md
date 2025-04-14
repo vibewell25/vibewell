@@ -1,10 +1,11 @@
 # Vibewell Platform
 
-Vibewell is a comprehensive wellness application designed to connect users with wellness providers, beauty services, and health resources.
+Vibewell is a comprehensive wellness and beauty application designed to connect users with wellness providers, beauty services, and health resources.
 
 ## Table of Contents
 
 - [Features](#features)
+- [Beauty & Wellness Features](#beauty--wellness-features)
 - [Project Structure](#project-structure)
 - [Component Library](#component-library)
 - [API Documentation](#api-documentation)
@@ -26,6 +27,37 @@ Vibewell is a comprehensive wellness application designed to connect users with 
 - Responsive design for all devices
 - Augmented Reality (AR) try-on features
 - Mobile application with cross-platform support
+
+## Beauty & Wellness Features
+
+Our platform offers comprehensive beauty and wellness services:
+
+### Virtual Try-On
+- AR-powered makeup and cosmetics try-on
+- Real-time facial feature detection
+- Customizable beauty filters
+- Product recommendations based on skin type
+
+### Beauty Services
+- Appointment booking for beauty treatments
+- Professional makeup artist directory
+- Skincare consultation scheduling
+- Beauty product marketplace
+- Virtual beauty consultations
+
+### Wellness Integration
+- Personalized wellness plans
+- Progress tracking
+- Integration with fitness devices
+- Wellness provider matching
+- Virtual wellness sessions
+
+### Beauty Content
+- Tutorials and how-to guides
+- Trending beauty looks
+- Professional beauty tips
+- Product reviews and ratings
+- Seasonal beauty trends
 
 ## Project Structure
 

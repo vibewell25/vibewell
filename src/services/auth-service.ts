@@ -119,16 +119,11 @@ export class AuthService {
 
   /**
    * Check if a user requires MFA
-   * In this implementation, all users with admin role require MFA
+   * In this implementation, all users require MFA for enhanced security
    */
   private async doesUserRequireMFA(user: User | null): Promise<boolean> {
-    if (!user) return false;
-    
-    // Get user role from metadata
-    const userRole = user.user_metadata?.role || 'customer';
-    
-    // Admin users require MFA
-    return userRole === 'admin';
+    // All users require MFA for enhanced security
+    return user !== null;
   }
 
   /**
@@ -161,7 +156,7 @@ export class AuthService {
         const resetTime = now + limits.windowMs;
         await Promise.all([
           redisClient.set(key, '1'),
-          redisClient.set(windowKey, resetTime.toString(), { ex: Math.ceil(limits.windowMs / 1000) }),
+          redisClient.set(windowKey, resetTime.toString(), Math.ceil(limits.windowMs / 1000).toString()),
         ]);
         
         return false; // Not rate limited

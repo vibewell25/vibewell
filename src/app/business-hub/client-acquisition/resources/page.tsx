@@ -1,25 +1,16 @@
 'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Layout } from '@/components/layout';
 import { ClientAcquisitionNav } from '@/components/client-acquisition-nav';
-import { 
-  MagnifyingGlassIcon, 
-  FunnelIcon,
-  CalendarIcon,
-  ClockIcon,
-  UserIcon,
-  ArrowDownTrayIcon,
-  ShareIcon
-} from '@heroicons/react/24/outline';
+;
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { StarRating } from '@/components/star-rating';
 import { getAverageRating } from '@/lib/ratings';
 import { isBookmarked } from '@/lib/bookmarks';
-
+import { Icons } from '@/components/icons';
 // Import resource data (in a real app, this would be fetched from an API)
 const resources = [
   {
@@ -61,14 +52,11 @@ const resources = [
     type: 'resource'
   }
 ];
-
 export default function ClientAcquisitionResourcesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  
   // Get unique categories
   const categories = Array.from(new Set(resources.map(resource => resource.category)));
-  
   // Filter resources based on search term and selected category
   const filteredResources = resources.filter(resource => {
     const matchesSearch = 
@@ -76,12 +64,9 @@ export default function ClientAcquisitionResourcesPage() {
       resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       resource.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
       resource.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    
     const matchesCategory = selectedCategory === null || resource.category === selectedCategory;
-    
     return matchesSearch && matchesCategory;
   });
-
   // Handle resource sharing
   const handleShare = (resource: any) => {
     if (navigator.share) {
@@ -96,7 +81,6 @@ export default function ClientAcquisitionResourcesPage() {
       alert(`Share this resource: ${window.location.origin}/business-hub/client-acquisition/resources/${resource.id}`);
     }
   };
-
   return (
     <Layout>
       <div className="flex flex-col min-h-screen bg-gray-50">
@@ -115,13 +99,11 @@ export default function ClientAcquisitionResourcesPage() {
               <span className="text-gray-700">Resources</span>
             </div>
           </div>
-          
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Sidebar Navigation */}
             <div className="lg:col-span-1">
               <ClientAcquisitionNav />
             </div>
-            
             {/* Main Content */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -129,11 +111,10 @@ export default function ClientAcquisitionResourcesPage() {
                 <p className="text-gray-600 mb-6">
                   Discover strategies and resources to attract, convert, and retain more clients for your wellness business.
                 </p>
-                
                 {/* Search and Filter */}
                 <div className="flex flex-col sm:flex-row gap-4 mb-6">
                   <div className="relative flex-grow">
-                    <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <Icons.MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <input
                       type="text"
                       placeholder="Search resources..."
@@ -142,9 +123,8 @@ export default function ClientAcquisitionResourcesPage() {
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
-                  
                   <div className="relative">
-                    <FunnelIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <Icons.FunnelIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <select
                       className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 appearance-none bg-white"
                       value={selectedCategory || ''}
@@ -157,12 +137,11 @@ export default function ClientAcquisitionResourcesPage() {
                     </select>
                   </div>
                 </div>
-                
                 {/* Resources List */}
                 <div className="space-y-6">
                   {filteredResources.length === 0 ? (
                     <div className="text-center py-12">
-                      <MagnifyingGlassIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                      <Icons.MagnifyingGlassIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-gray-900 mb-2">No resources found</h3>
                       <p className="text-gray-500 mb-4">Try adjusting your search or filter criteria</p>
                       <Button variant="outline" onClick={() => {setSearchTerm(''); setSelectedCategory(null);}}>
@@ -196,13 +175,10 @@ export default function ClientAcquisitionResourcesPage() {
                               </Badge>
                             )}
                           </div>
-                          
                           <Link href={`/business-hub/client-acquisition/resources/${resource.id}`}>
                             <h2 className="text-xl font-semibold mb-2 hover:text-green-600">{resource.title}</h2>
                           </Link>
-                          
                           <p className="text-gray-600 mb-4">{resource.excerpt}</p>
-                          
                           <div className="flex flex-wrap gap-2 mb-4">
                             {resource.tags.map(tag => (
                               <span 
@@ -213,18 +189,17 @@ export default function ClientAcquisitionResourcesPage() {
                               </span>
                             ))}
                           </div>
-                          
                           <div className="flex items-center text-sm text-gray-500 mt-auto space-x-4">
                             <div className="flex items-center">
-                              <UserIcon className="h-4 w-4 mr-1" />
+                              <Icons.UserIcon className="h-4 w-4 mr-1" />
                               <span>{resource.author.split(',')[0]}</span>
                             </div>
                             <div className="flex items-center">
-                              <CalendarIcon className="h-4 w-4 mr-1" />
+                              <Icons.CalendarIcon className="h-4 w-4 mr-1" />
                               <span>{new Date(resource.date).toLocaleDateString()}</span>
                             </div>
                             <div className="flex items-center">
-                              <ClockIcon className="h-4 w-4 mr-1" />
+                              <Icons.ClockIcon className="h-4 w-4 mr-1" />
                               <span>{resource.readTime}</span>
                             </div>
                             <div>
@@ -235,7 +210,6 @@ export default function ClientAcquisitionResourcesPage() {
                               />
                             </div>
                           </div>
-                          
                           <div className="flex gap-2 mt-4">
                             <Link href={`/business-hub/client-acquisition/resources/${resource.id}`}>
                               <Button variant="default" className="bg-green-600 hover:bg-green-700">Read More</Button>
@@ -243,7 +217,7 @@ export default function ClientAcquisitionResourcesPage() {
                             {resource.downloadUrl && (
                               <Link href={resource.downloadUrl} target="_blank">
                                 <Button variant="outline" className="flex items-center">
-                                  <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
+                                  <Icons.ArrowDownTrayIcon className="h-4 w-4 mr-2" />
                                   Download
                                 </Button>
                               </Link>
@@ -253,7 +227,7 @@ export default function ClientAcquisitionResourcesPage() {
                               className="flex items-center"
                               onClick={() => handleShare(resource)}
                             >
-                              <ShareIcon className="h-4 w-4 mr-2" />
+                              <Icons.ShareIcon className="h-4 w-4 mr-2" />
                               Share
                             </Button>
                           </div>

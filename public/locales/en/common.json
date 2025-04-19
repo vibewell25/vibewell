@@ -1,0 +1,35 @@
+{
+  "welcome": "Welcome to Vibewell",
+  "app": {
+    "name": "Vibewell",
+    "description": "Connect with wellness and beauty service providers"
+  },
+  "navigation": {
+    "home": "Home",
+    "beauty": "Beauty & Wellness",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "actions": {
+    "login": "Log In",
+    "signup": "Sign Up",
+    "logout": "Log Out"
+  },
+  "meditation": {
+    "start": "Begin Meditation",
+    "stop": "End Session",
+    "themes": {
+      "forest": "Forest",
+      "beach": "Beach",
+      "mountain": "Mountain",
+      "zenGarden": "Zen Garden"
+    },
+    "sounds": {
+      "rain": "Rain",
+      "waves": "Ocean Waves",
+      "wind": "Gentle Wind",
+      "birds": "Bird Songs",
+      "silence": "Silence"
+    }
+  }
+} 

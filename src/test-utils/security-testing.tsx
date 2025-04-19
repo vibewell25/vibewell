@@ -382,7 +382,7 @@ export function testRedirectAfterAuthFailure<P>(
       });
       
       // Mock the auth error response
-      // @ts-ignore - Ignore strict window type checking
+      // @ts-expect-error - Ignore strict window type checking
       jest.spyOn(global, 'window', 'get').mockImplementation(() => {
         // Create a partial window mock with just the properties we need
         const windowMock = {

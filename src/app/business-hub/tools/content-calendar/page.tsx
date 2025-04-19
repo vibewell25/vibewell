@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
@@ -7,12 +6,12 @@ import { ContentCalendarBoard } from '@/components/content-calendar/content-cale
 import { ContentCalendarSidebar } from '@/components/content-calendar/content-calendar-sidebar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { PlusIcon, CalendarDaysIcon, ListBulletIcon, UsersIcon } from '@heroicons/react/24/outline';
+;
 import { ContentItem, ContentPlatform, ContentStatus, ContentTeamMember } from '@/types/content-calendar';
 import { ContentCalendarCalendar } from '@/components/content-calendar/content-calendar-calendar';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-
+import { Icons } from '@/components/icons';
 export default function ContentCalendarPage() {
   const [activeTab, setActiveTab] = useState<string>('board');
   const [contentItems, setContentItems] = useState<ContentItem[]>([]);
@@ -25,14 +24,12 @@ export default function ContentCalendarPage() {
     { id: '6', name: 'Blog', color: '#FF5722' },
     { id: '7', name: 'Email', color: '#6200EA' }
   ]);
-  
   const [teamMembers, setTeamMembers] = useState<ContentTeamMember[]>([
     { id: '1', name: 'Sarah Johnson', avatar: '/images/team/sarah.jpg', role: 'Content Manager' },
     { id: '2', name: 'Mike Chen', avatar: '/images/team/mike.jpg', role: 'Graphic Designer' },
     { id: '3', name: 'Alex Wong', avatar: '/images/team/alex.jpg', role: 'Copywriter' },
     { id: '4', name: 'Taylor Swift', avatar: '/images/team/taylor.jpg', role: 'SEO Specialist' }
   ]);
-  
   const statuses: ContentStatus[] = [
     { id: 'idea', name: 'Idea', color: '#9E9E9E' },
     { id: 'planning', name: 'Planning', color: '#2196F3' },
@@ -42,7 +39,6 @@ export default function ContentCalendarPage() {
     { id: 'scheduled', name: 'Scheduled', color: '#00BCD4' },
     { id: 'published', name: 'Published', color: '#8BC34A' }
   ];
-
   // Simulate fetching content calendar items
   useEffect(() => {
     // In a real app, this would be an API call
@@ -115,10 +111,8 @@ export default function ContentCalendarPage() {
         comments: []
       },
     ];
-    
     setContentItems(mockContentItems);
   }, []);
-
   // Handle drag and drop between columns
   const handleDragAndDrop = (itemId: string, newStatus: string) => {
     setContentItems(prevItems => 
@@ -127,12 +121,10 @@ export default function ContentCalendarPage() {
       )
     );
   };
-  
   // Handle creating a new content item
   const handleCreateContentItem = (item: ContentItem) => {
     setContentItems(prevItems => [...prevItems, item]);
   };
-  
   // Handle editing a content item
   const handleEditContentItem = (updatedItem: ContentItem) => {
     setContentItems(prevItems => 
@@ -141,26 +133,22 @@ export default function ContentCalendarPage() {
       )
     );
   };
-  
   // Handle deleting a content item
   const handleDeleteContentItem = (itemId: string) => {
     setContentItems(prevItems => 
       prevItems.filter(item => item.id !== itemId)
     );
   };
-
   return (
     <Layout>
       <div className="bg-background min-h-screen">
         <BusinessHubNavigation />
-        
         <div className="container mx-auto py-6 px-4 space-y-6">
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-3xl font-bold">Content Calendar</h1>
               <p className="text-muted-foreground">Plan, create, and schedule your content across platforms</p>
             </div>
-            
             <div className="flex items-center gap-4">
               <Button
                 variant="outline"
@@ -168,7 +156,6 @@ export default function ContentCalendarPage() {
               >
                 Filter
               </Button>
-              
               <Button
                 onClick={() => {
                   const newId = (contentItems.length + 1).toString();
@@ -187,12 +174,11 @@ export default function ContentCalendarPage() {
                   });
                 }}
               >
-                <PlusIcon className="w-5 h-5 mr-2" />
+                <Icons.PlusIcon className="w-5 h-5 mr-2" />
                 Create Content
               </Button>
             </div>
           </div>
-          
           <Tabs
             defaultValue="board"
             value={activeTab}
@@ -201,19 +187,18 @@ export default function ContentCalendarPage() {
           >
             <TabsList className="grid w-full max-w-md grid-cols-3 mb-8">
               <TabsTrigger value="board">
-                <ListBulletIcon className="w-5 h-5 mr-2" />
+                <Icons.ListBulletIcon className="w-5 h-5 mr-2" />
                 Board
               </TabsTrigger>
               <TabsTrigger value="calendar">
-                <CalendarDaysIcon className="w-5 h-5 mr-2" />
+                <Icons.CalendarDaysIcon className="w-5 h-5 mr-2" />
                 Calendar
               </TabsTrigger>
               <TabsTrigger value="team">
-                <UsersIcon className="w-5 h-5 mr-2" />
+                <Icons.UsersIcon className="w-5 h-5 mr-2" />
                 Team
               </TabsTrigger>
             </TabsList>
-            
             <TabsContent value="board" className="mt-0">
               <div className="flex">
                 <ContentCalendarSidebar 
@@ -235,7 +220,6 @@ export default function ContentCalendarPage() {
                 </div>
               </div>
             </TabsContent>
-            
             <TabsContent value="calendar" className="mt-0">
               <div className="flex">
                 <ContentCalendarSidebar 
@@ -256,7 +240,6 @@ export default function ContentCalendarPage() {
                 </div>
               </div>
             </TabsContent>
-            
             <TabsContent value="team" className="mt-0">
               <div className="flex">
                 <ContentCalendarSidebar 

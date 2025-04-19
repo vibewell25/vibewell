@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
+import { getSession } from '@auth0/nextjs-auth0/edge';
 import { is2FAEnabled } from '@/lib/auth/two-factor';
 
 // Paths that don't require MFA
@@ -16,12 +16,9 @@ const MFA_EXEMPT_PATHS = [
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-  const supabase = createMiddlewareClient({ req, res });
-
-  // Check if user is authenticated
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  
+  // Check if user is authenticated with Auth0
+  const session = await getSession(req, res);
 
   // Get the current path
   const path = req.nextUrl.pathname;
@@ -32,12 +29,12 @@ export async function middleware(req: NextRequest) {
   }
 
   // If no session, redirect to login
-  if (!session) {
-    return NextResponse.redirect(new URL('/auth/login', req.url));
+  if (!session || !session.user) {
+    return NextResponse.redirect(new URL('/api/auth/login', req.url));
   }
 
   // Check if user has MFA enabled
-  const { enabled: mfaEnabled, error: mfaError } = await is2FAEnabled(session.user.id);
+  const { enabled: mfaEnabled, error: mfaError } = await is2FAEnabled(session.user.sub);
 
   // If there was an error checking MFA status, log it and allow access
   // This is a fail-open approach - in production you might want to fail-closed

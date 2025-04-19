@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 import { signupRateLimiter, applyRateLimit } from '../rate-limit-middleware';
+import { prisma } from '@/lib/database/client';
+import { handleAuth, handleSignup } from '@auth0/nextjs-auth0';
 
 // Schema for validating signup request
 const signupSchema = z.object({
@@ -16,6 +17,9 @@ const signupSchema = z.object({
   fullName: z.string().min(2, 'Name must be at least 2 characters').optional(),
   role: z.enum(['customer', 'provider']).default('customer'),
 });
+
+// Get Auth0 signup handler
+const { POST: auth0SignupHandler } = handleSignup();
 
 // Signup endpoint
 export async function POST(req: NextRequest) {
@@ -39,15 +43,10 @@ export async function POST(req: NextRequest) {
     
     const { email, password, fullName, role } = result.data;
     
-    // Create Supabase client
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Check if email already exists
-    const { data: existingUser } = await supabase
-      .from('users')
-      .select('email')
-      .eq('email', email)
-      .single();
+    // Check if email already exists in our database
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    });
     
     if (existingUser) {
       // Don't reveal if the email exists for security reasons
@@ -57,51 +56,65 @@ export async function POST(req: NextRequest) {
       );
     }
     
-    // Create user in Supabase Auth
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
-          role: role,
-        },
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/verify-email`,
-      },
-    });
-    
-    if (error) {
-      console.error('Signup error:', error);
+    try {
+      // Create a modified request that Auth0 SDK expects
+      const url = new URL(req.url);
+      url.searchParams.set('email', email);
+      url.searchParams.set('password', password);
+      url.searchParams.set('name', fullName || '');
+      
+      const modifiedReq = new Request(url, {
+        method: 'POST',
+        headers: req.headers,
+      });
+      
+      // Use Auth0's built-in signup handler
+      const response = await auth0SignupHandler(modifiedReq);
+      
+      // If signup is successful, create a profile record in our database
+      // We need to extract the user ID from the Auth0 response
+      const responseData = await response.json();
+      
+      if (responseData?.user?.sub) {
+        // Create profile record in our database
+        await prisma.profile.create({
+          data: {
+            id: responseData.user.sub,
+            fullName: fullName || '',
+            email: email,
+            role: role,
+            isVerified: false
+          },
+        });
+        
+        // Set custom Auth0 user metadata for role - use Management API
+        const auth0ManagementClient = new (require('auth0')).ManagementClient({
+          domain: process.env.AUTH0_ISSUER_BASE_URL?.replace(/^https?:\/\//, '') || '',
+          clientId: process.env.AUTH0_MANAGEMENT_CLIENT_ID || '',
+          clientSecret: process.env.AUTH0_MANAGEMENT_CLIENT_SECRET || '',
+        });
+        
+        await auth0ManagementClient.users.update(
+          { id: responseData.user.sub },
+          { 
+            user_metadata: { role },
+            app_metadata: { role } 
+          }
+        );
+      }
+      
+      // Return success response
+      return NextResponse.json({
+        success: true,
+        message: 'Account created successfully. Please verify your email.',
+      });
+    } catch (authError) {
+      console.error('Auth0 signup error:', authError);
       return NextResponse.json(
         { error: 'Failed to create account' },
         { status: 400 }
       );
     }
-    
-    // Create profile record in profiles table
-    if (data.user) {
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert([
-          {
-            id: data.user.id,
-            full_name: fullName,
-            email: email,
-            role: role,
-          },
-        ]);
-      
-      if (profileError) {
-        console.error('Profile creation error:', profileError);
-        // Continue anyway, as auth was successful
-      }
-    }
-    
-    // Return success response
-    return NextResponse.json({
-      success: true,
-      message: 'Account created successfully. Please verify your email.',
-    });
   } catch (error) {
     console.error('Error in signup API:', error);
     return NextResponse.json(

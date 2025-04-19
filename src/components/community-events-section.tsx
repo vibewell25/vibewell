@@ -2,7 +2,7 @@ import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import { Event } from '@/types/events';
 import { getUpcomingEvents, registerForEvent, cancelEventRegistration } from '@/lib/api/events';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/clerk-auth-context';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

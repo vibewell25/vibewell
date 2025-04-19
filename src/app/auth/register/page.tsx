@@ -1,22 +1,24 @@
 'use client';
 
-import React, { Suspense, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-function RegisterRedirectContent() {
+/**
+ * Redirect from register to signup for route standardization
+ */
+export default function RegisterRedirect() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   
   useEffect(() => {
-    router.replace('/auth/sign-up');
-  }, [router]);
+    // Preserve any query parameters
+    const params = searchParams?.toString() ? `?${searchParams?.toString()}` : '';
+    router.replace(`/auth/signup${params}`);
+  }, [router, searchParams]);
   
-  return null;
-}
-
-export default function RegisterRedirect() {
   return (
-    <Suspense fallback={<div>Redirecting...</div>}>
-      <RegisterRedirectContent />
-    </Suspense>
+    <div className="flex justify-center items-center h-screen">
+      <p className="text-gray-500">Redirecting...</p>
+    </div>
   );
 } 

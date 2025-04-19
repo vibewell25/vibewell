@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase';
+import { prisma } from '@/lib/database/client';
 import { 
   Goal, 
   GoalType, 

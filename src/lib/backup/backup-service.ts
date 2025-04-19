@@ -1,5 +1,5 @@
-import { supabase } from '@/lib/supabase/client';
-import { createClient } from '@supabase/supabase-js';
+import { prisma } from '@/lib/database/client';
+import { prisma } from '@/lib/database/client';
 import { format } from 'date-fns';
 import { createCipheriv, createDecipheriv, randomBytes, scrypt, CipherGCMTypes } from 'crypto';
 import { promisify } from 'util';

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Goal, GoalType, HabitLog, WellnessDay, ProgressSummary } from '@/types/progress';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/auth-context';
 import * as wellnessAPI from '@/lib/api/wellness';
 
 // Fallback dummy data

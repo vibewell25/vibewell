@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/clerk-auth-context';
 import { NotificationList } from '@/components/notifications/NotificationList';
 import { Layout } from '@/components/layout';
 import { Toaster } from 'react-hot-toast';

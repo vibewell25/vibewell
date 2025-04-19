@@ -12,7 +12,7 @@ import { ServiceForm } from './forms/service-form';
 import { PhotoUploadForm } from './forms/photo-upload-form';
 import { PaymentSettingsForm } from './forms/payment-settings-form';
 import { PoliciesForm } from './forms/policies-form';
-import { supabase } from '@/lib/supabase/client';
+import { prisma } from '@/lib/database/client';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 

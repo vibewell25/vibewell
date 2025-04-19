@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { format } from 'date-fns';
-import { BookOpenIcon, CalendarIcon, ShoppingBagIcon, StarIcon } from '@heroicons/react/24/outline';
+import { BookOpen, Calendar, ShoppingBag, Star } from 'lucide-react';
 
 interface Activity {
   id: string;
@@ -19,13 +19,13 @@ interface ActivityFeedProps {
 const getActivityIcon = (type: Activity['type']) => {
   switch (type) {
     case 'content':
-      return <BookOpenIcon className="h-5 w-5 text-blue-500" />;
+      return <BookOpen className="h-5 w-5 text-blue-500" />;
     case 'booking':
-      return <CalendarIcon className="h-5 w-5 text-green-500" />;
+      return <Calendar className="h-5 w-5 text-green-500" />;
     case 'purchase':
-      return <ShoppingBagIcon className="h-5 w-5 text-purple-500" />;
+      return <ShoppingBag className="h-5 w-5 text-purple-500" />;
     case 'review':
-      return <StarIcon className="h-5 w-5 text-yellow-500" />;
+      return <Star className="h-5 w-5 text-yellow-500" />;
     default:
       return null;
   }

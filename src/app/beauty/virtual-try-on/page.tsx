@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useRef, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,7 @@ import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { 
+import { Icons } from '@/components/icons';
   CameraIcon, 
   PhotoIcon, 
   ArrowPathIcon,
@@ -19,7 +19,6 @@ import {
   PaintBrushIcon,
   FaceSmileIcon
 } from '@heroicons/react/24/outline';
-
 interface VirtualStyle {
   id: string;
   name: string;
@@ -29,7 +28,6 @@ interface VirtualStyle {
   color?: string;
   variations: string[];
 }
-
 const virtualStyles: VirtualStyle[] = [
   {
     id: 'hair1',
@@ -50,7 +48,6 @@ const virtualStyles: VirtualStyle[] = [
   },
   // Add more styles...
 ];
-
 export default function VirtualTryOnPage() {
   const [activeTab, setActiveTab] = useState('hair');
   const [isCameraActive, setIsCameraActive] = useState(false);
@@ -60,7 +57,6 @@ export default function VirtualTryOnPage() {
   const [isARMode, setIsARMode] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
   useEffect(() => {
     if (isCameraActive) {
       startCamera();
@@ -68,7 +64,6 @@ export default function VirtualTryOnPage() {
       stopCamera();
     }
   }, [isCameraActive]);
-
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ 
@@ -81,7 +76,6 @@ export default function VirtualTryOnPage() {
       console.error('Error accessing camera:', error);
     }
   };
-
   const stopCamera = () => {
     if (videoRef.current?.srcObject) {
       const stream = videoRef.current.srcObject as MediaStream;
@@ -89,12 +83,10 @@ export default function VirtualTryOnPage() {
       videoRef.current.srcObject = null;
     }
   };
-
   const handleStyleSelect = (style: VirtualStyle) => {
     setSelectedStyle(style);
     setStyleIntensity(style.intensity);
   };
-
   const handleCapture = () => {
     if (canvasRef.current && videoRef.current) {
       const context = canvasRef.current.getContext('2d');
@@ -107,7 +99,6 @@ export default function VirtualTryOnPage() {
       }
     }
   };
-
   return (
     <Layout>
       <div className="container-app py-12">
@@ -117,7 +108,6 @@ export default function VirtualTryOnPage() {
             Preview beauty services in real-time using AR technology
           </p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Camera Preview */}
           <div className="lg:col-span-2">
@@ -131,14 +121,14 @@ export default function VirtualTryOnPage() {
                       size="icon"
                       onClick={() => setIsMirrorMode(!isMirrorMode)}
                     >
-                      <ArrowPathIcon className="h-5 w-5" />
+                      <Icons.ArrowPathIcon className="h-5 w-5" />
                     </Button>
                     <Button
                       variant="outline"
                       size="icon"
                       onClick={() => setIsARMode(!isARMode)}
                     >
-                      <SparklesIcon className="h-5 w-5" />
+                      <Icons.SparklesIcon className="h-5 w-5" />
                     </Button>
                   </div>
                 </CardTitle>
@@ -154,7 +144,7 @@ export default function VirtualTryOnPage() {
                     />
                   ) : (
                     <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
-                      <CameraIcon className="h-12 w-12 mb-4" />
+                      <Icons.CameraIcon className="h-12 w-12 mb-4" />
                       <p>Camera is inactive</p>
                     </div>
                   )}
@@ -176,14 +166,13 @@ export default function VirtualTryOnPage() {
                     onClick={handleCapture}
                     disabled={!isCameraActive}
                   >
-                    <PhotoIcon className="h-5 w-5 mr-2" />
+                    <Icons.PhotoIcon className="h-5 w-5 mr-2" />
                     Capture
                   </Button>
                 </div>
               </CardContent>
             </Card>
           </div>
-
           {/* Style Controls */}
           <div className="space-y-6">
             <Card>
@@ -194,15 +183,15 @@ export default function VirtualTryOnPage() {
                 <Tabs value={activeTab} onValueChange={setActiveTab}>
                   <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="hair">
-                      <ScissorsIcon className="h-5 w-5 mr-2" />
+                      <Icons.ScissorsIcon className="h-5 w-5 mr-2" />
                       Hair
                     </TabsTrigger>
                     <TabsTrigger value="makeup">
-                      <PaintBrushIcon className="h-5 w-5 mr-2" />
+                      <Icons.PaintBrushIcon className="h-5 w-5 mr-2" />
                       Makeup
                     </TabsTrigger>
                     <TabsTrigger value="accessories">
-                      <FaceSmileIcon className="h-5 w-5 mr-2" />
+                      <Icons.FaceSmileIcon className="h-5 w-5 mr-2" />
                       Accessories
                     </TabsTrigger>
                   </TabsList>
@@ -249,7 +238,6 @@ export default function VirtualTryOnPage() {
                 </Tabs>
               </CardContent>
             </Card>
-
             {selectedStyle && (
               <Card>
                 <CardHeader>
@@ -299,14 +287,13 @@ export default function VirtualTryOnPage() {
                 </CardContent>
               </Card>
             )}
-
             <div className="flex gap-4">
               <Button className="flex-1" variant="outline">
-                <ShareIcon className="h-5 w-5 mr-2" />
+                <Icons.ShareIcon className="h-5 w-5 mr-2" />
                 Share
               </Button>
               <Button className="flex-1" variant="outline">
-                <BookmarkIcon className="h-5 w-5 mr-2" />
+                <Icons.BookmarkIcon className="h-5 w-5 mr-2" />
                 Save
               </Button>
             </div>

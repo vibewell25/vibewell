@@ -181,6 +181,176 @@ model Notification {
   link        String?     // Add this field to match usage in the routes
 }
 
+// Add the missing models identified by the migration script
+
+model TryOnSession {
+  id              String    @id @default(uuid())
+  userId          String    
+  productId       String    
+  durationSeconds Int?
+  completed       Boolean?  @default(false)
+  feedback        Json?     // { rating: number, would_try_in_real_life: boolean, comment: string }
+  screenshots     String[]  @default([])
+  createdAt       DateTime  @default(now())
+  
+  @@map("try_on_sessions")
+}
+
+model ShareAnalytics {
+  id          String    @id @default(uuid())
+  sessionId   String?
+  userId      String
+  platform    String
+  method      String
+  success     Boolean   @default(true)
+  error       String?
+  createdAt   DateTime  @default(now())
+  
+  @@map("share_analytics")
+}
+
+model Product {
+  id            String    @id @default(uuid())
+  name          String
+  description   String?
+  price         Float?
+  imageUrl      String?
+  category      String?
+  tags          String[]  @default([])
+  rating        Float?
+  reviewCount   Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@map("products")
+}
+
+model UserBadge {
+  id          String    @id @default(uuid())
+  userId      String
+  badgeId     String
+  earnedAt    DateTime  @default(now())
+  
+  @@map("user_badges")
+}
+
+model UserPoints {
+  id          String    @id @default(uuid())
+  userId      String
+  points      Int       @default(0)
+  level       Int       @default(1)
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("user_points")
+}
+
+model SecurityEvent {
+  id          String    @id @default(uuid())
+  userId      String?
+  eventType   String
+  ipAddress   String?
+  userAgent   String?
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+  
+  @@map("security_events")
+}
+
+model Share {
+  id          String    @id @default(uuid())
+  userId      String
+  contentType String
+  contentId   String
+  platform    String
+  createdAt   DateTime  @default(now())
+  
+  @@map("shares")
+}
+
+model EncryptedUserData {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  data        String    // Encrypted data blob
+  iv          String    // Initialization vector
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("encrypted_user_data")
+}
+
+model Message {
+  id            String    @id @default(uuid())
+  senderId      String
+  receiverId    String
+  content       String
+  isRead        Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  
+  @@map("messages")
+}
+
+model AlertThreshold {
+  id                  String    @id @default(uuid())
+  name                String
+  description         String?
+  isActive            Boolean   @default(true)
+  productId           String
+  metric              String
+  condition           String
+  threshold           Float
+  notificationMethods String[]
+  lastTriggered       DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  
+  @@map("alert_thresholds")
+}
+
+model DashboardNotification {
+  id          String    @id @default(uuid())
+  type        String
+  userId      String?
+  content     Json
+  isRead      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  
+  @@map("dashboard_notifications")
+}
+
+model UserNotification {
+  id          String    @id @default(uuid())
+  userId      String
+  title       String
+  message     String
+  isRead      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  link        String?
+  
+  @@map("user_notifications")
+}
+
+model UserNotificationPreference {
+  id              String    @id @default(uuid())
+  userId          String    @unique
+  emailEnabled    Boolean   @default(true)
+  pushEnabled     Boolean   @default(true)
+  categories      String[]  @default(["system", "marketing", "account"])
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("user_notification_preferences")
+}
+
+model PaymentIntent {
+  id          String    @id
+  userId      String    
+  amount      Int
+  currency    String
+  status      String
+  bookingId   String?
+  serviceId   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
 enum Role {
   USER
   PROVIDER

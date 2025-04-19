@@ -1,5 +1,4 @@
 'use client';
-
 import React, { Suspense, useEffect, useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Input } from '@/components/ui/input';
@@ -7,11 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
-import { StarIcon, MapPinIcon, CheckBadgeIcon, SparklesIcon } from '@heroicons/react/24/solid';
-import { MagnifyingGlassIcon, AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline';
+;
+;
 import Link from 'next/link';
 import Image from 'next/image';
-
+import { Icons } from '@/components/icons';
 // Types
 interface Business {
   id: string;
@@ -28,7 +27,6 @@ interface Business {
   services: { name: string; price: number }[];
   availableSlots: number;
 }
-
 function BusinessDirectoryContent() {
   // State for filters and search
   const [searchTerm, setSearchTerm] = useState('');
@@ -40,7 +38,6 @@ function BusinessDirectoryContent() {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
   // Load mock data
   useEffect(() => {
     // In a real app, this would be an API call
@@ -161,19 +158,15 @@ function BusinessDirectoryContent() {
           availableSlots: 10
         }
       ];
-
       setBusinesses(mockBusinesses);
       setFilteredBusinesses(mockBusinesses);
       setIsLoading(false);
     }, 1000);
   }, []);
-
   // Apply filters
   useEffect(() => {
     if (businesses.length === 0) return;
-
     let filtered = [...businesses];
-
     // Search filter
     if (searchTerm) {
       filtered = filtered.filter(business => 
@@ -182,38 +175,31 @@ function BusinessDirectoryContent() {
         business.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
-
     // Category filter
     if (category !== 'all') {
       filtered = filtered.filter(business => business.category === category);
     }
-
     // Location filter
     if (location !== 'all') {
       filtered = filtered.filter(business => business.location.includes(location));
     }
-
     // Price range filter
     filtered = filtered.filter(business => {
       const avgPrice = business.services.reduce((sum, service) => sum + service.price, 0) / business.services.length;
       return avgPrice >= priceRange[0] && avgPrice <= priceRange[1];
     });
-
     // Rating filter
     if (rating > 0) {
       filtered = filtered.filter(business => business.rating >= rating);
     }
-
     // Sort premium listings first
     filtered.sort((a, b) => {
       if (a.isPremium && !b.isPremium) return -1;
       if (!a.isPremium && b.isPremium) return 1;
       return 0;
     });
-
     setFilteredBusinesses(filtered);
   }, [businesses, searchTerm, category, location, priceRange, rating]);
-
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
@@ -222,11 +208,10 @@ function BusinessDirectoryContent() {
           <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
             Discover top wellness and beauty service providers in your area. From spas and salons to fitness trainers and wellness coaches.
           </p>
-          
           <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg p-4 md:p-6 max-w-4xl mx-auto mb-8">
             <div className="flex flex-col md:flex-row gap-4">
               <h3 className="font-semibold text-lg flex items-center text-indigo-800">
-                <SparklesIcon className="h-5 w-5 mr-2 text-indigo-600" />
+                <Icons.SparklesSolid className="h-5 w-5 mr-2 text-indigo-600" />
                 List Your Business
               </h3>
               <div className="flex-grow">
@@ -239,12 +224,11 @@ function BusinessDirectoryContent() {
               </Button>
             </div>
           </div>
-          
           {/* Search and filter bar */}
           <div className="bg-white rounded-lg shadow p-4 max-w-4xl mx-auto">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-grow">
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Icons.MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type="text"
                   placeholder="Search by name, service, or keyword..."
@@ -258,7 +242,7 @@ function BusinessDirectoryContent() {
                 className="flex items-center"
                 onClick={() => setShowFilters(!showFilters)}
               >
-                <AdjustmentsHorizontalIcon className="h-5 w-5 mr-2" />
+                <Icons.AdjustmentsHorizontalIcon className="h-5 w-5 mr-2" />
                 Filters
               </Button>
               <Select value={category} onValueChange={(value: string) => setCategory(value)}>
@@ -274,7 +258,6 @@ function BusinessDirectoryContent() {
                 </SelectContent>
               </Select>
             </div>
-            
             {/* Expanded filters */}
             {showFilters && (
               <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-gray-200">
@@ -295,7 +278,6 @@ function BusinessDirectoryContent() {
                     </SelectContent>
                   </Select>
                 </div>
-                
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Price Range</label>
                   <div className="px-2">
@@ -312,7 +294,6 @@ function BusinessDirectoryContent() {
                     </div>
                   </div>
                 </div>
-                
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Minimum Rating</label>
                   <Select value={rating.toString()} onValueChange={(value: string) => setRating(Number(value))}>
@@ -331,7 +312,6 @@ function BusinessDirectoryContent() {
             )}
           </div>
         </div>
-        
         {/* Results section */}
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -351,7 +331,6 @@ function BusinessDirectoryContent() {
         ) : (
           <>
             <p className="text-gray-600 mb-6">{filteredBusinesses.length} businesses found</p>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredBusinesses.map((business) => (
                 <div key={business.id} className={`bg-white rounded-lg shadow-md overflow-hidden transition-all hover:shadow-lg ${business.isPremium ? 'ring-2 ring-indigo-500 ring-opacity-50' : ''}`}>
@@ -365,29 +344,25 @@ function BusinessDirectoryContent() {
                     />
                     {business.isPremium && (
                       <div className="absolute top-2 right-2 bg-indigo-600 text-white text-xs px-2 py-1 rounded-full flex items-center">
-                        <CheckBadgeIcon className="h-3 w-3 mr-1" />
+                        <Icons.CheckBadgeSolid className="h-3 w-3 mr-1" />
                         Premium
                       </div>
                     )}
                   </div>
-                  
                   <div className="p-4">
                     <div className="flex justify-between items-start">
                       <h3 className="text-lg font-semibold">{business.name}</h3>
                       <div className="flex items-center">
-                        <StarIcon className="h-4 w-4 text-yellow-400" />
+                        <Icons.StarSolid className="h-4 w-4 text-yellow-400" />
                         <span className="ml-1 text-sm text-gray-700">{business.rating}</span>
                         <span className="text-xs text-gray-500 ml-1">({business.reviewCount})</span>
                       </div>
                     </div>
-                    
                     <div className="flex items-center text-gray-500 text-sm mb-3">
-                      <MapPinIcon className="h-4 w-4 mr-1" />
+                      <Icons.MapPinSolid className="h-4 w-4 mr-1" />
                       {business.location}
                     </div>
-                    
                     <p className="text-gray-600 text-sm mb-4 line-clamp-3">{business.description}</p>
-                    
                     <div className="flex flex-wrap gap-1 mb-4">
                       {business.tags.map((tag) => (
                         <Badge key={tag} variant="outline" className="text-xs bg-gray-100">
@@ -395,12 +370,10 @@ function BusinessDirectoryContent() {
                         </Badge>
                       ))}
                     </div>
-                    
                     <div className="text-sm text-gray-500 mb-4">
                       <span className="font-medium">Services from:</span>{' '}
                       ${Math.min(...business.services.map(s => s.price))}
                     </div>
-                    
                     <div className="flex items-center justify-between mt-4">
                       <span className="text-sm text-gray-600">{business.availableSlots} slots available</span>
                       <Link href={`/providers/${business.id}`}>
@@ -411,7 +384,6 @@ function BusinessDirectoryContent() {
                 </div>
               ))}
             </div>
-            
             {filteredBusinesses.length === 0 && (
               <div className="text-center py-12">
                 <h3 className="text-lg font-medium text-gray-900 mb-2">No businesses found</h3>
@@ -432,7 +404,6 @@ function BusinessDirectoryContent() {
             )}
           </>
         )}
-        
         {/* Premium listing information */}
         <div className="mt-16 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-6 md:p-8">
           <div className="max-w-4xl mx-auto">
@@ -444,19 +415,19 @@ function BusinessDirectoryContent() {
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-start">
-                    <CheckBadgeIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
+                    <Icons.CheckBadgeSolid className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                     <span>Priority placement at the top of search results</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckBadgeIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
+                    <Icons.CheckBadgeSolid className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                     <span>Enhanced profile with photo gallery and featured services</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckBadgeIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
+                    <Icons.CheckBadgeSolid className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                     <span>Verified badge to increase client trust</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckBadgeIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
+                    <Icons.CheckBadgeSolid className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                     <span>Performance analytics and insights on profile views</span>
                   </li>
                 </ul>
@@ -476,19 +447,19 @@ function BusinessDirectoryContent() {
                   </div>
                   <ul className="text-sm space-y-2 mb-6">
                     <li className="flex items-center">
-                      <CheckBadgeIcon className="h-4 w-4 text-green-500 mr-2" />
+                      <Icons.CheckBadgeSolid className="h-4 w-4 text-green-500 mr-2" />
                       <span>Top placement in search results</span>
                     </li>
                     <li className="flex items-center">
-                      <CheckBadgeIcon className="h-4 w-4 text-green-500 mr-2" />
+                      <Icons.CheckBadgeSolid className="h-4 w-4 text-green-500 mr-2" />
                       <span>Premium badge</span>
                     </li>
                     <li className="flex items-center">
-                      <CheckBadgeIcon className="h-4 w-4 text-green-500 mr-2" />
+                      <Icons.CheckBadgeSolid className="h-4 w-4 text-green-500 mr-2" />
                       <span>Photo gallery (up to 10 photos)</span>
                     </li>
                     <li className="flex items-center">
-                      <CheckBadgeIcon className="h-4 w-4 text-green-500 mr-2" />
+                      <Icons.CheckBadgeSolid className="h-4 w-4 text-green-500 mr-2" />
                       <span>Business analytics dashboard</span>
                     </li>
                   </ul>
@@ -507,7 +478,6 @@ function BusinessDirectoryContent() {
     </Layout>
   );
 }
-
 export default function BusinessDirectory() {
   return (
     <Suspense fallback={<div>Loading...</div>}>

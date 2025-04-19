@@ -8,7 +8,7 @@
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { NextRequest } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { prisma } from '@/lib/database/client';
 import { logger } from '@/lib/logger';
 import { typeDefs } from '@/lib/graphql/schema';
 import { resolvers } from '@/lib/graphql/resolvers';
@@ -42,10 +42,7 @@ const handler = startServerAndCreateNextHandler(server, {
   context: async (req: NextRequest) => {
     try {
       // Create Supabase client
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      );
+      
       
       // Get auth token from header if available
       const authHeader = req.headers.get('authorization');

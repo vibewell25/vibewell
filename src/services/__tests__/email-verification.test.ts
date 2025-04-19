@@ -1,5 +1,5 @@
 import { EmailVerificationService } from '../email-verification';
-import { supabase } from '@/lib/supabase/client';
+import { prisma } from '@/lib/database/client';
 
 // Mock Supabase
 jest.mock('@/lib/supabase/client', () => ({

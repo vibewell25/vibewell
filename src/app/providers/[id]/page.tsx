@@ -1,17 +1,16 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { Layout } from '@/components/layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { CalendarIcon, CheckIcon, MapPinIcon, StarIcon, ClockIcon } from '@heroicons/react/24/solid';
+;
 import ReviewsList from '@/components/ReviewsList';
 import ReviewForm from '@/components/ReviewForm';
 import RatingBreakdown from '@/components/RatingBreakdown';
 import useProviderReviews from '@/hooks/useProviderReviews';
-
+import { Icons } from '@/components/icons';
 interface ProviderData {
   id: string;
   name: string;
@@ -48,14 +47,12 @@ interface ProviderData {
   rating: number;
   reviewCount: number;
 }
-
 export default function ProviderProfilePage() {
   const { id } = useParams();
   const [provider, setProvider] = useState<ProviderData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
-  
   // Use the custom hook for provider reviews
   const {
     reviews,
@@ -64,13 +61,11 @@ export default function ProviderProfilePage() {
     addReview,
     getRatingPercentage
   } = useProviderReviews(id as string);
-
   // Fetch provider data
   useEffect(() => {
     const fetchProviderData = async () => {
       setIsLoading(true);
       setError(null);
-      
       try {
         // This would be a real API call in production
         // Simulate fetch with timeout for demo
@@ -152,23 +147,19 @@ export default function ProviderProfilePage() {
             rating: 4.8,
             reviewCount: summary.totalReviews || 24
           };
-          
           setProvider(mockProvider);
           setIsLoading(false);
         }, 1000);
-        
       } catch (err) {
         setError('Failed to load provider data');
         setIsLoading(false);
         console.error('Error fetching provider data:', err);
       }
     };
-    
     if (id) {
       fetchProviderData();
     }
   }, [id, summary.totalReviews]);
-
   // Handle review submission
   const handleAddReview = async (data: { title: string; text: string; rating: number }) => {
     try {
@@ -178,7 +169,6 @@ export default function ProviderProfilePage() {
       console.error('Failed to submit review:', error);
     }
   };
-
   if (isLoading) {
     return (
       <Layout>
@@ -204,7 +194,6 @@ export default function ProviderProfilePage() {
       </Layout>
     );
   }
-
   if (error || !provider) {
     return (
       <Layout>
@@ -216,7 +205,6 @@ export default function ProviderProfilePage() {
       </Layout>
     );
   }
-
   return (
     <Layout>
       <div className="relative h-64 w-full">
@@ -233,7 +221,6 @@ export default function ProviderProfilePage() {
           <p className="text-lg">{provider.tagline}</p>
         </div>
       </div>
-
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Left sidebar */}
@@ -252,25 +239,23 @@ export default function ProviderProfilePage() {
                 <div>
                   <h2 className="text-xl font-semibold">{provider.name}</h2>
                   <div className="flex items-center">
-                    <StarIcon className="h-5 w-5 text-yellow-400" />
+                    <Icons.StarSolid className="h-5 w-5 text-yellow-400" />
                     <span className="ml-1 text-gray-700">
                       {provider.rating.toFixed(1)} ({provider.reviewCount} reviews)
                     </span>
                   </div>
                 </div>
               </div>
-
               <div className="border-t border-gray-200 pt-4 mb-4">
                 <div className="flex items-start mb-3">
-                  <MapPinIcon className="h-5 w-5 text-gray-500 mr-2 mt-0.5" />
+                  <Icons.MapPinSolid className="h-5 w-5 text-gray-500 mr-2 mt-0.5" />
                   <div>
                     <p className="font-medium">Location</p>
                     <p className="text-gray-600">{provider.address}</p>
                   </div>
                 </div>
-
                 <div className="flex items-start">
-                  <ClockIcon className="h-5 w-5 text-gray-500 mr-2 mt-0.5" />
+                  <Icons.ClockSolid className="h-5 w-5 text-gray-500 mr-2 mt-0.5" />
                   <div>
                     <p className="font-medium">Availability</p>
                     <ul className="text-gray-600">
@@ -281,16 +266,14 @@ export default function ProviderProfilePage() {
                   </div>
                 </div>
               </div>
-
               <Button className="w-full">Book an Appointment</Button>
             </div>
-
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold mb-4">Certifications</h3>
               <ul className="space-y-3">
                 {provider.certifications.map(cert => (
                   <li key={cert.id} className="flex items-start">
-                    <CheckIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
+                    <Icons.CheckSolid className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                     <div>
                       <p className="font-medium">{cert.name}</p>
                       <p className="text-sm text-gray-600">{cert.issuer}, {cert.year}</p>
@@ -300,7 +283,6 @@ export default function ProviderProfilePage() {
               </ul>
             </div>
           </div>
-
           {/* Main content */}
           <div className="md:w-2/3">
             <Tabs defaultValue="about">
@@ -309,14 +291,12 @@ export default function ProviderProfilePage() {
                 <TabsTrigger value="services">Services</TabsTrigger>
                 <TabsTrigger value="reviews">Reviews</TabsTrigger>
               </TabsList>
-              
               <TabsContent value="about">
                 <div className="bg-white rounded-lg shadow p-6">
                   <h2 className="text-2xl font-semibold mb-4">About {provider.name}</h2>
                   <p className="text-gray-700 mb-4">{provider.description}</p>
                 </div>
               </TabsContent>
-              
               <TabsContent value="services">
                 <div className="bg-white rounded-lg shadow p-6">
                   <h2 className="text-2xl font-semibold mb-4">Services Offered</h2>
@@ -328,20 +308,19 @@ export default function ProviderProfilePage() {
                           <div className="flex flex-col items-end">
                             <span className="font-bold text-lg">${service.price}</span>
                             <span className="text-sm text-gray-500 flex items-center">
-                              <ClockIcon className="h-4 w-4 mr-1" /> {service.duration} min
+                              <Icons.ClockSolid className="h-4 w-4 mr-1" /> {service.duration} min
                             </span>
                           </div>
                         </div>
                         <p className="text-gray-600 mt-2">{service.description}</p>
                         <Button variant="outline" className="mt-3">
-                          <CalendarIcon className="h-4 w-4 mr-2" /> Book Now
+                          <Icons.CalendarSolid className="h-4 w-4 mr-2" /> Book Now
                         </Button>
                       </div>
                     ))}
                   </div>
                 </div>
               </TabsContent>
-              
               <TabsContent value="reviews">
                 <div className="bg-white rounded-lg shadow p-6 mb-6">
                   <div className="flex justify-between items-center mb-6">
@@ -352,7 +331,6 @@ export default function ProviderProfilePage() {
                       {showReviewForm ? 'Cancel' : 'Write a Review'}
                     </Button>
                   </div>
-
                   {showReviewForm && (
                     <div className="mb-8">
                       <ReviewForm 
@@ -362,7 +340,6 @@ export default function ProviderProfilePage() {
                       />
                     </div>
                   )}
-                  
                   <div className="flex flex-col lg:flex-row gap-6">
                     <div className="lg:w-1/3">
                       <RatingBreakdown 
@@ -370,7 +347,6 @@ export default function ProviderProfilePage() {
                         totalReviews={summary.totalReviews}
                         averageRating={summary.averageRating}
                       />
-                      
                       {summary.categories && (
                         <div className="bg-white rounded-lg shadow p-6 mt-6">
                           <h3 className="text-lg font-semibold mb-4">Rating Details</h3>
@@ -399,7 +375,6 @@ export default function ProviderProfilePage() {
                         </div>
                       )}
                     </div>
-                    
                     <div className="lg:w-2/3">
                       <ReviewsList 
                         reviews={reviews}

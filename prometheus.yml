@@ -6,11 +6,10 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets:
-          # - alertmanager:9093
+          - alertmanager:9093
 
 rule_files:
-  # - "first_rules.yml"
-  # - "second_rules.yml"
+  - "/etc/prometheus/rules/alerts.yml"
 
 scrape_configs:
   - job_name: 'prometheus'
@@ -24,6 +23,9 @@ scrape_configs:
   - job_name: 'node'
     static_configs:
       - targets: ['app:3000']
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+    scheme: 'http'
 
   # Add Redis-specific metrics
   - job_name: 'redis'
@@ -37,4 +39,10 @@ scrape_configs:
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: redis-exporter:9121 
+        replacement: redis-exporter:9121
+
+  # Add PostgreSQL metrics
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+    metrics_path: '/metrics' 

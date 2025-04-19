@@ -1,4 +1,4 @@
-import { Icons } from '@/components/icons';
+import { UploadCloud } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 interface FileUploadProps {
   onFileSelect: (file: File) => void;
@@ -46,7 +46,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         onDragOver={handleDragOver}
       >
         <div className="text-center">
-          <Icons.CloudArrowUpIcon
+          <UploadCloud
             className="mx-auto h-12 w-12 text-gray-300"
             aria-hidden="true"
           />

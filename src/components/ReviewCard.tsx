@@ -1,6 +1,7 @@
-import { Icons } from '@/components/icons';
+import { Star } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import Image from 'next/image';
+
 interface ReviewCardProps {
   id: string;
   title: string;
@@ -14,6 +15,7 @@ interface ReviewCardProps {
   };
   compact?: boolean;
 }
+
 export default function ReviewCard({
   id,
   title,
@@ -29,16 +31,26 @@ export default function ReviewCard({
     for (let i = 1; i <= 5; i++) {
       if (i <= rating) {
         stars.push(
-          <Icons.StarSolid key={i} className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+          <Star 
+            key={i} 
+            className="h-5 w-5 text-yellow-400 fill-yellow-400" 
+            aria-hidden="true" 
+            fill="currentColor"
+          />
         );
       } else {
         stars.push(
-          <Icons.StarIcon key={i} className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+          <Star
+            key={i} 
+            className="h-5 w-5 text-yellow-400" 
+            aria-hidden="true"
+          />
         );
       }
     }
     return stars;
   };
+
   return (
     <div className={`bg-white rounded-lg shadow p-4 ${compact ? 'mb-2' : 'mb-4'}`}>
       <div className="flex items-start">

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import type { Notification, NotificationState, NotificationAction } from '../types';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/clerk-auth-context';
 
 // Initial state
 const initialState: NotificationState = {

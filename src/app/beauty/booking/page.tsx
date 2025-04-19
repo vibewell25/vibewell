@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Calendar } from '@/components/ui/calendar';
 import { 
+import { Icons } from '@/components/icons';
   CalendarIcon,
   ClockIcon,
   UserIcon,
@@ -18,7 +18,6 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon
 } from '@heroicons/react/24/outline';
-
 interface Service {
   id: string;
   name: string;
@@ -27,7 +26,6 @@ interface Service {
   price: number;
   description: string;
 }
-
 interface Provider {
   id: string;
   name: string;
@@ -36,7 +34,6 @@ interface Provider {
   specialties: string[];
   availableSlots: string[];
 }
-
 const services: Service[] = [
   {
     id: 'hair1',
@@ -56,7 +53,6 @@ const services: Service[] = [
   },
   // Add more services...
 ];
-
 const providers: Provider[] = [
   {
     id: 'provider1',
@@ -68,7 +64,6 @@ const providers: Provider[] = [
   },
   // Add more providers...
 ];
-
 export default function BookingPage() {
   const [step, setStep] = useState(1);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
@@ -76,19 +71,16 @@ export default function BookingPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState('card');
-
   const handleNext = () => {
     if (step < 4) {
       setStep(step + 1);
     }
   };
-
   const handleBack = () => {
     if (step > 1) {
       setStep(step - 1);
     }
   };
-
   return (
     <Layout>
       <div className="container-app py-12">
@@ -98,7 +90,6 @@ export default function BookingPage() {
             Choose your service and schedule with our expert providers
           </p>
         </div>
-
         {/* Progress Steps */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
@@ -128,7 +119,6 @@ export default function BookingPage() {
             <span>Payment</span>
           </div>
         </div>
-
         {/* Booking Steps */}
         <div className="space-y-8">
           {/* Step 1: Service Selection */}
@@ -189,7 +179,6 @@ export default function BookingPage() {
               </CardContent>
             </Card>
           )}
-
           {/* Step 2: Provider Selection */}
           {step === 2 && (
             <Card>
@@ -232,7 +221,6 @@ export default function BookingPage() {
               </CardContent>
             </Card>
           )}
-
           {/* Step 3: Time Selection */}
           {step === 3 && (
             <Card>
@@ -273,7 +261,6 @@ export default function BookingPage() {
               </CardContent>
             </Card>
           )}
-
           {/* Step 4: Payment */}
           {step === 4 && (
             <Card>
@@ -295,7 +282,7 @@ export default function BookingPage() {
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="card" id="card" />
                         <Label htmlFor="card" className="flex items-center gap-2">
-                          <CreditCardIcon className="h-5 w-5" />
+                          <Icons.CreditCardIcon className="h-5 w-5" />
                           Credit/Debit Card
                         </Label>
                       </div>
@@ -305,7 +292,6 @@ export default function BookingPage() {
                       </div>
                     </RadioGroup>
                   </div>
-
                   {paymentMethod === 'card' && (
                     <div className="space-y-4">
                       <div>
@@ -324,7 +310,6 @@ export default function BookingPage() {
                       </div>
                     </div>
                   )}
-
                   <div className="border-t pt-4">
                     <div className="flex justify-between mb-2">
                       <span>Service</span>
@@ -339,7 +324,6 @@ export default function BookingPage() {
               </CardContent>
             </Card>
           )}
-
           {/* Navigation Buttons */}
           <div className="flex justify-between">
             <Button
@@ -347,7 +331,7 @@ export default function BookingPage() {
               onClick={handleBack}
               disabled={step === 1}
             >
-              <ArrowLeftIcon className="h-5 w-5 mr-2" />
+              <Icons.ArrowLeftIcon className="h-5 w-5 mr-2" />
               Back
             </Button>
             <Button
@@ -360,13 +344,13 @@ export default function BookingPage() {
             >
               {step === 4 ? (
                 <>
-                  <CheckCircleIcon className="h-5 w-5 mr-2" />
+                  <Icons.CheckCircleIcon className="h-5 w-5 mr-2" />
                   Confirm Booking
                 </>
               ) : (
                 <>
                   Next
-                  <ArrowRightIcon className="h-5 w-5 ml-2" />
+                  <Icons.ArrowRightIcon className="h-5 w-5 ml-2" />
                 </>
               )}
             </Button>

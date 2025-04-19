@@ -1,4 +1,4 @@
-import { Icons } from '@/components/icons';
+import { Star } from 'lucide-react';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -77,11 +77,10 @@ export default function ReviewForm({
               onMouseLeave={() => setHover(null)}
               className="focus:outline-none"
             >
-              {rating <= (hover !== null ? hover : currentRating) ? (
-                <Icons.StarSolid className="h-8 w-8 text-yellow-400" />
-              ) : (
-                <Icons.StarIcon className="h-8 w-8 text-yellow-400" />
-              )}
+              <Star 
+                className={`h-8 w-8 text-yellow-400 ${rating <= (hover !== null ? hover : currentRating) ? 'fill-yellow-400' : ''}`}
+                fill={rating <= (hover !== null ? hover : currentRating) ? 'currentColor' : 'none'}
+              />
             </button>
           ))}
         </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { prisma } from '@/lib/database/client';
 
 // Define types for the reviews
 interface Review {

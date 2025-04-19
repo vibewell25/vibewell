@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { useParams, useRouter, notFound } from 'next/navigation';
 import Image from 'next/image';
@@ -7,29 +6,19 @@ import { format, parseISO, isPast } from 'date-fns';
 import { Layout } from '@/components/layout';
 import { Event, EventComment } from '@/types/events';
 import { getEventById, registerForEvent, cancelEventRegistration, addEventComment, isUserRegistered } from '@/lib/api/events';
-import { useAuth } from '@/hooks/useAuth';
-import { 
-  CalendarIcon, 
-  MapPinIcon, 
-  UserIcon, 
-  ClockIcon,
-  VideoCameraIcon,
-  UsersIcon,
-  ShareIcon,
-  ArrowLeftIcon
-} from '@heroicons/react/24/outline';
+import { useAuth } from '@/contexts/clerk-auth-context';
+;
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-
+import { Icons } from '@/components/icons';
 export default function EventDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
   const eventId = params.id as string;
-  
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [registering, setRegistering] = useState(false);
@@ -37,21 +26,17 @@ export default function EventDetailPage() {
   const [isRegistered, setIsRegistered] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [submittingComment, setSubmittingComment] = useState(false);
-  
   // Fetch event data
   useEffect(() => {
     const fetchEvent = async () => {
       try {
         setLoading(true);
         setError(null);
-        
         const eventData = await getEventById(eventId);
         if (!eventData) {
           notFound();
         }
-        
         setEvent(eventData);
-        
         // Check if user is registered
         if (user?.id) {
           setIsRegistered(isUserRegistered(eventId, user.id));
@@ -63,21 +48,17 @@ export default function EventDetailPage() {
         setLoading(false);
       }
     };
-    
     fetchEvent();
   }, [eventId, user?.id]);
-
   // Handle event registration
   const handleRegistration = async () => {
     if (!user) {
       router.push('/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`));
       return;
     }
-    
     try {
       setRegistering(true);
       setError(null);
-      
       if (isRegistered) {
         // Cancel registration
         const success = await cancelEventRegistration(eventId, user.id);
@@ -99,7 +80,6 @@ export default function EventDetailPage() {
           user.user_metadata?.full_name || 'Anonymous', 
           user.user_metadata?.avatar_url
         );
-        
         if (success) {
           setIsRegistered(true);
           // Update the event data with the updated participant count
@@ -118,16 +98,12 @@ export default function EventDetailPage() {
       setRegistering(false);
     }
   };
-
   // Handle comment submission
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!user || !newComment.trim() || submittingComment) return;
-    
     try {
       setSubmittingComment(true);
-      
       const comment = await addEventComment(
         eventId,
         user.id,
@@ -135,7 +111,6 @@ export default function EventDetailPage() {
         newComment,
         user.user_metadata?.avatar_url
       );
-      
       if (comment) {
         setNewComment('');
         // Update the event data to include the new comment
@@ -153,7 +128,6 @@ export default function EventDetailPage() {
       setSubmittingComment(false);
     }
   };
-
   // Share event
   const handleShare = () => {
     if (navigator.share) {
@@ -168,7 +142,6 @@ export default function EventDetailPage() {
       alert(`Share this event: ${window.location.href}`);
     }
   };
-
   if (loading) {
     return (
       <Layout>
@@ -180,7 +153,6 @@ export default function EventDetailPage() {
       </Layout>
     );
   }
-
   if (error || !event) {
     return (
       <Layout>
@@ -196,7 +168,6 @@ export default function EventDetailPage() {
       </Layout>
     );
   }
-
   const startDate = parseISO(event.startDate);
   const endDate = parseISO(event.endDate);
   const isVirtual = event.location.virtual;
@@ -204,7 +175,6 @@ export default function EventDetailPage() {
   const formattedStartDate = format(startDate, 'EEEE, MMMM d, yyyy');
   const formattedStartTime = format(startDate, 'h:mm a');
   const formattedEndTime = format(endDate, 'h:mm a');
-  
   return (
     <Layout>
       <div className="container-app py-8">
@@ -213,10 +183,9 @@ export default function EventDetailPage() {
           onClick={() => router.push('/events')}
           className="flex items-center text-gray-600 hover:text-gray-900 mb-6"
         >
-          <ArrowLeftIcon className="h-4 w-4 mr-1" />
+          <Icons.ArrowLeftIcon className="h-4 w-4 mr-1" />
           Back to Events
         </button>
-        
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
@@ -233,10 +202,9 @@ export default function EventDetailPage() {
                 </div>
               ) : (
                 <div className="h-64 bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center text-white">
-                  <CalendarIcon className="h-16 w-16" />
+                  <Icons.CalendarIcon className="h-16 w-16" />
                 </div>
               )}
-              
               <div className="p-6">
                 <div className="flex flex-wrap gap-2 mb-3">
                   <Badge className={eventPassed ? 'bg-gray-100 text-gray-700' : 'bg-green-100 text-green-800'}>
@@ -253,31 +221,27 @@ export default function EventDetailPage() {
                     </Badge>
                   )}
                 </div>
-                
                 <h1 className="text-2xl font-bold mb-2">{event.title}</h1>
-                
                 <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 text-gray-600 mb-4">
                   <div className="flex items-center">
-                    <CalendarIcon className="h-5 w-5 mr-2" />
+                    <Icons.CalendarIcon className="h-5 w-5 mr-2" />
                     <span>{formattedStartDate}</span>
                   </div>
-                  
                   <div className="flex items-center">
-                    <ClockIcon className="h-5 w-5 mr-2" />
+                    <Icons.ClockIcon className="h-5 w-5 mr-2" />
                     <span>{formattedStartTime} - {formattedEndTime}</span>
                   </div>
                 </div>
-                
                 <div className="flex items-center gap-2 mb-4">
                   <div className="flex items-center">
                     {isVirtual ? (
                       <>
-                        <VideoCameraIcon className="h-5 w-5 mr-2 text-blue-600" />
+                        <Icons.VideoCameraIcon className="h-5 w-5 mr-2 text-blue-600" />
                         <span>Online Event</span>
                       </>
                     ) : (
                       <>
-                        <MapPinIcon className="h-5 w-5 mr-2 text-red-600" />
+                        <Icons.MapPinIcon className="h-5 w-5 mr-2 text-red-600" />
                         <span>
                           {event.location.address ? (
                             <>
@@ -291,15 +255,13 @@ export default function EventDetailPage() {
                     )}
                   </div>
                 </div>
-                
                 <div className="flex items-center mb-4">
-                  <UsersIcon className="h-5 w-5 mr-2 text-gray-600" />
+                  <Icons.UsersIcon className="h-5 w-5 mr-2 text-gray-600" />
                   <span>
                     {event.participantsCount} {event.participantsCount === 1 ? 'person' : 'people'} participating
                     {event.capacity ? ` • ${event.capacity - event.participantsCount} spots left` : ''}
                   </span>
                 </div>
-                
                 <div className="flex items-center">
                   <div className="flex items-center">
                     <Avatar className="h-8 w-8 mr-2">
@@ -317,7 +279,6 @@ export default function EventDetailPage() {
                 </div>
               </div>
             </div>
-            
             {/* Event Description */}
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
               <h2 className="text-xl font-semibold mb-4">About this event</h2>
@@ -326,11 +287,9 @@ export default function EventDetailPage() {
                 dangerouslySetInnerHTML={{ __html: event.description }}
               />
             </div>
-            
             {/* Comments Section */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-xl font-semibold mb-4">Discussion</h2>
-              
               {user ? (
                 <form onSubmit={handleCommentSubmit} className="mb-6">
                   <div className="flex gap-3">
@@ -365,7 +324,6 @@ export default function EventDetailPage() {
                   </Button>
                 </div>
               )}
-              
               {event.comments && event.comments.length > 0 ? (
                 <div className="space-y-4">
                   {event.comments.map((comment) => (
@@ -396,7 +354,6 @@ export default function EventDetailPage() {
               )}
             </div>
           </div>
-          
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Registration Card */}
@@ -411,7 +368,6 @@ export default function EventDetailPage() {
                       : 'Join this event to connect with the community.'}
                 </p>
               </div>
-              
               {!eventPassed && (
                 <Button
                   className={`w-full ${isRegistered ? 'bg-red-600 hover:bg-red-700' : ''}`}
@@ -425,11 +381,9 @@ export default function EventDetailPage() {
                       : 'Register Now'}
                 </Button>
               )}
-              
               {error && (
                 <p className="text-red-600 text-sm mt-2">{error}</p>
               )}
-              
               {isRegistered && isVirtual && event.location.meetingUrl && (
                 <div className="mt-4 p-3 bg-blue-50 rounded-md">
                   <h4 className="font-medium text-blue-800">Meeting Link</h4>
@@ -444,7 +398,6 @@ export default function EventDetailPage() {
                 </div>
               )}
             </div>
-            
             {/* Share Card */}
             <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
               <h3 className="text-lg font-semibold mb-4">Share Event</h3>
@@ -453,11 +406,10 @@ export default function EventDetailPage() {
                 className="w-full flex items-center justify-center"
                 onClick={handleShare}
               >
-                <ShareIcon className="h-5 w-5 mr-2" />
+                <Icons.ShareIcon className="h-5 w-5 mr-2" />
                 Share this Event
               </Button>
             </div>
-            
             {/* Tags */}
             {event.tags && event.tags.length > 0 && (
               <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">

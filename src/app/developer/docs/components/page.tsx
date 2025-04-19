@@ -1,5 +1,4 @@
 'use client';
-
 import React, { Suspense, useState } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
@@ -8,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@/components/ui/breadcrumb';
 import { useSearchParams } from 'next/navigation';
 import { 
+import { Icons } from '@/components/icons';
   MagnifyingGlassIcon,
   ChevronRightIcon,
   DocumentTextIcon,
@@ -25,17 +25,15 @@ import {
   Bars3Icon,
   ChevronDoubleRightIcon
 } from '@heroicons/react/24/outline';
-
 function ComponentsDocumentationContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const searchParams = useSearchParams();
-  
   // List of component categories with their components
   const componentCategories = [
     {
       name: 'Layout',
       description: 'Components for structuring your application layout',
-      icon: <ArrowsPointingOutIcon className="h-6 w-6" />,
+      icon: <Icons.ArrowsPointingOutIcon className="h-6 w-6" />,
       components: [
         { name: 'Container', path: '/developer/docs/components/container' },
         { name: 'Grid', path: '/developer/docs/components/grid' },
@@ -47,7 +45,7 @@ function ComponentsDocumentationContent() {
     {
       name: 'Navigation',
       description: 'Components for navigating between pages and content',
-      icon: <ChevronDoubleRightIcon className="h-6 w-6" />,
+      icon: <Icons.ChevronDoubleRightIcon className="h-6 w-6" />,
       components: [
         { name: 'Breadcrumb', path: '/developer/docs/components/breadcrumb' },
         { name: 'Pagination', path: '/developer/docs/components/pagination' },
@@ -58,7 +56,7 @@ function ComponentsDocumentationContent() {
     {
       name: 'Forms',
       description: 'Components for collecting user input and data entry',
-      icon: <DocumentTextIcon className="h-6 w-6" />,
+      icon: <Icons.DocumentTextIcon className="h-6 w-6" />,
       components: [
         { name: 'Button', path: '/developer/docs/components/button' },
         { name: 'Input', path: '/developer/docs/components/input' },
@@ -72,7 +70,7 @@ function ComponentsDocumentationContent() {
     {
       name: 'Feedback',
       description: 'Components for providing feedback to users',
-      icon: <ChatBubbleLeftRightIcon className="h-6 w-6" />,
+      icon: <Icons.ChatBubbleLeftRightIcon className="h-6 w-6" />,
       components: [
         { name: 'Alert', path: '/developer/docs/components/alert' },
         { name: 'Toast', path: '/developer/docs/components/toast' },
@@ -83,7 +81,7 @@ function ComponentsDocumentationContent() {
     {
       name: 'Overlays',
       description: 'Components that overlay on the main content',
-      icon: <SquaresPlusIcon className="h-6 w-6" />,
+      icon: <Icons.SquaresPlusIcon className="h-6 w-6" />,
       components: [
         { name: 'Dialog', path: '/developer/docs/components/dialog' },
         { name: 'Drawer', path: '/developer/docs/components/drawer' },
@@ -94,7 +92,7 @@ function ComponentsDocumentationContent() {
     {
       name: 'Data Display',
       description: 'Components for displaying data in structured formats',
-      icon: <FolderIcon className="h-6 w-6" />,
+      icon: <Icons.FolderIcon className="h-6 w-6" />,
       components: [
         { name: 'Table', path: '/developer/docs/components/table' },
         { name: 'Avatar', path: '/developer/docs/components/avatar' },
@@ -103,7 +101,6 @@ function ComponentsDocumentationContent() {
       ]
     },
   ];
-  
   // Filter components based on search query
   const filteredCategories = searchQuery 
     ? componentCategories.map(category => ({
@@ -113,7 +110,6 @@ function ComponentsDocumentationContent() {
         )
       })).filter(category => category.components.length > 0)
     : componentCategories;
-
   return (
     <Layout>
       <div className="container-app py-8">
@@ -129,7 +125,6 @@ function ComponentsDocumentationContent() {
             <span className="text-sm font-medium">Components</span>
           </BreadcrumbItem>
         </Breadcrumb>
-      
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold mb-2">UI Components</h1>
@@ -139,11 +134,10 @@ function ComponentsDocumentationContent() {
             </p>
           </div>
         </div>
-        
         {/* Search box */}
         <div className="relative max-w-md mb-8">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
+            <Icons.MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
           </div>
           <Input
             type="text"
@@ -153,7 +147,6 @@ function ComponentsDocumentationContent() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        
         {/* Component categories */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           {filteredCategories.map((category, index) => (
@@ -167,7 +160,6 @@ function ComponentsDocumentationContent() {
                   <p className="text-muted-foreground">{category.description}</p>
                 </div>
               </div>
-              
               <div className="mt-4 space-y-3">
                 {category.components.map((component, compIndex) => (
                   <Link
@@ -178,21 +170,20 @@ function ComponentsDocumentationContent() {
                     <span className="font-medium group-hover:text-primary transition-colors">
                       {component.name}
                     </span>
-                    <ChevronRightIcon className="h-4 w-4 ml-auto text-muted-foreground group-hover:text-primary transition-colors" />
+                    <Icons.ChevronRightIcon className="h-4 w-4 ml-auto text-muted-foreground group-hover:text-primary transition-colors" />
                   </Link>
                 ))}
               </div>
             </div>
           ))}
         </div>
-        
         {/* Component principles and guidelines */}
         <div className="bg-muted rounded-lg p-6 border border-border mb-10">
           <h2 className="text-2xl font-bold mb-4">Component Design Principles</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h3 className="text-lg font-semibold mb-2 flex items-center">
-                <CheckCircleIcon className="h-5 w-5 mr-2 text-primary" />
+                <Icons.CheckCircleIcon className="h-5 w-5 mr-2 text-primary" />
                 Accessibility
               </h3>
               <p className="text-muted-foreground">
@@ -200,10 +191,9 @@ function ComponentsDocumentationContent() {
                 and supporting keyboard navigation, screen readers, and proper color contrast.
               </p>
             </div>
-            
             <div>
               <h3 className="text-lg font-semibold mb-2 flex items-center">
-                <ArrowPathIcon className="h-5 w-5 mr-2 text-primary" />
+                <Icons.ArrowPathIcon className="h-5 w-5 mr-2 text-primary" />
                 Composability
               </h3>
               <p className="text-muted-foreground">
@@ -211,10 +201,9 @@ function ComponentsDocumentationContent() {
                 composition and predictable behavior when combined.
               </p>
             </div>
-            
             <div>
               <h3 className="text-lg font-semibold mb-2 flex items-center">
-                <PaintBrushIcon className="h-5 w-5 mr-2 text-primary" />
+                <Icons.PaintBrushIcon className="h-5 w-5 mr-2 text-primary" />
                 Customization
               </h3>
               <p className="text-muted-foreground">
@@ -222,10 +211,9 @@ function ComponentsDocumentationContent() {
                 props, variants, and theming to adapt to different contexts.
               </p>
             </div>
-            
             <div>
               <h3 className="text-lg font-semibold mb-2 flex items-center">
-                <CogIcon className="h-5 w-5 mr-2 text-primary" />
+                <Icons.CogIcon className="h-5 w-5 mr-2 text-primary" />
                 Consistency
               </h3>
               <p className="text-muted-foreground">
@@ -235,7 +223,6 @@ function ComponentsDocumentationContent() {
             </div>
           </div>
         </div>
-        
         {/* Getting started with components */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Getting Started with Components</h2>
@@ -249,7 +236,6 @@ function ComponentsDocumentationContent() {
                 <Link href="/developer/docs/installation">View Installation Guide</Link>
               </Button>
             </div>
-            
             <div className="border rounded-lg p-5 bg-card hover:shadow-md transition-all">
               <h3 className="text-lg font-semibold mb-2">Best Practices</h3>
               <p className="text-muted-foreground mb-4">
@@ -259,7 +245,6 @@ function ComponentsDocumentationContent() {
                 <Link href="/developer/docs/best-practices">View Best Practices</Link>
               </Button>
             </div>
-            
             <div className="border rounded-lg p-5 bg-card hover:shadow-md transition-all">
               <h3 className="text-lg font-semibold mb-2">Component Playground</h3>
               <p className="text-muted-foreground mb-4">
@@ -271,7 +256,6 @@ function ComponentsDocumentationContent() {
             </div>
           </div>
         </div>
-        
         {/* Component status */}
         <div>
           <h2 className="text-2xl font-bold mb-4">Component Status</h2>
@@ -392,7 +376,6 @@ function ComponentsDocumentationContent() {
     </Layout>
   );
 }
-
 export default function ComponentsDocumentationPage() {
   return (
     <Suspense fallback={<ComponentsDocumentationSkeleton />}>
@@ -400,7 +383,6 @@ export default function ComponentsDocumentationPage() {
     </Suspense>
   );
 }
-
 // Add skeleton component for loading state
 function ComponentsDocumentationSkeleton() {
   return (

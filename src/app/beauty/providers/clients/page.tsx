@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { 
+import { Icons } from '@/components/icons';
   UserIcon,
   CalendarIcon,
   StarIcon,
@@ -20,7 +20,6 @@ import {
   PencilIcon,
   TrashIcon
 } from '@heroicons/react/24/outline';
-
 interface Client {
   id: string;
   name: string;
@@ -38,7 +37,6 @@ interface Client {
     concerns: string[];
   };
 }
-
 interface Appointment {
   id: string;
   date: string;
@@ -48,7 +46,6 @@ interface Appointment {
   amount: number;
   notes?: string;
 }
-
 const dummyClients: Client[] = [
   {
     id: '1',
@@ -72,7 +69,6 @@ const dummyClients: Client[] = [
     }
   }
 ];
-
 const dummyAppointments: Appointment[] = [
   {
     id: '1',
@@ -84,12 +80,10 @@ const dummyAppointments: Appointment[] = [
     notes: 'Client requested natural-looking highlights'
   }
 ];
-
 export default function ClientsPage() {
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
-
   return (
     <Layout>
       <div className="container-app py-12">
@@ -99,14 +93,13 @@ export default function ClientsPage() {
             Manage your clients and their preferences
           </p>
         </div>
-
         <div className="grid gap-6">
           {/* Search and Filter */}
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
                 <div className="relative flex-1">
-                  <MagnifyingGlassIcon className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  <Icons.MagnifyingGlassIcon className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
                   <Input
                     placeholder="Search clients..."
                     className="pl-10"
@@ -115,17 +108,16 @@ export default function ClientsPage() {
                   />
                 </div>
                 <Button variant="outline">
-                  <FunnelIcon className="h-5 w-5 mr-2" />
+                  <Icons.FunnelIcon className="h-5 w-5 mr-2" />
                   Filter
                 </Button>
                 <Button>
-                  <PlusIcon className="h-5 w-5 mr-2" />
+                  <Icons.PlusIcon className="h-5 w-5 mr-2" />
                   Add Client
                 </Button>
               </div>
             </CardContent>
           </Card>
-
           {/* Client List */}
           <div className="grid gap-6 md:grid-cols-3">
             {/* Client List Sidebar */}
@@ -167,7 +159,6 @@ export default function ClientsPage() {
                 </CardContent>
               </Card>
             </div>
-
             {/* Client Details */}
             <div className="md:col-span-2">
               {selectedClient ? (
@@ -190,10 +181,10 @@ export default function ClientsPage() {
                         </div>
                         <div className="flex gap-2">
                           <Button variant="outline" size="icon">
-                            <PencilIcon className="h-5 w-5" />
+                            <Icons.PencilIcon className="h-5 w-5" />
                           </Button>
                           <Button variant="outline" size="icon">
-                            <TrashIcon className="h-5 w-5" />
+                            <Icons.TrashIcon className="h-5 w-5" />
                           </Button>
                         </div>
                       </div>
@@ -219,24 +210,22 @@ export default function ClientsPage() {
                       </div>
                     </CardContent>
                   </Card>
-
                   {/* Client Details Tabs */}
                   <Tabs defaultValue="appointments">
                     <TabsList>
                       <TabsTrigger value="appointments">
-                        <CalendarIcon className="h-5 w-5 mr-2" />
+                        <Icons.CalendarIcon className="h-5 w-5 mr-2" />
                         Appointments
                       </TabsTrigger>
                       <TabsTrigger value="preferences">
-                        <StarIcon className="h-5 w-5 mr-2" />
+                        <Icons.StarIcon className="h-5 w-5 mr-2" />
                         Preferences
                       </TabsTrigger>
                       <TabsTrigger value="notes">
-                        <ChatBubbleLeftIcon className="h-5 w-5 mr-2" />
+                        <Icons.ChatBubbleLeftIcon className="h-5 w-5 mr-2" />
                         Notes
                       </TabsTrigger>
                     </TabsList>
-
                     {/* Appointments Tab */}
                     <TabsContent value="appointments" className="mt-6">
                       <Card>
@@ -279,7 +268,6 @@ export default function ClientsPage() {
                         </CardContent>
                       </Card>
                     </TabsContent>
-
                     {/* Preferences Tab */}
                     <TabsContent value="preferences" className="mt-6">
                       <Card>
@@ -298,7 +286,6 @@ export default function ClientsPage() {
                                 ))}
                               </div>
                             </div>
-
                             <div>
                               <Label>Communication Preferences</Label>
                               <div className="flex flex-wrap gap-2 mt-2">
@@ -309,7 +296,6 @@ export default function ClientsPage() {
                                 ))}
                               </div>
                             </div>
-
                             <div>
                               <Label>Allergies</Label>
                               <div className="flex flex-wrap gap-2 mt-2">
@@ -320,7 +306,6 @@ export default function ClientsPage() {
                                 ))}
                               </div>
                             </div>
-
                             <div>
                               <Label>Concerns</Label>
                               <div className="flex flex-wrap gap-2 mt-2">
@@ -335,7 +320,6 @@ export default function ClientsPage() {
                         </CardContent>
                       </Card>
                     </TabsContent>
-
                     {/* Notes Tab */}
                     <TabsContent value="notes" className="mt-6">
                       <Card>
@@ -353,7 +337,7 @@ export default function ClientsPage() {
                               </div>
                             ))}
                             <Button variant="outline" className="w-full">
-                              <PlusIcon className="h-5 w-5 mr-2" />
+                              <Icons.PlusIcon className="h-5 w-5 mr-2" />
                               Add Note
                             </Button>
                           </div>

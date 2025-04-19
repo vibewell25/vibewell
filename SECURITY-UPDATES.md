@@ -32,6 +32,13 @@ This document summarizes the security updates made to address vulnerabilities in
    - Successfully resolved all remaining security vulnerabilities
    - Verified that all tests still pass after dependency cleanup
 
+6. **Custom CSRF Implementation (Moderate to High Risk)**
+   - Replaced vulnerable `csurf` package with custom CSRF implementation
+   - Created secure token generation using HMAC-SHA256 signatures
+   - Implemented both server-side and client-side utilities for consistent token handling
+   - Added safeguards against timing attacks and token expiration
+   - Integrated with Next.js middleware for seamless protection of API routes
+
 ### Implementation Details
 
 1. **Web3 Wallet Connector Updates**
@@ -54,6 +61,13 @@ This document summarizes the security updates made to address vulnerabilities in
    - Ran `npm audit fix` to remove or update vulnerable dependencies
    - Successfully resolved all reported vulnerabilities
    - Verified that critical tests still pass after package cleanup
+
+5. **CSRF Protection Enhancements**
+   - Created `src/middleware/security/csrf.ts` with secure token generation and validation
+   - Updated `src/middleware/security/index.ts` to integrate CSRF protection
+   - Added `src/utils/csrf.ts` with client-side utilities for React components
+   - Ensured all state-changing operations (POST, PUT, DELETE) validate CSRF tokens
+   - Added automatic token generation for GET requests
 
 ### Validation
 

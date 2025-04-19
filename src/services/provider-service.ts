@@ -1,5 +1,5 @@
 import { cachedFetch } from '@/lib/cache';
-import { supabase } from '@/lib/supabase';
+import { prisma } from '@/lib/database/client';
 
 export interface Provider {
   id: string;

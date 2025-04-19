@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
@@ -7,18 +6,7 @@ import { BusinessHubNavigation } from '@/components/business-hub-navigation';
 import { HubSearch } from '@/components/hub-search';
 import Link from 'next/link';
 import Image from 'next/image';
-import { 
-  MagnifyingGlassIcon, 
-  DocumentTextIcon, 
-  CalculatorIcon, 
-  NewspaperIcon,
-  ChevronDownIcon,
-  BookmarkIcon,
-  FunnelIcon,
-  ArrowsUpDownIcon,
-  ChatBubbleLeftRightIcon,
-  XMarkIcon
-} from '@heroicons/react/24/outline';
+;
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { StarRating } from '@/components/star-rating';
@@ -26,7 +14,7 @@ import { ResourceReview, Review } from '@/components/resource-review';
 import { addBookmark, removeBookmark, isBookmarked } from '@/lib/bookmarks';
 import { getAverageRating } from '@/lib/ratings';
 import { Skeleton } from '@/components/ui/skeleton';
-
+import { Icons } from '@/components/icons';
 // Mock search result types
 interface SearchResult {
   id: string;
@@ -41,7 +29,6 @@ interface SearchResult {
   premium: boolean;
   relevanceScore?: number;
 }
-
 // Loading fallback component
 function SearchLoadingSkeleton() {
   return (
@@ -61,13 +48,11 @@ function SearchLoadingSkeleton() {
     </Layout>
   );
 }
-
 // Search page content that uses useSearchParams
 function SearchPageContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
   const initialCategory = (searchParams.get('category') || 'all') as any;
-  
   const [query, setQuery] = useState(initialQuery);
   const [category, setCategory] = useState(initialCategory);
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -79,13 +64,11 @@ function SearchPageContent() {
   const [bookmarkedItems, setBookmarkedItems] = useState<Record<string, boolean>>({});
   const [trackSearch, setTrackSearch] = useState(false);
   const [expandedReviews, setExpandedReviews] = useState<Record<string, boolean>>({});
-
   // Perform search when query or category changes
   useEffect(() => {
     if (query) {
       performSearch(query, category);
     }
-    
     // Track search analytics
     if (query && trackSearch) {
       // In a real app, this would send analytics data to your backend
@@ -103,25 +86,19 @@ function SearchPageContent() {
         }
       }
     }
-    
     setTrackSearch(true);
   }, [query, category]);
-
   // Check bookmarked status of results
   useEffect(() => {
     const bookmarked: Record<string, boolean> = {};
-    
     results.forEach(result => {
       bookmarked[result.id] = isBookmarked(result.id, result.type);
     });
-    
     setBookmarkedItems(bookmarked);
   }, [results]);
-
   // Perform search and update results
   const performSearch = (searchQuery: string, searchCategory: string) => {
     setIsLoading(true);
-    
     // Simulate API call delay
     setTimeout(() => {
       // In a real app, this would be an API call
@@ -200,7 +177,6 @@ function SearchPageContent() {
           premium: true
         }
       ];
-      
       // Filter by category if specified
       if (searchCategory && searchCategory !== 'all') {
         mockResults = mockResults.filter(result => {
@@ -211,34 +187,28 @@ function SearchPageContent() {
           return true;
         });
       }
-      
       // Simulate relevance scoring - in a real app this would be done by the search engine
       mockResults = mockResults.map(result => {
         // Add the query to the result for highlighting in a real app
         return { ...result, relevanceScore: Math.random() * 10 };
       });
-      
       setResults(mockResults);
       setIsLoading(false);
     }, 800);
   };
-
   // Handle search submission
   const handleSearch = (newQuery: string, newCategory: any) => {
     setQuery(newQuery);
     setCategory(newCategory);
-    
     // Update URL to reflect search params without page reload
     const url = new URL(window.location.href);
     url.searchParams.set('q', newQuery);
     url.searchParams.set('category', newCategory);
     window.history.pushState({}, '', url.toString());
   };
-
   // Toggle bookmark status
   const toggleBookmark = (result: SearchResult) => {
     const currentStatus = bookmarkedItems[result.id] || false;
-    
     if (currentStatus) {
       removeBookmark(result.id, result.type);
     } else {
@@ -251,13 +221,11 @@ function SearchPageContent() {
         category: result.section
       });
     }
-    
     setBookmarkedItems(prev => ({
       ...prev,
       [result.id]: !currentStatus
     }));
   };
-
   // Toggle reviews visibility for a result
   const toggleReviews = (resultId: string) => {
     setExpandedReviews(prev => ({
@@ -265,7 +233,6 @@ function SearchPageContent() {
       [resultId]: !prev[resultId]
     }));
   };
-
   // Handle review added
   const handleReviewAdded = (review: Review) => {
     // Refresh average ratings after a review is added
@@ -276,7 +243,6 @@ function SearchPageContent() {
       )
     );
   };
-
   // Filter results based on selected filters
   const filteredResults = results.filter(result => {
     const matchesType = selectedType === 'all' || result.type === selectedType;
@@ -284,7 +250,6 @@ function SearchPageContent() {
     const matchesRating = getAverageRating(result.id, result.type).average >= minRating;
     return matchesType && matchesSection && matchesRating;
   });
-
   // Sort results based on selected sort option
   const sortedResults = [...filteredResults].sort((a, b) => {
     if (sortBy === 'date') {
@@ -298,34 +263,29 @@ function SearchPageContent() {
       return (b.relevanceScore || 0) - (a.relevanceScore || 0);
     }
   });
-
   // Get unique sections and types for filters
   const sections = [...new Set(results.map(result => result.section))];
   const types = [...new Set(results.map(result => result.type))];
-
   // Render icon based on result type
   const renderTypeIcon = (type: string) => {
     switch (type) {
       case 'resource':
-        return <DocumentTextIcon className="h-5 w-5 text-blue-500" />;
+        return <Icons.DocumentTextIcon className="h-5 w-5 text-blue-500" />;
       case 'tool':
-        return <CalculatorIcon className="h-5 w-5 text-green-500" />;
+        return <Icons.CalculatorIcon className="h-5 w-5 text-green-500" />;
       case 'article':
-        return <NewspaperIcon className="h-5 w-5 text-purple-500" />;
+        return <Icons.NewspaperIcon className="h-5 w-5 text-purple-500" />;
       default:
-        return <DocumentTextIcon className="h-5 w-5 text-gray-500" />;
+        return <Icons.DocumentTextIcon className="h-5 w-5 text-gray-500" />;
     }
   };
-
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
         <p className="text-gray-600 mb-6">Tools, resources, and education to grow your wellness business</p>
-        
         {/* Main Navigation */}
         <BusinessHubNavigation />
-        
         <div className="max-w-5xl mx-auto">
           {/* Search Bar */}
           <div className="mb-8">
@@ -336,7 +296,6 @@ function SearchPageContent() {
               autoFocus={true}
             />
           </div>
-          
           {isLoading ? (
             <div className="py-12">
               <div className="flex justify-center items-center">
@@ -346,7 +305,7 @@ function SearchPageContent() {
             </div>
           ) : query && results.length === 0 ? (
             <div className="bg-white rounded-lg shadow-md p-8 text-center">
-              <MagnifyingGlassIcon className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+              <Icons.MagnifyingGlassIcon className="mx-auto h-12 w-12 text-gray-400 mb-4" />
               <h2 className="text-xl font-semibold mb-2">No results found</h2>
               <p className="text-gray-600 mb-6">
                 We couldn't find any matches for "{query}". Try adjusting your search terms or browse our popular resources below.
@@ -366,7 +325,6 @@ function SearchPageContent() {
                     {filteredResults.length} {filteredResults.length === 1 ? 'result' : 'results'} for "{query}"
                   </span>
                 </h2>
-                
                 <div className="flex gap-2">
                   <div className="relative">
                     <select
@@ -378,18 +336,16 @@ function SearchPageContent() {
                       <option value="date">Sort by Date</option>
                       <option value="rating">Sort by Rating</option>
                     </select>
-                    <ArrowsUpDownIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                    <Icons.ArrowsUpDownIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
                   </div>
                 </div>
               </div>
-              
               <div className="flex flex-col md:flex-row gap-6">
                 {/* Filters Sidebar */}
                 <div className="md:w-64 bg-white rounded-lg shadow-md p-4 h-fit">
                   <h3 className="font-semibold mb-4 flex items-center">
-                    <FunnelIcon className="h-4 w-4 mr-2" /> Filters
+                    <Icons.FunnelIcon className="h-4 w-4 mr-2" /> Filters
                   </h3>
-                  
                   <div className="mb-6">
                     <h4 className="text-sm font-medium mb-2">Content Type</h4>
                     <div className="space-y-2">
@@ -417,7 +373,6 @@ function SearchPageContent() {
                       ))}
                     </div>
                   </div>
-                  
                   <div className="mb-6">
                     <h4 className="text-sm font-medium mb-2">Section</h4>
                     <div className="space-y-2">
@@ -445,7 +400,6 @@ function SearchPageContent() {
                       ))}
                     </div>
                   </div>
-                  
                   {/* Rating Filter */}
                   <div className="mb-6">
                     <h4 className="text-sm font-medium mb-2">Minimum Rating</h4>
@@ -478,7 +432,6 @@ function SearchPageContent() {
                       ))}
                     </div>
                   </div>
-                  
                   {filteredResults.length !== results.length && (
                     <Button
                       variant="outline"
@@ -492,7 +445,6 @@ function SearchPageContent() {
                     </Button>
                   )}
                 </div>
-                
                 {/* Results List */}
                 <div className="flex-1">
                   {sortedResults.length === 0 ? (
@@ -546,7 +498,7 @@ function SearchPageContent() {
                                   className={`p-1 rounded-full text-gray-400 hover:text-gray-600`}
                                   title="View reviews"
                                 >
-                                  <ChatBubbleLeftRightIcon className="h-5 w-5" />
+                                  <Icons.ChatBubbleLeftRightIcon className="h-5 w-5" />
                                 </button>
                                 <button
                                   onClick={() => toggleBookmark(result)}
@@ -555,17 +507,14 @@ function SearchPageContent() {
                                   }`}
                                   title={bookmarkedItems[result.id] ? 'Remove from bookmarks' : 'Add to bookmarks'}
                                 >
-                                  <BookmarkIcon className="h-5 w-5" />
+                                  <Icons.BookmarkIcon className="h-5 w-5" />
                                 </button>
                               </div>
                             </div>
-                            
                             <Link href={result.url}>
                               <h3 className="text-xl font-semibold mt-2 mb-2 hover:text-blue-600">{result.title}</h3>
                             </Link>
-                            
                             <p className="text-gray-600 mb-3 line-clamp-2">{result.description}</p>
-                            
                             <div className="flex items-center justify-between mt-4">
                               <div className="flex flex-wrap gap-1">
                                 {result.tags.map(tag => (
@@ -574,7 +523,6 @@ function SearchPageContent() {
                                   </span>
                                 ))}
                               </div>
-                              
                               <div className="flex items-center text-sm text-gray-500">
                                 <div className="mr-4">
                                   <StarRating
@@ -588,7 +536,6 @@ function SearchPageContent() {
                                 <span>{new Date(result.date).toLocaleDateString()}</span>
                               </div>
                             </div>
-
                             {/* Reviews Section - Expandable */}
                             {expandedReviews[result.id] && (
                               <div className="mt-4 border-t pt-4">
@@ -598,7 +545,7 @@ function SearchPageContent() {
                                     onClick={() => toggleReviews(result.id)} 
                                     className="text-gray-400 hover:text-gray-600"
                                   >
-                                    <XMarkIcon className="h-5 w-5" />
+                                    <Icons.XMarkIcon className="h-5 w-5" />
                                   </button>
                                 </div>
                                 <ResourceReview 
@@ -643,7 +590,6 @@ function SearchPageContent() {
     </Layout>
   );
 }
-
 // Main page component with Suspense
 export default function SearchPage() {
   return (
@@ -654,7 +600,6 @@ export default function SearchPage() {
     </Layout>
   );
 }
-
 // Add skeleton component for loading state
 function SearchPageSkeleton() {
   return (

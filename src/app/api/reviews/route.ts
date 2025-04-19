@@ -1,4 +1,5 @@
-import { createServerClient } from '@supabase/ssr';
+import { prisma } from '@/lib/database/client';
+import { getSession } from '@auth0/nextjs-auth0';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
@@ -6,56 +7,46 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const providerId = searchParams.get('providerId');
   
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get: (name) => cookies().get(name)?.value,
-        set: () => {}, // Not needed for GET requests
-        remove: () => {}, // Not needed for GET requests
-      },
+  try {
+    let reviews;
+    
+    if (providerId) {
+      reviews = await prisma.review.findMany({
+        where: {
+          providerId: providerId
+        },
+        include: {
+          customer: true,
+          provider: true
+        }
+      });
+    } else {
+      reviews = await prisma.review.findMany({
+        include: {
+          customer: true,
+          provider: true
+        }
+      });
     }
-  );
-  
-  let query = supabase.from('reviews').select('*, customer:profiles(*), provider:providers(*)');
-  
-  if (providerId) {
-    query = query.eq('provider_id', providerId);
-  }
-  
-  const { data, error } = await query;
-  
-  if (error) {
+    
+    return NextResponse.json({ 
+      success: true,
+      count: reviews.length,
+      data: reviews
+    });
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
     return NextResponse.json(
-      { error: error.message },
+      { error: 'Error fetching reviews' },
       { status: 500 }
     );
   }
-  
-  return NextResponse.json({ 
-    success: true,
-    count: data.length,
-    data 
-  });
 }
 
 export async function POST(request: Request) {
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get: (name) => cookies().get(name)?.value,
-        set: () => {}, // We'll handle cookie setting in a proper response
-        remove: () => {}, // Not needed for this context
-      },
-    }
-  );
-  
-  // Check if user is authenticated
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
+  // Check if user is authenticated with Auth0
+  const session = await getSession();
+  if (!session || !session.user) {
     return NextResponse.json(
       { error: 'Not authorized' },
       { status: 401 }
@@ -75,13 +66,11 @@ export async function POST(request: Request) {
     }
     
     // Check if provider exists
-    const { data: provider, error: providerError } = await supabase
-      .from('providers')
-      .select('id')
-      .eq('id', providerId)
-      .single();
+    const provider = await prisma.provider.findUnique({
+      where: { id: providerId }
+    });
     
-    if (providerError || !provider) {
+    if (!provider) {
       return NextResponse.json(
         { error: 'Provider not found' },
         { status: 404 }
@@ -90,13 +79,11 @@ export async function POST(request: Request) {
     
     // If booking ID is provided, verify ownership
     if (bookingId) {
-      const { data: booking, error: bookingError } = await supabase
-        .from('bookings')
-        .select('customer_id, status')
-        .eq('id', bookingId)
-        .single();
+      const booking = await prisma.booking.findUnique({
+        where: { id: bookingId }
+      });
       
-      if (bookingError || !booking) {
+      if (!booking) {
         return NextResponse.json(
           { error: 'Booking not found' },
           { status: 404 }
@@ -104,7 +91,7 @@ export async function POST(request: Request) {
       }
       
       // Check if the booking belongs to the user
-      if (booking.customer_id !== session.user.id) {
+      if (booking.customerId !== session.user.sub) {
         return NextResponse.json(
           { error: 'Not authorized to review this booking' },
           { status: 401 }
@@ -120,13 +107,14 @@ export async function POST(request: Request) {
       }
       
       // Check for existing review for this booking
-      const { data: existingReview } = await supabase
-        .from('reviews')
-        .select('id')
-        .eq('booking_id', bookingId)
-        .eq('customer_id', session.user.id);
+      const existingReview = await prisma.review.findFirst({
+        where: {
+          bookingId: bookingId,
+          customerId: session.user.sub
+        }
+      });
       
-      if (existingReview && existingReview.length > 0) {
+      if (existingReview) {
         return NextResponse.json(
           { error: 'You have already submitted a review for this booking' },
           { status: 400 }
@@ -135,39 +123,32 @@ export async function POST(request: Request) {
     }
     
     // Create the review
-    const { data: review, error: reviewError } = await supabase
-      .from('reviews')
-      .insert({
+    const review = await prisma.review.create({
+      data: {
         title,
         text,
         rating,
-        provider_id: providerId,
-        customer_id: session.user.id,
-        booking_id: bookingId || null
-      })
-      .select()
-      .single();
-    
-    if (reviewError) {
-      return NextResponse.json(
-        { error: reviewError.message },
-        { status: 500 }
-      );
-    }
+        providerId: providerId,
+        customerId: session.user.sub,
+        bookingId: bookingId || null
+      }
+    });
     
     // Calculate and update provider average rating
-    const { data: avgRating } = await supabase
-      .from('reviews')
-      .select('rating')
-      .eq('provider_id', providerId);
+    const reviews = await prisma.review.findMany({
+      where: { providerId: providerId }
+    });
     
-    if (avgRating && avgRating.length > 0) {
-      const avgValue = avgRating.reduce((sum: number, item: { rating: number }) => sum + item.rating, 0) / avgRating.length;
+    if (reviews && reviews.length > 0) {
+      const avgValue = reviews.reduce((sum, item) => sum + item.rating, 0) / reviews.length;
       
-      await supabase
-        .from('providers')
-        .update({ avg_rating: avgValue, total_reviews: avgRating.length })
-        .eq('id', providerId);
+      await prisma.provider.update({
+        where: { id: providerId },
+        data: { 
+          avgRating: avgValue, 
+          totalReviews: reviews.length 
+        }
+      });
     }
     
     return NextResponse.json({

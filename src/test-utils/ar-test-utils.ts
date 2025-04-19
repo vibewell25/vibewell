@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { MockCanvas, MockGL, MockXR } from '@react-three/test-renderer';
 import { Vector3 } from 'three';
+import React from 'react';
 
 // Mock WebGL context
 const mockWebGL = {
@@ -40,14 +41,13 @@ export function renderARComponent(ui: React.ReactElement) {
     }
   };
   
+  // Return properly rendered component without JSX-like syntax
   return render(
-    <MockCanvas>
-      <MockGL>
-        <MockXR>
-          {ui}
-        </MockXR>
-      </MockGL>
-    </MockCanvas>
+    React.createElement(MockCanvas, {}, 
+      React.createElement(MockGL, {}, 
+        React.createElement(MockXR, {}, ui)
+      )
+    )
   );
 }
 

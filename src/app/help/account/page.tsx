@@ -1,26 +1,17 @@
 'use client';
-
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { 
-  LockClosedIcon,
-  CreditCardIcon,
-  ShieldCheckIcon,
-  UserCircleIcon,
-  BellIcon,
-  DevicePhoneMobileIcon,
-  ArrowLeftIcon
-} from '@heroicons/react/24/outline';
+;
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@/components/ui/breadcrumb';
-
+import { Icons } from '@/components/icons';
 export default function AccountManagementHelp() {
   // Account help articles
   const accountArticles = [
     {
       id: 'password',
       title: 'Password Management',
-      icon: <LockClosedIcon className="h-6 w-6" />,
+      icon: <Icons.LockClosedIcon className="h-6 w-6" />,
       description: 'Learn how to change, reset, and secure your password.',
       path: '/help/account/password-management',
       popularTopics: [
@@ -32,7 +23,7 @@ export default function AccountManagementHelp() {
     {
       id: 'subscription',
       title: 'Subscription & Billing',
-      icon: <CreditCardIcon className="h-6 w-6" />,
+      icon: <Icons.CreditCardIcon className="h-6 w-6" />,
       description: 'Manage your subscription plan, payment methods, and billing information.',
       path: '/help/account/subscription-management',
       popularTopics: [
@@ -44,7 +35,7 @@ export default function AccountManagementHelp() {
     {
       id: 'security',
       title: 'Account Security',
-      icon: <ShieldCheckIcon className="h-6 w-6" />,
+      icon: <Icons.ShieldCheckIcon className="h-6 w-6" />,
       description: 'Protect your account with two-factor authentication and security best practices.',
       path: '/help/account/security',
       popularTopics: [
@@ -56,7 +47,7 @@ export default function AccountManagementHelp() {
     {
       id: 'profile',
       title: 'Profile Settings',
-      icon: <UserCircleIcon className="h-6 w-6" />,
+      icon: <Icons.UserCircleIcon className="h-6 w-6" />,
       description: 'Update your profile information, preferences, and privacy settings.',
       path: '/help/account/profile-settings',
       popularTopics: [
@@ -68,7 +59,7 @@ export default function AccountManagementHelp() {
     {
       id: 'notifications',
       title: 'Notifications & Alerts',
-      icon: <BellIcon className="h-6 w-6" />,
+      icon: <Icons.BellIcon className="h-6 w-6" />,
       description: 'Customize your notification preferences for app updates, reminders, and more.',
       path: '/help/account/notifications',
       popularTopics: [
@@ -80,7 +71,7 @@ export default function AccountManagementHelp() {
     {
       id: 'devices',
       title: 'Devices & Sessions',
-      icon: <DevicePhoneMobileIcon className="h-6 w-6" />,
+      icon: <Icons.DevicePhoneMobileIcon className="h-6 w-6" />,
       description: 'Manage connected devices, active sessions, and multi-device synchronization.',
       path: '/help/account/devices',
       popularTopics: [
@@ -90,7 +81,6 @@ export default function AccountManagementHelp() {
       ]
     }
   ];
-
   // Frequently asked questions
   const accountFaqs = [
     {
@@ -114,7 +104,6 @@ export default function AccountManagementHelp() {
       path: '/help/account/update-payment'
     }
   ];
-
   return (
     <Layout>
       <div className="container-app py-8">
@@ -127,20 +116,17 @@ export default function AccountManagementHelp() {
             <BreadcrumbLink href="/help/account">Account Management</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
-        
         {/* Header section */}
         <div className="flex items-center gap-3 mb-8">
           <Link href="/help" className="text-muted-foreground hover:text-foreground">
-            <ArrowLeftIcon className="h-5 w-5" />
+            <Icons.ArrowLeftIcon className="h-5 w-5" />
           </Link>
           <h1 className="text-3xl font-bold">Account Management</h1>
         </div>
-        
         <p className="text-lg text-muted-foreground mb-10 max-w-3xl">
           Learn how to manage your Vibewell account settings, including password changes, 
           subscription management, security features, and profile customization.
         </p>
-        
         {/* Main content */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           {accountArticles.map((category) => (
@@ -157,7 +143,6 @@ export default function AccountManagementHelp() {
                   <p className="text-muted-foreground">{category.description}</p>
                 </div>
               </div>
-              
               <h4 className="text-sm uppercase text-muted-foreground font-medium mb-3">Popular Topics</h4>
               <ul className="space-y-2 mb-4 pl-4 border-l-2 border-muted">
                 {category.popularTopics.map((topic, index) => (
@@ -172,14 +157,12 @@ export default function AccountManagementHelp() {
                   </li>
                 ))}
               </ul>
-              
               <Button variant="outline" asChild className="w-full">
                 <Link href={category.path}>View all {category.title} articles</Link>
               </Button>
             </div>
           ))}
         </div>
-        
         {/* FAQs section */}
         <div className="mb-12">
           <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
@@ -201,7 +184,6 @@ export default function AccountManagementHelp() {
             ))}
           </div>
         </div>
-        
         {/* Contact support section */}
         <div className="bg-muted rounded-xl p-8 text-center">
           <h2 className="text-2xl font-bold mb-4">Still Have Questions About Your Account?</h2>

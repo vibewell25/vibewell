@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Calendar } from '@/components/ui/calendar';
 import { 
+import { Icons } from '@/components/icons';
   StarIcon,
   CalendarIcon,
   ClockIcon,
@@ -21,7 +21,6 @@ import {
   BookmarkIcon,
   ShareIcon
 } from '@heroicons/react/24/outline';
-
 interface Service {
   id: string;
   name: string;
@@ -30,7 +29,6 @@ interface Service {
   price: number;
   description: string;
 }
-
 interface Review {
   id: string;
   user: {
@@ -42,7 +40,6 @@ interface Review {
   date: string;
   service: string;
 }
-
 interface PortfolioItem {
   id: string;
   image: string;
@@ -50,7 +47,6 @@ interface PortfolioItem {
   category: string;
   description: string;
 }
-
 const provider = {
   id: 'provider1',
   name: 'Sarah Johnson',
@@ -117,11 +113,9 @@ const provider = {
     }
   }
 };
-
 export default function ProviderProfilePage() {
   const [activeTab, setActiveTab] = useState('about');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-
   return (
     <Layout>
       <div className="container-app py-12">
@@ -137,7 +131,7 @@ export default function ProviderProfilePage() {
                 <h1 className="text-4xl font-bold">{provider.name}</h1>
                 <div className="flex items-center gap-2 mt-1">
                   <div className="flex items-center">
-                    <StarIcon className="h-5 w-5 text-yellow-500" />
+                    <Icons.StarIcon className="h-5 w-5 text-yellow-500" />
                     <span className="ml-1 font-medium">{provider.rating}</span>
                   </div>
                   <span className="text-muted-foreground">
@@ -155,19 +149,19 @@ export default function ProviderProfilePage() {
             </div>
             <div className="flex gap-4">
               <Button>
-                <CalendarIcon className="h-5 w-5 mr-2" />
+                <Icons.CalendarIcon className="h-5 w-5 mr-2" />
                 Book Appointment
               </Button>
               <Button variant="outline">
-                <ChatBubbleLeftIcon className="h-5 w-5 mr-2" />
+                <Icons.ChatBubbleLeftIcon className="h-5 w-5 mr-2" />
                 Message
               </Button>
               <Button variant="outline">
-                <BookmarkIcon className="h-5 w-5 mr-2" />
+                <Icons.BookmarkIcon className="h-5 w-5 mr-2" />
                 Save
               </Button>
               <Button variant="outline">
-                <ShareIcon className="h-5 w-5 mr-2" />
+                <Icons.ShareIcon className="h-5 w-5 mr-2" />
                 Share
               </Button>
             </div>
@@ -179,19 +173,19 @@ export default function ProviderProfilePage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <MapPinIcon className="h-5 w-5 text-muted-foreground" />
+                  <Icons.MapPinIcon className="h-5 w-5 text-muted-foreground" />
                   <span>{provider.location}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <PhoneIcon className="h-5 w-5 text-muted-foreground" />
+                  <Icons.PhoneIcon className="h-5 w-5 text-muted-foreground" />
                   <span>{provider.phone}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <EnvelopeIcon className="h-5 w-5 text-muted-foreground" />
+                  <Icons.EnvelopeIcon className="h-5 w-5 text-muted-foreground" />
                   <span>{provider.email}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <GlobeAltIcon className="h-5 w-5 text-muted-foreground" />
+                  <Icons.GlobeAltIcon className="h-5 w-5 text-muted-foreground" />
                   <a href={provider.website} className="text-primary hover:underline">
                     {provider.website}
                   </a>
@@ -200,7 +194,6 @@ export default function ProviderProfilePage() {
             </Card>
           </div>
         </div>
-
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-4">
@@ -209,7 +202,6 @@ export default function ProviderProfilePage() {
             <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
           </TabsList>
-
           {/* About Tab */}
           <TabsContent value="about" className="mt-6">
             <div className="grid gap-6 md:grid-cols-2">
@@ -225,7 +217,6 @@ export default function ProviderProfilePage() {
                   </div>
                 </CardContent>
               </Card>
-
               <Card>
                 <CardHeader>
                   <CardTitle>Working Hours</CardTitle>
@@ -245,7 +236,6 @@ export default function ProviderProfilePage() {
               </Card>
             </div>
           </TabsContent>
-
           {/* Services Tab */}
           <TabsContent value="services" className="mt-6">
             <div className="grid gap-4">
@@ -271,7 +261,6 @@ export default function ProviderProfilePage() {
               ))}
             </div>
           </TabsContent>
-
           {/* Portfolio Tab */}
           <TabsContent value="portfolio" className="mt-6">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -288,7 +277,6 @@ export default function ProviderProfilePage() {
               ))}
             </div>
           </TabsContent>
-
           {/* Reviews Tab */}
           <TabsContent value="reviews" className="mt-6">
             <div className="space-y-4">
@@ -304,7 +292,7 @@ export default function ProviderProfilePage() {
                         <h3 className="font-medium">{review.user.name}</h3>
                         <div className="flex items-center gap-2">
                           <div className="flex items-center">
-                            <StarIcon className="h-4 w-4 text-yellow-500" />
+                            <Icons.StarIcon className="h-4 w-4 text-yellow-500" />
                             <span className="ml-1">{review.rating}</span>
                           </div>
                           <span className="text-sm text-muted-foreground">

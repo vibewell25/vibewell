@@ -6,7 +6,7 @@ import { ProviderProfileForm } from '@/components/provider/profile-form';
 import { BusinessProfileWizard } from '@/components/business/business-profile-wizard';
 import { BusinessProfileEdit } from '@/components/business/business-profile-edit';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { supabase } from '@/lib/supabase/client';
+import { prisma } from '@/lib/database/client';
 import { useRouter } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';

@@ -5,7 +5,7 @@
  * TOTP (Time-based One-Time Password) standard (RFC 6238).
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { prisma } from '@/lib/database/client';
 import { authenticator } from 'otplib';
 import { createHash, randomBytes } from 'crypto';
 import { logger } from '@/lib/logger';

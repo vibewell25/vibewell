@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { prisma } from '@/lib/database/client';
 import { AnalyticsService } from './analytics-service';
 import nodemailer from 'nodemailer';
 import { Twilio } from 'twilio';

@@ -1,127 +1,210 @@
 {
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "security",
+    "security-node",
+    "sonarjs",
+    "no-secrets",
+    "react",
+    "react-hooks",
+    "boundaries"
+  ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "airbnb",
-    "airbnb-typescript",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:security/recommended",
+    "plugin:security-node/recommended",
+    "plugin:sonarjs/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript",
-    "plugin:jsx-a11y/recommended",
-    "prettier"
+    "next/core-web-vitals"
   ],
-  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2022,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
-  "plugins": [
-    "@typescript-eslint",
-    "react",
-    "react-hooks",
-    "import",
-    "jsx-a11y"
-  ],
-  "rules": {
-    "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
-    "@typescript-eslint/explicit-function-return-type": ["warn", { "allowExpressions": true }],
-    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
-    "@typescript-eslint/naming-convention": [
-      "error",
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "boundaries/elements": [
       {
-        "selector": "interface",
-        "format": ["PascalCase"],
-        "custom": {
-          "regex": "^[A-Z]",
-          "match": true
-        }
+        "type": "components",
+        "pattern": "src/components"
       },
       {
-        "selector": "typeAlias",
-        "format": ["PascalCase"],
-        "custom": {
-          "regex": "^[A-Z]",
-          "match": true
-        }
-      }
-    ],
-    "react/display-name": "error",
-    "react-hooks/rules-of-hooks": "error",
-    "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off",
-    "react/jsx-props-no-spreading": "off",
-    "react/function-component-definition": [
-      "error",
+        "type": "pages",
+        "pattern": "src/pages"
+      },
       {
-        "namedComponents": ["function-declaration", "arrow-function"],
-        "unnamedComponents": "arrow-function"
-      }
-    ],
-    "react/require-default-props": "off",
-    "react/jsx-pascal-case": ["error", { "allowAllCaps": true }],
-    "import/prefer-default-export": "off",
-    "import/order": [
-      "error",
+        "type": "api",
+        "pattern": "src/api"
+      },
       {
-        "groups": [
-          ["builtin", "external"],
-          "internal",
-          ["parent", "sibling"],
-          "index"
-        ],
-        "pathGroups": [
-          {
-            "pattern": "react",
-            "group": "external",
-            "position": "before"
-          }
-        ],
-        "pathGroupsExcludedImportTypes": ["react"],
-        "newlines-between": "always",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        }
-      }
-    ],
-    "import/extensions": [
-      "error",
-      "ignorePackages",
+        "type": "services",
+        "pattern": "src/services"
+      },
       {
-        "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
-      }
-    ],
-    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
-    "camelcase": ["error", { "properties": "never" }],
-    "no-var": "error",
-    "prefer-const": "error",
-    "max-len": ["warn", { "code": 100, "ignoreComments": true, "ignoreStrings": true }],
-    "spaced-comment": ["error", "always"],
-    "filenames/match-regex": ["off", "^[a-z][a-z0-9.-]*$", true],
-    "jsx-a11y/alt-text": "error",
-    "react/jsx-filename-extension": [
-      "error",
+        "type": "hooks",
+        "pattern": "src/hooks"
+      },
       {
-        "extensions": [".jsx", ".tsx"]
+        "type": "utils/client",
+        "pattern": "src/utils/client"
+      },
+      {
+        "type": "utils/server",
+        "pattern": "src/utils/server"
+      },
+      {
+        "type": "types",
+        "pattern": "src/types"
       }
     ]
   },
-  "settings": {
-    "import/resolver": {
-      "typescript": {
-        "project": "./tsconfig.json"
-      },
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+  "rules": {
+    // Security
+    "security/detect-object-injection": "error",
+    "security/detect-non-literal-regexp": "error",
+    "security/detect-unsafe-regex": "error",
+    "security/detect-buffer-noassert": "error",
+    "security/detect-child-process": "error",
+    "security/detect-disable-mustache-escape": "error",
+    "security/detect-eval-with-expression": "error",
+    "security/detect-no-csrf-before-method-override": "error",
+    "security/detect-possible-timing-attacks": "error",
+    "security/detect-pseudoRandomBytes": "error",
+    "no-secrets/no-secrets": ["error", { "ignoreContent": ["^[a-z]+$"] }],
+
+    // TypeScript
+    "@typescript-eslint/explicit-function-return-type": "error",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unsafe-assignment": "error",
+    "@typescript-eslint/no-unsafe-call": "error",
+    "@typescript-eslint/no-unsafe-member-access": "error",
+    "@typescript-eslint/no-unsafe-return": "error",
+    "@typescript-eslint/restrict-template-expressions": "error",
+    "@typescript-eslint/strict-boolean-expressions": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
       }
-    },
-    "react": {
-      "version": "detect"
+    ],
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/explicit-function-return-type": [
+      "warn",
+      {
+        "allowExpressions": true,
+        "allowTypedFunctionExpressions": true
+      }
+    ],
+    "@typescript-eslint/no-unsafe-assignment": "error",
+    "@typescript-eslint/no-unsafe-call": "error",
+    "@typescript-eslint/no-unsafe-member-access": "error",
+    "@typescript-eslint/no-unsafe-return": "error",
+    "@typescript-eslint/restrict-template-expressions": "error",
+    "@typescript-eslint/strict-boolean-expressions": "error",
+
+    // React
+    "react/jsx-no-target-blank": "error",
+    "react/jsx-no-script-url": "error",
+    "react/no-danger": "error",
+    "react/no-find-dom-node": "error",
+    "react/no-invalid-html-attribute": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "react/no-unused-prop-types": "error",
+    "react/jsx-no-useless-fragment": "error",
+    "react/jsx-sort-props": [
+      "warn",
+      {
+        "callbacksLast": true,
+        "shorthandFirst": true,
+        "ignoreCase": true,
+        "reservedFirst": true
+      }
+    ],
+
+    // Best Practices
+    "sonarjs/no-all-duplicated-branches": "error",
+    "sonarjs/no-element-overwrite": "error",
+    "sonarjs/no-identical-conditions": "error",
+    "sonarjs/no-identical-expressions": "error",
+    "sonarjs/no-one-iteration-loop": "error",
+    "sonarjs/no-use-of-empty-return-value": "error",
+    "sonarjs/no-collection-size-mischeck": "error",
+    "sonarjs/no-redundant-jump": "error",
+    "sonarjs/no-same-line-conditional": "error",
+    "sonarjs/no-unused-collection": "error",
+    "sonarjs/no-useless-catch": "error",
+
+    // Node.js Security
+    "security-node/detect-crlf": "error",
+    "security-node/detect-dangerous-redirects": "error",
+    "security-node/detect-html-injection": "error",
+    "security-node/detect-nosql-injection": "error",
+    "security-node/detect-sql-injection": "error",
+    "security-node/detect-xpath-injection": "error",
+
+    // Boundaries
+    "boundaries/element-types": [
+      2,
+      {
+        "default": "allow",
+        "rules": [
+          {
+            "from": "components",
+            "disallow": ["api", "services", "utils/server"],
+            "message": "Components cannot import from server-side modules"
+          },
+          {
+            "from": "pages",
+            "allow": ["components", "hooks", "utils/client", "types", "api"],
+            "message": "Pages should only import from allowed client-side modules"
+          },
+          {
+            "from": "api",
+            "allow": ["services", "utils/server", "types"],
+            "message": "API routes should only import from server-side modules"
+          },
+          {
+            "from": "services",
+            "disallow": ["components", "pages", "hooks"],
+            "message": "Services cannot import from client-side modules"
+          }
+        ]
+      }
+    ],
+    "import/no-cycle": "error",
+    "import/no-self-import": "error",
+    "import/no-relative-parent-imports": "error"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.ts", "**/*.test.tsx"],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "security/detect-object-injection": "off"
+      }
     }
-  }
+  ],
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    "build/",
+    ".next/",
+    "out/",
+    "coverage/",
+    "*.config.js",
+    "*.config.ts"
+  ]
 } 

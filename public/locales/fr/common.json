@@ -1,0 +1,39 @@
+{
+  "welcome": "Bienvenue sur Vibewell",
+  "navigation": {
+    "home": "Accueil",
+    "beauty": "Beauté et Bien-être",
+    "profile": "Profil",
+    "settings": "Paramètres"
+  },
+  "actions": {
+    "login": "Se Connecter",
+    "signup": "S'inscrire",
+    "logout": "Se Déconnecter",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "submit": "Soumettre",
+    "back": "Retour",
+    "next": "Suivant",
+    "search": "Rechercher"
+  },
+  "meditation": {
+    "start": "Commencer la méditation",
+    "stop": "Arrêter la méditation",
+    "themes": {
+      "forest": "Forêt",
+      "beach": "Plage",
+      "mountain": "Montagne",
+      "zenGarden": "Jardin Zen"
+    },
+    "sounds": {
+      "rain": "Pluie",
+      "oceanWaves": "Vagues de l'océan",
+      "gentleWind": "Vent doux",
+      "birdSongs": "Chants d'oiseaux",
+      "silence": "Silence"
+    }
+  }
+} 

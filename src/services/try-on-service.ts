@@ -1,10 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
 import { RecommendationService } from './recommendation-service';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { prisma } from '@/lib/database/client';
 
 interface TryOnSession {
   id: string;
@@ -35,17 +30,16 @@ export class TryOnService {
    */
   async startSession(userId: string, productId: string): Promise<string> {
     try {
-      const { data, error } = await supabase
-        .from('try_on_sessions')
-        .insert({
-          user_id: userId,
-          product_id: productId,
+      const data = await prisma.tryOnSession.create({
+        data: {
+          userId,
+          productId,
           completed: false,
-        })
-        .select('id')
-        .single();
-      
-      if (error) throw error;
+        },
+        select: {
+          id: true
+        }
+      });
       
       // Increment product view count via recommendation service
       try {
@@ -75,18 +69,18 @@ export class TryOnService {
     }
   ): Promise<void> {
     try {
-      const { error } = await supabase
-        .from('try_on_sessions')
-        .update({
+      await prisma.tryOnSession.updateMany({
+        where: {
+          id: sessionId,
+          userId: userId
+        },
+        data: {
           completed: true,
-          duration_seconds: data.duration_seconds,
+          durationSeconds: data.duration_seconds,
           screenshots: data.screenshots,
-          feedback: data.feedback,
-        })
-        .eq('id', sessionId)
-        .eq('user_id', userId);
-      
-      if (error) throw error;
+          feedback: data.feedback as any,
+        }
+      });
     } catch (err) {
       console.error('Error completing try-on session:', err);
       throw err;
@@ -102,15 +96,15 @@ export class TryOnService {
     feedback: TryOnFeedback
   ): Promise<void> {
     try {
-      const { error } = await supabase
-        .from('try_on_sessions')
-        .update({
-          feedback,
-        })
-        .eq('id', sessionId)
-        .eq('user_id', userId);
-      
-      if (error) throw error;
+      await prisma.tryOnSession.updateMany({
+        where: {
+          id: sessionId,
+          userId: userId
+        },
+        data: {
+          feedback: feedback as any,
+        }
+      });
     } catch (err) {
       console.error('Error adding try-on feedback:', err);
       throw err;
@@ -122,14 +116,25 @@ export class TryOnService {
    */
   async getUserSessions(userId: string): Promise<TryOnSession[]> {
     try {
-      const { data, error } = await supabase
-        .from('try_on_sessions')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
+      const sessions = await prisma.tryOnSession.findMany({
+        where: {
+          userId: userId
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      });
       
-      if (error) throw error;
-      return data as TryOnSession[];
+      return sessions.map(session => ({
+        id: session.id,
+        user_id: session.userId,
+        product_id: session.productId,
+        duration_seconds: session.durationSeconds || undefined,
+        completed: session.completed || undefined,
+        feedback: session.feedback as TryOnFeedback | undefined,
+        screenshots: session.screenshots,
+        created_at: session.createdAt.toISOString()
+      }));
     } catch (err) {
       console.error('Error getting user try-on sessions:', err);
       return [];
@@ -141,24 +146,30 @@ export class TryOnService {
    */
   async getProductSession(userId: string, productId: string): Promise<TryOnSession | null> {
     try {
-      const { data, error } = await supabase
-        .from('try_on_sessions')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('product_id', productId)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
-      
-      if (error) {
-        if (error.code === 'PGRST116') {
-          // No rows returned (PGRST116 = no rows)
-          return null;
+      const session = await prisma.tryOnSession.findFirst({
+        where: {
+          userId: userId,
+          productId: productId
+        },
+        orderBy: {
+          createdAt: 'desc'
         }
-        throw error;
+      });
+      
+      if (!session) {
+        return null;
       }
       
-      return data as TryOnSession;
+      return {
+        id: session.id,
+        user_id: session.userId,
+        product_id: session.productId,
+        duration_seconds: session.durationSeconds || undefined,
+        completed: session.completed || undefined,
+        feedback: session.feedback as TryOnFeedback | undefined,
+        screenshots: session.screenshots,
+        created_at: session.createdAt.toISOString()
+      };
     } catch (err) {
       console.error('Error getting product try-on session:', err);
       return null;
@@ -171,18 +182,28 @@ export class TryOnService {
    */
   async getAllSessions(startDate: Date, endDate: Date): Promise<TryOnSession[]> {
     try {
-      const startTimestamp = startDate.toISOString();
-      const endTimestamp = endDate.toISOString();
+      const sessions = await prisma.tryOnSession.findMany({
+        where: {
+          createdAt: {
+            gte: startDate,
+            lte: endDate
+          }
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      });
       
-      const { data, error } = await supabase
-        .from('try_on_sessions')
-        .select('*')
-        .gte('created_at', startTimestamp)
-        .lte('created_at', endTimestamp)
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      return data as TryOnSession[];
+      return sessions.map(session => ({
+        id: session.id,
+        user_id: session.userId,
+        product_id: session.productId,
+        duration_seconds: session.durationSeconds || undefined,
+        completed: session.completed || undefined,
+        feedback: session.feedback as TryOnFeedback | undefined,
+        screenshots: session.screenshots,
+        created_at: session.createdAt.toISOString()
+      }));
     } catch (err) {
       console.error('Error getting all try-on sessions:', err);
       return [];
@@ -199,34 +220,28 @@ export class TryOnService {
     productBreakdown: Record<string, number>;
   }> {
     try {
-      const startTimestamp = startDate.toISOString();
-      const endTimestamp = endDate.toISOString();
+      const sessions = await prisma.tryOnSession.findMany({
+        where: {
+          createdAt: {
+            gte: startDate,
+            lte: endDate
+          }
+        }
+      });
       
-      // Get all sessions in the date range
-      const { data, error } = await supabase
-        .from('try_on_sessions')
-        .select('*')
-        .gte('created_at', startTimestamp)
-        .lte('created_at', endTimestamp);
-      
-      if (error) throw error;
-      
-      const sessions = data as TryOnSession[];
       const completedSessions = sessions.filter(s => s.completed);
       
-      // Calculate average duration of completed sessions
       const totalDuration = completedSessions.reduce((sum, session) => {
-        return sum + (session.duration_seconds || 0);
+        return sum + (session.durationSeconds || 0);
       }, 0);
       
       const averageDuration = completedSessions.length > 0 
         ? totalDuration / completedSessions.length 
         : 0;
       
-      // Count sessions by product
       const productBreakdown: Record<string, number> = {};
       sessions.forEach(session => {
-        productBreakdown[session.product_id] = (productBreakdown[session.product_id] || 0) + 1;
+        productBreakdown[session.productId] = (productBreakdown[session.productId] || 0) + 1;
       });
       
       return {

@@ -20,7 +20,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/components/ui/use-toast';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Fallback } from '@/components/ui/fallback';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/clerk-auth-context';
 
 // Available time slots for booking
 const TIME_SLOTS = [

@@ -1,0 +1,14 @@
+{
+  "welcome": "مرحباً بكم في Vibewell",
+  "navigation": {
+    "home": "الرئيسية",
+    "beauty": "الجمال والعافية",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات"
+  },
+  "actions": {
+    "login": "تسجيل الدخول",
+    "signup": "إنشاء حساب",
+    "logout": "تسجيل الخروج"
+  }
+} 

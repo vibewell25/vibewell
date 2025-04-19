@@ -19,7 +19,7 @@ import { ThemeProvider } from '../components/theme-provider';
 export function createWrapperWithProviders(providers = []) {
   return ({ children }) => {
     return providers.reduceRight((acc, Provider) => {
-      // @ts-ignore - JSX in .ts file
+      // @ts-expect-error - JSX in .ts file
       return <Provider>{acc}</Provider>;
     }, children);
   };
@@ -32,7 +32,7 @@ export function createWrapperWithProviders(providers = []) {
  * @returns Rendered component
  */
 export function renderWithProviders(ui, options = {}) {
-  // @ts-ignore - Ignore property does not exist errors
+  // @ts-expect-error - Ignore property does not exist errors
   const {
     wrapper: CustomWrapper,
     theme = 'light',
@@ -40,12 +40,12 @@ export function renderWithProviders(ui, options = {}) {
   } = options;
 
   function Wrapper({ children }) {
-    // @ts-ignore - JSX in .ts file
+    // @ts-expect-error - JSX in .ts file
     return (
-      // @ts-ignore - Prop may not exist on ThemeProvider
+      // @ts-expect-error - Prop may not exist on ThemeProvider
       <ThemeProvider initialTheme={theme}>
         {CustomWrapper ? (
-          // @ts-ignore - JSX in .ts file
+          // @ts-expect-error - JSX in .ts file
           <CustomWrapper>{children}</CustomWrapper>
         ) : (
           children
@@ -64,7 +64,7 @@ export function renderWithProviders(ui, options = {}) {
  * @returns Rendered component and axe results
  */
 export async function renderWithAccessibilityCheck(ui, options = {}) {
-  // @ts-ignore - Ignore property does not exist errors
+  // @ts-expect-error - Ignore property does not exist errors
   const { axeOptions, ...renderOptions } = options;
   const renderResult = renderWithProviders(ui, renderOptions);
   
@@ -102,22 +102,22 @@ export async function testForm({
                  screen.getByPlaceholderText(fieldName, { exact: false }) ||
                  screen.getByTestId(`input-${fieldName}`);
     
-    // @ts-ignore - Ignore property access issues
+    // @ts-expect-error - Ignore property access issues
     if (input.type === 'checkbox') {
       if (value) {
         await user.click(input);
       }
-    // @ts-ignore - Ignore property access issues
+    // @ts-expect-error - Ignore property access issues
     } else if (input.type === 'select-one') {
-      // @ts-ignore - Ignore type compatibility issues
+      // @ts-expect-error - Ignore type compatibility issues
       await user.selectOptions(input, value);
-    // @ts-ignore - Ignore property access issues
+    // @ts-expect-error - Ignore property access issues
     } else if (input.type === 'radio') {
-      // @ts-ignore - Ignore type compatibility issues
+      // @ts-expect-error - Ignore type compatibility issues
       const radioOption = screen.getByLabelText(value);
       await user.click(radioOption);
     } else {
-      // @ts-ignore - Ignore type compatibility issues
+      // @ts-expect-error - Ignore type compatibility issues
       await user.type(input, value);
     }
   }
@@ -129,7 +129,7 @@ export async function testForm({
   // Check for errors
   if (Object.keys(expectedErrors).length > 0) {
     for (const [fieldName, errorMessage] of Object.entries(expectedErrors)) {
-      // @ts-ignore - Ignore type compatibility issues
+      // @ts-expect-error - Ignore type compatibility issues
       const errorElement = await screen.findByText(errorMessage);
       expect(errorElement).toBeInTheDocument();
     }
@@ -246,7 +246,7 @@ export function testThemeSupport(component, themeCheck) {
   // Test in light mode
   const lightResult = renderWithProviders(component, { theme: 'light' });
   themeCheck(lightResult, 'light');
-  // @ts-ignore - Use imported testingCleanup
+  // @ts-expect-error - Use imported testingCleanup
   testingCleanup();
   
   // Test in dark mode

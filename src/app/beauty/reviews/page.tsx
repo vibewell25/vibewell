@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { 
+import { Icons } from '@/components/icons';
   StarIcon,
   ChartBarIcon,
   FunnelIcon,
@@ -21,7 +21,6 @@ import {
   PencilIcon,
   TrashIcon
 } from '@heroicons/react/24/outline';
-
 interface Review {
   id: string;
   user: {
@@ -43,7 +42,6 @@ interface Review {
     date: string;
   };
 }
-
 const reviews: Review[] = [
   {
     id: 'review1',
@@ -66,7 +64,6 @@ const reviews: Review[] = [
     }
   }
 ];
-
 const ratingStats = {
   average: 4.8,
   total: 128,
@@ -78,24 +75,20 @@ const ratingStats = {
     1: 2
   }
 };
-
 export default function ReviewsPage() {
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const handleSubmitReview = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     // Handle review submission
     setTimeout(() => setIsSubmitting(false), 1000);
   };
-
   const handleModerateReview = (reviewId: string, action: 'approve' | 'reject') => {
     // Handle review moderation
   };
-
   return (
     <Layout>
       <div className="container-app py-12">
@@ -105,7 +98,6 @@ export default function ReviewsPage() {
             Manage and analyze customer reviews
           </p>
         </div>
-
         <div className="grid gap-8 md:grid-cols-3">
           {/* Stats Overview */}
           <div className="md:col-span-1">
@@ -118,7 +110,7 @@ export default function ReviewsPage() {
                   <div className="text-4xl font-bold">{ratingStats.average}</div>
                   <div className="flex justify-center gap-1 mt-2">
                     {[1, 2, 3, 4, 5].map((star) => (
-                      <StarIcon
+                      <Icons.StarIcon
                         key={star}
                         className={`h-5 w-5 ${
                           star <= Math.round(ratingStats.average)
@@ -132,7 +124,6 @@ export default function ReviewsPage() {
                     Based on {ratingStats.total} reviews
                   </p>
                 </div>
-
                 <div className="space-y-2">
                   {Object.entries(ratingStats.distribution)
                     .sort((a, b) => Number(b[0]) - Number(a[0]))
@@ -154,7 +145,6 @@ export default function ReviewsPage() {
               </CardContent>
             </Card>
           </div>
-
           {/* Reviews List */}
           <div className="md:col-span-2">
             <Card>
@@ -163,7 +153,7 @@ export default function ReviewsPage() {
                   <CardTitle>Reviews</CardTitle>
                   <div className="flex items-center gap-2">
                     <div className="relative">
-                      <MagnifyingGlassIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Icons.MagnifyingGlassIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                       <Input
                         placeholder="Search reviews..."
                         className="pl-8"
@@ -172,7 +162,7 @@ export default function ReviewsPage() {
                       />
                     </div>
                     <Button variant="outline" size="icon">
-                      <FunnelIcon className="h-4 w-4" />
+                      <Icons.FunnelIcon className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
@@ -185,7 +175,6 @@ export default function ReviewsPage() {
                     <TabsTrigger value="approved">Approved</TabsTrigger>
                     <TabsTrigger value="rejected">Rejected</TabsTrigger>
                   </TabsList>
-
                   <TabsContent value="all" className="mt-4">
                     <div className="space-y-4">
                       {reviews.map((review) => (
@@ -201,7 +190,7 @@ export default function ReviewsPage() {
                                   <h3 className="font-medium">{review.user.name}</h3>
                                   <div className="flex items-center gap-2">
                                     <div className="flex items-center">
-                                      <StarIcon className="h-4 w-4 text-yellow-500" />
+                                      <Icons.StarIcon className="h-4 w-4 text-yellow-500" />
                                       <span className="ml-1">{review.rating}</span>
                                     </div>
                                     <span className="text-sm text-muted-foreground">
@@ -216,17 +205,17 @@ export default function ReviewsPage() {
                                   size="icon"
                                   onClick={() => handleModerateReview(review.id, 'approve')}
                                 >
-                                  <CheckCircleIcon className="h-4 w-4" />
+                                  <Icons.CheckCircleIcon className="h-4 w-4" />
                                 </Button>
                                 <Button
                                   variant="outline"
                                   size="icon"
                                   onClick={() => handleModerateReview(review.id, 'reject')}
                                 >
-                                  <XCircleIcon className="h-4 w-4" />
+                                  <Icons.XCircleIcon className="h-4 w-4" />
                                 </Button>
                                 <Button variant="outline" size="icon">
-                                  <FlagIcon className="h-4 w-4" />
+                                  <Icons.FlagIcon className="h-4 w-4" />
                                 </Button>
                               </div>
                             </div>
@@ -259,7 +248,6 @@ export default function ReviewsPage() {
             </Card>
           </div>
         </div>
-
         {/* Review Submission Form */}
         <Card className="mt-8">
           <CardHeader>
@@ -286,7 +274,7 @@ export default function ReviewsPage() {
                         size="icon"
                         className="h-10 w-10"
                       >
-                        <StarIcon className="h-5 w-5" />
+                        <Icons.StarIcon className="h-5 w-5" />
                       </Button>
                     ))}
                   </div>

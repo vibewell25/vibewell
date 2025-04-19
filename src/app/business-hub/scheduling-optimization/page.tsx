@@ -1,24 +1,14 @@
 'use client';
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  CalendarIcon,
-  ClockIcon,
-  BellAlertIcon,
-  UserGroupIcon,
-  ChartBarIcon,
-  ArrowPathIcon,
-  CurrencyDollarIcon,
-  ExclamationTriangleIcon
-} from '@heroicons/react/24/outline';
+;
 import Link from 'next/link';
 import Image from 'next/image';
-
+import { Icons } from '@/components/icons';
 // Types
 interface SchedulingStrategy {
   id: string;
@@ -31,7 +21,6 @@ interface SchedulingStrategy {
   impact: 'low' | 'medium' | 'high';
   steps: string[];
 }
-
 interface SchedulingTool {
   id: string;
   title: string;
@@ -41,19 +30,17 @@ interface SchedulingTool {
   premium: boolean;
   url: string;
 }
-
 export default function SchedulingOptimizationPage() {
   const [activeTab, setActiveTab] = useState('strategies');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
-  
   // Scheduling strategies data
   const strategies: SchedulingStrategy[] = [
     {
       id: 'buffer-time',
       title: 'Strategic Buffer Times',
       description: 'Add small buffers between appointments to prevent running behind and reduce stress.',
-      icon: <ClockIcon className="h-10 w-10 text-blue-500" />,
+      icon: <Icons.ClockIcon className="h-10 w-10 text-blue-500" />,
       category: 'efficiency',
       difficulty: 'beginner',
       timeToImplement: 'Immediate',
@@ -70,7 +57,7 @@ export default function SchedulingOptimizationPage() {
       id: 'batch-services',
       title: 'Service Batching',
       description: 'Group similar services together on specific days to improve efficiency and reduce setup time.',
-      icon: <ArrowPathIcon className="h-10 w-10 text-teal-500" />,
+      icon: <Icons.ArrowPathIcon className="h-10 w-10 text-teal-500" />,
       category: 'efficiency',
       difficulty: 'intermediate',
       timeToImplement: '1-2 weeks',
@@ -88,7 +75,7 @@ export default function SchedulingOptimizationPage() {
       id: 'deposit-system',
       title: 'Appointment Deposit System',
       description: 'Require a deposit for bookings to reduce no-shows and last-minute cancellations.',
-      icon: <CurrencyDollarIcon className="h-10 w-10 text-green-500" />,
+      icon: <Icons.CurrencyDollarIcon className="h-10 w-10 text-green-500" />,
       category: 'no-shows',
       difficulty: 'intermediate',
       timeToImplement: '1 week',
@@ -106,7 +93,7 @@ export default function SchedulingOptimizationPage() {
       id: 'reminder-sequence',
       title: 'Multi-Touch Reminder System',
       description: 'Implement a series of appointment reminders across multiple channels to minimize no-shows.',
-      icon: <BellAlertIcon className="h-10 w-10 text-purple-500" />,
+      icon: <Icons.BellAlertIcon className="h-10 w-10 text-purple-500" />,
       category: 'no-shows',
       difficulty: 'beginner',
       timeToImplement: '2-3 days',
@@ -124,7 +111,7 @@ export default function SchedulingOptimizationPage() {
       id: 'prime-time-pricing',
       title: 'Peak Time Premium Pricing',
       description: 'Charge more for high-demand time slots to maximize revenue during your busiest periods.',
-      icon: <ChartBarIcon className="h-10 w-10 text-amber-500" />,
+      icon: <Icons.ChartBarIcon className="h-10 w-10 text-amber-500" />,
       category: 'revenue',
       difficulty: 'advanced',
       timeToImplement: '2-3 weeks',
@@ -143,7 +130,7 @@ export default function SchedulingOptimizationPage() {
       id: 'capacity-optimization',
       title: 'Capacity Utilization Analysis',
       description: 'Analyze and optimize your schedule to maximize the number of clients you can serve.',
-      icon: <UserGroupIcon className="h-10 w-10 text-indigo-500" />,
+      icon: <Icons.UserGroupIcon className="h-10 w-10 text-indigo-500" />,
       category: 'capacity',
       difficulty: 'advanced',
       timeToImplement: '2-4 weeks',
@@ -162,7 +149,7 @@ export default function SchedulingOptimizationPage() {
       id: 'waitlist-system',
       title: 'Smart Waitlist Management',
       description: 'Implement an effective waitlist system to quickly fill cancelled appointments and maximize bookings.',
-      icon: <CalendarIcon className="h-10 w-10 text-red-500" />,
+      icon: <Icons.CalendarIcon className="h-10 w-10 text-red-500" />,
       category: 'capacity',
       difficulty: 'intermediate',
       timeToImplement: '1 week',
@@ -180,7 +167,7 @@ export default function SchedulingOptimizationPage() {
       id: 'cancellation-policy',
       title: 'Effective Cancellation Policy',
       description: 'Create and enforce a cancellation policy that protects your time and revenue.',
-      icon: <ExclamationTriangleIcon className="h-10 w-10 text-orange-500" />,
+      icon: <Icons.ExclamationTriangleIcon className="h-10 w-10 text-orange-500" />,
       category: 'no-shows',
       difficulty: 'beginner',
       timeToImplement: '1 day',
@@ -196,7 +183,6 @@ export default function SchedulingOptimizationPage() {
       ]
     }
   ];
-
   // Scheduling tools data
   const tools: SchedulingTool[] = [
     {
@@ -254,19 +240,16 @@ export default function SchedulingOptimizationPage() {
       url: '/business-hub/scheduling-optimization/revenue-analyzer'
     }
   ];
-
   // Filter strategies based on selected category and difficulty
   const filteredStrategies = strategies.filter(strategy => {
     const matchesCategory = selectedCategory === 'all' || strategy.category === selectedCategory;
     const matchesDifficulty = selectedDifficulty === 'all' || strategy.difficulty === selectedDifficulty;
     return matchesCategory && matchesDifficulty;
   });
-
   // Filter tools based on selected category
   const filteredTools = tools.filter(tool => 
     selectedCategory === 'all' || tool.category === selectedCategory
   );
-
   // Categories for filtering
   const categories = [
     { id: 'all', name: 'All Categories' },
@@ -275,7 +258,6 @@ export default function SchedulingOptimizationPage() {
     { id: 'capacity', name: 'Capacity Optimization' },
     { id: 'revenue', name: 'Revenue Maximization' }
   ];
-
   // Difficulty levels for filtering
   const difficultyLevels = [
     { id: 'all', name: 'All Levels' },
@@ -283,7 +265,6 @@ export default function SchedulingOptimizationPage() {
     { id: 'intermediate', name: 'Intermediate' },
     { id: 'advanced', name: 'Advanced' }
   ];
-
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
@@ -301,7 +282,7 @@ export default function SchedulingOptimizationPage() {
               className="bg-indigo-600 hover:bg-indigo-700"
               onClick={() => setActiveTab('strategies')}
             >
-              <CalendarIcon className="h-5 w-5 mr-2" />
+              <Icons.CalendarIcon className="h-5 w-5 mr-2" />
               Scheduling Strategies
             </Button>
             <Button 
@@ -309,19 +290,18 @@ export default function SchedulingOptimizationPage() {
               className="border-indigo-600 text-indigo-600 hover:bg-indigo-50"
               onClick={() => setActiveTab('tools')}
             >
-              <ChartBarIcon className="h-5 w-5 mr-2" />
+              <Icons.ChartBarIcon className="h-5 w-5 mr-2" />
               Optimization Tools
             </Button>
           </div>
         </div>
       </div>
-
       {/* Stats Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
           <div className="flex items-start mb-2">
             <div className="p-2 bg-red-100 rounded-lg mr-4">
-              <ExclamationTriangleIcon className="h-8 w-8 text-red-600" />
+              <Icons.ExclamationTriangleIcon className="h-8 w-8 text-red-600" />
             </div>
             <div>
               <p className="text-gray-500 text-sm">No-Show Impact</p>
@@ -330,11 +310,10 @@ export default function SchedulingOptimizationPage() {
           </div>
           <p className="text-gray-600">Average annual revenue loss for a beauty business due to no-shows and late cancellations.</p>
         </div>
-        
         <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
           <div className="flex items-start mb-2">
             <div className="p-2 bg-teal-100 rounded-lg mr-4">
-              <ClockIcon className="h-8 w-8 text-teal-600" />
+              <Icons.ClockIcon className="h-8 w-8 text-teal-600" />
             </div>
             <div>
               <p className="text-gray-500 text-sm">Time Optimization</p>
@@ -343,11 +322,10 @@ export default function SchedulingOptimizationPage() {
           </div>
           <p className="text-gray-600">Potential increase in service capacity through optimized scheduling strategies.</p>
         </div>
-        
         <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
           <div className="flex items-start mb-2">
             <div className="p-2 bg-amber-100 rounded-lg mr-4">
-              <CurrencyDollarIcon className="h-8 w-8 text-amber-600" />
+              <Icons.CurrencyDollarIcon className="h-8 w-8 text-amber-600" />
             </div>
             <div>
               <p className="text-gray-500 text-sm">Revenue Impact</p>
@@ -357,7 +335,6 @@ export default function SchedulingOptimizationPage() {
           <p className="text-gray-600">Potential revenue increase from implementing effective scheduling and cancellation policies.</p>
         </div>
       </div>
-
       {/* Category and Difficulty Filters */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-4">Filter Options</h2>
@@ -378,7 +355,6 @@ export default function SchedulingOptimizationPage() {
               ))}
             </div>
           </div>
-
           <div>
             <p className="text-sm font-medium text-gray-700 mb-2">By Difficulty:</p>
             <div className="flex flex-wrap gap-3">
@@ -397,14 +373,12 @@ export default function SchedulingOptimizationPage() {
           </div>
         </div>
       </div>
-
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue={activeTab}>
         <TabsList className="mb-8">
           <TabsTrigger value="strategies">Scheduling Strategies</TabsTrigger>
           <TabsTrigger value="tools">Optimization Tools</TabsTrigger>
         </TabsList>
-        
         {/* Strategies Tab Content */}
         <TabsContent value="strategies">
           {filteredStrategies.length > 0 ? (
@@ -419,7 +393,6 @@ export default function SchedulingOptimizationPage() {
                         </div>
                         <CardTitle className="text-xl">{strategy.title}</CardTitle>
                       </div>
-                      
                       <div className="flex space-x-2">
                         {strategy.difficulty === 'beginner' && (
                           <Badge className="bg-green-100 text-green-800 border-green-200">Beginner</Badge>
@@ -430,13 +403,11 @@ export default function SchedulingOptimizationPage() {
                         {strategy.difficulty === 'advanced' && (
                           <Badge className="bg-red-100 text-red-800 border-red-200">Advanced</Badge>
                         )}
-                        
                         {strategy.impact === 'high' && (
                           <Badge className="bg-purple-100 text-purple-800 border-purple-200">High Impact</Badge>
                         )}
                       </div>
                     </div>
-
                     <CardDescription className="text-base">{strategy.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -450,7 +421,6 @@ export default function SchedulingOptimizationPage() {
                         <p className="font-medium capitalize">{strategy.category.replace('-', ' ')}</p>
                       </div>
                     </div>
-                    
                     <div>
                       <p className="text-sm font-medium mb-2">Implementation Steps:</p>
                       <ol className="space-y-1 pl-5 list-decimal text-sm text-gray-600">
@@ -488,7 +458,6 @@ export default function SchedulingOptimizationPage() {
             </div>
           )}
         </TabsContent>
-        
         {/* Tools Tab Content */}
         <TabsContent value="tools">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -531,7 +500,6 @@ export default function SchedulingOptimizationPage() {
           </div>
         </TabsContent>
       </Tabs>
-
       {/* Call to Action: Schedule Analysis */}
       <div className="bg-white rounded-xl shadow-md p-8 mb-12 border border-gray-200">
         <div className="flex flex-col md:flex-row items-center">
@@ -556,7 +524,6 @@ export default function SchedulingOptimizationPage() {
           </div>
         </div>
       </div>
-
       {/* Cancellation Policy Generator */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Cancellation Policy Generator</h2>
@@ -565,7 +532,6 @@ export default function SchedulingOptimizationPage() {
             Create a professional, legally-sound cancellation policy tailored to your beauty or wellness business. 
             Our generator creates policies that protect your business while maintaining positive client relationships.
           </p>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -578,7 +544,6 @@ export default function SchedulingOptimizationPage() {
                 <option>Custom</option>
               </select>
             </div>
-            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Late Cancellation Fee
@@ -591,7 +556,6 @@ export default function SchedulingOptimizationPage() {
               </select>
             </div>
           </div>
-          
           <div className="flex justify-end">
             <Button className="bg-indigo-600 hover:bg-indigo-700">
               Generate Policy
@@ -599,7 +563,6 @@ export default function SchedulingOptimizationPage() {
           </div>
         </div>
       </div>
-
       {/* Expert Tips Section */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Expert Scheduling Tips</h2>

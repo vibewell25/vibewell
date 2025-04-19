@@ -1,11 +1,11 @@
 'use client';
 
-import { Icons } from '@/components/icons';
 import { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useDebounce } from '@/hooks/useDebounce';
+import { Search, X, Clock } from 'lucide-react';
 // Search categories for type-ahead
 export type SearchCategory = 'all' | 'resources' | 'tools' | 'marketing' | 'financial' | 'staff';
 // Suggested search item
@@ -174,7 +174,7 @@ export function HubSearch({
   return (
     <div className={`relative ${className}`}>
       <div className="relative flex items-center">
-        <Icons.MagnifyingGlassIcon className="absolute left-3 text-gray-400 h-5 w-5" />
+        <Search className="absolute left-3 text-gray-400 h-5 w-5" />
         <Input
           ref={inputRef}
           type="text"
@@ -200,7 +200,7 @@ export function HubSearch({
             onClick={handleClearSearch}
             className="absolute right-12 text-gray-400 hover:text-gray-600"
           >
-            <Icons.XMarkIcon className="h-5 w-5" />
+            <X className="h-5 w-5" />
           </button>
         )}
         <Button 
@@ -257,7 +257,7 @@ export function HubSearch({
                   onClick={handleSearch}
                 >
                   <div className="font-medium flex items-center">
-                    <Icons.MagnifyingGlassIcon className="h-4 w-4 mr-2" />
+                    <Search className="h-4 w-4 mr-2" />
                     Search for "{query}"
                   </div>
                 </button>
@@ -283,7 +283,7 @@ export function HubSearch({
                         setTimeout(() => handleSearch(), 0);
                       }}
                     >
-                      <Icons.ClockIcon className="h-4 w-4 mr-2 text-gray-400" />
+                      <Clock className="h-4 w-4 mr-2 text-gray-400" />
                       <span>{search}</span>
                     </button>
                   </li>

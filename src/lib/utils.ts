@@ -236,4 +236,20 @@ export function generateRandomString(length: number): string {
   }
   
   return result;
-} 
+}
+
+/**
+ * Truncate a hash or long identifier to show the first and last few characters
+ * @param hash The hash or identifier to truncate
+ * @param chars Number of characters to show at the beginning and end
+ * @returns Truncated hash with ellipsis
+ */
+export function truncateHash(hash: string, chars: number = 4): string {
+  if (!hash) return '';
+  if (hash.length <= chars * 2) return hash;
+  
+  return `${hash.substring(0, chars)}...${hash.substring(hash.length - chars)}`;
+}
+
+// For backward compatibility
+export const truncateAddress = truncateHash; 

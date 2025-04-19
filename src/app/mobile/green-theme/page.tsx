@@ -1,16 +1,14 @@
 'use client';
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
-import { MagnifyingGlassIcon, StarIcon } from '@heroicons/react/24/solid';
-
+;
+import { Icons } from '@/components/icons';
 export default function GreenThemePage() {
   const [searchQuery, setSearchQuery] = useState('');
-
   // Sample data for featured services
   const featuredServices = [
     {
@@ -32,7 +30,6 @@ export default function GreenThemePage() {
       image: 'https://placehold.co/400x300?text=Herbal+Therapy',
     },
   ];
-
   return (
     <div className="min-h-screen bg-[#F0F0E7]">
       {/* Header with cool gradient */}
@@ -52,12 +49,11 @@ export default function GreenThemePage() {
             </Button>
           </div>
         </div>
-
         <div className="mb-4">
           <Card className="bg-white/10 border-0 backdrop-blur">
             <CardContent className="p-4">
               <div className="relative">
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/70" />
+                <Icons.MagnifyingGlassSolid className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/70" />
                 <Input 
                   className="pl-10 pr-3 py-2 rounded-lg border-0 bg-white/20 text-white placeholder:text-white/70"
                   placeholder="Search services..."
@@ -69,7 +65,6 @@ export default function GreenThemePage() {
           </Card>
         </div>
       </div>
-
       {/* Main Content */}
       <div className="px-4 py-6">
         <Card className="mb-6 bg-white rounded-xl overflow-hidden border-0 shadow-sm">
@@ -83,7 +78,6 @@ export default function GreenThemePage() {
                 T
               </div>
             </div>
-
             <div className="grid grid-cols-4 gap-3 mb-4">
               <div className="flex flex-col items-center">
                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-1">
@@ -118,7 +112,6 @@ export default function GreenThemePage() {
                 <span className="text-xs">Mi sagen</span>
               </div>
             </div>
-
             <h3 className="text-sm font-semibold mb-3">Recommendations</h3>
             <div className="grid grid-cols-3 gap-2 mb-3">
               <div className="col-span-1 text-center bg-gray-50 p-2 rounded-lg">
@@ -134,7 +127,6 @@ export default function GreenThemePage() {
                 <div className="font-bold">$3.40</div>
               </div>
             </div>
-
             <div className="grid grid-cols-2 gap-3">
               {featuredServices.map((service, index) => (
                 <div key={service.id} className="overflow-hidden rounded-lg bg-white shadow">
@@ -152,7 +144,7 @@ export default function GreenThemePage() {
                     <div className="flex items-center mt-1">
                       <div className="flex">
                         {Array.from({ length: service.rating }).map((_, i) => (
-                          <StarIcon key={i} className="h-3 w-3 text-amber-400" />
+                          <Icons.StarSolid key={i} className="h-3 w-3 text-amber-400" />
                         ))}
                       </div>
                       <span className="text-xs text-gray-500 ml-1">{service.reviewCount}</span>
@@ -163,7 +155,6 @@ export default function GreenThemePage() {
             </div>
           </CardContent>
         </Card>
-
         {/* Footer Navigation */}
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around p-2">
           <button className="p-2 flex flex-col items-center">

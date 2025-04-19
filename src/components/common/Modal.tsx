@@ -1,5 +1,6 @@
-import { Icons } from '@/components/icons';
+import { X } from 'lucide-react';
 import React, { useEffect } from 'react';
+
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -7,6 +8,7 @@ interface ModalProps {
   children: React.ReactNode;
   className?: string;
 }
+
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
@@ -20,16 +22,20 @@ export const Modal: React.FC<ModalProps> = ({
         onClose();
       }
     };
+    
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
       document.body.style.overflow = 'hidden';
     }
+    
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
   }, [isOpen, onClose]);
+  
   if (!isOpen) return null;
+  
   return (
     <div
       className="fixed inset-0 z-50 overflow-y-auto"
@@ -59,7 +65,7 @@ export const Modal: React.FC<ModalProps> = ({
               onClick={onClose}
             >
               <span className="sr-only">Close</span>
-              <Icons.XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              <X className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
           {title && (

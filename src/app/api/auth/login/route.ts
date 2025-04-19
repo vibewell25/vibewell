@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 import { authRateLimiter, applyRateLimit } from '../rate-limit-middleware';
+import { handleAuth, handleLogin } from '@auth0/nextjs-auth0';
 
 // Schema for validating the request body
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
+
+// Auth0 handler
+const { POST: auth0LoginHandler } = handleLogin();
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,34 +32,29 @@ export async function POST(req: NextRequest) {
       );
     }
     
-    const { email, password } = result.data;
-    
-    // Create Supabase client
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Sign in with email and password
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    
-    if (error) {
+    // Call Auth0 login handler
+    try {
+      // Create a modified request that Auth0 SDK expects
+      const url = new URL(req.url);
+      url.searchParams.set('email', result.data.email);
+      url.searchParams.set('password', result.data.password);
+      
+      const modifiedReq = new Request(url, {
+        method: 'POST',
+        headers: req.headers,
+      });
+      
+      // Use Auth0's built-in login handler
+      return await auth0LoginHandler(modifiedReq);
+    } catch (authError) {
+      console.error('Auth0 authentication error:', authError);
+      
       // To prevent user enumeration, don't reveal whether the email exists
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
       );
     }
-    
-    // Return success response
-    return NextResponse.json({
-      success: true,
-      user: {
-        id: data.user.id,
-        email: data.user.email,
-        role: data.user.user_metadata?.role || 'customer',
-      },
-    });
   } catch (error) {
     console.error('Error in login API:', error);
     return NextResponse.json(

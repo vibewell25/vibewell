@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { getSession } from '@auth0/nextjs-auth0';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 import Stripe from 'stripe';
 import { financialRateLimiter, applyRateLimit } from '@/lib/rate-limiter';
+import { prisma } from '@/lib/database/client';
 
 // Initialize Stripe with the secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
@@ -51,17 +52,16 @@ export async function POST(req: NextRequest) {
     // Get the validated data
     const { amount, currency, description, booking_id, service_id, payment_method_id } = result.data;
     
-    // Create Supabase client
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Check if user is authenticated
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
+    // Check if user is authenticated with Auth0
+    const session = await getSession();
+    if (!session || !session.user) {
       return NextResponse.json(
         { error: 'Authentication required' },
         { status: 401 }
       );
     }
+    
+    const userId = session.user.sub;
     
     // Create payment intent
     const paymentIntent = await stripe.paymentIntents.create({
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
       currency,
       description,
       metadata: {
-        user_id: session.user.id,
+        user_id: userId,
         booking_id: booking_id || '',
         service_id: service_id || '',
       },
@@ -79,23 +79,21 @@ export async function POST(req: NextRequest) {
       ...(payment_method_id && { payment_method: payment_method_id }),
     });
     
-    // Store payment intent in database for tracking
-    const { error: dbError } = await supabase
-      .from('payment_intents')
-      .insert([
-        {
+    // Store payment intent in database for tracking using Prisma
+    try {
+      await prisma.paymentIntent.create({
+        data: {
           id: paymentIntent.id,
-          user_id: session.user.id,
+          userId: userId,
           amount,
           currency,
           status: paymentIntent.status,
-          booking_id,
-          service_id,
-          created_at: new Date().toISOString(),
+          bookingId: booking_id,
+          serviceId: service_id,
+          createdAt: new Date(),
         },
-      ]);
-    
-    if (dbError) {
+      });
+    } catch (dbError) {
       console.error('Error storing payment intent:', dbError);
       // Continue even if DB storage fails
     }
@@ -147,12 +145,9 @@ export async function PUT(req: NextRequest) {
     
     const { payment_intent_id, payment_method_id } = result.data;
     
-    // Create Supabase client
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Check if user is authenticated
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
+    // Check if user is authenticated with Auth0
+    const session = await getSession();
+    if (!session || !session.user) {
       return NextResponse.json(
         { error: 'Authentication required' },
         { status: 401 }
@@ -164,16 +159,16 @@ export async function PUT(req: NextRequest) {
       ...(payment_method_id && { payment_method: payment_method_id }),
     });
     
-    // Update payment intent in database
-    const { error: dbError } = await supabase
-      .from('payment_intents')
-      .update({
-        status: paymentIntent.status,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', payment_intent_id);
-    
-    if (dbError) {
+    // Update payment intent in database using Prisma
+    try {
+      await prisma.paymentIntent.update({
+        where: { id: payment_intent_id },
+        data: {
+          status: paymentIntent.status,
+          updatedAt: new Date(),
+        },
+      });
+    } catch (dbError) {
       console.error('Error updating payment intent:', dbError);
       // Continue even if DB update fails
     }
@@ -212,34 +207,32 @@ export async function GET(req: NextRequest) {
       return rateLimitResponse; // Rate limit exceeded
     }
     
-    // Create Supabase client
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Check if user is authenticated
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
+    // Check if user is authenticated with Auth0
+    const session = await getSession();
+    if (!session || !session.user) {
       return NextResponse.json(
         { error: 'Authentication required' },
         { status: 401 }
       );
     }
     
-    // Get payment intents for the current user
-    const { data, error } = await supabase
-      .from('payment_intents')
-      .select('*')
-      .eq('user_id', session.user.id)
-      .order('created_at', { ascending: false });
+    const userId = session.user.sub;
     
-    if (error) {
-      console.error('Error fetching payment intents:', error);
+    // Get payment intents for the current user using Prisma
+    try {
+      const payments = await prisma.paymentIntent.findMany({
+        where: { userId: userId },
+        orderBy: { createdAt: 'desc' },
+      });
+      
+      return NextResponse.json({ payments });
+    } catch (dbError) {
+      console.error('Error fetching payment intents:', dbError);
       return NextResponse.json(
         { error: 'Failed to fetch payment history' },
         { status: 500 }
       );
     }
-    
-    return NextResponse.json({ payments: data });
   } catch (error) {
     console.error('Payment history error:', error);
     return NextResponse.json(

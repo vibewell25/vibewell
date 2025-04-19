@@ -1,12 +1,14 @@
 'use client';
 
-import { AnalyticsTest } from '@/components/test/analytics-test';
+import { FC } from 'react';
 
-export default function TestPage() {
+const TestPage: FC = () => {
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">Analytics Testing</h1>
-      <AnalyticsTest />
+    <div className="p-4">
+      <h1>Test Page</h1>
+      <p>If you can see this, the server is working!</p>
     </div>
   );
-} 
+};
+
+export default TestPage; 

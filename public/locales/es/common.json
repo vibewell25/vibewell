@@ -1,0 +1,22 @@
+{
+  "welcome": "Bienvenido a Vibewell",
+  "navigation": {
+    "home": "Inicio",
+    "beauty": "Belleza y Bienestar",
+    "profile": "Perfil",
+    "settings": "Configuración"
+  },
+  "actions": {
+    "login": "Iniciar Sesión",
+    "signup": "Registrarse",
+    "logout": "Cerrar Sesión",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "submit": "Enviar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "search": "Buscar"
+  }
+} 

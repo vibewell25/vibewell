@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getServerSession } from 'next-auth';
@@ -9,9 +8,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MapPinIcon, StarIcon } from '@heroicons/react/24/outline';
+;
 import { toast } from 'react-hot-toast';
-
+import { Icons } from '@/components/icons';
 interface Business {
   id: string;
   name: string;
@@ -23,7 +22,6 @@ interface Business {
   location: string;
   services: string[];
 }
-
 const CATEGORIES = [
   'All Categories',
   'Spa & Massage',
@@ -32,7 +30,6 @@ const CATEGORIES = [
   'Facial & Skin Care',
   'Wellness Center',
 ];
-
 export default function BusinessDirectoryPage() {
   const router = useRouter();
   const [businesses, setBusinesses] = useState<Business[]>([]);
@@ -40,7 +37,6 @@ export default function BusinessDirectoryPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [minRating, setMinRating] = useState(0);
-
   useEffect(() => {
     const checkAuth = async () => {
       const session = await getServerSession(authOptions);
@@ -49,7 +45,6 @@ export default function BusinessDirectoryPage() {
       }
     };
     checkAuth();
-
     const fetchBusinesses = async () => {
       try {
         const response = await fetch('/api/business');
@@ -65,10 +60,8 @@ export default function BusinessDirectoryPage() {
         setLoading(false);
       }
     };
-
     fetchBusinesses();
   }, [router]);
-
   const filteredBusinesses = businesses.filter(business => {
     const matchesSearch = business.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       business.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -76,7 +69,6 @@ export default function BusinessDirectoryPage() {
     const matchesRating = business.rating >= minRating;
     return matchesSearch && matchesCategory && matchesRating;
   });
-
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -93,7 +85,6 @@ export default function BusinessDirectoryPage() {
       </div>
     );
   }
-
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -120,7 +111,6 @@ export default function BusinessDirectoryPage() {
             </Select>
           </div>
         </div>
-
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredBusinesses.map((business) => (
             <Card key={business.id} className="overflow-hidden">
@@ -139,11 +129,11 @@ export default function BusinessDirectoryPage() {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                  <MapPinIcon className="h-4 w-4" />
+                  <Icons.MapPinIcon className="h-4 w-4" />
                   <span>{business.location}</span>
                 </div>
                 <div className="flex items-center gap-2 mb-4">
-                  <StarIcon className="h-5 w-5 text-yellow-400" />
+                  <Icons.StarIcon className="h-5 w-5 text-yellow-400" />
                   <span className="font-semibold">{business.rating.toFixed(1)}</span>
                   <span className="text-muted-foreground">({business.reviewCount} reviews)</span>
                 </div>

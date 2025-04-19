@@ -1,9 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
+import { prisma } from '@/lib/database/client';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+
 
 export interface Product {
   id: string;
@@ -57,10 +54,7 @@ export class ProductService {
    */
   async getProduct(id: string): Promise<Product | null> {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', id)
+      const products = await prisma.product.findMany({ where: { id: id } })
         .single();
 
       if (error) throw error;
@@ -84,9 +78,7 @@ export class ProductService {
       if (countError) throw countError;
 
       // Then get paginated results
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
+      const products = await prisma.product.findMany()
         .range((page - 1) * limit, page * limit - 1)
         .order('created_at', { ascending: false });
 
@@ -103,10 +95,7 @@ export class ProductService {
    */
   async getFeaturedProducts(limit: number = 6): Promise<Product[]> {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('featured', true)
+      const products = await prisma.product.findMany({ where: { featured: true } })
         .order('rating', { ascending: false })
         .limit(limit);
 
@@ -123,10 +112,7 @@ export class ProductService {
    */
   async getTrendingProducts(limit: number = 6): Promise<Product[]> {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('trending', true)
+      const products = await prisma.product.findMany({ where: { trending: true } })
         .order('rating', { ascending: false })
         .limit(limit);
 
@@ -143,10 +129,7 @@ export class ProductService {
    */
   async getProductsByType(type: string, limit: number = 20): Promise<Product[]> {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('type', type)
+      const products = await prisma.product.findMany({ where: { type: type } })
         .order('rating', { ascending: false })
         .limit(limit);
 
@@ -163,9 +146,7 @@ export class ProductService {
    */
   async getProductCategories(): Promise<{ categories: string[], subcategories: Record<string, string[]> }> {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('category, subcategory')
+      const products = await prisma.product.findMany()
         .not('category', 'is', null);
 
       if (error) throw error;
@@ -196,9 +177,7 @@ export class ProductService {
    */
   async getProductBrands(): Promise<string[]> {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('brand')
+      const products = await prisma.product.findMany()
         .not('brand', 'is', null);
 
       if (error) throw error;
@@ -214,9 +193,7 @@ export class ProductService {
    */
   async getProductTags(): Promise<string[]> {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('tags');
+      const products = await prisma.product.findMany();
 
       if (error) throw error;
       
@@ -342,19 +319,13 @@ export class ProductService {
   async getRelatedProducts(productId: string, limit: number = 4): Promise<Product[]> {
     try {
       // First get the original product
-      const { data: product, error: productError } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', productId)
+      const product = await prisma.product.findMany({ where: { id: productId } })
         .single();
 
       if (productError) throw productError;
 
       // Then get related products of the same type and category
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('type', product.type)
+      const products = await prisma.product.findMany({ where: { type: product.type } })
         .eq('category', product.category)
         .neq('id', productId)
         .order('rating', { ascending: false })
@@ -365,10 +336,7 @@ export class ProductService {
       // If not enough products found, get more based on type only
       if (data.length < limit) {
         const remaining = limit - data.length;
-        const { data: moreData, error: moreError } = await supabase
-          .from('products')
-          .select('*')
-          .eq('type', product.type)
+        const moreData = await prisma.product.findMany({ where: { type: product.type } })
           .neq('id', productId)
           .not('id', 'in', `(${data.map(p => p.id).join(',')})`)
           .order('rating', { ascending: false })

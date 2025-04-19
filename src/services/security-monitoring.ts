@@ -1,6 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
 import { Redis } from 'ioredis';
 import { logger } from '@/lib/logger';
+import { prisma } from '@/lib/prisma';
 
 interface SecurityEvent {
   userId?: string;
@@ -40,15 +40,10 @@ interface ThreatDetectionConfig {
 
 export class SecurityMonitoringService {
   private redis: Redis;
-  private supabase: ReturnType<typeof createClient>;
   private config: ThreatDetectionConfig;
 
   constructor() {
     this.redis = new Redis(process.env.REDIS_URL || '');
-    this.supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-    );
 
     this.config = {
       maxLoginAttempts: 5,
@@ -64,22 +59,18 @@ export class SecurityMonitoringService {
    */
   async logSecurityEvent(event: SecurityEvent): Promise<void> {
     try {
-      // Store event in Supabase for long-term storage and analysis
-      const { error } = await this.supabase
-        .from('security_events')
-        .insert([{
-          user_id: event.userId,
-          event_type: event.eventType,
-          timestamp: event.timestamp.toISOString(),
+      // Store event in database for long-term storage and analysis
+      await prisma.securityEvent.create({
+        data: {
+          userId: event.userId,
+          eventType: event.eventType,
+          timestamp: event.timestamp,
           metadata: event.metadata,
           severity: event.severity,
-          source_ip: event.sourceIp,
-          user_agent: event.userAgent,
-        }]);
-
-      if (error) {
-        throw error;
-      }
+          sourceIp: event.sourceIp,
+          userAgent: event.userAgent,
+        }
+      });
 
       // Store recent events in Redis for real-time analysis
       const recentEventKey = `security:recent:${event.eventType}:${event.userId || 'anonymous'}`;
@@ -253,40 +244,45 @@ export class SecurityMonitoringService {
     suspicious: boolean;
     details: Record<string, any>;
   } {
-    const patterns = {
-      rapidSuccession: false,
-      unusualTiming: false,
-      mixedLocations: false,
-    };
-
-    try {
-      const events = activities.map(a => JSON.parse(a));
-      const timestamps = events.map(e => new Date(e.timestamp).getTime());
-      
-      // Check for rapid succession of events
-      const timeDiffs = timestamps.slice(1).map((t, i) => t - timestamps[i]);
-      patterns.rapidSuccession = timeDiffs.some(diff => diff < 1000); // Less than 1 second apart
-      
-      // Check for unusual timing
-      const hours = timestamps.map(t => new Date(t).getHours());
-      patterns.unusualTiming = hours.some(h => h >= 0 && h <= 5); // Activity between midnight and 5 AM
-      
-      // Check for mixed locations (if IP geolocation data is available)
-      const locations = new Set(events.map(e => e.metadata?.location?.country));
-      patterns.mixedLocations = locations.size > 1;
-      
-      return {
-        suspicious: Object.values(patterns).some(Boolean),
-        details: patterns,
-      };
-    } catch (error) {
-      logger.error('Failed to analyze activity patterns', 'security', { error });
-      return { suspicious: false, details: {} };
+    // Parse JSON activities
+    const parsedActivities = activities.map(activity => {
+      try {
+        return JSON.parse(activity);
+      } catch (e) {
+        return null;
+      }
+    }).filter(Boolean);
+    
+    // Simple pattern detection for demonstration
+    const timeGaps: number[] = [];
+    const ips = new Set<string>();
+    const userAgents = new Set<string>();
+    
+    for (let i = 1; i < parsedActivities.length; i++) {
+      const current = new Date(parsedActivities[i].timestamp).getTime();
+      const previous = new Date(parsedActivities[i-1].timestamp).getTime();
+      timeGaps.push(current - previous);
+      ips.add(parsedActivities[i].sourceIp);
+      userAgents.add(parsedActivities[i].userAgent);
     }
+    
+    // Detect suspicious patterns
+    const rapidActivities = timeGaps.filter(gap => gap < 1000).length;
+    const multipleIps = ips.size > 3;
+    const multipleUserAgents = userAgents.size > 3;
+    
+    return {
+      suspicious: rapidActivities > 5 || multipleIps || multipleUserAgents,
+      details: {
+        rapidSequentialActivities: rapidActivities,
+        distinctIpCount: ips.size,
+        distinctUserAgentCount: userAgents.size,
+      },
+    };
   }
 
   /**
-   * Handle detected threats
+   * Handle detected security threats
    */
   private async handleThreat(threat: {
     type: string;
@@ -296,34 +292,38 @@ export class SecurityMonitoringService {
     metadata: Record<string, any>;
   }): Promise<void> {
     try {
-      // Log the threat
-      await this.logSecurityEvent({
-        userId: threat.userId,
-        eventType: 'suspicious_activity',
-        timestamp: new Date(),
-        metadata: {
-          threatType: threat.type,
-          ...threat.metadata,
-        },
-        severity: threat.severity,
-        sourceIp: threat.sourceIp,
-        userAgent: threat.metadata.userAgent || 'Unknown',
+      // Log the threat to the database
+      await prisma.securityThreat.create({
+        data: {
+          type: threat.type,
+          severity: threat.severity,
+          sourceIp: threat.sourceIp,
+          userId: threat.userId,
+          metadata: threat.metadata,
+          timestamp: new Date(),
+          status: 'detected',
+        }
       });
-
-      // Take immediate action based on severity
+      
+      // Take defensive action based on threat severity
+      await this.takeDefensiveAction(threat);
+      
+      // Notify security team for high and critical threats
       if (threat.severity === 'high' || threat.severity === 'critical') {
-        await this.takeDefensiveAction(threat);
+        await this.notifySecurityTeam(threat);
       }
-
-      // Notify security team
-      await this.notifySecurityTeam(threat);
+      
+      // Log threat detection
+      logger.warn(`Security threat detected: ${threat.type}`, 'security', {
+        threat,
+      });
     } catch (error) {
-      logger.error('Failed to handle threat', 'security', { error, threat });
+      logger.error('Failed to handle security threat', 'security', { error, threat });
     }
   }
 
   /**
-   * Take defensive action against detected threats
+   * Take defensive actions against security threats
    */
   private async takeDefensiveAction(threat: {
     type: string;
@@ -333,28 +333,45 @@ export class SecurityMonitoringService {
     metadata: Record<string, any>;
   }): Promise<void> {
     try {
-      // Block IP address
-      if (threat.severity === 'critical') {
-        await this.redis.sadd('security:blocked_ips', threat.sourceIp);
-        await this.redis.expire('security:blocked_ips', 86400); // Block for 24 hours
+      // Actions vary based on threat type and severity
+      switch (threat.severity) {
+        case 'critical':
+          // Block IP immediately
+          await this.redis.set(`security:blocked:ip:${threat.sourceIp}`, '1', 'EX', 86400); // 24 hours
+          
+          // Lock user account if applicable
+          if (threat.userId) {
+            await prisma.user.update({
+              where: { id: threat.userId },
+              data: { locked: true }
+            });
+          }
+          break;
+          
+        case 'high':
+          // Temporary IP block
+          await this.redis.set(`security:blocked:ip:${threat.sourceIp}`, '1', 'EX', 3600); // 1 hour
+          break;
+          
+        case 'medium':
+          // Add to watch list
+          await this.redis.sadd('security:watchlist:ips', threat.sourceIp);
+          if (threat.userId) {
+            await this.redis.sadd('security:watchlist:users', threat.userId);
+          }
+          break;
+          
+        default:
+          // Just monitor
+          break;
       }
-
-      // Lock user account if necessary
-      if (threat.userId && (threat.type === 'brute_force_detected' || threat.type === 'mfa_abuse_detected')) {
-        await this.supabase
-          .from('users')
-          .update({ locked: true })
-          .eq('id', threat.userId);
-      }
-
-      // Implement additional defensive measures as needed
     } catch (error) {
       logger.error('Failed to take defensive action', 'security', { error, threat });
     }
   }
 
   /**
-   * Notify security team of detected threats
+   * Notify security team about threats
    */
   private async notifySecurityTeam(threat: {
     type: string;
@@ -364,12 +381,20 @@ export class SecurityMonitoringService {
     metadata: Record<string, any>;
   }): Promise<void> {
     try {
-      // Implement notification logic (e.g., email, Slack, etc.)
-      // This is a placeholder for actual implementation
-      logger.warn('Security threat detected', 'security', {
+      // In a real implementation, this would send an alert via email, Slack, PagerDuty, etc.
+      // For now, we'll just log it
+      logger.info('Security team notification', 'security', {
+        message: `Security alert: ${threat.severity.toUpperCase()} severity ${threat.type} detected`,
         threat,
-        timestamp: new Date().toISOString(),
       });
+      
+      // Queue notification in Redis for the notification service to pick up
+      await this.redis.lpush('security:notifications', JSON.stringify({
+        channel: 'security_team',
+        message: `Security alert: ${threat.severity.toUpperCase()} severity ${threat.type} detected`,
+        data: threat,
+        timestamp: new Date().toISOString(),
+      }));
     } catch (error) {
       logger.error('Failed to notify security team', 'security', { error, threat });
     }

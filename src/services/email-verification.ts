@@ -1,4 +1,12 @@
-import { supabase } from '@/lib/supabase/client';
+import { prisma } from '@/lib/prisma';
+import { ManagementClient } from 'auth0';
+
+// Initialize Auth0 Management API client
+const auth0Management = new ManagementClient({
+  domain: process.env.AUTH0_ISSUER_BASE_URL?.replace('https://', '') || '',
+  clientId: process.env.AUTH0_MANAGEMENT_CLIENT_ID || '',
+  clientSecret: process.env.AUTH0_MANAGEMENT_CLIENT_SECRET || '',
+});
 
 /**
  * Email verification service for user management
@@ -11,14 +19,17 @@ export const EmailVerificationService = {
    */
   async sendVerificationEmail(email: string): Promise<{ success: boolean; message: string }> {
     try {
-      const { error } = await supabase.auth.resend({
-        type: 'signup',
-        email,
-      });
-
-      if (error) {
-        throw error;
+      // Using Auth0 Management API to resend verification email
+      const users = await auth0Management.getUsersByEmail(email);
+      
+      if (!users || users.length === 0) {
+        throw new Error('User not found');
       }
+      
+      const userId = users[0].user_id;
+      
+      // Send verification email
+      await auth0Management.sendEmailVerification({ user_id: userId });
 
       return {
         success: true,
@@ -40,10 +51,9 @@ export const EmailVerificationService = {
    */
   async verifyEmail(token: string): Promise<{ success: boolean; message: string }> {
     try {
-      // This is a placeholder - in a real application, this would
-      // call the appropriate Supabase method to verify the token
-      // Since Supabase handles this automatically via URL callbacks,
-      // we would typically not need to implement this directly
+      // Auth0 handles email verification automatically via URL callbacks
+      // This method is kept for compatibility, but it's essentially a placeholder
+      // In a real application with Auth0, you'd typically redirect users to Auth0's verification URL
       
       return {
         success: true,
@@ -65,17 +75,11 @@ export const EmailVerificationService = {
    */
   async isEmailVerified(userId: string): Promise<boolean> {
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('email_verified')
-        .eq('id', userId)
-        .single();
-
-      if (error) {
-        throw error;
-      }
-
-      return data?.email_verified || false;
+      // Get user from Auth0
+      const user = await auth0Management.getUser({ id: userId });
+      
+      // Auth0 has email_verified property
+      return user.email_verified || false;
     } catch (error) {
       console.error('Error checking email verification status:', error);
       return false;
@@ -83,7 +87,7 @@ export const EmailVerificationService = {
   },
 
   /**
-   * Update a user's email verification status
+   * Update a user's email verification status in our database
    * @param userId User ID to update
    * @param verified Verification status to set
    * @returns Result object with success status
@@ -93,17 +97,14 @@ export const EmailVerificationService = {
     verified: boolean
   ): Promise<{ success: boolean }> {
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          email_verified: verified,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', userId);
-
-      if (error) {
-        throw error;
-      }
+      // Update the user profile in our database
+      await prisma.profile.update({
+        where: { userId },
+        data: {
+          emailVerified: verified,
+          updatedAt: new Date(),
+        },
+      });
 
       return { success: true };
     } catch (error) {

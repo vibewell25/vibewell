@@ -1,22 +1,12 @@
 'use client';
-
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import Link from 'next/link';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { 
-  Cog6ToothIcon, 
-  PaintBrushIcon, 
-  BellIcon, 
-  ShieldCheckIcon, 
-  LanguageIcon,
-  UserIcon,
-  DevicePhoneMobileIcon
-} from '@heroicons/react/24/outline';
+;
+;
 import { useTheme } from '@/components/theme-provider';
-
+import { Icons } from '@/components/icons';
 export default function SettingsPage() {
   const { theme } = useTheme();
-
   const settingsOptions = [
     {
       id: 'appearance',
@@ -63,18 +53,16 @@ export default function SettingsPage() {
       href: '/profile/settings/accessibility',
     },
   ];
-
   return (
     <MobileLayout>
       <div className="bg-background min-h-screen pb-16">
         {/* Header with Back Button */}
         <div className="bg-card px-5 py-4 flex items-center border-b border-border">
           <Link href="/profile/mobile" className="mr-4">
-            <ChevronLeftIcon className="w-5 h-5" />
+            <Icons.ChevronLeftIcon className="w-5 h-5" />
           </Link>
           <h1 className="text-xl font-semibold">Settings</h1>
         </div>
-
         <div className="py-4">
           <div className="px-5 py-2">
             {settingsOptions.map((option, index) => (
@@ -96,12 +84,11 @@ export default function SettingsPage() {
                   {option.indicator && (
                     <span className="text-sm text-muted-foreground mr-2">{option.indicator}</span>
                   )}
-                  <ChevronRightIcon className="w-5 h-5 text-muted-foreground" />
+                  <Icons.ChevronRightIcon className="w-5 h-5 text-muted-foreground" />
                 </div>
               </Link>
             ))}
           </div>
-
           <div className="px-5 py-4 mt-4">
             <div className="text-sm text-muted-foreground text-center">
               <p>Vibewell App</p>

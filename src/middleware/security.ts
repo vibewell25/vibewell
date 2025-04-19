@@ -82,7 +82,7 @@ function generateToken(secret: string): string {
 // Type-safe security headers
 export const securityHeaders: SecurityHeaders = {
   'Content-Security-Policy': 
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.supabase.co; frame-src 'self';",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.auth0.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.auth0.com; frame-src 'self' https://*.auth0.com;",
   'X-XSS-Protection': '1; mode=block',
   'X-Frame-Options': 'SAMEORIGIN',
   'X-Content-Type-Options': 'nosniff',
@@ -222,7 +222,7 @@ export async function middleware(req: NextRequest) {
   response.headers.set('X-XSS-Protection', '1; mode=block');
   response.headers.set(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.auth0.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.auth0.com; frame-src 'self' https://*.auth0.com;"
   );
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set(

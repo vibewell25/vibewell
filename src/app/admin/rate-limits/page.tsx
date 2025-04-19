@@ -6,7 +6,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { prisma } from '@/lib/database/client';
 import { Spinner } from '@/components/ui/spinner';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -61,8 +62,8 @@ interface SuspiciousIP {
 
 // Main Admin Rate Limiting Dashboard Component
 export default function RateLimitDashboard() {
-  const supabase = createClientComponentClient();
   const router = useRouter();
+  const { user, isLoading: userLoading, error: userError } = useUser();
   const [events, setEvents] = useState<RateLimitEvent[]>([]);
   const [suspiciousIPs, setSuspiciousIPs] = useState<SuspiciousIP[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,9 +71,9 @@ export default function RateLimitDashboard() {
   const [filter, setFilter] = useState('all');
   const [timeRange, setTimeRange] = useState('24h');
   const [statsData, setStatsData] = useState<any[]>([]);
-  const [session, setSession] = useState<any>(null);
   const [authStatus, setAuthStatus] = useState<'loading' | 'authenticated' | 'unauthenticated'>('loading');
   const [redisClient, setRedisClient] = useState<any>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   // Load Redis client dynamically
   useEffect(() => {
@@ -97,53 +98,51 @@ export default function RateLimitDashboard() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const { data: { session }, error } = await supabase.auth.getSession();
+        if (userLoading) return;
         
-        if (error) {
-          throw error;
+        if (userError) {
+          throw userError;
         }
         
-        if (session) {
-          setSession(session);
+        if (user) {
           setAuthStatus('authenticated');
           
-          // Fetch user profile to check role
-          const { data: profile, error: profileError } = await supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', session.user.id)
-            .single();
-            
-          if (profileError) {
-            throw profileError;
+          // Fetch user role from database
+          const response = await fetch('/api/user/role');
+          const data = await response.json();
+          
+          if (data.error) {
+            throw new Error(data.error);
           }
           
+          setUserRole(data.role);
+          
           // Check if user is admin
-          if (profile?.role !== 'admin') {
+          if (data.role !== 'admin') {
             router.push('/forbidden');
           } else if (redisClient) {
             fetchRateLimitEvents();
           }
         } else {
           setAuthStatus('unauthenticated');
-          router.push('/login?callbackUrl=/admin/rate-limits');
+          router.push('/api/auth/login?returnTo=/admin/rate-limits');
         }
       } catch (error) {
         console.error('Error checking auth:', error);
         setAuthStatus('unauthenticated');
-        router.push('/login?callbackUrl=/admin/rate-limits');
+        router.push('/api/auth/login?returnTo=/admin/rate-limits');
       }
     };
     
     checkAuth();
-  }, [router, supabase, redisClient]);
+  }, [user, userLoading, userError, router, redisClient]);
 
   // Fetch data when filters change
   useEffect(() => {
-    if (authStatus === 'authenticated' && redisClient) {
+    if (authStatus === 'authenticated' && userRole === 'admin' && redisClient) {
       fetchRateLimitEvents();
     }
-  }, [timeRange, filter, authStatus, redisClient]);
+  }, [timeRange, filter, authStatus, userRole, redisClient]);
 
   // Fetch rate limit events from Redis
   const fetchRateLimitEvents = async () => {

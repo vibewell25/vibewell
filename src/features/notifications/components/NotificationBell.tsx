@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { BellIcon } from '@heroicons/react/24/outline';
+;
 import { NotificationList } from './NotificationList';
 import { useNotifications } from '../context/NotificationContext';
-
+import { Icons } from '@/components/icons';
 interface NotificationBellProps {
   className?: string;
 }
-
 export const NotificationBell: React.FC<NotificationBellProps> = ({ className = '' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -20,7 +19,6 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
     deleteNotification,
     markAllAsRead,
   } = useNotifications();
-
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
     if (!isOpen) {
@@ -28,7 +26,6 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
       fetchNotifications();
     }
   };
-
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -36,13 +33,11 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
         setIsOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
       <button
@@ -51,14 +46,13 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ''}`}
         data-testid="notification-bell"
       >
-        <BellIcon className="h-6 w-6 text-gray-600" />
+        <Icons.BellIcon className="h-6 w-6 text-gray-600" />
         {unreadCount > 0 && (
           <span className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
       </button>
-
       {isOpen && (
         <div className="absolute right-0 mt-2 w-80 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="p-4 border-b border-gray-200">

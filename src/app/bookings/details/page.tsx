@@ -1,13 +1,12 @@
 'use client';
-
 import { useState } from 'react';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+;
 import Link from 'next/link';
 import Image from 'next/image';
-
+import { Icons } from '@/components/icons';
 // Mock data for provider
 const provider = {
   id: 'provider1',
@@ -18,7 +17,6 @@ const provider = {
   location: 'Cait Up & Ups · Chicago',
   price: '€00',
 };
-
 // Mock data for available dates
 const availableDates = [
   { day: 24, weekday: 'Sa', isSelected: true, isAvailable: true },
@@ -27,25 +25,21 @@ const availableDates = [
   { day: 27, weekday: 'Tu', isSelected: false, isAvailable: true },
   { day: 28, weekday: 'We', isSelected: false, isAvailable: true },
 ];
-
 // Mock data for available time slots
 const timeSlots = ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM'];
-
 export default function BookingDetailsPage() {
   const [selectedDate, setSelectedDate] = useState(availableDates[0]);
   const [selectedTime, setSelectedTime] = useState('');
-
   return (
     <MobileLayout>
       <div className="pb-24">
         {/* Header with Back Button */}
         <div className="bg-white px-5 py-4 flex items-center border-b border-gray-200">
           <Link href="/bookings/search" className="mr-4">
-            <ChevronLeftIcon className="w-5 h-5" />
+            <Icons.ChevronLeftIcon className="w-5 h-5" />
           </Link>
           <h1 className="text-xl font-semibold">Booking</h1>
         </div>
-
         {/* Availability Section */}
         <div className="px-5 py-4 border-b border-gray-200">
           <h2 className="font-medium text-lg mb-3">Availability</h2>
@@ -69,7 +63,6 @@ export default function BookingDetailsPage() {
             ))}
           </div>
         </div>
-
         {/* Provider Info */}
         <div className="px-5 py-4 border-b border-gray-200">
           <h2 className="font-medium text-lg mb-3">Availability</h2>
@@ -96,7 +89,6 @@ export default function BookingDetailsPage() {
             <p className="font-medium">{provider.price}</p>
           </div>
         </div>
-
         {/* Time Slots */}
         <div className="px-5 py-4">
           <h2 className="font-medium text-lg mb-3">Payment</h2>
@@ -111,11 +103,10 @@ export default function BookingDetailsPage() {
             </div>
             <Link href="/bookings/subscription" className="text-primary text-sm flex items-center">
               <span>Subscription</span>
-              <ChevronRightIcon className="w-4 h-4 ml-1" />
+              <Icons.ChevronRightIcon className="w-4 h-4 ml-1" />
             </Link>
           </div>
         </div>
-
         {/* Fixed Bottom Button */}
         <div className="fixed bottom-16 left-0 right-0 p-4 bg-white border-t border-gray-200">
           <Button className="w-full h-12 rounded-md">

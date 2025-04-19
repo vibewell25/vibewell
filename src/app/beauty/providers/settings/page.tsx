@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
+import { Icons } from '@/components/icons';
   BuildingOfficeIcon,
   ClockIcon,
   CreditCardIcon,
@@ -19,14 +19,12 @@ import {
   ShieldCheckIcon,
   UserGroupIcon
 } from '@heroicons/react/24/outline';
-
 interface BusinessHours {
   day: string;
   open: string;
   close: string;
   isClosed: boolean;
 }
-
 const defaultBusinessHours: BusinessHours[] = [
   { day: 'Monday', open: '09:00', close: '17:00', isClosed: false },
   { day: 'Tuesday', open: '09:00', close: '17:00', isClosed: false },
@@ -36,7 +34,6 @@ const defaultBusinessHours: BusinessHours[] = [
   { day: 'Saturday', open: '10:00', close: '15:00', isClosed: false },
   { day: 'Sunday', open: '00:00', close: '00:00', isClosed: true },
 ];
-
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('business');
   const [businessHours, setBusinessHours] = useState<BusinessHours[]>(defaultBusinessHours);
@@ -48,20 +45,17 @@ export default function SettingsPage() {
     newReviews: true,
     cancellations: true,
   });
-
   const handleBusinessHoursChange = (index: number, field: keyof BusinessHours, value: any) => {
     const updatedHours = [...businessHours];
     updatedHours[index] = { ...updatedHours[index], [field]: value };
     setBusinessHours(updatedHours);
   };
-
   const handleNotificationToggle = (key: string) => {
     setNotifications(prev => ({
       ...prev,
       [key]: !prev[key as keyof typeof notifications]
     }));
   };
-
   return (
     <Layout>
       <div className="container-app py-12">
@@ -71,27 +65,25 @@ export default function SettingsPage() {
             Manage your business configuration and preferences
           </p>
         </div>
-
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="business">
-              <BuildingOfficeIcon className="h-5 w-5 mr-2" />
+              <Icons.BuildingOfficeIcon className="h-5 w-5 mr-2" />
               Business
             </TabsTrigger>
             <TabsTrigger value="hours">
-              <ClockIcon className="h-5 w-5 mr-2" />
+              <Icons.ClockIcon className="h-5 w-5 mr-2" />
               Hours
             </TabsTrigger>
             <TabsTrigger value="payments">
-              <CreditCardIcon className="h-5 w-5 mr-2" />
+              <Icons.CreditCardIcon className="h-5 w-5 mr-2" />
               Payments
             </TabsTrigger>
             <TabsTrigger value="notifications">
-              <BellIcon className="h-5 w-5 mr-2" />
+              <Icons.BellIcon className="h-5 w-5 mr-2" />
               Notifications
             </TabsTrigger>
           </TabsList>
-
           {/* Business Settings */}
           <TabsContent value="business" className="mt-6">
             <div className="grid gap-6">
@@ -143,7 +135,6 @@ export default function SettingsPage() {
                   </div>
                 </CardContent>
               </Card>
-
               <Card>
                 <CardHeader>
                   <CardTitle>Branding</CardTitle>
@@ -156,7 +147,7 @@ export default function SettingsPage() {
                     <Label>Logo</Label>
                     <div className="mt-2 flex items-center gap-4">
                       <div className="h-20 w-20 rounded-lg bg-muted flex items-center justify-center">
-                        <PhotoIcon className="h-8 w-8 text-muted-foreground" />
+                        <Icons.PhotoIcon className="h-8 w-8 text-muted-foreground" />
                       </div>
                       <Button variant="outline">Upload Logo</Button>
                     </div>
@@ -172,7 +163,6 @@ export default function SettingsPage() {
               </Card>
             </div>
           </TabsContent>
-
           {/* Business Hours */}
           <TabsContent value="hours" className="mt-6">
             <Card>
@@ -219,7 +209,6 @@ export default function SettingsPage() {
               </CardContent>
             </Card>
           </TabsContent>
-
           {/* Payment Settings */}
           <TabsContent value="payments" className="mt-6">
             <div className="grid gap-6">
@@ -233,28 +222,27 @@ export default function SettingsPage() {
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <CreditCardIcon className="h-5 w-5" />
+                      <Icons.CreditCardIcon className="h-5 w-5" />
                       <span>Credit/Debit Cards</span>
                     </div>
                     <Switch defaultChecked />
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <GlobeAltIcon className="h-5 w-5" />
+                      <Icons.GlobeAltIcon className="h-5 w-5" />
                       <span>Online Payment</span>
                     </div>
                     <Switch defaultChecked />
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <ShieldCheckIcon className="h-5 w-5" />
+                      <Icons.ShieldCheckIcon className="h-5 w-5" />
                       <span>Cash</span>
                     </div>
                     <Switch defaultChecked />
                   </div>
                 </CardContent>
               </Card>
-
               <Card>
                 <CardHeader>
                   <CardTitle>Pricing Settings</CardTitle>
@@ -279,7 +267,6 @@ export default function SettingsPage() {
               </Card>
             </div>
           </TabsContent>
-
           {/* Notification Settings */}
           <TabsContent value="notifications" className="mt-6">
             <Card>
@@ -293,7 +280,7 @@ export default function SettingsPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <BellIcon className="h-5 w-5" />
+                      <Icons.BellIcon className="h-5 w-5" />
                       <span>Email Notifications</span>
                     </div>
                     <Switch
@@ -303,7 +290,7 @@ export default function SettingsPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <BellIcon className="h-5 w-5" />
+                      <Icons.BellIcon className="h-5 w-5" />
                       <span>SMS Notifications</span>
                     </div>
                     <Switch
@@ -313,7 +300,7 @@ export default function SettingsPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <BellIcon className="h-5 w-5" />
+                      <Icons.BellIcon className="h-5 w-5" />
                       <span>Push Notifications</span>
                     </div>
                     <Switch
@@ -322,12 +309,11 @@ export default function SettingsPage() {
                     />
                   </div>
                 </div>
-
                 <div className="mt-6 space-y-4">
                   <h3 className="font-medium">Notification Types</h3>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <UserGroupIcon className="h-5 w-5" />
+                      <Icons.UserGroupIcon className="h-5 w-5" />
                       <span>Appointment Reminders</span>
                     </div>
                     <Switch
@@ -337,7 +323,7 @@ export default function SettingsPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <UserGroupIcon className="h-5 w-5" />
+                      <Icons.UserGroupIcon className="h-5 w-5" />
                       <span>New Reviews</span>
                     </div>
                     <Switch
@@ -347,7 +333,7 @@ export default function SettingsPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <UserGroupIcon className="h-5 w-5" />
+                      <Icons.UserGroupIcon className="h-5 w-5" />
                       <span>Appointment Cancellations</span>
                     </div>
                     <Switch
@@ -360,7 +346,6 @@ export default function SettingsPage() {
             </Card>
           </TabsContent>
         </Tabs>
-
         <div className="mt-6 flex justify-end">
           <Button>Save Changes</Button>
         </div>

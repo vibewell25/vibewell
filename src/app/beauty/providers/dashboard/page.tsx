@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import { Badge } from '@/components/ui/badge';
 import { 
+import { Icons } from '@/components/icons';
   CalendarIcon,
   ClockIcon,
   UserIcon,
@@ -22,7 +22,6 @@ import {
   CheckCircleIcon,
   XCircleIcon
 } from '@heroicons/react/24/outline';
-
 interface Service {
   id: string;
   name: string;
@@ -31,7 +30,6 @@ interface Service {
   price: number;
   description: string;
 }
-
 interface Appointment {
   id: string;
   client: {
@@ -44,7 +42,6 @@ interface Appointment {
   status: 'scheduled' | 'completed' | 'cancelled';
   price: number;
 }
-
 interface Revenue {
   total: number;
   services: {
@@ -53,7 +50,6 @@ interface Revenue {
   }[];
   period: 'day' | 'week' | 'month';
 }
-
 const services: Service[] = [
   {
     id: 'hair1',
@@ -64,7 +60,6 @@ const services: Service[] = [
     description: 'Professional haircut and styling service'
   }
 ];
-
 const appointments: Appointment[] = [
   {
     id: 'app1',
@@ -79,7 +74,6 @@ const appointments: Appointment[] = [
     price: 75
   }
 ];
-
 const revenue: Revenue = {
   total: 1500,
   services: [
@@ -88,12 +82,10 @@ const revenue: Revenue = {
   ],
   period: 'week'
 };
-
 export default function ProviderDashboardPage() {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [isAddingService, setIsAddingService] = useState(false);
-
   return (
     <Layout>
       <div className="container-app py-12">
@@ -103,7 +95,6 @@ export default function ProviderDashboardPage() {
             Manage your beauty services and appointments
           </p>
         </div>
-
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -111,7 +102,6 @@ export default function ProviderDashboardPage() {
             <TabsTrigger value="appointments">Appointments</TabsTrigger>
             <TabsTrigger value="clients">Clients</TabsTrigger>
           </TabsList>
-
           {/* Overview Tab */}
           <TabsContent value="overview" className="mt-6">
             <div className="grid gap-6 md:grid-cols-3">
@@ -126,7 +116,6 @@ export default function ProviderDashboardPage() {
                   </p>
                 </CardContent>
               </Card>
-
               <Card>
                 <CardHeader>
                   <CardTitle>Weekly Revenue</CardTitle>
@@ -140,7 +129,6 @@ export default function ProviderDashboardPage() {
                   </p>
                 </CardContent>
               </Card>
-
               <Card>
                 <CardHeader>
                   <CardTitle>Client Satisfaction</CardTitle>
@@ -153,7 +141,6 @@ export default function ProviderDashboardPage() {
                 </CardContent>
               </Card>
             </div>
-
             <div className="grid gap-6 mt-6 md:grid-cols-2">
               <Card>
                 <CardHeader>
@@ -180,7 +167,6 @@ export default function ProviderDashboardPage() {
                   </div>
                 </CardContent>
               </Card>
-
               <Card>
                 <CardHeader>
                   <CardTitle>Upcoming Appointments</CardTitle>
@@ -211,7 +197,6 @@ export default function ProviderDashboardPage() {
               </Card>
             </div>
           </TabsContent>
-
           {/* Services Tab */}
           <TabsContent value="services" className="mt-6">
             <Card>
@@ -219,7 +204,7 @@ export default function ProviderDashboardPage() {
                 <div className="flex items-center justify-between">
                   <CardTitle>Services</CardTitle>
                   <Button onClick={() => setIsAddingService(true)}>
-                    <PlusIcon className="h-5 w-5 mr-2" />
+                    <Icons.PlusIcon className="h-5 w-5 mr-2" />
                     Add Service
                   </Button>
                 </div>
@@ -246,10 +231,10 @@ export default function ProviderDashboardPage() {
                           </div>
                           <div className="flex gap-2">
                             <Button variant="outline" size="icon">
-                              <PencilIcon className="h-4 w-4" />
+                              <Icons.PencilIcon className="h-4 w-4" />
                             </Button>
                             <Button variant="outline" size="icon">
-                              <TrashIcon className="h-4 w-4" />
+                              <Icons.TrashIcon className="h-4 w-4" />
                             </Button>
                           </div>
                         </div>
@@ -260,7 +245,6 @@ export default function ProviderDashboardPage() {
               </CardContent>
             </Card>
           </TabsContent>
-
           {/* Appointments Tab */}
           <TabsContent value="appointments" className="mt-6">
             <div className="grid gap-6 md:grid-cols-2">
@@ -277,7 +261,6 @@ export default function ProviderDashboardPage() {
                   />
                 </CardContent>
               </Card>
-
               <Card>
                 <CardHeader>
                   <CardTitle>Appointments</CardTitle>
@@ -306,10 +289,10 @@ export default function ProviderDashboardPage() {
                             </div>
                             <div className="flex gap-2">
                               <Button variant="outline" size="icon">
-                                <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                                <Icons.CheckCircleIcon className="h-5 w-5 text-green-500" />
                               </Button>
                               <Button variant="outline" size="icon">
-                                <XCircleIcon className="h-5 w-5 text-red-500" />
+                                <Icons.XCircleIcon className="h-5 w-5 text-red-500" />
                               </Button>
                             </div>
                           </div>
@@ -321,7 +304,6 @@ export default function ProviderDashboardPage() {
               </Card>
             </div>
           </TabsContent>
-
           {/* Clients Tab */}
           <TabsContent value="clients" className="mt-6">
             <Card>
@@ -351,7 +333,7 @@ export default function ProviderDashboardPage() {
                             </div>
                           </div>
                           <Button variant="outline">
-                            <UserIcon className="h-4 w-4 mr-2" />
+                            <Icons.UserIcon className="h-4 w-4 mr-2" />
                             View Profile
                           </Button>
                         </div>

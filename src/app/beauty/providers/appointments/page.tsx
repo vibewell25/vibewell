@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
@@ -9,25 +8,10 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  CalendarIcon,
-  ClockIcon,
-  UserIcon,
-  ScissorsIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  PencilIcon,
-  TrashIcon,
-  FunnelIcon,
-  MagnifyingGlassIcon,
-  PlusIcon,
-  ArrowPathIcon,
-  ListBulletIcon
-} from '@heroicons/react/24/outline';
+;
 import Calendar, { CalendarProps, TileArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Value } from 'react-calendar';
-
 interface Appointment {
   id: string;
   client: {
@@ -53,7 +37,6 @@ interface Appointment {
     method?: string;
   };
 }
-
 const dummyAppointments: Appointment[] = [
   {
     id: '1',
@@ -81,7 +64,6 @@ const dummyAppointments: Appointment[] = [
     }
   }
 ];
-
 // Add new interface for calendar events
 interface CalendarEvent {
   id: string;
@@ -97,7 +79,6 @@ interface CalendarEvent {
   };
   status: Appointment['status'];
 }
-
 export default function AppointmentsPage() {
   const [activeTab, setActiveTab] = useState('calendar');
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -105,12 +86,11 @@ export default function AppointmentsPage() {
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [view, setView] = useState<'list' | 'calendar'>('list');
   const [calendarDate, setCalendarDate] = useState<Date>(new Date());
-
   const handleStatusChange = (appointmentId: string, newStatus: Appointment['status']) => {
     import { updateAppointmentStatus } from "../../../../implementation-files/appointments-create-logic";
+import { Icons } from '@/components/icons';
     console.log(`Changing status for appointment ${appointmentId} to ${newStatus}`);
   };
-
   // Add function to convert appointments to calendar events
   const getCalendarEvents = (appointments: Appointment[]): CalendarEvent[] => {
     return appointments.map(appointment => ({
@@ -128,11 +108,9 @@ export default function AppointmentsPage() {
       status: appointment.status
     }));
   };
-
   // Add calendar view component
   const CalendarView = () => {
     const events = getCalendarEvents(dummyAppointments);
-    
     return (
       <div className="space-y-4">
         <Calendar
@@ -156,7 +134,6 @@ export default function AppointmentsPage() {
             ) : null;
           }}
         />
-        
         <Card>
           <CardHeader>
             <CardTitle>Appointments for {calendarDate.toLocaleDateString()}</CardTitle>
@@ -207,7 +184,6 @@ export default function AppointmentsPage() {
       </div>
     );
   };
-
   return (
     <Layout>
       <div className="container-app py-12">
@@ -217,7 +193,6 @@ export default function AppointmentsPage() {
             Manage and track your appointments
           </p>
         </div>
-
         <div className="grid gap-6">
           {/* View Toggle */}
           <Card>
@@ -228,20 +203,20 @@ export default function AppointmentsPage() {
                     variant={view === 'list' ? 'default' : 'outline'}
                     onClick={() => setView('list')}
                   >
-                    <ListBulletIcon className="h-5 w-5 mr-2" />
+                    <Icons.ListBulletIcon className="h-5 w-5 mr-2" />
                     List View
                   </Button>
                   <Button
                     variant={view === 'calendar' ? 'default' : 'outline'}
                     onClick={() => setView('calendar')}
                   >
-                    <CalendarIcon className="h-5 w-5 mr-2" />
+                    <Icons.CalendarIcon className="h-5 w-5 mr-2" />
                     Calendar View
                   </Button>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="relative">
-                    <MagnifyingGlassIcon className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                    <Icons.MagnifyingGlassIcon className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
                     <Input
                       placeholder="Search appointments..."
                       className="pl-10"
@@ -250,18 +225,17 @@ export default function AppointmentsPage() {
                     />
                   </div>
                   <Button variant="outline">
-                    <FunnelIcon className="h-5 w-5 mr-2" />
+                    <Icons.FunnelIcon className="h-5 w-5 mr-2" />
                     Filter
                   </Button>
                   <Button>
-                    <PlusIcon className="h-5 w-5 mr-2" />
+                    <Icons.PlusIcon className="h-5 w-5 mr-2" />
                     New Appointment
                   </Button>
                 </div>
               </div>
             </CardContent>
           </Card>
-
           {view === 'calendar' ? (
             <CalendarView />
           ) : (
@@ -307,7 +281,6 @@ export default function AppointmentsPage() {
                     </CardContent>
                   </Card>
                 </div>
-
                 {/* Appointment Details */}
                 <div className="md:col-span-2">
                   {selectedAppointment ? (
@@ -330,10 +303,10 @@ export default function AppointmentsPage() {
                             </div>
                             <div className="flex gap-2">
                               <Button variant="outline" size="icon">
-                                <PencilIcon className="h-5 w-5" />
+                                <Icons.PencilIcon className="h-5 w-5" />
                               </Button>
                               <Button variant="outline" size="icon">
-                                <TrashIcon className="h-5 w-5" />
+                                <Icons.TrashIcon className="h-5 w-5" />
                               </Button>
                             </div>
                           </div>
@@ -384,7 +357,6 @@ export default function AppointmentsPage() {
                           </div>
                         </CardContent>
                       </Card>
-
                       {/* Quick Actions */}
                       <div className="grid gap-4 md:grid-cols-3">
                         <Button
@@ -392,7 +364,7 @@ export default function AppointmentsPage() {
                           className="flex items-center justify-center gap-2"
                           onClick={() => handleStatusChange(selectedAppointment.id, 'confirmed')}
                         >
-                          <CheckCircleIcon className="h-5 w-5" />
+                          <Icons.CheckCircleIcon className="h-5 w-5" />
                           Confirm
                         </Button>
                         <Button
@@ -400,7 +372,7 @@ export default function AppointmentsPage() {
                           className="flex items-center justify-center gap-2"
                           onClick={() => handleStatusChange(selectedAppointment.id, 'completed')}
                         >
-                          <ArrowPathIcon className="h-5 w-5" />
+                          <Icons.ArrowPathIcon className="h-5 w-5" />
                           Complete
                         </Button>
                         <Button
@@ -408,11 +380,10 @@ export default function AppointmentsPage() {
                           className="flex items-center justify-center gap-2"
                           onClick={() => handleStatusChange(selectedAppointment.id, 'cancelled')}
                         >
-                          <XCircleIcon className="h-5 w-5" />
+                          <Icons.XCircleIcon className="h-5 w-5" />
                           Cancel
                         </Button>
                       </div>
-
                       {/* Notes */}
                       <Card>
                         <CardHeader>
@@ -426,13 +397,12 @@ export default function AppointmentsPage() {
                               <p className="text-muted-foreground">No notes available</p>
                             )}
                             <Button variant="outline" className="w-full">
-                              <PlusIcon className="h-5 w-5 mr-2" />
+                              <Icons.PlusIcon className="h-5 w-5 mr-2" />
                               Add Note
                             </Button>
                           </div>
                         </CardContent>
                       </Card>
-
                       {/* Client Details */}
                       <Card>
                         <CardHeader>

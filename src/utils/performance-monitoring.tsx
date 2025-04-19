@@ -10,6 +10,24 @@ interface PerformanceEntryExtended extends PerformanceEntry {
   hadRecentInput?: boolean;
 }
 
+// Add after the interfaces
+interface PerformanceError extends Error {
+  code: string;
+  context?: any;
+}
+
+class PerformanceMonitoringError extends Error implements PerformanceError {
+  code: string;
+  context?: any;
+
+  constructor(message: string, code: string, context?: any) {
+    super(message);
+    this.name = 'PerformanceMonitoringError';
+    this.code = code;
+    this.context = context;
+  }
+}
+
 // Performance metrics we want to track
 export interface PerformanceMetrics {
   // Navigation timing
@@ -63,6 +81,73 @@ export const PERFORMANCE_BUDGETS = {
   }
 };
 
+// Store observers for cleanup
+let observers: PerformanceObserver[] = [];
+
+// Add specific entry type interfaces
+interface LCPEntry extends PerformanceEntry {
+  renderTime: number;
+  loadTime: number;
+  size: number;
+  element?: Element;
+}
+
+interface FIDEntry extends PerformanceEntry {
+  processingStart: number;
+  processingEnd: number;
+  duration: number;
+  target?: Element;
+}
+
+interface CLSEntry extends PerformanceEntry {
+  value: number;
+  hadRecentInput: boolean;
+  sources: Array<{
+    node?: Node;
+    currentRect?: DOMRectReadOnly;
+    previousRect?: DOMRectReadOnly;
+  }>;
+}
+
+// Add retry mechanism for critical measurements
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 1000;
+
+async function retryMeasurement<T>(
+  measureFn: () => Promise<T>,
+  retries = MAX_RETRIES
+): Promise<T | null> {
+  try {
+    return await measureFn();
+  } catch (error) {
+    if (retries > 0) {
+      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+      return retryMeasurement(measureFn, retries - 1);
+    }
+    console.error('[Performance] Measurement failed after retries:', error);
+    return null;
+  }
+}
+
+// Add performance data batching
+const BATCH_INTERVAL = 5000; // 5 seconds
+let metricsQueue: PerformanceMetrics[] = [];
+let batchTimeout: NodeJS.Timeout | null = null;
+
+function queueMetrics(metrics: Partial<PerformanceMetrics>) {
+  metricsQueue.push(metrics as PerformanceMetrics);
+  
+  if (!batchTimeout) {
+    batchTimeout = setTimeout(() => {
+      if (metricsQueue.length > 0) {
+        sendPerformanceMetricsToAnalytics(metricsQueue);
+        metricsQueue = [];
+      }
+      batchTimeout = null;
+    }, BATCH_INTERVAL);
+  }
+}
+
 /**
  * Initialize performance monitoring
  */
@@ -92,48 +177,54 @@ export function initPerformanceMonitoring(options = {}) {
 /**
  * Setup Performance Observers for Web Vitals
  */
-function setupPerformanceObservers() {
+function setupPerformanceObservers(): void {
   if (typeof window === 'undefined' || !window.PerformanceObserver) return;
-  
+
   try {
-    // Observe Largest Contentful Paint
-    const lcpObserver = new PerformanceObserver((entryList) => {
-      const entries = entryList.getEntries();
-      const lastEntry = entries[entries.length - 1];
-      const lcp = lastEntry.startTime;
-      sessionStorage.setItem('lcp', lcp.toString());
-      checkAgainstBudget('largestContentfulPaint', lcp);
-    });
-    lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
-    
-    // Observe First Input Delay
-    const fidObserver = new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        const extendedEntry = entry as unknown as PerformanceEntryExtended;
-        if (extendedEntry.processingStart) {
-          const fid = extendedEntry.processingStart - entry.startTime;
-          sessionStorage.setItem('fid', String(fid));
-          checkAgainstBudget('firstInputDelay', fid);
-        }
+    // First cleanup any existing observers
+    cleanupPerformanceMonitoring();
+
+    const observeEntries = (type: string) => {
+      try {
+        const observer = new PerformanceObserver((list) => {
+          const entries = list.getEntries();
+          entries.forEach(entry => {
+            switch (type) {
+              case 'largest-contentful-paint':
+                handleLCPEntry(entry as LCPEntry);
+                break;
+              case 'first-input':
+                handleFIDEntry(entry as FIDEntry);
+                break;
+              case 'layout-shift':
+                handleCLSEntry(entry as CLSEntry);
+                break;
+              case 'paint':
+                handlePaintEntry(entry);
+                break;
+            }
+          });
+        });
+        
+        observer.observe({ entryTypes: [type] });
+        observers.push(observer);
+      } catch (error) {
+        throw new PerformanceMonitoringError(
+          `Failed to setup observer for ${type}`,
+          'OBSERVER_SETUP_FAILED',
+          { type, error }
+        );
       }
-    });
-    fidObserver.observe({ type: 'first-input', buffered: true });
-    
-    // Observe Cumulative Layout Shift
-    const lsObserver = new PerformanceObserver((entryList) => {
-      let cumulativeScore = 0;
-      for (const entry of entryList.getEntries()) {
-        const extendedEntry = entry as unknown as PerformanceEntryExtended;
-        if (typeof extendedEntry.hadRecentInput === 'boolean' && !extendedEntry.hadRecentInput) {
-          cumulativeScore += 0.01; // Simplified for example; actual calculation is more complex
-        }
-      }
-      sessionStorage.setItem('cls', String(cumulativeScore));
-      checkAgainstBudget('cumulativeLayoutShift', cumulativeScore);
-    });
-    lsObserver.observe({ type: 'layout-shift', buffered: true });
+    };
+
+    ['paint', 'largest-contentful-paint', 'first-input', 'layout-shift'].forEach(observeEntries);
+
   } catch (error) {
-    console.error('[Performance] Error setting up observers:', error);
+    if (error instanceof PerformanceMonitoringError) {
+      console.error(`[Performance] ${error.code}:`, error.message, error.context);
+    } else {
+      console.error('[Performance] Error setting up observers:', error);
+    }
   }
 }
 
@@ -176,7 +267,7 @@ function capturePageLoadMetrics() {
         }
         
         // Log performance data
-        sendPerformanceMetricsToAnalytics();
+        sendPerformanceMetricsToAnalytics(getMetrics());
       } catch (error) {
         console.error('[Performance] Error capturing page metrics:', error);
       }
@@ -378,15 +469,14 @@ export function reportPerformanceViolation(metricName: string, value: number, bu
 /**
  * Send performance metrics to analytics
  */
-function sendPerformanceMetricsToAnalytics() {
-  // In a real app, you would send this to your analytics service
-  if (process.env.NODE_ENV === 'production') {
-    const metrics = getMetrics();
-    console.log('[Performance] Would send metrics to analytics:', metrics);
-    
-    // Example of sending to analytics:
-    // analytics.trackEvent('performance_metrics', metrics);
-  }
+function sendPerformanceMetricsToAnalytics(metrics: Partial<PerformanceMetrics> | Partial<PerformanceMetrics>[]): void {
+  // Handle both single metrics and arrays
+  const metricsArray = Array.isArray(metrics) ? metrics : [metrics];
+  
+  metricsArray.forEach(metric => {
+    // Your analytics implementation here
+    console.debug('[Performance] Sending metrics to analytics:', metric);
+  });
 }
 
 /**
@@ -501,6 +591,60 @@ export function checkBudgets() {
   }
   
   return violations;
+}
+
+// Add cleanup function
+export function cleanupPerformanceMonitoring(): void {
+  if (typeof window === 'undefined') return;
+
+  // Disconnect all observers
+  observers.forEach(observer => {
+    try {
+      observer.disconnect();
+    } catch (error) {
+      console.error('[Performance] Error disconnecting observer:', error);
+    }
+  });
+  observers = [];
+
+  // Clear marks and measures
+  if (window.performance && window.performance.clearMarks) {
+    window.performance.clearMarks();
+  }
+  if (window.performance && window.performance.clearMeasures) {
+    window.performance.clearMeasures();
+  }
+}
+
+// Add specific entry type handlers
+function handleLCPEntry(entry: LCPEntry) {
+  queueMetrics({
+    largestContentfulPaint: entry.renderTime || entry.loadTime
+  });
+}
+
+function handleFIDEntry(entry: FIDEntry) {
+  queueMetrics({
+    firstInputDelay: entry.processingStart - entry.startTime
+  });
+}
+
+let cumulativeLayoutShift = 0;
+function handleCLSEntry(entry: CLSEntry) {
+  if (!entry.hadRecentInput) {
+    cumulativeLayoutShift += entry.value;
+    queueMetrics({
+      cumulativeLayoutShift
+    });
+  }
+}
+
+function handlePaintEntry(entry: PerformanceEntry) {
+  if (entry.name === 'first-contentful-paint') {
+    queueMetrics({
+      firstContentfulPaint: entry.startTime
+    });
+  }
 }
 
 // Create and export the default utility

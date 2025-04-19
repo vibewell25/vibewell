@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
@@ -11,15 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
-import { 
-  CalendarIcon,
-  ClockIcon,
-  UserIcon,
-  ScissorsIcon,
-  PlusIcon,
-  XMarkIcon
-} from '@heroicons/react/24/outline';
-
+;
 interface Service {
   id: string;
   name: string;
@@ -27,7 +18,6 @@ interface Service {
   price: number;
   category: string;
 }
-
 interface Client {
   id: string;
   name: string;
@@ -35,7 +25,6 @@ interface Client {
   phone: string;
   avatar?: string;
 }
-
 const dummyServices: Service[] = [
   {
     id: '1',
@@ -59,7 +48,6 @@ const dummyServices: Service[] = [
     category: 'Nails'
   }
 ];
-
 const dummyClients: Client[] = [
   {
     id: '1',
@@ -76,7 +64,6 @@ const dummyClients: Client[] = [
     avatar: '/users/michael.jpg'
   }
 ];
-
 export default function CreateAppointmentPage() {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
@@ -84,24 +71,21 @@ export default function CreateAppointmentPage() {
   const [time, setTime] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
   const [isNewClient, setIsNewClient] = useState(false);
-
   const totalDuration = selectedServices.reduce((sum, service) => sum + service.duration, 0);
   const totalPrice = selectedServices.reduce((sum, service) => sum + service.price, 0);
-
   const handleServiceSelect = (serviceId: string) => {
     const service = dummyServices.find(s => s.id === serviceId);
     if (service && !selectedServices.find(s => s.id === serviceId)) {
       setSelectedServices([...selectedServices, service]);
     }
   };
-
   const handleServiceRemove = (serviceId: string) => {
     setSelectedServices(selectedServices.filter(s => s.id !== serviceId));
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     import { createAppointment } from "../../../../../implementation-files/appointments-create-logic";
+import { Icons } from '@/components/icons';
     console.log({
       client: selectedClient,
       services: selectedServices,
@@ -112,7 +96,6 @@ export default function CreateAppointmentPage() {
       totalPrice
     });
   };
-
   return (
     <Layout>
       <div className="container-app py-12">
@@ -122,7 +105,6 @@ export default function CreateAppointmentPage() {
             Schedule a new appointment for your client
           </p>
         </div>
-
         <form onSubmit={handleSubmit}>
           <div className="grid gap-6">
             {/* Client Selection */}
@@ -151,7 +133,6 @@ export default function CreateAppointmentPage() {
                       New Client
                     </Button>
                   </div>
-
                   {isNewClient ? (
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
@@ -190,7 +171,6 @@ export default function CreateAppointmentPage() {
                 </div>
               </CardContent>
             </Card>
-
             {/* Service Selection */}
             <Card>
               <CardHeader>
@@ -216,7 +196,6 @@ export default function CreateAppointmentPage() {
                       ))}
                     </SelectContent>
                   </Select>
-
                   <div className="space-y-2">
                     {selectedServices.map(service => (
                       <div
@@ -235,12 +214,11 @@ export default function CreateAppointmentPage() {
                           size="icon"
                           onClick={() => handleServiceRemove(service.id)}
                         >
-                          <XMarkIcon className="h-5 w-5" />
+                          <Icons.XMarkIcon className="h-5 w-5" />
                         </Button>
                       </div>
                     ))}
                   </div>
-
                   {selectedServices.length > 0 && (
                     <div className="pt-4 border-t">
                       <div className="flex justify-between">
@@ -256,7 +234,6 @@ export default function CreateAppointmentPage() {
                 </div>
               </CardContent>
             </Card>
-
             {/* Date and Time */}
             <Card>
               <CardHeader>
@@ -275,7 +252,7 @@ export default function CreateAppointmentPage() {
                           variant="outline"
                           className="w-full justify-start text-left font-normal"
                         >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          <Icons.CalendarIcon className="mr-2 h-4 w-4" />
                           {date ? format(date, 'PPP') : 'Pick a date'}
                         </Button>
                       </PopoverTrigger>
@@ -300,7 +277,6 @@ export default function CreateAppointmentPage() {
                 </div>
               </CardContent>
             </Card>
-
             {/* Notes */}
             <Card>
               <CardHeader>
@@ -317,7 +293,6 @@ export default function CreateAppointmentPage() {
                 />
               </CardContent>
             </Card>
-
             {/* Submit Button */}
             <div className="flex justify-end">
               <Button type="submit">

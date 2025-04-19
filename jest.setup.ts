@@ -1,19 +1,45 @@
 import '@testing-library/jest-dom';
-import { toHaveNoViolations } from 'jest-axe';
-import { server } from './src/mocks/server';
-import { cleanup } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
+import { configure } from '@testing-library/react';
+import 'jest-axe/extend-expect';
+import { TextEncoder, TextDecoder } from 'util';
 
-// Extend Jest matchers
-expect.extend(toHaveNoViolations);
+// Setup DOM environment
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
 
-// Setup MSW
-beforeAll(() => server.listen());
-afterEach(() => {
-  server.resetHandlers();
-  cleanup();
+// Configure testing library
+configure({
+  testIdAttribute: 'data-testid',
 });
-afterAll(() => server.close());
+
+// Mock WebGL context
+class WebGLRenderingContext {
+  canvas: HTMLCanvasElement;
+  drawingBufferWidth: number;
+  drawingBufferHeight: number;
+
+  constructor() {
+    this.canvas = document.createElement('canvas');
+    this.drawingBufferWidth = 0;
+    this.drawingBufferHeight = 0;
+  }
+
+  // Add minimal WebGL methods needed for testing
+  viewport() {}
+  clearColor() {}
+  clear() {}
+  enable() {}
+  disable() {}
+  getExtension() { return null; }
+}
+
+// Mock HTMLCanvasElement.getContext
+HTMLCanvasElement.prototype.getContext = function(contextType: string) {
+  if (contextType === 'webgl' || contextType === 'webgl2') {
+    return new WebGLRenderingContext();
+  }
+  return null;
+};
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -31,23 +57,43 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
-  constructor() {}
-  observe() { return null; }
-  unobserve() { return null; }
-  disconnect() { return null; }
-};
+class IntersectionObserver {
+  observe = jest.fn();
+  unobserve = jest.fn();
+  disconnect = jest.fn();
+}
+
+Object.defineProperty(window, 'IntersectionObserver', {
+  writable: true,
+  value: IntersectionObserver,
+});
 
 // Mock ResizeObserver
-global.ResizeObserver = class ResizeObserver {
-  constructor() {}
-  observe() { return null; }
-  unobserve() { return null; }
-  disconnect() { return null; }
-};
+class ResizeObserver {
+  observe = jest.fn();
+  unobserve = jest.fn();
+  disconnect = jest.fn();
+}
 
-// Setup userEvent
-global.userEvent = userEvent;
+Object.defineProperty(window, 'ResizeObserver', {
+  writable: true,
+  value: ResizeObserver,
+});
 
-// Mock fetch
-global.fetch = jest.fn(); 
+// Suppress console errors during tests
+const originalError = console.error;
+beforeAll(() => {
+  console.error = (...args: any[]) => {
+    if (
+      typeof args[0] === 'string' &&
+      args[0].includes('Warning: ReactDOM.render is no longer supported')
+    ) {
+      return;
+    }
+    originalError.call(console, ...args);
+  };
+});
+
+afterAll(() => {
+  console.error = originalError;
+}); 

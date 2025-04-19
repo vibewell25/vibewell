@@ -1,24 +1,13 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
-import { 
-  ArrowUpIcon, 
-  ArrowDownIcon, 
-  ChartBarIcon, 
-  CircleStackIcon,
-  MagnifyingGlassIcon,
-  BookmarkIcon,
-  UserGroupIcon,
-  ArrowTrendingUpIcon,
-  ClockIcon
-} from '@heroicons/react/24/outline';
+;
 import Link from 'next/link';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { getHighestRatedItems } from '@/lib/ratings';
-
+import { Icons } from '@/components/icons';
 // Analytics data types
 interface ViewData {
   id: string;
@@ -26,13 +15,11 @@ interface ViewData {
   lastViewed: string;
   views: number;
 }
-
 interface SearchHistoryItem {
   query: string;
   category: string;
   timestamp: string;
 }
-
 interface MetricCard {
   title: string;
   value: string | number;
@@ -40,7 +27,6 @@ interface MetricCard {
   changeType: 'increase' | 'decrease' | 'neutral';
   icon: React.ReactNode;
 }
-
 interface PopularResource {
   id: string;
   title: string;
@@ -50,7 +36,6 @@ interface PopularResource {
   views: number;
   imageUrl?: string;
 }
-
 // Define the PopularRating interface from lib/ratings.ts
 interface PopularRating {
   id: string;
@@ -59,7 +44,6 @@ interface PopularRating {
   count: number;
   average: number;
 }
-
 // Get analytics data from localStorage
 const getAnalyticsData = () => {
   if (typeof window === 'undefined') {
@@ -72,36 +56,28 @@ const getAnalyticsData = () => {
       topRated: [] as PopularRating[]
     };
   }
-
   try {
     // Resource views
     const viewData = JSON.parse(localStorage.getItem('resource_view_log') || '{}');
     const resourceViews = Object.values(viewData) as ViewData[];
     const totalViews = resourceViews.reduce((sum, item) => sum + item.views, 0);
-    
     // Search history
     const searchHistory = JSON.parse(localStorage.getItem('search_history') || '[]') as SearchHistoryItem[];
-    
     // Popular searches (count occurrences)
     const searchTerms = searchHistory.map(item => item.query.toLowerCase().trim()).filter(Boolean);
     const searchCounts: Record<string, number> = {};
-    
     searchTerms.forEach(term => {
       searchCounts[term] = (searchCounts[term] || 0) + 1;
     });
-    
     const popularSearches = Object.entries(searchCounts)
       .map(([term, count]) => ({ term, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
-    
     // Bookmarked resources count
     const bookmarks = JSON.parse(localStorage.getItem('vibewell_bookmarks') || '{}');
     const bookmarkedCount = Object.keys(bookmarks).length;
-    
     // Top rated resources
     const topRated = getHighestRatedItems(5) as PopularRating[];
-    
     return {
       totalViews,
       resourceViews,
@@ -122,7 +98,6 @@ const getAnalyticsData = () => {
     };
   }
 };
-
 // Popular resources mock data (in a real app, this would come from analytics)
 const popularResources: PopularResource[] = [
   {
@@ -171,7 +146,6 @@ const popularResources: PopularResource[] = [
     imageUrl: '/images/email-marketing.jpg'
   }
 ];
-
 export default function BusinessHubAnalyticsPage() {
   const [analyticsData, setAnalyticsData] = useState<{
     totalViews: number;
@@ -189,13 +163,11 @@ export default function BusinessHubAnalyticsPage() {
     topRated: []
   });
   const [isClient, setIsClient] = useState(false);
-  
   useEffect(() => {
     setIsClient(true);
     const data = getAnalyticsData();
     setAnalyticsData(data);
   }, []);
-  
   // Metric cards with mock growth data
   const metricCards: MetricCard[] = [
     {
@@ -203,31 +175,30 @@ export default function BusinessHubAnalyticsPage() {
       value: analyticsData.totalViews,
       change: 12.5,
       changeType: 'increase',
-      icon: <ChartBarIcon className="h-6 w-6 text-blue-500" />
+      icon: <Icons.ChartBarIcon className="h-6 w-6 text-blue-500" />
     },
     {
       title: 'Resources Bookmarked',
       value: analyticsData.bookmarkedCount,
       change: 8.3,
       changeType: 'increase',
-      icon: <BookmarkIcon className="h-6 w-6 text-yellow-500" />
+      icon: <Icons.BookmarkIcon className="h-6 w-6 text-yellow-500" />
     },
     {
       title: 'Search Queries',
       value: analyticsData.searchHistory.length,
       change: 15.2,
       changeType: 'increase',
-      icon: <MagnifyingGlassIcon className="h-6 w-6 text-purple-500" />
+      icon: <Icons.MagnifyingGlassIcon className="h-6 w-6 text-purple-500" />
     },
     {
       title: 'Resource Engagement',
       value: '42%',
       change: 5.7,
       changeType: 'increase',
-      icon: <UserGroupIcon className="h-6 w-6 text-green-500" />
+      icon: <Icons.UserGroupIcon className="h-6 w-6 text-green-500" />
     }
   ];
-  
   // Format date to readable format
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -236,7 +207,6 @@ export default function BusinessHubAnalyticsPage() {
       year: 'numeric'
     });
   };
-  
   return (
     <Layout>
       <div className="flex flex-col min-h-screen bg-gray-50">
@@ -251,13 +221,11 @@ export default function BusinessHubAnalyticsPage() {
               <span className="text-gray-700">Analytics Dashboard</span>
             </div>
           </div>
-          
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Sidebar Navigation */}
             <div className="lg:col-span-1">
               <BusinessHubNavigation />
             </div>
-            
             {/* Main Content */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -265,7 +233,6 @@ export default function BusinessHubAnalyticsPage() {
                 <p className="text-gray-600 mb-6">
                   Track your engagement with Business Hub resources and discover popular content.
                 </p>
-                
                 {/* Metrics Overview */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                   {metricCards.map((card, index) => (
@@ -284,23 +251,21 @@ export default function BusinessHubAnalyticsPage() {
                         card.changeType === 'decrease' ? 'text-red-600' : 'text-gray-500'
                       }`}>
                         {card.changeType === 'increase' ? (
-                          <ArrowUpIcon className="h-4 w-4 mr-1" />
+                          <Icons.ArrowUpIcon className="h-4 w-4 mr-1" />
                         ) : card.changeType === 'decrease' ? (
-                          <ArrowDownIcon className="h-4 w-4 mr-1" />
+                          <Icons.ArrowDownIcon className="h-4 w-4 mr-1" />
                         ) : null}
                         <span>{card.change}% from last month</span>
                       </div>
                     </div>
                   ))}
                 </div>
-                
                 {/* Popular Resources */}
                 <div className="mb-8">
                   <h2 className="text-xl font-semibold mb-4 flex items-center">
-                    <CircleStackIcon className="h-5 w-5 mr-2 text-blue-600" />
+                    <Icons.CircleStackIcon className="h-5 w-5 mr-2 text-blue-600" />
                     Most Viewed Resources
                   </h2>
-                  
                   <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                     <div className="overflow-x-auto">
                       <table className="min-w-full divide-y divide-gray-200">
@@ -350,7 +315,7 @@ export default function BusinessHubAnalyticsPage() {
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center text-sm text-gray-900">
-                                  <ArrowTrendingUpIcon className="h-4 w-4 mr-2 text-green-500" />
+                                  <Icons.ArrowTrendingUpIcon className="h-4 w-4 mr-2 text-green-500" />
                                   {resource.views}
                                 </div>
                               </td>
@@ -366,16 +331,14 @@ export default function BusinessHubAnalyticsPage() {
                     </div>
                   </div>
                 </div>
-                
                 {/* Recent Activity and Popular Searches */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Recent Activity */}
                   <div>
                     <h2 className="text-lg font-semibold mb-4 flex items-center">
-                      <ClockIcon className="h-5 w-5 mr-2 text-blue-600" />
+                      <Icons.ClockIcon className="h-5 w-5 mr-2 text-blue-600" />
                       Your Recent Activity
                     </h2>
-                    
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       {isClient && analyticsData.resourceViews.length > 0 ? (
                         <div className="space-y-4">
@@ -385,7 +348,7 @@ export default function BusinessHubAnalyticsPage() {
                             .map((item) => (
                               <div key={item.id} className="flex items-start pb-4 border-b border-gray-100 last:border-0 last:pb-0">
                                 <div className="bg-blue-100 p-2 rounded-md mr-3">
-                                  <ChartBarIcon className="h-5 w-5 text-blue-700" />
+                                  <Icons.ChartBarIcon className="h-5 w-5 text-blue-700" />
                                 </div>
                                 <div>
                                   <p className="text-sm font-medium">Viewed: {item.name}</p>
@@ -405,14 +368,12 @@ export default function BusinessHubAnalyticsPage() {
                       )}
                     </div>
                   </div>
-                  
                   {/* Popular Searches */}
                   <div>
                     <h2 className="text-lg font-semibold mb-4 flex items-center">
-                      <MagnifyingGlassIcon className="h-5 w-5 mr-2 text-blue-600" />
+                      <Icons.MagnifyingGlassIcon className="h-5 w-5 mr-2 text-blue-600" />
                       Popular Searches
                     </h2>
-                    
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       {isClient && analyticsData.popularSearches.length > 0 ? (
                         <div className="space-y-3">

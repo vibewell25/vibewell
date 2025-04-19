@@ -1,12 +1,11 @@
 'use client';
-
 import { useState } from 'react';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { Card, CardContent } from '@/components/ui/card';
-import { ChevronRightIcon, UserIcon, BellIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
+;
 import { ThemeSelector } from '@/components/theme-selector';
 import Link from 'next/link';
-
+import { Icons } from '@/components/icons';
 interface User {
   name: string;
   bookingsThisWeek: number;
@@ -14,7 +13,6 @@ interface User {
   role: string;
   businessType: string;
 }
-
 export default function MobileDashboardPage() {
   const [user, setUser] = useState<User>({
     name: 'Maria',
@@ -23,7 +21,6 @@ export default function MobileDashboardPage() {
     role: 'Admin',
     businessType: 'Web-Based Panel'
   });
-
   return (
     <MobileLayout>
       <div className="px-5 py-6">
@@ -35,31 +32,28 @@ export default function MobileDashboardPage() {
           <div className="flex space-x-2 items-center">
             {/* Theme selector */}
             <ThemeSelector showColorThemes />
-            
             {/* Notifications */}
             <div className="relative">
               <Link href="/notifications">
-                <BellIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+                <Icons.BellIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                   3
                 </span>
               </Link>
             </div>
-            
             {/* Settings */}
             <Link href="/profile/settings">
-              <Cog6ToothIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+              <Icons.Cog6ToothIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
             </Link>
           </div>
         </div>
-
         <Card className="mb-4">
           <CardContent className="p-4">
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-semibold">Booking Overview</h2>
               <Link href="/bookings" className="flex items-center text-primary text-sm">
                 <span>View</span>
-                <ChevronRightIcon className="w-4 h-4 ml-1" />
+                <Icons.ChevronRightIcon className="w-4 h-4 ml-1" />
               </Link>
             </div>
             <div className="mt-4 flex items-center">
@@ -77,12 +71,11 @@ export default function MobileDashboardPage() {
             </div>
           </CardContent>
         </Card>
-
         <Card className="mb-4">
           <CardContent className="p-4">
             <div className="flex items-center">
               <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
-                <UserIcon className="w-5 h-5 text-primary" />
+                <Icons.UserIcon className="w-5 h-5 text-primary" />
               </div>
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{user.role}</p>
@@ -91,13 +84,11 @@ export default function MobileDashboardPage() {
             </div>
           </CardContent>
         </Card>
-
         <div className="mt-8">
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-lg font-semibold">Clients</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">Notification</p>
           </div>
-
           <div className="space-y-4">
             {/* This would be a list of clients or notifications */}
           </div>

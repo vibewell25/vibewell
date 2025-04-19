@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -7,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
+import { Icons } from '@/components/icons';
   UserGroupIcon,
   CalendarIcon,
   AcademicCapIcon,
@@ -16,7 +16,6 @@ import {
   ClipboardDocumentCheckIcon,
   CurrencyDollarIcon
 } from '@heroicons/react/24/outline';
-
 // Types
 interface ManagementGuide {
   id: string;
@@ -26,7 +25,6 @@ interface ManagementGuide {
   image: string;
   premium: boolean;
 }
-
 interface StaffTool {
   id: string;
   title: string;
@@ -35,7 +33,6 @@ interface StaffTool {
   category: 'hiring' | 'training' | 'retention' | 'performance' | 'communication';
   url: string;
 }
-
 interface TrainingResource {
   id: string;
   title: string;
@@ -44,11 +41,9 @@ interface TrainingResource {
   duration?: string;
   category: 'onboarding' | 'technical' | 'customer-service' | 'sales' | 'management';
 }
-
 export default function StaffManagementPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  
   // Management guides data
   const managementGuides: ManagementGuide[] = [
     {
@@ -100,14 +95,13 @@ export default function StaffManagementPage() {
       premium: false
     }
   ];
-
   // Staff tools data
   const staffTools: StaffTool[] = [
     {
       id: 'employee-handbook',
       title: 'Employee Handbook Template',
       description: 'Customizable template for creating a comprehensive employee handbook for your beauty business.',
-      icon: <DocumentTextIcon className="h-10 w-10 text-indigo-500" />,
+      icon: <Icons.DocumentTextIcon className="h-10 w-10 text-indigo-500" />,
       category: 'hiring',
       url: '/business-hub/staff-management/tools/employee-handbook'
     },
@@ -115,7 +109,7 @@ export default function StaffManagementPage() {
       id: 'performance-review',
       title: 'Performance Review Framework',
       description: 'Structured evaluation system for conducting fair and productive staff performance reviews.',
-      icon: <ChartBarIcon className="h-10 w-10 text-teal-500" />,
+      icon: <Icons.ChartBarIcon className="h-10 w-10 text-teal-500" />,
       category: 'performance',
       url: '/business-hub/staff-management/tools/performance-review'
     },
@@ -123,7 +117,7 @@ export default function StaffManagementPage() {
       id: 'team-schedules',
       title: 'Team Scheduling Templates',
       description: 'Templates and tools for creating balanced staff schedules that optimize coverage and satisfaction.',
-      icon: <CalendarIcon className="h-10 w-10 text-blue-500" />,
+      icon: <Icons.CalendarIcon className="h-10 w-10 text-blue-500" />,
       category: 'retention',
       url: '/business-hub/staff-management/tools/scheduling-templates'
     },
@@ -131,7 +125,7 @@ export default function StaffManagementPage() {
       id: 'one-on-one',
       title: 'One-on-One Meeting Guide',
       description: 'Framework for conducting effective individual meetings with staff members to improve engagement.',
-      icon: <ChatBubbleLeftRightIcon className="h-10 w-10 text-purple-500" />,
+      icon: <Icons.ChatBubbleLeftRightIcon className="h-10 w-10 text-purple-500" />,
       category: 'communication',
       url: '/business-hub/staff-management/tools/one-on-one-meetings'
     },
@@ -139,7 +133,7 @@ export default function StaffManagementPage() {
       id: 'compensation-calculator',
       title: 'Compensation & Commission Calculator',
       description: 'Calculate fair and competitive compensation packages and commission structures for your team.',
-      icon: <CurrencyDollarIcon className="h-10 w-10 text-green-500" />,
+      icon: <Icons.CurrencyDollarIcon className="h-10 w-10 text-green-500" />,
       category: 'performance',
       url: '/business-hub/staff-management/tools/compensation-calculator'
     },
@@ -147,12 +141,11 @@ export default function StaffManagementPage() {
       id: 'training-tracker',
       title: 'Staff Training Tracker',
       description: 'Track training progress, certifications, and skill development for each team member.',
-      icon: <ClipboardDocumentCheckIcon className="h-10 w-10 text-orange-500" />,
+      icon: <Icons.ClipboardDocumentCheckIcon className="h-10 w-10 text-orange-500" />,
       category: 'training',
       url: '/business-hub/staff-management/tools/training-tracker'
     }
   ];
-
   // Training resources data
   const trainingResources: TrainingResource[] = [
     {
@@ -200,28 +193,23 @@ export default function StaffManagementPage() {
       category: 'management'
     }
   ];
-
   // Filter guides based on category and search
   const filteredGuides = managementGuides.filter(guide => {
     const matchesCategory = selectedCategory === 'all' || guide.category === selectedCategory;
     const matchesSearch = !searchQuery || 
       guide.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
       guide.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
     return matchesCategory && matchesSearch;
   });
-
   // Filter tools based on category
   const filteredTools = staffTools.filter(tool => 
     selectedCategory === 'all' || tool.category === selectedCategory
   );
-
   // Filter resources based on selected category
   const filteredResources = trainingResources.filter(resource => 
     selectedCategory === 'all' || 
     (selectedCategory === 'training' && ['onboarding', 'technical', 'customer-service', 'sales', 'management'].includes(resource.category))
   );
-
   // Categories for filtering
   const categories = [
     { id: 'all', name: 'All Categories' },
@@ -231,7 +219,6 @@ export default function StaffManagementPage() {
     { id: 'performance', name: 'Performance Management' },
     { id: 'communication', name: 'Team Communication' }
   ];
-
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
@@ -259,7 +246,6 @@ export default function StaffManagementPage() {
           </div>
         </div>
       </div>
-
       {/* Category Filters */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-4">Browse by Category</h2>
@@ -275,7 +261,6 @@ export default function StaffManagementPage() {
           ))}
         </div>
       </div>
-
       {/* Staff Management Tools */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Staff Management Tools</h2>
@@ -300,7 +285,6 @@ export default function StaffManagementPage() {
           ))}
         </div>
       </div>
-
       {/* Management Guides */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Management Guides</h2>
@@ -351,7 +335,6 @@ export default function StaffManagementPage() {
           ))}
         </div>
       </div>
-
       {/* Team Success Blueprint */}
       <div className="mb-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl overflow-hidden">
         <div className="flex flex-col md:flex-row">
@@ -403,7 +386,6 @@ export default function StaffManagementPage() {
           </div>
         </div>
       </div>
-
       {/* Training Resources */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Staff Training Resources</h2>
@@ -440,13 +422,12 @@ export default function StaffManagementPage() {
           ))}
         </div>
       </div>
-
       {/* Staff Management Expert Consultation */}
       <div className="bg-white rounded-xl shadow-md p-8 mb-12 border border-gray-200">
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-2/3 md:pr-8">
             <div className="flex items-center mb-4">
-              <UserGroupIcon className="h-8 w-8 text-blue-600 mr-3" />
+              <Icons.UserGroupIcon className="h-8 w-8 text-blue-600 mr-3" />
               <h2 className="text-2xl font-bold">Need Personalized Guidance?</h2>
             </div>
             <p className="text-gray-700 mb-4">
@@ -469,7 +450,6 @@ export default function StaffManagementPage() {
           </div>
         </div>
       </div>
-
       {/* Common Team Challenges */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Common Team Challenges & Solutions</h2>

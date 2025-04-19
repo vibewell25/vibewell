@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import { AuthProvider, useAuth } from '../../contexts/auth-context';
-import { supabase } from '@/lib/supabase/client';
+import { prisma } from '@/lib/database/client';
 
 // Mock the Supabase client
 jest.mock('@/lib/supabase/client', () => ({

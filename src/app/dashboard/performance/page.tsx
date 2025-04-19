@@ -2,7 +2,7 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import { Layout } from '@/components/layout';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/clerk-auth-context';
 import { PerformanceDashboard } from '@/components/performance/PerformanceDashboard';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Alert, AlertDescription } from '@/components/ui/alert';

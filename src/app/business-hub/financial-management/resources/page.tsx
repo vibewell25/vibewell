@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
@@ -8,16 +7,9 @@ import { Badge } from '@/components/ui/badge';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
 import { FinancialNav } from '@/components/financial-nav';
 import Link from 'next/link';
-import { 
-  MagnifyingGlassIcon,
-  DocumentTextIcon, 
-  UserIcon,
-  ClockIcon,
-  CalendarIcon,
-  BookmarkIcon
-} from '@heroicons/react/24/outline';
+;
 import { TopRatedResources } from '@/components/top-rated-resources';
-
+import { Icons } from '@/components/icons';
 interface ResourceType {
   id: string;
   title: string;
@@ -28,7 +20,6 @@ interface ResourceType {
   imageUrl: string;
   excerpt: string;
 }
-
 // Financial resource data - in a real app, this would come from an API
 const financialResources: ResourceType[] = [
   {
@@ -102,7 +93,6 @@ const financialResources: ResourceType[] = [
     excerpt: 'Identifying the key factors that influence profitability in wellness businesses.'
   }
 ];
-
 const categories = [
   'All',
   'Planning',
@@ -113,43 +103,35 @@ const categories = [
   'Reporting',
   'Profitability'
 ];
-
 export default function FinancialResourcesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  
   // Filter resources based on search query and category
   const filteredResources = financialResources.filter(resource => {
     const matchesSearch = resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          resource.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || resource.category === selectedCategory;
-    
     return matchesSearch && matchesCategory;
   });
-  
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
         <p className="text-gray-600 mb-6">Tools, resources, and education to grow your wellness business</p>
-        
         {/* Main Navigation */}
         <BusinessHubNavigation />
-        
         {/* Financial Management Navigation */}
         <FinancialNav />
-        
         <div className="max-w-7xl mx-auto">
           <div className="bg-gradient-to-r from-blue-100 to-green-100 rounded-lg p-8 mb-8">
             <h2 className="text-2xl font-bold mb-2">Financial Resources</h2>
             <p className="text-lg mb-4">
               Explore our collection of guides, templates, and tools to manage your wellness business finances effectively
             </p>
-            
             {/* Search Input */}
             <div className="relative max-w-md">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+                <Icons.MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
               </div>
               <Input
                 type="text"
@@ -160,7 +142,6 @@ export default function FinancialResourcesPage() {
               />
             </div>
           </div>
-          
           {/* Category Filter */}
           <div className="mb-8">
             <div className="flex flex-wrap gap-2">
@@ -176,7 +157,6 @@ export default function FinancialResourcesPage() {
               ))}
             </div>
           </div>
-          
           <div className="grid lg:grid-cols-4 gap-6">
             {/* Main content - Resources */}
             <div className="lg:col-span-3">
@@ -214,9 +194,9 @@ export default function FinancialResourcesPage() {
                         <h3 className="text-xl font-semibold mb-2 line-clamp-2">{resource.title}</h3>
                         <p className="text-gray-600 mb-4 line-clamp-3">{resource.excerpt}</p>
                         <div className="flex items-center text-sm text-gray-500">
-                          <UserIcon className="h-4 w-4 mr-1" />
+                          <Icons.UserIcon className="h-4 w-4 mr-1" />
                           <span className="truncate mr-4">{resource.author}</span>
-                          <ClockIcon className="h-4 w-4 mr-1" />
+                          <Icons.ClockIcon className="h-4 w-4 mr-1" />
                           <span>{resource.readTime}</span>
                         </div>
                       </div>
@@ -225,12 +205,10 @@ export default function FinancialResourcesPage() {
                 </div>
               )}
             </div>
-            
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Top Rated Resources */}
               <TopRatedResources limit={5} />
-              
               {/* Recently Viewed */}
               <div className="p-4 bg-white shadow-sm rounded-lg">
                 <h3 className="text-lg font-medium mb-4">Recent Activity</h3>
@@ -239,7 +217,7 @@ export default function FinancialResourcesPage() {
                   className="block p-3 bg-blue-50 rounded-lg mb-3 hover:bg-blue-100 transition-colors"
                 >
                   <div className="flex items-center">
-                    <BookmarkIcon className="h-5 w-5 text-blue-500 mr-2" />
+                    <Icons.BookmarkIcon className="h-5 w-5 text-blue-500 mr-2" />
                     <span className="text-blue-700">Your Bookmarks</span>
                   </div>
                 </Link>
@@ -248,12 +226,11 @@ export default function FinancialResourcesPage() {
                   className="block p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                 >
                   <div className="flex items-center">
-                    <ClockIcon className="h-5 w-5 text-purple-500 mr-2" />
+                    <Icons.ClockIcon className="h-5 w-5 text-purple-500 mr-2" />
                     <span className="text-purple-700">Recently Viewed</span>
                   </div>
                 </Link>
               </div>
-              
               {/* Help Box */}
               <div className="p-4 bg-green-50 shadow-sm rounded-lg">
                 <h3 className="text-lg font-medium text-green-800 mb-2">Need Financial Advice?</h3>

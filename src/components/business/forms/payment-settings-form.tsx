@@ -35,8 +35,7 @@ const PAYMENT_METHODS = [
   { id: 'venmo', label: 'Venmo' },
   { id: 'zelle', label: 'Zelle' },
   { id: 'apple-pay', label: 'Apple Pay' },
-  { id: 'google-pay', label: 'Google Pay' },
-  { id: 'crypto', label: 'Cryptocurrency' }
+  { id: 'google-pay', label: 'Google Pay' }
 ];
 
 // Deposit options

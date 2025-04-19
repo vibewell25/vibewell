@@ -1,14 +1,12 @@
-import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
+import { getSession } from '@auth0/nextjs-auth0';
+import { prisma } from '@/lib/database/client';
 
 export async function GET(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const session = await getSession();
+    if (!session?.user?.sub) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -22,7 +20,7 @@ export async function GET(request: Request) {
 
     // Build the where clause
     const where = {
-      userId: session.user.id,
+      userId: session.user.sub,
       ...(status && { status }),
       ...(startDate && endDate && {
         date: {
@@ -69,8 +67,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const session = await getSession();
+    if (!session?.user?.sub) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -105,7 +103,7 @@ export async function POST(request: Request) {
     // Create the booking
     const booking = await prisma.booking.create({
       data: {
-        userId: session.user.id,
+        userId: session.user.sub,
         serviceId,
         businessId,
         date: new Date(date),

@@ -1,34 +1,16 @@
 'use client';
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import Image from 'next/image';
-import { 
-  MegaphoneIcon, 
-  UserGroupIcon, 
-  BuildingStorefrontIcon,
-  ChartBarIcon,
-  CalendarIcon,
-  CurrencyDollarIcon,
-  PresentationChartLineIcon,
-  PlayCircleIcon,
-  MagnifyingGlassIcon,
-  PhotoIcon,
-  BookmarkIcon
-} from '@heroicons/react/24/outline';
-import {
-  UsersIcon,
-  EnvelopeIcon,
-  StarIcon,
-  RocketLaunchIcon
-} from '@heroicons/react/24/solid';
+;
+;
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
 import { Layout } from '@/components/layout';
 import { TopRatedResources } from '@/components/top-rated-resources';
-
+import { Icons } from '@/components/icons';
 // Types for resources and tools
 interface Resource {
   id: string;
@@ -43,7 +25,6 @@ interface Resource {
   downloadUrl?: string;
   date: string;
 }
-
 interface SuccessStory {
   id: string;
   businessName: string;
@@ -53,7 +34,6 @@ interface SuccessStory {
   achievement: string;
   tags: string[];
 }
-
 interface MarketingTool {
   id: string;
   name: string;
@@ -62,19 +42,17 @@ interface MarketingTool {
   premium: boolean;
   url: string;
 }
-
 export default function BusinessHub() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [resourceType, setResourceType] = useState('all');
-  
   // Marketing tools data
   const marketingTools: MarketingTool[] = [
     {
       id: '1',
       name: 'Email Campaign Builder',
       description: 'Create beautiful email templates and automated sequences to nurture client relationships.',
-      icon: <MegaphoneIcon className="h-8 w-8 text-indigo-500" />,
+      icon: <Icons.MegaphoneIcon className="h-8 w-8 text-indigo-500" />,
       premium: false,
       url: '/business-hub/marketing/email-campaigns'
     },
@@ -82,7 +60,7 @@ export default function BusinessHub() {
       id: 'social-media',
       name: 'Social Media Toolkit',
       description: 'Pre-designed templates and scheduling tools for your social media marketing.',
-      icon: <PhotoIcon className="h-10 w-10 text-purple-500" />,
+      icon: <Icons.PhotoIcon className="h-10 w-10 text-purple-500" />,
       url: '/business-hub/tools/social-media',
       premium: false
     },
@@ -90,7 +68,7 @@ export default function BusinessHub() {
       id: 'email-templates',
       name: 'Email Campaign Builder',
       description: 'Create professional email campaigns to engage clients and promote offers.',
-      icon: <EnvelopeIcon className="h-10 w-10 text-blue-500" />,
+      icon: <Icons.EnvelopeSolid className="h-10 w-10 text-blue-500" />,
       url: '/business-hub/tools/email-marketing',
       premium: true
     },
@@ -98,7 +76,7 @@ export default function BusinessHub() {
       id: 'analytics',
       name: 'Performance Analytics',
       description: 'Track the effectiveness of your marketing efforts and customer engagement.',
-      icon: <ChartBarIcon className="h-10 w-10 text-green-500" />,
+      icon: <Icons.ChartBarIcon className="h-10 w-10 text-green-500" />,
       url: '/business-hub/tools/analytics',
       premium: true
     },
@@ -106,7 +84,7 @@ export default function BusinessHub() {
       id: 'reviews',
       name: 'Review Management',
       description: 'Tools to collect, manage, and showcase client reviews and testimonials.',
-      icon: <StarIcon className="h-10 w-10 text-yellow-500" />,
+      icon: <Icons.StarSolid className="h-10 w-10 text-yellow-500" />,
       url: '/business-hub/tools/reviews',
       premium: false
     },
@@ -114,7 +92,7 @@ export default function BusinessHub() {
       id: 'lead-gen',
       name: 'Lead Generation Tools',
       description: 'Create landing pages and promotional offers to attract new clients.',
-      icon: <UsersIcon className="h-10 w-10 text-red-500" />,
+      icon: <Icons.UsersSolid className="h-10 w-10 text-red-500" />,
       url: '/business-hub/tools/lead-generation',
       premium: true
     },
@@ -122,12 +100,11 @@ export default function BusinessHub() {
       id: 'content-calendar',
       name: 'Content Calendar',
       description: 'Plan and organize your marketing content across all channels.',
-      icon: <CalendarIcon className="h-10 w-10 text-indigo-500" />,
+      icon: <Icons.CalendarIcon className="h-10 w-10 text-indigo-500" />,
       url: '/business-hub/tools/content-calendar',
       premium: false
     }
   ];
-  
   // Resources data
   const resources: Resource[] = [
     {
@@ -205,7 +182,6 @@ export default function BusinessHub() {
       date: '2024-01-18'
     }
   ];
-  
   // Success stories data
   const successStories: SuccessStory[] = [
     {
@@ -236,32 +212,26 @@ export default function BusinessHub() {
       tags: ['lead generation', 'website optimization', 'new clients']
     }
   ];
-  
   // Filter resources based on search, category, and type
   const filteredResources = resources.filter(resource => {
     const matchesSearch = searchTerm === '' || 
       resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       resource.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       resource.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-      
     const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
     const matchesType = resourceType === 'all' || resource.type === resourceType;
-    
     return matchesSearch && matchesCategory && matchesType;
   });
-
   return (
     <Layout>
       <main className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Business Hub</h1>
-        
         {/* Top section with search and featured */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           {/* Search and categories - 2/3 width */}
           <div className="md:col-span-2 space-y-6">
             <div className="p-6 bg-white rounded-lg shadow-sm">
               <h2 className="text-xl font-semibold mb-4">Find Resources</h2>
-              
               {/* Search input */}
               <div className="relative mb-6">
                 <input
@@ -272,10 +242,9 @@ export default function BusinessHub() {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <div className="absolute left-4 top-3.5 text-gray-400">
-                  <MagnifyingGlassIcon className="h-5 w-5" />
+                  <Icons.MagnifyingGlassIcon className="h-5 w-5" />
                 </div>
               </div>
-              
               {/* Categories */}
               <div>
                 <h3 className="font-medium mb-3">Browse by Category</h3>
@@ -296,13 +265,11 @@ export default function BusinessHub() {
                 </div>
               </div>
             </div>
-            
             {/* Top Rated Resources */}
             <div className="p-6 bg-white rounded-lg shadow-sm">
               <TopRatedResources limit={3} />
             </div>
           </div>
-          
           {/* Featured tools - 1/3 width */}
           <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg p-6 text-white flex flex-col justify-between">
             <div>
@@ -310,7 +277,6 @@ export default function BusinessHub() {
               <p className="mb-6 text-blue-100">
                 Discover our newest tools to help your business grow
               </p>
-              
               <div className="space-y-4 mb-6">
                 {marketingTools.slice(0, 3).map((tool) => (
                   <div key={tool.name} className="bg-white/10 p-3 rounded-lg backdrop-blur-sm">
@@ -320,7 +286,6 @@ export default function BusinessHub() {
                 ))}
               </div>
             </div>
-            
             <a
               href="/business-hub/marketing"
               className="w-full block text-center py-2 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors"
@@ -329,10 +294,8 @@ export default function BusinessHub() {
             </a>
           </div>
         </div>
-        
         {/* Main Navigation */}
         <BusinessHubNavigation />
-        
         {/* Hero Section */}
         <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-xl p-8 mb-12">
           <div className="max-w-4xl mx-auto text-center">
@@ -351,7 +314,6 @@ export default function BusinessHub() {
             </div>
           </div>
         </div>
-        
         {/* Marketing Tools Section */}
         <section className="mb-16">
           <div className="flex justify-between items-center mb-8">
@@ -360,7 +322,6 @@ export default function BusinessHub() {
               View All Tools →
             </Link>
           </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {marketingTools.map(tool => (
               <div key={tool.id} className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
@@ -387,13 +348,12 @@ export default function BusinessHub() {
             ))}
           </div>
         </section>
-        
         {/* Resources Section */}
         <section className="mb-16">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold">Resources & Guides</h2>
             <div className="relative">
-              <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Icons.MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <Input 
                 type="text" 
                 placeholder="Search resources..." 
@@ -403,7 +363,6 @@ export default function BusinessHub() {
               />
             </div>
           </div>
-          
           {/* Resource Filters */}
           <div className="flex flex-wrap gap-2 mb-6">
             <Button 
@@ -449,7 +408,6 @@ export default function BusinessHub() {
               Sales
             </Button>
           </div>
-          
           <div className="flex flex-wrap gap-2 mb-8">
             <Button 
               variant={resourceType === 'all' ? 'default' : 'outline'}
@@ -500,7 +458,6 @@ export default function BusinessHub() {
               Tools
             </Button>
           </div>
-          
           {/* Resource Cards */}
           {filteredResources.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -522,12 +479,11 @@ export default function BusinessHub() {
                     {resource.type === 'video' && (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="bg-black bg-opacity-40 rounded-full p-3">
-                          <PlayCircleIcon className="h-12 w-12 text-white" />
+                          <Icons.PlayCircleIcon className="h-12 w-12 text-white" />
                         </div>
                       </div>
                     )}
                   </div>
-                  
                   <div className="p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <Badge variant="outline" className="text-xs capitalize">
@@ -535,10 +491,8 @@ export default function BusinessHub() {
                       </Badge>
                       <span className="text-gray-500 text-sm">{resource.date}</span>
                     </div>
-                    
                     <h3 className="text-lg font-semibold mb-2">{resource.title}</h3>
                     <p className="text-gray-600 text-sm mb-4 line-clamp-2">{resource.description}</p>
-                    
                     <div className="flex flex-wrap gap-1 mb-4">
                       {resource.tags.map(tag => (
                         <Badge key={tag} variant="secondary" className="text-xs bg-gray-100 text-gray-800">
@@ -546,7 +500,6 @@ export default function BusinessHub() {
                         </Badge>
                       ))}
                     </div>
-                    
                     <div className="flex gap-2">
                       <Link href={resource.viewUrl} className="flex-grow">
                         <Button variant="default" className="w-full" 
@@ -556,7 +509,7 @@ export default function BusinessHub() {
                       </Link>
                       {resource.downloadUrl && (
                         <Button variant="outline" className="px-3">
-                          <BookmarkIcon className="h-5 w-5" />
+                          <Icons.BookmarkIcon className="h-5 w-5" />
                         </Button>
                       )}
                     </div>
@@ -581,7 +534,6 @@ export default function BusinessHub() {
             </div>
           )}
         </section>
-        
         {/* Growth Accelerator Banner */}
         <section className="mb-16">
           <div className="bg-gradient-to-r from-indigo-600 to-purple-700 rounded-xl p-8 text-white">
@@ -604,7 +556,7 @@ export default function BusinessHub() {
               <div className="md:w-1/3 flex justify-center">
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 w-full max-w-xs">
                   <div className="flex items-center gap-3 mb-4">
-                    <RocketLaunchIcon className="h-10 w-10 text-yellow-300" />
+                    <Icons.RocketLaunchSolid className="h-10 w-10 text-yellow-300" />
                     <div>
                       <h3 className="text-xl font-bold">Growth Accelerator</h3>
                       <p className="text-sm text-white/80">Premium Program</p>
@@ -645,11 +597,9 @@ export default function BusinessHub() {
             </div>
           </div>
         </section>
-        
         {/* Success Stories */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-8">Success Stories</h2>
-          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {successStories.map(story => (
               <div key={story.id} className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
@@ -668,17 +618,14 @@ export default function BusinessHub() {
                     <p className="text-sm text-gray-600">{story.ownerName}</p>
                   </div>
                 </div>
-                
                 <blockquote className="text-gray-700 italic mb-4">
                   "{story.quote}"
                 </blockquote>
-                
                 <div className="bg-indigo-50 p-3 rounded-lg mb-4">
                   <p className="text-sm font-medium text-indigo-800">
                     <span className="font-bold">Achievement:</span> {story.achievement}
                   </p>
                 </div>
-                
                 <div className="flex flex-wrap gap-1">
                   {story.tags.map(tag => (
                     <Badge key={tag} variant="outline" className="text-xs">
@@ -689,18 +636,15 @@ export default function BusinessHub() {
               </div>
             ))}
           </div>
-          
           <div className="text-center mt-8">
             <Button variant="outline">
               Read More Success Stories
             </Button>
           </div>
         </section>
-        
         {/* Upcoming Webinars */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-8">Upcoming Webinars</h2>
-          
           <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
             <div className="flex flex-col md:flex-row">
               <div className="md:w-1/3 relative">
@@ -719,14 +663,12 @@ export default function BusinessHub() {
                   </div>
                 </div>
               </div>
-              
               <div className="p-6 md:w-2/3">
                 <h3 className="text-xl font-bold mb-2">Instagram Reels and TikTok: Creating Viral Content for Beauty Businesses</h3>
                 <p className="text-gray-600 mb-4">
                   Learn how to create engaging short-form video content that showcases your skills and services. 
                   Our panel of social media experts will share strategies that have helped beauty professionals gain thousands of followers and convert them into paying clients.
                 </p>
-                
                 <div className="flex items-center mb-6">
                   <div className="flex -space-x-2 mr-4">
                     <div className="relative h-8 w-8 rounded-full border-2 border-white overflow-hidden">
@@ -750,7 +692,6 @@ export default function BusinessHub() {
                   </div>
                   <span className="text-sm text-gray-600">Jessica Chen, Maya Williams</span>
                 </div>
-                
                 <div className="flex gap-3">
                   <Button>Register Now</Button>
                   <Button variant="outline">Add to Calendar</Button>
@@ -758,14 +699,12 @@ export default function BusinessHub() {
               </div>
             </div>
           </div>
-          
           <div className="mt-6 text-center">
             <Link href="/business-hub/webinars" className="text-indigo-600 hover:text-indigo-700 font-medium">
               View All Upcoming Webinars →
             </Link>
           </div>
         </section>
-        
         {/* Newsletter Signup */}
         <section>
           <div className="bg-gray-50 rounded-lg p-8 text-center">
@@ -774,12 +713,10 @@ export default function BusinessHub() {
               Subscribe to our newsletter to receive the latest marketing tips, business resources, 
               and exclusive offers directly to your inbox.
             </p>
-            
             <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
               <Input type="email" placeholder="Your email address" className="flex-grow" />
               <Button>Subscribe</Button>
             </div>
-            
             <p className="text-xs text-gray-500 mt-4">
               By subscribing, you agree to receive marketing emails. You can unsubscribe at any time.
             </p>

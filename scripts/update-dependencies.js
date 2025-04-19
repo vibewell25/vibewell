@@ -1,110 +1,98 @@
 #!/usr/bin/env node
 
-const { execSync } = require('child_process');
+/**
+ * Update Dependencies for Supabase to Prisma Migration
+ * 
+ * This script updates package.json to remove Supabase dependencies
+ * and ensure all necessary Prisma dependencies are present.
+ */
+
 const fs = require('fs');
 const path = require('path');
 
-const BACKUP_DIR = path.join(__dirname, '../backups');
+console.log('\n🔍 Updating dependencies for Supabase to Prisma migration...\n');
 
-// Ensure backup directory exists
-if (!fs.existsSync(BACKUP_DIR)) {
-  fs.mkdirSync(BACKUP_DIR, { recursive: true });
-}
-
-// Backup package.json and package-lock.json
-function backupFiles() {
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const backupPath = path.join(BACKUP_DIR, timestamp);
-  fs.mkdirSync(backupPath);
+try {
+  // Read package.json
+  const packageJsonPath = path.join(process.cwd(), 'package.json');
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
   
-  ['package.json', 'package-lock.json'].forEach(file => {
-    const sourcePath = path.join(__dirname, '..', file);
-    const targetPath = path.join(backupPath, file);
-    if (fs.existsSync(sourcePath)) {
-      fs.copyFileSync(sourcePath, targetPath);
+  // Dependencies to remove (Supabase-related)
+  const depsToRemove = [
+    '@supabase/supabase-js',
+    '@supabase/auth-helpers-nextjs',
+    '@supabase/auth-helpers-react',
+    '@supabase/ssr',
+    '@supabase/postgrest-js'
+  ];
+  
+  // Dependencies to add/ensure (Prisma-related)
+  const depsToEnsure = {
+    '@prisma/client': '^5.0.0',
+    'prisma': '^5.0.0'
+  };
+  
+  // Remove Supabase dependencies
+  let removedCount = 0;
+  depsToRemove.forEach(dep => {
+    if (packageJson.dependencies && packageJson.dependencies[dep]) {
+      console.log(`📤 Removing dependency: ${dep}`);
+      delete packageJson.dependencies[dep];
+      removedCount++;
+    }
+    
+    if (packageJson.devDependencies && packageJson.devDependencies[dep]) {
+      console.log(`📤 Removing dev dependency: ${dep}`);
+      delete packageJson.devDependencies[dep];
+      removedCount++;
     }
   });
   
-  return backupPath;
-}
-
-// Update packages in stages
-const updates = {
-  stage1: {
-    name: 'React and Core Dependencies',
-    packages: [
-      'react@19.1.0',
-      'react-dom@19.1.0',
-      '@types/react@19.1.1',
-      '@types/react-dom@19.1.2'
-    ]
-  },
-  stage2: {
-    name: 'Next.js and Related',
-    packages: [
-      'next@15.3.0',
-      'eslint-config-next@15.3.0'
-    ]
-  },
-  stage3: {
-    name: 'Testing Libraries',
-    packages: [
-      '@testing-library/react@16.3.0',
-      '@testing-library/dom@10.4.0',
-      'cypress@14.3.0'
-    ]
-  },
-  stage4: {
-    name: 'Third Party Integrations',
-    packages: [
-      '@stripe/react-stripe-js@3.6.0',
-      '@stripe/stripe-js@7.0.0',
-      'stripe@18.0.0'
-    ]
-  },
-  stage5: {
-    name: '3D and UI Libraries',
-    packages: [
-      '@react-three/drei@10.0.6',
-      '@react-three/fiber@9.1.2',
-      'three@0.175.0'
-    ]
-  }
-};
-
-async function main() {
-  console.log('Starting dependency update process...');
-  const backupPath = backupFiles();
-  console.log(`Backup created at: ${backupPath}`);
-
-  for (const [stage, info] of Object.entries(updates)) {
-    console.log(`\nStarting ${info.name} updates...`);
-    try {
-      execSync(`npm install ${info.packages.join(' ')} --save`, { stdio: 'inherit' });
-      console.log(`✅ ${info.name} updates completed successfully`);
-    } catch (error) {
-      console.error(`❌ Error updating ${info.name}:`, error.message);
-      console.log('Rolling back to backup...');
+  // Ensure Prisma dependencies
+  let addedCount = 0;
+  Object.entries(depsToEnsure).forEach(([dep, version]) => {
+    if (!packageJson.dependencies || !packageJson.dependencies[dep]) {
+      if (!packageJson.dependencies) {
+        packageJson.dependencies = {};
+      }
       
-      ['package.json', 'package-lock.json'].forEach(file => {
-        const backupFile = path.join(backupPath, file);
-        const targetFile = path.join(__dirname, '..', file);
-        if (fs.existsSync(backupFile)) {
-          fs.copyFileSync(backupFile, targetFile);
-        }
-      });
-      
-      execSync('npm install', { stdio: 'inherit' });
-      process.exit(1);
+      console.log(`📥 Adding dependency: ${dep}@${version}`);
+      packageJson.dependencies[dep] = version;
+      addedCount++;
+    } else {
+      console.log(`✅ Dependency already exists: ${dep}`);
     }
+    
+    // Remove from devDependencies if it exists there
+    if (packageJson.devDependencies && packageJson.devDependencies[dep]) {
+      console.log(`📤 Removing duplicate dev dependency: ${dep}`);
+      delete packageJson.devDependencies[dep];
+    }
+  });
+  
+  // Make sure prisma is in devDependencies if it's not already in dependencies
+  if (!packageJson.dependencies['prisma'] && (!packageJson.devDependencies || !packageJson.devDependencies['prisma'])) {
+    if (!packageJson.devDependencies) {
+      packageJson.devDependencies = {};
+    }
+    
+    console.log(`📥 Adding dev dependency: prisma@^5.0.0`);
+    packageJson.devDependencies['prisma'] = '^5.0.0';
+    addedCount++;
   }
-
-  console.log('\nAll updates completed successfully!');
-  console.log('\nRecommended next steps:');
-  console.log('1. Run tests: npm test');
-  console.log('2. Start the development server: npm run dev');
-  console.log('3. Check for any visual regressions');
-  console.log('4. Review console for warnings/errors');
-}
-
-main().catch(console.error); 
+  
+  // Write updated package.json
+  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
+  
+  console.log(`\n📊 Dependencies update summary:`);
+  console.log(`- ${removedCount} Supabase dependencies removed`);
+  console.log(`- ${addedCount} Prisma dependencies added/updated`);
+  
+  console.log(`\n📋 Next steps:`);
+  console.log(`1. Run 'npm install' to update your node_modules`);
+  console.log(`2. Run 'npx prisma generate' to ensure Prisma client is up-to-date\n`);
+  
+} catch (error) {
+  console.error('❌ Error updating dependencies:', error);
+  process.exit(1);
+} 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { prisma } from '@/lib/database/client';
 
 export async function GET(request: NextRequest) {
   try {

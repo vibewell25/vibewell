@@ -1,153 +1,126 @@
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { getSession } from '@auth0/nextjs-auth0';
+import { prisma } from '@/lib/database/client';
+import { z } from 'zod';
+
+// Schema for validating review updates
+const reviewUpdateSchema = z.object({
+  rating: z.number().min(1).max(5).optional(),
+  title: z.string().min(3).max(100).optional(),
+  content: z.string().min(10).max(1000).optional(),
+  status: z.enum(['published', 'pending', 'rejected']).optional(),
+});
 
 // GET a single review
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const cookieStore = cookies();
-  
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get: (name) => cookieStore.get(name)?.value,
-        set: () => {}, // Not needed for GET requests
-        remove: () => {}, // Not needed for GET requests
-      },
-    }
-  );
-  
-  const { data, error } = await supabase
-    .from('reviews')
-    .select('*, customer:profiles(*), provider:providers(*)')
-    .eq('id', params.id)
-    .single();
-  
-  if (error) {
-    return NextResponse.json(
-      { error: 'Review not found' },
-      { status: 404 }
-    );
-  }
-  
-  return NextResponse.json({
-    success: true,
-    data
-  });
-}
+  const { id } = params;
 
-// Update a review
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
-  const cookieStore = cookies();
-  
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get: (name) => cookieStore.get(name)?.value,
-        set: () => {}, // We'll handle cookie setting in a proper response
-        remove: () => {}, // Not needed for this context
-      },
-    }
-  );
-  
-  // Check if user is authenticated
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
-    return NextResponse.json(
-      { error: 'Not authorized' },
-      { status: 401 }
-    );
-  }
-  
   try {
-    // First check if review exists and belongs to this user
-    const { data: existingReview, error: reviewError } = await supabase
-      .from('reviews')
-      .select('customer_id, provider_id')
-      .eq('id', params.id)
-      .single();
-    
-    if (reviewError || !existingReview) {
+    // Get the review by ID
+    const review = await prisma.review.findUnique({
+      where: { id },
+      include: {
+        user: {
+          select: {
+            name: true,
+            image: true,
+          }
+        },
+        product: {
+          select: {
+            name: true,
+            image: true,
+          }
+        }
+      }
+    });
+
+    if (!review) {
       return NextResponse.json(
         { error: 'Review not found' },
         { status: 404 }
       );
     }
-    
-    // Check ownership or admin status
-    if (existingReview.customer_id !== session.user.id && session.user.app_metadata?.role !== 'admin') {
+
+    return NextResponse.json(review);
+  } catch (error) {
+    console.error('Error fetching review:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch review' },
+      { status: 500 }
+    );
+  }
+}
+
+// Update a review
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+  const session = await getSession();
+  const userId = session?.user?.sub;
+
+  if (!userId) {
+    return NextResponse.json(
+      { error: 'Authentication required' },
+      { status: 401 }
+    );
+  }
+
+  try {
+    // Get the existing review
+    const existingReview = await prisma.review.findUnique({
+      where: { id },
+    });
+
+    if (!existingReview) {
       return NextResponse.json(
-        { error: 'Not authorized to update this review' },
-        { status: 401 }
+        { error: 'Review not found' },
+        { status: 404 }
       );
     }
-    
-    // Get update data
-    const body = await request.json();
-    const { title, text, rating } = body;
-    
-    // Validation
-    if (!title && !text && !rating) {
+
+    // Check if the user owns this review or is an admin
+    const userRole = await prisma.userRole.findFirst({
+      where: { userId },
+    });
+
+    if (existingReview.userId !== userId && userRole?.role !== 'admin') {
       return NextResponse.json(
-        { error: 'Please provide at least one field to update' },
+        { error: 'Not authorized to update this review' },
+        { status: 403 }
+      );
+    }
+
+    // Validate and parse the update data
+    const body = await request.json();
+    const result = reviewUpdateSchema.safeParse(body);
+
+    if (!result.success) {
+      return NextResponse.json(
+        { error: 'Invalid request data', details: result.error.format() },
         { status: 400 }
       );
     }
-    
-    // Create update object
-    const updateData: { title?: string; text?: string; rating?: number } = {};
-    if (title) updateData.title = title;
-    if (text) updateData.text = text;
-    if (rating) updateData.rating = rating;
-    
+
     // Update the review
-    const { data: updatedReview, error: updateError } = await supabase
-      .from('reviews')
-      .update(updateData)
-      .eq('id', params.id)
-      .select()
-      .single();
-    
-    if (updateError) {
-      return NextResponse.json(
-        { error: updateError.message },
-        { status: 500 }
-      );
-    }
-    
-    // Recalculate provider average rating
-    const providerId = existingReview.provider_id;
-    const { data: avgRating } = await supabase
-      .from('reviews')
-      .select('rating')
-      .eq('provider_id', providerId);
-    
-    if (avgRating && avgRating.length > 0) {
-      const avgValue = avgRating.reduce((sum: number, item: { rating: number }) => sum + item.rating, 0) / avgRating.length;
-      
-      await supabase
-        .from('providers')
-        .update({ avg_rating: avgValue, total_reviews: avgRating.length })
-        .eq('id', providerId);
-    }
-    
-    return NextResponse.json({
-      success: true,
-      data: updatedReview
+    const updatedReview = await prisma.review.update({
+      where: { id },
+      data: {
+        ...result.data,
+        updatedAt: new Date(),
+      },
     });
+
+    return NextResponse.json(updatedReview);
   } catch (error) {
     console.error('Error updating review:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to update review' },
       { status: 500 }
     );
   }
@@ -155,100 +128,57 @@ export async function PUT(
 
 // Delete a review
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const cookieStore = cookies();
-  
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get: (name) => cookieStore.get(name)?.value,
-        set: () => {}, // We'll handle cookie setting in a proper response
-        remove: () => {}, // Not needed for this context
-      },
-    }
-  );
-  
-  // Check if user is authenticated
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
+  const { id } = params;
+  const session = await getSession();
+  const userId = session?.user?.sub;
+
+  if (!userId) {
     return NextResponse.json(
-      { error: 'Not authorized' },
+      { error: 'Authentication required' },
       { status: 401 }
     );
   }
-  
+
   try {
-    // First check if review exists and belongs to this user
-    const { data: existingReview, error: reviewError } = await supabase
-      .from('reviews')
-      .select('customer_id, provider_id')
-      .eq('id', params.id)
-      .single();
-    
-    if (reviewError || !existingReview) {
+    // Get the existing review
+    const existingReview = await prisma.review.findUnique({
+      where: { id },
+    });
+
+    if (!existingReview) {
       return NextResponse.json(
         { error: 'Review not found' },
         { status: 404 }
       );
     }
-    
-    // Check ownership or admin status
-    if (existingReview.customer_id !== session.user.id && session.user.app_metadata?.role !== 'admin') {
+
+    // Check if the user owns this review or is an admin
+    const userRole = await prisma.userRole.findFirst({
+      where: { userId },
+    });
+
+    if (existingReview.userId !== userId && userRole?.role !== 'admin') {
       return NextResponse.json(
         { error: 'Not authorized to delete this review' },
-        { status: 401 }
+        { status: 403 }
       );
     }
-    
-    // Store provider ID for later rating calculation
-    const providerId = existingReview.provider_id;
-    
+
     // Delete the review
-    const { error: deleteError } = await supabase
-      .from('reviews')
-      .delete()
-      .eq('id', params.id);
-    
-    if (deleteError) {
-      return NextResponse.json(
-        { error: deleteError.message },
-        { status: 500 }
-      );
-    }
-    
-    // Recalculate provider average rating
-    const { data: avgRating } = await supabase
-      .from('reviews')
-      .select('rating')
-      .eq('provider_id', providerId);
-    
-    if (avgRating && avgRating.length > 0) {
-      const avgValue = avgRating.reduce((sum: number, item: { rating: number }) => sum + item.rating, 0) / avgRating.length;
-      
-      await supabase
-        .from('providers')
-        .update({ avg_rating: avgValue, total_reviews: avgRating.length })
-        .eq('id', providerId);
-    } else {
-      // No reviews left, reset rating
-      await supabase
-        .from('providers')
-        .update({ avg_rating: 0, total_reviews: 0 })
-        .eq('id', providerId);
-    }
-    
-    return NextResponse.json({
-      success: true,
-      data: {}
+    await prisma.review.delete({
+      where: { id },
     });
+
+    return NextResponse.json(
+      { success: true, message: 'Review deleted successfully' }
+    );
   } catch (error) {
     console.error('Error deleting review:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to delete review' },
       { status: 500 }
     );
   }

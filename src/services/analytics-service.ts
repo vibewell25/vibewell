@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { prisma } from '@/lib/database/client';
 import { randomBytes } from 'crypto';
 
 // Define types for analytics events
@@ -16,7 +16,8 @@ export type EventName =
   | 'cart_add'
   | 'cart_remove'
   | 'checkout_start'
-  | 'checkout_complete';
+  | 'checkout_complete'
+  | 'achievement_earned'; // Added for engagement service
 
 // Define interface for event payload
 export interface AnalyticsEvent {
@@ -103,15 +104,9 @@ interface ShareData {
 
 // Analytics Service
 export class AnalyticsService {
-  private supabase;
   private sessionId: string;
   
   constructor() {
-    this.supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-    );
-    
     // Generate a session ID for anonymous users
     this.sessionId = this.getOrCreateSessionId();
   }
@@ -192,26 +187,30 @@ export class AnalyticsService {
       
       // Server-side tracking (direct to database)
       // Get the current user ID if available
-      const { data: { user } } = await this.supabase.auth.getUser();
-      const userId = user?.id;
+      const session = await prisma.session.findFirst({
+        where: { 
+          sessionToken: this.sessionId 
+        },
+        include: { 
+          user: true 
+        }
+      });
+      
+      const userId = session?.userId;
       
       // Create the event payload
-      const eventPayload: AnalyticsEvent = {
+      const eventPayload = {
         event,
-        user_id: userId,
-        session_id: this.sessionId,
-        timestamp: new Date().toISOString(),
-        properties
+        userId,
+        sessionId: this.sessionId,
+        timestamp: new Date(),
+        properties: JSON.stringify(properties)
       };
       
-      // Store the event in Supabase
-      const { error } = await this.supabase
-        .from('analytics_events')
-        .insert([eventPayload]);
-      
-      if (error) {
-        console.error('Error tracking analytics event:', error);
-      }
+      // Store the event in the database using Prisma
+      await prisma.analyticsEvent.create({
+        data: eventPayload
+      });
       
     } catch (error) {
       console.error('Failed to track analytics event:', error);
@@ -240,53 +239,72 @@ export class AnalyticsService {
     end: string 
   }): Promise<EngagementMetrics> {
     try {
-      // Query for sessions in the time range
-      const { data: sessions, error: sessionsError } = await this.supabase
-        .from('analytics_events')
-        .select('*')
-        .gte('timestamp', options.start)
-        .lte('timestamp', options.end)
-        .order('timestamp', { ascending: true });
-        
-      if (sessionsError) {
-        throw sessionsError;
-      }
+      // Query for sessions in the time range using Prisma
+      const sessions = await prisma.analyticsEvent.findMany({
+        where: {
+          timestamp: {
+            gte: new Date(options.start),
+            lte: new Date(options.end)
+          }
+        },
+        orderBy: {
+          timestamp: 'asc'
+        }
+      });
       
       // Calculate metrics
       const uniqueUserIds = new Set(sessions
-        .filter(session => session.user_id)
-        .map(session => session.user_id));
+        .filter(session => session.userId)
+        .map(session => session.userId));
         
-      const uniqueSessionIds = new Set(sessions.map(session => session.session_id));
+      const uniqueSessionIds = new Set(sessions.map(session => session.sessionId));
       
       // Calculate try-on session counts
       const tryOnSessions = sessions.filter(session => session.event === 'product_try_on');
       
       const makeupSessions = tryOnSessions.filter(
-        session => session.properties.product_type === 'makeup'
+        session => {
+          const props = JSON.parse(session.properties as string);
+          return props.product_type === 'makeup';
+        }
       ).length;
       
       const hairstyleSessions = tryOnSessions.filter(
-        session => session.properties.product_type === 'hairstyle'
+        session => {
+          const props = JSON.parse(session.properties as string);
+          return props.product_type === 'hairstyle';
+        }
       ).length;
       
       const accessorySessions = tryOnSessions.filter(
-        session => session.properties.product_type === 'accessory'
+        session => {
+          const props = JSON.parse(session.properties as string);
+          return props.product_type === 'accessory';
+        }
       ).length;
       
       // Calculate shares
       const shareSessions = sessions.filter(session => session.event === 'product_share');
       
       const socialShares = shareSessions.filter(
-        session => session.properties.share_method === 'social'
+        session => {
+          const props = JSON.parse(session.properties as string);
+          return props.share_method === 'social';
+        }
       ).length;
       
       const emailShares = shareSessions.filter(
-        session => session.properties.share_method === 'email'
+        session => {
+          const props = JSON.parse(session.properties as string);
+          return props.share_method === 'email';
+        }
       ).length;
       
       const downloadShares = shareSessions.filter(
-        session => session.properties.share_method === 'download'
+        session => {
+          const props = JSON.parse(session.properties as string);
+          return props.share_method === 'download';
+        }
       ).length;
       
       // Calculate top viewed products
@@ -294,88 +312,66 @@ export class AnalyticsService {
       
       const productViewsCount: Record<string, { count: number, name: string }> = {};
       productViews.forEach(view => {
-        const productId = view.properties.product_id;
-        const productName = view.properties.product_name || 'Unknown Product';
+        const props = JSON.parse(view.properties as string);
+        const productId = props.product_id;
+        const productName = props.product_name || 'Unknown Product';
         
-        if (productId) {
-          if (!productViewsCount[productId]) {
-            productViewsCount[productId] = { count: 0, name: productName };
-          }
-          productViewsCount[productId].count += 1;
+        if (!productViewsCount[productId]) {
+          productViewsCount[productId] = { count: 0, name: productName };
         }
+        productViewsCount[productId].count += 1;
       });
       
       const topViewedProducts = Object.entries(productViewsCount)
-        .map(([product_id, { count, name }]) => ({ 
-          product_id, 
-          name, 
-          views: count 
-        }))
+        .map(([product_id, { count, name }]) => ({ product_id, name, views: count }))
         .sort((a, b) => b.views - a.views)
-        .slice(0, 5);
-        
+        .slice(0, 10);
+      
       // Calculate product category breakdown
-      const categoryViews: Record<string, number> = {};
+      const productCategoryBreakdown: Record<string, number> = {};
       productViews.forEach(view => {
-        const category = view.properties.category || 'unknown';
-        categoryViews[category] = (categoryViews[category] || 0) + 1;
-      });
-      
-      // Calculate success rate (completed try-ons / started try-ons)
-      const startedTryOns = sessions.filter(
-        session => session.event === 'product_try_on' && 
-                  session.properties.action === 'start'
-      ).length;
-      
-      const completedTryOns = sessions.filter(
-        session => session.event === 'product_try_on' && 
-                  session.properties.action === 'complete'
-      ).length;
-      
-      const successRate = startedTryOns > 0 
-        ? (completedTryOns / startedTryOns) * 100 
-        : 0;
+        const props = JSON.parse(view.properties as string);
+        const category = props.product_category || 'Unknown';
         
-      // Calculate average session duration (this is an approximation)
+        if (!productCategoryBreakdown[category]) {
+          productCategoryBreakdown[category] = 0;
+        }
+        productCategoryBreakdown[category] += 1;
+      });
+      
+      // Calculate average duration and success rate
       let totalDuration = 0;
-      let sessionCount = 0;
+      let successCount = 0;
       
-      // Group events by session ID
-      const sessionEvents: Record<string, any[]> = {};
-      sessions.forEach(event => {
-        if (!sessionEvents[event.session_id]) {
-          sessionEvents[event.session_id] = [];
+      tryOnSessions.forEach(session => {
+        const props = JSON.parse(session.properties as string);
+        
+        if (props.duration) {
+          totalDuration += props.duration;
         }
-        sessionEvents[event.session_id].push(event);
-      });
-      
-      // Calculate duration for each session
-      Object.values(sessionEvents).forEach(events => {
-        if (events.length > 1) {
-          const sortedEvents = events.sort(
-            (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-          );
-          
-          const firstEvent = new Date(sortedEvents[0].timestamp).getTime();
-          const lastEvent = new Date(sortedEvents[sortedEvents.length - 1].timestamp).getTime();
-          
-          const durationSeconds = (lastEvent - firstEvent) / 1000;
-          
-          // Only count sessions with reasonable durations (less than 2 hours)
-          if (durationSeconds > 0 && durationSeconds < 7200) {
-            totalDuration += durationSeconds;
-            sessionCount++;
-          }
+        
+        if (props.success) {
+          successCount += 1;
         }
       });
       
-      const averageDuration = sessionCount > 0 ? totalDuration / sessionCount : 0;
+      const averageDuration = tryOnSessions.length > 0 
+        ? totalDuration / tryOnSessions.length 
+        : 0;
+      
+      const successRate = tryOnSessions.length > 0 
+        ? (successCount / tryOnSessions.length) * 100 
+        : 0;
       
       return {
         totalSessions: uniqueSessionIds.size,
         uniqueUsers: uniqueUserIds.size,
         averageDuration,
         successRate,
+        timeRange: {
+          start: options.start,
+          end: options.end
+        },
         makeupSessions,
         hairstyleSessions,
         accessorySessions,
@@ -383,15 +379,31 @@ export class AnalyticsService {
         emailShares,
         downloadShares,
         topViewedProducts,
-        productCategoryBreakdown: categoryViews,
+        productCategoryBreakdown
+      };
+        
+    } catch (error) {
+      console.error('Error getting engagement metrics:', error);
+      
+      // Return empty metrics on error
+      return {
+        totalSessions: 0,
+        uniqueUsers: 0,
+        averageDuration: 0,
+        successRate: 0,
         timeRange: {
           start: options.start,
           end: options.end
-        }
+        },
+        makeupSessions: 0,
+        hairstyleSessions: 0,
+        accessorySessions: 0,
+        socialShares: 0,
+        emailShares: 0,
+        downloadShares: 0,
+        topViewedProducts: [],
+        productCategoryBreakdown: {}
       };
-    } catch (error) {
-      console.error('Error fetching engagement metrics:', error);
-      throw error;
     }
   }
   
@@ -402,13 +414,34 @@ export class AnalyticsService {
   ): Promise<ProductMetrics> {
     try {
       // Query for product events in the time range
-      const { data: productEvents, error: eventsError } = await this.supabase
-        .from('analytics_events')
-        .select('*')
-        .gte('timestamp', options.start)
-        .lte('timestamp', options.end)
-        .or(`properties->product_id.eq.${productId},properties->id.eq.${productId}`)
-        .order('timestamp', { ascending: true });
+      const { data: productEvents, error: eventsError } = await prisma.analyticsEvent.findMany({
+        where: {
+          event: {
+            in: ['product_view', 'product_try_on'],
+          },
+          OR: [
+            {
+              properties: {
+                path: ['product_id'],
+                equals: productId,
+              },
+            },
+            {
+              properties: {
+                path: ['id'],
+                equals: productId,
+              },
+            },
+          ],
+          timestamp: {
+            gte: new Date(options.start),
+            lte: new Date(options.end)
+          }
+        },
+        orderBy: {
+          timestamp: 'asc'
+        }
+      });
         
       if (eventsError) {
         throw eventsError;
@@ -467,13 +500,20 @@ export class AnalyticsService {
   ): Promise<RecommendationMetrics> {
     try {
       // Query for recommendation events in the time range
-      const { data: events, error: eventsError } = await this.supabase
-        .from('analytics_events')
-        .select('*')
-        .gte('timestamp', options.start)
-        .lte('timestamp', options.end)
-        .in('event', ['product_recommendation_click', 'product_view', 'cart_add'])
-        .order('timestamp', { ascending: true });
+      const { data: events, error: eventsError } = await prisma.analyticsEvent.findMany({
+        where: {
+          event: {
+            in: ['product_recommendation_click', 'product_view', 'cart_add'],
+          },
+          timestamp: {
+            gte: new Date(options.start),
+            lte: new Date(options.end)
+          }
+        },
+        orderBy: {
+          timestamp: 'asc'
+        }
+      });
         
       if (eventsError) {
         throw eventsError;

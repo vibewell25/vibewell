@@ -1,5 +1,4 @@
 'use client';
-
 import React, { Suspense, useState, useEffect } from 'react';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { ThemeSelector } from '@/components/theme-selector';
@@ -7,14 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useTheme } from '@/components/theme-provider';
-import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+;
 import Link from 'next/link';
-
+import { Icons } from '@/components/icons';
 function ThemeSettingsContent() {
   const { theme } = useTheme();
   const [isSystemPreference, setIsSystemPreference] = useState(theme === 'system');
   const [activeColorTheme, setActiveColorTheme] = useState('default-theme');
-
   // Retrieve stored color theme on page load
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -24,24 +22,21 @@ function ThemeSettingsContent() {
       }
     }
   }, []);
-
   return (
     <MobileLayout>
       <div className="bg-background min-h-screen pb-16">
         {/* Header with Back Button */}
         <div className="bg-card px-5 py-4 flex items-center border-b border-border">
           <Link href="/profile/settings" className="mr-4">
-            <ChevronLeftIcon className="w-5 h-5" />
+            <Icons.ChevronLeftIcon className="w-5 h-5" />
           </Link>
           <h1 className="text-xl font-semibold">Theme Settings</h1>
         </div>
-
         <div className="px-5 py-6 space-y-8">
           {/* Display Mode */}
           <div className="space-y-4">
             <h2 className="text-xl font-bold">Display Mode</h2>
             <p className="text-muted-foreground">Choose how Vibewell appears to you</p>
-            
             <div className="flex justify-between items-center py-3">
               <Label htmlFor="system-preference" className="font-medium">
                 Use system preference
@@ -52,7 +47,6 @@ function ThemeSettingsContent() {
                 onCheckedChange={(checked) => setIsSystemPreference(checked)}
               />
             </div>
-
             <div className="grid grid-cols-2 gap-3 mt-4">
               <Button 
                 variant={theme === 'light' && !isSystemPreference ? "default" : "outline"} 
@@ -70,7 +64,6 @@ function ThemeSettingsContent() {
                 </div>
                 <span>Light</span>
               </Button>
-              
               <Button 
                 variant={theme === 'dark' && !isSystemPreference ? "default" : "outline"} 
                 size="lg"
@@ -89,12 +82,10 @@ function ThemeSettingsContent() {
               </Button>
             </div>
           </div>
-
           {/* Color Themes */}
           <div className="space-y-4">
             <h2 className="text-xl font-bold">Color Theme</h2>
             <p className="text-muted-foreground">Choose a color theme for the app</p>
-            
             <div className="mt-4 grid grid-cols-3 gap-4">
               {[
                 { name: 'Default', value: 'default-theme', color: '#7C3AED' },
@@ -113,7 +104,6 @@ function ThemeSettingsContent() {
                       // Handle custom theme picker
                       return;
                     }
-                    
                     // Apply the color theme
                     const root = window.document.documentElement;
                     ['default-theme', 'green-theme', 'peach-theme', 'blue-theme', 'purple-theme'].forEach(theme => {
@@ -144,12 +134,10 @@ function ThemeSettingsContent() {
               ))}
             </div>
           </div>
-
           {/* Accessibility */}
           <div className="space-y-4">
             <h2 className="text-xl font-bold">Accessibility</h2>
             <p className="text-muted-foreground">Customize your viewing experience</p>
-            
             <div className="space-y-3 py-2">
               <div className="flex justify-between items-center">
                 <Label htmlFor="reduced-motion" className="font-medium">
@@ -157,14 +145,12 @@ function ThemeSettingsContent() {
                 </Label>
                 <Switch id="reduced-motion" />
               </div>
-
               <div className="flex justify-between items-center">
                 <Label htmlFor="high-contrast" className="font-medium">
                   High contrast
                 </Label>
                 <Switch id="high-contrast" />
               </div>
-
               <div className="flex justify-between items-center">
                 <Label htmlFor="larger-text" className="font-medium">
                   Larger text
@@ -178,7 +164,6 @@ function ThemeSettingsContent() {
     </MobileLayout>
   );
 }
-
 export default function ThemeSettingsPage() {
   return (
     <Suspense fallback={<div>Loading theme settings...</div>}>

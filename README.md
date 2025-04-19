@@ -1,217 +1,163 @@
-# Vibewell Platform
+# VibeWell
 
-Vibewell is a comprehensive wellness and beauty application designed to connect users with wellness providers, beauty services, and health resources.
+VibeWell is a comprehensive wellness platform designed to help users improve their mental, physical, and emotional well-being through guided activities, personalized wellness plans, and progress tracking.
 
-## Table of Contents
+## 🌟 Features
 
-- [Features](#features)
-- [Beauty & Wellness Features](#beauty--wellness-features)
-- [Project Structure](#project-structure)
-- [Component Library](#component-library)
-- [API Documentation](#api-documentation)
-- [Development Setup](#development-setup)
-- [Testing](#testing)
-- [Build Instructions](#build-instructions)
-- [Deployment](#deployment)
-- [Known Issues](#known-issues)
-- [Contact](#contact)
+- **Wellness Activities**: Access a library of guided meditation, fitness, yoga, nutrition, and stress-reduction activities
+- **Beauty & Wellness Services**: Book appointments with beauty professionals, spas, and wellness practitioners
+- **Virtual Try-On**: Try makeup and beauty products virtually before purchasing using AR technology
+- **Personalized Plans**: Follow structured wellness plans tailored to specific goals
+- **Progress Tracking**: Monitor your wellness journey with detailed progress analytics
+- **Community Support**: Connect with like-minded individuals on similar wellness journeys
+- **Expert Guidance**: Content created by certified wellness professionals
+- **Subscription Tiers**: Choose from different subscription levels based on your needs
 
-## Features
+## 🛠️ Tech Stack
 
-- User authentication and profile management
-- Beauty services booking
-- Provider directory and management
-- Real-time notifications
-- Analytics dashboard
-- Admin controls
-- Responsive design for all devices
-- Augmented Reality (AR) try-on features
-- Mobile application with cross-platform support
+- **Frontend**: Next.js, React, TypeScript, Tailwind CSS
+- **Backend**: Node.js, Next.js API Routes
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: Auth0 for secure user authentication and authorization
+- **File Storage**: AWS S3
+- **Payments**: Stripe
+- **Deployment**: Vercel
 
-## Beauty & Wellness Features
+## 📋 Documentation
 
-Our platform offers comprehensive beauty and wellness services:
+- [Deployment Guide](DEPLOYMENT-GUIDE.md): Instructions for deploying the application
+- [Development Setup](DEVELOPMENT-SETUP.md): Guide for setting up the development environment
+- [Database Guide](docs/DATABASE-GUIDE.md): Information about our Prisma database setup
+- [API Documentation](API-DOCUMENTATION.md): Comprehensive API reference
+- [Troubleshooting Guide](TROUBLESHOOTING-GUIDE.md): Solutions for common issues
+- [Security Best Practices](SECURITY-BEST-PRACTICES.md): Security guidelines for the platform
 
-### Virtual Try-On
-- AR-powered makeup and cosmetics try-on
-- Real-time facial feature detection
-- Customizable beauty filters
-- Product recommendations based on skin type
+## 🚀 Getting Started
 
-### Beauty Services
-- Appointment booking for beauty treatments
-- Professional makeup artist directory
-- Skincare consultation scheduling
-- Beauty product marketplace
-- Virtual beauty consultations
+### Prerequisites
 
-### Wellness Integration
-- Personalized wellness plans
-- Progress tracking
-- Integration with fitness devices
-- Wellness provider matching
-- Virtual wellness sessions
+- Node.js (version 16.x or later)
+- NPM (version 8.x or later)
+- PostgreSQL database
+- AWS account (for S3)
+- Auth0 account
+- Stripe account (for payment processing)
 
-### Beauty Content
-- Tutorials and how-to guides
-- Trending beauty looks
-- Professional beauty tips
-- Product reviews and ratings
-- Seasonal beauty trends
-
-## Project Structure
-
-The project follows a modular architecture:
-
-```
-vibewell/
-├── app/                 # Next.js app router components
-├── components/          # Reusable UI components
-│   ├── ui/              # Base UI components
-│   ├── ar/              # AR-related components
-│   ├── auth/            # Authentication components
-│   ├── booking/         # Booking-related components
-│   └── provider/        # Provider-related components
-├── contexts/            # React contexts for state management
-├── hooks/               # Custom React hooks
-├── lib/                 # Utility libraries and client configurations
-├── prisma/              # Database schema and migrations
-├── public/              # Static assets
-├── services/            # API service abstractions
-├── styles/              # Global styles and theme configuration
-├── test-utils/          # Testing utilities
-└── types/               # TypeScript type definitions
-```
-
-## Component Library
-
-Vibewell includes a comprehensive UI component library built with React, TypeScript, and Tailwind CSS. The components are designed to be:
-
-- **Accessible**: Following WCAG guidelines
-- **Responsive**: Working on all device sizes
-- **Reusable**: Easily integrated into various parts of the application
-- **Themeable**: Supporting light and dark mode
-
-For detailed component documentation, refer to the [Component Documentation](docs/components/README.md).
-
-## API Documentation
-
-The API is organized around RESTful principles and uses standard HTTP methods and status codes. All API responses are JSON-formatted.
-
-Key API areas:
-- Authentication
-- User Management
-- Provider Management
-- Booking Services
-- [Notification Services](docs/api/notification-api.yaml)
-- Analytics
-- AR Integration
-
-For detailed API documentation, refer to the API docs in the `docs/api/` directory.
-
-## Development Setup
+### Quick Start
 
 1. Clone the repository
-   ```
-   git clone https://github.com/yourusername/vibewell.git
+   ```bash
+   git clone https://github.com/your-org/vibewell.git
    cd vibewell
    ```
 
-2. Install dependencies:
-   ```
+2. Install dependencies
+   ```bash
    npm install
    ```
 
-3. Set up environment variables:
-   - Copy `.env.local.example` to `.env.local`
-   - Fill in the necessary values for your environment
+3. Set up environment variables
+   Create a `.env.local` file with the necessary environment variables (see [Development Setup](DEVELOPMENT-SETUP.md) for details)
 
-4. Set up the database:
-   ```
+4. Run database migrations
+   ```bash
    npx prisma migrate dev
    ```
 
-5. Run the development server:
-   ```
+5. Start the development server
+   ```bash
    npm run dev
    ```
 
 6. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Testing
+## 📦 Project Structure
 
-The project uses Jest and React Testing Library for unit and integration tests.
+```
+vibewell/
+├── app/                  # Next.js app directory
+│   ├── api/              # API routes
+│   ├── components/       # React components
+│   ├── context/          # React context providers
+│   ├── hooks/            # Custom React hooks
+│   │   ├── auth/         # Auth0 integration
+│   │   ├── database/     # Prisma database client
+│   │   ├── aws/          # AWS S3 integration
+│   │   └── stripe/       # Stripe payment integration
+│   ├── lib/              # Utility functions and libraries
+│   ├── pages/            # Page components
+│   ├── styles/           # Global styles
+│   └── types/            # TypeScript type definitions
+├── prisma/               # Prisma schema and migrations
+├── public/               # Static assets
+├── scripts/              # Utility scripts
+├── test/                 # Test files
+└── .env.example          # Example environment variables
+```
 
-### Running Tests
+## 🧪 Testing
+
+We use Jest and React Testing Library for testing.
 
 ```bash
 # Run all tests
 npm test
 
-# Run tests with coverage
-npm run test:coverage
-
 # Run tests in watch mode
 npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
 ```
 
-### Test Structure
+## 🔄 Database Migration
 
-- Unit tests for UI components are located next to the component files
-- Integration tests are in the `__tests__/integration` directory
-- E2E tests are in the `__tests__/e2e` directory
-- API tests are in the `__tests__/api` directory
+VibeWell has successfully migrated from Supabase to Prisma ORM for improved database access, type safety, and schema management. Key benefits of this migration include:
 
-For more information about testing strategies, see [TESTING-UPDATES.md](TESTING-UPDATES.md).
+- **Better TypeScript Integration**: Full type safety with auto-generated Prisma Client
+- **Simplified Query API**: More intuitive and consistent database operations
+- **Improved Migration Management**: Robust schema versioning and migration tools
+- **Enhanced Performance**: Optimized database access patterns
 
-## Build Instructions
+For more details, see the [Database Guide](docs/DATABASE-GUIDE.md) and [Troubleshooting Guide](TROUBLESHOOTING-GUIDE.md).
 
-Due to the complexity of the application, there are some considerations with the build process:
+## 🔐 Authentication
 
-1. For local testing, use the development server:
-   ```
-   npm run dev
-   ```
+VibeWell uses Auth0 for secure authentication:
 
-2. For production deployment:
-   ```
-   npm run build
-   ```
+- **Secure Login**: Support for email/password, social login, and MFA
+- **Role-Based Access Control**: Fine-grained permission management
+- **JWT Authentication**: Secure, token-based API access
+- **Customizable Login Experience**: Branded authentication flows
 
-3. To analyze the bundle size:
-   ```
-   npm run analyze
-   ```
+## 🤝 Contributing
 
-## Deployment
+We welcome contributions from the community! Please check out our [contribution guidelines](CONTRIBUTING.md) to get started.
 
-For deployment, we recommend using a Node.js server environment with the following:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-1. Set up all required environment variables as specified in `.env.example`
-2. Deploy the standalone output from the build process
-3. Use a process manager like PM2 to keep the application running
-4. Set up a reverse proxy using Nginx or similar
-5. Enable HTTPS for secure connections
+## 📄 License
 
-### CI/CD Pipeline
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-The project includes GitHub Actions workflows for:
-- Running tests
-- Code quality checks
-- Building and deploying to staging
-- Building and deploying to production
+## 📞 Support
 
-## Known Issues
+For support, please contact us at support@vibewell.com or visit our [support portal](https://support.vibewell.com).
 
-- Some pages using `useSearchParams` need to be wrapped in a Suspense boundary
-- Redis client requires Node.js specific APIs
-- Web Push notifications require VAPID keys
-- AR features may not work in all browsers (WebXR support is required)
+## 🙌 Acknowledgements
 
-## Contact
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Prisma](https://www.prisma.io/)
+- [Auth0](https://auth0.com/)
+- [Stripe](https://stripe.com/)
+- [Vercel](https://vercel.com/)
 
-For more information or technical support, please contact the development team at dev@vibewell.com.
+---
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+Made with ❤️ by the VibeWell Team

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { prisma } from '@/lib/database/client';
 import { AuthService } from '@/services/auth-service';
 import redisClient from '@/lib/redis-client';
 import { logger } from '@/lib/logger';

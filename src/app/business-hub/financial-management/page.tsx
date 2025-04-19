@@ -1,25 +1,17 @@
 'use client';
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  CalculatorIcon,
-  DocumentTextIcon,
-  ChartBarIcon,
-  CurrencyDollarIcon,
-  ClipboardDocumentCheckIcon,
-  ArrowTrendingUpIcon
-} from '@heroicons/react/24/outline';
+;
 import Link from 'next/link';
 import Image from 'next/image';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
 import { FinancialNav } from '@/components/financial-nav';
 import { Layout } from '@/components/layout';
-
+import { Icons } from '@/components/icons';
 interface FinancialTool {
   id: string;
   title: string;
@@ -29,7 +21,6 @@ interface FinancialTool {
   premium: boolean;
   url: string;
 }
-
 interface FinancialResource {
   id: string;
   title: string;
@@ -38,18 +29,16 @@ interface FinancialResource {
   category: 'budgeting' | 'pricing' | 'tax' | 'reporting' | 'cash-flow';
   premium: boolean;
 }
-
 export default function FinancialManagementPage() {
   const [activeTab, setActiveTab] = useState('tools');
   const [selectedCategory, setSelectedCategory] = useState('all');
-
   // Financial tools data
   const financialTools: FinancialTool[] = [
     {
       id: 'profit-calculator',
       title: 'Service Profit Calculator',
       description: 'Calculate the true profit margin for each of your services, including all direct and indirect costs.',
-      icon: <CalculatorIcon className="h-10 w-10 text-green-500" />,
+      icon: <Icons.CalculatorIcon className="h-10 w-10 text-green-500" />,
       category: 'pricing',
       premium: false,
       url: '/business-hub/financial-management/tools/profit-calculator'
@@ -58,7 +47,7 @@ export default function FinancialManagementPage() {
       id: 'pricing-strategy',
       title: 'Pricing Strategy Builder',
       description: 'Develop a strategic pricing structure that maximizes profitability while remaining competitive.',
-      icon: <CurrencyDollarIcon className="h-10 w-10 text-indigo-500" />,
+      icon: <Icons.CurrencyDollarIcon className="h-10 w-10 text-indigo-500" />,
       category: 'pricing',
       premium: true,
       url: '/business-hub/financial-management/tools/pricing-strategy'
@@ -67,7 +56,7 @@ export default function FinancialManagementPage() {
       id: 'tax-planner',
       title: 'Tax Planning & Deduction Tracker',
       description: 'Stay organized throughout the year to maximize deductions and minimize tax liability.',
-      icon: <DocumentTextIcon className="h-10 w-10 text-red-500" />,
+      icon: <Icons.DocumentTextIcon className="h-10 w-10 text-red-500" />,
       category: 'tax',
       premium: false,
       url: '/business-hub/financial-management/tools/tax-planner'
@@ -76,7 +65,7 @@ export default function FinancialManagementPage() {
       id: 'cash-flow',
       title: 'Cash Flow Forecasting Tool',
       description: 'Predict and manage your business cash flow to ensure you always have sufficient operating funds.',
-      icon: <ArrowTrendingUpIcon className="h-10 w-10 text-blue-500" />,
+      icon: <Icons.ArrowTrendingUpIcon className="h-10 w-10 text-blue-500" />,
       category: 'cash-flow',
       premium: true,
       url: '/business-hub/financial-management/tools/cash-flow'
@@ -85,7 +74,7 @@ export default function FinancialManagementPage() {
       id: 'budget-template',
       title: 'Salon & Spa Budget Template',
       description: 'A comprehensive budgeting template designed specifically for beauty and wellness businesses.',
-      icon: <ClipboardDocumentCheckIcon className="h-10 w-10 text-orange-500" />,
+      icon: <Icons.ClipboardDocumentCheckIcon className="h-10 w-10 text-orange-500" />,
       category: 'budgeting',
       premium: false,
       url: '/business-hub/financial-management/tools/budget-template'
@@ -94,13 +83,12 @@ export default function FinancialManagementPage() {
       id: 'financial-dashboard',
       title: 'Financial KPI Dashboard',
       description: 'Track key financial metrics and performance indicators specific to service-based businesses.',
-      icon: <ChartBarIcon className="h-10 w-10 text-purple-500" />,
+      icon: <Icons.ChartBarIcon className="h-10 w-10 text-purple-500" />,
       category: 'reporting',
       premium: true,
       url: '/business-hub/financial-management/tools/financial-dashboard'
     }
   ];
-
   // Financial resources data
   const financialResources: FinancialResource[] = [
     {
@@ -160,29 +148,23 @@ export default function FinancialManagementPage() {
       premium: true
     }
   ];
-
   // Filter tools based on category
   const filteredTools = financialTools.filter(tool => 
     selectedCategory === 'all' || tool.category === selectedCategory
   );
-
   // Filter resources based on category
   const filteredResources = financialResources.filter(resource => 
     selectedCategory === 'all' || resource.category === selectedCategory
   );
-
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
         <p className="text-gray-600 mb-6">Tools, resources, and education to grow your wellness business</p>
-        
         {/* Main Navigation */}
         <BusinessHubNavigation />
-        
         {/* Financial Management Navigation */}
         <FinancialNav />
-      
         {/* Hero Section */}
         <div className="bg-gradient-to-r from-green-100 to-blue-100 rounded-xl p-8 mb-12">
           <div className="max-w-3xl">
@@ -198,7 +180,7 @@ export default function FinancialManagementPage() {
                 className="bg-green-600 hover:bg-green-700"
                 onClick={() => setActiveTab('tools')}
               >
-                <CalculatorIcon className="h-5 w-5 mr-2" />
+                <Icons.CalculatorIcon className="h-5 w-5 mr-2" />
                 Financial Tools
               </Button>
               <Button 
@@ -206,13 +188,12 @@ export default function FinancialManagementPage() {
                 className="border-green-600 text-green-600 hover:bg-green-50"
                 onClick={() => setActiveTab('resources')}
               >
-                <DocumentTextIcon className="h-5 w-5 mr-2" />
+                <Icons.DocumentTextIcon className="h-5 w-5 mr-2" />
                 Resources & Guides
               </Button>
             </div>
           </div>
         </div>
-
         {/* Category Filters */}
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-4">Filter by Category</h2>
@@ -267,14 +248,12 @@ export default function FinancialManagementPage() {
             </Button>
           </div>
         </div>
-
         {/* Main Content Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue={activeTab}>
           <TabsList className="mb-8">
             <TabsTrigger value="tools">Financial Tools</TabsTrigger>
             <TabsTrigger value="resources">Resources & Guides</TabsTrigger>
           </TabsList>
-          
           {/* Tools Tab Content */}
           <TabsContent value="tools">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -307,7 +286,6 @@ export default function FinancialManagementPage() {
               ))}
             </div>
           </TabsContent>
-          
           {/* Resources Tab Content */}
           <TabsContent value="resources">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -346,7 +324,6 @@ export default function FinancialManagementPage() {
             </div>
           </TabsContent>
         </Tabs>
-
         {/* Profit Analysis CTA */}
         <div className="mt-12 mb-12 bg-white rounded-xl shadow-md p-8 border border-gray-200">
           <div className="flex flex-col md:flex-row items-center">
@@ -391,7 +368,6 @@ export default function FinancialManagementPage() {
             </div>
           </div>
         </div>
-
         {/* Financial Insights */}
         <div className="mb-12">
           <h2 className="text-2xl font-bold mb-6">Key Financial Insights</h2>
@@ -442,7 +418,6 @@ export default function FinancialManagementPage() {
                 </Link>
               </CardFooter>
             </Card>
-            
             <Card>
               <CardHeader>
                 <CardTitle>Common Financial Mistakes</CardTitle>
@@ -488,7 +463,6 @@ export default function FinancialManagementPage() {
             </Card>
           </div>
         </div>
-
         {/* Financial Workshop CTA */}
         <div className="bg-gradient-to-r from-blue-600 to-green-600 rounded-xl overflow-hidden">
           <div className="flex flex-col md:flex-row">

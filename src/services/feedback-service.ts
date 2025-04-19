@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { prisma } from '@/lib/database/client';
 import { AnalyticsService } from './analytics-service';
 
 export interface ProductFeedback {

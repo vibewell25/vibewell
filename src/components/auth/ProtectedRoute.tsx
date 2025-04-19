@@ -1,55 +1,81 @@
-import React from 'react';
+'use client';
+
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { Role, Permission, hasPermission } from '@/lib/auth/roles';
+import { useAuth } from '@/contexts/clerk-auth-context';
+import { UserRole } from '@/contexts/clerk-auth-context';
+import { Spinner } from '@/components/ui/spinner';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { ReactNode } from 'react';
 
 interface ProtectedRouteProps {
-  children: React.ReactNode;
-  requiredRole?: Role;
-  requiredPermission?: Permission;
-  fallbackPath?: string;
+  children: ReactNode;
+  requiredRoles?: string[];
 }
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  children,
-  requiredRole,
-  requiredPermission,
-  fallbackPath = '/',
-}) => {
+export default function ProtectedRoute({ 
+  children, 
+  requiredRoles = [] 
+}: ProtectedRouteProps) {
   const router = useRouter();
-  const { data: session, status } = useSession();
-  const [isAuthorized, setIsAuthorized] = React.useState(false);
+  const { user, isLoading, error } = useUser();
+  
+  // Extract Auth0 namespace from env or use default
+  const namespace = process.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell.com';
 
-  React.useEffect(() => {
-    if (status === 'loading') return;
+  useEffect(() => {
+    // Wait for the auth state to load
+    if (isLoading) return;
 
-    if (!session) {
-      router.push('/auth/signin');
+    // If there's an auth error, redirect to login
+    if (error) {
+      console.error('Auth error:', error);
+      router.push(`/api/auth/login?returnTo=${encodeURIComponent(router.asPath)}`);
       return;
     }
 
-    const userRole = session.user?.role as Role;
-    
-    if (requiredRole && userRole !== requiredRole) {
-      router.push(fallbackPath);
+    // If not authenticated, redirect to login
+    if (!user) {
+      router.push(`/api/auth/login?returnTo=${encodeURIComponent(router.asPath)}`);
       return;
     }
 
-    if (requiredPermission && !hasPermission(userRole, requiredPermission)) {
-      router.push(fallbackPath);
-      return;
+    // If roles are required, check if the user has at least one of them
+    if (requiredRoles.length > 0) {
+      const userRoles = user[`${namespace}/roles`] || [];
+      const hasRequiredRole = requiredRoles.some(role => userRoles.includes(role));
+      
+      if (!hasRequiredRole) {
+        router.push('/unauthorized');
+      }
     }
+  }, [isLoading, error, user, router, requiredRoles, namespace]);
 
-    setIsAuthorized(true);
-  }, [session, status, requiredRole, requiredPermission, router, fallbackPath]);
-
-  if (status === 'loading' || !isAuthorized) {
+  // Show loading state
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       </div>
     );
   }
 
+  // Show error state
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-red-600">An authentication error occurred. Please try again.</div>
+      </div>
+    );
+  }
+
+  // Show unauthorized state
+  if (!user || (requiredRoles.length > 0 && !requiredRoles.some(role => 
+    (user[`${namespace}/roles`] || []).includes(role)
+  ))) {
+    return null; // The useEffect will handle the redirect
+  }
+
+  // User is authenticated and has the required roles
   return <>{children}</>;
-}; 
+} 

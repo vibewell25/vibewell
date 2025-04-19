@@ -1,182 +1,164 @@
-import React, { Suspense, lazy } from 'react';
-import { Button } from '@/components/ui/button';
+'use client';
+
+import { useState } from 'react';
+import { MeditationEnvironment, MeditationEnvironmentProps } from '@/components/ar/MeditationEnvironment';
 import Link from 'next/link';
-import Image from 'next/image';
-import { Layout } from '@/components/layout';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
-// Import critical components normally
-import { FeaturedCategories } from '@/components/home/featured-categories';
-
-// Lazy load non-critical components
-const TestimonialCarousel = lazy(() => import('@/components/home/testimonial-carousel'));
-const RecentBookings = lazy(() => import('@/components/home/recent-bookings'));
-const TrendingServices = lazy(() => import('@/components/home/trending-services'));
-const PopularProviders = lazy(() => import('@/components/home/popular-providers'));
-
-// Fallback components
-const SkeletonLoader = () => (
-  <div className="animate-pulse rounded-lg bg-muted h-48 w-full"></div>
-);
+type MeditationSettings = {
+  theme: MeditationEnvironmentProps['theme'];
+  soundscape: MeditationEnvironmentProps['soundscape'];
+  lightingIntensity: number;
+};
 
 export default function Home() {
   return (
-    <Layout>
-      <div className="container-app py-12 md:py-24">
-        {/* Hero Section */}
-        <section className="relative h-[70vh] flex items-center">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/images/hero-background.jpg"
-              alt="Vibewell wellness background"
-              fill
-              priority
-              className="object-cover"
-              quality={90}
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40" />
-          </div>
-          <div className="container relative z-10 mx-auto px-4 text-white">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">Find Your Wellness Balance</h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-2xl">
-              Discover and book beauty, wellness, and health services in your area.
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-b from-indigo-700 to-purple-800 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+          <div className="text-center md:text-left md:w-3/5">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight">
+              Transform Your Wellness Journey
+            </h1>
+            <p className="mt-6 text-xl max-w-3xl">
+              VibeWell connects you with the best wellness providers, services, and products to help you achieve your health and wellness goals.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <Button size="lg" asChild>
-                <Link href="/beauty">Beauty Services</Link>
-              </Button>
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10" asChild>
-                <Link href="/wellness">Wellness Services</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Categories */}
-        <section className="py-12 bg-background">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8 text-center">Featured Categories</h2>
-            <FeaturedCategories />
-          </div>
-        </section>
-
-        {/* Testimonials */}
-        <section className="py-12 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8 text-center">What Our Customers Say</h2>
-            <Suspense fallback={<SkeletonLoader />}>
-              <TestimonialCarousel />
-            </Suspense>
-          </div>
-        </section>
-
-        {/* Recent Bookings */}
-        <section className="py-12 bg-background">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8 text-center">Recent Bookings</h2>
-            <Suspense fallback={<SkeletonLoader />}>
-              <RecentBookings />
-            </Suspense>
-          </div>
-        </section>
-
-        {/* Trending Services */}
-        <section className="py-12 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8 text-center">Trending Services</h2>
-            <Suspense fallback={<SkeletonLoader />}>
-              <TrendingServices />
-            </Suspense>
-          </div>
-        </section>
-
-        {/* Popular Providers */}
-        <section className="py-12 bg-background">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8 text-center">Popular Providers</h2>
-            <Suspense fallback={<SkeletonLoader />}>
-              <PopularProviders />
-            </Suspense>
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section className="py-12 md:py-20">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Key Features</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to enhance your wellness journey, all in one platform.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {features.map((feature) => (
-              <div key={feature.title} className="card flex flex-col">
-                <div className="h-12 w-12 bg-primary/10 text-primary rounded-md flex items-center justify-center mb-4">
-                  <feature.icon className="h-6 w-6" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground flex-grow">{feature.description}</p>
-                <Link 
-                  href={feature.link} 
-                  className="inline-flex items-center text-primary mt-4 hover:underline"
-                >
-                  Learn more <ArrowRightIcon className="ml-2 h-4 w-4" />
-                </Link>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Call-to-Action Section */}
-        <section className="py-12 md:py-20">
-          <div className="bg-muted rounded-xl p-8 md:p-12">
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold mb-4">Start Your Wellness Journey Today</h2>
-              <p className="text-muted-foreground mb-8">
-                Join thousands of users who have transformed their wellness experience through our platform.
-              </p>
-              <Link href="/auth/sign-up" className="btn-primary text-center">
-                Create Free Account
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+              <Link 
+                href="/api/auth/login?returnTo=/dashboard" 
+                className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white hover:bg-gray-100 md:text-lg"
+              >
+                Get Started
+              </Link>
+              <Link 
+                href="/services" 
+                className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 md:text-lg"
+              >
+                Explore Services
               </Link>
             </div>
           </div>
-        </section>
-      </div>
-    </Layout>
+        </div>
+      </section>
+      
+      {/* Features Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              Everything You Need for Wellness
+            </h2>
+            <p className="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+              VibeWell brings together all aspects of wellness in one platform.
+            </p>
+          </div>
+          
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Feature 1 */}
+            <div className="bg-indigo-50 rounded-lg p-6">
+              <div className="w-12 h-12 bg-indigo-600 rounded-md flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900">Personal Wellness</h3>
+              <p className="mt-2 text-gray-600">
+                Find the right wellness providers and services tailored to your unique needs and goals.
+              </p>
+            </div>
+            
+            {/* Feature 2 */}
+            <div className="bg-purple-50 rounded-lg p-6">
+              <div className="w-12 h-12 bg-purple-600 rounded-md flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900">Easy Booking</h3>
+              <p className="mt-2 text-gray-600">
+                Schedule appointments with wellness providers easily, manage your bookings, and receive reminders.
+              </p>
+            </div>
+            
+            {/* Feature 3 */}
+            <div className="bg-amber-50 rounded-lg p-6">
+              <div className="w-12 h-12 bg-amber-600 rounded-md flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900">Secure Payments</h3>
+              <p className="mt-2 text-gray-600">
+                Pay for services securely through our platform, with support for one-time payments and subscriptions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* CTA Section */}
+      <section className="bg-indigo-700 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+            Ready to start your wellness journey?
+          </h2>
+          <p className="mt-4 text-xl text-indigo-100 max-w-2xl mx-auto">
+            Create an account and connect with wellness providers today.
+          </p>
+          <div className="mt-8">
+            <Link 
+              href="/api/auth/login?returnTo=/dashboard" 
+              className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white hover:bg-gray-100 md:text-lg"
+            >
+              Sign Up Now
+            </Link>
+          </div>
+        </div>
+      </section>
+      
+      {/* Footer */}
+      <footer className="bg-gray-900 text-gray-400 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="text-xl font-bold text-white mb-4">VibeWell</h3>
+              <p className="text-sm">
+                Connecting wellness providers with clients seeking to improve their health and wellbeing.
+              </p>
+            </div>
+            
+            <div>
+              <h4 className="text-lg font-semibold text-white mb-4">Services</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/services" className="hover:text-white">Browse Services</Link></li>
+                <li><Link href="/providers" className="hover:text-white">Find Providers</Link></li>
+                <li><Link href="/wellness" className="hover:text-white">Wellness Resources</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="text-lg font-semibold text-white mb-4">Company</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/about" className="hover:text-white">About Us</Link></li>
+                <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
+                <li><Link href="/careers" className="hover:text-white">Careers</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="text-lg font-semibold text-white mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-white">Terms of Service</Link></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="mt-8 pt-8 border-t border-gray-800 text-sm text-center">
+            <p>© {new Date().getFullYear()} VibeWell. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
-
-// Feature icons using Heroicons
-const features = [
-  {
-    title: 'Personalized Content',
-    description: 'AI-driven recommendations and content tailored to your wellness goals and preferences.',
-    icon: (props: React.ComponentProps<'svg'>) => (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-      </svg>
-    ),
-    link: '/wellness',
-  },
-  {
-    title: 'Expert Consultations',
-    description: 'Connect with certified wellness professionals through live video sessions.',
-    icon: (props: React.ComponentProps<'svg'>) => (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-      </svg>
-    ),
-    link: '/consultations',
-  },
-  {
-    title: 'Community & Social',
-    description: 'Join a supportive community of like-minded individuals on their wellness journeys.',
-    icon: (props: React.ComponentProps<'svg'>) => (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-      </svg>
-    ),
-    link: '/social',
-  },
-];

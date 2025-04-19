@@ -30,9 +30,9 @@ const mockConsole = {
 
 describe('Performance Monitoring', () => {
   beforeAll(() => {
-    // @ts-ignore - partial mock implementation
+    // @ts-expect-error - partial mock implementation
     global.performance = mockPerformance;
-    // @ts-ignore - partial mock implementation
+    // @ts-expect-error - partial mock implementation
     global.console = mockConsole;
   });
 

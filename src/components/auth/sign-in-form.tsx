@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth } from '@/contexts/clerk-auth-context';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,11 +16,7 @@ import { Icons } from '@/components/ui/icons';
 
 const signInSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one number')
-    .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
   rememberMe: z.boolean().optional(),
 });
 
@@ -32,17 +28,8 @@ export function SignInForm() {
   const [showCaptcha, setShowCaptcha] = useState(false);
   const [captchaValue, setCaptchaValue] = useState('');
   const [failedAttempts, setFailedAttempts] = useState(0);
-  const [isBiometricAvailable, setIsBiometricAvailable] = useState(false);
   const router = useRouter();
-  const { signIn } = useAuth();
-
-  useEffect(() => {
-    // Check if biometric authentication is available
-    if (window.PublicKeyCredential) {
-      PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
-        .then(available => setIsBiometricAvailable(available));
-    }
-  }, []);
+  const { signIn, signInWithGoogle, signInWithFacebook, signInWithApple } = useAuth();
 
   const {
     register,
@@ -51,26 +38,6 @@ export function SignInForm() {
   } = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
   });
-
-  const handleBiometricAuth = async () => {
-    try {
-      const credential = await navigator.credentials.get({
-        publicKey: {
-          challenge: new Uint8Array(32),
-          rpId: window.location.hostname,
-          allowCredentials: [],
-          userVerification: 'required',
-        },
-      });
-      
-      if (credential) {
-        // Handle successful biometric authentication
-        router.push('/dashboard');
-      }
-    } catch (err) {
-      setError('Biometric authentication failed. Please try another method.');
-    }
-  };
 
   const onSubmit = async (data: SignInFormValues) => {
     setIsLoading(true);
@@ -84,27 +51,28 @@ export function SignInForm() {
     }
 
     try {
-      // Attempt to sign in - assuming signIn returns void or a success value
-      await signIn(data.email, data.password);
+      const { error: signInError } = await signIn(data.email, data.password);
       
-      // If we get here, assume login was successful
-      // Reset failed attempts on successful login
-      setFailedAttempts(0);
-      setShowCaptcha(false);
-
-      // Handle remember me
-      if (data.rememberMe) {
-        localStorage.setItem('rememberedEmail', data.email);
+      if (signInError) {
+        // Handle login failure
+        setFailedAttempts(prev => prev + 1);
+        setError(signInError.message);
       } else {
-        localStorage.removeItem('rememberedEmail');
-      }
+        // If we get here, assume login was successful
+        setFailedAttempts(0);
+        setShowCaptcha(false);
 
-      // Navigate to dashboard
-      router.push('/dashboard');
+        // Handle remember me
+        if (data.rememberMe) {
+          localStorage.setItem('rememberedEmail', data.email);
+        } else {
+          localStorage.removeItem('rememberedEmail');
+        }
+      }
     } catch (err) {
-      // Handle login failure
+      // Handle unexpected errors
       setFailedAttempts(prev => prev + 1);
-      setError('Invalid credentials. Please try again.');
+      setError('An unexpected error occurred. Please try again.');
       console.error('Sign in error:', err);
     } finally {
       setIsLoading(false);
@@ -116,16 +84,20 @@ export function SignInForm() {
     setError(null);
 
     try {
-      // Implementation depends on your auth context
-      // For now, we'll just use a placeholder
-      console.log(`Signing in with ${provider}`);
-      
-      // Redirect after social sign in
-      router.push('/dashboard');
+      switch (provider) {
+        case 'google':
+          await signInWithGoogle();
+          break;
+        case 'facebook':
+          await signInWithFacebook();
+          break;
+        case 'apple':
+          await signInWithApple();
+          break;
+      }
     } catch (err) {
       setError(`Failed to sign in with ${provider}.`);
       console.error('Social sign in error:', err);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -211,20 +183,6 @@ export function SignInForm() {
           </Button>
         </form>
 
-        {isBiometricAvailable && (
-          <div className="mt-4">
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={handleBiometricAuth}
-            >
-              {/* Use an icon that exists in the Icons component */}
-              <Icons.spinner className="mr-2 h-4 w-4" />
-              Sign in with Biometrics
-            </Button>
-          </div>
-        )}
-
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
@@ -269,24 +227,19 @@ export function SignInForm() {
           </Button>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col space-y-4">
+      <CardFooter className="flex justify-between">
         <Link
           href="/auth/forgot-password"
-          className="text-sm text-muted-foreground hover:text-primary"
-          aria-label="Forgot password"
+          className="text-sm text-blue-600 hover:text-blue-800"
         >
-          Forgot your password?
+          Forgot password?
         </Link>
-        <div className="text-sm text-muted-foreground">
-          Don't have an account?{' '}
-          <Link
-            href="/auth/sign-up"
-            className="text-primary hover:underline"
-            aria-label="Sign up"
-          >
-            Sign up
-          </Link>
-        </div>
+        <Link
+          href="/auth/signup"
+          className="text-sm text-blue-600 hover:text-blue-800"
+        >
+          Create an account
+        </Link>
       </CardFooter>
     </Card>
   );

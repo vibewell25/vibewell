@@ -1,18 +1,12 @@
 'use client';
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import Image from 'next/image';
-import { 
-  MegaphoneIcon, 
-  ArrowDownTrayIcon, 
-  SparklesIcon,
-  StarIcon,
-  MagnifyingGlassIcon
-} from '@heroicons/react/24/outline';
+import { Icons } from '@/components/icons';
+import { Search, Download, Sparkles, Star, Megaphone } from 'lucide-react';
 
 // Define the interface for marketing resources
 interface MarketingResource {
@@ -24,11 +18,9 @@ interface MarketingResource {
   downloadable: boolean;
   premium: boolean;
 }
-
 export default function MarketingResourcesPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  
   // Marketing resources data
   const marketingResources: MarketingResource[] = [
     {
@@ -104,17 +96,14 @@ export default function MarketingResourcesPage() {
       premium: false
     }
   ];
-
   // Filter resources based on category and search
   const filteredResources = marketingResources.filter(resource => {
     const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
     const matchesSearch = !searchQuery || 
       resource.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
       resource.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
     return matchesCategory && matchesSearch;
   });
-
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
@@ -125,7 +114,6 @@ export default function MarketingResourcesPage() {
             Grow your beauty or wellness business with our practical marketing tools, templates, and guides. 
             From social media and email campaigns to local marketing strategies, find everything you need to attract and retain clients.
           </p>
-          
           <div className="relative w-full max-w-lg mb-6">
             <Input 
               type="text" 
@@ -135,12 +123,11 @@ export default function MarketingResourcesPage() {
               className="pr-10"
             />
             <button className="absolute inset-y-0 right-0 px-3 flex items-center">
-              <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+              <Search className="h-5 w-5 text-gray-400" />
             </button>
           </div>
         </div>
       </div>
-
       {/* Category Filters */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-4">Browse by Category</h2>
@@ -189,7 +176,6 @@ export default function MarketingResourcesPage() {
           </Button>
         </div>
       </div>
-
       {/* Marketing Resources */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         {filteredResources.map(resource => (
@@ -216,7 +202,7 @@ export default function MarketingResourcesPage() {
               <div className="flex justify-between items-center">
                 {resource.downloadable ? (
                   <div className="flex items-center text-xs text-green-600">
-                    <ArrowDownTrayIcon className="h-4 w-4 mr-1" />
+                    <Download className="h-4 w-4 mr-1" />
                     <span>Downloadable</span>
                   </div>
                 ) : (
@@ -235,39 +221,34 @@ export default function MarketingResourcesPage() {
           </div>
         ))}
       </div>
-
       {/* Marketing Services Spotlight */}
       <div className="mb-12 bg-white rounded-xl shadow-md p-8 border border-gray-200">
         <div className="flex flex-col md:flex-row">
           <div className="md:w-2/3 md:pr-8">
             <h2 className="text-2xl font-bold mb-4 flex items-center">
-              <SparklesIcon className="h-6 w-6 text-yellow-400 mr-2" />
+              <Sparkles className="h-6 w-6 text-yellow-400 mr-2" />
               Marketing Services Spotlight
             </h2>
             <p className="text-gray-700 mb-6">
               Need help implementing your marketing strategy? Our network of vetted marketing professionals 
               specialize in beauty and wellness businesses and can help you get results fast.
             </p>
-            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div className="border border-gray-200 rounded-lg p-4">
                 <h3 className="font-semibold mb-2">Social Media Management</h3>
                 <p className="text-sm text-gray-600 mb-3">Professional content creation and engagement strategies tailored for beauty businesses.</p>
                 <Badge className="bg-green-100 text-green-800">From $399/month</Badge>
               </div>
-              
               <div className="border border-gray-200 rounded-lg p-4">
                 <h3 className="font-semibold mb-2">Email Marketing Setup</h3>
                 <p className="text-sm text-gray-600 mb-3">Custom email sequences and templates to nurture leads and retain clients.</p>
                 <Badge className="bg-green-100 text-green-800">From $299 one-time</Badge>
               </div>
             </div>
-            
             <Button className="bg-purple-600 hover:bg-purple-700">
               Browse All Marketing Services
             </Button>
           </div>
-          
           <div className="md:w-1/3 mt-6 md:mt-0">
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-semibold mb-3">Client Success Story</h3>
@@ -284,11 +265,11 @@ export default function MarketingResourcesPage() {
                 <div>
                   <p className="font-medium">Sophia's Salon</p>
                   <div className="flex text-yellow-400">
-                    <StarIcon className="h-4 w-4" />
-                    <StarIcon className="h-4 w-4" />
-                    <StarIcon className="h-4 w-4" />
-                    <StarIcon className="h-4 w-4" />
-                    <StarIcon className="h-4 w-4" />
+                    <Star className="h-4 w-4" />
+                    <Star className="h-4 w-4" />
+                    <Star className="h-4 w-4" />
+                    <Star className="h-4 w-4" />
+                    <Star className="h-4 w-4" />
                   </div>
                 </div>
               </div>
@@ -304,7 +285,6 @@ export default function MarketingResourcesPage() {
           </div>
         </div>
       </div>
-
       {/* Marketing Quick Tips */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Marketing Quick Tips</h2>
@@ -320,7 +300,6 @@ export default function MarketingResourcesPage() {
               </Button>
             </Link>
           </div>
-          
           <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
             <h3 className="text-lg font-semibold mb-3">Create Irresistible Promotions</h3>
             <p className="text-gray-600 mb-4">
@@ -332,7 +311,6 @@ export default function MarketingResourcesPage() {
               </Button>
             </Link>
           </div>
-          
           <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
             <h3 className="text-lg font-semibold mb-3">Leverage Client Testimonials</h3>
             <p className="text-gray-600 mb-4">
@@ -346,7 +324,6 @@ export default function MarketingResourcesPage() {
           </div>
         </div>
       </div>
-
       {/* Marketing Workshop CTA */}
       <div className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl overflow-hidden">
         <div className="flex flex-col md:flex-row">

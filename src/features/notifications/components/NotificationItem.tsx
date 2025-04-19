@@ -1,34 +1,31 @@
 import React from 'react';
-import { BellIcon, CheckCircleIcon, XCircleIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
+;
 import { getRelativeTime } from '@/utils/date-formatter';
 import type { Notification } from '../types';
-
+import { Icons } from '@/components/icons';
 interface NotificationItemProps {
   notification: Notification;
   onMarkAsRead: (id: string) => void;
   onDelete: (id: string) => void;
 }
-
 export const NotificationItem: React.FC<NotificationItemProps> = ({
   notification,
   onMarkAsRead,
   onDelete,
 }) => {
   const { id, title, message, type, isRead, createdAt } = notification;
-
   const getIcon = () => {
     switch (type) {
       case 'success':
-        return <CheckCircleIcon className="h-6 w-6 text-green-500" />;
+        return <Icons.CheckCircleIcon className="h-6 w-6 text-green-500" />;
       case 'error':
-        return <XCircleIcon className="h-6 w-6 text-red-500" />;
+        return <Icons.XCircleIcon className="h-6 w-6 text-red-500" />;
       case 'info':
-        return <InformationCircleIcon className="h-6 w-6 text-blue-500" />;
+        return <Icons.InformationCircleIcon className="h-6 w-6 text-blue-500" />;
       default:
-        return <BellIcon className="h-6 w-6 text-gray-500" />;
+        return <Icons.BellIcon className="h-6 w-6 text-gray-500" />;
     }
   };
-
   return (
     <div 
       className={`border-b border-gray-200 p-4 ${!isRead ? 'bg-blue-50' : ''}`}

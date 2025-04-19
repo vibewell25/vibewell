@@ -1,12 +1,8 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
-import { 
-  PaperAirplaneIcon
-} from '@heroicons/react/24/outline';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/auth-context';
 import { ReactionType } from '@/components/post-reaction';
 import { Post, PostComment } from '@/components/post';
 import { UserAvatar } from '@/components/user-avatar';
@@ -26,19 +22,17 @@ import {
 } from '@/lib/api/social';
 import { getUpcomingEvents, registerForEvent, cancelEventRegistration } from '@/lib/api/events';
 import { Event } from '@/types/events';
-import { CalendarIcon } from '@heroicons/react/24/outline';
 import { format, parseISO } from 'date-fns';
-import { UserButton } from '@clerk/nextjs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PostReaction } from '@/components/post-reaction';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, Send } from 'lucide-react';
 import { EventShareCard } from '@/components/event-share-card';
 import { CommunityEventsSection } from '@/components/community-events-section';
-
+import { Icons } from '@/components/icons';
 // Fallback dummy data in case API fails
 const initialPosts: PostType[] = [
   {
@@ -84,7 +78,6 @@ const initialPosts: PostType[] = [
   },
   // More fallback posts...
 ];
-
 export default function SocialPage() {
   const { user, loading } = useAuth();
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -96,26 +89,21 @@ export default function SocialPage() {
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
   const [sharedEvents, setSharedEvents] = useState<{[key: string]: boolean}>({});
   const router = useRouter();
-
   // Fetch posts, user reactions, and saved posts on load
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
         setError(null);
-        
         const fetchedPosts = await getPosts();
         setPosts(fetchedPosts.length > 0 ? fetchedPosts : initialPosts);
-        
         // Fetch upcoming events
         const events = await getUpcomingEvents(3);
         setUpcomingEvents(events);
-        
         if (user?.id) {
           // Fetch user reactions
           const reactions = await getUserReactions(user.id);
           setUserReactions(reactions);
-          
           // Fetch saved posts
           const saved = await getSavedPosts(user.id);
           setSavedPosts(saved);
@@ -123,25 +111,19 @@ export default function SocialPage() {
       } catch (err) {
         console.error('Error fetching social data:', err);
         setError('Failed to load social feed. Please try again later.');
-        
         // Fallback to initial posts if API fails
         setPosts(initialPosts);
       } finally {
         setIsLoading(false);
       }
     };
-    
     fetchData();
   }, [user?.id]);
-
   const handlePostSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!newPost.trim() || loading || !user?.id) return;
-    
     try {
       const createdPost = await apiCreatePost(user.id, newPost);
-      
       if (createdPost) {
         setPosts([createdPost, ...posts]);
         setNewPost('');
@@ -171,18 +153,14 @@ export default function SocialPage() {
         },
         comments: [],
       };
-      
       setPosts([optimisticPost, ...posts]);
       setNewPost('');
     }
   };
-
   const handleCommentSubmit = async (postId: number, comment: string) => {
     if (!comment.trim() || loading || !user?.id) return;
-    
     try {
       const newComment = await apiAddComment(user.id, postId, comment);
-      
       if (newComment) {
         // Update posts with the new comment
         setPosts(posts.map(post => {
@@ -210,7 +188,6 @@ export default function SocialPage() {
         content: comment,
         createdAt: new Date().toISOString(),
       };
-      
       setPosts(posts.map(post => {
         if (post.id === postId) {
           return {
@@ -222,35 +199,28 @@ export default function SocialPage() {
       }));
     }
   };
-
   const handleReactionChange = async (postId: number, reactionType: ReactionType | null) => {
     if (!user?.id) return;
-    
     // First, capture the previous reaction to remove it if needed
     const prevReaction = userReactions[postId];
-    
     // Optimistically update UI
     // Update user reactions state
     setUserReactions(prev => ({
       ...prev,
       [postId]: reactionType
     }));
-    
     // Update posts with new reaction counts
     setPosts(posts.map(post => {
       if (post.id === postId) {
         const updatedReactions = { ...post.reactions };
-        
         // If there was a previous reaction, decrement it
         if (prevReaction) {
           updatedReactions[prevReaction] = Math.max(0, (updatedReactions[prevReaction] || 0) - 1);
         }
-        
         // If there's a new reaction, increment it
         if (reactionType) {
           updatedReactions[reactionType] = (updatedReactions[reactionType] || 0) + 1;
         }
-        
         return {
           ...post,
           reactions: updatedReactions
@@ -258,29 +228,24 @@ export default function SocialPage() {
       }
       return post;
     }));
-    
     // Send to API
     try {
       let success;
-      
       if (reactionType) {
         success = await apiAddReaction(user.id, postId, reactionType);
       } else {
         success = await apiRemoveReaction(user.id, postId);
       }
-      
       if (!success) {
         throw new Error('Failed to update reaction');
       }
     } catch (err) {
       console.error('Error updating reaction:', err);
-      
       // Revert changes on failure
       setUserReactions(prev => ({
         ...prev,
         [postId]: prevReaction
       }));
-      
       // Revert post reaction counts
       setPosts(posts.map(post => {
         if (post.id === postId) {
@@ -290,35 +255,28 @@ export default function SocialPage() {
       }));
     }
   };
-
   const toggleSave = async (postId: number) => {
     if (!user?.id) return;
-    
     const isSaved = savedPosts.includes(postId);
-    
     // Optimistic update
     if (isSaved) {
       setSavedPosts(savedPosts.filter(id => id !== postId));
     } else {
       setSavedPosts([...savedPosts, postId]);
     }
-    
     // API call
     try {
       let success;
-      
       if (isSaved) {
         success = await apiUnsavePost(user.id, postId);
       } else {
         success = await apiSavePost(user.id, postId);
       }
-      
       if (!success) {
         throw new Error('Failed to update saved status');
       }
     } catch (err) {
       console.error('Error updating saved status:', err);
-      
       // Revert on failure
       if (isSaved) {
         setSavedPosts([...savedPosts, postId]);
@@ -327,13 +285,11 @@ export default function SocialPage() {
       }
     }
   };
-
   const initiateMessage = (userId: string, userName: string) => {
     // In a real app, you'd create a conversation if one doesn't exist
     // For now, we'll just redirect to the messages page
     router.push(`/messages?initiate=${userId}&name=${encodeURIComponent(userName)}`);
   };
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { 
@@ -344,18 +300,13 @@ export default function SocialPage() {
       minute: '2-digit'
     });
   };
-
   const handleEventShare = async (eventId: string) => {
     if (!user?.id) return;
-    
     try {
       const event = upcomingEvents.find(e => e.id === eventId);
       if (!event) return;
-      
       const postContent = `I'm excited about this event! 🎉\n\n${event.title}\n${event.shortDescription}\n\nJoin me at ${format(parseISO(event.startDate), 'MMM d, yyyy h:mm a')}`;
-      
       const createdPost = await apiCreatePost(user.id, postContent);
-      
       if (createdPost) {
         setPosts([createdPost, ...posts]);
         setSharedEvents(prev => ({ ...prev, [eventId]: true }));
@@ -364,21 +315,16 @@ export default function SocialPage() {
       console.error('Error sharing event:', err);
     }
   };
-
   const handleEventAttendance = async (eventId: string) => {
     if (!user?.id) return;
-    
     try {
       const isAttending = sharedEvents[eventId];
-      
       if (isAttending) {
         await cancelEventRegistration(eventId, user.id);
       } else {
         await registerForEvent(eventId, user.id, user.user_metadata?.full_name || 'Anonymous', user.user_metadata?.avatar_url);
       }
-      
       setSharedEvents(prev => ({ ...prev, [eventId]: !isAttending }));
-      
       // Refresh upcoming events
       const events = await getUpcomingEvents(3);
       setUpcomingEvents(events);
@@ -386,7 +332,6 @@ export default function SocialPage() {
       console.error('Error updating event attendance:', err);
     }
   };
-
   // Rest of the component remains the same
   return (
     <Layout>
@@ -396,7 +341,6 @@ export default function SocialPage() {
           <div className="lg:col-span-2">
             <div className="mb-6">
               <h1 className="text-2xl font-bold mb-6">Community Feed</h1>
-              
               {user ? (
                 <div className="card mb-6">
                   <div className="p-4 flex gap-3">
@@ -419,7 +363,7 @@ export default function SocialPage() {
                           className="btn-primary flex items-center gap-1"
                           disabled={!newPost.trim()}
                         >
-                          <PaperAirplaneIcon className="h-4 w-4" />
+                          <Send className="h-4 w-4" />
                           Post
                         </button>
                       </div>
@@ -434,7 +378,6 @@ export default function SocialPage() {
                   </Link>
                 </div>
               )}
-              
               {isLoading ? (
                 <div className="space-y-4">
                   {[1, 2, 3].map((n) => (
@@ -489,14 +432,13 @@ export default function SocialPage() {
                             aria-label="Message"
                             title="Send message"
                           >
-                            <PaperAirplaneIcon className="h-5 w-5" />
+                            <Send className="h-5 w-5" />
                             <span>Message</span>
                           </button>
                         )
                       }
                     />
                   ))}
-                  
                   {posts.length === 0 && (
                     <div className="card p-6 text-center">
                       <p className="text-muted-foreground">No posts to show. Be the first to share something!</p>
@@ -506,7 +448,6 @@ export default function SocialPage() {
               )}
             </div>
           </div>
-          
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Community Section */}
@@ -515,12 +456,11 @@ export default function SocialPage() {
               <RecommendedConnections />
               <div className="mt-4">
                 <Link href="/messages" className="btn-secondary w-full justify-center flex items-center gap-2">
-                  <PaperAirplaneIcon className="h-4 w-4" />
+                  <Send className="h-4 w-4" />
                   Messages
                 </Link>
               </div>
             </div>
-            
             {/* Upcoming Events */}
             <div className="card p-4">
               <CommunityEventsSection
@@ -530,7 +470,6 @@ export default function SocialPage() {
                 showViewAllButton={true}
               />
             </div>
-            
             {/* Trending Topics */}
             <div className="card p-4">
               <h2 className="text-lg font-semibold mb-4">Trending Topics</h2>
@@ -551,7 +490,6 @@ export default function SocialPage() {
             </div>
           </div>
         </div>
-        
         {/* Upcoming Events Section */}
         {upcomingEvents.length > 0 && (
           <div className="mb-8">

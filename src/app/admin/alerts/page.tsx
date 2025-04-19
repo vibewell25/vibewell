@@ -193,7 +193,7 @@ function AlertsContent() {
 
   const getAlertStatus = (alert: AlertThreshold): AlertStatus => {
     if (!alert.is_active) return { label: 'Inactive', color: 'secondary' };
-    // @ts-ignore - last_triggered might not be in the interface, but it's used in the code
+    // @ts-expect-error - last_triggered might not be in the interface, but it's used in the code
     if (alert.last_triggered) return { label: 'Triggered', color: 'destructive' };
     return { label: 'Active', color: 'success' };
   };

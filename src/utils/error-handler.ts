@@ -1,4 +1,3 @@
-// @ts-nocheck
 // TypeScript helper for handling errors with React components
 // This file handles errors in a standardized way throughout the application
 
@@ -121,7 +120,9 @@ export const ErrorHandlerProvider: React.FC<ErrorHandlerProviderProps> = ({
     );
     
     if (logToServer) {
-      logToServer(error).catch(console.error);
+      logToServer(error).catch((serverLogError: Error) => 
+        console.error('Error logging to server:', serverLogError)
+      );
     }
   }, [logToServer]);
 
@@ -244,14 +245,16 @@ export const useErrorHandler = (): ErrorHandlerContextValue => {
 export function withErrorHandler<PropTypes extends object>(
   Component: React.ComponentType<PropTypes>
 ): React.FC<PropTypes> {
-  const WithErrorHandler = (props: PropTypes) => 
+  const WithErrorHandler: React.FC<PropTypes> = (props: PropTypes) => 
     React.createElement(
       ErrorHandlerProvider,
       { children: React.createElement(Component, props) } as ErrorHandlerProviderProps,
       null
     );
   
-  WithErrorHandler.displayName = `WithErrorHandler(${Component.displayName || Component.name || 'Component'})`;
+  // Set display name for debugging
+  const displayName = Component.displayName || Component.name || 'Component';
+  WithErrorHandler.displayName = `withErrorHandler(${displayName})`;
   
   return WithErrorHandler;
 }
@@ -259,24 +262,26 @@ export function withErrorHandler<PropTypes extends object>(
 // Error fallback function type
 export type ErrorFallbackFunction = (error: AppError) => React.ReactNode;
 
-// ErrorBoundary props interface
+// Props for the error boundary component
 export interface ErrorBoundaryProps {
   children: ReactNode;
   fallback?: ReactNode;
   fallbackFn?: ErrorFallbackFunction;
+  onError?: (error: AppError) => void;
 }
 
-// Error boundary state interface
+// State interface for error boundary
 interface ErrorBoundaryState {
   hasError: boolean;
   error: AppError | null;
 }
 
-// ErrorBoundary component
+// Error boundary component
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = { hasError: false, error: null };
-
+  
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    // Create a standard error from the caught error
     const appError = createStandardError(error.message, {
       originalError: error,
       source: ErrorSource.CLIENT,
@@ -285,28 +290,56 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     
     return { hasError: true, error: appError };
   }
-
+  
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-    console.error('Error caught by ErrorBoundary:', error);
-    console.error('Component stack:', errorInfo.componentStack);
+    if (this.props.onError && this.state.error) {
+      this.props.onError(this.state.error);
+    }
   }
-
+  
   render(): React.ReactNode {
     if (this.state.hasError) {
-      // If we have a fallback function and an error, call the function
-      if (this.props.fallbackFn && exists(this.state.error)) {
+      if (this.props.fallbackFn && this.state.error) {
         return this.props.fallbackFn(this.state.error);
       }
       
-      // Otherwise, use the fallback ReactNode or default error UI
-      return this.props.fallback || React.createElement(
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+      
+      // Default fallback UI
+      return React.createElement(
         'div',
-        { role: 'alert', className: 'error-boundary' },
-        React.createElement('h2', {}, 'Something went wrong'),
-        React.createElement('p', {}, this.state.error?.message || 'An error occurred')
+        { 
+          style: { 
+            padding: '20px', 
+            margin: '20px', 
+            border: '1px solid #f5c6cb', 
+            borderRadius: '4px', 
+            backgroundColor: '#f8d7da', 
+            color: '#721c24'
+          } 
+        },
+        React.createElement('h2', null, 'Something went wrong'),
+        React.createElement('p', null, this.state.error?.message || 'An unknown error occurred'),
+        React.createElement(
+          'button',
+          { 
+            onClick: () => this.setState({ hasError: false, error: null }), 
+            style: { 
+              padding: '8px 16px', 
+              backgroundColor: '#721c24', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '4px', 
+              cursor: 'pointer' 
+            } 
+          },
+          'Try again'
+        )
       );
     }
-
+    
     return this.props.children;
   }
 } 

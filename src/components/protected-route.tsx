@@ -2,26 +2,27 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth, UserRole } from '@/contexts/clerk-auth-context';
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
-  allowedRoles?: ('customer' | 'provider' | 'admin')[];
+  requiredRole?: UserRole;
+  redirectTo?: string;
 };
 
-export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
-  const { user, loading } = useAuth();
+export function ProtectedRoute({ children, requiredRole, redirectTo = '/auth/login' }: ProtectedRouteProps) {
+  const { user, loading, hasRole, isAuthenticated } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!loading) {
-      if (!user) {
-        router.push('/login');
-      } else if (allowedRoles && !allowedRoles.includes(user.user_metadata.user_type)) {
-        router.push('/unauthorized');
+      if (!isAuthenticated) {
+        router.push(redirectTo);
+      } else if (requiredRole && !hasRole(requiredRole)) {
+        router.push('/error/unauthorized');
       }
     }
-  }, [user, loading, router, allowedRoles]);
+  }, [user, loading, router, requiredRole, redirectTo, isAuthenticated, hasRole]);
 
   if (loading) {
     return (
@@ -31,11 +32,11 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     );
   }
 
-  if (!user) {
+  if (!isAuthenticated) {
     return null;
   }
 
-  if (allowedRoles && !allowedRoles.includes(user.user_metadata.user_type)) {
+  if (requiredRole && !hasRole(requiredRole)) {
     return null;
   }
 

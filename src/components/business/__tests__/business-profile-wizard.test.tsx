@@ -68,11 +68,7 @@ describe('BusinessProfileWizard', () => {
     // Set valid address to allow navigation
     await act(async () => {
       fireEvent.click(screen.getByTestId('location-complete'));
-    });
-    
-    // Click Next button
-    await act(async () => {
-      fireEvent.click(screen.getByText('Next'));
+      fireEvent.click(screen.getByText('Next Step'));
     });
     
     // Should now be on service form
@@ -90,7 +86,7 @@ describe('BusinessProfileWizard', () => {
     
     // Navigate to second step
     await act(async () => {
-      fireEvent.click(screen.getByText('Next'));
+      fireEvent.click(screen.getByText('Next Step'));
     });
     
     // Should now be on service form
@@ -123,7 +119,7 @@ describe('BusinessProfileWizard', () => {
     for (let i = 0; i < 4; i++) {
       await act(async () => {
         fireEvent.click(screen.getByTestId('location-complete'));
-        fireEvent.click(screen.getByText('Next'));
+        fireEvent.click(screen.getByText('Next Step'));
       });
     }
     
@@ -132,7 +128,7 @@ describe('BusinessProfileWizard', () => {
     
     // The button should say "Save Profile" instead of "Next"
     expect(screen.getByText('Save Profile')).toBeInTheDocument();
-    expect(screen.queryByText('Next')).not.toBeInTheDocument();
+    expect(screen.queryByText('Next Step')).not.toBeInTheDocument();
   });
 
   it('attempts to submit the form on the last step', async () => {
@@ -144,7 +140,7 @@ describe('BusinessProfileWizard', () => {
     for (let i = 0; i < 4; i++) {
       await act(async () => {
         fireEvent.click(screen.getByTestId('location-complete'));
-        fireEvent.click(screen.getByText('Next'));
+        fireEvent.click(screen.getByText('Next Step'));
       });
     }
     

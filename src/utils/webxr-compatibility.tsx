@@ -136,7 +136,7 @@ async function checkARSupport(): Promise<boolean> {
   }
   
   try {
-    // @ts-ignore - Some browsers may not have isSessionSupported method
+    // @ts-expect-error - Some browsers may not have isSessionSupported method
     return await navigator.xr.isSessionSupported('immersive-ar');
   } catch (error) {
     console.warn('Error checking AR support:', error);
@@ -153,7 +153,7 @@ async function checkVRSupport(): Promise<boolean> {
   }
   
   try {
-    // @ts-ignore - Some browsers may not have isSessionSupported method
+    // @ts-expect-error - Some browsers may not have isSessionSupported method
     return await navigator.xr.isSessionSupported('immersive-vr');
   } catch (error) {
     console.warn('Error checking VR support:', error);
@@ -175,7 +175,7 @@ async function checkGyroscopeSupport(): Promise<boolean> {
     typeof (DeviceMotionEvent as any).requestPermission === 'function'
   ) {
     try {
-      // @ts-ignore - iOS requires permission for DeviceMotion
+      // @ts-expect-error - iOS requires permission for DeviceMotion
       const permission = await DeviceMotionEvent.requestPermission();
       return permission === 'granted';
     } catch (error) {

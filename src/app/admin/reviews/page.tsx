@@ -1,31 +1,22 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  CheckCircleIcon, 
-  XCircleIcon, 
-  FlagIcon, 
-  ExclamationTriangleIcon,
-  MagnifyingGlassIcon
-} from '@heroicons/react/24/outline';
+;
 import ReviewCard from '@/components/ReviewCard';
-
+import { Icons } from '@/components/icons';
 interface User {
   id: string;
   name: string;
   email: string;
   avatar_url?: string;
 }
-
 interface Provider {
   id: string;
   name: string;
   avatar_url?: string;
 }
-
 interface Review {
   id: string;
   title: string;
@@ -40,7 +31,6 @@ interface Review {
   reportReason?: string;
   reportedBy?: User;
 }
-
 export default function AdminReviewsPage() {
   const [activeTab, setActiveTab] = useState('pending');
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -48,11 +38,9 @@ export default function AdminReviewsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
   const [moderationNote, setModerationNote] = useState('');
-
   // Fetch reviews
   useEffect(() => {
     setIsLoading(true);
-    
     // Mock data - would be replaced with API calls
     setTimeout(() => {
       const mockReviews: Review[] = [
@@ -141,21 +129,17 @@ export default function AdminReviewsPage() {
           moderationNotes: 'Review violates our community guidelines by using inflammatory language.'
         }
       ];
-      
       setReviews(mockReviews);
       setIsLoading(false);
     }, 1000);
   }, []);
-
   // Filter reviews by status and search term
   const filteredReviews = reviews.filter(review => {
     const matchesStatus = review.status === activeTab || activeTab === 'all';
     const searchContent = `${review.title} ${review.text} ${review.customer.name} ${review.provider.name}`.toLowerCase();
     const matchesSearch = searchTerm === '' || searchContent.includes(searchTerm.toLowerCase());
-    
     return matchesStatus && matchesSearch;
   });
-
   // Approve a review
   const handleApproveReview = (reviewId: string) => {
     setReviews(prevReviews => 
@@ -166,14 +150,12 @@ export default function AdminReviewsPage() {
       )
     );
   };
-
   // Reject a review
   const handleRejectReview = (reviewId: string) => {
     if (selectedReview?.id === reviewId && !moderationNote) {
       alert('Please provide a reason for rejection');
       return;
     }
-    
     setReviews(prevReviews => 
       prevReviews.map(review => 
         review.id === reviewId 
@@ -185,18 +167,15 @@ export default function AdminReviewsPage() {
           : review
       )
     );
-    
     setSelectedReview(null);
     setModerationNote('');
   };
-
   // Resolve a flagged review
   const handleResolveFlagged = (reviewId: string) => {
     if (selectedReview?.id === reviewId && !moderationNote) {
       alert('Please provide resolution notes');
       return;
     }
-    
     setReviews(prevReviews => 
       prevReviews.map(review => 
         review.id === reviewId 
@@ -211,34 +190,30 @@ export default function AdminReviewsPage() {
           : review
       )
     );
-    
     setSelectedReview(null);
     setModerationNote('');
   };
-
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'pending':
-        return <ExclamationTriangleIcon className="h-5 w-5 text-yellow-500" />;
+        return <Icons.ExclamationTriangleIcon className="h-5 w-5 text-yellow-500" />;
       case 'approved':
-        return <CheckCircleIcon className="h-5 w-5 text-green-500" />;
+        return <Icons.CheckCircleIcon className="h-5 w-5 text-green-500" />;
       case 'rejected':
-        return <XCircleIcon className="h-5 w-5 text-red-500" />;
+        return <Icons.XCircleIcon className="h-5 w-5 text-red-500" />;
       case 'flagged':
-        return <FlagIcon className="h-5 w-5 text-orange-500" />;
+        return <Icons.FlagIcon className="h-5 w-5 text-orange-500" />;
       default:
         return null;
     }
   };
-
   return (
     <Layout>
       <div className="container mx-auto max-w-6xl px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Review Management</h1>
-          
           <div className="relative">
-            <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-3 text-gray-400" />
+            <Icons.MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-3 text-gray-400" />
             <input
               type="text"
               placeholder="Search reviews..."
@@ -248,7 +223,6 @@ export default function AdminReviewsPage() {
             />
           </div>
         </div>
-        
         <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="pending">
           <TabsList className="mb-8">
             <TabsTrigger value="pending">Pending ({reviews.filter(r => r.status === 'pending').length})</TabsTrigger>
@@ -257,7 +231,6 @@ export default function AdminReviewsPage() {
             <TabsTrigger value="rejected">Rejected</TabsTrigger>
             <TabsTrigger value="all">All Reviews</TabsTrigger>
           </TabsList>
-          
           <TabsContent value={activeTab}>
             {isLoading ? (
               <div className="space-y-4">
@@ -303,7 +276,6 @@ export default function AdminReviewsPage() {
                         Submitted: {new Date(review.created_at).toLocaleDateString()}
                       </div>
                     </div>
-                    
                     <div className="p-2">
                       <ReviewCard
                         id={review.id}
@@ -318,7 +290,6 @@ export default function AdminReviewsPage() {
                         }}
                       />
                     </div>
-                    
                     <div className="flex flex-col border-t border-gray-100 p-4">
                       <div className="flex justify-between items-center mb-3">
                         <div className="text-sm">
@@ -328,14 +299,12 @@ export default function AdminReviewsPage() {
                           <span className="text-gray-500">Provider:</span> {review.provider.name}
                         </div>
                       </div>
-                      
                       {review.moderationNotes && (
                         <div className="mb-3 p-3 bg-gray-50 text-sm rounded">
                           <div className="font-medium text-gray-700 mb-1">Moderation Notes:</div>
                           <div className="text-gray-600 whitespace-pre-line">{review.moderationNotes}</div>
                         </div>
                       )}
-                      
                       {review.isReported && (
                         <div className="mb-3 p-3 bg-red-50 text-sm rounded">
                           <div className="font-medium text-red-700 mb-1">Report Reason:</div>
@@ -345,7 +314,6 @@ export default function AdminReviewsPage() {
                           </div>
                         </div>
                       )}
-                      
                       {selectedReview?.id === review.id && (
                         <div className="mb-3">
                           <textarea
@@ -359,7 +327,6 @@ export default function AdminReviewsPage() {
                           />
                         </div>
                       )}
-                      
                       <div className="flex justify-end space-x-2">
                         {review.status === 'pending' && (
                           <>
@@ -371,18 +338,17 @@ export default function AdminReviewsPage() {
                                 setModerationNote('');
                               }}
                             >
-                              <XCircleIcon className="h-4 w-4 mr-1" />
+                              <Icons.XCircleIcon className="h-4 w-4 mr-1" />
                               Reject
                             </Button>
                             <Button
                               onClick={() => handleApproveReview(review.id)}
                             >
-                              <CheckCircleIcon className="h-4 w-4 mr-1" />
+                              <Icons.CheckCircleIcon className="h-4 w-4 mr-1" />
                               Approve
                             </Button>
                           </>
                         )}
-                        
                         {review.status === 'flagged' && (
                           <>
                             <Button
@@ -393,7 +359,7 @@ export default function AdminReviewsPage() {
                                 setModerationNote('');
                               }}
                             >
-                              <XCircleIcon className="h-4 w-4 mr-1" />
+                              <Icons.XCircleIcon className="h-4 w-4 mr-1" />
                               Reject
                             </Button>
                             <Button
@@ -402,12 +368,11 @@ export default function AdminReviewsPage() {
                                 setModerationNote('');
                               }}
                             >
-                              <CheckCircleIcon className="h-4 w-4 mr-1" />
+                              <Icons.CheckCircleIcon className="h-4 w-4 mr-1" />
                               Resolve & Approve
                             </Button>
                           </>
                         )}
-                        
                         {selectedReview?.id === review.id && (
                           <>
                             <Button

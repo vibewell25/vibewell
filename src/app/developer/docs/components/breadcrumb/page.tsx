@@ -1,33 +1,23 @@
 'use client';
-
 import { Layout } from '@/components/layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BreadcrumbExample } from '@/components/examples/BreadcrumbExample';
 import { Button } from '@/components/ui/button';
-import { 
-  CodeBracketIcon, 
-  ClipboardIcon, 
-  ClipboardDocumentCheckIcon,
-  HomeIcon,
-  ChevronRightIcon
-} from '@heroicons/react/24/outline';
+;
 import { useState, Suspense } from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@/components/ui/breadcrumb';
 import { useSearchParams } from 'next/navigation';
-
 function BreadcrumbDocumentationContent() {
   const [copied, setCopied] = useState(false);
   const searchParams = useSearchParams();
-
   const copyToClipboard = (code: string) => {
     navigator.clipboard.writeText(code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
-
   // Code examples
   const basicUsageCode = `import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@/components/ui/breadcrumb';
-
+import { Icons } from '@/components/icons';
 export function MyBreadcrumb() {
   return (
     <Breadcrumb>
@@ -43,14 +33,13 @@ export function MyBreadcrumb() {
     </Breadcrumb>
   );
 }`;
-
   const customStylingCode = `<Breadcrumb className="bg-muted p-2 rounded-md">
   <BreadcrumbItem isFirstItem>
     <BreadcrumbLink 
       href="/" 
       className="text-primary hover:text-primary/80 flex items-center"
     >
-      <HomeIcon className="h-4 w-4 mr-1" />
+      <Icons.HomeIcon className="h-4 w-4 mr-1" />
       Home
     </BreadcrumbLink>
   </BreadcrumbItem>
@@ -61,7 +50,6 @@ export function MyBreadcrumb() {
     <span className="text-sm font-semibold">Settings</span>
   </BreadcrumbItem>
 </Breadcrumb>`;
-
   return (
     <Layout>
       <div className="container-app py-8">
@@ -80,7 +68,6 @@ export function MyBreadcrumb() {
             <span className="text-sm font-medium">Breadcrumb</span>
           </BreadcrumbItem>
         </Breadcrumb>
-        
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold mb-2">Breadcrumb</h1>
@@ -89,20 +76,18 @@ export function MyBreadcrumb() {
           <div className="mt-4 md:mt-0">
             <Button variant="outline" asChild>
               <a href="https://github.com/vibewell/components/blob/main/src/components/ui/breadcrumb.tsx" target="_blank" rel="noopener noreferrer">
-                <CodeBracketIcon className="h-4 w-4 mr-2" />
+                <Icons.CodeBracketIcon className="h-4 w-4 mr-2" />
                 View Source
               </a>
             </Button>
           </div>
         </div>
-        
         <Tabs defaultValue="overview">
           <TabsList className="mb-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="usage">Usage</TabsTrigger>
             <TabsTrigger value="api">API</TabsTrigger>
           </TabsList>
-          
           <TabsContent value="overview">
             <div className="bg-card border rounded-lg p-6 mb-8">
               <h2 className="text-xl font-semibold mb-4">Preview</h2>
@@ -110,7 +95,6 @@ export function MyBreadcrumb() {
                 <BreadcrumbExample />
               </div>
             </div>
-            
             <div className="space-y-6">
               <div>
                 <h2 className="text-xl font-semibold mb-2">About</h2>
@@ -120,7 +104,6 @@ export function MyBreadcrumb() {
                   the homepage to the current page, helping users navigate back to previous levels.
                 </p>
               </div>
-              
               <div>
                 <h2 className="text-xl font-semibold mb-2">Features</h2>
                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
@@ -131,7 +114,6 @@ export function MyBreadcrumb() {
                   <li>Support for custom separators between items</li>
                 </ul>
               </div>
-              
               <div>
                 <h2 className="text-xl font-semibold mb-2">Accessibility</h2>
                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
@@ -143,7 +125,6 @@ export function MyBreadcrumb() {
               </div>
             </div>
           </TabsContent>
-          
           <TabsContent value="usage">
             <div className="space-y-8">
               <div>
@@ -159,12 +140,12 @@ export function MyBreadcrumb() {
                     >
                       {copied ? (
                         <>
-                          <ClipboardDocumentCheckIcon className="h-4 w-4" />
+                          <Icons.ClipboardDocumentCheckIcon className="h-4 w-4" />
                           Copied
                         </>
                       ) : (
                         <>
-                          <ClipboardIcon className="h-4 w-4" />
+                          <Icons.ClipboardIcon className="h-4 w-4" />
                           Copy
                         </>
                       )}
@@ -193,7 +174,6 @@ export function MyBreadcrumb() {
                   The <code>isCurrentPage</code> prop is used to indicate the current page.
                 </p>
               </div>
-              
               <div>
                 <h2 className="text-xl font-semibold mb-4">Custom Styling</h2>
                 <div className="bg-card border rounded-lg mb-4">
@@ -207,12 +187,12 @@ export function MyBreadcrumb() {
                     >
                       {copied ? (
                         <>
-                          <ClipboardDocumentCheckIcon className="h-4 w-4" />
+                          <Icons.ClipboardDocumentCheckIcon className="h-4 w-4" />
                           Copied
                         </>
                       ) : (
                         <>
-                          <ClipboardIcon className="h-4 w-4" />
+                          <Icons.ClipboardIcon className="h-4 w-4" />
                           Copy
                         </>
                       )}
@@ -228,7 +208,7 @@ export function MyBreadcrumb() {
                           href="/" 
                           className="text-primary hover:text-primary/80 flex items-center"
                         >
-                          <HomeIcon className="h-4 w-4 mr-1" />
+                          <Icons.HomeIcon className="h-4 w-4 mr-1" />
                           Home
                         </BreadcrumbLink>
                       </BreadcrumbItem>
@@ -248,7 +228,6 @@ export function MyBreadcrumb() {
               </div>
             </div>
           </TabsContent>
-          
           <TabsContent value="api">
             <div className="space-y-8">
               <div>
@@ -256,14 +235,12 @@ export function MyBreadcrumb() {
                 <p className="text-muted-foreground mb-6">
                   The breadcrumb component consists of three main parts:
                 </p>
-                
                 <div className="space-y-6">
                   <div className="bg-card border rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-3">Breadcrumb</h3>
                     <p className="text-muted-foreground mb-4">
                       The main container that wraps the breadcrumb navigation.
                     </p>
-                    
                     <h4 className="text-sm font-semibold mb-2">Props</h4>
                     <div className="border rounded-md overflow-hidden">
                       <table className="min-w-full divide-y">
@@ -292,13 +269,11 @@ export function MyBreadcrumb() {
                       </table>
                     </div>
                   </div>
-                  
                   <div className="bg-card border rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-3">BreadcrumbItem</h3>
                     <p className="text-muted-foreground mb-4">
                       Represents a single item in the breadcrumb trail.
                     </p>
-                    
                     <h4 className="text-sm font-semibold mb-2">Props</h4>
                     <div className="border rounded-md overflow-hidden">
                       <table className="min-w-full divide-y">
@@ -339,13 +314,11 @@ export function MyBreadcrumb() {
                       </table>
                     </div>
                   </div>
-                  
                   <div className="bg-card border rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-3">BreadcrumbLink</h3>
                     <p className="text-muted-foreground mb-4">
                       Represents a link within a breadcrumb item.
                     </p>
-                    
                     <h4 className="text-sm font-semibold mb-2">Props</h4>
                     <div className="border rounded-md overflow-hidden">
                       <table className="min-w-full divide-y">
@@ -395,7 +368,6 @@ export function MyBreadcrumb() {
     </Layout>
   );
 }
-
 export default function BreadcrumbDocumentation() {
   return (
     <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>

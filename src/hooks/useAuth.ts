@@ -1,104 +1,117 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { User, Session, AuthState } from '@/types/auth';
-import { authService } from '@/services/auth/authService';
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
-export const useAuth = () => {
-  const [state, setState] = useState<AuthState>({
-    user: null,
-    loading: true,
-  });
+interface User {
+  sub: string;
+  email: string;
+  name: string;
+  picture?: string;
+  [key: string]: any;
+}
+
+interface AuthState {
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  user: User | null;
+  error: Error | null;
+}
+
+/**
+ * Re-export the auth context hook to provide a migration path
+ * This allows us to gradually move components to use the centralized auth context
+ */
+export function useAuth() {
   const router = useRouter();
+  const [authState, setAuthState] = useState<AuthState>({
+    isLoading: true,
+    isAuthenticated: false,
+    user: null,
+    error: null,
+  });
 
-  // Check if user is already logged in on mount
+  // Load user data
+  const loadUserData = useCallback(async () => {
+    try {
+      setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
+      
+      const response = await fetch('/api/auth/me');
+      
+      if (response.ok) {
+        const user = await response.json();
+        setAuthState({
+          isLoading: false,
+          isAuthenticated: true,
+          user,
+          error: null,
+        });
+      } else {
+        // Not authenticated
+        setAuthState({
+          isLoading: false,
+          isAuthenticated: false,
+          user: null,
+          error: null,
+        });
+      }
+    } catch (error) {
+      console.error('Failed to load user data', error);
+      setAuthState({
+        isLoading: false,
+        isAuthenticated: false,
+        user: null,
+        error: error instanceof Error ? error : new Error('Failed to load user data'),
+      });
+    }
+  }, []);
+
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const user = await authService.getCurrentUser();
-        setState({ user, loading: false });
-      } catch (error) {
-        setState({ user: null, loading: false });
-      }
-    };
+    loadUserData();
+  }, [loadUserData]);
 
-    checkAuthStatus();
-  }, []);
+  // Login
+  const login = useCallback((redirectTo?: string) => {
+    const returnTo = redirectTo || router.asPath;
+    router.push(`/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`);
+  }, [router]);
 
-  const signUp = useCallback(
-    async (email: string, password: string, name: string) => {
-      setState((prev) => ({ ...prev, loading: true }));
-      try {
-        const { user, session } = await authService.signUp(email, password, name);
-        setState({ user, loading: false });
-        return { success: true, data: { user, session }, error: null };
-      } catch (error) {
-        setState((prev) => ({ ...prev, loading: false }));
-        return { 
-          success: false, 
-          data: null, 
-          error: error instanceof Error ? error.message : 'Unknown error'
-        };
-      }
-    },
-    []
-  );
+  // Logout
+  const logout = useCallback((redirectTo?: string) => {
+    const returnTo = redirectTo || '/';
+    router.push(`/api/auth/logout?returnTo=${encodeURIComponent(returnTo)}`);
+  }, [router]);
 
-  const signIn = useCallback(async (email: string, password: string) => {
-    setState((prev) => ({ ...prev, loading: true }));
-    try {
-      const { user, session } = await authService.signIn(email, password);
-      setState({ user, loading: false });
-      return { success: true, data: { user, session }, error: null };
-    } catch (error) {
-      setState((prev) => ({ ...prev, loading: false }));
-      return { 
-        success: false, 
-        data: null, 
-        error: error instanceof Error ? error.message : 'Unknown error'
-      };
-    }
-  }, []);
+  // Refresh user data
+  const refreshUser = useCallback(() => {
+    loadUserData();
+  }, [loadUserData]);
 
-  const login = useCallback(async (email: string, password: string) => {
-    return signIn(email, password);
-  }, [signIn]);
+  // Check if user has a specific role
+  const hasRole = useCallback((role: string) => {
+    if (!authState.user) return false;
+    
+    const userRoles = authState.user[`${process.env.NEXT_PUBLIC_AUTH0_NAMESPACE}/roles`] || [];
+    return userRoles.includes(role);
+  }, [authState.user]);
 
-  const signOut = useCallback(async () => {
-    setState((prev) => ({ ...prev, loading: true }));
-    try {
-      await authService.signOut();
-      setState({ user: null, loading: false });
-      return { success: true };
-    } catch (error) {
-      setState((prev) => ({ ...prev, loading: false }));
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Unknown error'
-      };
-    }
-  }, []);
+  // Check if user is admin
+  const isAdmin = useCallback(() => {
+    return hasRole('admin');
+  }, [hasRole]);
 
-  const resetPassword = useCallback(async (email: string) => {
-    try {
-      await authService.resetPassword(email);
-      return { success: true };
-    } catch (error) {
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Unknown error'
-      };
-    }
-  }, []);
+  // Check if user is provider
+  const isProvider = useCallback(() => {
+    return hasRole('provider');
+  }, [hasRole]);
 
   return {
-    user: state.user,
-    loading: state.loading,
-    signUp,
-    signIn,
+    ...authState,
     login,
-    signOut,
-    resetPassword,
+    logout,
+    refreshUser,
+    hasRole,
+    isAdmin,
+    isProvider,
   };
-}; 
+} 

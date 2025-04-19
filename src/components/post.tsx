@@ -7,14 +7,29 @@ import { formatDistanceToNow } from 'date-fns';
 import { PostReaction, ReactionType } from '@/components/post-reaction';
 import { SharePost } from '@/components/share-post';
 import { UserAvatar } from '@/components/user-avatar';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/clerk-auth-context';
 
+/**
+ * Represents a user in the context of a post
+ * @interface PostUser
+ * @property {string} id - Unique identifier for the user
+ * @property {string} name - Display name of the user
+ * @property {string} avatar - URL to the user's avatar image
+ */
 export interface PostUser {
   id: string;
   name: string;
   avatar: string;
 }
 
+/**
+ * Represents a comment on a post
+ * @interface PostComment
+ * @property {string} id - Unique identifier for the comment
+ * @property {PostUser} user - User who created the comment
+ * @property {string} content - Text content of the comment
+ * @property {string} createdAt - ISO date string for when the comment was created
+ */
 export interface PostComment {
   id: string;
   user: PostUser;
@@ -22,6 +37,17 @@ export interface PostComment {
   createdAt: string;
 }
 
+/**
+ * Represents a post in the social feed
+ * @interface Post
+ * @property {number} id - Unique identifier for the post
+ * @property {PostUser} user - User who created the post
+ * @property {string} content - Text content of the post
+ * @property {string | null} image - Optional image URL for the post
+ * @property {string} createdAt - ISO date string for when the post was created
+ * @property {Object} reactions - Count of each reaction type on the post
+ * @property {PostComment[]} comments - Comments on the post
+ */
 export interface Post {
   id: number;
   user: PostUser;
@@ -34,6 +60,19 @@ export interface Post {
   comments: PostComment[];
 }
 
+/**
+ * Props for the Post component
+ * @interface PostProps
+ * @property {Post} post - The post data to display
+ * @property {ReactionType | null} currentUserReaction - The current user's reaction to the post, if any
+ * @property {boolean} isSaved - Whether the current user has saved this post
+ * @property {boolean} isAuthenticated - Whether the user is authenticated
+ * @property {Function} [formatDate] - Optional custom function to format dates
+ * @property {Function} onReactionChange - Handler for when reaction changes
+ * @property {Function} onToggleSave - Handler for when save status changes
+ * @property {Function} onCommentSubmit - Handler for when a comment is submitted
+ * @property {React.ReactNode} [customActions] - Optional additional action buttons
+ */
 export interface PostProps {
   post: Post;
   currentUserReaction: ReactionType | null;
@@ -46,6 +85,15 @@ export interface PostProps {
   customActions?: React.ReactNode;
 }
 
+/**
+ * Post component for displaying social media posts with reactions and comments
+ * 
+ * Displays a post with user information, content, image (if available),
+ * reaction buttons, comments section, and comment form for authenticated users.
+ *
+ * @param {PostProps} props - Component properties
+ * @returns {JSX.Element} Rendered post component
+ */
 export function Post({
   post,
   currentUserReaction,
@@ -61,10 +109,17 @@ export function Post({
   const [commentText, setCommentText] = useState('');
   const [expandedComments, setExpandedComments] = useState(post.comments.length < 3);
 
+  /**
+   * Toggles the expanded state of the comments section
+   */
   const toggleComments = () => {
     setExpandedComments(!expandedComments);
   };
 
+  /**
+   * Handles submission of a new comment
+   * @param {React.FormEvent} e - Form event
+   */
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!commentText.trim() || !isAuthenticated) return;
@@ -72,6 +127,12 @@ export function Post({
     setCommentText('');
   };
 
+  /**
+   * Formats a date string for display
+   * Uses custom format function if provided, otherwise uses date-fns
+   * @param {string} dateString - ISO date string to format
+   * @returns {string} Formatted date string
+   */
   const formatDateTime = (dateString: string) => {
     if (formatDate) {
       return formatDate(dateString);
@@ -121,7 +182,7 @@ export function Post({
             className="flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
             onClick={toggleComments}
           >
-            <Icons.ChatBubbleLeftIcon className="h-5 w-5" />
+            <Icons.messageCircle className="h-5 w-5" />
             <span>{post.comments.length}</span>
           </button>
           <SharePost postId={post.id.toString()} postContent={post.content} />
@@ -136,7 +197,7 @@ export function Post({
           onClick={onToggleSave}
           disabled={!isAuthenticated}
         >
-          <Icons.BookmarkIcon className="h-5 w-5" />
+          <Icons.bookmark className="h-5 w-5" />
         </button>
       </div>
       {/* Comments */}
@@ -162,8 +223,9 @@ export function Post({
           {isAuthenticated ? (
             <form onSubmit={handleCommentSubmit} className="flex items-start space-x-3 mt-3">
               <UserAvatar 
-                src={currentUser?.user_metadata?.avatar_url}
-                alt={currentUser?.user_metadata?.full_name || 'User'}
+                src={currentUser?.name ? `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}` : undefined}
+                alt={currentUser?.name || 'User'}
+                fallbackInitials={currentUser?.name}
                 size="sm"
               />
               <div className="flex-grow relative">
@@ -179,7 +241,7 @@ export function Post({
                   disabled={!commentText.trim()}
                   className="absolute right-2 top-2 text-primary disabled:text-muted-foreground"
                 >
-                  <Icons.PaperAirplaneIcon className="h-5 w-5" />
+                  <Icons.send className="h-5 w-5" />
                 </button>
               </div>
             </form>

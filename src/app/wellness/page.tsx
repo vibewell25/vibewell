@@ -1,23 +1,8 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
-import { 
-  MagnifyingGlassIcon, 
-  AdjustmentsHorizontalIcon,
-  ChartBarIcon,
-  PlusIcon,
-  HeartIcon,
-  ClockIcon,
-  StarIcon,
-  BookmarkIcon,
-  ShareIcon,
-  ArrowPathIcon,
-  FireIcon,
-  SparklesIcon,
-  UserGroupIcon
-} from '@heroicons/react/24/outline';
+;
 import { GoalCreationModal } from '@/components/wellness/GoalCreationModal';
 import { useWellnessData } from '@/hooks/useWellnessData';
 import { Goal } from '@/types/progress';
@@ -32,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip } from '@/components/ui/tooltip';
-
+import { Icons } from '@/components/icons';
 // Define wellness content categories
 const categories = [
   { id: 'all', name: 'All', icon: SparklesIcon },
@@ -43,7 +28,6 @@ const categories = [
   { id: 'sleep', name: 'Sleep', icon: ClockIcon },
   { id: 'mental-health', name: 'Mental Health', icon: UserGroupIcon },
 ];
-
 // Define wellness content with enhanced data
 const wellnessContent = [
   {
@@ -131,14 +115,12 @@ const wellnessContent = [
     image: '/placeholder.png',
   },
 ];
-
 interface UserProgress {
   completed: number;
   inProgress: number;
   bookmarked: number;
   total: number;
 }
-
 interface WellnessContent {
   id: string;
   title: string;
@@ -155,7 +137,6 @@ interface WellnessContent {
     expertise: string;
   };
 }
-
 export default function WellnessPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -170,21 +151,17 @@ export default function WellnessPage() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('discover');
-  
   const { createGoal } = useWellnessData();
-
   useEffect(() => {
     // Simulate loading data
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
   }, []);
-
   // Handle creating a new goal
   const handleCreateGoal = (newGoal: Omit<Goal, 'id' | 'current' | 'status'>) => {
     createGoal(newGoal);
   };
-
   const handleCreateContent = async (content: {
     title: string;
     description: string;
@@ -200,11 +177,9 @@ export default function WellnessPage() {
         },
         body: JSON.stringify(content),
       });
-
       if (!response.ok) {
         throw new Error('Failed to create content');
       }
-
       const newContent = await response.json();
       setIsCreateModalOpen(false);
       toast.success('Content created successfully');
@@ -213,22 +188,18 @@ export default function WellnessPage() {
       toast.error('Failed to create content');
     }
   };
-
   const handleBookmark = (id: number) => {
     // Update bookmark status
     toast.success('Content bookmarked');
   };
-
   const handleLike = (id: number) => {
     // Update like status
     toast.success('Content liked');
   };
-
   const handleShare = (id: number) => {
     // Implement share functionality
     toast.success('Content shared');
   };
-
   // Filter content by category and search query
   const filteredContent = wellnessContent.filter((item) => {
     const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
@@ -236,7 +207,6 @@ export default function WellnessPage() {
                           item.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
-
   return (
     <Layout>
       <div className="container-app py-12 md:py-24">
@@ -247,26 +217,24 @@ export default function WellnessPage() {
               Discover personalized content to support your wellness journey
             </p>
           </div>
-          
           <div className="flex gap-2 self-start">
             <Button
               onClick={() => setShowGoalModal(true)}
               variant="outline"
               className="flex items-center gap-2"
             >
-              <PlusIcon className="h-5 w-5" />
+              <Icons.PlusIcon className="h-5 w-5" />
               Create Goal
             </Button>
             <Link 
               href="/wellness/progress" 
               className="btn-primary flex items-center gap-2"
             >
-              <ChartBarIcon className="h-5 w-5" />
+              <Icons.ChartBarIcon className="h-5 w-5" />
               Track Progress
             </Link>
           </div>
         </div>
-
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="discover">Discover</TabsTrigger>
@@ -274,14 +242,13 @@ export default function WellnessPage() {
             <TabsTrigger value="bookmarks">Bookmarks</TabsTrigger>
             <TabsTrigger value="recommended">Recommended</TabsTrigger>
           </TabsList>
-
           <TabsContent value="discover" className="space-y-6">
             {/* Search and Filter */}
             <div className="mb-8">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="relative flex-grow">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
+                    <Icons.MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <input
                     type="text"
@@ -296,12 +263,11 @@ export default function WellnessPage() {
                   className="md:hidden flex items-center justify-center"
                   onClick={() => setShowFilters(!showFilters)}
                 >
-                  <AdjustmentsHorizontalIcon className="h-5 w-5 mr-2" />
+                  <Icons.AdjustmentsHorizontalIcon className="h-5 w-5 mr-2" />
                   Filters
                 </Button>
               </div>
             </div>
-
             {/* Category Filters */}
             <div className={`mb-8 ${showFilters ? 'block' : 'hidden md:block'}`}>
               <div className="flex flex-wrap gap-2">
@@ -321,7 +287,6 @@ export default function WellnessPage() {
                 })}
               </div>
             </div>
-
             {/* Wellness Content Grid */}
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -358,7 +323,7 @@ export default function WellnessPage() {
                               size="icon"
                               onClick={() => handleBookmark(item.id)}
                             >
-                              <BookmarkIcon className="h-5 w-5" />
+                              <Icons.BookmarkIcon className="h-5 w-5" />
                             </Button>
                           </Tooltip>
                           <Tooltip content="Like">
@@ -367,7 +332,7 @@ export default function WellnessPage() {
                               size="icon"
                               onClick={() => handleLike(item.id)}
                             >
-                              <HeartIcon className="h-5 w-5" />
+                              <Icons.HeartIcon className="h-5 w-5" />
                             </Button>
                           </Tooltip>
                           <Tooltip content="Share">
@@ -376,7 +341,7 @@ export default function WellnessPage() {
                               size="icon"
                               onClick={() => handleShare(item.id)}
                             >
-                              <ShareIcon className="h-5 w-5" />
+                              <Icons.ShareIcon className="h-5 w-5" />
                             </Button>
                           </Tooltip>
                         </div>
@@ -402,7 +367,7 @@ export default function WellnessPage() {
                             </div>
                           )}
                           <div className="flex items-center gap-2">
-                            <StarIcon className="h-4 w-4 text-yellow-500" />
+                            <Icons.StarIcon className="h-4 w-4 text-yellow-500" />
                             <span className="text-sm">{item.rating}</span>
                             <span className="text-sm text-muted-foreground">({item.reviews})</span>
                           </div>
@@ -423,7 +388,6 @@ export default function WellnessPage() {
               </div>
             )}
           </TabsContent>
-
           <TabsContent value="progress" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card>
@@ -458,7 +422,6 @@ export default function WellnessPage() {
               </Card>
             </div>
           </TabsContent>
-
           <TabsContent value="bookmarks" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredContent
@@ -470,7 +433,6 @@ export default function WellnessPage() {
                 ))}
             </div>
           </TabsContent>
-
           <TabsContent value="recommended" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredContent
@@ -484,14 +446,12 @@ export default function WellnessPage() {
             </div>
           </TabsContent>
         </Tabs>
-
         {/* Goal Creation Modal */}
         <GoalCreationModal
           isOpen={showGoalModal}
           onClose={() => setShowGoalModal(false)}
           onSave={handleCreateGoal}
         />
-        
         {/* Wellness Content Modal */}
         <WellnessContentModal
           isOpen={isCreateModalOpen}

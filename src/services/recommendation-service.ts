@@ -1,10 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
+import { prisma } from '@/lib/database/client';
 import { ProductService, Product } from './product-service';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+
 
 /**
  * Weight factors for recommendation scoring

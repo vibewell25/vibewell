@@ -1,274 +1,146 @@
 'use client';
 
-import { useEffect, useState, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Layout } from '@/components/layout';
-import { useAuth } from '@/hooks/useAuth';
-import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
-import { UpcomingAppointments } from '@/components/dashboard/UpcomingAppointments';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Button } from '@/components/ui/button';
-import { CalendarIcon, ChartBarIcon, ClockIcon, BellIcon, TargetIcon, HeartIcon, BoltIcon } from '@heroicons/react/24/outline';
-import { format } from 'date-fns';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MobileLayout } from '@/components/layout/MobileLayout';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import Link from 'next/link';
-import { ChevronRightIcon, UserIcon } from '@heroicons/react/24/outline';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-interface WellnessProgress {
-  totalContent: number;
-  completedContent: number;
-  percentage: number;
-  goals: Array<{
-    id: string;
-    title: string;
-    target: number;
-    current: number;
-    unit: string;
-  }>;
-}
-
-interface HealthMetrics {
-  heartRate: number;
-  steps: number;
-  sleepHours: number;
-  stressLevel: number;
-  history: Array<{
-    date: string;
-    heartRate: number;
-    steps: number;
-    sleepHours: number;
-    stressLevel: number;
-  }>;
-}
-
-interface Recommendation {
-  id: string;
-  type: 'content' | 'service' | 'product';
-  title: string;
-  description: string;
-  imageUrl: string;
-  relevance: number;
-}
-
-interface DashboardData {
-  wellnessProgress: WellnessProgress;
-  healthMetrics: HealthMetrics;
-  activities: Array<{
-    id: string;
-    type: 'content' | 'booking' | 'purchase' | 'review';
-    title: string;
-    description: string;
-    date: string;
-  }>;
-  upcomingAppointments: Array<{
-    id: string;
-    service: string;
-    provider: string;
-    date: string;
-    time: string;
-  }>;
-  recommendations: Recommendation[];
-  notifications: Array<{
-    id: string;
-    type: 'appointment' | 'achievement' | 'reminder' | 'update';
-    title: string;
-    message: string;
-    date: string;
-    read: boolean;
-  }>;
-}
-
-interface User {
-  name: string;
-  bookingsThisWeek: number;
-  earnings: string;
-  role: string;
-  businessType: string;
-}
-
-function DashboardContent() {
-  const { user, loading } = useAuth();
+export default function Dashboard() {
+  const { user, isLoading, error } = useUser();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState('overview');
-  const [userState, setUserState] = useState<User>({
-    name: 'Maria',
-    bookingsThisWeek: 4,
-    earnings: '€900',
-    role: 'Admin',
-    businessType: 'Web-Based Panel'
-  });
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/auth/signin');
+    // If not loading and no user, redirect to login
+    if (!isLoading && !user) {
+      router.push('/api/auth/login?returnTo=/dashboard');
     }
-  }, [loading, user, router]);
+  }, [isLoading, user, router]);
 
-  useEffect(() => {
-    const fetchDashboardData = async () => {
-      if (!user) return;
-
-      try {
-        setIsLoading(true);
-        setError(null);
-        const [
-          wellnessProgress,
-          healthMetrics,
-          activities,
-          appointments,
-          recommendations,
-          notifications
-        ] = await Promise.all([
-          fetch('/api/wellness/progress').then(res => res.json()),
-          fetch('/api/health/metrics').then(res => res.json()),
-          fetch('/api/dashboard/activities').then(res => res.json()),
-          fetch('/api/beauty/appointments/upcoming').then(res => res.json()),
-          fetch('/api/recommendations').then(res => res.json()),
-          fetch('/api/notifications').then(res => res.json()),
-        ]);
-
-        setDashboardData({
-          wellnessProgress,
-          healthMetrics,
-          activities: activities.activities,
-          upcomingAppointments: appointments.appointments,
-          recommendations: recommendations.recommendations,
-          notifications: notifications.notifications,
-        });
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-        setError('Failed to load dashboard data. Please try again later.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDashboardData();
-  }, [user]);
-
-  if (loading || isLoading) {
+  if (isLoading) {
     return (
-      <Layout>
-        <div className="container-app py-12">
-          <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="h-32 bg-gray-200 rounded"></div>
-              <div className="h-32 bg-gray-200 rounded"></div>
-              <div className="h-32 bg-gray-200 rounded"></div>
-            </div>
-            <div className="space-y-4">
-              <div className="h-64 bg-gray-200 rounded"></div>
-              <div className="h-64 bg-gray-200 rounded"></div>
-            </div>
-          </div>
-        </div>
-      </Layout>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
     );
-  }
-
-  if (!user) {
-    return null;
   }
 
   if (error) {
     return (
-      <Layout>
-        <div className="container-app py-12">
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+        <h1 className="text-2xl font-bold text-red-600">Authentication Error</h1>
+        <p className="mt-2 text-gray-600">An error occurred during authentication.</p>
+        <div className="mt-4">
+          <Link 
+            href="/api/auth/login?returnTo=/dashboard"
+            className="px-4 py-2 text-white bg-indigo-600 rounded hover:bg-indigo-700"
+          >
+            Try Again
+          </Link>
         </div>
-      </Layout>
+      </div>
     );
   }
 
+  if (!user) {
+    return null; // The useEffect will handle the redirect
+  }
+
+  // Get user roles if available
+  const namespace = process.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell.com';
+  const userRoles = user[`${namespace}/roles`] || [];
+  const isAdmin = userRoles.includes('admin');
+  const isProvider = userRoles.includes('provider');
+
   return (
-    <MobileLayout>
-      <div className="px-5 py-6">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <p className="text-sm text-gray-500">He Kōrero Yourservii</p>
-            <h1 className="text-2xl font-bold">Hi, {user.name}</h1>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="flex items-center space-x-4">
+            {user.picture && (
+              <img 
+                src={user.picture} 
+                alt={user.name || 'User'} 
+                className="h-16 w-16 rounded-full"
+              />
+            )}
+            <div>
+              <h1 className="text-2xl font-bold">Welcome, {user.name || 'User'}!</h1>
+              <p className="text-gray-600">{user.email}</p>
+              {userRoles.length > 0 && (
+                <div className="mt-1 flex flex-wrap gap-1">
+                  {userRoles.map(role => (
+                    <span 
+                      key={role}
+                      className="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full"
+                    >
+                      {role}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-          <div className="relative">
-            <Link href="/notifications">
-              <BellIcon className="w-6 h-6 text-gray-500" />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                {dashboardData?.notifications.filter(n => !n.read).length}
-              </span>
+
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-indigo-50 p-4 rounded-lg">
+              <h2 className="text-lg font-semibold text-indigo-800">My Profile</h2>
+              <p className="mt-2 text-gray-600">View and edit your profile information.</p>
+              <Link 
+                href="/profile"
+                className="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+              >
+                Go to Profile
+              </Link>
+            </div>
+
+            {isProvider && (
+              <div className="bg-emerald-50 p-4 rounded-lg">
+                <h2 className="text-lg font-semibold text-emerald-800">Provider Dashboard</h2>
+                <p className="mt-2 text-gray-600">Manage your services and bookings.</p>
+                <Link 
+                  href="/provider/dashboard"
+                  className="mt-4 inline-block px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700"
+                >
+                  Provider Dashboard
+                </Link>
+              </div>
+            )}
+
+            {isAdmin && (
+              <div className="bg-purple-50 p-4 rounded-lg">
+                <h2 className="text-lg font-semibold text-purple-800">Admin Dashboard</h2>
+                <p className="mt-2 text-gray-600">Manage users, services, and platform settings.</p>
+                <Link 
+                  href="/admin/dashboard"
+                  className="mt-4 inline-block px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                >
+                  Admin Dashboard
+                </Link>
+              </div>
+            )}
+
+            <div className="bg-amber-50 p-4 rounded-lg">
+              <h2 className="text-lg font-semibold text-amber-800">Explore Services</h2>
+              <p className="mt-2 text-gray-600">Browse and book wellness services.</p>
+              <Link 
+                href="/services"
+                className="mt-4 inline-block px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
+              >
+                Browse Services
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-8 border-t pt-6">
+            <Link 
+              href="/api/auth/logout"
+              className="text-red-600 hover:text-red-800"
+            >
+              Sign Out
             </Link>
           </div>
         </div>
-
-        <Card className="mb-4">
-          <CardContent className="p-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-semibold">Booking Overview</h2>
-              <Link href="/bookings" className="flex items-center text-primary text-sm">
-                <span>View</span>
-                <ChevronRightIcon className="w-4 h-4 ml-1" />
-              </Link>
-            </div>
-            <div className="mt-4 flex items-center">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
-                <span className="text-primary">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                  </svg>
-                </span>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Bookings this week</p>
-                <p className="text-xl font-bold">{dashboardData?.earnings}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="mb-4">
-          <CardContent className="p-4">
-            <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
-                <UserIcon className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">{user.role}</p>
-                <p className="text-base font-medium">{user.businessType}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="mt-8">
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-lg font-semibold">Clients</h2>
-            <p className="text-sm text-gray-500">Notification</p>
-          </div>
-
-          <div className="space-y-4">
-            {/* This would be a list of clients or notifications */}
-          </div>
-        </div>
       </div>
-    </MobileLayout>
-  );
-}
-
-export default function DashboardPage() {
-  return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
-      <DashboardContent />
-    </Suspense>
+    </div>
   );
 } 

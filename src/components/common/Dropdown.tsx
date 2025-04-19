@@ -1,17 +1,20 @@
-import { Icons } from '@/components/icons';
+import { ChevronDown } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
+
 interface DropdownItem {
   id: string;
   label: string;
   onClick: () => void;
   icon?: React.ReactNode;
 }
+
 interface DropdownProps {
   trigger: React.ReactNode;
   items: DropdownItem[];
   align?: 'left' | 'right';
   className?: string;
 }
+
 export const Dropdown: React.FC<DropdownProps> = ({
   trigger,
   items,
@@ -20,6 +23,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -29,13 +33,16 @@ export const Dropdown: React.FC<DropdownProps> = ({
         setIsOpen(false);
       }
     };
+    
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+  
   const handleItemClick = (onClick: () => void) => {
     onClick();
     setIsOpen(false);
   };
+  
   return (
     <div className={`relative inline-block text-left ${className}`} ref={dropdownRef}>
       <div>
@@ -47,7 +54,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
           aria-haspopup="true"
         >
           {trigger}
-          <Icons.ChevronDownIcon
+          <ChevronDown
             className={`-mr-1 ml-2 h-5 w-5 transition-transform ${
               isOpen ? 'rotate-180' : ''
             }`}

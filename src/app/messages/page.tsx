@@ -1,25 +1,15 @@
 'use client';
-
 import { useState, useEffect, Suspense } from 'react';
 import { Layout } from '@/components/layout';
-import { useAuth } from '@/hooks/useAuth';
-import { 
-  PaperAirplaneIcon, 
-  MagnifyingGlassIcon,
-  EllipsisHorizontalIcon,
-  TrashIcon
-} from '@heroicons/react/24/outline';
+import { useAuth } from '@/contexts/clerk-auth-context';
+;
 import { format } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 import { Messaging, type Conversation as UIConversation } from '@/components/messaging';
 import { toast, Toaster } from 'react-hot-toast';
 import type { Conversation } from '@/lib/api/messages';
 import Link from 'next/link';
-import { 
-  AdjustmentsHorizontalIcon,
-  PlusIcon,
-  BookmarkIcon
-} from '@heroicons/react/24/outline';
+;
 import { GoalCreationModal } from '@/components/wellness/GoalCreationModal';
 import { useWellnessData } from '@/hooks/useWellnessData';
 import { Goal } from '@/types/progress';
@@ -28,7 +18,6 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-
 // Loading fallback component
 function MessagesLoadingSkeleton() {
   return (
@@ -52,7 +41,6 @@ function MessagesLoadingSkeleton() {
     </div>
   );
 }
-
 // Messages page content that uses useSearchParams
 function MessagesPageContent() {
   const { user, loading } = useAuth();
@@ -62,22 +50,17 @@ function MessagesPageContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
-
   // Fetch conversations
   const fetchConversations = async () => {
     if (!user) return;
-    
     try {
       setIsLoading(true);
-      
       const response = await fetch('/api/messages');
       if (!response.ok) {
         throw new Error('Failed to fetch conversations');
       }
-      
       const data = await response.json();
       setConversations(data.conversations || []);
-      
       // Reset any errors
       setError(null);
     } catch (err) {
@@ -88,25 +71,21 @@ function MessagesPageContent() {
       setIsLoading(false);
     }
   };
-
   useEffect(() => {
     if (user) {
       fetchConversations();
     }
   }, [user]);
-
   useEffect(() => {
     // Check if we have initiate parameters to start a new conversation
     const initiateUserId = searchParams?.get('initiate');
     const initiateUserName = searchParams?.get('name');
-    
     if (initiateUserId && initiateUserName && user && !isLoading) {
       // Check if we already have a conversation with this user
       const existingConversation = conversations.find(conv => {
         const otherParticipant = conv.participants.find(p => p.id !== user.id);
         return otherParticipant?.id === initiateUserId;
       });
-      
       if (existingConversation) {
         // If we already have a conversation, select it
         setSelectedConversation(existingConversation.id);
@@ -120,22 +99,17 @@ function MessagesPageContent() {
       setSelectedConversation(conversations[0].id);
     }
   }, [conversations, selectedConversation, searchParams, user, isLoading]);
-
   // Send a message
   const handleSendMessage = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    
     if (!newMessage.trim() || !selectedConversation || loading || !user) return;
-    
     try {
       // Get the current conversation
       const conversation = conversations.find(c => c.id === selectedConversation);
       if (!conversation) return;
-      
       // Get the recipient
       const recipient = conversation.participants.find(p => p.id !== user.id);
       if (!recipient) return;
-      
       // Add optimistic update
       const optimisticMsg = {
         id: `temp-${Date.now()}`,
@@ -144,7 +118,6 @@ function MessagesPageContent() {
         timestamp: new Date().toISOString(),
         read: false,
       };
-      
       // Update UI optimistically
       setConversations(prev => 
         prev.map(conv => {
@@ -157,10 +130,8 @@ function MessagesPageContent() {
           return conv;
         })
       );
-      
       // Clear input
       setNewMessage('');
-      
       // Send to API
       const response = await fetch('/api/messages', {
         method: 'POST',
@@ -173,24 +144,19 @@ function MessagesPageContent() {
           content: newMessage
         })
       });
-      
       if (!response.ok) {
         throw new Error('Failed to send message');
       }
-      
       // Refresh conversations to get the latest state
       fetchConversations();
-      
     } catch (err) {
       console.error('Error sending message:', err);
       toast.error('Failed to send message');
     }
   };
-
   // Handler for initiating a new conversation
   const handleSendInitialMessage = async (recipientId: string, recipientName: string) => {
     if (!user) return;
-    
     try {
       const response = await fetch('/api/messages', {
         method: 'POST',
@@ -203,39 +169,30 @@ function MessagesPageContent() {
           content: `Hello ${recipientName}, I'd like to connect with you!`
         })
       });
-      
       if (!response.ok) {
         throw new Error('Failed to start conversation');
       }
-      
       const data = await response.json();
-      
       // Refresh conversations and select the new one
       await fetchConversations();
       setSelectedConversation(data.conversation.id);
-      
     } catch (err) {
       console.error('Error starting conversation:', err);
       toast.error('Failed to start conversation');
     }
   };
-
   // Mark conversation as read
   const handleSelectConversation = async (conversationId: string) => {
     setSelectedConversation(conversationId);
-    
     try {
       // Find the conversation
       const conversation = conversations.find(c => c.id === conversationId);
       if (!conversation || !user) return;
-      
       // Check if there are unread messages from the other user
       const unreadMessages = conversation.messages.filter(
         msg => msg.senderId !== user.id && !msg.read
       );
-      
       if (unreadMessages.length === 0) return;
-      
       // Mark messages as read optimistically
       setConversations(prev => 
         prev.map(conv => {
@@ -253,47 +210,38 @@ function MessagesPageContent() {
           return conv;
         })
       );
-      
       // Send request to mark as read
       await fetch(`/api/messages/${conversationId}/read`, {
         method: 'POST'
       });
-      
     } catch (err) {
       console.error('Error marking conversation as read:', err);
     }
   };
-
   // Delete a conversation
   const handleDeleteConversation = async (conversationId: string) => {
     if (!window.confirm('Are you sure you want to delete this conversation?')) {
       return;
     }
-    
     try {
       // Remove conversation from UI optimistically
       setConversations(prev => prev.filter(c => c.id !== conversationId));
-      
       // Clear selected conversation if it was the deleted one
       if (selectedConversation === conversationId) {
         setSelectedConversation(null);
       }
-      
       // Send delete request
       await fetch(`/api/messages/${conversationId}`, {
         method: 'DELETE'
       });
-      
       toast.success('Conversation deleted');
     } catch (err) {
       console.error('Error deleting conversation:', err);
       toast.error('Failed to delete conversation');
-      
       // Restore data on error
       fetchConversations();
     }
   };
-
   // Convert conversations to UI format
   const uiConversations: UIConversation[] = conversations.map(conv => {
     // Get other participant
@@ -302,12 +250,10 @@ function MessagesPageContent() {
       name: 'Unknown User',
       avatar: '/placeholder-avatar.jpg'
     };
-    
     // Count unread messages
     const unreadCount = user 
       ? conv.messages.filter(m => m.senderId !== user.id && !m.read).length 
       : 0;
-    
     return {
       id: conv.id,
       participants: conv.participants.map(p => ({
@@ -318,12 +264,10 @@ function MessagesPageContent() {
       unreadCount
     };
   });
-
   return (
     <Layout>
       <div className="container-app py-8">
         <Toaster position="top-right" />
-      
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold mb-2">Messages</h1>
@@ -331,7 +275,6 @@ function MessagesPageContent() {
               Connect with other wellness enthusiasts
             </p>
           </div>
-
           {error ? (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
               {error}
@@ -343,7 +286,6 @@ function MessagesPageContent() {
               </button>
             </div>
           ) : null}
-
           {isLoading ? (
             <div className="flex justify-center items-center h-[60vh]">
               <p>Loading conversations...</p>
@@ -379,7 +321,6 @@ function MessagesPageContent() {
     </Layout>
   );
 }
-
 // Main page component with Suspense
 export default function MessagesPage() {
   return (
@@ -390,7 +331,6 @@ export default function MessagesPage() {
     </Layout>
   );
 }
-
 // Add skeleton component for loading state
 function MessagesPageSkeleton() {
   return (

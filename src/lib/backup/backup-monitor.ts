@@ -1,6 +1,6 @@
 import { backupConfig } from '@/config/backup-config';
 import { logger } from '@/lib/logger';
-import { createClient } from '@supabase/supabase-js';
+import { prisma } from '@/lib/database/client';
 import { format, subDays } from 'date-fns';
 
 export interface BackupAlert {

@@ -1,16 +1,15 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { StarIcon, MapPinIcon, ClockIcon, PhoneIcon } from '@heroicons/react/24/outline';
+;
 import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
 import { ServiceBookingModal } from '@/components/business/ServiceBookingModal';
-
+import { Icons } from '@/components/icons';
 interface Business {
   id: string;
   name: string;
@@ -25,7 +24,6 @@ interface Business {
   services: Service[];
   reviews: Review[];
 }
-
 interface Service {
   id: string;
   name: string;
@@ -33,7 +31,6 @@ interface Service {
   price: number;
   duration: number;
 }
-
 interface Review {
   id: string;
   rating: number;
@@ -41,7 +38,6 @@ interface Review {
   userName: string;
   date: string;
 }
-
 export default function BusinessDetailPage() {
   const params = useParams();
   const id = params?.id as string;
@@ -49,7 +45,6 @@ export default function BusinessDetailPage() {
   const [loading, setLoading] = useState(true);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [showBookingModal, setShowBookingModal] = useState(false);
-
   useEffect(() => {
     const fetchBusiness = async () => {
       try {
@@ -66,12 +61,10 @@ export default function BusinessDetailPage() {
         setLoading(false);
       }
     };
-
     if (id) {
       fetchBusiness();
     }
   }, [id]);
-
   if (loading) {
     return (
       <Layout>
@@ -92,7 +85,6 @@ export default function BusinessDetailPage() {
       </Layout>
     );
   }
-
   if (!business) {
     return (
       <Layout>
@@ -110,7 +102,6 @@ export default function BusinessDetailPage() {
       </Layout>
     );
   }
-
   return (
     <Layout>
       <div className="container-app py-12">
@@ -123,7 +114,6 @@ export default function BusinessDetailPage() {
               className="object-cover w-full h-full"
             />
           </div>
-
           {/* Business Info */}
           <div className="space-y-6">
             <div>
@@ -131,7 +121,7 @@ export default function BusinessDetailPage() {
               <div className="flex items-center gap-2 mb-4">
                 <Badge variant="secondary">{business.category}</Badge>
                 <div className="flex items-center">
-                  <StarIcon className="h-5 w-5 text-yellow-400" />
+                  <Icons.StarIcon className="h-5 w-5 text-yellow-400" />
                   <span className="ml-1">{business.rating.toFixed(1)}</span>
                   <span className="text-muted-foreground ml-1">
                     ({business.reviewCount} reviews)
@@ -140,24 +130,22 @@ export default function BusinessDetailPage() {
               </div>
               <p className="text-muted-foreground">{business.description}</p>
             </div>
-
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <MapPinIcon className="h-5 w-5 text-muted-foreground" />
+                <Icons.MapPinIcon className="h-5 w-5 text-muted-foreground" />
                 <span>{business.location}</span>
               </div>
               <div className="flex items-center gap-2">
-                <PhoneIcon className="h-5 w-5 text-muted-foreground" />
+                <Icons.PhoneIcon className="h-5 w-5 text-muted-foreground" />
                 <span>{business.phone}</span>
               </div>
               <div className="flex items-center gap-2">
-                <ClockIcon className="h-5 w-5 text-muted-foreground" />
+                <Icons.ClockIcon className="h-5 w-5 text-muted-foreground" />
                 <span>{business.hours}</span>
               </div>
             </div>
           </div>
         </div>
-
         {/* Services */}
         <div className="mt-12">
           <h2 className="text-2xl font-bold mb-6">Services</h2>
@@ -188,7 +176,6 @@ export default function BusinessDetailPage() {
             ))}
           </div>
         </div>
-
         {/* Reviews */}
         <div className="mt-12">
           <h2 className="text-2xl font-bold mb-6">Reviews</h2>
@@ -199,7 +186,7 @@ export default function BusinessDetailPage() {
                   <div className="flex items-center gap-2 mb-2">
                     <span className="font-semibold">{review.userName}</span>
                     <div className="flex items-center">
-                      <StarIcon className="h-4 w-4 text-yellow-400" />
+                      <Icons.StarIcon className="h-4 w-4 text-yellow-400" />
                       <span className="ml-1">{review.rating}</span>
                     </div>
                     <span className="text-muted-foreground text-sm">
@@ -212,7 +199,6 @@ export default function BusinessDetailPage() {
             ))}
           </div>
         </div>
-
         {/* Booking Modal */}
         {selectedService && (
           <ServiceBookingModal

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CalendarIcon, CurrencyDollarIcon, ChartBarIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { Calendar, BarChart3, DollarSign, Users } from 'lucide-react';
 
 interface AnalyticsData {
   totalBookings: number;
@@ -101,7 +101,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ data }) 
         <StatCard
           title="Total Bookings"
           value={data.totalBookings}
-          icon={<CalendarIcon className="h-6 w-6 text-indigo-600" />}
+          icon={<Calendar className="h-6 w-6 text-indigo-600" />}
           iconBgColor="bg-indigo-100"
           iconColor="text-indigo-600"
         />
@@ -109,7 +109,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ data }) 
         <StatCard
           title="Total Revenue"
           value={`$${data.totalRevenue.toLocaleString()}`}
-          icon={<CurrencyDollarIcon className="h-6 w-6 text-green-600" />}
+          icon={<DollarSign className="h-6 w-6 text-green-600" />}
           iconBgColor="bg-green-100"
           iconColor="text-green-600"
         />
@@ -117,7 +117,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ data }) 
         <StatCard
           title="Average Rating"
           value={data.averageRating.toFixed(1)}
-          icon={<ChartBarIcon className="h-6 w-6 text-yellow-600" />}
+          icon={<BarChart3 className="h-6 w-6 text-yellow-600" />}
           iconBgColor="bg-yellow-100"
           iconColor="text-yellow-600"
         />
@@ -125,7 +125,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ data }) 
         <StatCard
           title="Total Customers"
           value={data.customerCount}
-          icon={<UserGroupIcon className="h-6 w-6 text-blue-600" />}
+          icon={<Users className="h-6 w-6 text-blue-600" />}
           iconBgColor="bg-blue-100"
           iconColor="text-blue-600"
         />

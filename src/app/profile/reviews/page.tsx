@@ -1,20 +1,18 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+;
 import ReviewCard from '@/components/ReviewCard';
 import ReviewForm from '@/components/ReviewForm';
-
+import { Icons } from '@/components/icons';
 // Mock data types
 interface Provider {
   id: string;
   name: string;
   avatar_url?: string;
 }
-
 interface Review {
   id: string;
   title: string;
@@ -25,7 +23,6 @@ interface Review {
   provider: Provider;
   booking_id: string;
 }
-
 interface Service {
   id: string;
   name: string;
@@ -33,18 +30,15 @@ interface Service {
   provider: Provider;
   price: number;
 }
-
 export default function MyReviewsPage() {
   const [activeTab, setActiveTab] = useState('my-reviews');
   const [userReviews, setUserReviews] = useState<Review[]>([]);
   const [pendingReviews, setPendingReviews] = useState<Service[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingReview, setEditingReview] = useState<Review | null>(null);
-
   // Fetch user reviews and pending reviews
   useEffect(() => {
     setIsLoading(true);
-    
     // Mock data - would be replaced with API calls
     setTimeout(() => {
       const mockReviews: Review[] = [
@@ -77,7 +71,6 @@ export default function MyReviewsPage() {
           booking_id: 'b2'
         }
       ];
-      
       const mockPendingReviews: Service[] = [
         {
           id: 's1',
@@ -102,13 +95,11 @@ export default function MyReviewsPage() {
           price: 45
         }
       ];
-      
       setUserReviews(mockReviews);
       setPendingReviews(mockPendingReviews);
       setIsLoading(false);
     }, 1000);
   }, []);
-
   // Handle review deletion
   const handleDeleteReview = (reviewId: string) => {
     if (window.confirm('Are you sure you want to delete this review?')) {
@@ -116,12 +107,10 @@ export default function MyReviewsPage() {
       setUserReviews(prevReviews => prevReviews.filter(review => review.id !== reviewId));
     }
   };
-
   // Handle review edit
   const handleEditReview = (review: Review) => {
     setEditingReview(review);
   };
-
   // Handle review update
   const handleUpdateReview = async (data: { title: string; text: string; rating: number }) => {
     if (editingReview) {
@@ -131,12 +120,10 @@ export default function MyReviewsPage() {
           ? { ...review, ...data }
           : review
       );
-      
       setUserReviews(updatedReviews);
       setEditingReview(null);
     }
   };
-
   // Handle new review submission
   const handleSubmitReview = async (
     data: { title: string; text: string; rating: number },
@@ -152,22 +139,18 @@ export default function MyReviewsPage() {
       provider: pendingReviews.find(service => service.provider.id === providerId)?.provider!,
       booking_id: serviceId
     };
-    
     setUserReviews(prev => [newReview, ...prev]);
     setPendingReviews(prev => prev.filter(service => service.id !== serviceId));
   };
-
   return (
     <Layout>
       <div className="container mx-auto max-w-5xl px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">My Reviews</h1>
-        
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-8">
             <TabsTrigger value="my-reviews">My Reviews</TabsTrigger>
             <TabsTrigger value="pending">Pending Reviews</TabsTrigger>
           </TabsList>
-          
           <TabsContent value="my-reviews">
             {isLoading ? (
               <div className="space-y-4">
@@ -211,7 +194,6 @@ export default function MyReviewsPage() {
                     />
                   </div>
                 )}
-                
                 <div className="space-y-4">
                   {userReviews.map(review => (
                     <div key={review.id} className="bg-white rounded-lg shadow">
@@ -238,7 +220,7 @@ export default function MyReviewsPage() {
                             onClick={() => handleEditReview(review)}
                             className="flex items-center"
                           >
-                            <PencilIcon className="h-4 w-4 mr-1" />
+                            <Icons.PencilIcon className="h-4 w-4 mr-1" />
                             Edit
                           </Button>
                           <Button
@@ -247,7 +229,7 @@ export default function MyReviewsPage() {
                             onClick={() => handleDeleteReview(review.id)}
                             className="flex items-center text-red-600 hover:text-red-700 hover:bg-red-50"
                           >
-                            <TrashIcon className="h-4 w-4 mr-1" />
+                            <Icons.TrashIcon className="h-4 w-4 mr-1" />
                             Delete
                           </Button>
                         </div>
@@ -258,7 +240,6 @@ export default function MyReviewsPage() {
               </div>
             )}
           </TabsContent>
-          
           <TabsContent value="pending">
             {isLoading ? (
               <div className="space-y-4">

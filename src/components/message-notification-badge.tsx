@@ -2,7 +2,7 @@ import { Icons } from '@/components/icons';
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/clerk-auth-context';
 export function MessageNotificationBadge() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);

@@ -1,13 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
 import { AnalyticsService } from './analytics-service';
 import { NotificationService } from './notification-service';
 import { ProductService } from './product-service';
-import { Database } from '@/types/supabase';
-
-const supabase = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
-);
+import { prisma } from '@/lib/database/client';
 
 export interface AlertThreshold {
   id?: string;
@@ -49,31 +43,40 @@ export class AlertService {
    */
   async createAlert(alert: AlertThreshold): Promise<AlertThreshold> {
     try {
-      const { data, error } = await supabase
-        .from('alert_thresholds')
-        .insert([{
+      const data = await prisma.alertThreshold.create({
+        data: {
           name: alert.name,
           description: alert.description,
-          is_active: alert.is_active,
-          product_id: alert.product_id,
+          isActive: alert.is_active,
+          productId: alert.product_id,
           metric: alert.metric,
           condition: alert.condition,
           threshold: alert.threshold,
-          notification_methods: alert.notification_methods
-        }])
-        .select()
-        .single();
-
-      if (error) throw error;
+          notificationMethods: alert.notification_methods
+        }
+      });
 
       // Track alert creation
       this.analyticsService.trackEvent('alert_created', {
         alert_id: data.id,
-        product_id: data.product_id,
+        product_id: data.productId,
         metric: data.metric
       });
 
-      return data;
+      // Convert Prisma model back to the interface format
+      return {
+        id: data.id,
+        name: data.name,
+        description: data.description || undefined,
+        is_active: data.isActive,
+        product_id: data.productId,
+        metric: data.metric as any,
+        condition: data.condition as any,
+        threshold: data.threshold,
+        notification_methods: data.notificationMethods,
+        created_at: data.createdAt.toISOString(),
+        updated_at: data.updatedAt.toISOString()
+      };
     } catch (error) {
       console.error('Error creating alert:', error);
       throw error;
@@ -85,32 +88,41 @@ export class AlertService {
    */
   async updateAlert(id: string, alert: AlertThreshold): Promise<AlertThreshold> {
     try {
-      const { data, error } = await supabase
-        .from('alert_thresholds')
-        .update({
+      const data = await prisma.alertThreshold.update({
+        where: { id },
+        data: {
           name: alert.name,
           description: alert.description,
-          is_active: alert.is_active,
-          product_id: alert.product_id,
+          isActive: alert.is_active,
+          productId: alert.product_id,
           metric: alert.metric,
           condition: alert.condition,
           threshold: alert.threshold,
-          notification_methods: alert.notification_methods
-        })
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
+          notificationMethods: alert.notification_methods
+        }
+      });
 
       // Track alert update
       this.analyticsService.trackEvent('alert_updated', {
         alert_id: data.id,
-        product_id: data.product_id,
+        product_id: data.productId,
         metric: data.metric
       });
 
-      return data;
+      // Convert Prisma model back to the interface format
+      return {
+        id: data.id,
+        name: data.name,
+        description: data.description || undefined,
+        is_active: data.isActive,
+        product_id: data.productId,
+        metric: data.metric as any,
+        condition: data.condition as any,
+        threshold: data.threshold,
+        notification_methods: data.notificationMethods,
+        created_at: data.createdAt.toISOString(),
+        updated_at: data.updatedAt.toISOString()
+      };
     } catch (error) {
       console.error('Error updating alert:', error);
       throw error;
@@ -122,12 +134,9 @@ export class AlertService {
    */
   async deleteAlert(id: string): Promise<void> {
     try {
-      const { error } = await supabase
-        .from('alert_thresholds')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
+      await prisma.alertThreshold.delete({
+        where: { id }
+      });
 
       // Track alert deletion
       this.analyticsService.trackEvent('alert_deleted', { alert_id: id });
@@ -142,14 +151,26 @@ export class AlertService {
    */
   async getAlertById(id: string): Promise<AlertThreshold | null> {
     try {
-      const { data, error } = await supabase
-        .from('alert_thresholds')
-        .select('*')
-        .eq('id', id)
-        .single();
+      const data = await prisma.alertThreshold.findUnique({
+        where: { id }
+      });
 
-      if (error) throw error;
-      return data;
+      if (!data) return null;
+
+      // Convert Prisma model back to the interface format
+      return {
+        id: data.id,
+        name: data.name,
+        description: data.description || undefined,
+        is_active: data.isActive,
+        product_id: data.productId,
+        metric: data.metric as any,
+        condition: data.condition as any,
+        threshold: data.threshold,
+        notification_methods: data.notificationMethods,
+        created_at: data.createdAt.toISOString(),
+        updated_at: data.updatedAt.toISOString()
+      };
     } catch (error) {
       console.error('Error fetching alert:', error);
       throw error;
@@ -161,13 +182,24 @@ export class AlertService {
    */
   async getAlertsByProduct(productId: string): Promise<AlertThreshold[]> {
     try {
-      const { data, error } = await supabase
-        .from('alert_thresholds')
-        .select('*')
-        .eq('product_id', productId);
+      const data = await prisma.alertThreshold.findMany({
+        where: { productId }
+      });
 
-      if (error) throw error;
-      return data || [];
+      // Convert Prisma models back to the interface format
+      return data.map(item => ({
+        id: item.id,
+        name: item.name,
+        description: item.description || undefined,
+        is_active: item.isActive,
+        product_id: item.productId,
+        metric: item.metric as any,
+        condition: item.condition as any,
+        threshold: item.threshold,
+        notification_methods: item.notificationMethods,
+        created_at: item.createdAt.toISOString(),
+        updated_at: item.updatedAt.toISOString()
+      }));
     } catch (error) {
       console.error('Error fetching alerts for product:', error);
       throw error;
@@ -179,19 +211,25 @@ export class AlertService {
    */
   async getAllAlerts(options: { isActive?: boolean } = {}): Promise<AlertThreshold[]> {
     try {
-      let query = supabase
-        .from('alert_thresholds')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const data = await prisma.alertThreshold.findMany({
+        where: options.isActive !== undefined ? { isActive: options.isActive } : undefined,
+        orderBy: { createdAt: 'desc' }
+      });
 
-      if (options.isActive !== undefined) {
-        query = query.eq('is_active', options.isActive);
-      }
-
-      const { data, error } = await query;
-
-      if (error) throw error;
-      return data || [];
+      // Convert Prisma models back to the interface format
+      return data.map(item => ({
+        id: item.id,
+        name: item.name,
+        description: item.description || undefined,
+        is_active: item.isActive,
+        product_id: item.productId,
+        metric: item.metric as any,
+        condition: item.condition as any,
+        threshold: item.threshold,
+        notification_methods: item.notificationMethods,
+        created_at: item.createdAt.toISOString(),
+        updated_at: item.updatedAt.toISOString()
+      }));
     } catch (error) {
       console.error('Error fetching all alerts:', error);
       throw error;
@@ -203,19 +241,19 @@ export class AlertService {
    */
   async createAlertNotification(notification: AlertNotification): Promise<AlertNotification> {
     try {
-      const { data, error } = await supabase
-        .from('dashboard_notifications')
-        .insert([{
-          alert_id: notification.alert_id,
-          product_id: notification.product_id,
-          current_value: notification.current_value,
-          threshold_value: notification.threshold_value,
-          is_read: false
-        }])
-        .select()
-        .single();
-
-      if (error) throw error;
+      const data = await prisma.dashboardNotification.create({
+        data: {
+          type: 'alert',
+          userId: null, // Will be filled in by the notification service
+          content: {
+            alert_id: notification.alert_id,
+            product_id: notification.product_id,
+            current_value: notification.current_value,
+            threshold_value: notification.threshold_value
+          },
+          isRead: false
+        }
+      });
 
       // Get the alert to determine notification methods
       const alert = await this.getAlertById(notification.alert_id);
@@ -248,7 +286,17 @@ export class AlertService {
         }
       }
 
-      return data;
+      // Convert Prisma model back to the interface format
+      const content = data.content as any;
+      return {
+        id: data.id,
+        alert_id: content.alert_id,
+        product_id: content.product_id,
+        current_value: content.current_value,
+        threshold_value: content.threshold_value,
+        is_read: data.isRead,
+        created_at: data.createdAt.toISOString()
+      };
     } catch (error) {
       console.error('Error creating alert notification:', error);
       throw error;
@@ -260,14 +308,21 @@ export class AlertService {
    */
   async getNotificationsByAlert(alertId: string): Promise<AlertNotification[]> {
     try {
-      const { data, error } = await supabase
-        .from('dashboard_notifications')
-        .select('*')
-        .eq('alert_id', alertId)
-        .order('created_at', { ascending: false });
+      const { data, error } = await prisma.dashboardNotification.findMany({
+        where: { alert_id: alertId },
+        orderBy: { createdAt: 'desc' }
+      });
 
       if (error) throw error;
-      return data || [];
+      return data.map(item => ({
+        id: item.id,
+        alert_id: item.alert_id,
+        product_id: item.product_id,
+        current_value: item.content.current_value,
+        threshold_value: item.content.threshold_value,
+        is_read: item.isRead,
+        created_at: item.createdAt.toISOString()
+      }));
     } catch (error) {
       console.error('Error fetching notifications for alert:', error);
       throw error;
@@ -279,14 +334,21 @@ export class AlertService {
    */
   async getUnreadNotifications(): Promise<AlertNotification[]> {
     try {
-      const { data, error } = await supabase
-        .from('dashboard_notifications')
-        .select('*, alert_thresholds(*)')
-        .eq('is_read', false)
-        .order('created_at', { ascending: false });
+      const { data, error } = await prisma.dashboardNotification.findMany({
+        where: { isRead: false },
+        orderBy: { createdAt: 'desc' }
+      });
 
       if (error) throw error;
-      return data || [];
+      return data.map(item => ({
+        id: item.id,
+        alert_id: item.alert_id,
+        product_id: item.product_id,
+        current_value: item.content.current_value,
+        threshold_value: item.content.threshold_value,
+        is_read: item.isRead,
+        created_at: item.createdAt.toISOString()
+      }));
     } catch (error) {
       console.error('Error fetching unread notifications:', error);
       throw error;
@@ -298,12 +360,10 @@ export class AlertService {
    */
   async markNotificationAsRead(notificationId: string): Promise<void> {
     try {
-      const { error } = await supabase
-        .from('dashboard_notifications')
-        .update({ is_read: true })
-        .eq('id', notificationId);
-
-      if (error) throw error;
+      await prisma.dashboardNotification.update({
+        where: { id: notificationId },
+        data: { isRead: true }
+      });
     } catch (error) {
       console.error('Error marking notification as read:', error);
       throw error;

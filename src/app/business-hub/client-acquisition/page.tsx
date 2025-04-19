@@ -1,18 +1,11 @@
 'use client';
-
 import React, { Suspense, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  AcademicCapIcon, 
-  LightBulbIcon, 
-  RocketLaunchIcon,
-  ChevronRightIcon
-} from '@heroicons/react/24/outline';
+;
 import Layout from '@/components/layout/business-hub-layout';
-
 interface Strategy {
   id: string;
   title: string;
@@ -23,12 +16,10 @@ interface Strategy {
   expectedResults: string;
   steps: string[];
 }
-
 function ClientAcquisitionContent() {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [activeDifficulty, setActiveDifficulty] = useState<string>('all');
   const searchParams = useSearchParams();
-
   // Client acquisition strategies
   const strategies: Strategy[] = [
     {
@@ -81,14 +72,12 @@ function ClientAcquisitionContent() {
       ]
     }
   ];
-
   // Filter strategies based on selected category and difficulty
   const filteredStrategies = strategies.filter(strategy => {
     const matchesCategory = activeCategory === 'all' || strategy.category === activeCategory;
     const matchesDifficulty = activeDifficulty === 'all' || strategy.difficulty === activeDifficulty;
     return matchesCategory && matchesDifficulty;
   });
-
   // Categories for filtering
   const categories = [
     { id: 'all', name: 'All Strategies' },
@@ -97,7 +86,6 @@ function ClientAcquisitionContent() {
     { id: 'referral', name: 'Referral Programs' },
     { id: 'reactivation', name: 'Client Reactivation' }
   ];
-
   // Difficulty levels for filtering
   const difficultyLevels = [
     { id: 'all', name: 'All Levels' },
@@ -105,7 +93,6 @@ function ClientAcquisitionContent() {
     { id: 'intermediate', name: 'Intermediate' },
     { id: 'advanced', name: 'Advanced' }
   ];
-
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
@@ -126,11 +113,9 @@ function ClientAcquisitionContent() {
             </div>
           </div>
         </div>
-
         {/* Strategies Section */}
         <div className="mb-12">
           <h2 className="text-2xl font-bold mb-6">Acquisition & Retention Strategies</h2>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredStrategies.map(strategy => (
               <div key={strategy.id} className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
@@ -149,7 +134,6 @@ function ClientAcquisitionContent() {
     </Layout>
   );
 }
-
 export default function ClientAcquisitionPage() {
   return (
     <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading client acquisition strategies...</div>}>

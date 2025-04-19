@@ -8,7 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth } from '@/contexts/clerk-auth-context';
 import Link from 'next/link';
 
 // Mobile profile components

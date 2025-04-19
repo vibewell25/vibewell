@@ -1,80 +1,90 @@
 import * as React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { ChevronRightIcon } from "@heroicons/react/24/outline";
+import { ChevronRight } from "lucide-react";
 
 export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
 }
 
-export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement> {
-  isCurrentPage?: boolean;
+export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLElement> {
+  href?: string;
+  current?: boolean;
   children: React.ReactNode;
-  isFirstItem?: boolean;
 }
 
-export interface BreadcrumbLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
-  href: string;
-  children: React.ReactNode;
-  asChild?: boolean;
-}
-
-export function Breadcrumb({ className, ...props }: BreadcrumbProps) {
+export function Breadcrumb({ className, children, ...props }: BreadcrumbProps) {
   return (
-    <nav 
-      className={cn("flex", className)} 
-      aria-label="Breadcrumb"
+    <nav
+      className={cn("flex", className)}
       {...props}
     >
-      <ol className="inline-flex items-center space-x-1 md:space-x-2">
-        {props.children}
+      <ol className="flex flex-wrap items-center">
+        {children}
       </ol>
     </nav>
   );
 }
 
-export function BreadcrumbItem({ 
-  className, 
-  isCurrentPage,
-  isFirstItem = false,
+export function BreadcrumbItem({
+  className,
+  href,
+  current = false,
   children,
-  ...props 
+  ...props
 }: BreadcrumbItemProps) {
-  return (
-    <li 
-      className={cn("inline-flex items-center", className)} 
-      aria-current={isCurrentPage ? "page" : undefined}
-      {...props}
-    >
-      <div className="flex items-center">
-        {!isFirstItem && (
-          <ChevronRightIcon className="h-4 w-4 text-muted-foreground mx-1" />
-        )}
+  const BreadcrumbItem = React.useMemo(() => {
+    if (current) {
+      return (
+        <span
+          className={cn(
+            "text-sm font-medium text-muted-foreground",
+            className
+          )}
+          aria-current="page"
+          {...props}
+        >
+          {children}
+        </span>
+      );
+    }
+
+    if (href) {
+      return (
+        <Link
+          href={href}
+          className={cn(
+            "text-sm font-medium text-foreground hover:text-muted-foreground",
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </Link>
+      );
+    }
+
+    return (
+      <span
+        className={cn("text-sm font-medium", className)}
+        {...props}
+      >
         {children}
-      </div>
+      </span>
+    );
+  }, [current, href, className, props, children]);
+
+  return (
+    <li className="inline-flex items-center">
+      {BreadcrumbItem}
     </li>
   );
 }
 
-export function BreadcrumbLink({ 
-  className, 
-  href,
-  asChild = false,
-  children,
-  ...props 
-}: BreadcrumbLinkProps) {
-  const Comp = asChild ? React.Fragment : Link;
-  
+export function BreadcrumbSeparator() {
   return (
-    <Comp
-      className={cn(
-        "text-sm font-medium text-muted-foreground hover:text-foreground transition-colors",
-        className
-      )}
-      href={href}
-      {...props}
-    >
-      {children}
-    </Comp>
+    <li className="mx-2 text-muted-foreground">
+      <ChevronRight className="h-4 w-4" />
+    </li>
   );
 } 

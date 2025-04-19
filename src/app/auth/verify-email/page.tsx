@@ -2,7 +2,8 @@
 
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useAuth } from '@/contexts/auth-context';
+import Link from 'next/link';
+import { useAuth } from '@/contexts/clerk-auth-context';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -13,7 +14,7 @@ function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  const token = searchParams.get('token');
+  const token = searchParams?.get('token') ?? null;
 
   const handleResendEmail = async () => {
     setIsLoading(true);
@@ -76,12 +77,12 @@ function VerifyEmailContent() {
         </div>
         <p className="px-8 text-center text-sm text-muted-foreground">
           Already verified?{' '}
-          <a
-            href="/auth/sign-in"
-            className="hover:text-brand underline underline-offset-4"
+          <Link
+            href="/auth/login"
+            className="text-primary underline-offset-4 hover:underline"
           >
             Sign in
-          </a>
+          </Link>
         </p>
       </div>
     </div>

@@ -2,12 +2,13 @@ import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/clerk-auth-context';
 import { NotificationBadge } from './notification-badge';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { useResponsive } from '@/hooks/useResponsive';
 import { TouchHandler } from './ui/touch-handler';
 import { cn } from '@/lib/utils';
+import { ROUTES } from '@/constants/routes';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -211,7 +212,7 @@ export function EnhancedHeader() {
                       </div>
                     </>
                   ) : (
-                    <Link href="/auth/sign-in" className="hidden md:block btn-primary">
+                    <Link href={ROUTES.AUTH.LOGIN} className="hidden md:block btn-primary">
                       Sign In
                     </Link>
                   )}
@@ -303,7 +304,7 @@ export function EnhancedHeader() {
                       </>
                     ) : (
                       <Link 
-                        href="/auth/sign-in" 
+                        href={ROUTES.AUTH.LOGIN}
                         className="mt-4 btn-primary text-center"
                         onClick={() => setIsMenuOpen(false)}
                       >

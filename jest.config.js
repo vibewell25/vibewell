@@ -8,13 +8,14 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
+  preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/src/tests/setup.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-    '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js',
-    '\\.(glb|gltf)$': '<rootDir>/__mocks__/modelMock.js',
+    '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js',
+    'three': '<rootDir>/node_modules/three',
     // Add aliases for commonly used directories
     '^@components/(.*)$': '<rootDir>/src/components/$1',
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
@@ -24,26 +25,19 @@ const customJestConfig = {
     '^@mocks/(.*)$': '<rootDir>/__mocks__/$1',
   },
   transform: {
-    '^.+\\.(ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
+      tsconfig: 'tsconfig.json'
+    }],
   },
-  testPathIgnorePatterns: [
-    '<rootDir>/node_modules/',
-    '<rootDir>/.next/',
-    '<rootDir>/cypress/',
-    '<rootDir>/tests/e2e/', // Ignore Playwright E2E tests
-    '<rootDir>/tests/load-testing/', // Ignore k6 load tests
-  ],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   transformIgnorePatterns: [
     '/node_modules/',
     '^.+\\.module\\.(css|sass|scss)$',
   ],
   collectCoverageFrom: [
-    'src/**/*.{js,jsx,ts,tsx}',
+    'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
-    '!src/**/*.stories.{js,jsx,ts,tsx}',
-    '!src/**/*.test.{js,jsx,ts,tsx}',
-    '!src/pages/_app.tsx',
-    '!src/pages/_document.tsx',
+    '!src/types/**/*',
   ],
   coverageThreshold: {
     global: {
@@ -54,9 +48,8 @@ const customJestConfig = {
     },
   },
   testMatch: [
-    '<rootDir>/src/**/*.test.{js,jsx,ts,tsx}',
-    '<rootDir>/tests/unit/**/*.test.{js,jsx,ts,tsx}',
-    '<rootDir>/tests/integration/**/*.test.{js,jsx,ts,tsx}',
+    '<rootDir>/src/**/__tests__/**/*.{ts,tsx}',
+    '<rootDir>/src/**/*.{spec,test}.{ts,tsx}',
   ],
   watchPlugins: [
     'jest-watch-typeahead/filename',
@@ -77,13 +70,15 @@ const customJestConfig = {
   ],
   globals: {
     'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.jest.json',
+      tsconfig: 'tsconfig.json',
+      diagnostics: false,
     },
   },
   // Add moduleDirectories to help with module resolution
   moduleDirectories: ['node_modules', '<rootDir>/src'],
   // Add resolver for test files
   resolver: '<rootDir>/jest.resolver.js',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

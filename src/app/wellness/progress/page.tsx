@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { GoalProgressCard } from '@/components/wellness/GoalProgressCard';
@@ -11,9 +10,9 @@ import { GoalList } from '@/components/wellness/GoalList';
 import { DeleteConfirmationModal } from '@/components/wellness/DeleteConfirmationModal';
 import { useWellnessData } from '@/hooks/useWellnessData';
 import { GoalType, Goal } from '@/types/progress';
-import { PlusIcon, ChartBarIcon } from '@heroicons/react/24/outline';
-import { useAuth } from '@/hooks/useAuth';
-
+;
+import { useAuth } from '@/contexts/clerk-auth-context';
+import { Icons } from '@/components/icons';
 export default function ProgressPage() {
   const { user, loading: authLoading } = useAuth();
   const { 
@@ -27,30 +26,25 @@ export default function ProgressPage() {
     updateGoal,
     deleteGoal
   } = useWellnessData();
-
   const [selectedType, setSelectedType] = useState<GoalType>('meditation');
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('7d');
   const [activeView, setActiveView] = useState<'summary' | 'charts' | 'tracker'>('summary');
   const [showGoalCreationModal, setShowGoalCreationModal] = useState(false);
   const [goalToEdit, setGoalToEdit] = useState<Goal | undefined>(undefined);
   const [goalToDelete, setGoalToDelete] = useState<{ id: string, title: string } | null>(null);
-
   // Handle goal tracking 
   const handleLogProgress = (goalId: string, value: number) => {
     logHabit(goalId, value);
   };
-
   // Handle creating a new goal
   const handleCreateGoal = (newGoal: Omit<Goal, 'id' | 'current' | 'status'>) => {
     createGoal(newGoal);
   };
-
   // Handle editing a goal
   const handleEditGoal = (goal: Goal) => {
     setGoalToEdit(goal);
     setShowGoalCreationModal(true);
   };
-
   // Handle saving edits to a goal
   const handleSaveEdit = (editedGoal: Omit<Goal, 'id' | 'current' | 'status'>) => {
     if (goalToEdit) {
@@ -63,7 +57,6 @@ export default function ProgressPage() {
       setGoalToEdit(undefined);
     }
   };
-
   // Handle deleting a goal
   const handleDeleteGoal = (goalId: string) => {
     const goal = goals.find(g => g.id === goalId);
@@ -71,7 +64,6 @@ export default function ProgressPage() {
       setGoalToDelete({ id: goal.id, title: goal.title });
     }
   };
-
   // Handle confirming goal deletion
   const handleConfirmDelete = () => {
     if (goalToDelete) {
@@ -79,13 +71,11 @@ export default function ProgressPage() {
       setGoalToDelete(null);
     }
   };
-
   // Handle modal close actions
   const handleCloseCreationModal = () => {
     setShowGoalCreationModal(false);
     setGoalToEdit(undefined);
   };
-
   if (authLoading || isLoading) {
     return (
       <Layout>
@@ -97,7 +87,6 @@ export default function ProgressPage() {
       </Layout>
     );
   }
-
   if (!user) {
     return (
       <Layout>
@@ -111,7 +100,6 @@ export default function ProgressPage() {
       </Layout>
     );
   }
-
   return (
     <Layout>
       <div className="container-app py-12">
@@ -122,18 +110,16 @@ export default function ProgressPage() {
               Track your goals and habits to improve your wellness journey
             </p>
           </div>
-          
           <div className="flex gap-2">
             <button 
               className="btn-primary flex items-center gap-1"
               onClick={() => setShowGoalCreationModal(true)}
             >
-              <PlusIcon className="h-5 w-5" />
+              <Icons.PlusIcon className="h-5 w-5" />
               New Goal
             </button>
           </div>
         </div>
-
         {/* View selector tabs */}
         <div className="flex border-b border-border mb-8">
           <button
@@ -167,7 +153,6 @@ export default function ProgressPage() {
             Habit Tracker
           </button>
         </div>
-
         {/* Summary View */}
         {activeView === 'summary' && summary && (
           <div>
@@ -175,7 +160,6 @@ export default function ProgressPage() {
             <div className="mb-8">
               <ProgressSummaryCard summary={summary} />
             </div>
-            
             {/* Goal List */}
             <GoalList 
               goals={goals}
@@ -186,7 +170,6 @@ export default function ProgressPage() {
             />
           </div>
         )}
-        
         {/* Charts View */}
         {activeView === 'charts' && (
           <div>
@@ -243,7 +226,6 @@ export default function ProgressPage() {
                 Steps
               </button>
             </div>
-            
             {/* Time range selector */}
             <div className="mb-6 flex gap-2">
               <button
@@ -277,7 +259,6 @@ export default function ProgressPage() {
                 90 Days
               </button>
             </div>
-            
             {/* Charts */}
             <ProgressCharts 
               wellnessDays={wellnessDays} 
@@ -287,7 +268,6 @@ export default function ProgressPage() {
             />
           </div>
         )}
-        
         {/* Habit Tracker View */}
         {activeView === 'tracker' && (
           <div>
@@ -296,7 +276,6 @@ export default function ProgressPage() {
               habitLogs={habitLogs} 
               onLogHabit={handleLogProgress} 
             />
-            
             {/* Quick Stats */}
             {summary && (
               <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -311,7 +290,6 @@ export default function ProgressPage() {
                     </p>
                   </div>
                 </div>
-                
                 <div className="card bg-gradient-to-br from-pink-500/10 to-pink-500/5">
                   <div className="text-center">
                     <span className="text-xl block mb-1">🏋️‍♂️</span>
@@ -323,7 +301,6 @@ export default function ProgressPage() {
                     </p>
                   </div>
                 </div>
-                
                 <div className="card bg-gradient-to-br from-blue-500/10 to-blue-500/5">
                   <div className="text-center">
                     <span className="text-xl block mb-1">💧</span>
@@ -335,7 +312,6 @@ export default function ProgressPage() {
                     </p>
                   </div>
                 </div>
-                
                 <div className="card bg-gradient-to-br from-indigo-500/10 to-indigo-500/5">
                   <div className="text-center">
                     <span className="text-xl block mb-1">😴</span>
@@ -351,7 +327,6 @@ export default function ProgressPage() {
             )}
           </div>
         )}
-
         {/* Goal Creation/Editing Modal */}
         <GoalCreationModal 
           isOpen={showGoalCreationModal} 
@@ -359,7 +334,6 @@ export default function ProgressPage() {
           onSave={goalToEdit ? handleSaveEdit : handleCreateGoal}
           editingGoal={goalToEdit}
         />
-
         {/* Goal Deletion Confirmation Modal */}
         <DeleteConfirmationModal
           isOpen={!!goalToDelete}

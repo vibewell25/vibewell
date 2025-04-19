@@ -3,7 +3,7 @@
  * This file provides backward compatibility with existing imports
  */
 
-// @ts-ignore - Ignore the .tsx extension
+// @ts-expect-error - Ignore the .tsx extension
 import * as StateManagerModule from './state/index.tsx';
 
 // Re-export everything
@@ -18,5 +18,5 @@ export const {
 } = StateManagerModule;
 
 // Re-export the interface with a different name to avoid conflicts
-// @ts-ignore - Ignore the .tsx extension
+// @ts-expect-error - Ignore the .tsx extension
 export type { StateManager } from './state/index.tsx'; 

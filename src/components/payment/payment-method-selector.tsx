@@ -5,8 +5,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { PaymentFormWrapper } from './payment-form';
-import { Web3PaymentForm } from './web3-payment-form';
-import { CreditCard, Wallet, Banknote, AlertCircle } from 'lucide-react';
+import { CreditCard, Banknote, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface PaymentMethod {
@@ -33,7 +32,7 @@ export function PaymentMethodSelector({
   orderReference,
   onSuccess,
   onError,
-  availableMethods = ['card', 'crypto', 'bank'],
+  availableMethods = ['card', 'bank'],
 }: PaymentMethodSelectorProps) {
   const [selectedMethod, setSelectedMethod] = useState<string>(availableMethods[0] || 'card');
   const [error, setError] = useState<string | null>(null);
@@ -44,12 +43,6 @@ export function PaymentMethodSelector({
       label: 'Credit or Debit Card',
       icon: <CreditCard className="h-5 w-5" />,
       description: 'Pay securely with your credit or debit card',
-    },
-    {
-      id: 'crypto',
-      label: 'Cryptocurrency',
-      icon: <Wallet className="h-5 w-5" />,
-      description: 'Pay with Bitcoin, Ethereum, or other cryptocurrencies',
     },
     {
       id: 'bank',
@@ -68,13 +61,6 @@ export function PaymentMethodSelector({
   const handlePaymentSuccess = (paymentId: string) => {
     if (onSuccess) {
       onSuccess(paymentId, selectedMethod);
-    }
-  };
-
-  // Handle crypto payment success
-  const handleCryptoSuccess = (transactionHash: string, cryptoCurrency: string) => {
-    if (onSuccess) {
-      onSuccess(transactionHash, `crypto_${cryptoCurrency.toLowerCase()}`);
     }
   };
 
@@ -98,18 +84,6 @@ export function PaymentMethodSelector({
             currency={currency}
             description={description}
             onSuccess={handlePaymentSuccess}
-            onError={handlePaymentError}
-          />
-        );
-
-      case 'crypto':
-        return (
-          <Web3PaymentForm
-            amount={amount}
-            currency={currency}
-            description={description}
-            orderReference={orderReference}
-            onSuccess={handleCryptoSuccess}
             onError={handlePaymentError}
           />
         );

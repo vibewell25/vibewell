@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ProductService } from '@/services/product-service';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/clerk-auth-context';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Mail, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
-import { supabase } from '@/lib/supabase/client';
+import { prisma } from '@/lib/database/client';
 import { toast } from '@/components/ui/use-toast';
 
 interface EmailVerificationProps {

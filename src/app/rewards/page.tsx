@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getServerSession } from 'next-auth';
@@ -7,11 +6,10 @@ import { authOptions } from '@/lib/auth';
 import { LoyaltyPoints } from '@/components/rewards/LoyaltyPoints';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { GiftIcon, SparklesIcon } from '@heroicons/react/24/outline';
-
+;
+import { Icons } from '@/components/icons';
 export default function RewardsPage() {
   const router = useRouter();
-
   useEffect(() => {
     const checkAuth = async () => {
       const session = await getServerSession(authOptions);
@@ -21,24 +19,21 @@ export default function RewardsPage() {
     };
     checkAuth();
   }, [router]);
-
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Rewards & Loyalty</h1>
           <Button onClick={() => router.push('/rewards/catalog')}>
-            <GiftIcon className="h-5 w-5 mr-2" />
+            <Icons.GiftIcon className="h-5 w-5 mr-2" />
             View Rewards Catalog
           </Button>
         </div>
-
         <LoyaltyPoints />
-
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <SparklesIcon className="h-5 w-5" />
+              <Icons.SparklesIcon className="h-5 w-5" />
               How to Earn Points
             </CardTitle>
           </CardHeader>

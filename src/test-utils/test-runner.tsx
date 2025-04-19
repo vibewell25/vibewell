@@ -38,13 +38,13 @@ type SetItemFn = (key: string, value: string) => void;
 type RemoveItemFn = (key: string) => void;
 type ClearFn = () => void;
 interface StorageMock {
-  // @ts-ignore - We're having issues with jest.Mock types but the runtime behavior is fine
+  // @ts-expect-error - We're having issues with jest.Mock types but the runtime behavior is fine
   getItem: jest.Mock;
-  // @ts-ignore - We're having issues with jest.Mock types but the runtime behavior is fine
+  // @ts-expect-error - We're having issues with jest.Mock types but the runtime behavior is fine
   setItem: jest.Mock;
-  // @ts-ignore - We're having issues with jest.Mock types but the runtime behavior is fine
+  // @ts-expect-error - We're having issues with jest.Mock types but the runtime behavior is fine
   removeItem: jest.Mock;
-  // @ts-ignore - We're having issues with jest.Mock types but the runtime behavior is fine
+  // @ts-expect-error - We're having issues with jest.Mock types but the runtime behavior is fine
   clear: jest.Mock;
   getAll: () => MockStore;
 }

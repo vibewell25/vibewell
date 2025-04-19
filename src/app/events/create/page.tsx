@@ -1,27 +1,17 @@
 'use client';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { EventCategory, EventLocation } from '@/types/events';
 import { createEvent } from '@/lib/api/events';
-import { useAuth } from '@/hooks/useAuth';
-import { 
-  CalendarIcon, 
-  MapPinIcon, 
-  UserIcon, 
-  ClockIcon,
-  VideoCameraIcon,
-  XMarkIcon,
-  ArrowLeftIcon
-} from '@heroicons/react/24/outline';
+import { useAuth } from '@/contexts/clerk-auth-context';
+;
 import { Button } from '@/components/ui/button';
 import { format, addHours } from 'date-fns';
-
+import { Icons } from '@/components/icons';
 export default function CreateEventPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-  
   // Event form state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -45,16 +35,13 @@ export default function CreateEventPage() {
   const [imageUrl, setImageUrl] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
-  
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<{[key: string]: string}>({});
-  
   // Redirect if not logged in
   if (!authLoading && !user) {
     router.push('/auth/login?returnUrl=' + encodeURIComponent('/events/create'));
     return null;
   }
-
   // Available categories
   const categories: EventCategory[] = [
     'Wellness', 
@@ -68,7 +55,6 @@ export default function CreateEventPage() {
     'Webinar',
     'Other'
   ];
-
   // Add a tag
   const addTag = () => {
     if (tagInput.trim() && !tags.includes(tagInput.trim())) {
@@ -76,12 +62,10 @@ export default function CreateEventPage() {
       setTagInput('');
     }
   };
-
   // Remove a tag
   const removeTag = (tagToRemove: string) => {
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
-
   // Update location fields
   const updateLocation = (field: string, value: string) => {
     setLocation({
@@ -89,7 +73,6 @@ export default function CreateEventPage() {
       [field]: value
     });
   };
-
   // Toggle virtual event
   const toggleVirtual = () => {
     setIsVirtual(!isVirtual);
@@ -105,11 +88,9 @@ export default function CreateEventPage() {
       })
     });
   };
-
   // Validate form
   const validateForm = (): boolean => {
     const newErrors: {[key: string]: string} = {};
-    
     // Required fields
     if (!title.trim()) newErrors.title = 'Title is required';
     if (!description.trim()) newErrors.description = 'Description is required';
@@ -117,7 +98,6 @@ export default function CreateEventPage() {
     if (!startTime) newErrors.startTime = 'Start time is required';
     if (!endDate) newErrors.endDate = 'End date is required';
     if (!endTime) newErrors.endTime = 'End time is required';
-    
     // Location validation
     if (isVirtual) {
       if (!location.meetingUrl) newErrors.meetingUrl = 'Meeting URL is required for virtual events';
@@ -127,41 +107,32 @@ export default function CreateEventPage() {
       if (!location.state) newErrors.state = 'State is required for in-person events';
       if (!location.zipCode) newErrors.zipCode = 'Zip code is required for in-person events';
     }
-    
     // Date and time validation
     if (startDate && endDate && startTime && endTime) {
       const startDateTime = new Date(`${startDate}T${startTime}`);
       const endDateTime = new Date(`${endDate}T${endTime}`);
-      
       if (endDateTime <= startDateTime) {
         newErrors.endDate = 'End date/time must be after start date/time';
       }
     }
-    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!user) {
       router.push('/auth/login?returnUrl=' + encodeURIComponent('/events/create'));
       return;
     }
-    
     if (!validateForm()) {
       return;
     }
-    
     try {
       setSubmitting(true);
-      
       // Prepare dates
       const startDateTime = new Date(`${startDate}T${startTime}`);
       const endDateTime = new Date(`${endDate}T${endTime}`);
-      
       // Create event object
       const eventData = {
         title,
@@ -185,13 +156,10 @@ export default function CreateEventPage() {
         tags: tags.length > 0 ? tags : undefined,
         isFeatured: false
       };
-      
       // Submit event
       const createdEvent = await createEvent(eventData);
-      
       // Navigate to the created event
       router.push(`/events/${createdEvent.id}`);
-      
     } catch (err) {
       console.error('Error creating event:', err);
       setErrors({
@@ -201,7 +169,6 @@ export default function CreateEventPage() {
       setSubmitting(false);
     }
   };
-
   // Set default dates if not set
   const setDefaultDates = () => {
     if (!startDate || !startTime) {
@@ -209,17 +176,14 @@ export default function CreateEventPage() {
       const roundedHours = Math.ceil(now.getHours() + now.getMinutes() / 60) + 1;
       const startDateTime = new Date(now);
       startDateTime.setHours(roundedHours, 0, 0, 0);
-      
       setStartDate(format(startDateTime, 'yyyy-MM-dd'));
       setStartTime(format(startDateTime, 'HH:mm'));
-      
       // Default end time is 1 hour after start
       const endDateTime = addHours(startDateTime, 1);
       setEndDate(format(endDateTime, 'yyyy-MM-dd'));
       setEndTime(format(endDateTime, 'HH:mm'));
     }
   };
-
   return (
     <Layout>
       <div className="container-app py-8">
@@ -228,19 +192,16 @@ export default function CreateEventPage() {
           onClick={() => router.push('/events')}
           className="flex items-center text-gray-600 hover:text-gray-900 mb-6"
         >
-          <ArrowLeftIcon className="h-4 w-4 mr-1" />
+          <Icons.ArrowLeftIcon className="h-4 w-4 mr-1" />
           Back to Events
         </button>
-        
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl font-bold mb-2">Create Event</h1>
           <p className="text-gray-600 mb-8">Share your wellness event with the community</p>
-          
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* General Information */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-xl font-semibold mb-4">General Information</h2>
-              
               <div className="space-y-4">
                 {/* Title */}
                 <div>
@@ -257,7 +218,6 @@ export default function CreateEventPage() {
                   />
                   {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
                 </div>
-                
                 {/* Short Description */}
                 <div>
                   <label htmlFor="shortDescription" className="block text-sm font-medium text-gray-700 mb-1">
@@ -273,7 +233,6 @@ export default function CreateEventPage() {
                   />
                   <p className="text-gray-500 text-xs mt-1">Optional. A short summary for event listings (max 160 characters)</p>
                 </div>
-                
                 {/* Description */}
                 <div>
                   <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
@@ -289,7 +248,6 @@ export default function CreateEventPage() {
                   {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
                   <p className="text-gray-500 text-xs mt-1">You can use HTML for formatting</p>
                 </div>
-                
                 {/* Category */}
                 <div>
                   <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
@@ -306,7 +264,6 @@ export default function CreateEventPage() {
                     ))}
                   </select>
                 </div>
-                
                 {/* Image URL */}
                 <div>
                   <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700 mb-1">
@@ -324,11 +281,9 @@ export default function CreateEventPage() {
                 </div>
               </div>
             </div>
-            
             {/* Date and Time */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-xl font-semibold mb-4">Date and Time</h2>
-              
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Start Date */}
@@ -346,7 +301,6 @@ export default function CreateEventPage() {
                     />
                     {errors.startDate && <p className="text-red-500 text-xs mt-1">{errors.startDate}</p>}
                   </div>
-                  
                   {/* Start Time */}
                   <div>
                     <label htmlFor="startTime" className="block text-sm font-medium text-gray-700 mb-1">
@@ -362,7 +316,6 @@ export default function CreateEventPage() {
                     />
                     {errors.startTime && <p className="text-red-500 text-xs mt-1">{errors.startTime}</p>}
                   </div>
-                  
                   {/* End Date */}
                   <div>
                     <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-1">
@@ -378,7 +331,6 @@ export default function CreateEventPage() {
                     />
                     {errors.endDate && <p className="text-red-500 text-xs mt-1">{errors.endDate}</p>}
                   </div>
-                  
                   {/* End Time */}
                   <div>
                     <label htmlFor="endTime" className="block text-sm font-medium text-gray-700 mb-1">
@@ -397,11 +349,9 @@ export default function CreateEventPage() {
                 </div>
               </div>
             </div>
-            
             {/* Location */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-xl font-semibold mb-4">Location</h2>
-              
               <div className="space-y-4">
                 {/* Virtual or In-Person */}
                 <div className="flex items-center">
@@ -416,7 +366,6 @@ export default function CreateEventPage() {
                     This is a virtual event
                   </label>
                 </div>
-                
                 {isVirtual ? (
                   <div>
                     <label htmlFor="meetingUrl" className="block text-sm font-medium text-gray-700 mb-1">
@@ -450,7 +399,6 @@ export default function CreateEventPage() {
                       />
                       {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
                     </div>
-                    
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* City */}
                       <div>
@@ -467,7 +415,6 @@ export default function CreateEventPage() {
                         />
                         {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
                       </div>
-                      
                       {/* State */}
                       <div>
                         <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">
@@ -483,7 +430,6 @@ export default function CreateEventPage() {
                         />
                         {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
                       </div>
-                      
                       {/* Zip Code */}
                       <div>
                         <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700 mb-1">
@@ -500,7 +446,6 @@ export default function CreateEventPage() {
                         {errors.zipCode && <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>}
                       </div>
                     </div>
-                    
                     {/* Country */}
                     <div>
                       <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
@@ -519,11 +464,9 @@ export default function CreateEventPage() {
                 )}
               </div>
             </div>
-            
             {/* Additional Details */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-xl font-semibold mb-4">Additional Details</h2>
-              
               <div className="space-y-4">
                 {/* Capacity */}
                 <div>
@@ -541,7 +484,6 @@ export default function CreateEventPage() {
                   />
                   <p className="text-gray-500 text-xs mt-1">Optional. Leave blank for unlimited capacity</p>
                 </div>
-                
                 {/* Tags */}
                 <div>
                   <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
@@ -566,7 +508,6 @@ export default function CreateEventPage() {
                     </button>
                   </div>
                   <p className="text-gray-500 text-xs mt-1">Press Enter or click Add to add a tag</p>
-                  
                   {tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-2">
                       {tags.map(tag => (
@@ -577,7 +518,7 @@ export default function CreateEventPage() {
                             onClick={() => removeTag(tag)}
                             className="ml-1 text-gray-500 hover:text-gray-700"
                           >
-                            <XMarkIcon className="h-4 w-4" />
+                            <Icons.XMarkIcon className="h-4 w-4" />
                           </button>
                         </div>
                       ))}
@@ -586,7 +527,6 @@ export default function CreateEventPage() {
                 </div>
               </div>
             </div>
-            
             {/* Submit */}
             <div className="flex justify-end">
               {errors.form && <p className="text-red-500 text-sm mr-auto">{errors.form}</p>}

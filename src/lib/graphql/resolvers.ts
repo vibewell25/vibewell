@@ -9,7 +9,7 @@ import { GraphQLError } from 'graphql';
 import { withGraphQLRateLimit } from '@/lib/rate-limiter';
 import { ValueNode, Kind } from 'graphql';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { createClient } from '@supabase/supabase-js'
+import { prisma } from '@/lib/database/client'
 import { Filter } from '@supabase/postgrest-js'
 
 // Type definitions

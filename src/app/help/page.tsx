@@ -1,32 +1,19 @@
 'use client';
-
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
-  MagnifyingGlassIcon,
-  BookOpenIcon,
-  UserCircleIcon,
-  SparklesIcon,
-  ArrowPathIcon,
-  QuestionMarkCircleIcon,
-  AcademicCapIcon,
-  ShieldExclamationIcon,
-  DocumentTextIcon,
-  CreditCardIcon
-} from '@heroicons/react/24/outline';
+;
 import { useState } from 'react';
-
+import { Icons } from '@/components/icons';
 export default function HelpCenter() {
   const [searchQuery, setSearchQuery] = useState('');
-  
   // Help categories
   const categories = [
     {
       id: 'getting-started',
       title: 'Getting Started',
-      icon: <BookOpenIcon className="h-8 w-8" />,
+      icon: <Icons.BookOpenIcon className="h-8 w-8" />,
       description: 'New to Vibewell? Learn the basics and set up your account.',
       path: '/help/getting-started',
       articles: [
@@ -38,7 +25,7 @@ export default function HelpCenter() {
     {
       id: 'account',
       title: 'Account Management',
-      icon: <UserCircleIcon className="h-8 w-8" />,
+      icon: <Icons.UserCircleIcon className="h-8 w-8" />,
       description: 'Manage your profile, privacy settings, and subscription details.',
       path: '/help/account',
       articles: [
@@ -50,7 +37,7 @@ export default function HelpCenter() {
     {
       id: 'features',
       title: 'Features & Functionality',
-      icon: <SparklesIcon className="h-8 w-8" />,
+      icon: <Icons.SparklesIcon className="h-8 w-8" />,
       description: 'Discover how to use Vibewell features and get the most out of the platform.',
       path: '/help/features',
       articles: [
@@ -62,7 +49,7 @@ export default function HelpCenter() {
     {
       id: 'troubleshooting',
       title: 'Troubleshooting',
-      icon: <ArrowPathIcon className="h-8 w-8" />,
+      icon: <Icons.ArrowPathIcon className="h-8 w-8" />,
       description: 'Having issues? Find solutions to common problems and technical support.',
       path: '/help/troubleshooting',
       articles: [
@@ -72,7 +59,6 @@ export default function HelpCenter() {
       ]
     }
   ];
-  
   // FAQs
   const faqs = [
     {
@@ -101,7 +87,6 @@ export default function HelpCenter() {
       path: '/help/contact'
     }
   ];
-
   return (
     <Layout>
       <div className="container-app py-8">
@@ -114,7 +99,7 @@ export default function HelpCenter() {
             </p>
             <div className="relative max-w-2xl mx-auto">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
+                <Icons.MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
               </div>
               <Input
                 type="text"
@@ -131,7 +116,6 @@ export default function HelpCenter() {
             </div>
           </div>
         </div>
-        
         {/* Categories section */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold mb-8">Browse Help Categories</h2>
@@ -170,7 +154,6 @@ export default function HelpCenter() {
             ))}
           </div>
         </div>
-        
         {/* FAQs section */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold mb-8">Frequently Asked Questions</h2>
@@ -178,7 +161,7 @@ export default function HelpCenter() {
             {faqs.map((faq, index) => (
               <div key={index} className="border rounded-lg p-6 bg-card">
                 <h3 className="text-xl font-semibold mb-2 flex items-start">
-                  <QuestionMarkCircleIcon className="h-6 w-6 text-primary mr-2 flex-shrink-0" />
+                  <Icons.QuestionMarkCircleIcon className="h-6 w-6 text-primary mr-2 flex-shrink-0" />
                   <span>{faq.question}</span>
                 </h3>
                 <p className="text-muted-foreground mb-3 ml-8">{faq.answer}</p>
@@ -197,14 +180,13 @@ export default function HelpCenter() {
             ))}
           </div>
         </div>
-        
         {/* Additional resources */}
         <div className="mb-12">
           <h2 className="text-3xl font-bold mb-8">Additional Resources</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="border rounded-lg p-6 bg-card hover:shadow-md transition-all">
               <div className="text-primary mb-4">
-                <AcademicCapIcon className="h-10 w-10" />
+                <Icons.AcademicCapIcon className="h-10 w-10" />
               </div>
               <h3 className="text-xl font-bold mb-2">Video Tutorials</h3>
               <p className="text-muted-foreground mb-4">
@@ -214,10 +196,9 @@ export default function HelpCenter() {
                 <Link href="/help/tutorials">View Tutorials</Link>
               </Button>
             </div>
-            
             <div className="border rounded-lg p-6 bg-card hover:shadow-md transition-all">
               <div className="text-primary mb-4">
-                <DocumentTextIcon className="h-10 w-10" />
+                <Icons.DocumentTextIcon className="h-10 w-10" />
               </div>
               <h3 className="text-xl font-bold mb-2">User Manual</h3>
               <p className="text-muted-foreground mb-4">
@@ -227,10 +208,9 @@ export default function HelpCenter() {
                 <Link href="/help/manual">View Manual</Link>
               </Button>
             </div>
-            
             <div className="border rounded-lg p-6 bg-card hover:shadow-md transition-all">
               <div className="text-primary mb-4">
-                <ShieldExclamationIcon className="h-10 w-10" />
+                <Icons.ShieldExclamationIcon className="h-10 w-10" />
               </div>
               <h3 className="text-xl font-bold mb-2">Privacy & Terms</h3>
               <p className="text-muted-foreground mb-4">
@@ -242,7 +222,6 @@ export default function HelpCenter() {
             </div>
           </div>
         </div>
-        
         {/* Contact support section */}
         <div className="bg-muted rounded-xl p-8 text-center">
           <h2 className="text-2xl font-bold mb-4">Still Need Help?</h2>

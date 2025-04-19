@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 import { passwordResetRateLimiter, applyRateLimit } from '../rate-limit-middleware';
+import { ManagementClient } from 'auth0-js';
+
+// Create an Auth0 Management API client
+// We use environment variables for Auth0 domain and client credentials
+const auth0Management = new ManagementClient({
+  domain: process.env.AUTH0_DOMAIN || '',
+  clientId: process.env.AUTH0_MANAGEMENT_CLIENT_ID || '',
+  clientSecret: process.env.AUTH0_MANAGEMENT_CLIENT_SECRET || '',
+});
 
 // Schema for validating the request body
 const passwordResetSchema = z.object({
@@ -42,22 +50,16 @@ export async function POST(req: NextRequest) {
     
     const { email } = result.data;
     
-    // Create Supabase client
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Send password reset email
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/reset-password`,
-    });
-    
-    if (error) {
-      console.error('Password reset error:', error);
-      
-      // Don't reveal if the email exists or not for security reasons
-      return NextResponse.json({
-        success: true,
-        message: 'If your email is registered, you will receive password reset instructions.',
+    // Send password reset email via Auth0
+    try {
+      await auth0Management.requestChangePasswordEmail({
+        email,
+        connection: 'Username-Password-Authentication',
+        client_id: process.env.AUTH0_CLIENT_ID,
       });
+    } catch (auth0Error) {
+      console.error('Auth0 password reset error:', auth0Error);
+      // Don't reveal if the email exists or not for security reasons
     }
     
     // Return success response
@@ -96,27 +98,27 @@ export async function PUT(req: NextRequest) {
     
     const { password, token } = result.data;
     
-    // Create Supabase client
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Update user password using the token
-    const { error } = await supabase.auth.updateUser({
-      password: password,
-    });
-    
-    if (error) {
-      console.error('Password update error:', error);
+    try {
+      // Auth0 password change with token
+      await auth0Management.changePassword({
+        email: '', // The token contains the user identity
+        password,
+        connection: 'Username-Password-Authentication',
+        client_id: process.env.AUTH0_CLIENT_ID,
+      }, token);
+      
+      // Return success response
+      return NextResponse.json({
+        success: true,
+        message: 'Password updated successfully',
+      });
+    } catch (auth0Error) {
+      console.error('Auth0 password update error:', auth0Error);
       return NextResponse.json(
         { error: 'Failed to update password. The reset link may have expired.' },
         { status: 400 }
       );
     }
-    
-    // Return success response
-    return NextResponse.json({
-      success: true,
-      message: 'Password updated successfully',
-    });
   } catch (error) {
     console.error('Error in password update API:', error);
     return NextResponse.json(

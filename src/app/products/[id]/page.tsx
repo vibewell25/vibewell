@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/clerk-auth-context';
 import { Star, ShoppingCart, Share2, ArrowLeft, HeartIcon, Clock } from 'lucide-react';
 import { ProductService, Product } from '@/services/product-service';
 import { RecommendationService } from '@/services/recommendation-service';

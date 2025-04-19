@@ -1,8 +1,10 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { isAdmin } from '@/lib/utils/admin';
 import redisClient from '@/lib/redis-client';
+import { securityMiddleware } from '@/middleware/security/index';
+import { NextFetchEvent } from 'next/server';
+import { getSession } from '@auth0/nextjs-auth0';
 
 // Define public routes that don't require authentication
 const publicRoutes = [
@@ -12,40 +14,63 @@ const publicRoutes = [
   '/auth/forgot-password',
   '/auth/reset-password',
   '/auth/verify-email',
+  '/auth/sso-callback',
   '/api/auth/callback',
   '/_next',
   '/favicon.ico',
+  '/locales',
+  '/api/i18n',
 ];
 
-// Define protected routes based on user roles
-const protectedRoutes: Record<string, string[]> = {
-  customer: [
-    '/dashboard',
-    '/bookings',
-    '/profile',
-    '/virtual-try-on',
-  ],
-  provider: [
-    '/provider/dashboard',
-    '/provider/services',
-    '/provider/bookings',
-    '/provider/profile',
-  ],
-  admin: [
-    '/admin/dashboard',
-    '/admin/users',
-    '/admin/services',
-    '/admin/bookings',
-    '/admin/settings',
-  ],
-};
+// Define protected routes that require authentication
+const protectedRoutes: string[] = [
+  '/api/v1/users',
+  '/api/v1/posts',
+  '/dashboard',
+  '/profile',
+  '/settings',
+  '/bookings',
+  '/wellness',
+  '/community',
+  '/events'
+];
 
-// Rate limiting configuration
-const rateLimit = {
-  windowMs: 60 * 1000, // 1 minute
-  max: 100, // limit each IP to 100 requests per windowMs
-  store: new Map<string, number[]>(),
-  keyPrefix: 'ratelimit:middleware:',
+// Define security-sensitive routes that require admin access 
+const adminRoutes = [
+  '/api-docs',  // Swagger UI route
+  '/swagger',   // Alternative Swagger route
+  '/admin',     // Admin dashboard
+  '/metrics',   // Performance metrics
+];
+
+// Security headers configuration
+const securityHeaders = {
+  'X-DNS-Prefetch-Control': 'on',
+  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'origin-when-cross-origin',
+  'X-XSS-Protection': '1; mode=block',
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob:",
+    "font-src 'self'",
+    "object-src 'none'",
+    "media-src 'self'",
+    "worker-src 'self' blob:",
+    "frame-ancestors 'self'",
+  ].join('; '),
+  'Permissions-Policy': [
+    'camera=self',
+    'microphone=self',
+    'geolocation=self',
+    'accelerometer=self',
+    'gyroscope=self',
+    'magnetometer=self',
+    'payment=self',
+  ].join(', '),
 };
 
 // Define API versions
@@ -66,323 +91,202 @@ const API_VERSION_PATHS: Record<string, string> = {
   [ApiVersion.LATEST]: 'v3' // latest points to most recent version
 };
 
-// Minimum supported version 
-const MIN_SUPPORTED_VERSION = ApiVersion.V1;
+/**
+ * Generate a random nonce for CSP
+ */
+function generateNonce(): string {
+  const array = new Uint8Array(16);
+  crypto.getRandomValues(array);
+  return btoa(String.fromCharCode.apply(null, Array.from(array)));
+}
 
-// API paths that should be versioned
+/**
+ * Check if a path matches the API pattern that requires versioning
+ */
+function isVersionedPath(path: string): boolean {
+  return API_PATH_PATTERN.test(path);
+}
+
+/**
+ * Normalize an API path to include version information
+ */
+function normalizeApiPath(path: string, version: ApiVersion): string {
+  const versionPath = API_VERSION_PATHS[version];
+  
+  // If the path already includes a version, don't modify it
+  if (path.match(/\/api\/v\d+\//)) {
+    return path;
+  }
+  
+  return path.replace(/\/api\//, `/api/${versionPath}/`);
+}
+
+/**
+ * Extract version from URL path if present
+ */
+function extractVersionFromPath(path: string): ApiVersion | null {
+  const match = path.match(/\/api\/(v\d+)\//);
+  if (!match) return null;
+  
+  const version = match[1];
+  switch (version) {
+    case 'v1': return ApiVersion.V1;
+    case 'v2': return ApiVersion.V2;
+    case 'v3': return ApiVersion.V3;
+    case 'legacy': return ApiVersion.LEGACY;
+    default: return null;
+  }
+}
+
+// API path pattern for versioning
 const API_PATH_PATTERN = /^\/api\/(?!auth|webhooks)/;
 
-// Helper function for Redis-based rate limiting in production
-async function redisRateLimit(req: NextRequest): Promise<NextResponse | null> {
-  try {
-    // Only use Redis in production
-    if (process.env.NODE_ENV !== 'production') {
-      return null; // In development, skip Redis rate limiting
-    }
-
-    const ip = req.headers.get('x-real-ip') || 
-               req.headers.get('x-forwarded-for') || 
-               'anonymous';
-    
-    const key = `${rateLimit.keyPrefix}${ip}`;
-    const windowKey = `${key}:window`;
-    
-    const now = Date.now();
-    const [requestCount, windowExpires] = await Promise.all([
-      redisClient.get(key),
-      redisClient.get(windowKey),
-    ]);
-    
-    // If window doesn't exist or has expired, create a new one
-    if (!windowExpires || parseInt(windowExpires, 10) < now) {
-      const resetTime = now + rateLimit.windowMs;
-      await Promise.all([
-        redisClient.set(key, '1'),
-        redisClient.set(windowKey, resetTime.toString(), { ex: Math.ceil(rateLimit.windowMs / 1000) }),
-      ]);
-      
-      return null; // Allow the request
-    }
-    
-    // Check if over limit
-    const count = requestCount ? parseInt(requestCount, 10) : 0;
-    if (count >= rateLimit.max) {
-      const resetTime = parseInt(windowExpires, 10);
-      const retryAfter = Math.ceil((resetTime - now) / 1000);
-      
-      return new NextResponse('Too Many Requests', {
-        status: 429,
-        headers: {
-          'Retry-After': String(retryAfter),
-          'X-RateLimit-Limit': String(rateLimit.max),
-          'X-RateLimit-Remaining': '0',
-          'X-RateLimit-Reset': String(Math.ceil(resetTime / 1000)),
-          'Content-Type': 'text/plain',
-        }
-      });
-    }
-    
-    // Increment the counter
-    await redisClient.incr(key);
-    
-    // Request within limit, allow it
-    return null;
-  } catch (error) {
-    console.error('Redis rate limiting error:', error);
-    return null; // Fail open on Redis errors
-  }
-}
-
-// Generate a random nonce for CSP
-function generateNonce(): string {
-  const crypto = require('crypto');
-  return crypto.randomBytes(16).toString('base64');
-}
-
-// In-memory rate limiting function
-async function inMemoryRateLimit(req: NextRequest): Promise<NextResponse | null> {
-  const ip = req.headers.get('x-real-ip') || 
-             req.headers.get('x-forwarded-for') || 
-             'anonymous';
-  const now = Date.now();
-  const windowStart = now - rateLimit.windowMs;
-  
-  // Get or create entry for this IP
-  if (!rateLimit.store.has(ip)) {
-    rateLimit.store.set(ip, []);
-  }
-  
-  // Clean old requests and add current request
-  const requests = rateLimit.store.get(ip) || [];
-  const recentRequests = requests.filter((timestamp: number) => timestamp > windowStart);
-  recentRequests.push(now);
-  rateLimit.store.set(ip, recentRequests);
-  
-  // Check if rate limit exceeded
-  if (recentRequests.length > rateLimit.max) {
-    return new NextResponse('Too Many Requests', {
-      status: 429,
-      headers: {
-        'Retry-After': '60',
-        'Content-Type': 'text/plain',
-      }
-    });
-  }
-  
-  return null;
-}
-
-// Helper to parse Accept header for API version
+/**
+ * Parse API version from Accept header
+ * 
+ * Example: Accept: application/json;version=v2
+ */
 function parseApiVersionFromAcceptHeader(acceptHeader: string | null): ApiVersion | null {
   if (!acceptHeader) return null;
   
-  // Example: application/json; version=v2
-  const versionMatch = acceptHeader.match(/version=([^;]+)/i);
-  if (versionMatch && versionMatch[1]) {
-    // Check if it's a valid version
-    if (Object.values(ApiVersion).includes(versionMatch[1] as ApiVersion)) {
-      return versionMatch[1] as ApiVersion;
-    }
-  }
+  const versionMatch = acceptHeader.match(/version=v(\d+)/);
+  if (!versionMatch) return null;
   
-  return null;
+  const version = `v${versionMatch[1]}`;
+  switch (version) {
+    case 'v1': return ApiVersion.V1;
+    case 'v2': return ApiVersion.V2;
+    case 'v3': return ApiVersion.V3;
+    default: return null;
+  }
 }
 
-// Check if a path is a versioned API path
-function isVersionedPath(path: string): boolean {
-  // Check if path matches API pattern and contains version
-  return API_PATH_PATTERN.test(path) && 
-         Object.values(API_VERSION_PATHS).some(version => 
-           path.includes(`/api/${version}/`));
-}
-
-// Normalize path to latest version alias if needed
-function normalizeApiPath(path: string, version: ApiVersion): string {
-  if (version === ApiVersion.LATEST) {
-    // Map LATEST to actual latest version
-    const targetVersion = API_VERSION_PATHS[ApiVersion.LATEST];
-    return path.replace(/\/api\/latest\//, `/api/${targetVersion}/`);
-  }
-  return path;
-}
-
-// Extract version from path
-function extractVersionFromPath(path: string): ApiVersion | null {
-  for (const [version, versionPath] of Object.entries(API_VERSION_PATHS)) {
-    if (path.includes(`/api/${versionPath}/`)) {
-      return version as ApiVersion;
-    }
-  }
-  return null;
-}
-
-export async function middleware(req: NextRequest) {
-  // Fix potential issues with undefined URL by extracting origin early
-  const origin = new URL(req.url).origin;
-
-  // Try Redis-based rate limiting in production
-  const rateLimitResponse = await redisRateLimit(req);
-  if (rateLimitResponse) {
-    return rateLimitResponse;
-  }
-
-  // Apply rate limits to specific routes
-  if (req.nextUrl.pathname.startsWith('/api/')) {
-    const limitResult = await inMemoryRateLimit(req);
-    if (limitResult) {
-      return limitResult;
-    }
-  }
-
-  // Initialize response with security headers
-  const res = NextResponse.next();
-  
-  // Generate a unique nonce for this request
-  const scriptNonce = generateNonce();
-  const styleNonce = generateNonce();
-  
-  // Store nonces in response headers so they can be accessed by the app
-  res.headers.set('X-Script-Nonce', scriptNonce);
-  res.headers.set('X-Style-Nonce', styleNonce);
-  
-  // Add security headers
-  const securityHeaders = {
-    'X-DNS-Prefetch-Control': 'on',
-    'X-XSS-Protection': '1; mode=block',
-    'X-Frame-Options': 'SAMEORIGIN',
-    'X-Content-Type-Options': 'nosniff',
-    'Referrer-Policy': 'strict-origin-when-cross-origin',
-    'Content-Security-Policy': `
-      default-src 'self';
-      script-src 'self' 'nonce-${scriptNonce}' https://js.stripe.com https://cdn.jsdelivr.net 'strict-dynamic';
-      style-src 'self' 'nonce-${styleNonce}' https://fonts.googleapis.com;
-      img-src 'self' data: https://res.cloudinary.com https://*.stripe.com https: blob:;
-      font-src 'self' data: https://fonts.gstatic.com;
-      connect-src 'self' https://*.supabase.co https://api.stripe.com wss://*.supabase.co https://api.vibewell.com;
-      frame-src 'self' https://js.stripe.com https://hooks.stripe.com;
-      object-src 'none';
-      base-uri 'self';
-      form-action 'self';
-      frame-ancestors 'self';
-      upgrade-insecure-requests;
-      block-all-mixed-content;
-      require-trusted-types-for 'script';
-      trusted-types 'none';
-    `.replace(/\s+/g, ' ').trim(),
-    'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self), interest-cohort=(), payment=(self), autoplay=(), fullscreen=(self), picture-in-picture=(), display-capture=(), battery=(), accelerometer=(), gyroscope=(), magnetometer=()',
-    'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
-    'Cross-Origin-Embedder-Policy': 'require-corp',
-    'Cross-Origin-Opener-Policy': 'same-origin',
-    'Cross-Origin-Resource-Policy': 'same-origin',
-    'Expect-CT': 'max-age=86400, enforce',
-    'NEL': '{"report_to":"default","max_age":31536000,"include_subdomains":true}',
-    'Report-To': '{"group":"default","max_age":31536000,"endpoints":[{"url":"https://vibewell.report-uri.com/a/d/g"}],"include_subdomains":true}'
-  };
-
-  // Apply security headers to response
+/**
+ * Add security headers to the response
+ */
+function addSecurityHeaders(response: NextResponse): NextResponse {
   Object.entries(securityHeaders).forEach(([key, value]) => {
-    res.headers.set(key, value);
+    response.headers.set(key, value);
   });
+  return response;
+}
+
+/**
+ * Handle API versioning
+ */
+function handleApiVersioning(req: NextRequest): NextResponse | null {
+  const path = req.nextUrl.pathname;
   
-  const supabase = createMiddlewareClient({ req, res });
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  // Check if the user is trying to access an admin route
-  if (req.nextUrl.pathname.startsWith('/admin')) {
-    if (!session?.user) {
-      // Redirect to login if not authenticated
-      return NextResponse.redirect(new URL('/login', origin));
-    }
-
-    // Check if the user has admin role
-    const isUserAdmin = await isAdmin(session.user.id);
-    if (!isUserAdmin) {
-      // Redirect to home if not an admin
-      return NextResponse.redirect(new URL('/', origin));
-    }
-  }
-
-  // Check if the request path is public
-  if (publicRoutes.some(route => req.nextUrl.pathname.startsWith(route))) {
-    return res;
-  }
-
-  // Ensure user is authenticated for protected routes
-  if (!session?.user) {
-    return NextResponse.redirect(new URL('/auth/login', origin));
-  }
-
-  // Get user role from session
-  const userRole = session.user.user_metadata?.role || 'customer';
-
-  // Check if user has access to the requested route
-  const userRoutes = protectedRoutes[userRole] || [];
-  const hasAccess = userRoutes.some(route => req.nextUrl.pathname.startsWith(route));
-
-  if (!hasAccess) {
-    // Redirect to appropriate dashboard based on role
-    const dashboardPath = `/${userRole}/dashboard`;
-    return NextResponse.redirect(new URL(dashboardPath, origin));
-  }
-
-  // Only apply to API routes except auth and webhooks
-  if (!API_PATH_PATTERN.test(req.nextUrl.pathname)) {
-    return res;
+  if (!isVersionedPath(path)) {
+    return null;
   }
   
-  // Check if path already contains version
-  if (isVersionedPath(req.nextUrl.pathname)) {
-    const pathVersion = extractVersionFromPath(req.nextUrl.pathname);
+  // Check Accept header for version
+  const acceptVersion = parseApiVersionFromAcceptHeader(req.headers.get('Accept'));
+  
+  // Check for version in path
+  const pathVersion = extractVersionFromPath(path);
+  
+  // Default to latest version if not specified
+  const version = acceptVersion || pathVersion || ApiVersion.LATEST;
+  
+  // Clone URL to modify it
+  const url = req.nextUrl.clone();
+  
+  // If path doesn't contain version, rewrite URL
+  if (!pathVersion) {
+    url.pathname = normalizeApiPath(path, version);
+    return NextResponse.rewrite(url);
+  }
+  
+  return null;
+}
+
+/**
+ * Check if a path is public (doesn't require authentication)
+ */
+function isPublicPath(path: string): boolean {
+  return publicRoutes.some(route => {
+    if (route.endsWith('*')) {
+      const baseRoute = route.slice(0, -1);
+      return path.startsWith(baseRoute);
+    }
+    return path === route;
+  });
+}
+
+/**
+ * Check if user has admin access
+ */
+async function checkAdminAccess(req: NextRequest): Promise<boolean> {
+  // Using Auth0 session to check admin status
+  try {
+    const res = NextResponse.next();
+    const session = await getSession(req, res);
+    if (!session || !session.user) return false;
     
-    // Normalize if it's using the "latest" alias
-    if (pathVersion === ApiVersion.LATEST) {
-      const normalizedPath = normalizeApiPath(req.nextUrl.pathname, ApiVersion.LATEST);
-      req.nextUrl.pathname = normalizedPath;
-      return NextResponse.rewrite(req.nextUrl);
-    }
+    const namespace = process.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell.com';
+    const userRoles = session.user[`${namespace}/roles`] || [];
     
-    // Path already has version, continue
-    return res;
+    return userRoles.includes('admin');
+  } catch (error) {
+    console.error('Error checking admin access:', error);
+    return false;
+  }
+}
+
+/**
+ * Our main middleware function
+ */
+export async function middleware(req: NextRequest) {
+  const path = req.nextUrl.pathname;
+  
+  // Apply security middleware (includes CSRF protection & rate limiting)
+  const securityResponse = await securityMiddleware(req);
+  if (securityResponse.status !== 200) {
+    return new NextResponse(securityResponse.body, {
+      status: securityResponse.status,
+      headers: securityResponse.headers as HeadersInit,
+    });
   }
   
-  // Handle unversioned API paths
-  let targetVersion: ApiVersion;
+  // Handle API versioning
+  const versioningResponse = handleApiVersioning(req);
+  if (versioningResponse) {
+    return addSecurityHeaders(versioningResponse);
+  }
+
+  // Always apply security headers, even on public routes
+  const response = NextResponse.next();
+  addSecurityHeaders(response);
   
-  // Try to extract version from Accept header
-  const acceptHeader = req.headers.get('accept');
-  const headerVersion = parseApiVersionFromAcceptHeader(acceptHeader);
-  
-  if (headerVersion) {
-    // Use version from Accept header
-    targetVersion = headerVersion;
-  } else {
-    // Default to latest version
-    targetVersion = ApiVersion.LATEST;
+  // Public routes are accessible without authentication
+  if (isPublicPath(path)) {
+    return response;
   }
   
-  // Insert version into path
-  const versionedPath = req.nextUrl.pathname.replace('/api/', `/api/${API_VERSION_PATHS[targetVersion]}/`);
-  req.nextUrl.pathname = normalizeApiPath(versionedPath, targetVersion);
+  // Get Auth0 session
+  const session = await getSession(req, response);
+  const isAuthenticated = !!session?.user;
   
-  // Add API version to response headers for tracking
-  res.headers.set('X-API-Version', API_VERSION_PATHS[targetVersion]);
+  // For protected routes, check if user is authenticated
+  if (protectedRoutes.some(route => path.startsWith(route)) && !isAuthenticated) {
+    const loginUrl = new URL('/auth/login', req.url);
+    loginUrl.searchParams.set('returnTo', path);
+    return NextResponse.redirect(loginUrl);
+  }
   
-  return res;
+  // For admin routes, check if user is admin
+  if (adminRoutes.some(route => path.startsWith(route)) && !(await checkAdminAccess(req))) {
+    return NextResponse.redirect(new URL('/error/unauthorized', req.url));
+  }
+  
+  return response;
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     */
-    '/((?!_next/static|_next/image|favicon.ico|public/).*)',
-    '/admin/:path*',
+    // Match all routes except static assets and API routes that don't need middleware
+    '/((?!_next/static|_next/image|favicon.ico|images|fonts|api/webhooks).*)',
   ],
 }; 

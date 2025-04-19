@@ -1,6 +1,7 @@
-import { render, screen } from '@testing-library/react/pure';
+import { renderWithProviders } from '@/test-utils/component-testing';
+import { screen } from '@testing-library/dom';
 import { useTranslation } from 'react-i18next';
-import i18n from '../../i18n/config';
+import i18n from '@/i18n';
 import { I18nextProvider } from 'react-i18next';
 import '@testing-library/jest-dom';
 
@@ -10,7 +11,7 @@ const TestComponent = () => {
   return (
     <div>
       <h1>{t('common.welcome')}</h1>
-      <button>{t('common.save')}</button>
+      <button>{t('common.actions.save')}</button>
     </div>
   );
 };
@@ -26,22 +27,37 @@ beforeAll(async () => {
       en: {
         common: {
           welcome: 'Welcome to Vibewell',
-          save: 'Save'
+          actions: {
+            save: 'Save'
+          }
         }
       },
       es: {
         common: {
           welcome: 'Bienvenido a Vibewell',
-          save: 'Guardar'
+          actions: {
+            save: 'Guardar'
+          }
         }
       }
+    },
+    interpolation: {
+      escapeValue: false,
+    },
+    react: {
+      useSuspense: false // Disable suspense for tests
     }
   });
 });
 
+// Reset i18n instance after each test
+afterEach(() => {
+  i18n.changeLanguage('en');
+});
+
 describe('Internationalization', () => {
-  it('displays English text by default', () => {
-    render(
+  it('displays English text by default', async () => {
+    renderWithProviders(
       <I18nextProvider i18n={i18n}>
         <TestComponent />
       </I18nextProvider>
@@ -52,18 +68,18 @@ describe('Internationalization', () => {
 
   it('changes language to Spanish', async () => {
     await i18n.changeLanguage('es');
-    render(
+    renderWithProviders(
       <I18nextProvider i18n={i18n}>
         <TestComponent />
       </I18nextProvider>
     );
     expect(screen.getByText('Bienvenido a Vibewell')).toBeInTheDocument();
     expect(screen.getByText('Guardar')).toBeInTheDocument();
-  }, 15000); // Increased timeout
+  });
 
   it('handles missing translations gracefully', async () => {
     await i18n.changeLanguage('fr'); // We haven't created French translations yet
-    render(
+    renderWithProviders(
       <I18nextProvider i18n={i18n}>
         <TestComponent />
       </I18nextProvider>
@@ -71,5 +87,5 @@ describe('Internationalization', () => {
     // Should fall back to English
     expect(screen.getByText('Welcome to Vibewell')).toBeInTheDocument();
     expect(screen.getByText('Save')).toBeInTheDocument();
-  }, 15000); // Increased timeout
+  });
 }); 

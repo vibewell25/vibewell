@@ -14,6 +14,9 @@ import { User, Session } from '@supabase/supabase-js';
 import { useErrorHandler } from '@/utils/error-handler';
 import { ErrorCategory, ErrorSource } from '@/utils/error-handler';
 import { isError } from '@/utils/type-guards';
+import { rateLimit, RateLimitError } from '../utils/rateLimit';
+import { logger } from '../utils/logger';
+import { sessionManager } from '../utils/sessionManager';
 
 // Define user roles for role-based access control
 export enum UserRole {
@@ -88,19 +91,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const router = useRouter();
   const { captureError } = useErrorHandler();
 
-  // Helper function to safely handle unknown errors
   const handleError = (error: unknown) => {
-    if (isError(error)) {
-      captureError(error, {
-        category: ErrorCategory.AUTHENTICATION,
-        source: ErrorSource.CLIENT,
-      });
+    if (error instanceof RateLimitError) {
+      logger.warn('Rate limit exceeded', user?.id, { error });
     } else {
-      captureError(String(error), {
-        category: ErrorCategory.AUTHENTICATION,
-        source: ErrorSource.CLIENT,
-      });
+      logger.error('Authentication error', user?.id, { error });
     }
+    return error instanceof Error ? error : new Error(String(error));
   };
 
   // Check for existing session and set up auth state listener
@@ -160,30 +157,51 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
   }, [captureError]);
 
+  useEffect(() => {
+    // Initialize session monitoring
+    sessionManager.startSessionMonitoring(
+      session,
+      // On timeout
+      () => {
+        signOut();
+      },
+      // On refresh needed
+      async () => {
+        try {
+          const { data: { session: newSession }, error } = await supabase.auth.refreshSession();
+          if (error) throw error;
+          if (!newSession) throw new Error('Failed to refresh session');
+        } catch (error) {
+          handleError(error);
+          signOut();
+        }
+      }
+    );
+
+    return () => {
+      sessionManager.clearTimeouts();
+    };
+  }, [session]);
+
   /**
    * Sign in a user with email and password
    */
   const signIn = async (email: string, password: string) => {
     try {
-      if (isMobile) {
-        // Mobile-specific sign in would go here
-        // This is a placeholder
-        return { error: null };
-      }
-      
-      const { error } = await supabase.auth.signInWithPassword({
+      // Apply rate limiting
+      rateLimit(`signin-${email}`, 5, 15 * 60 * 1000);
+
+      logger.security('Sign in attempt', null, { email });
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      
-      if (!error) {
-        router.push('/dashboard');
-      }
-      
-      return { error };
+
+      if (error) throw error;
+      logger.security('Sign in successful', data.user?.id);
+      return { error: null };
     } catch (error) {
-      handleError(error);
-      return { error: error instanceof Error ? error : new Error(String(error)) };
+      return { error: handleError(error) };
     }
   };
 
@@ -225,17 +243,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    */
   const signOut = async () => {
     try {
-      if (isMobile) {
-        // Mobile-specific sign out would go here
-        // This is a placeholder
-        setUser(null);
-        setSession(null);
-        router.push('/auth/login');
-        return;
-      }
-      
+      logger.security('Sign out initiated', user?.id);
       await supabase.auth.signOut();
-      router.push('/auth/login');
+      sessionManager.clearTimeouts();
+      logger.security('Sign out successful', user?.id);
     } catch (error) {
       handleError(error);
     }
@@ -246,20 +257,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    */
   const resetPassword = async (email: string) => {
     try {
-      if (isMobile) {
-        // Mobile-specific password reset would go here
-        // This is a placeholder
-        return { error: null };
-      }
-      
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
-      });
-      
-      return { error };
+      // Apply rate limiting
+      rateLimit(`reset-password-${email}`, 3, 60 * 60 * 1000);
+
+      logger.security('Password reset requested', null, { email });
+      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      if (error) throw error;
+      return { error: null };
     } catch (error) {
-      handleError(error);
-      return { error: error instanceof Error ? error : new Error(String(error)) };
+      return { error: handleError(error) };
     }
   };
 

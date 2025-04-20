@@ -1,28 +1,33 @@
 import { NextResponse } from 'next/server';
-import { verifyAuthentication } from '@/lib/auth/webauthn-service';
-import type { AuthenticationResponseJSON } from '@simplewebauthn/types';
+import { WebAuthnService } from '@/lib/auth/webauthn-service';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth/auth-options';
+import { AuthenticationResponseJSON } from '@simplewebauthn/typescript-types';
 
 export async function POST(request: Request) {
   try {
-    const { userId, response } = await request.json();
-
-    if (!userId || !response) {
-      return NextResponse.json(
-        { error: 'User ID and response are required' },
-        { status: 400 }
-      );
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    const verification = await verifyAuthentication(
-      userId,
-      response as AuthenticationResponseJSON
+    const body = await request.json();
+    const { assertionResponse } = body as { assertionResponse: AuthenticationResponseJSON };
+
+    if (!assertionResponse) {
+      return new NextResponse('Missing assertion response', { status: 400 });
+    }
+
+    const verification = await WebAuthnService.verifyAuthentication(
+      session.user.id,
+      assertionResponse
     );
 
-    return NextResponse.json(verification);
+    return NextResponse.json({ verified: verification });
   } catch (error) {
     console.error('WebAuthn authentication verification error:', error);
-    return NextResponse.json(
-      { error: (error as Error).message },
+    return new NextResponse(
+      error instanceof Error ? error.message : 'Internal server error',
       { status: 500 }
     );
   }

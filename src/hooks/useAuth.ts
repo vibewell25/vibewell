@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 interface User {
   sub: string;
@@ -24,94 +25,11 @@ interface AuthState {
  */
 export function useAuth() {
   const router = useRouter();
-  const [authState, setAuthState] = useState<AuthState>({
-    isLoading: true,
-    isAuthenticated: false,
-    user: null,
-    error: null,
-  });
-
-  // Load user data
-  const loadUserData = useCallback(async () => {
-    try {
-      setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
-      
-      const response = await fetch('/api/auth/me');
-      
-      if (response.ok) {
-        const user = await response.json();
-        setAuthState({
-          isLoading: false,
-          isAuthenticated: true,
-          user,
-          error: null,
-        });
-      } else {
-        // Not authenticated
-        setAuthState({
-          isLoading: false,
-          isAuthenticated: false,
-          user: null,
-          error: null,
-        });
-      }
-    } catch (error) {
-      console.error('Failed to load user data', error);
-      setAuthState({
-        isLoading: false,
-        isAuthenticated: false,
-        user: null,
-        error: error instanceof Error ? error : new Error('Failed to load user data'),
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    loadUserData();
-  }, [loadUserData]);
-
-  // Login
-  const login = useCallback((redirectTo?: string) => {
-    const returnTo = redirectTo || router.asPath;
-    router.push(`/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`);
-  }, [router]);
-
-  // Logout
-  const logout = useCallback((redirectTo?: string) => {
-    const returnTo = redirectTo || '/';
-    router.push(`/api/auth/logout?returnTo=${encodeURIComponent(returnTo)}`);
-  }, [router]);
-
-  // Refresh user data
-  const refreshUser = useCallback(() => {
-    loadUserData();
-  }, [loadUserData]);
-
-  // Check if user has a specific role
-  const hasRole = useCallback((role: string) => {
-    if (!authState.user) return false;
-    
-    const userRoles = authState.user[`${process.env.NEXT_PUBLIC_AUTH0_NAMESPACE}/roles`] || [];
-    return userRoles.includes(role);
-  }, [authState.user]);
-
-  // Check if user is admin
-  const isAdmin = useCallback(() => {
-    return hasRole('admin');
-  }, [hasRole]);
-
-  // Check if user is provider
-  const isProvider = useCallback(() => {
-    return hasRole('provider');
-  }, [hasRole]);
+  const { data: session, status } = useSession();
 
   return {
-    ...authState,
-    login,
-    logout,
-    refreshUser,
-    hasRole,
-    isAdmin,
-    isProvider,
+    user: session?.user,
+    isAuthenticated: status === 'authenticated',
+    isLoading: status === 'loading',
   };
 } 

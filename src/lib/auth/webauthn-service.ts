@@ -13,6 +13,8 @@ import {
   type VerifiedAuthenticationResponse,
 } from '@simplewebauthn/server';
 import { isoBase64URL } from '@simplewebauthn/server/helpers';
+import { prisma } from '@/lib/prisma';
+import { nanoid } from 'nanoid';
 
 interface WebAuthnAuthenticator {
   id: string;
@@ -40,171 +42,164 @@ export class WebAuthnError extends Error {
 }
 
 export class WebAuthnService {
+  private static rpName = 'Vibewell';
+  private static rpID = process.env.WEBAUTHN_RP_ID || 'localhost';
+  private static origin = process.env.WEBAUTHN_ORIGIN || `https://${this.rpID}`;
+
   constructor(
     private prisma: PrismaClient,
-    private rpName: string,
-    private rpID: string,
-    private origin: string
   ) {}
 
-  async generateRegistrationOptions(user: UserWithAuthenticators): Promise<PublicKeyCredentialCreationOptionsJSON> {
-    const existingAuthenticators = await this.prisma.$queryRaw<WebAuthnAuthenticator[]>`
-      SELECT * FROM "Authenticator" WHERE "userId" = ${user.id}
-    `;
+  static async startRegistration(userId: string) {
+    const user = await prisma.user.findUnique({ 
+      where: { id: userId },
+      include: { authenticators: true }
+    });
 
-    const userIDBuffer = new TextEncoder().encode(user.id);
+    if (!user) throw new Error('User not found');
 
     const options = await generateRegistrationOptions({
       rpName: this.rpName,
       rpID: this.rpID,
-      userID: userIDBuffer,
+      userID: user.id,
       userName: user.email,
       attestationType: 'none',
       authenticatorSelection: {
-        residentKey: 'preferred',
+        authenticatorAttachment: 'platform',
         userVerification: 'preferred',
+        residentKey: 'preferred',
       },
-      excludeCredentials: existingAuthenticators.map(auth => ({
-        id: auth.credentialId,
+      excludeCredentials: user.authenticators.map(authenticator => ({
+        id: Buffer.from(authenticator.credentialID, 'base64'),
         type: 'public-key',
-        transports: auth.transports
-      }))
+        transports: authenticator.transports as AuthenticatorTransport[],
+      })),
     });
 
-    await this.prisma.$queryRaw`
-      INSERT INTO "Challenge" ("userId", "challenge")
-      VALUES (${user.id}, ${options.challenge})
-    `;
+    await prisma.challenge.create({
+      data: {
+        id: nanoid(),
+        challenge: options.challenge,
+        userId: user.id,
+      },
+    });
 
     return options;
   }
 
-  async verifyRegistration(
+  static async verifyRegistration(
     userId: string,
-    response: RegistrationResponseJSON
-  ): Promise<WebAuthnAuthenticator> {
-    const challenge = await this.prisma.$queryRaw<{ challenge: string }[]>`
-      SELECT "challenge" FROM "Challenge"
-      WHERE "userId" = ${userId}
-      ORDER BY "createdAt" DESC
-      LIMIT 1
-    `;
+    response: RegistrationResponseJSON,
+  ) {
+    const user = await prisma.user.findUnique({ 
+      where: { id: userId },
+      include: { challenges: true }
+    });
 
-    if (!challenge.length) {
-      throw new WebAuthnError('Challenge not found', 'CHALLENGE_NOT_FOUND');
-    }
+    if (!user) throw new Error('User not found');
+
+    const challenge = user.challenges[0];
+    if (!challenge) throw new Error('Challenge not found');
 
     const verification = await verifyRegistrationResponse({
       response,
-      expectedChallenge: challenge[0].challenge,
+      expectedChallenge: challenge.challenge,
       expectedOrigin: this.origin,
       expectedRPID: this.rpID,
-      requireUserVerification: false
     });
 
-    if (!verification.verified || !verification.registrationInfo) {
-      throw new WebAuthnError('Registration verification failed', 'VERIFICATION_FAILED');
+    const { verified, registrationInfo } = verification;
+    if (!verified || !registrationInfo) {
+      throw new Error('Verification failed');
     }
 
-    const { credential } = verification.registrationInfo;
+    const { credentialID, credentialPublicKey, counter } = registrationInfo;
 
-    const authenticators = await this.prisma.$queryRaw<WebAuthnAuthenticator[]>`
-      INSERT INTO "Authenticator" (
-        "userId",
-        "credentialId",
-        "credentialPublicKey",
-        "counter",
-        "transports"
-      ) VALUES (
-        ${userId},
-        ${credential.id},
-        ${isoBase64URL.fromBuffer(credential.publicKey)},
-        ${credential.counter},
-        ${JSON.stringify(response.response.transports || [])}
-      )
-      RETURNING *
-    `;
+    await prisma.authenticator.create({
+      data: {
+        credentialID: Buffer.from(credentialID).toString('base64'),
+        credentialPublicKey: Buffer.from(credentialPublicKey).toString('base64'),
+        counter,
+        userId: user.id,
+      },
+    });
 
-    await this.prisma.$queryRaw`
-      DELETE FROM "Challenge"
-      WHERE "userId" = ${userId}
-    `;
+    await prisma.challenge.delete({ where: { id: challenge.id } });
 
-    return authenticators[0];
+    return verified;
   }
 
-  async generateAuthenticationOptions(user: UserWithAuthenticators): Promise<PublicKeyCredentialRequestOptionsJSON> {
-    const allowCredentials = user.authenticators.map((auth) => ({
-      id: auth.credentialId,
-      type: 'public-key' as const,
-      transports: auth.transports
-    }));
+  static async startAuthentication(userId: string) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: { authenticators: true },
+    });
+
+    if (!user) throw new Error('User not found');
 
     const options = await generateAuthenticationOptions({
       rpID: this.rpID,
-      allowCredentials,
-      userVerification: 'preferred'
+      allowCredentials: user.authenticators.map(authenticator => ({
+        id: Buffer.from(authenticator.credentialID, 'base64'),
+        type: 'public-key',
+        transports: authenticator.transports as AuthenticatorTransport[],
+      })),
+      userVerification: 'preferred',
     });
 
-    await this.prisma.$queryRaw`
-      INSERT INTO "Challenge" ("userId", "challenge")
-      VALUES (${user.id}, ${options.challenge})
-    `;
+    await prisma.challenge.create({
+      data: {
+        id: nanoid(),
+        challenge: options.challenge,
+        userId: user.id,
+      },
+    });
 
     return options;
   }
 
-  async verifyAuthentication(
+  static async verifyAuthentication(
     userId: string,
-    response: AuthenticationResponseJSON
-  ): Promise<boolean> {
-    const challenge = await this.prisma.$queryRaw<{ challenge: string }[]>`
-      SELECT "challenge" FROM "Challenge"
-      WHERE "userId" = ${userId}
-      ORDER BY "createdAt" DESC
-      LIMIT 1
-    `;
+    response: AuthenticationResponseJSON,
+  ) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: { authenticators: true, challenges: true },
+    });
 
-    if (!challenge.length) {
-      throw new WebAuthnError('Challenge not found', 'CHALLENGE_NOT_FOUND');
-    }
+    if (!user) throw new Error('User not found');
 
-    const authenticator = await this.prisma.$queryRaw<WebAuthnAuthenticator[]>`
-      SELECT * FROM "Authenticator"
-      WHERE "credentialId" = ${response.id}
-      LIMIT 1
-    `;
+    const challenge = user.challenges[0];
+    if (!challenge) throw new Error('Challenge not found');
 
-    if (!authenticator.length) {
-      throw new WebAuthnError('Authenticator not found', 'USER_NOT_FOUND');
-    }
+    const authenticator = user.authenticators.find(
+      auth => auth.credentialID === Buffer.from(response.id, 'base64').toString('base64'),
+    );
+
+    if (!authenticator) throw new Error('Authenticator not found');
 
     const verification = await verifyAuthenticationResponse({
       response,
-      expectedChallenge: challenge[0].challenge,
+      expectedChallenge: challenge.challenge,
       expectedOrigin: this.origin,
       expectedRPID: this.rpID,
-      requireUserVerification: true,
-      credential: {
-        id: authenticator[0].credentialId,
-        publicKey: isoBase64URL.toBuffer(authenticator[0].credentialPublicKey),
-        counter: authenticator[0].counter
-      }
+      authenticator: {
+        credentialID: Buffer.from(authenticator.credentialID, 'base64'),
+        credentialPublicKey: Buffer.from(authenticator.credentialPublicKey, 'base64'),
+        counter: authenticator.counter,
+      },
     });
 
-    if (verification.verified) {
-      await this.prisma.$queryRaw`
-        UPDATE "Authenticator"
-        SET "counter" = ${verification.authenticationInfo.newCounter}
-        WHERE "credentialId" = ${response.id}
-      `;
+    const { verified, authenticationInfo } = verification;
+    if (!verified) throw new Error('Verification failed');
 
-      await this.prisma.$queryRaw`
-        DELETE FROM "Challenge"
-        WHERE "userId" = ${userId}
-      `;
-    }
+    await prisma.authenticator.update({
+      where: { id: authenticator.id },
+      data: { counter: authenticationInfo.newCounter },
+    });
 
-    return verification.verified;
+    await prisma.challenge.delete({ where: { id: challenge.id } });
+
+    return verified;
   }
 }

@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 // Define Prisma model types based on the schema
 type PrismaModels = {
@@ -22,21 +22,15 @@ const PrismaClientWithModels = PrismaClient as {
   new(options?: Prisma.PrismaClientOptions): PrismaClient & PrismaModels;
 };
 
-// Define a global variable for PrismaClient to avoid multiple instances in development
 declare global {
-  var prisma: (PrismaClient & PrismaModels) | undefined;
+  var prisma: PrismaClient | undefined;
 }
 
-// Instantiate PrismaClient if it doesn't exist on the global object
-// This is to prevent hot reloading from creating new clients
-const prisma = global.prisma || new PrismaClientWithModels({
-  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-});
+const prismaGlobal = global.prisma || new PrismaClient();
 
-// Save PrismaClient to the global object in development to prevent multiple instances
 if (process.env.NODE_ENV !== 'production') {
-  global.prisma = prisma;
+  global.prisma = prismaGlobal;
 }
 
-export { prisma };
+export const prisma = prismaGlobal;
 export default prisma; 

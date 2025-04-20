@@ -5,7 +5,8 @@ import redisClient from '@/lib/redis-client';
 import { securityMiddleware } from '@/middleware/security/index';
 import { NextFetchEvent } from 'next/server';
 import { getSession } from '@auth0/nextjs-auth0';
-import RateLimit from './lib/auth/rate-limit';
+import { RateLimiter } from 'limiter';
+import { rateLimitService } from '@/lib/auth/rate-limit';
 
 // Define public routes that don't require authentication
 const publicRoutes = [
@@ -92,10 +93,10 @@ const API_VERSION_PATHS: Record<string, string> = {
   [ApiVersion.LATEST]: 'v3' // latest points to most recent version
 };
 
-// Create a new rate limiter instance
-const limiter = new RateLimit({
-  interval: 60 * 1000, // 1 minute
-  uniqueTokenPerInterval: 500
+// Create a rate limiter instance
+const limiter = new RateLimiter({
+  tokensPerInterval: 100,
+  interval: 'minute',
 });
 
 // Configure paths that should be rate limited
@@ -256,13 +257,7 @@ function getClientIp(request: NextRequest): string {
   if (forwardedFor) {
     return forwardedFor.split(',')[0].trim();
   }
-  
-  const realIp = request.headers.get('x-real-ip');
-  if (realIp) {
-    return realIp;
-  }
-
-  return 'anonymous';
+  return request.headers.get('x-real-ip') || 'unknown';
 }
 
 /**
@@ -315,30 +310,49 @@ export async function middleware(req: NextRequest) {
   if (RATE_LIMITED_PATHS.includes(path)) {
     try {
       const ip = getClientIp(req);
-      const { success, limit, remaining, reset } = await limiter.check(10, ip);
+      const remaining = await limiter.tryRemoveTokens(1);
 
-      // Set rate limit headers
-      const response = success
-        ? NextResponse.next()
-        : NextResponse.json(
-            { error: 'Too many requests' },
-            { status: 429 }
-          );
-
-      response.headers.set('X-RateLimit-Limit', limit.toString());
-      response.headers.set('X-RateLimit-Remaining', remaining.toString());
-      response.headers.set('X-RateLimit-Reset', reset.toString());
-
-      if (!success) {
-        response.headers.set('Retry-After', Math.ceil(reset - Date.now() / 1000).toString());
+      if (remaining < 0) {
+        return new NextResponse('Too Many Requests', {
+          status: 429,
+          headers: {
+            'Retry-After': '60',
+            'Content-Type': 'text/plain',
+          },
+        });
       }
+
+      // Add rate limit headers
+      response.headers.set('X-RateLimit-Limit', '100');
+      response.headers.set('X-RateLimit-Remaining', remaining.toString());
 
       return response;
     } catch {
       // If rate limiting fails, allow the request but log the error
       console.error('Rate limiting failed');
-      return NextResponse.next();
+      return response;
     }
+  }
+  
+  // Apply rate limiting only to API routes
+  if (path.startsWith('/api')) {
+    const ip = getClientIp(req);
+    const { success, remaining, resetTime } = await rateLimitService.checkRateLimit(ip);
+    
+    if (!success) {
+      return new NextResponse('Too Many Requests', {
+        status: 429,
+        headers: {
+          'Retry-After': Math.ceil((resetTime - Date.now()) / 1000).toString(),
+          'Content-Type': 'text/plain',
+        },
+      });
+    }
+
+    // Add rate limit headers
+    response.headers.set('X-RateLimit-Limit', '100');
+    response.headers.set('X-RateLimit-Remaining', remaining.toString());
+    response.headers.set('X-RateLimit-Reset', resetTime.toString());
   }
   
   return response;
@@ -346,7 +360,12 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    // Match all routes except static assets and API routes that don't need middleware
-    '/((?!_next/static|_next/image|favicon.ico|images|fonts|api/webhooks).*)',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 }; 

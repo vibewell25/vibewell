@@ -1,61 +1,117 @@
-import React from 'react';
-import { Button } from './ui/button';
-import { useWebAuthn } from '@/hooks/useWebAuthn';
-import { toast } from './ui/use-toast';
-import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 interface WebAuthnButtonProps {
   mode: 'register' | 'authenticate';
   onSuccess?: () => void;
-  onError?: (error: string) => void;
-  className?: string;
-  disabled?: boolean;
+  onError?: (error: Error) => void;
 }
 
-export const WebAuthnButton: React.FC<WebAuthnButtonProps> = ({
-  mode,
-  onSuccess,
-  onError,
-  className = '',
-  disabled = false,
-}) => {
-  const { register, authenticate, loading, error } = useWebAuthn();
+export function WebAuthnButton({ mode, onSuccess, onError }: WebAuthnButtonProps) {
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+  const { user } = useAuth();
 
-  const handleClick = async () => {
-    try {
-      const success = await (mode === 'register' ? register() : authenticate());
-
-      if (success) {
-        toast({
-          title: 'Success',
-          description: `Biometric ${mode === 'register' ? 'registration' : 'authentication'} successful`,
-        });
-        onSuccess?.();
-      } else {
-        throw new Error('Operation failed');
-      }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Operation failed';
+  const handleWebAuthn = async () => {
+    if (!user) {
       toast({
         title: 'Error',
-        description: errorMessage,
+        description: 'You must be logged in to use biometric authentication',
         variant: 'destructive',
       });
-      onError?.(errorMessage);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      if (mode === 'register') {
+        const optionsResponse = await fetch('/api/auth/webauthn/register-options', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id }),
+        });
+
+        const options = await optionsResponse.json();
+        const attResp = await startRegistration(options);
+
+        const verificationResponse = await fetch('/api/auth/webauthn/verify-registration', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user.id,
+            attestationResponse: attResp,
+          }),
+        });
+
+        const verification = await verificationResponse.json();
+
+        if (verification.verified) {
+          toast({
+            title: 'Success',
+            description: 'Biometric authentication registered successfully',
+          });
+          onSuccess?.();
+        }
+      } else {
+        const optionsResponse = await fetch('/api/auth/webauthn/auth-options', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id }),
+        });
+
+        const options = await optionsResponse.json();
+        const assertResp = await startAuthentication(options);
+
+        const verificationResponse = await fetch('/api/auth/webauthn/verify-authentication', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user.id,
+            assertionResponse: assertResp,
+          }),
+        });
+
+        const verification = await verificationResponse.json();
+
+        if (verification.verified) {
+          toast({
+            title: 'Success',
+            description: 'Biometric authentication successful',
+          });
+          onSuccess?.();
+        }
+      }
+    } catch (error) {
+      console.error('WebAuthn error:', error);
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'An error occurred',
+        variant: 'destructive',
+      });
+      onError?.(error instanceof Error ? error : new Error('An error occurred'));
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <Button
-      onClick={handleClick}
-      disabled={disabled || loading}
-      className={`webauthn-button ${className}`}
-      variant="secondary"
+      onClick={handleWebAuthn}
+      disabled={isLoading}
+      variant="outline"
+      className="w-full"
     >
-      {loading && (
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+      {isLoading ? (
+        <span className="loading loading-spinner" />
+      ) : mode === 'register' ? (
+        'Register Biometric Authentication'
+      ) : (
+        'Sign in with Biometric'
       )}
-      {mode === 'register' ? 'Register Biometric Key' : 'Login with Biometric'}
     </Button>
   );
-}; 
+} 

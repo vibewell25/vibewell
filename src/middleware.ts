@@ -5,6 +5,7 @@ import redisClient from '@/lib/redis-client';
 import { securityMiddleware } from '@/middleware/security/index';
 import { NextFetchEvent } from 'next/server';
 import { getSession } from '@auth0/nextjs-auth0';
+import RateLimit from './lib/auth/rate-limit';
 
 // Define public routes that don't require authentication
 const publicRoutes = [
@@ -90,6 +91,20 @@ const API_VERSION_PATHS: Record<string, string> = {
   [ApiVersion.LEGACY]: 'legacy',
   [ApiVersion.LATEST]: 'v3' // latest points to most recent version
 };
+
+// Create a new rate limiter instance
+const limiter = new RateLimit({
+  interval: 60 * 1000, // 1 minute
+  uniqueTokenPerInterval: 500
+});
+
+// Configure paths that should be rate limited
+const RATE_LIMITED_PATHS = [
+  '/api/auth/webauthn/register',
+  '/api/auth/webauthn/verify',
+  '/api/auth/webauthn/authenticate',
+  '/api/auth/webauthn/authenticators'
+];
 
 /**
  * Generate a random nonce for CSP
@@ -235,6 +250,21 @@ async function checkAdminAccess(req: NextRequest): Promise<boolean> {
   }
 }
 
+// Helper function to get client IP
+function getClientIp(request: NextRequest): string {
+  const forwardedFor = request.headers.get('x-forwarded-for');
+  if (forwardedFor) {
+    return forwardedFor.split(',')[0].trim();
+  }
+  
+  const realIp = request.headers.get('x-real-ip');
+  if (realIp) {
+    return realIp;
+  }
+
+  return 'anonymous';
+}
+
 /**
  * Our main middleware function
  */
@@ -279,6 +309,36 @@ export async function middleware(req: NextRequest) {
   // For admin routes, check if user is admin
   if (adminRoutes.some(route => path.startsWith(route)) && !(await checkAdminAccess(req))) {
     return NextResponse.redirect(new URL('/error/unauthorized', req.url));
+  }
+  
+  // Only apply rate limiting to specified paths
+  if (RATE_LIMITED_PATHS.includes(path)) {
+    try {
+      const ip = getClientIp(req);
+      const { success, limit, remaining, reset } = await limiter.check(10, ip);
+
+      // Set rate limit headers
+      const response = success
+        ? NextResponse.next()
+        : NextResponse.json(
+            { error: 'Too many requests' },
+            { status: 429 }
+          );
+
+      response.headers.set('X-RateLimit-Limit', limit.toString());
+      response.headers.set('X-RateLimit-Remaining', remaining.toString());
+      response.headers.set('X-RateLimit-Reset', reset.toString());
+
+      if (!success) {
+        response.headers.set('Retry-After', Math.ceil(reset - Date.now() / 1000).toString());
+      }
+
+      return response;
+    } catch {
+      // If rate limiting fails, allow the request but log the error
+      console.error('Rate limiting failed');
+      return NextResponse.next();
+    }
   }
   
   return response;

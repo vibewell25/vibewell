@@ -1,122 +1,70 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  generateRegistrationOptions,
-  verifyRegistrationResponse,
-} from '@simplewebauthn/server';
-import { cookies } from 'next/headers';
-import { sign } from 'jsonwebtoken';
+import { getServerSession } from 'next-auth';
+import { WebAuthnService } from '@/lib/auth/webauthn-service';
+import { WebAuthnError } from '@/lib/auth/webauthn-types';
 
-// WebAuthn configuration
-const rpName = 'VibeWell';
-const rpID = process.env.NEXT_PUBLIC_DOMAIN || 'localhost';
-const origin = process.env.NEXT_PUBLIC_APP_URL || `https://${rpID}`;
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const webAuthnService = new WebAuthnService();
 
-// In-memory storage for demo purposes
-// In production, use a database
-const authenticators = new Map<string, any>();
-
-export async function GET(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const email = request.nextUrl.searchParams.get('email');
-    if (!email) {
+    const session = await getServerSession();
+    if (!session?.user?.email) {
       return NextResponse.json(
-        { error: 'Email is required' },
-        { status: 400 }
+        { error: 'Unauthorized' },
+        { status: 401 }
       );
     }
 
-    const options = await generateRegistrationOptions({
-      rpName,
-      rpID,
-      userID: email,
-      userName: email,
-      attestationType: 'none',
-      authenticatorSelection: {
-        authenticatorAttachment: 'platform',
-        userVerification: 'preferred',
-        requireResidentKey: false,
-      },
-    });
-
-    // Store challenge for verification
-    cookies().set('current_challenge', options.challenge, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      path: '/',
-    });
+    const body = await req.json();
+    const options = await webAuthnService.generateRegistrationOptions(
+      session.user.id,
+      session.user.email,
+      body.options || {}
+    );
 
     return NextResponse.json(options);
   } catch (error) {
-    console.error('WebAuthn registration options error:', error);
+    if (error instanceof WebAuthnError) {
+      return NextResponse.json(
+        { error: error.message, code: error.code, details: error.details },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
-      { error: 'Failed to generate registration options' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json();
-    const email = body.email;
-    const challenge = cookies().get('current_challenge')?.value;
-
-    if (!email || !challenge) {
+    const session = await getServerSession();
+    if (!session?.user?.id) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    const verified = await webAuthnService.verifyRegistration(
+      session.user.id,
+      body
+    );
+
+    if (!verified) {
+      return NextResponse.json(
+        { error: 'Registration verification failed' },
         { status: 400 }
       );
     }
 
-    const verification = await verifyRegistrationResponse({
-      response: body,
-      expectedChallenge: challenge,
-      expectedOrigin: origin,
-      expectedRPID: rpID,
-    });
-
-    if (verification.verified) {
-      // Store the authenticator
-      authenticators.set(email, verification.registrationInfo);
-
-      // Create session token
-      const token = sign(
-        {
-          email,
-          provider: 'webauthn',
-        },
-        JWT_SECRET,
-        { expiresIn: '7d' }
-      );
-
-      // Set session cookie
-      cookies().set('session_token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 7 * 24 * 60 * 60, // 7 days
-        path: '/',
-      });
-
-      // Clear challenge cookie
-      cookies().delete('current_challenge');
-
-      return NextResponse.json({
-        verified: true,
-        message: 'Registration successful',
-      });
-    }
-
-    return NextResponse.json(
-      { error: 'Registration verification failed' },
-      { status: 400 }
-    );
+    return NextResponse.json({ verified: true });
   } catch (error) {
     console.error('WebAuthn registration verification error:', error);
     return NextResponse.json(
-      { error: 'Registration verification failed' },
+      { error: error instanceof Error ? error.message : 'Verification failed' },
       { status: 500 }
     );
   }

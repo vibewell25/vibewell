@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { startRegistration, startAuthentication } from '@simplewebauthn/browser';
+import React from 'react';
 import { Button } from './ui/button';
+import { useWebAuthn } from '@/hooks/useWebAuthn';
 import { toast } from './ui/use-toast';
+import { Loader2 } from 'lucide-react';
 
 interface WebAuthnButtonProps {
-  mode: 'register' | 'login';
-  onSuccess?: (response: any) => void;
-  onError?: (error: Error) => void;
+  mode: 'register' | 'authenticate';
+  onSuccess?: () => void;
+  onError?: (error: string) => void;
   className?: string;
   disabled?: boolean;
 }
@@ -18,89 +19,41 @@ export const WebAuthnButton: React.FC<WebAuthnButtonProps> = ({
   className = '',
   disabled = false,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const { register, authenticate, loading, error } = useWebAuthn();
 
-  const handleWebAuthn = async () => {
+  const handleClick = async () => {
     try {
-      setIsLoading(true);
-      
-      if (mode === 'register') {
-        // Get registration options from your server
-        const optionsResponse = await fetch('/api/auth/webauthn/register/options');
-        const options = await optionsResponse.json();
+      const success = await (mode === 'register' ? register() : authenticate());
 
-        // Start registration
-        const regResponse = await startRegistration(options);
-
-        // Verify registration with your server
-        const verificationResponse = await fetch('/api/auth/webauthn/register/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(regResponse),
-        });
-
-        if (!verificationResponse.ok) {
-          throw new Error('Registration failed');
-        }
-
-        const verification = await verificationResponse.json();
-        onSuccess?.(verification);
+      if (success) {
         toast({
           title: 'Success',
-          description: 'Biometric registration successful',
-          variant: 'default',
+          description: `Biometric ${mode === 'register' ? 'registration' : 'authentication'} successful`,
         });
+        onSuccess?.();
       } else {
-        // Get authentication options from your server
-        const optionsResponse = await fetch('/api/auth/webauthn/login/options');
-        const options = await optionsResponse.json();
-
-        // Start authentication
-        const authResponse = await startAuthentication(options);
-
-        // Verify authentication with your server
-        const verificationResponse = await fetch('/api/auth/webauthn/login/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(authResponse),
-        });
-
-        if (!verificationResponse.ok) {
-          throw new Error('Authentication failed');
-        }
-
-        const verification = await verificationResponse.json();
-        onSuccess?.(verification);
-        toast({
-          title: 'Success',
-          description: 'Biometric authentication successful',
-          variant: 'default',
-        });
+        throw new Error('Operation failed');
       }
-    } catch (error) {
-      console.error('WebAuthn error:', error);
-      onError?.(error as Error);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Operation failed';
       toast({
         title: 'Error',
-        description: (error as Error).message || 'Authentication failed',
+        description: errorMessage,
         variant: 'destructive',
       });
-    } finally {
-      setIsLoading(false);
+      onError?.(errorMessage);
     }
   };
 
   return (
     <Button
-      onClick={handleWebAuthn}
-      disabled={disabled || isLoading}
+      onClick={handleClick}
+      disabled={disabled || loading}
       className={`webauthn-button ${className}`}
       variant="secondary"
     >
-      {isLoading ? (
-        <span className="loading-spinner mr-2" />
-      ) : (
-        <span className="fingerprint-icon mr-2" />
+      {loading && (
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
       )}
       {mode === 'register' ? 'Register Biometric Key' : 'Login with Biometric'}
     </Button>

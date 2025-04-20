@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -9,47 +8,90 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  role          Role      @default(USER)
-  content       Content[]
-  bookings      ServiceBooking[] @relation("UserBookings")
-  providerBookings ServiceBooking[] @relation("ProviderBookings")
-  reviews       ServiceReview[]
-  progress      ContentProgress[]
-  
-  // Add these fields to support provider functionality
-  bio           String?
-  specialties   String[]  @default([])
-  experience    Int?      // years of experience
-  loyaltyPoints Int       @default(0)
-  phone         String?
-  avatar        String?
+  id                String                @id @default(cuid())
+  email             String                @unique
+  name              String?
+  emailVerified     DateTime?
+  image             String?
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  authenticators    Authenticator[]
+  challenges        Challenge[]
+  phone             String?
+  avatar            String?
+  location          String?
+  website           String?
+  accounts          Account[]
+  sessions          Session[]
+  role              Role                  @default(USER)
+  contents          Content[]
+  bookings          ServiceBooking[]      @relation("UserBookings")
+  providerBookings  ServiceBooking[]      @relation("ProviderBookings")
+  reviews           ServiceReview[]
+  progress          ContentProgress[]
+  bio               String?
+  specialties       String[]              @default([])
+  experience        Int                   @default(0)
+  loyaltyPoints     Int                   @default(0)
+  twoFactorEnabled  Boolean               @default(false)
+  twoFactorAuth     TwoFactorAuth?
+}
+
+model TwoFactorAuth {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  secret      String
+  backupCodes String[] @default([])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Authenticator {
+  id                String   @id @default(cuid())
+  userId            String
+  credentialId      String   @unique
+  credentialPublicKey String
+  counter           Int      @default(0)
+  transports        String[] // Stored as JSON array
+  user              User     @relation(fields: [userId], references: [id])
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Challenge {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String
+  type      String
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model Account {
-  id                 String   @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -58,297 +100,84 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Content {
-  id          String    @id @default(cuid())
+  id          String            @id @default(cuid())
   title       String
-  description String
-  type        ContentType
-  content     String
-  tags        String[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  description String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
   authorId    String
-  author      User      @relation(fields: [authorId], references: [id])
+  url         String?
+  type        String
+  author      User              @relation(fields: [authorId], references: [id])
   progress    ContentProgress[]
+
+  @@index([authorId])
 }
 
 model ContentProgress {
-  id          String    @id @default(cuid())
-  content     Content   @relation(fields: [contentId], references: [id])
-  contentId   String
-  user        User      @relation(fields: [userId], references: [id])
-  userId      String
-  completed   Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id           String   @id @default(cuid())
+  contentId    String
+  userId       String
+  lastAccessed DateTime @default(now())
+  progress     Float
+  content      Content  @relation(fields: [contentId], references: [id])
+  user         User     @relation(fields: [userId], references: [id])
 
   @@unique([contentId, userId])
-}
-
-model BeautyService {
-  id          String    @id @default(cuid())
-  name        String
-  description String
-  price       Float
-  duration    Int       // in minutes
-  image       String?
-  bookings    ServiceBooking[]
-  reviews     ServiceReview[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  @@index([userId])
+  @@index([contentId])
 }
 
 model ServiceBooking {
-  id          String      @id @default(uuid())
-  userId      String
-  providerId  String
-  serviceId   String
-  date        DateTime
-  time        String      // Add time field that appears in API code
-  status      BookingStatus @default(PENDING)
-  notes       String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  user        User      @relation("UserBookings", fields: [userId], references: [id])
-  provider    User      @relation("ProviderBookings", fields: [providerId], references: [id])
-  service     BeautyService @relation(fields: [serviceId], references: [id])
-  review      ServiceReview? // Make each booking have an optional review
+  id         String        @id @default(cuid())
+  userId     String
+  providerId String
+  serviceId  String
+  date       DateTime
+  status     BookingStatus @default(PENDING)
+  notes      String?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  provider   User          @relation("ProviderBookings", fields: [providerId], references: [id])
+  service    BeautyService @relation(fields: [serviceId], references: [id])
+  user       User          @relation("UserBookings", fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([providerId])
+  @@index([serviceId])
 }
 
 model ServiceReview {
-  id          String    @id @default(cuid())
-  rating      Int
-  comment     String?
-  userId      String
-  serviceId   String
-  bookingId   String?   @unique // Add bookingId for relation
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  user        User      @relation(fields: [userId], references: [id])
-  service     BeautyService @relation(fields: [serviceId], references: [id])
-  booking     ServiceBooking? @relation(fields: [bookingId], references: [id])
+  id        String        @id @default(cuid())
+  rating    Int
+  comment   String?
+  userId    String
+  serviceId String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  service   BeautyService @relation(fields: [serviceId], references: [id])
+  user      User          @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([serviceId])
 }
 
-// Add missing models referenced in API code
-model Booking {
-  id          String      @id @default(uuid())
-  date        DateTime
-  status      BookingStatus @default(PENDING)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-}
-
-model Tip {
-  id          String      @id @default(uuid())
-  amount      Float
-  createdAt   DateTime    @default(now())
-  userId      String
-  receiverId  String
-  bookingId   String
-}
-
-model Business {
-  id          String      @id @default(uuid())
+model BeautyService {
+  id          String           @id @default(cuid())
   name        String
   description String?
-  address     String?
-  image       String?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  services    String[]
-  reviews     Json[]      // Array of review objects
-}
-
-model LoyaltyTransaction {
-  id          String      @id @default(uuid())
-  userId      String
-  amount      Int
-  type        String      // "EARN" or "REDEEM"
-  description String?
-  createdAt   DateTime    @default(now())
-}
-
-model Notification {
-  id          String      @id @default(uuid())
-  userId      String
-  title       String
-  message     String
-  isRead      Boolean     @default(false)
-  type        String      // "ALERT", "BOOKING", etc.
-  createdAt   DateTime    @default(now())
-  link        String?     // Add this field to match usage in the routes
-}
-
-// Add the missing models identified by the migration script
-
-model TryOnSession {
-  id              String    @id @default(uuid())
-  userId          String    
-  productId       String    
-  durationSeconds Int?
-  completed       Boolean?  @default(false)
-  feedback        Json?     // { rating: number, would_try_in_real_life: boolean, comment: string }
-  screenshots     String[]  @default([])
-  createdAt       DateTime  @default(now())
-  
-  @@map("try_on_sessions")
-}
-
-model ShareAnalytics {
-  id          String    @id @default(uuid())
-  sessionId   String?
-  userId      String
-  platform    String
-  method      String
-  success     Boolean   @default(true)
-  error       String?
-  createdAt   DateTime  @default(now())
-  
-  @@map("share_analytics")
-}
-
-model Product {
-  id            String    @id @default(uuid())
-  name          String
-  description   String?
-  price         Float?
-  imageUrl      String?
-  category      String?
-  tags          String[]  @default([])
-  rating        Float?
-  reviewCount   Int       @default(0)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  @@map("products")
-}
-
-model UserBadge {
-  id          String    @id @default(uuid())
-  userId      String
-  badgeId     String
-  earnedAt    DateTime  @default(now())
-  
-  @@map("user_badges")
-}
-
-model UserPoints {
-  id          String    @id @default(uuid())
-  userId      String
-  points      Int       @default(0)
-  level       Int       @default(1)
-  updatedAt   DateTime  @updatedAt
-  
-  @@map("user_points")
-}
-
-model SecurityEvent {
-  id          String    @id @default(uuid())
-  userId      String?
-  eventType   String
-  ipAddress   String?
-  userAgent   String?
-  metadata    Json?
-  createdAt   DateTime  @default(now())
-  
-  @@map("security_events")
-}
-
-model Share {
-  id          String    @id @default(uuid())
-  userId      String
-  contentType String
-  contentId   String
-  platform    String
-  createdAt   DateTime  @default(now())
-  
-  @@map("shares")
-}
-
-model EncryptedUserData {
-  id          String    @id @default(uuid())
-  userId      String    @unique
-  data        String    // Encrypted data blob
-  iv          String    // Initialization vector
-  updatedAt   DateTime  @updatedAt
-  
-  @@map("encrypted_user_data")
-}
-
-model Message {
-  id            String    @id @default(uuid())
-  senderId      String
-  receiverId    String
-  content       String
-  isRead        Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  
-  @@map("messages")
-}
-
-model AlertThreshold {
-  id                  String    @id @default(uuid())
-  name                String
-  description         String?
-  isActive            Boolean   @default(true)
-  productId           String
-  metric              String
-  condition           String
-  threshold           Float
-  notificationMethods String[]
-  lastTriggered       DateTime?
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
-  
-  @@map("alert_thresholds")
-}
-
-model DashboardNotification {
-  id          String    @id @default(uuid())
-  type        String
-  userId      String?
-  content     Json
-  isRead      Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  
-  @@map("dashboard_notifications")
-}
-
-model UserNotification {
-  id          String    @id @default(uuid())
-  userId      String
-  title       String
-  message     String
-  isRead      Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  link        String?
-  
-  @@map("user_notifications")
-}
-
-model UserNotificationPreference {
-  id              String    @id @default(uuid())
-  userId          String    @unique
-  emailEnabled    Boolean   @default(true)
-  pushEnabled     Boolean   @default(true)
-  categories      String[]  @default(["system", "marketing", "account"])
-  updatedAt       DateTime  @updatedAt
-  
-  @@map("user_notification_preferences")
-}
-
-model PaymentIntent {
-  id          String    @id
-  userId      String    
-  amount      Int
-  currency    String
-  status      String
-  bookingId   String?
-  serviceId   String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
+  price       Float
+  duration    Int
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  category    String
+  bookings    ServiceBooking[]
+  reviews     ServiceReview[]
 }
 
 enum Role {
@@ -357,16 +186,9 @@ enum Role {
   ADMIN
 }
 
-enum ContentType {
-  ARTICLE
-  VIDEO
-  AUDIO
-  IMAGE
-}
-
 enum BookingStatus {
   PENDING
   CONFIRMED
   CANCELLED
   COMPLETED
-} 
+}

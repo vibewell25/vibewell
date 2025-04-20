@@ -9,6 +9,7 @@ import { prisma } from '@/lib/database/client';
 import { authenticator } from 'otplib';
 import { createHash, randomBytes } from 'crypto';
 import { logger } from '@/lib/logger';
+import { createClient } from '@supabase/supabase-js';
 
 // Constants for TOTP configuration
 const TOTP_WINDOW = 1; // Number of windows to check (⟹ 30 seconds)

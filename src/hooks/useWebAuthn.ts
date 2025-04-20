@@ -1,115 +1,140 @@
-import { startRegistration, startAuthentication } from '@simplewebauthn/browser';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import {
+  startRegistration,
+  startAuthentication,
+} from '@simplewebauthn/browser';
+import { WebAuthnError } from '@/lib/auth/webauthn-types';
 
-interface WebAuthnHookReturn {
-  error: string | null;
-  loading: boolean;
-  register: (userId: string, username: string) => Promise<boolean>;
-  authenticate: (userId: string) => Promise<boolean>;
+interface WebAuthnOptions {
+  requireBiometrics?: boolean;
+  userVerificationLevel?: 'required' | 'preferred' | 'discouraged';
+  authenticatorAttachment?: 'platform' | 'cross-platform';
 }
 
-export function useWebAuthn(): WebAuthnHookReturn {
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+export function useWebAuthn() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
-  const register = async (userId: string, username: string): Promise<boolean> => {
+  const register = useCallback(async (options: WebAuthnOptions = {}) => {
     try {
-      setLoading(true);
+      setIsLoading(true);
       setError(null);
 
       // Get registration options from server
       const optionsResponse = await fetch('/api/auth/webauthn/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, username }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ options })
       });
-
-      const options = await optionsResponse.json();
 
       if (!optionsResponse.ok) {
-        throw new Error(options.error || 'Failed to get registration options');
+        const error = await optionsResponse.json();
+        throw new WebAuthnError(
+          error.error || 'Failed to get registration options',
+          error.code || 'UNKNOWN_ERROR',
+          error.details
+        );
       }
 
-      // Create credentials
-      const credential = await startRegistration(options);
+      const registrationOptions = await optionsResponse.json();
 
-      // Verify with server
-      const verificationResponse = await fetch('/api/auth/webauthn/register/verify', {
+      // Start the registration process in the browser
+      const registrationResponse = await startRegistration(registrationOptions);
+
+      // Verify the registration with the server
+      const verificationResponse = await fetch('/api/auth/webauthn/verify', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, credential }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          response: registrationResponse,
+          options
+        })
       });
 
-      const verification = await verificationResponse.json();
-
       if (!verificationResponse.ok) {
-        throw new Error(verification.error || 'Failed to verify registration');
+        const error = await verificationResponse.json();
+        throw new WebAuthnError(
+          error.error || 'Registration verification failed',
+          error.code || 'UNKNOWN_ERROR',
+          error.details
+        );
       }
 
-      return true;
+      const verification = await verificationResponse.json();
+      return verification.verified;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Registration failed');
-      return false;
+      const error = err instanceof Error ? err : new Error('Registration failed');
+      setError(error);
+      throw error;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  };
+  }, []);
 
-  const authenticate = async (userId: string): Promise<boolean> => {
+  const authenticate = useCallback(async (options: WebAuthnOptions = {}) => {
     try {
-      setLoading(true);
+      setIsLoading(true);
       setError(null);
 
       // Get authentication options from server
-      const optionsResponse = await fetch('/api/auth/webauthn/authenticate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId }),
+      const searchParams = new URLSearchParams({
+        requireBiometrics: options.requireBiometrics ? 'true' : 'false',
+        userVerification: options.userVerificationLevel || 'preferred'
       });
 
-      const options = await optionsResponse.json();
+      const optionsResponse = await fetch(
+        `/api/auth/webauthn/authenticate?${searchParams.toString()}`,
+        { method: 'GET' }
+      );
 
       if (!optionsResponse.ok) {
-        throw new Error(options.error || 'Failed to get authentication options');
+        const error = await optionsResponse.json();
+        throw new WebAuthnError(
+          error.error || 'Failed to get authentication options',
+          error.code || 'UNKNOWN_ERROR',
+          error.details
+        );
       }
 
-      // Create assertion
-      const credential = await startAuthentication(options);
+      const authenticationOptions = await optionsResponse.json();
 
-      // Verify with server
-      const verificationResponse = await fetch('/api/auth/webauthn/authenticate/verify', {
+      // Start the authentication process in the browser
+      const authenticationResponse = await startAuthentication(authenticationOptions);
+
+      // Verify the authentication with the server
+      const verificationResponse = await fetch('/api/auth/webauthn/authenticate', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, credential }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          response: authenticationResponse,
+          options
+        })
       });
 
-      const verification = await verificationResponse.json();
-
       if (!verificationResponse.ok) {
-        throw new Error(verification.error || 'Failed to verify authentication');
+        const error = await verificationResponse.json();
+        throw new WebAuthnError(
+          error.error || 'Authentication verification failed',
+          error.code || 'UNKNOWN_ERROR',
+          error.details
+        );
       }
 
-      return true;
+      const verification = await verificationResponse.json();
+      return verification.verified;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Authentication failed');
-      return false;
+      const error = err instanceof Error ? err : new Error('Authentication failed');
+      setError(error);
+      throw error;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  };
+  }, []);
 
   return {
-    error,
-    loading,
     register,
     authenticate,
+    isLoading,
+    error
   };
 } 

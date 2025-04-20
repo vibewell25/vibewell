@@ -2,6 +2,12 @@ import { NextRequest } from 'next/server';
 import { getStoredAuthToken } from '@/utils/auth-helpers';
 import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { Auth0Provider } from '@auth0/auth0-react';
+import { initAuth0 } from '@auth0/nextjs-auth0';
+import { getSession } from '@auth0/nextjs-auth0';
+import { prisma } from './prisma';
 
 /**
  * User interface
@@ -138,4 +144,60 @@ export const auth = {
   verifyToken,
   getCurrentUser,
   authOptions
-}; 
+};
+
+export async function auth() {
+  const session = await getServerSession(authOptions);
+  return session;
+}
+
+export const auth0 = initAuth0({
+  secret: process.env.AUTH0_SECRET,
+  baseURL: process.env.AUTH0_BASE_URL,
+  clientID: process.env.AUTH0_CLIENT_ID,
+  clientSecret: process.env.AUTH0_CLIENT_SECRET,
+  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
+  routes: {
+    callback: '/api/auth/callback',
+    postLogoutRedirect: '/',
+  },
+  session: {
+    rollingDuration: 60 * 60 * 24, // 24 hours
+    absoluteDuration: 60 * 60 * 24 * 7, // 7 days
+  },
+});
+
+export const getAuthenticatedUser = async (req: any, res: any) => {
+  try {
+    const session = await getSession(req, res);
+    if (!session?.user) return null;
+
+    // Get or create user in our database
+    const user = await prisma.user.upsert({
+      where: { email: session.user.email },
+      update: {
+        name: session.user.name,
+        email: session.user.email,
+        image: session.user.picture,
+      },
+      create: {
+        email: session.user.email,
+        name: session.user.name,
+        image: session.user.picture,
+      },
+    });
+
+    return {
+      ...session.user,
+      id: user.id,
+      role: user.role,
+    };
+  } catch (error) {
+    console.error('Error getting authenticated user:', error);
+    return null;
+  }
+};
+
+export const withPageAuthRequired = auth0.withPageAuthRequired;
+export const withApiAuthRequired = auth0.withApiAuthRequired;
+export const getAccessToken = auth0.getAccessToken; 

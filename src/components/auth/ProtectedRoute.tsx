@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/clerk-auth-context';
-import { UserRole } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/lib/auth';
 import { Spinner } from '@/components/ui/spinner';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { ReactNode } from 'react';

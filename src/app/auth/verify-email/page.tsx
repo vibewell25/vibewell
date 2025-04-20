@@ -3,7 +3,7 @@
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 

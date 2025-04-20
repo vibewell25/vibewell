@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Icons } from '@/components/icons';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 import { useNotifications } from '@/contexts/NotificationContext';
 
 // Define proper user type to match auth context

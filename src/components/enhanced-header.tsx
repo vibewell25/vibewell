@@ -2,7 +2,7 @@ import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 import { NotificationBadge } from './notification-badge';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { useResponsive } from '@/hooks/useResponsive';

@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const TerserPlugin = require('terser-webpack-plugin');
+const crypto = require('crypto');
+
 const nextConfig = {
   reactStrictMode: true,
   env: {
@@ -13,6 +17,7 @@ const nextConfig = {
       'images.unsplash.com', // For Unsplash images
       'platform-lookaside.fbsbx.com', // For Facebook profile pictures
       process.env.AWS_S3_BUCKET ? `${process.env.AWS_S3_BUCKET}.s3.amazonaws.com` : 'vibewell-uploads.s3.amazonaws.com', // For AWS S3 images
+      'res.cloudinary.com',
     ],
   },
   // Optimize file watching
@@ -36,6 +41,13 @@ const nextConfig = {
     optimizeCss: true,
     // Improve module resolution
     esmExternals: true,
+    optimizePackageImports: [
+      '@headlessui/react',
+      '@heroicons/react',
+      '@radix-ui/react-icons',
+      'date-fns',
+      'lodash',
+    ],
   },
   // Security headers
   async headers() {
@@ -49,7 +61,7 @@ const nextConfig = {
           },
           {
             key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains'
+            value: 'max-age=63072000; includeSubDomains; preload'
           },
           {
             key: 'X-XSS-Protection',
@@ -65,7 +77,7 @@ const nextConfig = {
           },
           {
             key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin'
+            value: 'origin-when-cross-origin'
           },
           {
             key: 'Content-Security-Policy',
@@ -95,7 +107,6 @@ const nextConfig = {
         fs: false,
         path: false,
       },
-      // Add additional module directories
       modules: [
         ...config.resolve.modules || [],
         'src',
@@ -124,6 +135,102 @@ const nextConfig = {
       };
     }
 
+    // Enable tree shaking and optimization
+    config.optimization = {
+      ...config.optimization,
+      usedExports: true,
+      minimize: !dev,
+      minimizer: [
+        ...config.optimization.minimizer || [],
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: process.env.NODE_ENV === 'production',
+              drop_debugger: process.env.NODE_ENV === 'production',
+            },
+            format: {
+              comments: false,
+            },
+          },
+        }),
+      ],
+      splitChunks: {
+        chunks: 'all',
+        minSize: 20000,
+        maxSize: 244000,
+        minChunks: 1,
+        maxAsyncRequests: 30,
+        maxInitialRequests: 30,
+        cacheGroups: {
+          default: false,
+          vendors: false,
+          framework: {
+            chunks: 'all',
+            name: 'framework',
+            test: /[\\/]node_modules[\\/](react|react-dom|next)[\\/]/,
+            priority: 40,
+            enforce: true,
+          },
+          lib: {
+            test(module) {
+              return (
+                module.size() > 160000 &&
+                /node_modules[/\\]/.test(module.identifier())
+              );
+            },
+            name(module) {
+              const hash = crypto.createHash('sha1');
+              hash.update(module.identifier());
+              return hash.digest('hex').substring(0, 8);
+            },
+            priority: 30,
+            minChunks: 1,
+            reuseExistingChunk: true,
+          },
+          commons: {
+            name: 'commons',
+            minChunks: 2,
+            priority: 20,
+          },
+          shared: {
+            name(module, chunks) {
+              return crypto
+                .createHash('sha1')
+                .update(
+                  chunks.reduce((acc, chunk) => acc + chunk.name, '')
+                )
+                .digest('hex');
+            },
+            priority: 10,
+            minChunks: 2,
+            reuseExistingChunk: true,
+          },
+        },
+      },
+    };
+
+    // Add bundle analyzer in production
+    if (process.env.ANALYZE === 'true') {
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'server',
+          analyzerPort: isServer ? 8888 : 8889,
+          openAnalyzer: true,
+          generateStatsFile: true,
+          statsFilename: isServer 
+            ? './analyze/server-stats.json' 
+            : './analyze/client-stats.json',
+          reportFilename: isServer
+            ? './analyze/server.html'
+            : './analyze/client.html',
+          statsOptions: {
+            context: './src',
+            excludeModules: /[\\/]node_modules[\\/]/,
+          },
+        })
+      );
+    }
+
     return config;
   },
   // Improve module resolution for Three.js and other large libraries
@@ -135,6 +242,12 @@ const nextConfig = {
     '@react-three/fiber': {
       transform: '@react-three/fiber/{{member}}',
       skipDefaultConversion: true,
+    },
+    'lodash': {
+      transform: 'lodash/{{member}}',
+    },
+    '@heroicons/react': {
+      transform: '@heroicons/react/{{member}}',
     },
   },
   // Improve path handling

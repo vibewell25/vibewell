@@ -6,7 +6,7 @@ import { ProductSelector } from '@/components/virtual-try-on/ProductSelector';
 import { TryOnViewer } from '@/components/virtual-try-on/TryOnViewer';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 
 interface Product {

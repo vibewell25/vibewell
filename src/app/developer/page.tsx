@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 import { Spinner } from '@/components/ui/spinner';
 ;
 import { Input } from '@/components/ui/input';

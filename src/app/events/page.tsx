@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { format, parseISO, isAfter } from 'date-fns';
 import { Event, EventCategory } from '@/types/events';
 import { getEvents, getUpcomingEvents, registerForEvent } from '@/lib/api/events';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 ;
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

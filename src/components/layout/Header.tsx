@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { NotificationIndicator } from '@/components/notifications/NotificationIndicator';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { UserMenu } from '@/components/user-menu';
 import { Icons } from '@/components/icons';

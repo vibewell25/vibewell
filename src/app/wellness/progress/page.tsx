@@ -11,7 +11,7 @@ import { DeleteConfirmationModal } from '@/components/wellness/DeleteConfirmatio
 import { useWellnessData } from '@/hooks/useWellnessData';
 import { GoalType, Goal } from '@/types/progress';
 ;
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 import { Icons } from '@/components/icons';
 export default function ProgressPage() {
   const { user, loading: authLoading } = useAuth();

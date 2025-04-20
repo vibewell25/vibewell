@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 import { Icons } from '@/components/icons';
 import { ROUTES } from '@/constants/routes';
 import { AuthForm, AuthFormInput, AuthSubmitButton } from '@/components/auth/auth-form';

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useAuth, UserRole } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 
 type ProtectedRouteProps = {
   children: React.ReactNode;

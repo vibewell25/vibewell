@@ -6,7 +6,7 @@ import { format, parseISO, isPast } from 'date-fns';
 import { Layout } from '@/components/layout';
 import { Event, EventComment } from '@/types/events';
 import { getEventById, registerForEvent, cancelEventRegistration, addEventComment, isUserRegistered } from '@/lib/api/events';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 ;
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

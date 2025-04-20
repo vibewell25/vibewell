@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { EventCategory, EventLocation } from '@/types/events';
 import { createEvent } from '@/lib/api/events';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 ;
 import { Button } from '@/components/ui/button';
 import { format, addHours } from 'date-fns';

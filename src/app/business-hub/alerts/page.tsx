@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 import { AnalyticsAlertService } from '@/services/analytics-alert-service';
 import { Alert } from '@/services/analytics-alert-service';
 import { AlertDialog } from '@/components/alerts/alert-dialog';

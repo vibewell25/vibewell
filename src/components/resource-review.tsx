@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { StarRating } from '@/components/star-rating';
 import { getUserRating, saveRating, getAverageRating } from '@/lib/ratings';
 import { formatDistanceToNow } from 'date-fns';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 // Types for reviews
 export interface Review {
   id: string;

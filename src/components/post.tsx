@@ -7,7 +7,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { PostReaction, ReactionType } from '@/components/post-reaction';
 import { SharePost } from '@/components/share-post';
 import { UserAvatar } from '@/components/user-avatar';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 
 /**
  * Represents a user in the context of a post

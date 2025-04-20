@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 ;
 ;
 import Link from 'next/link';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 import { ContentProgress } from '@/types/progress';
 import { ContentTypeSelector, type ContentType } from '@/components/wellness/ContentTypeSelector';
 import { WellnessContentModal } from '@/components/wellness/WellnessContentModal';

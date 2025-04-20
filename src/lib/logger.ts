@@ -6,6 +6,7 @@
  */
 
 import { createHash } from 'crypto';
+import winston, { LogEntry } from 'winston';
 
 // Define types for log levels and events
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
@@ -141,11 +142,41 @@ setInterval(() => {
   rateLimitTracker.cleanup();
 }, 5 * 60 * 1000);
 
+interface LoggerOptions {
+  level?: string;
+  metadata?: Record<string, any>;
+}
+
 class Logger {
-  private isProduction: boolean;
+  private level: string;
+  private logger: winston.Logger;
   
-  constructor() {
-    this.isProduction = process.env.NODE_ENV === 'production';
+  constructor(options: LoggerOptions = {}) {
+    this.level = options.level || 'info';
+    
+    // Initialize Winston logger
+    this.logger = winston.createLogger({
+      level: this.level,
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json(),
+        winston.format.printf((info: LogEntry) => {
+          const moduleStr = info.module ? ` [${info.module}]` : '';
+          const metadataStr = info.metadata ? ` ${JSON.stringify(info.metadata)}` : '';
+          return `[${info.timestamp}] [${info.level.toUpperCase()}]${moduleStr}: ${info.message}${metadataStr}`;
+        })
+      ),
+      transports: [
+        new winston.transports.Console({
+          format: winston.format.colorize({ all: this.level === 'debug' })
+        }),
+        // Add file transport in production
+        ...(this.level === 'info' ? [
+          new winston.transports.File({ filename: 'error.log', level: 'error' }),
+          new winston.transports.File({ filename: 'combined.log' })
+        ] : [])
+      ]
+    });
   }
   
   // Log a message at the specified level
@@ -157,20 +188,11 @@ class Logger {
       timestamp: new Date(),
     };
     
-    // In production, you would send this to a logging service
-    if (this.isProduction) {
-      // Send to logging service
-      // Example: logstashClient.send(logEvent);
-    } else {
-      // In development, just log to console with appropriate level
-      const logFn = 
-        level === 'debug' ? console.debug : 
-        level === 'info' ? console.info : 
-        level === 'warn' ? console.warn : 
-        console.error;
-      
-      logFn(`[${logEvent.timestamp.toISOString()}] [${level.toUpperCase()}]${module ? ` [${module}]` : ''}: ${message}`, metadata ? metadata : '');
-    }
+    this.logger.log(level, message, {
+      module,
+      metadata: logEvent.metadata,
+      timestamp: logEvent.timestamp
+    });
   }
   
   // Debug level log
@@ -266,11 +288,9 @@ class Logger {
     const userKey = event.userId || '';
     const combinedKey = `${ipKey}:${userKey}`;
     
-    if (rateLimitTracker.trackConsecutiveFailures(ipKey) ||
-        (event.userId && rateLimitTracker.trackConsecutiveFailures(userKey)) ||
-        rateLimitTracker.trackConsecutiveFailures(combinedKey)) {
+    if (rateLimitTracker.trackConsecutiveFailures(combinedKey)) {
       this.alertSuspiciousActivity({
-        reason: 'Consecutive rate limit failures',
+        reason: 'High rate of limit exceeded for combined IP and user',
         ip: event.ip,
         userId: event.userId,
         path: event.path,
@@ -279,9 +299,8 @@ class Logger {
       isAttack = true;
     }
     
-    // If this appears to be an attack, log it
     if (isAttack) {
-      this.error(`Possible API abuse detected`, 'security', {
+      this.warn('Suspicious activity detected', 'security', {
         ip: this.hashSensitiveData(event.ip),
         userId: event.userId ? this.hashSensitiveData(event.userId) : undefined,
         path: event.path,
@@ -290,71 +309,37 @@ class Logger {
     }
   }
   
-  // Alert about suspicious activity
-  private alertSuspiciousActivity(details: Record<string, any>): void {
-    this.error(`SECURITY ALERT: Suspicious rate limit activity detected`, 'security', details);
-    
-    // In production, you would send alerts to security team
-    if (this.isProduction) {
-      this.sendSecurityAlert('rate_limit_abuse', details);
-    }
-  }
-  
-  // Send security alert to appropriate channels
-  private sendSecurityAlert(alertType: string, details: Record<string, any>): void {
-    // In a real implementation, this would send alerts to:
-    // 1. Security monitoring systems
-    // 2. Email to security team
-    // 3. Slack/Teams alerts
-    // 4. SMS for critical alerts
-    
-    // For now, just log that we would send an alert
-    console.error(`[SECURITY ALERT] ${alertType}`, details);
-  }
-  
-  // Hash sensitive data before logging
+  // Hash sensitive data
   private hashSensitiveData(data: string): string {
-    // In production, you might want to use a proper anonymization technique
-    // This simple hash is just for demonstration
-    return createHash('sha256').update(data).digest('hex').substring(0, 8);
+    return createHash('sha256').update(data).digest('hex');
   }
   
-  // Sanitize metadata to remove sensitive information
+  // Sanitize metadata
   private sanitizeMetadata(metadata?: Record<string, any>): Record<string, any> | undefined {
     if (!metadata) return undefined;
-    
-    const sanitized = { ...metadata };
-    
-    // List of fields to either remove or hash
-    const sensitiveFields = [
-      'password', 'token', 'secret', 'key', 'credit_card',
-      'ssn', 'social', 'dob', 'birth', 'phone', 'address',
-    ];
-    
-    // Remove or hash sensitive fields
-    Object.keys(sanitized).forEach(key => {
-      const lowerKey = key.toLowerCase();
-      
-      // Check if this is a sensitive field
-      const isSensitive = sensitiveFields.some(field => lowerKey.includes(field));
-      
-      if (isSensitive) {
-        if (typeof sanitized[key] === 'string') {
-          // Hash string values
-          sanitized[key] = this.hashSensitiveData(sanitized[key]);
-        } else {
-          // Remove non-string sensitive data
-          delete sanitized[key];
-        }
-      } else if (typeof sanitized[key] === 'object' && sanitized[key] !== null) {
-        // Recursively sanitize nested objects
-        sanitized[key] = this.sanitizeMetadata(sanitized[key]);
+    const sanitizedMetadata: Record<string, any> = {};
+    for (const key in metadata) {
+      if (typeof metadata[key] === 'string') {
+        sanitizedMetadata[key] = metadata[key].replace(/[^a-zA-Z0-9]/g, '');
+      } else {
+        sanitizedMetadata[key] = metadata[key];
       }
+    }
+    return sanitizedMetadata;
+  }
+  
+  // Alert suspicious activity
+  private alertSuspiciousActivity(event: { reason: string; ip: string; userId?: string; path: string; rateLimiter: string }): void {
+    this.warn('Suspicious activity detected', 'security', {
+      reason: event.reason,
+      ip: this.hashSensitiveData(event.ip),
+      userId: event.userId ? this.hashSensitiveData(event.userId) : undefined,
+      path: event.path,
+      rateLimiter: event.rateLimiter,
     });
-    
-    return sanitized;
   }
 }
 
-// Export singleton instance
-export const logger = new Logger(); 
+export const logger = new Logger({
+  level: process.env.LOG_LEVEL || 'info'
+});

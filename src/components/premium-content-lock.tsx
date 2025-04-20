@@ -3,7 +3,7 @@
 import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 import Link from 'next/link';
 
 interface PremiumContentLockProps {

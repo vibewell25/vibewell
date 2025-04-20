@@ -38,9 +38,8 @@ interface Review {
   userName: string;
   date: string;
 }
-export default function BusinessDetailPage() {
-  const params = useParams();
-  const id = params?.id as string;
+export default function BusinessPage({ params }: { params: { businessId: string } }) {
+  const { businessId } = params;
   const [business, setBusiness] = useState<Business | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
@@ -48,7 +47,7 @@ export default function BusinessDetailPage() {
   useEffect(() => {
     const fetchBusiness = async () => {
       try {
-        const response = await fetch(`/api/business/${id}`);
+        const response = await fetch(`/api/business/${businessId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch business details');
         }
@@ -61,10 +60,10 @@ export default function BusinessDetailPage() {
         setLoading(false);
       }
     };
-    if (id) {
+    if (businessId) {
       fetchBusiness();
     }
-  }, [id]);
+  }, [businessId]);
   if (loading) {
     return (
       <Layout>

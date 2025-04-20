@@ -1,39 +1,86 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPresignedUploadUrl, generateS3Key } from '@/lib/s3';
 import { withAuth } from '@/app/api/auth/middleware';
+import { auth } from '@/lib/auth';
+import { FileUploadService } from '@/services/file-upload-service';
 
-export async function POST(req: NextRequest) {
-  return withAuth(req, async (req, user) => {
-    try {
-      const data = await req.json();
-      const { fileName, contentType, folder = 'uploads' } = data;
+const fileUploadService = new FileUploadService();
 
-      if (!fileName || !contentType) {
-        return NextResponse.json(
-          { error: 'Missing required fields' },
-          { status: 400 }
-        );
-      }
+const ALLOWED_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+];
 
-      // Generate a unique key for this file
-      const key = generateS3Key(folder, fileName, user.sub);
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
-      // Get a presigned URL for uploading
-      const { url, key: finalKey } = await getPresignedUploadUrl(key, contentType);
+export async function POST(req: Request) {
+  try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-      return NextResponse.json({
-        uploadUrl: url,
-        key: finalKey,
-        fileUrl: `${process.env.NEXT_PUBLIC_FILE_BASE_URL || ''}/${finalKey}`,
-      });
-    } catch (error) {
-      console.error('Error getting upload URL:', error);
+    const { filename, contentType } = await req.json();
+
+    if (!filename || !contentType) {
       return NextResponse.json(
-        { error: 'Failed to get upload URL' },
-        { status: 500 }
+        { error: 'Filename and content type are required' },
+        { status: 400 }
       );
     }
-  });
+
+    if (!ALLOWED_TYPES.includes(contentType)) {
+      return NextResponse.json(
+        { error: 'File type not allowed' },
+        { status: 400 }
+      );
+    }
+
+    const uploadUrl = await fileUploadService.getPresignedUploadUrl(
+      filename,
+      contentType
+    );
+
+    return NextResponse.json({ uploadUrl });
+  } catch (error) {
+    console.error('Error generating upload URL:', error);
+    return NextResponse.json(
+      { error: 'Error generating upload URL' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(req: Request) {
+  try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const key = searchParams.get('key');
+
+    if (!key) {
+      return NextResponse.json(
+        { error: 'File key is required' },
+        { status: 400 }
+      );
+    }
+
+    const url = fileUploadService.getPublicUrl(key);
+    return NextResponse.json({ url });
+  } catch (error) {
+    console.error('Error getting file URL:', error);
+    return NextResponse.json(
+      { error: 'Error getting file URL' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function DELETE(req: NextRequest) {

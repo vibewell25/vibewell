@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
 import { Layout } from '@/components/layout';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 ;
 import { format } from 'date-fns';
 import { useSearchParams } from 'next/navigation';

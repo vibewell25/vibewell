@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 
 // Notification type definitions
 export type NotificationType = 'like' | 'comment' | 'follow' | 'message' | 'system';

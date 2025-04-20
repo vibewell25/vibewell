@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { Prisma as PrismaNamespace } from '@prisma/client';
 
 declare global {
   namespace PrismaClient {
@@ -27,6 +28,12 @@ declare global {
       createdAt: Date;
       expiresAt: Date;
     }
+  }
+
+  namespace Prisma {
+    type BookingGetPayload<T> = PrismaNamespace.BookingGetPayload<T>;
+    type CalendarConnectionGetPayload<T> = PrismaNamespace.CalendarConnectionGetPayload<T>;
+    type CalendarEventGetPayload<T> = PrismaNamespace.CalendarEventGetPayload<T>;
   }
 }
 

@@ -7,40 +7,112 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
 model User {
-  id              String         @id @default(cuid())
-  name            String?
-  email           String         @unique
-  emailVerified   DateTime?
-  password        String?
-  image           String?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  phone           String?
-  avatar          String?
-  role            String         @default("user")
-  twoFactorSecret String?
-  twoFactorEnabled Boolean       @default(false)
+  id               String          @id @default(cuid())
+  name             String?
+  email            String?         @unique
+  emailVerified    DateTime?
+  image            String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  phone            String?
+  avatar           String?
+  role             Role            @default(USER)
+  businessId       String?
+  stripeCustomerId String?
+
+  // Auth relations
+  accounts         Account[]
+  sessions         Session[]
   authenticators   Authenticator[]
-  challenges      Challenge[]
-  accounts        Account[]
-  sessions        Session[]
+  challenges       Challenge[]
+  twoFactorAuth    TwoFactorAuth?
+  recoveryCode     RecoveryCode?
+  trustedDevices   TrustedDevice[]
+
+  // Business relation
+  business         Business?       @relation("BusinessUsers", fields: [businessId], references: [id])
+
+  // Content relations
+  authoredContent Content[]
+  contentProgress ContentProgress[]
+
+  // Booking relations
+  providerBookings    ServiceBooking[] @relation("ProviderBookings")
+  userServiceBookings ServiceBooking[] @relation("UserServiceBookings")
+  bookings            Booking[]        @relation("UserBookings")
+  waitlistEntries     Waitlist[]       @relation("UserWaitlist")
+
+  // Review relations
+  reviews ServiceReview[]
+  practitionerReviews PractitionerReview[]
+
+  // Practitioner relation
+  practitioner Practitioner?
+
+  // Notification relations
+  notifications           Notification[]
+  scheduledNotifications  ScheduledNotification[]
+  notificationPreferences NotificationPreferences?
+
+  // Form relations
+  formResponses FormResponse[]
+
+  // Social and Events relations
+  eventRegistrations EventRegistration[]
+  posts              SocialPost[]        @relation("UserPosts")
+  reactions          PostReaction[]      @relation("UserReactions")
+  comments           PostComment[]       @relation("UserComments")
+  loyaltyMemberships LoyaltyMember[]
+
+  // Calendar relations
+  calendarConnections CalendarConnection[]
+  calendarEvents      CalendarEvent[]
+
+  // Virtual try-on relations
+  virtualTryOns VirtualTryOn[]
+
+  // Advanced booking relations
+  recurringBookings  RecurringBookingGroup[]
+  packageBookings    PackageBooking[]
+  groupBookingParticipations GroupBookingParticipant[]
+
+  // User preferences
+  userPreferences UserPreference[]
+
+  // Service recommendations
+  serviceRecommendations ServiceRecommendation[]
+
+  // Style preferences
+  stylePreferences StylePreference[]
+
+  // Booking predictions
+  bookingPredictions BookingPrediction[]
+
+  @@map("users")
 }
 
 model Account {
-  id                String   @id @default(cuid())
+  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?  @db.Text
-  access_token      String?  @db.Text
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?  @db.Text
+  id_token          String? @db.Text
   session_state     String?
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -82,15 +154,12 @@ model VerificationToken {
 }
 
 model TwoFactorAuth {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  secret      String
-  backupCodes String[] @default([])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([userId])
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  secret    String
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Content {
@@ -122,51 +191,247 @@ model ContentProgress {
   @@index([contentId])
 }
 
+enum RecurringFrequency {
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+}
+
+enum WaitlistStatus {
+  PENDING
+  NOTIFIED
+  BOOKED
+  EXPIRED
+}
+
+model RecurringBookingGroup {
+  id          String            @id @default(cuid())
+  userId      String
+  serviceId   String
+  frequency   RecurringFrequency
+  startDate   DateTime
+  endDate     DateTime
+  skipDates   DateTime[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  user        User              @relation(fields: [userId], references: [id])
+  service     BeautyService     @relation(fields: [serviceId], references: [id])
+  bookings    ServiceBooking[]
+
+  @@index([userId])
+  @@index([serviceId])
+}
+
+model ServicePackage {
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  price       Float
+  duration    Int               // Total duration in minutes
+  services    BeautyService[]   // Services included in the package
+  businessId  String
+  business    Business          @relation(fields: [businessId], references: [id])
+  bookings    PackageBooking[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([businessId])
+}
+
+model PackageBooking {
+  id          String            @id @default(cuid())
+  userId      String
+  packageId   String
+  status      BookingStatus
+  notes       String?
+  bookings    ServiceBooking[]  // Individual service bookings
+  user        User              @relation(fields: [userId], references: [id])
+  package     ServicePackage    @relation(fields: [packageId], references: [id])
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([userId])
+  @@index([packageId])
+}
+
+model Waitlist {
+  id             String         @id @default(cuid())
+  userId         String
+  serviceId      String
+  preferredDates DateTime[]
+  priority       Float          @default(1)
+  status         WaitlistStatus @default(PENDING)
+  notes          String?
+
+  // Relations
+  user           User           @relation("UserWaitlist", fields: [userId], references: [id])
+  service        BeautyService  @relation(fields: [serviceId], references: [id])
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([userId])
+  @@index([serviceId])
+  @@index([status])
+}
+
 model ServiceBooking {
-  id         String        @id @default(cuid())
-  userId     String
-  providerId String
-  serviceId  String
-  date       DateTime
-  status     BookingStatus @default(PENDING)
-  notes      String?
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-  provider   User          @relation("ProviderBookings", fields: [providerId], references: [id])
-  service    BeautyService @relation(fields: [serviceId], references: [id])
-  user       User          @relation("UserBookings", fields: [userId], references: [id])
+  id          String        @id @default(cuid())
+  userId      String
+  providerId  String
+  serviceId   String
+  status      BookingStatus @default(PENDING)
+  startTime   DateTime
+  endTime     DateTime
+  notes       String?
+  isRecurring Boolean       @default(false)
+  paymentId   String?       @unique
+
+  // Multi-service booking support
+  services BookingService[]
+
+  // Recurring booking support
+  recurringGroupId  String?
+  packageBookingId  String?
+  recurringGroup    RecurringBookingGroup? @relation(fields: [recurringGroupId], references: [id])
+  packageBooking    PackageBooking?       @relation(fields: [packageBookingId], references: [id])
+
+  // Relations
+  user     User          @relation("UserServiceBookings", fields: [userId], references: [id])
+  provider User          @relation("ProviderBookings", fields: [providerId], references: [id])
+  payment  Payment?      @relation(fields: [paymentId], references: [id])
+  service  BeautyService @relation("ServiceBookings", fields: [serviceId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([providerId])
   @@index([serviceId])
+  @@index([recurringGroupId])
+  @@index([packageBookingId])
+  @@index([paymentId])
 }
 
-model ServiceReview {
-  id        String        @id @default(cuid())
-  rating    Int
-  comment   String?
-  userId    String
+model BookingService {
+  id        String @id @default(cuid())
+  bookingId String
   serviceId String
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  service   BeautyService @relation(fields: [serviceId], references: [id])
-  user      User          @relation(fields: [userId], references: [id])
+  price     Float
+  duration  Int // in minutes
 
-  @@index([userId])
+  // Relations
+  booking ServiceBooking @relation(fields: [bookingId], references: [id])
+  service BeautyService  @relation(fields: [serviceId], references: [id])
+
+  @@index([bookingId])
   @@index([serviceId])
 }
 
+model ServiceReview {
+  id        String   @id @default(cuid())
+  rating    Int // 1-5 stars
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  userId     String
+  user       User          @relation(fields: [userId], references: [id])
+  serviceId  String
+  service    BeautyService @relation(fields: [serviceId], references: [id])
+  bookingId  String?
+  booking    Booking?      @relation(fields: [bookingId], references: [id])
+  business   Business      @relation(fields: [businessId], references: [id])
+  businessId String
+  sentiment  ReviewSentiment?
+
+  @@index([userId])
+  @@index([serviceId])
+  @@index([bookingId])
+  @@map("service_reviews")
+}
+
+model ReviewSentiment {
+  id        String   @id @default(cuid())
+  reviewId  String   @unique
+  sentiment String   // 'positive', 'negative', 'neutral'
+  score     Float    // -1 to 1
+  aspects   Json     // Detailed aspect-level sentiment
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  review    ServiceReview @relation(fields: [reviewId], references: [id])
+
+  @@index([reviewId])
+  @@map("review_sentiments")
+}
+
 model BeautyService {
-  id          String           @id @default(cuid())
-  name        String
-  description String?
-  price       Float
-  duration    Int
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  category    String
-  bookings    ServiceBooking[]
-  reviews     ServiceReview[]
+  id              String      @id @default(cuid())
+  businessId      String
+  name            String
+  description     String?
+  duration        Int         // in minutes
+  price           Float
+  category        String
+  subcategory     String?
+  isActive        Boolean     @default(true)
+  images          String[]
+  virtualTryOn    Boolean     @default(false)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  business        Business @relation(fields: [businessId], references: [id])
+  practitioners   PractitionerService[]
+  bookings        ServiceBooking[] @relation("ServiceBookings")
+  customPricing   CustomPricing[]
+  reviews         ServiceReview[]
+  bookingServices BookingService[]
+  consultationForms ConsultationForm[]
+  groupBookings   GroupBooking[]
+  businessProfile BusinessProfile? @relation("BusinessProfileServices", fields: [businessProfileId], references: [id])
+  businessProfileId String?
+
+  packages           ServicePackage[]
+  recurringBookings  RecurringBookingGroup[]
+  waitlistEntries    Waitlist[]
+
+  @@index([businessId])
+  @@index([category])
+  @@index([businessProfileId])
+}
+
+model RecoveryCode {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  code      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("recovery_codes")
+}
+
+model TrustedDevice {
+  id          String    @id @default(cuid())
+  userId      String
+  deviceId    String    @unique
+  deviceName  String
+  browserInfo String?
+  osInfo      String?
+  ipAddress   String?
+  lastUsed    DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime?
+  isRevoked   Boolean   @default(false)
+  revokedAt   DateTime?
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([deviceId])
+  @@map("trusted_devices")
 }
 
 enum Role {
@@ -180,4 +445,1481 @@ enum BookingStatus {
   CONFIRMED
   CANCELLED
   COMPLETED
+  NO_SHOW
+}
+
+model Practitioner {
+  id              String      @id @default(cuid())
+  businessId      String
+  userId          String      @unique
+  name            String
+  bio             String?
+  specialties     String[]
+  experience      Int         // years of experience
+  rating          Float?
+  availability    Json        // Weekly availability schedule
+  profileImage    String?
+  certifications  String[]
+  isActive        Boolean     @default(true)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  business        Business @relation("BusinessPractitioners", fields: [businessId], references: [id])
+  user            User     @relation(fields: [userId], references: [id])
+  services        PractitionerService[]
+  portfolio       PortfolioItem[]
+  reviews         PractitionerReview[]
+  businessProfile BusinessProfile? @relation("BusinessProfilePractitioners", fields: [businessProfileId], references: [id])
+  businessProfileId String?
+
+  @@index([businessId])
+  @@index([userId])
+  @@index([businessProfileId])
+}
+
+model PractitionerService {
+  id              String      @id @default(cuid())
+  practitionerId  String
+  serviceId       String
+  isSpecialist    Boolean     @default(false)
+  customPrice     Float?
+  notes           String?
+
+  // Relations
+  practitioner    Practitioner  @relation(fields: [practitionerId], references: [id])
+  service         BeautyService @relation(fields: [serviceId], references: [id])
+
+  @@unique([practitionerId, serviceId])
+  @@index([practitionerId])
+  @@index([serviceId])
+}
+
+model PortfolioItem {
+  id              String      @id @default(cuid())
+  practitionerId  String
+  title           String
+  description     String?
+  imageUrl        String
+  category        String
+  tags            String[]
+  beforeImage     String?
+  afterImage      String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  practitioner    Practitioner @relation(fields: [practitionerId], references: [id])
+
+  @@index([practitionerId])
+  @@index([category])
+}
+
+model PractitionerReview {
+  id              String      @id @default(cuid())
+  practitionerId  String
+  userId          String
+  rating          Float
+  comment         String?
+  serviceId       String?
+  bookingId       String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  practitioner    Practitioner @relation(fields: [practitionerId], references: [id])
+  user            User        @relation(fields: [userId], references: [id])
+
+  @@index([practitionerId])
+  @@index([userId])
+}
+
+model VirtualTryOn {
+  id              String      @id @default(cuid())
+  userId          String
+  serviceId       String
+  imageUrl        String      // Original image
+  resultUrl       String      // Processed image
+  settings        Json        // Try-on settings
+  type            TryOnType   @default(HAIR)
+  arSessionId     String?     // For real-time AR sessions
+  metadata        Json?       // Additional metadata
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  user            User        @relation(fields: [userId], references: [id])
+  service         BeautyService @relation(fields: [serviceId], references: [id])
+  skinAnalysis    SkinAnalysis?
+  makeupTryOn     MakeupTryOn?
+
+  @@index([userId])
+  @@index([serviceId])
+}
+
+enum TryOnType {
+  HAIR
+  MAKEUP
+  SKINCARE
+  AR_FILTER
+}
+
+model SkinAnalysis {
+  id              String      @id @default(cuid())
+  virtualTryOnId  String      @unique
+  skinType        String      // dry, oily, combination, etc.
+  concerns        String[]    // array of skin concerns
+  score           Float       // overall skin health score (0-1)
+  analysis        Json        // detailed analysis results
+  recommendations Json        // product and treatment recommendations
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  virtualTryOn    VirtualTryOn @relation(fields: [virtualTryOnId], references: [id])
+  products        RecommendedProduct[]
+
+  @@index([virtualTryOnId])
+}
+
+model MakeupTryOn {
+  id              String      @id @default(cuid())
+  virtualTryOnId  String      @unique
+  foundationShade String?     // matched foundation shade
+  colorPalette    Json        // color recommendations
+  products        Json        // tried-on product details
+  facialFeatures  Json        // detected facial features
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  virtualTryOn    VirtualTryOn @relation(fields: [virtualTryOnId], references: [id])
+
+  @@index([virtualTryOnId])
+}
+
+model RecommendedProduct {
+  id              String      @id @default(cuid())
+  name            String
+  brand           String
+  category        String
+  description     String?
+  price           Float
+  imageUrl        String?
+  matchScore      Float       // how well the product matches (0-1)
+  skinAnalysisId  String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  skinAnalysis    SkinAnalysis @relation(fields: [skinAnalysisId], references: [id])
+
+  @@index([skinAnalysisId])
+}
+
+model VerificationDocument {
+  id          String                     @id @default(cuid())
+  businessId  String
+  type        String // LICENSE, INSURANCE, TAX_ID, etc.
+  fileUrl     String
+  status      BusinessVerificationStatus @default(PENDING)
+  submittedAt DateTime                   @default(now())
+  reviewedAt  DateTime?
+  notes       String?
+  business    Business                   @relation(fields: [businessId], references: [id])
+
+  @@index([businessId])
+}
+
+model Business {
+  id                 String                     @id @default(cuid())
+  name               String
+  description        String?
+  address            String
+  phone              String
+  email              String                     @unique
+  website            String?
+  isActive           Boolean                    @default(true)
+  createdAt          DateTime                   @default(now())
+  updatedAt          DateTime                   @updatedAt
+  verificationStatus BusinessVerificationStatus @default(PENDING)
+
+  // Relations
+  users             User[]             @relation("BusinessUsers")
+  practitioners     Practitioner[]     @relation("BusinessPractitioners")
+  services          BeautyService[]
+  bookings          Booking[]
+  payments          Payment[]
+  reviews           ServiceReview[]
+  businessHours     BusinessHours[]
+  consultationForms ConsultationForm[]
+  attachments       Attachment[]
+  forms             Form[]
+  loyaltyPrograms   LoyaltyProgram[]
+  groupBookings     GroupBooking[]
+  servicePackages   ServicePackage[]
+  pricingRules      PricingRule[]
+  verificationDocs  VerificationDocument[]
+
+  // New relations
+  analytics       BusinessAnalytics[]
+  segments        CustomerSegment[]
+  trends          MarketTrend[]
+
+  @@index([email])
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model BusinessHours {
+  id        String    @id @default(cuid())
+  dayOfWeek DayOfWeek
+  openTime  String // Format: "HH:mm"
+  closeTime String // Format: "HH:mm"
+  isClosed  Boolean   @default(false)
+
+  // Relations
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id])
+
+  @@unique([businessId, dayOfWeek])
+  @@index([businessId])
+}
+
+model ConsultationForm {
+  id          String   @id @default(cuid())
+  businessId  String
+  name        String
+  description String?
+  fields      Json // Array of form fields with their types and validation rules
+  isRequired  Boolean  @default(true)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  business  Business        @relation(fields: [businessId], references: [id])
+  responses FormResponse[]
+  services  BeautyService[] // Services that require this form
+
+  @@index([businessId])
+}
+
+model Form {
+  id          String         @id @default(cuid())
+  name        String
+  description String?
+  isRequired  Boolean        @default(true)
+  isActive    Boolean        @default(true)
+  businessId  String
+  business    Business       @relation(fields: [businessId], references: [id])
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  versions    FormVersion[]
+  responses   FormResponse[]
+  templateId  String?
+  template    FormTemplate?  @relation(fields: [templateId], references: [id])
+
+  @@index([businessId])
+  @@index([templateId])
+}
+
+model FormVersion {
+  id        String         @id @default(cuid())
+  formId    String
+  form      Form           @relation(fields: [formId], references: [id])
+  version   Int
+  fields    Json // Stores the form fields
+  createdAt DateTime       @default(now())
+  createdBy String // User ID who created this version
+  isActive  Boolean        @default(true)
+  responses FormResponse[]
+
+  @@unique([formId, version])
+  @@index([formId])
+}
+
+model FormTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  fields      Json // Stores the form fields
+  category    String
+  isPublic    Boolean  @default(false)
+  createdBy   String // User ID who created this template
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  forms       Form[]
+}
+
+model FormResponse {
+  id                 String            @id @default(cuid())
+  formId             String
+  form               Form              @relation(fields: [formId], references: [id])
+  versionId          String
+  version            FormVersion       @relation(fields: [versionId], references: [id])
+  userId             String // User ID who submitted the response
+  user               User              @relation(fields: [userId], references: [id])
+  responses          Json // Stores the form responses
+  attachments        Json? // Stores file attachments info
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  booking            Booking?          @relation(fields: [bookingId], references: [id])
+  bookingId          String?
+  consultationForm   ConsultationForm? @relation(fields: [consultationFormId], references: [id])
+  consultationFormId String?
+  attachmentFiles    Attachment[]
+
+  @@index([formId])
+  @@index([versionId])
+  @@index([userId])
+  @@index([bookingId])
+  @@index([consultationFormId])
+}
+
+model Attachment {
+  id        String   @id @default(cuid())
+  url       String
+  filename  String
+  mimeType  String
+  size      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  formResponseId String?
+  formResponse   FormResponse? @relation(fields: [formResponseId], references: [id])
+  businessId     String
+  business       Business      @relation(fields: [businessId], references: [id])
+
+  @@index([formResponseId])
+  @@index([businessId])
+}
+
+model Event {
+  id               String   @id @default(cuid())
+  title            String
+  description      String
+  date             DateTime
+  location         String
+  maxAttendees     Int
+  currentAttendees Int      @default(0)
+  imageUrl         String?
+  businessId       String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  business      BusinessProfile     @relation(fields: [businessId], references: [id])
+  registrations EventRegistration[]
+
+  @@index([businessId])
+}
+
+model EventRegistration {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  createdAt DateTime @default(now())
+
+  // Relations
+  event Event @relation(fields: [eventId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+}
+
+model PostReaction {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  type      String // e.g., 'LIKE', 'LOVE', etc.
+  createdAt DateTime @default(now())
+
+  // Relations
+  post SocialPost @relation(fields: [postId], references: [id])
+  user User       @relation("UserReactions", fields: [userId], references: [id])
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
+model PostComment {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  post SocialPost @relation(fields: [postId], references: [id])
+  user User       @relation("UserComments", fields: [userId], references: [id])
+
+  @@index([postId])
+  @@index([userId])
+}
+
+model ServiceCategory {
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  imageUrl    String?
+  parentId    String? // For hierarchical categories
+  parent      ServiceCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    ServiceCategory[] @relation("CategoryHierarchy")
+  services    Service[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([parentId])
+}
+
+model ServiceAttribute {
+  id        String    @id @default(cuid())
+  name      String
+  type      String // TEXT, NUMBER, BOOLEAN, SELECT, MULTI_SELECT
+  required  Boolean   @default(false)
+  options   String[] // For SELECT and MULTI_SELECT types
+  services  Service[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model LoyaltyProgram {
+  id              String      @id @default(cuid())
+  businessId      String
+  name            String
+  description     String?
+  pointsPerDollar Float      @default(1)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  isActive        Boolean     @default(true)
+
+  // Relations
+  business        Business    @relation(fields: [businessId], references: [id])
+  tiers           LoyaltyTier[]
+  rewards         LoyaltyReward[]
+  members         LoyaltyMember[]
+  multiplierEvents PointsMultiplierEvent[]
+  referralProgram ReferralProgram?
+
+  @@index([businessId])
+}
+
+model PointsMultiplierEvent {
+  id              String      @id @default(cuid())
+  programId       String
+  name            String
+  description     String?
+  multiplier      Float
+  startDate       DateTime
+  endDate         DateTime
+  conditions      Json?       // Specific conditions for multiplier
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  program         LoyaltyProgram @relation(fields: [programId], references: [id])
+
+  @@index([programId])
+}
+
+model ReferralProgram {
+  id              String      @id @default(cuid())
+  programId       String      @unique
+  referrerPoints  Int         // Points for referrer
+  refereePoints   Int         // Points for new customer
+  maxReferrals    Int?        // Max referrals per user
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  program         LoyaltyProgram @relation(fields: [programId], references: [id])
+  referrals       Referral[]
+
+  @@index([programId])
+}
+
+model Referral {
+  id              String      @id @default(cuid())
+  programId       String
+  referrerId      String
+  refereeId       String
+  status          ReferralStatus @default(PENDING)
+  pointsAwarded   Boolean     @default(false)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  program         ReferralProgram @relation(fields: [programId], references: [id])
+  referrer        User        @relation("Referrer", fields: [referrerId], references: [id])
+  referee         User        @relation("Referee", fields: [refereeId], references: [id])
+
+  @@index([programId])
+  @@index([referrerId])
+  @@index([refereeId])
+}
+
+enum ReferralStatus {
+  PENDING
+  COMPLETED
+  EXPIRED
+}
+
+model BusinessAnalytics {
+  id              String      @id @default(cuid())
+  businessId      String
+  period          String      // daily, weekly, monthly, yearly
+  date            DateTime
+  metrics         Json        // Key performance metrics
+  trends          Json        // Trend analysis
+  competitors     Json?       // Competitor analysis data
+  segments        Json        // Customer segment data
+  recommendations Json        // AI-generated recommendations
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  business        Business    @relation(fields: [businessId], references: [id])
+
+  @@unique([businessId, period, date])
+  @@index([businessId])
+  @@index([date])
+}
+
+model CustomerSegment {
+  id              String      @id @default(cuid())
+  businessId      String
+  name            String
+  description     String?
+  criteria        Json        // Segmentation criteria
+  size            Int         // Number of customers in segment
+  value           Float       // Average customer value
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  business        Business    @relation(fields: [businessId], references: [id])
+
+  @@index([businessId])
+}
+
+model MarketTrend {
+  id              String      @id @default(cuid())
+  businessId      String
+  category        String
+  trend           String
+  impact          Float       // Impact score (-1 to 1)
+  confidence      Float       // Confidence score (0-1)
+  source          String?     // Data source
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  business        Business    @relation(fields: [businessId], references: [id])
+
+  @@index([businessId])
+  @@index([category])
+}
+
+model LoyaltyTier {
+  id              String   @id @default(cuid())
+  programId       String
+  name            String
+  description     String?
+  pointsRequired  Int
+  benefits        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  program LoyaltyProgram  @relation(fields: [programId], references: [id])
+  members LoyaltyMember[]
+
+  @@index([programId])
+}
+
+model LoyaltyMember {
+  id          String   @id @default(cuid())
+  programId   String
+  userId      String
+  tierId      String
+  points      Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  program      LoyaltyProgram           @relation(fields: [programId], references: [id])
+  user         User                     @relation(fields: [userId], references: [id])
+  tier         LoyaltyTier             @relation(fields: [tierId], references: [id])
+  transactions LoyaltyTransaction[]
+  redemptions  LoyaltyRewardRedemption[]
+
+  @@unique([programId, userId])
+  @@index([programId])
+  @@index([userId])
+  @@index([tierId])
+}
+
+model LoyaltyTransaction {
+  id        String   @id @default(cuid())
+  memberId  String
+  points    Int
+  type      String   // EARN, REDEEM, ADJUST
+  source    String   // BOOKING, REVIEW, MANUAL, etc.
+  sourceId  String?  // Reference to the source entity (e.g., booking ID)
+  createdAt DateTime @default(now())
+  bookingId String?
+
+  // Relations
+  member    LoyaltyMember  @relation(fields: [memberId], references: [id])
+  booking   Booking?      @relation("BookingLoyaltyTransactions", fields: [bookingId], references: [id])
+
+  @@index([memberId])
+  @@index([bookingId])
+}
+
+model LoyaltyReward {
+  id          String   @id @default(cuid())
+  programId   String
+  name        String
+  description String?
+  pointsCost  Int
+  type        String   // DISCOUNT, SERVICE, PRODUCT, etc.
+  value       String   // JSON string containing reward details
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  program     LoyaltyProgram           @relation(fields: [programId], references: [id])
+  redemptions LoyaltyRewardRedemption[]
+
+  @@index([programId])
+}
+
+model LoyaltyRewardRedemption {
+  id        String   @id @default(cuid())
+  memberId  String
+  rewardId  String
+  status    String   // PENDING, COMPLETED, CANCELLED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  bookingId String?
+
+  // Relations
+  member    LoyaltyMember  @relation(fields: [memberId], references: [id])
+  reward    LoyaltyReward  @relation(fields: [rewardId], references: [id])
+  booking   Booking?       @relation("BookingLoyaltyRedemptions", fields: [bookingId], references: [id])
+
+  @@index([memberId])
+  @@index([rewardId])
+  @@index([bookingId])
+}
+
+model CalendarConnection {
+  id           String   @id @default(cuid())
+  userId       String
+  provider     String   // 'google', 'outlook', 'apple'
+  accessToken  String
+  refreshToken String?
+  expiryDate   DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model CalendarEvent {
+  id              String   @id @default(cuid())
+  bookingId       String
+  userId          String
+  provider        String   // 'google', 'outlook', 'apple'
+  externalEventId String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  booking         Booking  @relation(fields: [bookingId], references: [id])
+  user            User     @relation(fields: [userId], references: [id])
+
+  @@index([bookingId])
+  @@index([userId])
+}
+
+model AnalyticsView {
+  id          String   @id @default(cuid())
+  sessionId   String
+  userId      String?
+  timestamp   DateTime
+  pageUrl     String
+  deviceType  String
+  duration    Int?
+  exitUrl     String?
+  createdAt   DateTime @default(now())
+
+  @@index([timestamp])
+  @@index([sessionId])
+  @@index([userId])
+}
+
+model AnalyticsInteraction {
+  id          String   @id @default(cuid())
+  sessionId   String
+  userId      String?
+  timestamp   DateTime
+  eventType   String
+  elementId   String?
+  elementType String?
+  value       String?
+  metadata    Json
+  createdAt   DateTime @default(now())
+
+  @@index([timestamp])
+  @@index([sessionId])
+  @@index([userId])
+  @@index([eventType])
+}
+
+model AnalyticsConversion {
+  id        String   @id @default(cuid())
+  sessionId String
+  userId    String?
+  timestamp DateTime
+  type      String
+  value     Float
+  currency  String
+  metadata  Json
+  createdAt DateTime @default(now())
+
+  @@index([timestamp])
+  @@index([sessionId])
+  @@index([userId])
+  @@index([type])
+}
+
+model AnalyticsError {
+  id         String   @id @default(cuid())
+  sessionId  String
+  userId     String?
+  timestamp  DateTime
+  errorCode  String
+  message    String
+  stackTrace String?
+  metadata   Json
+  createdAt  DateTime @default(now())
+
+  @@index([timestamp])
+  @@index([sessionId])
+  @@index([userId])
+  @@index([errorCode])
+}
+
+model AnalyticsAggregate {
+  id        String   @id @default(cuid())
+  date      DateTime
+  type      String   // 'view', 'interaction', 'conversion', 'error'
+  count     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([date, type], name: "date_type")
+  @@index([date])
+  @@index([type])
+}
+
+model GroupBooking {
+  id                String                    @id @default(cuid())
+  serviceId         String
+  businessId        String
+  startTime         DateTime
+  endTime           DateTime
+  minParticipants   Int?
+  maxParticipants   Int?
+  notes             String?
+  status            GroupBookingStatus        @default(PENDING)
+  cancellationReason String?
+  createdAt         DateTime                  @default(now())
+  updatedAt         DateTime                  @updatedAt
+
+  // Relations
+  service           BeautyService             @relation(fields: [serviceId], references: [id])
+  business          Business                  @relation(fields: [businessId], references: [id])
+  participants      GroupBookingParticipant[]
+
+  @@index([serviceId])
+  @@index([businessId])
+}
+
+model GroupBookingParticipant {
+  id             String           @id @default(cuid())
+  groupBookingId String
+  userId         String
+  role           ParticipantRole  @default(PARTICIPANT)
+  status         ParticipantStatus @default(PENDING)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  // Relations
+  groupBooking   GroupBooking     @relation(fields: [groupBookingId], references: [id])
+  user           User             @relation(fields: [userId], references: [id])
+
+  @@unique([groupBookingId, userId])
+  @@index([groupBookingId])
+  @@index([userId])
+}
+
+enum GroupBookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum ParticipantRole {
+  ORGANIZER
+  PARTICIPANT
+}
+
+enum ParticipantStatus {
+  PENDING
+  CONFIRMED
+  DECLINED
+}
+
+enum NotificationType {
+  SYSTEM
+  BOOKING
+  LOYALTY
+  MARKETING
+}
+
+enum NotificationStatus {
+  PENDING
+  DELIVERED
+  FAILED
+}
+
+model NotificationPreferences {
+  id                   String   @id @default(cuid())
+  userId              String   @unique
+  emailEnabled        Boolean  @default(true)
+  pushEnabled         Boolean  @default(true)
+  smsEnabled          Boolean  @default(false)
+  systemNotifications Boolean  @default(true)
+  bookingNotifications Boolean  @default(true)
+  loyaltyNotifications Boolean  @default(true)
+  marketingNotifications Boolean @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Relations
+  user                User     @relation(fields: [userId], references: [id])
+}
+
+model UserNotification {
+  id          String    @id @default(cuid())
+  userId      String
+  type        String
+  title       String
+  message     String
+  data        Json?
+  status      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model StaffNotification {
+  id          String    @id @default(cuid())
+  staffId     String
+  type        String
+  message     String
+  data        Json?
+  isRead      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  staff       Staff     @relation(fields: [staffId], references: [id])
+}
+
+model Notification {
+  id        String            @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  data      Json?
+  status    NotificationStatus @default(PENDING)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  // Relations
+  user      User              @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+}
+
+model UserPushToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  device    String?
+  platform  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model Booking {
+  id            String        @id @default(cuid())
+  userId        String
+  status        BookingStatus @default(PENDING)
+  startTime     DateTime
+  endTime       DateTime
+  notes         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  // Relations
+  user          User          @relation("UserBookings", fields: [userId], references: [id])
+  payment       Payment?      @relation("BookingPayment")
+  reviews       ServiceReview[]
+  formResponses FormResponse[]
+  loyaltyTransactions LoyaltyTransaction[] @relation("BookingLoyaltyTransactions")
+  loyaltyRedemptions LoyaltyRewardRedemption[] @relation("BookingLoyaltyRedemptions")
+  calendarEvents CalendarEvent[] @relation("BookingCalendarEvents")
+  business      Business       @relation(fields: [businessId], references: [id])
+  businessId    String
+
+  @@index([userId])
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  amount        Float
+  currency      String
+  status        PaymentStatus @default(PENDING)
+  bookingId     String        @unique
+  businessId    String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  booking       Booking       @relation("BookingPayment", fields: [bookingId], references: [id])
+  business      Business      @relation(fields: [businessId], references: [id])
+  serviceBooking ServiceBooking? @relation(fields: [serviceBookingId], references: [id])
+  serviceBookingId String?      @unique
+
+  @@index([bookingId])
+  @@index([businessId])
+  @@index([serviceBookingId])
+}
+
+enum BusinessVerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model SocialPost {
+  id        String   @id @default(cuid())
+  userId    String
+  content   String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user      User          @relation("UserPosts", fields: [userId], references: [id])
+  reactions PostReaction[]
+  comments  PostComment[]
+
+  @@index([userId])
+}
+
+model BusinessProfile {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  address     String
+  phone       String
+  email       String   @unique
+  website     String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  practitioners Practitioner[]
+  services     BeautyService[] @relation("BusinessProfileServices")
+  events       Event[]
+
+  @@index([email])
+}
+
+model CustomPricing {
+  id          String   @id @default(cuid())
+  serviceId   String
+  name        String
+  description String?
+  price       Float
+  startDate   DateTime
+  endDate     DateTime
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  service     BeautyService @relation(fields: [serviceId], references: [id])
+
+  @@index([serviceId])
+}
+
+model PricingRule {
+  id          String   @id @default(cuid())
+  businessId  String
+  name        String
+  description String?
+  type        String   // PEAK_HOUR, OFF_PEAK, LAST_MINUTE, etc.
+  adjustment  Float    // Percentage adjustment
+  conditions  Json     // Conditions for applying the rule
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  business    Business @relation(fields: [businessId], references: [id])
+
+  @@index([businessId])
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  duration    Int      // in minutes
+  price       Float
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  category    ServiceCategory  @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  attributes  ServiceAttribute[]
+
+  @@index([categoryId])
+}
+
+model UserPreference {
+  id        String   @id @default(cuid())
+  userId    String
+  category  String
+  weight    Float    // Preference weight (0-1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, category])
+  @@index([userId])
+}
+
+model ServiceRecommendation {
+  id          String   @id @default(cuid())
+  userId      String
+  serviceId   String
+  score       Float    // Recommendation score (0-1)
+  reason      String   // Explanation for the recommendation
+  isViewed    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id])
+  service     Service  @relation(fields: [serviceId], references: [id])
+
+  @@index([userId])
+  @@index([serviceId])
+}
+
+model StylePreference {
+  id        String   @id @default(cuid())
+  userId    String
+  style     String   // Style category or tag
+  weight    Float    // Preference weight (0-1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, style])
+  @@index([userId])
+}
+
+model BookingPrediction {
+  id          String   @id @default(cuid())
+  businessId  String
+  serviceId   String
+  date        DateTime
+  predictedDemand Float
+  confidence   Float    // Prediction confidence (0-1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  business    Business @relation(fields: [businessId], references: [id])
+  service     Service  @relation(fields: [serviceId], references: [id])
+
+  @@index([businessId])
+  @@index([serviceId])
+  @@index([date])
+}
+
+// Client Management Models
+model ClientCard {
+  id                String      @id @default(cuid())
+  userId            String      @unique
+  user              User        @relation(fields: [userId], references: [id])
+  serviceHistory    ServiceHistory[]
+  feedbacks         Feedback[]
+  marketingPrefs    MarketingPreferences?
+  retentionScore    Float       @default(0)
+  lastVisit         DateTime?
+  nextFollowUp      DateTime?
+  notes             String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  @@index([userId])
+}
+
+model ServiceHistory {
+  id              String      @id @default(cuid())
+  clientCardId    String
+  clientCard      ClientCard  @relation(fields: [clientCardId], references: [id])
+  serviceId       String
+  service         BeautyService @relation(fields: [serviceId], references: [id])
+  staffId         String
+  staff           Staff       @relation(fields: [staffId], references: [id])
+  date            DateTime
+  notes           String?
+  productsUsed    ProductUsage[]
+  feedback        Feedback?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([clientCardId])
+}
+
+model Feedback {
+  id                String      @id @default(cuid())
+  clientCardId      String
+  clientCard        ClientCard  @relation(fields: [clientCardId], references: [id])
+  serviceHistoryId  String      @unique
+  serviceHistory    ServiceHistory @relation(fields: [serviceHistoryId], references: [id])
+  rating            Int         // 1-5
+  comment           String?
+  followUpRequired  Boolean     @default(false)
+  resolved          Boolean     @default(false)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  @@index([clientCardId])
+}
+
+model MarketingPreferences {
+  id              String      @id @default(cuid())
+  clientCardId    String      @unique
+  clientCard      ClientCard  @relation(fields: [clientCardId], references: [id])
+  email           Boolean     @default(true)
+  sms             Boolean     @default(false)
+  push            Boolean     @default(false)
+  interests       String[]    // Array of service categories
+  lastCampaign    DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+// Inventory Management Models
+model Product {
+  id              String      @id @default(cuid())
+  name            String
+  brand           String
+  category        String
+  sku             String      @unique
+  description     String?
+  price           Float
+  cost            Float
+  quantity        Int
+  minQuantity     Int         @default(10)
+  maxQuantity     Int         @default(100)
+  location        String?
+  supplier        Supplier    @relation(fields: [supplierId], references: [id])
+  supplierId      String
+  usage           ProductUsage[]
+  performance     ProductPerformance?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([supplierId])
+}
+
+model ProductUsage {
+  id                String      @id @default(cuid())
+  productId         String
+  product           Product     @relation(fields: [productId], references: [id])
+  serviceHistoryId  String
+  serviceHistory    ServiceHistory @relation(fields: [serviceHistoryId], references: [id])
+  quantity          Float
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  @@index([productId])
+  @@index([serviceHistoryId])
+}
+
+model ProductPerformance {
+  id              String      @id @default(cuid())
+  productId       String      @unique
+  product         Product     @relation(fields: [productId], references: [id])
+  salesVelocity   Float       @default(0)
+  profitMargin    Float       @default(0)
+  wastageRate     Float       @default(0)
+  popularity      Float       @default(0)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Supplier {
+  id              String      @id @default(cuid())
+  name            String
+  email           String
+  phone           String
+  address         String?
+  products        Product[]
+  leadTime        Int         // Average lead time in days
+  reliability     Float       @default(0) // 0-1
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+// Staff Management Models
+model Staff {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  teamId          String?
+  role            String
+  specialties     String[]
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user            User      @relation(fields: [userId], references: [id])
+  team            Team?     @relation(fields: [teamId], references: [id])
+  schedule        Schedule[]
+  performance     StaffPerformance?
+  goals           StaffGoal[]
+  messages        Message[]
+  notifications   Notification[]
+  certifications  Certification[]
+  availability    StaffAvailability[]
+}
+
+model Team {
+  id          String    @id @default(cuid())
+  name        String
+  businessId  String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  business    Business  @relation(fields: [businessId], references: [id])
+  members     Staff[]
+  metrics     TeamMetrics[]
+  messages    Message[]
+}
+
+model StaffPerformance {
+  id                  String    @id @default(cuid())
+  staffId            String    @unique
+  clientSatisfaction Float     @default(0)
+  efficiency         Float     @default(0)
+  salesPerformance   Float     @default(0)
+  attendance         Float     @default(0)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  staff              Staff     @relation(fields: [staffId], references: [id])
+}
+
+model PerformanceMetric {
+  id          String    @id @default(cuid())
+  staffId     String
+  type        String
+  value       Float
+  timestamp   DateTime
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+
+  staff       Staff     @relation(fields: [staffId], references: [id])
+}
+
+model StaffGoal {
+  id          String    @id @default(cuid())
+  staffId     String
+  type        String
+  target      Float
+  current     Float     @default(0)
+  deadline    DateTime
+  status      String
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  staff       Staff     @relation(fields: [staffId], references: [id])
+}
+
+model Schedule {
+  id          String    @id @default(cuid())
+  staffId     String
+  startTime   DateTime
+  endTime     DateTime
+  status      String    @default("SCHEDULED")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  staff       Staff     @relation(fields: [staffId], references: [id])
+  breaks      BreakSchedule[]
+  handovers   ShiftHandover[]
+  swapRequests ShiftSwapRequest[]
+}
+
+model BreakSchedule {
+  id          String    @id @default(cuid())
+  staffId     String
+  shiftId     String
+  startTime   DateTime
+  duration    Int
+  type        String
+  status      String
+  createdAt   DateTime  @default(now())
+
+  staff       Staff     @relation(fields: [staffId], references: [id])
+  shift       Schedule  @relation(fields: [shiftId], references: [id])
+}
+
+model ShiftSwapRequest {
+  id          String    @id @default(cuid())
+  requesterId String
+  recipientId String
+  shiftId     String
+  status      String
+  reason      String?
+  createdAt   DateTime  @default(now())
+  respondedAt DateTime?
+
+  requester   Staff     @relation("SwapRequester", fields: [requesterId], references: [id])
+  recipient   Staff     @relation("SwapRecipient", fields: [recipientId], references: [id])
+  shift       Schedule  @relation(fields: [shiftId], references: [id])
+}
+
+model Message {
+  id          String    @id @default(cuid())
+  senderId    String
+  recipientId String?
+  teamId      String?
+  type        String
+  content     String
+  attachments String[]
+  readBy      String[]
+  createdAt   DateTime  @default(now())
+
+  sender      Staff     @relation(fields: [senderId], references: [id])
+  recipient   Staff?    @relation("MessageRecipient", fields: [recipientId], references: [id])
+  team        Team?     @relation(fields: [teamId], references: [id])
+}
+
+model ShiftHandover {
+  id          String    @id @default(cuid())
+  staffId     String
+  shiftId     String
+  notes       String
+  tasks       Json
+  incidents   String[]
+  createdAt   DateTime  @default(now())
+
+  staff       Staff     @relation(fields: [staffId], references: [id])
+  shift       Schedule  @relation(fields: [shiftId], references: [id])
+}
+
+model Notification {
+  id          String    @id @default(cuid())
+  staffId     String
+  type        String
+  message     String
+  data        Json?
+  isRead      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  staff       Staff     @relation(fields: [staffId], references: [id])
+}
+
+model Certification {
+  id          String    @id @default(cuid())
+  staffId     String
+  name        String
+  issuer      String
+  issuedDate  DateTime
+  expiryDate  DateTime?
+  status      String
+  createdAt   DateTime  @default(now())
+
+  staff       Staff     @relation(fields: [staffId], references: [id])
+}
+
+model StaffAvailability {
+  id          String    @id @default(cuid())
+  staffId     String
+  dayOfWeek   Int
+  startTime   String
+  endTime     String
+  isPreferred Boolean
+  notes       String?
+  createdAt   DateTime  @default(now())
+
+  staff       Staff     @relation(fields: [staffId], references: [id])
+}
+
+model TeamMetrics {
+  id                  String    @id @default(cuid())
+  teamId             String
+  overallEfficiency  Float
+  clientSatisfaction Float
+  teamCollaboration  Float
+  goalCompletion     Float
+  periodStart        DateTime
+  periodEnd          DateTime
+  createdAt          DateTime  @default(now())
+
+  team               Team      @relation(fields: [teamId], references: [id])
 }

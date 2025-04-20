@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { BookingList } from '@/components/booking/booking-list';
 import { BookingDetails } from '@/components/booking/booking-details';
-import { useAuth } from '@/contexts/clerk-auth-context';
+import { useAuth } from '@/lib/auth';
 import { Suspense } from 'react';
 
 function BookingsContent() {

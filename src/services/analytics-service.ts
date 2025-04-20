@@ -1,5 +1,9 @@
 import { prisma } from '@/lib/database/client';
 import { randomBytes } from 'crypto';
+import { PrismaClient } from '@prisma/client';
+import { logger } from '@/lib/logger';
+
+const prismaClient = new PrismaClient();
 
 // Define types for analytics events
 export type EventName = 
@@ -100,6 +104,52 @@ interface ShareData {
   method: 'email' | 'social' | 'download';
   success: boolean;
   error?: string;
+}
+
+export interface AnalyticsData {
+  timeframe: 'daily' | 'weekly' | 'monthly' | 'yearly';
+  startDate: Date;
+  endDate: Date;
+  metrics: {
+    totalUsers: number;
+    activeUsers: number;
+    newUsers: number;
+    totalBookings: number;
+    totalRevenue: number;
+    averageBookingValue: number;
+  };
+  trends: {
+    userGrowth: number;
+    revenueGrowth: number;
+    bookingGrowth: number;
+  };
+  topServices: Array<{
+    id: string;
+    name: string;
+    bookings: number;
+    revenue: number;
+  }>;
+  userRetention: {
+    newUsers: number;
+    returningUsers: number;
+    churnRate: number;
+  };
+}
+
+export interface ServicePerformance {
+  id: string;
+  name: string;
+  metrics: {
+    totalBookings: number;
+    totalRevenue: number;
+    averageRating: number;
+    utilization: number;
+  };
+  trends: {
+    bookingTrend: number[];
+    revenueTrend: number[];
+    ratingTrend: number[];
+  };
 }
 
 // Analytics Service
@@ -641,5 +691,327 @@ export class AnalyticsService {
     } catch (error) {
       console.error('Error tracking share:', error);
     }
+  }
+
+  /**
+   * Get analytics data for a specific timeframe
+   */
+  async getAnalytics(timeframe: AnalyticsData['timeframe'], startDate: Date, endDate: Date): Promise<AnalyticsData> {
+    try {
+      const [
+        userMetrics,
+        bookingMetrics,
+        topServices,
+        retentionData
+      ] = await Promise.all([
+        this.getUserMetrics(startDate, endDate),
+        this.getBookingMetrics(startDate, endDate),
+        this.getTopServices(startDate, endDate),
+        this.getUserRetention(startDate, endDate)
+      ]);
+
+      const previousPeriodEnd = new Date(startDate);
+      previousPeriodEnd.setDate(previousPeriodEnd.getDate() - 1);
+      const previousPeriodStart = new Date(previousPeriodEnd);
+      previousPeriodStart.setDate(previousPeriodStart.getDate() - (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+
+      const [
+        previousUserMetrics,
+        previousBookingMetrics
+      ] = await Promise.all([
+        this.getUserMetrics(previousPeriodStart, previousPeriodEnd),
+        this.getBookingMetrics(previousPeriodStart, previousPeriodEnd)
+      ]);
+
+      const trends = {
+        userGrowth: this.calculateGrowth(previousUserMetrics.totalUsers, userMetrics.totalUsers),
+        revenueGrowth: this.calculateGrowth(previousBookingMetrics.totalRevenue, bookingMetrics.totalRevenue),
+        bookingGrowth: this.calculateGrowth(previousBookingMetrics.totalBookings, bookingMetrics.totalBookings)
+      };
+
+      return {
+        timeframe,
+        startDate,
+        endDate,
+        metrics: {
+          ...userMetrics,
+          ...bookingMetrics
+        },
+        trends,
+        topServices,
+        userRetention: retentionData
+      };
+    } catch (error) {
+      logger.error('Error getting analytics data', 'analytics', { error });
+      throw error;
+    }
+  }
+
+  /**
+   * Get service performance metrics
+   */
+  async getServicePerformance(serviceId: string, startDate: Date, endDate: Date): Promise<ServicePerformance> {
+    try {
+      const service = await prismaClient.service.findUnique({
+        where: { id: serviceId },
+        include: {
+          bookings: {
+            where: {
+              startTime: {
+                gte: startDate,
+                lte: endDate
+              }
+            }
+          },
+          reviews: {
+            where: {
+              createdAt: {
+                gte: startDate,
+                lte: endDate
+              }
+            }
+          }
+        }
+      });
+
+      if (!service) {
+        throw new Error('Service not found');
+      }
+
+      const metrics = {
+        totalBookings: service.bookings.length,
+        totalRevenue: service.bookings.reduce((sum, booking) => sum + booking.price, 0),
+        averageRating: service.reviews.length > 0 
+          ? service.reviews.reduce((sum, review) => sum + review.rating, 0) / service.reviews.length 
+          : 0,
+        utilization: await this.calculateUtilization(service, startDate, endDate)
+      };
+
+      const trends = await this.getServiceTrends(service, startDate, endDate);
+
+      return {
+        id: service.id,
+        name: service.name,
+        metrics,
+        trends
+      };
+    } catch (error) {
+      logger.error('Error getting service performance', 'analytics', { error, serviceId });
+      throw error;
+    }
+  }
+
+  /**
+   * Generate custom report
+   */
+  async generateReport(options: {
+    startDate: Date;
+    endDate: Date;
+    metrics: string[];
+    groupBy?: string;
+    filters?: Record<string, any>;
+  }) {
+    try {
+      const { startDate, endDate, metrics, groupBy, filters } = options;
+
+      const reportData = await prismaClient.$transaction(async (prisma) => {
+        const data: Record<string, any> = {};
+
+        for (const metric of metrics) {
+          switch (metric) {
+            case 'bookings':
+              data.bookings = await this.getBookingMetrics(startDate, endDate, filters);
+              break;
+            case 'revenue':
+              data.revenue = await this.getRevenueMetrics(startDate, endDate, filters);
+              break;
+            case 'users':
+              data.users = await this.getUserMetrics(startDate, endDate, filters);
+              break;
+            case 'services':
+              data.services = await this.getServiceMetrics(startDate, endDate, filters);
+              break;
+            default:
+              logger.warn('Unknown metric requested', 'analytics', { metric });
+          }
+        }
+
+        if (groupBy) {
+          data.groupedData = await this.groupDataBy(data, groupBy, startDate, endDate);
+        }
+
+        return data;
+      });
+
+      return reportData;
+    } catch (error) {
+      logger.error('Error generating report', 'analytics', { error });
+      throw error;
+    }
+  }
+
+  /**
+   * Private helper methods
+   */
+  private async getUserMetrics(startDate: Date, endDate: Date, filters?: Record<string, any>) {
+    const users = await prismaClient.user.findMany({
+      where: {
+        createdAt: {
+          gte: startDate,
+          lte: endDate
+        },
+        ...filters
+      }
+    });
+
+    const activeUsers = await prismaClient.user.count({
+      where: {
+        lastLoginAt: {
+          gte: startDate,
+          lte: endDate
+        },
+        ...filters
+      }
+    });
+
+    return {
+      totalUsers: users.length,
+      activeUsers,
+      newUsers: users.filter(user => user.createdAt >= startDate).length
+    };
+  }
+
+  private async getBookingMetrics(startDate: Date, endDate: Date, filters?: Record<string, any>) {
+    const bookings = await prismaClient.booking.findMany({
+      where: {
+        createdAt: {
+          gte: startDate,
+          lte: endDate
+        },
+        ...filters
+      }
+    });
+
+    const totalRevenue = bookings.reduce((sum, booking) => sum + booking.price, 0);
+
+    return {
+      totalBookings: bookings.length,
+      totalRevenue,
+      averageBookingValue: bookings.length > 0 ? totalRevenue / bookings.length : 0
+    };
+  }
+
+  private async getTopServices(startDate: Date, endDate: Date) {
+    const services = await prismaClient.service.findMany({
+      include: {
+        bookings: {
+          where: {
+            createdAt: {
+              gte: startDate,
+              lte: endDate
+            }
+          }
+        }
+      }
+    });
+
+    return services.map(service => ({
+      id: service.id,
+      name: service.name,
+      bookings: service.bookings.length,
+      revenue: service.bookings.reduce((sum, booking) => sum + booking.price, 0)
+    }))
+    .sort((a, b) => b.revenue - a.revenue)
+    .slice(0, 5);
+  }
+
+  private async getUserRetention(startDate: Date, endDate: Date) {
+    const users = await prismaClient.user.findMany({
+      include: {
+        bookings: {
+          where: {
+            createdAt: {
+              gte: startDate,
+              lte: endDate
+            }
+          }
+        }
+      }
+    });
+
+    const newUsers = users.filter(user => user.createdAt >= startDate).length;
+    const returningUsers = users.filter(user => 
+      user.createdAt < startDate && user.bookings.length > 0
+    ).length;
+
+    const previousUsers = await prismaClient.user.count({
+      where: {
+        createdAt: {
+          lt: startDate
+        }
+      }
+    });
+
+    const churnRate = previousUsers > 0 
+      ? (previousUsers - returningUsers) / previousUsers 
+      : 0;
+
+    return {
+      newUsers,
+      returningUsers,
+      churnRate
+    };
+  }
+
+  private calculateGrowth(previous: number, current: number): number {
+    if (previous === 0) return current > 0 ? 100 : 0;
+    return ((current - previous) / previous) * 100;
+  }
+
+  private async calculateUtilization(
+    service: any,
+    startDate: Date,
+    endDate: Date
+  ): Promise<number> {
+    const totalSlots = await this.getTotalAvailableSlots(service, startDate, endDate);
+    if (totalSlots === 0) return 0;
+    return (service.bookings.length / totalSlots) * 100;
+  }
+
+  private async getTotalAvailableSlots(
+    service: any,
+    startDate: Date,
+    endDate: Date
+  ): Promise<number> {
+    // Implementation depends on your business logic
+    // This is a simplified version
+    const daysDifference = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const slotsPerDay = 8; // Assuming 8 slots per day
+    return daysDifference * slotsPerDay;
+  }
+
+  private async getServiceTrends(
+    service: any,
+    startDate: Date,
+    endDate: Date
+  ) {
+    // Implementation depends on your business logic
+    // This is a simplified version
+    return {
+      bookingTrend: [/* Array of booking counts over time */],
+      revenueTrend: [/* Array of revenue over time */],
+      ratingTrend: [/* Array of ratings over time */]
+    };
+  }
+
+  private async groupDataBy(
+    data: Record<string, any>,
+    groupBy: string,
+    startDate: Date,
+    endDate: Date
+  ) {
+    // Implementation depends on your grouping requirements
+    // This is a placeholder
+    return {};
   }
 } 

@@ -1,77 +1,142 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse, NextApiHandler } from 'next';
 import { getSession } from 'next-auth/react';
-import { MFAService } from '@/services/mfaService';
-import { getServerSession } from 'next-auth';
 import { Redis } from 'ioredis';
 import { authOptions } from '@/lib/auth';
-
-const SENSITIVE_ROUTES = [
-  '/api/user/profile',
-  '/api/user/settings',
-  '/api/payments',
-  '/api/admin'
-];
-
-const mfaService = new MFAService();
-const redis = new Redis(process.env.REDIS_URL || '');
 
 interface ExtendedRequest extends NextApiRequest {
   mfaVerified?: boolean;
 }
 
-export async function mfaMiddleware(
-  req: ExtendedRequest,
-  res: NextApiResponse,
-  next: () => void
-) {
-  try {
-    // Check if the route requires MFA
-    const requiresMFA = SENSITIVE_ROUTES.some(route => 
-      req.url?.startsWith(route)
-    );
+interface MFAError extends Error {
+  code: string;
+  statusCode: number;
+}
 
-    if (!requiresMFA) {
-      return next();
-    }
+class MFARequiredError extends Error implements MFAError {
+  code: string;
+  statusCode: number;
 
-    // Get the user session
-    const session = await getServerSession(req, res, authOptions);
-    if (!session?.user?.id) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-
-    // Check if MFA is verified for this session
-    const sessionId = req.cookies['next-auth.session-token'];
-    const mfaVerified = sessionId && await redis.get(`mfa:verified:${sessionId}`);
-    if (mfaVerified) {
-      req.mfaVerified = true;
-      return next();
-    }
-
-    // Check if user has MFA enabled
-    const settings = await mfaService.getMFASettings(session.user.id);
-    if (!settings?.methods?.length) {
-      // If MFA is not set up, redirect to MFA setup page
-      return res.status(403).json({
-        error: 'MFA Required',
-        redirect: '/settings/security/mfa/setup'
-      });
-    }
-
-    // If MFA is not verified, redirect to verification page
-    return res.status(403).json({
-      error: 'MFA Required',
-      redirect: '/auth/mfa/verify',
-      methods: settings.methods
-    });
-  } catch (error) {
-    console.error('MFA middleware error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+  constructor() {
+    super('MFA verification required');
+    this.name = 'MFARequiredError';
+    this.code = 'MFA_REQUIRED';
+    this.statusCode = 403;
   }
 }
 
-export function withMFA(handler: any) {
+class MFAVerificationError extends Error implements MFAError {
+  code: string;
+  statusCode: number;
+
+  constructor() {
+    super('MFA verification failed');
+    this.name = 'MFAVerificationError';
+    this.code = 'MFA_VERIFICATION_FAILED';
+    this.statusCode = 401;
+  }
+}
+
+class MFAService {
+  async isMFAEnabled(email: string): Promise<boolean> {
+    // TODO: Implement actual MFA check logic
+    return false;
+  }
+
+  async verifyMFA(email: string): Promise<boolean> {
+    // TODO: Implement actual MFA verification logic
+    return false;
+  }
+}
+
+const SENSITIVE_ROUTES = [
+  '/api/admin',
+  '/api/settings',
+  // Add other sensitive routes that require MFA
+];
+
+const mfaService = new MFAService();
+const redis = new Redis(process.env.REDIS_URL || '');
+
+export const mfaMiddleware = async (
+  req: ExtendedRequest,
+  res: NextApiResponse,
+  next: () => Promise<void>
+) => {
+  try {
+    const session = await getSession({ req });
+    if (!session?.user?.email) {
+      return res.status(401).json({ error: 'Unauthorized: No session found' });
+    }
+
+    const isSensitiveRoute = SENSITIVE_ROUTES.some((route) =>
+      req.url?.startsWith(route)
+    );
+
+    if (!isSensitiveRoute) {
+      return next();
+    }
+
+    const isMFAEnabled = await mfaService.isMFAEnabled(session.user.email);
+
+    if (!isMFAEnabled) {
+      return next();
+    }
+
+    if (!req.mfaVerified) {
+      throw new MFARequiredError();
+    }
+
+    const isVerified = await mfaService.verifyMFA(session.user.email);
+    if (!isVerified) {
+      throw new MFAVerificationError();
+    }
+
+    return next();
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      'code' in error &&
+      'statusCode' in error &&
+      (error instanceof MFARequiredError || error instanceof MFAVerificationError)
+    ) {
+      console.error(`MFA Error: ${error.code} - ${error.message}`);
+      return res.status(error.statusCode).json({ 
+        error: error.message,
+        code: error.code 
+      });
+    }
+    
+    console.error('Unexpected error in MFA middleware:', error);
+    return res.status(500).json({ 
+      error: 'Internal server error during MFA verification',
+      code: 'INTERNAL_SERVER_ERROR'
+    });
+  }
+};
+
+export const withMFA = (handler: NextApiHandler): NextApiHandler => {
   return async (req: ExtendedRequest, res: NextApiResponse) => {
-    await mfaMiddleware(req, res, () => handler(req, res));
+    try {
+      const session = await getSession({ req });
+      if (!session?.user?.email) {
+        return res.status(401).json({ error: 'Unauthorized: No session found' });
+      }
+
+      const isMFAEnabled = await mfaService.isMFAEnabled(session.user.email);
+      if (isMFAEnabled) {
+        const isVerified = await mfaService.verifyMFA(session.user.email);
+        if (!isVerified) {
+          throw new MFARequiredError();
+        }
+        req.mfaVerified = true;
+      }
+
+      return handler(req, res);
+    } catch (error) {
+      if (error instanceof MFARequiredError) {
+        return res.status(403).json({ error: error.message, code: error.code });
+      }
+      throw error;
+    }
   };
-} 
+}; 

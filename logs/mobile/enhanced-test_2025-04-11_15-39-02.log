@@ -1,7 +1,0 @@
-Starting enhanced mobile testing at 2025-04-11_15-39-02
-./scripts/enhanced-mobile-testing.sh: line 166: run_functional_tests: command not found
-./scripts/enhanced-mobile-testing.sh: line 167: run_performance_tests: command not found
-./scripts/enhanced-mobile-testing.sh: line 168: run_accessibility_tests: command not found
-./scripts/enhanced-mobile-testing.sh: line 169: run_security_tests: command not found
-./scripts/enhanced-mobile-testing.sh: line 170: run_usability_tests: command not found
-./scripts/enhanced-mobile-testing.sh: line 171: generate_reports: command not found

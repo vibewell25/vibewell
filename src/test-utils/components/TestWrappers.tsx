@@ -6,29 +6,25 @@ import { MemoryRouter } from 'react-router-dom';
  * Default wrapper uses ThemeProvider
  */
 export const DefaultWrapper: React.FC<{ children: ReactNode }> = ({ children }) => (
-  <ThemeProvider>
-    {children}
-  </ThemeProvider>
+  <ThemeProvider>{children}</ThemeProvider>
 );
 
 /**
  * Router wrapper for components that need routing
  */
-export const RouterWrapper: React.FC<{ 
+export const RouterWrapper: React.FC<{
   children: ReactNode;
   initialRoute?: string;
 }> = ({ children, initialRoute = '/' }) => (
   <MemoryRouter initialEntries={[initialRoute]}>
-    <ThemeProvider>
-      {children}
-    </ThemeProvider>
+    <ThemeProvider>{children}</ThemeProvider>
   </MemoryRouter>
 );
 
 /**
  * Auth wrapper for testing authenticated components
  */
-export const AuthWrapper: React.FC<{ 
+export const AuthWrapper: React.FC<{
   children: ReactNode;
   mockUser?: any;
 }> = ({ children, mockUser = { id: 'test-user-id', name: 'Test User' } }) => (
@@ -43,15 +39,11 @@ export const AuthWrapper: React.FC<{
 /**
  * Combined wrapper for components that need routing and auth
  */
-export const AuthRouterWrapper: React.FC<{ 
+export const AuthRouterWrapper: React.FC<{
   children: ReactNode;
   initialRoute?: string;
   mockUser?: any;
-}> = ({ 
-  children, 
-  initialRoute = '/',
-  mockUser = { id: 'test-user-id', name: 'Test User' }  
-}) => (
+}> = ({ children, initialRoute = '/', mockUser = { id: 'test-user-id', name: 'Test User' } }) => (
   <MemoryRouter initialEntries={[initialRoute]}>
     <ThemeProvider>
       <div data-testid="mock-auth-provider" data-user={JSON.stringify(mockUser)}>
@@ -59,4 +51,4 @@ export const AuthRouterWrapper: React.FC<{
       </div>
     </ThemeProvider>
   </MemoryRouter>
-); 
+);

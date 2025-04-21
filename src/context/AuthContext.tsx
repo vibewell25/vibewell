@@ -3,15 +3,15 @@
 /**
  * @deprecated This module is deprecated. Use the unified auth context from '@/contexts/unified-auth-context' instead.
  * Authentication Context
- * 
+ *
  * This is a backwards compatibility wrapper that forwards to the unified auth context.
  * It will be removed in a future version.
  */
 import React, { ReactNode } from 'react';
-import { 
-  AuthProvider as UnifiedAuthProvider, 
+import {
+  AuthProvider as UnifiedAuthProvider,
   useAuth as useUnifiedAuth,
-  AuthContextType as UnifiedAuthContextType
+  AuthContextType as UnifiedAuthContextType,
 } from '../contexts/unified-auth-context';
 import { User, Session } from '@supabase/supabase-js';
 
@@ -40,10 +40,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   if (process.env.NODE_ENV === 'development') {
     console.warn(
       'Warning: The AuthProvider from @/context/AuthContext is deprecated. ' +
-      'Use the AuthProvider from @/contexts/unified-auth-context instead.'
+        'Use the AuthProvider from @/contexts/unified-auth-context instead.'
     );
   }
-  
+
   return <UnifiedAuthProvider>{children}</UnifiedAuthProvider>;
 };
 
@@ -56,28 +56,20 @@ export const useAuth = (): AuthContextType => {
   if (process.env.NODE_ENV === 'development') {
     console.warn(
       'Warning: The useAuth hook from @/context/AuthContext is deprecated. ' +
-      'Use the useAuth hook from @/contexts/unified-auth-context instead.'
+        'Use the useAuth hook from @/contexts/unified-auth-context instead.'
     );
   }
-  
+
   // Use the unified auth hook but only return the properties expected in the old interface
   const unifiedAuth = useUnifiedAuth();
-  
+
   // Extract only the properties and methods defined in the old interface
-  const {
-    session,
-    loading,
-    signIn,
-    signUp,
-    signOut,
-    resetPassword,
-  } = unifiedAuth;
-  
+  const { session, loading, signIn, signUp, signOut, resetPassword } = unifiedAuth;
+
   // Handle the user type by safely asserting the type when it's a Supabase User
-  const user = unifiedAuth.user && 'app_metadata' in unifiedAuth.user 
-    ? unifiedAuth.user as User 
-    : null;
-  
+  const user =
+    unifiedAuth.user && 'app_metadata' in unifiedAuth.user ? (unifiedAuth.user as User) : null;
+
   return {
     user,
     session,
@@ -87,4 +79,4 @@ export const useAuth = (): AuthContextType => {
     signOut,
     resetPassword,
   };
-}; 
+};

@@ -2,8 +2,8 @@ import { RateLimiterRedis } from 'rate-limiter-flexible';
 import redisClient from '@/lib/redis-client';
 
 interface RateLimitConfig {
-  points: number;      // Number of points
-  duration: number;    // Per duration in seconds
+  points: number; // Number of points
+  duration: number; // Per duration in seconds
   blockDuration?: number; // Block duration in seconds
 }
 
@@ -13,33 +13,33 @@ export const rateLimits: Record<string, RateLimitConfig> = {
   'auth:login': {
     points: 5,
     duration: 60 * 15, // 15 minutes
-    blockDuration: 60 * 60 // 1 hour block
+    blockDuration: 60 * 60, // 1 hour block
   },
   'auth:signup': {
     points: 3,
     duration: 60 * 60, // 1 hour
-    blockDuration: 60 * 60 * 24 // 24 hour block
+    blockDuration: 60 * 60 * 24, // 24 hour block
   },
-  
+
   // API endpoints
   'api:general': {
     points: 100,
-    duration: 60 // 1 minute
+    duration: 60, // 1 minute
   },
   'api:ar': {
     points: 200,
-    duration: 60 // Higher limit for AR endpoints
+    duration: 60, // Higher limit for AR endpoints
   },
-  
+
   // User actions
   'user:profile-update': {
     points: 10,
-    duration: 60 * 5 // 5 minutes
+    duration: 60 * 5, // 5 minutes
   },
   'booking:create': {
     points: 20,
-    duration: 60 * 15 // 15 minutes
-  }
+    duration: 60 * 15, // 15 minutes
+  },
 };
 
 // Create rate limiters
@@ -54,7 +54,7 @@ Object.entries(rateLimits).forEach(([key, config]) => {
       keyPrefix: `ratelimit:${key}:`,
       points: config.points,
       duration: config.duration,
-      blockDuration: config.blockDuration
+      blockDuration: config.blockDuration,
     })
   );
 });
@@ -73,13 +73,13 @@ export async function checkRateLimit(
     return {
       success: true,
       remainingPoints: rateLimitResult.remainingPoints,
-      msBeforeNext: rateLimitResult.msBeforeNext
+      msBeforeNext: rateLimitResult.msBeforeNext,
     };
   } catch (error) {
     if (error instanceof Error) {
       return {
         success: false,
-        msBeforeNext: (error as any).msBeforeNext
+        msBeforeNext: (error as any).msBeforeNext,
       };
     }
     return { success: false };
@@ -89,4 +89,4 @@ export async function checkRateLimit(
 // Helper function to get rate limit info
 export function getRateLimitInfo(key: string): RateLimitConfig | undefined {
   return rateLimits[key];
-} 
+}

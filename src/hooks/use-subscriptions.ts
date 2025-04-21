@@ -54,4 +54,4 @@ export function useSubscriptions(): UseSubscriptionsReturn {
     error,
     refetch: fetchSubscriptions,
   };
-} 
+}

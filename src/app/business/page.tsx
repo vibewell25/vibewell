@@ -7,8 +7,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-;
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { toast } from 'react-hot-toast';
 import { Icons } from '@/components/icons';
 interface Business {
@@ -63,9 +68,11 @@ export default function BusinessDirectoryPage() {
     fetchBusinesses();
   }, [router]);
   const filteredBusinesses = businesses.filter(business => {
-    const matchesSearch = business.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const matchesSearch =
+      business.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       business.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'All Categories' || business.category === selectedCategory;
+    const matchesCategory =
+      selectedCategory === 'All Categories' || business.category === selectedCategory;
     const matchesRating = business.rating >= minRating;
     return matchesSearch && matchesCategory && matchesRating;
   });
@@ -94,7 +101,7 @@ export default function BusinessDirectoryPage() {
             <Input
               placeholder="Search businesses..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className="max-w-xs"
             />
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
@@ -102,7 +109,7 @@ export default function BusinessDirectoryPage() {
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                {CATEGORIES.map((category) => (
+                {CATEGORIES.map(category => (
                   <SelectItem key={category} value={category}>
                     {category}
                   </SelectItem>
@@ -112,7 +119,7 @@ export default function BusinessDirectoryPage() {
           </div>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredBusinesses.map((business) => (
+          {filteredBusinesses.map(business => (
             <Card key={business.id} className="overflow-hidden">
               <div className="aspect-video bg-gray-100 relative">
                 <img
@@ -120,9 +127,7 @@ export default function BusinessDirectoryPage() {
                   alt={business.name}
                   className="object-cover w-full h-full"
                 />
-                <Badge className="absolute top-2 right-2">
-                  {business.category}
-                </Badge>
+                <Badge className="absolute top-2 right-2">{business.category}</Badge>
               </div>
               <CardHeader>
                 <CardTitle>{business.name}</CardTitle>
@@ -139,17 +144,14 @@ export default function BusinessDirectoryPage() {
                 </div>
                 <p className="text-muted-foreground mb-4">{business.description}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {business.services.map((service) => (
+                  {business.services.map(service => (
                     <Badge key={service} variant="secondary">
                       {service}
                     </Badge>
                   ))}
                 </div>
                 <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    onClick={() => router.push(`/business/${business.id}`)}
-                  >
+                  <Button variant="outline" onClick={() => router.push(`/business/${business.id}`)}>
                     View Details
                   </Button>
                   <Button onClick={() => router.push(`/business/${business.id}/book`)}>
@@ -163,4 +165,4 @@ export default function BusinessDirectoryPage() {
       </div>
     </div>
   );
-} 
+}

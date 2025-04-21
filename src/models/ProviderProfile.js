@@ -21,7 +21,7 @@ const ProviderProfileSchema = new mongoose.Schema({
       'nutrition',
       'wellness_center',
       'freelancer',
-      'other'
+      'other',
     ],
     required: [true, 'Please specify business type'],
   },
@@ -83,40 +83,46 @@ const ProviderProfileSchema = new mongoose.Schema({
     youtube: String,
     tiktok: String,
   },
-  certifications: [{
-    name: {
-      type: String,
-      required: true,
+  certifications: [
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      issuingOrganization: String,
+      issueDate: Date,
+      expiryDate: Date,
+      documentUrl: String,
+      isVerified: {
+        type: Boolean,
+        default: false,
+      },
     },
-    issuingOrganization: String,
-    issueDate: Date,
-    expiryDate: Date,
-    documentUrl: String,
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
-  }],
+  ],
   expertise: [String],
   yearsOfExperience: Number,
   languages: [String],
-  businessHours: [{
-    day: {
-      type: String,
-      enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
-      required: true,
+  businessHours: [
+    {
+      day: {
+        type: String,
+        enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+        required: true,
+      },
+      isOpen: {
+        type: Boolean,
+        default: true,
+      },
+      openTime: String,
+      closeTime: String,
+      breaks: [
+        {
+          startTime: String,
+          endTime: String,
+        },
+      ],
     },
-    isOpen: {
-      type: Boolean,
-      default: true,
-    },
-    openTime: String,
-    closeTime: String,
-    breaks: [{
-      startTime: String,
-      endTime: String,
-    }],
-  }],
+  ],
   subscriptionPlan: {
     type: String,
     enum: ['free', 'basic', 'premium'],
@@ -184,4 +190,4 @@ ProviderProfileSchema.pre('save', function (next) {
 
 const ProviderProfile = mongoose.model('ProviderProfile', ProviderProfileSchema);
 
-export default ProviderProfile; 
+export default ProviderProfile;

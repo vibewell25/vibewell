@@ -20,14 +20,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/components/ui/use-toast';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Fallback } from '@/components/ui/fallback';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { loadStripe } from '@stripe/stripe-js';
-import {
-  Elements,
-  PaymentElement,
-  useStripe,
-  useElements,
-} from '@stripe/react-stripe-js';
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -36,9 +31,23 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 
 // Available time slots for booking
 const TIME_SLOTS = [
-  '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
-  '12:00 PM', '12:30 PM', '01:00 PM', '01:30 PM', '02:00 PM', '02:30 PM',
-  '03:00 PM', '03:30 PM', '04:00 PM', '04:30 PM', '05:00 PM'
+  '09:00 AM',
+  '09:30 AM',
+  '10:00 AM',
+  '10:30 AM',
+  '11:00 AM',
+  '11:30 AM',
+  '12:00 PM',
+  '12:30 PM',
+  '01:00 PM',
+  '01:30 PM',
+  '02:00 PM',
+  '02:30 PM',
+  '03:00 PM',
+  '03:30 PM',
+  '04:00 PM',
+  '04:30 PM',
+  '05:00 PM',
 ];
 
 // Available services for booking
@@ -47,7 +56,7 @@ const SERVICES = [
   { id: 'service2', name: 'Therapy Session', duration: 60, price: 100 },
   { id: 'service3', name: 'Health Assessment', duration: 45, price: 75 },
   { id: 'service4', name: 'Nutrition Coaching', duration: 60, price: 90 },
-  { id: 'service5', name: 'Fitness Evaluation', duration: 45, price: 80 }
+  { id: 'service5', name: 'Fitness Evaluation', duration: 45, price: 80 },
 ];
 
 interface BookingFormProps {
@@ -57,7 +66,13 @@ interface BookingFormProps {
   className?: string;
 }
 
-function PaymentForm({ clientSecret, onPaymentSuccess }: { clientSecret: string; onPaymentSuccess: () => void }) {
+function PaymentForm({
+  clientSecret,
+  onPaymentSuccess,
+}: {
+  clientSecret: string;
+  onPaymentSuccess: () => void;
+}) {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState<string | null>(null);
@@ -90,11 +105,7 @@ function PaymentForm({ clientSecret, onPaymentSuccess }: { clientSecret: string;
     <form onSubmit={handleSubmit} className="space-y-4">
       <PaymentElement />
       {error && <div className="text-red-500 text-sm">{error}</div>}
-      <Button
-        type="submit"
-        disabled={!stripe || processing}
-        className="w-full"
-      >
+      <Button type="submit" disabled={!stripe || processing} className="w-full">
         {processing ? 'Processing...' : 'Pay and Confirm Booking'}
       </Button>
     </form>
@@ -103,28 +114,28 @@ function PaymentForm({ clientSecret, onPaymentSuccess }: { clientSecret: string;
 
 const bookingSchema = z.object({
   date: z.date({
-    required_error: "Please select a date",
-    invalid_type_error: "Invalid date format",
+    required_error: 'Please select a date',
+    invalid_type_error: 'Invalid date format',
   }),
-  timeSlot: z.string().min(1, "Please select a time slot"),
-  serviceId: z.string().min(1, "Please select a service"),
+  timeSlot: z.string().min(1, 'Please select a time slot'),
+  serviceId: z.string().min(1, 'Please select a service'),
   notes: z.string().optional(),
   contactPreference: z.enum(['email', 'phone', 'text'], {
-    required_error: "Please select a contact preference",
+    required_error: 'Please select a contact preference',
   }),
   sendReminders: z.boolean(),
   agreeToTerms: z.literal(true, {
-    errorMap: () => ({ message: "You must agree to the terms and conditions" }),
+    errorMap: () => ({ message: 'You must agree to the terms and conditions' }),
   }),
 });
 
 type BookingFormData = z.infer<typeof bookingSchema>;
 
-export function BookingForm({ 
-  providerId, 
-  providerName, 
+export function BookingForm({
+  providerId,
+  providerName,
   onSuccess,
-  className = '' 
+  className = '',
 }: BookingFormProps) {
   const router = useRouter();
   const { user } = useAuth();
@@ -153,17 +164,17 @@ export function BookingForm({
     if (!date) return;
 
     setIsLoading(true);
-    
+
     // Simulating API call to fetch available time slots
     setTimeout(() => {
       // Randomly remove some time slots to simulate availability
       const unavailableCount = Math.floor(Math.random() * 8);
       const unavailableIndices = new Set();
-      
+
       while (unavailableIndices.size < unavailableCount) {
         unavailableIndices.add(Math.floor(Math.random() * TIME_SLOTS.length));
       }
-      
+
       const available = TIME_SLOTS.filter((_, index) => !unavailableIndices.has(index));
       setAvailableTimeSlots(available);
       setIsLoading(false);
@@ -206,7 +217,7 @@ export function BookingForm({
   const handleSubmit = async (data: BookingFormData) => {
     try {
       setIsLoading(true);
-      
+
       const selectedService = SERVICES.find(s => s.id === data.serviceId);
       const bookingData = {
         providerId,
@@ -221,7 +232,7 @@ export function BookingForm({
         price: selectedService?.price,
         duration: selectedService?.duration,
       };
-      
+
       // Create booking first
       const bookingResponse = await fetch('/api/bookings', {
         method: 'POST',
@@ -230,25 +241,27 @@ export function BookingForm({
         },
         body: JSON.stringify(bookingData),
       });
-      
+
       if (!bookingResponse.ok) {
         const errorData = await bookingResponse.json();
         throw new Error(errorData.error || 'Failed to create booking');
       }
-      
+
       const bookingResult = await bookingResponse.json();
-      
+
       // Create payment intent
       await handleCreatePaymentIntent({
         ...bookingData,
         id: bookingResult.id,
       });
-      
     } catch (error) {
       console.error('Booking error:', error);
       toast({
         title: 'Booking failed',
-        description: error instanceof Error ? error.message : 'There was an error creating your booking. Please try again.',
+        description:
+          error instanceof Error
+            ? error.message
+            : 'There was an error creating your booking. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -261,7 +274,7 @@ export function BookingForm({
       title: 'Booking confirmed',
       description: `Your appointment with ${providerName} has been booked successfully!`,
     });
-    
+
     if (onSuccess) {
       onSuccess();
     } else {
@@ -273,18 +286,20 @@ export function BookingForm({
     <ErrorBoundary>
       <div className={`p-6 bg-white rounded-lg shadow-md ${className}`}>
         <h2 className="text-xl font-bold mb-6">Book an Appointment with {providerName}</h2>
-        
+
         {bookingStep === 'details' ? (
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             {/* Date Selection */}
             <div>
-              <Label htmlFor="date" className="block mb-2">Select Date</Label>
+              <Label htmlFor="date" className="block mb-2">
+                Select Date
+              </Label>
               <div className="border rounded-md p-4">
                 <Calendar
                   mode="single"
                   selected={date}
                   onSelect={setDate}
-                  disabled={(date) => {
+                  disabled={date => {
                     // Disable dates in the past and weekends
                     const now = new Date();
                     now.setHours(0, 0, 0, 0);
@@ -295,17 +310,19 @@ export function BookingForm({
                 />
               </div>
             </div>
-            
+
             {/* Time Slot Selection */}
             <div>
-              <Label htmlFor="timeSlot" className="block mb-2">Select Time</Label>
+              <Label htmlFor="timeSlot" className="block mb-2">
+                Select Time
+              </Label>
               {date ? (
                 isLoading ? (
                   <Fallback className="h-20" message="Loading available time slots..." />
                 ) : (
                   <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
                     {availableTimeSlots.length > 0 ? (
-                      availableTimeSlots.map((slot) => (
+                      availableTimeSlots.map(slot => (
                         <Button
                           key={slot}
                           type="button"
@@ -329,16 +346,18 @@ export function BookingForm({
                 </p>
               )}
             </div>
-            
+
             {/* Service Selection */}
             <div>
-              <Label htmlFor="service" className="block mb-2">Select Service</Label>
+              <Label htmlFor="service" className="block mb-2">
+                Select Service
+              </Label>
               <Select value={serviceId} onValueChange={setServiceId}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select a service" />
                 </SelectTrigger>
                 <SelectContent>
-                  {SERVICES.map((service) => (
+                  {SERVICES.map(service => (
                     <SelectItem key={service.id} value={service.id}>
                       {service.name} - ${service.price} ({service.duration} min)
                     </SelectItem>
@@ -346,24 +365,26 @@ export function BookingForm({
                 </SelectContent>
               </Select>
             </div>
-            
+
             {/* Notes */}
             <div>
-              <Label htmlFor="notes" className="block mb-2">Additional Notes</Label>
+              <Label htmlFor="notes" className="block mb-2">
+                Additional Notes
+              </Label>
               <Textarea
                 id="notes"
                 placeholder="Any special requirements or information for your provider"
                 value={notes}
-                onChange={(e) => form.setValue('notes', e.target.value)}
+                onChange={e => form.setValue('notes', e.target.value)}
                 rows={3}
               />
             </div>
-            
+
             {/* Contact Preference */}
             <div>
               <Label className="block mb-2">Preferred Contact Method</Label>
-              <RadioGroup 
-                value={contactPreference} 
+              <RadioGroup
+                value={contactPreference}
                 onValueChange={setContactPreference}
                 className="flex flex-col space-y-2"
               >
@@ -381,36 +402,35 @@ export function BookingForm({
                 </div>
               </RadioGroup>
             </div>
-            
+
             {/* Reminders */}
             <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="reminders" 
+              <Checkbox
+                id="reminders"
                 checked={sendReminders}
-                onCheckedChange={(checked) => form.setValue('sendReminders', checked as boolean)}
+                onCheckedChange={checked => form.setValue('sendReminders', checked as boolean)}
               />
               <Label htmlFor="reminders">Send me appointment reminders</Label>
             </div>
-            
+
             {/* Terms and Conditions */}
             <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="terms" 
+              <Checkbox
+                id="terms"
                 checked={agreeToTerms}
-                onCheckedChange={(checked) => form.setValue('agreeToTerms', checked as boolean)}
+                onCheckedChange={checked => form.setValue('agreeToTerms', checked as boolean)}
                 required
               />
               <Label htmlFor="terms" className="text-sm">
-                I agree to the <a href="/terms" className="text-blue-600 hover:underline">terms and conditions</a>
+                I agree to the{' '}
+                <a href="/terms" className="text-blue-600 hover:underline">
+                  terms and conditions
+                </a>
                 , including the cancellation policy
               </Label>
             </div>
-            
-            <Button 
-              type="submit" 
-              disabled={isLoading}
-              className="w-full"
-            >
+
+            <Button type="submit" disabled={isLoading} className="w-full">
               {isLoading ? 'Processing...' : 'Continue to Payment'}
             </Button>
           </form>
@@ -418,20 +438,15 @@ export function BookingForm({
           <div className="space-y-6">
             <div className="mb-4">
               <h3 className="text-lg font-semibold mb-2">Payment Details</h3>
-              <p className="text-gray-600">
-                Complete your payment to confirm your booking
-              </p>
+              <p className="text-gray-600">Complete your payment to confirm your booking</p>
             </div>
-            
+
             {clientSecret && (
               <Elements stripe={stripePromise} options={{ clientSecret }}>
-                <PaymentForm 
-                  clientSecret={clientSecret}
-                  onPaymentSuccess={handlePaymentSuccess}
-                />
+                <PaymentForm clientSecret={clientSecret} onPaymentSuccess={handlePaymentSuccess} />
               </Elements>
             )}
-            
+
             <Button
               variant="outline"
               onClick={() => setBookingStep('details')}
@@ -444,4 +459,4 @@ export function BookingForm({
       </div>
     </ErrorBoundary>
   );
-} 
+}

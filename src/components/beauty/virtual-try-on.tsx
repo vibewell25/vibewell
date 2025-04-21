@@ -1,28 +1,28 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Camera, Upload, Image, Video, Settings, Share2 } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
-import { toast } from "@/components/ui/use-toast";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Camera, Upload, Image, Video, Settings, Share2 } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState } from 'react';
+import { toast } from '@/components/ui/use-toast';
 
 export function VirtualTryOn() {
-  const [activeTab, setActiveTab] = useState("camera");
+  const [activeTab, setActiveTab] = useState('camera');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleTryOn = async () => {
     try {
       setIsLoading(true);
       // Simulate try-on process
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       toast({
-        title: "Try-On Complete",
-        description: "Your virtual try-on has been processed successfully.",
+        title: 'Try-On Complete',
+        description: 'Your virtual try-on has been processed successfully.',
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to process virtual try-on.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to process virtual try-on.',
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -64,7 +64,7 @@ export function VirtualTryOn() {
                   Settings
                 </Button>
                 <Button onClick={handleTryOn} disabled={isLoading}>
-                  {isLoading ? "Processing..." : "Start Try-On"}
+                  {isLoading ? 'Processing...' : 'Start Try-On'}
                 </Button>
               </div>
             </TabsContent>
@@ -74,9 +74,7 @@ export function VirtualTryOn() {
                 <Upload className="h-12 w-12 text-muted-foreground" />
                 <div className="text-center">
                   <p className="text-sm font-medium">Upload a photo</p>
-                  <p className="text-xs text-muted-foreground">
-                    Supported formats: JPG, PNG, WEBP
-                  </p>
+                  <p className="text-xs text-muted-foreground">Supported formats: JPG, PNG, WEBP</p>
                 </div>
                 <Button variant="outline">
                   <Image className="mr-2 h-4 w-4" />
@@ -85,7 +83,7 @@ export function VirtualTryOn() {
               </div>
               <div className="flex justify-center">
                 <Button onClick={handleTryOn} disabled={isLoading}>
-                  {isLoading ? "Processing..." : "Start Try-On"}
+                  {isLoading ? 'Processing...' : 'Start Try-On'}
                 </Button>
               </div>
             </TabsContent>
@@ -107,9 +105,7 @@ export function VirtualTryOn() {
         <Card>
           <CardHeader>
             <CardTitle>Recent Try-Ons</CardTitle>
-            <CardDescription>
-              View your previous virtual try-on sessions.
-            </CardDescription>
+            <CardDescription>View your previous virtual try-on sessions.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -119,9 +115,7 @@ export function VirtualTryOn() {
                   <Image className="h-10 w-10 rounded-md" />
                   <div>
                     <p className="text-sm font-medium">Natural Look</p>
-                    <p className="text-xs text-muted-foreground">
-                      Last tried 2 hours ago
-                    </p>
+                    <p className="text-xs text-muted-foreground">Last tried 2 hours ago</p>
                   </div>
                 </div>
                 <Button variant="ghost" size="sm">
@@ -135,9 +129,7 @@ export function VirtualTryOn() {
         <Card>
           <CardHeader>
             <CardTitle>Saved Looks</CardTitle>
-            <CardDescription>
-              Your favorite virtual try-on results.
-            </CardDescription>
+            <CardDescription>Your favorite virtual try-on results.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -147,9 +139,7 @@ export function VirtualTryOn() {
                   <Image className="h-10 w-10 rounded-md" />
                   <div>
                     <p className="text-sm font-medium">Evening Glam</p>
-                    <p className="text-xs text-muted-foreground">
-                      Saved 3 days ago
-                    </p>
+                    <p className="text-xs text-muted-foreground">Saved 3 days ago</p>
                   </div>
                 </div>
                 <Button variant="ghost" size="sm">
@@ -162,4 +152,4 @@ export function VirtualTryOn() {
       </div>
     </div>
   );
-} 
+}

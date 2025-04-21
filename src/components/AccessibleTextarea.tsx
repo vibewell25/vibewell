@@ -25,15 +25,12 @@ export const AccessibleTextarea: React.FC<AccessibleTextareaProps> = ({
     none: 'resize-none',
     vertical: 'resize-y',
     horizontal: 'resize-x',
-    both: 'resize'
+    both: 'resize',
   };
 
   return (
     <div className="w-full">
-      <label
-        htmlFor={textareaId}
-        className="block text-sm font-medium text-gray-700 mb-1"
-      >
+      <label htmlFor={textareaId} className="block text-sm font-medium text-gray-700 mb-1">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
@@ -70,4 +67,4 @@ export const AccessibleTextarea: React.FC<AccessibleTextareaProps> = ({
   );
 };
 
-export default AccessibleTextarea; 
+export default AccessibleTextarea;

@@ -35,7 +35,7 @@ export const AccessibleAccordion: React.FC<AccessibleAccordionProps> = ({
         : isExpanded
           ? []
           : [itemId];
-      
+
       onItemToggle?.(itemId, !isExpanded);
       return newExpandedItems;
     });
@@ -43,7 +43,7 @@ export const AccessibleAccordion: React.FC<AccessibleAccordionProps> = ({
 
   const handleKeyDown = (e: React.KeyboardEvent, itemId: string) => {
     const itemIndex = items.findIndex(item => item.id === itemId);
-    
+
     switch (e.key) {
       case 'Enter':
       case ' ':
@@ -83,14 +83,14 @@ export const AccessibleAccordion: React.FC<AccessibleAccordionProps> = ({
 
   return (
     <div className={className}>
-      {items.map((item) => {
+      {items.map(item => {
         const isExpanded = expandedItems.includes(item.id);
-        
+
         return (
           <div key={item.id} className="border-b border-gray-200">
             <h3>
               <button
-                ref={(el) => {
+                ref={el => {
                   itemRefs.current[item.id] = el;
                 }}
                 id={`accordion-${item.id}-header`}
@@ -105,7 +105,7 @@ export const AccessibleAccordion: React.FC<AccessibleAccordionProps> = ({
                   focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
                 `}
                 onClick={() => handleItemClick(item.id)}
-                onKeyDown={(e) => handleKeyDown(e, item.id)}
+                onKeyDown={e => handleKeyDown(e, item.id)}
               >
                 {item.title}
                 <span
@@ -128,9 +128,7 @@ export const AccessibleAccordion: React.FC<AccessibleAccordionProps> = ({
                 ${isExpanded ? 'max-h-screen' : 'max-h-0'}
               `}
             >
-              <div className="px-4 py-3">
-                {item.content}
-              </div>
+              <div className="px-4 py-3">{item.content}</div>
             </div>
           </div>
         );
@@ -139,4 +137,4 @@ export const AccessibleAccordion: React.FC<AccessibleAccordionProps> = ({
   );
 };
 
-export default AccessibleAccordion; 
+export default AccessibleAccordion;

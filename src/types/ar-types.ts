@@ -21,4 +21,4 @@ export interface ARCacheStats {
   totalSize: number;
   deviceQuota: number;
   percentUsed: number;
-} 
+}

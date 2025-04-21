@@ -1,6 +1,6 @@
 /**
  * PDF Generator Module
- * 
+ *
  * This module provides functionality to generate PDF reports from HTML templates.
  * In a real implementation, this would use a library like puppeteer or jspdf.
  * For this demo, we'll simulate the PDF generation.
@@ -12,7 +12,7 @@ import path from 'path';
 
 /**
  * Generate a PDF file from an HTML file
- * 
+ *
  * @param htmlPath Path to the HTML file
  * @param pdfPath Path where the PDF should be saved
  * @returns A promise that resolves when the PDF is generated
@@ -20,25 +20,25 @@ import path from 'path';
 export async function generatePDF(htmlPath: string, pdfPath: string): Promise<void> {
   try {
     // In a real implementation, we would use a library like puppeteer:
-    // 
+    //
     // const browser = await puppeteer.launch();
     // const page = await browser.newPage();
     // await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' });
-    // await page.pdf({ 
+    // await page.pdf({
     //   path: pdfPath,
     //   format: 'A4',
     //   printBackground: true,
     //   margin: { top: '1cm', right: '1cm', bottom: '1cm', left: '1cm' }
     // });
     // await browser.close();
-    
+
     // For this demo, we'll just create a simple PDF placeholder
     const htmlContent = fs.readFileSync(htmlPath, 'utf8');
-    
+
     // Extract title from HTML
     const titleMatch = htmlContent.match(/<title>(.*?)<\/title>/);
     const title = titleMatch ? titleMatch[1] : 'Report';
-    
+
     // Create a simplistic PDF content representation
     const pdfContent = `%PDF-1.7
 1 0 obj
@@ -79,13 +79,15 @@ startxref
 
     // Write the PDF file
     await promisify(fs.writeFile)(pdfPath, pdfContent);
-    
+
     console.log(`PDF placeholder created at: ${pdfPath}`);
-    console.log('Note: This is a simulated PDF. In a real application, you would use a proper PDF generation library.');
-    
+    console.log(
+      'Note: This is a simulated PDF. In a real application, you would use a proper PDF generation library.'
+    );
+
     return;
   } catch (error) {
     console.error('Error generating PDF:', error);
     throw new Error('Failed to generate PDF');
   }
-} 
+}

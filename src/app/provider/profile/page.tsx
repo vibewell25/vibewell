@@ -25,7 +25,9 @@ export default function ProviderProfilePage() {
 
   const checkUser = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) {
         router.push('/login');
         return;
@@ -68,9 +70,11 @@ export default function ProviderProfilePage() {
   };
 
   if (isLoading) {
-    return <div className="flex items-center justify-center min-h-screen">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-    </div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
   }
 
   if (!profile) {
@@ -80,7 +84,7 @@ export default function ProviderProfilePage() {
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-6">Provider Profile</h1>
-      
+
       <Tabs defaultValue={activeTab} onValueChange={handleTabChange} className="mb-8">
         <TabsList className="grid grid-cols-2 w-[400px]">
           <TabsTrigger value="personal" className="flex items-center gap-2">
@@ -92,7 +96,7 @@ export default function ProviderProfilePage() {
             Business Profile
           </TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="personal" className="mt-6">
           <div className="grid gap-8 md:grid-cols-2">
             <Card>
@@ -127,7 +131,7 @@ export default function ProviderProfilePage() {
             </Card>
           </div>
         </TabsContent>
-        
+
         <TabsContent value="business" className="mt-6">
           {hasCompletedBusinessSetup ? (
             <div className="flex flex-col space-y-6">
@@ -148,7 +152,9 @@ export default function ProviderProfilePage() {
                   <CardTitle>Business Profile Setup</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="mb-4">Let's set up your business profile with a few simple steps.</p>
+                  <p className="mb-4">
+                    Let's set up your business profile with a few simple steps.
+                  </p>
                   <BusinessProfileWizard />
                 </CardContent>
               </Card>
@@ -158,4 +164,4 @@ export default function ProviderProfilePage() {
       </Tabs>
     </div>
   );
-} 
+}

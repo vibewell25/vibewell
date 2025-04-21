@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Icons } from '@/components/ui/icons';
 import { toast } from '@/components/ui/use-toast';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 
 interface BusinessStats {
   totalBookings: number;
@@ -62,53 +62,37 @@ export function BusinessDashboard({ className = '' }: BusinessDashboardProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">
-              Total Bookings
-            </CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-500">Total Bookings</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {stats?.totalBookings || 0}
-            </div>
+            <div className="text-2xl font-bold">{stats?.totalBookings || 0}</div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">
-              Total Revenue
-            </CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-500">Total Revenue</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              ${stats?.totalRevenue?.toFixed(2) || '0.00'}
-            </div>
+            <div className="text-2xl font-bold">${stats?.totalRevenue?.toFixed(2) || '0.00'}</div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">
-              Active Customers
-            </CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-500">Active Customers</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {stats?.activeCustomers || 0}
-            </div>
+            <div className="text-2xl font-bold">{stats?.activeCustomers || 0}</div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">
-              Average Rating
-            </CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-500">Average Rating</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {stats?.averageRating?.toFixed(1) || '0.0'} ⭐
-            </div>
+            <div className="text-2xl font-bold">{stats?.averageRating?.toFixed(1) || '0.0'} ⭐</div>
           </CardContent>
         </Card>
       </div>
@@ -191,4 +175,4 @@ export function BusinessDashboard({ className = '' }: BusinessDashboardProps) {
       </Tabs>
     </div>
   );
-} 
+}

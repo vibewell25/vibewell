@@ -17,4 +17,4 @@ declare module '@/app/api/*/*/route' {
 // Specifically define the login route
 declare module '@/app/api/auth/login/route' {
   export function POST(request: NextRequest): Promise<NextResponse>;
-} 
+}

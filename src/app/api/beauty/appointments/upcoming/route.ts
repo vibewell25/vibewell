@@ -19,7 +19,7 @@ interface Appointment {
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -71,9 +71,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching upcoming appointments:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch upcoming appointments' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch upcoming appointments' }, { status: 500 });
   }
-} 
+}

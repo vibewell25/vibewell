@@ -3,22 +3,27 @@ import { VirtualTryOn } from '../virtual-try-on';
 import { useARCache } from '@/hooks/use-ar-cache';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useEngagement } from '@/hooks/use-engagement';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 // Mock the hooks
-jest.mock('@/hooks/use-ar-cache');
-jest.mock('@/hooks/use-analytics');
-jest.mock('@/hooks/use-engagement');
+vi.mock('@/hooks/use-ar-cache');
+vi.mock('@/hooks/use-analytics');
+vi.mock('@/hooks/use-engagement');
 
 // Mock the components
-jest.mock('../ar-support-check', () => ({
-  ARSupportCheck: ({ children }: { children: React.ReactNode }) => <div data-testid="ar-support-check">{children}</div>,
+vi.mock('../ar-support-check', () => ({
+  ARSupportCheck: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="ar-support-check">{children}</div>
+  ),
 }));
 
-jest.mock('../model-error-boundary', () => ({
-  ModelErrorBoundary: ({ children }: { children: React.ReactNode }) => <div data-testid="model-error-boundary">{children}</div>,
+vi.mock('../model-error-boundary', () => ({
+  ModelErrorBoundary: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="model-error-boundary">{children}</div>
+  ),
 }));
 
-jest.mock('../three-ar-viewer', () => ({
+vi.mock('../three-ar-viewer', () => ({
   ThreeARViewer: () => <div data-testid="three-ar-viewer" />,
 }));
 
@@ -30,25 +35,25 @@ const mockModels = [
 describe('VirtualTryOn', () => {
   beforeEach(() => {
     // Reset all mocks
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Setup default mock implementations
-    (useARCache as jest.Mock).mockReturnValue({
-      getModel: jest.fn(),
-      prefetchModels: jest.fn(),
-      cancelLoading: jest.fn(),
+    (useARCache as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      getModel: vi.fn(),
+      prefetchModels: vi.fn(),
+      cancelLoading: vi.fn(),
       isLoading: false,
       loadingProgress: 0,
       error: null,
-      stats: {}
+      stats: {},
     });
 
-    (useAnalytics as jest.Mock).mockReturnValue({
-      trackEvent: jest.fn()
+    (useAnalytics as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      trackEvent: vi.fn(),
     });
 
-    (useEngagement as jest.Mock).mockReturnValue({
-      trackAchievement: jest.fn()
+    (useEngagement as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      trackAchievement: vi.fn(),
     });
   });
 
@@ -65,10 +70,14 @@ describe('VirtualTryOn', () => {
   });
 
   it('shows loading state when loading model', () => {
-    (useARCache as jest.Mock).mockReturnValue({
-      ...useARCache(),
+    (useARCache as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      getModel: vi.fn(),
+      prefetchModels: vi.fn(),
+      cancelLoading: vi.fn(),
       isLoading: true,
-      loadingProgress: 50
+      loadingProgress: 50,
+      error: null,
+      stats: {},
     });
 
     render(
@@ -84,6 +93,17 @@ describe('VirtualTryOn', () => {
   });
 
   it('handles model selection', () => {
+    const getModel = vi.fn();
+    (useARCache as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      getModel,
+      prefetchModels: vi.fn(),
+      cancelLoading: vi.fn(),
+      isLoading: false,
+      loadingProgress: 0,
+      error: null,
+      stats: {},
+    });
+
     render(
       <VirtualTryOn
         models={mockModels}
@@ -96,12 +116,12 @@ describe('VirtualTryOn', () => {
     const modelButtons = screen.getAllByRole('button');
     fireEvent.click(modelButtons[1]); // Click second model
 
-    expect(useARCache().getModel).toHaveBeenCalledWith(mockModels[1].url);
+    expect(getModel).toHaveBeenCalledWith(mockModels[1].url);
   });
 
   it('handles intensity changes', async () => {
-    const trackEvent = jest.fn();
-    (useAnalytics as jest.Mock).mockReturnValue({ trackEvent });
+    const trackEvent = vi.fn();
+    (useAnalytics as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ trackEvent });
 
     render(
       <VirtualTryOn
@@ -120,12 +140,16 @@ describe('VirtualTryOn', () => {
 
   it('handles errors correctly', async () => {
     const error = new Error('Failed to load model');
-    const onModelError = jest.fn();
-    
-    (useARCache as jest.Mock).mockReturnValue({
-      ...useARCache(),
+    const onModelError = vi.fn();
+
+    (useARCache as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      getModel: vi.fn(),
+      prefetchModels: vi.fn(),
+      cancelLoading: vi.fn(),
       error,
-      isLoading: false
+      isLoading: false,
+      loadingProgress: 0,
+      stats: {},
     });
 
     render(
@@ -143,8 +167,8 @@ describe('VirtualTryOn', () => {
   });
 
   it('tracks session duration on unmount', async () => {
-    const trackEvent = jest.fn();
-    (useAnalytics as jest.Mock).mockReturnValue({ trackEvent });
+    const trackEvent = vi.fn();
+    (useAnalytics as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ trackEvent });
 
     const { unmount } = render(
       <VirtualTryOn
@@ -156,7 +180,7 @@ describe('VirtualTryOn', () => {
     );
 
     // Fast-forward time
-    jest.advanceTimersByTime(5000);
+    vi.advanceTimersByTime(5000);
 
     unmount();
 
@@ -164,14 +188,14 @@ describe('VirtualTryOn', () => {
       'virtual_try_on_session_end',
       expect.objectContaining({
         duration: expect.any(Number),
-        userId: 'user123'
+        userId: 'user123',
       })
     );
   });
 
   it('handles AR unsupported scenario', () => {
-    const trackEvent = jest.fn();
-    (useAnalytics as jest.Mock).mockReturnValue({ trackEvent });
+    const trackEvent = vi.fn();
+    (useAnalytics as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ trackEvent });
 
     render(
       <VirtualTryOn
@@ -188,4 +212,4 @@ describe('VirtualTryOn', () => {
 
     expect(trackEvent).toHaveBeenCalledWith('ar_unsupported', expect.any(Object));
   });
-}); 
+});

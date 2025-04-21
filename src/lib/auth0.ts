@@ -25,11 +25,11 @@ export const auth0 = initAuth0({
 // Helper function to get user profile data with role information
 export const getUserProfile = (user: any) => {
   if (!user) return null;
-  
+
   // Extract roles from Auth0 user metadata
   // The actual field might vary based on your Auth0 setup
   const roles = user[`${process.env.AUTH0_NAMESPACE}/roles`] || [];
-  
+
   return {
     id: user.sub,
     email: user.email,
@@ -52,4 +52,4 @@ export interface Auth0UserProfile {
   isAdmin: boolean;
   isProvider: boolean;
   isUser: boolean;
-} 
+}

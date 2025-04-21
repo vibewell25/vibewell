@@ -1,13 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState, useEffect } from "react";
-import { toast } from "sonner";
-import { format } from "date-fns";
-import { Plus, Trash2, Edit2, Eye } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
+import { format } from 'date-fns';
+import { Plus, Trash2, Edit2, Eye } from 'lucide-react';
 
 interface Content {
   id: string;
@@ -25,26 +31,26 @@ export function WellnessContent() {
   const [contents, setContents] = useState<Content[]>([]);
   const [loading, setLoading] = useState(true);
   const [newContent, setNewContent] = useState({
-    title: "",
-    description: "",
-    category: "",
-    type: "",
-    content: "",
-    tags: "",
+    title: '',
+    description: '',
+    category: '',
+    type: '',
+    content: '',
+    tags: '',
   });
 
   useEffect(() => {
     const fetchContents = async () => {
       try {
-        const response = await fetch("/api/wellness/contents");
+        const response = await fetch('/api/wellness/contents');
         if (!response.ok) {
-          throw new Error("Failed to fetch contents");
+          throw new Error('Failed to fetch contents');
         }
         const data = await response.json();
         setContents(data);
       } catch (error) {
-        console.error("Error fetching contents:", error);
-        toast.error("Failed to load contents");
+        console.error('Error fetching contents:', error);
+        toast.error('Failed to load contents');
       } finally {
         setLoading(false);
       }
@@ -55,58 +61,58 @@ export function WellnessContent() {
 
   const handleAddContent = async () => {
     if (!newContent.title || !newContent.category || !newContent.type || !newContent.content) {
-      toast.error("Please fill in all required fields");
+      toast.error('Please fill in all required fields');
       return;
     }
 
     try {
-      const response = await fetch("/api/wellness/contents", {
-        method: "POST",
+      const response = await fetch('/api/wellness/contents', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...newContent,
-          tags: newContent.tags.split(",").map((tag) => tag.trim()),
+          tags: newContent.tags.split(',').map(tag => tag.trim()),
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add content");
+        throw new Error('Failed to add content');
       }
 
       const data = await response.json();
       setContents([...contents, data]);
       setNewContent({
-        title: "",
-        description: "",
-        category: "",
-        type: "",
-        content: "",
-        tags: "",
+        title: '',
+        description: '',
+        category: '',
+        type: '',
+        content: '',
+        tags: '',
       });
-      toast.success("Content added successfully!");
+      toast.success('Content added successfully!');
     } catch (error) {
-      console.error("Error adding content:", error);
-      toast.error("Failed to add content");
+      console.error('Error adding content:', error);
+      toast.error('Failed to add content');
     }
   };
 
   const handleDeleteContent = async (contentId: string) => {
     try {
       const response = await fetch(`/api/wellness/contents/${contentId}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete content");
+        throw new Error('Failed to delete content');
       }
 
-      setContents(contents.filter((content) => content.id !== contentId));
-      toast.success("Content deleted successfully!");
+      setContents(contents.filter(content => content.id !== contentId));
+      toast.success('Content deleted successfully!');
     } catch (error) {
-      console.error("Error deleting content:", error);
-      toast.error("Failed to delete content");
+      console.error('Error deleting content:', error);
+      toast.error('Failed to delete content');
     }
   };
 
@@ -131,18 +137,14 @@ export function WellnessContent() {
               <Input
                 id="title"
                 value={newContent.title}
-                onChange={(e) =>
-                  setNewContent({ ...newContent, title: e.target.value })
-                }
+                onChange={e => setNewContent({ ...newContent, title: e.target.value })}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               <Select
                 value={newContent.category}
-                onValueChange={(value) =>
-                  setNewContent({ ...newContent, category: value })
-                }
+                onValueChange={value => setNewContent({ ...newContent, category: value })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select category" />
@@ -159,9 +161,7 @@ export function WellnessContent() {
               <Label htmlFor="type">Type</Label>
               <Select
                 value={newContent.type}
-                onValueChange={(value) =>
-                  setNewContent({ ...newContent, type: value })
-                }
+                onValueChange={value => setNewContent({ ...newContent, type: value })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select type" />
@@ -179,9 +179,7 @@ export function WellnessContent() {
               <Input
                 id="tags"
                 value={newContent.tags}
-                onChange={(e) =>
-                  setNewContent({ ...newContent, tags: e.target.value })
-                }
+                onChange={e => setNewContent({ ...newContent, tags: e.target.value })}
               />
             </div>
             <div className="space-y-2 md:col-span-2">
@@ -189,9 +187,7 @@ export function WellnessContent() {
               <Textarea
                 id="description"
                 value={newContent.description}
-                onChange={(e) =>
-                  setNewContent({ ...newContent, description: e.target.value })
-                }
+                onChange={e => setNewContent({ ...newContent, description: e.target.value })}
               />
             </div>
             <div className="space-y-2 md:col-span-2">
@@ -199,9 +195,7 @@ export function WellnessContent() {
               <Textarea
                 id="content"
                 value={newContent.content}
-                onChange={(e) =>
-                  setNewContent({ ...newContent, content: e.target.value })
-                }
+                onChange={e => setNewContent({ ...newContent, content: e.target.value })}
               />
             </div>
           </div>
@@ -213,7 +207,7 @@ export function WellnessContent() {
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {contents.map((content) => (
+        {contents.map(content => (
           <Card key={content.id}>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -237,29 +231,21 @@ export function WellnessContent() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">
-                  {content.description}
-                </p>
+                <p className="text-sm text-muted-foreground">{content.description}</p>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">{content.category}</span>
                   <span className="text-sm text-muted-foreground">•</span>
-                  <span className="text-sm text-muted-foreground">
-                    {content.type}
-                  </span>
+                  <span className="text-sm text-muted-foreground">{content.type}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {content.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full bg-secondary px-2 py-1 text-xs"
-                    >
+                  {content.tags.map(tag => (
+                    <span key={tag} className="rounded-full bg-secondary px-2 py-1 text-xs">
                       {tag}
                     </span>
                   ))}
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  By {content.author} •{" "}
-                  {format(new Date(content.publishedAt), "MMM d, yyyy")}
+                  By {content.author} • {format(new Date(content.publishedAt), 'MMM d, yyyy')}
                 </p>
               </div>
             </CardContent>
@@ -268,4 +254,4 @@ export function WellnessContent() {
       </div>
     </div>
   );
-} 
+}

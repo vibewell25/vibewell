@@ -36,18 +36,17 @@ export const LoyaltyPointsCard: React.FC<LoyaltyPointsCardProps> = ({
       <div className="mb-6">
         <div className="flex justify-between text-sm text-gray-500 mb-2">
           <span>Progress to next level</span>
-          <span>{points}/{nextLevelPoints} points</span>
+          <span>
+            {points}/{nextLevelPoints} points
+          </span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2.5">
-          <div
-            className="bg-yellow-400 h-2.5 rounded-full"
-            style={{ width: `${progress}%` }}
-          />
+          <div className="bg-yellow-400 h-2.5 rounded-full" style={{ width: `${progress}%` }} />
         </div>
       </div>
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-gray-900">Available Rewards</h3>
-        {rewards.map((reward) => (
+        {rewards.map(reward => (
           <div
             key={reward.id}
             className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
@@ -60,17 +59,16 @@ export const LoyaltyPointsCard: React.FC<LoyaltyPointsCardProps> = ({
               </div>
             </div>
             <div className="flex items-center">
-              <span className="text-sm font-medium text-gray-900 mr-4">
-                {reward.points} points
-              </span>
+              <span className="text-sm font-medium text-gray-900 mr-4">{reward.points} points</span>
               <button
                 onClick={() => onRedeem(reward.id)}
                 disabled={!reward.isRedeemable}
                 className={`
                   px-4 py-2 rounded-md text-sm font-medium
-                  ${reward.isRedeemable
-                    ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-                    : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                  ${
+                    reward.isRedeemable
+                      ? 'bg-indigo-600 text-white hover:bg-indigo-700'
+                      : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                   }
                 `}
               >
@@ -82,8 +80,10 @@ export const LoyaltyPointsCard: React.FC<LoyaltyPointsCardProps> = ({
       </div>
       <div className="mt-6 flex items-center text-sm text-gray-500">
         <Icons.SparklesIcon className="h-5 w-5 mr-2" />
-        <span>Earn points by booking services, completing wellness content, and making purchases</span>
+        <span>
+          Earn points by booking services, completing wellness content, and making purchases
+        </span>
       </div>
     </div>
   );
-}; 
+};

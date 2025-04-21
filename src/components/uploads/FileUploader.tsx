@@ -46,7 +46,7 @@ export default function FileUploader({
       // Process each file
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        
+
         // Validate file size
         const fileSizeMB = file.size / (1024 * 1024);
         if (fileSizeMB > maxSizeMB) {
@@ -76,14 +76,14 @@ export default function FileUploader({
         // For progress tracking, we need to use XMLHttpRequest instead of fetch
         await new Promise<void>((resolve, reject) => {
           const xhr = new XMLHttpRequest();
-          
+
           xhr.upload.addEventListener('progress', (event: ProgressEvent) => {
             if (event.lengthComputable) {
               const percentCompleted = Math.round((event.loaded * 100) / event.total);
               setUploadProgress(percentCompleted);
             }
           });
-          
+
           xhr.addEventListener('load', () => {
             if (xhr.status >= 200 && xhr.status < 300) {
               resolve();
@@ -91,11 +91,11 @@ export default function FileUploader({
               reject(new Error('Failed to upload file to storage'));
             }
           });
-          
+
           xhr.addEventListener('error', () => {
             reject(new Error('Failed to upload file to storage'));
           });
-          
+
           xhr.open('PUT', uploadUrl);
           xhr.setRequestHeader('Content-Type', file.type);
           xhr.send(file);
@@ -109,14 +109,14 @@ export default function FileUploader({
     } catch (error) {
       console.error('Upload error:', error);
       setUploadError(error instanceof Error ? error.message : 'An unknown error occurred');
-      
+
       if (onUploadError && error instanceof Error) {
         onUploadError(error);
       }
     } finally {
       setIsUploading(false);
       setUploadProgress(0);
-      
+
       // Reset file input
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
@@ -140,7 +140,7 @@ export default function FileUploader({
         multiple={multiple}
         className="hidden"
       />
-      
+
       <button
         type="button"
         onClick={triggerFileInput}
@@ -153,7 +153,7 @@ export default function FileUploader({
       >
         {isUploading ? 'Uploading...' : buttonText}
       </button>
-      
+
       {isUploading && (
         <div className="mt-2">
           <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
@@ -165,15 +165,14 @@ export default function FileUploader({
           <p className="text-sm text-gray-600 mt-1">{uploadProgress}% complete</p>
         </div>
       )}
-      
-      {uploadError && (
-        <div className="text-red-600 mt-2 text-sm">{uploadError}</div>
-      )}
-      
+
+      {uploadError && <div className="text-red-600 mt-2 text-sm">{uploadError}</div>}
+
       <p className="text-xs text-gray-500 mt-2">
         Max file size: {maxSizeMB}MB
-        {acceptedFileTypes !== '*' && ` • Accepted formats: ${acceptedFileTypes.replace('*', 'All')}`}
+        {acceptedFileTypes !== '*' &&
+          ` • Accepted formats: ${acceptedFileTypes.replace('*', 'All')}`}
       </p>
     </div>
   );
-} 
+}

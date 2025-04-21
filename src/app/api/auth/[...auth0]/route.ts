@@ -13,4 +13,4 @@ export const GET = handleAuth({
   // Other handlers are automatically provided by handleAuth()
 });
 
-export const POST = handleAuth(); 
+export const POST = handleAuth();

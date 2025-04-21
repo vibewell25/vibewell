@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Elements, 
-  PaymentElement, 
-  useStripe, 
+import {
+  Elements,
+  PaymentElement,
+  useStripe,
   useElements,
-  AddressElement
+  AddressElement,
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
+import { validateField, validateForm } from '../../utils/form-validation';
 
 // Load Stripe outside of a component
 // Make sure to include your publishable key from the environment variables
@@ -140,23 +141,32 @@ function PaymentForm({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    // Reset errors
-    setNameError(null);
-    setEmailError(null);
-    setError(null);
+    // Clear previous errors
+    setNameError('');
+    setEmailError('');
+    setError('');
 
-    // Validate inputs
+    // Use centralized form validation
+    const formData = { name, email };
     let hasError = false;
-    if (!name.trim()) {
-      setNameError('Name is required');
-      hasError = true;
-    }
 
-    if (!email.trim()) {
-      setEmailError('Email is required');
-      hasError = true;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setEmailError('Please enter a valid email address');
+    try {
+      const validationResult = validateForm(formData);
+      
+      if (!validationResult.isValid) {
+        // Set specific field errors
+        if (validationResult.errors.name) {
+          setNameError(validationResult.errors.name);
+          hasError = true;
+        }
+        
+        if (validationResult.errors.email) {
+          setEmailError(validationResult.errors.email);
+          hasError = true;
+        }
+      }
+    } catch (validationError) {
+      console.error('Validation error:', validationError);
       hasError = true;
     }
 
@@ -210,24 +220,21 @@ function PaymentForm({
   }
 
   return (
-    <form 
-      onSubmit={handleSubmit} 
-      className="space-y-6" 
-      data-cy="payment-form"
-      autoComplete="off"
-    >
+    <form onSubmit={handleSubmit} className="space-y-6" data-cy="payment-form" autoComplete="off">
       <div className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="name">Full Name</Label>
           <Input
             id="name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={e => setName(e.target.value)}
             placeholder="John Doe"
             data-cy="customer-name"
           />
           {nameError && (
-            <p className="text-sm text-red-500" data-cy="name-error">{nameError}</p>
+            <p className="text-sm text-red-500" data-cy="name-error">
+              {nameError}
+            </p>
           )}
         </div>
 
@@ -237,12 +244,14 @@ function PaymentForm({
             id="email"
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
             placeholder="john@example.com"
             data-cy="customer-email"
           />
           {emailError && (
-            <p className="text-sm text-red-500" data-cy="email-error">{emailError}</p>
+            <p className="text-sm text-red-500" data-cy="email-error">
+              {emailError}
+            </p>
           )}
         </div>
 
@@ -252,7 +261,9 @@ function PaymentForm({
             <PaymentElement />
           </div>
           {error && (
-            <p className="text-sm text-red-500" data-cy="card-error">{error}</p>
+            <p className="text-sm text-red-500" data-cy="card-error">
+              {error}
+            </p>
           )}
         </div>
 
@@ -288,4 +299,4 @@ function PaymentForm({
       </div>
     </form>
   );
-} 
+}

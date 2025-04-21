@@ -12,10 +12,7 @@ const reviewUpdateSchema = z.object({
 });
 
 // GET a single review
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
 
   try {
@@ -27,48 +24,36 @@ export async function GET(
           select: {
             name: true,
             image: true,
-          }
+          },
         },
         product: {
           select: {
             name: true,
             image: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
 
     if (!review) {
-      return NextResponse.json(
-        { error: 'Review not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Review not found' }, { status: 404 });
     }
 
     return NextResponse.json(review);
   } catch (error) {
     console.error('Error fetching review:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch review' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch review' }, { status: 500 });
   }
 }
 
 // Update a review
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
   const session = await getSession();
   const userId = session?.user?.sub;
 
   if (!userId) {
-    return NextResponse.json(
-      { error: 'Authentication required' },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
   }
 
   try {
@@ -78,10 +63,7 @@ export async function PUT(
     });
 
     if (!existingReview) {
-      return NextResponse.json(
-        { error: 'Review not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Review not found' }, { status: 404 });
     }
 
     // Check if the user owns this review or is an admin
@@ -90,10 +72,7 @@ export async function PUT(
     });
 
     if (existingReview.userId !== userId && userRole?.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Not authorized to update this review' },
-        { status: 403 }
-      );
+      return NextResponse.json({ error: 'Not authorized to update this review' }, { status: 403 });
     }
 
     // Validate and parse the update data
@@ -119,27 +98,18 @@ export async function PUT(
     return NextResponse.json(updatedReview);
   } catch (error) {
     console.error('Error updating review:', error);
-    return NextResponse.json(
-      { error: 'Failed to update review' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to update review' }, { status: 500 });
   }
 }
 
 // Delete a review
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
   const session = await getSession();
   const userId = session?.user?.sub;
 
   if (!userId) {
-    return NextResponse.json(
-      { error: 'Authentication required' },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
   }
 
   try {
@@ -149,10 +119,7 @@ export async function DELETE(
     });
 
     if (!existingReview) {
-      return NextResponse.json(
-        { error: 'Review not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Review not found' }, { status: 404 });
     }
 
     // Check if the user owns this review or is an admin
@@ -161,10 +128,7 @@ export async function DELETE(
     });
 
     if (existingReview.userId !== userId && userRole?.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Not authorized to delete this review' },
-        { status: 403 }
-      );
+      return NextResponse.json({ error: 'Not authorized to delete this review' }, { status: 403 });
     }
 
     // Delete the review
@@ -172,14 +136,9 @@ export async function DELETE(
       where: { id },
     });
 
-    return NextResponse.json(
-      { success: true, message: 'Review deleted successfully' }
-    );
+    return NextResponse.json({ success: true, message: 'Review deleted successfully' });
   } catch (error) {
     console.error('Error deleting review:', error);
-    return NextResponse.json(
-      { error: 'Failed to delete review' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to delete review' }, { status: 500 });
   }
-} 
+}

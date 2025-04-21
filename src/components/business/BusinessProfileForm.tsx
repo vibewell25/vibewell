@@ -30,7 +30,11 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
   onSubmit,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<BusinessProfileFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<BusinessProfileFormData>({
     defaultValues: initialData,
   });
 
@@ -57,9 +61,7 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
             {...register('name', { required: 'Business name is required' })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           />
-          {errors.name && (
-            <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-          )}
+          {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
         </div>
 
         <div>
@@ -138,14 +140,10 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
       </div>
 
       <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="btn-primary"
-        >
+        <button type="submit" disabled={isLoading} className="btn-primary">
           {isLoading ? 'Saving...' : 'Save Changes'}
         </button>
       </div>
     </form>
   );
-}; 
+};

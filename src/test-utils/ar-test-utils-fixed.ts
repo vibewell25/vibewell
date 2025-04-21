@@ -54,7 +54,7 @@ export function renderARComponent(ui: React.ReactElement) {
   // Mock canvas and WebGL context
   const canvas = document.createElement('canvas');
   Object.defineProperty(canvas, 'getContext', { value: mockWebGL.getContext });
-  
+
   // Setup mock XR
   (global as { XRSession?: XRSessionInterface }).XRSession = mockXRSession;
   (global as { XRWebGLLayer?: XRWebGLLayerInterface }).XRWebGLLayer = class {
@@ -62,11 +62,11 @@ export function renderARComponent(ui: React.ReactElement) {
       return { x: 0, y: 0, width: 1920, height: 1080 };
     }
   } as unknown as XRWebGLLayerInterface;
-  
+
   // Add the UI element to the container
   const container = document.createElement('div');
   container.appendChild(document.createElement('div')).appendChild(ui as unknown as Node);
-  
+
   // Since we can't use @testing-library/react directly, provide a simple mock
   return {
     container,
@@ -74,7 +74,7 @@ export function renderARComponent(ui: React.ReactElement) {
       const element = document.createElement('div');
       element.setAttribute('data-testid', id);
       return element;
-    }
+    },
   };
 }
 
@@ -83,16 +83,19 @@ export class ARTestHelper {
   static createTestVector(x: number, y: number, z: number) {
     return new Vector3(x, y, z);
   }
-  
+
   static calculateDistance(v1: Vector3, v2: Vector3) {
     return v1.distanceTo(v2);
   }
-  
+
   static isWithinBounds(position: Vector3, bounds: { min: Vector3; max: Vector3 }) {
     return (
-      position.x >= bounds.min.x && position.x <= bounds.max.x &&
-      position.y >= bounds.min.y && position.y <= bounds.max.y &&
-      position.z >= bounds.min.z && position.z <= bounds.max.z
+      position.x >= bounds.min.x &&
+      position.x <= bounds.max.x &&
+      position.y >= bounds.min.y &&
+      position.y <= bounds.max.y &&
+      position.z >= bounds.min.z &&
+      position.z <= bounds.max.z
     );
   }
 }
@@ -101,29 +104,32 @@ export class ARTestHelper {
 export class ARPerformanceTest {
   private startTime: number = 0;
   private measurements: { name: string; duration: number }[] = [];
-  
+
   startMeasurement() {
     this.startTime = performance.now();
   }
-  
+
   endMeasurement(name: string) {
     const duration = performance.now() - this.startTime;
     this.measurements.push({ name, duration });
   }
-  
+
   getResults() {
     return {
       measurements: this.measurements,
-      averageDuration: this.measurements.reduce((acc, m) => acc + m.duration, 0) / this.measurements.length,
+      averageDuration:
+        this.measurements.reduce((acc, m) => acc + m.duration, 0) / this.measurements.length,
       maxDuration: Math.max(...this.measurements.map(m => m.duration)),
       minDuration: Math.min(...this.measurements.map(m => m.duration)),
     };
   }
-  
+
   assertPerformance(maxDuration: number) {
     const results = this.getResults();
     if (results.averageDuration > maxDuration) {
-      throw new Error(`Performance test failed: average duration ${results.averageDuration}ms exceeds maximum ${maxDuration}ms`);
+      throw new Error(
+        `Performance test failed: average duration ${results.averageDuration}ms exceeds maximum ${maxDuration}ms`
+      );
     }
   }
 }
@@ -134,7 +140,7 @@ export class ARAssetTest {
     try {
       const response = await fetch(url);
       if (!response.ok) throw new Error(`Failed to load asset: ${response.statusText}`);
-      
+
       const buffer = await response.arrayBuffer();
       return buffer.byteLength > 0;
     } catch (error) {
@@ -142,13 +148,13 @@ export class ARAssetTest {
       return false;
     }
   }
-  
+
   static validateGLTF(buffer: ArrayBuffer): boolean {
     // Basic GLTF validation
     const header = new Uint32Array(buffer.slice(0, 20));
     const magic = header[0];
     const version = header[1];
-    
-    return magic === 0x46546C67 && version === 2; // Check for glTF magic number and version 2
+
+    return magic === 0x46546c67 && version === 2; // Check for glTF magic number and version 2
   }
-} 
+}

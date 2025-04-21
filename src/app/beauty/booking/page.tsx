@@ -8,8 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Calendar } from '@/components/ui/calendar';
-import { 
 import { Icons } from '@/components/icons';
+import {
   CalendarIcon,
   ClockIcon,
   UserIcon,
@@ -18,6 +18,7 @@ import { Icons } from '@/components/icons';
   ArrowLeftIcon,
   ArrowRightIcon
 } from '@heroicons/react/24/outline';
+
 interface Service {
   id: string;
   name: string;

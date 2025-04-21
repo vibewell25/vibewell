@@ -41,7 +41,7 @@ export class AdvancedBookingService {
     try {
       const service = await prisma.beautyService.findUnique({
         where: { id: serviceId },
-        include: { business: true }
+        include: { business: true },
       });
 
       if (!service) {
@@ -52,7 +52,7 @@ export class AdvancedBookingService {
       const bookings = [];
 
       // Create bookings in a transaction
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async tx => {
         // Create recurring booking group
         const recurringGroup = await tx.recurringBookingGroup.create({
           data: {
@@ -61,8 +61,8 @@ export class AdvancedBookingService {
             frequency: options.frequency,
             startDate,
             endDate: options.endDate,
-            skipDates: options.skipDates || []
-          }
+            skipDates: options.skipDates || [],
+          },
         });
 
         // Create individual bookings
@@ -74,8 +74,8 @@ export class AdvancedBookingService {
               startTime: date,
               endTime: new Date(date.getTime() + service.duration * 60000),
               status: 'CONFIRMED',
-              recurringGroupId: recurringGroup.id
-            }
+              recurringGroupId: recurringGroup.id,
+            },
           });
           bookings.push(booking);
         }
@@ -84,7 +84,7 @@ export class AdvancedBookingService {
       logger.info('Created recurring booking', {
         userId,
         serviceId,
-        frequency: options.frequency
+        frequency: options.frequency,
       });
 
       return bookings;
@@ -105,8 +105,8 @@ export class AdvancedBookingService {
           preferredDates: entry.preferredDates,
           priority: this.calculatePriority(entry),
           notes: entry.notes,
-          status: 'PENDING'
-        }
+          status: 'PENDING',
+        },
       });
 
       // Check for cancellations or new slots
@@ -115,7 +115,7 @@ export class AdvancedBookingService {
       logger.info('Added to waitlist', {
         userId: entry.userId,
         serviceId: entry.serviceId,
-        priority: waitlistEntry.priority
+        priority: waitlistEntry.priority,
       });
 
       return waitlistEntry;
@@ -127,14 +127,11 @@ export class AdvancedBookingService {
   }
 
   // Package/Bundle Booking
-  async createPackageBooking(
-    userId: string,
-    options: PackageBookingOptions
-  ) {
+  async createPackageBooking(userId: string, options: PackageBookingOptions) {
     try {
       const package = await prisma.servicePackage.findUnique({
         where: { id: options.packageId },
-        include: { services: true }
+        include: { services: true },
       });
 
       if (!package) {
@@ -142,14 +139,14 @@ export class AdvancedBookingService {
       }
 
       // Create package booking in a transaction
-      const bookings = await prisma.$transaction(async (tx) => {
+      const bookings = await prisma.$transaction(async tx => {
         const packageBooking = await tx.packageBooking.create({
           data: {
             userId,
             packageId: options.packageId,
             status: 'CONFIRMED',
-            notes: options.notes
-          }
+            notes: options.notes,
+          },
         });
 
         // Create individual service bookings
@@ -165,8 +162,8 @@ export class AdvancedBookingService {
                     service.duration * 60000
                 ),
                 status: 'CONFIRMED',
-                packageBookingId: packageBooking.id
-              }
+                packageBookingId: packageBooking.id,
+              },
             })
           )
         );
@@ -174,7 +171,7 @@ export class AdvancedBookingService {
 
       logger.info('Created package booking', {
         userId,
-        packageId: options.packageId
+        packageId: options.packageId,
       });
 
       return bookings;
@@ -193,7 +190,7 @@ export class AdvancedBookingService {
     try {
       const service = await prisma.beautyService.findUnique({
         where: { id: serviceId },
-        include: { business: true }
+        include: { business: true },
       });
 
       if (!service) {
@@ -235,17 +232,14 @@ export class AdvancedBookingService {
   }
 
   // Private helper methods
-  private generateRecurringDates(
-    startDate: Date,
-    options: RecurringBookingOptions
-  ): Date[] {
+  private generateRecurringDates(startDate: Date, options: RecurringBookingOptions): Date[] {
     const dates: Date[] = [];
     let currentDate = new Date(startDate);
 
     while (currentDate <= options.endDate) {
-      if (!options.skipDates?.some(skipDate => 
-        skipDate.toDateString() === currentDate.toDateString()
-      )) {
+      if (
+        !options.skipDates?.some(skipDate => skipDate.toDateString() === currentDate.toDateString())
+      ) {
         dates.push(new Date(currentDate));
       }
 
@@ -266,19 +260,16 @@ export class AdvancedBookingService {
     return dates;
   }
 
-  private async calculateDemandMultiplier(
-    serviceId: string,
-    date: Date
-  ): Promise<number> {
+  private async calculateDemandMultiplier(serviceId: string, date: Date): Promise<number> {
     // Count bookings for the same service on the same day
     const bookingCount = await prisma.serviceBooking.count({
       where: {
         serviceId,
         startTime: {
           gte: new Date(date.setHours(0, 0, 0, 0)),
-          lt: new Date(date.setHours(23, 59, 59, 999))
-        }
-      }
+          lt: new Date(date.setHours(23, 59, 59, 999)),
+        },
+      },
     });
 
     // Calculate multiplier based on booking count
@@ -307,9 +298,9 @@ export class AdvancedBookingService {
       where: {
         userId,
         createdAt: {
-          gte: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000) // Last year
-        }
-      }
+          gte: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000), // Last year
+        },
+      },
     });
 
     if (bookingCount >= 20) return 2.0;
@@ -318,19 +309,16 @@ export class AdvancedBookingService {
     return 1.0;
   }
 
-  private async getDaysOnWaitlist(
-    userId: string,
-    serviceId: string
-  ): Promise<number> {
+  private async getDaysOnWaitlist(userId: string, serviceId: string): Promise<number> {
     const waitlistEntry = await prisma.waitlist.findFirst({
       where: {
         userId,
         serviceId,
-        status: 'PENDING'
+        status: 'PENDING',
       },
       orderBy: {
-        createdAt: 'asc'
-      }
+        createdAt: 'asc',
+      },
     });
 
     if (!waitlistEntry) return 0;
@@ -342,10 +330,7 @@ export class AdvancedBookingService {
     return daysOnWaitlist;
   }
 
-  private async checkWaitlistAvailability(
-    serviceId: string,
-    dates: Date[]
-  ) {
+  private async checkWaitlistAvailability(serviceId: string, dates: Date[]) {
     // Check each preferred date for availability
     for (const date of dates) {
       const availability = await this.checkSlotAvailability(serviceId, date);
@@ -354,14 +339,14 @@ export class AdvancedBookingService {
         const waitlistEntry = await prisma.waitlist.findFirst({
           where: {
             serviceId,
-            status: 'PENDING'
+            status: 'PENDING',
           },
           orderBy: {
-            priority: 'desc'
+            priority: 'desc',
           },
           include: {
-            user: true
-          }
+            user: true,
+          },
         });
 
         if (waitlistEntry) {
@@ -372,8 +357,8 @@ export class AdvancedBookingService {
             message: `A slot is now available for your waitlisted service on ${date.toLocaleDateString()}`,
             data: {
               serviceId,
-              date: date.toISOString()
-            }
+              date: date.toISOString(),
+            },
           });
         }
       }
@@ -385,7 +370,7 @@ export class AdvancedBookingService {
     date: Date
   ): Promise<{ available: boolean; slots: Date[] }> {
     const service = await prisma.beautyService.findUnique({
-      where: { id: serviceId }
+      where: { id: serviceId },
     });
 
     if (!service) {
@@ -398,9 +383,9 @@ export class AdvancedBookingService {
         serviceId,
         startTime: {
           gte: new Date(date.setHours(0, 0, 0, 0)),
-          lt: new Date(date.setHours(23, 59, 59, 999))
-        }
-      }
+          lt: new Date(date.setHours(23, 59, 59, 999)),
+        },
+      },
     });
 
     // Calculate available slots
@@ -408,15 +393,11 @@ export class AdvancedBookingService {
 
     return {
       available: availableSlots.length > 0,
-      slots: availableSlots
+      slots: availableSlots,
     };
   }
 
-  private findAvailableSlots(
-    date: Date,
-    duration: number,
-    existingBookings: any[]
-  ): Date[] {
+  private findAvailableSlots(date: Date, duration: number, existingBookings: any[]): Date[] {
     const slots: Date[] = [];
     const startHour = 9; // Business hours start
     const endHour = 17; // Business hours end
@@ -428,12 +409,7 @@ export class AdvancedBookingService {
 
         // Check if slot conflicts with existing bookings
         const hasConflict = existingBookings.some(booking =>
-          this.hasTimeConflict(
-            slotStart,
-            slotEnd,
-            booking.startTime,
-            booking.endTime
-          )
+          this.hasTimeConflict(slotStart, slotEnd, booking.startTime, booking.endTime)
         );
 
         if (!hasConflict) {
@@ -445,14 +421,9 @@ export class AdvancedBookingService {
     return slots;
   }
 
-  private hasTimeConflict(
-    start1: Date,
-    end1: Date,
-    start2: Date,
-    end2: Date
-  ): boolean {
+  private hasTimeConflict(start1: Date, end1: Date, start2: Date, end2: Date): boolean {
     return start1 < end2 && start2 < end1;
   }
 }
 
-export const advancedBookingService = new AdvancedBookingService(new NotificationService()); 
+export const advancedBookingService = new AdvancedBookingService(new NotificationService());

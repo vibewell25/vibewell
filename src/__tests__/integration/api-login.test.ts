@@ -20,20 +20,20 @@ jest.mock('next/headers', () => ({
     getAll: jest.fn(),
     get: jest.fn(),
     set: jest.fn(),
-  })
+  }),
 }));
 
 jest.mock('@supabase/auth-helpers-nextjs', () => ({
   createRouteHandlerClient: jest.fn(() => ({
     auth: {
-      signInWithPassword: jest.fn()
-    }
-  }))
+      signInWithPassword: jest.fn(),
+    },
+  })),
 }));
 
 jest.mock('@/app/api/auth/rate-limit-middleware', () => ({
   authRateLimiter: {},
-  applyRateLimit: jest.fn().mockResolvedValue(null) // No rate limit by default
+  applyRateLimit: jest.fn().mockResolvedValue(null), // No rate limit by default
 }));
 
 describe('Login API Endpoint', () => {
@@ -47,14 +47,14 @@ describe('Login API Endpoint', () => {
       method: 'POST',
       body: JSON.stringify({
         email: 'invalid-email',
-        password: 'password123'
-      })
+        password: 'password123',
+      }),
     });
-    
+
     // Execute the handler
     const response = await POST(req);
     const data = await response.json();
-    
+
     // Verify error response
     expect(response.status).toBe(400);
     expect(data).toHaveProperty('error', 'Invalid request data');
@@ -67,14 +67,14 @@ describe('Login API Endpoint', () => {
       method: 'POST',
       body: JSON.stringify({
         email: 'valid@example.com',
-        password: '12345' // Too short
-      })
+        password: '12345', // Too short
+      }),
     });
-    
+
     // Execute the handler
     const response = await POST(req);
     const data = await response.json();
-    
+
     // Verify error response
     expect(response.status).toBe(400);
     expect(data).toHaveProperty('error', 'Invalid request data');
@@ -88,24 +88,24 @@ describe('Login API Endpoint', () => {
       auth: {
         signInWithPassword: jest.fn().mockResolvedValue({
           data: {},
-          error: { message: 'Invalid login credentials' }
-        })
-      }
+          error: { message: 'Invalid login credentials' },
+        }),
+      },
     });
-    
+
     // Create a sample request with valid format but invalid credentials
     const req = new NextRequest('https://vibewell.com/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({
         email: 'user@example.com',
-        password: 'password123'
-      })
+        password: 'password123',
+      }),
     });
-    
+
     // Execute the handler
     const response = await POST(req);
     const data = await response.json();
-    
+
     // Verify error response
     expect(response.status).toBe(401);
     expect(data).toHaveProperty('error', 'Invalid credentials');
@@ -120,20 +120,20 @@ describe('Login API Endpoint', () => {
         { status: 429, headers: { 'Retry-After': '60' } }
       )
     );
-    
+
     // Create a sample request
     const req = new NextRequest('https://vibewell.com/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({
         email: 'user@example.com',
-        password: 'password123'
-      })
+        password: 'password123',
+      }),
     });
-    
+
     // Execute the handler
     const response = await POST(req);
     const data = await response.json();
-    
+
     // Verify rate limit response
     expect(response.status).toBe(429);
     expect(data).toHaveProperty('error', 'Too many requests');
@@ -151,27 +151,27 @@ describe('Login API Endpoint', () => {
             user: {
               id: 'user-123',
               email: 'user@example.com',
-              user_metadata: { role: 'customer' }
-            }
+              user_metadata: { role: 'customer' },
+            },
           },
-          error: null
-        })
-      }
+          error: null,
+        }),
+      },
     });
-    
+
     // Create a sample request with valid credentials
     const req = new NextRequest('https://vibewell.com/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({
         email: 'user@example.com',
-        password: 'password123'
-      })
+        password: 'password123',
+      }),
     });
-    
+
     // Execute the handler
     const response = await POST(req);
     const data = await response.json();
-    
+
     // Verify success response
     expect(response.status).toBe(200);
     expect(data).toHaveProperty('success', true);
@@ -186,22 +186,22 @@ describe('Login API Endpoint', () => {
     createRouteHandlerClient.mockImplementation(() => {
       throw new Error('Unexpected error');
     });
-    
+
     // Create a sample request
     const req = new NextRequest('https://vibewell.com/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({
         email: 'user@example.com',
-        password: 'password123'
-      })
+        password: 'password123',
+      }),
     });
-    
+
     // Execute the handler
     const response = await POST(req);
     const data = await response.json();
-    
+
     // Verify error response
     expect(response.status).toBe(500);
     expect(data).toHaveProperty('error', 'Internal server error');
   });
-}); 
+});

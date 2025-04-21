@@ -12,14 +12,11 @@ interface RouteParams {
 }
 
 // GET a single booking
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const id = params.id;
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -58,31 +55,28 @@ export async function GET(
 }
 
 // Update a booking
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const id = params.id;
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    
+
     const body = await request.json();
     const { status } = body;
-    
+
     const booking = await prisma.serviceBooking.findFirst({
       where: {
         id,
       },
     });
-    
+
     if (!booking) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
     }
-    
+
     const updatedBooking = await prisma.serviceBooking.update({
       where: {
         id,
@@ -91,7 +85,7 @@ export async function PUT(
         status: status || booking.status,
       },
     });
-    
+
     return NextResponse.json({ booking: updatedBooking });
   } catch (error) {
     console.error('Error updating booking:', error);
@@ -100,14 +94,11 @@ export async function PUT(
 }
 
 // Delete a booking
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const id = params.id;
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -140,14 +131,11 @@ export async function DELETE(
 }
 
 // Update booking status (PATCH)
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const id = params.id;
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -183,4 +171,4 @@ export async function PATCH(
     console.error('Error updating booking status:', error);
     return NextResponse.json({ error: 'Failed to update booking status' }, { status: 500 });
   }
-} 
+}

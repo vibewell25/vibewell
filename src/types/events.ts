@@ -1,9 +1,9 @@
-export type EventCategory = 
-  | 'Wellness' 
-  | 'Fitness' 
-  | 'Meditation' 
-  | 'Nutrition' 
-  | 'Yoga' 
+export type EventCategory =
+  | 'Wellness'
+  | 'Fitness'
+  | 'Meditation'
+  | 'Nutrition'
+  | 'Yoga'
   | 'Mental Health'
   | 'Community'
   | 'Workshop'
@@ -30,7 +30,7 @@ export interface EventOrganizer {
 export interface EventParticipant {
   id: string;
   name: string;
-  avatar?: string;
+  avatar?: string | undefined;
   registeredAt: string;
   status: 'registered' | 'attended' | 'cancelled';
 }
@@ -76,6 +76,10 @@ export interface Event {
   tags: string[];
   createdAt: string;
   updatedAt: string;
+  // Participants list
+  participants?: EventParticipant[];
+  // Comments 
+  comments?: EventComment[];
   // New fields for recurring events
   isRecurring?: boolean;
   recurrencePattern?: {
@@ -128,6 +132,12 @@ export interface Event {
   feedbackEnabled?: boolean;
   averageRating?: number;
   ratingCount?: number;
+  feedback?: {
+    userId: string;
+    rating: number;
+    comment: string;
+    submittedAt: string;
+  }[];
   // New fields for event check-in
   checkInEnabled?: boolean;
   checkInCode?: string;
@@ -210,4 +220,23 @@ export interface Event {
       twitterEventId?: string;
     };
   };
-} 
+  // New fields for event payment
+  isPaid?: boolean;
+  price?: number;
+  currency?: string;
+  earlyBirdPrice?: number;
+  earlyBirdEndDate?: string;
+  refundPolicy?: {
+    allowedUntil: string; // ISO date string
+    percentageToRefund: number; // e.g., 100 for full refund, 50 for 50% refund
+    description?: string;
+  };
+  paymentStatuses?: {
+    userId: string;
+    status: 'pending' | 'paid' | 'refunded' | 'failed';
+    amount: number;
+    paymentIntentId?: string;
+    paymentDate?: string;
+    refundDate?: string;
+  }[];
+}

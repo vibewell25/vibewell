@@ -41,7 +41,7 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
         url: rating.id.includes('/') ? rating.id : `/${rating.type}s/${rating.id}`,
         category: 'Financial',
         average: rating.average,
-        count: rating.count
+        count: rating.count,
       }));
       setResources(items);
       setLoading(false);
@@ -99,20 +99,18 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
     <div className="p-4 bg-white shadow-sm rounded-lg">
       <h3 className="text-lg font-medium mb-4">Top Rated Resources</h3>
       <div className="space-y-4">
-        {resources.map((resource) => (
+        {resources.map(resource => (
           <div key={`${resource.type}-${resource.id}`} className="flex items-start">
-            <div className="mr-3 mt-1">
-              {renderTypeIcon(resource.type)}
-            </div>
+            <div className="mr-3 mt-1">{renderTypeIcon(resource.type)}</div>
             <div className="flex-1">
-              <Link 
+              <Link
                 href={resource.url}
                 className="text-base font-medium text-blue-600 hover:text-blue-800"
               >
                 {resource.title}
               </Link>
               <div className="mt-1">
-                <StarRating 
+                <StarRating
                   initialRating={resource.average}
                   readonly={true}
                   size="sm"
@@ -126,4 +124,4 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
       </div>
     </div>
   );
-} 
+}

@@ -25,9 +25,6 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     console.error('Subscription creation error:', error);
-    return NextResponse.json(
-      { error: 'Failed to create subscription' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to create subscription' }, { status: 500 });
   }
-} 
+}

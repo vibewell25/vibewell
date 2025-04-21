@@ -1,8 +1,8 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Star } from "lucide-react";
-import { useState, useEffect } from "react";
-import { toast } from "sonner";
+import { Card, CardContent } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Star } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 
 interface Review {
   id: string;
@@ -29,13 +29,13 @@ export function ReviewList({ providerId }: ReviewListProps) {
       try {
         const response = await fetch(`/api/providers/${providerId}/reviews`);
         if (!response.ok) {
-          throw new Error("Failed to fetch reviews");
+          throw new Error('Failed to fetch reviews');
         }
         const data = await response.json();
         setReviews(data);
       } catch (error) {
-        console.error("Error fetching reviews:", error);
-        toast.error("Failed to load reviews");
+        console.error('Error fetching reviews:', error);
+        toast.error('Failed to load reviews');
       } finally {
         setLoading(false);
       }
@@ -62,7 +62,7 @@ export function ReviewList({ providerId }: ReviewListProps) {
 
   return (
     <div className="space-y-4">
-      {reviews.map((review) => (
+      {reviews.map(review => (
         <Card key={review.id}>
           <CardContent className="pt-6">
             <div className="flex items-start gap-4">
@@ -70,9 +70,9 @@ export function ReviewList({ providerId }: ReviewListProps) {
                 <AvatarImage src={review.user.avatar} alt={review.user.name} />
                 <AvatarFallback>
                   {review.user.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
+                    .split(' ')
+                    .map(n => n[0])
+                    .join('')}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 space-y-2">
@@ -108,4 +108,4 @@ export function ReviewList({ providerId }: ReviewListProps) {
       ))}
     </div>
   );
-} 
+}

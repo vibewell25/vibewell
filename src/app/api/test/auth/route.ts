@@ -6,6 +6,6 @@ export async function POST(req: NextRequest) {
   if (rateLimitResult) {
     return rateLimitResult;
   }
-  
+
   return NextResponse.json({ status: 'success', message: 'Authentication API endpoint' });
 }

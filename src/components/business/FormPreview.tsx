@@ -27,12 +27,12 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
   const [files, setFiles] = useState<Record<string, File>>({});
 
   const handleChange = (fieldId: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [fieldId]: value }));
+    setFormData(prev => ({ ...prev, [fieldId]: value }));
   };
 
   const handleFileChange = (fieldId: string, file: File | null) => {
     if (file) {
-      setFiles((prev) => ({ ...prev, [fieldId]: file }));
+      setFiles(prev => ({ ...prev, [fieldId]: file }));
     } else {
       const newFiles = { ...files };
       delete newFiles[fieldId];
@@ -58,7 +58,7 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
         return (
           <Input
             value={formData[field.id] || ''}
-            onChange={(e) => handleChange(field.id, e.target.value)}
+            onChange={e => handleChange(field.id, e.target.value)}
             required={field.required}
           />
         );
@@ -66,7 +66,7 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
         return (
           <Textarea
             value={formData[field.id] || ''}
-            onChange={(e) => handleChange(field.id, e.target.value)}
+            onChange={e => handleChange(field.id, e.target.value)}
             required={field.required}
           />
         );
@@ -74,11 +74,11 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
         return (
           <Select
             value={formData[field.id] || ''}
-            onValueChange={(value) => handleChange(field.id, value)}
+            onValueChange={value => handleChange(field.id, value)}
             required={field.required}
           >
             <option value="">Select an option</option>
-            {field.options?.map((option) => (
+            {field.options?.map(option => (
               <option key={option} value={option}>
                 {option}
               </option>
@@ -89,7 +89,7 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
         return (
           <Checkbox
             checked={formData[field.id] || false}
-            onCheckedChange={(checked) => handleChange(field.id, checked)}
+            onCheckedChange={checked => handleChange(field.id, checked)}
             required={field.required}
           />
         );
@@ -97,7 +97,7 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
         return (
           <Input
             type="file"
-            onChange={(e) => {
+            onChange={e => {
               const file = e.target.files?.[0] || null;
               handleFileChange(field.id, file);
             }}
@@ -117,7 +117,7 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {fields.map((field) => (
+          {fields.map(field => (
             <div key={field.id} className="space-y-2">
               <Label>
                 {field.label}
@@ -135,4 +135,4 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
       </CardContent>
     </Card>
   );
-} 
+}

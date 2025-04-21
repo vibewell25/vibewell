@@ -21,7 +21,7 @@ Always use the route constants instead of hardcoding routes:
 import { ROUTES } from '@/constants/routes';
 
 // Use in navigation
-<Link href={ROUTES.AUTH.LOGIN}>Sign in</Link>
+<Link href={ROUTES.AUTH.LOGIN}>Sign in</Link>;
 ```
 
 The following routes are standardized:
@@ -37,18 +37,18 @@ The following routes are standardized:
 
 The following methods are available through the `useAuth` hook:
 
-| Method | Parameters | Return Value | Description |
-|--------|------------|--------------|-------------|
-| `signIn` | `(email: string, password: string)` | `Promise<{ error: Error \| null }>` | Sign in with email and password |
-| `signUp` | `(email: string, password: string, name: string)` | `Promise<{ error: Error \| null }>` | Create a new account |
-| `signOut` | `()` | `Promise<void>` | Sign out the current user |
-| `resetPassword` | `(email: string)` | `Promise<{ error: Error \| null }>` | Send a password reset email |
-| `updatePassword` | `(password: string)` | `Promise<{ error: Error \| null }>` | Update user's password |
-| `verifyEmail` | `(token: string)` | `Promise<void>` | Verify email with token |
-| `resendVerificationEmail` | `()` | `Promise<void>` | Resend verification email |
-| `signInWithGoogle` | `()` | `Promise<void>` | Sign in with Google |
-| `signInWithFacebook` | `()` | `Promise<void>` | Sign in with Facebook |
-| `signInWithApple` | `()` | `Promise<void>` | Sign in with Apple |
+| Method                    | Parameters                                        | Return Value                        | Description                     |
+| ------------------------- | ------------------------------------------------- | ----------------------------------- | ------------------------------- |
+| `signIn`                  | `(email: string, password: string)`               | `Promise<{ error: Error \| null }>` | Sign in with email and password |
+| `signUp`                  | `(email: string, password: string, name: string)` | `Promise<{ error: Error \| null }>` | Create a new account            |
+| `signOut`                 | `()`                                              | `Promise<void>`                     | Sign out the current user       |
+| `resetPassword`           | `(email: string)`                                 | `Promise<{ error: Error \| null }>` | Send a password reset email     |
+| `updatePassword`          | `(password: string)`                              | `Promise<{ error: Error \| null }>` | Update user's password          |
+| `verifyEmail`             | `(token: string)`                                 | `Promise<void>`                     | Verify email with token         |
+| `resendVerificationEmail` | `()`                                              | `Promise<void>`                     | Resend verification email       |
+| `signInWithGoogle`        | `()`                                              | `Promise<void>`                     | Sign in with Google             |
+| `signInWithFacebook`      | `()`                                              | `Promise<void>`                     | Sign in with Facebook           |
+| `signInWithApple`         | `()`                                              | `Promise<void>`                     | Sign in with Apple              |
 
 ## Error Handling Pattern
 
@@ -91,7 +91,9 @@ export default function ProtectedPage() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace(`${ROUTES.AUTH.LOGIN}?callbackUrl=${encodeURIComponent(window.location.pathname)}`);
+      router.replace(
+        `${ROUTES.AUTH.LOGIN}?callbackUrl=${encodeURIComponent(window.location.pathname)}`
+      );
     }
   }, [user, loading, router]);
 
@@ -110,4 +112,4 @@ If you're using the old authentication patterns:
 1. Update imports to use `@/contexts/auth-context` instead of `@/hooks/useAuth`
 2. Update route references to use constants from `@/constants/routes`
 3. Update function calls to match the current API (check error handling)
-4. Test thoroughly after migration 
+4. Test thoroughly after migration

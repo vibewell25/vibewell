@@ -1,33 +1,75 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserFromRequest } from '@/lib/auth';
+import { isAuthenticated, getAuthState } from '@/hooks/use-unified-auth';
+import { prisma } from '@/lib/prisma';
+import { logger } from '@/utils/logger';
 
 /**
- * PATCH /api/notifications/read-all
- * Marks all notifications for a user as read
+ * PUT /api/notifications/read-all
+ * Marks all unread notifications as read for the authenticated user
  */
-export async function PATCH(request: NextRequest) {
-  // Check authentication
-  const user = await getUserFromRequest(request);
-  if (!user) {
-    return NextResponse.json(
-      { error: 'Authentication required' },
-      { status: 401 }
-    );
-  }
-
+export async function PUT(request: NextRequest) {
   try {
-    // In a real app, this would update all notifications for the user in the database
-    // For the demo, we'll just return success
-    
+    // Check if the user is authenticated
+    if (!(await isAuthenticated())) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    // Get user ID from auth state
+    const { user } = await getAuthState();
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    // Get count of unread notifications before update
+    const unreadCount = await prisma.notification.count({
+      where: {
+        userId: user.id,
+        read: false
+      }
+    });
+
+    // If no unread notifications, return early
+    if (unreadCount === 0) {
+      return NextResponse.json({
+        success: true,
+        message: 'No unread notifications found',
+        count: 0
+      });
+    }
+
+    // Update all unread notifications to read
+    const result = await prisma.notification.updateMany({
+      where: {
+        userId: user.id,
+        read: false
+      },
+      data: {
+        read: true
+      }
+    });
+
+    logger.info(`Marked ${result.count} notifications as read for user ${user.id}`);
+
+    // Return success response
     return NextResponse.json({
       success: true,
       message: 'All notifications marked as read',
+      count: result.count
     });
   } catch (error) {
-    console.error('Error marking all notifications as read:', error);
+    logger.error('Error marking all notifications as read', 
+      error instanceof Error ? error.message : String(error)
+    );
+
     return NextResponse.json(
       { error: 'Failed to mark all notifications as read' },
       { status: 500 }
     );
   }
-} 
+}

@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { ProfileForm } from '@/components/user/ProfileForm';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -12,14 +12,15 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  BellIcon, 
-  CogIcon, 
-  ShieldCheckIcon, 
-  UserIcon 
-} from "@heroicons/react/24/outline"
-import { Globe as GlobeIcon } from "lucide-react"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { BellIcon, CogIcon, ShieldCheckIcon, UserIcon } from '@heroicons/react/24/outline';
+import { Globe as GlobeIcon } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -91,11 +92,7 @@ function ProfileContent() {
 
   const handleNotificationToggle = (id: string, type: 'email' | 'push' | 'inApp') => {
     setNotificationPreferences(prev =>
-      prev.map(pref =>
-        pref.id === id
-          ? { ...pref, [type]: !pref[type] }
-          : pref
-      )
+      prev.map(pref => (pref.id === id ? { ...pref, [type]: !pref[type] } : pref))
     );
     toast.success('Notification preferences updated');
   };
@@ -106,7 +103,9 @@ function ProfileContent() {
   };
 
   const handleDeleteAccount = async () => {
-    if (!window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    if (
+      !window.confirm('Are you sure you want to delete your account? This action cannot be undone.')
+    ) {
       return;
     }
 
@@ -149,9 +148,7 @@ function ProfileContent() {
       <div className="container-app py-12">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Profile Settings</h1>
-          <p className="text-muted-foreground">
-            Manage your account information and preferences
-          </p>
+          <p className="text-muted-foreground">Manage your account information and preferences</p>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -203,14 +200,15 @@ function ProfileContent() {
               <Card>
                 <CardHeader>
                   <CardTitle>Connected Accounts</CardTitle>
-                  <CardDescription>
-                    Manage your connected social media accounts
-                  </CardDescription>
+                  <CardDescription>Manage your connected social media accounts</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {connectedAccounts.map((account) => (
-                      <div key={account.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    {connectedAccounts.map(account => (
+                      <div
+                        key={account.id}
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                      >
                         <div className="flex items-center gap-3">
                           <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
                             <GlobeIcon className="h-5 w-5 text-gray-500" />
@@ -247,20 +245,16 @@ function ProfileContent() {
             <Card>
               <CardHeader>
                 <CardTitle>Notification Preferences</CardTitle>
-                <CardDescription>
-                  Choose how you want to receive notifications
-                </CardDescription>
+                <CardDescription>Choose how you want to receive notifications</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {notificationPreferences.map((preference) => (
+                  {notificationPreferences.map(preference => (
                     <div key={preference.id} className="space-y-4">
                       <div className="flex items-center justify-between">
                         <div>
                           <h3 className="font-medium">{preference.name}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            {preference.description}
-                          </p>
+                          <p className="text-sm text-muted-foreground">{preference.description}</p>
                         </div>
                       </div>
                       <div className="grid grid-cols-3 gap-4">
@@ -302,9 +296,7 @@ function ProfileContent() {
               <Card>
                 <CardHeader>
                   <CardTitle>Security Settings</CardTitle>
-                  <CardDescription>
-                    Manage your account security settings
-                  </CardDescription>
+                  <CardDescription>Manage your account security settings</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
@@ -395,9 +387,7 @@ function ProfileContent() {
               <Card>
                 <CardHeader>
                   <CardTitle>Appearance</CardTitle>
-                  <CardDescription>
-                    Customize how the app looks and feels
-                  </CardDescription>
+                  <CardDescription>Customize how the app looks and feels</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -484,4 +474,4 @@ export default function ProfilePage() {
       <ProfileContent />
     </Suspense>
   );
-} 
+}

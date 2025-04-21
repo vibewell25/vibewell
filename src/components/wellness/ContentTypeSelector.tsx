@@ -1,10 +1,16 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 
-export type ContentType = 
-  | 'post' 
-  | 'story' 
-  | 'reel' 
+export type ContentType =
+  | 'post'
+  | 'story'
+  | 'reel'
   | 'video'
   | 'blog'
   | 'social'
@@ -22,19 +28,16 @@ interface ContentTypeSelectorProps {
   className?: string;
 }
 
-export function ContentTypeSelector({ 
-  value, 
-  onChange, 
+export function ContentTypeSelector({
+  value,
+  onChange,
   label = 'Content Type',
-  className = ''
+  className = '',
 }: ContentTypeSelectorProps) {
   return (
     <div className={`space-y-2 ${className}`}>
       <Label htmlFor="contentType">{label}</Label>
-      <Select
-        value={value}
-        onValueChange={(value) => onChange(value as ContentType)}
-      >
+      <Select value={value} onValueChange={value => onChange(value as ContentType)}>
         <SelectTrigger id="contentType">
           <SelectValue placeholder="Select content type" />
         </SelectTrigger>
@@ -55,4 +58,4 @@ export function ContentTypeSelector({
       </Select>
     </div>
   );
-} 
+}

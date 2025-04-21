@@ -59,12 +59,7 @@ function AnalyticsProviderContent({
   }, [pathname, searchParams, gaInitialized]);
 
   // Track events
-  const trackEvent = (
-    category: string, 
-    action: string, 
-    label?: string, 
-    value?: number,
-  ) => {
+  const trackEvent = (category: string, action: string, label?: string, value?: number) => {
     if (!gaInitialized) return;
 
     ReactGA.event({
@@ -83,12 +78,7 @@ function AnalyticsProviderContent({
   };
 
   // Track timing
-  const trackTiming = (
-    category: string,
-    variable: string,
-    value: number,
-    label?: string,
-  ) => {
+  const trackTiming = (category: string, variable: string, value: number, label?: string) => {
     if (!gaInitialized) return;
 
     ReactGA.timing({
@@ -110,9 +100,9 @@ function AnalyticsProviderContent({
   };
 
   return (
-    <AnalyticsContext.Provider 
-      value={{ 
-        trackEvent, 
+    <AnalyticsContext.Provider
+      value={{
+        trackEvent,
         trackPageView,
         trackTiming,
         trackException,
@@ -128,11 +118,9 @@ function AnalyticsProviderContent({
 export function AnalyticsProvider({ children, trackingId }: AnalyticsProviderProps) {
   return (
     <Suspense fallback={null}>
-      <AnalyticsProviderContent trackingId={trackingId}>
-        {children}
-      </AnalyticsProviderContent>
+      <AnalyticsProviderContent trackingId={trackingId}>{children}</AnalyticsProviderContent>
     </Suspense>
   );
 }
 
-export const useAnalytics = () => useContext(AnalyticsContext); 
+export const useAnalytics = () => useContext(AnalyticsContext);

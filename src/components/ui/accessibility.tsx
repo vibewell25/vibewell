@@ -10,4 +10,4 @@ export { SkipLink } from './skip-link';
 export { VisuallyHidden } from './visually-hidden';
 
 // Example usage:
-// import { SkipLink, AccessibleIcon, ScreenReaderOnly } from '@/components/ui/accessibility'; 
+// import { SkipLink, AccessibleIcon, ScreenReaderOnly } from '@/components/ui/accessibility';

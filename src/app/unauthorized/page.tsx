@@ -15,13 +15,14 @@ export default function Unauthorized() {
             You don't have permission to access this page.
           </p>
         </div>
-        
+
         <div className="mt-8 space-y-6">
           <div className="rounded-md shadow-sm space-y-4">
             <p className="text-gray-700">
-              This page requires additional permissions. If you believe you should have access, please contact your administrator.
+              This page requires additional permissions. If you believe you should have access,
+              please contact your administrator.
             </p>
-            
+
             {user ? (
               <div className="bg-gray-50 p-4 rounded-md">
                 <p className="text-sm text-gray-600">
@@ -31,13 +32,14 @@ export default function Unauthorized() {
             ) : (
               <div className="bg-yellow-50 p-4 rounded-md">
                 <p className="text-sm text-yellow-800">
-                  You are not currently logged in. Try logging in with an account that has the required permissions.
+                  You are not currently logged in. Try logging in with an account that has the
+                  required permissions.
                 </p>
               </div>
             )}
           </div>
         </div>
-        
+
         <div className="flex items-center justify-between mt-6">
           <Link
             href="/dashboard"
@@ -45,7 +47,7 @@ export default function Unauthorized() {
           >
             Go to Dashboard
           </Link>
-          
+
           <Link
             href="/"
             className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -56,4 +58,4 @@ export default function Unauthorized() {
       </div>
     </div>
   );
-} 
+}

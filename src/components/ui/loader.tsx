@@ -1,7 +1,7 @@
 'use client';
 
-import { Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface LoaderProps {
   className?: string;
@@ -9,10 +9,5 @@ interface LoaderProps {
 }
 
 export function Loader({ className, size = 24 }: LoaderProps) {
-  return (
-    <Loader2 
-      className={cn("animate-spin", className)} 
-      size={size}
-    />
-  );
-} 
+  return <Loader2 className={cn('animate-spin', className)} size={size} />;
+}

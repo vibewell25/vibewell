@@ -8,10 +8,7 @@ export async function POST(request: Request) {
     const response: AuthenticationResponseJSON = body.response;
 
     if (!response) {
-      return NextResponse.json(
-        { error: 'Missing authentication response' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing authentication response' }, { status: 400 });
     }
 
     // In a real application, you would:
@@ -30,16 +27,13 @@ export async function POST(request: Request) {
         credential: {
           // This would come from your database
           publicKey: new Uint8Array([]),
-          id: '',  // Base64URL string of the credential ID
+          id: '', // Base64URL string of the credential ID
           counter: 0,
         },
       });
     } catch (error) {
       console.error('Error verifying authentication:', error);
-      return NextResponse.json(
-        { error: 'Failed to verify authentication' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Failed to verify authentication' }, { status: 400 });
     }
 
     const { verified, authenticationInfo } = verification;
@@ -51,15 +45,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ verified, authenticationInfo });
     }
 
-    return NextResponse.json(
-      { error: 'Authentication verification failed' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Authentication verification failed' }, { status: 400 });
   } catch (error) {
     console.error('Error processing authentication:', error);
-    return NextResponse.json(
-      { error: 'Failed to process authentication' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to process authentication' }, { status: 500 });
   }
-} 
+}

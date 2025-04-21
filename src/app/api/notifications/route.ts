@@ -1,118 +1,90 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserFromRequest } from '@/lib/auth';
-import { z } from 'zod';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { isAuthenticated, getAuthState } from '@/hooks/use-unified-auth';
 import { prisma } from '@/lib/prisma';
-
-// Sample notifications data - In a real app, this would come from a database
-const MOCK_NOTIFICATIONS = [
-  {
-    id: '1',
-    title: 'New message received',
-    message: 'You have a new message from Jane Smith',
-    type: 'info',
-    isRead: false,
-    createdAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(), // 15 minutes ago
-    userId: 'user123',
-    link: '/messages?id=msg789',
-  },
-  {
-    id: '2',
-    title: 'Booking confirmed',
-    message: 'Your appointment with Dr. Johnson has been confirmed',
-    type: 'success',
-    isRead: true,
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
-    userId: 'user123',
-    link: '/bookings/bk456',
-  },
-  {
-    id: '3',
-    title: 'Payment successful',
-    message: 'Your payment of $75.00 has been processed successfully',
-    type: 'success',
-    isRead: false,
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
-    userId: 'user123',
-    link: '/payments/pm123',
-  },
-  {
-    id: '4',
-    title: 'Profile update required',
-    message: 'Please complete your profile to access all features',
-    type: 'error',
-    isRead: false,
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(), // 2 days ago
-    userId: 'user123',
-    link: '/profile',
-  },
-  {
-    id: '5',
-    title: 'New feature available',
-    message: 'Try our new virtual try-on experience',
-    type: 'info',
-    isRead: true,
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 72).toISOString(), // 3 days ago
-    userId: 'user123',
-    link: '/try-on',
-  },
-];
-
-// Schema for creating a notification
-const createNotificationSchema = z.object({
-  title: z.string().min(1).max(100),
-  message: z.string().min(1).max(500),
-  type: z.enum(['success', 'error', 'info', 'default']).default('info'),
-  link: z.string().optional(),
-});
+import { logger } from '@/utils/logger';
 
 /**
- * GET /api/notifications
- * Retrieves a list of notifications for the authenticated user
+ * GET /api/notifications?page=1&limit=10&filter=all|unread|read
+ * Fetches paginated notifications for the authenticated user with optional filtering
  */
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // Check if the user is authenticated
+    if (!(await isAuthenticated())) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
     }
 
-    const { searchParams } = new URL(request.url);
+    // Get user ID from auth state
+    const { user } = await getAuthState();
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    // Parse query parameters
+    const searchParams = request.nextUrl.searchParams;
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
-    const skip = (page - 1) * limit;
+    const filter = searchParams.get('filter') || 'all';
+    
+    // Validate pagination parameters
+    if (isNaN(page) || page < 1 || isNaN(limit) || limit < 1 || limit > 100) {
+      return NextResponse.json(
+        { error: 'Invalid pagination parameters' },
+        { status: 400 }
+      );
+    }
 
-    const [notifications, total] = await Promise.all([
-      prisma.notification.findMany({
-        where: {
-          userId: session.user.id
-        },
-        orderBy: {
-          createdAt: 'desc'
-        },
-        skip,
-        take: limit
-      }),
-      prisma.notification.count({
-        where: {
-          userId: session.user.id
-        }
-      })
-    ]);
+    // Build where clause based on filter
+    const where: any = { userId: user.id };
+    if (filter === 'read') {
+      where.read = true;
+    } else if (filter === 'unread') {
+      where.read = false;
+    }
 
+    // Get total count for pagination
+    const totalCount = await prisma.notification.count({ where });
+    
+    // Calculate pagination values
+    const offset = (page - 1) * limit;
+    const totalPages = Math.ceil(totalCount / limit);
+
+    // Fetch notifications with pagination
+    const notifications = await prisma.notification.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip: offset,
+      take: limit,
+    });
+
+    logger.info(`Fetched ${notifications.length} notifications for user ${user.id}`);
+
+    // Return paginated response
     return NextResponse.json({
-      notifications,
-      pagination: {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit)
+      success: true,
+      data: {
+        notifications,
+        pagination: {
+          page,
+          limit,
+          totalItems: totalCount,
+          totalPages,
+          hasNextPage: page < totalPages,
+          hasPrevPage: page > 1
+        }
       }
     });
   } catch (error) {
-    console.error('Error fetching notifications:', error);
+    logger.error('Error fetching notifications', 
+      error instanceof Error ? error.message : String(error)
+    );
+
     return NextResponse.json(
       { error: 'Failed to fetch notifications' },
       { status: 500 }
@@ -122,50 +94,75 @@ export async function GET(request: Request) {
 
 /**
  * POST /api/notifications
- * Creates a new notification
+ * Creates a new notification for a user (admin/system use)
  */
 export async function POST(request: NextRequest) {
-  // Check for authentication and admin privileges
-  const user = await getUserFromRequest(request);
-  if (!user || user.role !== 'admin') {
-    return NextResponse.json(
-      { error: 'Unauthorized' },
-      { status: 403 }
-    );
-  }
-
   try {
-    const body = await request.json();
-    
-    // Validate request body
-    const validatedData = createNotificationSchema.safeParse(body);
-    if (!validatedData.success) {
+    // Check authentication and admin/system permission
+    // This is a placeholder - implement actual admin/system authorization check
+    if (!(await isAuthenticated())) {
       return NextResponse.json(
-        { error: 'Invalid request data', details: validatedData.error.format() },
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    // Verify the user has permission to create notifications
+    const { user } = await getAuthState();
+    if (!user || user.role !== 'ADMIN') {
+      return NextResponse.json(
+        { error: 'Forbidden: Admin access required' },
+        { status: 403 }
+      );
+    }
+
+    // Parse request body
+    const body = await request.json();
+    const { userId, title, message, type, linkUrl } = body;
+
+    // Validate required fields
+    if (!userId || !title || !message || !type) {
+      return NextResponse.json(
+        { error: 'Missing required fields: userId, title, message, and type are required' },
         { status: 400 }
       );
     }
-    
-    const { title, message, type, link } = validatedData.data;
-    
-    // Create the notification in the database
+
+    // Verify target user exists
+    const targetUser = await prisma.user.findUnique({
+      where: { id: userId }
+    });
+
+    if (!targetUser) {
+      return NextResponse.json(
+        { error: 'Target user not found' },
+        { status: 404 }
+      );
+    }
+
+    // Create notification
     const notification = await prisma.notification.create({
       data: {
-        userId: body.userId,
+        userId,
         title,
         message,
         type,
-        isRead: false,
-        link
+        linkUrl: linkUrl || null,
+        read: false
       }
     });
-    
+
+    logger.info(`Admin ${user.id} created notification for user ${userId}`);
+
     return NextResponse.json({
-      notification,
       success: true,
-    }, { status: 201 });
+      notification
+    });
   } catch (error) {
-    console.error('Error creating notification:', error);
+    logger.error('Error creating notification', 
+      error instanceof Error ? error.message : String(error)
+    );
+
     return NextResponse.json(
       { error: 'Failed to create notification' },
       { status: 500 }
@@ -173,41 +170,60 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function PUT(request: Request) {
+/**
+ * PUT /api/notifications
+ * Batch updates notifications (deprecated - use more specific endpoints)
+ */
+export async function PUT(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.id) {
+    // Check if user is authenticated
+    if (!(await isAuthenticated())) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { notificationIds } = await request.json();
-
-    if (!Array.isArray(notificationIds)) {
-      return NextResponse.json(
-        { error: 'Invalid request body' },
-        { status: 400 }
-      );
+    // Get user from auth state
+    const { user } = await getAuthState();
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    await prisma.notification.updateMany({
+    // Parse request body
+    const { notificationIds } = await request.json();
+
+    // Validate request
+    if (!Array.isArray(notificationIds)) {
+      return NextResponse.json({ error: 'Invalid request body - notificationIds must be an array' }, { status: 400 });
+    }
+
+    // Update notifications to mark them as read
+    const result = await prisma.notification.updateMany({
       where: {
         id: {
-          in: notificationIds
+          in: notificationIds,
         },
-        userId: session.user.id
+        userId: user.id,
       },
       data: {
-        isRead: true
-      }
+        read: true,
+      },
     });
 
-    return NextResponse.json({ success: true });
+    logger.info(`Marked ${result.count} notifications as read for user ${user.id}`);
+
+    return NextResponse.json({
+      success: true,
+      message: `${result.count} notifications marked as read`,
+      count: result.count
+    });
   } catch (error) {
-    console.error('Error marking notifications as read:', error);
+    logger.error('Error marking notifications as read', 
+      error instanceof Error ? error.message : String(error)
+    );
+    
     return NextResponse.json(
       { error: 'Failed to mark notifications as read' },
       { status: 500 }
     );
   }
-} 
+}
+

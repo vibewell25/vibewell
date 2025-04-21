@@ -18,7 +18,7 @@ export async function GET() {
     // Get user with stripe customer ID
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { stripeCustomerId: true }
+      select: { stripeCustomerId: true },
     });
 
     if (!user?.stripeCustomerId) {
@@ -53,9 +53,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching subscription:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch subscription' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch subscription' }, { status: 500 });
   }
-} 
+}

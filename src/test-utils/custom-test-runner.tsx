@@ -1,6 +1,6 @@
 /**
  * Custom Test Runner implementation
- * 
+ *
  * This module provides a test runner implementation with event emitters
  * for manually running test suites outside of the Jest environment.
  */
@@ -14,7 +14,7 @@ export enum TestStatus {
   PASSED = 'passed',
   FAILED = 'failed',
   TIMEOUT = 'timeout',
-  SKIPPED = 'skipped'
+  SKIPPED = 'skipped',
 }
 
 /**
@@ -74,10 +74,7 @@ export class TestRunner {
   /**
    * Register an event listener
    */
-  on<K extends keyof TestRunnerEvents>(
-    event: K,
-    listener: TestRunnerEvents[K]
-  ): void {
+  on<K extends keyof TestRunnerEvents>(event: K, listener: TestRunnerEvents[K]): void {
     this.emitter.on(event, listener as any);
   }
 
@@ -117,13 +114,13 @@ export class TestRunner {
 
     for (const suite of suites) {
       this.emitter.emit('suiteStart', suite);
-      
+
       const suiteStartTime = Date.now();
       const suiteResults: TestResult[] = [];
 
       for (const test of suite.tests) {
         this.emitter.emit('testStart', test, suite);
-        
+
         const testStartTime = Date.now();
         let status = TestStatus.PENDING;
         let error: Error | undefined;
@@ -136,14 +133,15 @@ export class TestRunner {
               setTimeout(() => {
                 reject(new Error(`Test "${test.name}" timed out after ${test.timeout}ms`));
               }, test.timeout);
-            })
+            }),
           ]);
 
           status = result === false ? TestStatus.FAILED : TestStatus.PASSED;
         } catch (err: unknown) {
-          status = err instanceof Error && err.message.includes('timed out') 
-            ? TestStatus.TIMEOUT 
-            : TestStatus.FAILED;
+          status =
+            err instanceof Error && err.message.includes('timed out')
+              ? TestStatus.TIMEOUT
+              : TestStatus.FAILED;
           error = err instanceof Error ? err : new Error(String(err));
         }
 
@@ -152,7 +150,7 @@ export class TestRunner {
           name: test.name,
           status,
           duration,
-          error
+          error,
         };
 
         suiteResults.push(result);
@@ -163,7 +161,7 @@ export class TestRunner {
       const suiteResult: SuiteResult = {
         name: suite.name,
         tests: suiteResults,
-        duration: suiteDuration
+        duration: suiteDuration,
       };
 
       this.results.push(suiteResult);
@@ -181,4 +179,4 @@ export class TestRunner {
 export async function runTests(suites: TestSuite[]): Promise<SuiteResult[]> {
   const runner = new TestRunner();
   return await runner.run(suites);
-} 
+}

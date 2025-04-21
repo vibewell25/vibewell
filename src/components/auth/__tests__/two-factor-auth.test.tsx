@@ -16,13 +16,13 @@ describe('TwoFactorAuth Component', () => {
 
   it('renders the component correctly', () => {
     render(<TwoFactorAuth />);
-    
+
     // Check if the main title is present
     expect(screen.getByText('Two-Factor Authentication')).toBeInTheDocument();
-    
+
     // Check if the description is present
     expect(screen.getByText(/Add an extra layer of security/)).toBeInTheDocument();
-    
+
     // Check if the methods are displayed
     expect(screen.getByText('Authenticator App')).toBeInTheDocument();
     expect(screen.getByText('SMS Verification')).toBeInTheDocument();
@@ -30,11 +30,11 @@ describe('TwoFactorAuth Component', () => {
 
   it('shows QR code when enabling authenticator app', async () => {
     render(<TwoFactorAuth />);
-    
+
     // Find and click the enable button for authenticator app
     const enableButton = screen.getAllByRole('button', { name: /Enable/i })[0];
     fireEvent.click(enableButton);
-    
+
     // Check if QR code section appears
     await waitFor(() => {
       expect(screen.getByText('Scan this QR code')).toBeInTheDocument();
@@ -44,33 +44,33 @@ describe('TwoFactorAuth Component', () => {
 
   it('handles verification code input', async () => {
     render(<TwoFactorAuth />);
-    
+
     // Enable authenticator app
     const enableButton = screen.getAllByRole('button', { name: /Enable/i })[0];
     fireEvent.click(enableButton);
-    
+
     // Enter verification code
     const codeInput = screen.getByLabelText('Verification code');
     fireEvent.change(codeInput, { target: { value: '123456' } });
-    
+
     expect(codeInput).toHaveValue('123456');
   });
 
   it('shows success toast when verification is successful', async () => {
     render(<TwoFactorAuth />);
-    
+
     // Enable authenticator app
     const enableButton = screen.getAllByRole('button', { name: /Enable/i })[0];
     fireEvent.click(enableButton);
-    
+
     // Enter verification code
     const codeInput = screen.getByLabelText('Verification code');
     fireEvent.change(codeInput, { target: { value: '123456' } });
-    
+
     // Click verify button
     const verifyButton = screen.getByRole('button', { name: /Verify/i });
     fireEvent.click(verifyButton);
-    
+
     // Check if toast was called with success message
     await waitFor(() => {
       expect(toast).toHaveBeenCalledWith(
@@ -84,11 +84,11 @@ describe('TwoFactorAuth Component', () => {
 
   it('displays phone number input when enabling SMS verification', async () => {
     render(<TwoFactorAuth />);
-    
+
     // Find and click the enable button for SMS verification
     const enableButtons = screen.getAllByRole('button', { name: /Enable/i });
     fireEvent.click(enableButtons[1]); // SMS is the second method
-    
+
     // Check for toast with SMS verification message
     expect(toast).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -101,24 +101,24 @@ describe('TwoFactorAuth Component', () => {
   it('allows disabling of enabled methods', async () => {
     // Mock a scenario where authenticator is already enabled
     const { rerender } = render(<TwoFactorAuth />);
-    
+
     // Enable the authenticator
     const enableButton = screen.getAllByRole('button', { name: /Enable/i })[0];
     fireEvent.click(enableButton);
-    
+
     // Enter code and verify
     const codeInput = screen.getByLabelText('Verification code');
     fireEvent.change(codeInput, { target: { value: '123456' } });
     const verifyButton = screen.getByRole('button', { name: /Verify/i });
     fireEvent.click(verifyButton);
-    
+
     // Force rerender to simulate the enabled state
     rerender(<TwoFactorAuth />);
-    
+
     // Now we should see a Disable button
     const disableButton = screen.getByRole('button', { name: /Disable/i });
     fireEvent.click(disableButton);
-    
+
     // Check if toast was called with disabled message
     expect(toast).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -127,4 +127,4 @@ describe('TwoFactorAuth Component', () => {
       })
     );
   });
-}); 
+});

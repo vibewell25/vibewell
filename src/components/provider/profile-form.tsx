@@ -11,29 +11,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { prisma } from '@/lib/database/client';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from '@/components/ui/tabs';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import {
-  Switch
-} from "@/components/ui/switch";
+} from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
 import { Shield, Eye, Bell, Mail, Send, CheckCircle2 } from 'lucide-react';
 
 const profileSchema = z.object({
@@ -69,7 +56,7 @@ export function ProviderProfileForm() {
   const [verificationCode, setVerificationCode] = useState('');
   const [activeTab, setActiveTab] = useState('personal');
   const { toast } = useToast();
-  
+
   const {
     register,
     handleSubmit,
@@ -96,7 +83,7 @@ export function ProviderProfileForm() {
         promotional_notifications: false,
         newsletter: false,
       },
-    }
+    },
   });
 
   useEffect(() => {
@@ -105,7 +92,9 @@ export function ProviderProfileForm() {
 
   const fetchProfile = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) throw new Error('No user found');
 
       const { data, error } = await supabase
@@ -115,7 +104,7 @@ export function ProviderProfileForm() {
         .single();
 
       if (error) throw error;
-      
+
       setProfile(data);
       reset({
         full_name: data.full_name || '',
@@ -153,7 +142,9 @@ export function ProviderProfileForm() {
 
   const onSubmit = async (data: ProfileFormData) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) throw new Error('No user found');
 
       const { error } = await supabase
@@ -180,7 +171,7 @@ export function ProviderProfileForm() {
         title: 'Success',
         description: 'Profile updated successfully',
       });
-      
+
       // Refresh profile data
       fetchProfile();
     } catch (error) {
@@ -196,14 +187,14 @@ export function ProviderProfileForm() {
   const sendEmailVerification = async () => {
     try {
       setIsSendingVerification(true);
-      
+
       const { error } = await supabase.auth.resend({
         type: 'signup',
         email: profile?.email,
       });
-      
+
       if (error) throw error;
-      
+
       toast({
         title: 'Verification Email Sent',
         description: 'Please check your inbox for the verification link',
@@ -225,15 +216,18 @@ export function ProviderProfileForm() {
     // For now, we're just simulating the verification process
     try {
       setIsVerifyingPhone(true);
-      
+
       // Simulate API call to verify phone
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Update the profile with verified phone
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) throw new Error('No user found');
 
-      if (verificationCode === '123456') { // For demo, any 6-digit code would work
+      if (verificationCode === '123456') {
+        // For demo, any 6-digit code would work
         const { error } = await supabase
           .from('profiles')
           .update({
@@ -243,12 +237,12 @@ export function ProviderProfileForm() {
           .eq('id', user.id);
 
         if (error) throw error;
-        
+
         toast({
           title: 'Phone Verified',
           description: 'Your phone number has been verified successfully',
         });
-        
+
         // Refresh profile data
         fetchProfile();
       } else {
@@ -276,9 +270,11 @@ export function ProviderProfileForm() {
   };
 
   if (isLoading) {
-    return <div className="flex justify-center items-center p-8">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-    </div>;
+    return (
+      <div className="flex justify-center items-center p-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
   }
 
   return (
@@ -297,23 +293,21 @@ export function ProviderProfileForm() {
           Notifications
         </TabsTrigger>
       </TabsList>
-      
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <TabsContent value="personal" className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>Email Verification</CardTitle>
-              <CardDescription>
-                Verify your email to access all features
-              </CardDescription>
+              <CardDescription>Verify your email to access all features</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">{profile?.email}</p>
                   <p className="text-sm text-muted-foreground">
-                    {profile?.email_verified 
-                      ? 'Email verified' 
+                    {profile?.email_verified
+                      ? 'Email verified'
                       : 'Email not verified. Please check your inbox for verification link.'}
                   </p>
                 </div>
@@ -324,7 +318,7 @@ export function ProviderProfileForm() {
                       Verified
                     </div>
                   ) : (
-                    <Button 
+                    <Button
                       type="button"
                       variant="outline"
                       onClick={sendEmailVerification}
@@ -339,28 +333,20 @@ export function ProviderProfileForm() {
               </div>
             </CardContent>
           </Card>
-      
+
           <Card>
             <CardHeader>
               <CardTitle>Phone Verification</CardTitle>
-              <CardDescription>
-                Verify your phone number for additional security
-              </CardDescription>
+              <CardDescription>Verify your phone number for additional security</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
                 <div>
                   <Label htmlFor="phone">Phone Number</Label>
-                  <Input
-                    id="phone"
-                    {...register('phone')}
-                    placeholder="Enter your phone number"
-                  />
-                  {errors.phone && (
-                    <p className="text-sm text-red-500">{errors.phone.message}</p>
-                  )}
+                  <Input id="phone" {...register('phone')} placeholder="Enter your phone number" />
+                  {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
                 </div>
-                
+
                 {!profile?.phone_verified && profile?.phone && (
                   <div className="space-y-2">
                     <Label htmlFor="verification_code">Verification Code</Label>
@@ -368,11 +354,11 @@ export function ProviderProfileForm() {
                       <Input
                         id="verification_code"
                         value={verificationCode}
-                        onChange={(e) => setVerificationCode(e.target.value)}
+                        onChange={e => setVerificationCode(e.target.value)}
                         placeholder="Enter 6-digit code"
                         maxLength={6}
                       />
-                      <Button 
+                      <Button
                         type="button"
                         onClick={verifyPhone}
                         disabled={isVerifyingPhone || !verificationCode}
@@ -381,12 +367,10 @@ export function ProviderProfileForm() {
                         {isVerifyingPhone ? 'Verifying...' : 'Verify Phone'}
                       </Button>
                     </div>
-                    <p className="text-xs text-muted-foreground">
-                      For testing, use code: 123456
-                    </p>
+                    <p className="text-xs text-muted-foreground">For testing, use code: 123456</p>
                   </div>
                 )}
-                
+
                 {profile?.phone_verified && (
                   <div className="flex items-center text-green-600 font-medium">
                     <CheckCircle2 className="h-5 w-5 mr-2" />
@@ -396,13 +380,11 @@ export function ProviderProfileForm() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>Profile Information</CardTitle>
-              <CardDescription>
-                Update your personal profile information
-              </CardDescription>
+              <CardDescription>Update your personal profile information</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -419,23 +401,13 @@ export function ProviderProfileForm() {
 
               <div>
                 <Label htmlFor="bio">Bio</Label>
-                <Textarea
-                  id="bio"
-                  {...register('bio')}
-                  placeholder="Tell us about yourself"
-                />
-                {errors.bio && (
-                  <p className="text-sm text-red-500">{errors.bio.message}</p>
-                )}
+                <Textarea id="bio" {...register('bio')} placeholder="Tell us about yourself" />
+                {errors.bio && <p className="text-sm text-red-500">{errors.bio.message}</p>}
               </div>
 
               <div>
                 <Label htmlFor="location">Location</Label>
-                <Input
-                  id="location"
-                  {...register('location')}
-                  placeholder="Enter your location"
-                />
+                <Input id="location" {...register('location')} placeholder="Enter your location" />
                 {errors.location && (
                   <p className="text-sm text-red-500">{errors.location.message}</p>
                 )}
@@ -455,7 +427,7 @@ export function ProviderProfileForm() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="visibility" className="space-y-6">
           <Card>
             <CardHeader>
@@ -467,9 +439,11 @@ export function ProviderProfileForm() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="profile_visibility">Profile Visibility</Label>
-                <Select 
+                <Select
                   defaultValue={profile?.profile_visibility || 'public'}
-                  onValueChange={(value: ProfileVisibility) => setValue('profile_visibility', value)}
+                  onValueChange={(value: ProfileVisibility) =>
+                    setValue('profile_visibility', value)
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select visibility" />
@@ -481,54 +455,62 @@ export function ProviderProfileForm() {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="show_email" className="text-base">Show Email Address</Label>
+                  <Label htmlFor="show_email" className="text-base">
+                    Show Email Address
+                  </Label>
                   <p className="text-sm text-muted-foreground">
                     Allow others to see your email address
                   </p>
                 </div>
-                <Switch 
+                <Switch
                   id="show_email"
                   defaultChecked={profile?.show_email || false}
-                  onCheckedChange={(checked) => setValue('show_email', checked)}
+                  onCheckedChange={checked => setValue('show_email', checked)}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="show_phone" className="text-base">Show Phone Number</Label>
+                  <Label htmlFor="show_phone" className="text-base">
+                    Show Phone Number
+                  </Label>
                   <p className="text-sm text-muted-foreground">
                     Allow others to see your phone number
                   </p>
                 </div>
-                <Switch 
+                <Switch
                   id="show_phone"
                   defaultChecked={profile?.show_phone || false}
-                  onCheckedChange={(checked) => setValue('show_phone', checked)}
+                  onCheckedChange={checked => setValue('show_phone', checked)}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="allow_tagging" className="text-base">Allow Tagging</Label>
+                  <Label htmlFor="allow_tagging" className="text-base">
+                    Allow Tagging
+                  </Label>
                   <p className="text-sm text-muted-foreground">
                     Allow others to tag you in posts and comments
                   </p>
                 </div>
-                <Switch 
+                <Switch
                   id="allow_tagging"
                   defaultChecked={profile?.allow_tagging !== false}
-                  onCheckedChange={(checked) => setValue('allow_tagging', checked)}
+                  onCheckedChange={checked => setValue('allow_tagging', checked)}
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="receive_messages_from">Receive Messages From</Label>
-                <Select 
+                <Select
                   defaultValue={profile?.receive_messages_from || 'anyone'}
-                  onValueChange={(value) => setValue('receive_messages_from', value as 'anyone' | 'contacts_only' | 'none')}
+                  onValueChange={value =>
+                    setValue('receive_messages_from', value as 'anyone' | 'contacts_only' | 'none')
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select who can message you" />
@@ -543,139 +525,167 @@ export function ProviderProfileForm() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="notifications" className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>Notification Preferences</CardTitle>
-              <CardDescription>
-                Manage how and when you receive notifications
-              </CardDescription>
+              <CardDescription>Manage how and when you receive notifications</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <h3 className="text-base font-medium">Communication Channels</h3>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="email_notifications" className="text-base">Email Notifications</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Receive notifications via email
-                    </p>
+                    <Label htmlFor="email_notifications" className="text-base">
+                      Email Notifications
+                    </Label>
+                    <p className="text-sm text-muted-foreground">Receive notifications via email</p>
                   </div>
-                  <Switch 
+                  <Switch
                     id="email_notifications"
-                    defaultChecked={profile?.notification_preferences?.email_notifications !== false}
-                    onCheckedChange={(checked) => setValue('notification_preferences.email_notifications', checked)}
+                    defaultChecked={
+                      profile?.notification_preferences?.email_notifications !== false
+                    }
+                    onCheckedChange={checked =>
+                      setValue('notification_preferences.email_notifications', checked)
+                    }
                   />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="sms_notifications" className="text-base">SMS Notifications</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Receive notifications via SMS
-                    </p>
+                    <Label htmlFor="sms_notifications" className="text-base">
+                      SMS Notifications
+                    </Label>
+                    <p className="text-sm text-muted-foreground">Receive notifications via SMS</p>
                   </div>
-                  <Switch 
+                  <Switch
                     id="sms_notifications"
                     defaultChecked={profile?.notification_preferences?.sms_notifications !== false}
-                    onCheckedChange={(checked) => setValue('notification_preferences.sms_notifications', checked)}
+                    onCheckedChange={checked =>
+                      setValue('notification_preferences.sms_notifications', checked)
+                    }
                   />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="push_notifications" className="text-base">Push Notifications</Label>
+                    <Label htmlFor="push_notifications" className="text-base">
+                      Push Notifications
+                    </Label>
                     <p className="text-sm text-muted-foreground">
                       Receive push notifications on your devices
                     </p>
                   </div>
-                  <Switch 
+                  <Switch
                     id="push_notifications"
                     defaultChecked={profile?.notification_preferences?.push_notifications !== false}
-                    onCheckedChange={(checked) => setValue('notification_preferences.push_notifications', checked)}
+                    onCheckedChange={checked =>
+                      setValue('notification_preferences.push_notifications', checked)
+                    }
                   />
                 </div>
               </div>
-              
+
               <div className="space-y-4">
                 <h3 className="text-base font-medium">Notification Types</h3>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="booking_reminders" className="text-base">Booking Reminders</Label>
+                    <Label htmlFor="booking_reminders" className="text-base">
+                      Booking Reminders
+                    </Label>
                     <p className="text-sm text-muted-foreground">
                       Receive reminders about upcoming bookings
                     </p>
                   </div>
-                  <Switch 
+                  <Switch
                     id="booking_reminders"
                     defaultChecked={profile?.notification_preferences?.booking_reminders !== false}
-                    onCheckedChange={(checked) => setValue('notification_preferences.booking_reminders', checked)}
+                    onCheckedChange={checked =>
+                      setValue('notification_preferences.booking_reminders', checked)
+                    }
                   />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="messages_notifications" className="text-base">Messages</Label>
+                    <Label htmlFor="messages_notifications" className="text-base">
+                      Messages
+                    </Label>
                     <p className="text-sm text-muted-foreground">
                       Receive notifications for new messages
                     </p>
                   </div>
-                  <Switch 
+                  <Switch
                     id="messages_notifications"
-                    defaultChecked={profile?.notification_preferences?.messages_notifications !== false}
-                    onCheckedChange={(checked) => setValue('notification_preferences.messages_notifications', checked)}
+                    defaultChecked={
+                      profile?.notification_preferences?.messages_notifications !== false
+                    }
+                    onCheckedChange={checked =>
+                      setValue('notification_preferences.messages_notifications', checked)
+                    }
                   />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="promotional_notifications" className="text-base">Promotional</Label>
+                    <Label htmlFor="promotional_notifications" className="text-base">
+                      Promotional
+                    </Label>
                     <p className="text-sm text-muted-foreground">
                       Receive notifications about promotions and offers
                     </p>
                   </div>
-                  <Switch 
+                  <Switch
                     id="promotional_notifications"
-                    defaultChecked={profile?.notification_preferences?.promotional_notifications === true}
-                    onCheckedChange={(checked) => setValue('notification_preferences.promotional_notifications', checked)}
+                    defaultChecked={
+                      profile?.notification_preferences?.promotional_notifications === true
+                    }
+                    onCheckedChange={checked =>
+                      setValue('notification_preferences.promotional_notifications', checked)
+                    }
                   />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="marketing_emails" className="text-base">Marketing Emails</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Receive marketing emails
-                    </p>
+                    <Label htmlFor="marketing_emails" className="text-base">
+                      Marketing Emails
+                    </Label>
+                    <p className="text-sm text-muted-foreground">Receive marketing emails</p>
                   </div>
-                  <Switch 
+                  <Switch
                     id="marketing_emails"
                     defaultChecked={profile?.notification_preferences?.marketing_emails === true}
-                    onCheckedChange={(checked) => setValue('notification_preferences.marketing_emails', checked)}
+                    onCheckedChange={checked =>
+                      setValue('notification_preferences.marketing_emails', checked)
+                    }
                   />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="newsletter" className="text-base">Newsletter</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Receive our regular newsletter
-                    </p>
+                    <Label htmlFor="newsletter" className="text-base">
+                      Newsletter
+                    </Label>
+                    <p className="text-sm text-muted-foreground">Receive our regular newsletter</p>
                   </div>
-                  <Switch 
+                  <Switch
                     id="newsletter"
                     defaultChecked={profile?.notification_preferences?.newsletter === true}
-                    onCheckedChange={(checked) => setValue('notification_preferences.newsletter', checked)}
+                    onCheckedChange={checked =>
+                      setValue('notification_preferences.newsletter', checked)
+                    }
                   />
                 </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <div className="mt-6">
           <Button type="submit" className="w-full">
             Update Profile
@@ -684,4 +694,4 @@ export function ProviderProfileForm() {
       </form>
     </Tabs>
   );
-} 
+}

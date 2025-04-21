@@ -52,11 +52,11 @@ export class SkinAnalysisService {
 
       // Preprocess image
       const tensor = await this.preprocessImage(imageData);
-      
+
       // Run inference
-      const predictions = await this.model.predict(tensor) as tf.Tensor;
+      const predictions = (await this.model.predict(tensor)) as tf.Tensor;
       const results = await this.processResults(predictions);
-      
+
       // Cleanup
       tensor.dispose();
       predictions.dispose();
@@ -74,14 +74,15 @@ export class SkinAnalysisService {
   private async preprocessImage(imageData: ImageData): Promise<tf.Tensor4D> {
     return tf.tidy(() => {
       // Convert ImageData to tensor
-      const tensor = tf.browser.fromPixels(imageData)
+      const tensor = tf.browser
+        .fromPixels(imageData)
         // Resize
         .resizeBilinear([this.IMAGE_SIZE, this.IMAGE_SIZE])
         // Normalize to [-1, 1]
         .toFloat()
         .sub(127.5)
         .div(127.5)
-        .expandDims(0) as tf.Tensor4D;  // Explicitly cast to Tensor4D
+        .expandDims(0) as tf.Tensor4D; // Explicitly cast to Tensor4D
 
       return tensor;
     });
@@ -91,14 +92,10 @@ export class SkinAnalysisService {
    * Processes model predictions
    */
   private async processResults(predictions: tf.Tensor): Promise<SkinAnalysisResult> {
-    const [
-      skinTypeProbs,
-      concernProbs,
-      healthScore
-    ] = await Promise.all([
-      predictions.slice([0, 0], [1, 4]).data(),  // Skin type
+    const [skinTypeProbs, concernProbs, healthScore] = await Promise.all([
+      predictions.slice([0, 0], [1, 4]).data(), // Skin type
       predictions.slice([0, 4], [1, 10]).data(), // Concerns
-      predictions.slice([0, 14], [1, 1]).data()  // Overall health
+      predictions.slice([0, 14], [1, 1]).data(), // Overall health
     ]);
 
     // Determine skin type
@@ -107,28 +104,31 @@ export class SkinAnalysisService {
 
     // Process concerns
     const concernTypes = [
-      'acne', 'wrinkles', 'pigmentation', 'redness', 'dryness', 'oiliness'
+      'acne',
+      'wrinkles',
+      'pigmentation',
+      'redness',
+      'dryness',
+      'oiliness',
     ] as const;
-    
-    const concerns: SkinConcern[] = concernTypes.map((type, i) => ({
-      type,
-      severity: concernProbs[i],
-      confidence: concernProbs[i + concernTypes.length],
-      regions: [] // Would be populated by a separate detection model
-    })).filter(concern => concern.confidence > 0.5);
+
+    const concerns: SkinConcern[] = concernTypes
+      .map((type, i) => ({
+        type,
+        severity: concernProbs[i],
+        confidence: concernProbs[i + concernTypes.length],
+        regions: [], // Would be populated by a separate detection model
+      }))
+      .filter(concern => concern.confidence > 0.5);
 
     // Generate recommendations
-    const recommendations = await this.generateRecommendations(
-      skinType,
-      concerns,
-      healthScore[0]
-    );
+    const recommendations = await this.generateRecommendations(skinType, concerns, healthScore[0]);
 
     return {
       skinType,
       concerns,
       overallHealth: healthScore[0],
-      recommendations
+      recommendations,
     };
   }
 
@@ -145,38 +145,22 @@ export class SkinAnalysisService {
     const recommendations: SkinAnalysisResult['recommendations'] = {
       products: [],
       treatments: [],
-      lifestyle: []
+      lifestyle: [],
     };
 
     // Product recommendations based on skin type
     switch (skinType) {
       case 'dry':
-        recommendations.products.push(
-          'Hydrating cleanser',
-          'Rich moisturizer',
-          'Facial oil'
-        );
+        recommendations.products.push('Hydrating cleanser', 'Rich moisturizer', 'Facial oil');
         break;
       case 'oily':
-        recommendations.products.push(
-          'Oil-free cleanser',
-          'Light moisturizer',
-          'Clay mask'
-        );
+        recommendations.products.push('Oil-free cleanser', 'Light moisturizer', 'Clay mask');
         break;
       case 'combination':
-        recommendations.products.push(
-          'Balanced cleanser',
-          'Zone-specific moisturizer',
-          'Toner'
-        );
+        recommendations.products.push('Balanced cleanser', 'Zone-specific moisturizer', 'Toner');
         break;
       case 'normal':
-        recommendations.products.push(
-          'Gentle cleanser',
-          'Daily moisturizer',
-          'Sunscreen'
-        );
+        recommendations.products.push('Gentle cleanser', 'Daily moisturizer', 'Sunscreen');
         break;
     }
 
@@ -219,4 +203,4 @@ export class SkinAnalysisService {
       this.model = null;
     }
   }
-} 
+}

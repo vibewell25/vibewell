@@ -2,7 +2,7 @@
 
 /**
  * Unified Authentication Context
- * 
+ *
  * Provides authentication state and methods for the entire application.
  * Consolidates functionality from previous separate auth implementations.
  * Supports both web (Supabase) and mobile authentication.
@@ -41,29 +41,29 @@ export interface AuthContextType {
   loading: boolean;
   isAuthenticated: boolean;
   userRole: UserRole;
-  
+
   // Authentication methods
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string, name: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
-  
+
   // Password management
   resetPassword: (email: string) => Promise<{ error: Error | null }>;
   updatePassword: (password: string) => Promise<{ error: Error | null }>;
-  
+
   // Social authentication
   signInWithGoogle: () => Promise<void>;
   signInWithFacebook: () => Promise<void>;
   signInWithApple: () => Promise<void>;
-  
+
   // Email verification
   verifyEmail: (token: string) => Promise<void>;
   resendVerificationEmail: () => Promise<void>;
-  
+
   // Role-based access control
   hasRole: (role: UserRole) => boolean;
   isAdmin: () => boolean;
-  
+
   // Profile management
   updateProfile: (data: { name?: string; avatar_url?: string }) => Promise<{ error: Error | null }>;
 }
@@ -72,7 +72,8 @@ export interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Detect platform (web or mobile)
-const isMobile = typeof window !== 'undefined' && 
+const isMobile =
+  typeof window !== 'undefined' &&
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 // Props for the AuthProvider component
@@ -108,19 +109,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // setLoading(false);
       return;
     }
-    
+
     // Web authentication with Supabase
     const initializeAuth = async () => {
       setLoading(true);
-      
+
       try {
         // Get current session
-        const { data: { session } } = await supabase.auth.getSession();
-        
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
         if (session) {
           setSession(session);
           setUser(session.user);
-          
+
           // Determine user role
           if (session.user?.app_metadata?.role) {
             setUserRole(session.user.app_metadata.role as UserRole);
@@ -136,20 +139,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     initializeAuth();
 
     // Set up auth state change listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        if (session?.user?.app_metadata?.role) {
-          setUserRole(session.user.app_metadata.role as UserRole);
-        } else {
-          setUserRole(UserRole.USER);
-        }
-        
-        setLoading(false);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+
+      if (session?.user?.app_metadata?.role) {
+        setUserRole(session.user.app_metadata.role as UserRole);
+      } else {
+        setUserRole(UserRole.USER);
       }
-    );
+
+      setLoading(false);
+    });
 
     // Clean up subscription on unmount
     return () => {
@@ -168,7 +171,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // On refresh needed
       async () => {
         try {
-          const { data: { session: newSession }, error } = await supabase.auth.refreshSession();
+          const {
+            data: { session: newSession },
+            error,
+          } = await supabase.auth.refreshSession();
           if (error) throw error;
           if (!newSession) throw new Error('Failed to refresh session');
         } catch (error) {
@@ -215,7 +221,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // This is a placeholder
         return { error: null };
       }
-      
+
       const { error } = await supabase.auth.signUp({
         email,
         password,
@@ -225,12 +231,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           },
         },
       });
-      
+
       if (!error) {
         // Navigate to a success page or email verification page
         router.push('/auth/verify-email');
       }
-      
+
       return { error };
     } catch (error) {
       handleError(error);
@@ -279,11 +285,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // This is a placeholder
         return { error: null };
       }
-      
+
       const { error } = await supabase.auth.updateUser({
         password,
       });
-      
+
       return { error };
     } catch (error) {
       handleError(error);
@@ -301,16 +307,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // This is a placeholder
         return;
       }
-      
+
       const { error } = await supabase.auth.verifyOtp({
         token_hash: token,
         type: 'email',
       });
-      
+
       if (error) throw error;
     } catch (error) {
       handleError(error);
-      throw (error instanceof Error ? error : new Error(String(error)));
+      throw error instanceof Error ? error : new Error(String(error));
     }
   };
 
@@ -324,20 +330,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // This is a placeholder
         return;
       }
-      
+
       if (!user || !('email' in user) || !user.email) {
         throw new Error('No user email available');
       }
-      
+
       const { error } = await supabase.auth.resend({
         type: 'signup',
         email: user.email,
       });
-      
+
       if (error) throw error;
     } catch (error) {
       handleError(error);
-      throw (error instanceof Error ? error : new Error(String(error)));
+      throw error instanceof Error ? error : new Error(String(error));
     }
   };
 
@@ -351,7 +357,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // This is a placeholder
         return;
       }
-      
+
       await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -373,7 +379,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // This is a placeholder
         return;
       }
-      
+
       await supabase.auth.signInWithOAuth({
         provider: 'facebook',
         options: {
@@ -395,7 +401,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // This is a placeholder
         return;
       }
-      
+
       await supabase.auth.signInWithOAuth({
         provider: 'apple',
         options: {
@@ -412,17 +418,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    */
   const hasRole = (role: UserRole): boolean => {
     if (!user) return false;
-    
+
     // For Supabase users
     if ('app_metadata' in user && user.app_metadata?.role) {
       return user.app_metadata.role === role;
     }
-    
+
     // For mobile users
     if ('role' in user) {
       return user.role === role;
     }
-    
+
     return false;
   };
 
@@ -443,14 +449,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // This is a placeholder
         return { error: null };
       }
-      
+
       const { error } = await supabase.auth.updateUser({
         data: {
           full_name: data.name ?? '',
           avatar_url: data.avatar_url ?? '',
         },
       });
-      
+
       return { error };
     } catch (error) {
       handleError(error);
@@ -480,11 +486,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     updateProfile,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 /**
@@ -492,10 +494,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
  */
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  
+
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
-  
+
   return context;
-}; 
+};

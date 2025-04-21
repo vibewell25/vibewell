@@ -1,10 +1,10 @@
 /**
  * Redis Rate Limiter (Legacy Import)
- * 
+ *
  * @deprecated Use the consolidated rate limiter from '@/lib/rate-limiter' instead
  */
 
-import { 
+import {
   redisApiRateLimiter,
   redisAuthRateLimiter,
   redisSensitiveApiRateLimiter,
@@ -15,7 +15,7 @@ import {
   redisAdminRateLimiter,
   createRateLimiter,
   type RateLimitOptions,
-  type RateLimitResult
+  type RateLimitResult,
 } from '@/lib/rate-limiter';
 
 // Re-export the Redis-compatible implementations
@@ -28,8 +28,8 @@ export {
   redisTokenRateLimiter,
   redisFinancialRateLimiter,
   redisAdminRateLimiter,
-  createRateLimiter
+  createRateLimiter,
 };
 
 // Re-export types
-export type { RateLimitOptions, RateLimitResult }; 
+export type { RateLimitOptions, RateLimitResult };

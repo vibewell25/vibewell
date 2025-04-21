@@ -2,11 +2,28 @@
 
 export type GoalStatus = 'not_started' | 'in_progress' | 'completed' | 'failed';
 
-export type GoalType = 'meditation' | 'workout' | 'water' | 'sleep' | 'nutrition' | 'steps' | 'weight' | 'custom';
+export type GoalType =
+  | 'meditation'
+  | 'workout'
+  | 'water'
+  | 'sleep'
+  | 'nutrition'
+  | 'steps'
+  | 'weight'
+  | 'custom';
 
 export type GoalFrequency = 'daily' | 'weekly' | 'monthly' | 'one_time';
 
-export type GoalUnit = 'minutes' | 'sessions' | 'glasses' | 'hours' | 'calories' | 'steps' | 'kg' | 'lbs' | 'custom';
+export type GoalUnit =
+  | 'minutes'
+  | 'sessions'
+  | 'glasses'
+  | 'hours'
+  | 'calories'
+  | 'steps'
+  | 'kg'
+  | 'lbs'
+  | 'custom';
 
 export interface Goal {
   id: string;
@@ -72,4 +89,4 @@ export interface ContentProgress {
   completedDate?: string;
   rating?: 1 | 2 | 3 | 4 | 5;
   notes?: string;
-} 
+}

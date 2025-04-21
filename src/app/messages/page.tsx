@@ -1,15 +1,13 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
 import { Layout } from '@/components/layout';
-import { useAuth } from '@/lib/auth';
-;
+import { useAuth } from '@/hooks/use-unified-auth';
 import { format } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 import { Messaging, type Conversation as UIConversation } from '@/components/messaging';
 import { toast, Toaster } from 'react-hot-toast';
 import type { Conversation } from '@/lib/api/messages';
 import Link from 'next/link';
-;
 import { GoalCreationModal } from '@/components/wellness/GoalCreationModal';
 import { useWellnessData } from '@/hooks/useWellnessData';
 import { Goal } from '@/types/progress';
@@ -25,16 +23,20 @@ function MessagesLoadingSkeleton() {
       <div className="flex h-[calc(100vh-200px)] gap-4">
         <div className="w-1/3">
           <Skeleton className="h-12 w-full mb-4" />
-          {Array(5).fill(0).map((_, i) => (
-            <Skeleton key={i} className="h-20 w-full mb-2" />
-          ))}
+          {Array(5)
+            .fill(0)
+            .map((_, i) => (
+              <Skeleton key={i} className="h-20 w-full mb-2" />
+            ))}
         </div>
         <div className="w-2/3">
           <Skeleton className="h-12 w-full mb-4" />
           <div className="space-y-4">
-            {Array(8).fill(0).map((_, i) => (
-              <Skeleton key={i} className="h-16 w-full" />
-            ))}
+            {Array(8)
+              .fill(0)
+              .map((_, i) => (
+                <Skeleton key={i} className="h-16 w-full" />
+              ))}
           </div>
         </div>
       </div>
@@ -93,7 +95,7 @@ function MessagesPageContent() {
         // Create a new conversation by sending the first message
         handleSendInitialMessage(initiateUserId, initiateUserName);
       }
-    } 
+    }
     // If no initiate params or after handling them, default to first conversation if none selected
     else if (conversations.length > 0 && !selectedConversation && !isLoading) {
       setSelectedConversation(conversations[0].id);
@@ -119,12 +121,12 @@ function MessagesPageContent() {
         read: false,
       };
       // Update UI optimistically
-      setConversations(prev => 
+      setConversations(prev =>
         prev.map(conv => {
           if (conv.id === selectedConversation) {
             return {
               ...conv,
-              messages: [...conv.messages, optimisticMsg]
+              messages: [...conv.messages, optimisticMsg],
             };
           }
           return conv;
@@ -136,13 +138,13 @@ function MessagesPageContent() {
       const response = await fetch('/api/messages', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           recipientId: recipient.id,
           recipientName: recipient.name,
-          content: newMessage
-        })
+          content: newMessage,
+        }),
       });
       if (!response.ok) {
         throw new Error('Failed to send message');
@@ -161,13 +163,13 @@ function MessagesPageContent() {
       const response = await fetch('/api/messages', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           recipientId,
           recipientName,
-          content: `Hello ${recipientName}, I'd like to connect with you!`
-        })
+          content: `Hello ${recipientName}, I'd like to connect with you!`,
+        }),
       });
       if (!response.ok) {
         throw new Error('Failed to start conversation');
@@ -194,7 +196,7 @@ function MessagesPageContent() {
       );
       if (unreadMessages.length === 0) return;
       // Mark messages as read optimistically
-      setConversations(prev => 
+      setConversations(prev =>
         prev.map(conv => {
           if (conv.id === conversationId) {
             return {
@@ -204,7 +206,7 @@ function MessagesPageContent() {
                   return { ...msg, read: true };
                 }
                 return msg;
-              })
+              }),
             };
           }
           return conv;
@@ -212,7 +214,7 @@ function MessagesPageContent() {
       );
       // Send request to mark as read
       await fetch(`/api/messages/${conversationId}/read`, {
-        method: 'POST'
+        method: 'POST',
       });
     } catch (err) {
       console.error('Error marking conversation as read:', err);
@@ -232,7 +234,7 @@ function MessagesPageContent() {
       }
       // Send delete request
       await fetch(`/api/messages/${conversationId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
       toast.success('Conversation deleted');
     } catch (err) {
@@ -245,23 +247,23 @@ function MessagesPageContent() {
   // Convert conversations to UI format
   const uiConversations: UIConversation[] = conversations.map(conv => {
     // Get other participant
-    const otherParticipant = conv.participants.find(p => p.id !== user?.id) || { 
+    const otherParticipant = conv.participants.find(p => p.id !== user?.id) || {
       id: 'unknown',
       name: 'Unknown User',
-      avatar: '/placeholder-avatar.jpg'
+      avatar: '/placeholder-avatar.jpg',
     };
     // Count unread messages
-    const unreadCount = user 
-      ? conv.messages.filter(m => m.senderId !== user.id && !m.read).length 
+    const unreadCount = user
+      ? conv.messages.filter(m => m.senderId !== user.id && !m.read).length
       : 0;
     return {
       id: conv.id,
       participants: conv.participants.map(p => ({
         ...p,
-        avatar: p.avatar || undefined
+        avatar: p.avatar || undefined,
       })),
       messages: conv.messages,
-      unreadCount
+      unreadCount,
     };
   });
   return (
@@ -271,17 +273,12 @@ function MessagesPageContent() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold mb-2">Messages</h1>
-            <p className="text-muted-foreground">
-              Connect with other wellness enthusiasts
-            </p>
+            <p className="text-muted-foreground">Connect with other wellness enthusiasts</p>
           </div>
           {error ? (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
               {error}
-              <button 
-                className="ml-2 underline" 
-                onClick={fetchConversations}
-              >
+              <button className="ml-2 underline" onClick={fetchConversations}>
                 Try again
               </button>
             </div>
@@ -348,4 +345,4 @@ function MessagesPageSkeleton() {
       </div>
     </div>
   );
-} 
+}

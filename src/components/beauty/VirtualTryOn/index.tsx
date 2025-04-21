@@ -1,8 +1,18 @@
 import React, { Suspense, lazy, useState, useEffect, useRef } from 'react';
-import { 
-  Camera, CameraOff, RefreshCcw, Download, Share2, 
-  Heart, ZoomIn, ZoomOut, Maximize2, ChevronRight, ChevronLeft,
-  Info, X
+import {
+  Camera,
+  CameraOff,
+  RefreshCcw,
+  Download,
+  Share2,
+  Heart,
+  ZoomIn,
+  ZoomOut,
+  Maximize2,
+  ChevronRight,
+  ChevronLeft,
+  Info,
+  X,
 } from 'lucide-react';
 import Image from 'next/image';
 import { virtualTryOnState, TryOnProduct, ProductColor } from '../../../utils/beauty-state';
@@ -26,10 +36,10 @@ export function VirtualTryOn() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [announcement, setAnnouncement] = useState('');
-  
+
   // Refs
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   // Use the virtual try-on state
   const {
     availableProducts,
@@ -49,104 +59,102 @@ export function VirtualTryOn() {
     stopARExperience,
     captureImage,
     saveToFavorites,
-    shareImage
+    shareImage,
   } = virtualTryOnState.useStore();
-  
+
   // Load try-on products on mount
   useEffect(() => {
     loadTryOnProducts();
   }, [loadTryOnProducts]);
-  
+
   // Toggle AR mode
   const handleARToggle = async () => {
     if (!cameraActive) {
       toggleCamera();
-      setAnnouncement("Camera activated. Please allow camera access when prompted.");
+      setAnnouncement('Camera activated. Please allow camera access when prompted.');
     } else if (cameraActive && !arActive && faceDetected) {
       const success = await startARExperience();
       if (success) {
-        setAnnouncement("AR experience started. You can now try on beauty products.");
+        setAnnouncement('AR experience started. You can now try on beauty products.');
       } else {
-        setAnnouncement("Failed to start AR experience. Please try again.");
+        setAnnouncement('Failed to start AR experience. Please try again.');
       }
     } else if (arActive) {
       stopARExperience();
-      setAnnouncement("AR experience stopped.");
+      setAnnouncement('AR experience stopped.');
     } else {
       toggleCamera();
-      setAnnouncement("Camera deactivated.");
+      setAnnouncement('Camera deactivated.');
     }
   };
-  
+
   // Capture current look
   const handleCapture = async () => {
     if (!arActive) return;
-    
+
     const imageData = await captureImage();
     if (imageData) {
       setCapturedImage(imageData);
-      setAnnouncement("Image captured. You can now download or share it.");
+      setAnnouncement('Image captured. You can now download or share it.');
     } else {
-      setAnnouncement("Failed to capture image. Please try again.");
+      setAnnouncement('Failed to capture image. Please try again.');
     }
   };
-  
+
   // Share captured image
   const handleShare = async () => {
     if (!capturedImage) return;
-    
+
     const success = await shareImage(capturedImage);
     if (success) {
-      setAnnouncement("Image shared successfully.");
+      setAnnouncement('Image shared successfully.');
     } else {
-      setAnnouncement("Failed to share image. Your browser may not support sharing.");
+      setAnnouncement('Failed to share image. Your browser may not support sharing.');
     }
   };
-  
+
   // Save to favorites
   const handleSaveToFavorites = () => {
     if (!selectedProduct || !selectedColor) return;
-    
+
     saveToFavorites(selectedProduct.id, selectedColor.id);
     setAnnouncement(`${selectedProduct.name} in ${selectedColor.name} saved to favorites.`);
   };
-  
+
   // Toggle fullscreen
   const toggleFullscreen = () => {
     if (!containerRef.current) return;
-    
+
     if (!isFullscreen) {
       if (containerRef.current.requestFullscreen) {
         containerRef.current.requestFullscreen();
       }
       setIsFullscreen(true);
-      setAnnouncement("Fullscreen mode activated. Press Escape to exit.");
+      setAnnouncement('Fullscreen mode activated. Press Escape to exit.');
     } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
       }
       setIsFullscreen(false);
-      setAnnouncement("Fullscreen mode deactivated.");
+      setAnnouncement('Fullscreen mode deactivated.');
     }
   };
-  
+
   // Adjust zoom level
   const adjustZoom = (increase: boolean) => {
     setZoomLevel(prevZoom => {
-      const newZoom = increase 
-        ? Math.min(prevZoom + 0.25, 3) 
-        : Math.max(prevZoom - 0.25, 0.5);
-      
+      const newZoom = increase ? Math.min(prevZoom + 0.25, 3) : Math.max(prevZoom - 0.25, 0.5);
+
       setAnnouncement(`Zoom level set to ${Math.round(newZoom * 100)}%.`);
       return newZoom;
     });
   };
-  
+
   return (
     <div className="virtual-try-on relative" ref={containerRef}>
       {/* Accessibility announcer for screen reader users */}
       <AccessibilityAnnouncer message={announcement} />
-      
+
       {/* Info modal */}
       {isInfoOpen && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
@@ -161,7 +169,7 @@ export function VirtualTryOn() {
                 <X size={20} />
               </button>
             </div>
-            
+
             <div className="p-6">
               <ol className="space-y-4 list-decimal list-inside">
                 <li className="text-gray-800">
@@ -191,19 +199,21 @@ export function VirtualTryOn() {
                 <li className="text-gray-800">
                   <span className="font-medium">Adjust and Capture</span>
                   <p className="text-gray-600 ml-6 mt-1">
-                    Use the zoom controls to adjust your view, then capture your look with the center button
+                    Use the zoom controls to adjust your view, then capture your look with the
+                    center button
                   </p>
                 </li>
               </ol>
-              
+
               <div className="mt-6 bg-blue-50 p-4 rounded-lg">
                 <h3 className="text-blue-800 font-medium">Privacy Note</h3>
                 <p className="text-blue-700 text-sm mt-1">
-                  Your camera feed is processed locally on your device. No images are sent to our servers unless you explicitly choose to share them.
+                  Your camera feed is processed locally on your device. No images are sent to our
+                  servers unless you explicitly choose to share them.
                 </p>
               </div>
             </div>
-            
+
             <div className="p-4 bg-gray-50 border-t">
               <button
                 onClick={() => setIsInfoOpen(false)}
@@ -216,25 +226,29 @@ export function VirtualTryOn() {
           </div>
         </div>
       )}
-      
+
       {/* Main content */}
-      <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 ${isFullscreen ? 'h-screen fixed inset-0 z-40 bg-white p-4' : ''}`}>
+      <div
+        className={`grid grid-cols-1 md:grid-cols-3 gap-6 ${isFullscreen ? 'h-screen fixed inset-0 z-40 bg-white p-4' : ''}`}
+      >
         {/* Product selection panel */}
         <div className="md:col-span-1 bg-white rounded-lg shadow p-4">
           <h2 className="text-xl font-semibold mb-4" id="product-selection">
             Select a Product
           </h2>
-          
+
           {/* Product grid with virtualization */}
-          <Suspense fallback={
-            <div className="flex items-center justify-center w-full h-40">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
-            </div>
-          }>
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center w-full h-40">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+              </div>
+            }
+          >
             <VirtualizedProductGrid
               products={availableProducts}
               isLoading={isLoading}
-              onSelectProduct={(product) => {
+              onSelectProduct={product => {
                 selectProduct(product.id);
                 setAnnouncement(`Selected ${product.name}`);
               }}
@@ -242,39 +256,37 @@ export function VirtualTryOn() {
               gridClassName="mb-6"
             />
           </Suspense>
-          
+
           {/* Product details section */}
           {selectedProduct && (
             <Suspense fallback={<div className="animate-pulse h-40 bg-gray-200 rounded-lg"></div>}>
-              <ProductDetails 
-                product={selectedProduct} 
-                className="mb-6"
-              />
+              <ProductDetails product={selectedProduct} className="mb-6" />
             </Suspense>
           )}
-          
+
           {/* Color selector section */}
           {selectedProduct && selectedProduct.colors.length > 0 && (
             <Suspense fallback={<div className="animate-pulse h-20 bg-gray-200 rounded-lg"></div>}>
               <ColorSelector
                 colors={selectedProduct.colors}
                 selectedColorId={selectedColor?.id}
-                onSelectColor={(colorId) => {
+                onSelectColor={colorId => {
                   selectColor(colorId);
-                  const colorName = selectedProduct.colors.find(c => c.id === colorId)?.name || 'new color';
+                  const colorName =
+                    selectedProduct.colors.find(c => c.id === colorId)?.name || 'new color';
                   setAnnouncement(`Selected ${colorName}`);
                 }}
                 className="mb-6"
               />
             </Suspense>
           )}
-          
+
           {/* Recently tried products */}
           {recentlyTriedProducts.length > 0 && (
             <Suspense fallback={<div className="animate-pulse h-20 bg-gray-200 rounded-lg"></div>}>
               <RecentlyTried
                 products={recentlyTriedProducts}
-                onSelectProduct={(productId) => {
+                onSelectProduct={productId => {
                   selectProduct(productId);
                   const product = recentlyTriedProducts.find(p => p.id === productId);
                   if (product) {
@@ -286,7 +298,7 @@ export function VirtualTryOn() {
             </Suspense>
           )}
         </div>
-        
+
         {/* AR Experience container */}
         <div className="md:col-span-2 bg-white rounded-lg shadow overflow-hidden">
           <div className="relative aspect-video bg-gray-100">
@@ -299,7 +311,7 @@ export function VirtualTryOn() {
                 </div>
               </div>
             )}
-            
+
             {/* Camera inactive state */}
             {!cameraActive ? (
               <div className="absolute inset-0 flex items-center justify-center">
@@ -322,12 +334,14 @@ export function VirtualTryOn() {
               </div>
             ) : (
               /* Active AR experience */
-              <Suspense fallback={
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-4 border-pink-500 border-t-transparent"></div>
-                </div>
-              }>
-                <ARExperience 
+              <Suspense
+                fallback={
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-pink-500 border-t-transparent"></div>
+                  </div>
+                }
+              >
+                <ARExperience
                   product={selectedProduct}
                   colorId={selectedColor?.id}
                   arActive={arActive}
@@ -336,7 +350,7 @@ export function VirtualTryOn() {
                 />
               </Suspense>
             )}
-            
+
             {/* AR controls */}
             {cameraActive && (
               <div className="absolute bottom-4 left-0 right-0 flex justify-center">
@@ -346,17 +360,17 @@ export function VirtualTryOn() {
                     onClick={handleARToggle}
                     disabled={!faceDetected && !arActive}
                     className={`p-3 rounded-full ${
-                      arActive 
-                        ? 'bg-red-500 text-white' 
-                        : faceDetected 
-                          ? 'bg-pink-500 text-white' 
+                      arActive
+                        ? 'bg-red-500 text-white'
+                        : faceDetected
+                          ? 'bg-pink-500 text-white'
                           : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                     }`}
-                    aria-label={arActive ? "Stop AR experience" : "Start AR experience"}
+                    aria-label={arActive ? 'Stop AR experience' : 'Start AR experience'}
                   >
                     {arActive ? <CameraOff size={20} /> : <Camera size={20} />}
                   </button>
-                  
+
                   {/* Zoom controls */}
                   <div className="flex items-center space-x-1">
                     <button
@@ -364,20 +378,20 @@ export function VirtualTryOn() {
                       disabled={zoomLevel <= 0.5 || !arActive}
                       className={`p-2 rounded-full ${
                         !arActive || zoomLevel <= 0.5
-                          ? 'text-gray-300 cursor-not-allowed' 
+                          ? 'text-gray-300 cursor-not-allowed'
                           : 'hover:bg-gray-200'
                       }`}
                       aria-label="Zoom out"
                     >
                       <ZoomOut size={18} />
                     </button>
-                    
+
                     <button
                       onClick={() => adjustZoom(true)}
                       disabled={zoomLevel >= 3 || !arActive}
                       className={`p-2 rounded-full ${
                         !arActive || zoomLevel >= 3
-                          ? 'text-gray-300 cursor-not-allowed' 
+                          ? 'text-gray-300 cursor-not-allowed'
                           : 'hover:bg-gray-200'
                       }`}
                       aria-label="Zoom in"
@@ -385,49 +399,57 @@ export function VirtualTryOn() {
                       <ZoomIn size={18} />
                     </button>
                   </div>
-                  
+
                   {/* Capture button */}
                   <button
                     onClick={handleCapture}
                     disabled={!arActive}
                     className={`p-3 rounded-full ${
-                      arActive 
-                        ? 'bg-pink-500 text-white' 
+                      arActive
+                        ? 'bg-pink-500 text-white'
                         : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                     }`}
                     aria-label="Capture current look"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <circle cx="12" cy="12" r="10"></circle>
                       <circle cx="12" cy="12" r="3"></circle>
                     </svg>
                   </button>
-                  
+
                   {/* Favorite button */}
                   <button
                     onClick={handleSaveToFavorites}
                     disabled={!selectedProduct || !selectedColor}
                     className={`p-2 rounded-full ${
                       selectedProduct && selectedColor
-                        ? 'hover:bg-gray-200 text-pink-500' 
+                        ? 'hover:bg-gray-200 text-pink-500'
                         : 'text-gray-300 cursor-not-allowed'
                     }`}
                     aria-label="Save to favorites"
                   >
                     <Heart size={18} />
                   </button>
-                  
+
                   {/* Reset button */}
                   <button
                     onClick={() => {
                       setZoomLevel(1);
-                      setAnnouncement("View reset to default zoom level.");
+                      setAnnouncement('View reset to default zoom level.');
                     }}
                     disabled={!arActive}
                     className={`p-2 rounded-full ${
-                      arActive
-                        ? 'hover:bg-gray-200' 
-                        : 'text-gray-300 cursor-not-allowed'
+                      arActive ? 'hover:bg-gray-200' : 'text-gray-300 cursor-not-allowed'
                     }`}
                     aria-label="Reset view"
                   >
@@ -436,7 +458,7 @@ export function VirtualTryOn() {
                 </div>
               </div>
             )}
-            
+
             {/* Face detection message */}
             {cameraActive && !faceDetected && !arActive && (
               <div className="absolute top-4 left-0 right-0 flex justify-center">
@@ -445,7 +467,7 @@ export function VirtualTryOn() {
                 </div>
               </div>
             )}
-            
+
             {/* Error message */}
             {error && (
               <div className="absolute top-4 left-0 right-0 flex justify-center">
@@ -457,7 +479,7 @@ export function VirtualTryOn() {
           </div>
         </div>
       </div>
-      
+
       {/* Captured image modal */}
       {capturedImage && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
@@ -467,7 +489,7 @@ export function VirtualTryOn() {
               <button
                 onClick={() => {
                   setCapturedImage(null);
-                  setAnnouncement("Captured image dismissed.");
+                  setAnnouncement('Captured image dismissed.');
                 }}
                 className="p-2 rounded-full hover:bg-gray-100"
                 aria-label="Close image view"
@@ -475,7 +497,7 @@ export function VirtualTryOn() {
                 <X size={20} />
               </button>
             </div>
-            
+
             <div className="p-4">
               <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
                 <Image
@@ -486,12 +508,12 @@ export function VirtualTryOn() {
                 />
               </div>
             </div>
-            
+
             <div className="p-4 border-t bg-gray-50 flex justify-between">
               <div className="text-sm text-gray-500">
                 {selectedProduct?.name} in {selectedColor?.name}
               </div>
-              
+
               <div className="flex space-x-2">
                 <button
                   onClick={() => {
@@ -500,7 +522,7 @@ export function VirtualTryOn() {
                     link.href = capturedImage;
                     link.download = `vibewell-beauty-${Date.now()}.png`;
                     link.click();
-                    setAnnouncement("Image downloaded.");
+                    setAnnouncement('Image downloaded.');
                   }}
                   className="flex items-center space-x-1 text-gray-700 hover:text-gray-900"
                   aria-label="Download image"
@@ -508,7 +530,7 @@ export function VirtualTryOn() {
                   <Download size={16} />
                   <span>Download</span>
                 </button>
-                
+
                 <button
                   onClick={handleShare}
                   className="flex items-center space-x-1 text-gray-700 hover:text-gray-900"
@@ -526,4 +548,4 @@ export function VirtualTryOn() {
   );
 }
 
-export default VirtualTryOn; 
+export default VirtualTryOn;

@@ -12,18 +12,14 @@ interface TabsProps {
   className?: string;
 }
 
-export const Tabs: React.FC<TabsProps> = ({
-  tabs,
-  defaultTab,
-  className = '',
-}) => {
+export const Tabs: React.FC<TabsProps> = ({ tabs, defaultTab, className = '' }) => {
   const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.id);
 
   return (
     <div className={className}>
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-          {tabs.map((tab) => (
+          {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -44,7 +40,7 @@ export const Tabs: React.FC<TabsProps> = ({
       </div>
 
       <div className="mt-4">
-        {tabs.map((tab) => (
+        {tabs.map(tab => (
           <div
             key={tab.id}
             className={activeTab === tab.id ? 'block' : 'hidden'}
@@ -57,4 +53,4 @@ export const Tabs: React.FC<TabsProps> = ({
       </div>
     </div>
   );
-}; 
+};

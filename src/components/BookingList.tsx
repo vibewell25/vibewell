@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Booking, BookingStatus, typeSafeBookingService } from '../services/booking-service';
-import { hasData, hasError, isSuccessResponse, getResponseError } from '../utils/api-response-utils';
+import {
+  hasData,
+  hasError,
+  isSuccessResponse,
+  getResponseError,
+} from '../utils/api-response-utils';
 import { useErrorHandler } from '../utils/error-handler';
 import { ErrorSource, ErrorCategory, ErrorSeverity } from '../utils/error-handler';
 
@@ -13,10 +18,10 @@ interface BookingListProps {
 /**
  * Component to display a list of bookings with proper type-safe API handling
  */
-export const BookingList: React.FC<BookingListProps> = ({ 
-  status = 'confirmed', 
+export const BookingList: React.FC<BookingListProps> = ({
+  status = 'confirmed',
   providerId,
-  onBookingSelect 
+  onBookingSelect,
 }) => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,9 +31,9 @@ export const BookingList: React.FC<BookingListProps> = ({
     const fetchBookings = async () => {
       setIsLoading(true);
       try {
-        const response = await typeSafeBookingService.getBookings({ 
+        const response = await typeSafeBookingService.getBookings({
           status,
-          providerId
+          providerId,
         });
 
         // Method 1: Using type guards
@@ -40,7 +45,7 @@ export const BookingList: React.FC<BookingListProps> = ({
           const error = createError(response.error, {
             severity: ErrorSeverity.ERROR,
             source: ErrorSource.API,
-            category: ErrorCategory.API
+            category: ErrorCategory.API,
           });
           showErrorToUser(error);
         }
@@ -61,13 +66,13 @@ export const BookingList: React.FC<BookingListProps> = ({
         captureError(error instanceof Error ? error : String(error), {
           category: ErrorCategory.API,
           source: ErrorSource.API,
-          metadata: { status, providerId }
+          metadata: { status, providerId },
         });
-        
+
         const appError = createError('Unable to load bookings. Please try again later.', {
           severity: ErrorSeverity.ERROR,
           source: ErrorSource.API,
-          category: ErrorCategory.API
+          category: ErrorCategory.API,
         });
         showErrorToUser(appError);
       } finally {
@@ -81,19 +86,20 @@ export const BookingList: React.FC<BookingListProps> = ({
   const handleCancelBooking = async (bookingId: string) => {
     try {
       const response = await typeSafeBookingService.cancelBooking(bookingId);
-      
+
       if (isSuccessResponse(response) && hasData(response)) {
         // Update the local state with the updated booking
-        setBookings(prevBookings => 
-          prevBookings.map(booking => 
-            booking.id === bookingId ? response.data : booking
-          ) as Booking[]
+        setBookings(
+          prevBookings =>
+            prevBookings.map(booking =>
+              booking.id === bookingId ? response.data : booking
+            ) as Booking[]
         );
-        
-        const successMsg = createError('Booking cancelled successfully', { 
+
+        const successMsg = createError('Booking cancelled successfully', {
           severity: ErrorSeverity.INFO,
           source: ErrorSource.CLIENT,
-          category: ErrorCategory.API
+          category: ErrorCategory.API,
         });
         showErrorToUser(successMsg);
       } else {
@@ -101,7 +107,7 @@ export const BookingList: React.FC<BookingListProps> = ({
         const error = createError(errorMessage, {
           severity: ErrorSeverity.ERROR,
           source: ErrorSource.API,
-          category: ErrorCategory.API
+          category: ErrorCategory.API,
         });
         showErrorToUser(error);
       }
@@ -109,7 +115,7 @@ export const BookingList: React.FC<BookingListProps> = ({
       captureError(error instanceof Error ? error : String(error), {
         category: ErrorCategory.API,
         source: ErrorSource.API,
-        metadata: { bookingId }
+        metadata: { bookingId },
       });
     }
   };
@@ -132,7 +138,7 @@ export const BookingList: React.FC<BookingListProps> = ({
               <h3>{booking.serviceName}</h3>
               <span className="booking-status">{booking.status}</span>
             </div>
-            
+
             <div className="booking-details">
               <p>
                 <strong>Date:</strong> {booking.date} at {booking.time}
@@ -149,20 +155,14 @@ export const BookingList: React.FC<BookingListProps> = ({
                 </p>
               )}
             </div>
-            
+
             <div className="booking-actions">
-              <button 
-                onClick={() => onBookingSelect?.(booking)}
-                className="view-button"
-              >
+              <button onClick={() => onBookingSelect?.(booking)} className="view-button">
                 View Details
               </button>
-              
+
               {booking.status === 'confirmed' && (
-                <button 
-                  onClick={() => handleCancelBooking(booking.id)}
-                  className="cancel-button"
-                >
+                <button onClick={() => handleCancelBooking(booking.id)} className="cancel-button">
                   Cancel
                 </button>
               )}
@@ -172,4 +172,4 @@ export const BookingList: React.FC<BookingListProps> = ({
       </ul>
     </div>
   );
-}; 
+};

@@ -34,7 +34,7 @@ export class RecommendationService {
       // Get service details
       const service = await prisma.service.findUnique({
         where: { id: serviceId },
-        include: { category: true }
+        include: { category: true },
       });
 
       if (!service) return;
@@ -63,7 +63,9 @@ export class RecommendationService {
       logger.info('User preferences updated', 'RecommendationService', { userId });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      logger.error('Error updating user preferences', 'RecommendationService', { error: errorMessage });
+      logger.error('Error updating user preferences', 'RecommendationService', {
+        error: errorMessage,
+      });
     }
   }
 
@@ -107,7 +109,8 @@ export class RecommendationService {
         // Factor in past reviews
         const serviceReviews = reviews.filter(r => r.service.categoryId === service.categoryId);
         if (serviceReviews.length > 0) {
-          const avgRating = serviceReviews.reduce((sum, r) => sum + r.rating, 0) / serviceReviews.length;
+          const avgRating =
+            serviceReviews.reduce((sum, r) => sum + r.rating, 0) / serviceReviews.length;
           score += (avgRating / 5) * 0.2;
           reasons.push('Based on your ratings of similar services');
         }
@@ -120,9 +123,7 @@ export class RecommendationService {
       });
 
       // Store top recommendations
-      const topRecommendations = recommendations
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 5);
+      const topRecommendations = recommendations.sort((a, b) => b.score - a.score).slice(0, 5);
 
       await Promise.all(
         topRecommendations.map(rec =>
@@ -141,7 +142,9 @@ export class RecommendationService {
       return topRecommendations;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      logger.error('Error generating recommendations', 'RecommendationService', { error: errorMessage });
+      logger.error('Error generating recommendations', 'RecommendationService', {
+        error: errorMessage,
+      });
       return [];
     }
   }
@@ -168,19 +171,21 @@ export class RecommendationService {
         Generate 3 style suggestions with confidence scores and descriptions.`;
 
       const response = await this.openai.createCompletion({
-        model: "gpt-3.5-turbo-instruct",
+        model: 'gpt-3.5-turbo-instruct',
         prompt,
         max_tokens: 200,
         temperature: 0.7,
       });
 
       const suggestions = JSON.parse(response.data.choices[0].text || '[]');
-      
+
       logger.info('Style suggestions generated', 'RecommendationService', { userId });
       return suggestions;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      logger.error('Error generating style suggestions', 'RecommendationService', { error: errorMessage });
+      logger.error('Error generating style suggestions', 'RecommendationService', {
+        error: errorMessage,
+      });
       return [];
     }
   }
@@ -212,7 +217,9 @@ export class RecommendationService {
       logger.info('Style preferences updated', 'RecommendationService', { userId, style });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      logger.error('Error updating style preferences', 'RecommendationService', { error: errorMessage });
+      logger.error('Error updating style preferences', 'RecommendationService', {
+        error: errorMessage,
+      });
     }
   }
-} 
+}

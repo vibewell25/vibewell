@@ -5,8 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import Image from 'next/image';
-;
-;
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
 import { Layout } from '@/components/layout';
 import { TopRatedResources } from '@/components/top-rated-resources';
@@ -51,10 +49,11 @@ export default function BusinessHub() {
     {
       id: '1',
       name: 'Email Campaign Builder',
-      description: 'Create beautiful email templates and automated sequences to nurture client relationships.',
+      description:
+        'Create beautiful email templates and automated sequences to nurture client relationships.',
       icon: <Icons.MegaphoneIcon className="h-8 w-8 text-indigo-500" />,
       premium: false,
-      url: '/business-hub/marketing/email-campaigns'
+      url: '/business-hub/marketing/email-campaigns',
     },
     {
       id: 'social-media',
@@ -62,7 +61,7 @@ export default function BusinessHub() {
       description: 'Pre-designed templates and scheduling tools for your social media marketing.',
       icon: <Icons.PhotoIcon className="h-10 w-10 text-purple-500" />,
       url: '/business-hub/tools/social-media',
-      premium: false
+      premium: false,
     },
     {
       id: 'email-templates',
@@ -70,7 +69,7 @@ export default function BusinessHub() {
       description: 'Create professional email campaigns to engage clients and promote offers.',
       icon: <Icons.EnvelopeSolid className="h-10 w-10 text-blue-500" />,
       url: '/business-hub/tools/email-marketing',
-      premium: true
+      premium: true,
     },
     {
       id: 'analytics',
@@ -78,7 +77,7 @@ export default function BusinessHub() {
       description: 'Track the effectiveness of your marketing efforts and customer engagement.',
       icon: <Icons.ChartBarIcon className="h-10 w-10 text-green-500" />,
       url: '/business-hub/tools/analytics',
-      premium: true
+      premium: true,
     },
     {
       id: 'reviews',
@@ -86,7 +85,7 @@ export default function BusinessHub() {
       description: 'Tools to collect, manage, and showcase client reviews and testimonials.',
       icon: <Icons.StarSolid className="h-10 w-10 text-yellow-500" />,
       url: '/business-hub/tools/reviews',
-      premium: false
+      premium: false,
     },
     {
       id: 'lead-gen',
@@ -94,7 +93,7 @@ export default function BusinessHub() {
       description: 'Create landing pages and promotional offers to attract new clients.',
       icon: <Icons.UsersSolid className="h-10 w-10 text-red-500" />,
       url: '/business-hub/tools/lead-generation',
-      premium: true
+      premium: true,
     },
     {
       id: 'content-calendar',
@@ -102,27 +101,29 @@ export default function BusinessHub() {
       description: 'Plan and organize your marketing content across all channels.',
       icon: <Icons.CalendarIcon className="h-10 w-10 text-indigo-500" />,
       url: '/business-hub/tools/content-calendar',
-      premium: false
-    }
+      premium: false,
+    },
   ];
   // Resources data
   const resources: Resource[] = [
     {
       id: '1',
       title: 'The Complete Guide to Social Media Marketing for Beauty Businesses',
-      description: 'Learn how to leverage Instagram, TikTok, and other platforms to showcase your services and attract new clients.',
+      description:
+        'Learn how to leverage Instagram, TikTok, and other platforms to showcase your services and attract new clients.',
       image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7',
       type: 'guide',
       category: 'marketing',
       tags: ['social media', 'instagram', 'tiktok'],
       premium: false,
       viewUrl: '/business-hub/resources/social-media-guide',
-      date: '2023-08-15'
+      date: '2023-08-15',
     },
     {
       id: '2',
       title: 'Email Templates for Client Retention',
-      description: 'Ready-to-use email templates for welcoming new clients, appointment reminders, follow-ups, and special offers.',
+      description:
+        'Ready-to-use email templates for welcoming new clients, appointment reminders, follow-ups, and special offers.',
       image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3',
       type: 'template',
       category: 'client-retention',
@@ -130,36 +131,39 @@ export default function BusinessHub() {
       premium: true,
       downloadUrl: '/downloads/email-templates.zip',
       viewUrl: '/business-hub/resources/email-templates',
-      date: '2023-09-21'
+      date: '2023-09-21',
     },
     {
       id: '3',
       title: 'How to Price Your Services for Maximum Profit',
-      description: 'A comprehensive guide to pricing strategies for wellness and beauty services, including cost analysis and market positioning.',
+      description:
+        'A comprehensive guide to pricing strategies for wellness and beauty services, including cost analysis and market positioning.',
       image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f',
       type: 'guide',
       category: 'business-strategy',
       tags: ['pricing', 'profitability', 'strategy'],
       premium: true,
       viewUrl: '/business-hub/resources/pricing-guide',
-      date: '2023-10-05'
+      date: '2023-10-05',
     },
     {
       id: '4',
       title: 'Client Onboarding Process Walkthrough',
-      description: 'Watch how successful spa owners create a memorable first impression that turns new visitors into loyal clients.',
+      description:
+        'Watch how successful spa owners create a memorable first impression that turns new visitors into loyal clients.',
       image: 'https://images.unsplash.com/photo-1595247299149-85c93280604d',
       type: 'video',
       category: 'client-experience',
       tags: ['onboarding', 'client experience', 'loyalty'],
       premium: false,
       viewUrl: '/business-hub/resources/client-onboarding-video',
-      date: '2023-11-12'
+      date: '2023-11-12',
     },
     {
       id: '5',
       title: 'Seasonal Promotion Calendar Template',
-      description: 'Plan your promotions around holidays, seasons, and local events with this customizable calendar.',
+      description:
+        'Plan your promotions around holidays, seasons, and local events with this customizable calendar.',
       image: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88',
       type: 'template',
       category: 'marketing',
@@ -167,20 +171,21 @@ export default function BusinessHub() {
       premium: false,
       downloadUrl: '/downloads/seasonal-promotions.xlsx',
       viewUrl: '/business-hub/resources/seasonal-promotions',
-      date: '2023-12-03'
+      date: '2023-12-03',
     },
     {
       id: '6',
       title: 'Converting Leads to Bookings: Sales Techniques for Service Providers',
-      description: 'Learn consultative selling approaches that help potential clients understand the value of your services.',
+      description:
+        'Learn consultative selling approaches that help potential clients understand the value of your services.',
       image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df',
       type: 'webinar',
       category: 'sales',
       tags: ['sales', 'conversion', 'communication'],
       premium: true,
       viewUrl: '/business-hub/resources/sales-techniques-webinar',
-      date: '2024-01-18'
-    }
+      date: '2024-01-18',
+    },
   ];
   // Success stories data
   const successStories: SuccessStory[] = [
@@ -189,32 +194,36 @@ export default function BusinessHub() {
       businessName: 'Glow Beauty Lounge',
       ownerName: 'Sarah Mitchell',
       image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f',
-      quote: "Using the email templates and social media toolkit, I've managed to increase my client retention by 45% in just three months.",
+      quote:
+        "Using the email templates and social media toolkit, I've managed to increase my client retention by 45% in just three months.",
       achievement: '200% increase in Instagram following, 45% improvement in client retention',
-      tags: ['social media', 'email marketing', 'small business']
+      tags: ['social media', 'email marketing', 'small business'],
     },
     {
       id: '2',
       businessName: 'Zen Wellness Center',
       ownerName: 'Michael Rodriguez',
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
-      quote: "The performance analytics tool helped me identify which services were most profitable, allowing me to restructure my offerings and increase revenue.",
+      quote:
+        'The performance analytics tool helped me identify which services were most profitable, allowing me to restructure my offerings and increase revenue.',
       achievement: '35% increase in monthly revenue, optimized service menu',
-      tags: ['analytics', 'business strategy', 'service optimization']
+      tags: ['analytics', 'business strategy', 'service optimization'],
     },
     {
       id: '3',
       businessName: 'Pure Skin Aesthetics',
       ownerName: 'Jennifer Lee',
       image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956',
-      quote: "The lead generation tools transformed my business. I implemented the landing page templates and within weeks saw a dramatic increase in new client inquiries.",
+      quote:
+        'The lead generation tools transformed my business. I implemented the landing page templates and within weeks saw a dramatic increase in new client inquiries.',
       achievement: '68 new clients in 2 months, 320% ROI on marketing spending',
-      tags: ['lead generation', 'website optimization', 'new clients']
-    }
+      tags: ['lead generation', 'website optimization', 'new clients'],
+    },
   ];
   // Filter resources based on search, category, and type
   const filteredResources = resources.filter(resource => {
-    const matchesSearch = searchTerm === '' || 
+    const matchesSearch =
+      searchTerm === '' ||
       resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       resource.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       resource.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -239,7 +248,7 @@ export default function BusinessHub() {
                   placeholder="Search for business resources..."
                   className="w-full border border-gray-300 rounded-lg py-3 px-4 pl-12 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={e => setSearchTerm(e.target.value)}
                 />
                 <div className="absolute left-4 top-3.5 text-gray-400">
                   <Icons.MagnifyingGlassIcon className="h-5 w-5" />
@@ -249,7 +258,14 @@ export default function BusinessHub() {
               <div>
                 <h3 className="font-medium mb-3">Browse by Category</h3>
                 <div className="flex flex-wrap gap-2">
-                  {['all', 'marketing', 'client-retention', 'business-strategy', 'client-experience', 'sales'].map((category) => (
+                  {[
+                    'all',
+                    'marketing',
+                    'client-retention',
+                    'business-strategy',
+                    'client-experience',
+                    'sales',
+                  ].map(category => (
                     <button
                       key={category}
                       className={`px-3 py-1.5 rounded-full text-sm ${
@@ -278,7 +294,7 @@ export default function BusinessHub() {
                 Discover our newest tools to help your business grow
               </p>
               <div className="space-y-4 mb-6">
-                {marketingTools.slice(0, 3).map((tool) => (
+                {marketingTools.slice(0, 3).map(tool => (
                   <div key={tool.name} className="bg-white/10 p-3 rounded-lg backdrop-blur-sm">
                     <h3 className="font-medium text-white">{tool.name}</h3>
                     <p className="text-sm text-blue-100">{tool.description}</p>
@@ -301,14 +317,16 @@ export default function BusinessHub() {
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl font-bold mb-4">Business Building Hub</h1>
             <p className="text-lg mb-8">
-              Everything you need to grow your beauty or wellness business, all in one place.
-              Access marketing tools, business resources, and expert strategies to attract and retain clients.
+              Everything you need to grow your beauty or wellness business, all in one place. Access
+              marketing tools, business resources, and expert strategies to attract and retain
+              clients.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-indigo-600 hover:bg-indigo-700">
-                Browse Marketing Tools
-              </Button>
-              <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50">
+              <Button className="bg-indigo-600 hover:bg-indigo-700">Browse Marketing Tools</Button>
+              <Button
+                variant="outline"
+                className="border-indigo-600 text-indigo-600 hover:bg-indigo-50"
+              >
                 Join Next Webinar
               </Button>
             </div>
@@ -318,17 +336,21 @@ export default function BusinessHub() {
         <section className="mb-16">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold">Marketing Tools</h2>
-            <Link href="/business-hub/tools" className="text-indigo-600 hover:text-indigo-700 font-medium">
+            <Link
+              href="/business-hub/tools"
+              className="text-indigo-600 hover:text-indigo-700 font-medium"
+            >
               View All Tools →
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {marketingTools.map(tool => (
-              <div key={tool.id} className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+              <div
+                key={tool.id}
+                className="bg-white rounded-lg shadow-md p-6 border border-gray-100"
+              >
                 <div className="flex items-start mb-4">
-                  <div className="bg-gray-50 p-3 rounded-lg mr-4">
-                    {tool.icon}
-                  </div>
+                  <div className="bg-gray-50 p-3 rounded-lg mr-4">{tool.icon}</div>
                   <div>
                     <h3 className="text-xl font-semibold mb-1">{tool.name}</h3>
                     {tool.premium && (
@@ -340,7 +362,7 @@ export default function BusinessHub() {
                 </div>
                 <p className="text-gray-600 mb-4">{tool.description}</p>
                 <Link href={tool.url}>
-                  <Button className="w-full" variant={tool.premium ? "outline" : "default"}>
+                  <Button className="w-full" variant={tool.premium ? 'outline' : 'default'}>
                     {tool.premium ? 'Upgrade to Access' : 'Use Tool'}
                   </Button>
                 </Link>
@@ -354,9 +376,9 @@ export default function BusinessHub() {
             <h2 className="text-2xl font-bold">Resources & Guides</h2>
             <div className="relative">
               <Icons.MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <Input 
-                type="text" 
-                placeholder="Search resources..." 
+              <Input
+                type="text"
+                placeholder="Search resources..."
                 className="pl-10 w-64"
                 value={searchTerm}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
@@ -365,42 +387,42 @@ export default function BusinessHub() {
           </div>
           {/* Resource Filters */}
           <div className="flex flex-wrap gap-2 mb-6">
-            <Button 
+            <Button
               variant={selectedCategory === 'all' ? 'default' : 'outline'}
               onClick={() => setSelectedCategory('all')}
               className="text-sm"
             >
               All Categories
             </Button>
-            <Button 
+            <Button
               variant={selectedCategory === 'marketing' ? 'default' : 'outline'}
               onClick={() => setSelectedCategory('marketing')}
               className="text-sm"
             >
               Marketing
             </Button>
-            <Button 
+            <Button
               variant={selectedCategory === 'client-retention' ? 'default' : 'outline'}
               onClick={() => setSelectedCategory('client-retention')}
               className="text-sm"
             >
               Client Retention
             </Button>
-            <Button 
+            <Button
               variant={selectedCategory === 'business-strategy' ? 'default' : 'outline'}
               onClick={() => setSelectedCategory('business-strategy')}
               className="text-sm"
             >
               Business Strategy
             </Button>
-            <Button 
+            <Button
               variant={selectedCategory === 'client-experience' ? 'default' : 'outline'}
               onClick={() => setSelectedCategory('client-experience')}
               className="text-sm"
             >
               Client Experience
             </Button>
-            <Button 
+            <Button
               variant={selectedCategory === 'sales' ? 'default' : 'outline'}
               onClick={() => setSelectedCategory('sales')}
               className="text-sm"
@@ -409,7 +431,7 @@ export default function BusinessHub() {
             </Button>
           </div>
           <div className="flex flex-wrap gap-2 mb-8">
-            <Button 
+            <Button
               variant={resourceType === 'all' ? 'default' : 'outline'}
               onClick={() => setResourceType('all')}
               size="sm"
@@ -417,7 +439,7 @@ export default function BusinessHub() {
             >
               All Types
             </Button>
-            <Button 
+            <Button
               variant={resourceType === 'guide' ? 'default' : 'outline'}
               onClick={() => setResourceType('guide')}
               size="sm"
@@ -425,7 +447,7 @@ export default function BusinessHub() {
             >
               Guides
             </Button>
-            <Button 
+            <Button
               variant={resourceType === 'template' ? 'default' : 'outline'}
               onClick={() => setResourceType('template')}
               size="sm"
@@ -433,7 +455,7 @@ export default function BusinessHub() {
             >
               Templates
             </Button>
-            <Button 
+            <Button
               variant={resourceType === 'video' ? 'default' : 'outline'}
               onClick={() => setResourceType('video')}
               size="sm"
@@ -441,7 +463,7 @@ export default function BusinessHub() {
             >
               Videos
             </Button>
-            <Button 
+            <Button
               variant={resourceType === 'webinar' ? 'default' : 'outline'}
               onClick={() => setResourceType('webinar')}
               size="sm"
@@ -449,7 +471,7 @@ export default function BusinessHub() {
             >
               Webinars
             </Button>
-            <Button 
+            <Button
               variant={resourceType === 'tool' ? 'default' : 'outline'}
               onClick={() => setResourceType('tool')}
               size="sm"
@@ -462,7 +484,10 @@ export default function BusinessHub() {
           {filteredResources.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredResources.map(resource => (
-                <div key={resource.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+                <div
+                  key={resource.id}
+                  className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100"
+                >
                   <div className="relative h-48 w-full">
                     <Image
                       src={resource.image}
@@ -492,19 +517,30 @@ export default function BusinessHub() {
                       <span className="text-gray-500 text-sm">{resource.date}</span>
                     </div>
                     <h3 className="text-lg font-semibold mb-2">{resource.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{resource.description}</p>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                      {resource.description}
+                    </p>
                     <div className="flex flex-wrap gap-1 mb-4">
                       {resource.tags.map(tag => (
-                        <Badge key={tag} variant="secondary" className="text-xs bg-gray-100 text-gray-800">
+                        <Badge
+                          key={tag}
+                          variant="secondary"
+                          className="text-xs bg-gray-100 text-gray-800"
+                        >
                           {tag}
                         </Badge>
                       ))}
                     </div>
                     <div className="flex gap-2">
                       <Link href={resource.viewUrl} className="flex-grow">
-                        <Button variant="default" className="w-full" 
-                          disabled={resource.premium && resource.type !== 'guide'}>
-                          {resource.premium && resource.type !== 'guide' ? 'Requires Premium' : 'View Resource'}
+                        <Button
+                          variant="default"
+                          className="w-full"
+                          disabled={resource.premium && resource.type !== 'guide'}
+                        >
+                          {resource.premium && resource.type !== 'guide'
+                            ? 'Requires Premium'
+                            : 'View Resource'}
                         </Button>
                       </Link>
                       {resource.downloadUrl && (
@@ -521,8 +557,8 @@ export default function BusinessHub() {
             <div className="text-center py-12 bg-gray-50 rounded-lg">
               <h3 className="text-lg font-medium text-gray-900 mb-2">No resources found</h3>
               <p className="text-gray-500 mb-6">Try changing your search terms or filters</p>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => {
                   setSearchTerm('');
                   setSelectedCategory('all');
@@ -541,13 +577,12 @@ export default function BusinessHub() {
               <div className="md:w-2/3 mb-6 md:mb-0">
                 <h2 className="text-3xl font-bold mb-4">Ready to accelerate your growth?</h2>
                 <p className="text-lg mb-6">
-                  Join our Growth Accelerator Program and get personalized coaching, exclusive resources, 
-                  and access to all premium tools to take your business to the next level.
+                  Join our Growth Accelerator Program and get personalized coaching, exclusive
+                  resources, and access to all premium tools to take your business to the next
+                  level.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Button className="bg-white text-indigo-700 hover:bg-gray-100">
-                    Learn More
-                  </Button>
+                  <Button className="bg-white text-indigo-700 hover:bg-gray-100">Learn More</Button>
                   <Button variant="outline" className="border-white text-white hover:bg-white/10">
                     Schedule a Consultation
                   </Button>
@@ -602,7 +637,10 @@ export default function BusinessHub() {
           <h2 className="text-2xl font-bold mb-8">Success Stories</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {successStories.map(story => (
-              <div key={story.id} className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+              <div
+                key={story.id}
+                className="bg-white rounded-lg shadow-md p-6 border border-gray-100"
+              >
                 <div className="flex items-center mb-4">
                   <div className="relative h-12 w-12 rounded-full overflow-hidden mr-3">
                     <Image
@@ -618,9 +656,7 @@ export default function BusinessHub() {
                     <p className="text-sm text-gray-600">{story.ownerName}</p>
                   </div>
                 </div>
-                <blockquote className="text-gray-700 italic mb-4">
-                  "{story.quote}"
-                </blockquote>
+                <blockquote className="text-gray-700 italic mb-4">"{story.quote}"</blockquote>
                 <div className="bg-indigo-50 p-3 rounded-lg mb-4">
                   <p className="text-sm font-medium text-indigo-800">
                     <span className="font-bold">Achievement:</span> {story.achievement}
@@ -637,9 +673,7 @@ export default function BusinessHub() {
             ))}
           </div>
           <div className="text-center mt-8">
-            <Button variant="outline">
-              Read More Success Stories
-            </Button>
+            <Button variant="outline">Read More Success Stories</Button>
           </div>
         </section>
         {/* Upcoming Webinars */}
@@ -664,10 +698,14 @@ export default function BusinessHub() {
                 </div>
               </div>
               <div className="p-6 md:w-2/3">
-                <h3 className="text-xl font-bold mb-2">Instagram Reels and TikTok: Creating Viral Content for Beauty Businesses</h3>
+                <h3 className="text-xl font-bold mb-2">
+                  Instagram Reels and TikTok: Creating Viral Content for Beauty Businesses
+                </h3>
                 <p className="text-gray-600 mb-4">
-                  Learn how to create engaging short-form video content that showcases your skills and services. 
-                  Our panel of social media experts will share strategies that have helped beauty professionals gain thousands of followers and convert them into paying clients.
+                  Learn how to create engaging short-form video content that showcases your skills
+                  and services. Our panel of social media experts will share strategies that have
+                  helped beauty professionals gain thousands of followers and convert them into
+                  paying clients.
                 </p>
                 <div className="flex items-center mb-6">
                   <div className="flex -space-x-2 mr-4">
@@ -700,7 +738,10 @@ export default function BusinessHub() {
             </div>
           </div>
           <div className="mt-6 text-center">
-            <Link href="/business-hub/webinars" className="text-indigo-600 hover:text-indigo-700 font-medium">
+            <Link
+              href="/business-hub/webinars"
+              className="text-indigo-600 hover:text-indigo-700 font-medium"
+            >
               View All Upcoming Webinars →
             </Link>
           </div>
@@ -710,7 +751,7 @@ export default function BusinessHub() {
           <div className="bg-gray-50 rounded-lg p-8 text-center">
             <h2 className="text-2xl font-bold mb-2">Stay Updated</h2>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              Subscribe to our newsletter to receive the latest marketing tips, business resources, 
+              Subscribe to our newsletter to receive the latest marketing tips, business resources,
               and exclusive offers directly to your inbox.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
@@ -718,11 +759,12 @@ export default function BusinessHub() {
               <Button>Subscribe</Button>
             </div>
             <p className="text-xs text-gray-500 mt-4">
-              By subscribing, you agree to receive marketing emails. You can unsubscribe at any time.
+              By subscribing, you agree to receive marketing emails. You can unsubscribe at any
+              time.
             </p>
           </div>
         </section>
       </main>
     </Layout>
   );
-} 
+}

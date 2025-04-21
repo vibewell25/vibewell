@@ -34,18 +34,14 @@ import { BaseButton } from '@/components/ui/base-button';
 function MyForm() {
   return (
     <form>
-      <BaseInput 
-        label="Email" 
-        type="email" 
+      <BaseInput
+        label="Email"
+        type="email"
         placeholder="Enter your email"
         size="md"
         leftIcon={<MailIcon />}
       />
-      <BaseButton 
-        variant="primary" 
-        size="md"
-        isLoading={isSubmitting}
-      >
+      <BaseButton variant="primary" size="md" isLoading={isSubmitting}>
         Submit
       </BaseButton>
     </form>
@@ -71,7 +67,7 @@ export function SearchInput({ onSearch, ...props }: SearchInputProps) {
       placeholder="Search..."
       leftIcon={<SearchIcon />}
       wrapperClassName="w-full max-w-md"
-      onChange={(e) => onSearch(e.target.value)}
+      onChange={e => onSearch(e.target.value)}
       {...props}
     />
   );
@@ -180,4 +176,4 @@ When creating new base components, follow these guidelines:
 3. Implement accessibility features
 4. Create comprehensive TypeScript interfaces
 5. Document the component with JSDoc comments
-6. Add the component to this documentation 
+6. Add the component to this documentation

@@ -25,7 +25,7 @@ export const AccessibleProgress: React.FC<AccessibleProgressProps> = ({
   const sizeStyles = {
     sm: 'h-1',
     md: 'h-2',
-    lg: 'h-4'
+    lg: 'h-4',
   };
 
   return (
@@ -35,14 +35,10 @@ export const AccessibleProgress: React.FC<AccessibleProgressProps> = ({
           <label htmlFor={progressId} className="text-sm font-medium text-gray-700">
             {label}
           </label>
-          {showValue && (
-            <span className="text-sm text-gray-500">
-              {value}%
-            </span>
-          )}
+          {showValue && <span className="text-sm text-gray-500">{value}%</span>}
         </div>
       )}
-      
+
       <div
         role="progressbar"
         aria-valuenow={value}
@@ -66,4 +62,4 @@ export const AccessibleProgress: React.FC<AccessibleProgressProps> = ({
   );
 };
 
-export default AccessibleProgress; 
+export default AccessibleProgress;

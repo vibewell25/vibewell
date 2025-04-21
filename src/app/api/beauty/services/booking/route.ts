@@ -33,10 +33,7 @@ export async function POST(request: Request) {
     });
 
     if (existingBooking) {
-      return NextResponse.json(
-        { error: 'This time slot is already booked' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'This time slot is already booked' }, { status: 400 });
     }
 
     // Create the booking
@@ -55,10 +52,7 @@ export async function POST(request: Request) {
     return NextResponse.json(booking);
   } catch (error) {
     console.error('Error creating booking:', error);
-    return NextResponse.json(
-      { error: 'Failed to create booking' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to create booking' }, { status: 500 });
   }
 }
 
@@ -75,10 +69,7 @@ export async function GET(request: Request) {
 
     const bookings = await prisma.serviceBooking.findMany({
       where: {
-        OR: [
-          { userId: userId || session.user.id },
-          { providerId },
-        ],
+        OR: [{ userId: userId || session.user.id }, { providerId }],
       },
       include: {
         service: true,
@@ -90,9 +81,6 @@ export async function GET(request: Request) {
     return NextResponse.json(bookings);
   } catch (error) {
     console.error('Error fetching bookings:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch bookings' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch bookings' }, { status: 500 });
   }
-} 
+}

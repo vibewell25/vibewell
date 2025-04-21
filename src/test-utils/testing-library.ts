@@ -4,4 +4,4 @@
  */
 import { render, screen, fireEvent, within, waitFor } from './testing-lib-adapter';
 
-export { render, screen, fireEvent, within, waitFor }; 
+export { render, screen, fireEvent, within, waitFor };

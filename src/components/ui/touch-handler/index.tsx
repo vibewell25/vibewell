@@ -18,7 +18,7 @@ export interface TouchHandlerProps {
 
 /**
  * TouchHandler - A component that provides enhanced touch interaction support
- * 
+ *
  * This component captures and processes touch events to provide high-level
  * gesture support like swipes, pinches, rotates, and long presses.
  */
@@ -35,20 +35,16 @@ export function TouchHandler({
   className,
 }: TouchHandlerProps) {
   const { isTouch } = useResponsive();
-  
+
   // Use the custom hook to handle touch events
-  const { 
-    handleTouchStart, 
-    handleTouchMove, 
-    handleTouchEnd 
-  } = useTouchEvents({
+  const { handleTouchStart, handleTouchMove, handleTouchEnd } = useTouchEvents({
     onGesture,
     onTap,
     onSwipe,
     onPinch,
     onRotate,
     onLongPress,
-    longPressThreshold
+    longPressThreshold,
   });
 
   // Don't add handlers if not a touch device or component is disabled
@@ -72,4 +68,4 @@ export function TouchHandler({
 // Re-export types and utilities for easy access
 export * from './utils';
 export * from './gesture-handlers';
-export * from './use-touch-events'; 
+export * from './use-touch-events';

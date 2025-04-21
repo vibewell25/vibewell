@@ -6,7 +6,6 @@ import { authOptions } from '@/lib/auth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-;
 import { toast } from 'react-hot-toast';
 import { Icons } from '@/components/icons';
 interface Reward {
@@ -35,7 +34,7 @@ export default function RewardsCatalogPage() {
       try {
         const [rewardsResponse, pointsResponse] = await Promise.all([
           fetch('/api/rewards/catalog'),
-          fetch('/api/rewards/points')
+          fetch('/api/rewards/points'),
         ]);
         if (!rewardsResponse.ok || !pointsResponse.ok) {
           throw new Error('Failed to fetch data');
@@ -104,7 +103,7 @@ export default function RewardsCatalogPage() {
           </div>
         </div>
         <div className="grid gap-6 md:grid-cols-2">
-          {rewards.map((reward) => (
+          {rewards.map(reward => (
             <Card key={reward.id} className="overflow-hidden">
               <div className="aspect-video bg-gray-100 relative">
                 <img
@@ -113,10 +112,10 @@ export default function RewardsCatalogPage() {
                   className="object-cover w-full h-full"
                 />
                 <Badge
-                  variant={reward.available ? "default" : "secondary"}
+                  variant={reward.available ? 'default' : 'secondary'}
                   className="absolute top-2 right-2"
                 >
-                  {reward.available ? "Available" : "Out of Stock"}
+                  {reward.available ? 'Available' : 'Out of Stock'}
                 </Badge>
               </div>
               <CardHeader>
@@ -144,4 +143,4 @@ export default function RewardsCatalogPage() {
       </div>
     </div>
   );
-} 
+}

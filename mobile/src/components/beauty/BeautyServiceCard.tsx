@@ -5,7 +5,7 @@ import { BeautyService } from '../../types/beauty';
 
 interface BeautyServiceCardProps {
   service: BeautyService;
-  onPress: () => void;
+  onPress: (service: BeautyService) => void;
   isDarkMode: boolean;
 }
 
@@ -20,12 +20,14 @@ const BeautyServiceCard: React.FC<BeautyServiceCardProps> = ({
         styles.container,
         { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
       ]}
-      onPress={onPress}
+      onPress={() => onPress(service)}
+      testID="beautyServiceCard"
     >
       <Image 
         source={{ uri: service.imageUrl }} 
         style={styles.image}
         resizeMode="cover"
+        testID="serviceImage"
       />
       <View style={styles.content}>
         <Text 
@@ -34,6 +36,7 @@ const BeautyServiceCard: React.FC<BeautyServiceCardProps> = ({
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}
           numberOfLines={1}
+          testID="serviceTitle"
         >
           {service.title}
         </Text>
@@ -43,6 +46,7 @@ const BeautyServiceCard: React.FC<BeautyServiceCardProps> = ({
             { color: isDarkMode ? '#E0E0E0' : '#444444' }
           ]}
           numberOfLines={2}
+          testID="serviceDescription"
         >
           {service.description}
         </Text>
@@ -52,8 +56,18 @@ const BeautyServiceCard: React.FC<BeautyServiceCardProps> = ({
               styles.price,
               { color: isDarkMode ? '#FFFFFF' : '#000000' }
             ]}
+            testID="servicePrice"
           >
             ${service.price}
+          </Text>
+          <Text 
+            style={[
+              styles.duration,
+              { color: isDarkMode ? '#E0E0E0' : '#444444' }
+            ]}
+            testID="serviceDuration"
+          >
+            {service.duration} min
           </Text>
           <View style={styles.ratingContainer}>
             <MaterialIcons name="star" size={14} color="#FFD700" />
@@ -62,6 +76,7 @@ const BeautyServiceCard: React.FC<BeautyServiceCardProps> = ({
                 styles.rating,
                 { color: isDarkMode ? '#E0E0E0' : '#444444' }
               ]}
+              testID="serviceRating"
             >
               {service.rating}
             </Text>
@@ -69,7 +84,7 @@ const BeautyServiceCard: React.FC<BeautyServiceCardProps> = ({
         </View>
       </View>
       {service.featured && (
-        <View style={styles.featuredBadge}>
+        <View style={styles.featuredBadge} testID="featuredBadge">
           <Text style={styles.featuredText}>Featured</Text>
         </View>
       )}
@@ -114,6 +129,10 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  duration: {
+    fontSize: 14,
+    color: '#666',
   },
   ratingContainer: {
     flexDirection: 'row',

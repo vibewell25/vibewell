@@ -11,12 +11,12 @@ const recoveryCodeService = new RecoveryCodeService();
 const RATE_LIMIT = {
   GENERATE: {
     windowMs: 24 * 60 * 60 * 1000, // 24 hours
-    max: 3 // 3 generations per day
+    max: 3, // 3 generations per day
   },
   VERIFY: {
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5 // 5 attempts per 15 minutes
-  }
+    max: 5, // 5 attempts per 15 minutes
+  },
 };
 
 export async function POST(req: NextRequest) {
@@ -49,10 +49,7 @@ export async function POST(req: NextRequest) {
 
       case 'verify': {
         if (!code) {
-          return NextResponse.json(
-            { error: 'Recovery code is required' },
-            { status: 400 }
-          );
+          return NextResponse.json({ error: 'Recovery code is required' }, { status: 400 });
         }
 
         // Check rate limit for verification
@@ -61,22 +58,13 @@ export async function POST(req: NextRequest) {
           RATE_LIMIT.VERIFY
         );
         if (limited) {
-          return NextResponse.json(
-            { error: 'Too many verification attempts' },
-            { status: 429 }
-          );
+          return NextResponse.json({ error: 'Too many verification attempts' }, { status: 429 });
         }
 
-        const isValid = await recoveryCodeService.verifyRecoveryCode(
-          session.user.id,
-          code
-        );
+        const isValid = await recoveryCodeService.verifyRecoveryCode(session.user.id, code);
 
         if (!isValid) {
-          return NextResponse.json(
-            { error: 'Invalid recovery code' },
-            { status: 401 }
-          );
+          return NextResponse.json({ error: 'Invalid recovery code' }, { status: 401 });
         }
 
         return NextResponse.json({ success: true });
@@ -88,38 +76,23 @@ export async function POST(req: NextRequest) {
       }
 
       default:
-        return NextResponse.json(
-          { error: 'Invalid action' },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
     }
   } catch (error) {
     logger.error('Recovery code operation failed', 'security', { error });
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
 // Only allow POST requests
 export async function GET() {
-  return NextResponse.json(
-    { error: 'Method not allowed' },
-    { status: 405 }
-  );
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
 }
 
 export async function PUT() {
-  return NextResponse.json(
-    { error: 'Method not allowed' },
-    { status: 405 }
-  );
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
 }
 
 export async function DELETE() {
-  return NextResponse.json(
-    { error: 'Method not allowed' },
-    { status: 405 }
-  );
-} 
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+}

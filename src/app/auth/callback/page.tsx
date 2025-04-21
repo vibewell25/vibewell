@@ -1,8 +1,8 @@
 'use client';
 
-import React, { Suspense, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import React, { Suspense, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 function AuthCallbackContent() {
   const router = useRouter();
@@ -10,8 +10,11 @@ function AuthCallbackContent() {
 
   useEffect(() => {
     const handleCallback = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+
       if (error) {
         console.error('Error getting session:', error);
         router.push('/auth/login');
@@ -32,9 +35,7 @@ function AuthCallbackContent() {
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Signing you in...
-          </h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Signing you in...</h1>
           <p className="text-sm text-muted-foreground">
             Please wait while we complete the authentication process.
           </p>
@@ -46,16 +47,18 @@ function AuthCallbackContent() {
 
 export default function AuthCallbackPage() {
   return (
-    <Suspense fallback={<div className="container flex h-screen w-screen flex-col items-center justify-center">
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-        <div className="flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Loading authentication...
-          </h1>
+    <Suspense
+      fallback={
+        <div className="container flex h-screen w-screen flex-col items-center justify-center">
+          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+            <div className="flex flex-col space-y-2 text-center">
+              <h1 className="text-2xl font-semibold tracking-tight">Loading authentication...</h1>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>}>
+      }
+    >
       <AuthCallbackContent />
     </Suspense>
   );
-} 
+}

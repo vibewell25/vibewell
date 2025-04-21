@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, AlertTriangle, CheckCircle2, Clock, XCircle } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Activity, AlertTriangle, CheckCircle2, Clock, XCircle } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 
 interface ActivityStats {
   totalEvents: number;
@@ -18,9 +18,9 @@ export function ActivityStats() {
     successfulEvents: 142,
     warningEvents: 10,
     errorEvents: 4,
-    lastActivity: "2024-03-20T10:00:00Z",
-    mostActiveTime: "10:00 AM - 12:00 PM",
-    mostCommonEvent: "login",
+    lastActivity: '2024-03-20T10:00:00Z',
+    mostActiveTime: '10:00 AM - 12:00 PM',
+    mostCommonEvent: 'login',
   };
 
   const getPercentage = (value: number, total: number) => {
@@ -51,7 +51,9 @@ export function ActivityStats() {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Most Common Event</span>
-              <span className="text-sm text-muted-foreground capitalize">{stats.mostCommonEvent}</span>
+              <span className="text-sm text-muted-foreground capitalize">
+                {stats.mostCommonEvent}
+              </span>
             </div>
           </div>
 
@@ -63,7 +65,8 @@ export function ActivityStats() {
                   <span className="text-sm font-medium">Successful</span>
                 </div>
                 <span className="text-sm text-muted-foreground">
-                  {stats.successfulEvents} ({getPercentage(stats.successfulEvents, stats.totalEvents)}%)
+                  {stats.successfulEvents} (
+                  {getPercentage(stats.successfulEvents, stats.totalEvents)}%)
                 </span>
               </div>
               <div className="h-2 w-full rounded-full bg-green-100">
@@ -120,4 +123,4 @@ export function ActivityStats() {
       </CardContent>
     </Card>
   );
-} 
+}

@@ -15,10 +15,10 @@ interface ResponsiveTesterProps {
 
 /**
  * ResponsiveTester - A development tool to help visualize responsive design
- * 
+ *
  * This component provides a floating panel with useful information about
  * the current viewport, device type, and responsive breakpoints.
- * 
+ *
  * It should be used only during development and disabled in production.
  */
 export function ResponsiveTester({
@@ -29,20 +29,13 @@ export function ResponsiveTester({
   showDimensions = true,
   showTouchInfo = true,
   onlyInDevelopment = true,
-  className
+  className,
 }: ResponsiveTesterProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isPinned, setIsPinned] = useState(false);
   const [touchEvents, setTouchEvents] = useState<string[]>([]);
-  const { 
-    deviceType, 
-    dimensions, 
-    isTouch, 
-    isMobile, 
-    isTablet, 
-    isDesktop, 
-    breakpoints 
-  } = useResponsive();
+  const { deviceType, dimensions, isTouch, isMobile, isTablet, isDesktop, breakpoints } =
+    useResponsive();
 
   // Check if we should show based on environment
   useEffect(() => {
@@ -53,7 +46,7 @@ export function ResponsiveTester({
         return;
       }
     }
-    
+
     setIsVisible(enabled);
   }, [enabled, onlyInDevelopment]);
 
@@ -108,7 +101,7 @@ export function ResponsiveTester({
   const activeBreakpoint = getActiveBreakpoint();
 
   return (
-    <div 
+    <div
       className={cn(
         'fixed z-[9999] bg-gray-900/90 text-white rounded-lg overflow-hidden shadow-lg',
         'backdrop-blur-lg border border-gray-700 transition-opacity duration-300',
@@ -116,16 +109,16 @@ export function ResponsiveTester({
         positionClasses[position],
         className
       )}
-      style={{ 
+      style={{
         maxWidth: '300px',
         fontSize: '12px',
-        fontFamily: 'monospace'
+        fontFamily: 'monospace',
       }}
     >
       <div className="p-3 flex justify-between items-center border-b border-gray-700">
         <span className="font-bold">Responsive Tester</span>
         <div className="flex items-center space-x-2">
-          <button 
+          <button
             onClick={() => setIsPinned(!isPinned)}
             className={cn(
               'p-1 rounded hover:bg-gray-700',
@@ -135,7 +128,7 @@ export function ResponsiveTester({
           >
             {isPinned ? '📌' : '📍'}
           </button>
-          <button 
+          <button
             onClick={() => setIsVisible(false)}
             className="p-1 rounded hover:bg-gray-700 text-gray-400 hover:text-white"
             title="Close"
@@ -144,7 +137,7 @@ export function ResponsiveTester({
           </button>
         </div>
       </div>
-      
+
       <div className="p-3 space-y-3 max-h-[40vh] overflow-y-auto">
         {showDimensions && (
           <div className="space-y-1">
@@ -153,32 +146,30 @@ export function ResponsiveTester({
             <div>Height: {dimensions.height}px</div>
           </div>
         )}
-        
+
         {showDeviceInfo && (
           <div className="space-y-1">
             <div className="font-bold border-b border-gray-700 pb-1">Device</div>
             <div>Type: {deviceType}</div>
             <div>Touch: {isTouch ? 'Yes' : 'No'}</div>
             <div>
-              <span className={isMobile ? 'text-green-400' : ''}>Mobile</span> | 
-              <span className={isTablet ? 'text-green-400' : ''}> Tablet</span> | 
+              <span className={isMobile ? 'text-green-400' : ''}>Mobile</span> |
+              <span className={isTablet ? 'text-green-400' : ''}> Tablet</span> |
               <span className={isDesktop ? 'text-green-400' : ''}> Desktop</span>
             </div>
           </div>
         )}
-        
+
         {showBreakpoints && (
           <div className="space-y-1">
             <div className="font-bold border-b border-gray-700 pb-1">Breakpoints</div>
             <div className="grid grid-cols-6 gap-1">
               {Object.entries(breakpoints).map(([key, value]) => (
-                <div 
+                <div
                   key={key}
                   className={cn(
                     'text-center py-1 px-2 rounded',
-                    key === activeBreakpoint 
-                      ? 'bg-blue-600 text-white' 
-                      : 'bg-gray-800'
+                    key === activeBreakpoint ? 'bg-blue-600 text-white' : 'bg-gray-800'
                   )}
                   title={`${key}: ${value}px`}
                 >
@@ -188,14 +179,16 @@ export function ResponsiveTester({
             </div>
           </div>
         )}
-        
+
         {showTouchInfo && isTouch && (
           <div className="space-y-1">
             <div className="font-bold border-b border-gray-700 pb-1">Touch Events</div>
             {touchEvents.length > 0 ? (
               <div className="space-y-1">
                 {touchEvents.map((event, index) => (
-                  <div key={index} className="text-xs">{event}</div>
+                  <div key={index} className="text-xs">
+                    {event}
+                  </div>
                 ))}
               </div>
             ) : (
@@ -206,4 +199,4 @@ export function ResponsiveTester({
       </div>
     </div>
   );
-} 
+}

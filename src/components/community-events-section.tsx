@@ -2,7 +2,7 @@ import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import { Event } from '@/types/events';
 import { getUpcomingEvents, registerForEvent, cancelEventRegistration } from '@/lib/api/events';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -21,12 +21,12 @@ export function CommunityEventsSection({
   limit = 3,
   showCreateButton = false,
   showViewAllButton = true,
-  className = ''
+  className = '',
 }: CommunityEventsSectionProps) {
   const { user } = useAuth();
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [sharedEvents, setSharedEvents] = useState<{[key: string]: boolean}>({});
+  const [sharedEvents, setSharedEvents] = useState<{ [key: string]: boolean }>({});
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -61,7 +61,12 @@ export function CommunityEventsSection({
       if (isAttending) {
         await cancelEventRegistration(eventId, user.id);
       } else {
-        await registerForEvent(eventId, user.id, user.user_metadata?.full_name || 'Anonymous', user.user_metadata?.avatar_url);
+        await registerForEvent(
+          eventId,
+          user.id,
+          user.user_metadata?.full_name || 'Anonymous',
+          user.user_metadata?.avatar_url
+        );
       }
       setSharedEvents(prev => ({ ...prev, [eventId]: !isAttending }));
       // Refresh events
@@ -90,21 +95,23 @@ export function CommunityEventsSection({
       </div>
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Array(limit).fill(0).map((_, idx) => (
-            <Card key={idx} className="animate-pulse">
-              <CardHeader>
-                <div className="h-4 bg-muted rounded w-3/4"></div>
-              </CardHeader>
-              <CardContent>
-                <div className="h-3 bg-muted rounded w-1/2 mb-4"></div>
-                <div className="h-2 bg-muted rounded w-full mb-2"></div>
-                <div className="h-2 bg-muted rounded w-2/3"></div>
-              </CardContent>
-              <CardFooter>
-                <div className="h-8 bg-muted rounded w-24"></div>
-              </CardFooter>
-            </Card>
-          ))}
+          {Array(limit)
+            .fill(0)
+            .map((_, idx) => (
+              <Card key={idx} className="animate-pulse">
+                <CardHeader>
+                  <div className="h-4 bg-muted rounded w-3/4"></div>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-3 bg-muted rounded w-1/2 mb-4"></div>
+                  <div className="h-2 bg-muted rounded w-full mb-2"></div>
+                  <div className="h-2 bg-muted rounded w-2/3"></div>
+                </CardContent>
+                <CardFooter>
+                  <div className="h-8 bg-muted rounded w-24"></div>
+                </CardFooter>
+              </Card>
+            ))}
         </div>
       ) : events.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -125,9 +132,7 @@ export function CommunityEventsSection({
             <p className="text-muted-foreground text-center mb-4">No upcoming community events.</p>
             {user && (
               <Link href="/events/create">
-                <Button>
-                  Create an Event
-                </Button>
+                <Button>Create an Event</Button>
               </Link>
             )}
           </CardContent>
@@ -135,4 +140,4 @@ export function CommunityEventsSection({
       )}
     </div>
   );
-} 
+}

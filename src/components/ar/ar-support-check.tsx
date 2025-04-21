@@ -29,7 +29,8 @@ export function ARSupportCheck({ children, onARUnsupported }: ARSupportCheckProp
           onARUnsupported?.();
           toast({
             title: 'AR Not Supported',
-            description: 'Your device or browser does not support AR features. You can still view the 3D model.',
+            description:
+              'Your device or browser does not support AR features. You can still view the 3D model.',
             variant: 'warning',
           });
         }
@@ -70,7 +71,8 @@ export function ARSupportCheck({ children, onARUnsupported }: ARSupportCheckProp
         <div className="space-y-4">
           <h2 className="text-2xl font-bold">AR Not Available</h2>
           <p className="text-gray-500">
-            Your device or browser does not support AR features. You can still view the 3D model in 3D view mode.
+            Your device or browser does not support AR features. You can still view the 3D model in
+            3D view mode.
           </p>
           <div className="space-y-2">
             <p className="text-sm text-gray-500">To use AR features, you need:</p>
@@ -89,4 +91,4 @@ export function ARSupportCheck({ children, onARUnsupported }: ARSupportCheckProp
   }
 
   return <>{children}</>;
-} 
+}

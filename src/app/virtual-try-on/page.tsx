@@ -10,13 +10,13 @@ import dynamic from 'next/dynamic';
 // Dynamically import the AR viewer to reduce initial page load
 const DynamicARViewer = dynamic(
   () => import('@/components/dynamic/DynamicARViewer').then(mod => mod.DynamicARViewer),
-  { 
+  {
     ssr: false,
     loading: () => (
       <div className="bg-gray-200 h-[300px] flex items-center justify-center rounded-md">
         <p className="text-gray-500">Loading AR Experience...</p>
       </div>
-    )
+    ),
   }
 );
 
@@ -76,22 +76,24 @@ function VirtualTryOnContent() {
       {isARActive && selectedModel ? (
         <div className="mb-8">
           <div className="bg-white rounded-lg shadow-md p-4">
-            <DynamicARViewer 
+            <DynamicARViewer
               modelId={selectedModel}
               prioritizeBattery={true}
               enableProgressiveLoading={true}
               height="500px"
-              onError={(error) => {
+              onError={error => {
                 console.error('AR Error:', error);
                 setIsARActive(false);
               }}
             />
             <div className="mt-4 flex justify-between items-center">
               <h3 className="font-medium">
-                {mockModels.makeup.find(m => m.id === selectedModel)?.name || 
-                 mockModels.hairstyle.find(m => m.id === selectedModel)?.name}
+                {mockModels.makeup.find(m => m.id === selectedModel)?.name ||
+                  mockModels.hairstyle.find(m => m.id === selectedModel)?.name}
               </h3>
-              <Button variant="outline" onClick={handleCloseAR}>Close AR View</Button>
+              <Button variant="outline" onClick={handleCloseAR}>
+                Close AR View
+              </Button>
             </div>
           </div>
         </div>
@@ -103,14 +105,17 @@ function VirtualTryOnContent() {
                 type="text"
                 placeholder="Search looks..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="pl-10"
               />
               <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             </div>
           </div>
 
-          <Tabs defaultValue="makeup" onValueChange={(value) => setSelectedType(value as 'makeup' | 'hairstyle')}>
+          <Tabs
+            defaultValue="makeup"
+            onValueChange={value => setSelectedType(value as 'makeup' | 'hairstyle')}
+          >
             <TabsList className="mb-6">
               <TabsTrigger value="makeup">Makeup</TabsTrigger>
               <TabsTrigger value="hairstyle">Hairstyles</TabsTrigger>
@@ -118,14 +123,16 @@ function VirtualTryOnContent() {
 
             <TabsContent value="makeup">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {mockModels.makeup.map((model) => (
+                {mockModels.makeup.map(model => (
                   <div key={model.id} className="bg-white rounded-lg shadow-md p-4">
                     <div className="bg-gray-200 h-[300px] flex items-center justify-center rounded-md">
                       <p className="text-gray-500">Virtual Try-On Placeholder</p>
                     </div>
                     <h3 className="mt-4 font-medium">{model.name}</h3>
                     <div className="mt-2">
-                      <Button size="sm" onClick={() => handleTryOn(model.id)}>Try On</Button>
+                      <Button size="sm" onClick={() => handleTryOn(model.id)}>
+                        Try On
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -134,14 +141,16 @@ function VirtualTryOnContent() {
 
             <TabsContent value="hairstyle">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {mockModels.hairstyle.map((model) => (
+                {mockModels.hairstyle.map(model => (
                   <div key={model.id} className="bg-white rounded-lg shadow-md p-4">
                     <div className="bg-gray-200 h-[300px] flex items-center justify-center rounded-md">
                       <p className="text-gray-500">Virtual Try-On Placeholder</p>
                     </div>
                     <h3 className="mt-4 font-medium">{model.name}</h3>
                     <div className="mt-2">
-                      <Button size="sm" onClick={() => handleTryOn(model.id)}>Try On</Button>
+                      <Button size="sm" onClick={() => handleTryOn(model.id)}>
+                        Try On
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -156,8 +165,12 @@ function VirtualTryOnContent() {
 
 export default function VirtualTryOnPage() {
   return (
-    <Suspense fallback={<div className="container mx-auto px-4 py-8">Loading virtual try-on experience...</div>}>
+    <Suspense
+      fallback={
+        <div className="container mx-auto px-4 py-8">Loading virtual try-on experience...</div>
+      }
+    >
       <VirtualTryOnContent />
     </Suspense>
   );
-} 
+}

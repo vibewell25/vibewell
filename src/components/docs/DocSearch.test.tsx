@@ -10,12 +10,11 @@ jest.mock('next/navigation', () => ({
 }));
 
 // Setup custom render with test-utils if needed
-const customRender = (ui: React.ReactElement) =>
-  render(ui);
+const customRender = (ui: React.ReactElement) => render(ui);
 
 describe('DocSearch', () => {
   const mockPush = jest.fn();
-  
+
   beforeEach(() => {
     (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
   });
@@ -33,7 +32,7 @@ describe('DocSearch', () => {
   it('updates input value on change', () => {
     customRender(<DocSearch />);
     const input = screen.getByRole('searchbox') as HTMLInputElement;
-    
+
     fireEvent.change(input, { target: { value: 'test query' } });
     expect(input.value).toBe('test query');
   });
@@ -74,4 +73,4 @@ describe('DocSearch', () => {
     const form = screen.getByRole('form');
     expect(form).toHaveClass('custom-class');
   });
-}); 
+});

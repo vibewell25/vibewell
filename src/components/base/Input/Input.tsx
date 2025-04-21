@@ -53,11 +53,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {error}
           </p>
         )}
-        {!error && success && (
-          <p className="mt-1 text-sm text-success">
-            {success}
-          </p>
-        )}
+        {!error && success && <p className="mt-1 text-sm text-success">{success}</p>}
       </div>
     );
   }
@@ -65,4 +61,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = 'Input';
 
-export { Input, inputVariants }; 
+export { Input, inputVariants };

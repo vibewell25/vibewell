@@ -14,7 +14,8 @@ export function ShareView({ shareData }: ShareViewProps) {
     <div className="container mx-auto px-4 py-8">
       <Card className="max-w-2xl mx-auto p-6">
         <h1 className="text-2xl font-bold mb-4">
-          My {shareData.type} try-on look{shareData.productName ? ` with ${shareData.productName}` : ''}
+          My {shareData.type} try-on look
+          {shareData.productName ? ` with ${shareData.productName}` : ''}
         </h1>
         <div className="aspect-square relative mb-4">
           <img
@@ -29,15 +30,13 @@ export function ShareView({ shareData }: ShareViewProps) {
               Type: <span className="capitalize">{shareData.type}</span>
             </p>
             {shareData.productName && (
-              <p className="text-sm text-muted-foreground">
-                Product: {shareData.productName}
-              </p>
+              <p className="text-sm text-muted-foreground">Product: {shareData.productName}</p>
             )}
             <p className="text-sm text-muted-foreground">
               Shared on: {format(new Date(shareData.createdAt), 'MMM d, yyyy h:mm a')}
             </p>
           </div>
-          
+
           <div className="pt-4 border-t">
             <h2 className="text-lg font-semibold mb-2">Share this look</h2>
             <SocialShareButtons
@@ -51,4 +50,4 @@ export function ShareView({ shareData }: ShareViewProps) {
       </Card>
     </div>
   );
-} 
+}

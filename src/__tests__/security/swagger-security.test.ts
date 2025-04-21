@@ -35,9 +35,7 @@ describe('Swagger UI Security Tests', () => {
 
     it('should block excessive requests', async () => {
       const req = mockSwaggerRequest();
-      const responses = await Promise.all(
-        Array(35).map(() => securityMiddleware(req))
-      );
+      const responses = await Promise.all(Array(35).map(() => securityMiddleware(req)));
       const blockedResponses = responses.filter(r => r.status === 429);
       expect(blockedResponses.length).toBeGreaterThan(0);
     });
@@ -122,10 +120,8 @@ describe('Swagger UI Security Tests', () => {
       const consoleSpy = jest.spyOn(console, 'info');
       const req = mockSwaggerRequest();
       await Promise.all(Array(35).map(() => securityMiddleware(req)));
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining('rate-limit')
-      );
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('rate-limit'));
       consoleSpy.mockRestore();
     });
   });
-}); 
+});

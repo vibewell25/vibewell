@@ -4,7 +4,16 @@
  * This utility provides a comprehensive set of testing helpers for different testing scenarios
  */
 import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
-import { render, screen, fireEvent, waitFor, cleanup, within, RenderOptions, RenderResult } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  cleanup,
+  within,
+  RenderOptions,
+  RenderResult,
+} from '@testing-library/react';
 import userEvent, { UserEvent } from '@testing-library/user-event';
 import { startComponentRender, endComponentRender } from '../utils/performanceMonitor';
 import React, { ReactElement, ReactNode, ComponentType } from 'react';
@@ -81,12 +90,26 @@ type UnknownFunction = (...args: any[]) => any;
 
 interface TestRunnerContext {
   test: (description: string, testFn: () => void | Promise<void>) => void;
-  testEach: <T>(description: string, testData: T[], testFn: (data: T) => void | Promise<void>) => void;
-  testPerformance: (description: string, ui: ReactElement, options?: PerformanceTestOptions) => void;
+  testEach: <T>(
+    description: string,
+    testData: T[],
+    testFn: (data: T) => void | Promise<void>
+  ) => void;
+  testPerformance: (
+    description: string,
+    ui: ReactElement,
+    options?: PerformanceTestOptions
+  ) => void;
   render: (ui: ReactElement, options?: RenderOptions) => RenderResult & { renderTime?: number };
-  renderWithAxe: (ui: ReactElement, options?: RenderOptions) => Promise<RenderResult & { axeResults: any }>;
+  renderWithAxe: (
+    ui: ReactElement,
+    options?: RenderOptions
+  ) => Promise<RenderResult & { axeResults: any }>;
   renderWithSnapshot: (ui: ReactElement, options?: RenderOptions) => RenderResult;
-  renderWithRouter: (ui: ReactElement, options?: RenderOptions & { route?: string }) => RenderResult;
+  renderWithRouter: (
+    ui: ReactElement,
+    options?: RenderOptions & { route?: string }
+  ) => RenderResult;
   renderWithAuth: (ui: ReactElement, options?: RenderOptions & { user?: any }) => RenderResult;
   testApi: (description: string, testFn: () => void | Promise<void>) => void;
   testIntegration: (description: string, testFn: () => void | Promise<void>) => void;
@@ -112,15 +135,15 @@ interface TestRunnerContext {
  * @returns Test runner with helper methods
  */
 export function createTestRunner(name: string, options: TestSuiteOptions = {}): TestRunnerContext {
-  const { 
-    setup, 
-    teardown, 
-    wrapper: CustomWrapper, 
+  const {
+    setup,
+    teardown,
+    wrapper: CustomWrapper,
     initialRoute = '/',
     mocks = {},
     performanceMetrics = false,
   } = options;
-  
+
   // Setup mocks based on options
   if (mocks.localStorage) {
     // Setup localStorage mock
@@ -142,13 +165,13 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
         getAll: () => store,
       };
     })();
-    
+
     Object.defineProperty(window, 'localStorage', {
       value: localStorageMock,
       writable: true,
     });
   }
-  
+
   if (mocks.sessionStorage) {
     // Setup sessionStorage mock
     const sessionStorageMock = ((): StorageMock => {
@@ -167,19 +190,19 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
         getAll: () => store,
       };
     })();
-    
+
     Object.defineProperty(window, 'sessionStorage', {
       value: sessionStorageMock,
       writable: true,
     });
   }
-  
+
   // Choose the appropriate wrapper
   let Wrapper: ComponentType<any> = CustomWrapper || DefaultWrapper;
   if (options.withRouter) {
     Wrapper = RouterWrapper;
   }
-  
+
   // Create the test runner context
   const testRunner: TestRunnerContext = {
     // Test function implementations go here
@@ -188,179 +211,189 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
     test: (description, testFn) => {
       it(description, testFn);
     },
-    
+
     testEach: (description, testData, testFn) => {
       testData.forEach((data, index) => {
         it(`${description} (case ${index + 1})`, () => testFn(data));
       });
     },
-    
+
     testPerformance: (description, ui, options = {}) => {
       it(`Performance: ${description}`, async () => {
         const { iterations = 5, timeout = 5000, threshold = 50 } = options;
-        
+
         // Start measuring
         const startMark = startComponentRender('test-render');
-        
+
         // Perform multiple render iterations
         for (let i = 0; i < iterations; i++) {
           const { unmount } = render(ui, { wrapper: Wrapper });
-          await waitFor(() => {
-            expect(screen).toBeTruthy();
-          }, { timeout });
+          await waitFor(
+            () => {
+              expect(screen).toBeTruthy();
+            },
+            { timeout }
+          );
           unmount();
         }
-        
+
         // Stop measuring and get results
         endComponentRender('test-render', startMark);
-        
+
         // We would need to use the actual metrics from performanceMonitor here
         // but since we don't have access to them easily, we'll just log a placeholder
         console.log(`Measured performance for "${description}"`);
       });
     },
-    
+
     render: (ui, options = {}) => {
       const { wrapper, ...restOptions } = options;
-      
+
       // Use custom wrapper or default wrapper
       const WrapperToUse = wrapper || Wrapper;
-      
+
       // Start performance measuring if enabled
       let startTime = 0;
       if (performanceMetrics) {
         startTime = performance.now();
       }
-      
+
       const result = render(ui, {
         wrapper: WrapperToUse,
-        ...restOptions
+        ...restOptions,
       });
-      
+
       // Calculate render time if performance metrics are enabled
       if (performanceMetrics) {
         const renderTime = performance.now() - startTime;
         return {
           ...result,
-          renderTime
+          renderTime,
         };
       }
-      
+
       return result as RenderResult & { renderTime?: number };
     },
-    
+
     renderWithRouter: (ui, options = {}) => {
       const { route = '/', ...restOptions } = options;
-      
+
       const RouterWrapperWithRoute = ({ children }: { children: React.ReactNode }) => {
         return React.createElement(RouterWrapper, { initialRoute: route, children });
       };
-      
+
       return testRunner.render(ui, {
         wrapper: RouterWrapperWithRoute,
-        ...restOptions
+        ...restOptions,
       });
     },
-    
+
     renderWithAuth: (ui, options = {}) => {
       const { user, ...restOptions } = options;
-      
+
       const AuthWrapperWithUser = ({ children }: { children: React.ReactNode }) => {
         return React.createElement(AuthWrapper, { mockUser: user, children });
       };
-      
+
       return testRunner.render(ui, {
         wrapper: AuthWrapperWithUser,
-        ...restOptions
+        ...restOptions,
       });
     },
-    
-    renderWithAxe: async function(ui: ReactElement, options: RenderOptions = {}): Promise<RenderResult & { axeResults: any }> {
+
+    renderWithAxe: async function (
+      ui: ReactElement,
+      options: RenderOptions = {}
+    ): Promise<RenderResult & { axeResults: any }> {
       if (!axe) {
-        throw new Error('jest-axe is not available. Please install it with: npm install --save-dev jest-axe');
+        throw new Error(
+          'jest-axe is not available. Please install it with: npm install --save-dev jest-axe'
+        );
       }
-      
+
       const result = testRunner.render(ui, options);
       const axeResults = await axe(result.container);
-      
+
       return {
         ...result,
-        axeResults
+        axeResults,
       };
     },
-    
+
     renderWithSnapshot: (ui, options = {}) => {
       const result = testRunner.render(ui, options);
       expect(result.container).toMatchSnapshot();
       return result;
     },
-    
+
     testApi: (description, testFn) => {
       it(`API: ${description}`, testFn);
     },
-    
+
     mockAPI: (url, response, options = {}) => {
-      const { 
-        method = 'GET', 
-        status = 200, 
+      const {
+        method = 'GET',
+        status = 200,
         headers = { 'Content-Type': 'application/json' },
-        delay = 0
+        delay = 0,
       } = options;
-      
+
       // Implement based on your mocking strategy (e.g., MSW, jest.spyOn, etc.)
       (global.fetch as jest.Mock).mockImplementation(
         (fetchUrl: string, fetchOptions: RequestInit = {}) => {
           if (fetchUrl === url && (!fetchOptions.method || fetchOptions.method === method)) {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
               setTimeout(() => {
                 resolve({
                   ok: status >= 200 && status < 300,
                   status,
                   headers: new Headers(headers),
-                  json: () => Promise.resolve(response)
+                  json: () => Promise.resolve(response),
                 });
               }, delay);
             });
           }
-          
+
           return Promise.reject(new Error(`Unhandled request: ${fetchUrl}`));
         }
       );
     },
-    
+
     mockService: (serviceName, mockImplementation) => {
       jest.mock(`../services/${serviceName}`, () => mockImplementation);
     },
-    
+
     createMock: (value: any): jest.Mock => {
       return jest.fn().mockReturnValue(value);
     },
-    
+
     testIntegration: (description, testFn) => {
       it(`Integration: ${description}`, testFn);
     },
-    
+
     testAccessibility: (description, ui, options = {}) => {
       it(`Accessibility: ${description}`, async () => {
         if (!axe) {
-          throw new Error('jest-axe is not available. Please install it with: npm install --save-dev jest-axe');
+          throw new Error(
+            'jest-axe is not available. Please install it with: npm install --save-dev jest-axe'
+          );
         }
-        
+
         const { container } = testRunner.render(ui, options);
         const results = await axe(container);
-        
+
         expect(results).toHaveNoViolations();
       });
     },
-    
+
     testSecurity: (description, testFn) => {
       it(`Security: ${description}`, testFn);
     },
-    
+
     testE2E: (description, testFn) => {
       it(`E2E: ${description}`, testFn);
     },
-    
+
     // Provide access to testing libraries
     user: userEvent.setup(),
     screen,
@@ -370,6 +403,6 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
     expect,
     jest,
   };
-  
+
   return testRunner;
-} 
+}

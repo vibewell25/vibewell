@@ -56,9 +56,7 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                 />
               </svg>
-              <h3 className="mt-2 text-lg font-medium text-gray-900">
-                Check your email
-              </h3>
+              <h3 className="mt-2 text-lg font-medium text-gray-900">Check your email</h3>
               <p className="mt-1 text-sm text-gray-500">
                 Please check your email and click the verification link to continue.
               </p>
@@ -73,10 +71,7 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
             >
               {isResending ? 'Sending...' : 'Resend verification email'}
             </button>
-            <button
-              onClick={() => router.push('/auth/signin')}
-              className="btn-primary"
-            >
+            <button onClick={() => router.push('/auth/signin')} className="btn-primary">
               Back to sign in
             </button>
           </div>
@@ -84,4 +79,4 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
       </div>
     </div>
   );
-}; 
+};

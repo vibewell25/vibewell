@@ -29,7 +29,7 @@ export interface BeautyProduct {
   tags: string[];
 }
 
-export type BeautyCategory = 
+export type BeautyCategory =
   | 'makeup'
   | 'skincare'
   | 'haircare'
@@ -78,11 +78,11 @@ export interface BeautyCatalogState {
     isCrueltyFree: boolean | null;
   };
   searchQuery: string;
-  
+
   // Actions
   fetchProducts: () => Promise<void>;
   setFilter: <K extends keyof BeautyCatalogState['filters']>(
-    key: K, 
+    key: K,
     value: BeautyCatalogState['filters'][K]
   ) => void;
   resetFilters: () => void;
@@ -107,7 +107,7 @@ const initialCatalogState: BeautyCatalogState = {
     isCrueltyFree: null,
   },
   searchQuery: '',
-  
+
   // These will be implemented after state creation
   fetchProducts: async () => {},
   setFilter: () => {},
@@ -119,14 +119,12 @@ const initialCatalogState: BeautyCatalogState = {
 /**
  * Creates the beauty catalog state manager
  * Manages product catalog, filtering, and searching
- * 
+ *
  * @returns A state manager for beauty catalog
  */
 export const createBeautyCatalogState = () => {
-  const catalogState = createState<BeautyCatalogState>(
-    initialCatalogState
-  );
-  
+  const catalogState = createState<BeautyCatalogState>(initialCatalogState);
+
   // Implement all the methods
   catalogState.setState({
     fetchProducts: async (): Promise<void> => {
@@ -140,49 +138,47 @@ export const createBeautyCatalogState = () => {
         const products = await response.json();
         catalogState.setState({ products, isLoading: false });
       } catch (error) {
-        catalogState.setState({ 
+        catalogState.setState({
           error: error instanceof Error ? error.message : 'Unknown error',
-          isLoading: false 
+          isLoading: false,
         });
       }
     },
-    
+
     setFilter: <K extends keyof BeautyCatalogState['filters']>(
-      key: K, 
+      key: K,
       value: BeautyCatalogState['filters'][K]
     ): void => {
       const currentState = catalogState.getState();
       catalogState.setState({
         filters: {
           ...currentState.filters,
-          [key]: value
-        }
+          [key]: value,
+        },
       });
     },
-    
+
     resetFilters: (): void => {
       catalogState.setState({
         filters: initialCatalogState.filters,
-        searchQuery: ''
+        searchQuery: '',
       });
     },
-    
+
     setSearchQuery: (query: string): void => {
       catalogState.setState({ searchQuery: query });
     },
-    
+
     toggleFavorite: (productId: string): void => {
       const currentState = catalogState.getState();
       catalogState.setState({
         products: currentState.products.map(product =>
-          product.id === productId 
-            ? { ...product, isFavorite: !product.isFavorite }
-            : product
-        )
+          product.id === productId ? { ...product, isFavorite: !product.isFavorite } : product
+        ),
       });
-    }
+    },
   });
-  
+
   return catalogState;
 };
 
@@ -192,12 +188,12 @@ export const createBeautyCatalogState = () => {
 
 export interface TryOnProduct extends BeautyProduct {
   modelUrls: {
-    default: string;  // URL to default 3D model
-    ar: string;       // URL to AR model format
-    preview: string;  // Preview image URL
+    default: string; // URL to default 3D model
+    ar: string; // URL to AR model format
+    preview: string; // Preview image URL
   };
   textures: {
-    [colorId: string]: string;  // Color ID to texture URL mapping
+    [colorId: string]: string; // Color ID to texture URL mapping
   };
   placement: 'face' | 'lips' | 'eyes' | 'cheeks' | 'nails' | 'hair';
 }
@@ -212,7 +208,7 @@ export interface VirtualTryOnState {
   error: string | null;
   recentlyTriedProducts: TryOnProduct[];
   faceDetected: boolean;
-  
+
   // Actions
   loadTryOnProducts: () => Promise<void>;
   selectProduct: (productId: string) => void;
@@ -236,7 +232,7 @@ const initialTryOnState: VirtualTryOnState = {
   error: null,
   recentlyTriedProducts: [],
   faceDetected: false,
-  
+
   // These will be implemented after state creation
   loadTryOnProducts: async () => {},
   selectProduct: () => {},
@@ -252,14 +248,12 @@ const initialTryOnState: VirtualTryOnState = {
 /**
  * Creates the virtual try-on state manager
  * Manages AR camera, product selection, and try-on experience
- * 
+ *
  * @returns A state manager for virtual try-on features
  */
 export const createVirtualTryOnState = () => {
-  const tryOnState = createState<VirtualTryOnState>(
-    initialTryOnState
-  );
-  
+  const tryOnState = createState<VirtualTryOnState>(initialTryOnState);
+
   // Implement all the methods
   tryOnState.setState({
     loadTryOnProducts: async (): Promise<void> => {
@@ -273,46 +267,46 @@ export const createVirtualTryOnState = () => {
         const products = await response.json();
         tryOnState.setState({ availableProducts: products, isLoading: false });
       } catch (error) {
-        tryOnState.setState({ 
+        tryOnState.setState({
           error: error instanceof Error ? error.message : 'Unknown error',
-          isLoading: false 
+          isLoading: false,
         });
       }
     },
-    
-    selectProduct: (productId) => {
+
+    selectProduct: productId => {
       const product = tryOnState.getState().availableProducts.find(p => p.id === productId) || null;
       const firstAvailableColor = product?.colors.find(c => c.isAvailable) || null;
-      
-      tryOnState.setState({ 
+
+      tryOnState.setState({
         selectedProduct: product,
         selectedColor: firstAvailableColor,
         // Add to recently tried if not already there
-        recentlyTriedProducts: product 
+        recentlyTriedProducts: product
           ? [
               product,
-              ...tryOnState.getState().recentlyTriedProducts.filter(p => p.id !== productId)
+              ...tryOnState.getState().recentlyTriedProducts.filter(p => p.id !== productId),
             ].slice(0, 5) // Keep only 5 most recent
-          : tryOnState.getState().recentlyTriedProducts
+          : tryOnState.getState().recentlyTriedProducts,
       });
     },
-    
-    selectColor: (colorId) => {
+
+    selectColor: colorId => {
       const product = tryOnState.getState().selectedProduct;
       if (!product) return;
-      
+
       const color = product.colors.find(c => c.id === colorId) || null;
       tryOnState.setState({ selectedColor: color });
     },
-    
+
     toggleCamera: () => {
       const currentState = tryOnState.getState();
       // If turning off camera, also make sure AR is off
       if (currentState.cameraActive) {
-        tryOnState.setState({ 
+        tryOnState.setState({
           cameraActive: false,
           arActive: false,
-          faceDetected: false
+          faceDetected: false,
         });
       } else {
         tryOnState.setState({ cameraActive: true });
@@ -324,7 +318,7 @@ export const createVirtualTryOnState = () => {
         }, 2000);
       }
     },
-    
+
     startARExperience: async () => {
       tryOnState.setState({ isLoading: true, error: null });
       try {
@@ -337,16 +331,16 @@ export const createVirtualTryOnState = () => {
         tryOnState.setState({
           error: error instanceof Error ? error.message : 'Failed to start AR',
           isLoading: false,
-          arActive: false
+          arActive: false,
         });
         return false;
       }
     },
-    
+
     stopARExperience: () => {
       tryOnState.setState({ arActive: false });
     },
-    
+
     captureImage: async () => {
       try {
         // In a real implementation, this would capture from canvas/camera
@@ -354,18 +348,18 @@ export const createVirtualTryOnState = () => {
         return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
       } catch (error) {
         tryOnState.setState({
-          error: error instanceof Error ? error.message : 'Failed to capture image'
+          error: error instanceof Error ? error.message : 'Failed to capture image',
         });
         return null;
       }
     },
-    
+
     saveToFavorites: (productId, colorId) => {
       // In a real implementation, this would save to user's favorites
       console.log(`Saved product ${productId} with color ${colorId} to favorites`);
     },
-    
-    shareImage: async (imageData) => {
+
+    shareImage: async imageData => {
       try {
         // In a real implementation, this would use the Web Share API
         if (navigator.share) {
@@ -373,7 +367,7 @@ export const createVirtualTryOnState = () => {
             title: 'My Virtual Try-On',
             text: 'Check out this beauty look I created with Vibewell AR!',
             // In a real app, you'd first upload the image and share the URL
-            url: 'https://vibewell.com/virtual-try-on'
+            url: 'https://vibewell.com/virtual-try-on',
           });
           return true;
         } else {
@@ -383,13 +377,13 @@ export const createVirtualTryOnState = () => {
         }
       } catch (error) {
         tryOnState.setState({
-          error: error instanceof Error ? error.message : 'Failed to share image'
+          error: error instanceof Error ? error.message : 'Failed to share image',
         });
         return false;
       }
-    }
+    },
   });
-  
+
   return tryOnState;
 };
 
@@ -431,7 +425,7 @@ export interface BeautyBookingState {
   isLoading: boolean;
   error: string | null;
   currentStep: number;
-  
+
   // Actions
   fetchServices: () => Promise<void>;
   fetchProviders: (serviceId: string) => Promise<void>;
@@ -460,7 +454,7 @@ const initialBookingState: BeautyBookingState = {
   isLoading: false,
   error: null,
   currentStep: 0,
-  
+
   // These will be implemented after state creation
   fetchServices: async () => {},
   fetchProviders: async () => {},
@@ -480,7 +474,7 @@ const initialBookingState: BeautyBookingState = {
 /**
  * Creates the beauty booking state manager
  * Manages complex multi-step booking flow
- * 
+ *
  * @returns A state manager for beauty booking
  */
 export const createBeautyBookingState = () => {
@@ -488,7 +482,7 @@ export const createBeautyBookingState = () => {
     initialBookingState,
     StateManagerType.REDUX // Explicitly keep Redux for complex booking flow with middleware
   );
-  
+
   // Implement all the methods
   bookingState.setState({
     fetchServices: async (): Promise<void> => {
@@ -502,14 +496,14 @@ export const createBeautyBookingState = () => {
         const services = await response.json();
         bookingState.setState({ services, isLoading: false });
       } catch (error) {
-        bookingState.setState({ 
+        bookingState.setState({
           error: error instanceof Error ? error.message : 'Unknown error',
-          isLoading: false 
+          isLoading: false,
         });
       }
     },
-    
-    fetchProviders: async (serviceId) => {
+
+    fetchProviders: async serviceId => {
       bookingState.setState({ isLoading: true, error: null });
       try {
         // In a real implementation, this would be an API call
@@ -520,13 +514,13 @@ export const createBeautyBookingState = () => {
         const providers = await response.json();
         bookingState.setState({ providers, isLoading: false });
       } catch (error) {
-        bookingState.setState({ 
+        bookingState.setState({
           error: error instanceof Error ? error.message : 'Unknown error',
-          isLoading: false 
+          isLoading: false,
         });
       }
     },
-    
+
     fetchAvailability: async (providerId, serviceId) => {
       bookingState.setState({ isLoading: true, error: null });
       try {
@@ -537,147 +531,140 @@ export const createBeautyBookingState = () => {
         if (!response.ok) {
           throw new Error('Failed to fetch availability');
         }
-        
+
         // Update provider with availability data
         const availability = await response.json();
         const currentState = bookingState.getState();
-        
+
         const updatedProviders = currentState.providers.map(provider =>
-          provider.id === providerId
-            ? { ...provider, availability }
-            : provider
+          provider.id === providerId ? { ...provider, availability } : provider
         );
-        
+
         bookingState.setState({ providers: updatedProviders, isLoading: false });
       } catch (error) {
-        bookingState.setState({ 
+        bookingState.setState({
           error: error instanceof Error ? error.message : 'Unknown error',
-          isLoading: false 
+          isLoading: false,
         });
       }
     },
-    
-    selectService: (serviceId) => {
+
+    selectService: serviceId => {
       const service = bookingState.getState().services.find(s => s.id === serviceId) || null;
-      bookingState.setState({ 
+      bookingState.setState({
         selectedService: service,
         selectedProvider: null,
         selectedDate: null,
-        selectedTime: null
+        selectedTime: null,
       });
-      
+
       // Fetch providers for this service
       if (service) {
         bookingState.getState().fetchProviders(serviceId);
       }
     },
-    
-    selectProvider: (providerId) => {
+
+    selectProvider: providerId => {
       const provider = bookingState.getState().providers.find(p => p.id === providerId) || null;
-      bookingState.setState({ 
+      bookingState.setState({
         selectedProvider: provider,
         selectedDate: null,
-        selectedTime: null
+        selectedTime: null,
       });
-      
+
       // Fetch availability for this provider and selected service
       const serviceId = bookingState.getState().selectedService?.id;
       if (provider && serviceId) {
         bookingState.getState().fetchAvailability(providerId, serviceId);
       }
     },
-    
-    selectDate: (date) => {
-      bookingState.setState({ 
+
+    selectDate: date => {
+      bookingState.setState({
         selectedDate: date,
-        selectedTime: null
+        selectedTime: null,
       });
     },
-    
-    selectTime: (time) => {
+
+    selectTime: time => {
       bookingState.setState({ selectedTime: time });
     },
-    
-    setCustomerNotes: (notes) => {
+
+    setCustomerNotes: notes => {
       bookingState.setState({ customerNotes: notes });
     },
-    
+
     nextStep: () => {
       const currentStep = bookingState.getState().currentStep;
       bookingState.setState({ currentStep: currentStep + 1 });
     },
-    
+
     prevStep: () => {
       const currentStep = bookingState.getState().currentStep;
       if (currentStep > 0) {
         bookingState.setState({ currentStep: currentStep - 1 });
       }
     },
-    
-    goToStep: (step) => {
+
+    goToStep: step => {
       bookingState.setState({ currentStep: step });
     },
-    
+
     resetBooking: () => {
       // Reset all booking data but keep services and providers
       const { services, providers } = bookingState.getState();
       bookingState.setState({
         ...initialBookingState,
         services,
-        providers
+        providers,
       });
     },
-    
+
     submitBooking: async (): Promise<boolean> => {
-      const {
-        selectedService,
-        selectedProvider,
-        selectedDate,
-        selectedTime,
-        customerNotes
-      } = bookingState.getState();
-      
+      const { selectedService, selectedProvider, selectedDate, selectedTime, customerNotes } =
+        bookingState.getState();
+
       if (!selectedService || !selectedProvider || !selectedDate || !selectedTime) {
-        bookingState.setState({ 
-          error: 'Missing required booking information'
+        bookingState.setState({
+          error: 'Missing required booking information',
         });
         return false;
       }
-      
+
       bookingState.setState({ isLoading: true, error: null });
-      
+
       try {
         // In a real implementation, this would be an API call
         const response = await fetch('/api/beauty/bookings', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             serviceId: selectedService.id,
             providerId: selectedProvider.id,
             date: selectedDate,
             time: selectedTime,
-            notes: customerNotes
-          })
+            notes: customerNotes,
+          }),
         });
-        
+
         if (!response.ok) {
           throw new Error('Failed to create booking');
         }
-        
+
         bookingState.setState({ isLoading: false });
         return true;
       } catch (error) {
-        bookingState.setState({ 
+        bookingState.setState({
           error: error instanceof Error ? error.message : 'Unknown error',
-          isLoading: false 
+          isLoading: false,
         });
         return false;
       }
-    }
+    },
   });
-  
+
   return bookingState;
 };
 
@@ -765,33 +752,33 @@ export const mockProducts: TryOnProduct[] = [
         name: 'Ruby Red',
         hexValue: '#D92D3C',
         arOverlayUrl: '/beauty/overlays/lip-red-01.png',
-        thumbnailUrl: '/beauty/thumbnails/lip-red-01.png'
+        thumbnailUrl: '/beauty/thumbnails/lip-red-01.png',
       },
       {
         id: 'lip-pink-01',
         name: 'Rose Pink',
         hexValue: '#EB9898',
         arOverlayUrl: '/beauty/overlays/lip-pink-01.png',
-        thumbnailUrl: '/beauty/thumbnails/lip-pink-01.png'
+        thumbnailUrl: '/beauty/thumbnails/lip-pink-01.png',
       },
       {
         id: 'lip-berry-01',
         name: 'Berry Crush',
         hexValue: '#9D2933',
         arOverlayUrl: '/beauty/overlays/lip-berry-01.png',
-        thumbnailUrl: '/beauty/thumbnails/lip-berry-01.png'
-      }
+        thumbnailUrl: '/beauty/thumbnails/lip-berry-01.png',
+      },
     ],
     images: [
       {
         id: 'lip-img-01',
         url: '/beauty/products/lipstick-01.jpg',
-        alt: 'Velvet Matte Lipstick'
-      }
+        alt: 'Velvet Matte Lipstick',
+      },
     ],
     isNew: true,
     rating: 4.7,
-    reviewCount: 124
+    reviewCount: 124,
   },
   {
     id: 'eyeshadow-001',
@@ -806,33 +793,33 @@ export const mockProducts: TryOnProduct[] = [
         name: 'Neutral Glow',
         hexValue: '#D9B99B',
         arOverlayUrl: '/beauty/overlays/eye-neutral-01.png',
-        thumbnailUrl: '/beauty/thumbnails/eye-neutral-01.png'
+        thumbnailUrl: '/beauty/thumbnails/eye-neutral-01.png',
       },
       {
         id: 'eye-smoky-01',
         name: 'Smoky Night',
         hexValue: '#5C5C5C',
         arOverlayUrl: '/beauty/overlays/eye-smoky-01.png',
-        thumbnailUrl: '/beauty/thumbnails/eye-smoky-01.png'
+        thumbnailUrl: '/beauty/thumbnails/eye-smoky-01.png',
       },
       {
         id: 'eye-blue-01',
         name: 'Ocean Blue',
         hexValue: '#4A7B9D',
         arOverlayUrl: '/beauty/overlays/eye-blue-01.png',
-        thumbnailUrl: '/beauty/thumbnails/eye-blue-01.png'
-      }
+        thumbnailUrl: '/beauty/thumbnails/eye-blue-01.png',
+      },
     ],
     images: [
       {
         id: 'eye-img-01',
         url: '/beauty/products/eyeshadow-01.jpg',
-        alt: 'Shimmer Eyeshadow Palette'
-      }
+        alt: 'Shimmer Eyeshadow Palette',
+      },
     ],
     isBestseller: true,
     rating: 4.5,
-    reviewCount: 89
+    reviewCount: 89,
   },
   {
     id: 'foundation-001',
@@ -847,31 +834,31 @@ export const mockProducts: TryOnProduct[] = [
         name: 'Light',
         hexValue: '#F5DCBE',
         arOverlayUrl: '/beauty/overlays/foundation-light-01.png',
-        thumbnailUrl: '/beauty/thumbnails/foundation-light-01.png'
+        thumbnailUrl: '/beauty/thumbnails/foundation-light-01.png',
       },
       {
         id: 'foundation-medium-01',
         name: 'Medium',
         hexValue: '#E0B492',
         arOverlayUrl: '/beauty/overlays/foundation-medium-01.png',
-        thumbnailUrl: '/beauty/thumbnails/foundation-medium-01.png'
+        thumbnailUrl: '/beauty/thumbnails/foundation-medium-01.png',
       },
       {
         id: 'foundation-tan-01',
         name: 'Tan',
         hexValue: '#C68E6A',
         arOverlayUrl: '/beauty/overlays/foundation-tan-01.png',
-        thumbnailUrl: '/beauty/thumbnails/foundation-tan-01.png'
-      }
+        thumbnailUrl: '/beauty/thumbnails/foundation-tan-01.png',
+      },
     ],
     images: [
       {
         id: 'foundation-img-01',
         url: '/beauty/products/foundation-01.jpg',
-        alt: 'Hydrating Foundation'
-      }
+        alt: 'Hydrating Foundation',
+      },
     ],
     rating: 4.3,
-    reviewCount: 67
-  }
-]; 
+    reviewCount: 67,
+  },
+];

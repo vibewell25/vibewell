@@ -2,11 +2,8 @@
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { useParams, useRouter } from 'next/navigation';
-;
-;
-;
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { ContentProgress } from '@/types/progress';
 import { ContentTypeSelector, type ContentType } from '@/components/wellness/ContentTypeSelector';
 import { WellnessContentModal } from '@/components/wellness/WellnessContentModal';
@@ -174,8 +171,8 @@ export default function ContentDetailPage() {
     return 0;
   };
   const handleEditContent = (updatedContent: any) => {
-    import { updateWellnessContent } from "../../../../implementation-files/wellness-content-update";
-import { Icons } from '@/components/icons';
+    import { updateWellnessContent } from '../../../../implementation-files/wellness-content-update';
+    import { Icons } from '@/components/icons';
     console.log('Updating content:', updatedContent);
     setIsEditModalOpen(false);
   };
@@ -196,7 +193,9 @@ import { Icons } from '@/components/icons';
         <div className="container-app py-12">
           <div className="flex flex-col justify-center items-center h-[60vh]">
             <h1 className="text-2xl font-bold mb-4">Content Not Found</h1>
-            <p className="text-muted-foreground mb-6">The content you're looking for does not exist or has been removed.</p>
+            <p className="text-muted-foreground mb-6">
+              The content you're looking for does not exist or has been removed.
+            </p>
             <Link href="/wellness" className="btn-primary">
               Back to Wellness Library
             </Link>
@@ -210,8 +209,8 @@ import { Icons } from '@/components/icons';
       <div className="container-app py-12">
         {/* Back button */}
         <div className="mb-8">
-          <button 
-            onClick={() => router.back()} 
+          <button
+            onClick={() => router.back()}
             className="flex items-center text-muted-foreground hover:text-foreground transition-colors"
           >
             <Icons.ArrowLeftIcon className="h-4 w-4 mr-2" />
@@ -253,7 +252,7 @@ import { Icons } from '@/components/icons';
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <p className="text-muted-foreground mb-4">Content Preview</p>
                   {/* Play/Pause Button */}
-                  <button 
+                  <button
                     className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center"
                     onClick={togglePlayback}
                   >
@@ -267,7 +266,7 @@ import { Icons } from '@/components/icons';
                 {/* Progress bar */}
                 {progress && (
                   <div className="absolute bottom-0 left-0 right-0 h-1 bg-muted">
-                    <div 
+                    <div
                       className="h-full bg-primary"
                       style={{ width: `${getProgressPercentage()}%` }}
                     />
@@ -277,7 +276,7 @@ import { Icons } from '@/components/icons';
               {/* Action buttons */}
               <div className="flex justify-between mb-6">
                 <div className="flex gap-4">
-                  <button 
+                  <button
                     className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
                     onClick={toggleLike}
                   >
@@ -288,7 +287,7 @@ import { Icons } from '@/components/icons';
                     )}
                     <span>{isLiked ? 'Liked' : 'Like'}</span>
                   </button>
-                  <button 
+                  <button
                     className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
                     onClick={toggleSave}
                   >
@@ -306,7 +305,7 @@ import { Icons } from '@/components/icons';
                 </div>
                 {/* Complete button */}
                 {progress && !progress.completed && (
-                  <button 
+                  <button
                     className="btn-primary text-sm flex items-center gap-1"
                     onClick={markAsCompleted}
                   >
@@ -323,8 +322,8 @@ import { Icons } from '@/components/icons';
                 )}
               </div>
               {/* Content */}
-              <div 
-                className="prose prose-sm dark:prose-invert max-w-none" 
+              <div
+                className="prose prose-sm dark:prose-invert max-w-none"
                 dangerouslySetInnerHTML={{ __html: content.content }}
               />
               {/* Tags */}
@@ -333,9 +332,9 @@ import { Icons } from '@/components/icons';
                   <h3 className="text-sm font-medium mb-2">Tags</h3>
                   <div className="flex flex-wrap gap-2">
                     {content.tags.map((tag: string) => (
-                      <Link 
-                        key={tag} 
-                        href={`/wellness?tag=${tag}`} 
+                      <Link
+                        key={tag}
+                        href={`/wellness?tag=${tag}`}
                         className="bg-muted hover:bg-muted-foreground/20 text-xs px-2 py-1 rounded-full transition-colors"
                       >
                         #{tag}
@@ -371,13 +370,13 @@ import { Icons } from '@/components/icons';
                   <p className="text-sm text-muted-foreground mb-3">
                     Sign in to track your progress
                   </p>
-                  <Link href="/auth/signin" className="btn-primary">Sign In</Link>
+                  <Link href="/auth/signin" className="btn-primary">
+                    Sign In
+                  </Link>
                 </div>
               ) : !progress ? (
                 <div className="text-center py-4">
-                  <p className="text-sm text-muted-foreground">
-                    No progress data available
-                  </p>
+                  <p className="text-sm text-muted-foreground">No progress data available</p>
                 </div>
               ) : (
                 <div>
@@ -390,7 +389,7 @@ import { Icons } from '@/components/icons';
                       </span>
                     </div>
                     <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div 
+                      <div
                         className="h-full bg-primary transition-all duration-500"
                         style={{ width: `${getProgressPercentage()}%` }}
                       />
@@ -416,7 +415,8 @@ import { Icons } from '@/components/icons';
                         <div>
                           <p>In Progress</p>
                           <p className="text-xs text-muted-foreground">
-                            {Math.floor(progress.lastPosition / 60)}:{(progress.lastPosition % 60).toString().padStart(2, '0')} watched
+                            {Math.floor(progress.lastPosition / 60)}:
+                            {(progress.lastPosition % 60).toString().padStart(2, '0')} watched
                           </p>
                         </div>
                       </div>
@@ -430,7 +430,7 @@ import { Icons } from '@/components/icons';
                   {/* Actions */}
                   <div className="space-y-2">
                     {!progress.completed && (
-                      <button 
+                      <button
                         className="btn-primary w-full flex items-center justify-center gap-1"
                         onClick={markAsCompleted}
                       >
@@ -438,8 +438,8 @@ import { Icons } from '@/components/icons';
                         Mark as Completed
                       </button>
                     )}
-                    <Link 
-                      href="/wellness/progress" 
+                    <Link
+                      href="/wellness/progress"
                       className="btn-secondary w-full flex items-center justify-center gap-1"
                     >
                       <Icons.ChartBarIcon className="h-4 w-4" />
@@ -487,8 +487,8 @@ import { Icons } from '@/components/icons';
                   </div>
                 </div>
               </div>
-              <Link 
-                href="/wellness" 
+              <Link
+                href="/wellness"
                 className="text-primary hover:text-primary-dark transition-colors mt-4 inline-block text-sm"
               >
                 Explore more content
@@ -505,4 +505,4 @@ import { Icons } from '@/components/icons';
       />
     </Layout>
   );
-} 
+}

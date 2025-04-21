@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { useEffect, useRef } from 'react'
-import { Line, Bar, Pie } from 'react-chartjs-2'
+import { useEffect, useRef } from 'react';
+import { Line, Bar, Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,8 +13,8 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartOptions
-} from 'chart.js'
+  ChartOptions,
+} from 'chart.js';
 
 // Register ChartJS components
 ChartJS.register(
@@ -27,7 +27,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-)
+);
 
 // Define theme colors
 const themeColors = {
@@ -44,11 +44,11 @@ const themeColors = {
   emerald: ['rgba(5, 150, 105, 0.5)', 'rgb(5, 150, 105)'],
   violet: ['rgba(124, 58, 237, 0.5)', 'rgb(124, 58, 237)'],
   fuchsia: ['rgba(217, 70, 239, 0.5)', 'rgb(217, 70, 239)'],
-}
+};
 
 // Define font and grid color based on theme
-const fontColor = 'rgb(107, 114, 128)' // text-gray-500
-const gridColor = 'rgba(229, 231, 235, 0.5)' // border-gray-200 with opacity
+const fontColor = 'rgb(107, 114, 128)'; // text-gray-500
+const gridColor = 'rgba(229, 231, 235, 0.5)'; // border-gray-200 with opacity
 
 interface ChartProps {
   data: Record<string, any>[];
@@ -64,10 +64,10 @@ export function LineChart({
   index,
   categories,
   colors = ['blue'],
-  valueFormatter = (value) => value.toString(),
+  valueFormatter = value => value.toString(),
   height = 300,
 }: ChartProps) {
-  const chartRef = useRef<any>(null)
+  const chartRef = useRef<any>(null);
 
   // Prepare data for Chart.js
   const chartData = {
@@ -81,7 +81,7 @@ export function LineChart({
       pointRadius: 3,
       pointHoverRadius: 5,
     })),
-  }
+  };
 
   const options: ChartOptions<'line'> = {
     responsive: true,
@@ -98,7 +98,7 @@ export function LineChart({
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             let label = context.dataset.label || '';
             if (label) {
               label += ': ';
@@ -107,9 +107,9 @@ export function LineChart({
               label += valueFormatter(context.parsed.y);
             }
             return label;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       y: {
@@ -122,10 +122,10 @@ export function LineChart({
           font: {
             family: 'Inter, sans-serif',
           },
-          callback: function(value) {
+          callback: function (value) {
             return valueFormatter(value as number);
-          }
-        }
+          },
+        },
       },
       x: {
         grid: {
@@ -137,17 +137,17 @@ export function LineChart({
             family: 'Inter, sans-serif',
           },
           maxRotation: 45,
-          minRotation: 45
-        }
-      }
-    }
-  }
+          minRotation: 45,
+        },
+      },
+    },
+  };
 
   return (
     <div style={{ width: '100%', height: `${height}px` }}>
       <Line ref={chartRef} data={chartData} options={options} />
     </div>
-  )
+  );
 }
 
 export function BarChart({
@@ -155,10 +155,10 @@ export function BarChart({
   index,
   categories,
   colors = ['blue'],
-  valueFormatter = (value) => value.toString(),
+  valueFormatter = value => value.toString(),
   height = 300,
 }: ChartProps) {
-  const chartRef = useRef<any>(null)
+  const chartRef = useRef<any>(null);
 
   // Prepare data for Chart.js
   const chartData = {
@@ -170,7 +170,7 @@ export function BarChart({
       borderColor: themeColors[colors[i % colors.length] as keyof typeof themeColors][1],
       borderWidth: 1,
     })),
-  }
+  };
 
   const options: ChartOptions<'bar'> = {
     responsive: true,
@@ -187,7 +187,7 @@ export function BarChart({
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             let label = context.dataset.label || '';
             if (label) {
               label += ': ';
@@ -196,9 +196,9 @@ export function BarChart({
               label += valueFormatter(context.parsed.y);
             }
             return label;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       y: {
@@ -211,10 +211,10 @@ export function BarChart({
           font: {
             family: 'Inter, sans-serif',
           },
-          callback: function(value) {
+          callback: function (value) {
             return valueFormatter(value as number);
-          }
-        }
+          },
+        },
       },
       x: {
         grid: {
@@ -226,17 +226,17 @@ export function BarChart({
             family: 'Inter, sans-serif',
           },
           maxRotation: 45,
-          minRotation: 45
-        }
-      }
-    }
-  }
+          minRotation: 45,
+        },
+      },
+    },
+  };
 
   return (
     <div style={{ width: '100%', height: `${height}px` }}>
       <Bar ref={chartRef} data={chartData} options={options} />
     </div>
-  )
+  );
 }
 
 interface PieChartProps {
@@ -253,20 +253,16 @@ export function PieChart({
   category,
   index,
   colors = ['blue', 'green', 'red', 'yellow', 'purple'],
-  valueFormatter = (value) => value.toString(),
+  valueFormatter = value => value.toString(),
   height = 300,
 }: PieChartProps) {
-  const chartRef = useRef<any>(null)
+  const chartRef = useRef<any>(null);
 
   // Get background colors based on provided color names
-  const backgroundColors = colors.map(color => 
-    themeColors[color as keyof typeof themeColors][0]
-  )
-  
+  const backgroundColors = colors.map(color => themeColors[color as keyof typeof themeColors][0]);
+
   // Get border colors based on provided color names
-  const borderColors = colors.map(color => 
-    themeColors[color as keyof typeof themeColors][1]
-  )
+  const borderColors = colors.map(color => themeColors[color as keyof typeof themeColors][1]);
 
   // Prepare data for Chart.js
   const chartData = {
@@ -279,7 +275,7 @@ export function PieChart({
         borderWidth: 1,
       },
     ],
-  }
+  };
 
   const options: ChartOptions<'pie'> = {
     responsive: true,
@@ -296,21 +292,21 @@ export function PieChart({
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const label = context.label || '';
             const value = context.raw as number;
             const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
             const percentage = Math.round((value / total) * 100);
             return `${label}: ${valueFormatter(value)} (${percentage}%)`;
-          }
-        }
-      }
-    }
-  }
+          },
+        },
+      },
+    },
+  };
 
   return (
     <div style={{ width: '100%', height: `${height}px` }}>
       <Pie ref={chartRef} data={chartData} options={options} />
     </div>
-  )
-} 
+  );
+}

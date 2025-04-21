@@ -40,22 +40,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({
         <CardContent className="space-y-4">
           {/* OAuth Providers */}
           <div className="grid gap-2">
-            <OAuthButton
-              provider="google"
-              onLogin={onOAuthLogin}
-            />
-            <OAuthButton
-              provider="facebook"
-              onLogin={onOAuthLogin}
-            />
-            <OAuthButton
-              provider="apple"
-              onLogin={onOAuthLogin}
-            />
-            <OAuthButton
-              provider="twitter"
-              onLogin={onOAuthLogin}
-            />
+            <OAuthButton provider="google" onLogin={onOAuthLogin} />
+            <OAuthButton provider="facebook" onLogin={onOAuthLogin} />
+            <OAuthButton provider="apple" onLogin={onOAuthLogin} />
+            <OAuthButton provider="twitter" onLogin={onOAuthLogin} />
           </div>
 
           <div className="relative">
@@ -63,9 +51,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
               <Separator />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or continue with
-              </span>
+              <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
             </div>
           </div>
 
@@ -103,10 +89,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
             ) : (
               <p className="text-muted-foreground">
                 Already have an account?{' '}
-                <a
-                  href="/auth/login"
-                  className="text-primary underline-offset-4 hover:underline"
-                >
+                <a href="/auth/login" className="text-primary underline-offset-4 hover:underline">
                   Sign in
                 </a>
               </p>
@@ -116,4 +99,4 @@ export const AuthPage: React.FC<AuthPageProps> = ({
       </Card>
     </div>
   );
-}; 
+};

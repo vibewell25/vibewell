@@ -1,6 +1,6 @@
 /**
  * Unified Rate Limiter Service
- * 
+ *
  * This module provides a comprehensive rate limiting solution for the VibeWell platform.
  * It supports multiple protocols (HTTP API, GraphQL, WebSocket) and environments.
  */
@@ -17,4 +17,4 @@ export * from './websocket';
 export * from './presets';
 
 // Core implementation
-export * from './core'; 
+export * from './core';

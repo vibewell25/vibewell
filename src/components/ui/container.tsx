@@ -21,23 +21,13 @@ const maxWidthClasses: Record<MaxWidth, string> = {
 
 /**
  * Container - A simple container component for layout structure
- * 
+ *
  * This component provides a simple container with configurable max-width
  * and padding settings for consistent layout.
  */
-export function Container({
-  children,
-  maxWidth = 'xl',
-  className,
-}: ContainerProps) {
+export function Container({ children, maxWidth = 'xl', className }: ContainerProps) {
   return (
-    <div
-      className={cn(
-        'container mx-auto px-4 md:px-6',
-        maxWidthClasses[maxWidth],
-        className
-      )}
-    >
+    <div className={cn('container mx-auto px-4 md:px-6', maxWidthClasses[maxWidth], className)}>
       {children}
     </div>
   );

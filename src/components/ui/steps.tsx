@@ -15,10 +15,7 @@ export function Steps({ steps, currentStep, className }: StepsProps) {
       {steps.map((step, index) => (
         <div
           key={step.id}
-          className={cn(
-            'flex items-center',
-            index < steps.length - 1 && 'flex-1'
-          )}
+          className={cn('flex items-center', index < steps.length - 1 && 'flex-1')}
         >
           <div
             className={cn(
@@ -30,24 +27,20 @@ export function Steps({ steps, currentStep, className }: StepsProps) {
           >
             {index + 1}
           </div>
-          
+
           {index < steps.length - 1 && (
             <div
               className={cn(
                 'flex-1 h-0.5 mx-2',
-                index < currentStep
-                  ? 'bg-primary'
-                  : 'bg-muted-foreground'
+                index < currentStep ? 'bg-primary' : 'bg-muted-foreground'
               )}
             />
           )}
-          
+
           <div
             className={cn(
               'absolute mt-10 text-sm',
-              index <= currentStep
-                ? 'text-foreground'
-                : 'text-muted-foreground'
+              index <= currentStep ? 'text-foreground' : 'text-muted-foreground'
             )}
           >
             {step.title}
@@ -56,4 +49,4 @@ export function Steps({ steps, currentStep, className }: StepsProps) {
       ))}
     </div>
   );
-} 
+}

@@ -10,7 +10,7 @@ describe('Avatar Component', () => {
         <AvatarFallback>JD</AvatarFallback>
       </Avatar>
     );
-    
+
     // The image should be in the document
     const image = screen.getByAltText('User Avatar');
     expect(image).toBeInTheDocument();
@@ -21,21 +21,21 @@ describe('Avatar Component', () => {
     // Mock the error event on the image
     const originalError = console.error;
     console.error = jest.fn();
-    
+
     render(
       <Avatar>
         <AvatarImage src="invalid-image-url.jpg" alt="User Avatar" />
         <AvatarFallback>JD</AvatarFallback>
       </Avatar>
     );
-    
+
     // Manually trigger the onError event on the image
     const image = screen.getByAltText('User Avatar');
     image.dispatchEvent(new Event('error'));
-    
+
     // The fallback should be visible
     expect(screen.getByText('JD')).toBeInTheDocument();
-    
+
     // Restore console.error
     console.error = originalError;
   });
@@ -46,7 +46,7 @@ describe('Avatar Component', () => {
         <AvatarFallback>JD</AvatarFallback>
       </Avatar>
     );
-    
+
     // The root should have the custom class
     const avatarRoot = screen.getByText('JD').parentElement;
     expect(avatarRoot).toHaveClass('custom-avatar-class');
@@ -55,10 +55,14 @@ describe('Avatar Component', () => {
   it('applies custom classes to AvatarImage', () => {
     render(
       <Avatar>
-        <AvatarImage className="custom-image-class" src="https://example.com/avatar.jpg" alt="User Avatar" />
+        <AvatarImage
+          className="custom-image-class"
+          src="https://example.com/avatar.jpg"
+          alt="User Avatar"
+        />
       </Avatar>
     );
-    
+
     // The image should have the custom class
     const image = screen.getByAltText('User Avatar');
     expect(image).toHaveClass('custom-image-class');
@@ -70,7 +74,7 @@ describe('Avatar Component', () => {
         <AvatarFallback className="custom-fallback-class">JD</AvatarFallback>
       </Avatar>
     );
-    
+
     // The fallback should have the custom class
     const fallback = screen.getByText('JD');
     expect(fallback).toHaveClass('custom-fallback-class');
@@ -84,7 +88,7 @@ describe('Avatar Component', () => {
         </AvatarFallback>
       </Avatar>
     );
-    
+
     // The complex content should be in the document
     expect(screen.getByTestId('icon-element')).toBeInTheDocument();
   });
@@ -96,8 +100,8 @@ describe('Avatar Component', () => {
         <AvatarFallback>JD</AvatarFallback>
       </Avatar>
     );
-    
+
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
-}); 
+});

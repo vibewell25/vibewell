@@ -24,12 +24,7 @@ interface LineChartProps {
   grid?: boolean;
 }
 
-export default function LineChart({ 
-  data, 
-  lines, 
-  xAxisKey, 
-  grid = true 
-}: LineChartProps) {
+export default function LineChart({ data, lines, xAxisKey, grid = true }: LineChartProps) {
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center h-full text-muted-foreground">
@@ -40,39 +35,32 @@ export default function LineChart({
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <RechartsLineChart
-        data={data}
-        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-      >
+      <RechartsLineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
         {grid && <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />}
-        <XAxis 
-          dataKey={xAxisKey} 
+        <XAxis
+          dataKey={xAxisKey}
           stroke="#888888"
           tick={{ fontSize: 12 }}
           tickLine={{ stroke: '#e0e0e0' }}
         />
-        <YAxis 
-          stroke="#888888"
-          tick={{ fontSize: 12 }}
-          tickLine={{ stroke: '#e0e0e0' }}
-        />
+        <YAxis stroke="#888888" tick={{ fontSize: 12 }} tickLine={{ stroke: '#e0e0e0' }} />
         <Tooltip
-          contentStyle={{ 
-            backgroundColor: 'white', 
-            borderRadius: '8px', 
+          contentStyle={{
+            backgroundColor: 'white',
+            borderRadius: '8px',
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-            border: 'none'
+            border: 'none',
           }}
         />
         <Legend verticalAlign="bottom" height={36} />
-        
+
         {lines.map((line, index) => (
           <Line
             key={index}
             type="monotone"
             dataKey={line.dataKey}
             name={line.name || line.dataKey}
-            stroke={line.color || `#${Math.floor(Math.random()*16777215).toString(16)}`}
+            stroke={line.color || `#${Math.floor(Math.random() * 16777215).toString(16)}`}
             strokeWidth={2}
             dot={{ r: 4 }}
             activeDot={{ r: 6 }}
@@ -83,4 +71,4 @@ export default function LineChart({
       </RechartsLineChart>
     </ResponsiveContainer>
   );
-} 
+}

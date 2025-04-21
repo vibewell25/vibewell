@@ -2,7 +2,7 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import { Layout } from '@/components/layout';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { PerformanceDashboard } from '@/components/performance/PerformanceDashboard';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -25,7 +25,7 @@ function PerformanceContent() {
         // Check if user is admin
         const response = await fetch('/api/users/currentRole');
         const { role } = await response.json();
-        
+
         if (role !== 'admin') {
           setIsAuthorized(false);
         } else {
@@ -79,7 +79,7 @@ function PerformanceContent() {
             Monitor application performance metrics and receive alerts when thresholds are exceeded.
           </p>
         </div>
-        
+
         <PerformanceDashboard />
       </div>
     </Layout>
@@ -88,8 +88,10 @@ function PerformanceContent() {
 
 export default function PerformancePage() {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+    <Suspense
+      fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}
+    >
       <PerformanceContent />
     </Suspense>
   );
-} 
+}

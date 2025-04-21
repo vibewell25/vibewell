@@ -29,7 +29,7 @@ const AnalyticsEventSchema = z.object({
   timestamp: z.date(),
   sessionId: z.string(),
   userId: z.string().optional(),
-  metadata: z.record(z.any())
+  metadata: z.record(z.any()),
 });
 
 type ValidatedAnalyticsEvent = z.infer<typeof AnalyticsEventSchema>;
@@ -57,7 +57,8 @@ class AnalyticsWebSocketServer {
   private readonly FLUSH_INTERVAL = 5000;
   private readonly BROADCAST_INTERVAL = 1000;
   private readonly RATE_LIMIT = 100;
-  private readonly ENCRYPTION_KEY = process.env.ANALYTICS_ENCRYPTION_KEY || 'default-key-32-chars-12345678901';
+  private readonly ENCRYPTION_KEY =
+    process.env.ANALYTICS_ENCRYPTION_KEY || 'default-key-32-chars-12345678901';
   private readonly ENCRYPTION_IV = Buffer.from(process.env.ANALYTICS_IV || '1234567890123456');
   private readonly RETENTION_PERIOD = 30 * 24 * 60 * 60 * 1000; // 30 days
 
@@ -71,7 +72,7 @@ class AnalyticsWebSocketServer {
       views: [],
       interactions: [],
       conversions: [],
-      errors: []
+      errors: [],
     };
 
     this.setupWebSocketServer();
@@ -102,7 +103,10 @@ class AnalyticsWebSocketServer {
   private startFlushInterval() {
     setInterval(() => {
       this.flushBuffer().catch(error => {
-        logger.error('Error flushing buffer:', error instanceof Error ? error.message : String(error));
+        logger.error(
+          'Error flushing buffer:',
+          error instanceof Error ? error.message : String(error)
+        );
       });
     }, this.FLUSH_INTERVAL);
   }
@@ -110,7 +114,10 @@ class AnalyticsWebSocketServer {
   private startBroadcastInterval() {
     setInterval(() => {
       this.broadcastMetrics().catch(error => {
-        logger.error('Error broadcasting metrics:', error instanceof Error ? error.message : String(error));
+        logger.error(
+          'Error broadcasting metrics:',
+          error instanceof Error ? error.message : String(error)
+        );
       });
     }, this.BROADCAST_INTERVAL);
   }
@@ -118,12 +125,18 @@ class AnalyticsWebSocketServer {
   private startDataCleanup() {
     setInterval(() => {
       const cutoff = new Date(Date.now() - this.RETENTION_PERIOD);
-      
+
       this.inMemoryStore.views = this.inMemoryStore.views.filter(event => event.timestamp > cutoff);
-      this.inMemoryStore.interactions = this.inMemoryStore.interactions.filter(event => event.timestamp > cutoff);
-      this.inMemoryStore.conversions = this.inMemoryStore.conversions.filter(event => event.timestamp > cutoff);
-      this.inMemoryStore.errors = this.inMemoryStore.errors.filter(event => event.timestamp > cutoff);
-      
+      this.inMemoryStore.interactions = this.inMemoryStore.interactions.filter(
+        event => event.timestamp > cutoff
+      );
+      this.inMemoryStore.conversions = this.inMemoryStore.conversions.filter(
+        event => event.timestamp > cutoff
+      );
+      this.inMemoryStore.errors = this.inMemoryStore.errors.filter(
+        event => event.timestamp > cutoff
+      );
+
       logger.info('Cleaned up old analytics data');
     }, this.RETENTION_PERIOD);
   }
@@ -136,7 +149,10 @@ class AnalyticsWebSocketServer {
       if (error instanceof ZodError) {
         logger.error('Invalid analytics event:', error.message);
       } else {
-        logger.error('Invalid analytics event:', error instanceof Error ? error.message : String(error));
+        logger.error(
+          'Invalid analytics event:',
+          error instanceof Error ? error.message : String(error)
+        );
       }
       throw new Error('Invalid analytics event');
     }
@@ -195,10 +211,18 @@ class AnalyticsWebSocketServer {
     const now = new Date();
     const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
 
-    const views = this.inMemoryStore.views.filter(event => event.timestamp >= fiveMinutesAgo).length;
-    const interactions = this.inMemoryStore.interactions.filter(event => event.timestamp >= fiveMinutesAgo).length;
-    const conversions = this.inMemoryStore.conversions.filter(event => event.timestamp >= fiveMinutesAgo).length;
-    const errors = this.inMemoryStore.errors.filter(event => event.timestamp >= fiveMinutesAgo).length;
+    const views = this.inMemoryStore.views.filter(
+      event => event.timestamp >= fiveMinutesAgo
+    ).length;
+    const interactions = this.inMemoryStore.interactions.filter(
+      event => event.timestamp >= fiveMinutesAgo
+    ).length;
+    const conversions = this.inMemoryStore.conversions.filter(
+      event => event.timestamp >= fiveMinutesAgo
+    ).length;
+    const errors = this.inMemoryStore.errors.filter(
+      event => event.timestamp >= fiveMinutesAgo
+    ).length;
 
     return {
       timestamp: now.toISOString(),
@@ -207,8 +231,8 @@ class AnalyticsWebSocketServer {
         interactions,
         conversions,
         errors,
-        conversionRate: views > 0 ? (conversions / views) * 100 : 0
-      }
+        conversionRate: views > 0 ? (conversions / views) * 100 : 0,
+      },
     };
   }
 
@@ -225,7 +249,10 @@ class AnalyticsWebSocketServer {
         }
       });
     } catch (error) {
-      logger.error('Error broadcasting metrics:', error instanceof Error ? error.message : String(error));
+      logger.error(
+        'Error broadcasting metrics:',
+        error instanceof Error ? error.message : String(error)
+      );
     }
   }
 
@@ -281,4 +308,4 @@ class AnalyticsWebSocketServer {
 // Export a singleton instance
 export const analyticsServer = new AnalyticsWebSocketServer(
   parseInt(process.env.ANALYTICS_WS_PORT || '3001', 10)
-); 
+);

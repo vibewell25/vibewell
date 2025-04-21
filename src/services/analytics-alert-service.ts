@@ -77,17 +77,15 @@ const emailTransporter = nodemailer.createTransport({
   },
 });
 
-const twilioClient = process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN 
-  ? new Twilio(
-      process.env.TWILIO_ACCOUNT_SID,
-      process.env.TWILIO_AUTH_TOKEN
-    )
-  : null;
+const twilioClient =
+  process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN
+    ? new Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
+    : null;
 
 export class AnalyticsAlertService {
   private supabase;
   private analyticsService;
-  
+
   constructor() {
     this.supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL || '',
@@ -101,7 +99,9 @@ export class AnalyticsAlertService {
    * @param alert Alert data to create
    * @returns The created alert or error
    */
-  async createAlert(alert: Omit<Alert, 'id' | 'createdAt' | 'updatedAt'>): Promise<{ data: Alert | null; error: Error | null }> {
+  async createAlert(
+    alert: Omit<Alert, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<{ data: Alert | null; error: Error | null }> {
     try {
       // Track event
       await this.analyticsService.trackEvent({
@@ -110,22 +110,18 @@ export class AnalyticsAlertService {
         properties: {
           alertName: alert.name,
           metricType: alert.threshold.metricType,
-          productId: alert.productId || 'all_products'
-        }
+          productId: alert.productId || 'all_products',
+        },
       });
 
       const now = new Date().toISOString();
       const newAlert = {
         ...alert,
         createdAt: now,
-        updatedAt: now
+        updatedAt: now,
       };
 
-      const { data, error } = await this.supabase
-        .from('alerts')
-        .insert(newAlert)
-        .select()
-        .single();
+      const { data, error } = await this.supabase.from('alerts').insert(newAlert).select().single();
 
       if (error) throw error;
 
@@ -209,15 +205,18 @@ export class AnalyticsAlertService {
    * @param alert The updated alert data
    * @returns The updated alert or error
    */
-  async updateAlert(alertId: string, update: Partial<Alert>): Promise<{ data: Alert | null; error: Error | null }> {
+  async updateAlert(
+    alertId: string,
+    update: Partial<Alert>
+  ): Promise<{ data: Alert | null; error: Error | null }> {
     try {
       const now = new Date().toISOString();
-      
+
       const { data, error } = await this.supabase
         .from('alerts')
         .update({
           ...update,
-          updatedAt: now
+          updatedAt: now,
         })
         .eq('id', alertId)
         .select()
@@ -233,8 +232,8 @@ export class AnalyticsAlertService {
           properties: {
             alertId,
             alertName: data.name,
-            isActive: data.isActive
-          }
+            isActive: data.isActive,
+          },
         });
       }
 
@@ -259,10 +258,7 @@ export class AnalyticsAlertService {
         .eq('id', alertId)
         .single();
 
-      const { error } = await this.supabase
-        .from('alerts')
-        .delete()
-        .eq('id', alertId);
+      const { error } = await this.supabase.from('alerts').delete().eq('id', alertId);
 
       if (error) throw error;
 
@@ -273,8 +269,8 @@ export class AnalyticsAlertService {
           userId: alert.userId,
           properties: {
             alertId,
-            alertName: alert.name
-          }
+            alertName: alert.name,
+          },
         });
       }
 
@@ -284,7 +280,7 @@ export class AnalyticsAlertService {
       return { error: error as Error };
     }
   }
-  
+
   /**
    * Check if any alerts have been triggered for a product
    * @param productId The product ID to check alerts for
@@ -294,50 +290,48 @@ export class AnalyticsAlertService {
     try {
       // Get active alerts for this product
       const { data: alerts, error } = await this.getAlertsByProduct(productId);
-      
+
       if (error) throw error;
       if (!alerts || alerts.length === 0) return { data: [], error: null };
-      
+
       const triggeredAlerts = [];
-      
+
       // For each alert, check if it's been triggered
       for (const alert of alerts) {
         const { threshold } = alert;
         const { metricType, condition, value, timeframeHours } = threshold;
-        
+
         // Get the current metric value
         const timeframeStart = new Date();
         timeframeStart.setHours(timeframeStart.getHours() - timeframeHours);
-        
+
         const metricValue = await this.getMetricValue(
-          productId, 
-          metricType, 
+          productId,
+          metricType,
           timeframeStart.toISOString()
         );
-        
+
         if (!metricValue) continue;
-        
+
         // Check if the alert condition is met
-        const isTriggered = condition === 'above' 
-          ? metricValue > value 
-          : metricValue < value;
-        
+        const isTriggered = condition === 'above' ? metricValue > value : metricValue < value;
+
         if (isTriggered) {
           triggeredAlerts.push({
             alert,
             currentValue: metricValue,
-            triggeredAt: new Date().toISOString()
+            triggeredAt: new Date().toISOString(),
           });
         }
       }
-      
+
       return { data: triggeredAlerts, error: null };
     } catch (error) {
       console.error('Error checking product alerts:', error);
       return { data: null, error };
     }
   }
-  
+
   /**
    * Get the current value for a specific metric
    * @param productId The product ID to get the metric for
@@ -345,29 +339,42 @@ export class AnalyticsAlertService {
    * @param startTime The start time for the metric calculation
    * @returns The metric value or null if not available
    */
-  private async getMetricValue(productId: string, metricType: string, startTime: string): Promise<number | null> {
+  private async getMetricValue(
+    productId: string,
+    metricType: string,
+    startTime: string
+  ): Promise<number | null> {
     try {
       switch (metricType) {
         case 'views':
           const viewsResponse = await this.analyticsService.getProductViews(productId, startTime);
           return viewsResponse.totalViews || 0;
-          
+
         case 'uniqueVisitors':
-          const uniqueVisitorsResponse = await this.analyticsService.getUniqueVisitors(productId, startTime);
+          const uniqueVisitorsResponse = await this.analyticsService.getUniqueVisitors(
+            productId,
+            startTime
+          );
           return uniqueVisitorsResponse.uniqueVisitors || 0;
-          
+
         case 'tryOns':
           const tryOnsResponse = await this.analyticsService.getTryOnCount(productId, startTime);
           return tryOnsResponse.tryOnCount || 0;
-          
+
         case 'conversion':
-          const conversionResponse = await this.analyticsService.getConversionRate(productId, startTime);
+          const conversionResponse = await this.analyticsService.getConversionRate(
+            productId,
+            startTime
+          );
           return conversionResponse.conversionRate || 0;
-          
+
         case 'rating':
-          const ratingsResponse = await this.analyticsService.getAverageRating(productId, startTime);
+          const ratingsResponse = await this.analyticsService.getAverageRating(
+            productId,
+            startTime
+          );
           return ratingsResponse.averageRating || 0;
-          
+
         default:
           console.warn(`Unknown metric type: ${metricType}`);
           return null;
@@ -387,19 +394,19 @@ export class AnalyticsAlertService {
     try {
       // Get the alert
       const { data: alert, error: alertError } = await this.getAlertById(alertId);
-      
+
       if (alertError) throw alertError;
       if (!alert) throw new Error('Alert not found');
       if (!alert.isActive) return { data: null, error: null }; // Skip inactive alerts
-      
+
       // Get the current metric value
       const { metricType, condition, value, timeframeHours } = alert.threshold;
       const productId = alert.productId;
-      
+
       let currentValue = 0;
       const timeframe = timeframeHours * 60 * 60 * 1000; // Convert hours to milliseconds
       const since = new Date(Date.now() - timeframe).toISOString();
-      
+
       // Get the appropriate metric based on the alert type
       switch (metricType) {
         case 'views':
@@ -423,12 +430,10 @@ export class AnalyticsAlertService {
           currentValue = ratingData.average || 0;
           break;
       }
-      
+
       // Check if the alert is triggered
-      const isTriggered = condition === 'above' 
-        ? currentValue > value 
-        : currentValue < value;
-      
+      const isTriggered = condition === 'above' ? currentValue > value : currentValue < value;
+
       // Create alert check record
       const alertCheck: AlertCheck = {
         alertId,
@@ -436,15 +441,15 @@ export class AnalyticsAlertService {
         threshold: value,
         condition,
         triggered: isTriggered,
-        checkedAt: new Date().toISOString()
+        checkedAt: new Date().toISOString(),
       };
-      
+
       // If triggered, update the lastTriggered timestamp and send notifications
       if (isTriggered) {
         await this.updateAlert(alertId, { lastTriggered: alertCheck.checkedAt });
         await this.sendAlertNotifications(alert, currentValue);
       }
-      
+
       return { data: alertCheck, error: null };
     } catch (error) {
       console.error('Error checking alert:', error);
@@ -463,14 +468,14 @@ export class AnalyticsAlertService {
         .from('alerts')
         .select('*')
         .eq('isActive', true);
-      
+
       if (error) throw error;
-      
+
       // Check each alert
       for (const alert of activeAlerts || []) {
         await this.checkAlert(alert.id);
       }
-      
+
       return { success: true, error: null };
     } catch (error) {
       console.error('Error checking all alerts:', error);
@@ -487,7 +492,7 @@ export class AnalyticsAlertService {
     try {
       const { name, threshold, notificationMethods, userId } = alert;
       const productId = alert.productId;
-      
+
       // Get product name if we have a product ID
       let productName = 'All products';
       if (productId) {
@@ -496,17 +501,18 @@ export class AnalyticsAlertService {
           .select('name')
           .eq('id', productId)
           .single();
-        
+
         if (product) {
           productName = product.name;
         }
       }
-      
+
       // Create notification message
       const metricName = threshold.metricType.replace(/([A-Z])/g, ' $1').toLowerCase();
-      const formattedValue = threshold.metricType === 'conversion' ? `${currentValue}%` : currentValue;
+      const formattedValue =
+        threshold.metricType === 'conversion' ? `${currentValue}%` : currentValue;
       const message = `Alert "${name}": ${productName} ${metricName} is ${threshold.condition === 'above' ? 'above' : 'below'} threshold (${formattedValue} ${threshold.condition === 'above' ? '>' : '<'} ${threshold.value}${threshold.metricType === 'conversion' ? '%' : ''})`;
-      
+
       // Send notifications based on enabled methods
       for (const method of notificationMethods.filter(m => m.enabled)) {
         // Create notification record
@@ -516,13 +522,11 @@ export class AnalyticsAlertService {
           message,
           read: false,
           notificationMethod: method.type,
-          sentAt: new Date().toISOString()
+          sentAt: new Date().toISOString(),
         };
-        
-        await this.supabase
-          .from('alert_notifications')
-          .insert(notification);
-        
+
+        await this.supabase.from('alert_notifications').insert(notification);
+
         // Email notification
         if (method.type === 'email' && method.destination) {
           try {
@@ -532,15 +536,15 @@ export class AnalyticsAlertService {
               .select('full_name, email')
               .eq('id', userId)
               .single();
-            
+
             const userEmail = method.destination || user?.email;
             const userName = user?.full_name || 'User';
-            
+
             if (!userEmail) {
               console.error('No email destination for alert notification');
               continue;
             }
-            
+
             // Create a more formatted email with HTML
             const emailHtml = `
               <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px;">
@@ -570,7 +574,7 @@ export class AnalyticsAlertService {
                 </p>
               </div>
             `;
-            
+
             // Send the email
             await emailTransporter.sendMail({
               from: `"VibeWell Analytics" <${process.env.EMAIL_FROM || 'alerts@vibewell.com'}>`,
@@ -579,13 +583,13 @@ export class AnalyticsAlertService {
               text: message,
               html: emailHtml,
             });
-            
+
             console.log(`Email notification sent to ${userEmail}`);
           } catch (emailError) {
             console.error('Error sending email notification:', emailError);
           }
         }
-        
+
         // SMS notification
         if (method.type === 'sms' && method.destination) {
           try {
@@ -593,30 +597,30 @@ export class AnalyticsAlertService {
               console.error('Twilio client not initialized');
               continue;
             }
-            
+
             // Format phone number - ensure it has country code
             let phoneNumber = method.destination;
             if (!phoneNumber.startsWith('+')) {
               phoneNumber = `+1${phoneNumber}`; // Default to US country code
             }
-            
+
             // Keep SMS messages brief
             const smsMessage = `VibeWell Alert: ${message.substring(0, 140)}`;
-            
+
             // Send SMS using Twilio
             await twilioClient.messages.create({
               body: smsMessage,
               from: process.env.TWILIO_PHONE_NUMBER || '',
-              to: phoneNumber
+              to: phoneNumber,
             });
-            
+
             console.log(`SMS notification sent to ${phoneNumber}`);
           } catch (smsError) {
             console.error('Error sending SMS notification:', smsError);
           }
         }
       }
-      
+
       // Track notification event
       await this.analyticsService.trackEvent({
         eventName: 'alert_triggered',
@@ -626,8 +630,8 @@ export class AnalyticsAlertService {
           alertName: name,
           productId: productId || 'all_products',
           metricType: threshold.metricType,
-          currentValue
-        }
+          currentValue,
+        },
       });
     } catch (error) {
       console.error('Error sending alert notifications:', error);
@@ -640,22 +644,25 @@ export class AnalyticsAlertService {
    * @param unreadOnly Whether to get only unread notifications
    * @returns List of notifications or error
    */
-  async getNotifications(userId: string, unreadOnly = false): Promise<{ data: AlertNotification[]; error: Error | null }> {
+  async getNotifications(
+    userId: string,
+    unreadOnly = false
+  ): Promise<{ data: AlertNotification[]; error: Error | null }> {
     try {
       let query = this.supabase
         .from('alert_notifications')
         .select('*')
         .eq('userId', userId)
         .order('sentAt', { ascending: false });
-      
+
       if (unreadOnly) {
         query = query.eq('read', false);
       }
-      
+
       const { data, error } = await query;
-      
+
       if (error) throw error;
-      
+
       return { data: data || [], error: null };
     } catch (error) {
       console.error('Error getting notifications:', error);
@@ -668,15 +675,17 @@ export class AnalyticsAlertService {
    * @param notificationId The ID of the notification to mark as read
    * @returns Success or error
    */
-  async markNotificationAsRead(notificationId: string): Promise<{ success: boolean; error: Error | null }> {
+  async markNotificationAsRead(
+    notificationId: string
+  ): Promise<{ success: boolean; error: Error | null }> {
     try {
       const { error } = await this.supabase
         .from('alert_notifications')
         .update({ read: true })
         .eq('id', notificationId);
-      
+
       if (error) throw error;
-      
+
       return { success: true, error: null };
     } catch (error) {
       console.error('Error marking notification as read:', error);
@@ -689,20 +698,22 @@ export class AnalyticsAlertService {
    * @param userId The user ID to mark notifications for
    * @returns Success or error
    */
-  async markAllNotificationsAsRead(userId: string): Promise<{ success: boolean; error: Error | null }> {
+  async markAllNotificationsAsRead(
+    userId: string
+  ): Promise<{ success: boolean; error: Error | null }> {
     try {
       const { error } = await this.supabase
         .from('alert_notifications')
         .update({ read: true })
         .eq('userId', userId)
         .eq('read', false);
-      
+
       if (error) throw error;
-      
+
       return { success: true, error: null };
     } catch (error) {
       console.error('Error marking all notifications as read:', error);
       return { success: false, error: error as Error };
     }
   }
-} 
+}

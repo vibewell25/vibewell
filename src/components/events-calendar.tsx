@@ -1,7 +1,18 @@
 import { Icons } from '@/components/icons';
 import React, { useState, useEffect } from 'react';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, 
-  isSameDay, addMonths, subMonths, parseISO, differenceInCalendarDays, isAfter } from 'date-fns';
+import {
+  format,
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  isSameMonth,
+  isSameDay,
+  addMonths,
+  subMonths,
+  parseISO,
+  differenceInCalendarDays,
+  isAfter,
+} from 'date-fns';
 import Link from 'next/link';
 import { Event } from '@/types/events';
 import { Badge } from '@/components/ui/badge';
@@ -14,14 +25,14 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [calendarDays, setCalendarDays] = useState<Date[]>([]);
-  const [displayEvents, setDisplayEvents] = useState<{[dateString: string]: Event[]}>({});
+  const [displayEvents, setDisplayEvents] = useState<{ [dateString: string]: Event[] }>({});
   // Generate calendar days and map events to dates
   useEffect(() => {
     const monthStart = startOfMonth(currentDate);
     const monthEnd = endOfMonth(currentDate);
     const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
     // Map events to their dates for quick lookup
-    const eventsByDate: {[dateString: string]: Event[]} = {};
+    const eventsByDate: { [dateString: string]: Event[] } = {};
     events.forEach(event => {
       const eventDate = parseISO(event.startDate);
       const dateKey = format(eventDate, 'yyyy-MM-dd');
@@ -74,11 +85,9 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
       {/* Calendar Header */}
       <div className="bg-white p-4 border-b">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">
-            {format(currentDate, 'MMMM yyyy')}
-          </h2>
+          <h2 className="text-lg font-semibold">{format(currentDate, 'MMMM yyyy')}</h2>
           <div className="flex space-x-2">
-            <button 
+            <button
               onClick={goToPreviousMonth}
               className="p-1 rounded-md hover:bg-gray-100"
               aria-label="Previous month"
@@ -99,7 +108,7 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
       <div className="bg-white">
         {/* Day Names */}
         <div className="grid grid-cols-7 text-center text-xs uppercase tracking-wide text-gray-500 border-b">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
             <div key={day} className="py-2">
               {day}
             </div>
@@ -123,11 +132,13 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
                 `}
                 onClick={() => !isPast && handleDateClick(day)}
               >
-                <div className={`
+                <div
+                  className={`
                   text-sm mb-1 font-medium flex justify-between
                   ${isTodayDate ? 'text-blue-600' : ''}
                   ${isPast ? 'text-gray-400' : ''}
-                `}>
+                `}
+                >
                   <span>{format(day, 'd')}</span>
                   {dateHasEvents && (
                     <span className="bg-green-100 text-green-800 text-xs font-medium px-1.5 rounded-full">
@@ -136,18 +147,21 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
                   )}
                 </div>
                 {/* Event indicators */}
-                {dateHasEvents && getEventsForDate(day).slice(0, 2).map((event, idx) => (
-                  <div
-                    key={event.id}
-                    className={`
+                {dateHasEvents &&
+                  getEventsForDate(day)
+                    .slice(0, 2)
+                    .map((event, idx) => (
+                      <div
+                        key={event.id}
+                        className={`
                       px-1.5 py-0.5 text-xs truncate rounded
                       ${isPast ? 'bg-gray-100 text-gray-500' : 'bg-green-100 text-green-800'}
                     `}
-                    title={event.title}
-                  >
-                    {event.title}
-                  </div>
-                ))}
+                        title={event.title}
+                      >
+                        {event.title}
+                      </div>
+                    ))}
                 {getEventsForDate(day).length > 2 && (
                   <div className="text-xs text-gray-500 mt-1">
                     +{getEventsForDate(day).length - 2} more
@@ -161,27 +175,29 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
       {/* Selected Date Events */}
       {selectedDate && (
         <div className="bg-white p-4 border-t">
-          <h3 className="font-medium mb-3">
-            Events on {format(selectedDate, 'MMMM d, yyyy')}
-          </h3>
+          <h3 className="font-medium mb-3">Events on {format(selectedDate, 'MMMM d, yyyy')}</h3>
           {selectedDateEvents.length === 0 ? (
             <p className="text-sm text-gray-500">No events scheduled for this date.</p>
           ) : (
             <div className="space-y-3">
-              {selectedDateEvents.map((event) => {
+              {selectedDateEvents.map(event => {
                 const startDate = parseISO(event.startDate);
                 const endDate = parseISO(event.endDate);
                 const durationDays = differenceInCalendarDays(endDate, startDate);
                 const isFuture = isAfter(startDate, new Date());
                 return (
-                  <Link 
-                    href={`/events/${event.id}`} 
+                  <Link
+                    href={`/events/${event.id}`}
                     key={event.id}
                     className="block p-3 border rounded-md hover:bg-gray-50 transition-colors"
                   >
                     <div className="flex justify-between items-start">
                       <h4 className="font-medium">{event.title}</h4>
-                      <Badge className={isFuture ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700'}>
+                      <Badge
+                        className={
+                          isFuture ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700'
+                        }
+                      >
                         {event.category}
                       </Badge>
                     </div>
@@ -194,7 +210,8 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
                         {durationDays > 0 && ` (${durationDays + 1} days)`}
                       </span>
                       <span>
-                        {event.participantsCount} {event.participantsCount === 1 ? 'participant' : 'participants'}
+                        {event.participantsCount}{' '}
+                        {event.participantsCount === 1 ? 'participant' : 'participants'}
                       </span>
                     </div>
                   </Link>
@@ -206,4 +223,4 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
       )}
     </div>
   );
-} 
+}

@@ -1,14 +1,14 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Star, MapPin, Clock, Phone, Mail, Calendar, Share2, MessageCircle } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
-import { BookingSystem } from "./booking-system";
-import { AvailabilityCalendar } from "./availability-calendar";
-import { ServiceList } from "./service-list";
-import { ReviewList } from "./review-list";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Star, MapPin, Clock, Phone, Mail, Calendar, Share2, MessageCircle } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState } from 'react';
+import { BookingSystem } from './booking-system';
+import { AvailabilityCalendar } from './availability-calendar';
+import { ServiceList } from './service-list';
+import { ReviewList } from './review-list';
 
 interface Service {
   id: string;
@@ -78,7 +78,7 @@ export function ProviderProfile({ provider }: ProviderProfileProps) {
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">
-                {provider.specialties.map((specialty) => (
+                {provider.specialties.map(specialty => (
                   <Badge key={specialty} variant="secondary">
                     {specialty}
                   </Badge>
@@ -124,4 +124,4 @@ export function ProviderProfile({ provider }: ProviderProfileProps) {
       </Tabs>
     </div>
   );
-} 
+}

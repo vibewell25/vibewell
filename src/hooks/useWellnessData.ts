@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Goal, GoalType, HabitLog, WellnessDay, ProgressSummary } from '@/types/progress';
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth } from '@/hooks/use-unified-auth';
 import * as wellnessAPI from '@/lib/api/wellness';
 
 // Fallback dummy data
@@ -86,13 +86,13 @@ const DUMMY_HABIT_LOGS: HabitLog[] = [
   { id: 'm5', goalId: '1', date: '2023-08-05T00:00:00.000Z', value: 15 },
   { id: 'm6', goalId: '1', date: '2023-08-06T00:00:00.000Z', value: 10 },
   { id: 'm7', goalId: '1', date: '2023-08-07T00:00:00.000Z', value: 7 },
-  
+
   // Workout logs for the past week
   { id: 'w1', goalId: '2', date: '2023-08-01T00:00:00.000Z', value: 1 },
   { id: 'w2', goalId: '2', date: '2023-08-03T00:00:00.000Z', value: 1 },
   { id: 'w3', goalId: '2', date: '2023-08-05T00:00:00.000Z', value: 0 },
   { id: 'w4', goalId: '2', date: '2023-08-07T00:00:00.000Z', value: 1 },
-  
+
   // Water logs for the past week
   { id: 'h1', goalId: '3', date: '2023-08-01T00:00:00.000Z', value: 6 },
   { id: 'h2', goalId: '3', date: '2023-08-02T00:00:00.000Z', value: 7 },
@@ -101,7 +101,7 @@ const DUMMY_HABIT_LOGS: HabitLog[] = [
   { id: 'h5', goalId: '3', date: '2023-08-05T00:00:00.000Z', value: 7 },
   { id: 'h6', goalId: '3', date: '2023-08-06T00:00:00.000Z', value: 6 },
   { id: 'h7', goalId: '3', date: '2023-08-07T00:00:00.000Z', value: 5 },
-  
+
   // Sleep logs for the past week
   { id: 's1', goalId: '4', date: '2023-08-01T00:00:00.000Z', value: 7.5 },
   { id: 's2', goalId: '4', date: '2023-08-02T00:00:00.000Z', value: 6 },
@@ -110,7 +110,7 @@ const DUMMY_HABIT_LOGS: HabitLog[] = [
   { id: 's5', goalId: '4', date: '2023-08-05T00:00:00.000Z', value: 6.5 },
   { id: 's6', goalId: '4', date: '2023-08-06T00:00:00.000Z', value: 7.5 },
   { id: 's7', goalId: '4', date: '2023-08-07T00:00:00.000Z', value: 6.5 },
-  
+
   // Steps logs for the past week
   { id: 'st1', goalId: '5', date: '2023-08-01T00:00:00.000Z', value: 9200 },
   { id: 'st2', goalId: '5', date: '2023-08-02T00:00:00.000Z', value: 8500 },
@@ -233,7 +233,7 @@ export function useWellnessData() {
     } catch (err) {
       console.error('Error fetching wellness data:', err);
       setError('Failed to load wellness data');
-      
+
       // Use dummy data as fallback
       setGoals(DUMMY_GOALS);
       setHabitLogs(DUMMY_HABIT_LOGS);
@@ -246,8 +246,8 @@ export function useWellnessData() {
 
   // Generate fallback summary from goal data
   const generateFallbackSummary = (goalsData: Goal[]) => {
-    const activeGoals = goalsData.filter((g) => g.status === 'in_progress').length;
-    const completedGoals = goalsData.filter((g) => g.status === 'completed').length;
+    const activeGoals = goalsData.filter(g => g.status === 'in_progress').length;
+    const completedGoals = goalsData.filter(g => g.status === 'completed').length;
     const dailyStreak = 0;
 
     const thisWeekProgress = {
@@ -287,16 +287,16 @@ export function useWellnessData() {
     try {
       setIsLoading(true);
       const createdGoal = await wellnessAPI.createGoal(user.id, newGoal);
-      
+
       if (createdGoal) {
-        setGoals((prevGoals) => [createdGoal, ...prevGoals]);
+        setGoals(prevGoals => [createdGoal, ...prevGoals]);
       } else {
         throw new Error('Failed to create goal');
       }
     } catch (err) {
       console.error('Error creating goal:', err);
       setError('Failed to create goal');
-      
+
       // Optimistic update with a temp ID
       const tempGoal: Goal = {
         id: `temp-${Date.now()}`,
@@ -304,8 +304,8 @@ export function useWellnessData() {
         current: 0,
         status: 'not_started',
       };
-      
-      setGoals((prevGoals) => [tempGoal, ...prevGoals]);
+
+      setGoals(prevGoals => [tempGoal, ...prevGoals]);
     } finally {
       setIsLoading(false);
     }
@@ -316,23 +316,19 @@ export function useWellnessData() {
     try {
       setIsLoading(true);
       const updatedGoal = await wellnessAPI.updateGoal(goalId, updatedData);
-      
+
       if (updatedGoal) {
-        setGoals((prevGoals) => 
-          prevGoals.map((goal) => (goal.id === goalId ? updatedGoal : goal))
-        );
+        setGoals(prevGoals => prevGoals.map(goal => (goal.id === goalId ? updatedGoal : goal)));
       } else {
         throw new Error('Failed to update goal');
       }
     } catch (err) {
       console.error('Error updating goal:', err);
       setError('Failed to update goal');
-      
+
       // Optimistic update
-      setGoals((prevGoals) => 
-        prevGoals.map((goal) => 
-          goal.id === goalId ? { ...goal, ...updatedData } : goal
-        )
+      setGoals(prevGoals =>
+        prevGoals.map(goal => (goal.id === goalId ? { ...goal, ...updatedData } : goal))
       );
     } finally {
       setIsLoading(false);
@@ -344,9 +340,9 @@ export function useWellnessData() {
     try {
       setIsLoading(true);
       const success = await wellnessAPI.deleteGoal(goalId);
-      
+
       if (success) {
-        setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== goalId));
+        setGoals(prevGoals => prevGoals.filter(goal => goal.id !== goalId));
       } else {
         throw new Error('Failed to delete goal');
       }
@@ -365,25 +361,25 @@ export function useWellnessData() {
     try {
       setIsLoading(true);
       const newLog = await wellnessAPI.logHabit(user.id, goalId, value);
-      
+
       if (newLog) {
         // Add the new log
-        setHabitLogs((prevLogs) => [newLog, ...prevLogs]);
-        
+        setHabitLogs(prevLogs => [newLog, ...prevLogs]);
+
         // Update the goal's current value optimistically
-        setGoals((prevGoals) => 
-          prevGoals.map((goal) => {
+        setGoals(prevGoals =>
+          prevGoals.map(goal => {
             if (goal.id === goalId) {
-              return { 
-                ...goal, 
+              return {
+                ...goal,
                 current: goal.current + value,
-                status: goal.status === 'not_started' ? 'in_progress' : goal.status
+                status: goal.status === 'not_started' ? 'in_progress' : goal.status,
               };
             }
             return goal;
           })
         );
-        
+
         // Refresh data to update summary
         fetchData();
       } else {
@@ -392,7 +388,7 @@ export function useWellnessData() {
     } catch (err) {
       console.error('Error logging habit:', err);
       setError('Failed to log habit progress');
-      
+
       // Optimistic update with a temp ID
       const tempLog: HabitLog = {
         id: `temp-${Date.now()}`,
@@ -400,17 +396,17 @@ export function useWellnessData() {
         date: new Date().toISOString(),
         value,
       };
-      
-      setHabitLogs((prevLogs) => [tempLog, ...prevLogs]);
-      
+
+      setHabitLogs(prevLogs => [tempLog, ...prevLogs]);
+
       // Update the goal's current value optimistically
-      setGoals((prevGoals) => 
-        prevGoals.map((goal) => {
+      setGoals(prevGoals =>
+        prevGoals.map(goal => {
           if (goal.id === goalId) {
-            return { 
-              ...goal, 
+            return {
+              ...goal,
               current: goal.current + value,
-              status: goal.status === 'not_started' ? 'in_progress' : goal.status
+              status: goal.status === 'not_started' ? 'in_progress' : goal.status,
             };
           }
           return goal;
@@ -437,6 +433,6 @@ export function useWellnessData() {
     updateGoal,
     deleteGoal,
     logHabit,
-    refreshData
+    refreshData,
   };
-} 
+}

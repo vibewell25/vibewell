@@ -23,27 +23,26 @@ describe('UserPreferencesPanel', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     // Set up the default mock implementation
-    jest.spyOn(useLocalStorageModule, 'useLocalStorage').mockReturnValue([
-      defaultPreferences,
-      jest.fn(),
-    ]);
+    jest
+      .spyOn(useLocalStorageModule, 'useLocalStorage')
+      .mockReturnValue([defaultPreferences, jest.fn()]);
   });
 
   it('renders with default preferences', () => {
     // Act
     render(<UserPreferencesPanel />);
-    
+
     // Assert
     expect(screen.getByText('User Preferences')).toBeInTheDocument();
     expect(screen.getByLabelText('Enable Notifications')).toBeChecked();
-    
+
     // Check select elements
     const emailFrequencySelect = screen.getByLabelText('Email Frequency') as HTMLSelectElement;
     expect(emailFrequencySelect.value).toBe('weekly');
-    
+
     const languageSelect = screen.getByLabelText('Language') as HTMLSelectElement;
     expect(languageSelect.value).toBe('en');
-    
+
     const fontSizeSelect = screen.getByLabelText('Font Size') as HTMLSelectElement;
     expect(fontSizeSelect.value).toBe('medium');
   });
@@ -51,15 +50,14 @@ describe('UserPreferencesPanel', () => {
   it('toggles notification preference when checkbox is clicked', () => {
     // Arrange
     const setPreferencesMock = jest.fn();
-    jest.spyOn(useLocalStorageModule, 'useLocalStorage').mockReturnValue([
-      defaultPreferences,
-      setPreferencesMock,
-    ]);
-    
+    jest
+      .spyOn(useLocalStorageModule, 'useLocalStorage')
+      .mockReturnValue([defaultPreferences, setPreferencesMock]);
+
     // Act
     render(<UserPreferencesPanel />);
     fireEvent.click(screen.getByLabelText('Enable Notifications'));
-    
+
     // Assert
     expect(setPreferencesMock).toHaveBeenCalledWith(expect.any(Function));
     // Test the updater function
@@ -74,15 +72,14 @@ describe('UserPreferencesPanel', () => {
   it('updates email frequency when select is changed', () => {
     // Arrange
     const setPreferencesMock = jest.fn();
-    jest.spyOn(useLocalStorageModule, 'useLocalStorage').mockReturnValue([
-      defaultPreferences,
-      setPreferencesMock,
-    ]);
-    
+    jest
+      .spyOn(useLocalStorageModule, 'useLocalStorage')
+      .mockReturnValue([defaultPreferences, setPreferencesMock]);
+
     // Act
     render(<UserPreferencesPanel />);
     fireEvent.change(screen.getByLabelText('Email Frequency'), { target: { value: 'daily' } });
-    
+
     // Assert
     expect(setPreferencesMock).toHaveBeenCalledWith(expect.any(Function));
     // Test the updater function
@@ -97,15 +94,14 @@ describe('UserPreferencesPanel', () => {
   it('updates language when select is changed', () => {
     // Arrange
     const setPreferencesMock = jest.fn();
-    jest.spyOn(useLocalStorageModule, 'useLocalStorage').mockReturnValue([
-      defaultPreferences,
-      setPreferencesMock,
-    ]);
-    
+    jest
+      .spyOn(useLocalStorageModule, 'useLocalStorage')
+      .mockReturnValue([defaultPreferences, setPreferencesMock]);
+
     // Act
     render(<UserPreferencesPanel />);
     fireEvent.change(screen.getByLabelText('Language'), { target: { value: 'fr' } });
-    
+
     // Assert
     expect(setPreferencesMock).toHaveBeenCalledWith(expect.any(Function));
     // Test the updater function
@@ -126,15 +122,14 @@ describe('UserPreferencesPanel', () => {
       fontSize: 'large',
     };
     const setPreferencesMock = jest.fn();
-    jest.spyOn(useLocalStorageModule, 'useLocalStorage').mockReturnValue([
-      customPreferences,
-      setPreferencesMock,
-    ]);
-    
+    jest
+      .spyOn(useLocalStorageModule, 'useLocalStorage')
+      .mockReturnValue([customPreferences, setPreferencesMock]);
+
     // Act
     render(<UserPreferencesPanel />);
     fireEvent.click(screen.getByText('Reset to Defaults'));
-    
+
     // Assert
     expect(setPreferencesMock).toHaveBeenCalledWith({
       notifications: true,
@@ -143,4 +138,4 @@ describe('UserPreferencesPanel', () => {
       fontSize: 'medium',
     });
   });
-}); 
+});

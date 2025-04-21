@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -22,7 +22,7 @@ export async function GET() {
     });
 
     return NextResponse.json({
-      transactions: transactions.map((transaction) => ({
+      transactions: transactions.map(transaction => ({
         id: transaction.id,
         type: transaction.type,
         points: transaction.points,
@@ -32,9 +32,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching loyalty transactions:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch loyalty transactions' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch loyalty transactions' }, { status: 500 });
   }
-} 
+}

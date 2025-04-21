@@ -18,14 +18,11 @@ export async function POST() {
     // Get user with stripe customer ID
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { stripeCustomerId: true }
+      select: { stripeCustomerId: true },
     });
 
     if (!user?.stripeCustomerId) {
-      return NextResponse.json(
-        { error: 'No subscription found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'No subscription found' }, { status: 404 });
     }
 
     // Get active subscriptions
@@ -35,19 +32,15 @@ export async function POST() {
     });
 
     if (!subscriptions.data.length) {
-      return NextResponse.json(
-        { error: 'No active subscription found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'No active subscription found' }, { status: 404 });
     }
 
     const subscription = subscriptions.data[0];
 
     // Cancel at period end
-    const updatedSubscription = await stripe.subscriptions.update(
-      subscription.id,
-      { cancel_at_period_end: true }
-    );
+    const updatedSubscription = await stripe.subscriptions.update(subscription.id, {
+      cancel_at_period_end: true,
+    });
 
     const price = await stripe.prices.retrieve(subscription.items.data[0].price.id);
 
@@ -65,9 +58,6 @@ export async function POST() {
     });
   } catch (error) {
     console.error('Error cancelling subscription:', error);
-    return NextResponse.json(
-      { error: 'Failed to cancel subscription' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to cancel subscription' }, { status: 500 });
   }
-} 
+}

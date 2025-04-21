@@ -11,31 +11,37 @@ import * as React from 'react';
 const server = setupServer(
   http.post('/api/auth/login', async ({ request }) => {
     const body = await request.json();
-    
+
     // Simulate validation errors
     if (!body.email || !body.password) {
-      return HttpResponse.json({ 
-        error: 'Email and password are required' 
-      }, { status: 400 });
+      return HttpResponse.json(
+        {
+          error: 'Email and password are required',
+        },
+        { status: 400 }
+      );
     }
-    
+
     // Simulate authentication
     if (body.email === 'test@example.com' && body.password === 'Password123!') {
-      return HttpResponse.json({ 
-        success: true, 
-        token: 'mock-jwt-token', 
-        user: { 
-          id: '123', 
-          email: 'test@example.com', 
-          name: 'Test User' 
-        } 
+      return HttpResponse.json({
+        success: true,
+        token: 'mock-jwt-token',
+        user: {
+          id: '123',
+          email: 'test@example.com',
+          name: 'Test User',
+        },
       });
     }
-    
+
     // Simulate authentication failure
-    return HttpResponse.json({ 
-      error: 'Invalid email or password' 
-    }, { status: 401 });
+    return HttpResponse.json(
+      {
+        error: 'Invalid email or password',
+      },
+      { status: 401 }
+    );
   })
 );
 
@@ -69,7 +75,7 @@ const localStorageMock = (() => {
     },
     clear() {
       store = {};
-    }
+    },
   };
 })();
 
@@ -83,7 +89,7 @@ describe('Login Page', () => {
 
   test('renders login form', async () => {
     render(React.createElement(LoginPage));
-    
+
     // Check that form elements are present
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
@@ -92,13 +98,13 @@ describe('Login Page', () => {
 
   test('validates user input', async () => {
     render(React.createElement(LoginPage));
-    
+
     // Submit with empty fields
     const submitButton = screen.getByRole('button', { name: /sign in/i });
     await act(async () => {
       fireEvent.click(submitButton);
     });
-    
+
     // Should show validation errors
     await waitFor(() => {
       expect(screen.getByText(/email is required/i)).toBeInTheDocument();
@@ -108,19 +114,19 @@ describe('Login Page', () => {
 
   test('shows error message for invalid credentials', async () => {
     render(React.createElement(LoginPage));
-    
+
     // Fill in form with invalid credentials
     await act(async () => {
       userEvent.type(screen.getByLabelText(/email/i), 'wrong@example.com');
       userEvent.type(screen.getByLabelText(/password/i), 'wrongpassword');
     });
-    
+
     // Submit form
     const submitButton = screen.getByRole('button', { name: /sign in/i });
     await act(async () => {
       fireEvent.click(submitButton);
     });
-    
+
     // Should show error message
     await waitFor(() => {
       expect(screen.getByText(/invalid email or password/i)).toBeInTheDocument();
@@ -129,22 +135,22 @@ describe('Login Page', () => {
 
   test('successfully logs in with valid credentials', async () => {
     render(React.createElement(LoginPage));
-    
+
     // Fill in form with valid credentials
     await act(async () => {
       userEvent.type(screen.getByLabelText(/email/i), 'test@example.com');
       userEvent.type(screen.getByLabelText(/password/i), 'Password123!');
     });
-    
+
     // Submit form
     const submitButton = screen.getByRole('button', { name: /sign in/i });
     await act(async () => {
       fireEvent.click(submitButton);
     });
-    
+
     // Should save token to localStorage
     await waitFor(() => {
       expect(localStorageMock.getItem('auth_token')).toBe('mock-jwt-token');
     });
   });
-}); 
+});

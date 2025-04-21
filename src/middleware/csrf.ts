@@ -1,12 +1,9 @@
 import { doubleCsrf } from 'csrf-csrf';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from '@/types/api';
 import { Request } from 'express';
 
 // CSRF Protection Configuration
-const {
-  generateToken,
-  doubleCsrfProtection,
-} = doubleCsrf({
+const { generateToken, doubleCsrfProtection } = doubleCsrf({
   getSecret: () => process.env.CSRF_SECRET || 'PLEASE_USE_ENVIRONMENT_VARIABLE',
   cookieName: '__Host-psifi.csrf-token',
   cookieOptions: {
@@ -37,4 +34,4 @@ export const config = {
     '!api/auth/:path*',
     '!api/webhooks/:path*',
   ],
-}; 
+};

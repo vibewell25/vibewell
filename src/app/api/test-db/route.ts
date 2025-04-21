@@ -4,10 +4,7 @@ import { prisma } from '@/lib/database/client';
 export async function GET() {
   try {
     // Test the connection by querying the profiles table
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .limit(1);
+    const { data, error } = await supabase.from('profiles').select('*').limit(1);
 
     if (error) {
       console.error('Database error:', error);
@@ -20,7 +17,7 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       message: 'Database connection successful',
-      data: data || []
+      data: data || [],
     });
   } catch (error) {
     console.error('Unexpected error:', error);
@@ -29,4 +26,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-} 
+}

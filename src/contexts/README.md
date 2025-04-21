@@ -3,11 +3,13 @@
 ## Overview
 
 The VibeWell application previously had multiple separate authentication implementations:
+
 - `src/contexts/auth-context.tsx`
 - `src/context/AuthContext.tsx`
 - `mobile/src/contexts/AuthContext.tsx`
 
 These have been consolidated into a single unified authentication context to eliminate code duplication, ensure consistency, and improve maintainability:
+
 - `src/contexts/unified-auth-context.tsx`
 
 This document provides guidance on migrating to the new unified authentication context.
@@ -37,17 +39,17 @@ import { useAuth, UserRole } from '@/contexts/unified-auth-context';
 
 function AdminPanel() {
   const { hasRole, isAdmin } = useAuth();
-  
+
   // Check if user is an admin
   if (!isAdmin()) {
     return <AccessDenied />;
   }
-  
+
   // Or check for a specific role
   if (!hasRole(UserRole.PREMIUM)) {
     return <UpgradeRequired />;
   }
-  
+
   return <div>Admin Panel Content</div>;
 }
 ```
@@ -82,32 +84,28 @@ The unified context provides additional properties:
 import { useAuth, UserRole } from '@/contexts/unified-auth-context';
 
 function ProfilePage() {
-  const { 
-    user, 
-    isAuthenticated, 
-    loading, 
-    updateProfile,
-    signOut
-  } = useAuth();
-  
+  const { user, isAuthenticated, loading, updateProfile, signOut } = useAuth();
+
   if (loading) {
     return <LoadingSpinner />;
   }
-  
+
   if (!isAuthenticated) {
     return <LoginRequired />;
   }
-  
+
   return (
     <div>
       <h1>Welcome, {user?.email}</h1>
       <button onClick={signOut}>Sign Out</button>
-      
-      <button 
-        onClick={() => updateProfile({ 
-          name: 'New Name', 
-          avatar_url: 'https://example.com/avatar.png' 
-        })}
+
+      <button
+        onClick={() =>
+          updateProfile({
+            name: 'New Name',
+            avatar_url: 'https://example.com/avatar.png',
+          })
+        }
       >
         Update Profile
       </button>
@@ -122,4 +120,4 @@ For a transitional period, the old auth contexts will continue to work but will 
 
 ## Questions and Support
 
-If you encounter any issues during migration, please contact the development team. 
+If you encounter any issues during migration, please contact the development team.

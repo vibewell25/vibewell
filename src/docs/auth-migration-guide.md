@@ -43,14 +43,15 @@ Replace hardcoded route strings with constants:
 
 ```tsx
 // OLD
-<Link href="/auth/login">Sign in</Link>
+<Link href="/auth/login">Sign in</Link>;
 
 // NEW
 import { ROUTES } from '@/constants/routes';
-<Link href={ROUTES.AUTH.LOGIN}>Sign in</Link>
+<Link href={ROUTES.AUTH.LOGIN}>Sign in</Link>;
 ```
 
 Pay special attention to:
+
 - Navigation links in headers/footers
 - Auth flow redirects
 - Protected route fallbacks
@@ -95,7 +96,7 @@ Use the new standardized auth components for consistency:
 <div className="container">
   <h1>Sign in</h1>
   <form>...</form>
-</div>
+</div>;
 
 // NEW (standardized components)
 import { AuthForm, AuthFormInput, AuthSubmitButton } from '@/components/auth/auth-form';
@@ -106,13 +107,13 @@ import { AuthForm, AuthFormInput, AuthSubmitButton } from '@/components/auth/aut
   error={error}
   isLoading={isLoading}
   footerText="Don't have an account?"
-  footerLink={{ text: "Sign up", href: ROUTES.AUTH.SIGNUP }}
+  footerLink={{ text: 'Sign up', href: ROUTES.AUTH.SIGNUP }}
 >
   <form>
     <AuthFormInput id="email" label="Email" /* ... */ />
     <AuthSubmitButton isLoading={isLoading} text="Sign in" />
   </form>
-</AuthForm>
+</AuthForm>;
 ```
 
 ### 5. Testing All Auth Flows
@@ -138,6 +139,7 @@ npm test -- -t "AuthContext"
 After confirming all redirects work correctly in production:
 
 1. Run the cleanup script in dry-run mode:
+
    ```bash
    node scripts/cleanup-auth-routes.js --dry-run
    ```
@@ -169,4 +171,4 @@ If you encounter issues during migration:
 - [ ] Error handling is consistent across all components
 - [ ] All auth flows have been tested and work correctly
 - [ ] Unit tests for auth context pass
-- [ ] Duplicate routes have been cleaned up 
+- [ ] Duplicate routes have been cleaned up

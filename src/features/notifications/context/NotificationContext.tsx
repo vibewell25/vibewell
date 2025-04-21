@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import type { Notification, NotificationState, NotificationAction } from '../types';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 
 // Initial state
 const initialState: NotificationState = {
@@ -20,7 +20,10 @@ const DELETE_NOTIFICATION = 'DELETE_NOTIFICATION';
 const MARK_ALL_AS_READ = 'MARK_ALL_AS_READ';
 
 // Reducer
-const notificationReducer = (state: NotificationState, action: NotificationAction): NotificationState => {
+const notificationReducer = (
+  state: NotificationState,
+  action: NotificationAction
+): NotificationState => {
   switch (action.type) {
     case FETCH_NOTIFICATIONS_START:
       return {
@@ -51,7 +54,7 @@ const notificationReducer = (state: NotificationState, action: NotificationActio
     case MARK_AS_READ:
       return {
         ...state,
-        notifications: state.notifications.map((n) =>
+        notifications: state.notifications.map(n =>
           n.id === action.payload.id ? { ...n, isRead: true } : n
         ),
         unreadCount: Math.max(0, state.unreadCount - 1),
@@ -59,15 +62,15 @@ const notificationReducer = (state: NotificationState, action: NotificationActio
     case DELETE_NOTIFICATION:
       return {
         ...state,
-        notifications: state.notifications.filter((n) => n.id !== action.payload.id),
-        unreadCount: state.notifications.find((n) => n.id === action.payload.id && !n.isRead)
+        notifications: state.notifications.filter(n => n.id !== action.payload.id),
+        unreadCount: state.notifications.find(n => n.id === action.payload.id && !n.isRead)
           ? Math.max(0, state.unreadCount - 1)
           : state.unreadCount,
       };
     case MARK_ALL_AS_READ:
       return {
         ...state,
-        notifications: state.notifications.map((n) => ({ ...n, isRead: true })),
+        notifications: state.notifications.map(n => ({ ...n, isRead: true })),
         unreadCount: 0,
       };
     default:
@@ -103,13 +106,13 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
 
     try {
       const response = await fetch('/api/notifications');
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch notifications');
       }
-      
+
       const data = await response.json();
-      
+
       dispatch({
         type: FETCH_NOTIFICATIONS_SUCCESS,
         payload: { notifications: data.notifications || [] },
@@ -127,11 +130,11 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     try {
       // Optimistic update
       dispatch({ type: MARK_AS_READ, payload: { id } });
-      
+
       const response = await fetch(`/api/notifications/${id}/read`, {
         method: 'PATCH',
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to mark notification as read');
       }
@@ -147,11 +150,11 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     try {
       // Optimistic update
       dispatch({ type: DELETE_NOTIFICATION, payload: { id } });
-      
+
       const response = await fetch(`/api/notifications/${id}`, {
         method: 'DELETE',
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to delete notification');
       }
@@ -167,11 +170,11 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     try {
       // Optimistic update
       dispatch({ type: MARK_ALL_AS_READ });
-      
+
       const response = await fetch('/api/notifications/read-all', {
         method: 'PATCH',
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to mark all notifications as read');
       }
@@ -192,7 +195,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
       isRead: false,
       ...notification,
     };
-    
+
     dispatch({ type: ADD_NOTIFICATION, payload: { notification: newNotification } });
   };
 
@@ -212,20 +215,16 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     addNotification,
   };
 
-  return (
-    <NotificationContext.Provider value={value}>
-      {children}
-    </NotificationContext.Provider>
-  );
+  return <NotificationContext.Provider value={value}>{children}</NotificationContext.Provider>;
 };
 
 // Hook
 export const useNotifications = (): NotificationContextType => {
   const context = useContext(NotificationContext);
-  
+
   if (context === undefined) {
     throw new Error('useNotifications must be used within a NotificationProvider');
   }
-  
+
   return context;
-}; 
+};

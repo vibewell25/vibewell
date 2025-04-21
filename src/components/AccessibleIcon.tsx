@@ -32,8 +32,8 @@ export const AccessibleIcon: React.FC<AccessibleIconProps> = ({
   return (
     <span className="inline-flex items-center">
       {labelPosition === 'before' && <span className="mr-2">{label}</span>}
-      <span 
-        aria-hidden={labelPosition !== 'hidden'} 
+      <span
+        aria-hidden={labelPosition !== 'hidden'}
         role={labelPosition === 'hidden' ? 'img' : undefined}
         aria-label={labelPosition === 'hidden' ? label : undefined}
       >
@@ -44,4 +44,4 @@ export const AccessibleIcon: React.FC<AccessibleIconProps> = ({
   );
 };
 
-export default AccessibleIcon; 
+export default AccessibleIcon;

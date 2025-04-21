@@ -38,9 +38,7 @@ export function AccessibleIcon({
 
   // If it's just a visual icon with an accessible label
   return (
-    <span 
-      className={cn('inline-flex items-center', className)}
-    >
+    <span className={cn('inline-flex items-center', className)}>
       {labelPosition === 'before' && <span className="mr-2">{label}</span>}
       <span
         aria-hidden={labelPosition !== 'hidden'}
@@ -52,4 +50,4 @@ export function AccessibleIcon({
       {labelPosition === 'after' && <span className="ml-2">{label}</span>}
     </span>
   );
-} 
+}

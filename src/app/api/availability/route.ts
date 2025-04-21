@@ -1,20 +1,17 @@
-import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { availability, providers, services } from "@/lib/db/schema";
-import { and, eq, gte, lte } from "drizzle-orm";
-import { addMinutes, format, parse } from "date-fns";
+import { NextResponse } from 'next/server';
+import { db } from '@/lib/db';
+import { availability, providers, services } from '@/lib/db/schema';
+import { and, eq, gte, lte } from 'drizzle-orm';
+import { addMinutes, format, parse } from 'date-fns';
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const providerId = searchParams.get("providerId");
-    const date = searchParams.get("date");
+    const providerId = searchParams.get('providerId');
+    const date = searchParams.get('date');
 
     if (!providerId || !date) {
-      return NextResponse.json(
-        { error: "Provider ID and date are required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Provider ID and date are required' }, { status: 400 });
     }
 
     const parsedDate = new Date(date);
@@ -44,16 +41,13 @@ export async function GET(request: Request) {
     const timeSlots = generateTimeSlots(parsedDate, providerAvailability);
 
     return NextResponse.json({
-      date: format(parsedDate, "yyyy-MM-dd"),
+      date: format(parsedDate, 'yyyy-MM-dd'),
       slots: timeSlots,
       services: providerServices,
     });
   } catch (error) {
-    console.error("Error fetching availability:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch availability" },
-      { status: 500 }
-    );
+    console.error('Error fetching availability:', error);
+    return NextResponse.json({ error: 'Failed to fetch availability' }, { status: 500 });
   }
 }
 
@@ -63,28 +57,18 @@ export async function POST(request: Request) {
     const { providerId, date, time, serviceId } = body;
 
     if (!providerId || !date || !time || !serviceId) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     // Get service duration
-    const service = await db
-      .select()
-      .from(services)
-      .where(eq(services.id, serviceId))
-      .limit(1);
+    const service = await db.select().from(services).where(eq(services.id, serviceId)).limit(1);
 
     if (!service.length) {
-      return NextResponse.json(
-        { error: "Service not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Service not found' }, { status: 404 });
     }
 
     const serviceDuration = service[0].duration;
-    const startTime = parse(time, "HH:mm", new Date(date));
+    const startTime = parse(time, 'HH:mm', new Date(date));
     const endTime = addMinutes(startTime, serviceDuration);
 
     // Check if slots are available
@@ -101,10 +85,7 @@ export async function POST(request: Request) {
       );
 
     if (existingSlots.length > 0) {
-      return NextResponse.json(
-        { error: "Time slot is not available" },
-        { status: 409 }
-      );
+      return NextResponse.json({ error: 'Time slot is not available' }, { status: 409 });
     }
 
     // Create appointment
@@ -113,10 +94,10 @@ export async function POST(request: Request) {
       .values({
         providerId,
         serviceId,
-        userId: "user123", // This would come from the session
+        userId: 'user123', // This would come from the session
         startTime,
         endTime,
-        status: "scheduled",
+        status: 'scheduled',
       })
       .returning();
 
@@ -134,29 +115,25 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, appointment });
   } catch (error) {
-    console.error("Error creating appointment:", error);
-    return NextResponse.json(
-      { error: "Failed to create appointment" },
-      { status: 500 }
-    );
+    console.error('Error creating appointment:', error);
+    return NextResponse.json({ error: 'Failed to create appointment' }, { status: 500 });
   }
 }
 
 function generateTimeSlots(date: Date, availability: any[]) {
   const slots = [];
-  const startTime = parse("09:00", "HH:mm", date);
-  const endTime = parse("17:00", "HH:mm", date);
+  const startTime = parse('09:00', 'HH:mm', date);
+  const endTime = parse('17:00', 'HH:mm', date);
 
   let currentTime = startTime;
   while (currentTime <= endTime) {
-    const slotTime = format(currentTime, "HH:mm");
+    const slotTime = format(currentTime, 'HH:mm');
     const isAvailable = !availability.some(
-      (slot) =>
-        format(slot.startTime, "HH:mm") === slotTime && !slot.isAvailable
+      slot => format(slot.startTime, 'HH:mm') === slotTime && !slot.isAvailable
     );
 
     slots.push({
-      id: format(currentTime, "HHmm"),
+      id: format(currentTime, 'HHmm'),
       time: slotTime,
       available: isAvailable,
     });
@@ -165,4 +142,4 @@ function generateTimeSlots(date: Date, availability: any[]) {
   }
 
   return slots;
-} 
+}

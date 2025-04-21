@@ -23,7 +23,7 @@ export class FieldEncryptionService {
     try {
       // Generate a new data key using HSM
       const { plaintextKey, encryptedKey } = await this.hsm.generateDataKey();
-      
+
       // Generate initialization vector
       const iv = randomBytes(16);
 
@@ -40,13 +40,13 @@ export class FieldEncryptionService {
       // Combine encrypted data with auth tag
       const finalEncryptedData = Buffer.concat([
         Buffer.from(encryptedData, 'base64'),
-        authTag
+        authTag,
       ]).toString('base64');
 
       return {
         iv: iv.toString('base64'),
         encryptedData: finalEncryptedData,
-        keyId: encryptedKey.toString('base64')
+        keyId: encryptedKey.toString('base64'),
       };
     } catch (error) {
       logger.error('Field encryption failed', 'encryption', { error });
@@ -97,7 +97,7 @@ export class FieldEncryptionService {
 
     for (const field of fieldsToEncrypt) {
       if (typeof result[field] === 'string') {
-        result[field] = await this.encrypt(result[field]) as any;
+        result[field] = (await this.encrypt(result[field])) as any;
       }
     }
 
@@ -115,7 +115,7 @@ export class FieldEncryptionService {
 
     for (const field of fieldsToDecrypt) {
       if (this.isEncryptedField(result[field])) {
-        result[field] = await this.decrypt(result[field]) as any;
+        result[field] = (await this.decrypt(result[field])) as any;
       }
     }
 
@@ -134,4 +134,4 @@ export class FieldEncryptionService {
       'keyId' in value
     );
   }
-} 
+}

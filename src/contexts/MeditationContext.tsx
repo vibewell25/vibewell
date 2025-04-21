@@ -78,4 +78,4 @@ export const MeditationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       {children}
     </MeditationContext.Provider>
   );
-}; 
+};

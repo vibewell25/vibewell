@@ -34,10 +34,10 @@ export async function POST(request: Request) {
       include: {
         practitioner: {
           include: {
-            business: true
-          }
-        }
-      }
+            business: true,
+          },
+        },
+      },
     });
 
     if (!user?.practitioner?.business) {
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
         notes: appointment.notes,
         business: { connect: { id: user.practitioner.business.id } },
         practitioner: { connect: { id: user.practitioner.id } },
-        user: { connect: { id: appointment.customerId } }
+        user: { connect: { id: appointment.customerId } },
       },
       update: {
         startTime: new Date(appointment.startTime),
@@ -72,4 +72,4 @@ export async function POST(request: Request) {
     console.error('Error syncing appointment:', error);
     return new NextResponse('Internal Server Error', { status: 500 });
   }
-} 
+}

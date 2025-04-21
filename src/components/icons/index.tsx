@@ -15,36 +15,36 @@ export const {
   google,
   facebook,
   apple,
-  
+
   // Logo icon
   logo,
-  
+
   // UI icons
   spinner,
   arrowRight,
   chevronDown,
   chevronUp,
-  
+
   // Theme icons
   sun,
   moon,
   system,
-  
+
   // Notification icons
   bell,
-  
+
   // Message icons
   chat,
-  
+
   // User icon
   user,
-  
+
   // Settings icon
   settings,
-  
+
   // Close/X icon
   close,
-  
+
   // Menu icon
   menu,
 } = Icons;

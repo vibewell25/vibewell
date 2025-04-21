@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
-;
 import { GoalCreationModal } from '@/components/wellness/GoalCreationModal';
 import { useWellnessData } from '@/hooks/useWellnessData';
 import { Goal } from '@/types/progress';
@@ -201,10 +200,11 @@ export default function WellnessPage() {
     toast.success('Content shared');
   };
   // Filter content by category and search query
-  const filteredContent = wellnessContent.filter((item) => {
+  const filteredContent = wellnessContent.filter(item => {
     const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
-    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          item.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch =
+      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
   return (
@@ -226,10 +226,7 @@ export default function WellnessPage() {
               <Icons.PlusIcon className="h-5 w-5" />
               Create Goal
             </Button>
-            <Link 
-              href="/wellness/progress" 
-              className="btn-primary flex items-center gap-2"
-            >
+            <Link href="/wellness/progress" className="btn-primary flex items-center gap-2">
               <Icons.ChartBarIcon className="h-5 w-5" />
               Track Progress
             </Link>
@@ -255,7 +252,7 @@ export default function WellnessPage() {
                     placeholder="Search wellness content..."
                     className="form-input pl-10"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={e => setSearchQuery(e.target.value)}
                   />
                 </div>
                 <Button
@@ -271,12 +268,12 @@ export default function WellnessPage() {
             {/* Category Filters */}
             <div className={`mb-8 ${showFilters ? 'block' : 'hidden md:block'}`}>
               <div className="flex flex-wrap gap-2">
-                {categories.map((category) => {
+                {categories.map(category => {
                   const Icon = category.icon;
                   return (
                     <Button
                       key={category.id}
-                      variant={selectedCategory === category.id ? "default" : "outline"}
+                      variant={selectedCategory === category.id ? 'default' : 'outline'}
                       className="flex items-center gap-2"
                       onClick={() => setSelectedCategory(category.id)}
                     >
@@ -305,11 +302,13 @@ export default function WellnessPage() {
               </div>
             ) : filteredContent.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">No wellness content found. Try adjusting your filters.</p>
+                <p className="text-muted-foreground">
+                  No wellness content found. Try adjusting your filters.
+                </p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredContent.map((item) => (
+                {filteredContent.map(item => (
                   <Card key={item.id} className="group hover:shadow-lg transition-all">
                     <CardContent className="p-0">
                       <div className="relative">
@@ -327,11 +326,7 @@ export default function WellnessPage() {
                             </Button>
                           </Tooltip>
                           <Tooltip content="Like">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleLike(item.id)}
-                            >
+                            <Button variant="ghost" size="icon" onClick={() => handleLike(item.id)}>
                               <Icons.HeartIcon className="h-5 w-5" />
                             </Button>
                           </Tooltip>
@@ -362,7 +357,9 @@ export default function WellnessPage() {
                               </Avatar>
                               <div>
                                 <p className="text-sm font-medium">{item.author.name}</p>
-                                <p className="text-xs text-muted-foreground">{item.author.expertise}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {item.author.expertise}
+                                </p>
                               </div>
                             </div>
                           )}
@@ -397,7 +394,10 @@ export default function WellnessPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold">{userProgress.completed}</div>
-                  <Progress value={(userProgress.completed / userProgress.total) * 100} className="mt-2" />
+                  <Progress
+                    value={(userProgress.completed / userProgress.total) * 100}
+                    className="mt-2"
+                  />
                 </CardContent>
               </Card>
               <Card>
@@ -407,7 +407,10 @@ export default function WellnessPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold">{userProgress.inProgress}</div>
-                  <Progress value={(userProgress.inProgress / userProgress.total) * 100} className="mt-2" />
+                  <Progress
+                    value={(userProgress.inProgress / userProgress.total) * 100}
+                    className="mt-2"
+                  />
                 </CardContent>
               </Card>
               <Card>
@@ -417,7 +420,10 @@ export default function WellnessPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold">{userProgress.bookmarked}</div>
-                  <Progress value={(userProgress.bookmarked / userProgress.total) * 100} className="mt-2" />
+                  <Progress
+                    value={(userProgress.bookmarked / userProgress.total) * 100}
+                    className="mt-2"
+                  />
                 </CardContent>
               </Card>
             </div>
@@ -427,9 +433,7 @@ export default function WellnessPage() {
               {filteredContent
                 .filter(item => item.isBookmarked)
                 .map(item => (
-                  <Card key={item.id}>
-                    {/* Same card content as in discover tab */}
-                  </Card>
+                  <Card key={item.id}>{/* Same card content as in discover tab */}</Card>
                 ))}
             </div>
           </TabsContent>
@@ -439,9 +443,7 @@ export default function WellnessPage() {
                 .sort((a, b) => b.rating - a.rating)
                 .slice(0, 6)
                 .map(item => (
-                  <Card key={item.id}>
-                    {/* Same card content as in discover tab */}
-                  </Card>
+                  <Card key={item.id}>{/* Same card content as in discover tab */}</Card>
                 ))}
             </div>
           </TabsContent>
@@ -461,4 +463,4 @@ export default function WellnessPage() {
       </div>
     </Layout>
   );
-} 
+}

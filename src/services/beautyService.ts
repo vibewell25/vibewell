@@ -112,7 +112,7 @@ export const bookBeautyService = async (
       serviceId,
       date,
       timeSlot,
-      userInfo
+      userInfo,
     });
     return response.data;
   } catch (error) {
@@ -130,7 +130,7 @@ export const checkServiceAvailability = async (
 ): Promise<{ id: string; time: string; available: boolean }[]> => {
   try {
     const response = await api.get(`/api/beauty-services/${serviceId}/availability`, {
-      params: { date }
+      params: { date },
     });
     return response.data;
   } catch (error) {
@@ -163,4 +163,4 @@ export const getSimilarBeautyServices = async (serviceId: string): Promise<Beaut
     console.error('Error fetching similar beauty services:', error);
     return [];
   }
-}; 
+};

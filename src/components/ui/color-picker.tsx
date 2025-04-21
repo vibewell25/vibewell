@@ -32,18 +32,18 @@ export function ColorPicker({ color, onChange, className }: ColorPickerProps) {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={cn("w-10 h-8 p-0 border-2", className)}
+          className={cn('w-10 h-8 p-0 border-2', className)}
           style={{ backgroundColor: color }}
         />
       </PopoverTrigger>
       <PopoverContent className="w-auto p-3">
         <div className="grid grid-cols-5 gap-2">
-          {predefinedColors.map((presetColor) => (
+          {predefinedColors.map(presetColor => (
             <button
               key={presetColor}
               className={cn(
-                "w-6 h-6 rounded-md border border-gray-200",
-                color === presetColor ? "ring-2 ring-offset-2 ring-primary" : ""
+                'w-6 h-6 rounded-md border border-gray-200',
+                color === presetColor ? 'ring-2 ring-offset-2 ring-primary' : ''
               )}
               style={{ backgroundColor: presetColor }}
               onClick={() => {
@@ -57,11 +57,11 @@ export function ColorPicker({ color, onChange, className }: ColorPickerProps) {
           <input
             type="color"
             value={color}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={e => onChange(e.target.value)}
             className="w-8 h-8 cursor-pointer appearance-none bg-transparent border-0"
             id="custom-color-picker"
           />
-          <label 
+          <label
             htmlFor="custom-color-picker"
             className="ml-2 text-xs text-muted-foreground cursor-pointer"
           >
@@ -71,4 +71,4 @@ export function ColorPicker({ color, onChange, className }: ColorPickerProps) {
       </PopoverContent>
     </Popover>
   );
-} 
+}

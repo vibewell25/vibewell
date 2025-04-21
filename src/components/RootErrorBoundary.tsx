@@ -24,7 +24,7 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
     this.state = {
       hasError: false,
       error: null,
-      errorInfo: null
+      errorInfo: null,
     };
   }
 
@@ -37,9 +37,9 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
     // You could log the error to an error reporting service here
     console.error('Application error caught by RootErrorBoundary:', error);
     console.error('Component stack:', errorInfo.componentStack);
-    
+
     this.setState({ errorInfo });
-    
+
     // You could also send the error to your analytics or error tracking service
     // Example: sendErrorToAnalytics(error, errorInfo);
   }
@@ -63,12 +63,13 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
             <div className="flex items-center justify-center mb-6 text-red-500">
               <Icons.XCircleIcon className="h-12 w-12" />
             </div>
-            
+
             <h1 className="text-2xl font-bold text-foreground mb-2">Oops, something went wrong</h1>
             <p className="text-muted-foreground mb-6">
-              We're sorry, but we encountered an unexpected error. Please try refreshing the page or go back to the homepage.
+              We're sorry, but we encountered an unexpected error. Please try refreshing the page or
+              go back to the homepage.
             </p>
-            
+
             <div className="space-y-4">
               <button
                 onClick={this.handleReload}
@@ -76,7 +77,7 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
               >
                 Refresh page
               </button>
-              
+
               <Link
                 href="/"
                 onClick={this.handleGoHome}
@@ -85,7 +86,7 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
                 Go to homepage
               </Link>
             </div>
-            
+
             {process.env.NODE_ENV === 'development' && (
               <details className="mt-6 p-3 border border-border rounded-md bg-muted">
                 <summary className="cursor-pointer font-medium text-sm">
@@ -110,4 +111,4 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
   }
 }
 
-export default RootErrorBoundary; 
+export default RootErrorBoundary;

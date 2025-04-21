@@ -1,5 +1,4 @@
 import React from 'react';
-;
 import { getRelativeTime } from '@/utils/date-formatter';
 import type { Notification } from '../types';
 import { Icons } from '@/components/icons';
@@ -27,7 +26,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
     }
   };
   return (
-    <div 
+    <div
       className={`border-b border-gray-200 p-4 ${!isRead ? 'bg-blue-50' : ''}`}
       data-testid="notification-item"
     >
@@ -40,9 +39,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
             </p>
             <p className="text-xs text-gray-500">{getRelativeTime(createdAt)}</p>
           </div>
-          <p className={`mt-1 text-sm ${!isRead ? 'text-blue-700' : 'text-gray-600'}`}>
-            {message}
-          </p>
+          <p className={`mt-1 text-sm ${!isRead ? 'text-blue-700' : 'text-gray-600'}`}>{message}</p>
           <div className="mt-2 flex space-x-2">
             {!isRead && (
               <button
@@ -65,4 +62,4 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
       </div>
     </div>
   );
-}; 
+};

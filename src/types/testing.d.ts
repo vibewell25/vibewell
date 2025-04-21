@@ -54,7 +54,7 @@ declare global {
       not: Matchers<R>;
     }
   }
-  
+
   // Add missing expect static properties
   namespace jest {
     interface ExpectStatic {
@@ -161,4 +161,4 @@ interface FirstInputDelayEntry extends PerformanceEntry {
   processingEnd: number;
   duration: number;
   target: Node;
-} 
+}

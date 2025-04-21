@@ -1,14 +1,14 @@
 'use client';
 
-import * as React from "react"
-import { cn } from "@/lib/utils"
-import { BaseInput, BaseInputProps } from "./base-input"
+import * as React from 'react';
+import { cn } from '@/lib/utils';
+import { BaseInput, BaseInputProps } from './base-input';
 
 export interface InputProps extends Omit<BaseInputProps, 'wrapperClassName'> {}
 
 /**
  * Input component with shadcn/ui styling
- * 
+ *
  * This is a wrapper around the BaseInput component that applies the shadcn/ui
  * style guidelines while maintaining API compatibility with the original Input component.
  */
@@ -23,9 +23,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         containerClassName="shadow-none"
         {...props}
       />
-    )
+    );
   }
-)
-Input.displayName = "Input"
+);
+Input.displayName = 'Input';
 
-export { Input } 
+export { Input };

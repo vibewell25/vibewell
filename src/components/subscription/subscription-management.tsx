@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Icons } from '@/components/ui/icons';
 import { toast } from '@/components/ui/use-toast';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 
 interface Subscription {
   id: string;
@@ -125,9 +125,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
           <p className="text-gray-600 mb-4">
             You don't have an active subscription. Choose a plan to get started.
           </p>
-          <Button onClick={() => window.location.href = '/pricing'}>
-            View Plans
-          </Button>
+          <Button onClick={() => (window.location.href = '/pricing')}>View Plans</Button>
         </CardContent>
       </Card>
     );
@@ -155,7 +153,9 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
           <div className="text-sm text-gray-600">
             {subscription.status === 'active' ? (
               <>
-                <p>Next billing date: {new Date(subscription.currentPeriodEnd).toLocaleDateString()}</p>
+                <p>
+                  Next billing date: {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
+                </p>
                 <Button
                   variant="outline"
                   onClick={handleCancelSubscription}
@@ -171,10 +171,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
                   Your subscription will end on{' '}
                   {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
                 </p>
-                <Button
-                  onClick={handleReactivateSubscription}
-                  className="mt-4"
-                >
+                <Button onClick={handleReactivateSubscription} className="mt-4">
                   Reactivate Subscription
                 </Button>
               </>
@@ -183,7 +180,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
 
           <div className="mt-6 pt-6 border-t border-gray-200">
             <h4 className="font-medium mb-2">Billing History</h4>
-            <Button variant="outline" onClick={() => window.location.href = '/billing'}>
+            <Button variant="outline" onClick={() => (window.location.href = '/billing')}>
               View Billing History
             </Button>
           </div>
@@ -191,4 +188,4 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
       </CardContent>
     </Card>
   );
-} 
+}

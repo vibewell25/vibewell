@@ -40,7 +40,7 @@ class OfflineSyncService {
       request.onerror = () => reject(request.error);
       request.onsuccess = () => resolve(request.result);
 
-      request.onupgradeneeded = (event) => {
+      request.onupgradeneeded = event => {
         const db = (event.target as IDBOpenDBRequest).result;
         if (!db.objectStoreNames.contains(this.cachedDataStore)) {
           db.createObjectStore(this.cachedDataStore, { keyPath: 'id' });
@@ -148,12 +148,12 @@ class OfflineSyncService {
         lastSynced: new Date().toISOString(),
         appointments: cachedData.appointments.map(appointment => ({
           ...appointment,
-          needsSync: appointmentResults.some(result => !result) && appointment.needsSync
+          needsSync: appointmentResults.some(result => !result) && appointment.needsSync,
         })),
         services: cachedData.services.map(service => ({
           ...service,
-          needsSync: serviceResults.some(result => !result) && service.needsSync
-        }))
+          needsSync: serviceResults.some(result => !result) && service.needsSync,
+        })),
       });
 
       return true;
@@ -170,14 +170,14 @@ class OfflineSyncService {
         await this.setCachedData({
           appointments: [{ ...appointment, needsSync: true }],
           services: [],
-          lastSynced: new Date().toISOString()
+          lastSynced: new Date().toISOString(),
         });
         return;
       }
 
       await this.setCachedData({
         ...cachedData,
-        appointments: [...cachedData.appointments, { ...appointment, needsSync: true }]
+        appointments: [...cachedData.appointments, { ...appointment, needsSync: true }],
       });
     } catch (error) {
       console.error('Error adding appointment to cache:', error);
@@ -191,14 +191,14 @@ class OfflineSyncService {
         await this.setCachedData({
           appointments: [],
           services: [{ ...service, needsSync: true }],
-          lastSynced: new Date().toISOString()
+          lastSynced: new Date().toISOString(),
         });
         return;
       }
 
       await this.setCachedData({
         ...cachedData,
-        services: [...cachedData.services, { ...service, needsSync: true }]
+        services: [...cachedData.services, { ...service, needsSync: true }],
       });
     } catch (error) {
       console.error('Error adding service to cache:', error);
@@ -206,4 +206,4 @@ class OfflineSyncService {
   }
 }
 
-export const offlineSyncService = new OfflineSyncService(); 
+export const offlineSyncService = new OfflineSyncService();

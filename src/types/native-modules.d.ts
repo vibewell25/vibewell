@@ -20,4 +20,4 @@ declare module 'react-native' {
       deleteEvent(eventId: string): Promise<boolean>;
     };
   }
-} 
+}

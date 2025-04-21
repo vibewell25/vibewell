@@ -8,15 +8,16 @@ interface CacheOptions {
 }
 
 export function useCache(options: CacheOptions = {}) {
-  const { maxSize = 100 * 1024 * 1024, // 100MB default
-    expirationTime = 24 * 60 * 60 * 1000 // 24 hours default
+  const {
+    maxSize = 100 * 1024 * 1024, // 100MB default
+    expirationTime = 24 * 60 * 60 * 1000, // 24 hours default
   } = options;
 
   const getCachedModel = async (url: string): Promise<Uint8Array | null> => {
     try {
       const cache = await caches.open('model-cache');
       const response = await cache.match(url);
-      
+
       if (!response) return null;
 
       const data = await response.json();
@@ -39,7 +40,7 @@ export function useCache(options: CacheOptions = {}) {
         model: Array.from(model),
         timestamp: Date.now(),
       };
-      
+
       await cache.put(url, new Response(JSON.stringify(data)));
     } catch (error) {
       console.error('Error caching model:', error);
@@ -47,4 +48,4 @@ export function useCache(options: CacheOptions = {}) {
   };
 
   return { getCachedModel, cacheModel };
-} 
+}

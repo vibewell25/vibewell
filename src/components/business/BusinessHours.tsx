@@ -80,9 +80,7 @@ export function BusinessHours({ businessId }: BusinessHoursProps) {
 
   const handleHourChange = (day: DayOfWeek, field: keyof BusinessHour, value: any) => {
     setHours(prev =>
-      prev.map(hour =>
-        hour.dayOfWeek === day ? { ...hour, [field]: value } : hour
-      )
+      prev.map(hour => (hour.dayOfWeek === day ? { ...hour, [field]: value } : hour))
     );
   };
 
@@ -102,20 +100,18 @@ export function BusinessHours({ businessId }: BusinessHoursProps) {
               <div className="w-32">{day}</div>
               <Switch
                 checked={!hours.find(h => h.dayOfWeek === day)?.isClosed}
-                onCheckedChange={(checked) =>
-                  handleHourChange(day, 'isClosed', !checked)
-                }
+                onCheckedChange={checked => handleHourChange(day, 'isClosed', !checked)}
               />
               {!hours.find(h => h.dayOfWeek === day)?.isClosed && (
                 <>
                   <TimeInput
                     value={hours.find(h => h.dayOfWeek === day)?.openTime || '09:00'}
-                    onChange={(value) => handleHourChange(day, 'openTime', value)}
+                    onChange={value => handleHourChange(day, 'openTime', value)}
                   />
                   <span>to</span>
                   <TimeInput
                     value={hours.find(h => h.dayOfWeek === day)?.closeTime || '17:00'}
-                    onChange={(value) => handleHourChange(day, 'closeTime', value)}
+                    onChange={value => handleHourChange(day, 'closeTime', value)}
                   />
                 </>
               )}
@@ -128,4 +124,4 @@ export function BusinessHours({ businessId }: BusinessHoursProps) {
       </CardContent>
     </Card>
   );
-} 
+}

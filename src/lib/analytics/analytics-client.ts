@@ -18,7 +18,9 @@ class AnalyticsClient {
   private maxReconnectAttempts = 5;
   private reconnectDelay = 1000; // Start with 1 second delay
 
-  constructor(private wsUrl: string = `ws://localhost:${process.env.NEXT_PUBLIC_ANALYTICS_WS_PORT || 3001}`) {
+  constructor(
+    private wsUrl: string = `ws://localhost:${process.env.NEXT_PUBLIC_ANALYTICS_WS_PORT || 3001}`
+  ) {
     this.sessionId = this.getOrCreateSessionId();
     this.connect();
   }
@@ -48,7 +50,7 @@ class AnalyticsClient {
         this.handleReconnect();
       };
 
-      this.ws.onerror = (error) => {
+      this.ws.onerror = error => {
         console.error('Analytics WebSocket error:', error);
         this.handleReconnect();
       };
@@ -93,7 +95,7 @@ class AnalyticsClient {
       timestamp: Date.now(),
       sessionId: this.sessionId,
       userId: this.userId,
-      metadata: { page }
+      metadata: { page },
     });
   }
 
@@ -103,7 +105,7 @@ class AnalyticsClient {
       timestamp: Date.now(),
       sessionId: this.sessionId,
       userId: this.userId,
-      metadata: { element, action }
+      metadata: { element, action },
     });
   }
 
@@ -113,7 +115,7 @@ class AnalyticsClient {
       timestamp: Date.now(),
       sessionId: this.sessionId,
       userId: this.userId,
-      metadata: { type, value }
+      metadata: { type, value },
     });
   }
 
@@ -126,11 +128,11 @@ class AnalyticsClient {
       metadata: {
         name: error.name,
         message: error.message,
-        stack: error.stack
-      }
+        stack: error.stack,
+      },
     });
   }
 }
 
 // Export a singleton instance
-export const analytics = new AnalyticsClient(); 
+export const analytics = new AnalyticsClient();

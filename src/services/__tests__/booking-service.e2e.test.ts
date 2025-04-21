@@ -59,7 +59,7 @@ const mockPrisma: MockPrisma = {
   service: {
     findUnique: jest.fn(),
   },
-  $transaction: jest.fn((callback) => callback(mockPrisma)),
+  $transaction: jest.fn(callback => callback(mockPrisma)),
 };
 
 jest.mock('@prisma/client', () => ({
@@ -69,8 +69,8 @@ jest.mock('@prisma/client', () => ({
     CONFIRMED: 'CONFIRMED',
     CANCELLED: 'CANCELLED',
     COMPLETED: 'COMPLETED',
-    NO_SHOW: 'NO_SHOW'
-  }
+    NO_SHOW: 'NO_SHOW',
+  },
 }));
 
 describe('BookingService - End to End Tests', () => {
@@ -289,11 +289,13 @@ describe('BookingService - End to End Tests', () => {
         id: 'booking4',
         userId: mockUser.id,
         providerId: mockProvider.id,
-        services: [{
-          serviceId: 'service1',
-          price: 100,
-          duration: 60,
-        }],
+        services: [
+          {
+            serviceId: 'service1',
+            price: 100,
+            duration: 60,
+          },
+        ],
         startTime: new Date('2024-01-01T10:00:00Z'),
         endTime: new Date('2024-01-01T11:00:00Z'),
         status: BookingStatus.CONFIRMED,
@@ -338,9 +340,9 @@ describe('BookingService - End to End Tests', () => {
     it('should handle waitlist addition failures', async () => {
       mockPrisma.waitlist.create.mockRejectedValue(new Error('Database error'));
 
-      await expect(
-        bookingService.addToWaitlist('user1', 'service1')
-      ).rejects.toThrow('Database error');
+      await expect(bookingService.addToWaitlist('user1', 'service1')).rejects.toThrow(
+        'Database error'
+      );
     });
 
     it('should handle invalid booking data', async () => {
@@ -351,9 +353,7 @@ describe('BookingService - End to End Tests', () => {
         startTime: new Date(),
       };
 
-      await expect(
-        bookingService.createBooking(invalidBookingData)
-      ).rejects.toThrow();
+      await expect(bookingService.createBooking(invalidBookingData)).rejects.toThrow();
     });
   });
-}); 
+});

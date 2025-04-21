@@ -5,10 +5,7 @@ import { authOptions } from '@/lib/auth';
 
 const prisma = new PrismaClient();
 
-export async function POST(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function POST(request: Request, { params }: { params: { id: string } }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
@@ -44,10 +41,7 @@ export async function POST(
     });
 
     if (existingRegistration) {
-      return NextResponse.json(
-        { error: 'Already registered for this event' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Already registered for this event' }, { status: 400 });
     }
 
     // Create registration and update attendee count
@@ -71,9 +65,6 @@ export async function POST(
     return NextResponse.json(registration);
   } catch (error) {
     console.error('Error registering for event:', error);
-    return NextResponse.json(
-      { error: 'Failed to register for event' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to register for event' }, { status: 500 });
   }
-} 
+}

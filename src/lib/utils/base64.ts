@@ -1,17 +1,17 @@
 export function base64URLStringToBuffer(base64URLString: string): Uint8Array {
   // Convert from Base64URL to Base64
   const base64 = base64URLString.replace(/-/g, '+').replace(/_/g, '/');
-  const paddedBase64 = base64.padEnd(base64.length + (4 - (base64.length % 4)) % 4, '=');
-  
+  const paddedBase64 = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), '=');
+
   // Convert Base64 to binary string
   const binaryString = atob(paddedBase64);
-  
+
   // Convert binary string to Uint8Array
   const buffer = new Uint8Array(binaryString.length);
   for (let i = 0; i < binaryString.length; i++) {
     buffer[i] = binaryString.charCodeAt(i);
   }
-  
+
   return buffer;
 }
 
@@ -21,10 +21,10 @@ export function bufferToBase64URLString(buffer: Uint8Array): string {
   for (let i = 0; i < buffer.length; i++) {
     binaryString += String.fromCharCode(buffer[i]);
   }
-  
+
   // Convert binary string to Base64
   const base64 = btoa(binaryString);
-  
+
   // Convert Base64 to Base64URL
   return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-} 
+}

@@ -19,12 +19,15 @@ export default function EditProfilePage() {
     async function getUserSession() {
       try {
         setLoading(true);
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+
         if (sessionError) {
           throw sessionError;
         }
-        
+
         if (session?.user?.id) {
           setUserId(session.user.id);
         } else {
@@ -79,7 +82,9 @@ export default function EditProfilePage() {
       <div className="container mx-auto py-10 px-4">
         <Alert variant="destructive">
           <AlertTitle>Authentication Error</AlertTitle>
-          <AlertDescription>{error || 'You must be logged in to edit your profile'}</AlertDescription>
+          <AlertDescription>
+            {error || 'You must be logged in to edit your profile'}
+          </AlertDescription>
         </Alert>
       </div>
     );
@@ -101,15 +106,12 @@ export default function EditProfilePage() {
           </div>
         </div>
       </div>
-      
+
       <Card className="border-none shadow-sm">
         <CardContent className="pt-6">
-          <ProfileForm 
-            userId={userId} 
-            onSuccess={handleProfileUpdateSuccess} 
-          />
+          <ProfileForm userId={userId} onSuccess={handleProfileUpdateSuccess} />
         </CardContent>
       </Card>
     </div>
   );
-} 
+}

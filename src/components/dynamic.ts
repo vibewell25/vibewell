@@ -6,11 +6,17 @@ export const DynamicBackupSettings = dynamicImport(() => import('./admin/backup-
 
 // Analytics Components
 export const DynamicAlertsDashboard = dynamicImport(() => import('./analytics/alerts-dashboard'));
-export const DynamicEngagementDashboard = dynamicImport(() => import('./analytics/engagement-dashboard'));
-export const DynamicProductMetricsDashboard = dynamicImport(() => import('./analytics/product-metrics-dashboard'));
+export const DynamicEngagementDashboard = dynamicImport(
+  () => import('./analytics/engagement-dashboard')
+);
+export const DynamicProductMetricsDashboard = dynamicImport(
+  () => import('./analytics/product-metrics-dashboard')
+);
 
 // AR Components
-export const DynamicMeditationEnvironment = dynamicImport(() => import('./ar/MeditationEnvironment'));
+export const DynamicMeditationEnvironment = dynamicImport(
+  () => import('./ar/MeditationEnvironment')
+);
 export const DynamicVirtualTryOn = dynamicImport(() => import('./ar/virtual-try-on'));
 
 // Auth Components
@@ -23,15 +29,25 @@ export const DynamicBookingForm = dynamicImport(() => import('./booking/booking-
 
 // Business Components
 export const DynamicConsultationForms = dynamicImport(() => import('./business/ConsultationForms'));
-export const DynamicBusinessProfileWizard = dynamicImport(() => import('./business/business-profile-wizard'));
+export const DynamicBusinessProfileWizard = dynamicImport(
+  () => import('./business/business-profile-wizard')
+);
 export const DynamicServicesForm = dynamicImport(() => import('./business/forms/services-form'));
-export const DynamicVerificationForm = dynamicImport(() => import('./business/forms/verification-form'));
+export const DynamicVerificationForm = dynamicImport(
+  () => import('./business/forms/verification-form')
+);
 
 // Content Calendar Components
 export const DynamicContentCalendar = dynamicImport(() => import('./content/content-calendar'));
-export const DynamicContentCalendarBoard = dynamicImport(() => import('./content-calendar/content-calendar-board'));
-export const DynamicContentCalendarCalendar = dynamicImport(() => import('./content-calendar/content-calendar-calendar'));
-export const DynamicContentItemModal = dynamicImport(() => import('./content-calendar/content-item-modal'));
+export const DynamicContentCalendarBoard = dynamicImport(
+  () => import('./content-calendar/content-calendar-board')
+);
+export const DynamicContentCalendarCalendar = dynamicImport(
+  () => import('./content-calendar/content-calendar-calendar')
+);
+export const DynamicContentItemModal = dynamicImport(
+  () => import('./content-calendar/content-item-modal')
+);
 
 // Profile Components
 export const DynamicProfileForm = dynamicImport(() => import('./profile/profile-form'));
@@ -44,4 +60,4 @@ export const DynamicProviderProfile = dynamicImport(() => import('./provider/pro
 export const DynamicMobileBookingFlow = dynamicImport(() => import('./mobile/MobileBookingFlow'));
 
 // UI Components
-export const DynamicDateTimePicker = dynamicImport(() => import('./ui/date-time-picker')); 
+export const DynamicDateTimePicker = dynamicImport(() => import('./ui/date-time-picker'));

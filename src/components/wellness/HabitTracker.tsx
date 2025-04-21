@@ -19,15 +19,12 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
   const days = useMemo(() => {
     return eachDayOfInterval({
       start: subDays(currentDate, 29),
-      end: currentDate
+      end: currentDate,
     });
   }, [currentDate]);
   // Get logs for a specific goal and day
   const getLogForDay = (goalId: string, date: Date): HabitLog | undefined => {
-    return habitLogs.find(log => 
-      log.goalId === goalId && 
-      isSameDay(parseISO(log.date), date)
-    );
+    return habitLogs.find(log => log.goalId === goalId && isSameDay(parseISO(log.date), date));
   };
   // Calculate streak for a goal
   const calculateStreak = (goalId: string): number => {
@@ -94,23 +91,23 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
         <table className="min-w-full">
           <thead>
             <tr>
-              <th className="py-2 px-3 text-left text-sm font-medium text-muted-foreground w-40">Habit</th>
+              <th className="py-2 px-3 text-left text-sm font-medium text-muted-foreground w-40">
+                Habit
+              </th>
               {days.map((day, i) => (
-                <th 
-                  key={i} 
+                <th
+                  key={i}
                   className={`py-2 px-1 text-center text-xs font-medium ${
                     isToday(day) ? 'text-primary' : 'text-muted-foreground'
                   }`}
                 >
-                  <div>
-                    {format(day, 'EEE')}
-                  </div>
-                  <div>
-                    {format(day, 'd')}
-                  </div>
+                  <div>{format(day, 'EEE')}</div>
+                  <div>{format(day, 'd')}</div>
                 </th>
               ))}
-              <th className="py-2 px-3 text-center text-sm font-medium text-muted-foreground w-20">Streak</th>
+              <th className="py-2 px-3 text-center text-sm font-medium text-muted-foreground w-20">
+                Streak
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -118,15 +115,23 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
               <tr key={goal.id} className="border-t border-border">
                 <td className="py-3 px-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">{
-                      goal.type === 'meditation' ? '🧘‍♂️' :
-                      goal.type === 'workout' ? '🏋️‍♂️' :
-                      goal.type === 'water' ? '💧' :
-                      goal.type === 'sleep' ? '😴' :
-                      goal.type === 'nutrition' ? '🥗' :
-                      goal.type === 'steps' ? '👣' :
-                      goal.type === 'weight' ? '⚖️' : '🎯'
-                    }</span>
+                    <span className="text-xl">
+                      {goal.type === 'meditation'
+                        ? '🧘‍♂️'
+                        : goal.type === 'workout'
+                          ? '🏋️‍♂️'
+                          : goal.type === 'water'
+                            ? '💧'
+                            : goal.type === 'sleep'
+                              ? '😴'
+                              : goal.type === 'nutrition'
+                                ? '🥗'
+                                : goal.type === 'steps'
+                                  ? '👣'
+                                  : goal.type === 'weight'
+                                    ? '⚖️'
+                                    : '🎯'}
+                    </span>
                     <div>
                       <div className="font-medium">{goal.title}</div>
                       <div className="text-xs text-muted-foreground">
@@ -147,12 +152,18 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
                             className="w-8 h-8 rounded-full flex items-center justify-center border border-primary hover:bg-primary/10 transition-colors"
                             onClick={() => {
                               setActiveGoalId(goal.id);
-                              setLogValue(value || (
-                                goal.type === 'water' ? 1 : 
-                                goal.type === 'workout' ? 30 : 
-                                goal.type === 'meditation' ? 10 : 
-                                goal.type === 'sleep' ? 8 : 0
-                              ));
+                              setLogValue(
+                                value ||
+                                  (goal.type === 'water'
+                                    ? 1
+                                    : goal.type === 'workout'
+                                      ? 30
+                                      : goal.type === 'meditation'
+                                        ? 10
+                                        : goal.type === 'sleep'
+                                          ? 8
+                                          : 0)
+                              );
                             }}
                           >
                             {value > 0 ? value : <Icons.PlusIcon className="h-4 w-4" />}
@@ -160,9 +171,7 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
                         ) : (
                           <div
                             className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                              value > 0 
-                                ? getColorIntensity(value, goal.id)
-                                : 'bg-muted'
+                              value > 0 ? getColorIntensity(value, goal.id) : 'bg-muted'
                             }`}
                           >
                             {value > 0 && <span className="text-xs">{value}</span>}
@@ -175,9 +184,7 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
                 <td className="py-3 px-3 text-center">
                   <span className="font-medium inline-flex items-center justify-center gap-1">
                     {calculateStreak(goal.id)}
-                    {calculateStreak(goal.id) > 0 && 
-                      <span className="text-orange-500">🔥</span>
-                    }
+                    {calculateStreak(goal.id) > 0 && <span className="text-orange-500">🔥</span>}
                   </span>
                 </td>
               </tr>
@@ -202,7 +209,7 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
                   id="logValue"
                   className="form-input w-full"
                   value={logValue}
-                  onChange={(e) => setLogValue(Number(e.target.value))}
+                  onChange={e => setLogValue(Number(e.target.value))}
                   min={0}
                   step={goals.find(g => g.id === activeGoalId)?.type === 'sleep' ? 0.5 : 1}
                   required
@@ -226,4 +233,4 @@ export function HabitTracker({ goals, habitLogs, onLogHabit }: HabitTrackerProps
       )}
     </div>
   );
-} 
+}

@@ -81,11 +81,7 @@ export const AuthNavigation: React.FC<AuthNavigationProps> = ({
       {/* Notifications */}
       <Sheet open={isNotificationsOpen} onOpenChange={setIsNotificationsOpen}>
         <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative"
-          >
+          <Button variant="ghost" size="icon" className="relative">
             <Bell className="h-4 w-4" />
             {user?.unreadNotifications ? (
               <Badge
@@ -108,10 +104,7 @@ export const AuthNavigation: React.FC<AuthNavigationProps> = ({
       {/* User Menu */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="relative h-8 w-8 rounded-full"
-          >
+          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
             {user?.avatar ? (
               <img
                 src={user.avatar}
@@ -126,13 +119,9 @@ export const AuthNavigation: React.FC<AuthNavigationProps> = ({
         <DropdownMenuContent align="end" className="w-56">
           <div className="flex items-center justify-start gap-2 p-2">
             <div className="flex flex-col space-y-1 leading-none">
-              {user?.name && (
-                <p className="font-medium">{user.name}</p>
-              )}
+              {user?.name && <p className="font-medium">{user.name}</p>}
               {user?.email && (
-                <p className="w-[200px] truncate text-sm text-muted-foreground">
-                  {user.email}
-                </p>
+                <p className="w-[200px] truncate text-sm text-muted-foreground">{user.email}</p>
               )}
             </div>
           </div>
@@ -173,4 +162,4 @@ export const AuthNavigation: React.FC<AuthNavigationProps> = ({
       </DropdownMenu>
     </div>
   );
-}; 
+};

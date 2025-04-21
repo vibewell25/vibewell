@@ -23,7 +23,7 @@ export default function ReviewCard({
   rating,
   createdAt,
   customer,
-  compact = false
+  compact = false,
 }: ReviewCardProps) {
   // Function to render stars based on rating
   const renderStars = (rating: number) => {
@@ -31,21 +31,15 @@ export default function ReviewCard({
     for (let i = 1; i <= 5; i++) {
       if (i <= rating) {
         stars.push(
-          <Star 
-            key={i} 
-            className="h-5 w-5 text-yellow-400 fill-yellow-400" 
-            aria-hidden="true" 
+          <Star
+            key={i}
+            className="h-5 w-5 text-yellow-400 fill-yellow-400"
+            aria-hidden="true"
             fill="currentColor"
           />
         );
       } else {
-        stars.push(
-          <Star
-            key={i} 
-            className="h-5 w-5 text-yellow-400" 
-            aria-hidden="true"
-          />
-        );
+        stars.push(<Star key={i} className="h-5 w-5 text-yellow-400" aria-hidden="true" />);
       }
     }
     return stars;
@@ -80,16 +74,14 @@ export default function ReviewCard({
           </div>
           <div className="flex mt-1 mb-2">{renderStars(rating)}</div>
           <h4 className="font-semibold text-lg text-gray-800 mb-1">{title}</h4>
-          {!compact && (
-            <p className="text-gray-600">{text}</p>
-          )}
+          {!compact && <p className="text-gray-600">{text}</p>}
           {compact && text.length > 120 ? (
             <p className="text-gray-600">{text.substring(0, 120)}...</p>
-          ) : compact && (
-            <p className="text-gray-600">{text}</p>
+          ) : (
+            compact && <p className="text-gray-600">{text}</p>
           )}
         </div>
       </div>
     </div>
   );
-} 
+}

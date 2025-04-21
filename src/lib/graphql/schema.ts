@@ -1,6 +1,6 @@
 /**
  * GraphQL Schema Definition
- * 
+ *
  * This file defines the schema for the VibeWell GraphQL API.
  * The schema includes types for users, providers, services, bookings, and reviews.
  */
@@ -295,4 +295,4 @@ export const typeDefs = gql`
   }
 `;
 
-export default typeDefs; 
+export default typeDefs;

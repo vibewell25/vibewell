@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function MFASetupPage() {
   const supabase = createServerComponentClient({ cookies });
-  
+
   // Check if user is authenticated
   const {
     data: { session },
@@ -43,4 +43,4 @@ export default async function MFASetupPage() {
       </div>
     </div>
   );
-} 
+}

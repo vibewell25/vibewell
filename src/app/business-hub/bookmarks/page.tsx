@@ -3,8 +3,14 @@ import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
 import Link from 'next/link';
-import { getBookmarks, Bookmark, getRecentlyViewed, RecentView, removeBookmark, addBookmark } from '@/lib/bookmarks';
-;
+import {
+  getBookmarks,
+  Bookmark,
+  getRecentlyViewed,
+  RecentView,
+  removeBookmark,
+  addBookmark,
+} from '@/lib/bookmarks';
 import { formatDistanceToNow } from 'date-fns';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -59,7 +65,8 @@ export default function BookmarksPage() {
   };
   // Filter bookmarks based on search query, type, and category
   const filteredBookmarks = bookmarks.filter(bookmark => {
-    const matchesSearch = searchQuery === '' || 
+    const matchesSearch =
+      searchQuery === '' ||
       bookmark.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       bookmark.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       bookmark.category.toLowerCase().includes(searchQuery.toLowerCase());
@@ -80,10 +87,12 @@ export default function BookmarksPage() {
   };
   // Filter recently viewed based on search query
   const filteredRecentlyViewed = recentlyViewed.filter(item => {
-    return searchQuery === '' || 
+    return (
+      searchQuery === '' ||
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchQuery.toLowerCase());
+      item.category.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   });
   // Export bookmarks as JSON
   const exportBookmarks = () => {
@@ -106,7 +115,9 @@ export default function BookmarksPage() {
     <Layout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
-        <p className="text-gray-600 mb-6">Tools, resources, and education to grow your wellness business</p>
+        <p className="text-gray-600 mb-6">
+          Tools, resources, and education to grow your wellness business
+        </p>
         {/* Main Navigation */}
         <BusinessHubNavigation />
         <div className="max-w-5xl mx-auto">
@@ -117,8 +128,8 @@ export default function BookmarksPage() {
               <div className="flex border-b border-gray-200 mb-6">
                 <button
                   className={`py-2 px-4 font-medium ${
-                    activeTab === 'bookmarks' 
-                      ? 'text-blue-600 border-b-2 border-blue-600' 
+                    activeTab === 'bookmarks'
+                      ? 'text-blue-600 border-b-2 border-blue-600'
                       : 'text-gray-500 hover:text-gray-700'
                   }`}
                   onClick={() => setActiveTab('bookmarks')}
@@ -130,8 +141,8 @@ export default function BookmarksPage() {
                 </button>
                 <button
                   className={`py-2 px-4 font-medium ${
-                    activeTab === 'recent' 
-                      ? 'text-blue-600 border-b-2 border-blue-600' 
+                    activeTab === 'recent'
+                      ? 'text-blue-600 border-b-2 border-blue-600'
                       : 'text-gray-500 hover:text-gray-700'
                   }`}
                   onClick={() => setActiveTab('recent')}
@@ -147,12 +158,14 @@ export default function BookmarksPage() {
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="relative flex-grow">
                     <Icons.MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <Input 
-                      type="text" 
-                      placeholder="Search your bookmarks..." 
+                    <Input
+                      type="text"
+                      placeholder="Search your bookmarks..."
                       className="pl-10"
                       value={searchQuery}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setSearchQuery(e.target.value)
+                      }
                     />
                   </div>
                   {activeTab === 'bookmarks' && (
@@ -161,7 +174,7 @@ export default function BookmarksPage() {
                         <select
                           className="appearance-none bg-white border border-gray-300 rounded-md py-2 px-4 pr-8 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                           value={selectedType}
-                          onChange={(e) => setSelectedType(e.target.value)}
+                          onChange={e => setSelectedType(e.target.value)}
                         >
                           <option value="all">All Types</option>
                           <option value="resource">Resources</option>
@@ -174,16 +187,22 @@ export default function BookmarksPage() {
                         <select
                           className="appearance-none bg-white border border-gray-300 rounded-md py-2 px-4 pr-8 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                           value={selectedCategory}
-                          onChange={(e) => setSelectedCategory(e.target.value)}
+                          onChange={e => setSelectedCategory(e.target.value)}
                         >
                           <option value="all">All Categories</option>
                           {categories.map(category => (
-                            <option key={category} value={category}>{category}</option>
+                            <option key={category} value={category}>
+                              {category}
+                            </option>
                           ))}
                         </select>
                         <Icons.TagIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
                       </div>
-                      <Button variant="outline" onClick={exportBookmarks} className="flex items-center">
+                      <Button
+                        variant="outline"
+                        onClick={exportBookmarks}
+                        className="flex items-center"
+                      >
                         <Icons.ArrowDownTrayIcon className="h-4 w-4 mr-1" />
                         Export
                       </Button>
@@ -201,7 +220,7 @@ export default function BookmarksPage() {
                       <p className="text-gray-500 mb-6">
                         Bookmarks help you save resources and tools for quick access later.
                       </p>
-                      <Link 
+                      <Link
                         href="/business-hub"
                         className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
                       >
@@ -211,11 +230,11 @@ export default function BookmarksPage() {
                   ) : filteredBookmarks.length === 0 ? (
                     <div className="text-center py-12">
                       <Icons.MagnifyingGlassIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">No matching bookmarks found</h3>
-                      <p className="text-gray-500 mb-6">
-                        Try adjusting your search or filters.
-                      </p>
-                      <Button 
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">
+                        No matching bookmarks found
+                      </h3>
+                      <p className="text-gray-500 mb-6">Try adjusting your search or filters.</p>
+                      <Button
                         variant="outline"
                         onClick={() => {
                           setSearchQuery('');
@@ -239,8 +258,8 @@ export default function BookmarksPage() {
                               </span>
                             </h3>
                             <div className="space-y-4">
-                              {categoryBookmarks.map((bookmark) => (
-                                <BookmarkItem 
+                              {categoryBookmarks.map(bookmark => (
+                                <BookmarkItem
                                   key={`${bookmark.type}-${bookmark.id}`}
                                   bookmark={bookmark}
                                   formatDate={formatDate}
@@ -253,8 +272,8 @@ export default function BookmarksPage() {
                         ))
                       ) : (
                         <div className="space-y-4">
-                          {filteredBookmarks.map((bookmark) => (
-                            <BookmarkItem 
+                          {filteredBookmarks.map(bookmark => (
+                            <BookmarkItem
                               key={`${bookmark.type}-${bookmark.id}`}
                               bookmark={bookmark}
                               formatDate={formatDate}
@@ -274,11 +293,13 @@ export default function BookmarksPage() {
                   {recentlyViewed.length === 0 ? (
                     <div className="text-center py-12">
                       <Icons.ClockIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">No recently viewed items</h3>
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">
+                        No recently viewed items
+                      </h3>
                       <p className="text-gray-500 mb-6">
                         As you explore resources and tools, they'll appear here for quick access.
                       </p>
-                      <Link 
+                      <Link
                         href="/business-hub"
                         className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
                       >
@@ -288,29 +309,24 @@ export default function BookmarksPage() {
                   ) : filteredRecentlyViewed.length === 0 ? (
                     <div className="text-center py-12">
                       <Icons.MagnifyingGlassIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">No matching items found</h3>
-                      <p className="text-gray-500 mb-6">
-                        Try adjusting your search.
-                      </p>
-                      <Button 
-                        variant="outline"
-                        onClick={() => setSearchQuery('')}
-                      >
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">
+                        No matching items found
+                      </h3>
+                      <p className="text-gray-500 mb-6">Try adjusting your search.</p>
+                      <Button variant="outline" onClick={() => setSearchQuery('')}>
                         Clear Search
                       </Button>
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      {filteredRecentlyViewed.map((item) => (
-                        <div 
+                      {filteredRecentlyViewed.map(item => (
+                        <div
                           key={`${item.type}-${item.id}`}
                           className="bg-gray-50 rounded-lg p-4 flex items-start"
                         >
-                          <div className="mr-3 mt-1">
-                            {renderTypeIcon(item.type)}
-                          </div>
+                          <div className="mr-3 mt-1">{renderTypeIcon(item.type)}</div>
                           <div className="flex-grow">
-                            <Link 
+                            <Link
                               href={item.url}
                               className="text-lg font-medium text-blue-600 hover:text-blue-800"
                             >
@@ -321,7 +337,10 @@ export default function BookmarksPage() {
                               <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full mr-2">
                                 {item.category}
                               </span>
-                              <span>Viewed {formatDate(item.lastViewed)} • {item.viewCount} {item.viewCount === 1 ? 'time' : 'times'}</span>
+                              <span>
+                                Viewed {formatDate(item.lastViewed)} • {item.viewCount}{' '}
+                                {item.viewCount === 1 ? 'time' : 'times'}
+                              </span>
                             </div>
                           </div>
                           {!bookmarks.some(b => b.id === item.id && b.type === item.type) && (
@@ -337,7 +356,7 @@ export default function BookmarksPage() {
                                   title: item.title,
                                   description: item.description,
                                   url: item.url,
-                                  category: item.category
+                                  category: item.category,
                                 };
                                 const newBookmark = addBookmark(bookmark);
                                 setBookmarks(prev => [...prev, newBookmark]);
@@ -360,27 +379,22 @@ export default function BookmarksPage() {
   );
 }
 // BookmarkItem Component for cleaner rendering
-function BookmarkItem({ 
-  bookmark, 
-  formatDate, 
-  renderTypeIcon, 
-  onRemove 
-}: { 
-  bookmark: Bookmark; 
+function BookmarkItem({
+  bookmark,
+  formatDate,
+  renderTypeIcon,
+  onRemove,
+}: {
+  bookmark: Bookmark;
   formatDate: (date: string) => string;
   renderTypeIcon: (type: Bookmark['type']) => React.ReactNode;
   onRemove: (id: string, type: Bookmark['type']) => void;
 }) {
   return (
     <div className="bg-gray-50 rounded-lg p-4 flex items-start">
-      <div className="mr-3 mt-1">
-        {renderTypeIcon(bookmark.type)}
-      </div>
+      <div className="mr-3 mt-1">{renderTypeIcon(bookmark.type)}</div>
       <div className="flex-grow">
-        <Link 
-          href={bookmark.url}
-          className="text-lg font-medium text-blue-600 hover:text-blue-800"
-        >
+        <Link href={bookmark.url} className="text-lg font-medium text-blue-600 hover:text-blue-800">
           {bookmark.title}
         </Link>
         <p className="text-sm text-gray-600 mb-1">{bookmark.description}</p>
@@ -400,4 +414,4 @@ function BookmarkItem({
       </button>
     </div>
   );
-} 
+}

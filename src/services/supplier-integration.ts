@@ -11,7 +11,7 @@ const supplierConfigSchema = z.object({
   apiEndpoint: z.string().url(),
   webhookUrl: z.string().url().optional(),
   supplierType: z.enum(['DIRECT', 'MARKETPLACE', 'DISTRIBUTOR']),
-  integrationSettings: z.record(z.any()).optional()
+  integrationSettings: z.record(z.any()).optional(),
 });
 
 const orderRequestSchema = z.object({
@@ -19,7 +19,7 @@ const orderRequestSchema = z.object({
   quantity: z.number().positive(),
   requestedDeliveryDate: z.date().optional(),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH']).optional(),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 interface SupplierConfig {
@@ -66,12 +66,12 @@ export class SupplierIntegrationService {
         where: {
           isActive: true,
           integrationConfig: {
-            not: null
-          }
+            not: null,
+          },
         },
         include: {
-          integrationConfig: true
-        }
+          integrationConfig: true,
+        },
       });
 
       suppliers.forEach(supplier => {
@@ -82,10 +82,12 @@ export class SupplierIntegrationService {
       });
 
       logger.info('Supplier configurations initialized', 'SupplierIntegration', {
-        supplierCount: suppliers.length
+        supplierCount: suppliers.length,
       });
     } catch (error) {
-      logger.error('Failed to initialize supplier configurations', 'SupplierIntegration', { error });
+      logger.error('Failed to initialize supplier configurations', 'SupplierIntegration', {
+        error,
+      });
       throw error;
     }
   }
@@ -93,10 +95,7 @@ export class SupplierIntegrationService {
   /**
    * Place an order with a supplier through their API
    */
-  async placeOrder(
-    supplierId: string,
-    orderRequest: OrderRequest
-  ): Promise<OrderResponse> {
+  async placeOrder(supplierId: string, orderRequest: OrderRequest): Promise<OrderResponse> {
     try {
       // Validate request
       const validatedRequest = orderRequestSchema.parse(orderRequest);
@@ -106,16 +105,12 @@ export class SupplierIntegrationService {
       const payload = this.prepareOrderPayload(supplierConfig.supplierType, validatedRequest);
 
       // Send order to supplier API
-      const response = await axios.post(
-        `${supplierConfig.apiEndpoint}/orders`,
-        payload,
-        {
-          headers: {
-            'Authorization': `Bearer ${supplierConfig.apiKey}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+      const response = await axios.post(`${supplierConfig.apiEndpoint}/orders`, payload, {
+        headers: {
+          Authorization: `Bearer ${supplierConfig.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
       // Store order in database
       await this.storeOrder(supplierId, validatedRequest, response.data);
@@ -124,7 +119,7 @@ export class SupplierIntegrationService {
     } catch (error) {
       logger.error('Failed to place order with supplier', 'SupplierIntegration', {
         supplierId,
-        error
+        error,
       });
       throw error;
     }
@@ -137,14 +132,11 @@ export class SupplierIntegrationService {
     try {
       const supplierConfig = this.getSupplierConfig(supplierId);
 
-      const response = await axios.get(
-        `${supplierConfig.apiEndpoint}/orders/${orderId}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${supplierConfig.apiKey}`
-          }
-        }
-      );
+      const response = await axios.get(`${supplierConfig.apiEndpoint}/orders/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${supplierConfig.apiKey}`,
+        },
+      });
 
       await this.updateOrderStatus(orderId, response.data);
 
@@ -153,7 +145,7 @@ export class SupplierIntegrationService {
       logger.error('Failed to check order status', 'SupplierIntegration', {
         supplierId,
         orderId,
-        error
+        error,
       });
       throw error;
     }
@@ -170,12 +162,12 @@ export class SupplierIntegrationService {
         `${supplierConfig.apiEndpoint}/webhooks`,
         {
           url: webhookUrl,
-          events: ['order.status_update', 'order.shipped', 'order.delivered']
+          events: ['order.status_update', 'order.shipped', 'order.delivered'],
         },
         {
           headers: {
-            'Authorization': `Bearer ${supplierConfig.apiKey}`
-          }
+            Authorization: `Bearer ${supplierConfig.apiKey}`,
+          },
         }
       );
 
@@ -185,24 +177,24 @@ export class SupplierIntegrationService {
         data: {
           integrationConfig: {
             ...supplierConfig,
-            webhookUrl
-          }
-        }
+            webhookUrl,
+          },
+        },
       });
 
       this.supplierConfigs.set(supplierId, {
         ...supplierConfig,
-        webhookUrl
+        webhookUrl,
       });
 
       logger.info('Webhook configured successfully', 'SupplierIntegration', {
         supplierId,
-        webhookUrl
+        webhookUrl,
       });
     } catch (error) {
       logger.error('Failed to configure webhook', 'SupplierIntegration', {
         supplierId,
-        error
+        error,
       });
       throw error;
     }
@@ -226,14 +218,14 @@ export class SupplierIntegrationService {
         default:
           logger.warn('Unhandled webhook event type', 'SupplierIntegration', {
             supplierId,
-            eventType: event.type
+            eventType: event.type,
           });
       }
     } catch (error) {
       logger.error('Failed to handle webhook event', 'SupplierIntegration', {
         supplierId,
         event,
-        error
+        error,
       });
       throw error;
     }
@@ -259,7 +251,7 @@ export class SupplierIntegrationService {
           quantity: orderRequest.quantity,
           delivery_date: orderRequest.requestedDeliveryDate?.toISOString(),
           priority: orderRequest.priority,
-          notes: orderRequest.notes
+          notes: orderRequest.notes,
         };
       case 'MARKETPLACE':
         return {
@@ -267,7 +259,7 @@ export class SupplierIntegrationService {
           qty: orderRequest.quantity,
           requested_delivery: orderRequest.requestedDeliveryDate?.toISOString(),
           urgency: orderRequest.priority,
-          additional_info: orderRequest.notes
+          additional_info: orderRequest.notes,
         };
       case 'DISTRIBUTOR':
         return {
@@ -275,7 +267,7 @@ export class SupplierIntegrationService {
           orderQty: orderRequest.quantity,
           targetDelivery: orderRequest.requestedDeliveryDate?.toISOString(),
           orderPriority: orderRequest.priority,
-          comments: orderRequest.notes
+          comments: orderRequest.notes,
         };
     }
   }
@@ -298,8 +290,8 @@ export class SupplierIntegrationService {
         estimatedDeliveryDate: response.estimatedDeliveryDate,
         unitPrice: response.pricing.unitPrice,
         totalPrice: response.pricing.totalPrice,
-        currency: response.pricing.currency
-      }
+        currency: response.pricing.currency,
+      },
     });
   }
 
@@ -311,9 +303,9 @@ export class SupplierIntegrationService {
       pricing: {
         unitPrice: response.pricing.unitPrice || response.unit_price,
         totalPrice: response.pricing.totalPrice || response.total_price,
-        currency: response.pricing.currency
+        currency: response.pricing.currency,
       },
-      message: response.message || response.notes
+      message: response.message || response.notes,
     };
   }
 
@@ -325,17 +317,14 @@ export class SupplierIntegrationService {
     return 'PENDING';
   }
 
-  private async updateOrderStatus(
-    orderId: string,
-    statusData: Record<string, any>
-  ): Promise<void> {
+  private async updateOrderStatus(orderId: string, statusData: Record<string, any>): Promise<void> {
     await prisma.supplierOrder.update({
       where: { externalOrderId: orderId },
       data: {
         status: this.normalizeOrderStatus(statusData.status),
         estimatedDeliveryDate: statusData.estimatedDeliveryDate,
-        lastStatusUpdate: new Date()
-      }
+        lastStatusUpdate: new Date(),
+      },
     });
   }
 
@@ -350,8 +339,8 @@ export class SupplierIntegrationService {
         status: 'SHIPPED',
         shippedAt: new Date(),
         trackingNumber: data.trackingNumber,
-        carrier: data.carrier
-      }
+        carrier: data.carrier,
+      },
     });
   }
 
@@ -360,13 +349,13 @@ export class SupplierIntegrationService {
       where: { externalOrderId: data.orderId },
       data: {
         status: 'DELIVERED',
-        deliveredAt: new Date()
-      }
+        deliveredAt: new Date(),
+      },
     });
 
     // Update inventory
     const order = await prisma.supplierOrder.findUnique({
-      where: { externalOrderId: data.orderId }
+      where: { externalOrderId: data.orderId },
     });
 
     if (order) {
@@ -374,10 +363,10 @@ export class SupplierIntegrationService {
         where: { id: order.productId },
         data: {
           stockQuantity: {
-            increment: order.quantity
-          }
-        }
+            increment: order.quantity,
+          },
+        },
       });
     }
   }
-} 
+}

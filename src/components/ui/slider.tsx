@@ -24,7 +24,7 @@ export function Slider({
   // Use controlled or uncontrolled state
   const [internalValues, setInternalValues] = useState<number[]>(defaultValue);
   const currentValues = value !== undefined ? value : internalValues;
-  
+
   const trackRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef<boolean[]>([false, false]);
   const startPositions = useRef<number[]>([0, 0]);
@@ -35,9 +35,9 @@ export function Slider({
     if (newValues[0] > newValues[1]) {
       return;
     }
-    
+
     const clampedValues = newValues.map(v => Math.max(min, Math.min(max, v)));
-    
+
     setInternalValues(clampedValues);
     onValueChange?.(clampedValues);
   };
@@ -49,7 +49,7 @@ export function Slider({
 
   // Convert percentage to value
   const percentToValue = (percent: number) => {
-    const rawValue = ((percent / 100) * (max - min)) + min;
+    const rawValue = (percent / 100) * (max - min) + min;
     const steppedValue = Math.round(rawValue / step) * step;
     return steppedValue;
   };
@@ -65,21 +65,24 @@ export function Slider({
 
   const handlePointerMove = (e: PointerEvent) => {
     if (!trackRef.current || (!isDragging.current[0] && !isDragging.current[1])) return;
-    
+
     const trackRect = trackRef.current.getBoundingClientRect();
     const trackWidth = trackRect.width;
-    
+
     // Handle thumb movement for each thumb
     let newValues = [...currentValues];
-    
+
     for (let i = 0; i < 2; i++) {
       if (isDragging.current[i]) {
         const pointerPos = e.clientX;
-        const pointerPercent = Math.max(0, Math.min(100, ((pointerPos - trackRect.left) / trackWidth) * 100));
+        const pointerPercent = Math.max(
+          0,
+          Math.min(100, ((pointerPos - trackRect.left) / trackWidth) * 100)
+        );
         newValues[i] = percentToValue(pointerPercent);
       }
     }
-    
+
     // Ensure values are in ascending order
     if (newValues[0] > newValues[1]) {
       if (isDragging.current[0]) {
@@ -88,7 +91,7 @@ export function Slider({
         newValues[1] = newValues[0];
       }
     }
-    
+
     handleValueChange(newValues);
   };
 
@@ -107,14 +110,8 @@ export function Slider({
   }, []);
 
   return (
-    <div 
-      className={cn("relative w-full touch-none py-2", className)} 
-      {...props}
-    >
-      <div
-        ref={trackRef}
-        className="relative h-2 w-full rounded-full bg-gray-200"
-      >
+    <div className={cn('relative w-full touch-none py-2', className)} {...props}>
+      <div ref={trackRef} className="relative h-2 w-full rounded-full bg-gray-200">
         {/* Track highlight */}
         <div
           className="absolute h-full rounded-full bg-indigo-500"
@@ -123,14 +120,14 @@ export function Slider({
             width: `${valueToPercent(currentValues[1]) - valueToPercent(currentValues[0])}%`,
           }}
         />
-        
+
         {/* Thumbs */}
         {currentValues.map((val, index) => (
           <div
             key={index}
             className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white border-2 border-indigo-500 shadow cursor-pointer focus:outline-none"
             style={{ left: `${valueToPercent(val)}%` }}
-            onPointerDown={(e) => handlePointerDown(e, index)}
+            onPointerDown={e => handlePointerDown(e, index)}
             role="slider"
             aria-valuemin={min}
             aria-valuemax={max}
@@ -141,4 +138,4 @@ export function Slider({
       </div>
     </div>
   );
-} 
+}

@@ -4,11 +4,12 @@ import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { EventCategory, EventLocation } from '@/types/events';
 import { createEvent } from '@/lib/api/events';
-import { useAuth } from '@/lib/auth';
-;
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Button } from '@/components/ui/button';
 import { format, addHours } from 'date-fns';
 import { Icons } from '@/components/icons';
+import { validateForm, ValidationResult } from '@/utils/form-validation';
+
 export default function CreateEventPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
@@ -29,14 +30,14 @@ export default function CreateEventPage() {
     zipCode: '',
     country: 'USA',
     virtual: false,
-    meetingUrl: ''
+    meetingUrl: '',
   });
   const [capacity, setCapacity] = useState<string>('');
   const [imageUrl, setImageUrl] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   // Redirect if not logged in
   if (!authLoading && !user) {
     router.push('/auth/login?returnUrl=' + encodeURIComponent('/events/create'));
@@ -44,16 +45,16 @@ export default function CreateEventPage() {
   }
   // Available categories
   const categories: EventCategory[] = [
-    'Wellness', 
-    'Fitness', 
-    'Meditation', 
-    'Nutrition', 
-    'Yoga', 
+    'Wellness',
+    'Fitness',
+    'Meditation',
+    'Nutrition',
+    'Yoga',
     'Mental Health',
     'Community',
     'Workshop',
     'Webinar',
-    'Other'
+    'Other',
   ];
   // Add a tag
   const addTag = () => {
@@ -70,7 +71,7 @@ export default function CreateEventPage() {
   const updateLocation = (field: string, value: string) => {
     setLocation({
       ...location,
-      [field]: value
+      [field]: value,
     });
   };
   // Toggle virtual event
@@ -80,43 +81,15 @@ export default function CreateEventPage() {
       ...location,
       virtual: !isVirtual,
       // Clear physical address if switching to virtual
-      ...(isVirtual ? {} : { 
-        address: '', 
-        city: '', 
-        state: '', 
-        zipCode: '' 
-      })
+      ...(isVirtual
+        ? {}
+        : {
+            address: '',
+            city: '',
+            state: '',
+            zipCode: '',
+          }),
     });
-  };
-  // Validate form
-  const validateForm = (): boolean => {
-    const newErrors: {[key: string]: string} = {};
-    // Required fields
-    if (!title.trim()) newErrors.title = 'Title is required';
-    if (!description.trim()) newErrors.description = 'Description is required';
-    if (!startDate) newErrors.startDate = 'Start date is required';
-    if (!startTime) newErrors.startTime = 'Start time is required';
-    if (!endDate) newErrors.endDate = 'End date is required';
-    if (!endTime) newErrors.endTime = 'End time is required';
-    // Location validation
-    if (isVirtual) {
-      if (!location.meetingUrl) newErrors.meetingUrl = 'Meeting URL is required for virtual events';
-    } else {
-      if (!location.address) newErrors.address = 'Address is required for in-person events';
-      if (!location.city) newErrors.city = 'City is required for in-person events';
-      if (!location.state) newErrors.state = 'State is required for in-person events';
-      if (!location.zipCode) newErrors.zipCode = 'Zip code is required for in-person events';
-    }
-    // Date and time validation
-    if (startDate && endDate && startTime && endTime) {
-      const startDateTime = new Date(`${startDate}T${startTime}`);
-      const endDateTime = new Date(`${endDate}T${endTime}`);
-      if (endDateTime <= startDateTime) {
-        newErrors.endDate = 'End date/time must be after start date/time';
-      }
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
   };
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -125,9 +98,42 @@ export default function CreateEventPage() {
       router.push('/auth/login?returnUrl=' + encodeURIComponent('/events/create'));
       return;
     }
-    if (!validateForm()) {
+    
+    // Create form data object
+    const formData = {
+      title,
+      description,
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      ...(isVirtual ? { meetingUrl: location.meetingUrl } : {
+        address: location.address,
+        city: location.city,
+        state: location.state,
+        zipCode: location.zipCode,
+      })
+    };
+    
+    // Validate using the standardized utility
+    const validationResult = validateForm(formData);
+    
+    // Add custom validations for dates
+    if (validationResult.isValid && startDate && endDate && startTime && endTime) {
+      const startDateTime = new Date(`${startDate}T${startTime}`);
+      const endDateTime = new Date(`${endDate}T${endTime}`);
+      if (endDateTime <= startDateTime) {
+        validationResult.errors.endDate = 'End date/time must be after start date/time';
+        validationResult.isValid = false;
+      }
+    }
+    
+    setErrors(validationResult.errors);
+    
+    if (!validationResult.isValid) {
       return;
     }
+
     try {
       setSubmitting(true);
       // Prepare dates
@@ -143,18 +149,18 @@ export default function CreateEventPage() {
         endDate: endDateTime.toISOString(),
         location: {
           ...location,
-          virtual: isVirtual
+          virtual: isVirtual,
         },
         organizer: {
           id: user.id,
           name: user.user_metadata?.full_name || 'Anonymous',
           avatar: user.user_metadata?.avatar_url,
-          isVerified: false
+          isVerified: false,
         },
         capacity: capacity ? parseInt(capacity) : undefined,
         imageUrl: imageUrl || undefined,
         tags: tags.length > 0 ? tags : undefined,
-        isFeatured: false
+        isFeatured: false,
       };
       // Submit event
       const createdEvent = await createEvent(eventData);
@@ -163,7 +169,7 @@ export default function CreateEventPage() {
     } catch (err) {
       console.error('Error creating event:', err);
       setErrors({
-        form: 'Failed to create event. Please try again.'
+        form: 'Failed to create event. Please try again.',
       });
     } finally {
       setSubmitting(false);
@@ -188,7 +194,7 @@ export default function CreateEventPage() {
     <Layout>
       <div className="container-app py-8">
         {/* Back button */}
-        <button 
+        <button
           onClick={() => router.push('/events')}
           className="flex items-center text-gray-600 hover:text-gray-900 mb-6"
         >
@@ -212,7 +218,7 @@ export default function CreateEventPage() {
                     type="text"
                     id="title"
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={e => setTitle(e.target.value)}
                     className={`w-full p-2 border rounded-md ${errors.title ? 'border-red-500' : 'border-gray-300'}`}
                     placeholder="Enter a descriptive title for your event"
                   />
@@ -220,64 +226,84 @@ export default function CreateEventPage() {
                 </div>
                 {/* Short Description */}
                 <div>
-                  <label htmlFor="shortDescription" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="shortDescription"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Short Description
                   </label>
                   <input
                     type="text"
                     id="shortDescription"
                     value={shortDescription}
-                    onChange={(e) => setShortDescription(e.target.value)}
+                    onChange={e => setShortDescription(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Brief description (for listings and previews)"
                   />
-                  <p className="text-gray-500 text-xs mt-1">Optional. A short summary for event listings (max 160 characters)</p>
+                  <p className="text-gray-500 text-xs mt-1">
+                    Optional. A short summary for event listings (max 160 characters)
+                  </p>
                 </div>
                 {/* Description */}
                 <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="description"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Description <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     id="description"
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={e => setDescription(e.target.value)}
                     className={`w-full p-2 border rounded-md h-40 ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
                     placeholder="Describe your event in detail. What will participants experience or learn?"
                   />
-                  {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
+                  {errors.description && (
+                    <p className="text-red-500 text-xs mt-1">{errors.description}</p>
+                  )}
                   <p className="text-gray-500 text-xs mt-1">You can use HTML for formatting</p>
                 </div>
                 {/* Category */}
                 <div>
-                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="category"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Category <span className="text-red-500">*</span>
                   </label>
                   <select
                     id="category"
                     value={category}
-                    onChange={(e) => setCategory(e.target.value as EventCategory)}
+                    onChange={e => setCategory(e.target.value as EventCategory)}
                     className="w-full p-2 border border-gray-300 rounded-md"
                   >
-                    {categories.map((cat) => (
-                      <option key={cat} value={cat}>{cat}</option>
+                    {categories.map(cat => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
                     ))}
                   </select>
                 </div>
                 {/* Image URL */}
                 <div>
-                  <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="imageUrl"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Image URL
                   </label>
                   <input
                     type="url"
                     id="imageUrl"
                     value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
+                    onChange={e => setImageUrl(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="https://example.com/image.jpg"
                   />
-                  <p className="text-gray-500 text-xs mt-1">Optional. URL to an image for your event</p>
+                  <p className="text-gray-500 text-xs mt-1">
+                    Optional. URL to an image for your event
+                  </p>
                 </div>
               </div>
             </div>
@@ -288,63 +314,83 @@ export default function CreateEventPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Start Date */}
                   <div>
-                    <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="startDate"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Start Date <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="date"
                       id="startDate"
                       value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
+                      onChange={e => setStartDate(e.target.value)}
                       className={`w-full p-2 border rounded-md ${errors.startDate ? 'border-red-500' : 'border-gray-300'}`}
                       onFocus={setDefaultDates}
                     />
-                    {errors.startDate && <p className="text-red-500 text-xs mt-1">{errors.startDate}</p>}
+                    {errors.startDate && (
+                      <p className="text-red-500 text-xs mt-1">{errors.startDate}</p>
+                    )}
                   </div>
                   {/* Start Time */}
                   <div>
-                    <label htmlFor="startTime" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="startTime"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Start Time <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="time"
                       id="startTime"
                       value={startTime}
-                      onChange={(e) => setStartTime(e.target.value)}
+                      onChange={e => setStartTime(e.target.value)}
                       className={`w-full p-2 border rounded-md ${errors.startTime ? 'border-red-500' : 'border-gray-300'}`}
                       onFocus={setDefaultDates}
                     />
-                    {errors.startTime && <p className="text-red-500 text-xs mt-1">{errors.startTime}</p>}
+                    {errors.startTime && (
+                      <p className="text-red-500 text-xs mt-1">{errors.startTime}</p>
+                    )}
                   </div>
                   {/* End Date */}
                   <div>
-                    <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="endDate"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       End Date <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="date"
                       id="endDate"
                       value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
+                      onChange={e => setEndDate(e.target.value)}
                       className={`w-full p-2 border rounded-md ${errors.endDate ? 'border-red-500' : 'border-gray-300'}`}
                       onFocus={setDefaultDates}
                     />
-                    {errors.endDate && <p className="text-red-500 text-xs mt-1">{errors.endDate}</p>}
+                    {errors.endDate && (
+                      <p className="text-red-500 text-xs mt-1">{errors.endDate}</p>
+                    )}
                   </div>
                   {/* End Time */}
                   <div>
-                    <label htmlFor="endTime" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="endTime"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       End Time <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="time"
                       id="endTime"
                       value={endTime}
-                      onChange={(e) => setEndTime(e.target.value)}
+                      onChange={e => setEndTime(e.target.value)}
                       className={`w-full p-2 border rounded-md ${errors.endTime ? 'border-red-500' : 'border-gray-300'}`}
                       onFocus={setDefaultDates}
                     />
-                    {errors.endTime && <p className="text-red-500 text-xs mt-1">{errors.endTime}</p>}
+                    {errors.endTime && (
+                      <p className="text-red-500 text-xs mt-1">{errors.endTime}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -368,48 +414,63 @@ export default function CreateEventPage() {
                 </div>
                 {isVirtual ? (
                   <div>
-                    <label htmlFor="meetingUrl" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="meetingUrl"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Meeting URL <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="url"
                       id="meetingUrl"
                       value={location.meetingUrl || ''}
-                      onChange={(e) => updateLocation('meetingUrl', e.target.value)}
+                      onChange={e => updateLocation('meetingUrl', e.target.value)}
                       className={`w-full p-2 border rounded-md ${errors.meetingUrl ? 'border-red-500' : 'border-gray-300'}`}
                       placeholder="https://zoom.us/j/example"
                     />
-                    {errors.meetingUrl && <p className="text-red-500 text-xs mt-1">{errors.meetingUrl}</p>}
-                    <p className="text-gray-500 text-xs mt-1">Zoom, Google Meet, Microsoft Teams, etc.</p>
+                    {errors.meetingUrl && (
+                      <p className="text-red-500 text-xs mt-1">{errors.meetingUrl}</p>
+                    )}
+                    <p className="text-gray-500 text-xs mt-1">
+                      Zoom, Google Meet, Microsoft Teams, etc.
+                    </p>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {/* Address */}
                     <div>
-                      <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+                      <label
+                        htmlFor="address"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
                         Address <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
                         id="address"
                         value={location.address || ''}
-                        onChange={(e) => updateLocation('address', e.target.value)}
+                        onChange={e => updateLocation('address', e.target.value)}
                         className={`w-full p-2 border rounded-md ${errors.address ? 'border-red-500' : 'border-gray-300'}`}
                         placeholder="123 Main St"
                       />
-                      {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
+                      {errors.address && (
+                        <p className="text-red-500 text-xs mt-1">{errors.address}</p>
+                      )}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* City */}
                       <div>
-                        <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label
+                          htmlFor="city"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
                           City <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
                           id="city"
                           value={location.city || ''}
-                          onChange={(e) => updateLocation('city', e.target.value)}
+                          onChange={e => updateLocation('city', e.target.value)}
                           className={`w-full p-2 border rounded-md ${errors.city ? 'border-red-500' : 'border-gray-300'}`}
                           placeholder="City"
                         />
@@ -417,45 +478,58 @@ export default function CreateEventPage() {
                       </div>
                       {/* State */}
                       <div>
-                        <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label
+                          htmlFor="state"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
                           State <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
                           id="state"
                           value={location.state || ''}
-                          onChange={(e) => updateLocation('state', e.target.value)}
+                          onChange={e => updateLocation('state', e.target.value)}
                           className={`w-full p-2 border rounded-md ${errors.state ? 'border-red-500' : 'border-gray-300'}`}
                           placeholder="State"
                         />
-                        {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
+                        {errors.state && (
+                          <p className="text-red-500 text-xs mt-1">{errors.state}</p>
+                        )}
                       </div>
                       {/* Zip Code */}
                       <div>
-                        <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label
+                          htmlFor="zipCode"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
                           Zip Code <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
                           id="zipCode"
                           value={location.zipCode || ''}
-                          onChange={(e) => updateLocation('zipCode', e.target.value)}
+                          onChange={e => updateLocation('zipCode', e.target.value)}
                           className={`w-full p-2 border rounded-md ${errors.zipCode ? 'border-red-500' : 'border-gray-300'}`}
                           placeholder="12345"
                         />
-                        {errors.zipCode && <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>}
+                        {errors.zipCode && (
+                          <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>
+                        )}
                       </div>
                     </div>
                     {/* Country */}
                     <div>
-                      <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+                      <label
+                        htmlFor="country"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
                         Country
                       </label>
                       <input
                         type="text"
                         id="country"
                         value={location.country || ''}
-                        onChange={(e) => updateLocation('country', e.target.value)}
+                        onChange={e => updateLocation('country', e.target.value)}
                         className="w-full p-2 border border-gray-300 rounded-md"
                         placeholder="Country"
                       />
@@ -470,7 +544,10 @@ export default function CreateEventPage() {
               <div className="space-y-4">
                 {/* Capacity */}
                 <div>
-                  <label htmlFor="capacity" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="capacity"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Capacity
                   </label>
                   <input
@@ -478,11 +555,13 @@ export default function CreateEventPage() {
                     id="capacity"
                     min="1"
                     value={capacity}
-                    onChange={(e) => setCapacity(e.target.value)}
+                    onChange={e => setCapacity(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Maximum number of participants"
                   />
-                  <p className="text-gray-500 text-xs mt-1">Optional. Leave blank for unlimited capacity</p>
+                  <p className="text-gray-500 text-xs mt-1">
+                    Optional. Leave blank for unlimited capacity
+                  </p>
                 </div>
                 {/* Tags */}
                 <div>
@@ -494,8 +573,8 @@ export default function CreateEventPage() {
                       type="text"
                       id="tags"
                       value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                      onChange={e => setTagInput(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addTag())}
                       className="w-full p-2 border border-gray-300 rounded-md rounded-r-none"
                       placeholder="Add relevant tags"
                     />
@@ -507,11 +586,16 @@ export default function CreateEventPage() {
                       Add
                     </button>
                   </div>
-                  <p className="text-gray-500 text-xs mt-1">Press Enter or click Add to add a tag</p>
+                  <p className="text-gray-500 text-xs mt-1">
+                    Press Enter or click Add to add a tag
+                  </p>
                   {tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-2">
                       {tags.map(tag => (
-                        <div key={tag} className="inline-flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm">
+                        <div
+                          key={tag}
+                          className="inline-flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm"
+                        >
                           {tag}
                           <button
                             type="button"
@@ -538,10 +622,7 @@ export default function CreateEventPage() {
               >
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                disabled={submitting}
-              >
+              <Button type="submit" disabled={submitting}>
                 {submitting ? 'Creating Event...' : 'Create Event'}
               </Button>
             </div>
@@ -550,4 +631,4 @@ export default function CreateEventPage() {
       </div>
     </Layout>
   );
-} 
+}

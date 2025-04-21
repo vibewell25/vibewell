@@ -26,12 +26,12 @@ export class HairTryOnService {
       0.1,
       1000
     );
-    
+
     // Initialize renderer with WebGL
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
-      preserveDrawingBuffer: true
+      preserveDrawingBuffer: true,
     });
     this.renderer.setSize(container.clientWidth, container.clientHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -70,14 +70,14 @@ export class HairTryOnService {
       // Load new model
       const loader = new GLTFLoader();
       const gltf = await loader.loadAsync(model.modelUrl);
-      
+
       this.currentModel = gltf.scene;
-      
+
       // Apply texture
       const textureLoader = new THREE.TextureLoader();
       const texture = await textureLoader.loadAsync(model.textureUrl);
-      
-      this.currentModel.traverse((child) => {
+
+      this.currentModel.traverse(child => {
         if (child instanceof THREE.Mesh) {
           child.material.map = texture;
           child.material.needsUpdate = true;
@@ -85,7 +85,7 @@ export class HairTryOnService {
       });
 
       this.scene.add(this.currentModel);
-      
+
       logger.info('Hair model loaded successfully', 'HairTryOn');
     } catch (error) {
       logger.error('Failed to load hair model', 'HairTryOn', { error });
@@ -99,7 +99,7 @@ export class HairTryOnService {
   public updateHairColor(color: string): void {
     if (!this.currentModel) return;
 
-    this.currentModel.traverse((child) => {
+    this.currentModel.traverse(child => {
       if (child instanceof THREE.Mesh) {
         child.material.color = new THREE.Color(color);
         child.material.needsUpdate = true;
@@ -146,7 +146,7 @@ export class HairTryOnService {
   public dispose(): void {
     if (this.currentModel) {
       this.scene.remove(this.currentModel);
-      this.currentModel.traverse((child) => {
+      this.currentModel.traverse(child => {
         if (child instanceof THREE.Mesh) {
           child.geometry.dispose();
           if (Array.isArray(child.material)) {
@@ -163,4 +163,4 @@ export class HairTryOnService {
       this.controls.dispose();
     }
   }
-} 
+}

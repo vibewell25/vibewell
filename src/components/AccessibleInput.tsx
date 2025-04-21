@@ -34,4 +34,4 @@ export const AccessibleInput: React.FC<AccessibleInputProps> = ({
   );
 };
 
-export default AccessibleInput; 
+export default AccessibleInput;

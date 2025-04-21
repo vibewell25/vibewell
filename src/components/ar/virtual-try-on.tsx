@@ -28,12 +28,7 @@ interface VirtualTryOnProps {
   userId?: string;
 }
 
-export function VirtualTryOn({ 
-  models, 
-  onModelLoaded, 
-  onModelError,
-  userId 
-}: VirtualTryOnProps) {
+export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: VirtualTryOnProps) {
   const [selectedModelIndex, setSelectedModelIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -48,18 +43,18 @@ export function VirtualTryOn({
   const viewerRef = useRef<HTMLDivElement>(null);
   const analyticsService = new AnalyticsService();
   const { trackAchievement } = useEngagement();
-  
-  const { 
+
+  const {
     getModel,
     prefetchModels,
     cancelLoading,
     isLoading: isCacheLoading,
     loadingProgress: cacheLoadingProgress,
     error: cacheError,
-    stats
+    stats,
   } = useARCache({
     autoAdjustCacheSize: true,
-    prefetchEnabled: true
+    prefetchEnabled: true,
   });
 
   const selectedModel = models[selectedModelIndex];
@@ -67,7 +62,7 @@ export function VirtualTryOn({
   // Start session timing when component mounts
   useEffect(() => {
     setSessionStartTime(Date.now());
-    
+
     return () => {
       // Track session duration on unmount
       if (sessionStartTime && userId) {
@@ -79,9 +74,9 @@ export function VirtualTryOn({
           productName: selectedModel.name,
           duration,
           intensity,
-          success: !error
+          success: !error,
         });
-        
+
         // Track achievement for engagement features
         if (!error) {
           trackAchievement('try_on_complete');
@@ -97,47 +92,45 @@ export function VirtualTryOn({
       setLoading(true);
       setError(null);
       setLoadingProgress(0);
-      
+
       // Load the model
       const loadModel = async () => {
         try {
           // Get model data from cache with progress tracking
-          const data = await getModel(
-            selectedModel.url, 
-            selectedModel.type,
-            (progress) => setLoadingProgress(progress)
+          const data = await getModel(selectedModel.url, selectedModel.type, progress =>
+            setLoadingProgress(progress)
           );
-          
+
           setModelData(data);
           setLoading(false);
-          
+
           if (onModelLoaded) {
             onModelLoaded();
           }
-          
-          trackEvent('virtual_try_on_model_loaded', { 
-            type: selectedModel.type, 
+
+          trackEvent('virtual_try_on_model_loaded', {
+            type: selectedModel.type,
             modelName: selectedModel.name,
             modelId: selectedModel.id,
-            intensity
+            intensity,
           });
-          
+
           // Prefetch next models
           const currentIndex = selectedModelIndex;
           if (prefetchModels) {
             // Prefetch the next 2 models with decreasing priority
             const modelsToFetch = [];
-            
+
             for (let i = 1; i <= 2; i++) {
               const nextIndex = (currentIndex + i) % models.length;
               const model = models[nextIndex];
               modelsToFetch.push({
                 url: model.url,
                 type: model.type,
-                priority: 10 - i * 2 // Higher priority for the next model
+                priority: 10 - i * 2, // Higher priority for the next model
               });
             }
-            
+
             prefetchModels(modelsToFetch);
           }
         } catch (error) {
@@ -145,18 +138,18 @@ export function VirtualTryOn({
           const err = error instanceof Error ? error : new Error('Unknown error loading model');
           setError(err);
           setLoading(false);
-          
+
           if (onModelError) {
             onModelError(err);
           }
-          
-          trackEvent('virtual_try_on_error', { 
-            type: selectedModel.type, 
+
+          trackEvent('virtual_try_on_error', {
+            type: selectedModel.type,
             error: err.message,
             modelId: selectedModel.id,
-            modelName: selectedModel.name
+            modelName: selectedModel.name,
           });
-          
+
           toast({
             title: 'Error',
             description: 'Failed to load the 3D model. Please try again.',
@@ -164,9 +157,9 @@ export function VirtualTryOn({
           });
         }
       };
-      
+
       loadModel();
-      
+
       // Clean up on unmount or when model changes
       return () => {
         // Cancel any active loading
@@ -175,7 +168,22 @@ export function VirtualTryOn({
         }
       };
     }
-  }, [selectedModel, selectedModelIndex, getModel, prefetchModels, cancelLoading, onModelLoaded, onModelError, models, intensity, trackEvent, toast, userId, analyticsService, trackAchievement]);
+  }, [
+    selectedModel,
+    selectedModelIndex,
+    getModel,
+    prefetchModels,
+    cancelLoading,
+    onModelLoaded,
+    onModelError,
+    models,
+    intensity,
+    trackEvent,
+    toast,
+    userId,
+    analyticsService,
+    trackAchievement,
+  ]);
 
   const handleARUnsupported = () => {
     toast({
@@ -183,29 +191,29 @@ export function VirtualTryOn({
       description: 'Your device does not support AR. You can still view the model in 3D mode.',
       variant: 'default',
     });
-    trackEvent('ar_unsupported', { 
+    trackEvent('ar_unsupported', {
       type: selectedModel.type,
       modelId: selectedModel.id,
-      modelName: selectedModel.name
+      modelName: selectedModel.name,
     });
   };
 
   const handleCapture = (dataUrl: string) => {
     setCapturedImage(dataUrl);
     setShowShareDialog(true);
-    trackEvent('virtual_try_on_captured', { 
+    trackEvent('virtual_try_on_captured', {
       type: selectedModel.type,
       modelId: selectedModel.id,
-      modelName: selectedModel.name
+      modelName: selectedModel.name,
     });
-    
+
     // Track capture achievement
     trackAchievement('capture');
   };
 
   const handleModelChange = (i: number) => {
     if (!models || models.length === 0) return;
-    
+
     // Calculate next model index
     const nextIndex = (selectedModelIndex + i) % models.length;
     setSelectedModelIndex(nextIndex);
@@ -213,11 +221,11 @@ export function VirtualTryOn({
 
   const handleIntensityChange = (newIntensity: number) => {
     setIntensity(newIntensity);
-    trackEvent('virtual_try_on_intensity_change', { 
-      type: selectedModel.type, 
+    trackEvent('virtual_try_on_intensity_change', {
+      type: selectedModel.type,
       intensity: newIntensity,
       modelId: selectedModel.id,
-      modelName: selectedModel.name
+      modelName: selectedModel.name,
     });
   };
 
@@ -250,12 +258,15 @@ export function VirtualTryOn({
               max="10"
               step="1"
               value={intensity}
-              onChange={(e) => handleIntensityChange(parseInt(e.target.value))}
+              onChange={e => handleIntensityChange(parseInt(e.target.value))}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             />
           </div>
 
-          <div ref={viewerRef} className="relative w-full h-[500px] bg-gray-100 rounded-lg overflow-hidden">
+          <div
+            ref={viewerRef}
+            className="relative w-full h-[500px] bg-gray-100 rounded-lg overflow-hidden"
+          >
             {loading && (
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <Progress value={loadingProgress} className="w-[60%] mb-4" />
@@ -267,11 +278,15 @@ export function VirtualTryOn({
             {error && (
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <p className="text-red-500 mb-4">Failed to load model: {error.message}</p>
-                <Button onClick={() => {
-                  setLoading(true);
-                  setLoadingProgress(0);
-                  setError(null);
-                }}>Retry Loading</Button>
+                <Button
+                  onClick={() => {
+                    setLoading(true);
+                    setLoadingProgress(0);
+                    setError(null);
+                  }}
+                >
+                  Retry Loading
+                </Button>
               </div>
             )}
             {modelData && !loading && !error && (
@@ -314,4 +329,4 @@ export function VirtualTryOn({
       </ARSupportCheck>
     </div>
   );
-} 
+}

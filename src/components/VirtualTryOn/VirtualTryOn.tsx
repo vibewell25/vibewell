@@ -11,8 +11,6 @@ import {
   GridItem,
 } from '@chakra-ui/react';
 import { useDropzone } from 'react-dropzone';
-;
-
 interface VirtualTryOnProps {
   serviceId?: string;
   onComplete?: (resultUrl: string) => void;
@@ -41,7 +39,7 @@ export function VirtualTryOn({ serviceId, onComplete }: VirtualTryOnProps) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png']
+      'image/*': ['.jpeg', '.jpg', '.png'],
     },
     maxFiles: 1,
     multiple: false,
@@ -70,7 +68,7 @@ export function VirtualTryOn({ serviceId, onComplete }: VirtualTryOnProps) {
 
       const data = await response.json();
       setResult(data.resultUrl);
-      
+
       if (onComplete) {
         onComplete(data.resultUrl);
       }
@@ -111,13 +109,7 @@ export function VirtualTryOn({ serviceId, onComplete }: VirtualTryOnProps) {
           >
             <input {...getInputProps()} />
             {preview ? (
-              <Image
-                src={preview}
-                alt="Preview"
-                maxH="300px"
-                mx="auto"
-                objectFit="contain"
-              />
+              <Image src={preview} alt="Preview" maxH="300px" mx="auto" objectFit="contain" />
             ) : (
               <Text textAlign="center" color="gray.500">
                 {isDragActive
@@ -142,13 +134,7 @@ export function VirtualTryOn({ serviceId, onComplete }: VirtualTryOnProps) {
             {isLoading ? (
               <Spinner size="xl" />
             ) : result ? (
-              <Image
-                src={result}
-                alt="Result"
-                maxH="300px"
-                mx="auto"
-                objectFit="contain"
-              />
+              <Image src={result} alt="Result" maxH="300px" mx="auto" objectFit="contain" />
             ) : (
               <Text textAlign="center" color="gray.500">
                 Processed image will appear here
@@ -169,4 +155,4 @@ export function VirtualTryOn({ serviceId, onComplete }: VirtualTryOnProps) {
       </Button>
     </VStack>
   );
-} 
+}

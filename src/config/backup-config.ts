@@ -24,35 +24,35 @@ export const backupConfig: BackupConfig = {
   alertThresholds: {
     failedBackups: 3,
     storageUsage: 0.9,
-    retentionViolations: 1
-  }
+    retentionViolations: 1,
+  },
 };
 
 // Backup schedule configuration
 export const backupSchedule = {
   fullBackup: {
-    frequency: 'weekly',    // Perform full backups weekly
-    dayOfWeek: 0,          // Sunday
-    timeOfDay: '00:00',    // Midnight
+    frequency: 'weekly', // Perform full backups weekly
+    dayOfWeek: 0, // Sunday
+    timeOfDay: '00:00', // Midnight
   },
   incrementalBackup: {
-    frequency: 'daily',     // Perform incremental backups daily
-    timeOfDay: '00:00',    // Midnight
+    frequency: 'daily', // Perform incremental backups daily
+    timeOfDay: '00:00', // Midnight
   },
 };
 
 // Encryption configuration
 export const encryptionConfig = {
   algorithm: 'aes-256-gcm',
-  keySize: 32,             // 256 bits
-  ivSize: 12,             // 96 bits for GCM
-  tagSize: 16,            // 128 bits authentication tag
+  keySize: 32, // 256 bits
+  ivSize: 12, // 96 bits for GCM
+  tagSize: 16, // 128 bits authentication tag
 };
 
 // Compression configuration
 export const compressionConfig = {
   algorithm: 'gzip',
-  level: 6,               // Compression level (1-9, where 9 is maximum compression)
+  level: 6, // Compression level (1-9, where 9 is maximum compression)
 };
 
 // Storage configuration
@@ -76,9 +76,9 @@ export const monitoringConfig = {
   enabled: true,
   alertChannels: ['email', 'slack'],
   alertThresholds: {
-    backupSize: 1024 * 1024 * 1024,  // Alert if backup size exceeds 1GB
-    backupDuration: 3600,             // Alert if backup takes more than 1 hour
-    failedAttempts: 3,                // Alert after 3 failed backup attempts
+    backupSize: 1024 * 1024 * 1024, // Alert if backup size exceeds 1GB
+    backupDuration: 3600, // Alert if backup takes more than 1 hour
+    failedAttempts: 3, // Alert after 3 failed backup attempts
   },
   contacts: {
     email: process.env.BACKUP_ALERT_EMAIL || 'admin@vibewell.com',
@@ -91,7 +91,7 @@ export const recoveryConfig = {
   automaticRecovery: {
     enabled: true,
     maxAttempts: 3,
-    retryDelay: 300,      // 5 minutes between retry attempts
+    retryDelay: 300, // 5 minutes between retry attempts
   },
   verificationChecks: {
     checksum: true,
@@ -107,4 +107,4 @@ export const recoveryConfig = {
       'SELECT COUNT(*) FROM sessions',
     ],
   },
-}; 
+};

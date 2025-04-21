@@ -39,7 +39,7 @@ export class FraudDetectionService {
       const fraudScore: FraudScore = {
         score,
         reasons,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
       // Store the fraud score
@@ -56,8 +56,8 @@ export class FraudDetectionService {
           details: {
             score,
             reasons,
-            action: behavior.action
-          }
+            action: behavior.action,
+          },
         });
       }
 
@@ -67,7 +67,7 @@ export class FraudDetectionService {
       return {
         score: 0,
         reasons: ['Error in fraud detection'],
-        timestamp: new Date()
+        timestamp: new Date(),
       };
     }
   }
@@ -83,18 +83,16 @@ export class FraudDetectionService {
     try {
       // Get recent actions
       const recentActions = await this.getRecentActions(userId, hourAgo);
-      
+
       // Calculate features
       const features: Record<string, number> = {
         actionFrequency: recentActions.length,
         uniqueIPs: new Set(recentActions.map(a => a.ip)).size,
         uniqueUserAgents: new Set(recentActions.map(a => a.userAgent)).size,
-        suspiciousActionCount: recentActions.filter(a => 
-          this.isSuspiciousAction(a.action)
-        ).length,
+        suspiciousActionCount: recentActions.filter(a => this.isSuspiciousAction(a.action)).length,
         timeSinceLastAction: this.getTimeSinceLastAction(recentActions),
         locationVariance: await this.calculateLocationVariance(recentActions),
-        riskScore: await this.getUserRiskScore(userId)
+        riskScore: await this.getUserRiskScore(userId),
       };
 
       return features;
@@ -107,7 +105,7 @@ export class FraudDetectionService {
         suspiciousActionCount: 0,
         timeSinceLastAction: 0,
         locationVariance: 0,
-        riskScore: 0
+        riskScore: 0,
       };
     }
   }
@@ -124,7 +122,7 @@ export class FraudDetectionService {
       suspiciousActionCount: 0.25,
       timeSinceLastAction: 0.1,
       locationVariance: 0.1,
-      riskScore: 0.05
+      riskScore: 0.05,
     };
 
     // Normalize and combine features
@@ -170,11 +168,7 @@ export class FraudDetectionService {
    */
   private async storeFraudScore(userId: string, score: FraudScore): Promise<void> {
     const key = `fraud:score:${userId}`;
-    await this.redis.zadd(
-      key,
-      score.timestamp.getTime(),
-      JSON.stringify(score)
-    );
+    await this.redis.zadd(key, score.timestamp.getTime(), JSON.stringify(score));
     // Keep only last 100 scores
     await this.redis.zremrangebyrank(key, 0, -101);
   }
@@ -182,10 +176,7 @@ export class FraudDetectionService {
   /**
    * Get recent user actions
    */
-  private async getRecentActions(
-    userId: string,
-    since: Date
-  ): Promise<UserBehavior[]> {
+  private async getRecentActions(userId: string, since: Date): Promise<UserBehavior[]> {
     const actions = await this.redis.zrangebyscore(
       `user:actions:${userId}`,
       since.getTime(),
@@ -204,7 +195,7 @@ export class FraudDetectionService {
       'mfa_disable',
       'payment_info_change',
       'email_change',
-      'high_value_transaction'
+      'high_value_transaction',
     ];
     return suspiciousActions.includes(action);
   }
@@ -214,10 +205,8 @@ export class FraudDetectionService {
    */
   private getTimeSinceLastAction(actions: UserBehavior[]): number {
     if (actions.length === 0) return Infinity;
-    
-    const lastActionTime = Math.max(
-      ...actions.map(a => a.timestamp.getTime())
-    );
+
+    const lastActionTime = Math.max(...actions.map(a => a.timestamp.getTime()));
     return Date.now() - lastActionTime;
   }
 
@@ -237,17 +226,12 @@ export class FraudDetectionService {
    * Get user's historical risk score
    */
   private async getUserRiskScore(userId: string): Promise<number> {
-    const scores = await this.redis.zrange(
-      `fraud:score:${userId}`,
-      -5,
-      -1
-    );
+    const scores = await this.redis.zrange(`fraud:score:${userId}`, -5, -1);
 
     if (scores.length === 0) return 0;
 
-    const avgScore = scores
-      .map(s => JSON.parse(s).score)
-      .reduce((a, b) => a + b, 0) / scores.length;
+    const avgScore =
+      scores.map(s => JSON.parse(s).score).reduce((a, b) => a + b, 0) / scores.length;
 
     return avgScore;
   }
@@ -263,10 +247,10 @@ export class FraudDetectionService {
       suspiciousActionCount: [0, 5],
       timeSinceLastAction: [0, 3600000], // 1 hour in ms
       locationVariance: [0, 1000],
-      riskScore: [0, 1]
+      riskScore: [0, 1],
     };
 
     const [min, max] = ranges[feature];
     return Math.min(Math.max((value - min) / (max - min), 0), 1);
   }
-} 
+}

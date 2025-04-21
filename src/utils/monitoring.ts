@@ -27,7 +27,9 @@ export const performanceMonitoring = {
   // Track page load performance
   trackPageLoad: () => {
     if (typeof window !== 'undefined') {
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const navigation = performance.getEntriesByType(
+        'navigation'
+      )[0] as PerformanceNavigationTiming;
       const metrics = {
         dnsLookup: navigation.domainLookupEnd - navigation.domainLookupStart,
         tcpConnection: navigation.connectEnd - navigation.connectStart,
@@ -132,4 +134,4 @@ export default {
   reportWebVitals,
   performanceMonitoring,
   performanceMarks,
-}; 
+};

@@ -34,8 +34,8 @@ export class MarketingService {
       const segmentData = await prisma.customerSegment.findUnique({
         where: { id: targetSegment },
         include: {
-          business: true
-        }
+          business: true,
+        },
       });
 
       if (!segmentData) throw new Error('Segment not found');
@@ -43,19 +43,20 @@ export class MarketingService {
       // Generate base campaign using OpenAI
       const prompt = this.buildCampaignPrompt(segmentData, objective, preferences);
       const completion = await openai.chat.completions.create({
-        model: "gpt-4",
+        model: 'gpt-4',
         messages: [
           {
-            role: "system",
-            content: "You are an expert marketing copywriter specializing in beauty and wellness services."
+            role: 'system',
+            content:
+              'You are an expert marketing copywriter specializing in beauty and wellness services.',
           },
           {
-            role: "user",
-            content: prompt
-          }
+            role: 'user',
+            content: prompt,
+          },
         ],
         n: 3, // Generate 3 variants
-        temperature: 0.8
+        temperature: 0.8,
       });
 
       // Create campaign variants
@@ -65,8 +66,8 @@ export class MarketingService {
         metadata: {
           targetSegment,
           objective,
-          generatedAt: new Date().toISOString()
-        }
+          generatedAt: new Date().toISOString(),
+        },
       }));
 
       // Store variants for A/B testing
@@ -93,20 +94,17 @@ export class MarketingService {
 
       // Split target audience
       const audiencePerVariant = Math.floor(targetSize / variants.length);
-      
+
       for (const variant of variants) {
         // Get test audience
         const testAudience = await this.selectTestAudience(audiencePerVariant);
-        
+
         // Deploy variant
         await this.deployCampaignVariant(variant, testAudience);
-        
+
         // Monitor performance
-        const variantResults = await this.monitorVariantPerformance(
-          variant.id,
-          duration
-        );
-        
+        const variantResults = await this.monitorVariantPerformance(variant.id, duration);
+
         results.push(variantResults);
       }
 
@@ -126,16 +124,11 @@ export class MarketingService {
    */
   async analyzeCampaignPerformance(campaignId: string): Promise<Record<string, any>> {
     try {
-      const [
-        campaign,
-        engagements,
-        conversions,
-        revenue
-      ] = await Promise.all([
+      const [campaign, engagements, conversions, revenue] = await Promise.all([
         this.getCampaignDetails(campaignId),
         this.getEngagementMetrics(campaignId),
         this.getConversionMetrics(campaignId),
-        this.getRevenueMetrics(campaignId)
+        this.getRevenueMetrics(campaignId),
       ]);
 
       // Calculate ROI and other metrics
@@ -149,18 +142,18 @@ export class MarketingService {
         metrics: {
           roi,
           conversionRate,
-          engagement
-        }
+          engagement,
+        },
       });
 
       return {
         metrics: {
           roi,
           conversionRate,
-          engagement
+          engagement,
         },
         insights,
-        recommendations: insights.recommendations
+        recommendations: insights.recommendations,
       };
     } catch (error) {
       logger.error('Failed to analyze campaign performance', 'MarketingService', { error });
@@ -192,7 +185,7 @@ export class MarketingService {
     // Implementation for storing variants
     logger.info('Storing campaign variants', 'MarketingService', {
       variantCount: variants.length,
-      segmentId
+      segmentId,
     });
   }
 
@@ -206,14 +199,11 @@ export class MarketingService {
     return [];
   }
 
-  private async deployCampaignVariant(
-    variant: CampaignVariant,
-    audience: string[]
-  ): Promise<void> {
+  private async deployCampaignVariant(variant: CampaignVariant, audience: string[]): Promise<void> {
     // Implementation for deploying variant
     logger.info('Deploying campaign variant', 'MarketingService', {
       variantId: variant.id,
-      audienceSize: audience.length
+      audienceSize: audience.length,
     });
   }
 
@@ -227,7 +217,7 @@ export class MarketingService {
       impressions: 0,
       engagements: 0,
       conversions: 0,
-      revenue: 0
+      revenue: 0,
     };
   }
 
@@ -236,14 +226,11 @@ export class MarketingService {
     return results[0];
   }
 
-  private async applyWinningVariant(
-    variantId: string,
-    campaignId: string
-  ): Promise<void> {
+  private async applyWinningVariant(variantId: string, campaignId: string): Promise<void> {
     // Implementation for applying winner
     logger.info('Applying winning variant', 'MarketingService', {
       variantId,
-      campaignId
+      campaignId,
     });
   }
 
@@ -283,7 +270,7 @@ export class MarketingService {
   private async generateCampaignInsights(data: any): Promise<any> {
     // Implementation for generating AI insights
     return {
-      recommendations: []
+      recommendations: [],
     };
   }
-} 
+}

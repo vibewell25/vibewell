@@ -3,7 +3,14 @@ import { Client } from '@microsoft/microsoft-graph-client';
 import { ClientSecretCredential } from '@azure/identity';
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
-import type { Booking, BeautyService, Business, User, CalendarConnection, CalendarEvent } from '@prisma/client';
+import type {
+  Booking,
+  BeautyService,
+  Business,
+  User,
+  CalendarConnection,
+  CalendarEvent,
+} from '@prisma/client';
 import { Prisma } from '@prisma/client';
 
 interface BookingWithRelations extends Booking {
@@ -56,7 +63,7 @@ export class CalendarService {
 
   private async getOutlookClient(accessToken: string): Promise<Client> {
     return Client.init({
-      authProvider: (done) => {
+      authProvider: done => {
         done(null, accessToken);
       },
     });
@@ -120,7 +127,7 @@ export class CalendarService {
       }
 
       const connections = booking.user.calendarConnections;
-      
+
       for (const connection of connections) {
         switch (connection.provider) {
           case 'google':
@@ -213,9 +220,7 @@ export class CalendarService {
         },
       };
 
-      const response = await client
-        .api('/me/events')
-        .post(event);
+      const response = await client.api('/me/events').post(event);
 
       await prisma.calendarEvent.create({
         data: {
@@ -242,7 +247,7 @@ export class CalendarService {
 
     try {
       const { AppleCalendarModule } = NativeModules;
-      
+
       // Request calendar access if not already granted
       const hasAccess = await AppleCalendarModule.requestAccess();
       if (!hasAccess) {
@@ -397,9 +402,7 @@ export class CalendarService {
         },
       };
 
-      await client
-        .api(`/me/events/${event.externalEventId}`)
-        .update(updatedEvent);
+      await client.api(`/me/events/${event.externalEventId}`).update(updatedEvent);
     } catch (error) {
       logger.error('Error updating Outlook Calendar event:', error);
       throw new Error('Failed to update Outlook Calendar event');
@@ -457,9 +460,7 @@ export class CalendarService {
       const connection = event.connection;
       const client = await this.getOutlookClient(connection.accessToken);
 
-      await client
-        .api(`/me/events/${event.externalEventId}`)
-        .delete();
+      await client.api(`/me/events/${event.externalEventId}`).delete();
     } catch (error) {
       logger.error('Error deleting Outlook Calendar event:', error);
       throw new Error('Failed to delete Outlook Calendar event');
@@ -482,4 +483,4 @@ export class CalendarService {
   }
 }
 
-export default CalendarService; 
+export default CalendarService;

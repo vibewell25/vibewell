@@ -57,7 +57,7 @@ export async function POST(request: Request) {
             id: true,
             name: true,
             image: true,
-          }
+          },
         },
       },
     });
@@ -65,10 +65,7 @@ export async function POST(request: Request) {
     return NextResponse.json(review);
   } catch (error) {
     console.error('Error creating review:', error);
-    return NextResponse.json(
-      { error: 'Failed to create review' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to create review' }, { status: 500 });
   }
 }
 
@@ -79,19 +76,16 @@ export async function GET(request: Request) {
     const providerId = searchParams.get('providerId');
 
     if (!serviceId && !providerId) {
-      return NextResponse.json(
-        { error: 'Service ID or provider ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Service ID or provider ID is required' }, { status: 400 });
     }
 
     // Build the where clause
     const whereClause: any = {};
-    
+
     if (serviceId) {
       whereClause.serviceId = serviceId;
     }
-    
+
     if (providerId) {
       whereClause.booking = {
         providerId,
@@ -106,7 +100,7 @@ export async function GET(request: Request) {
             id: true,
             name: true,
             image: true,
-          }
+          },
         },
         booking: {
           include: {
@@ -122,9 +116,6 @@ export async function GET(request: Request) {
     return NextResponse.json(reviews);
   } catch (error) {
     console.error('Error fetching reviews:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch reviews' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch reviews' }, { status: 500 });
   }
-} 
+}

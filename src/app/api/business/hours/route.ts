@@ -115,4 +115,4 @@ export async function DELETE(req: Request) {
     console.error('Error deleting business hours:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-} 
+}

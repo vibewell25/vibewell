@@ -1,15 +1,51 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/components/ui/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -25,16 +61,17 @@ const alertFormSchema = z.object({
   name: z.string().min(3, { message: 'Alert name must be at least 3 characters' }),
   description: z.string().optional(),
   product_id: z.string().uuid({ message: 'Valid product ID is required' }),
-  metric: z.enum(['rating', 'views', 'purchases', 'try_ons'], { 
-    required_error: 'Please select a metric' 
+  metric: z.enum(['rating', 'views', 'purchases', 'try_ons'], {
+    required_error: 'Please select a metric',
   }),
-  condition: z.enum(['below', 'above'], { 
-    required_error: 'Please select a condition' 
+  condition: z.enum(['below', 'above'], {
+    required_error: 'Please select a condition',
   }),
-  threshold: z.coerce.number()
-    .min(0, { message: 'Threshold must be a positive number' }),
-  notification_methods: z.array(z.string()).min(1, { message: 'Select at least one notification method' }),
-  is_active: z.boolean().default(true)
+  threshold: z.coerce.number().min(0, { message: 'Threshold must be a positive number' }),
+  notification_methods: z
+    .array(z.string())
+    .min(1, { message: 'Select at least one notification method' }),
+  is_active: z.boolean().default(true),
 });
 
 type AlertFormValues = z.infer<typeof alertFormSchema>;
@@ -48,7 +85,7 @@ export function AlertsDashboard() {
   const [editingAlert, setEditingAlert] = useState<any | null>(null);
   const [deletingAlertId, setDeletingAlertId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('all');
-  
+
   const alertService = new AlertService();
   const productService = new ProductService();
 
@@ -62,8 +99,8 @@ export function AlertsDashboard() {
       condition: 'below',
       threshold: 0,
       notification_methods: ['email'],
-      is_active: true
-    }
+      is_active: true,
+    },
   });
 
   useEffect(() => {
@@ -72,9 +109,9 @@ export function AlertsDashboard() {
         setLoading(true);
         const [alertsData, productsData] = await Promise.all([
           alertService.getAllAlerts(),
-          productService.getProducts({ limit: 100 })
+          productService.getProducts({ limit: 100 }),
         ]);
-        
+
         setAlerts(alertsData || []);
         setProducts(productsData?.data || []);
       } catch (error) {
@@ -82,7 +119,7 @@ export function AlertsDashboard() {
         toast({
           title: 'Error fetching data',
           description: 'Could not load alerts and products',
-          variant: 'destructive'
+          variant: 'destructive',
         });
       } finally {
         setLoading(false);
@@ -106,21 +143,21 @@ export function AlertsDashboard() {
         toast({
           title: 'Alert updated',
           description: 'The alert has been updated successfully',
-          variant: 'default'
+          variant: 'default',
         });
       } else {
         await alertService.createAlert(values);
         toast({
           title: 'Alert created',
           description: 'The new alert has been created successfully',
-          variant: 'default'
+          variant: 'default',
         });
       }
-      
+
       // Refresh alerts list
       const updatedAlerts = await alertService.getAllAlerts();
       setAlerts(updatedAlerts || []);
-      
+
       setOpenDialog(false);
       resetForm();
     } catch (error) {
@@ -128,14 +165,14 @@ export function AlertsDashboard() {
       toast({
         title: 'Error',
         description: 'There was an error saving the alert',
-        variant: 'destructive'
+        variant: 'destructive',
       });
     }
   };
 
   const handleDeleteAlert = async () => {
     if (!deletingAlertId) return;
-    
+
     try {
       await alertService.deleteAlert(deletingAlertId);
       setAlerts(alerts.filter(alert => alert.id !== deletingAlertId));
@@ -143,14 +180,14 @@ export function AlertsDashboard() {
       toast({
         title: 'Alert deleted',
         description: 'The alert has been deleted successfully',
-        variant: 'default'
+        variant: 'default',
       });
     } catch (error) {
       console.error('Error deleting alert:', error);
       toast({
         title: 'Error',
         description: 'There was an error deleting the alert',
-        variant: 'destructive'
+        variant: 'destructive',
       });
     }
   };
@@ -165,7 +202,7 @@ export function AlertsDashboard() {
       condition: alert.condition,
       threshold: Number(alert.threshold),
       notification_methods: alert.notification_methods,
-      is_active: alert.is_active
+      is_active: alert.is_active,
     });
     setOpenDialog(true);
   };
@@ -173,20 +210,20 @@ export function AlertsDashboard() {
   const handleToggleAlertStatus = async (alertId: string, isActive: boolean) => {
     try {
       await alertService.updateAlert(alertId, { is_active: !isActive });
-      setAlerts(alerts.map(alert => 
-        alert.id === alertId ? { ...alert, is_active: !isActive } : alert
-      ));
+      setAlerts(
+        alerts.map(alert => (alert.id === alertId ? { ...alert, is_active: !isActive } : alert))
+      );
       toast({
         title: 'Alert status updated',
         description: `Alert is now ${!isActive ? 'active' : 'inactive'}`,
-        variant: 'default'
+        variant: 'default',
       });
     } catch (error) {
       console.error('Error toggling alert status:', error);
       toast({
         title: 'Error',
         description: 'There was an error updating the alert status',
-        variant: 'destructive'
+        variant: 'destructive',
       });
     }
   };
@@ -200,7 +237,7 @@ export function AlertsDashboard() {
       condition: 'below',
       threshold: 0,
       notification_methods: ['email'],
-      is_active: true
+      is_active: true,
     });
     setEditingAlert(null);
   };
@@ -212,10 +249,10 @@ export function AlertsDashboard() {
 
   const getMetricLabel = (metric: string) => {
     const labels: Record<string, string> = {
-      'rating': 'Rating',
-      'views': 'Views',
-      'purchases': 'Purchases',
-      'try_ons': 'Try-Ons'
+      rating: 'Rating',
+      views: 'Views',
+      purchases: 'Purchases',
+      try_ons: 'Try-Ons',
     };
     return labels[metric] || metric;
   };
@@ -230,7 +267,9 @@ export function AlertsDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Analytics Alerts</h2>
-          <p className="text-muted-foreground">Manage product performance alerts and notifications</p>
+          <p className="text-muted-foreground">
+            Manage product performance alerts and notifications
+          </p>
         </div>
         <Button onClick={handleAddNewAlert}>
           <Plus className="mr-2 h-4 w-4" />
@@ -272,9 +311,11 @@ export function AlertsDashboard() {
                   <AlertCircle className="h-10 w-10 text-muted-foreground mb-4" />
                   <h3 className="text-lg font-semibold">No alerts found</h3>
                   <p className="text-muted-foreground mt-2">
-                    {activeTab === 'all' ? 'No alerts have been created yet.' : 
-                     activeTab === 'active' ? 'There are no active alerts.' : 
-                     'No alerts have been triggered recently.'}
+                    {activeTab === 'all'
+                      ? 'No alerts have been created yet.'
+                      : activeTab === 'active'
+                        ? 'There are no active alerts.'
+                        : 'No alerts have been triggered recently.'}
                   </p>
                   {activeTab === 'all' && (
                     <Button onClick={handleAddNewAlert} className="mt-4">
@@ -297,25 +338,27 @@ export function AlertsDashboard() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredAlerts.map((alert) => (
+                    {filteredAlerts.map(alert => (
                       <TableRow key={alert.id}>
                         <TableCell>
-                          <Switch 
-                            checked={alert.is_active} 
-                            onCheckedChange={() => handleToggleAlertStatus(alert.id, alert.is_active)}
+                          <Switch
+                            checked={alert.is_active}
+                            onCheckedChange={() =>
+                              handleToggleAlertStatus(alert.id, alert.is_active)
+                            }
                           />
                         </TableCell>
                         <TableCell className="font-medium">
                           {alert.name}
                           {alert.last_triggered && (
-                            <Badge variant="destructive" className="ml-2">Triggered</Badge>
+                            <Badge variant="destructive" className="ml-2">
+                              Triggered
+                            </Badge>
                           )}
                         </TableCell>
                         <TableCell>{getProductName(alert.product_id)}</TableCell>
                         <TableCell>
-                          <Badge variant="outline">
-                            {getMetricLabel(alert.metric)}
-                          </Badge>
+                          <Badge variant="outline">{getMetricLabel(alert.metric)}</Badge>
                         </TableCell>
                         <TableCell>
                           {alert.condition} {alert.threshold}
@@ -328,16 +371,12 @@ export function AlertsDashboard() {
                           )}
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            onClick={() => handleEditAlert(alert)}
-                          >
+                          <Button variant="ghost" size="sm" onClick={() => handleEditAlert(alert)}>
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             onClick={() => setDeletingAlertId(alert.id)}
                           >
                             <Trash2 className="h-4 w-4" />
@@ -359,13 +398,12 @@ export function AlertsDashboard() {
           <DialogHeader>
             <DialogTitle>{editingAlert ? 'Edit Alert' : 'Create New Alert'}</DialogTitle>
             <DialogDescription>
-              {editingAlert 
+              {editingAlert
                 ? 'Update the alert settings below.'
-                : 'Set up a new alert to monitor product performance.'
-              }
+                : 'Set up a new alert to monitor product performance.'}
             </DialogDescription>
           </DialogHeader>
-          
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
               <FormField
@@ -381,7 +419,7 @@ export function AlertsDashboard() {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="description"
@@ -395,24 +433,21 @@ export function AlertsDashboard() {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="product_id"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Product</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a product" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {products.map((product) => (
+                        {products.map(product => (
                           <SelectItem key={product.id} value={product.id}>
                             {product.name}
                           </SelectItem>
@@ -423,7 +458,7 @@ export function AlertsDashboard() {
                   </FormItem>
                 )}
               />
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -431,10 +466,7 @@ export function AlertsDashboard() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Metric</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select a metric" />
@@ -451,17 +483,14 @@ export function AlertsDashboard() {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="condition"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Condition</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select a condition" />
@@ -477,7 +506,7 @@ export function AlertsDashboard() {
                   )}
                 />
               </div>
-              
+
               <FormField
                 control={form.control}
                 name="threshold"
@@ -488,16 +517,15 @@ export function AlertsDashboard() {
                       <Input type="number" min="0" step="0.1" {...field} />
                     </FormControl>
                     <FormDescription>
-                      {form.watch('metric') === 'rating' 
+                      {form.watch('metric') === 'rating'
                         ? 'For ratings, set a value between 1-5'
-                        : 'Set the threshold value that will trigger the alert'
-                      }
+                        : 'Set the threshold value that will trigger the alert'}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="notification_methods"
@@ -513,7 +541,7 @@ export function AlertsDashboard() {
                             <FormControl>
                               <Checkbox
                                 checked={field.value?.includes('email')}
-                                onCheckedChange={(checked) => {
+                                onCheckedChange={checked => {
                                   const current = field.value || [];
                                   if (checked) {
                                     field.onChange([...current, 'email']);
@@ -523,9 +551,7 @@ export function AlertsDashboard() {
                                 }}
                               />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              Email
-                            </FormLabel>
+                            <FormLabel className="font-normal">Email</FormLabel>
                           </FormItem>
                         )}
                       />
@@ -537,7 +563,7 @@ export function AlertsDashboard() {
                             <FormControl>
                               <Checkbox
                                 checked={field.value?.includes('dashboard')}
-                                onCheckedChange={(checked) => {
+                                onCheckedChange={checked => {
                                   const current = field.value || [];
                                   if (checked) {
                                     field.onChange([...current, 'dashboard']);
@@ -547,9 +573,7 @@ export function AlertsDashboard() {
                                 }}
                               />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              Dashboard
-                            </FormLabel>
+                            <FormLabel className="font-normal">Dashboard</FormLabel>
                           </FormItem>
                         )}
                       />
@@ -558,22 +582,17 @@ export function AlertsDashboard() {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="is_active"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4">
                     <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>
-                        Active Alert
-                      </FormLabel>
+                      <FormLabel>Active Alert</FormLabel>
                       <FormDescription>
                         Alert will be monitored and can trigger notifications
                       </FormDescription>
@@ -581,7 +600,7 @@ export function AlertsDashboard() {
                   </FormItem>
                 )}
               />
-              
+
               <DialogFooter>
                 <Button
                   type="button"
@@ -593,9 +612,7 @@ export function AlertsDashboard() {
                 >
                   Cancel
                 </Button>
-                <Button type="submit">
-                  {editingAlert ? 'Update Alert' : 'Create Alert'}
-                </Button>
+                <Button type="submit">{editingAlert ? 'Update Alert' : 'Create Alert'}</Button>
               </DialogFooter>
             </form>
           </Form>
@@ -603,7 +620,7 @@ export function AlertsDashboard() {
       </Dialog>
 
       {/* Delete Confirmation Dialog */}
-      <Dialog open={!!deletingAlertId} onOpenChange={(open) => !open && setDeletingAlertId(null)}>
+      <Dialog open={!!deletingAlertId} onOpenChange={open => !open && setDeletingAlertId(null)}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Confirm Deletion</DialogTitle>
@@ -612,16 +629,10 @@ export function AlertsDashboard() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setDeletingAlertId(null)}
-            >
+            <Button variant="outline" onClick={() => setDeletingAlertId(null)}>
               Cancel
             </Button>
-            <Button
-              variant="destructive"
-              onClick={handleDeleteAlert}
-            >
+            <Button variant="destructive" onClick={handleDeleteAlert}>
               Delete
             </Button>
           </DialogFooter>
@@ -629,4 +640,4 @@ export function AlertsDashboard() {
       </Dialog>
     </div>
   );
-} 
+}

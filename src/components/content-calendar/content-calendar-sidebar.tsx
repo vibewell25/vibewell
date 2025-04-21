@@ -22,7 +22,7 @@ export function ContentCalendarSidebar({
   platforms,
   teamMembers,
   onAddPlatform,
-  onAddTeamMember
+  onAddTeamMember,
 }: ContentCalendarSidebarProps) {
   const [newPlatformName, setNewPlatformName] = useState('');
   const [newPlatformColor, setNewPlatformColor] = useState('#6200EA');
@@ -34,7 +34,7 @@ export function ContentCalendarSidebar({
     onAddPlatform({
       id: (platforms.length + 1).toString(),
       name: newPlatformName,
-      color: newPlatformColor
+      color: newPlatformColor,
     });
     setNewPlatformName('');
     setNewPlatformColor('#6200EA');
@@ -63,8 +63,8 @@ export function ContentCalendarSidebar({
               <ul className="space-y-2">
                 {platforms.map(platform => (
                   <li key={platform.id} className="flex items-center">
-                    <div 
-                      className="w-3 h-3 rounded-full mr-2" 
+                    <div
+                      className="w-3 h-3 rounded-full mr-2"
                       style={{ backgroundColor: platform.color }}
                     ></div>
                     <span className="text-sm">{platform.name}</span>
@@ -78,14 +78,11 @@ export function ContentCalendarSidebar({
                   <Input
                     placeholder="New platform"
                     value={newPlatformName}
-                    onChange={(e) => setNewPlatformName(e.target.value)}
+                    onChange={e => setNewPlatformName(e.target.value)}
                     className="h-8 text-sm"
                   />
                 </div>
-                <ColorPicker
-                  color={newPlatformColor}
-                  onChange={setNewPlatformColor}
-                />
+                <ColorPicker color={newPlatformColor} onChange={setNewPlatformColor} />
               </div>
               <Button
                 size="sm"
@@ -139,7 +136,7 @@ export function ContentCalendarSidebar({
               className="w-full mt-3 h-8"
               onClick={() => {
                 // In a real app, this would open a modal to add a team member
-                alert("Team member management will be implemented in the next phase");
+                alert('Team member management will be implemented in the next phase');
               }}
             >
               <Icons.PlusIcon className="h-4 w-4 mr-1" />
@@ -157,11 +154,7 @@ export function ContentCalendarSidebar({
           <div className="space-y-2">
             {['Blog', 'Social', 'Email', 'Video', 'Promotion'].map(type => (
               <div key={type} className="flex items-center">
-                <input 
-                  type="checkbox" 
-                  id={`type-${type}`} 
-                  className="mr-2"
-                />
+                <input type="checkbox" id={`type-${type}`} className="mr-2" />
                 <Label htmlFor={`type-${type}`} className="text-sm">
                   {type}
                 </Label>
@@ -177,7 +170,7 @@ export function ContentCalendarSidebar({
         </CardHeader>
         <CardContent className="p-3 pt-0 flex flex-wrap gap-1">
           {['spring', 'summer', 'promotion', 'wellness', 'tips', 'product'].map(tag => (
-            <div 
+            <div
               key={tag}
               className="px-2 py-1 text-xs rounded-full bg-secondary cursor-pointer hover:bg-secondary/80"
             >
@@ -188,4 +181,4 @@ export function ContentCalendarSidebar({
       </Card>
     </div>
   );
-} 
+}

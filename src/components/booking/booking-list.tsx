@@ -80,7 +80,10 @@ export function BookingList({ userId, role }: BookingListProps) {
   };
 
   const getStatusBadge = (status: string) => {
-    const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+    const statusMap: Record<
+      string,
+      { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }
+    > = {
       pending: { label: 'Pending', variant: 'secondary' },
       confirmed: { label: 'Confirmed', variant: 'default' },
       completed: { label: 'Completed', variant: 'outline' },
@@ -126,10 +129,7 @@ export function BookingList({ userId, role }: BookingListProps) {
   return (
     <div className="space-y-4">
       <div className="flex gap-2 mb-4">
-        <Button
-          variant={filter === 'all' ? 'default' : 'outline'}
-          onClick={() => setFilter('all')}
-        >
+        <Button variant={filter === 'all' ? 'default' : 'outline'} onClick={() => setFilter('all')}>
           All
         </Button>
         <Button
@@ -153,9 +153,9 @@ export function BookingList({ userId, role }: BookingListProps) {
       </div>
 
       <div className="grid gap-4">
-        {filteredBookings.map((booking) => (
-          <Card 
-            key={booking.id} 
+        {filteredBookings.map(booking => (
+          <Card
+            key={booking.id}
             className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             onClick={() => router.push(`/bookings?id=${booking.id}`)}
           >
@@ -168,17 +168,11 @@ export function BookingList({ userId, role }: BookingListProps) {
                 <p className="text-sm text-gray-500">
                   Duration: {booking.service.duration} minutes
                 </p>
-                <p className="text-sm text-gray-500">
-                  Price: ${booking.service.price}
-                </p>
+                <p className="text-sm text-gray-500">Price: ${booking.service.price}</p>
                 {role === 'customer' ? (
-                  <p className="text-sm text-gray-500">
-                    Provider: {booking.provider.name}
-                  </p>
+                  <p className="text-sm text-gray-500">Provider: {booking.provider.name}</p>
                 ) : (
-                  <p className="text-sm text-gray-500">
-                    Customer: {booking.customer.name}
-                  </p>
+                  <p className="text-sm text-gray-500">Customer: {booking.customer.name}</p>
                 )}
               </div>
               <div className="flex flex-col items-end gap-2">
@@ -186,7 +180,7 @@ export function BookingList({ userId, role }: BookingListProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     router.push(`/bookings?id=${booking.id}`);
                   }}
@@ -205,4 +199,4 @@ export function BookingList({ userId, role }: BookingListProps) {
       </div>
     </div>
   );
-} 
+}

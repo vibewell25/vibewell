@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Icons } from '@/components/icons';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { useNotifications } from '@/contexts/NotificationContext';
 
 // Define proper user type to match auth context
@@ -59,9 +59,9 @@ export function UserMenu() {
         <span className="sr-only">Open user menu</span>
         <Icons.UserCircleIcon className="h-8 w-8 text-muted-foreground hover:text-foreground" />
       </button>
-      
+
       {isOpen && (
-        <div 
+        <div
           ref={menuRef}
           id="user-menu"
           className="absolute right-0 mt-2 w-48 bg-card rounded-md shadow-lg border border-border py-1 z-10"
@@ -70,9 +70,7 @@ export function UserMenu() {
           aria-labelledby="user-menu-button"
         >
           <div className="px-4 py-2 border-b border-border">
-            <p className="text-sm font-medium">
-              {user.user_metadata?.full_name || user.email}
-            </p>
+            <p className="text-sm font-medium">{user.user_metadata?.full_name || user.email}</p>
             <p className="text-xs text-muted-foreground truncate">{user.email}</p>
           </div>
           <Link
@@ -150,4 +148,4 @@ export function UserMenu() {
       )}
     </div>
   );
-} 
+}

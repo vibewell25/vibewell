@@ -26,15 +26,9 @@ export class EncryptedDataService {
     this.encryptionService = new EncryptionService();
   }
 
-  async storeEncryptedData(
-    userId: string,
-    dataType: string,
-    data: any
-  ): Promise<string> {
+  async storeEncryptedData(userId: string, dataType: string, data: any): Promise<string> {
     // Encrypt the data
-    const { encryptedData, metadata } = await this.encryptionService.encrypt(
-      JSON.stringify(data)
-    );
+    const { encryptedData, metadata } = await this.encryptionService.encrypt(JSON.stringify(data));
 
     // Store in database using Prisma
     const result = await prisma.$executeRaw`
@@ -53,15 +47,14 @@ export class EncryptedDataService {
     return result as string;
   }
 
-  async retrieveEncryptedData<T>(
-    userId: string,
-    dataType: string
-  ): Promise<T | null> {
+  async retrieveEncryptedData<T>(userId: string, dataType: string): Promise<T | null> {
     // Retrieve from database using Prisma
-    const result = await prisma.$queryRaw<Array<{
-      encrypted_data: string;
-      encryption_metadata: Record<string, any>;
-    }>>`
+    const result = await prisma.$queryRaw<
+      Array<{
+        encrypted_data: string;
+        encryption_metadata: Record<string, any>;
+      }>
+    >`
       SELECT encrypted_data, encryption_metadata
       FROM encrypted_data
       WHERE user_id = ${userId}::uuid
@@ -89,32 +82,27 @@ export class EncryptedDataService {
     value: any
   ): Promise<void> {
     // Encrypt the value
-    const { encryptedData } = await this.encryptionService.encrypt(
-      JSON.stringify(value)
-    );
+    const { encryptedData } = await this.encryptionService.encrypt(JSON.stringify(value));
 
     // Update the user table using Prisma
     await prisma.user.update({
       where: { id: userId },
       data: {
-        [`encrypted_${field}`]: encryptedData
-      }
+        [`encrypted_${field}`]: encryptedData,
+      },
     });
   }
 
   async getEncryptionKeyUsageStats(): Promise<Array<EncryptionKeyUsage>> {
     const data = await prisma.encryptionKeyUsage.findMany();
 
-    return data.map((row: {
-      keyId: string;
-      usageCount: number;
-      firstUsed: Date;
-      lastUsed: Date;
-    }) => ({
-      keyId: row.keyId,
-      usageCount: row.usageCount,
-      firstUsed: row.firstUsed,
-      lastUsed: row.lastUsed
-    }));
+    return data.map(
+      (row: { keyId: string; usageCount: number; firstUsed: Date; lastUsed: Date }) => ({
+        keyId: row.keyId,
+        usageCount: row.usageCount,
+        firstUsed: row.firstUsed,
+        lastUsed: row.lastUsed,
+      })
+    );
   }
-} 
+}

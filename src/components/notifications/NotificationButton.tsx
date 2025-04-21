@@ -38,4 +38,4 @@ export const NotificationButton: React.FC<NotificationButtonProps> = ({ onOpen }
       )}
     </button>
   );
-}; 
+};

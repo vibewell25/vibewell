@@ -11,4 +11,4 @@ const TestPage: FC = () => {
   );
 };
 
-export default TestPage; 
+export default TestPage;

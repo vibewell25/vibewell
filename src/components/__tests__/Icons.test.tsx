@@ -30,9 +30,7 @@ describe('Icons', () => {
   });
 
   it('passes size props correctly', () => {
-    const { container } = render(
-      <Icons.UserIcon size={32} data-testid="sized-icon" />
-    );
+    const { container } = render(<Icons.UserIcon size={32} data-testid="sized-icon" />);
     const icon = container.querySelector('[data-testid="sized-icon"]');
     expect(icon).toHaveAttribute('width', '32');
     expect(icon).toHaveAttribute('height', '32');
@@ -58,15 +56,13 @@ describe('Icons', () => {
   });
 
   it('renders spinner icon', () => {
-    const { container } = render(
-      <Icons.spinner data-testid="spinner-icon" />
-    );
+    const { container } = render(<Icons.spinner data-testid="spinner-icon" />);
     expect(container.querySelector('[data-testid="spinner-icon"]')).toBeInTheDocument();
   });
 
   it('renders correctly with various props', () => {
     const { container } = render(
-      <Icons.UserIcon 
+      <Icons.UserIcon
         className="test-class"
         size={24}
         stroke="red"
@@ -81,4 +77,4 @@ describe('Icons', () => {
     expect(icon).toHaveAttribute('stroke', 'red');
     expect(icon).toHaveAttribute('fill', 'blue');
   });
-}); 
+});

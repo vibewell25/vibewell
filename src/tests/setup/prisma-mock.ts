@@ -14,7 +14,7 @@ beforeEach(() => {
 
 // Mock the Prisma module
 jest.mock('@/lib/database/client', () => ({
-  prisma
+  prisma,
 }));
 
 /**
@@ -29,7 +29,7 @@ export const createMockUser = (overrides = {}) => ({
   role: 'USER',
   createdAt: new Date(),
   updatedAt: new Date(),
-  ...overrides
+  ...overrides,
 });
 
 // Create a mock service
@@ -41,7 +41,7 @@ export const createMockService = (overrides = {}) => ({
   duration: 60,
   createdAt: new Date(),
   updatedAt: new Date(),
-  ...overrides
+  ...overrides,
 });
 
 // Create a mock booking
@@ -55,7 +55,7 @@ export const createMockBooking = (overrides = {}) => ({
   status: 'PENDING',
   createdAt: new Date(),
   updatedAt: new Date(),
-  ...overrides
+  ...overrides,
 });
 
 // Create a mock review
@@ -68,7 +68,7 @@ export const createMockReview = (overrides = {}) => ({
   comment: 'Great service!',
   createdAt: new Date(),
   updatedAt: new Date(),
-  ...overrides
+  ...overrides,
 });
 
 // Create a mock payment intent
@@ -82,23 +82,23 @@ export const createMockPaymentIntent = (overrides = {}) => ({
   serviceId: 'service-id-123',
   createdAt: new Date(),
   updatedAt: new Date(),
-  ...overrides
+  ...overrides,
 });
 
 /**
  * Example usage in tests:
- * 
+ *
  * ```typescript
  * import { prisma, createMockUser } from '@/tests/setup/prisma-mock';
- * 
+ *
  * describe('User service', () => {
  *   it('should get user by id', async () => {
  *     const mockUser = createMockUser();
  *     prisma.user.findUnique.mockResolvedValue(mockUser);
- *     
+ *
  *     const userService = new UserService();
  *     const user = await userService.getUserById('user-id-123');
- *     
+ *
  *     expect(user).toEqual(mockUser);
  *     expect(prisma.user.findUnique).toHaveBeenCalledWith({
  *       where: { id: 'user-id-123' }
@@ -106,4 +106,4 @@ export const createMockPaymentIntent = (overrides = {}) => ({
  *   });
  * });
  * ```
- */ 
+ */

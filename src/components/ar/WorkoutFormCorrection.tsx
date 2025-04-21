@@ -35,7 +35,7 @@ const POSE_CONFIG = {
 
 const calculateAngle = (pose: poseDetection.Pose, joint: string): number => {
   const keypoints = pose.keypoints;
-  
+
   // Define joint connections for angle calculation
   const jointConnections: Record<string, [string, string, string]> = {
     knee: ['hip', 'knee', 'ankle'],
@@ -49,7 +49,7 @@ const calculateAngle = (pose: poseDetection.Pose, joint: string): number => {
   }
 
   const [p1Name, p2Name, p3Name] = jointConnections[joint];
-  
+
   const p1 = keypoints.find(kp => kp.name === p1Name);
   const p2 = keypoints.find(kp => kp.name === p2Name);
   const p3 = keypoints.find(kp => kp.name === p3Name);
@@ -155,7 +155,7 @@ const WorkoutFormCorrection: React.FC<WorkoutFormCorrectionProps> = ({
     if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     if (showGuideLines) {
       // Draw guide lines for ideal form
       drawGuideLines(ctx, exerciseType);
@@ -176,11 +176,7 @@ const WorkoutFormCorrection: React.FC<WorkoutFormCorrectionProps> = ({
   return (
     <div className="relative w-full max-w-2xl mx-auto">
       <div className="relative aspect-video">
-        <video
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover"
-          playsInline
-        />
+        <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" playsInline />
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full"
@@ -195,9 +191,7 @@ const WorkoutFormCorrection: React.FC<WorkoutFormCorrectionProps> = ({
         </h3>
         <div className="flex items-center gap-4">
           <button
-            className={`px-4 py-2 rounded ${
-              isAnalyzing ? 'bg-red-500' : 'bg-primary'
-            } text-white`}
+            className={`px-4 py-2 rounded ${isAnalyzing ? 'bg-red-500' : 'bg-primary'} text-white`}
             onClick={() => setIsAnalyzing(!isAnalyzing)}
           >
             {isAnalyzing ? 'Stop Analysis' : 'Start Analysis'}
@@ -206,7 +200,7 @@ const WorkoutFormCorrection: React.FC<WorkoutFormCorrectionProps> = ({
             <input
               type="checkbox"
               checked={showGuideLines}
-              onChange={(e) => showGuideLines = e.target.checked}
+              onChange={e => (showGuideLines = e.target.checked)}
               className="form-checkbox"
             />
             Show Guide Lines
@@ -217,4 +211,4 @@ const WorkoutFormCorrection: React.FC<WorkoutFormCorrectionProps> = ({
   );
 };
 
-export default WorkoutFormCorrection; 
+export default WorkoutFormCorrection;

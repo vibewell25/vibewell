@@ -25,18 +25,15 @@ export async function GET(request: Request) {
     const timezone = searchParams.get('timezone') || 'UTC';
 
     if (!practitionerId || !serviceId || !date) {
-      return NextResponse.json(
-        { error: 'Missing required parameters' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 });
     }
 
     // Get service details with business hours
     const service = await prisma.beautyService.findUnique({
       where: { id: serviceId },
       include: {
-        businessHours: true
-      }
+        businessHours: true,
+      },
     });
 
     if (!service) {
@@ -50,29 +47,29 @@ export async function GET(request: Request) {
     );
 
     if (!businessHours || businessHours.isClosed) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         availableSlots: [],
-        message: 'Business is closed on this day' 
+        message: 'Business is closed on this day',
       });
     }
 
     // Get practitioner's schedule for the day
     const practitionerData = await prisma.user.findFirst({
-      where: { 
+      where: {
         id: practitionerId,
-        role: 'PRACTITIONER'
+        role: 'PRACTITIONER',
       },
       include: {
         schedule: {
-          where: { dayOfWeek }
-        }
-      }
+          where: { dayOfWeek },
+        },
+      },
     });
 
     if (!practitionerData || practitionerData.schedule.length === 0) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         availableSlots: [],
-        message: 'No schedule found for this day' 
+        message: 'No schedule found for this day',
       });
     }
 
@@ -80,7 +77,7 @@ export async function GET(request: Request) {
     const practitionerSchedule = {
       ...schedule,
       practitionerId,
-      breaks: [] // You'll need to implement break time handling based on your requirements
+      breaks: [], // You'll need to implement break time handling based on your requirements
     };
 
     // Get all bookings for the practitioner on the specified date
@@ -97,17 +94,17 @@ export async function GET(request: Request) {
           lte: endOfDay,
         },
         status: {
-          in: [BookingStatus.PENDING, BookingStatus.CONFIRMED, BookingStatus.COMPLETED]
+          in: [BookingStatus.PENDING, BookingStatus.CONFIRMED, BookingStatus.COMPLETED],
         },
       },
       select: {
         date: true,
         service: {
           select: {
-            duration: true
-          }
-        }
-      }
+            duration: true,
+          },
+        },
+      },
     });
 
     // Generate all possible time slots
@@ -127,7 +124,7 @@ export async function GET(request: Request) {
       return practitionerSchedule.breaks.some((breakTime: BreakTime) => {
         const [breakStartHour, breakStartMinute] = breakTime.startTime.split(':').map(Number);
         const [breakEndHour, breakEndMinute] = breakTime.endTime.split(':').map(Number);
-        
+
         const breakStart = new Date(date);
         breakStart.setHours(breakStartHour, breakStartMinute, 0, 0);
         const breakEnd = new Date(date);
@@ -145,8 +142,10 @@ export async function GET(request: Request) {
     const overlapsWithBooking = (slotStart: Date, slotEnd: Date) => {
       return existingBookings.some(booking => {
         const bookingStart = new Date(booking.date);
-        const bookingEnd = new Date(bookingStart.getTime() + (booking.service?.duration || 0) * 60000);
-        
+        const bookingEnd = new Date(
+          bookingStart.getTime() + (booking.service?.duration || 0) * 60000
+        );
+
         return (
           (slotStart >= bookingStart && slotStart < bookingEnd) ||
           (slotEnd > bookingStart && slotEnd <= bookingEnd) ||
@@ -160,15 +159,16 @@ export async function GET(request: Request) {
       const slotEnd = new Date(currentTime.getTime() + serviceDuration * 60000);
       const slotWithBuffer = new Date(slotEnd.getTime() + bufferTime * 60000);
 
-      if (slotWithBuffer <= endTime &&
-          !overlapsWithBreak(currentTime, slotWithBuffer) &&
-          !overlapsWithBooking(currentTime, slotWithBuffer)) {
-        
+      if (
+        slotWithBuffer <= endTime &&
+        !overlapsWithBreak(currentTime, slotWithBuffer) &&
+        !overlapsWithBooking(currentTime, slotWithBuffer)
+      ) {
         const timeString = currentTime.toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
           hour12: false,
-          timeZone: timezone
+          timeZone: timezone,
         });
 
         slots.push(timeString);
@@ -188,14 +188,11 @@ export async function GET(request: Request) {
       },
       businessHours: {
         startTime: businessHours.openTime,
-        endTime: businessHours.closeTime
-      }
+        endTime: businessHours.closeTime,
+      },
     });
   } catch (error) {
     console.error('Error checking availability:', error);
-    return NextResponse.json(
-      { error: 'Failed to check availability' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to check availability' }, { status: 500 });
   }
-} 
+}

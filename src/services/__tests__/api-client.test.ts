@@ -16,7 +16,7 @@ describe('API Client', () => {
         ok: true,
         status: 200,
         json: jest.fn().mockResolvedValue({ data: 'test-data' }),
-        statusText: 'OK'
+        statusText: 'OK',
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -27,16 +27,16 @@ describe('API Client', () => {
       expect(global.fetch).toHaveBeenCalledWith('/test-endpoint', {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: undefined
+        body: undefined,
       });
 
       // Verify the response was processed correctly
       expect(result).toEqual({
         data: { data: 'test-data' },
         status: 200,
-        success: true
+        success: true,
       });
     });
 
@@ -46,7 +46,7 @@ describe('API Client', () => {
         ok: false,
         status: 404,
         json: jest.fn().mockResolvedValue({ error: 'Not found' }),
-        statusText: 'Not Found'
+        statusText: 'Not Found',
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -58,7 +58,7 @@ describe('API Client', () => {
         data: { error: 'Not found' },
         status: 404,
         success: false,
-        error: 'Not Found'
+        error: 'Not Found',
       });
     });
 
@@ -73,7 +73,7 @@ describe('API Client', () => {
       expect(result).toEqual({
         status: 0,
         success: false,
-        error: 'Network error'
+        error: 'Network error',
       });
     });
 
@@ -83,7 +83,7 @@ describe('API Client', () => {
         ok: true,
         status: 200,
         json: jest.fn().mockRejectedValue(new Error('Invalid JSON')),
-        statusText: 'OK'
+        statusText: 'OK',
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -94,7 +94,7 @@ describe('API Client', () => {
       expect(result).toEqual({
         status: 200,
         success: true,
-        error: undefined
+        error: undefined,
       });
     });
 
@@ -104,7 +104,7 @@ describe('API Client', () => {
         ok: true,
         status: 200,
         json: jest.fn().mockResolvedValue({ data: 'test-data' }),
-        statusText: 'OK'
+        statusText: 'OK',
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -112,8 +112,8 @@ describe('API Client', () => {
       const config = {
         baseUrl: 'https://api.example.com',
         headers: {
-          'Authorization': 'Bearer token123'
-        }
+          Authorization: 'Bearer token123',
+        },
       };
 
       // Make the request
@@ -124,9 +124,9 @@ describe('API Client', () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer token123'
+          Authorization: 'Bearer token123',
         },
-        body: undefined
+        body: undefined,
       });
     });
   });
@@ -138,7 +138,7 @@ describe('API Client', () => {
         ok: true,
         status: 201,
         json: jest.fn().mockResolvedValue({ id: 'new-resource-id' }),
-        statusText: 'Created'
+        statusText: 'Created',
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -152,16 +152,16 @@ describe('API Client', () => {
       expect(global.fetch).toHaveBeenCalledWith('/test-resource', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(postData)
+        body: JSON.stringify(postData),
       });
 
       // Verify the response was processed correctly
       expect(result).toEqual({
         data: { id: 'new-resource-id' },
         status: 201,
-        success: true
+        success: true,
       });
     });
   });
@@ -173,7 +173,7 @@ describe('API Client', () => {
         ok: true,
         status: 200,
         json: jest.fn().mockResolvedValue({ id: 'resource-id', updated: true }),
-        statusText: 'OK'
+        statusText: 'OK',
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -187,16 +187,16 @@ describe('API Client', () => {
       expect(global.fetch).toHaveBeenCalledWith('/test-resource/123', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(putData)
+        body: JSON.stringify(putData),
       });
 
       // Verify the response was processed correctly
       expect(result).toEqual({
         data: { id: 'resource-id', updated: true },
         status: 200,
-        success: true
+        success: true,
       });
     });
   });
@@ -208,7 +208,7 @@ describe('API Client', () => {
         ok: true,
         status: 204,
         json: jest.fn().mockRejectedValue(new Error('No content')), // No content to parse
-        statusText: 'No Content'
+        statusText: 'No Content',
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -219,15 +219,15 @@ describe('API Client', () => {
       expect(global.fetch).toHaveBeenCalledWith('/test-resource/123', {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: undefined
+        body: undefined,
       });
 
       // Verify the response was processed correctly
       expect(result).toEqual({
         status: 204,
-        success: true
+        success: true,
       });
     });
   });
@@ -239,7 +239,7 @@ describe('API Client', () => {
         ok: true,
         status: 200,
         json: jest.fn().mockResolvedValue({ id: 'resource-id', patched: true }),
-        statusText: 'OK'
+        statusText: 'OK',
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -253,17 +253,17 @@ describe('API Client', () => {
       expect(global.fetch).toHaveBeenCalledWith('/test-resource/123', {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(patchData)
+        body: JSON.stringify(patchData),
       });
 
       // Verify the response was processed correctly
       expect(result).toEqual({
         data: { id: 'resource-id', patched: true },
         status: 200,
-        success: true
+        success: true,
       });
     });
   });
-}); 
+});

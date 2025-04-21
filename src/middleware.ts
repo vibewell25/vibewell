@@ -34,15 +34,15 @@ const protectedRoutes: string[] = [
   '/bookings',
   '/wellness',
   '/community',
-  '/events'
+  '/events',
 ];
 
-// Define security-sensitive routes that require admin access 
+// Define security-sensitive routes that require admin access
 const adminRoutes = [
-  '/api-docs',  // Swagger UI route
-  '/swagger',   // Alternative Swagger route
-  '/admin',     // Admin dashboard
-  '/metrics',   // Performance metrics
+  '/api-docs', // Swagger UI route
+  '/swagger', // Alternative Swagger route
+  '/admin', // Admin dashboard
+  '/metrics', // Performance metrics
 ];
 
 // Security headers configuration
@@ -81,7 +81,7 @@ export enum ApiVersion {
   V2 = 'v2',
   V3 = 'v3',
   LEGACY = 'legacy',
-  LATEST = 'latest'
+  LATEST = 'latest',
 }
 
 // API version to path mapping
@@ -90,7 +90,7 @@ const API_VERSION_PATHS: Record<string, string> = {
   [ApiVersion.V2]: 'v2',
   [ApiVersion.V3]: 'v3',
   [ApiVersion.LEGACY]: 'legacy',
-  [ApiVersion.LATEST]: 'v3' // latest points to most recent version
+  [ApiVersion.LATEST]: 'v3', // latest points to most recent version
 };
 
 // Create a rate limiter instance
@@ -104,7 +104,7 @@ const RATE_LIMITED_PATHS = [
   '/api/auth/webauthn/register',
   '/api/auth/webauthn/verify',
   '/api/auth/webauthn/authenticate',
-  '/api/auth/webauthn/authenticators'
+  '/api/auth/webauthn/authenticators',
 ];
 
 /**
@@ -128,12 +128,12 @@ function isVersionedPath(path: string): boolean {
  */
 function normalizeApiPath(path: string, version: ApiVersion): string {
   const versionPath = API_VERSION_PATHS[version];
-  
+
   // If the path already includes a version, don't modify it
   if (path.match(/\/api\/v\d+\//)) {
     return path;
   }
-  
+
   return path.replace(/\/api\//, `/api/${versionPath}/`);
 }
 
@@ -143,14 +143,19 @@ function normalizeApiPath(path: string, version: ApiVersion): string {
 function extractVersionFromPath(path: string): ApiVersion | null {
   const match = path.match(/\/api\/(v\d+)\//);
   if (!match) return null;
-  
+
   const version = match[1];
   switch (version) {
-    case 'v1': return ApiVersion.V1;
-    case 'v2': return ApiVersion.V2;
-    case 'v3': return ApiVersion.V3;
-    case 'legacy': return ApiVersion.LEGACY;
-    default: return null;
+    case 'v1':
+      return ApiVersion.V1;
+    case 'v2':
+      return ApiVersion.V2;
+    case 'v3':
+      return ApiVersion.V3;
+    case 'legacy':
+      return ApiVersion.LEGACY;
+    default:
+      return null;
   }
 }
 
@@ -159,22 +164,41 @@ const API_PATH_PATTERN = /^\/api\/(?!auth|webhooks)/;
 
 /**
  * Parse API version from Accept header
- * 
+ *
  * Example: Accept: application/json;version=v2
  */
 function parseApiVersionFromAcceptHeader(acceptHeader: string | null): ApiVersion | null {
   if (!acceptHeader) return null;
-  
+
   const versionMatch = acceptHeader.match(/version=v(\d+)/);
   if (!versionMatch) return null;
-  
+
   const version = `v${versionMatch[1]}`;
   switch (version) {
-    case 'v1': return ApiVersion.V1;
-    case 'v2': return ApiVersion.V2;
-    case 'v3': return ApiVersion.V3;
-    default: return null;
+    case 'v1':
+      return ApiVersion.V1;
+    case 'v2':
+      return ApiVersion.V2;
+    case 'v3':
+      return ApiVersion.V3;
+    default:
+      return null;
   }
+}
+
+/**
+ * Add version information to response headers
+ */
+function addVersionHeaders(response: Response, version: ApiVersion): Response {
+  const headers = new Headers(response.headers);
+  headers.set('X-API-Version', version);
+  headers.set('X-API-Deprecated', version === ApiVersion.LEGACY ? 'true' : 'false');
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
 }
 
 /**
@@ -192,29 +216,29 @@ function addSecurityHeaders(response: NextResponse): NextResponse {
  */
 function handleApiVersioning(req: NextRequest): NextResponse | null {
   const path = req.nextUrl.pathname;
-  
+
   if (!isVersionedPath(path)) {
     return null;
   }
-  
+
   // Check Accept header for version
   const acceptVersion = parseApiVersionFromAcceptHeader(req.headers.get('Accept'));
-  
+
   // Check for version in path
   const pathVersion = extractVersionFromPath(path);
-  
+
   // Default to latest version if not specified
   const version = acceptVersion || pathVersion || ApiVersion.LATEST;
-  
+
   // Clone URL to modify it
   const url = req.nextUrl.clone();
-  
+
   // If path doesn't contain version, rewrite URL
   if (!pathVersion) {
     url.pathname = normalizeApiPath(path, version);
     return NextResponse.rewrite(url);
   }
-  
+
   return null;
 }
 
@@ -240,10 +264,10 @@ async function checkAdminAccess(req: NextRequest): Promise<boolean> {
     const res = NextResponse.next();
     const session = await getSession(req, res);
     if (!session || !session.user) return false;
-    
+
     const namespace = process.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell.com';
     const userRoles = session.user[`${namespace}/roles`] || [];
-    
+
     return userRoles.includes('admin');
   } catch (error) {
     console.error('Error checking admin access:', error);
@@ -265,7 +289,7 @@ function getClientIp(request: NextRequest): string {
  */
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
-  
+
   // Apply security middleware (includes CSRF protection & rate limiting)
   const securityResponse = await securityMiddleware(req);
   if (securityResponse.status !== 200) {
@@ -274,7 +298,7 @@ export async function middleware(req: NextRequest) {
       headers: securityResponse.headers as HeadersInit,
     });
   }
-  
+
   // Handle API versioning
   const versioningResponse = handleApiVersioning(req);
   if (versioningResponse) {
@@ -284,28 +308,28 @@ export async function middleware(req: NextRequest) {
   // Always apply security headers, even on public routes
   const response = NextResponse.next();
   addSecurityHeaders(response);
-  
+
   // Public routes are accessible without authentication
   if (isPublicPath(path)) {
     return response;
   }
-  
+
   // Get Auth0 session
   const session = await getSession(req, response);
   const isAuthenticated = !!session?.user;
-  
+
   // For protected routes, check if user is authenticated
   if (protectedRoutes.some(route => path.startsWith(route)) && !isAuthenticated) {
     const loginUrl = new URL('/auth/login', req.url);
     loginUrl.searchParams.set('returnTo', path);
     return NextResponse.redirect(loginUrl);
   }
-  
+
   // For admin routes, check if user is admin
   if (adminRoutes.some(route => path.startsWith(route)) && !(await checkAdminAccess(req))) {
     return NextResponse.redirect(new URL('/error/unauthorized', req.url));
   }
-  
+
   // Only apply rate limiting to specified paths
   if (RATE_LIMITED_PATHS.includes(path)) {
     try {
@@ -333,12 +357,12 @@ export async function middleware(req: NextRequest) {
       return response;
     }
   }
-  
+
   // Apply rate limiting only to API routes
   if (path.startsWith('/api')) {
     const ip = getClientIp(req);
     const { success, remaining, resetTime } = await rateLimitService.checkRateLimit(ip);
-    
+
     if (!success) {
       return new NextResponse('Too Many Requests', {
         status: 429,
@@ -354,8 +378,9 @@ export async function middleware(req: NextRequest) {
     response.headers.set('X-RateLimit-Remaining', remaining.toString());
     response.headers.set('X-RateLimit-Reset', resetTime.toString());
   }
-  
-  return response;
+
+  // Add version headers
+  return addVersionHeaders(response, extractVersionFromPath(path) || ApiVersion.LATEST);
 }
 
 export const config = {
@@ -368,4 +393,4 @@ export const config = {
      */
     '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
-}; 
+};

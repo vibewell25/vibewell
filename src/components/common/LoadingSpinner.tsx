@@ -33,4 +33,4 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
       </span>
     </div>
   );
-}; 
+};

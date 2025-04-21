@@ -3,27 +3,18 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
-export async function POST(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function POST(request: Request, { params }: { params: { id: string } }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { amount, message } = await request.json();
 
     // Validate amount
     if (!amount || amount <= 0) {
-      return NextResponse.json(
-        { error: 'Invalid tip amount' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid tip amount' }, { status: 400 });
     }
 
     // Check if booking exists and belongs to the user
@@ -82,9 +73,6 @@ export async function POST(
     return NextResponse.json({ tip });
   } catch (error) {
     console.error('Error creating tip:', error);
-    return NextResponse.json(
-      { error: 'Failed to create tip' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to create tip' }, { status: 500 });
   }
-} 
+}

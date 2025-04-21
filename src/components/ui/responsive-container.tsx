@@ -14,7 +14,7 @@ interface ResponsiveContainerProps {
 
 /**
  * ResponsiveContainer - A container component that adapts to different screen sizes
- * 
+ *
  * This component provides a consistent container with appropriate padding,
  * max-width, and other responsive behaviors based on the current screen size.
  */
@@ -28,22 +28,22 @@ export function ResponsiveContainer({
   stretchHeight = false,
 }: ResponsiveContainerProps) {
   const { deviceType } = useResponsive();
-  
+
   // Map maxWidth to Tailwind classes
   const maxWidthClasses = {
-    'xs': 'max-w-xs',
-    'sm': 'max-w-sm',
-    'md': 'max-w-md',
-    'lg': 'max-w-lg',
-    'xl': 'max-w-xl',
+    xs: 'max-w-xs',
+    sm: 'max-w-sm',
+    md: 'max-w-md',
+    lg: 'max-w-lg',
+    xl: 'max-w-xl',
     '2xl': 'max-w-2xl',
-    'full': 'max-w-full',
-    'screen': 'max-w-screen',
+    full: 'max-w-full',
+    screen: 'max-w-screen',
   };
-  
+
   // Determine padding based on device type and padding prop
   let paddingClasses = '';
-  
+
   if (padding === true) {
     // Responsive padding based on device type
     switch (deviceType) {
@@ -88,7 +88,7 @@ export function ResponsiveContainer({
         paddingClasses = 'py-4';
     }
   }
-  
+
   // Combine all classes
   const containerClasses = cn(
     'mx-auto w-full',
@@ -98,10 +98,6 @@ export function ResponsiveContainer({
     stretchHeight && 'h-full',
     className
   );
-  
-  return (
-    <Component className={containerClasses}>
-      {children}
-    </Component>
-  );
-} 
+
+  return <Component className={containerClasses}>{children}</Component>;
+}

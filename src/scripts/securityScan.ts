@@ -105,7 +105,7 @@ const securityChecks: SecurityCheck[] = [
       const files = await getAllFiles('src');
       for (const file of files) {
         const content = await fs.promises.readFile(file, 'utf-8');
-        if (content.includes('import helmet') || content.includes("import Helmet")) {
+        if (content.includes('import helmet') || content.includes('import Helmet')) {
           return true;
         }
       }
@@ -132,9 +132,9 @@ async function getAllFiles(dir: string): Promise<string[]> {
 
 async function runSecurityScan(): Promise<SecurityReport> {
   console.log(chalk.blue('Starting security scan...'));
-  
+
   const results = await Promise.all(
-    securityChecks.map(async (check) => {
+    securityChecks.map(async check => {
       process.stdout.write(chalk.yellow(`Running ${check.name}... `));
       const passed = await check.check();
       console.log(passed ? chalk.green('✓') : chalk.red('✗'));
@@ -149,9 +149,9 @@ async function runSecurityScan(): Promise<SecurityReport> {
 
   const summary = {
     total: results.length,
-    passed: results.filter((r) => r.passed).length,
-    failed: results.filter((r) => !r.passed).length,
-    highSeverityFailed: results.filter((r) => !r.passed && r.severity === 'HIGH').length,
+    passed: results.filter(r => r.passed).length,
+    failed: results.filter(r => !r.passed).length,
+    highSeverityFailed: results.filter(r => !r.passed && r.severity === 'HIGH').length,
   };
 
   const report: SecurityReport = {
@@ -163,8 +163,8 @@ async function runSecurityScan(): Promise<SecurityReport> {
   // Print report
   console.log('\nSecurity Scan Report:');
   console.log('===================\n');
-  
-  results.forEach((result) => {
+
+  results.forEach(result => {
     const icon = result.passed ? chalk.green('✓') : chalk.red('✗');
     const severity = chalk.yellow(`[${result.severity}]`);
     console.log(`${icon} ${severity} ${result.name}: ${result.description}`);
@@ -187,7 +187,7 @@ async function runSecurityScan(): Promise<SecurityReport> {
 }
 
 // Run the security scan
-runSecurityScan().catch((error) => {
+runSecurityScan().catch(error => {
   console.error(chalk.red('Error running security scan:'), error);
   process.exit(1);
-}); 
+});

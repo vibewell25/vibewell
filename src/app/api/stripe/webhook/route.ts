@@ -53,10 +53,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ received: true });
   } catch (error) {
     console.error('Webhook error:', error);
-    return NextResponse.json(
-      { error: 'Webhook handler failed' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Webhook handler failed' }, { status: 500 });
   }
 }
 
@@ -88,4 +85,4 @@ async function handleFailedPayment(invoice: Stripe.Invoice) {
   // Mark payment as failed in your database
   // Send notification to customer
   // Update subscription status
-} 
+}

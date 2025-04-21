@@ -40,12 +40,12 @@ export const db = {
        * @param columns Columns to select (defaults to all)
        */
       select: (columns?: string | string[]) => {
-        const select = columns 
-          ? Array.isArray(columns) 
+        const select = columns
+          ? Array.isArray(columns)
             ? columns.reduce((acc, col) => ({ ...acc, [col]: true }), {})
             : { [columns]: true }
           : undefined;
-          
+
         return {
           /**
            * Filter by a specific column value
@@ -56,14 +56,14 @@ export const db = {
             try {
               return prisma[table as keyof typeof prisma].findMany({
                 where: { [column]: value },
-                select
+                select,
               });
             } catch (error) {
               logger.error(`Database error in ${table}.select.eq:`, error);
               throw error;
             }
           },
-          
+
           /**
            * Order results by a column
            * @param column Column to order by
@@ -73,14 +73,14 @@ export const db = {
             try {
               return prisma[table as keyof typeof prisma].findMany({
                 orderBy: { [column]: direction },
-                select
+                select,
               });
             } catch (error) {
               logger.error(`Database error in ${table}.select.order:`, error);
               throw error;
             }
           },
-          
+
           /**
            * Limit the number of results
            * @param count Maximum number of results
@@ -89,30 +89,30 @@ export const db = {
             try {
               return prisma[table as keyof typeof prisma].findMany({
                 take: count,
-                select
+                select,
               });
             } catch (error) {
               logger.error(`Database error in ${table}.select.limit:`, error);
               throw error;
             }
           },
-          
+
           /**
            * Execute the query
            */
           execute: () => {
             try {
               return prisma[table as keyof typeof prisma].findMany({
-                select
+                select,
               });
             } catch (error) {
               logger.error(`Database error in ${table}.select.execute:`, error);
               throw error;
             }
-          }
+          },
         };
       },
-      
+
       /**
        * Insert data into the table
        * @param data Data to insert
@@ -120,14 +120,14 @@ export const db = {
       insert: (data: any) => {
         try {
           return prisma[table as keyof typeof prisma].create({
-            data
+            data,
           });
         } catch (error) {
           logger.error(`Database error in ${table}.insert:`, error);
           throw error;
         }
       },
-      
+
       /**
        * Update data in the table
        * @param data Data to update
@@ -143,16 +143,16 @@ export const db = {
             try {
               return prisma[table as keyof typeof prisma].updateMany({
                 where: { [column]: value },
-                data
+                data,
               });
             } catch (error) {
               logger.error(`Database error in ${table}.update.eq:`, error);
               throw error;
             }
-          }
+          },
         };
       },
-      
+
       /**
        * Delete data from the table
        */
@@ -166,18 +166,18 @@ export const db = {
           eq: (column: string, value: any) => {
             try {
               return prisma[table as keyof typeof prisma].deleteMany({
-                where: { [column]: value }
+                where: { [column]: value },
               });
             } catch (error) {
               logger.error(`Database error in ${table}.delete.eq:`, error);
               throw error;
             }
-          }
+          },
         };
-      }
+      },
     };
   },
-  
+
   /**
    * Start a transaction
    * @param id Optional transaction ID
@@ -185,7 +185,7 @@ export const db = {
   transaction: async (id?: string) => {
     const txId = id || `tx-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
     try {
-      const tx = await prisma.$transaction(async (prisma) => {
+      const tx = await prisma.$transaction(async prisma => {
         activeTransactions.set(txId, prisma);
         return txId;
       });
@@ -195,7 +195,7 @@ export const db = {
       throw error;
     }
   },
-  
+
   /**
    * Commit a transaction
    * @param id Transaction ID
@@ -209,7 +209,7 @@ export const db = {
       throw error;
     }
   },
-  
+
   /**
    * Rollback a transaction
    * @param id Transaction ID
@@ -222,9 +222,9 @@ export const db = {
       logger.error(`Database error rolling back transaction ${id}:`, error);
       throw error;
     }
-  }
+  },
 };
 
 // For compatibility with existing code
 export { db as database, db as supabase };
-export { prisma }; 
+export { prisma };

@@ -2,4 +2,4 @@
 
 declare namespace jest {
   interface Matchers<R> extends jest.Matchers<R> {}
-} 
+}

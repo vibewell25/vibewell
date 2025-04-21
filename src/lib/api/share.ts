@@ -15,4 +15,4 @@ export async function getShareData(id: string): Promise<ShareData | null> {
     console.error('Error fetching share data:', error);
     return null;
   }
-} 
+}

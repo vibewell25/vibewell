@@ -60,15 +60,15 @@ export default function useProviderReviews(providerId?: string) {
       4: 0,
       3: 0,
       2: 0,
-      1: 0
+      1: 0,
     },
     categories: {
       cleanliness: 0,
       value: 0,
       service: 0,
       communication: 0,
-      expertise: 0
-    }
+      expertise: 0,
+    },
   });
 
   // Use the base reviews hook
@@ -80,7 +80,7 @@ export default function useProviderReviews(providerId?: string) {
     addReview,
     updateReview,
     deleteReview,
-    getAverageRating
+    getAverageRating,
   } = useReviews(providerId);
 
   // Cast reviews to include the categories
@@ -98,8 +98,8 @@ export default function useProviderReviews(providerId?: string) {
           value: 0,
           service: 0,
           communication: 0,
-          expertise: 0
-        }
+          expertise: 0,
+        },
       });
       return;
     }
@@ -118,11 +118,11 @@ export default function useProviderReviews(providerId?: string) {
       value: 0,
       service: 0,
       communication: 0,
-      expertise: 0
+      expertise: 0,
     };
-    
+
     let categoryCount = 0;
-    
+
     reviews.forEach(review => {
       if (review.categories) {
         categoryCount++;
@@ -134,19 +134,22 @@ export default function useProviderReviews(providerId?: string) {
       }
     });
 
-    const categoryAverages = categoryCount > 0 ? {
-      cleanliness: parseFloat((categoryTotals.cleanliness / categoryCount).toFixed(1)),
-      value: parseFloat((categoryTotals.value / categoryCount).toFixed(1)),
-      service: parseFloat((categoryTotals.service / categoryCount).toFixed(1)),
-      communication: parseFloat((categoryTotals.communication / categoryCount).toFixed(1)),
-      expertise: parseFloat((categoryTotals.expertise / categoryCount).toFixed(1))
-    } : undefined;
+    const categoryAverages =
+      categoryCount > 0
+        ? {
+            cleanliness: parseFloat((categoryTotals.cleanliness / categoryCount).toFixed(1)),
+            value: parseFloat((categoryTotals.value / categoryCount).toFixed(1)),
+            service: parseFloat((categoryTotals.service / categoryCount).toFixed(1)),
+            communication: parseFloat((categoryTotals.communication / categoryCount).toFixed(1)),
+            expertise: parseFloat((categoryTotals.expertise / categoryCount).toFixed(1)),
+          }
+        : undefined;
 
     setSummary({
       averageRating: getAverageRating(),
       totalReviews: reviews.length,
       ratingDistribution: distribution,
-      categories: categoryAverages
+      categories: categoryAverages,
     });
   }, [reviews, getAverageRating]);
 
@@ -177,6 +180,6 @@ export default function useProviderReviews(providerId?: string) {
     deleteReview,
     getRatingPercentage,
     getRecentReviews,
-    getReviewsByRating
+    getReviewsByRating,
   };
-} 
+}

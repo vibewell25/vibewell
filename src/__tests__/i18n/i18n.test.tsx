@@ -28,25 +28,25 @@ beforeAll(async () => {
         common: {
           welcome: 'Welcome to Vibewell',
           actions: {
-            save: 'Save'
-          }
-        }
+            save: 'Save',
+          },
+        },
       },
       es: {
         common: {
           welcome: 'Bienvenido a Vibewell',
           actions: {
-            save: 'Guardar'
-          }
-        }
-      }
+            save: 'Guardar',
+          },
+        },
+      },
     },
     interpolation: {
       escapeValue: false,
     },
     react: {
-      useSuspense: false // Disable suspense for tests
-    }
+      useSuspense: false, // Disable suspense for tests
+    },
   });
 });
 
@@ -88,4 +88,4 @@ describe('Internationalization', () => {
     expect(screen.getByText('Welcome to Vibewell')).toBeInTheDocument();
     expect(screen.getByText('Save')).toBeInTheDocument();
   });
-}); 
+});

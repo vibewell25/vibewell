@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import React from 'react';
 import BaseCheckbox from '../BaseCheckbox';
@@ -35,8 +35,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       errorClassName="mt-1 text-xs text-red-600"
       helperTextClassName="mt-1 text-xs text-gray-500"
       checkboxClassName={cn(
-        "h-4 w-4 rounded border-gray-300",
-        error ? "border-red-300" : "border-gray-300",
+        'h-4 w-4 rounded border-gray-300',
+        error ? 'border-red-300' : 'border-gray-300',
         variantClasses[variant],
         className
       )}
@@ -46,4 +46,4 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   );
 };
 
-export default Checkbox; 
+export default Checkbox;

@@ -19,10 +19,10 @@ export async function POST(req: NextRequest) {
     if (rateLimitResponse) {
       return rateLimitResponse; // Rate limit exceeded
     }
-    
+
     // Parse request body
     const body = await req.json();
-    
+
     // Validate the request body
     const result = eventSchema.safeParse(body);
     if (!result.success) {
@@ -31,20 +31,21 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     // Get validated data
     const { event, properties, session_id } = result.data;
-    
+
     // Create Supabase client
     const supabase = createRouteHandlerClient({ cookies });
-    
+
     // Get current user if authenticated
-    const { data: { user } } = await supabase.auth.getUser();
-    
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
     // Generate unique session ID if not provided
-    const sessionId = session_id || 
-      randomBytes(16).toString('hex');
-    
+    const sessionId = session_id || randomBytes(16).toString('hex');
+
     // Create the analytics event
     const analyticsEvent = {
       event,
@@ -53,20 +54,15 @@ export async function POST(req: NextRequest) {
       timestamp: new Date().toISOString(),
       properties,
     };
-    
+
     // Insert the event into the analytics_events table
-    const { error } = await supabase
-      .from('analytics_events')
-      .insert([analyticsEvent]);
-    
+    const { error } = await supabase.from('analytics_events').insert([analyticsEvent]);
+
     if (error) {
       console.error('Error tracking analytics event:', error);
-      return NextResponse.json(
-        { error: 'Failed to store analytics event' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: 'Failed to store analytics event' }, { status: 500 });
     }
-    
+
     // Return success response with the session ID for client-side tracking
     return NextResponse.json({
       success: true,
@@ -75,17 +71,11 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error('Error in analytics track endpoint:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
 // Only allow POST requests to this endpoint
 export async function GET() {
-  return NextResponse.json(
-    { error: 'Method not allowed' },
-    { status: 405 }
-  );
-} 
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+}

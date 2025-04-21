@@ -12,7 +12,6 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { VirtualTryOn } from '../../components/VirtualTryOn/VirtualTryOn';
-;
 import { GetServerSideProps } from 'next';
 import { prisma } from '../../lib/prisma';
 
@@ -36,7 +35,7 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
 
   const handleTryOnComplete = (resultUrl: string) => {
     // Update history with new try-on
-    setTryOnHistory((prev) => [
+    setTryOnHistory(prev => [
       {
         id: Date.now().toString(),
         imageUrl: '',
@@ -55,8 +54,8 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
             Virtual Try-On
           </Heading>
           <Text color="gray.600">
-            Experience how different styles and looks would suit you using our
-            virtual try-on technology.
+            Experience how different styles and looks would suit you using our virtual try-on
+            technology.
           </Text>
         </Box>
 
@@ -72,21 +71,14 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
                   Your Try-On History
                 </Heading>
                 <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-                  {tryOnHistory.map((item) => (
+                  {tryOnHistory.map(item => (
                     <Card key={item.id}>
                       <CardBody>
-                        <Image
-                          src={item.resultUrl}
-                          alt="Try-on result"
-                          borderRadius="lg"
-                          mb={4}
-                        />
+                        <Image src={item.resultUrl} alt="Try-on result" borderRadius="lg" mb={4} />
                         <Text fontSize="sm" color="gray.500">
                           {new Date(item.createdAt).toLocaleDateString()}
                         </Text>
-                        {item.service && (
-                          <Text fontWeight="medium">{item.service.name}</Text>
-                        )}
+                        {item.service && <Text fontWeight="medium">{item.service.name}</Text>}
                         <Button
                           size="sm"
                           variant="ghost"
@@ -94,9 +86,7 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
                           mt={2}
                           onClick={() => {
                             // Implement delete functionality
-                            setTryOnHistory((prev) =>
-                              prev.filter((h) => h.id !== item.id)
-                            );
+                            setTryOnHistory(prev => prev.filter(h => h.id !== item.id));
                           }}
                         >
                           Delete
@@ -109,18 +99,9 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
             )}
           </>
         ) : (
-          <Box
-            bg="gray.50"
-            p={8}
-            borderRadius="lg"
-            textAlign="center"
-          >
-            <Text mb={4}>
-              Please sign in to use the virtual try-on feature.
-            </Text>
-            <Button colorScheme="blue">
-              Sign In
-            </Button>
+          <Box bg="gray.50" p={8} borderRadius="lg" textAlign="center">
+            <Text mb={4}>Please sign in to use the virtual try-on feature.</Text>
+            <Button colorScheme="blue">Sign In</Button>
           </Box>
         )}
       </VStack>
@@ -128,7 +109,7 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async context => {
   // Get user's try-on history
   const history = await prisma.virtualTryOn.findMany({
     where: {
@@ -152,10 +133,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      history: history.map((item) => ({
+      history: history.map(item => ({
         ...item,
         createdAt: item.createdAt.toISOString(),
       })),
     },
   };
-}; 
+};

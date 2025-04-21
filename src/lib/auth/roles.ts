@@ -39,12 +39,7 @@ export const rolePermissions: RolePermissions = {
     'manage_reviews',
     'manage_loyalty',
   ],
-  user: [
-    'view_content',
-    'book_services',
-    'write_reviews',
-    'earn_points',
-  ],
+  user: ['view_content', 'book_services', 'write_reviews', 'earn_points'],
 };
 
 export const hasPermission = (role: Role, permission: Permission): boolean => {
@@ -53,4 +48,4 @@ export const hasPermission = (role: Role, permission: Permission): boolean => {
 
 export const getRolePermissions = (role: Role): Permission[] => {
   return rolePermissions[role] || [];
-}; 
+};

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 
 // Notification type definitions
 export type NotificationType = 'like' | 'comment' | 'follow' | 'message' | 'system';
@@ -29,11 +29,11 @@ const DUMMY_NOTIFICATIONS: Notification[] = [
     from: {
       id: 'user1',
       name: 'Emma Thompson',
-      avatar: '/avatar1.png'
+      avatar: '/avatar1.png',
     },
     createdAt: '2023-07-15T09:30:00.000Z',
     read: false,
-    actionUrl: '/social'
+    actionUrl: '/social',
   },
   {
     id: 'notif2',
@@ -42,11 +42,11 @@ const DUMMY_NOTIFICATIONS: Notification[] = [
     from: {
       id: 'user2',
       name: 'David Chen',
-      avatar: '/avatar2.png'
+      avatar: '/avatar2.png',
     },
     createdAt: '2023-07-14T14:45:00.000Z',
     read: false,
-    actionUrl: '/social'
+    actionUrl: '/social',
   },
   // More notifications from the notifications page...
 ];
@@ -104,33 +104,27 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       createdAt: new Date().toISOString(),
       read: false,
     };
-    
+
     setNotifications(prev => [newNotification, ...prev]);
   };
 
   // Mark notification as read
   const markAsRead = (id: string) => {
-    setNotifications(prev => 
-      prev.map(notification => 
-        notification.id === id 
-          ? { ...notification, read: true } 
-          : notification
+    setNotifications(prev =>
+      prev.map(notification =>
+        notification.id === id ? { ...notification, read: true } : notification
       )
     );
   };
 
   // Mark all notifications as read
   const markAllAsRead = () => {
-    setNotifications(prev => 
-      prev.map(notification => ({ ...notification, read: true }))
-    );
+    setNotifications(prev => prev.map(notification => ({ ...notification, read: true })));
   };
 
   // Delete a notification
   const deleteNotification = (id: string) => {
-    setNotifications(prev => 
-      prev.filter(notification => notification.id !== id)
-    );
+    setNotifications(prev => prev.filter(notification => notification.id !== id));
   };
 
   // Clear all notifications
@@ -153,4 +147,4 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       {children}
     </NotificationContext.Provider>
   );
-} 
+}

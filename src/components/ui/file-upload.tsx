@@ -20,16 +20,16 @@ interface FileUploadProps {
 // Utility functions
 const formatFileSize = (bytes: number): string => {
   if (bytes === 0) return '0 Bytes';
-  
+
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  
+
   return `${parseFloat((bytes / Math.pow(1024, i)).toFixed(2))} ${sizes[i]}`;
 };
 
 const getFileIcon = (file: File) => {
   const type = file.type.split('/')[0];
-  
+
   switch (type) {
     case 'image':
       return <Image className="h-8 w-8 text-blue-500" />;
@@ -44,7 +44,7 @@ const getFileIcon = (file: File) => {
 
 const getAcceptString = (acceptedFileTypes?: Record<string, string[]>): string => {
   if (!acceptedFileTypes) return '';
-  
+
   return Object.entries(acceptedFileTypes)
     .flatMap(([mimeType, extensions]) => {
       // If it's a wildcard mime type like 'image/*', include it
@@ -79,39 +79,39 @@ const FileDropZone: React.FC<FileDropZoneProps> = ({
   disabled,
   isDragging,
   setIsDragging,
-  fileInputRef
+  fileInputRef,
 }) => {
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     if (!disabled) setIsDragging(true);
   };
-  
+
   const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
   };
-  
+
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
-    
+
     if (disabled) return;
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const droppedFiles = Array.from(e.dataTransfer.files);
       onFilesDrop(droppedFiles);
     }
   };
-  
+
   return (
     <div
       className={cn(
-        "border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors",
-        isDragging ? "border-primary bg-primary/5" : "border-border hover:border-primary/50",
-        disabled && "opacity-50 cursor-not-allowed"
+        'border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors',
+        isDragging ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50',
+        disabled && 'opacity-50 cursor-not-allowed'
       )}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -120,9 +120,7 @@ const FileDropZone: React.FC<FileDropZoneProps> = ({
     >
       <div className="flex flex-col items-center justify-center space-y-2">
         <Upload className="h-10 w-10 text-muted-foreground mb-2" />
-        <p className="text-sm font-medium">
-          Drag and drop files here, or click to select files
-        </p>
+        <p className="text-sm font-medium">Drag and drop files here, or click to select files</p>
         <p className="text-xs text-muted-foreground">
           {acceptedFileTypes
             ? `Accepted file types: ${Object.keys(acceptedFileTypes)
@@ -143,7 +141,7 @@ const FileDropZone: React.FC<FileDropZoneProps> = ({
         onChange={e => {
           if (e.target.files?.length) {
             onFilesDrop(Array.from(e.target.files));
-            
+
             // Reset input value so the same file can be selected again if removed
             if (fileInputRef.current) {
               fileInputRef.current.value = '';
@@ -163,7 +161,7 @@ interface FileErrorsProps {
 
 const FileErrors: React.FC<FileErrorsProps> = ({ errors }) => {
   if (errors.length === 0) return null;
-  
+
   return (
     <div className="bg-destructive/10 text-destructive rounded-md p-3">
       <p className="font-bold text-sm mb-1">Error:</p>
@@ -198,7 +196,7 @@ const FileItem: React.FC<FileItemProps> = ({ file, progress, onRemove }) => {
         variant="ghost"
         size="sm"
         className="h-8 w-8 p-0"
-        onClick={(e) => {
+        onClick={e => {
           e.stopPropagation();
           onRemove(file);
         }}
@@ -219,7 +217,7 @@ interface FileListProps {
 
 const FileList: React.FC<FileListProps> = ({ files, progress, onRemove }) => {
   if (files.length === 0) return null;
-  
+
   return (
     <div className="space-y-2">
       <p className="text-sm font-medium">Selected Files ({files.length})</p>
@@ -244,81 +242,81 @@ export function FileUpload({
   maxFiles = 10,
   maxFileSize = 10, // 10MB default
   acceptedFileTypes,
-  disabled = false
+  disabled = false,
 }: FileUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
   const [errors, setErrors] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   // Check if file type is accepted
   const isFileTypeAccepted = (file: File): boolean => {
     if (!acceptedFileTypes) return true;
-    
+
     return Object.entries(acceptedFileTypes).some(([mimeType, extensions]) => {
       // Check if file matches mime type pattern (e.g., 'image/*')
       if (mimeType.endsWith('/*') && file.type.startsWith(mimeType.replace('/*', '/'))) {
         return true;
       }
-      
+
       // Check if file extension is in the accepted list
       const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
       return extensions.includes(fileExtension);
     });
   };
-  
+
   // Validate files before adding
   const validateFiles = (files: File[]): File[] => {
     const validFiles: File[] = [];
     const errorMessages: string[] = [];
-    
+
     // Check if adding these files would exceed the maxFiles limit
     if (selectedFiles.length + files.length > maxFiles) {
       errorMessages.push(`You can only upload a maximum of ${maxFiles} files.`);
       // Only take as many files as we can fit
       files = files.slice(0, maxFiles - selectedFiles.length);
     }
-    
+
     for (const file of files) {
       // Check file size
       if (file.size > maxFileSize * 1024 * 1024) {
         errorMessages.push(`${file.name} exceeds the maximum file size of ${maxFileSize}MB.`);
         continue;
       }
-      
+
       // Check file type
       if (!isFileTypeAccepted(file)) {
         errorMessages.push(`${file.name} has an unsupported file type.`);
         continue;
       }
-      
+
       // Check if file with same name already exists
       if (selectedFiles.some(selectedFile => selectedFile.name === file.name)) {
         errorMessages.push(`${file.name} is already added.`);
         continue;
       }
-      
+
       validFiles.push(file);
-      
+
       // Initialize progress for valid files
       setUploadProgress(prev => ({
         ...prev,
-        [file.name]: 0
+        [file.name]: 0,
       }));
-      
+
       // Simulate upload progress
       simulateFileUploadProgress(file.name);
     }
-    
+
     if (errorMessages.length > 0) {
       setErrors(errorMessages);
       // Clear errors after 5 seconds
       setTimeout(() => setErrors([]), 5000);
     }
-    
+
     return validFiles;
   };
-  
+
   // Simulate file upload progress
   const simulateFileUploadProgress = (fileName: string) => {
     let progress = 0;
@@ -328,28 +326,28 @@ export function FileUpload({
         progress = 100;
         clearInterval(interval);
       }
-      
+
       setUploadProgress(prev => ({
         ...prev,
-        [fileName]: Math.min(progress, 100)
+        [fileName]: Math.min(progress, 100),
       }));
     }, 200);
   };
-  
+
   // Handle files processing
   const handleProcessFiles = (files: File[]) => {
     const validFiles = validateFiles(files);
-    
+
     if (validFiles.length > 0) {
       onFilesSelected([...selectedFiles, ...validFiles]);
     }
   };
-  
+
   // Remove a file from the selection
   const handleRemoveFile = (fileToRemove: File) => {
     const updatedFiles = selectedFiles.filter(file => file !== fileToRemove);
     onFilesSelected(updatedFiles);
-    
+
     // Remove progress entry for the file
     setUploadProgress(prev => {
       const newProgress = { ...prev };
@@ -357,7 +355,7 @@ export function FileUpload({
       return newProgress;
     });
   };
-  
+
   return (
     <div className="space-y-4">
       <FileDropZone
@@ -371,14 +369,10 @@ export function FileUpload({
         setIsDragging={setIsDragging}
         fileInputRef={fileInputRef}
       />
-      
+
       <FileErrors errors={errors} />
-      
-      <FileList
-        files={selectedFiles}
-        progress={uploadProgress}
-        onRemove={handleRemoveFile}
-      />
+
+      <FileList files={selectedFiles} progress={uploadProgress} onRemove={handleRemoveFile} />
     </div>
   );
-} 
+}

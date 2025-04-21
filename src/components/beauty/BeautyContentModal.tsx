@@ -1,5 +1,5 @@
 import { Icons } from '@/components/icons';
-'use client';
+('use client');
 import { useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { ContentTypeSelector } from '@/components/wellness/ContentTypeSelector';
@@ -32,13 +32,8 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="mx-auto max-w-2xl w-full bg-white rounded-lg shadow-xl">
           <div className="flex items-center justify-between p-6 border-b">
-            <Dialog.Title className="text-xl font-semibold">
-              Create Beauty Content
-            </Dialog.Title>
-            <button
-              onClick={onClose}
-              className="text-muted-foreground hover:text-foreground"
-            >
+            <Dialog.Title className="text-xl font-semibold">Create Beauty Content</Dialog.Title>
+            <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
               <Icons.XMarkIcon className="h-6 w-6" />
             </button>
           </div>
@@ -52,7 +47,7 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                   type="text"
                   id="title"
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={e => setTitle(e.target.value)}
                   className="form-input w-full"
                   required
                 />
@@ -64,7 +59,7 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                 <textarea
                   id="description"
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={e => setDescription(e.target.value)}
                   className="form-textarea w-full"
                   rows={4}
                   required
@@ -77,7 +72,7 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                 <select
                   id="category"
                   value={category}
-                  onChange={(e) => setCategory(e.target.value)}
+                  onChange={e => setCategory(e.target.value)}
                   className="form-select w-full"
                   required
                 >
@@ -98,7 +93,7 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                   type="text"
                   id="duration"
                   value={duration}
-                  onChange={(e) => setDuration(e.target.value)}
+                  onChange={e => setDuration(e.target.value)}
                   className="form-input w-full"
                   placeholder="e.g., 30 mins"
                   required
@@ -111,7 +106,7 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                 <select
                   id="level"
                   value={level}
-                  onChange={(e) => setLevel(e.target.value)}
+                  onChange={e => setLevel(e.target.value)}
                   className="form-select w-full"
                   required
                 >
@@ -121,27 +116,15 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">
-                  Content Type
-                </label>
-                <ContentTypeSelector
-                  selectedType={contentType}
-                  onSelectType={setContentType}
-                />
+                <label className="block text-sm font-medium mb-2">Content Type</label>
+                <ContentTypeSelector selectedType={contentType} onSelectType={setContentType} />
               </div>
             </div>
             <div className="mt-8 flex justify-end gap-4">
-              <button
-                type="button"
-                onClick={onClose}
-                className="btn-secondary"
-              >
+              <button type="button" onClick={onClose} className="btn-secondary">
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="btn-primary"
-              >
+              <button type="submit" className="btn-primary">
                 Create Content
               </button>
             </div>
@@ -150,4 +133,4 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
       </div>
     </Dialog>
   );
-} 
+}

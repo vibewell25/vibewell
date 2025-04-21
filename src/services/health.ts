@@ -17,14 +17,14 @@ export interface HealthStatus {
 export async function fetchHealthStatus(): Promise<HealthStatus> {
   try {
     const response = await fetch('/api/health');
-    
+
     if (!response.ok) {
       throw new Error(`Health check failed with status: ${response.status}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error('Health check failed:', error);
     throw new Error('Failed to fetch health status');
   }
-} 
+}

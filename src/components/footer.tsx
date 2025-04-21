@@ -65,15 +65,15 @@ export function Footer() {
               <span className="text-2xl font-bold text-primary">Vibewell</span>
             </Link>
             <p className="text-muted-foreground max-w-xs">
-              Personalized wellness experiences connecting you with experts and content
-              tailored to your wellness journey.
+              Personalized wellness experiences connecting you with experts and content tailored to
+              your wellness journey.
             </p>
           </div>
 
           <div>
             <h3 className="text-foreground font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-3">
-              {footerNavigation.main.map((item) => (
+              {footerNavigation.main.map(item => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
@@ -89,7 +89,7 @@ export function Footer() {
           <div>
             <h3 className="text-foreground font-semibold mb-4">Legal</h3>
             <ul className="space-y-3">
-              {footerNavigation.legal.map((item) => (
+              {footerNavigation.legal.map(item => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
@@ -103,7 +103,7 @@ export function Footer() {
 
             <h3 className="text-foreground font-semibold mt-6 mb-4">Follow Us</h3>
             <div className="flex space-x-4">
-              {footerNavigation.social.map((item) => (
+              {footerNavigation.social.map(item => (
                 <a
                   key={item.name}
                   href={item.href}
@@ -127,4 +127,4 @@ export function Footer() {
       </div>
     </footer>
   );
-} 
+}

@@ -84,7 +84,7 @@ export class AppError extends Error {
     this.category = options.category || ErrorCategory.UNKNOWN;
     this.context = options.context || {};
     this.originalError = options.originalError;
-    this.isSilent = options.isSilent || false; 
+    this.isSilent = options.isSilent || false;
     this.shouldRetry = options.shouldRetry || false;
     this.retryCount = options.retryCount || 0;
     this.maxRetries = options.maxRetries || 3;
@@ -149,7 +149,7 @@ export function getBrowserInfo(): Record<string, any> {
       height: window.innerHeight,
     },
     pixelRatio: window.devicePixelRatio,
-    connection: navigator.connection 
+    connection: navigator.connection
       ? {
           effectiveType: (navigator.connection as any).effectiveType,
           downlink: (navigator.connection as any).downlink,
@@ -168,13 +168,15 @@ class ErrorTrackingService {
   private debugMode = false;
 
   // Initialize the error tracking service
-  public init(options: { 
-    errorHandler?: (error: AppError) => void;
-    captureConsoleErrors?: boolean;
-    capturePromiseRejections?: boolean;
-    captureWindowErrors?: boolean;
-    debug?: boolean;
-  } = {}) {
+  public init(
+    options: {
+      errorHandler?: (error: AppError) => void;
+      captureConsoleErrors?: boolean;
+      capturePromiseRejections?: boolean;
+      captureWindowErrors?: boolean;
+      debug?: boolean;
+    } = {}
+  ) {
     if (this.isInitialized) return;
 
     this.errorHandler = options.errorHandler;
@@ -190,7 +192,7 @@ class ErrorTrackingService {
 
     // Capture unhandled promise rejections
     if (options.capturePromiseRejections && typeof window !== 'undefined') {
-      window.addEventListener('unhandledrejection', (event) => {
+      window.addEventListener('unhandledrejection', event => {
         this.captureError(event.reason, {
           severity: ErrorSeverity.HIGH,
           category: ErrorCategory.UNKNOWN,
@@ -204,7 +206,7 @@ class ErrorTrackingService {
 
     // Capture window errors
     if (options.captureWindowErrors && typeof window !== 'undefined') {
-      window.addEventListener('error', (event) => {
+      window.addEventListener('error', event => {
         this.captureError(event.error || event.message, {
           severity: ErrorSeverity.HIGH,
           category: ErrorCategory.UNKNOWN,
@@ -222,7 +224,7 @@ class ErrorTrackingService {
     }
 
     this.isInitialized = true;
-    
+
     // Process any queued errors
     if (this.queuedErrors.length > 0) {
       this.processQueuedErrors();
@@ -280,9 +282,9 @@ class ErrorTrackingService {
   // Capture errors from console.error
   private captureConsoleError(args: any[]) {
     // Extract meaningful info from console.error arguments
-    const errorMessage = args.map(arg => 
-      typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
-    ).join(' ');
+    const errorMessage = args
+      .map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : String(arg)))
+      .join(' ');
 
     const error = args.find(arg => arg instanceof Error);
     if (error) {
@@ -307,7 +309,7 @@ class ErrorTrackingService {
   // Report exception from try/catch blocks or error boundaries
   public reportException(error: Error | unknown, context?: Partial<ErrorContext>): AppError {
     let appError: AppError;
-    
+
     if (error instanceof AppError) {
       appError = error;
       // Update context if provided
@@ -320,16 +322,14 @@ class ErrorTrackingService {
         context,
       });
     } else {
-      const errorMessage = typeof error === 'string' 
-        ? error 
-        : 'An unknown error occurred';
-      
+      const errorMessage = typeof error === 'string' ? error : 'An unknown error occurred';
+
       appError = this.captureError(errorMessage, {
         severity: ErrorSeverity.HIGH,
         context,
       });
     }
-    
+
     return appError;
   }
 
@@ -348,7 +348,7 @@ export const errorTrackingService = new ErrorTrackingService();
 // React hook for error reporting within components
 export function useErrorTracking() {
   return {
-    reportError: (error: Error | string, options: ErrorOptions = {}) => 
+    reportError: (error: Error | string, options: ErrorOptions = {}) =>
       errorTrackingService.captureError(error, options),
     trackAction: (action: string, fn: () => void) => {
       try {
@@ -360,7 +360,7 @@ export function useErrorTracking() {
         throw error;
       }
     },
-    trackPromise: <T>(action: string, promise: Promise<T>) => 
+    trackPromise: <T>(action: string, promise: Promise<T>) =>
       promise.catch(error => {
         errorTrackingService.captureError(error, {
           context: { action },
@@ -378,4 +378,4 @@ export function initErrorTracking(options = {}) {
 // Export a convenience function for tracking errors
 export function trackError(error: Error | string, options: ErrorOptions = {}) {
   return errorTrackingService.captureError(error, options);
-} 
+}

@@ -8,12 +8,12 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { withErrorBoundary } from '@/hooks/useErrorBoundary';
 import { isError, exists } from '@/utils/type-guards';
-import { 
-  enhanceError, 
-  isNetworkError, 
-  isNotFoundError, 
-  isServerError, 
-  isTimeoutError 
+import {
+  enhanceError,
+  isNetworkError,
+  isNotFoundError,
+  isServerError,
+  isTimeoutError,
 } from '@/utils/error-utils';
 
 interface Product {
@@ -28,14 +28,14 @@ interface Product {
 // This is a temporary solution until the error-handler.ts can be properly updated
 const ExtendedErrorSource = {
   ...ErrorSource,
-  API: 'api' as any
+  API: 'api' as any,
 };
 
 const ExtendedErrorCategory = {
   ...ErrorCategory,
   RESOURCE_NOT_FOUND: 'resource-not-found' as any,
   SERVER: 'server' as any,
-  TIMEOUT: 'timeout' as any
+  TIMEOUT: 'timeout' as any,
 };
 
 /**
@@ -50,73 +50,75 @@ const ExtendedErrorCategory = {
 function ProductDataFetcherComponent() {
   const errorHandler = useErrorHandler();
   const captureError = errorHandler.captureError;
-  
+
   // Create a local implementation of withErrorHandling if it doesn't exist in the error handler
-  const withErrorHandling = errorHandler.withErrorHandling || (<T extends any[], R>(
-    fn: (...args: T) => Promise<R>,
-    options?: any
-  ) => {
-    return async (...args: T): Promise<R> => {
-      try {
-        return await fn(...args);
-      } catch (error) {
-        if (isError(error)) {
-          captureError(error, options);
-        } else {
-          captureError(String(error), options);
+  const withErrorHandling =
+    errorHandler.withErrorHandling ||
+    (<T extends any[], R>(fn: (...args: T) => Promise<R>, options?: any) => {
+      return async (...args: T): Promise<R> => {
+        try {
+          return await fn(...args);
+        } catch (error) {
+          if (isError(error)) {
+            captureError(error, options);
+          } else {
+            captureError(String(error), options);
+          }
+          throw error;
         }
-        throw error;
-      }
-    };
-  });
-  
+      };
+    });
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [productId, setProductId] = useState('prod-123'); // Valid ID to start
 
   // Fetch products with proper error handling
-  const fetchProducts = withErrorHandling(async () => {
-    setLoading(true);
-    
-    try {
-      // Simulate API request
-      const response = await fetch('/api/products');
-      
-      if (!response.ok) {
-        // Handle specific HTTP error codes
-        if (response.status === 404) {
-          throw new Error('Products not found');
-        } else if (response.status === 401) {
-          throw new Error('Unauthorized access to products');
-        } else if (response.status === 403) {
-          throw new Error('Forbidden access to products');
-        } else if (response.status >= 500) {
-          throw new Error('Server error occurred while fetching products');
-        } else {
-          throw new Error(`Failed to fetch products: ${response.statusText}`);
+  const fetchProducts = withErrorHandling(
+    async () => {
+      setLoading(true);
+
+      try {
+        // Simulate API request
+        const response = await fetch('/api/products');
+
+        if (!response.ok) {
+          // Handle specific HTTP error codes
+          if (response.status === 404) {
+            throw new Error('Products not found');
+          } else if (response.status === 401) {
+            throw new Error('Unauthorized access to products');
+          } else if (response.status === 403) {
+            throw new Error('Forbidden access to products');
+          } else if (response.status >= 500) {
+            throw new Error('Server error occurred while fetching products');
+          } else {
+            throw new Error(`Failed to fetch products: ${response.statusText}`);
+          }
         }
+
+        const data = await response.json();
+        setProducts(data);
+        return data;
+      } finally {
+        setLoading(false);
       }
-      
-      const data = await response.json();
-      setProducts(data);
-      return data;
-    } finally {
-      setLoading(false);
+    },
+    {
+      source: ExtendedErrorSource.API,
+      category: ExtendedErrorCategory.RESOURCE_NOT_FOUND,
+      severity: ErrorSeverity.WARNING,
+      metadata: {
+        component: 'ProductDataFetcher',
+        endpoint: '/api/products',
+      },
     }
-  }, {
-    source: ExtendedErrorSource.API,
-    category: ExtendedErrorCategory.RESOURCE_NOT_FOUND,
-    severity: ErrorSeverity.WARNING,
-    metadata: {
-      component: 'ProductDataFetcher',
-      endpoint: '/api/products'
-    }
-  });
+  );
 
   // Fetch a single product with custom error handling
   const fetchProductById = async (id: string) => {
     setLoading(true);
-    
+
     try {
       // Simulate API request
       // For demo purposes, we'll throw different errors based on the ID
@@ -135,16 +137,16 @@ function ProductDataFetcherComponent() {
         networkError.name = 'TypeError'; // Simulate a fetch network error
         throw networkError;
       }
-      
+
       // Simulate successful response for any other ID
       const mockProduct: Product = {
         id,
         name: `Product ${id}`,
         price: 99.99,
         description: 'This is a sample product description',
-        inStock: true
+        inStock: true,
       };
-      
+
       // Set as the only product in our list
       setProducts([mockProduct]);
     } catch (error) {
@@ -154,25 +156,25 @@ function ProductDataFetcherComponent() {
         metadata: {
           productId: id,
           endpoint: `/api/products/${id}`,
-          timestamp: new Date().toISOString()
-        }
+          timestamp: new Date().toISOString(),
+        },
       });
-      
+
       // Create a retry function
       const retry = () => fetchProductById(id);
-      
+
       // Capture and handle the error
       const appError = captureError(enhanced.originalError || enhanced.errorMessage, {
         source: enhanced.source,
         category: enhanced.category,
         severity: enhanced.severity,
         metadata: enhanced.metadata,
-        retry // Pass retry function directly, compatible with error handler
+        retry, // Pass retry function directly, compatible with error handler
       });
-      
+
       // Clear products since fetch failed
       setProducts([]);
-      
+
       // Re-throw to allow parent components to also handle if needed
       throw appError;
     } finally {
@@ -181,15 +183,12 @@ function ProductDataFetcherComponent() {
   };
 
   // Wrap the fetchProductById with the error handler
-  const handleFetchProduct = withErrorHandling(
-    () => fetchProductById(productId),
-    {
-      // These are default values that will be overridden by the specific ones in fetchProductById
-      source: ExtendedErrorSource.API,
-      category: ErrorCategory.UNKNOWN, 
-      severity: ErrorSeverity.ERROR
-    }
-  );
+  const handleFetchProduct = withErrorHandling(() => fetchProductById(productId), {
+    // These are default values that will be overridden by the specific ones in fetchProductById
+    source: ExtendedErrorSource.API,
+    category: ErrorCategory.UNKNOWN,
+    severity: ErrorSeverity.ERROR,
+  });
 
   // Initial data fetch
   useEffect(() => {
@@ -204,64 +203,66 @@ function ProductDataFetcherComponent() {
         <p className="text-gray-600">
           This component demonstrates error handling in API data fetching scenarios.
         </p>
-        
+
         <div className="flex flex-wrap gap-2">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => setProductId('prod-123')}
             className={productId === 'prod-123' ? 'bg-primary text-primary-foreground' : ''}
           >
             Valid Product
           </Button>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => setProductId('not-found')}
             className={productId === 'not-found' ? 'bg-primary text-primary-foreground' : ''}
           >
             Not Found Error
           </Button>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => setProductId('server-error')}
             className={productId === 'server-error' ? 'bg-primary text-primary-foreground' : ''}
           >
             Server Error
           </Button>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => setProductId('timeout')}
             className={productId === 'timeout' ? 'bg-primary text-primary-foreground' : ''}
           >
             Timeout Error
           </Button>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => setProductId('network')}
             className={productId === 'network' ? 'bg-primary text-primary-foreground' : ''}
           >
             Network Error
           </Button>
         </div>
-        
+
         <Button onClick={() => handleFetchProduct()} className="mt-4 w-full md:w-auto">
           Fetch Product
         </Button>
       </div>
-      
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {loading ? (
           // Loading skeleton
-          Array(3).fill(0).map((_, index) => (
-            <Card key={index} className="p-4 space-y-3">
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-              <Skeleton className="h-20 w-full" />
-              <div className="flex justify-between">
-                <Skeleton className="h-4 w-1/4" />
-                <Skeleton className="h-8 w-1/4" />
-              </div>
-            </Card>
-          ))
+          Array(3)
+            .fill(0)
+            .map((_, index) => (
+              <Card key={index} className="p-4 space-y-3">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-20 w-full" />
+                <div className="flex justify-between">
+                  <Skeleton className="h-4 w-1/4" />
+                  <Skeleton className="h-8 w-1/4" />
+                </div>
+              </Card>
+            ))
         ) : products.length > 0 ? (
           // Products display
           products.map(product => (
@@ -296,4 +297,4 @@ function ProductDataFetcherComponent() {
 // Wrap with error boundary for component-level error handling
 const ProductDataFetcher = withErrorBoundary(ProductDataFetcherComponent);
 
-export default ProductDataFetcher; 
+export default ProductDataFetcher;

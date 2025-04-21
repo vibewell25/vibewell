@@ -1,10 +1,10 @@
 /**
  * Mock utilities for testing
- * 
+ *
  * This file provides utilities for mocking various parts of the application
  * including API responses, services, localStorage, and more.
  */
-import { jest } from '@jest/globals';
+import { vi } from 'vitest';
 
 /**
  * Create a mock API response
@@ -19,8 +19,8 @@ export function mockApiResponse(data, status = 200, headers = {}) {
     status,
     headers,
     ok: status >= 200 && status < 300,
-    json: jest.fn().mockResolvedValue(data),
-    text: jest.fn().mockResolvedValue(JSON.stringify(data)),
+    json: vi.fn().mockResolvedValue(data),
+    text: vi.fn().mockResolvedValue(JSON.stringify(data)),
   };
 }
 
@@ -30,11 +30,7 @@ export function mockApiResponse(data, status = 200, headers = {}) {
  * @returns {Function} - Mocked fetch function
  */
 export function mockFetch(response) {
-  return jest.fn().mockResolvedValue(
-    typeof response === 'function' 
-      ? response() 
-      : response
-  );
+  return vi.fn().mockResolvedValue(typeof response === 'function' ? response() : response);
 }
 
 /**
@@ -44,17 +40,17 @@ export function setupLocalStorageMock() {
   const localStorageMock = (() => {
     let store = {};
     return {
-      getItem: jest.fn(key => store[key] || null),
-      setItem: jest.fn((key, value) => {
+      getItem: vi.fn(key => store[key] || null),
+      setItem: vi.fn((key, value) => {
         store[key] = String(value);
       }),
-      removeItem: jest.fn(key => {
+      removeItem: vi.fn(key => {
         delete store[key];
       }),
-      clear: jest.fn(() => {
+      clear: vi.fn(() => {
         store = {};
       }),
-      key: jest.fn(index => Object.keys(store)[index] || null),
+      key: vi.fn(index => Object.keys(store)[index] || null),
       get length() {
         return Object.keys(store).length;
       },
@@ -67,7 +63,7 @@ export function setupLocalStorageMock() {
     value: localStorageMock,
     writable: true,
   });
-  
+
   return localStorageMock;
 }
 
@@ -78,17 +74,17 @@ export function setupSessionStorageMock() {
   const sessionStorageMock = (() => {
     let store = {};
     return {
-      getItem: jest.fn(key => store[key] || null),
-      setItem: jest.fn((key, value) => {
+      getItem: vi.fn(key => store[key] || null),
+      setItem: vi.fn((key, value) => {
         store[key] = String(value);
       }),
-      removeItem: jest.fn(key => {
+      removeItem: vi.fn(key => {
         delete store[key];
       }),
-      clear: jest.fn(() => {
+      clear: vi.fn(() => {
         store = {};
       }),
-      key: jest.fn(index => Object.keys(store)[index] || null),
+      key: vi.fn(index => Object.keys(store)[index] || null),
       get length() {
         return Object.keys(store).length;
       },
@@ -101,7 +97,7 @@ export function setupSessionStorageMock() {
     value: sessionStorageMock,
     writable: true,
   });
-  
+
   return sessionStorageMock;
 }
 
@@ -111,15 +107,15 @@ export function setupSessionStorageMock() {
 export function setupMatchMediaMock() {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: jest.fn().mockImplementation(query => ({
+    value: vi.fn().mockImplementation(query => ({
       matches: false,
       media: query,
       onchange: null,
-      addListener: jest.fn(), // deprecated
-      removeListener: jest.fn(), // deprecated
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     })),
   });
 }
@@ -128,20 +124,15 @@ export function setupMatchMediaMock() {
  * Mock IntersectionObserver
  */
 export function setupIntersectionObserverMock() {
-  const mockIntersectionObserver = jest.fn().mockImplementation(function(
-    callback,
-    options
-  ) {
+  const mockIntersectionObserver = vi.fn().mockImplementation(function (callback, options) {
     return {
       root: options?.root || null,
       rootMargin: options?.rootMargin || '',
-      thresholds: Array.isArray(options?.threshold)
-        ? options.threshold
-        : [options?.threshold || 0],
-      observe: jest.fn(),
-      unobserve: jest.fn(),
-      disconnect: jest.fn(),
-      takeRecords: jest.fn().mockReturnValue([]),
+      thresholds: Array.isArray(options?.threshold) ? options.threshold : [options?.threshold || 0],
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
+      takeRecords: vi.fn().mockReturnValue([]),
     };
   });
 
@@ -149,7 +140,7 @@ export function setupIntersectionObserverMock() {
     writable: true,
     value: mockIntersectionObserver,
   });
-  
+
   return mockIntersectionObserver;
 }
 
@@ -157,11 +148,11 @@ export function setupIntersectionObserverMock() {
  * Mock ResizeObserver
  */
 export function setupResizeObserverMock() {
-  const mockResizeObserver = jest.fn().mockImplementation(function() {
+  const mockResizeObserver = vi.fn().mockImplementation(function () {
     return {
-      observe: jest.fn(),
-      unobserve: jest.fn(),
-      disconnect: jest.fn(),
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
     };
   });
 
@@ -169,7 +160,7 @@ export function setupResizeObserverMock() {
     writable: true,
     value: mockResizeObserver,
   });
-  
+
   return mockResizeObserver;
 }
 
@@ -195,7 +186,7 @@ export function setupAllBrowserMocks() {
 export function createMockService(methods = {}) {
   return {
     ...Object.keys(methods).reduce((acc, key) => {
-      acc[key] = jest.fn(methods[key]);
+      acc[key] = vi.fn(methods[key]);
       return acc;
     }, {}),
   };
@@ -208,12 +199,12 @@ export function createMockService(methods = {}) {
 export function mockWindowLocation(properties = {}) {
   const originalLocation = window.location;
   delete window.location;
-  
+
   window.location = {
-    assign: jest.fn(),
-    reload: jest.fn(),
-    replace: jest.fn(),
-    toString: jest.fn(),
+    assign: vi.fn(),
+    reload: vi.fn(),
+    replace: vi.fn(),
+    toString: vi.fn(),
     hash: '',
     host: 'localhost:3000',
     hostname: 'localhost',
@@ -225,7 +216,7 @@ export function mockWindowLocation(properties = {}) {
     search: '',
     ...properties,
   };
-  
+
   return () => {
     window.location = originalLocation;
   };
@@ -237,12 +228,12 @@ export function mockWindowLocation(properties = {}) {
  */
 export function mockConsole(methods = ['error', 'warn', 'log', 'info', 'debug']) {
   const originalMethods = {};
-  
+
   methods.forEach(method => {
     originalMethods[method] = console[method];
-    console[method] = jest.fn();
+    console[method] = vi.fn();
   });
-  
+
   return () => {
     methods.forEach(method => {
       console[method] = originalMethods[method];
@@ -257,18 +248,18 @@ export function mockConsole(methods = ['error', 'warn', 'log', 'info', 'debug'])
 export function mockDate(mockDate) {
   const realDate = global.Date;
   const mockDateObj = new realDate(mockDate);
-  
+
   global.Date = class extends realDate {
     constructor(...args) {
       return args.length ? new realDate(...args) : mockDateObj;
     }
-    
+
     static now() {
       return mockDateObj.getTime();
     }
   };
-  
+
   return () => {
     global.Date = realDate;
   };
-} 
+}

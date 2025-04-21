@@ -30,7 +30,7 @@ export function HubSearch({
   onSearch,
   className = '',
   autoFocus = false,
-  allowEmptySearch = false
+  allowEmptySearch = false,
 }: HubSearchProps) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState<SearchCategory>(defaultCategory);
@@ -97,22 +97,22 @@ export function HubSearch({
           title: `Resource: ${debouncedQuery}`,
           description: `Learn more about ${debouncedQuery} in the business context`,
           category: 'resource',
-          url: `/business-hub/search?q=${encodeURIComponent(debouncedQuery)}&type=resource`
+          url: `/business-hub/search?q=${encodeURIComponent(debouncedQuery)}&type=resource`,
         },
         {
           id: '2',
           title: `Marketing: ${debouncedQuery}`,
           description: `Marketing strategies related to ${debouncedQuery}`,
           category: 'marketing',
-          url: `/business-hub/marketing?q=${encodeURIComponent(debouncedQuery)}`
+          url: `/business-hub/marketing?q=${encodeURIComponent(debouncedQuery)}`,
         },
         {
           id: '3',
           title: `Financial: ${debouncedQuery}`,
           description: `Financial aspects of ${debouncedQuery}`,
           category: 'financial',
-          url: `/business-hub/financial-management?q=${encodeURIComponent(debouncedQuery)}`
-        }
+          url: `/business-hub/financial-management?q=${encodeURIComponent(debouncedQuery)}`,
+        },
       ];
       setSuggestions(mockSuggestions);
       setShowSuggestions(true);
@@ -125,10 +125,7 @@ export function HubSearch({
     if (!query && !allowEmptySearch) return;
     // Add to recent searches
     if (query.trim() !== '') {
-      const updatedSearches = [
-        query,
-        ...recentSearches.filter(s => s !== query)
-      ].slice(0, 5);
+      const updatedSearches = [query, ...recentSearches.filter(s => s !== query)].slice(0, 5);
       setRecentSearches(updatedSearches);
       try {
         localStorage.setItem('vibewell_recent_searches', JSON.stringify(updatedSearches));
@@ -158,7 +155,7 @@ export function HubSearch({
     // Add to recent searches
     const updatedSearches = [
       suggestion.title.split(': ')[1] || suggestion.title,
-      ...recentSearches.filter(s => s !== suggestion.title)
+      ...recentSearches.filter(s => s !== suggestion.title),
     ].slice(0, 5);
     setRecentSearches(updatedSearches);
     try {
@@ -179,7 +176,7 @@ export function HubSearch({
           ref={inputRef}
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={e => setQuery(e.target.value)}
           placeholder={placeholder}
           className="pl-10 pr-10"
           onFocus={() => setShowSuggestions(query.length >= 2)}
@@ -187,7 +184,7 @@ export function HubSearch({
             // Delay hiding suggestions to allow for clicks
             setTimeout(() => setShowSuggestions(false), 200);
           }}
-          onKeyDown={(e) => {
+          onKeyDown={e => {
             if (e.key === 'Enter') {
               e.preventDefault();
               handleSearch();
@@ -203,25 +200,19 @@ export function HubSearch({
             <X className="h-5 w-5" />
           </button>
         )}
-        <Button 
-          type="button"
-          className="absolute right-0 rounded-l-none"
-          onClick={handleSearch}
-        >
+        <Button type="button" className="absolute right-0 rounded-l-none" onClick={handleSearch}>
           Search
         </Button>
       </div>
       {/* Category selector */}
       <div className="flex mt-2 space-x-2 text-sm">
         <span className="text-gray-500">Search in:</span>
-        {(['all', 'resources', 'tools', 'marketing', 'financial'] as SearchCategory[]).map((cat) => (
+        {(['all', 'resources', 'tools', 'marketing', 'financial'] as SearchCategory[]).map(cat => (
           <button
             key={cat}
             type="button"
             className={`${
-              category === cat 
-                ? 'text-blue-600 font-medium' 
-                : 'text-gray-600 hover:text-gray-900'
+              category === cat ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'
             }`}
             onClick={() => setCategory(cat)}
           >
@@ -233,12 +224,10 @@ export function HubSearch({
       {showSuggestions && (
         <div className="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg border border-gray-200">
           {isLoading ? (
-            <div className="p-4 text-center text-sm text-gray-500">
-              Loading suggestions...
-            </div>
+            <div className="p-4 text-center text-sm text-gray-500">Loading suggestions...</div>
           ) : suggestions.length > 0 ? (
             <ul>
-              {suggestions.map((suggestion) => (
+              {suggestions.map(suggestion => (
                 <li key={suggestion.id}>
                   <button
                     type="button"
@@ -294,9 +283,7 @@ export function HubSearch({
         </div>
       )}
       {/* Keyboard shortcut hint */}
-      <div className="absolute right-0 mt-2 text-xs text-gray-400">
-        Press / to search
-      </div>
+      <div className="absolute right-0 mt-2 text-xs text-gray-400">Press / to search</div>
     </div>
   );
-} 
+}

@@ -5,7 +5,7 @@ export function BreadcrumbExample() {
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Breadcrumb Navigation Example</h2>
-      
+
       <div className="space-y-6">
         <div>
           <h3 className="text-md font-semibold mb-2">Basic Breadcrumb</h3>
@@ -21,7 +21,7 @@ export function BreadcrumbExample() {
             </BreadcrumbItem>
           </Breadcrumb>
         </div>
-        
+
         <div>
           <h3 className="text-md font-semibold mb-2">Account Settings Breadcrumb</h3>
           <Breadcrumb>
@@ -42,4 +42,4 @@ export function BreadcrumbExample() {
       </div>
     </div>
   );
-} 
+}

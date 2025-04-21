@@ -7,4 +7,4 @@ interface Auth0ProviderProps {
 
 export default function Auth0Provider({ children }: Auth0ProviderProps) {
   return <UserProvider>{children}</UserProvider>;
-} 
+}

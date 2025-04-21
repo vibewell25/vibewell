@@ -62,7 +62,7 @@ export class WebSocketService {
         this.notifyClient(clientId, {
           type: 'availabilityUpdate',
           date: updatedDate,
-          providerId
+          providerId,
         });
       }
     });
@@ -86,12 +86,14 @@ export class WebSocketService {
   public broadcastToProvider(providerId: string, data: any) {
     this.clients.forEach((client, clientId) => {
       if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({
-          type: 'providerUpdate',
-          providerId,
-          data
-        }));
+        client.send(
+          JSON.stringify({
+            type: 'providerUpdate',
+            providerId,
+            data,
+          })
+        );
       }
     });
   }
-} 
+}

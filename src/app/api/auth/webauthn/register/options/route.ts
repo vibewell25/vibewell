@@ -12,10 +12,7 @@ export async function POST(request: Request) {
     const { userId, username } = body;
 
     if (!userId || !username) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     const options = await generateRegistrationOptions({
@@ -33,13 +30,10 @@ export async function POST(request: Request) {
 
     // In a real application, you would store these options in a database
     // associated with the user's session
-    
+
     return NextResponse.json(options);
   } catch (error) {
     console.error('Error generating registration options:', error);
-    return NextResponse.json(
-      { error: 'Failed to generate registration options' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to generate registration options' }, { status: 500 });
   }
-} 
+}

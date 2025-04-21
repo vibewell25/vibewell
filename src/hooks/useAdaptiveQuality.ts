@@ -31,30 +31,32 @@ export function useAdaptiveQuality() {
     shadows: true,
     antialiasing: true,
     effects: 'basic',
-    targetFrameRate: 60
+    targetFrameRate: 60,
   });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const detectDeviceCapabilities = async () => {
       setIsLoading(true);
-      
+
       try {
         // Get device information
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        const isLowEndDevice = isMobile && (
-          (navigator.deviceMemory && navigator.deviceMemory < 4) || 
-          (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4)
-        );
-        const isHighEndDevice = !isMobile || (
-          (navigator.deviceMemory && navigator.deviceMemory >= 8) && 
-          (navigator.hardwareConcurrency && navigator.hardwareConcurrency >= 6)
-        );
-        
+        const isLowEndDevice =
+          isMobile &&
+          ((navigator.deviceMemory && navigator.deviceMemory < 4) ||
+            (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4));
+        const isHighEndDevice =
+          !isMobile ||
+          (navigator.deviceMemory &&
+            navigator.deviceMemory >= 8 &&
+            navigator.hardwareConcurrency &&
+            navigator.hardwareConcurrency >= 6);
+
         // Check WebGL capabilities
         const canvas = document.createElement('canvas');
         const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
-        
+
         if (!gl) {
           // WebGL not supported - use lowest quality
           setQualityLevel(1);
@@ -64,29 +66,29 @@ export function useAdaptiveQuality() {
             shadows: false,
             antialiasing: false,
             effects: 'none',
-            targetFrameRate: 30
+            targetFrameRate: 30,
           });
           setIsLoading(false);
           return;
         }
-        
+
         // Check max texture size
         const maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-        
+
         // Benchmark rendering performance (simple test)
         const startTime = performance.now();
         let frameCount = 0;
         const testDuration = 500; // ms
-        
+
         // Define renderTestFrame outside the block to avoid strict mode issues
         const renderTestFrame = () => {
           if (!gl) return;
-          
+
           // Simple rendering test
           gl.clearColor(0, 0, 0, 1);
           gl.clear(gl.COLOR_BUFFER_BIT);
           frameCount++;
-          
+
           const elapsed = performance.now() - startTime;
           if (elapsed < testDuration) {
             requestAnimationFrame(renderTestFrame);
@@ -94,17 +96,17 @@ export function useAdaptiveQuality() {
             // Calculate approximate FPS
             const fps = (frameCount / elapsed) * 1000;
             finalizeSettings(
-              fps, 
-              maxTextureSize, 
-              Boolean(isLowEndDevice), 
+              fps,
+              maxTextureSize,
+              Boolean(isLowEndDevice),
               Boolean(isHighEndDevice)
             );
           }
         };
-        
+
         renderTestFrame();
       } catch (error) {
-        console.error("Error detecting device capabilities:", error);
+        console.error('Error detecting device capabilities:', error);
         // Fallback to medium quality
         setQualityLevel(2);
         setAdaptiveSettings({
@@ -113,21 +115,21 @@ export function useAdaptiveQuality() {
           shadows: true,
           antialiasing: true,
           effects: 'basic',
-          targetFrameRate: 60
+          targetFrameRate: 60,
         });
         setIsLoading(false);
       }
     };
-    
+
     const finalizeSettings = (
-      fps: number, 
-      maxTextureSize: number, 
-      isLowEndDevice: boolean, 
+      fps: number,
+      maxTextureSize: number,
+      isLowEndDevice: boolean,
       isHighEndDevice: boolean
     ) => {
       let level: 1 | 2 | 3;
       let settings: AdaptiveSettings;
-      
+
       if (fps < 30 || isLowEndDevice) {
         // Low-end device or poor performance
         level = 1;
@@ -137,7 +139,7 @@ export function useAdaptiveQuality() {
           shadows: false,
           antialiasing: false,
           effects: 'none',
-          targetFrameRate: 30
+          targetFrameRate: 30,
         };
       } else if (fps > 55 && isHighEndDevice) {
         // High-end device with good performance
@@ -148,7 +150,7 @@ export function useAdaptiveQuality() {
           shadows: true,
           antialiasing: true,
           effects: 'advanced',
-          targetFrameRate: 60
+          targetFrameRate: 60,
         };
       } else {
         // Medium-quality device
@@ -159,17 +161,17 @@ export function useAdaptiveQuality() {
           shadows: true,
           antialiasing: true,
           effects: 'basic',
-          targetFrameRate: 45
+          targetFrameRate: 45,
         };
       }
-      
+
       setQualityLevel(level);
       setAdaptiveSettings(settings);
       setIsLoading(false);
     };
-    
+
     detectDeviceCapabilities();
-    
+
     // Add a separate function for battery level check
     const checkBatteryStatus = () => {
       if ('getBattery' in navigator) {
@@ -188,7 +190,7 @@ export function useAdaptiveQuality() {
                 shadows: false,
                 antialiasing: isHigherQuality,
                 effects: isHigherQuality ? 'basic' : 'none',
-                targetFrameRate: isHigherQuality ? 45 : 30
+                targetFrameRate: isHigherQuality ? 45 : 30,
               };
             });
           }
@@ -198,10 +200,10 @@ export function useAdaptiveQuality() {
 
     checkBatteryStatus();
   }, []);
-  
+
   return {
     qualityLevel, // 1=low, 2=medium, 3=high
     adaptiveSettings,
-    isLoading
+    isLoading,
   };
-} 
+}

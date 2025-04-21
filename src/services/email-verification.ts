@@ -21,13 +21,13 @@ export const EmailVerificationService = {
     try {
       // Using Auth0 Management API to resend verification email
       const users = await auth0Management.getUsersByEmail(email);
-      
+
       if (!users || users.length === 0) {
         throw new Error('User not found');
       }
-      
+
       const userId = users[0].user_id;
-      
+
       // Send verification email
       await auth0Management.sendEmailVerification({ user_id: userId });
 
@@ -54,7 +54,7 @@ export const EmailVerificationService = {
       // Auth0 handles email verification automatically via URL callbacks
       // This method is kept for compatibility, but it's essentially a placeholder
       // In a real application with Auth0, you'd typically redirect users to Auth0's verification URL
-      
+
       return {
         success: true,
         message: 'Email verified successfully',
@@ -77,7 +77,7 @@ export const EmailVerificationService = {
     try {
       // Get user from Auth0
       const user = await auth0Management.getUser({ id: userId });
-      
+
       // Auth0 has email_verified property
       return user.email_verified || false;
     } catch (error) {
@@ -112,4 +112,4 @@ export const EmailVerificationService = {
       return { success: false };
     }
   },
-}; 
+};

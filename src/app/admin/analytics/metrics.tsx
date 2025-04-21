@@ -1,7 +1,7 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowUpIcon, ArrowDownIcon, Users, Calendar, CreditCard, BarChart3 } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowUpIcon, ArrowDownIcon, Users, Calendar, CreditCard, BarChart3 } from 'lucide-react';
 
 interface MetricCardProps {
   title: string;
@@ -50,8 +50,8 @@ export function Metrics() {
         description="Monthly revenue"
         icon={<CreditCard className="h-4 w-4" />}
         change={{
-          value: "+20.1% from last month",
-          type: "increase"
+          value: '+20.1% from last month',
+          type: 'increase',
         }}
       />
       <MetricCard
@@ -60,8 +60,8 @@ export function Metrics() {
         description="Active this month"
         icon={<Users className="h-4 w-4" />}
         change={{
-          value: "+12.5% from last month",
-          type: "increase"
+          value: '+12.5% from last month',
+          type: 'increase',
         }}
       />
       <MetricCard
@@ -70,8 +70,8 @@ export function Metrics() {
         description="This week"
         icon={<Calendar className="h-4 w-4" />}
         change={{
-          value: "-3.2% from last week",
-          type: "decrease"
+          value: '-3.2% from last week',
+          type: 'decrease',
         }}
       />
       <MetricCard
@@ -80,10 +80,10 @@ export function Metrics() {
         description="Visitor to booking"
         icon={<BarChart3 className="h-4 w-4" />}
         change={{
-          value: "+1.1% from last month",
-          type: "increase"
+          value: '+1.1% from last month',
+          type: 'increase',
         }}
       />
     </div>
   );
-} 
+}

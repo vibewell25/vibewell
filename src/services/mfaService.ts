@@ -25,7 +25,7 @@ export class MFAService {
   constructor() {
     this.redis = new Redis(process.env.REDIS_URL || '');
     this.encryption = new EncryptionService();
-    
+
     // Initialize email transport
     this.emailTransport = createTransport({
       host: process.env.SMTP_HOST,
@@ -33,15 +33,12 @@ export class MFAService {
       secure: process.env.SMTP_SECURE === 'true',
       auth: {
         user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
+        pass: process.env.SMTP_PASS,
+      },
     });
 
     // Initialize Twilio client
-    this.twilioClient = new Twilio(
-      process.env.TWILIO_ACCOUNT_SID!,
-      process.env.TWILIO_AUTH_TOKEN!
-    );
+    this.twilioClient = new Twilio(process.env.TWILIO_ACCOUNT_SID!, process.env.TWILIO_AUTH_TOKEN!);
   }
 
   /**
@@ -50,7 +47,7 @@ export class MFAService {
   async enableMFA(userId: string, method: MFAMethod): Promise<{ secret?: string }> {
     try {
       const settings = await this.getMFASettings(userId);
-      
+
       if (settings?.methods.includes(method)) {
         throw new Error(`MFA method ${method} is already enabled`);
       }
@@ -58,7 +55,7 @@ export class MFAService {
       const newSettings: MFASettings = {
         userId,
         methods: [...(settings?.methods || []), method],
-        ...(settings || {})
+        ...(settings || {}),
       };
 
       switch (method) {
@@ -84,11 +81,7 @@ export class MFAService {
   /**
    * Verify an MFA code
    */
-  async verifyCode(
-    userId: string,
-    method: MFAMethod,
-    code: string
-  ): Promise<boolean> {
+  async verifyCode(userId: string, method: MFAMethod, code: string): Promise<boolean> {
     try {
       const settings = await this.getMFASettings(userId);
       if (!settings || !settings.methods.includes(method)) {
@@ -96,7 +89,7 @@ export class MFAService {
       }
 
       const codeKey = `mfa:code:${userId}:${method}`;
-      
+
       switch (method) {
         case 'totp': {
           if (!settings.totpSecret) {
@@ -104,7 +97,7 @@ export class MFAService {
           }
           return authenticator.verify({
             token: code,
-            secret: settings.totpSecret
+            secret: settings.totpSecret,
           });
         }
         case 'sms':
@@ -141,7 +134,7 @@ export class MFAService {
       const code = this.generateCode();
       const hashedCode = await this.encryption.hash(code);
       const codeKey = `mfa:code:${userId}:${method}`;
-      
+
       // Store the code with 5-minute expiration
       await this.redis.set(codeKey, hashedCode, 'EX', 300);
 
@@ -153,7 +146,7 @@ export class MFAService {
           await this.twilioClient.messages.create({
             body: `Your Vibewell verification code is: ${code}`,
             to: settings.phoneNumber,
-            from: process.env.TWILIO_PHONE_NUMBER
+            from: process.env.TWILIO_PHONE_NUMBER,
           });
           break;
         }
@@ -166,7 +159,7 @@ export class MFAService {
             to: settings.email,
             subject: 'Vibewell Verification Code',
             text: `Your verification code is: ${code}`,
-            html: `<p>Your verification code is: <strong>${code}</strong></p>`
+            html: `<p>Your verification code is: <strong>${code}</strong></p>`,
           });
           break;
         }
@@ -190,9 +183,7 @@ export class MFAService {
       }
 
       const codes = Array.from({ length: 10 }, () => this.generateCode(8));
-      const hashedCodes = await Promise.all(
-        codes.map(code => this.encryption.hash(code))
-      );
+      const hashedCodes = await Promise.all(codes.map(code => this.encryption.hash(code)));
 
       settings.backupCodes = hashedCodes;
       await this.storeMFASettings(userId, settings);
@@ -239,10 +230,7 @@ export class MFAService {
   }
 
   private generateCode(length: number = 6): string {
-    return Array.from(
-      { length },
-      () => Math.floor(Math.random() * 10)
-    ).join('');
+    return Array.from({ length }, () => Math.floor(Math.random() * 10)).join('');
   }
 
   /**
@@ -252,4 +240,4 @@ export class MFAService {
     const settings = await this.redis.get(`mfa:settings:${userId}`);
     return settings ? JSON.parse(settings) : null;
   }
-} 
+}

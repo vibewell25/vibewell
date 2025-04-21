@@ -1,48 +1,94 @@
 import './globals.css';
-import Providers from './providers';
-import Script from 'next/script';
 import { Inter } from 'next/font/google';
-import Auth0Provider from '@/components/auth/Auth0Provider';
-import { AuthProvider } from '@/contexts/auth-context';
+import { Metadata, Viewport } from 'next';
+import { cn } from '@/lib/utils';
+import { ThemeProvider } from '@/components/theme-provider';
+import { LayoutProviders } from '@/components/providers/layout-providers';
+import Script from 'next/script';
+import { Suspense } from 'react';
+import { Providers } from './providers';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { headers } from 'next/headers';
 
-// Define the font
-const fontSans = Inter({
+// Import the Inter font with subset optimization
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-sans',
+  display: 'swap',
+  variable: '--font-inter',
+  preload: true,
 });
 
+// Static metadata
 export const metadata = {
-  title: 'VibeWell Platform',
-  description: 'A wellness platform connecting users with providers, offering virtual services, and e-commerce capabilities',
+  title: {
+    default: 'VibeWell - Your Wellness Journey',
+    template: '%s | VibeWell'
+  },
+  description: 'Connect with wellness services, events, and community',
+  keywords: ['wellness', 'health', 'community', 'events', 'services'],
+  authors: [{ name: 'VibeWell Team' }],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://vibewell.com',
+    siteName: 'VibeWell',
+    images: [
+      {
+        url: '/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'VibeWell'
+      }
+    ]
+  }
 };
 
-export default function RootLayout({
-  children,
+// Static viewport
+export const viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#000000' }
+  ],
+  width: 'device-width',
+  initialScale: 1
+};
+
+async function getInitialState() {
+  const headersList = headers();
+  const userAgent = headersList.get('user-agent') || '';
+  const isMobile = /mobile/i.test(userAgent);
+  
+  return {
+    isMobile,
+    theme: 'light', // Default theme, will be updated client-side
+    language: 'en' // Default language, will be updated client-side
+  };
+}
+
+export default async function RootLayout({
+  children
 }: {
   children: React.ReactNode;
 }) {
+  const initialState = await getInitialState();
+
   return (
-    <html lang="en">
-      <body className={fontSans.className}>
-        <Providers defaultLanguage="en" defaultDir="ltr">
-          <Auth0Provider>
-            <AuthProvider>
-              {children}
-            </AuthProvider>
-          </Auth0Provider>
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <Providers initialState={initialState}>
+          <Suspense fallback={null}>
+            {children}
+          </Suspense>
+          
+          {/* Analytics and Speed Insights are loaded only in production */}
+          {process.env.NODE_ENV === 'production' && (
+            <>
+              <Analytics />
+              <SpeedInsights />
+            </>
+          )}
         </Providers>
-        <Script
-          strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
-          `}
-        </Script>
       </body>
     </html>
   );

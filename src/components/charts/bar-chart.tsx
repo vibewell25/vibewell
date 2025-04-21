@@ -52,27 +52,23 @@ export default function BarChart({
         {grid && <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />}
         {layout === 'horizontal' ? (
           <>
-            <XAxis 
-              dataKey={xAxisKey} 
+            <XAxis
+              dataKey={xAxisKey}
               stroke="#888888"
               tick={{ fontSize: 12 }}
               tickLine={{ stroke: '#e0e0e0' }}
             />
-            <YAxis 
-              stroke="#888888"
-              tick={{ fontSize: 12 }}
-              tickLine={{ stroke: '#e0e0e0' }}
-            />
+            <YAxis stroke="#888888" tick={{ fontSize: 12 }} tickLine={{ stroke: '#e0e0e0' }} />
           </>
         ) : (
           <>
-            <XAxis 
+            <XAxis
               type="number"
               stroke="#888888"
               tick={{ fontSize: 12 }}
               tickLine={{ stroke: '#e0e0e0' }}
             />
-            <YAxis 
+            <YAxis
               dataKey={xAxisKey}
               type="category"
               stroke="#888888"
@@ -83,21 +79,21 @@ export default function BarChart({
           </>
         )}
         <Tooltip
-          contentStyle={{ 
-            backgroundColor: 'white', 
-            borderRadius: '8px', 
+          contentStyle={{
+            backgroundColor: 'white',
+            borderRadius: '8px',
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-            border: 'none'
+            border: 'none',
           }}
         />
         <Legend verticalAlign="bottom" height={36} />
-        
+
         {bars.map((bar, index) => (
           <Bar
             key={index}
             dataKey={bar.dataKey}
             name={bar.name || bar.dataKey}
-            fill={bar.color || `#${Math.floor(Math.random()*16777215).toString(16)}`}
+            fill={bar.color || `#${Math.floor(Math.random() * 16777215).toString(16)}`}
             stackId={stackId}
             radius={[4, 4, 0, 0]}
             animationDuration={750}
@@ -107,4 +103,4 @@ export default function BarChart({
       </RechartsBarChart>
     </ResponsiveContainer>
   );
-} 
+}

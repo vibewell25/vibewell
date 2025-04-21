@@ -34,7 +34,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       <div className="space-y-2">
-        {options.map((option) => (
+        {options.map(option => (
           <div key={option.value} className="flex items-start">
             <div className="flex items-center h-5">
               <input
@@ -43,7 +43,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
                 type="radio"
                 value={option.value}
                 checked={value === option.value}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={e => onChange(e.target.value)}
                 className={`
                   h-4 w-4 text-indigo-600
                   focus:ring-indigo-500
@@ -60,9 +60,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
               >
                 {option.label}
               </label>
-              {option.description && (
-                <p className="text-sm text-gray-500">{option.description}</p>
-              )}
+              {option.description && <p className="text-sm text-gray-500">{option.description}</p>}
             </div>
           </div>
         ))}
@@ -74,4 +72,4 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
       )}
     </div>
   );
-}; 
+};

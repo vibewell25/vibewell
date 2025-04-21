@@ -37,9 +37,7 @@ export class SentryErrorBoundary extends Component<Props, State> {
         this.props.fallback || (
           <div className="min-h-screen flex items-center justify-center bg-gray-50">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Oops! Something went wrong
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Oops! Something went wrong</h2>
               <p className="text-gray-600 mb-4">
                 We've been notified and are working to fix the issue.
               </p>
@@ -57,4 +55,4 @@ export class SentryErrorBoundary extends Component<Props, State> {
 
     return this.props.children;
   }
-} 
+}

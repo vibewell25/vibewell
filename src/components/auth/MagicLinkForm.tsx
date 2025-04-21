@@ -5,14 +5,7 @@ import * as z from 'zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Mail, Loader2 } from 'lucide-react';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '../ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { toast } from '../ui/use-toast';
 
 const formSchema = z.object({
@@ -24,10 +17,7 @@ interface MagicLinkFormProps {
   className?: string;
 }
 
-export const MagicLinkForm: React.FC<MagicLinkFormProps> = ({
-  onSubmit,
-  className = '',
-}) => {
+export const MagicLinkForm: React.FC<MagicLinkFormProps> = ({ onSubmit, className = '' }) => {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -59,10 +49,7 @@ export const MagicLinkForm: React.FC<MagicLinkFormProps> = ({
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className={`space-y-4 ${className}`}
-      >
+      <form onSubmit={form.handleSubmit(handleSubmit)} className={`space-y-4 ${className}`}>
         <FormField
           control={form.control}
           name="email"
@@ -85,11 +72,7 @@ export const MagicLinkForm: React.FC<MagicLinkFormProps> = ({
           )}
         />
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isLoading}
-        >
+        <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -102,4 +85,4 @@ export const MagicLinkForm: React.FC<MagicLinkFormProps> = ({
       </form>
     </Form>
   );
-}; 
+};

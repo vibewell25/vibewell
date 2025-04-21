@@ -7,10 +7,7 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const rewards = await prisma.reward.findMany({
@@ -25,9 +22,6 @@ export async function GET() {
     return NextResponse.json(rewards);
   } catch (error) {
     console.error('Error fetching rewards catalog:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch rewards catalog' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch rewards catalog' }, { status: 500 });
   }
-} 
+}

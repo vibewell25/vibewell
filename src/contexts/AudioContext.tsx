@@ -25,7 +25,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const [currentSoundscape, setCurrentSoundscape] = useState<string | null>(null);
-  
+
   const audioContextRef = useRef<AudioContext | null>(null);
   const audioSourceRef = useRef<AudioBufferSourceNode | null>(null);
   const gainNodeRef = useRef<GainNode | null>(null);
@@ -113,4 +113,4 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       {children}
     </AudioContext.Provider>
   );
-}; 
+};

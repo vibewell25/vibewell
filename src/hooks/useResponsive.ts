@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { 
-  BREAKPOINTS, 
-  DeviceType, 
-  detectDeviceType, 
-  getViewportDimensions, 
-  isTouchDevice 
+import {
+  BREAKPOINTS,
+  DeviceType,
+  detectDeviceType,
+  getViewportDimensions,
+  isTouchDevice,
 } from '@/utils/responsive-checker';
 
 type Dimensions = { width: number; height: number };
@@ -33,7 +33,7 @@ export function useResponsive() {
     };
 
     window.addEventListener('resize', handleResize);
-    
+
     // Clean up
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -46,9 +46,12 @@ export function useResponsive() {
   const isDesktop = deviceType === 'desktop';
 
   // Check if screen matches a certain breakpoint
-  const isBreakpoint = (breakpoint: keyof typeof BREAKPOINTS, comparison: 'up' | 'down' | 'only' = 'up') => {
+  const isBreakpoint = (
+    breakpoint: keyof typeof BREAKPOINTS,
+    comparison: 'up' | 'down' | 'only' = 'up'
+  ) => {
     const width = dimensions.width;
-    
+
     switch (comparison) {
       case 'up':
         return width >= BREAKPOINTS[breakpoint];
@@ -58,8 +61,9 @@ export function useResponsive() {
         const nextBreakpoint = Object.entries(BREAKPOINTS).find(
           ([key, value]) => value > BREAKPOINTS[breakpoint]
         );
-        return width >= BREAKPOINTS[breakpoint] && 
-               (nextBreakpoint ? width < nextBreakpoint[1] : true);
+        return (
+          width >= BREAKPOINTS[breakpoint] && (nextBreakpoint ? width < nextBreakpoint[1] : true)
+        );
       default:
         return false;
     }
@@ -75,4 +79,4 @@ export function useResponsive() {
     isBreakpoint,
     breakpoints: BREAKPOINTS,
   };
-} 
+}

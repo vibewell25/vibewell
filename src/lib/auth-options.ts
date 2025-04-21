@@ -24,12 +24,12 @@ export const authOptions: NextAuthOptions = {
         // In a real app, you would verify credentials against a database
         const demoEmail = process.env.DEMO_USER_EMAIL || '';
         const demoPassword = process.env.DEMO_USER_PASSWORD || '';
-        
+
         if (!demoEmail || !demoPassword) {
           console.error('Demo credentials not configured in environment variables');
           return null;
         }
-        
+
         if (credentials?.email === demoEmail && credentials.password === demoPassword) {
           return {
             id: '1',
@@ -63,4 +63,4 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-}; 
+};

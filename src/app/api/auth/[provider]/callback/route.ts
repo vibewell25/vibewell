@@ -5,19 +5,14 @@ import { sign } from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { provider: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { provider: string } }) {
   try {
     const provider = params.provider as SupportedOAuthProvider;
     const searchParams = request.nextUrl.searchParams;
     const code = searchParams.get('code');
 
     if (!code) {
-      return NextResponse.redirect(
-        new URL('/auth/error?error=missing_code', request.url)
-      );
+      return NextResponse.redirect(new URL('/auth/error?error=missing_code', request.url));
     }
 
     // Handle OAuth callback
@@ -58,8 +53,6 @@ export async function GET(
     return NextResponse.redirect(new URL('/dashboard', request.url));
   } catch (error) {
     console.error('OAuth callback error:', error);
-    return NextResponse.redirect(
-      new URL('/auth/error?error=oauth_failed', request.url)
-    );
+    return NextResponse.redirect(new URL('/auth/error?error=oauth_failed', request.url));
   }
-} 
+}

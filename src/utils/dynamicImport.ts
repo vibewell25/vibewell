@@ -24,4 +24,4 @@ export function dynamicImport<T>(
 }
 
 // Example usage:
-// const DynamicComponent = dynamicImport(() => import('@/components/HeavyComponent')); 
+// const DynamicComponent = dynamicImport(() => import('@/components/HeavyComponent'));

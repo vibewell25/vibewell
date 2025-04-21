@@ -22,7 +22,7 @@ interface BeautyWellnessFeaturesProps {
 export function BeautyWellnessFeatures({
   serviceId,
   serviceName,
-  reviews
+  reviews,
 }: BeautyWellnessFeaturesProps) {
   const { toast } = useToast();
   const [rating, setRating] = useState(5);
@@ -37,8 +37,8 @@ export function BeautyWellnessFeatures({
         body: JSON.stringify({
           serviceId,
           rating,
-          comment
-        })
+          comment,
+        }),
       });
 
       if (!response.ok) {
@@ -47,7 +47,7 @@ export function BeautyWellnessFeatures({
 
       toast({
         title: 'Review Submitted',
-        description: 'Thank you for your feedback!'
+        description: 'Thank you for your feedback!',
       });
 
       setShowReviewForm(false);
@@ -58,7 +58,7 @@ export function BeautyWellnessFeatures({
       toast({
         title: 'Error',
         description: 'Failed to submit review. Please try again.',
-        variant: 'destructive'
+        variant: 'destructive',
       });
     }
   };
@@ -92,10 +92,7 @@ export function BeautyWellnessFeatures({
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h3 className="text-xl font-semibold">Client Reviews</h3>
-          <Button
-            variant="outline"
-            onClick={() => setShowReviewForm(!showReviewForm)}
-          >
+          <Button variant="outline" onClick={() => setShowReviewForm(!showReviewForm)}>
             {showReviewForm ? 'Cancel Review' : 'Write Review'}
           </Button>
         </div>
@@ -105,7 +102,7 @@ export function BeautyWellnessFeatures({
             <div className="space-y-2">
               <label className="block text-sm font-medium">Rating</label>
               <div className="flex gap-2">
-                {[1, 2, 3, 4, 5].map((value) => (
+                {[1, 2, 3, 4, 5].map(value => (
                   <Button
                     key={value}
                     variant={rating === value ? 'default' : 'outline'}
@@ -121,7 +118,7 @@ export function BeautyWellnessFeatures({
               <label className="block text-sm font-medium">Your Review</label>
               <Textarea
                 value={comment}
-                onChange={(e) => setComment(e.target.value)}
+                onChange={e => setComment(e.target.value)}
                 placeholder="Share your experience..."
                 className="min-h-[100px]"
               />
@@ -131,7 +128,7 @@ export function BeautyWellnessFeatures({
         )}
 
         <div className="space-y-4">
-          {reviews.map((review) => (
+          {reviews.map(review => (
             <Card key={review.id} className="p-4">
               <div className="flex justify-between items-start">
                 <div>
@@ -155,4 +152,4 @@ export function BeautyWellnessFeatures({
       </div>
     </div>
   );
-} 
+}

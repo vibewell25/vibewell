@@ -5,10 +5,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { AlertTriangle, Trash2, X } from "lucide-react";
-import { useState } from "react";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { AlertTriangle, Trash2, X } from 'lucide-react';
+import { useState } from 'react';
 
 interface DeleteConfirmationDialogProps {
   isOpen: boolean;
@@ -29,7 +29,7 @@ export function DeleteConfirmationDialog({
       await onConfirm();
       onClose();
     } catch (error) {
-      console.error("Error during deletion:", error);
+      console.error('Error during deletion:', error);
     } finally {
       setIsDeleting(false);
     }
@@ -44,30 +44,21 @@ export function DeleteConfirmationDialog({
             Final Confirmation
           </DialogTitle>
           <DialogDescription>
-            This is your last chance to cancel. Once you confirm, your account and
-            all associated data will be permanently deleted and cannot be
-            recovered.
+            This is your last chance to cancel. Once you confirm, your account and all associated
+            data will be permanently deleted and cannot be recovered.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={onClose}
-            disabled={isDeleting}
-          >
+          <Button variant="outline" onClick={onClose} disabled={isDeleting}>
             <X className="mr-2 h-4 w-4" />
             Cancel
           </Button>
-          <Button
-            variant="destructive"
-            onClick={handleConfirm}
-            disabled={isDeleting}
-          >
+          <Button variant="destructive" onClick={handleConfirm} disabled={isDeleting}>
             <Trash2 className="mr-2 h-4 w-4" />
-            {isDeleting ? "Deleting..." : "Delete Account"}
+            {isDeleting ? 'Deleting...' : 'Delete Account'}
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-} 
+}

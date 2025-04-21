@@ -6,7 +6,8 @@ interface SelectOption {
   disabled?: boolean;
 }
 
-interface AccessibleSelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'children'> {
+interface AccessibleSelectProps
+  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'children'> {
   label: string;
   options: SelectOption[];
   error?: string;
@@ -31,10 +32,7 @@ export const AccessibleSelect: React.FC<AccessibleSelectProps> = ({
 
   return (
     <div className="w-full">
-      <label
-        htmlFor={selectId}
-        className="block text-sm font-medium text-gray-700 mb-1"
-      >
+      <label htmlFor={selectId} className="block text-sm font-medium text-gray-700 mb-1">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
@@ -61,12 +59,8 @@ export const AccessibleSelect: React.FC<AccessibleSelectProps> = ({
               {placeholder}
             </option>
           )}
-          {options.map((option) => (
-            <option
-              key={option.value}
-              value={option.value}
-              disabled={option.disabled}
-            >
+          {options.map(option => (
+            <option key={option.value} value={option.value} disabled={option.disabled}>
               {option.label}
             </option>
           ))}
@@ -104,4 +98,4 @@ export const AccessibleSelect: React.FC<AccessibleSelectProps> = ({
   );
 };
 
-export default AccessibleSelect; 
+export default AccessibleSelect;

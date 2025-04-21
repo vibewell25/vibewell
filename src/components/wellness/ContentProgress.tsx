@@ -6,10 +6,7 @@ interface ContentProgressProps {
   onProgressUpdate: (progress: number) => void;
 }
 
-export const ContentProgress: React.FC<ContentProgressProps> = ({
-  progress,
-  onProgressUpdate,
-}) => {
+export const ContentProgress: React.FC<ContentProgressProps> = ({ progress, onProgressUpdate }) => {
   const handleProgressUpdate = async (newProgress: number) => {
     try {
       const response = await fetch('/api/wellness/content/progress', {
@@ -55,4 +52,4 @@ export const ContentProgress: React.FC<ContentProgressProps> = ({
       </div>
     </div>
   );
-}; 
+};

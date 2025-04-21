@@ -7,11 +7,11 @@ export async function POST(req: NextRequest) {
   if (rateLimitResult) {
     return rateLimitResult;
   }
-  
+
   // Simulate admin-only operation
-  return NextResponse.json({ 
-    status: 'success', 
+  return NextResponse.json({
+    status: 'success',
     message: 'Admin operations API endpoint',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
-} 
+}

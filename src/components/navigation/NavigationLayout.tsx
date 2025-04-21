@@ -36,7 +36,7 @@ export const NavigationLayout: React.FC<NavigationLayoutProps> = ({
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       // Show/hide scroll to top button
       setShowScrollToTop(currentScrollY > 400);
 
@@ -60,7 +60,7 @@ export const NavigationLayout: React.FC<NavigationLayoutProps> = ({
 
   return (
     <div className="relative min-h-screen">
-      <header 
+      <header
         className={`sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-transform duration-300 ${
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
         }`}
@@ -68,11 +68,7 @@ export const NavigationLayout: React.FC<NavigationLayoutProps> = ({
         <div className="container flex h-14 items-center">
           <MainNavigation />
           <div className="flex flex-1 items-center justify-end space-x-4">
-            <AuthNavigation
-              isAuthenticated={isAuthenticated}
-              user={user}
-              onLogout={onLogout}
-            />
+            <AuthNavigation isAuthenticated={isAuthenticated} user={user} onLogout={onLogout} />
           </div>
         </div>
         {isAdmin && (
@@ -87,20 +83,24 @@ export const NavigationLayout: React.FC<NavigationLayoutProps> = ({
         </div>
       </header>
 
-      <main className="container flex-1 py-6">
-        {children}
-      </main>
+      <main className="container flex-1 py-6">{children}</main>
 
       <footer className="border-t py-6 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
             <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
               Built with care by the VibeWell team.{' '}
-              <Link href={{ pathname: '/terms' }} className="font-medium underline underline-offset-4">
+              <Link
+                href={{ pathname: '/terms' }}
+                className="font-medium underline underline-offset-4"
+              >
                 Terms
               </Link>
               .{' '}
-              <Link href={{ pathname: '/privacy' }} className="font-medium underline underline-offset-4">
+              <Link
+                href={{ pathname: '/privacy' }}
+                className="font-medium underline underline-offset-4"
+              >
                 Privacy
               </Link>
               .
@@ -123,4 +123,4 @@ export const NavigationLayout: React.FC<NavigationLayoutProps> = ({
       </Button>
     </div>
   );
-}; 
+};

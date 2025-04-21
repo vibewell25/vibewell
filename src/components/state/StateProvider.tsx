@@ -12,37 +12,32 @@ export interface ContextProviderProps<T> {
   onStateChange?: (newState: T, prevState: T) => void;
 }
 
-export function ContextProvider<T>({ 
-  initialState, 
-  children, 
-  stateContext, 
-  onStateChange 
+export function ContextProvider<T>({
+  initialState,
+  children,
+  stateContext,
+  onStateChange,
 }: ContextProviderProps<T>) {
   // State using useReducer for immutability
   const [state, dispatch] = useReducer(
     (state: T, action: Partial<T> | ((state: T) => Partial<T>)) => {
-      const newState = typeof action === 'function' 
-        ? { ...state, ...action(state) } 
-        : { ...state, ...action };
-      
+      const newState =
+        typeof action === 'function' ? { ...state, ...action(state) } : { ...state, ...action };
+
       // Call the state change handler if provided
       if (onStateChange) {
         onStateChange(newState, state);
       }
-      
+
       return newState;
     },
     initialState
   );
-  
+
   // Memoize context value
   const contextValue = useMemo(() => [state, dispatch] as const, [state]);
-  
-  return (
-    <stateContext.Provider value={contextValue}>
-      {children}
-    </stateContext.Provider>
-  );
+
+  return <stateContext.Provider value={contextValue}>{children}</stateContext.Provider>;
 }
 
 /**
@@ -54,11 +49,7 @@ export interface ReduxProviderProps {
 }
 
 export function StateReduxProvider({ store, children }: ReduxProviderProps) {
-  return (
-    <ReduxProvider store={store}>
-      {children}
-    </ReduxProvider>
-  );
+  return <ReduxProvider store={store}>{children}</ReduxProvider>;
 }
 
 /**
@@ -69,10 +60,13 @@ export interface AuthProviderProps {
   children: React.ReactNode;
 }
 
-export function MockAuthProvider({ user = { id: 'test-user-id', name: 'Test User' }, children }: AuthProviderProps) {
+export function MockAuthProvider({
+  user = { id: 'test-user-id', name: 'Test User' },
+  children,
+}: AuthProviderProps) {
   return (
     <div data-testid="mock-auth-provider" data-user={JSON.stringify(user)}>
       {children}
     </div>
   );
-} 
+}

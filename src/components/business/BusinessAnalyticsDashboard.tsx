@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LineChart, BarChart, PieChart } from '@/components/ui/charts';
 import { Select } from '@/components/ui/select';
@@ -88,7 +82,7 @@ export const BusinessAnalyticsDashboard: React.FC<Props> = ({ businessId }) => {
         <div className="flex space-x-4">
           <Select
             value={period}
-            onValueChange={(value) => setPeriod(value)}
+            onValueChange={value => setPeriod(value)}
             options={[
               { label: 'Daily', value: 'DAILY' },
               { label: 'Weekly', value: 'WEEKLY' },
@@ -96,13 +90,8 @@ export const BusinessAnalyticsDashboard: React.FC<Props> = ({ businessId }) => {
               { label: 'Yearly', value: 'YEARLY' },
             ]}
           />
-          <DateRangePicker
-            value={dateRange}
-            onChange={setDateRange}
-          />
-          <Button onClick={exportAnalytics}>
-            Export Data
-          </Button>
+          <DateRangePicker value={dateRange} onChange={setDateRange} />
+          <Button onClick={exportAnalytics}>Export Data</Button>
         </div>
       </div>
 
@@ -114,12 +103,7 @@ export const BusinessAnalyticsDashboard: React.FC<Props> = ({ businessId }) => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${analytics.revenue.total}</div>
-            <LineChart
-              data={analytics.revenue.trend}
-              xKey="date"
-              yKey="amount"
-              color="green"
-            />
+            <LineChart data={analytics.revenue.trend} xKey="date" yKey="amount" color="green" />
           </CardContent>
         </Card>
 
@@ -130,12 +114,7 @@ export const BusinessAnalyticsDashboard: React.FC<Props> = ({ businessId }) => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics.bookings.total}</div>
-            <BarChart
-              data={analytics.bookings.trend}
-              xKey="date"
-              yKey="count"
-              color="blue"
-            />
+            <BarChart data={analytics.bookings.trend} xKey="date" yKey="count" color="blue" />
           </CardContent>
         </Card>
 
@@ -180,11 +159,7 @@ export const BusinessAnalyticsDashboard: React.FC<Props> = ({ businessId }) => {
               <CardTitle>Revenue by Service</CardTitle>
             </CardHeader>
             <CardContent>
-              <PieChart
-                data={analytics.revenue.byService}
-                nameKey="service"
-                valueKey="amount"
-              />
+              <PieChart data={analytics.revenue.byService} nameKey="service" valueKey="amount" />
             </CardContent>
           </Card>
         </TabsContent>
@@ -195,11 +170,7 @@ export const BusinessAnalyticsDashboard: React.FC<Props> = ({ businessId }) => {
               <CardTitle>Bookings by Status</CardTitle>
             </CardHeader>
             <CardContent>
-              <PieChart
-                data={analytics.bookings.byStatus}
-                nameKey="status"
-                valueKey="count"
-              />
+              <PieChart data={analytics.bookings.byStatus} nameKey="status" valueKey="count" />
             </CardContent>
           </Card>
         </TabsContent>
@@ -209,12 +180,10 @@ export const BusinessAnalyticsDashboard: React.FC<Props> = ({ businessId }) => {
             <CardHeader>
               <CardTitle>Customer Retention</CardTitle>
             </CardHeader>
-            <CardContent>
-              {/* Add customer retention visualization */}
-            </CardContent>
+            <CardContent>{/* Add customer retention visualization */}</CardContent>
           </Card>
         </TabsContent>
       </Tabs>
     </div>
   );
-}; 
+};

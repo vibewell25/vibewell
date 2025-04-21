@@ -72,4 +72,4 @@ export const AnimateIn: React.FC<AnimateInProps> = ({
       {children}
     </motion.div>
   );
-}; 
+};

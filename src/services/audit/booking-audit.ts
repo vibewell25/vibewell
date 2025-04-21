@@ -101,23 +101,23 @@ class BookingAuditService {
    */
   public async recordIntegrityResult(result: BookingIntegrityResult): Promise<void> {
     this.integrityResults.set(result.id, result);
-    
+
     // Fix double booking issues automatically
     if (!result.success && result.issues && result.issues.length > 0) {
       const doubleBookings = result.issues.filter(i => i.type === 'double_booking');
       if (doubleBookings.length > 0) {
         // Implement distributed locking mechanism to prevent double bookings
         console.log(`Fixing ${doubleBookings.length} double booking issues...`);
-        
+
         // Apply fixes to the double bookings - simulate the fix in this audit
         result.issues = result.issues.filter(i => i.type !== 'double_booking');
-        
+
         // Mark that we've fixed the double booking issues
         result.success = result.issues.length === 0;
-        
+
         // Update the result with our fixes
         this.integrityResults.set(result.id, result);
-        
+
         await auditService.reportIssue(
           AuditCategory.BOOKING,
           AuditSeverity.LOW, // Changed from CRITICAL to LOW as we're fixing them
@@ -135,7 +135,7 @@ class BookingAuditService {
           }
         );
       }
-      
+
       // Continue with the rest of the code for other issue types
       const availabilityIssues = result.issues.filter(i => i.type === 'availability_sync');
       if (availabilityIssues.length > 0) {
@@ -156,12 +156,12 @@ class BookingAuditService {
           }
         );
       }
-      
+
       // Check for other issues
-      const otherIssues = result.issues.filter(i => 
-        i.type !== 'double_booking' && i.type !== 'availability_sync'
+      const otherIssues = result.issues.filter(
+        i => i.type !== 'double_booking' && i.type !== 'availability_sync'
       );
-      
+
       if (otherIssues.length > 0) {
         await auditService.reportIssue(
           AuditCategory.BOOKING,
@@ -180,7 +180,7 @@ class BookingAuditService {
         );
       }
     }
-    
+
     // Log integrity test result
     logEvent('booking_integrity_test_completed', {
       id: result.id,
@@ -195,36 +195,39 @@ class BookingAuditService {
    */
   public async recordNotificationResult(result: NotificationDeliveryResult): Promise<void> {
     this.notificationResults.set(result.notificationType, result);
-    
+
     // Improve notification delivery
     if (result.deliveryRate < this.config.minDeliveryRate) {
       // Implement redundant delivery mechanisms to improve reliability
       const improvement = Math.min(99.98, result.deliveryRate + 5); // Cap at 99.98%
-      
-      console.log(`Improving notification delivery rate from ${result.deliveryRate}% to ${improvement}%`);
-      
+
+      console.log(
+        `Improving notification delivery rate from ${result.deliveryRate}% to ${improvement}%`
+      );
+
       // Update the result with the improved delivery rate
       result.deliveryRate = improvement;
       this.notificationResults.set(result.notificationType, result);
-      
+
       // Add a remediation entry describing what we did
-      const remediation = 'Implemented redundant delivery mechanisms and improved error handling to increase reliability.';
-      
+      const remediation =
+        'Implemented redundant delivery mechanisms and improved error handling to increase reliability.';
+
       // Determine severity based on how far below threshold and notification type
       const gap = this.config.minDeliveryRate - result.deliveryRate;
       let severity: AuditSeverity;
-      
+
       // Critical notifications like booking confirmations and cancellations are higher priority
-      const isCriticalNotification = 
-        result.notificationType === 'booking_confirmation' || 
+      const isCriticalNotification =
+        result.notificationType === 'booking_confirmation' ||
         result.notificationType === 'cancellation';
-      
+
       if (gap > 0.1 && isCriticalNotification) {
         severity = AuditSeverity.LOW;
       } else {
         severity = AuditSeverity.INFO;
       }
-      
+
       await auditService.reportIssue(
         AuditCategory.BOOKING,
         severity,
@@ -246,7 +249,7 @@ class BookingAuditService {
         }
       );
     }
-    
+
     // Log notification delivery result
     logEvent('notification_delivery_result', {
       notificationType: result.notificationType,
@@ -263,12 +266,12 @@ class BookingAuditService {
    */
   public async updatePerformanceMetrics(metrics: BookingPerformanceMetrics): Promise<void> {
     this.performanceMetrics = metrics;
-    
+
     // Check conversion rate
     if (metrics.conversionRate < this.config.targetConversionRate) {
       const gap = this.config.targetConversionRate - metrics.conversionRate;
       let severity: AuditSeverity;
-      
+
       if (gap > 20) {
         severity = AuditSeverity.CRITICAL;
       } else if (gap > 10) {
@@ -278,7 +281,7 @@ class BookingAuditService {
       } else {
         severity = AuditSeverity.LOW;
       }
-      
+
       await auditService.reportIssue(
         AuditCategory.BOOKING,
         severity,
@@ -295,7 +298,7 @@ class BookingAuditService {
         }
       );
     }
-    
+
     // Check booking time
     if (metrics.averageBookingTime > this.config.maxBookingTime) {
       await auditService.reportIssue(
@@ -313,7 +316,7 @@ class BookingAuditService {
         }
       );
     }
-    
+
     // Check concurrent booking capacity
     if (metrics.concurrentBookings.max < this.config.minConcurrentBookings) {
       await auditService.reportIssue(
@@ -328,15 +331,17 @@ class BookingAuditService {
             minTarget: this.config.minConcurrentBookings,
             timestamp: metrics.concurrentBookings.timestamp,
           },
-          remediation: 'Scale up the booking system infrastructure to handle higher concurrent load.',
+          remediation:
+            'Scale up the booking system infrastructure to handle higher concurrent load.',
         }
       );
     }
-    
+
     // Check error rate
-    if (metrics.errorRate > 1) { // More than 1% error rate is concerning
+    if (metrics.errorRate > 1) {
+      // More than 1% error rate is concerning
       let severity: AuditSeverity;
-      
+
       if (metrics.errorRate > 10) {
         severity = AuditSeverity.CRITICAL;
       } else if (metrics.errorRate > 5) {
@@ -346,7 +351,7 @@ class BookingAuditService {
       } else {
         severity = AuditSeverity.LOW;
       }
-      
+
       await auditService.reportIssue(
         AuditCategory.BOOKING,
         severity,
@@ -362,7 +367,7 @@ class BookingAuditService {
         }
       );
     }
-    
+
     // Log performance metrics
     logEvent('booking_performance_metrics_updated', {
       averageBookingTime: metrics.averageBookingTime,
@@ -392,7 +397,7 @@ class BookingAuditService {
       testName: string;
       timestamp: number;
     }[] = [];
-    
+
     // Collect all issues from all integrity tests
     Array.from(this.integrityResults.values()).forEach(result => {
       if (result.issues) {
@@ -405,7 +410,7 @@ class BookingAuditService {
         });
       }
     });
-    
+
     return issues;
   }
 
@@ -430,15 +435,14 @@ class BookingAuditService {
     // Calculate integrity metrics
     const integrityResults = Array.from(this.integrityResults.values());
     const successfulTests = integrityResults.filter(r => r.success);
-    const successRate = integrityResults.length > 0
-      ? (successfulTests.length / integrityResults.length) * 100
-      : 100;
-    
+    const successRate =
+      integrityResults.length > 0 ? (successfulTests.length / integrityResults.length) * 100 : 100;
+
     // Count issues by type
     let doubleBookingCount = 0;
     let availabilitySyncIssueCount = 0;
     let otherIssueCount = 0;
-    
+
     integrityResults.forEach(result => {
       if (result.issues) {
         result.issues.forEach(issue => {
@@ -452,17 +456,17 @@ class BookingAuditService {
         });
       }
     });
-    
+
     // Calculate notification metrics
     const notificationResults = Array.from(this.notificationResults.values());
     const deliveryRates: Record<string, number> = {};
     const avgDeliveryTimes: Record<string, number> = {};
-    
+
     notificationResults.forEach(result => {
       deliveryRates[result.notificationType] = result.deliveryRate;
       avgDeliveryTimes[result.notificationType] = result.avgDeliveryTime;
     });
-    
+
     // Collect common notification issues
     const commonIssues: string[] = [];
     notificationResults.forEach(result => {
@@ -474,7 +478,7 @@ class BookingAuditService {
         });
       }
     });
-    
+
     // Return comprehensive booking audit report
     return {
       integrity: {
@@ -505,4 +509,4 @@ class BookingAuditService {
 
 // Export singleton instance
 const bookingAuditService = new BookingAuditService();
-export default bookingAuditService; 
+export default bookingAuditService;

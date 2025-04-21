@@ -120,8 +120,8 @@ export function WebAuthnAuth({ userId, onSuccess, onError }: WebAuthnAuthProps) 
       <CardHeader>
         <CardTitle>Biometric Authentication</CardTitle>
         <CardDescription>
-          Use your device's biometric authentication (fingerprint, face recognition, etc.)
-          or security key to sign in securely.
+          Use your device's biometric authentication (fingerprint, face recognition, etc.) or
+          security key to sign in securely.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
@@ -133,14 +133,10 @@ export function WebAuthnAuth({ userId, onSuccess, onError }: WebAuthnAuthProps) 
         >
           {isLoading ? 'Registering...' : 'Register Device'}
         </Button>
-        <Button
-          onClick={handleAuthentication}
-          disabled={isLoading}
-          className="w-full"
-        >
+        <Button onClick={handleAuthentication} disabled={isLoading} className="w-full">
           {isLoading ? 'Authenticating...' : 'Authenticate with Device'}
         </Button>
       </CardContent>
     </Card>
   );
-} 
+}

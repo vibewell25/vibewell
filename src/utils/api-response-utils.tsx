@@ -1,11 +1,11 @@
 /**
  * API Response Utilities
- * 
+ *
  * This file provides type guard functions for safely working with API responses,
  * ensuring proper type checking for data and error properties that could be undefined.
  */
 
-import { ApiResponse } from '../services/api-client';
+import { ApiResponse } from '@/types/api';
 import { exists, isString } from './type-guards';
 
 /**
@@ -22,7 +22,9 @@ export function hasData<T>(response: ApiResponse<T>): response is ApiResponse<T>
  * @param response - The API response to check
  * @returns True if the response has an error
  */
-export function hasError<T>(response: ApiResponse<T>): response is ApiResponse<T> & { error: string } {
+export function hasError<T>(
+  response: ApiResponse<T>
+): response is ApiResponse<T> & { error: string } {
   return exists(response.error) && isString(response.error);
 }
 
@@ -42,7 +44,10 @@ export function getResponseData<T, D = T>(response: ApiResponse<T>, defaultValue
  * @param defaultError - The default error message to return if error is undefined
  * @returns The error message or the default error
  */
-export function getResponseError<T>(response: ApiResponse<T>, defaultError = 'Unknown error'): string {
+export function getResponseError<T>(
+  response: ApiResponse<T>,
+  defaultError = 'Unknown error'
+): string {
   return hasError(response) ? response.error : defaultError;
 }
 
@@ -118,8 +123,8 @@ export function withApiErrorHandling<T, Args extends any[]>(
       return {
         status: 0,
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
       };
     }
   };
-} 
+}

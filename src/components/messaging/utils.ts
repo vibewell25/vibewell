@@ -8,9 +8,10 @@ import { format } from 'date-fns';
 export function formatMessageTime(timestamp: string): string {
   const date = new Date(timestamp);
   const now = new Date();
-  const isToday = date.getDate() === now.getDate() &&
-                  date.getMonth() === now.getMonth() &&
-                  date.getFullYear() === now.getFullYear();
+  const isToday =
+    date.getDate() === now.getDate() &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear();
   if (isToday) {
     return format(date, 'HH:mm');
   } else {
@@ -38,4 +39,4 @@ export function formatLastSeen(timestamp: string): string {
   } else {
     return format(date, 'MMM d, yyyy');
   }
-} 
+}

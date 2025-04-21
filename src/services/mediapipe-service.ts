@@ -29,11 +29,11 @@ export class MediaPipeService {
     try {
       // Load MediaPipe FaceMesh from CDN
       const { FaceMesh } = await import('@mediapipe/face_mesh');
-      
+
       this.faceMesh = new FaceMesh({
         locateFile: (file: string) => {
           return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
-        }
+        },
       });
 
       // Set default options
@@ -41,7 +41,7 @@ export class MediaPipeService {
         maxNumFaces: 1,
         refineLandmarks: true,
         minDetectionConfidence: 0.5,
-        minTrackingConfidence: 0.5
+        minTrackingConfidence: 0.5,
       });
 
       this.isInitialized = true;
@@ -89,26 +89,26 @@ export class MediaPipeService {
       const eyeVector = {
         x: rightEye.x - leftEye.x,
         y: rightEye.y - leftEye.y,
-        z: rightEye.z - leftEye.z
+        z: rightEye.z - leftEye.z,
       };
 
       const mouthVector = {
         x: rightMouth.x - leftMouth.x,
         y: rightMouth.y - leftMouth.y,
-        z: rightMouth.z - leftMouth.z
+        z: rightMouth.z - leftMouth.z,
       };
 
       const rotation = {
         x: Math.atan2(eyeVector.y, eyeVector.z),
         y: Math.atan2(eyeVector.x, eyeVector.z),
-        z: Math.atan2(mouthVector.y, mouthVector.x)
+        z: Math.atan2(mouthVector.y, mouthVector.x),
       };
 
       // Use nose point as translation
       const translation = {
         x: nose.x,
         y: nose.y,
-        z: nose.z
+        z: nose.z,
       };
 
       return { rotation, translation };
@@ -128,15 +128,15 @@ export class MediaPipeService {
       return {
         eyes: [
           landmarks.slice(133, 144), // Left eye
-          landmarks.slice(362, 373)  // Right eye
+          landmarks.slice(362, 373), // Right eye
         ],
         lips: landmarks.slice(61, 69),
         jawline: landmarks.slice(0, 17),
-        nose: landmarks.slice(168, 174)
+        nose: landmarks.slice(168, 174),
       };
     } catch (error) {
       logger.error('Failed to extract facial features', 'MediaPipeService', { error });
       throw error;
     }
   }
-} 
+}

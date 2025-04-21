@@ -16,14 +16,5 @@ export function ScreenReaderOnly({
   className,
   as: Component = 'span',
 }: ScreenReaderOnlyProps) {
-  return (
-    <Component 
-      className={cn(
-        'sr-only',
-        className
-      )}
-    >
-      {children}
-    </Component>
-  );
-} 
+  return <Component className={cn('sr-only', className)}>{children}</Component>;
+}

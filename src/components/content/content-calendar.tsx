@@ -3,7 +3,14 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -51,7 +58,7 @@ export function ContentCalendar() {
     description: '',
     contentType: 'post',
     platform: 'instagram',
-    status: 'draft'
+    status: 'draft',
   });
   const [activeTab, setActiveTab] = useState<string>('calendar');
   const [currentWeek, setCurrentWeek] = useState<Date>(startOfWeek(new Date()));
@@ -60,11 +67,11 @@ export function ContentCalendar() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setNewItem((prev) => ({ ...prev, [name]: value }));
+    setNewItem(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSelectChange = (value: string, name: string) => {
-    setNewItem((prev) => ({ ...prev, [name]: value }));
+    setNewItem(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -75,20 +82,20 @@ export function ContentCalendar() {
       id: Date.now().toString(),
       title: newItem.title || '',
       description: newItem.description || '',
-      contentType: newItem.contentType as ContentType || 'post',
-      platform: newItem.platform as Platform || 'instagram',
+      contentType: (newItem.contentType as ContentType) || 'post',
+      platform: (newItem.platform as Platform) || 'instagram',
       scheduledDate,
       attachments: selectedFiles,
-      status: 'scheduled'
+      status: 'scheduled',
     };
 
-    setContentItems((prev) => [...prev, newContentItem]);
+    setContentItems(prev => [...prev, newContentItem]);
     setNewItem({
       title: '',
       description: '',
       contentType: 'post',
       platform: 'instagram',
-      status: 'draft'
+      status: 'draft',
     });
     setScheduledDate(undefined);
     setSelectedFiles([]);
@@ -99,9 +106,7 @@ export function ContentCalendar() {
 
   // Get content items for a specific day
   const getItemsForDay = (day: Date) => {
-    return contentItems.filter((item) => 
-      isSameDay(item.scheduledDate, day)
-    );
+    return contentItems.filter(item => isSameDay(item.scheduledDate, day));
   };
 
   // Navigate to previous or next week
@@ -147,20 +152,21 @@ export function ContentCalendar() {
                 </div>
               </div>
               <CardDescription>
-                View and manage your scheduled content for the week of {format(currentWeek, 'MMM d, yyyy')}
+                View and manage your scheduled content for the week of{' '}
+                {format(currentWeek, 'MMM d, yyyy')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-7 gap-2">
-                {weekDays.map((day) => (
+                {weekDays.map(day => (
                   <div key={day.toString()} className="min-h-[12rem] border rounded-md p-2">
                     <div className="font-medium text-sm mb-2 sticky top-0 bg-background">
                       {format(day, 'EEE, MMM d')}
                     </div>
                     <div className="space-y-2">
-                      {getItemsForDay(day).map((item) => (
-                        <div 
-                          key={item.id} 
+                      {getItemsForDay(day).map(item => (
+                        <div
+                          key={item.id}
                           className="text-xs p-2 rounded-md bg-primary/10 hover:bg-primary/20 cursor-pointer"
                         >
                           <div className="font-medium">{item.title}</div>
@@ -190,9 +196,7 @@ export function ContentCalendar() {
           <Card>
             <CardHeader>
               <CardTitle>Content List</CardTitle>
-              <CardDescription>
-                View all your scheduled content in a list format
-              </CardDescription>
+              <CardDescription>View all your scheduled content in a list format</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
@@ -213,7 +217,7 @@ export function ContentCalendar() {
                       </TableCell>
                     </TableRow>
                   ) : (
-                    contentItems.map((item) => (
+                    contentItems.map(item => (
                       <TableRow key={item.id}>
                         <TableCell>{item.title}</TableCell>
                         <TableCell>{item.contentType}</TableCell>
@@ -272,7 +276,7 @@ export function ContentCalendar() {
                     <Label htmlFor="contentType">Content Type</Label>
                     <Select
                       value={newItem.contentType}
-                      onValueChange={(value) => handleSelectChange(value, 'contentType')}
+                      onValueChange={value => handleSelectChange(value, 'contentType')}
                     >
                       <SelectTrigger id="contentType">
                         <SelectValue placeholder="Select content type" />
@@ -290,7 +294,7 @@ export function ContentCalendar() {
                     <Label htmlFor="platform">Platform</Label>
                     <Select
                       value={newItem.platform}
-                      onValueChange={(value) => handleSelectChange(value, 'platform')}
+                      onValueChange={value => handleSelectChange(value, 'platform')}
                     >
                       <SelectTrigger id="platform">
                         <SelectValue placeholder="Select platform" />
@@ -307,10 +311,7 @@ export function ContentCalendar() {
 
                 <div className="space-y-2">
                   <Label>Schedule Date and Time</Label>
-                  <DateTimePicker
-                    date={scheduledDate}
-                    setDate={setScheduledDate}
-                  />
+                  <DateTimePicker date={scheduledDate} setDate={setScheduledDate} />
                 </div>
 
                 <div className="space-y-2">
@@ -321,7 +322,7 @@ export function ContentCalendar() {
                     maxFiles={5}
                     acceptedFileTypes={{
                       'image/*': ['.png', '.jpg', '.jpeg', '.gif'],
-                      'video/*': ['.mp4', '.mov', '.avi']
+                      'video/*': ['.mp4', '.mov', '.avi'],
                     }}
                   />
                 </div>
@@ -341,4 +342,4 @@ export function ContentCalendar() {
       </Tabs>
     </div>
   );
-} 
+}

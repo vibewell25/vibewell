@@ -64,12 +64,8 @@ export const checkPoseAccuracy = (
   let isCorrect = true;
 
   Object.entries(config).forEach(([joint, range]) => {
-    const points = getKeypoints(pose, [
-      `${joint}_start`,
-      joint,
-      `${joint}_end`,
-    ]);
-    
+    const points = getKeypoints(pose, [`${joint}_start`, joint, `${joint}_end`]);
+
     const angle = calculateAngle(points[0], points[1], points[2]);
     const withinRange = isAngleWithinRange(angle, range);
 
@@ -100,14 +96,14 @@ export function drawGuideLines(ctx: CanvasRenderingContext2D, keypoints: Keypoin
 export async function setupCamera(videoElement: HTMLVideoElement): Promise<boolean> {
   const stream = await navigator.mediaDevices.getUserMedia({
     video: { width: 640, height: 480 },
-    audio: false
+    audio: false,
   });
   videoElement.srcObject = stream;
-  
-  return new Promise((resolve) => {
+
+  return new Promise(resolve => {
     videoElement.onloadedmetadata = () => {
       videoElement.play();
       resolve(true);
     };
   });
-} 
+}

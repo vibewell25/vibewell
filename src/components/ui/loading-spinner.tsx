@@ -9,4 +9,4 @@ export function LoadingSpinner(): JSX.Element {
   );
 }
 
-export type LoadingSpinnerProps = React.ComponentProps<typeof LoadingSpinner>; 
+export type LoadingSpinnerProps = React.ComponentProps<typeof LoadingSpinner>;

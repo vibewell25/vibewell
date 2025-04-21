@@ -9,10 +9,7 @@ interface BreadcrumbsProps {
   items: BreadcrumbItem[];
   className?: string;
 }
-export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
-  items,
-  className = '',
-}) => {
+export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, className = '' }) => {
   return (
     <nav className={`flex ${className}`} aria-label="Breadcrumb">
       <ol className="flex items-center space-x-2">
@@ -28,9 +25,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
               <Link
                 href={item.href}
                 className={`ml-2 text-sm font-medium ${
-                  index === items.length - 1
-                    ? 'text-gray-500'
-                    : 'text-gray-700 hover:text-gray-900'
+                  index === items.length - 1 ? 'text-gray-500' : 'text-gray-700 hover:text-gray-900'
                 }`}
               >
                 {item.label}
@@ -38,9 +33,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
             ) : (
               <span
                 className={`ml-2 text-sm font-medium ${
-                  index === items.length - 1
-                    ? 'text-gray-500'
-                    : 'text-gray-700'
+                  index === items.length - 1 ? 'text-gray-500' : 'text-gray-700'
                 }`}
                 aria-current={index === items.length - 1 ? 'page' : undefined}
               >
@@ -52,4 +45,4 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
       </ol>
     </nav>
   );
-}; 
+};

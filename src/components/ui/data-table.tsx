@@ -41,8 +41,8 @@ export function DataTable({
   // Apply filtering
   const filteredData = React.useMemo(() => {
     if (!filtering || !filterValue) return data;
-    return data.filter((item) =>
-      Object.values(item).some((value) =>
+    return data.filter(item =>
+      Object.values(item).some(value =>
         String(value).toLowerCase().includes(filterValue.toLowerCase())
       )
     );
@@ -77,7 +77,7 @@ export function DataTable({
           <Input
             placeholder="Filter records..."
             value={filterValue}
-            onChange={(e) => setFilterValue(e.target.value)}
+            onChange={e => setFilterValue(e.target.value)}
             className="max-w-sm"
           />
         </div>
@@ -86,7 +86,7 @@ export function DataTable({
       <Table>
         <TableHeader>
           <TableRow>
-            {columns.map((column) => (
+            {columns.map(column => (
               <TableHead
                 key={column.id || column.accessorKey}
                 onClick={() => {
@@ -112,13 +112,13 @@ export function DataTable({
         <TableBody>
           {paginatedData.map((row, rowIndex) => (
             <TableRow key={rowIndex}>
-              {columns.map((column) => (
+              {columns.map(column => (
                 <TableCell key={column.id || column.accessorKey}>
                   {column.cell
                     ? column.cell({ row: { original: row } })
                     : column.accessorKey
-                    ? row[column.accessorKey]
-                    : null}
+                      ? row[column.accessorKey]
+                      : null}
                 </TableCell>
               ))}
             </TableRow>
@@ -131,7 +131,7 @@ export function DataTable({
           <div className="flex items-center gap-2">
             <select
               value={pageSize}
-              onChange={(e) => setPageSize(Number(e.target.value))}
+              onChange={e => setPageSize(Number(e.target.value))}
               className="border rounded p-1"
             >
               <option value="10">10</option>
@@ -142,11 +142,7 @@ export function DataTable({
           </div>
 
           <div className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={() => setPage(page - 1)}
-              disabled={page === 1}
-            >
+            <Button variant="outline" onClick={() => setPage(page - 1)} disabled={page === 1}>
               Previous
             </Button>
             <span className="py-2">
@@ -164,4 +160,4 @@ export function DataTable({
       )}
     </div>
   );
-} 
+}

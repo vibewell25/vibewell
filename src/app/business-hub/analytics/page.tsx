@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
-;
 import Link from 'next/link';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
@@ -50,10 +49,10 @@ const getAnalyticsData = () => {
     return {
       totalViews: 0,
       resourceViews: [] as ViewData[],
-      popularSearches: [] as {term: string, count: number}[],
+      popularSearches: [] as { term: string; count: number }[],
       searchHistory: [] as SearchHistoryItem[],
       bookmarkedCount: 0,
-      topRated: [] as PopularRating[]
+      topRated: [] as PopularRating[],
     };
   }
   try {
@@ -62,7 +61,9 @@ const getAnalyticsData = () => {
     const resourceViews = Object.values(viewData) as ViewData[];
     const totalViews = resourceViews.reduce((sum, item) => sum + item.views, 0);
     // Search history
-    const searchHistory = JSON.parse(localStorage.getItem('search_history') || '[]') as SearchHistoryItem[];
+    const searchHistory = JSON.parse(
+      localStorage.getItem('search_history') || '[]'
+    ) as SearchHistoryItem[];
     // Popular searches (count occurrences)
     const searchTerms = searchHistory.map(item => item.query.toLowerCase().trim()).filter(Boolean);
     const searchCounts: Record<string, number> = {};
@@ -84,7 +85,7 @@ const getAnalyticsData = () => {
       popularSearches,
       searchHistory,
       bookmarkedCount,
-      topRated
+      topRated,
     };
   } catch (error) {
     console.error('Error fetching analytics data:', error);
@@ -94,7 +95,7 @@ const getAnalyticsData = () => {
       popularSearches: [],
       searchHistory: [],
       bookmarkedCount: 0,
-      topRated: []
+      topRated: [],
     };
   }
 };
@@ -107,7 +108,7 @@ const popularResources: PopularResource[] = [
     category: 'Marketing',
     url: '/business-hub/marketing/resources/1',
     views: 245,
-    imageUrl: '/images/social-media-marketing.jpg'
+    imageUrl: '/images/social-media-marketing.jpg',
   },
   {
     id: '2',
@@ -116,7 +117,7 @@ const popularResources: PopularResource[] = [
     category: 'Financial',
     url: '/business-hub/financial-management/resources/1',
     views: 189,
-    imageUrl: '/images/financial-planning.jpg'
+    imageUrl: '/images/financial-planning.jpg',
   },
   {
     id: '3',
@@ -125,7 +126,7 @@ const popularResources: PopularResource[] = [
     category: 'Client Acquisition',
     url: '/business-hub/client-acquisition/strategies/1',
     views: 173,
-    imageUrl: '/images/client-acquisition.jpg'
+    imageUrl: '/images/client-acquisition.jpg',
   },
   {
     id: '4',
@@ -134,7 +135,7 @@ const popularResources: PopularResource[] = [
     category: 'Financial',
     url: '/business-hub/financial-management/tools/1',
     views: 162,
-    imageUrl: '/images/pricing-calculator.jpg'
+    imageUrl: '/images/pricing-calculator.jpg',
   },
   {
     id: '5',
@@ -143,14 +144,14 @@ const popularResources: PopularResource[] = [
     category: 'Marketing',
     url: '/business-hub/marketing/resources/2',
     views: 157,
-    imageUrl: '/images/email-marketing.jpg'
-  }
+    imageUrl: '/images/email-marketing.jpg',
+  },
 ];
 export default function BusinessHubAnalyticsPage() {
   const [analyticsData, setAnalyticsData] = useState<{
     totalViews: number;
     resourceViews: ViewData[];
-    popularSearches: {term: string, count: number}[];
+    popularSearches: { term: string; count: number }[];
     searchHistory: SearchHistoryItem[];
     bookmarkedCount: number;
     topRated: PopularRating[];
@@ -160,7 +161,7 @@ export default function BusinessHubAnalyticsPage() {
     popularSearches: [],
     searchHistory: [],
     bookmarkedCount: 0,
-    topRated: []
+    topRated: [],
   });
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
@@ -175,36 +176,36 @@ export default function BusinessHubAnalyticsPage() {
       value: analyticsData.totalViews,
       change: 12.5,
       changeType: 'increase',
-      icon: <Icons.ChartBarIcon className="h-6 w-6 text-blue-500" />
+      icon: <Icons.ChartBarIcon className="h-6 w-6 text-blue-500" />,
     },
     {
       title: 'Resources Bookmarked',
       value: analyticsData.bookmarkedCount,
       change: 8.3,
       changeType: 'increase',
-      icon: <Icons.BookmarkIcon className="h-6 w-6 text-yellow-500" />
+      icon: <Icons.BookmarkIcon className="h-6 w-6 text-yellow-500" />,
     },
     {
       title: 'Search Queries',
       value: analyticsData.searchHistory.length,
       change: 15.2,
       changeType: 'increase',
-      icon: <Icons.MagnifyingGlassIcon className="h-6 w-6 text-purple-500" />
+      icon: <Icons.MagnifyingGlassIcon className="h-6 w-6 text-purple-500" />,
     },
     {
       title: 'Resource Engagement',
       value: '42%',
       change: 5.7,
       changeType: 'increase',
-      icon: <Icons.UserGroupIcon className="h-6 w-6 text-green-500" />
-    }
+      icon: <Icons.UserGroupIcon className="h-6 w-6 text-green-500" />,
+    },
   ];
   // Format date to readable format
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   };
   return (
@@ -236,20 +237,26 @@ export default function BusinessHubAnalyticsPage() {
                 {/* Metrics Overview */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                   {metricCards.map((card, index) => (
-                    <div key={index} className="bg-white border border-gray-100 rounded-lg p-4 shadow-sm">
+                    <div
+                      key={index}
+                      className="bg-white border border-gray-100 rounded-lg p-4 shadow-sm"
+                    >
                       <div className="flex justify-between items-start">
                         <div>
                           <p className="text-sm text-gray-500">{card.title}</p>
                           <p className="text-2xl font-bold mt-1">{card.value}</p>
                         </div>
-                        <div className="p-2 bg-gray-50 rounded-lg">
-                          {card.icon}
-                        </div>
+                        <div className="p-2 bg-gray-50 rounded-lg">{card.icon}</div>
                       </div>
-                      <div className={`flex items-center mt-4 text-sm ${
-                        card.changeType === 'increase' ? 'text-green-600' : 
-                        card.changeType === 'decrease' ? 'text-red-600' : 'text-gray-500'
-                      }`}>
+                      <div
+                        className={`flex items-center mt-4 text-sm ${
+                          card.changeType === 'increase'
+                            ? 'text-green-600'
+                            : card.changeType === 'decrease'
+                              ? 'text-red-600'
+                              : 'text-gray-500'
+                        }`}
+                      >
                         {card.changeType === 'increase' ? (
                           <Icons.ArrowUpIcon className="h-4 w-4 mr-1" />
                         ) : card.changeType === 'decrease' ? (
@@ -271,22 +278,34 @@ export default function BusinessHubAnalyticsPage() {
                       <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                           <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                               Resource
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                               Category
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                               Views
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                               Type
                             </th>
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                          {popularResources.map((resource) => (
+                          {popularResources.map(resource => (
                             <tr key={resource.id} className="hover:bg-gray-50">
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
@@ -302,7 +321,10 @@ export default function BusinessHubAnalyticsPage() {
                                     </div>
                                   )}
                                   <div>
-                                    <Link href={resource.url} className="text-sm font-medium text-gray-900 hover:text-blue-600">
+                                    <Link
+                                      href={resource.url}
+                                      className="text-sm font-medium text-gray-900 hover:text-blue-600"
+                                    >
                                       {resource.title}
                                     </Link>
                                   </div>
@@ -343,22 +365,28 @@ export default function BusinessHubAnalyticsPage() {
                       {isClient && analyticsData.resourceViews.length > 0 ? (
                         <div className="space-y-4">
                           {analyticsData.resourceViews
-                            .sort((a, b) => new Date(b.lastViewed).getTime() - new Date(a.lastViewed).getTime())
+                            .sort(
+                              (a, b) =>
+                                new Date(b.lastViewed).getTime() - new Date(a.lastViewed).getTime()
+                            )
                             .slice(0, 5)
-                            .map((item) => (
-                              <div key={item.id} className="flex items-start pb-4 border-b border-gray-100 last:border-0 last:pb-0">
+                            .map(item => (
+                              <div
+                                key={item.id}
+                                className="flex items-start pb-4 border-b border-gray-100 last:border-0 last:pb-0"
+                              >
                                 <div className="bg-blue-100 p-2 rounded-md mr-3">
                                   <Icons.ChartBarIcon className="h-5 w-5 text-blue-700" />
                                 </div>
                                 <div>
                                   <p className="text-sm font-medium">Viewed: {item.name}</p>
                                   <p className="text-xs text-gray-500 mt-1">
-                                    {formatDate(item.lastViewed)} • {item.views} {item.views === 1 ? 'view' : 'views'}
+                                    {formatDate(item.lastViewed)} • {item.views}{' '}
+                                    {item.views === 1 ? 'view' : 'views'}
                                   </p>
                                 </div>
                               </div>
-                            ))
-                          }
+                            ))}
                         </div>
                       ) : (
                         <div className="text-center py-8 text-gray-500">
@@ -378,7 +406,10 @@ export default function BusinessHubAnalyticsPage() {
                       {isClient && analyticsData.popularSearches.length > 0 ? (
                         <div className="space-y-3">
                           {analyticsData.popularSearches.map((item, index) => (
-                            <div key={index} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                            <div
+                              key={index}
+                              className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0"
+                            >
                               <div className="flex items-center">
                                 <div className="bg-gray-100 h-7 w-7 rounded-full flex items-center justify-center mr-3 text-xs font-medium">
                                   {index + 1}
@@ -407,4 +438,4 @@ export default function BusinessHubAnalyticsPage() {
       </div>
     </Layout>
   );
-} 
+}

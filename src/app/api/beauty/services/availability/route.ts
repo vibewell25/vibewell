@@ -9,10 +9,7 @@ export async function GET(request: Request) {
     const date = searchParams.get('date');
 
     if (!serviceId || !date) {
-      return NextResponse.json(
-        { error: 'Service ID and date are required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Service ID and date are required' }, { status: 400 });
     }
 
     // Get service details
@@ -46,10 +43,8 @@ export async function GET(request: Request) {
 
     for (let hour = startTime; hour < endTime; hour++) {
       for (let minute = 0; minute < 60; minute += interval) {
-        const time = `${hour.toString().padStart(2, '0')}:${minute
-          .toString()
-          .padStart(2, '0')}`;
-        
+        const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+
         // Now we can safely check the time property since it's part of our schema
         const isBooked = bookings.some(booking => booking.time === time);
 
@@ -67,9 +62,6 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error('Error checking availability:', error);
-    return NextResponse.json(
-      { error: 'Failed to check availability' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to check availability' }, { status: 500 });
   }
-} 
+}

@@ -43,11 +43,7 @@ export const Accessibility: React.FC<AccessibilityProps> = ({ children }) => {
   }, []);
 
   return (
-    <div
-      role="application"
-      aria-label="Vibewell Application"
-      className="min-h-screen"
-    >
+    <div role="application" aria-label="Vibewell Application" className="min-h-screen">
       {/* Skip links */}
       <div className="sr-only">
         <a href="#main-content" className="skip-link">
@@ -67,4 +63,4 @@ export const Accessibility: React.FC<AccessibilityProps> = ({ children }) => {
       </main>
     </div>
   );
-}; 
+};

@@ -100,12 +100,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
     const itemId = `nav-item-${item.label.toLowerCase().replace(/\s+/g, '-')}`;
 
     return (
-      <li
-        key={item.label}
-        id={itemId}
-        role="none"
-        className={level > 0 ? 'pl-4' : ''}
-      >
+      <li key={item.label} id={itemId} role="none" className={level > 0 ? 'pl-4' : ''}>
         <div
           role="menuitem"
           tabIndex={0}
@@ -120,14 +115,10 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
           }}
           className="flex items-center justify-between py-2 px-3 hover:bg-gray-100 rounded-md"
         >
-          <a
-            href={item.href}
-            className="flex-1"
-            aria-label={item.description}
-          >
+          <a href={item.href} className="flex-1" aria-label={item.description}>
             {item.label}
           </a>
-          
+
           {hasChildren && (
             <button
               aria-label={isExpanded ? 'Collapse submenu' : 'Expand submenu'}
@@ -165,11 +156,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
         </div>
 
         {hasChildren && isExpanded && item.children && (
-          <ul
-            role="menu"
-            aria-label={`${item.label} submenu`}
-            className="mt-1"
-          >
+          <ul role="menu" aria-label={`${item.label} submenu`} className="mt-1">
             {item.children.map(child => renderNavItem(child, level + 1))}
           </ul>
         )}
@@ -178,12 +165,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
   };
 
   return (
-    <nav
-      ref={navRef}
-      role="navigation"
-      aria-label="Main navigation"
-      className={className}
-    >
+    <nav ref={navRef} role="navigation" aria-label="Main navigation" className={className}>
       <ul role="menubar" className="space-y-1">
         {items.map(item => renderNavItem(item))}
       </ul>
@@ -224,4 +206,4 @@ const navItems = [
 ];
 
 <AccessibleNavigation items={navItems} className="w-64" />
-*/ 
+*/

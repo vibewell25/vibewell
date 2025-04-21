@@ -17,7 +17,7 @@ function LoginContent() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
+
     // Simulate login
     setTimeout(() => {
       setLoading(false);
@@ -41,7 +41,7 @@ function LoginContent() {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 className="h-12 w-full rounded-md"
                 placeholder="Enter your email"
                 required
@@ -56,15 +56,15 @@ function LoginContent() {
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 className="h-12 w-full rounded-md"
                 placeholder="Enter your password"
                 required
               />
             </div>
 
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full h-12 rounded-md font-medium text-base"
               disabled={loading}
             >
@@ -73,10 +73,7 @@ function LoginContent() {
           </form>
 
           <div className="mt-4 text-center">
-            <Link 
-              href="/forgot-password" 
-              className="text-primary hover:underline text-sm"
-            >
+            <Link href="/forgot-password" className="text-primary hover:underline text-sm">
               Forgot password?
             </Link>
           </div>
@@ -84,7 +81,7 @@ function LoginContent() {
 
         <div className="pt-8 pb-4 text-center">
           <p className="text-gray-600">
-            No account? {' '}
+            No account?{' '}
             <Link href="/register" className="text-primary font-medium hover:underline">
               Sign up
             </Link>
@@ -97,8 +94,10 @@ function LoginContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+    <Suspense
+      fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}
+    >
       <LoginContent />
     </Suspense>
   );
-} 
+}

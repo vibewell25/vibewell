@@ -4,7 +4,14 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { CheckCircle } from 'lucide-react';
 
 // Component that uses useSearchParams
@@ -27,7 +34,7 @@ function PaymentSuccessContent() {
         // In a real application, you would fetch payment details from your backend
         // This is just a simulated response
         await new Promise(resolve => setTimeout(resolve, 1000));
-        
+
         setPaymentDetails({
           id: paymentId,
           amount: 49.99,
@@ -66,9 +73,7 @@ function PaymentSuccessContent() {
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle className="text-red-600">Payment Error</CardTitle>
-            <CardDescription>
-              There was a problem with your payment
-            </CardDescription>
+            <CardDescription>There was a problem with your payment</CardDescription>
           </CardHeader>
           <CardContent>
             <p>{error || 'No payment details found'}</p>
@@ -99,9 +104,7 @@ function PaymentSuccessContent() {
             <CheckCircle className="h-10 w-10 text-green-600" />
           </div>
           <CardTitle className="text-xl">Payment Successful!</CardTitle>
-          <CardDescription>
-            Your payment has been processed successfully
-          </CardDescription>
+          <CardDescription>Your payment has been processed successfully</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -154,16 +157,18 @@ function PaymentSuccessContent() {
 // Export with Suspense boundary
 export default function PaymentSuccessPage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <h2 className="mt-4 text-xl font-semibold">Loading Payment Details</h2>
-          <p className="mt-2 text-gray-500">Please wait...</p>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <h2 className="mt-4 text-xl font-semibold">Loading Payment Details</h2>
+            <p className="mt-2 text-gray-500">Please wait...</p>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <PaymentSuccessContent />
     </Suspense>
   );
-} 
+}

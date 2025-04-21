@@ -54,15 +54,12 @@ export class ComplianceService {
         acceptedAt: new Date(),
         purposes,
         dataCategories,
-        retentionPeriod: 365 // 1 year default
+        retentionPeriod: 365, // 1 year default
       };
 
-      await this.redis.hset(
-        `compliance:consent:${userId}`,
-        {
-          agreement: JSON.stringify(agreement)
-        }
-      );
+      await this.redis.hset(`compliance:consent:${userId}`, {
+        agreement: JSON.stringify(agreement),
+      });
 
       await this.auditLogging.log('consent_recorded', {
         userId,
@@ -70,8 +67,8 @@ export class ComplianceService {
         resourceId: userId,
         metadata: {
           purposes,
-          dataCategories
-        }
+          dataCategories,
+        },
       });
 
       return agreement;
@@ -93,15 +90,12 @@ export class ComplianceService {
         ...request,
         id,
         createdAt: new Date(),
-        status: 'pending'
+        status: 'pending',
       };
 
-      await this.redis.hset(
-        `compliance:dsr:${id}`,
-        {
-          request: JSON.stringify(dsr)
-        }
-      );
+      await this.redis.hset(`compliance:dsr:${id}`, {
+        request: JSON.stringify(dsr),
+      });
 
       await this.auditLogging.log('data_subject_request_created', {
         userId: request.userId,
@@ -109,8 +103,8 @@ export class ComplianceService {
         resourceId: id,
         metadata: {
           type: request.type,
-          details: request.details
-        }
+          details: request.details,
+        },
       });
 
       // Start processing the request
@@ -208,7 +202,7 @@ export class ComplianceService {
   ): Promise<void> {
     const key = `compliance:dsr:${requestId}`;
     const data = await this.redis.hget(key, 'request');
-    
+
     if (data) {
       const request = JSON.parse(data) as DataSubjectRequest;
       request.status = status;
@@ -217,7 +211,7 @@ export class ComplianceService {
       }
 
       await this.redis.hset(key, {
-        request: JSON.stringify(request)
+        request: JSON.stringify(request),
       });
 
       await this.auditLogging.log('data_subject_request_updated', {
@@ -226,8 +220,8 @@ export class ComplianceService {
         resourceId: requestId,
         metadata: {
           status,
-          completedAt: request.completedAt
-        }
+          completedAt: request.completedAt,
+        },
       });
     }
   }
@@ -235,14 +229,13 @@ export class ComplianceService {
   /**
    * Check if data retention period has expired
    */
-  async checkDataRetention(
-    dataType: string,
-    createdAt: Date
-  ): Promise<boolean> {
+  async checkDataRetention(dataType: string, createdAt: Date): Promise<boolean> {
     const policy = await this.getRetentionPolicy(dataType);
     if (!policy) return false;
 
-    const retentionEnd = new Date(createdAt.getTime() + policy.retentionPeriod * 24 * 60 * 60 * 1000);
+    const retentionEnd = new Date(
+      createdAt.getTime() + policy.retentionPeriod * 24 * 60 * 60 * 1000
+    );
     return new Date() > retentionEnd;
   }
 
@@ -258,20 +251,17 @@ export class ComplianceService {
    * Set data retention policy
    */
   async setRetentionPolicy(policy: DataRetentionPolicy): Promise<void> {
-    await this.redis.hset(
-      'compliance:retention_policies',
-      {
-        [policy.type]: JSON.stringify(policy)
-      }
-    );
+    await this.redis.hset('compliance:retention_policies', {
+      [policy.type]: JSON.stringify(policy),
+    });
 
     await this.auditLogging.log('retention_policy_updated', {
       resourceType: 'retention_policy',
       resourceId: policy.type,
       metadata: {
         retentionPeriod: policy.retentionPeriod,
-        dataCategories: policy.dataCategories
-      }
+        dataCategories: policy.dataCategories,
+      },
     });
   }
-} 
+}

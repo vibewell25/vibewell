@@ -2,7 +2,7 @@
  * Security middleware for the Vibewell application
  * Implements various security protections
  */
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from '@/types/api';
 import crypto from 'crypto';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import { Request } from 'express';
@@ -38,10 +38,7 @@ interface RateLimitError {
 // Configure Winston logger
 const securityLogger = winston.createLogger({
   level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
-  ),
+  format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
   transports: [
     new winston.transports.File({ filename: 'logs/security.log' }),
     new winston.transports.Console({
@@ -67,28 +64,25 @@ const csrfConfig: CsrfConfig = {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     path: '/',
-    maxAge: 3600 // 1 hour
-  }
+    maxAge: 3600, // 1 hour
+  },
 };
 
 // Generate CSRF token with proper type safety
 function generateToken(secret: string): string {
-  return crypto
-    .createHmac('sha256', secret)
-    .update(crypto.randomBytes(32))
-    .digest('hex');
+  return crypto.createHmac('sha256', secret).update(crypto.randomBytes(32)).digest('hex');
 }
 
 // Type-safe security headers
 export const securityHeaders: SecurityHeaders = {
-  'Content-Security-Policy': 
+  'Content-Security-Policy':
     "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.auth0.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.auth0.com; frame-src 'self' https://*.auth0.com;",
   'X-XSS-Protection': '1; mode=block',
   'X-Frame-Options': 'SAMEORIGIN',
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self), interest-cohort=()',
-  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload'
+  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
 };
 
 // Apply security headers with type safety
@@ -99,23 +93,25 @@ export function applySecurityHeaders(res: NextApiResponse): void {
 }
 
 // Type-safe middleware wrapper for Next.js API routes
-export const withSecurity = (handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>) => {
+export const withSecurity = (
+  handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>
+) => {
   return async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
       const expressReq = req as unknown as Request;
       const ipAddress = expressReq.ip || '0.0.0.0'; // Fallback IP if undefined
       const limiter = new RateLimiterMemory({
         points: 10,
-        duration: 1
+        duration: 1,
       });
 
       try {
         await limiter.consume(ipAddress);
       } catch (error) {
         const rateLimitError = error as RateLimitError;
-        res.status(429).json({ 
+        res.status(429).json({
           error: 'Too many requests, please try again later',
-          retryAfter: rateLimitError.remainingPoints 
+          retryAfter: rateLimitError.remainingPoints,
         });
         return;
       }
@@ -131,9 +127,12 @@ export const withSecurity = (handler: (req: NextApiRequest, res: NextApiResponse
 // Type-safe helper to get CSRF token for forms
 export const getToken = async (req: NextApiRequest, res: NextApiResponse): Promise<string> => {
   const token = generateToken(csrfConfig.secret);
-  res.setHeader('Set-Cookie', `${csrfConfig.cookieName}=${token}; ${Object.entries(csrfConfig.cookieOptions)
-    .map(([key, value]) => `${key}=${value}`)
-    .join('; ')}`);
+  res.setHeader(
+    'Set-Cookie',
+    `${csrfConfig.cookieName}=${token}; ${Object.entries(csrfConfig.cookieOptions)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('; ')}`
+  );
   return token;
 };
 
@@ -151,9 +150,7 @@ export function logSecurityEvent(
 
 // Rate limiting function for Swagger UI
 async function checkSwaggerRateLimit(req: NextRequest): Promise<boolean> {
-  const ip = req.headers.get('x-real-ip') || 
-             req.headers.get('x-forwarded-for') || 
-             'anonymous';
+  const ip = req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for') || 'anonymous';
   try {
     await swaggerRateLimiter.consume(ip);
     return true;
@@ -170,11 +167,7 @@ async function checkSwaggerRateLimit(req: NextRequest): Promise<boolean> {
 const redis = new Redis(process.env.REDIS_URL || '');
 
 // Paths that don't need security monitoring
-const EXEMPT_PATHS = [
-  '/_next',
-  '/static',
-  '/favicon.ico',
-];
+const EXEMPT_PATHS = ['/_next', '/static', '/favicon.ico'];
 
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
@@ -185,9 +178,8 @@ export async function middleware(req: NextRequest) {
   }
 
   // Check if IP is blocked
-  const clientIp = req.headers.get('x-real-ip') || 
-                  req.headers.get('x-forwarded-for')?.split(',')[0] ||
-                  'unknown';
+  const clientIp =
+    req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
   const isBlocked = await redis.sismember('security:blocked_ips', clientIp);
   if (isBlocked) {
     return new NextResponse('Access Denied', { status: 403 });

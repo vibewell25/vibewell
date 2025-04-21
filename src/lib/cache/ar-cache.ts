@@ -1,6 +1,6 @@
 /**
  * AR Model Caching System
- * 
+ *
  * Specialized caching system for AR models with:
  * - IndexedDB storage for persistence between sessions
  * - Automatic cache invalidation for model updates
@@ -64,7 +64,15 @@ const DEFAULT_SETTINGS = {
 };
 
 // Event emitter for cache events
-type CacheEventType = 'hit' | 'miss' | 'add' | 'remove' | 'clear' | 'error' | 'cleanup' | 'prefetch';
+type CacheEventType =
+  | 'hit'
+  | 'miss'
+  | 'add'
+  | 'remove'
+  | 'clear'
+  | 'error'
+  | 'cleanup'
+  | 'prefetch';
 type CacheEventCallback = (event: CacheEvent) => void;
 
 interface CacheEvent {
@@ -95,20 +103,20 @@ export class ARModelCache {
     cleanup: [],
     prefetch: [],
   };
-  
+
   private memoryCache = new Map<string, Uint8Array>();
   private prefetchQueue: string[] = [];
   private isPrefetching = false;
-  
+
   constructor() {
     // Only run initialization in browser environment
     if (typeof window !== 'undefined') {
       this.initDB();
       this.estimateDeviceStorage();
-      
+
       // Set up periodic cache maintenance
       window.addEventListener('online', this.onOnline.bind(this));
-      
+
       // Use idle callback for maintenance if available
       if ('requestIdleCallback' in window) {
         (window as any).requestIdleCallback(this.performMaintenance.bind(this));
@@ -117,7 +125,7 @@ export class ARModelCache {
       }
     }
   }
-  
+
   /**
    * Initialize the IndexedDB database
    */
@@ -134,11 +142,11 @@ export class ARModelCache {
               modelStore.createIndex('by-last-accessed', 'lastAccessed');
               modelStore.createIndex('by-access-count', 'accessCount');
             }
-            
+
             if (!db.objectStoreNames.contains('metadata')) {
               db.createObjectStore('metadata', { keyPath: 'key' });
             }
-            
+
             // Initialize metadata if upgrading from no previous version
             if (oldVersion === 0) {
               const metadataStore = db.transaction('metadata', 'readwrite').objectStore('metadata');
@@ -154,18 +162,18 @@ export class ARModelCache {
             }
           },
         });
-        
+
         // Wait for DB to be ready
         await this.dbPromise;
         this.isInitialized = true;
       }
     } catch (error) {
-      this.emitEvent('error', { 
-        error: error instanceof Error ? error : new Error('Unknown error initializing cache') 
+      this.emitEvent('error', {
+        error: error instanceof Error ? error : new Error('Unknown error initializing cache'),
       });
     }
   }
-  
+
   /**
    * Get a model from the cache
    * @param url Model URL
@@ -173,11 +181,15 @@ export class ARModelCache {
    * @param onProgress Progress callback
    * @returns Promise resolving to the model data or null if not found
    */
-  async getModel(url: string, type: string, onProgress?: (progress: number) => void): Promise<Uint8Array | null> {
+  async getModel(
+    url: string,
+    type: string,
+    onProgress?: (progress: number) => void
+  ): Promise<Uint8Array | null> {
     if (!url) {
       throw new Error('URL is required');
     }
-    
+
     try {
       // Check memory cache first for fastest access
       if (this.memoryCache.has(url)) {
@@ -186,47 +198,47 @@ export class ARModelCache {
         this.updateModelMetadata(url);
         return data;
       }
-      
+
       // Ensure DB is initialized
       if (!this.isInitialized) {
         await this.initDB();
       }
-      
+
       // Check IndexedDB cache
       const db = await this.dbPromise;
       if (!db) {
         throw new Error('Database not initialized');
       }
-      
+
       const model = await db.get('models', url);
-      
+
       // Cache hit
       if (model) {
         // Update last accessed time
         await this.updateModelMetadata(url);
-        
+
         // Add to memory cache for faster subsequent access
         this.memoryCache.set(url, model.data);
-        
+
         // Emit cache hit event
         this.emitEvent('hit', { url, modelType: type, size: model.data.byteLength });
-        
+
         return model.data;
       }
-      
+
       // Cache miss
       this.emitEvent('miss', { url, modelType: type });
       return null;
     } catch (error) {
-      this.emitEvent('error', { 
+      this.emitEvent('error', {
         error: error instanceof Error ? error : new Error('Unknown error getting model'),
         url,
-        modelType: type
+        modelType: type,
       });
       return null;
     }
   }
-  
+
   /**
    * Add a model to the cache
    */
@@ -234,27 +246,27 @@ export class ARModelCache {
     if (!url || !data) {
       throw new Error('URL and data are required');
     }
-    
+
     try {
       // Ensure DB is initialized
       if (!this.isInitialized) {
         await this.initDB();
       }
-      
+
       const db = await this.dbPromise;
       if (!db) {
         throw new Error('Database not initialized');
       }
-      
+
       // Make sure there's enough space
       await this.makeRoom(data.byteLength);
-      
+
       // Add to memory cache
       this.memoryCache.set(url, data);
-      
+
       // Current timestamp
       const now = Date.now();
-      
+
       // Store in IndexedDB
       await db.put('models', {
         url,
@@ -264,56 +276,56 @@ export class ARModelCache {
         size: data.byteLength,
         version: CACHE_VERSION,
         lastAccessed: now,
-        accessCount: 1
+        accessCount: 1,
       });
-      
+
       // Update metadata
       const tx = db.transaction('metadata', 'readwrite');
       const metadata = await tx.store.get('cache-stats');
-      
+
       if (metadata) {
         metadata.totalSize = (metadata.totalSize || 0) + data.byteLength;
         metadata.modelCount = (metadata.modelCount || 0) + 1;
         await tx.store.put(metadata);
       }
-      
+
       await tx.done;
-      
+
       this.emitEvent('add', { url, modelType: type, size: data.byteLength });
       return true;
     } catch (error) {
-      this.emitEvent('error', { 
+      this.emitEvent('error', {
         error: error instanceof Error ? error : new Error('Unknown error adding model'),
         url,
-        modelType: type
+        modelType: type,
       });
       return false;
     }
   }
-  
+
   /**
    * Prefetch a model (add to prefetch queue)
    */
   async prefetchModel(url: string, type: string, priority: number = 5): Promise<void> {
     if (!url) return;
-    
+
     // Skip if in memory cache or currently prefetching
     if (this.memoryCache.has(url) || this.prefetchQueue.includes(url)) {
       return;
     }
-    
+
     // Add to prefetch queue
     this.prefetchQueue.push(url);
-    
+
     // Emit prefetch event
     this.emitEvent('prefetch', { url, modelType: type });
-    
+
     // Process the queue if not already processing
     if (!this.isPrefetching) {
       this.processPrefetchQueue();
     }
   }
-  
+
   /**
    * Process the prefetch queue
    */
@@ -321,51 +333,55 @@ export class ARModelCache {
     if (this.prefetchQueue.length === 0 || this.isPrefetching) {
       return;
     }
-    
+
     this.isPrefetching = true;
-    
+
     try {
       // Process up to 3 items from the queue
       const urls = this.prefetchQueue.splice(0, 3);
-      
+
       // Prefetch in parallel
-      await Promise.all(urls.map(async (url) => {
-        try {
-          // Skip if already in memory cache
-          if (this.memoryCache.has(url)) {
-            return;
+      await Promise.all(
+        urls.map(async url => {
+          try {
+            // Skip if already in memory cache
+            if (this.memoryCache.has(url)) {
+              return;
+            }
+
+            // Fetch the model
+            const response = await fetch(url);
+            if (!response.ok) {
+              throw new Error(
+                `Failed to prefetch model: ${response.status} ${response.statusText}`
+              );
+            }
+
+            const data = new Uint8Array(await response.arrayBuffer());
+
+            // Get model type from URL
+            const type = url.split('.').pop()?.toLowerCase() || 'unknown';
+
+            // Store in cache
+            await this.addModel(url, type, data);
+          } catch (error) {
+            this.emitEvent('error', {
+              error: error instanceof Error ? error : new Error('Unknown error prefetching model'),
+              url,
+            });
           }
-          
-          // Fetch the model
-          const response = await fetch(url);
-          if (!response.ok) {
-            throw new Error(`Failed to prefetch model: ${response.status} ${response.statusText}`);
-          }
-          
-          const data = new Uint8Array(await response.arrayBuffer());
-          
-          // Get model type from URL
-          const type = url.split('.').pop()?.toLowerCase() || 'unknown';
-          
-          // Store in cache
-          await this.addModel(url, type, data);
-        } catch (error) {
-          this.emitEvent('error', { 
-            error: error instanceof Error ? error : new Error('Unknown error prefetching model'),
-            url
-          });
-        }
-      }));
+        })
+      );
     } finally {
       this.isPrefetching = false;
-      
+
       // Continue processing the queue if there are more items
       if (this.prefetchQueue.length > 0) {
         setTimeout(() => this.processPrefetchQueue(), 100);
       }
     }
   }
-  
+
   /**
    * Clear the entire cache
    */
@@ -375,19 +391,19 @@ export class ARModelCache {
       if (!this.isInitialized) {
         await this.initDB();
       }
-      
+
       const db = await this.dbPromise;
       if (!db) {
         throw new Error('Database not initialized');
       }
-      
+
       // Clear memory cache
       this.memoryCache.clear();
-      
+
       // Clear IndexedDB
       const tx = db.transaction(['models', 'metadata'], 'readwrite');
       await tx.objectStore('models').clear();
-      
+
       // Reset metadata
       const metadata = await tx.objectStore('metadata').get('cache-stats');
       if (metadata) {
@@ -396,19 +412,19 @@ export class ARModelCache {
         metadata.modelCount = 0;
         await tx.objectStore('metadata').put(metadata);
       }
-      
+
       await tx.done;
-      
+
       this.emitEvent('clear', {});
       return true;
     } catch (error) {
-      this.emitEvent('error', { 
-        error: error instanceof Error ? error : new Error('Unknown error clearing cache')
+      this.emitEvent('error', {
+        error: error instanceof Error ? error : new Error('Unknown error clearing cache'),
       });
       return false;
     }
   }
-  
+
   /**
    * Get cache statistics
    */
@@ -426,12 +442,12 @@ export class ARModelCache {
       if (!this.isInitialized) {
         await this.initDB();
       }
-      
+
       const db = await this.dbPromise;
       if (!db) {
         throw new Error('Database not initialized');
       }
-      
+
       // Get metadata
       const metadata = await db.get('metadata', 'cache-stats');
       if (!metadata) {
@@ -442,18 +458,17 @@ export class ARModelCache {
           version: CACHE_VERSION,
           modelCount: 0,
           percentUsed: 0,
-          settings: DEFAULT_SETTINGS
+          settings: DEFAULT_SETTINGS,
         };
       }
-      
+
       // Count models
       const modelCount = await db.count('models');
-      
+
       // Calculate percent used
-      const percentUsed = metadata.deviceQuota > 0 
-        ? (metadata.totalSize / metadata.deviceQuota) * 100
-        : 0;
-      
+      const percentUsed =
+        metadata.deviceQuota > 0 ? (metadata.totalSize / metadata.deviceQuota) * 100 : 0;
+
       return {
         totalSize: metadata.totalSize || 0,
         lastCleanup: metadata.lastCleanup || Date.now(),
@@ -461,13 +476,13 @@ export class ARModelCache {
         version: metadata.version || CACHE_VERSION,
         modelCount,
         percentUsed,
-        settings: metadata.settings || DEFAULT_SETTINGS
+        settings: metadata.settings || DEFAULT_SETTINGS,
       };
     } catch (error) {
-      this.emitEvent('error', { 
-        error: error instanceof Error ? error : new Error('Unknown error getting cache stats')
+      this.emitEvent('error', {
+        error: error instanceof Error ? error : new Error('Unknown error getting cache stats'),
       });
-      
+
       return {
         totalSize: 0,
         lastCleanup: Date.now(),
@@ -475,11 +490,11 @@ export class ARModelCache {
         version: CACHE_VERSION,
         modelCount: 0,
         percentUsed: 0,
-        settings: DEFAULT_SETTINGS
+        settings: DEFAULT_SETTINGS,
       };
     }
   }
-  
+
   /**
    * Update settings for the cache
    */
@@ -489,105 +504,105 @@ export class ARModelCache {
       if (!this.isInitialized) {
         await this.initDB();
       }
-      
+
       const db = await this.dbPromise;
       if (!db) {
         throw new Error('Database not initialized');
       }
-      
+
       // Get metadata
       const tx = db.transaction('metadata', 'readwrite');
       const metadata = await tx.store.get('cache-stats');
-      
+
       if (metadata) {
         metadata.settings = { ...metadata.settings, ...settings };
         await tx.store.put(metadata);
       }
-      
+
       await tx.done;
-      
+
       return true;
     } catch (error) {
-      this.emitEvent('error', { 
-        error: error instanceof Error ? error : new Error('Unknown error updating settings')
+      this.emitEvent('error', {
+        error: error instanceof Error ? error : new Error('Unknown error updating settings'),
       });
       return false;
     }
   }
-  
+
   /**
    * Make room for a new model by removing old models if necessary
    */
   private async makeRoom(requiredSize: number): Promise<void> {
     if (requiredSize <= 0) return;
-    
+
     try {
       const db = await this.dbPromise;
       if (!db) return;
-      
+
       // Get metadata
       const metadata = await db.get('metadata', 'cache-stats');
       if (!metadata) return;
-      
+
       // Calculate maximum size in bytes
       const maxSizeBytes = metadata.settings.maxCacheSizeMB * 1024 * 1024;
-      
+
       // Check if we need to make room
       if (metadata.totalSize + requiredSize <= maxSizeBytes) {
         return;
       }
-      
+
       // We need to remove some models
       const tx = db.transaction('models', 'readwrite');
-      
+
       // Get all models sorted by last accessed (oldest first)
       const models = await tx.store.index('by-last-accessed').getAll();
-      
+
       // Sort by last accessed (oldest first)
       models.sort((a, b) => a.lastAccessed - b.lastAccessed);
-      
+
       let freedSpace = 0;
       const neededSpace = metadata.totalSize + requiredSize - maxSizeBytes;
-      
+
       // Remove models until we have enough space
       for (const model of models) {
         if (freedSpace >= neededSpace) break;
-        
+
         // Remove from IndexedDB
         await tx.store.delete(model.url);
-        
+
         // Remove from memory cache
         this.memoryCache.delete(model.url);
-        
+
         // Add to freed space
         freedSpace += model.size;
-        
+
         // Emit event
         this.emitEvent('remove', { url: model.url, modelType: model.type, size: model.size });
       }
-      
+
       await tx.done;
-      
+
       // Update metadata
       const metadataTx = db.transaction('metadata', 'readwrite');
       const updatedMetadata = await metadataTx.store.get('cache-stats');
-      
+
       if (updatedMetadata) {
         updatedMetadata.totalSize = Math.max(0, updatedMetadata.totalSize - freedSpace);
         updatedMetadata.modelCount = Math.max(0, (updatedMetadata.modelCount || 0) - models.length);
         await metadataTx.store.put(updatedMetadata);
       }
-      
+
       await metadataTx.done;
-      
+
       this.emitEvent('cleanup', { details: { freedSpace, removedModels: models.length } });
     } catch (error) {
-      this.emitEvent('error', { 
-        error: error instanceof Error ? error : new Error('Unknown error making room in cache')
+      this.emitEvent('error', {
+        error: error instanceof Error ? error : new Error('Unknown error making room in cache'),
       });
     }
   }
-  
+
   /**
    * Update model metadata (last accessed time, access count)
    */
@@ -595,23 +610,23 @@ export class ARModelCache {
     try {
       const db = await this.dbPromise;
       if (!db) return;
-      
+
       const tx = db.transaction('models', 'readwrite');
       const model = await tx.store.get(url);
-      
+
       if (model) {
         model.lastAccessed = Date.now();
         model.accessCount = (model.accessCount || 0) + 1;
         await tx.store.put(model);
       }
-      
+
       await tx.done;
     } catch (error) {
       // Non-critical operation, so just log the error
       console.error('Error updating model metadata:', error);
     }
   }
-  
+
   /**
    * Perform cache maintenance
    */
@@ -619,73 +634,75 @@ export class ARModelCache {
     try {
       const db = await this.dbPromise;
       if (!db) return;
-      
+
       // Get metadata
       const metadata = await db.get('metadata', 'cache-stats');
       if (!metadata) return;
-      
+
       // Skip if not due for cleanup or auto-cleanup disabled
       const now = Date.now();
       const autoCleanupInterval = 24 * 60 * 60 * 1000; // 24 hours
-      if (!metadata.settings.autoCleanup || 
-          now - metadata.lastCleanup < autoCleanupInterval) {
+      if (!metadata.settings.autoCleanup || now - metadata.lastCleanup < autoCleanupInterval) {
         return;
       }
-      
+
       // Remove expired models
       const tx = db.transaction('models', 'readwrite');
       const models = await tx.store.index('by-timestamp').getAll();
-      
+
       let removedCount = 0;
       let freedSpace = 0;
       const maxAge = metadata.settings.maxCacheAge;
-      
+
       for (const model of models) {
         // Skip if not expired
         if (now - model.timestamp < maxAge) continue;
-        
+
         // Remove from IndexedDB
         await tx.store.delete(model.url);
-        
+
         // Remove from memory cache
         this.memoryCache.delete(model.url);
-        
+
         // Update counters
         removedCount++;
         freedSpace += model.size;
       }
-      
+
       await tx.done;
-      
+
       // Update metadata
       if (removedCount > 0) {
         const metadataTx = db.transaction('metadata', 'readwrite');
         const updatedMetadata = await metadataTx.store.get('cache-stats');
-        
+
         if (updatedMetadata) {
           updatedMetadata.totalSize = Math.max(0, updatedMetadata.totalSize - freedSpace);
           updatedMetadata.lastCleanup = now;
-          updatedMetadata.modelCount = Math.max(0, (updatedMetadata.modelCount || 0) - removedCount);
+          updatedMetadata.modelCount = Math.max(
+            0,
+            (updatedMetadata.modelCount || 0) - removedCount
+          );
           await metadataTx.store.put(updatedMetadata);
         }
-        
+
         await metadataTx.done;
-        
-        this.emitEvent('cleanup', { 
-          details: { 
-            freedSpace, 
+
+        this.emitEvent('cleanup', {
+          details: {
+            freedSpace,
             removedModels: removedCount,
-            reason: 'maintenance' 
-          } 
+            reason: 'maintenance',
+          },
         });
       }
     } catch (error) {
-      this.emitEvent('error', { 
-        error: error instanceof Error ? error : new Error('Unknown error during maintenance')
+      this.emitEvent('error', {
+        error: error instanceof Error ? error : new Error('Unknown error during maintenance'),
       });
     }
   }
-  
+
   /**
    * Estimate available device storage
    */
@@ -694,23 +711,23 @@ export class ARModelCache {
       if (typeof navigator === 'undefined' || !('storage' in navigator)) {
         return;
       }
-      
+
       if ('estimate' in navigator.storage) {
         const estimate = await navigator.storage.estimate();
-        
+
         if (estimate.quota) {
           const db = await this.dbPromise;
           if (!db) return;
-          
+
           // Update metadata with device quota
           const tx = db.transaction('metadata', 'readwrite');
           const metadata = await tx.store.get('cache-stats');
-          
+
           if (metadata) {
             metadata.deviceQuota = estimate.quota;
             await tx.store.put(metadata);
           }
-          
+
           await tx.done;
         }
       }
@@ -719,7 +736,7 @@ export class ARModelCache {
       console.error('Error estimating device storage:', error);
     }
   }
-  
+
   /**
    * Handle coming online
    */
@@ -727,7 +744,7 @@ export class ARModelCache {
     // Perform maintenance when coming back online
     this.performMaintenance();
   }
-  
+
   /**
    * Add event listener
    */
@@ -735,30 +752,30 @@ export class ARModelCache {
     if (!this.eventListeners[event]) {
       this.eventListeners[event] = [];
     }
-    
+
     this.eventListeners[event].push(callback);
   }
-  
+
   /**
    * Remove event listener
    */
   removeEventListener(event: CacheEventType, callback: CacheEventCallback): void {
     if (!this.eventListeners[event]) return;
-    
+
     this.eventListeners[event] = this.eventListeners[event].filter(cb => cb !== callback);
   }
-  
+
   /**
    * Emit event to all registered listeners
    */
   private emitEvent(event: CacheEventType, data: Partial<CacheEvent>): void {
     if (!this.eventListeners[event]) return;
-    
+
     const eventObject: CacheEvent = {
       type: event,
-      ...data
+      ...data,
     };
-    
+
     for (const callback of this.eventListeners[event]) {
       try {
         callback(eventObject);
@@ -770,4 +787,4 @@ export class ARModelCache {
 }
 
 // Create and export a singleton instance
-export const arModelCache = new ARModelCache(); 
+export const arModelCache = new ARModelCache();

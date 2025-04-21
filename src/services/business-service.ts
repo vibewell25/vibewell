@@ -161,8 +161,8 @@ export class BusinessService {
         where: { id },
         data: {
           ...data,
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       });
 
       return profile;
@@ -175,7 +175,11 @@ export class BusinessService {
   /**
    * Get business analytics
    */
-  async getBusinessAnalytics(businessId: string, startDate: Date, endDate: Date): Promise<BusinessAnalytics> {
+  async getBusinessAnalytics(
+    businessId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<BusinessAnalytics> {
     try {
       const [bookings, reviews, revenue] = await Promise.all([
         // Get booking analytics
@@ -184,13 +188,13 @@ export class BusinessService {
             business: { id: businessId },
             startTime: {
               gte: startDate,
-              lte: endDate
-            }
+              lte: endDate,
+            },
           },
           include: {
             services: true,
-            payment: true
-          }
+            payment: true,
+          },
         }),
 
         // Get review analytics
@@ -199,40 +203,44 @@ export class BusinessService {
             businessId,
             createdAt: {
               gte: startDate,
-              lte: endDate
-            }
-          }
+              lte: endDate,
+            },
+          },
         }),
 
         // Get revenue analytics
         prisma.payment.findMany({
           where: {
             booking: {
-              business: { id: businessId }
+              business: { id: businessId },
             },
             createdAt: {
               gte: startDate,
-              lte: endDate
+              lte: endDate,
             },
-            status: 'COMPLETED'
-          }
-        })
+            status: 'COMPLETED',
+          },
+        }),
       ]);
 
       // Calculate metrics
       const totalBookings = bookings.length;
       const totalRevenue = revenue.reduce((sum, payment) => sum + payment.amount, 0);
-      const averageRating = reviews.length > 0
-        ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
-        : 0;
+      const averageRating =
+        reviews.length > 0
+          ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+          : 0;
 
       // Calculate service popularity
-      const servicePopularity = bookings.reduce((acc, booking) => {
-        booking.services.forEach(service => {
-          acc[service.serviceId] = (acc[service.serviceId] || 0) + 1;
-        });
-        return acc;
-      }, {} as Record<string, number>);
+      const servicePopularity = bookings.reduce(
+        (acc, booking) => {
+          booking.services.forEach(service => {
+            acc[service.serviceId] = (acc[service.serviceId] || 0) + 1;
+          });
+          return acc;
+        },
+        {} as Record<string, number>
+      );
 
       return {
         totalBookings,
@@ -241,7 +249,7 @@ export class BusinessService {
         servicePopularity,
         recentReviews: reviews.slice(0, 5), // Last 5 reviews
         bookingTrend: this.calculateBookingTrend(bookings),
-        revenueTrend: this.calculateRevenueTrend(revenue)
+        revenueTrend: this.calculateRevenueTrend(revenue),
       };
     } catch (error) {
       logger.error('Error getting business analytics', error);
@@ -257,13 +265,13 @@ export class BusinessService {
       const [popularServices, peakHours, customerRetention] = await Promise.all([
         this.getPopularServices(businessId),
         this.getPeakHours(businessId),
-        this.getCustomerRetention(businessId)
+        this.getCustomerRetention(businessId),
       ]);
 
       return {
         popularServices,
         peakHours,
-        customerRetention
+        customerRetention,
       };
     } catch (error) {
       logger.error('Error getting business insights', error);
@@ -280,16 +288,16 @@ export class BusinessService {
       where: {
         businessId,
         createdAt: {
-          gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // Last 30 days
-        }
+          gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // Last 30 days
+        },
       },
       _count: true,
       orderBy: {
         _count: {
-          serviceId: 'desc'
-        }
+          serviceId: 'desc',
+        },
       },
-      take: 5
+      take: 5,
     });
 
     return services;
@@ -303,12 +311,12 @@ export class BusinessService {
       where: {
         businessId,
         createdAt: {
-          gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // Last 30 days
-        }
+          gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // Last 30 days
+        },
       },
       select: {
-        startTime: true
-      }
+        startTime: true,
+      },
     });
 
     const hourCounts = new Array(24).fill(0);
@@ -319,7 +327,7 @@ export class BusinessService {
 
     return hourCounts.map((count, hour) => ({
       hour,
-      count
+      count,
     }));
   }
 
@@ -332,16 +340,16 @@ export class BusinessService {
       where: {
         businessId,
         createdAt: {
-          gte: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000) // Last 90 days
-        }
+          gte: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000), // Last 90 days
+        },
       },
-      _count: true
+      _count: true,
     });
 
     const retention = {
       oneTime: 0,
       repeat: 0,
-      loyal: 0 // 3 or more bookings
+      loyal: 0, // 3 or more bookings
     };
 
     customers.forEach(customer => {
@@ -359,7 +367,7 @@ export class BusinessService {
   async configureSelfServicePortal(businessId: string, config: SelfServicePortalConfig) {
     try {
       const business = await prisma.businessProfile.findUnique({
-        where: { id: businessId }
+        where: { id: businessId },
       });
 
       if (!business) {
@@ -371,8 +379,8 @@ export class BusinessService {
         where: { id: businessId },
         data: {
           selfServiceConfig: config,
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       });
 
       // Create default templates for customer communications
@@ -393,18 +401,18 @@ export class BusinessService {
       {
         type: 'BOOKING_CONFIRMATION',
         subject: 'Booking Confirmation - {{serviceName}}',
-        content: 'Dear {{customerName}},\n\nYour booking for {{serviceName}} has been confirmed...'
+        content: 'Dear {{customerName}},\n\nYour booking for {{serviceName}} has been confirmed...',
       },
       {
         type: 'RESCHEDULE_NOTIFICATION',
         subject: 'Booking Rescheduled - {{serviceName}}',
-        content: 'Dear {{customerName}},\n\nYour booking has been rescheduled...'
+        content: 'Dear {{customerName}},\n\nYour booking has been rescheduled...',
       },
       {
         type: 'CANCELLATION_CONFIRMATION',
         subject: 'Booking Cancelled - {{serviceName}}',
-        content: 'Dear {{customerName}},\n\nYour booking has been cancelled...'
-      }
+        content: 'Dear {{customerName}},\n\nYour booking has been cancelled...',
+      },
     ];
 
     for (const template of templates) {
@@ -413,8 +421,8 @@ export class BusinessService {
           businessId,
           ...template,
           createdAt: new Date(),
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       });
     }
   }
@@ -430,26 +438,26 @@ export class BusinessService {
             businessId,
             createdAt: {
               gte: startDate,
-              lte: endDate
+              lte: endDate,
             },
-            isCreatedThroughPortal: true
-          }
+            isCreatedThroughPortal: true,
+          },
         }),
         prisma.booking.count({
           where: {
             businessId,
             createdAt: {
               gte: startDate,
-              lte: endDate
-            }
-          }
-        })
+              lte: endDate,
+            },
+          },
+        }),
       ]);
 
       return {
         selfServiceBookingRate: (selfServiceBookings / totalBookings) * 100,
         totalSelfServiceBookings: selfServiceBookings,
-        period: { startDate, endDate }
+        period: { startDate, endDate },
       };
     } catch (error) {
       logger.error('Error getting portal analytics', error);
@@ -459,10 +467,10 @@ export class BusinessService {
 
   async updatePricingRules(businessId: string, rules: PricingRule[]): Promise<void> {
     try {
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async tx => {
         // Delete existing pricing rules
         await tx.pricingRule.deleteMany({
-          where: { businessId }
+          where: { businessId },
         });
 
         // Create new pricing rules
@@ -476,10 +484,8 @@ export class BusinessService {
               offPeakDiscount: rule.offPeakDiscount,
               bulkDiscountMinServices: rule.bulkDiscount?.minServices,
               bulkDiscountPercentage: rule.bulkDiscount?.discountPercentage,
-              seasonalPricing: rule.seasonalPricing
-                ? JSON.stringify(rule.seasonalPricing)
-                : null
-            }
+              seasonalPricing: rule.seasonalPricing ? JSON.stringify(rule.seasonalPricing) : null,
+            },
           });
         }
       });
@@ -489,30 +495,24 @@ export class BusinessService {
     }
   }
 
-  async calculatePrice(
-    serviceId: string,
-    date: Date,
-    quantity: number = 1
-  ): Promise<number> {
+  async calculatePrice(serviceId: string, date: Date, quantity: number = 1): Promise<number> {
     try {
       const service = await prisma.beautyService.findUnique({
         where: { id: serviceId },
         include: {
           business: {
             include: {
-              pricingRules: true
-            }
-          }
-        }
+              pricingRules: true,
+            },
+          },
+        },
       });
 
       if (!service) {
         throw new Error('Service not found');
       }
 
-      const pricingRule = service.business.pricingRules.find(
-        (rule) => rule.serviceId === serviceId
-      );
+      const pricingRule = service.business.pricingRules.find(rule => rule.serviceId === serviceId);
 
       if (!pricingRule) {
         return service.price * quantity;
@@ -522,13 +522,15 @@ export class BusinessService {
 
       // Apply peak/off-peak pricing
       const hour = date.getHours();
-      if (hour >= 9 && hour <= 17) { // Peak hours
+      if (hour >= 9 && hour <= 17) {
+        // Peak hours
         if (pricingRule.peakMultiplier) {
           finalPrice *= pricingRule.peakMultiplier;
         }
-      } else { // Off-peak hours
+      } else {
+        // Off-peak hours
         if (pricingRule.offPeakDiscount) {
-          finalPrice *= (1 - pricingRule.offPeakDiscount);
+          finalPrice *= 1 - pricingRule.offPeakDiscount;
         }
       }
 
@@ -538,7 +540,7 @@ export class BusinessService {
         pricingRule.bulkDiscountPercentage &&
         quantity >= pricingRule.bulkDiscountMinServices
       ) {
-        finalPrice *= (1 - pricingRule.bulkDiscountPercentage / 100);
+        finalPrice *= 1 - pricingRule.bulkDiscountPercentage / 100;
       }
 
       // Apply seasonal pricing
@@ -565,7 +567,7 @@ export class BusinessService {
   async submitVerification(data: BusinessVerificationDTO) {
     try {
       const documents = await Promise.all(
-        data.documents.map((doc) =>
+        data.documents.map(doc =>
           prisma.businessDocument.create({
             data: {
               businessId: data.businessId,
@@ -671,11 +673,14 @@ export class BusinessService {
 
   private calculateBookingTrend(bookings: any[]) {
     // Group bookings by day and calculate daily totals
-    const dailyBookings = bookings.reduce((acc, booking) => {
-      const date = booking.startTime.toISOString().split('T')[0];
-      acc[date] = (acc[date] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    const dailyBookings = bookings.reduce(
+      (acc, booking) => {
+        const date = booking.startTime.toISOString().split('T')[0];
+        acc[date] = (acc[date] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     return Object.entries(dailyBookings)
       .sort(([dateA], [dateB]) => dateA.localeCompare(dateB))
@@ -684,11 +689,14 @@ export class BusinessService {
 
   private calculateRevenueTrend(payments: any[]) {
     // Group payments by day and calculate daily totals
-    const dailyRevenue = payments.reduce((acc, payment) => {
-      const date = payment.createdAt.toISOString().split('T')[0];
-      acc[date] = (acc[date] || 0) + payment.amount;
-      return acc;
-    }, {} as Record<string, number>);
+    const dailyRevenue = payments.reduce(
+      (acc, payment) => {
+        const date = payment.createdAt.toISOString().split('T')[0];
+        acc[date] = (acc[date] || 0) + payment.amount;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     return Object.entries(dailyRevenue)
       .sort(([dateA], [dateB]) => dateA.localeCompare(dateB))
@@ -696,4 +704,4 @@ export class BusinessService {
   }
 }
 
-export const businessService = new BusinessService(); 
+export const businessService = new BusinessService();

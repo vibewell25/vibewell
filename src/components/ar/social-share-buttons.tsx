@@ -16,7 +16,7 @@ export const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
   type,
   productName,
   shareUrl,
-  onShare
+  onShare,
 }) => {
   const { toast } = useToast();
   const { trackEvent } = useAnalytics();
@@ -85,7 +85,12 @@ export const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
         description: `Failed to share to ${platform}. Please try again.`,
         variant: 'destructive',
       });
-      trackEvent('social_share_error', { platform, type, productName, error: error instanceof Error ? error.message : 'Unknown error' });
+      trackEvent('social_share_error', {
+        platform,
+        type,
+        productName,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
     }
   };
 
@@ -138,4 +143,4 @@ export const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
       </Button>
     </div>
   );
-}; 
+};

@@ -108,7 +108,7 @@ class PerformanceAuditService {
   private databaseMetrics: DatabasePerformanceMetrics[] = [];
   private frontendMetrics: FrontendPerformanceMetrics[] = [];
   private config: PerformanceAuditConfig;
-  
+
   // Metric retention period defaults
   private readonly DEFAULT_RETENTION_DAYS = 30;
   private readonly MAX_METRICS_PER_TYPE = 10000;
@@ -146,13 +146,13 @@ class PerformanceAuditService {
    */
   public async recordLoadTestResult(result: LoadTestResult): Promise<void> {
     this.loadTestResults.set(result.id, result);
-    
+
     // Check if thresholds were exceeded
     const issues = [];
-    
+
     // Check response time
     if (
-      result.metrics.responseTime.value > 
+      result.metrics.responseTime.value >
       (result.metrics.responseTime.threshold || this.config.alertThresholds.apiResponseTime)
     ) {
       issues.push({
@@ -161,10 +161,10 @@ class PerformanceAuditService {
         threshold: `${result.metrics.responseTime.threshold || this.config.alertThresholds.apiResponseTime}ms`,
       });
     }
-    
+
     // Check error rate
     if (
-      result.metrics.errorRate.value > 
+      result.metrics.errorRate.value >
       (result.metrics.errorRate.threshold || this.config.alertThresholds.errorRate)
     ) {
       issues.push({
@@ -173,12 +173,12 @@ class PerformanceAuditService {
         threshold: `${result.metrics.errorRate.threshold || this.config.alertThresholds.errorRate}%`,
       });
     }
-    
+
     // Check CPU utilization if available
     if (
       result.metrics.cpuUtilization &&
-      result.metrics.cpuUtilization.value > 
-      (result.metrics.cpuUtilization.threshold || this.config.alertThresholds.cpuUtilization)
+      result.metrics.cpuUtilization.value >
+        (result.metrics.cpuUtilization.threshold || this.config.alertThresholds.cpuUtilization)
     ) {
       issues.push({
         metric: 'CPU Utilization',
@@ -186,12 +186,12 @@ class PerformanceAuditService {
         threshold: `${result.metrics.cpuUtilization.threshold || this.config.alertThresholds.cpuUtilization}%`,
       });
     }
-    
+
     // Check memory usage if available
     if (
       result.metrics.memoryUsage &&
-      result.metrics.memoryUsage.value > 
-      (result.metrics.memoryUsage.threshold || this.config.alertThresholds.memoryUsage)
+      result.metrics.memoryUsage.value >
+        (result.metrics.memoryUsage.threshold || this.config.alertThresholds.memoryUsage)
     ) {
       issues.push({
         metric: 'Memory Usage',
@@ -199,11 +199,11 @@ class PerformanceAuditService {
         threshold: `${result.metrics.memoryUsage.threshold || this.config.alertThresholds.memoryUsage}%`,
       });
     }
-    
+
     // Report issues if any thresholds were exceeded
     if (issues.length > 0) {
       const severity = issues.length > 2 ? AuditSeverity.HIGH : AuditSeverity.MEDIUM;
-      
+
       await auditService.reportIssue(
         AuditCategory.PERFORMANCE,
         severity,
@@ -221,7 +221,7 @@ class PerformanceAuditService {
         }
       );
     }
-    
+
     // Log the load test result
     logEvent('load_test_completed', {
       id: result.id,
@@ -239,19 +239,18 @@ class PerformanceAuditService {
    */
   public async recordMobileMetrics(metrics: MobilePerformanceMetrics): Promise<void> {
     this.mobileMetrics.push(metrics);
-    
+
     // Limit the number of metrics stored
     if (this.mobileMetrics.length > this.MAX_METRICS_PER_TYPE) {
       this.mobileMetrics.shift();
     }
-    
+
     // Check for performance issues
     const issues = [];
-    
+
     // Check startup time
     if (
-      metrics.startupTime.value > 
-      (metrics.startupTime.threshold || 2000) // 2 seconds default
+      metrics.startupTime.value > (metrics.startupTime.threshold || 2000) // 2 seconds default
     ) {
       issues.push({
         metric: 'Startup Time',
@@ -259,11 +258,10 @@ class PerformanceAuditService {
         threshold: `${metrics.startupTime.threshold || 2000}ms`,
       });
     }
-    
+
     // Check memory usage
     if (
-      metrics.memoryUsage.value > 
-      (metrics.memoryUsage.threshold || 150) // 150MB default
+      metrics.memoryUsage.value > (metrics.memoryUsage.threshold || 150) // 150MB default
     ) {
       issues.push({
         metric: 'Memory Usage',
@@ -271,11 +269,10 @@ class PerformanceAuditService {
         threshold: `${metrics.memoryUsage.threshold || 150}${metrics.memoryUsage.unit}`,
       });
     }
-    
+
     // Check battery impact
     if (
-      metrics.batteryImpact.value > 
-      (metrics.batteryImpact.threshold || 5) // 5% per hour default
+      metrics.batteryImpact.value > (metrics.batteryImpact.threshold || 5) // 5% per hour default
     ) {
       issues.push({
         metric: 'Battery Impact',
@@ -283,11 +280,10 @@ class PerformanceAuditService {
         threshold: `${metrics.batteryImpact.threshold || 5}${metrics.batteryImpact.unit}`,
       });
     }
-    
+
     // Check frame rate (lower is worse for frame rate)
     if (
-      metrics.frameRate.value < 
-      (metrics.frameRate.threshold || 30) // 30 FPS default
+      metrics.frameRate.value < (metrics.frameRate.threshold || 30) // 30 FPS default
     ) {
       issues.push({
         metric: 'Frame Rate',
@@ -295,11 +291,11 @@ class PerformanceAuditService {
         threshold: `${metrics.frameRate.threshold || 30}${metrics.frameRate.unit}`,
       });
     }
-    
+
     // Report issues if any thresholds were exceeded
     if (issues.length > 0) {
       const severity = issues.length > 2 ? AuditSeverity.HIGH : AuditSeverity.MEDIUM;
-      
+
       await auditService.reportIssue(
         AuditCategory.PERFORMANCE,
         severity,
@@ -316,7 +312,7 @@ class PerformanceAuditService {
         }
       );
     }
-    
+
     // Log the mobile metrics
     logEvent('mobile_performance_metrics', {
       deviceType: metrics.deviceType,
@@ -334,20 +330,21 @@ class PerformanceAuditService {
    */
   public async recordDatabaseMetrics(metrics: DatabasePerformanceMetrics): Promise<void> {
     this.databaseMetrics.push(metrics);
-    
+
     // Limit the number of metrics stored
     if (this.databaseMetrics.length > this.MAX_METRICS_PER_TYPE) {
       this.databaseMetrics.shift();
     }
-    
+
     // Check for performance issues
     if (
-      metrics.executionTime.value > 
+      metrics.executionTime.value >
       (metrics.executionTime.threshold || this.config.alertThresholds.databaseQueryTime)
     ) {
-      const threshold = metrics.executionTime.threshold || this.config.alertThresholds.databaseQueryTime;
+      const threshold =
+        metrics.executionTime.threshold || this.config.alertThresholds.databaseQueryTime;
       const ratio = metrics.executionTime.value / threshold;
-      
+
       // Determine severity based on how far above threshold
       let severity: AuditSeverity;
       if (ratio > 10) {
@@ -359,7 +356,7 @@ class PerformanceAuditService {
       } else {
         severity = AuditSeverity.LOW;
       }
-      
+
       await auditService.reportIssue(
         AuditCategory.PERFORMANCE,
         severity,
@@ -380,7 +377,7 @@ class PerformanceAuditService {
         }
       );
     }
-    
+
     // Log the database metrics
     logEvent('database_performance_metrics', {
       queryType: metrics.queryType,
@@ -397,19 +394,18 @@ class PerformanceAuditService {
    */
   public async recordFrontendMetrics(metrics: FrontendPerformanceMetrics): Promise<void> {
     this.frontendMetrics.push(metrics);
-    
+
     // Limit the number of metrics stored
     if (this.frontendMetrics.length > this.MAX_METRICS_PER_TYPE) {
       this.frontendMetrics.shift();
     }
-    
+
     // Check for performance issues
     const issues = [];
-    
+
     // Check LCP (Largest Contentful Paint)
     if (
-      metrics.lcp.value > 
-      (metrics.lcp.threshold || 2500) // 2.5s default
+      metrics.lcp.value > (metrics.lcp.threshold || 2500) // 2.5s default
     ) {
       issues.push({
         metric: 'Largest Contentful Paint',
@@ -417,11 +413,10 @@ class PerformanceAuditService {
         threshold: `${metrics.lcp.threshold || 2500}ms`,
       });
     }
-    
+
     // Check FID (First Input Delay)
     if (
-      metrics.fid.value > 
-      (metrics.fid.threshold || 100) // 100ms default
+      metrics.fid.value > (metrics.fid.threshold || 100) // 100ms default
     ) {
       issues.push({
         metric: 'First Input Delay',
@@ -429,11 +424,10 @@ class PerformanceAuditService {
         threshold: `${metrics.fid.threshold || 100}ms`,
       });
     }
-    
+
     // Check CLS (Cumulative Layout Shift)
     if (
-      metrics.cls.value > 
-      (metrics.cls.threshold || 0.1) // 0.1 default
+      metrics.cls.value > (metrics.cls.threshold || 0.1) // 0.1 default
     ) {
       issues.push({
         metric: 'Cumulative Layout Shift',
@@ -441,11 +435,10 @@ class PerformanceAuditService {
         threshold: `${metrics.cls.threshold || 0.1}`,
       });
     }
-    
+
     // Check TTFB (Time to First Byte)
     if (
-      metrics.ttfb.value > 
-      (metrics.ttfb.threshold || 600) // 600ms default
+      metrics.ttfb.value > (metrics.ttfb.threshold || 600) // 600ms default
     ) {
       issues.push({
         metric: 'Time to First Byte',
@@ -453,11 +446,11 @@ class PerformanceAuditService {
         threshold: `${metrics.ttfb.threshold || 600}ms`,
       });
     }
-    
+
     // Report issues if any thresholds were exceeded
     if (issues.length > 0) {
       const severity = issues.length > 2 ? AuditSeverity.HIGH : AuditSeverity.MEDIUM;
-      
+
       await auditService.reportIssue(
         AuditCategory.PERFORMANCE,
         severity,
@@ -475,7 +468,7 @@ class PerformanceAuditService {
         }
       );
     }
-    
+
     // Log the frontend metrics
     logEvent('frontend_performance_metrics', {
       deviceType: metrics.deviceType,
@@ -516,7 +509,7 @@ class PerformanceAuditService {
   } {
     // Generate load test summary
     const loadTests = Array.from(this.loadTestResults.values());
-    
+
     // Generate mobile metrics summary
     const deviceTypes = [...new Set(this.mobileMetrics.map(m => m.deviceType))];
     const mobileAverages = {
@@ -525,32 +518,35 @@ class PerformanceAuditService {
       batteryImpact: this.calculateAverage(this.mobileMetrics, m => m.batteryImpact.value),
       frameRate: this.calculateAverage(this.mobileMetrics, m => m.frameRate.value),
     };
-    
+
     // Generate database metrics summary
     const queryTypes: Record<string, number> = {};
     this.databaseMetrics.forEach(m => {
       const key = `${m.queryType}-${m.operationType}`;
       queryTypes[key] = (queryTypes[key] || 0) + 1;
     });
-    
+
     // Find slowest operations
-    const operationsMap = new Map<string, {
-      totalTime: number;
-      maxTime: number;
-      count: number;
-    }>();
-    
+    const operationsMap = new Map<
+      string,
+      {
+        totalTime: number;
+        maxTime: number;
+        count: number;
+      }
+    >();
+
     this.databaseMetrics.forEach(m => {
       const key = m.operationType;
       const current = operationsMap.get(key) || { totalTime: 0, maxTime: 0, count: 0 };
-      
+
       current.totalTime += m.executionTime.value;
       current.count += 1;
       current.maxTime = Math.max(current.maxTime, m.executionTime.value);
-      
+
       operationsMap.set(key, current);
     });
-    
+
     const slowestOperations = Array.from(operationsMap.entries())
       .map(([operationType, stats]) => ({
         operationType,
@@ -560,7 +556,7 @@ class PerformanceAuditService {
       }))
       .sort((a, b) => b.avgExecutionTime - a.avgExecutionTime)
       .slice(0, 10);
-    
+
     // Generate frontend metrics summary
     const frontendAverages = {
       lcp: this.calculateAverage(this.frontendMetrics, m => m.lcp.value),
@@ -569,13 +565,13 @@ class PerformanceAuditService {
       ttfb: this.calculateAverage(this.frontendMetrics, m => m.ttfb.value),
       fcp: this.calculateAverage(this.frontendMetrics, m => m.fcp.value),
     };
-    
+
     // Calculate device breakdown
     const deviceBreakdown: Record<string, number> = {};
     this.frontendMetrics.forEach(m => {
       deviceBreakdown[m.deviceType] = (deviceBreakdown[m.deviceType] || 0) + 1;
     });
-    
+
     // Return comprehensive performance report
     return {
       loadTests,
@@ -630,9 +626,9 @@ class PerformanceAuditService {
         p99: 0,
       };
     }
-    
+
     const values = items.map(valueAccessor).sort((a, b) => a - b);
-    
+
     return {
       p50: this.getPercentile(values, 50),
       p95: this.getPercentile(values, 95),
@@ -661,4 +657,4 @@ class PerformanceAuditService {
 
 // Export singleton instance
 const performanceAuditService = new PerformanceAuditService();
-export default performanceAuditService; 
+export default performanceAuditService;

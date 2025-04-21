@@ -18,7 +18,7 @@ type SetupStep = 'method-selection' | 'setup' | 'verify' | 'backup';
 export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
   userId,
   userEmail,
-  onSetupComplete
+  onSetupComplete,
 }) => {
   const [setupData, setSetupData] = useState<{
     secret: string;
@@ -35,7 +35,7 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
     try {
       setIsLoading(true);
       const result = await setup2FA(userId, userEmail);
-      
+
       if (result.error) {
         toast.error(result.error);
         return;
@@ -90,9 +90,7 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-6 text-center">
-        Two-Factor Authentication Required
-      </h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">Two-Factor Authentication Required</h2>
 
       {step === 'method-selection' && (
         <div>
@@ -108,9 +106,7 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
 
       {step === 'setup' && selectedMethod === 'authenticator' && (
         <div className="text-center">
-          <p className="mb-4">
-            You'll need to set up an authenticator app to continue.
-          </p>
+          <p className="mb-4">You'll need to set up an authenticator app to continue.</p>
           <button
             onClick={initiateMFASetup}
             className="bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark"
@@ -123,21 +119,18 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
       {step === 'verify' && setupData && selectedMethod === 'authenticator' && (
         <div>
           <p className="mb-4">
-            1. Install an authenticator app like Google Authenticator or Authy if you haven't already.
+            1. Install an authenticator app like Google Authenticator or Authy if you haven't
+            already.
           </p>
-          <p className="mb-4">
-            2. Scan this QR code with your authenticator app:
-          </p>
+          <p className="mb-4">2. Scan this QR code with your authenticator app:</p>
           <div className="flex justify-center mb-6">
             <QRCode value={setupData.qrCodeUrl} size={200} />
           </div>
-          <p className="mb-4">
-            3. Enter the verification code from your authenticator app:
-          </p>
+          <p className="mb-4">3. Enter the verification code from your authenticator app:</p>
           <input
             type="text"
             value={verificationCode}
-            onChange={(e) => setVerificationCode(e.target.value)}
+            onChange={e => setVerificationCode(e.target.value)}
             placeholder="Enter 6-digit code"
             className="w-full px-4 py-2 mb-4 border rounded"
             maxLength={6}
@@ -154,13 +147,11 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
 
       {step === 'verify' && setupData && selectedMethod === 'sms' && (
         <div>
-          <p className="mb-4">
-            Enter the verification code sent to your phone:
-          </p>
+          <p className="mb-4">Enter the verification code sent to your phone:</p>
           <input
             type="text"
             value={verificationCode}
-            onChange={(e) => setVerificationCode(e.target.value)}
+            onChange={e => setVerificationCode(e.target.value)}
             placeholder="Enter 6-digit code"
             className="w-full px-4 py-2 mb-4 border rounded"
             maxLength={6}
@@ -177,13 +168,11 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
 
       {step === 'verify' && setupData && selectedMethod === 'email' && (
         <div>
-          <p className="mb-4">
-            Enter the verification code sent to your email:
-          </p>
+          <p className="mb-4">Enter the verification code sent to your email:</p>
           <input
             type="text"
             value={verificationCode}
-            onChange={(e) => setVerificationCode(e.target.value)}
+            onChange={e => setVerificationCode(e.target.value)}
             placeholder="Enter 6-digit code"
             className="w-full px-4 py-2 mb-4 border rounded"
             maxLength={6}
@@ -201,7 +190,14 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
       {step === 'backup' && setupData && (
         <div>
           <p className="mb-4">
-            Important: Save these backup codes in a secure place. You'll need them if you lose access to your {selectedMethod === 'authenticator' ? 'authenticator app' : selectedMethod === 'sms' ? 'phone' : 'email'}.
+            Important: Save these backup codes in a secure place. You'll need them if you lose
+            access to your{' '}
+            {selectedMethod === 'authenticator'
+              ? 'authenticator app'
+              : selectedMethod === 'sms'
+                ? 'phone'
+                : 'email'}
+            .
           </p>
           <div className="bg-gray-100 p-4 rounded mb-6">
             {setupData.backupCodes.map((code, index) => (
@@ -222,4 +218,4 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
   );
 };
 
-export default MFASetupRequired; 
+export default MFASetupRequired;

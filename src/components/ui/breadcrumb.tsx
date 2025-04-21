@@ -1,7 +1,7 @@
-import * as React from "react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { ChevronRight } from "lucide-react";
+import * as React from 'react';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { ChevronRight } from 'lucide-react';
 
 export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
@@ -15,13 +15,8 @@ export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLElement> {
 
 export function Breadcrumb({ className, children, ...props }: BreadcrumbProps) {
   return (
-    <nav
-      className={cn("flex", className)}
-      {...props}
-    >
-      <ol className="flex flex-wrap items-center">
-        {children}
-      </ol>
+    <nav className={cn('flex', className)} {...props}>
+      <ol className="flex flex-wrap items-center">{children}</ol>
     </nav>
   );
 }
@@ -37,10 +32,7 @@ export function BreadcrumbItem({
     if (current) {
       return (
         <span
-          className={cn(
-            "text-sm font-medium text-muted-foreground",
-            className
-          )}
+          className={cn('text-sm font-medium text-muted-foreground', className)}
           aria-current="page"
           {...props}
         >
@@ -54,7 +46,7 @@ export function BreadcrumbItem({
         <Link
           href={href}
           className={cn(
-            "text-sm font-medium text-foreground hover:text-muted-foreground",
+            'text-sm font-medium text-foreground hover:text-muted-foreground',
             className
           )}
           {...props}
@@ -65,20 +57,13 @@ export function BreadcrumbItem({
     }
 
     return (
-      <span
-        className={cn("text-sm font-medium", className)}
-        {...props}
-      >
+      <span className={cn('text-sm font-medium', className)} {...props}>
         {children}
       </span>
     );
   }, [current, href, className, props, children]);
 
-  return (
-    <li className="inline-flex items-center">
-      {BreadcrumbItem}
-    </li>
-  );
+  return <li className="inline-flex items-center">{BreadcrumbItem}</li>;
 }
 
 export function BreadcrumbSeparator() {
@@ -87,4 +72,4 @@ export function BreadcrumbSeparator() {
       <ChevronRight className="h-4 w-4" />
     </li>
   );
-} 
+}

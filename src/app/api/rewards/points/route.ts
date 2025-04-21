@@ -21,13 +21,23 @@ const LOYALTY_LEVELS = [
     name: 'Gold',
     minPoints: 3000,
     maxPoints: 7000,
-    benefits: ['15% off all services', 'VIP events access', 'Exclusive promotions', 'Personalized wellness plan'],
+    benefits: [
+      '15% off all services',
+      'VIP events access',
+      'Exclusive promotions',
+      'Personalized wellness plan',
+    ],
   },
   {
     name: 'Platinum',
     minPoints: 7000,
     maxPoints: Infinity,
-    benefits: ['20% off all services', '24/7 concierge', 'Free monthly treatment', 'Partner benefits'],
+    benefits: [
+      '20% off all services',
+      '24/7 concierge',
+      'Free monthly treatment',
+      'Partner benefits',
+    ],
   },
 ];
 
@@ -35,10 +45,7 @@ export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user's total points
@@ -48,24 +55,22 @@ export async function GET(request: Request) {
     });
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Determine current level and next level
-    const currentLevel = LOYALTY_LEVELS.find(
-      level => user.loyaltyPoints >= level.minPoints && user.loyaltyPoints < level.maxPoints
-    ) || LOYALTY_LEVELS[0];
+    const currentLevel =
+      LOYALTY_LEVELS.find(
+        level => user.loyaltyPoints >= level.minPoints && user.loyaltyPoints < level.maxPoints
+      ) || LOYALTY_LEVELS[0];
 
-    const nextLevel = LOYALTY_LEVELS.find(
-      level => level.minPoints > currentLevel.minPoints
-    );
+    const nextLevel = LOYALTY_LEVELS.find(level => level.minPoints > currentLevel.minPoints);
 
     // Calculate progress to next level
     const progress = nextLevel
-      ? ((user.loyaltyPoints - currentLevel.minPoints) / (nextLevel.minPoints - currentLevel.minPoints)) * 100
+      ? ((user.loyaltyPoints - currentLevel.minPoints) /
+          (nextLevel.minPoints - currentLevel.minPoints)) *
+        100
       : 100;
 
     // Get recent transactions
@@ -96,9 +101,6 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error('Error fetching loyalty points:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch loyalty points' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch loyalty points' }, { status: 500 });
   }
-} 
+}

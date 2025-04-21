@@ -15,7 +15,10 @@ interface ThemeSelectorProps {
   showColorThemes?: boolean;
 }
 
-export function ThemeSelector({ variant = 'default', showColorThemes = false }: ThemeSelectorProps) {
+export function ThemeSelector({
+  variant = 'default',
+  showColorThemes = false,
+}: ThemeSelectorProps) {
   const { theme, setTheme } = useTheme();
 
   // Additional color themes beyond just light/dark
@@ -82,7 +85,7 @@ export function ThemeSelector({ variant = 'default', showColorThemes = false }: 
           <div className="space-y-2">
             <h3 className="text-lg font-medium">Color Theme</h3>
             <div className="flex flex-wrap gap-2">
-              {colorThemes.map((colorTheme) => (
+              {colorThemes.map(colorTheme => (
                 <button
                   key={colorTheme.value}
                   className="w-8 h-8 rounded-full border-2 border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
@@ -120,19 +123,19 @@ export function ThemeSelector({ variant = 'default', showColorThemes = false }: 
           <Icons.ComputerDesktopIcon className="mr-2 h-4 w-4" />
           <span>System</span>
         </DropdownMenuItem>
-        
+
         {showColorThemes && (
           <>
             <DropdownMenuItem className="border-t mt-1 pt-1">
               <Icons.PaintBrushIcon className="mr-2 h-4 w-4" />
               <span>Color Themes</span>
             </DropdownMenuItem>
-            {colorThemes.map((colorTheme) => (
-              <DropdownMenuItem 
+            {colorThemes.map(colorTheme => (
+              <DropdownMenuItem
                 key={colorTheme.value}
                 onClick={() => setColorTheme(colorTheme.value)}
               >
-                <div 
+                <div
                   className="mr-2 h-4 w-4 rounded-full"
                   style={{ backgroundColor: colorTheme.color }}
                 />
@@ -144,4 +147,4 @@ export function ThemeSelector({ variant = 'default', showColorThemes = false }: 
       </DropdownMenuContent>
     </DropdownMenu>
   );
-} 
+}

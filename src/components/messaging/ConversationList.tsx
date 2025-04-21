@@ -27,7 +27,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   onSelectConversation,
   onDeleteClick,
   onConfirmDelete,
-  onCancelDelete
+  onCancelDelete,
 }) => {
   const filteredConversations = conversations.filter(conv => {
     const otherParticipant = conv.participants.find(p => p.id !== currentUserId);
@@ -44,7 +44,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
             placeholder="Search conversations..."
             className="w-full pl-10 pr-4 py-2 bg-muted/50 rounded-md"
             value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
+            onChange={e => onSearchChange(e.target.value)}
           />
         </div>
       </div>
@@ -53,7 +53,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
           <div className="flex flex-col items-center justify-center h-full p-4 text-center">
             <p className="text-muted-foreground mb-2">No conversations found</p>
             {searchQuery && (
-              <button 
+              <button
                 className="text-primary text-sm hover:underline"
                 onClick={() => onSearchChange('')}
               >
@@ -63,11 +63,11 @@ export const ConversationList: React.FC<ConversationListProps> = ({
           </div>
         ) : (
           <div className="divide-y">
-            {filteredConversations.map((conversation) => {
+            {filteredConversations.map(conversation => {
               const otherParticipant = conversation.participants.find(p => p.id !== currentUserId);
               const lastMessage = conversation.messages[conversation.messages.length - 1];
               return (
-                <div 
+                <div
                   key={conversation.id}
                   className={`p-4 flex items-center space-x-3 cursor-pointer hover:bg-muted transition-colors relative ${selectedConversation === conversation.id ? 'bg-muted' : ''}`}
                   onClick={() => onSelectConversation(conversation.id)}
@@ -76,15 +76,17 @@ export const ConversationList: React.FC<ConversationListProps> = ({
                     <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center overflow-hidden">
                       {otherParticipant?.avatar ? (
                         <div className="relative w-full h-full">
-                          <Image 
-                            src={otherParticipant.avatar} 
-                            alt={otherParticipant?.name || 'User'} 
+                          <Image
+                            src={otherParticipant.avatar}
+                            alt={otherParticipant?.name || 'User'}
                             layout="fill"
                             objectFit="cover"
                           />
                         </div>
                       ) : (
-                        <span className="text-xl font-semibold">{otherParticipant?.name.charAt(0) || '?'}</span>
+                        <span className="text-xl font-semibold">
+                          {otherParticipant?.name.charAt(0) || '?'}
+                        </span>
                       )}
                     </div>
                     {conversation.unreadCount > 0 && (
@@ -110,23 +112,20 @@ export const ConversationList: React.FC<ConversationListProps> = ({
                   {showDeleteConfirm === conversation.id ? (
                     <div className="absolute right-3 bg-background border rounded shadow-md px-3 py-2 z-10 flex items-center space-x-2">
                       <span className="text-sm">Delete this conversation?</span>
-                      <button 
+                      <button
                         className="text-destructive text-sm font-medium"
                         onClick={() => onConfirmDelete(conversation.id)}
                       >
                         Delete
                       </button>
-                      <button 
-                        className="text-muted-foreground text-sm"
-                        onClick={onCancelDelete}
-                      >
+                      <button className="text-muted-foreground text-sm" onClick={onCancelDelete}>
                         Cancel
                       </button>
                     </div>
                   ) : (
-                    <button 
+                    <button
                       className="p-1 rounded-full hover:bg-muted-foreground/10"
-                      onClick={(e) => onDeleteClick(e, conversation.id)}
+                      onClick={e => onDeleteClick(e, conversation.id)}
                       aria-label="Delete conversation"
                     >
                       <Trash className="h-4 w-4 text-muted-foreground" />
@@ -142,4 +141,4 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   );
 };
 
-export default ConversationList; 
+export default ConversationList;

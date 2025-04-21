@@ -1,32 +1,32 @@
 /**
  * Compatibility layer for legacy performance monitoring code
- * 
+ *
  * This file re-exports functions from both performance monitoring systems to ensure
  * backward compatibility while we transition to the new system.
  */
 import performanceMonitor from './performanceMonitor';
-import { 
-  startComponentRender, 
+import {
+  startComponentRender,
   endComponentRender,
   startApiCall,
   endApiCall,
   reportPerformanceViolation,
   getMetrics,
   checkBudgets,
-  initPerformanceMonitoring
+  initPerformanceMonitoring,
 } from './performance-monitoring';
 
 // Export everything from both modules
 export {
-  startComponentRender, 
+  startComponentRender,
   endComponentRender,
   startApiCall,
   endApiCall,
   reportPerformanceViolation,
   getMetrics,
   checkBudgets,
-  initPerformanceMonitoring
+  initPerformanceMonitoring,
 };
 
 // Also export the default performanceMonitor object for direct usage
-export default performanceMonitor; 
+export default performanceMonitor;

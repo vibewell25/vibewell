@@ -50,15 +50,11 @@ export function ZenGarden() {
         const x = Math.cos(angle) * radius;
         const z = Math.sin(angle) * radius;
         const scale = 0.5 + Math.random() * 1;
-        
+
         return (
           <group key={i} position={[x, -1 + scale / 2, z]}>
             <Sphere args={[scale, 8, 8]}>
-              <meshStandardMaterial
-                color="#696969"
-                roughness={0.8}
-                metalness={0.2}
-              />
+              <meshStandardMaterial color="#696969" roughness={0.8} metalness={0.2} />
             </Sphere>
           </group>
         );
@@ -70,7 +66,7 @@ export function ZenGarden() {
         const radius = 7;
         const x = Math.cos(angle) * radius;
         const z = Math.sin(angle) * radius;
-        
+
         return (
           <group key={i} position={[x, 0, z]}>
             {/* Bamboo Stalks */}
@@ -78,18 +74,14 @@ export function ZenGarden() {
               const height = 2 + Math.random() * 2;
               const offsetX = Math.random() * 0.5 - 0.25;
               const offsetZ = Math.random() * 0.5 - 0.25;
-              
+
               return (
                 <group key={j}>
                   {Array.from({ length: 5 }).map((_, k) => (
                     <Cylinder
                       key={k}
                       args={[0.1, 0.1, 0.5, 8]}
-                      position={[
-                        offsetX,
-                        k * 0.5,
-                        offsetZ
-                      ]}
+                      position={[offsetX, k * 0.5, offsetZ]}
                     >
                       <meshStandardMaterial color="#90EE90" />
                     </Cylinder>
@@ -102,4 +94,4 @@ export function ZenGarden() {
       })}
     </group>
   );
-} 
+}

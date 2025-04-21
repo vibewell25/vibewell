@@ -12,7 +12,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   newMessage,
   onMessageChange,
   onSubmit,
-  disabled = false
+  disabled = false,
 }) => {
   return (
     <form onSubmit={onSubmit} className="p-4 border-t">
@@ -22,7 +22,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           placeholder="Type a message..."
           className="flex-grow p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           value={newMessage}
-          onChange={(e) => onMessageChange(e.target.value)}
+          onChange={e => onMessageChange(e.target.value)}
           disabled={disabled}
           aria-label="Message input"
         />
@@ -39,4 +39,4 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   );
 };
 
-export default MessageInput; 
+export default MessageInput;

@@ -50,7 +50,7 @@ export function AnalyticsTest() {
         duration: 10,
         intensity: 5,
         success: false,
-        error: 'Model loading failed'
+        error: 'Model loading failed',
       });
       toast({
         title: 'Success',
@@ -68,7 +68,10 @@ export function AnalyticsTest() {
     }
   };
 
-  const testShareAnalytics = async (method: 'social' | 'email' | 'download', platform: string = 'facebook') => {
+  const testShareAnalytics = async (
+    method: 'social' | 'email' | 'download',
+    platform: string = 'facebook'
+  ) => {
     try {
       setLoading(true);
       await analyticsService.trackShare({
@@ -97,21 +100,17 @@ export function AnalyticsTest() {
   return (
     <div className="space-y-4 p-4">
       <h2 className="text-xl font-bold">Analytics Test</h2>
-      
+
       <Tabs defaultValue="sessions">
         <TabsList>
           <TabsTrigger value="sessions">Try-On Sessions</TabsTrigger>
           <TabsTrigger value="shares">Shares</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="sessions" className="space-y-4 pt-4">
           <h3 className="text-lg font-medium">Test Try-On Sessions</h3>
           <div className="flex flex-wrap gap-2">
-            <Button
-              onClick={() => testTryOnSession('makeup')}
-              disabled={loading}
-              variant="default"
-            >
+            <Button onClick={() => testTryOnSession('makeup')} disabled={loading} variant="default">
               Test Makeup Session
             </Button>
             <Button
@@ -128,16 +127,12 @@ export function AnalyticsTest() {
             >
               Test Accessory Session
             </Button>
-            <Button
-              onClick={testFailedSession}
-              disabled={loading}
-              variant="destructive"
-            >
+            <Button onClick={testFailedSession} disabled={loading} variant="destructive">
               Test Failed Session
             </Button>
           </div>
         </TabsContent>
-        
+
         <TabsContent value="shares" className="space-y-4 pt-4">
           <h3 className="text-lg font-medium">Test Share Analytics</h3>
           <div className="flex flex-wrap gap-2">
@@ -172,11 +167,20 @@ export function AnalyticsTest() {
           </div>
         </TabsContent>
       </Tabs>
-      
+
       <div className="mt-6 p-4 bg-gray-50 rounded-lg text-sm">
-        <p>Use these test buttons to generate analytics data that can be viewed in the admin dashboard.</p>
-        <p className="mt-1 text-muted-foreground">After generating test data, visit the <a href="/admin/analytics" className="text-blue-600 hover:underline">admin analytics dashboard</a> to see the results.</p>
+        <p>
+          Use these test buttons to generate analytics data that can be viewed in the admin
+          dashboard.
+        </p>
+        <p className="mt-1 text-muted-foreground">
+          After generating test data, visit the{' '}
+          <a href="/admin/analytics" className="text-blue-600 hover:underline">
+            admin analytics dashboard
+          </a>{' '}
+          to see the results.
+        </p>
       </div>
     </div>
   );
-} 
+}

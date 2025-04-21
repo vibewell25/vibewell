@@ -5,13 +5,41 @@ import { format } from 'date-fns';
 import { BackupService, BackupMetadata } from '@/lib/backup/backup-service';
 import { backupConfig } from '@/config/backup-config';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Download, Upload, RefreshCw, AlertTriangle, CheckCircle, Clock, XCircle } from 'lucide-react';
+import {
+  Download,
+  Upload,
+  RefreshCw,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  XCircle,
+} from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 
 const backupService = new BackupService(backupConfig);
@@ -117,17 +145,12 @@ export function BackupManager() {
       <Card>
         <CardHeader>
           <CardTitle>Backup Manager</CardTitle>
-          <CardDescription>
-            Manage database backups and restore points
-          </CardDescription>
+          <CardDescription>Manage database backups and restore points</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-              <Button
-                onClick={() => handleCreateBackup('full')}
-                disabled={backupInProgress}
-              >
+              <Button onClick={() => handleCreateBackup('full')} disabled={backupInProgress}>
                 <Upload className="w-4 h-4 mr-2" />
                 Create Full Backup
               </Button>
@@ -161,7 +184,7 @@ export function BackupManager() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {backups.map((backup) => (
+                {backups.map(backup => (
                   <TableRow key={backup.id}>
                     <TableCell>{backup.id}</TableCell>
                     <TableCell>
@@ -169,15 +192,9 @@ export function BackupManager() {
                         {backup.type}
                       </Badge>
                     </TableCell>
-                    <TableCell>
-                      {format(new Date(backup.timestamp), 'PPpp')}
-                    </TableCell>
-                    <TableCell>
-                      {(backup.size / 1024 / 1024).toFixed(2)} MB
-                    </TableCell>
-                    <TableCell>
-                      {getStatusBadge(backup.status)}
-                    </TableCell>
+                    <TableCell>{format(new Date(backup.timestamp), 'PPpp')}</TableCell>
+                    <TableCell>{(backup.size / 1024 / 1024).toFixed(2)} MB</TableCell>
+                    <TableCell>{getStatusBadge(backup.status)}</TableCell>
                     <TableCell>
                       <Button
                         variant="ghost"
@@ -223,11 +240,7 @@ export function BackupManager() {
               Restore Selected Backup
             </Button>
           </div>
-          <Button
-            onClick={loadBackups}
-            variant="outline"
-            disabled={loading}
-          >
+          <Button onClick={loadBackups} variant="outline" disabled={loading}>
             <RefreshCw className="w-4 h-4 mr-2" />
             Refresh
           </Button>
@@ -239,9 +252,7 @@ export function BackupManager() {
           <CardContent className="pt-6">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span>
-                  {backupInProgress ? 'Backup in progress...' : 'Restore in progress...'}
-                </span>
+                <span>{backupInProgress ? 'Backup in progress...' : 'Restore in progress...'}</span>
                 <Progress value={45} className="w-1/2" />
               </div>
             </div>
@@ -250,4 +261,4 @@ export function BackupManager() {
       )}
     </div>
   );
-} 
+}

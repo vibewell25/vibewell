@@ -6,7 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Briefcase } from 'lucide-react';
 
 interface BasicInfoFormProps {
@@ -34,13 +40,13 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>Business Details</CardTitle>
-          <CardDescription>
-            Enter the basic information about your business
-          </CardDescription>
+          <CardDescription>Enter the basic information about your business</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="businessName">Business Name <span className="text-red-500">*</span></Label>
+            <Label htmlFor="businessName">
+              Business Name <span className="text-red-500">*</span>
+            </Label>
             <Input
               id="businessName"
               {...form.register('businessName')}
@@ -52,7 +58,9 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description <span className="text-red-500">*</span></Label>
+            <Label htmlFor="description">
+              Description <span className="text-red-500">*</span>
+            </Label>
             <Textarea
               id="description"
               {...form.register('description')}
@@ -68,16 +76,20 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="businessType">Business Type <span className="text-red-500">*</span></Label>
+            <Label htmlFor="businessType">
+              Business Type <span className="text-red-500">*</span>
+            </Label>
             <Select
               value={form.watch('businessType')}
-              onValueChange={(value) => form.setValue('businessType', value as any, { shouldValidate: true })}
+              onValueChange={value =>
+                form.setValue('businessType', value as any, { shouldValidate: true })
+              }
             >
               <SelectTrigger id="businessType">
                 <SelectValue placeholder="Select business type" />
               </SelectTrigger>
               <SelectContent>
-                {businessTypes.map((type) => (
+                {businessTypes.map(type => (
                   <SelectItem key={type.value} value={type.value}>
                     {type.label}
                   </SelectItem>
@@ -94,13 +106,13 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>Contact Information</CardTitle>
-          <CardDescription>
-            How clients can reach your business
-          </CardDescription>
+          <CardDescription>How clients can reach your business</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Business Email <span className="text-red-500">*</span></Label>
+            <Label htmlFor="email">
+              Business Email <span className="text-red-500">*</span>
+            </Label>
             <Input
               id="email"
               type="email"
@@ -113,12 +125,10 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone">Business Phone <span className="text-red-500">*</span></Label>
-            <Input
-              id="phone"
-              {...form.register('phone')}
-              placeholder="+1 (555) 123-4567"
-            />
+            <Label htmlFor="phone">
+              Business Phone <span className="text-red-500">*</span>
+            </Label>
+            <Input id="phone" {...form.register('phone')} placeholder="+1 (555) 123-4567" />
             {form.formState.errors.phone && (
               <p className="text-sm text-red-500">{form.formState.errors.phone.message}</p>
             )}
@@ -139,4 +149,4 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
       </Card>
     </div>
   );
-} 
+}

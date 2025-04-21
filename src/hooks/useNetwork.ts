@@ -22,4 +22,4 @@ export function useNetwork() {
   }, []);
 
   return { isOnline };
-} 
+}

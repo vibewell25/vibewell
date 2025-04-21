@@ -9,40 +9,42 @@ const businessHubLinks = [
   {
     title: 'Overview',
     href: '/business-hub',
-    icon: <Icons.BriefcaseIcon className="w-5 h-5" />
+    icon: <Icons.BriefcaseIcon className="w-5 h-5" />,
   },
   {
     title: 'Marketing',
     href: '/business-hub/marketing',
-    icon: <Icons.MegaphoneIcon className="w-5 h-5" />
+    icon: <Icons.MegaphoneIcon className="w-5 h-5" />,
   },
   {
     title: 'Client Acquisition',
     href: '/business-hub/client-acquisition',
-    icon: <Icons.UsersIcon className="w-5 h-5" />
+    icon: <Icons.UsersIcon className="w-5 h-5" />,
   },
   {
     title: 'Financial Management',
     href: '/business-hub/financial-management',
-    icon: <Icons.CurrencyDollarIcon className="w-5 h-5" />
+    icon: <Icons.CurrencyDollarIcon className="w-5 h-5" />,
   },
   {
     title: 'Staff Management',
     href: '/business-hub/staff-management',
-    icon: <Icons.UserGroupIcon className="w-5 h-5" />
+    icon: <Icons.UserGroupIcon className="w-5 h-5" />,
   },
   {
     title: 'Scheduling Optimization',
     href: '/business-hub/scheduling-optimization',
-    icon: <Icons.CalendarIcon className="w-5 h-5" />
-  }
+    icon: <Icons.CalendarIcon className="w-5 h-5" />,
+  },
 ];
 
 export function BusinessHubSidebar() {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
-    <div className={`bg-card border-r border-border h-full transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'}`}>
+    <div
+      className={`bg-card border-r border-border h-full transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'}`}
+    >
       <div className="p-4 flex items-center justify-between border-b border-border">
         <h2 className={`font-semibold ${isCollapsed ? 'hidden' : 'block'}`}>Business Hub</h2>
         <button
@@ -68,7 +70,7 @@ export function BusinessHubSidebar() {
       </div>
       <nav className="p-2">
         <ul className="space-y-1">
-          {businessHubLinks.map((link) => {
+          {businessHubLinks.map(link => {
             const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (
               <li key={link.href}>
@@ -117,4 +119,4 @@ export function BusinessHubSidebar() {
       </div>
     </div>
   );
-} 
+}

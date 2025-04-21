@@ -30,7 +30,7 @@ export default function Dashboard() {
         <h1 className="text-2xl font-bold text-red-600">Authentication Error</h1>
         <p className="mt-2 text-gray-600">An error occurred during authentication.</p>
         <div className="mt-4">
-          <Link 
+          <Link
             href="/api/auth/login?returnTo=/dashboard"
             className="px-4 py-2 text-white bg-indigo-600 rounded hover:bg-indigo-700"
           >
@@ -57,9 +57,9 @@ export default function Dashboard() {
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="flex items-center space-x-4">
             {user.picture && (
-              <img 
-                src={user.picture} 
-                alt={user.name || 'User'} 
+              <img
+                src={user.picture}
+                alt={user.name || 'User'}
                 className="h-16 w-16 rounded-full"
               />
             )}
@@ -69,7 +69,7 @@ export default function Dashboard() {
               {userRoles.length > 0 && (
                 <div className="mt-1 flex flex-wrap gap-1">
                   {userRoles.map(role => (
-                    <span 
+                    <span
                       key={role}
                       className="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full"
                     >
@@ -85,7 +85,7 @@ export default function Dashboard() {
             <div className="bg-indigo-50 p-4 rounded-lg">
               <h2 className="text-lg font-semibold text-indigo-800">My Profile</h2>
               <p className="mt-2 text-gray-600">View and edit your profile information.</p>
-              <Link 
+              <Link
                 href="/profile"
                 className="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
               >
@@ -97,7 +97,7 @@ export default function Dashboard() {
               <div className="bg-emerald-50 p-4 rounded-lg">
                 <h2 className="text-lg font-semibold text-emerald-800">Provider Dashboard</h2>
                 <p className="mt-2 text-gray-600">Manage your services and bookings.</p>
-                <Link 
+                <Link
                   href="/provider/dashboard"
                   className="mt-4 inline-block px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700"
                 >
@@ -110,7 +110,7 @@ export default function Dashboard() {
               <div className="bg-purple-50 p-4 rounded-lg">
                 <h2 className="text-lg font-semibold text-purple-800">Admin Dashboard</h2>
                 <p className="mt-2 text-gray-600">Manage users, services, and platform settings.</p>
-                <Link 
+                <Link
                   href="/admin/dashboard"
                   className="mt-4 inline-block px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
                 >
@@ -122,7 +122,7 @@ export default function Dashboard() {
             <div className="bg-amber-50 p-4 rounded-lg">
               <h2 className="text-lg font-semibold text-amber-800">Explore Services</h2>
               <p className="mt-2 text-gray-600">Browse and book wellness services.</p>
-              <Link 
+              <Link
                 href="/services"
                 className="mt-4 inline-block px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
               >
@@ -132,10 +132,7 @@ export default function Dashboard() {
           </div>
 
           <div className="mt-8 border-t pt-6">
-            <Link 
-              href="/api/auth/logout"
-              className="text-red-600 hover:text-red-800"
-            >
+            <Link href="/api/auth/logout" className="text-red-600 hover:text-red-800">
               Sign Out
             </Link>
           </div>
@@ -143,4 +140,4 @@ export default function Dashboard() {
       </div>
     </div>
   );
-} 
+}

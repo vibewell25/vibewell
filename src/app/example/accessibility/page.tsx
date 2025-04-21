@@ -16,12 +16,13 @@ export default function AccessibilityExample() {
   // Handle font size change
   const handleFontSizeChange = (size: string) => {
     setFontSize(size);
-    document.documentElement.style.fontSize = {
-      small: '14px',
-      medium: '16px',
-      large: '18px',
-      xlarge: '20px',
-    }[size] || '16px';
+    document.documentElement.style.fontSize =
+      {
+        small: '14px',
+        medium: '16px',
+        large: '18px',
+        xlarge: '20px',
+      }[size] || '16px';
   };
 
   // Toggle high contrast mode
@@ -56,7 +57,7 @@ export default function AccessibilityExample() {
           <h2 className="text-xl font-semibold mb-4" tabIndex={0}>
             {t('settings.theme.title')}
           </h2>
-          
+
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <label htmlFor="theme-selector" className="block text-sm font-medium">
@@ -65,7 +66,7 @@ export default function AccessibilityExample() {
               <select
                 id="theme-selector"
                 value={theme}
-                onChange={(e) => setTheme(e.target.value as 'light' | 'dark' | 'system')}
+                onChange={e => setTheme(e.target.value as 'light' | 'dark' | 'system')}
                 className="mt-1 block w-1/2 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                 aria-label={t('settings.theme.title')}
               >
@@ -83,7 +84,7 @@ export default function AccessibilityExample() {
                 <LanguageSwitcher />
               </div>
             </div>
-            
+
             <div className="pt-4">
               <NotificationPermissionButton />
             </div>
@@ -95,7 +96,7 @@ export default function AccessibilityExample() {
           <h2 className="text-xl font-semibold mb-4" tabIndex={0}>
             {t('settings.accessibility.title')}
           </h2>
-          
+
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <label htmlFor="font-size-selector" className="block text-sm font-medium">
@@ -104,7 +105,7 @@ export default function AccessibilityExample() {
               <select
                 id="font-size-selector"
                 value={fontSize}
-                onChange={(e) => handleFontSizeChange(e.target.value)}
+                onChange={e => handleFontSizeChange(e.target.value)}
                 className="mt-1 block w-1/2 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                 aria-label={t('settings.accessibility.fontSize')}
               >
@@ -179,18 +180,21 @@ export default function AccessibilityExample() {
         <h2 className="text-xl font-semibold mb-4" tabIndex={0}>
           Demo Content
         </h2>
-        
+
         <div className="space-y-4">
           <p>
-            This text demonstrates the font size changes. You can adjust the font size using the dropdown above.
+            This text demonstrates the font size changes. You can adjust the font size using the
+            dropdown above.
           </p>
-          
-          <div className={`p-4 rounded-lg bg-blue-100 dark:bg-blue-900 ${highContrast ? 'text-black dark:text-white font-bold' : ''}`}>
+
+          <div
+            className={`p-4 rounded-lg bg-blue-100 dark:bg-blue-900 ${highContrast ? 'text-black dark:text-white font-bold' : ''}`}
+          >
             This box demonstrates the high contrast mode. Toggle it to see the difference.
           </div>
-          
+
           <div className="p-4 rounded-lg bg-green-100 dark:bg-green-900">
-            <button 
+            <button
               className={`px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 ${reduceMotion ? 'transition-none' : 'transition-all duration-300 hover:-translate-y-1'}`}
               aria-label="Demo button for reduce motion setting"
             >
@@ -205,13 +209,17 @@ export default function AccessibilityExample() {
         <h2 className="text-xl font-semibold mb-4" tabIndex={0}>
           ARIA Examples
         </h2>
-        
+
         <div className="space-y-4">
-          <div role="alert" aria-live="assertive" className="p-4 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
+          <div
+            role="alert"
+            aria-live="assertive"
+            className="p-4 bg-yellow-100 dark:bg-yellow-900 rounded-lg"
+          >
             <p className="font-bold">Accessibility Notice</p>
             <p>This is a live region that will be announced by screen readers when it changes.</p>
           </div>
-          
+
           <nav aria-label="Pagination">
             <ul className="flex items-center space-x-2">
               <li>
@@ -249,23 +257,20 @@ export default function AccessibilityExample() {
               </li>
             </ul>
           </nav>
-          
+
           <div className="mt-4">
             <label id="progress-label" className="block mb-2">
               Download Progress (ARIA Progressbar Example):
             </label>
-            <div 
-              role="progressbar" 
-              aria-labelledby="progress-label" 
-              aria-valuenow={75} 
-              aria-valuemin={0} 
+            <div
+              role="progressbar"
+              aria-labelledby="progress-label"
+              aria-valuenow={75}
+              aria-valuemin={0}
               aria-valuemax={100}
               className="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700"
             >
-              <div 
-                className="bg-blue-600 h-4 rounded-full" 
-                style={{ width: '75%' }}
-              ></div>
+              <div className="bg-blue-600 h-4 rounded-full" style={{ width: '75%' }}></div>
             </div>
             <span className="sr-only">75 percent complete</span>
           </div>
@@ -273,4 +278,4 @@ export default function AccessibilityExample() {
       </div>
     </div>
   );
-} 
+}

@@ -162,4 +162,4 @@ export const MEDITATION_SOUNDSCAPES = {
 export type ARRoomTheme = keyof typeof AR_ROOM_THEMES;
 export type WorkoutType = keyof typeof WORKOUT_TYPES;
 export type YogaPose = keyof typeof YOGA_POSES;
-export type MeditationSoundscape = keyof typeof MEDITATION_SOUNDSCAPES; 
+export type MeditationSoundscape = keyof typeof MEDITATION_SOUNDSCAPES;

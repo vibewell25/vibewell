@@ -6,11 +6,16 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
-;
 interface Service {
   id: string;
   name: string;
@@ -31,22 +36,22 @@ const dummyServices: Service[] = [
     name: 'Haircut',
     duration: 30,
     price: 50,
-    category: 'Hair'
+    category: 'Hair',
   },
   {
     id: '2',
     name: 'Highlights',
     duration: 120,
     price: 150,
-    category: 'Hair'
+    category: 'Hair',
   },
   {
     id: '3',
     name: 'Manicure',
     duration: 45,
     price: 35,
-    category: 'Nails'
-  }
+    category: 'Nails',
+  },
 ];
 const dummyClients: Client[] = [
   {
@@ -54,15 +59,15 @@ const dummyClients: Client[] = [
     name: 'Sarah Johnson',
     email: 'sarah@example.com',
     phone: '+1 (555) 123-4567',
-    avatar: '/users/sarah.jpg'
+    avatar: '/users/sarah.jpg',
   },
   {
     id: '2',
     name: 'Michael Brown',
     email: 'michael@example.com',
     phone: '+1 (555) 987-6543',
-    avatar: '/users/michael.jpg'
-  }
+    avatar: '/users/michael.jpg',
+  },
 ];
 export default function CreateAppointmentPage() {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
@@ -84,8 +89,8 @@ export default function CreateAppointmentPage() {
   };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    import { createAppointment } from "../../../../../implementation-files/appointments-create-logic";
-import { Icons } from '@/components/icons';
+    import { createAppointment } from '../../../../../implementation-files/appointments-create-logic';
+    import { Icons } from '@/components/icons';
     console.log({
       client: selectedClient,
       services: selectedServices,
@@ -93,7 +98,7 @@ import { Icons } from '@/components/icons';
       time,
       notes,
       totalDuration,
-      totalPrice
+      totalPrice,
     });
   };
   return (
@@ -111,9 +116,7 @@ import { Icons } from '@/components/icons';
             <Card>
               <CardHeader>
                 <CardTitle>Client</CardTitle>
-                <CardDescription>
-                  Select an existing client or add a new one
-                </CardDescription>
+                <CardDescription>Select an existing client or add a new one</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -149,9 +152,9 @@ import { Icons } from '@/components/icons';
                       </div>
                     </div>
                   ) : (
-                    <Select 
+                    <Select
                       value={selectedClient?.id || ''}
-                      onValueChange={(value) => {
+                      onValueChange={value => {
                         const client = dummyClients.find(c => c.id === value);
                         setSelectedClient(client || null);
                       }}
@@ -175,13 +178,11 @@ import { Icons } from '@/components/icons';
             <Card>
               <CardHeader>
                 <CardTitle>Services</CardTitle>
-                <CardDescription>
-                  Select services for the appointment
-                </CardDescription>
+                <CardDescription>Select services for the appointment</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <Select 
+                  <Select
                     value={selectedServices.length > 0 ? selectedServices[0].id : ''}
                     onValueChange={handleServiceSelect}
                   >
@@ -238,9 +239,7 @@ import { Icons } from '@/components/icons';
             <Card>
               <CardHeader>
                 <CardTitle>Date & Time</CardTitle>
-                <CardDescription>
-                  Select the appointment date and time
-                </CardDescription>
+                <CardDescription>Select the appointment date and time</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4 md:grid-cols-2">
@@ -257,22 +256,13 @@ import { Icons } from '@/components/icons';
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
-                          selected={date}
-                          onSelect={setDate}
-                          initialFocus
-                        />
+                        <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
                       </PopoverContent>
                     </Popover>
                   </div>
                   <div>
                     <Label>Time</Label>
-                    <Input
-                      type="time"
-                      value={time}
-                      onChange={(e) => setTime(e.target.value)}
-                    />
+                    <Input type="time" value={time} onChange={e => setTime(e.target.value)} />
                   </div>
                 </div>
               </CardContent>
@@ -281,27 +271,23 @@ import { Icons } from '@/components/icons';
             <Card>
               <CardHeader>
                 <CardTitle>Notes</CardTitle>
-                <CardDescription>
-                  Add any additional notes for this appointment
-                </CardDescription>
+                <CardDescription>Add any additional notes for this appointment</CardDescription>
               </CardHeader>
               <CardContent>
                 <Textarea
                   placeholder="Add notes about the appointment..."
                   value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
+                  onChange={e => setNotes(e.target.value)}
                 />
               </CardContent>
             </Card>
             {/* Submit Button */}
             <div className="flex justify-end">
-              <Button type="submit">
-                Create Appointment
-              </Button>
+              <Button type="submit">Create Appointment</Button>
             </div>
           </div>
         </form>
       </div>
     </Layout>
   );
-} 
+}

@@ -10,8 +10,8 @@ export class HSMService {
       region: process.env.AWS_REGION || 'us-east-1',
       credentials: {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ''
-      }
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+      },
     });
     this.keyAlias = process.env.KMS_KEY_ALIAS || 'alias/vibewell';
   }
@@ -21,22 +21,26 @@ export class HSMService {
    */
   async createKey(description: string): Promise<string> {
     try {
-      const { KeyMetadata } = await this.kms.createKey({
-        Description: description,
-        KeyUsage: 'ENCRYPT_DECRYPT',
-        Origin: 'AWS_KMS',
-        MultiRegion: true
-      }).promise();
+      const { KeyMetadata } = await this.kms
+        .createKey({
+          Description: description,
+          KeyUsage: 'ENCRYPT_DECRYPT',
+          Origin: 'AWS_KMS',
+          MultiRegion: true,
+        })
+        .promise();
 
       if (!KeyMetadata.KeyId) {
         throw new Error('Failed to create KMS key');
       }
 
       // Create alias for the key
-      await this.kms.createAlias({
-        AliasName: this.keyAlias,
-        TargetKeyId: KeyMetadata.KeyId
-      }).promise();
+      await this.kms
+        .createAlias({
+          AliasName: this.keyAlias,
+          TargetKeyId: KeyMetadata.KeyId,
+        })
+        .promise();
 
       logger.info('Created new KMS key', 'hsm', { keyId: KeyMetadata.KeyId });
       return KeyMetadata.KeyId;
@@ -51,10 +55,12 @@ export class HSMService {
    */
   async encrypt(data: string | Buffer): Promise<{ ciphertext: Buffer; keyId: string }> {
     try {
-      const { CiphertextBlob, KeyId } = await this.kms.encrypt({
-        KeyId: this.keyAlias,
-        Plaintext: Buffer.from(data)
-      }).promise();
+      const { CiphertextBlob, KeyId } = await this.kms
+        .encrypt({
+          KeyId: this.keyAlias,
+          Plaintext: Buffer.from(data),
+        })
+        .promise();
 
       if (!CiphertextBlob || !KeyId) {
         throw new Error('Encryption failed');
@@ -62,7 +68,7 @@ export class HSMService {
 
       return {
         ciphertext: CiphertextBlob,
-        keyId: KeyId
+        keyId: KeyId,
       };
     } catch (error) {
       logger.error('Encryption failed', 'hsm', { error });
@@ -75,9 +81,11 @@ export class HSMService {
    */
   async decrypt(ciphertext: Buffer): Promise<Buffer> {
     try {
-      const { Plaintext } = await this.kms.decrypt({
-        CiphertextBlob: ciphertext
-      }).promise();
+      const { Plaintext } = await this.kms
+        .decrypt({
+          CiphertextBlob: ciphertext,
+        })
+        .promise();
 
       if (!Plaintext) {
         throw new Error('Decryption failed');
@@ -98,10 +106,12 @@ export class HSMService {
     encryptedKey: Buffer;
   }> {
     try {
-      const { Plaintext, CiphertextBlob } = await this.kms.generateDataKey({
-        KeyId: this.keyAlias,
-        KeySpec: 'AES_256'
-      }).promise();
+      const { Plaintext, CiphertextBlob } = await this.kms
+        .generateDataKey({
+          KeyId: this.keyAlias,
+          KeySpec: 'AES_256',
+        })
+        .promise();
 
       if (!Plaintext || !CiphertextBlob) {
         throw new Error('Failed to generate data key');
@@ -109,7 +119,7 @@ export class HSMService {
 
       return {
         plaintextKey: Plaintext,
-        encryptedKey: CiphertextBlob
+        encryptedKey: CiphertextBlob,
       };
     } catch (error) {
       logger.error('Failed to generate data key', 'hsm', { error });
@@ -122,10 +132,12 @@ export class HSMService {
    */
   async rotateKey(): Promise<void> {
     try {
-      await this.kms.rotateKey({
-        KeyId: this.keyAlias
-      }).promise();
-      
+      await this.kms
+        .rotateKey({
+          KeyId: this.keyAlias,
+        })
+        .promise();
+
       logger.info('Rotated KMS key', 'hsm', { keyAlias: this.keyAlias });
     } catch (error) {
       logger.error('Failed to rotate KMS key', 'hsm', { error });
@@ -138,24 +150,26 @@ export class HSMService {
    */
   async scheduleKeyDeletion(keyId: string, pendingDays: number = 30): Promise<Date> {
     try {
-      const { DeletionDate } = await this.kms.scheduleKeyDeletion({
-        KeyId: keyId,
-        PendingWindowInDays: pendingDays
-      }).promise();
+      const { DeletionDate } = await this.kms
+        .scheduleKeyDeletion({
+          KeyId: keyId,
+          PendingWindowInDays: pendingDays,
+        })
+        .promise();
 
       if (!DeletionDate) {
         throw new Error('Failed to schedule key deletion');
       }
 
-      logger.info('Scheduled key deletion', 'hsm', { 
-        keyId, 
-        deletionDate: DeletionDate 
+      logger.info('Scheduled key deletion', 'hsm', {
+        keyId,
+        deletionDate: DeletionDate,
       });
-      
+
       return DeletionDate;
     } catch (error) {
       logger.error('Failed to schedule key deletion', 'hsm', { error });
       throw error;
     }
   }
-} 
+}

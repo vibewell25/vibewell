@@ -9,4 +9,4 @@ import { Messaging } from './messaging/index';
 export * from './messaging/types';
 export * from './messaging/index';
 
-export default Messaging; 
+export default Messaging;

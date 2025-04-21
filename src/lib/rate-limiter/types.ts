@@ -1,6 +1,6 @@
 /**
  * Rate Limiter Types and Interfaces
- * 
+ *
  * This module contains shared type definitions used across the rate limiter services.
  */
 
@@ -14,11 +14,11 @@ export interface RateLimitOptions {
   message?: string | object;
   keyPrefix?: string;
   statusCode?: number;
-  
+
   // Customization
   identifierGenerator?: (req: any) => string;
   skip?: (req: any) => boolean;
-  
+
   // Additional options
   burstFactor?: number;
   burstDurationMs?: number;
@@ -65,7 +65,7 @@ export interface WebSocketRateLimitOptions extends RateLimitOptions {
   // Connection limits
   maxConnectionsPerIP?: number;
   connectionWindowMs?: number;
-  
+
   // Message limits
   maxMessagesPerMinute?: number;
   maxMessageSizeBytes?: number;
@@ -102,4 +102,4 @@ export const DEFAULT_WEBSOCKET_OPTIONS: WebSocketRateLimitOptions = {
   maxMessageSizeBytes: 10 * 1024, // 10 KB
   burstFactor: 2,
   burstDurationMs: 5000, // 5 seconds
-}; 
+};

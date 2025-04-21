@@ -14,9 +14,8 @@ export async function POST(request: Request) {
     return NextResponse.json(options);
   } catch (error) {
     console.error('WebAuthn authentication options error:', error);
-    return new NextResponse(
-      error instanceof Error ? error.message : 'Internal server error',
-      { status: 500 }
-    );
+    return new NextResponse(error instanceof Error ? error.message : 'Internal server error', {
+      status: 500,
+    });
   }
-} 
+}

@@ -11,24 +11,20 @@ function ReviewsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const providerId = searchParams.get('providerId');
-  
+
   const [showReviewForm, setShowReviewForm] = useState(false);
-  
+
   // Get reviews for the specified provider
-  const {
-    reviews,
-    isLoading,
-    error,
-    addReview,
-    getAverageRating
-  } = useReviews(providerId || undefined);
-  
+  const { reviews, isLoading, error, addReview, getAverageRating } = useReviews(
+    providerId || undefined
+  );
+
   const handleAddReview = async (data: { title: string; text: string; rating: number }) => {
     if (!providerId) {
       alert('Provider ID is required to submit a review');
       return;
     }
-    
+
     try {
       await addReview(data, providerId);
       setShowReviewForm(false);
@@ -36,14 +32,16 @@ function ReviewsContent() {
       console.error('Failed to submit review:', error);
     }
   };
-  
+
   if (!providerId) {
     return (
       <Layout>
         <div className="container mx-auto max-w-4xl px-4 py-8">
           <div className="bg-white rounded-lg shadow p-8 text-center">
             <h2 className="text-2xl font-bold mb-4">Provider Reviews</h2>
-            <p className="text-gray-600 mb-6">No provider specified. Please select a provider to view or leave reviews.</p>
+            <p className="text-gray-600 mb-6">
+              No provider specified. Please select a provider to view or leave reviews.
+            </p>
             <button
               onClick={() => router.push('/providers')}
               className="bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
@@ -55,7 +53,7 @@ function ReviewsContent() {
       </Layout>
     );
   }
-  
+
   return (
     <Layout>
       <div className="container mx-auto max-w-4xl px-4 py-8">
@@ -66,7 +64,7 @@ function ReviewsContent() {
               {!isLoading && (
                 <div className="flex items-center mt-2">
                   <div className="flex">
-                    {[1, 2, 3, 4, 5].map((star) => (
+                    {[1, 2, 3, 4, 5].map(star => (
                       <svg
                         key={star}
                         className={`h-5 w-5 ${
@@ -87,7 +85,8 @@ function ReviewsContent() {
                     ))}
                   </div>
                   <span className="ml-2 text-gray-600">
-                    {getAverageRating().toFixed(1)} out of 5 ({reviews.length} {reviews.length === 1 ? 'review' : 'reviews'})
+                    {getAverageRating().toFixed(1)} out of 5 ({reviews.length}{' '}
+                    {reviews.length === 1 ? 'review' : 'reviews'})
                   </span>
                 </div>
               )}
@@ -99,24 +98,24 @@ function ReviewsContent() {
               {showReviewForm ? 'Cancel' : 'Write a Review'}
             </button>
           </div>
-          
+
           {showReviewForm && (
             <div className="mb-8">
-              <ReviewForm 
+              <ReviewForm
                 providerId={providerId}
                 onSubmit={handleAddReview}
                 onCancel={() => setShowReviewForm(false)}
               />
             </div>
           )}
-          
+
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
               {error}
             </div>
           )}
         </div>
-        
+
         <ReviewsList reviews={reviews} isLoading={isLoading} />
       </div>
     </Layout>
@@ -125,8 +124,10 @@ function ReviewsContent() {
 
 export default function ReviewsPage() {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+    <Suspense
+      fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}
+    >
       <ReviewsContent />
     </Suspense>
   );
-} 
+}

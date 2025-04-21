@@ -99,7 +99,7 @@ export const AccessibleFileUpload: React.FC<AccessibleFileUploadProps> = ({
           type="file"
           accept={accept}
           multiple={multiple}
-          onChange={(e) => handleFileSelect(e.target.files)}
+          onChange={e => handleFileSelect(e.target.files)}
           className="hidden"
           disabled={disabled}
           required={required}
@@ -128,11 +128,7 @@ export const AccessibleFileUpload: React.FC<AccessibleFileUploadProps> = ({
               </span>
               {' or drag and drop'}
             </div>
-            {fileName && (
-              <p className="mt-1 text-xs text-gray-500">
-                Selected file: {fileName}
-              </p>
-            )}
+            {fileName && <p className="mt-1 text-xs text-gray-500">Selected file: {fileName}</p>}
             {maxSize && (
               <p className="mt-1 text-xs text-gray-500">
                 Maximum file size: {maxSize / 1024 / 1024}MB
@@ -155,4 +151,4 @@ export const AccessibleFileUpload: React.FC<AccessibleFileUploadProps> = ({
   );
 };
 
-export default AccessibleFileUpload; 
+export default AccessibleFileUpload;

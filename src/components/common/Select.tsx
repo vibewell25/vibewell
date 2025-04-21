@@ -22,10 +22,7 @@ export const Select: React.FC<SelectProps> = ({
   return (
     <div className={className}>
       {label && (
-        <label
-          htmlFor={props.id}
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor={props.id} className="block text-sm font-medium text-gray-700 mb-1">
           {label}
         </label>
       )}
@@ -39,7 +36,7 @@ export const Select: React.FC<SelectProps> = ({
         `}
         {...props}
       >
-        {options.map((option) => (
+        {options.map(option => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
@@ -52,4 +49,4 @@ export const Select: React.FC<SelectProps> = ({
       )}
     </div>
   );
-}; 
+};

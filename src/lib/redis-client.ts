@@ -1,15 +1,15 @@
 /**
  * Consolidated Redis Client
- * 
+ *
  * This module provides a configurable Redis client for use across the application,
  * supporting multiple environments and features:
- * 
+ *
  * - Production Redis connections for distributed rate limiting
  * - In-memory fallback implementation for development, Edge Runtime, or when Redis is unavailable
  * - Support for rate limiting events and metrics
  * - IP blocking functionality for security
- * 
- * The module exports a singleton instance of the Redis client configured based on 
+ *
+ * The module exports a singleton instance of the Redis client configured based on
  * the current environment.
  */
 
@@ -55,7 +55,8 @@ interface IPCountInfo {
 
 // Next.js compatibility check
 const isServer = typeof window === 'undefined';
-const isEdgeRuntime = typeof process.env.NEXT_RUNTIME === 'string' && process.env.NEXT_RUNTIME === 'edge';
+const isEdgeRuntime =
+  typeof process.env.NEXT_RUNTIME === 'string' && process.env.NEXT_RUNTIME === 'edge';
 
 /**
  * Mock Redis client for Edge Runtime and development
@@ -64,18 +65,18 @@ class MockRedisClient implements RedisClientInterface {
   private store: Map<string, { value: string; expiry?: number }>;
   private rateLimitEvents: RateLimitEvent[];
   private blockedIPs: Map<string, number>;
-  
+
   constructor() {
     this.store = new Map();
     this.rateLimitEvents = [];
     this.blockedIPs = new Map();
-    
+
     // Clean up expired keys periodically
     if (typeof setInterval !== 'undefined') {
       setInterval(() => this.cleanupExpiredKeys(), 1000);
     }
   }
-  
+
   private cleanupExpiredKeys() {
     const now = Date.now();
     for (const [key, data] of this.store.entries()) {
@@ -83,7 +84,7 @@ class MockRedisClient implements RedisClientInterface {
         this.store.delete(key);
       }
     }
-    
+
     // Clean up expired IP blocks
     for (const [ip, expiry] of this.blockedIPs.entries()) {
       if (expiry <= now) {
@@ -91,7 +92,7 @@ class MockRedisClient implements RedisClientInterface {
       }
     }
   }
-  
+
   async get(key: string): Promise<string | null> {
     const data = this.store.get(key);
     if (!data) return null;
@@ -101,76 +102,74 @@ class MockRedisClient implements RedisClientInterface {
     }
     return data.value;
   }
-  
+
   async set(key: string, value: string, options?: { ex?: number }): Promise<'OK'> {
-    const expiry = options?.ex ? Date.now() + (options.ex * 1000) : undefined;
+    const expiry = options?.ex ? Date.now() + options.ex * 1000 : undefined;
     this.store.set(key, { value, expiry });
     return 'OK';
   }
-  
+
   async incr(key: string): Promise<number> {
-    const value = await this.get(key) || '0';
+    const value = (await this.get(key)) || '0';
     const newValue = (parseInt(value, 10) || 0) + 1;
     await this.set(key, newValue.toString());
     return newValue;
   }
-  
+
   async expire(key: string, seconds: number): Promise<number> {
     const data = this.store.get(key);
     if (!data) return 0;
-    data.expiry = Date.now() + (seconds * 1000);
+    data.expiry = Date.now() + seconds * 1000;
     this.store.set(key, data);
     return 1;
   }
-  
+
   async del(key: string): Promise<number> {
     return this.store.delete(key) ? 1 : 0;
   }
-  
+
   async ttl(key: string): Promise<number> {
     const data = this.store.get(key);
     if (!data || !data.expiry) return -1;
     const ttl = Math.ceil((data.expiry - Date.now()) / 1000);
     return ttl > 0 ? ttl : -2;
   }
-  
+
   async zadd(key: string, score: number, member: string): Promise<number> {
     throw new Error('Method not implemented');
   }
-  
+
   async zrange(key: string, start: number, stop: number): Promise<string[]> {
     throw new Error('Method not implemented');
   }
-  
+
   async zrangebyscore(key: string, min: number, max: number): Promise<string[]> {
     throw new Error('Method not implemented');
   }
-  
+
   async zremrangebyrank(key: string, start: number, stop: number): Promise<number> {
     throw new Error('Method not implemented');
   }
-  
+
   async keys(pattern: string): Promise<string[]> {
     throw new Error('Method not implemented');
   }
-  
+
   async info(): Promise<string> {
     throw new Error('Method not implemented');
   }
-  
+
   async logRateLimitEvent(event: RateLimitEvent): Promise<void> {
     this.rateLimitEvents.push(event);
     if (this.rateLimitEvents.length > 1000) {
       this.rateLimitEvents = this.rateLimitEvents.slice(-1000);
     }
   }
-  
+
   async getRateLimitEvents(limit = 100): Promise<RateLimitEvent[]> {
-    return this.rateLimitEvents
-      .sort((a, b) => b.timestamp - a.timestamp)
-      .slice(0, limit);
+    return this.rateLimitEvents.sort((a, b) => b.timestamp - a.timestamp).slice(0, limit);
   }
-  
+
   async clearOldRateLimitEvents(olderThanMs = 24 * 60 * 60 * 1000): Promise<number> {
     const now = Date.now();
     const originalLength = this.rateLimitEvents.length;
@@ -179,11 +178,11 @@ class MockRedisClient implements RedisClientInterface {
     );
     return originalLength - this.rateLimitEvents.length;
   }
-  
+
   async blockIP(ip: string, durationSeconds: number = 3600): Promise<void> {
-    this.blockedIPs.set(ip, Date.now() + (durationSeconds * 1000));
+    this.blockedIPs.set(ip, Date.now() + durationSeconds * 1000);
   }
-  
+
   async isIPBlocked(ip: string): Promise<boolean> {
     const expiry = this.blockedIPs.get(ip);
     if (!expiry) return false;
@@ -193,11 +192,11 @@ class MockRedisClient implements RedisClientInterface {
     }
     return true;
   }
-  
+
   async unblockIP(ip: string): Promise<boolean> {
     return this.blockedIPs.delete(ip);
   }
-  
+
   async getBlockedIPs(): Promise<string[]> {
     const now = Date.now();
     const ips: string[] = [];
@@ -208,10 +207,10 @@ class MockRedisClient implements RedisClientInterface {
     }
     return ips;
   }
-  
+
   async getSuspiciousIPs(limit = 20): Promise<SuspiciousIP[]> {
     const ipCounts = new Map<string, { count: number; events: RateLimitEvent[] }>();
-    
+
     for (const event of this.rateLimitEvents) {
       if (event.suspicious || event.exceeded) {
         if (!ipCounts.has(event.ip)) {
@@ -222,12 +221,12 @@ class MockRedisClient implements RedisClientInterface {
         data.events.push(event);
       }
     }
-    
+
     return Array.from(ipCounts.entries())
       .map(([ip, data]) => ({
         ip,
         count: data.count,
-        recentEvents: data.events.slice(-10)
+        recentEvents: data.events.slice(-10),
       }))
       .sort((a, b) => b.count - a.count)
       .slice(0, limit);
@@ -240,34 +239,34 @@ class MockRedisClient implements RedisClientInterface {
 class UpstashRedisClient implements RedisClientInterface {
   private url: string;
   private token: string;
-  
+
   constructor(url: string, token: string) {
     this.url = url;
     this.token = token;
   }
-  
+
   private async fetch(commands: string[][], pipeline = false): Promise<any> {
     const response = await fetch(this.url, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.token}`,
+        Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(pipeline ? commands : commands[0]),
     });
-    
+
     if (!response.ok) {
       throw new Error(`Redis operation failed: ${response.statusText}`);
     }
-    
+
     const result = await response.json();
     return pipeline ? result : result.result;
   }
-  
+
   async get(key: string): Promise<string | null> {
     return this.fetch([['get', key]]);
   }
-  
+
   async set(key: string, value: string, options?: { ex?: number }): Promise<'OK'> {
     const command: string[] = ['set', key, value];
     if (options?.ex) {
@@ -275,63 +274,65 @@ class UpstashRedisClient implements RedisClientInterface {
     }
     return this.fetch([command]);
   }
-  
+
   async incr(key: string): Promise<number> {
     return this.fetch([['incr', key]]);
   }
-  
+
   async expire(key: string, seconds: number): Promise<number> {
     return this.fetch([['expire', key, seconds.toString()]]);
   }
-  
+
   async del(key: string): Promise<number> {
     return this.fetch([['del', key]]);
   }
-  
+
   async ttl(key: string): Promise<number> {
     return this.fetch([['ttl', key]]);
   }
-  
+
   async zadd(key: string, score: number, member: string): Promise<number> {
     return this.fetch([['zadd', key, score.toString(), member]]);
   }
-  
+
   async zrange(key: string, start: number, stop: number): Promise<string[]> {
     return this.fetch([['zrange', key, start.toString(), stop.toString()]]);
   }
-  
+
   async zrangebyscore(key: string, min: number, max: number): Promise<string[]> {
     return this.fetch([['zrangebyscore', key, min.toString(), max.toString()]]);
   }
-  
+
   async zremrangebyrank(key: string, start: number, stop: number): Promise<number> {
     return this.fetch([['zremrangebyrank', key, start.toString(), stop.toString()]]);
   }
-  
+
   async keys(pattern: string): Promise<string[]> {
     return this.fetch([['keys', pattern]]);
   }
-  
+
   async info(): Promise<string> {
     return this.fetch([['info']]);
   }
-  
+
   async logRateLimitEvent(event: RateLimitEvent): Promise<void> {
     const eventKey = 'ratelimit:events';
     const eventId = event.id || `${event.ip}:${event.path}:${Date.now()}`;
     event.id = eventId;
-    
+
     const commands: string[][] = [
       ['zadd', eventKey, event.timestamp.toString(), JSON.stringify(event)],
       ['zremrangebyrank', eventKey, '0', '-10001'],
-      ['expire', eventKey, (7 * 24 * 60 * 60).toString()]
+      ['expire', eventKey, (7 * 24 * 60 * 60).toString()],
     ];
-    
+
     await this.fetch(commands, true);
   }
-  
+
   async getRateLimitEvents(limit = 100): Promise<RateLimitEvent[]> {
-    const events = await this.fetch([['zrevrange', 'ratelimit:events', '0', (limit - 1).toString()]]);
+    const events = await this.fetch([
+      ['zrevrange', 'ratelimit:events', '0', (limit - 1).toString()],
+    ]);
     return events
       .map((event: string) => {
         try {
@@ -342,39 +343,39 @@ class UpstashRedisClient implements RedisClientInterface {
       })
       .filter(Boolean);
   }
-  
+
   async clearOldRateLimitEvents(olderThanMs = 24 * 60 * 60 * 1000): Promise<number> {
     const cutoffTime = Date.now() - olderThanMs;
     return this.fetch([['zremrangebyscore', 'ratelimit:events', '0', cutoffTime.toString()]]);
   }
-  
+
   async blockIP(ip: string, durationSeconds: number = 3600): Promise<void> {
     const blockedKey = `vibewell:ratelimit:blocked:${ip}`;
     const command: string[] = ['set', blockedKey, '1', 'ex', durationSeconds.toString()];
     await this.fetch([command]);
   }
-  
+
   async isIPBlocked(ip: string): Promise<boolean> {
     const blockedKey = `vibewell:ratelimit:blocked:${ip}`;
     const result = await this.fetch([['get', blockedKey]]);
     return result !== null;
   }
-  
+
   async unblockIP(ip: string): Promise<boolean> {
     const blockedKey = `vibewell:ratelimit:blocked:${ip}`;
     const result = await this.fetch([['del', blockedKey]]);
     return result > 0;
   }
-  
+
   async getBlockedIPs(): Promise<string[]> {
     const keys = await this.fetch([['keys', 'vibewell:ratelimit:blocked:*']]);
     return keys.map((key: string) => key.replace('vibewell:ratelimit:blocked:', ''));
   }
-  
+
   async getSuspiciousIPs(limit = 20): Promise<SuspiciousIP[]> {
     const events = await this.getRateLimitEvents(1000);
     const ipCounts = new Map<string, { count: number; events: RateLimitEvent[] }>();
-    
+
     for (const event of events) {
       if (event.suspicious || event.exceeded) {
         if (!ipCounts.has(event.ip)) {
@@ -385,12 +386,12 @@ class UpstashRedisClient implements RedisClientInterface {
         data.events.push(event);
       }
     }
-    
+
     return Array.from(ipCounts.entries())
       .map(([ip, data]) => ({
         ip,
         count: data.count,
-        recentEvents: data.events.slice(-10)
+        recentEvents: data.events.slice(-10),
       }))
       .sort((a, b) => b.count - a.count)
       .slice(0, limit);
@@ -406,7 +407,7 @@ function createRedisClient(): RedisClientInterface {
     logger.info('Using in-memory Redis client in Edge Runtime', 'redis');
     return new MockRedisClient();
   }
-  
+
   // Use Upstash Redis in production if configured
   if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
     return new UpstashRedisClient(
@@ -414,7 +415,7 @@ function createRedisClient(): RedisClientInterface {
       process.env.UPSTASH_REDIS_REST_TOKEN
     );
   }
-  
+
   // Use mock client as fallback
   logger.warn('Using in-memory Redis client as fallback', 'redis');
   return new MockRedisClient();
@@ -432,4 +433,4 @@ export function getRedisClient(): RedisClientInterface {
 
 // Export default client for backward compatibility
 const defaultClient = getRedisClient();
-export default defaultClient; 
+export default defaultClient;

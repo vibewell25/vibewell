@@ -22,7 +22,7 @@ const ARWellnessPage = () => {
             theme="zen"
             lightingIntensity={1}
             customObjects={[]}
-            onCustomize={(updates) => console.log('Room customized:', updates)}
+            onCustomize={updates => console.log('Room customized:', updates)}
           />
         </div>
       </section>
@@ -56,7 +56,7 @@ const ARWellnessPage = () => {
             soundscape="rain"
             lightingIntensity={1}
             particleEffects={true}
-            onStateChange={(state) => console.log('Meditation state:', state)}
+            onStateChange={state => console.log('Meditation state:', state)}
           />
         </div>
       </section>
@@ -105,13 +105,11 @@ const ARWellnessPage = () => {
 
         <div className="p-6 bg-white rounded-lg shadow-lg">
           <h3 className="text-xl font-semibold mb-3">Yoga Guide</h3>
-          <p className="text-gray-600">
-            Perfect your yoga practice with real-time pose guidance.
-          </p>
+          <p className="text-gray-600">Perfect your yoga practice with real-time pose guidance.</p>
         </div>
       </section>
     </div>
   );
 };
 
-export default ARWellnessPage; 
+export default ARWellnessPage;

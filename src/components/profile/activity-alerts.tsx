@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bell, BellOff, Mail, Smartphone, Globe, AlertTriangle } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { toast } from "@/components/ui/use-toast";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Bell, BellOff, Mail, Smartphone, Globe, AlertTriangle } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { useState } from 'react';
+import { toast } from '@/components/ui/use-toast';
 
 interface AlertSetting {
   id: string;
@@ -23,48 +23,48 @@ interface AlertSetting {
 export function ActivityAlerts() {
   const [settings, setSettings] = useState<AlertSetting[]>([
     {
-      id: "login",
-      title: "Login Alerts",
-      description: "Get notified when someone logs into your account",
+      id: 'login',
+      title: 'Login Alerts',
+      description: 'Get notified when someone logs into your account',
       icon: <Globe className="h-5 w-5" />,
       enabled: true,
       channels: [
         {
-          id: "email_login",
-          name: "Email",
+          id: 'email_login',
+          name: 'Email',
           icon: <Mail className="h-4 w-4" />,
           enabled: true,
         },
         {
-          id: "push_login",
-          name: "Push",
+          id: 'push_login',
+          name: 'Push',
           icon: <Bell className="h-4 w-4" />,
           enabled: true,
         },
       ],
     },
     {
-      id: "security",
-      title: "Security Alerts",
-      description: "Get notified about security-related events",
+      id: 'security',
+      title: 'Security Alerts',
+      description: 'Get notified about security-related events',
       icon: <AlertTriangle className="h-5 w-5" />,
       enabled: true,
       channels: [
         {
-          id: "email_security",
-          name: "Email",
+          id: 'email_security',
+          name: 'Email',
           icon: <Mail className="h-4 w-4" />,
           enabled: true,
         },
         {
-          id: "push_security",
-          name: "Push",
+          id: 'push_security',
+          name: 'Push',
           icon: <Bell className="h-4 w-4" />,
           enabled: true,
         },
         {
-          id: "sms_security",
-          name: "SMS",
+          id: 'sms_security',
+          name: 'SMS',
           icon: <Smartphone className="h-4 w-4" />,
           enabled: false,
         },
@@ -73,8 +73,8 @@ export function ActivityAlerts() {
   ]);
 
   const handleToggleSetting = (id: string) => {
-    setSettings((prev) =>
-      prev.map((setting) => {
+    setSettings(prev =>
+      prev.map(setting => {
         if (setting.id === id) {
           return { ...setting, enabled: !setting.enabled };
         }
@@ -84,12 +84,12 @@ export function ActivityAlerts() {
   };
 
   const handleToggleChannel = (settingId: string, channelId: string) => {
-    setSettings((prev) =>
-      prev.map((setting) => {
+    setSettings(prev =>
+      prev.map(setting => {
         if (setting.id === settingId) {
           return {
             ...setting,
-            channels: setting.channels.map((channel) => {
+            channels: setting.channels.map(channel => {
               if (channel.id === channelId) {
                 return { ...channel, enabled: !channel.enabled };
               }
@@ -105,17 +105,17 @@ export function ActivityAlerts() {
   const handleSave = async () => {
     try {
       // Simulate save process
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       toast({
-        title: "Settings Updated",
-        description: "Your alert preferences have been saved.",
+        title: 'Settings Updated',
+        description: 'Your alert preferences have been saved.',
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to update alert preferences.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to update alert preferences.',
+        variant: 'destructive',
       });
     }
   };
@@ -129,18 +129,14 @@ export function ActivityAlerts() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {settings.map((setting) => (
+        {settings.map(setting => (
           <div key={setting.id} className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <div className="rounded-lg bg-muted p-2">
-                  {setting.icon}
-                </div>
+                <div className="rounded-lg bg-muted p-2">{setting.icon}</div>
                 <div>
                   <h3 className="text-sm font-medium">{setting.title}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {setting.description}
-                  </p>
+                  <p className="text-sm text-muted-foreground">{setting.description}</p>
                 </div>
               </div>
               <Switch
@@ -151,11 +147,8 @@ export function ActivityAlerts() {
 
             {setting.enabled && (
               <div className="ml-8 space-y-4">
-                {setting.channels.map((channel) => (
-                  <div
-                    key={channel.id}
-                    className="flex items-center justify-between"
-                  >
+                {setting.channels.map(channel => (
+                  <div key={channel.id} className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       {channel.icon}
                       <Label htmlFor={channel.id}>{channel.name}</Label>
@@ -163,9 +156,7 @@ export function ActivityAlerts() {
                     <Switch
                       id={channel.id}
                       checked={channel.enabled}
-                      onCheckedChange={() =>
-                        handleToggleChannel(setting.id, channel.id)
-                      }
+                      onCheckedChange={() => handleToggleChannel(setting.id, channel.id)}
                     />
                   </div>
                 ))}
@@ -180,4 +171,4 @@ export function ActivityAlerts() {
       </CardContent>
     </Card>
   );
-} 
+}

@@ -1,23 +1,23 @@
 /**
  * Unified State Manager for Vibewell Platform
- * 
- * This module provides a unified API for state management that works with 
+ *
+ * This module provides a unified API for state management that works with
  * different state management libraries.
- * 
+ *
  * USAGE GUIDELINES:
- * 
+ *
  * 1. Zustand (DEFAULT): Use for most application state management needs:
  *    - Complex state with many fields
  *    - State that needs to be accessed across multiple components
  *    - Performance-sensitive features (AR, animations)
  *    - Global state that needs to be accessed outside of React components
- * 
+ *
  * 2. Context: Use only for:
  *    - Simple, local UI state
  *    - Theme/localization providers
  *    - State that is only shared between a parent and its immediate children
  *    - Components that don't need frequent updates
- * 
+ *
  * 3. Redux: Use only for:
  *    - Very complex state with interdependent slices
  *    - When you need Redux DevTools for debugging
@@ -34,7 +34,7 @@ import { useStore as useZustandStore } from 'zustand';
 export enum StateManagerType {
   CONTEXT = 'context',
   REDUX = 'redux',
-  ZUSTAND = 'zustand'
+  ZUSTAND = 'zustand',
 }
 
 // Base interface for all state managers
@@ -47,26 +47,22 @@ export interface StateManager<T> {
 
 // Function to create context-based state manager
 export function createContextStateManager<T>(initialState: T): StateManager<T> & {
-  Provider: React.FC<{ initialState?: T, children: React.ReactNode }>;
+  Provider: React.FC<{ initialState?: T; children: React.ReactNode }>;
   useStateContext: () => readonly [T, React.Dispatch<React.SetStateAction<T>>];
 } {
   // Create the context
   const StateContext = React.createContext<readonly [T, React.Dispatch<React.SetStateAction<T>>]>([
     initialState,
-    () => initialState
+    () => initialState,
   ]);
 
   // Provider component
-  const StateProvider: React.FC<{ initialState?: T, children: React.ReactNode }> = ({ 
-    initialState: propInitialState, 
-    children 
+  const StateProvider: React.FC<{ initialState?: T; children: React.ReactNode }> = ({
+    initialState: propInitialState,
+    children,
   }) => {
     const [state, setState] = React.useState<T>(propInitialState || initialState);
-    return React.createElement(
-      StateContext.Provider,
-      { value: [state, setState] },
-      children
-    );
+    return React.createElement(StateContext.Provider, { value: [state, setState] }, children);
   };
 
   // Hook to use this context
@@ -86,7 +82,7 @@ export function createContextStateManager<T>(initialState: T): StateManager<T> &
       return initialState;
     },
 
-    setState: (newState) => {
+    setState: newState => {
       // This is a placeholder - in actual components you'd use the hook and setState
       console.warn('setState outside of React component is not supported for context state');
       // Can't actually set state here because context state is bound to components
@@ -97,17 +93,17 @@ export function createContextStateManager<T>(initialState: T): StateManager<T> &
       console.warn('resetState outside of React component is not supported for context state');
     },
 
-    subscribe: (listener) => {
+    subscribe: listener => {
       // Context doesn't support direct subscription outside components
       console.warn('subscribe outside of React component is not supported for context state');
       return () => {}; // Noop unsubscribe
-    }
+    },
   };
 
   return {
     ...manager,
     Provider: StateProvider,
-    useStateContext
+    useStateContext,
   };
 }
 
@@ -124,8 +120,8 @@ export function createReduxStateManager<T>(initialState: T): StateManager<T> & {
       setState: (state, action: PayloadAction<Partial<T>>) => {
         return { ...state, ...action.payload };
       },
-      resetState: () => initialState
-    }
+      resetState: () => initialState,
+    },
   });
 
   // Extract actions
@@ -133,16 +129,12 @@ export function createReduxStateManager<T>(initialState: T): StateManager<T> & {
 
   // Create store
   const store = configureStore({
-    reducer: stateSlice.reducer
+    reducer: stateSlice.reducer,
   });
 
   // Provider component
   const StateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    return React.createElement(
-      ReduxProvider,
-      { store: store, children: children },
-      null
-    );
+    return React.createElement(ReduxProvider, { store: store, children: children }, null);
   };
 
   // Hook to use this Redux store
@@ -155,7 +147,7 @@ export function createReduxStateManager<T>(initialState: T): StateManager<T> & {
   const manager: StateManager<T> = {
     getState: () => store.getState() as T,
 
-    setState: (newState) => {
+    setState: newState => {
       store.dispatch(setState(newState));
     },
 
@@ -163,24 +155,28 @@ export function createReduxStateManager<T>(initialState: T): StateManager<T> & {
       store.dispatch(resetState());
     },
 
-    subscribe: (listener) => {
+    subscribe: listener => {
       return store.subscribe(() => listener(store.getState() as T));
-    }
+    },
   };
 
   return {
     ...manager,
     Provider: StateProvider,
-    useReduxState
+    useReduxState,
   };
 }
 
 // Function to create Zustand-based state manager
 export function createZustandStateManager<T>(initialState: T): StateManager<T> & {
-  useStore: UseBoundStore<StoreApi<T & {
-    set: (fn: (state: T) => Partial<T>) => void;
-    reset: () => void;
-  }>>;
+  useStore: UseBoundStore<
+    StoreApi<
+      T & {
+        set: (fn: (state: T) => Partial<T>) => void;
+        reset: () => void;
+      }
+    >
+  >;
 } {
   type StoreWithActions = T & {
     set: (fn: (state: T) => Partial<T>) => void;
@@ -188,10 +184,10 @@ export function createZustandStateManager<T>(initialState: T): StateManager<T> &
   };
 
   // Create Zustand store
-  const useStoreHook = create<StoreWithActions>((set) => ({
+  const useStoreHook = create<StoreWithActions>(set => ({
     ...initialState,
-    set: (fn) => set((state) => ({ ...state, ...fn(state) })),
-    reset: () => set(initialState as unknown as StoreWithActions)
+    set: fn => set(state => ({ ...state, ...fn(state) })),
+    reset: () => set(initialState as unknown as StoreWithActions),
   }));
 
   // Create a state manager instance
@@ -203,7 +199,7 @@ export function createZustandStateManager<T>(initialState: T): StateManager<T> &
       return pureState as T;
     },
 
-    setState: (newState) => {
+    setState: newState => {
       useStoreHook.setState(newState as Partial<StoreWithActions>);
     },
 
@@ -211,17 +207,17 @@ export function createZustandStateManager<T>(initialState: T): StateManager<T> &
       useStoreHook.getState().reset();
     },
 
-    subscribe: (listener) => {
-      return useStoreHook.subscribe((state) => {
+    subscribe: listener => {
+      return useStoreHook.subscribe(state => {
         const { set, reset, ...pureState } = state;
         listener(pureState as T);
       });
-    }
+    },
   };
 
   return {
     ...manager,
-    useStore: useStoreHook
+    useStore: useStoreHook,
   };
 }
 
@@ -248,4 +244,4 @@ export function createSelector<T, R>(
   stateManager: StateManager<T>
 ): () => R {
   return () => selector(stateManager.getState());
-} 
+}

@@ -36,7 +36,7 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
       const response = await fetch('/api/auth/trusted-devices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'list' })
+        body: JSON.stringify({ action: 'list' }),
       });
 
       if (!response.ok) throw new Error('Failed to fetch devices');
@@ -63,8 +63,8 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'revoke',
-          deviceId: selectedDevice.id
-        })
+          deviceId: selectedDevice.id,
+        }),
       });
 
       if (!response.ok) {
@@ -95,20 +95,20 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
       <Card className="p-6">
         <h3 className="text-lg font-semibold mb-4">Trusted Devices</h3>
         <p className="text-sm text-gray-600 mb-6">
-          These are the devices that are currently trusted for your account. You can
-          revoke access for any device at any time.
+          These are the devices that are currently trusted for your account. You can revoke access
+          for any device at any time.
         </p>
 
         {devices.length === 0 ? (
           <Alert>
             <AlertDescription>
-              No trusted devices found. Devices will appear here when you choose to
-              trust them during login.
+              No trusted devices found. Devices will appear here when you choose to trust them
+              during login.
             </AlertDescription>
           </Alert>
         ) : (
           <div className="space-y-4">
-            {devices.map((device) => (
+            {devices.map(device => (
               <div
                 key={device.id}
                 className="flex items-center justify-between p-4 border rounded-lg"
@@ -146,8 +146,8 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
           </DialogHeader>
           <div className="space-y-4">
             <p>
-              Are you sure you want to revoke access for this device? You'll need to
-              re-authenticate if you want to use it again.
+              Are you sure you want to revoke access for this device? You'll need to re-authenticate
+              if you want to use it again.
             </p>
             {selectedDevice && (
               <div className="bg-gray-50 p-4 rounded-lg">
@@ -165,11 +165,7 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
               >
                 Cancel
               </Button>
-              <Button
-                variant="destructive"
-                onClick={confirmRevoke}
-                disabled={isLoading}
-              >
+              <Button variant="destructive" onClick={confirmRevoke} disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Revoke Access
               </Button>
@@ -179,4 +175,4 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
       </Dialog>
     </div>
   );
-} 
+}

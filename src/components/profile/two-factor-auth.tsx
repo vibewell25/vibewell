@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Lock, Smartphone, Shield } from "lucide-react";
-import { useState } from "react";
-import { toast } from "@/components/ui/use-toast";
-import { QRCodeSVG } from "qrcode.react";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Lock, Smartphone, Shield } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from '@/components/ui/use-toast';
+import { QRCodeSVG } from 'qrcode.react';
 
 interface TwoFactorMethod {
   id: string;
@@ -18,41 +18,41 @@ interface TwoFactorMethod {
 export function TwoFactorAuth() {
   const [methods, setMethods] = useState<TwoFactorMethod[]>([
     {
-      id: "authenticator",
-      name: "Authenticator App",
-      description: "Use an authenticator app like Google Authenticator or Authy",
+      id: 'authenticator',
+      name: 'Authenticator App',
+      description: 'Use an authenticator app like Google Authenticator or Authy',
       icon: <Smartphone className="h-5 w-5" />,
       enabled: false,
     },
     {
-      id: "sms",
-      name: "SMS Verification",
-      description: "Receive verification codes via SMS",
+      id: 'sms',
+      name: 'SMS Verification',
+      description: 'Receive verification codes via SMS',
       icon: <Smartphone className="h-5 w-5" />,
       enabled: false,
     },
   ]);
 
   const [showQRCode, setShowQRCode] = useState(false);
-  const [verificationCode, setVerificationCode] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [verificationCode, setVerificationCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleEnable = async (methodId: string) => {
     try {
-      if (methodId === "authenticator") {
+      if (methodId === 'authenticator') {
         setShowQRCode(true);
-      } else if (methodId === "sms") {
+      } else if (methodId === 'sms') {
         // Implement SMS verification setup
         toast({
-          title: "SMS Verification",
-          description: "Please enter your phone number to enable SMS verification.",
+          title: 'SMS Verification',
+          description: 'Please enter your phone number to enable SMS verification.',
         });
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to enable two-factor authentication.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to enable two-factor authentication.',
+        variant: 'destructive',
       });
     }
   };
@@ -60,8 +60,8 @@ export function TwoFactorAuth() {
   const handleDisable = async (methodId: string) => {
     try {
       // Implement disable logic here
-      setMethods((prev) =>
-        prev.map((method) => {
+      setMethods(prev =>
+        prev.map(method => {
           if (method.id === methodId) {
             return { ...method, enabled: false };
           }
@@ -69,14 +69,14 @@ export function TwoFactorAuth() {
         })
       );
       toast({
-        title: "2FA Disabled",
-        description: "Two-factor authentication has been disabled.",
+        title: '2FA Disabled',
+        description: 'Two-factor authentication has been disabled.',
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to disable two-factor authentication.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to disable two-factor authentication.',
+        variant: 'destructive',
       });
     }
   };
@@ -85,24 +85,24 @@ export function TwoFactorAuth() {
     try {
       // Implement verification logic here
       setShowQRCode(false);
-      setVerificationCode("");
-      setMethods((prev) =>
-        prev.map((method) => {
-          if (method.id === "authenticator") {
+      setVerificationCode('');
+      setMethods(prev =>
+        prev.map(method => {
+          if (method.id === 'authenticator') {
             return { ...method, enabled: true };
           }
           return method;
         })
       );
       toast({
-        title: "2FA Enabled",
-        description: "Two-factor authentication has been enabled successfully.",
+        title: '2FA Enabled',
+        description: 'Two-factor authentication has been enabled successfully.',
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to verify the code.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to verify the code.',
+        variant: 'destructive',
       });
     }
   };
@@ -112,26 +112,20 @@ export function TwoFactorAuth() {
       <CardHeader>
         <CardTitle>Two-Factor Authentication</CardTitle>
         <CardDescription>
-          Add an extra layer of security to your account by enabling two-factor
-          authentication.
+          Add an extra layer of security to your account by enabling two-factor authentication.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {methods.map((method) => (
+        {methods.map(method => (
           <div key={method.id} className="space-y-4">
             <div className="flex items-start space-x-4">
               <div className="mt-1">{method.icon}</div>
               <div className="flex-1 space-y-1">
                 <h3 className="text-sm font-medium">{method.name}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {method.description}
-                </p>
+                <p className="text-sm text-muted-foreground">{method.description}</p>
               </div>
               {method.enabled ? (
-                <Button
-                  variant="outline"
-                  onClick={() => handleDisable(method.id)}
-                >
+                <Button variant="outline" onClick={() => handleDisable(method.id)}>
                   Disable
                 </Button>
               ) : (
@@ -157,7 +151,7 @@ export function TwoFactorAuth() {
               <Input
                 id="verification-code"
                 value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
+                onChange={e => setVerificationCode(e.target.value)}
                 placeholder="Enter the 6-digit code"
               />
             </div>
@@ -167,14 +161,14 @@ export function TwoFactorAuth() {
           </div>
         )}
 
-        {methods.find((m) => m.id === "sms")?.enabled && (
+        {methods.find(m => m.id === 'sms')?.enabled && (
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="phone-number">Phone Number</Label>
               <Input
                 id="phone-number"
                 value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                onChange={e => setPhoneNumber(e.target.value)}
                 placeholder="Enter your phone number"
               />
             </div>
@@ -184,4 +178,4 @@ export function TwoFactorAuth() {
       </CardContent>
     </Card>
   );
-} 
+}

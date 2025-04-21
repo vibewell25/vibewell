@@ -1,6 +1,6 @@
 /**
  * Error Handling Utilities
- * 
+ *
  * This file provides type-safe error handling functions that work alongside
  * the main error-handler.ts system. These utilities help ensure proper type checking
  * and guard against undefined/null errors.
@@ -51,10 +51,10 @@ export function getErrorName(error: unknown): string {
  */
 export function isNetworkError(error: unknown): boolean {
   if (!isError(error)) return false;
-  
+
   // Check for common network error patterns
   return (
-    error.name === 'TypeError' || 
+    error.name === 'TypeError' ||
     error.name === 'NetworkError' ||
     error.message.includes('network') ||
     error.message.includes('fetch') ||
@@ -69,7 +69,7 @@ export function isNetworkError(error: unknown): boolean {
  */
 export function isTimeoutError(error: unknown): boolean {
   if (!isError(error)) return false;
-  
+
   return (
     error.name === 'TimeoutError' ||
     error.message.includes('timeout') ||
@@ -84,11 +84,8 @@ export function isTimeoutError(error: unknown): boolean {
  */
 export function isNotFoundError(error: unknown): boolean {
   if (!isError(error)) return false;
-  
-  return (
-    error.message.includes('not found') ||
-    error.message.includes('404')
-  );
+
+  return error.message.includes('not found') || error.message.includes('404');
 }
 
 /**
@@ -98,7 +95,7 @@ export function isNotFoundError(error: unknown): boolean {
  */
 export function isServerError(error: unknown): boolean {
   if (!isError(error)) return false;
-  
+
   return (
     error.message.includes('server error') ||
     error.message.includes('500') ||
@@ -113,7 +110,7 @@ export function isServerError(error: unknown): boolean {
  */
 export function isAuthenticationError(error: unknown): boolean {
   if (!isError(error)) return false;
-  
+
   return (
     error.message.includes('authentication') ||
     error.message.includes('unauthenticated') ||
@@ -178,7 +175,7 @@ export function getErrorSeverity(error: unknown): ErrorSeverity {
 
 /**
  * Enhances an error object with additional metadata for the error handler
- * @param error - The original error 
+ * @param error - The original error
  * @param options - Additional options to add
  * @returns An object with error properly typed and additional metadata
  */
@@ -202,7 +199,7 @@ export function enhanceError(
 } {
   const errorMessage = getErrorMessage(error);
   const originalError = isError(error) ? error : undefined;
-  
+
   return {
     errorMessage,
     originalError,
@@ -210,6 +207,6 @@ export function enhanceError(
     source: options?.source || getErrorSource(error),
     severity: options?.severity || getErrorSeverity(error),
     metadata: options?.metadata || {},
-    code: options?.code
+    code: options?.code,
   };
-} 
+}

@@ -30,4 +30,4 @@ export interface MessagingProps {
   height?: string;
   defaultSelectedConversation?: string;
   loading?: boolean;
-} 
+}

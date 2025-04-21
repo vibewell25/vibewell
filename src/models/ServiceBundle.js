@@ -16,18 +16,20 @@ const ServiceBundleSchema = new mongoose.Schema({
     required: [true, 'Please provide a bundle description'],
     maxlength: [1000, 'Description cannot be more than 1000 characters'],
   },
-  services: [{
-    service: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Service',
-      required: true,
+  services: [
+    {
+      service: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Service',
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        default: 1,
+        min: [1, 'Quantity must be at least 1'],
+      },
     },
-    quantity: {
-      type: Number,
-      default: 1,
-      min: [1, 'Quantity must be at least 1'],
-    },
-  }],
+  ],
   price: {
     type: Number,
     required: [true, 'Please specify bundle price'],
@@ -77,10 +79,12 @@ const ServiceBundleSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  availableDays: [{
-    type: String,
-    enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
-  }],
+  availableDays: [
+    {
+      type: String,
+      enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
@@ -97,26 +101,27 @@ ServiceBundleSchema.index({ name: 'text', description: 'text', tags: 'text' });
 // Calculate total value and discount percentage
 ServiceBundleSchema.pre('save', async function (next) {
   this.updatedAt = Date.now();
-  
+
   // If totalValue was not manually set, calculate it
   if (!this.totalValue && this.services.length > 0) {
     try {
       // Populate services to get their prices
-      const populatedBundle = await this.constructor.findById(this._id)
+      const populatedBundle = await this.constructor
+        .findById(this._id)
         .populate('services.service')
         .exec();
-        
+
       if (populatedBundle) {
         let totalValue = 0;
-        
+
         for (const serviceItem of populatedBundle.services) {
           if (serviceItem.service && serviceItem.service.price) {
             totalValue += serviceItem.service.price * serviceItem.quantity;
           }
         }
-        
+
         this.totalValue = totalValue;
-        
+
         // Calculate discount percentage if not set
         if (!this.discountPercentage && this.price && totalValue > 0) {
           this.discountPercentage = Math.round(((totalValue - this.price) / totalValue) * 100);
@@ -127,8 +132,8 @@ ServiceBundleSchema.pre('save', async function (next) {
       console.error('Error calculating bundle values:', error);
     }
   }
-  
+
   next();
 });
 
-export default mongoose.model('ServiceBundle', ServiceBundleSchema); 
+export default mongoose.model('ServiceBundle', ServiceBundleSchema);

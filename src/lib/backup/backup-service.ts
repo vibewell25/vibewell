@@ -41,8 +41,9 @@ export class BackupService {
     this.config = {
       ...config,
       // Set default values for Supabase URL and key if not provided
-      supabaseUrl: config.supabaseUrl || process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:3000',
-      supabaseKey: config.supabaseKey || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'mock-key'
+      supabaseUrl:
+        config.supabaseUrl || process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:3000',
+      supabaseKey: config.supabaseKey || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'mock-key',
     };
     this.backupBucket = 'backups';
     this.backupClient = supabase;
@@ -50,11 +51,14 @@ export class BackupService {
   }
 
   async initializeBackup(): Promise<void> {
-    const { data: bucket, error } = await this.backupClient.storage.createBucket(this.backupBucket, {
-      public: false,
-      allowedMimeTypes: ['application/json', 'application/octet-stream'],
-      fileSizeLimit: 50000000, // 50MB
-    });
+    const { data: bucket, error } = await this.backupClient.storage.createBucket(
+      this.backupBucket,
+      {
+        public: false,
+        allowedMimeTypes: ['application/json', 'application/octet-stream'],
+        fileSizeLimit: 50000000, // 50MB
+      }
+    );
 
     if (error) {
       console.error('Error initializing backup bucket:', error);
@@ -67,7 +71,10 @@ export class BackupService {
       logger.info('Creating full backup');
       await this.createBackup('full');
     } catch (error: unknown) {
-      logger.error('Error creating full backup:', error instanceof Error ? error.message : String(error));
+      logger.error(
+        'Error creating full backup:',
+        error instanceof Error ? error.message : String(error)
+      );
       throw error;
     }
   }
@@ -77,7 +84,10 @@ export class BackupService {
       logger.info('Creating incremental backup');
       await this.createBackup('incremental');
     } catch (error: unknown) {
-      logger.error('Error creating incremental backup:', error instanceof Error ? error.message : String(error));
+      logger.error(
+        'Error creating incremental backup:',
+        error instanceof Error ? error.message : String(error)
+      );
       throw error;
     }
   }
@@ -85,7 +95,7 @@ export class BackupService {
   public async createBackup(type: 'full' | 'incremental'): Promise<void> {
     try {
       logger.info(`Creating ${type} backup`);
-      
+
       // Get all tables
       const { data: tables, error: tablesError } = await this.backupClient
         .from('information_schema.tables')
@@ -96,9 +106,7 @@ export class BackupService {
 
       // Backup each table
       for (const table of tables) {
-        const { data, error } = await this.backupClient
-          .from(table.table_name)
-          .select('*');
+        const { data, error } = await this.backupClient.from(table.table_name).select('*');
 
         if (error) throw error;
 
@@ -108,12 +116,19 @@ export class BackupService {
 
       logger.info(`Completed ${type} backup`);
     } catch (error: unknown) {
-      logger.error(`Error during ${type} backup:`, error instanceof Error ? error.message : String(error));
+      logger.error(
+        `Error during ${type} backup:`,
+        error instanceof Error ? error.message : String(error)
+      );
       throw error;
     }
   }
 
-  private async processAndStoreBackup(tableName: string, data: any[], type: 'full' | 'incremental'): Promise<void> {
+  private async processAndStoreBackup(
+    tableName: string,
+    data: any[],
+    type: 'full' | 'incremental'
+  ): Promise<void> {
     try {
       // Convert data to JSON
       const jsonData = JSON.stringify(data);
@@ -132,25 +147,26 @@ export class BackupService {
         .from(this.backupBucket)
         .upload(backupPath, encryptedData, {
           contentType: 'application/octet-stream',
-          upsert: true
+          upsert: true,
         });
 
       if (storageError) throw storageError;
 
       // Store metadata
-      const { error: metadataError } = await this.backupClient
-        .from('backup_metadata')
-        .insert({
-          table_name: tableName,
-          backup_type: type,
-          backup_path: backupPath,
-          created_at: new Date().toISOString(),
-          size: encryptedData.length
-        });
+      const { error: metadataError } = await this.backupClient.from('backup_metadata').insert({
+        table_name: tableName,
+        backup_type: type,
+        backup_path: backupPath,
+        created_at: new Date().toISOString(),
+        size: encryptedData.length,
+      });
 
       if (metadataError) throw metadataError;
     } catch (error: unknown) {
-      logger.error(`Error processing backup for table ${tableName}:`, error instanceof Error ? error.message : String(error));
+      logger.error(
+        `Error processing backup for table ${tableName}:`,
+        error instanceof Error ? error.message : String(error)
+      );
       throw error;
     }
   }
@@ -167,13 +183,10 @@ export class BackupService {
   private async encryptData(data: Buffer): Promise<Buffer> {
     const iv = randomBytes(16);
     const salt = randomBytes(16);
-    const key = await promisify(scrypt)(this.encryptionKey, salt, 32) as Buffer;
+    const key = (await promisify(scrypt)(this.encryptionKey, salt, 32)) as Buffer;
     const cipher = createCipheriv('aes-256-gcm', key, iv);
 
-    const encrypted = Buffer.concat([
-      cipher.update(data),
-      cipher.final()
-    ]);
+    const encrypted = Buffer.concat([cipher.update(data), cipher.final()]);
 
     const authTag = cipher.getAuthTag();
 
@@ -185,12 +198,16 @@ export class BackupService {
       const [ivBase64, saltBase64, encryptedData] = data.split(':');
       const iv = Buffer.from(ivBase64, 'base64');
       const salt = Buffer.from(saltBase64, 'base64');
-      const key = await promisify(scrypt)(this.encryptionKey, salt, encryptionConfig.keySize) as Buffer;
+      const key = (await promisify(scrypt)(
+        this.encryptionKey,
+        salt,
+        encryptionConfig.keySize
+      )) as Buffer;
       const decipher = createDecipheriv(encryptionConfig.algorithm as CipherGCMTypes, key, iv);
-      
+
       let decrypted = decipher.update(encryptedData, 'base64', 'utf8');
       decrypted += decipher.final('utf8');
-      
+
       return decrypted;
     } catch (error) {
       console.error('Error decrypting data:', error);
@@ -204,7 +221,7 @@ export class BackupService {
     delay: number = this.retryDelay
   ): Promise<T> {
     let lastError: Error | null = null;
-    
+
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         return await operation();
@@ -215,11 +232,14 @@ export class BackupService {
         }
       }
     }
-    
+
     throw lastError;
   }
 
-  private async updateBackupStatus(backupId: string, status: BackupMetadata['status']): Promise<void> {
+  private async updateBackupStatus(
+    backupId: string,
+    status: BackupMetadata['status']
+  ): Promise<void> {
     const { error } = await this.backupClient
       .from('backup_metadata')
       .update({ status })
@@ -251,9 +271,7 @@ export class BackupService {
 
       // Restore each table
       for (const [tableName, tableData] of Object.entries(processedData)) {
-        const { error } = await this.backupClient
-          .from(tableName)
-          .upsert(tableData);
+        const { error } = await this.backupClient.from(tableName).upsert(tableData);
 
         if (error) throw error;
       }
@@ -294,20 +312,20 @@ export class BackupService {
     try {
       const { default: cron } = await import('node-cron');
       const schedule = {
-        daily: '0 0 * * *',      // Every day at midnight
-        weekly: '0 0 * * 0',     // Every Sunday at midnight
-        monthly: '0 0 1 * *',    // First day of each month at midnight
+        daily: '0 0 * * *', // Every day at midnight
+        weekly: '0 0 * * 0', // Every Sunday at midnight
+        monthly: '0 0 1 * *', // First day of each month at midnight
       };
-      
+
       // Check if frequency is valid
       if (!this.config.frequency || !schedule[this.config.frequency]) {
         throw new Error(`Invalid backup frequency: ${this.config.frequency}`);
       }
-      
+
       // Schedule full backup
       const cronExpression = schedule[this.config.frequency];
       logger.info(`Scheduling ${this.config.frequency} backups at ${cronExpression}`);
-      
+
       // Schedule full backups
       const fullBackupJob = cron.schedule(cronExpression, async () => {
         try {
@@ -315,12 +333,15 @@ export class BackupService {
           await this.createFullBackup();
           logger.info(`Completed scheduled ${this.config.frequency} full backup successfully`);
         } catch (error) {
-          logger.error(`Error in scheduled full backup:`, error instanceof Error ? error.message : String(error));
+          logger.error(
+            `Error in scheduled full backup:`,
+            error instanceof Error ? error.message : String(error)
+          );
           // Notify of backup failure
           await this.notifyBackupFailure('full', error);
         }
       });
-      
+
       // Schedule weekly cleanup
       const cleanupJob = cron.schedule('0 2 * * 0', async () => {
         try {
@@ -328,48 +349,59 @@ export class BackupService {
           await this.cleanupOldBackups();
           logger.info('Completed scheduled backup cleanup successfully');
         } catch (error) {
-          logger.error('Error in scheduled backup cleanup:', error instanceof Error ? error.message : String(error));
+          logger.error(
+            'Error in scheduled backup cleanup:',
+            error instanceof Error ? error.message : String(error)
+          );
         }
       });
-      
+
       // Start all jobs
       fullBackupJob.start();
       cleanupJob.start();
-      
+
       logger.info('Backup scheduling initialized successfully');
-      
+
       return Promise.resolve();
     } catch (error) {
-      logger.error('Error scheduling backups:', error instanceof Error ? error.message : String(error));
+      logger.error(
+        'Error scheduling backups:',
+        error instanceof Error ? error.message : String(error)
+      );
       throw error;
     }
   }
-  
+
   // Helper method to notify of backup failures
-  private async notifyBackupFailure(backupType: 'full' | 'incremental', error: unknown): Promise<void> {
+  private async notifyBackupFailure(
+    backupType: 'full' | 'incremental',
+    error: unknown
+  ): Promise<void> {
     try {
       // Import the BackupMonitor class
       const { BackupMonitor } = await import('./backup-monitor');
       const monitor = new BackupMonitor(backupConfig);
-      
+
       // Send alert about the failure
       await monitor.sendAlert({
         type: 'error',
         message: `Backup failure: ${backupType} backup failed - ${error instanceof Error ? error.message : String(error)}`,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
-      
+
       logger.info(`Backup failure notification sent for ${backupType} backup`);
     } catch (notifyError) {
-      logger.error('Failed to send backup failure notification:', 
-        notifyError instanceof Error ? notifyError.message : String(notifyError));
+      logger.error(
+        'Failed to send backup failure notification:',
+        notifyError instanceof Error ? notifyError.message : String(notifyError)
+      );
     }
   }
 
   public async cleanupOldBackups(): Promise<void> {
     try {
       logger.info('Cleaning up old backups');
-      
+
       // Get backups older than retention period
       const cutoffDate = new Date();
       cutoffDate.setDate(cutoffDate.getDate() - backupConfig.retentionPeriod);
@@ -401,7 +433,10 @@ export class BackupService {
 
       logger.info('Completed backup cleanup');
     } catch (error: unknown) {
-      logger.error('Error cleaning up old backups:', error instanceof Error ? error.message : String(error));
+      logger.error(
+        'Error cleaning up old backups:',
+        error instanceof Error ? error.message : String(error)
+      );
       throw error;
     }
   }
@@ -409,7 +444,7 @@ export class BackupService {
   public async restoreBackup(backupId: string): Promise<void> {
     try {
       logger.info(`Starting restoration of backup ${backupId}`);
-      
+
       // Get backup metadata
       const { data: backup, error: metadataError } = await this.backupClient
         .from('backup_metadata')
@@ -438,14 +473,17 @@ export class BackupService {
         .from(backup.table_name)
         .upsert(tableData, {
           onConflict: 'id',
-          ignoreDuplicates: false
+          ignoreDuplicates: false,
         });
 
       if (restoreError) throw restoreError;
 
       logger.info(`Successfully restored backup ${backupId}`);
     } catch (error: unknown) {
-      logger.error(`Error restoring backup ${backupId}:`, error instanceof Error ? error.message : String(error));
+      logger.error(
+        `Error restoring backup ${backupId}:`,
+        error instanceof Error ? error.message : String(error)
+      );
       throw error;
     }
   }
@@ -453,7 +491,7 @@ export class BackupService {
   public async verifyBackup(backupId: string): Promise<boolean> {
     try {
       logger.info(`Verifying backup ${backupId}`);
-      
+
       // Get backup metadata
       const { data: backup, error: metadataError } = await this.backupClient
         .from('backup_metadata')
@@ -493,7 +531,10 @@ export class BackupService {
       logger.info(`Backup ${backupId} verification successful`);
       return true;
     } catch (error: unknown) {
-      logger.error(`Error verifying backup ${backupId}:`, error instanceof Error ? error.message : String(error));
+      logger.error(
+        `Error verifying backup ${backupId}:`,
+        error instanceof Error ? error.message : String(error)
+      );
       return false;
     }
   }
@@ -505,7 +546,7 @@ export class BackupService {
   private verifyDataStructure(data: any[], tableName: string): boolean {
     // Basic structure validation
     if (!Array.isArray(data)) return false;
-    
+
     // Get table schema
     const tableSchema = this.getTableSchema(tableName);
     if (!tableSchema) return false;
@@ -524,7 +565,7 @@ export class BackupService {
     return {
       id: 'string',
       created_at: 'string',
-      updated_at: 'string'
+      updated_at: 'string',
     };
   }
-} 
+}

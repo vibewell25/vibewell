@@ -1,10 +1,10 @@
 /**
  * Enhanced error handling middleware for API routes
- * 
+ *
  * This middleware provides consistent error handling and prevents
  * information disclosure in error messages.
  */
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from '@/types/api';
 import logger from '../utils/logger';
 
 interface ErrorResponse {
@@ -35,7 +35,7 @@ const DEFAULT_ERROR_MESSAGE = 'An unexpected error occurred. Please try again la
 
 /**
  * Get a user-friendly error message based on error code
- * 
+ *
  * @param code The error code
  * @param isProduction Whether the application is running in production
  * @param message The original error message
@@ -46,27 +46,23 @@ export function getSafeErrorMessage(code: string, isProduction: boolean, message
   if (!isProduction && message) {
     return message;
   }
-  
+
   // In production, only return mapped messages or default
   return ERROR_MESSAGES[code] || DEFAULT_ERROR_MESSAGE;
 }
 
 /**
  * Middleware to handle errors in API routes
- * 
+ *
  * @param err The error object
  * @param req The request object
  * @param res The response object
  */
-export function errorHandler(
-  err: any,
-  req: NextApiRequest,
-  res: NextApiResponse<ErrorResponse>
-) {
+export function errorHandler(err: any, req: NextApiRequest, res: NextApiResponse<ErrorResponse>) {
   const isProduction = process.env.NODE_ENV === 'production';
   const errorCode = err.code || 'server/unknown-error';
   const statusCode = err.statusCode || 500;
-  
+
   // Log the full error details for debugging (but not sensitive info)
   logger.error({
     code: errorCode,
@@ -75,19 +71,19 @@ export function errorHandler(
     message: err.message,
     stack: isProduction ? undefined : err.stack,
   });
-  
+
   // Return a sanitized error to the client
   res.status(statusCode).json({
     error: {
       message: getSafeErrorMessage(errorCode, isProduction, err.message),
       code: isProduction ? undefined : errorCode,
-    }
+    },
   });
 }
 
 /**
  * Wrapper for API handlers with automatic error handling
- * 
+ *
  * @param handler The API route handler function
  * @returns A wrapped handler with error handling
  */
@@ -101,4 +97,4 @@ export function withErrorHandler(
       errorHandler(error, req, res);
     }
   };
-} 
+}

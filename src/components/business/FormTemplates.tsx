@@ -99,26 +99,19 @@ export function FormTemplates({ businessId }: FormTemplatesProps) {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {templates.map((template) => (
+          {templates.map(template => (
             <Card key={template.id} className="p-4">
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-semibold">{template.name}</h3>
                   <p className="text-sm text-gray-500">{template.description}</p>
-                  <div className="text-sm text-gray-500">
-                    Category: {template.category}
-                  </div>
+                  <div className="text-sm text-gray-500">Category: {template.category}</div>
                 </div>
                 <div className="space-x-2">
-                  <Button
-                    variant="outline"
-                    onClick={() => setSelectedTemplate(template)}
-                  >
+                  <Button variant="outline" onClick={() => setSelectedTemplate(template)}>
                     Preview
                   </Button>
-                  <Button onClick={() => useTemplate(template)}>
-                    Use Template
-                  </Button>
+                  <Button onClick={() => useTemplate(template)}>Use Template</Button>
                 </div>
               </div>
             </Card>
@@ -138,15 +131,10 @@ export function FormTemplates({ businessId }: FormTemplatesProps) {
                   fields={selectedTemplate.fields}
                 />
                 <div className="flex justify-end space-x-2 mt-6">
-                  <Button
-                    variant="outline"
-                    onClick={() => setSelectedTemplate(null)}
-                  >
+                  <Button variant="outline" onClick={() => setSelectedTemplate(null)}>
                     Close
                   </Button>
-                  <Button onClick={() => useTemplate(selectedTemplate)}>
-                    Use Template
-                  </Button>
+                  <Button onClick={() => useTemplate(selectedTemplate)}>Use Template</Button>
                 </div>
               </CardContent>
             </Card>
@@ -155,4 +143,4 @@ export function FormTemplates({ businessId }: FormTemplatesProps) {
       </CardContent>
     </Card>
   );
-} 
+}

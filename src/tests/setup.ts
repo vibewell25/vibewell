@@ -1,20 +1,57 @@
 import '@testing-library/jest-dom';
-// Remove the extend-expect import as it's included in @testing-library/jest-dom
-// import '@testing-library/jest-dom/extend-expect';
+import { vi } from 'vitest';
+import { cleanup } from '@testing-library/react';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import 'jest-axe/extend-expect';
+import type { ReactNode } from 'react';
+
+// Extend expect with jest-axe
+expect.extend(toHaveNoViolations);
+
+// Mock next/navigation
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    prefetch: vi.fn(),
+  }),
+  useSearchParams: () => ({
+    get: vi.fn(),
+  }),
+  usePathname: () => '',
+}));
+
+// Mock next-auth
+vi.mock('next-auth/react', () => ({
+  useSession: () => ({
+    data: {
+      user: {
+        id: '123',
+        name: 'Test User',
+        email: 'test@example.com',
+        role: 'user',
+      },
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+    },
+    status: 'authenticated',
+  }),
+  signIn: vi.fn(),
+  signOut: vi.fn(),
+  SessionProvider: ({ children }: { children: ReactNode }) => children,
+}));
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation(query => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   })),
 });
 
@@ -37,16 +74,16 @@ const mockWebGLContext = {
   COLOR_BUFFER_BIT: 0x00004000,
   ARRAY_BUFFER: 0x8892,
   ELEMENT_ARRAY_BUFFER: 0x8893,
-  STATIC_DRAW: 0x88E4,
+  STATIC_DRAW: 0x88e4,
   FLOAT: 0x1406,
   TRIANGLES: 0x0004,
   UNSIGNED_SHORT: 0x1403,
-  VERTEX_SHADER: 0x8B31,
-  FRAGMENT_SHADER: 0x8B30,
-  COMPILE_STATUS: 0x8B81,
-  LINK_STATUS: 0x8B82,
-  TEXTURE_2D: 0x0DE1,
-  TEXTURE0: 0x84C0,
+  VERTEX_SHADER: 0x8b31,
+  FRAGMENT_SHADER: 0x8b30,
+  COMPILE_STATUS: 0x8b81,
+  LINK_STATUS: 0x8b82,
+  TEXTURE_2D: 0x0de1,
+  TEXTURE0: 0x84c0,
   // Required WebGL methods
   getContextAttributes: jest.fn(() => ({
     alpha: true,
@@ -199,10 +236,22 @@ const mock2DContext = {
 } as unknown as CanvasRenderingContext2D;
 
 // Type-safe mock implementation of getContext with overloads
-function getContextMock(contextId: '2d', options?: CanvasRenderingContext2DSettings): CanvasRenderingContext2D | null;
-function getContextMock(contextId: 'bitmaprenderer', options?: ImageBitmapRenderingContextSettings): ImageBitmapRenderingContext | null;
-function getContextMock(contextId: 'webgl', options?: WebGLContextAttributes): WebGLRenderingContext | null;
-function getContextMock(contextId: 'webgl2', options?: WebGLContextAttributes): WebGL2RenderingContext | null;
+function getContextMock(
+  contextId: '2d',
+  options?: CanvasRenderingContext2DSettings
+): CanvasRenderingContext2D | null;
+function getContextMock(
+  contextId: 'bitmaprenderer',
+  options?: ImageBitmapRenderingContextSettings
+): ImageBitmapRenderingContext | null;
+function getContextMock(
+  contextId: 'webgl',
+  options?: WebGLContextAttributes
+): WebGLRenderingContext | null;
+function getContextMock(
+  contextId: 'webgl2',
+  options?: WebGLContextAttributes
+): WebGL2RenderingContext | null;
 function getContextMock(
   this: HTMLCanvasElement,
   contextId: string,
@@ -227,7 +276,7 @@ global.ResizeObserver = class ResizeObserver {
 };
 
 // Mock requestAnimationFrame
-global.requestAnimationFrame = (callback) => setTimeout(callback, 0);
+global.requestAnimationFrame = callback => setTimeout(callback, 0);
 global.cancelAnimationFrame = jest.fn();
 
 // Mock AudioContext
@@ -291,5 +340,6 @@ global.console.error = jest.fn();
 
 // Clean up after each test
 afterEach(() => {
-  jest.clearAllMocks();
-}); 
+  cleanup();
+  vi.clearAllMocks();
+});

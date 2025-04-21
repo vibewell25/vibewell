@@ -6,10 +6,10 @@ import { logger } from '@/lib/logger';
 const prismaClient = new PrismaClient();
 
 // Define types for analytics events
-export type EventName = 
+export type EventName =
   | 'page_view'
-  | 'product_view' 
-  | 'product_filter' 
+  | 'product_view'
+  | 'product_filter'
   | 'product_search'
   | 'product_recommendation_click'
   | 'product_try_on'
@@ -155,31 +155,31 @@ export interface ServicePerformance {
 // Analytics Service
 export class AnalyticsService {
   private sessionId: string;
-  
+
   constructor() {
     // Generate a session ID for anonymous users
     this.sessionId = this.getOrCreateSessionId();
   }
-  
+
   private getOrCreateSessionId(): string {
     // Check if we have a session ID in localStorage
     if (typeof window !== 'undefined') {
       const storedSessionId = localStorage.getItem('analytics_session_id');
-      
+
       if (storedSessionId) {
         return storedSessionId;
       }
-      
+
       // Create a new session ID
       const newSessionId = this.generateSessionId();
       localStorage.setItem('analytics_session_id', newSessionId);
       return newSessionId;
     }
-    
+
     // Server-side fallback
     return this.generateSessionId();
   }
-  
+
   private generateSessionId(): string {
     // Use cryptographically secure random bytes instead of Math.random
     // This works in both browser and Node.js environments
@@ -195,7 +195,7 @@ export class AnalyticsService {
       return randomBytes(16).toString('hex');
     }
   }
-  
+
   // Track an analytics event
   public async trackEvent(event: EventName, properties: Record<string, any> = {}): Promise<void> {
     try {
@@ -213,15 +213,15 @@ export class AnalyticsService {
             session_id: this.sessionId,
           }),
         });
-        
+
         const result = await response.json();
-        
+
         // Update the session ID if one was returned
         if (result.success && result.session_id) {
           localStorage.setItem('analytics_session_id', result.session_id);
           this.sessionId = result.session_id;
         }
-        
+
         // If this is a production environment, you might want to
         // integrate with third-party analytics services here
         this.sendToExternalAnalytics({
@@ -229,64 +229,63 @@ export class AnalyticsService {
           user_id: undefined, // We don't have this info client-side
           session_id: this.sessionId,
           timestamp: new Date().toISOString(),
-          properties
+          properties,
         });
-        
+
         return;
       }
-      
+
       // Server-side tracking (direct to database)
       // Get the current user ID if available
       const session = await prisma.session.findFirst({
-        where: { 
-          sessionToken: this.sessionId 
+        where: {
+          sessionToken: this.sessionId,
         },
-        include: { 
-          user: true 
-        }
+        include: {
+          user: true,
+        },
       });
-      
+
       const userId = session?.userId;
-      
+
       // Create the event payload
       const eventPayload = {
         event,
         userId,
         sessionId: this.sessionId,
         timestamp: new Date(),
-        properties: JSON.stringify(properties)
+        properties: JSON.stringify(properties),
       };
-      
+
       // Store the event in the database using Prisma
       await prisma.analyticsEvent.create({
-        data: eventPayload
+        data: eventPayload,
       });
-      
     } catch (error) {
       console.error('Failed to track analytics event:', error);
     }
   }
-  
+
   // Helper method to send data to external analytics services
   private sendToExternalAnalytics(event: AnalyticsEvent): void {
     // Implement integrations with services like Google Analytics, Mixpanel, etc.
-    
+
     // Example: Google Analytics (GA4)
     if (typeof window !== 'undefined' && 'gtag' in window) {
       const gtag = (window as any).gtag;
-      
+
       gtag('event', event.event, {
         ...event.properties,
         user_id: event.user_id,
-        session_id: event.session_id
+        session_id: event.session_id,
       });
     }
   }
-  
+
   // Get engagement metrics for a given time range
-  public async getEngagementMetrics(options: { 
-    start: string, 
-    end: string 
+  public async getEngagementMetrics(options: {
+    start: string;
+    end: string;
   }): Promise<EngagementMetrics> {
     try {
       // Query for sessions in the time range using Prisma
@@ -294,125 +293,110 @@ export class AnalyticsService {
         where: {
           timestamp: {
             gte: new Date(options.start),
-            lte: new Date(options.end)
-          }
+            lte: new Date(options.end),
+          },
         },
         orderBy: {
-          timestamp: 'asc'
-        }
+          timestamp: 'asc',
+        },
       });
-      
+
       // Calculate metrics
-      const uniqueUserIds = new Set(sessions
-        .filter(session => session.userId)
-        .map(session => session.userId));
-        
+      const uniqueUserIds = new Set(
+        sessions.filter(session => session.userId).map(session => session.userId)
+      );
+
       const uniqueSessionIds = new Set(sessions.map(session => session.sessionId));
-      
+
       // Calculate try-on session counts
       const tryOnSessions = sessions.filter(session => session.event === 'product_try_on');
-      
-      const makeupSessions = tryOnSessions.filter(
-        session => {
-          const props = JSON.parse(session.properties as string);
-          return props.product_type === 'makeup';
-        }
-      ).length;
-      
-      const hairstyleSessions = tryOnSessions.filter(
-        session => {
-          const props = JSON.parse(session.properties as string);
-          return props.product_type === 'hairstyle';
-        }
-      ).length;
-      
-      const accessorySessions = tryOnSessions.filter(
-        session => {
-          const props = JSON.parse(session.properties as string);
-          return props.product_type === 'accessory';
-        }
-      ).length;
-      
+
+      const makeupSessions = tryOnSessions.filter(session => {
+        const props = JSON.parse(session.properties as string);
+        return props.product_type === 'makeup';
+      }).length;
+
+      const hairstyleSessions = tryOnSessions.filter(session => {
+        const props = JSON.parse(session.properties as string);
+        return props.product_type === 'hairstyle';
+      }).length;
+
+      const accessorySessions = tryOnSessions.filter(session => {
+        const props = JSON.parse(session.properties as string);
+        return props.product_type === 'accessory';
+      }).length;
+
       // Calculate shares
       const shareSessions = sessions.filter(session => session.event === 'product_share');
-      
-      const socialShares = shareSessions.filter(
-        session => {
-          const props = JSON.parse(session.properties as string);
-          return props.share_method === 'social';
-        }
-      ).length;
-      
-      const emailShares = shareSessions.filter(
-        session => {
-          const props = JSON.parse(session.properties as string);
-          return props.share_method === 'email';
-        }
-      ).length;
-      
-      const downloadShares = shareSessions.filter(
-        session => {
-          const props = JSON.parse(session.properties as string);
-          return props.share_method === 'download';
-        }
-      ).length;
-      
+
+      const socialShares = shareSessions.filter(session => {
+        const props = JSON.parse(session.properties as string);
+        return props.share_method === 'social';
+      }).length;
+
+      const emailShares = shareSessions.filter(session => {
+        const props = JSON.parse(session.properties as string);
+        return props.share_method === 'email';
+      }).length;
+
+      const downloadShares = shareSessions.filter(session => {
+        const props = JSON.parse(session.properties as string);
+        return props.share_method === 'download';
+      }).length;
+
       // Calculate top viewed products
       const productViews = sessions.filter(session => session.event === 'product_view');
-      
-      const productViewsCount: Record<string, { count: number, name: string }> = {};
+
+      const productViewsCount: Record<string, { count: number; name: string }> = {};
       productViews.forEach(view => {
         const props = JSON.parse(view.properties as string);
         const productId = props.product_id;
         const productName = props.product_name || 'Unknown Product';
-        
+
         if (!productViewsCount[productId]) {
           productViewsCount[productId] = { count: 0, name: productName };
         }
         productViewsCount[productId].count += 1;
       });
-      
+
       const topViewedProducts = Object.entries(productViewsCount)
         .map(([product_id, { count, name }]) => ({ product_id, name, views: count }))
         .sort((a, b) => b.views - a.views)
         .slice(0, 10);
-      
+
       // Calculate product category breakdown
       const productCategoryBreakdown: Record<string, number> = {};
       productViews.forEach(view => {
         const props = JSON.parse(view.properties as string);
         const category = props.product_category || 'Unknown';
-        
+
         if (!productCategoryBreakdown[category]) {
           productCategoryBreakdown[category] = 0;
         }
         productCategoryBreakdown[category] += 1;
       });
-      
+
       // Calculate average duration and success rate
       let totalDuration = 0;
       let successCount = 0;
-      
+
       tryOnSessions.forEach(session => {
         const props = JSON.parse(session.properties as string);
-        
+
         if (props.duration) {
           totalDuration += props.duration;
         }
-        
+
         if (props.success) {
           successCount += 1;
         }
       });
-      
-      const averageDuration = tryOnSessions.length > 0 
-        ? totalDuration / tryOnSessions.length 
-        : 0;
-      
-      const successRate = tryOnSessions.length > 0 
-        ? (successCount / tryOnSessions.length) * 100 
-        : 0;
-      
+
+      const averageDuration = tryOnSessions.length > 0 ? totalDuration / tryOnSessions.length : 0;
+
+      const successRate =
+        tryOnSessions.length > 0 ? (successCount / tryOnSessions.length) * 100 : 0;
+
       return {
         totalSessions: uniqueSessionIds.size,
         uniqueUsers: uniqueUserIds.size,
@@ -420,7 +404,7 @@ export class AnalyticsService {
         successRate,
         timeRange: {
           start: options.start,
-          end: options.end
+          end: options.end,
         },
         makeupSessions,
         hairstyleSessions,
@@ -429,12 +413,11 @@ export class AnalyticsService {
         emailShares,
         downloadShares,
         topViewedProducts,
-        productCategoryBreakdown
+        productCategoryBreakdown,
       };
-        
     } catch (error) {
       console.error('Error getting engagement metrics:', error);
-      
+
       // Return empty metrics on error
       return {
         totalSessions: 0,
@@ -443,7 +426,7 @@ export class AnalyticsService {
         successRate: 0,
         timeRange: {
           start: options.start,
-          end: options.end
+          end: options.end,
         },
         makeupSessions: 0,
         hairstyleSessions: 0,
@@ -452,15 +435,15 @@ export class AnalyticsService {
         emailShares: 0,
         downloadShares: 0,
         topViewedProducts: [],
-        productCategoryBreakdown: {}
+        productCategoryBreakdown: {},
       };
     }
   }
-  
+
   // Get metrics for a specific product
   public async getProductMetrics(
-    productId: string, 
-    options: { start: string, end: string }
+    productId: string,
+    options: { start: string; end: string }
   ): Promise<ProductMetrics> {
     try {
       // Query for product events in the time range
@@ -485,47 +468,41 @@ export class AnalyticsService {
           ],
           timestamp: {
             gte: new Date(options.start),
-            lte: new Date(options.end)
-          }
+            lte: new Date(options.end),
+          },
         },
         orderBy: {
-          timestamp: 'asc'
-        }
+          timestamp: 'asc',
+        },
       });
-        
+
       if (eventsError) {
         throw eventsError;
       }
-      
+
       // Calculate product metrics
-      const viewEvents = productEvents.filter(
-        event => event.event === 'product_view'
-      );
-      
-      const tryOnEvents = productEvents.filter(
-        event => event.event === 'product_try_on'
-      );
-      
+      const viewEvents = productEvents.filter(event => event.event === 'product_view');
+
+      const tryOnEvents = productEvents.filter(event => event.event === 'product_try_on');
+
       const uniqueViewerIds = new Set(
         viewEvents
           .filter(event => event.user_id || event.session_id)
           .map(event => event.user_id || event.session_id)
       );
-      
+
       // Calculate click-through rate (views / recommendation clicks)
       const recommendationClicks = productEvents.filter(
         event => event.event === 'product_recommendation_click'
       ).length;
-      
-      const clickThroughRate = recommendationClicks > 0 
-        ? (viewEvents.length / recommendationClicks) * 100 
-        : 0;
-        
+
+      const clickThroughRate =
+        recommendationClicks > 0 ? (viewEvents.length / recommendationClicks) * 100 : 0;
+
       // Calculate conversion rate (try-ons / views)
-      const conversionRate = viewEvents.length > 0 
-        ? (tryOnEvents.length / viewEvents.length) * 100 
-        : 0;
-      
+      const conversionRate =
+        viewEvents.length > 0 ? (tryOnEvents.length / viewEvents.length) * 100 : 0;
+
       return {
         productId,
         totalViews: viewEvents.length,
@@ -535,19 +512,20 @@ export class AnalyticsService {
         clickThroughRate,
         timeRange: {
           start: options.start,
-          end: options.end
-        }
+          end: options.end,
+        },
       };
     } catch (error) {
       console.error(`Error fetching metrics for product ${productId}:`, error);
       throw error;
     }
   }
-  
+
   // Get metrics for recommendations
-  public async getRecommendationMetrics(
-    options: { start: string, end: string }
-  ): Promise<RecommendationMetrics> {
+  public async getRecommendationMetrics(options: {
+    start: string;
+    end: string;
+  }): Promise<RecommendationMetrics> {
     try {
       // Query for recommendation events in the time range
       const { data: events, error: eventsError } = await prisma.analyticsEvent.findMany({
@@ -557,97 +535,107 @@ export class AnalyticsService {
           },
           timestamp: {
             gte: new Date(options.start),
-            lte: new Date(options.end)
-          }
+            lte: new Date(options.end),
+          },
         },
         orderBy: {
-          timestamp: 'asc'
-        }
+          timestamp: 'asc',
+        },
       });
-        
+
       if (eventsError) {
         throw eventsError;
       }
-      
+
       // Calculate recommendation metrics
       const recommendationClicks = events.filter(
         event => event.event === 'product_recommendation_click'
       );
-      
+
       // Track which products were recommended and clicked
-      const recommendedProducts: Record<string, { 
-        recommendations: number, 
-        clicks: number,
-        views: number,
-        conversions: number,
-        name: string 
-      }> = {};
-      
+      const recommendedProducts: Record<
+        string,
+        {
+          recommendations: number;
+          clicks: number;
+          views: number;
+          conversions: number;
+          name: string;
+        }
+      > = {};
+
       recommendationClicks.forEach(event => {
         const productId = event.properties.product_id;
         const productName = event.properties.product_name || 'Unknown Product';
-        
+
         if (productId) {
           if (!recommendedProducts[productId]) {
-            recommendedProducts[productId] = { 
-              recommendations: 0, 
+            recommendedProducts[productId] = {
+              recommendations: 0,
               clicks: 0,
               views: 0,
               conversions: 0,
-              name: productName 
+              name: productName,
             };
           }
           recommendedProducts[productId].clicks += 1;
         }
       });
-      
+
       // Count views for recommended products
-      events.filter(event => event.event === 'product_view').forEach(event => {
-        const productId = event.properties.product_id;
-        
-        if (productId && recommendedProducts[productId]) {
-          recommendedProducts[productId].views += 1;
-        }
-      });
-      
+      events
+        .filter(event => event.event === 'product_view')
+        .forEach(event => {
+          const productId = event.properties.product_id;
+
+          if (productId && recommendedProducts[productId]) {
+            recommendedProducts[productId].views += 1;
+          }
+        });
+
       // Count conversions (added to cart) for recommended products
-      events.filter(event => event.event === 'cart_add').forEach(event => {
-        const productId = event.properties.product_id;
-        
-        if (productId && recommendedProducts[productId]) {
-          recommendedProducts[productId].conversions += 1;
-        }
-      });
-      
+      events
+        .filter(event => event.event === 'cart_add')
+        .forEach(event => {
+          const productId = event.properties.product_id;
+
+          if (productId && recommendedProducts[productId]) {
+            recommendedProducts[productId].conversions += 1;
+          }
+        });
+
       // Calculate overall metrics
-      const totalRecommendations = Object.values(recommendedProducts)
-        .reduce((sum, product) => sum + product.recommendations, 0);
-        
-      const totalClicks = Object.values(recommendedProducts)
-        .reduce((sum, product) => sum + product.clicks, 0);
-        
-      const totalConversions = Object.values(recommendedProducts)
-        .reduce((sum, product) => sum + product.conversions, 0);
-        
-      const clickThroughRate = totalRecommendations > 0 
-        ? (totalClicks / totalRecommendations) * 100
-        : 0;
-        
-      const conversionRate = totalClicks > 0
-        ? (totalConversions / totalClicks) * 100
-        : 0;
-        
+      const totalRecommendations = Object.values(recommendedProducts).reduce(
+        (sum, product) => sum + product.recommendations,
+        0
+      );
+
+      const totalClicks = Object.values(recommendedProducts).reduce(
+        (sum, product) => sum + product.clicks,
+        0
+      );
+
+      const totalConversions = Object.values(recommendedProducts).reduce(
+        (sum, product) => sum + product.conversions,
+        0
+      );
+
+      const clickThroughRate =
+        totalRecommendations > 0 ? (totalClicks / totalRecommendations) * 100 : 0;
+
+      const conversionRate = totalClicks > 0 ? (totalConversions / totalClicks) * 100 : 0;
+
       // Get top recommended products
       const topRecommendedProducts = Object.entries(recommendedProducts)
         .map(([product_id, product]) => ({
           product_id,
           name: product.name,
           recommendations: product.recommendations,
-          clicks: product.clicks
+          clicks: product.clicks,
         }))
         .sort((a, b) => b.recommendations - a.recommendations)
         .slice(0, 5);
-        
+
       return {
         totalRecommendations,
         clickThroughRate,
@@ -655,8 +643,8 @@ export class AnalyticsService {
         topRecommendedProducts,
         timeRange: {
           start: options.start,
-          end: options.end
-        }
+          end: options.end,
+        },
       };
     } catch (error) {
       console.error('Error fetching recommendation metrics:', error);
@@ -686,7 +674,7 @@ export class AnalyticsService {
         platform: data.platform,
         method: data.method,
         success: data.success,
-        error: data.error
+        error: data.error,
       });
     } catch (error) {
       console.error('Error tracking share:', error);
@@ -696,37 +684,42 @@ export class AnalyticsService {
   /**
    * Get analytics data for a specific timeframe
    */
-  async getAnalytics(timeframe: AnalyticsData['timeframe'], startDate: Date, endDate: Date): Promise<AnalyticsData> {
+  async getAnalytics(
+    timeframe: AnalyticsData['timeframe'],
+    startDate: Date,
+    endDate: Date
+  ): Promise<AnalyticsData> {
     try {
-      const [
-        userMetrics,
-        bookingMetrics,
-        topServices,
-        retentionData
-      ] = await Promise.all([
+      const [userMetrics, bookingMetrics, topServices, retentionData] = await Promise.all([
         this.getUserMetrics(startDate, endDate),
         this.getBookingMetrics(startDate, endDate),
         this.getTopServices(startDate, endDate),
-        this.getUserRetention(startDate, endDate)
+        this.getUserRetention(startDate, endDate),
       ]);
 
       const previousPeriodEnd = new Date(startDate);
       previousPeriodEnd.setDate(previousPeriodEnd.getDate() - 1);
       const previousPeriodStart = new Date(previousPeriodEnd);
-      previousPeriodStart.setDate(previousPeriodStart.getDate() - (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+      previousPeriodStart.setDate(
+        previousPeriodStart.getDate() -
+          (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
 
-      const [
-        previousUserMetrics,
-        previousBookingMetrics
-      ] = await Promise.all([
+      const [previousUserMetrics, previousBookingMetrics] = await Promise.all([
         this.getUserMetrics(previousPeriodStart, previousPeriodEnd),
-        this.getBookingMetrics(previousPeriodStart, previousPeriodEnd)
+        this.getBookingMetrics(previousPeriodStart, previousPeriodEnd),
       ]);
 
       const trends = {
         userGrowth: this.calculateGrowth(previousUserMetrics.totalUsers, userMetrics.totalUsers),
-        revenueGrowth: this.calculateGrowth(previousBookingMetrics.totalRevenue, bookingMetrics.totalRevenue),
-        bookingGrowth: this.calculateGrowth(previousBookingMetrics.totalBookings, bookingMetrics.totalBookings)
+        revenueGrowth: this.calculateGrowth(
+          previousBookingMetrics.totalRevenue,
+          bookingMetrics.totalRevenue
+        ),
+        bookingGrowth: this.calculateGrowth(
+          previousBookingMetrics.totalBookings,
+          bookingMetrics.totalBookings
+        ),
       };
 
       return {
@@ -735,11 +728,11 @@ export class AnalyticsService {
         endDate,
         metrics: {
           ...userMetrics,
-          ...bookingMetrics
+          ...bookingMetrics,
         },
         trends,
         topServices,
-        userRetention: retentionData
+        userRetention: retentionData,
       };
     } catch (error) {
       logger.error('Error getting analytics data', 'analytics', { error });
@@ -750,7 +743,11 @@ export class AnalyticsService {
   /**
    * Get service performance metrics
    */
-  async getServicePerformance(serviceId: string, startDate: Date, endDate: Date): Promise<ServicePerformance> {
+  async getServicePerformance(
+    serviceId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<ServicePerformance> {
     try {
       const service = await prismaClient.service.findUnique({
         where: { id: serviceId },
@@ -759,19 +756,19 @@ export class AnalyticsService {
             where: {
               startTime: {
                 gte: startDate,
-                lte: endDate
-              }
-            }
+                lte: endDate,
+              },
+            },
           },
           reviews: {
             where: {
               createdAt: {
                 gte: startDate,
-                lte: endDate
-              }
-            }
-          }
-        }
+                lte: endDate,
+              },
+            },
+          },
+        },
       });
 
       if (!service) {
@@ -781,10 +778,12 @@ export class AnalyticsService {
       const metrics = {
         totalBookings: service.bookings.length,
         totalRevenue: service.bookings.reduce((sum, booking) => sum + booking.price, 0),
-        averageRating: service.reviews.length > 0 
-          ? service.reviews.reduce((sum, review) => sum + review.rating, 0) / service.reviews.length 
-          : 0,
-        utilization: await this.calculateUtilization(service, startDate, endDate)
+        averageRating:
+          service.reviews.length > 0
+            ? service.reviews.reduce((sum, review) => sum + review.rating, 0) /
+              service.reviews.length
+            : 0,
+        utilization: await this.calculateUtilization(service, startDate, endDate),
       };
 
       const trends = await this.getServiceTrends(service, startDate, endDate);
@@ -793,7 +792,7 @@ export class AnalyticsService {
         id: service.id,
         name: service.name,
         metrics,
-        trends
+        trends,
       };
     } catch (error) {
       logger.error('Error getting service performance', 'analytics', { error, serviceId });
@@ -814,7 +813,7 @@ export class AnalyticsService {
     try {
       const { startDate, endDate, metrics, groupBy, filters } = options;
 
-      const reportData = await prismaClient.$transaction(async (prisma) => {
+      const reportData = await prismaClient.$transaction(async prisma => {
         const data: Record<string, any> = {};
 
         for (const metric of metrics) {
@@ -858,26 +857,26 @@ export class AnalyticsService {
       where: {
         createdAt: {
           gte: startDate,
-          lte: endDate
+          lte: endDate,
         },
-        ...filters
-      }
+        ...filters,
+      },
     });
 
     const activeUsers = await prismaClient.user.count({
       where: {
         lastLoginAt: {
           gte: startDate,
-          lte: endDate
+          lte: endDate,
         },
-        ...filters
-      }
+        ...filters,
+      },
     });
 
     return {
       totalUsers: users.length,
       activeUsers,
-      newUsers: users.filter(user => user.createdAt >= startDate).length
+      newUsers: users.filter(user => user.createdAt >= startDate).length,
     };
   }
 
@@ -886,10 +885,10 @@ export class AnalyticsService {
       where: {
         createdAt: {
           gte: startDate,
-          lte: endDate
+          lte: endDate,
         },
-        ...filters
-      }
+        ...filters,
+      },
     });
 
     const totalRevenue = bookings.reduce((sum, booking) => sum + booking.price, 0);
@@ -897,7 +896,7 @@ export class AnalyticsService {
     return {
       totalBookings: bookings.length,
       totalRevenue,
-      averageBookingValue: bookings.length > 0 ? totalRevenue / bookings.length : 0
+      averageBookingValue: bookings.length > 0 ? totalRevenue / bookings.length : 0,
     };
   }
 
@@ -908,21 +907,22 @@ export class AnalyticsService {
           where: {
             createdAt: {
               gte: startDate,
-              lte: endDate
-            }
-          }
-        }
-      }
+              lte: endDate,
+            },
+          },
+        },
+      },
     });
 
-    return services.map(service => ({
-      id: service.id,
-      name: service.name,
-      bookings: service.bookings.length,
-      revenue: service.bookings.reduce((sum, booking) => sum + booking.price, 0)
-    }))
-    .sort((a, b) => b.revenue - a.revenue)
-    .slice(0, 5);
+    return services
+      .map(service => ({
+        id: service.id,
+        name: service.name,
+        bookings: service.bookings.length,
+        revenue: service.bookings.reduce((sum, booking) => sum + booking.price, 0),
+      }))
+      .sort((a, b) => b.revenue - a.revenue)
+      .slice(0, 5);
   }
 
   private async getUserRetention(startDate: Date, endDate: Date) {
@@ -932,34 +932,32 @@ export class AnalyticsService {
           where: {
             createdAt: {
               gte: startDate,
-              lte: endDate
-            }
-          }
-        }
-      }
+              lte: endDate,
+            },
+          },
+        },
+      },
     });
 
     const newUsers = users.filter(user => user.createdAt >= startDate).length;
-    const returningUsers = users.filter(user => 
-      user.createdAt < startDate && user.bookings.length > 0
+    const returningUsers = users.filter(
+      user => user.createdAt < startDate && user.bookings.length > 0
     ).length;
 
     const previousUsers = await prismaClient.user.count({
       where: {
         createdAt: {
-          lt: startDate
-        }
-      }
+          lt: startDate,
+        },
+      },
     });
 
-    const churnRate = previousUsers > 0 
-      ? (previousUsers - returningUsers) / previousUsers 
-      : 0;
+    const churnRate = previousUsers > 0 ? (previousUsers - returningUsers) / previousUsers : 0;
 
     return {
       newUsers,
       returningUsers,
-      churnRate
+      churnRate,
     };
   }
 
@@ -985,22 +983,26 @@ export class AnalyticsService {
   ): Promise<number> {
     // Implementation depends on your business logic
     // This is a simplified version
-    const daysDifference = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const daysDifference = Math.ceil(
+      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
     const slotsPerDay = 8; // Assuming 8 slots per day
     return daysDifference * slotsPerDay;
   }
 
-  private async getServiceTrends(
-    service: any,
-    startDate: Date,
-    endDate: Date
-  ) {
+  private async getServiceTrends(service: any, startDate: Date, endDate: Date) {
     // Implementation depends on your business logic
     // This is a simplified version
     return {
-      bookingTrend: [/* Array of booking counts over time */],
-      revenueTrend: [/* Array of revenue over time */],
-      ratingTrend: [/* Array of ratings over time */]
+      bookingTrend: [
+        /* Array of booking counts over time */
+      ],
+      revenueTrend: [
+        /* Array of revenue over time */
+      ],
+      ratingTrend: [
+        /* Array of ratings over time */
+      ],
     };
   }
 
@@ -1014,4 +1016,4 @@ export class AnalyticsService {
     // This is a placeholder
     return {};
   }
-} 
+}

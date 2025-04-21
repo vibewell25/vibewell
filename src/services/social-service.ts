@@ -50,7 +50,9 @@ export class SocialService {
   /**
    * Create a new event
    */
-  async createEvent(data: Omit<Event, 'id' | 'status' | 'attendees' | 'waitlist' | 'createdAt' | 'updatedAt'>) {
+  async createEvent(
+    data: Omit<Event, 'id' | 'status' | 'attendees' | 'waitlist' | 'createdAt' | 'updatedAt'>
+  ) {
     try {
       const event = await prisma.event.create({
         data: {
@@ -59,8 +61,8 @@ export class SocialService {
           attendees: [],
           waitlist: [],
           createdAt: new Date(),
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       });
 
       return event;
@@ -76,7 +78,7 @@ export class SocialService {
   async registerForEvent(eventId: string, userId: string) {
     try {
       const event = await prisma.event.findUnique({
-        where: { id: eventId }
+        where: { id: eventId },
       });
 
       if (!event) {
@@ -89,15 +91,15 @@ export class SocialService {
           where: { id: eventId },
           data: {
             waitlist: {
-              push: userId
-            }
-          }
+              push: userId,
+            },
+          },
         });
 
         await this.notificationService.notifyUser(userId, {
           type: 'system',
           subject: 'Added to Waitlist',
-          message: `You have been added to the waitlist for ${event.title}`
+          message: `You have been added to the waitlist for ${event.title}`,
         });
 
         return { status: 'waitlisted' };
@@ -108,15 +110,15 @@ export class SocialService {
         where: { id: eventId },
         data: {
           attendees: {
-            push: userId
-          }
-        }
+            push: userId,
+          },
+        },
       });
 
       await this.notificationService.notifyUser(userId, {
         type: 'system',
         subject: 'Event Registration Confirmed',
-        message: `Your registration for ${event.title} has been confirmed`
+        message: `Your registration for ${event.title} has been confirmed`,
       });
 
       return { status: 'registered' };
@@ -137,8 +139,8 @@ export class SocialService {
           likes: 0,
           comments: [],
           createdAt: new Date(),
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       });
 
       return post;
@@ -154,7 +156,7 @@ export class SocialService {
   async likePost(postId: string, userId: string) {
     try {
       const post = await prisma.post.findUnique({
-        where: { id: postId }
+        where: { id: postId },
       });
 
       if (!post) {
@@ -165,9 +167,9 @@ export class SocialService {
         where: { id: postId },
         data: {
           likes: {
-            increment: 1
-          }
-        }
+            increment: 1,
+          },
+        },
       });
 
       return { success: true };
@@ -183,7 +185,7 @@ export class SocialService {
   async commentOnPost(postId: string, data: Omit<Comment, 'id' | 'createdAt' | 'updatedAt'>) {
     try {
       const post = await prisma.post.findUnique({
-        where: { id: postId }
+        where: { id: postId },
       });
 
       if (!post) {
@@ -194,16 +196,16 @@ export class SocialService {
         ...data,
         id: Math.random().toString(36).substr(2, 9),
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       await prisma.post.update({
         where: { id: postId },
         data: {
           comments: {
-            push: comment
-          }
-        }
+            push: comment,
+          },
+        },
       });
 
       return comment;
@@ -222,13 +224,13 @@ export class SocialService {
         where: {
           status: 'upcoming',
           startDate: {
-            gte: new Date()
-          }
+            gte: new Date(),
+          },
         },
         orderBy: {
-          startDate: 'asc'
+          startDate: 'asc',
         },
-        take: limit
+        take: limit,
       });
 
       return events;
@@ -245,9 +247,9 @@ export class SocialService {
     try {
       const posts = await prisma.post.findMany({
         orderBy: {
-          createdAt: 'desc'
+          createdAt: 'desc',
         },
-        take: limit
+        take: limit,
       });
 
       return posts;
@@ -256,4 +258,4 @@ export class SocialService {
       throw error;
     }
   }
-} 
+}

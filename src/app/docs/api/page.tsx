@@ -102,7 +102,7 @@ export default function ApiDocumentation() {
   return (
     <div className="flex min-h-screen">
       <DocSidebar className="w-64 hidden lg:block" />
-      
+
       <main className="flex-1 px-6 py-8 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <div className="mb-8">
@@ -118,11 +118,18 @@ export default function ApiDocumentation() {
             {endpoints.map((endpoint, index) => (
               <div key={index} className="border rounded-lg p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className={`px-3 py-1 rounded text-sm font-medium
-                    ${endpoint.method === 'GET' ? 'bg-blue-100 text-blue-800' :
-                      endpoint.method === 'POST' ? 'bg-green-100 text-green-800' :
-                      endpoint.method === 'PUT' ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-red-100 text-red-800'}`}>
+                  <span
+                    className={`px-3 py-1 rounded text-sm font-medium
+                    ${
+                      endpoint.method === 'GET'
+                        ? 'bg-blue-100 text-blue-800'
+                        : endpoint.method === 'POST'
+                          ? 'bg-green-100 text-green-800'
+                          : endpoint.method === 'PUT'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-red-100 text-red-800'
+                    }`}
+                  >
                     {endpoint.method}
                   </span>
                   <code className="text-sm">{endpoint.path}</code>
@@ -145,10 +152,18 @@ export default function ApiDocumentation() {
                       <table className="min-w-full divide-y">
                         <thead className="bg-gray-50">
                           <tr>
-                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Name</th>
-                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Type</th>
-                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Required</th>
-                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Description</th>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
+                              Name
+                            </th>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
+                              Type
+                            </th>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
+                              Required
+                            </th>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
+                              Description
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y">
@@ -172,10 +187,16 @@ export default function ApiDocumentation() {
                     {endpoint.responses.map((response, responseIndex) => (
                       <div key={responseIndex} className="border rounded-md p-4">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className={`px-2 py-1 rounded text-sm
-                            ${response.code >= 200 && response.code < 300 ? 'bg-green-100 text-green-800' :
-                              response.code >= 400 ? 'bg-red-100 text-red-800' :
-                              'bg-gray-100 text-gray-800'}`}>
+                          <span
+                            className={`px-2 py-1 rounded text-sm
+                            ${
+                              response.code >= 200 && response.code < 300
+                                ? 'bg-green-100 text-green-800'
+                                : response.code >= 400
+                                  ? 'bg-red-100 text-red-800'
+                                  : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
                             {response.code}
                           </span>
                           <span className="text-sm text-gray-600">{response.description}</span>
@@ -196,4 +217,4 @@ export default function ApiDocumentation() {
       </main>
     </div>
   );
-} 
+}

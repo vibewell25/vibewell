@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/use-unified-auth';
 
 interface WebAuthnButtonProps {
   mode: 'register' | 'authenticate';
@@ -99,12 +99,7 @@ export function WebAuthnButton({ mode, onSuccess, onError }: WebAuthnButtonProps
   };
 
   return (
-    <Button
-      onClick={handleWebAuthn}
-      disabled={isLoading}
-      variant="outline"
-      className="w-full"
-    >
+    <Button onClick={handleWebAuthn} disabled={isLoading} variant="outline" className="w-full">
       {isLoading ? (
         <span className="loading loading-spinner" />
       ) : mode === 'register' ? (
@@ -114,4 +109,4 @@ export function WebAuthnButton({ mode, onSuccess, onError }: WebAuthnButtonProps
       )}
     </Button>
   );
-} 
+}

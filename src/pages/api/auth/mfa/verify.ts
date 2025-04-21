@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from '@/types/api';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { MFAService, MFAMethod } from '@/services/mfaService';
@@ -7,10 +7,7 @@ import { Redis } from 'ioredis';
 const mfaService = new MFAService();
 const redis = new Redis(process.env.REDIS_URL || '');
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -28,11 +25,7 @@ export default async function handler(
     }
 
     // Verify the MFA code
-    const isValid = await mfaService.verifyCode(
-      session.user.id,
-      method as MFAMethod,
-      code
-    );
+    const isValid = await mfaService.verifyCode(session.user.id, method as MFAMethod, code);
 
     if (!isValid) {
       return res.status(401).json({ error: 'Invalid code' });
@@ -42,12 +35,7 @@ export default async function handler(
     const sessionId = req.cookies['next-auth.session-token'];
     if (sessionId) {
       // Store MFA verification status for 12 hours
-      await redis.set(
-        `mfa:verified:${sessionId}`,
-        'true',
-        'EX',
-        12 * 60 * 60
-      );
+      await redis.set(`mfa:verified:${sessionId}`, 'true', 'EX', 12 * 60 * 60);
     }
 
     return res.status(200).json({ success: true });
@@ -55,4 +43,4 @@ export default async function handler(
     console.error('MFA verification error:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
-} 
+}

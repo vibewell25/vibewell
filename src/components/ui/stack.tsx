@@ -13,7 +13,7 @@ interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
 
 /**
  * Stack - A flexible layout component for vertical and horizontal stacking
- * 
+ *
  * This component provides a simple way to stack elements with consistent spacing
  * in either vertical or horizontal direction.
  */
@@ -29,31 +29,31 @@ export function Stack({
 }: StackProps) {
   // Map spacing sizes to Tailwind classes
   const spacingClasses = {
-    'none': direction === 'row' ? 'space-x-0' : 'space-y-0',
-    'xs': direction === 'row' ? 'space-x-1' : 'space-y-1',
-    'sm': direction === 'row' ? 'space-x-2' : 'space-y-2',
-    'md': direction === 'row' ? 'space-x-4' : 'space-y-4',
-    'lg': direction === 'row' ? 'space-x-6' : 'space-y-6',
-    'xl': direction === 'row' ? 'space-x-8' : 'space-y-8',
+    none: direction === 'row' ? 'space-x-0' : 'space-y-0',
+    xs: direction === 'row' ? 'space-x-1' : 'space-y-1',
+    sm: direction === 'row' ? 'space-x-2' : 'space-y-2',
+    md: direction === 'row' ? 'space-x-4' : 'space-y-4',
+    lg: direction === 'row' ? 'space-x-6' : 'space-y-6',
+    xl: direction === 'row' ? 'space-x-8' : 'space-y-8',
   };
 
   // Map alignment to Tailwind classes
   const alignClasses = {
-    'start': 'items-start',
-    'center': 'items-center',
-    'end': 'items-end',
-    'stretch': 'items-stretch',
-    'baseline': 'items-baseline',
+    start: 'items-start',
+    center: 'items-center',
+    end: 'items-end',
+    stretch: 'items-stretch',
+    baseline: 'items-baseline',
   };
 
   // Map justification to Tailwind classes
   const justifyClasses = {
-    'start': 'justify-start',
-    'center': 'justify-center',
-    'end': 'justify-end',
-    'between': 'justify-between',
-    'around': 'justify-around',
-    'evenly': 'justify-evenly',
+    start: 'justify-start',
+    center: 'justify-center',
+    end: 'justify-end',
+    between: 'justify-between',
+    around: 'justify-around',
+    evenly: 'justify-evenly',
   };
 
   // Combine classes
@@ -124,4 +124,4 @@ export function HStack({
       {children}
     </Stack>
   );
-} 
+}

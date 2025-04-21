@@ -16,13 +16,13 @@ interface EventAnalyticsIntegrationsProps {
   onEmailSetup: () => void;
   onSocialShare: (platform: 'facebook' | 'linkedin' | 'twitter') => void;
 }
-export function EventAnalyticsIntegrations({ 
-  event, 
-  onCalendarSync, 
-  onVideoSetup, 
+export function EventAnalyticsIntegrations({
+  event,
+  onCalendarSync,
+  onVideoSetup,
   onPaymentSetup,
   onEmailSetup,
-  onSocialShare
+  onSocialShare,
 }: EventAnalyticsIntegrationsProps) {
   const [activeTab, setActiveTab] = useState('analytics');
   return (
@@ -74,7 +74,9 @@ export function EventAnalyticsIntegrations({
                       <span>Check-ins</span>
                       <span>{event.analytics.checkIns}</span>
                     </div>
-                    <Progress value={(event.analytics.checkIns / event.analytics.registrations) * 100} />
+                    <Progress
+                      value={(event.analytics.checkIns / event.analytics.registrations) * 100}
+                    />
                   </div>
                 </div>
                 {event.analytics.revenue && (
@@ -235,4 +237,4 @@ export function EventAnalyticsIntegrations({
       </CardContent>
     </Card>
   );
-} 
+}

@@ -6,7 +6,7 @@ import * as THREE from 'three';
 export function Forest() {
   const groupRef = useRef<THREE.Group>(null);
 
-  useFrame((state) => {
+  useFrame(state => {
     if (groupRef.current) {
       groupRef.current.rotation.y += 0.001;
     }
@@ -24,7 +24,7 @@ export function Forest() {
         const x = Math.random() * 16 - 8;
         const z = Math.random() * 16 - 8;
         const height = 2 + Math.random() * 2;
-        
+
         return (
           <group key={i} position={[x, 0, z]}>
             {/* Tree trunk */}
@@ -40,4 +40,4 @@ export function Forest() {
       })}
     </group>
   );
-} 
+}

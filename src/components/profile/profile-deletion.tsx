@@ -1,25 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
-import { toast } from "sonner";
-import {
-  AlertTriangle,
-  Trash2,
-  X,
-  Download,
-  Shield,
-} from "lucide-react";
-import { DeleteConfirmationDialog } from "./delete-confirmation-dialog";
-import { DataBackup } from "./data-backup";
-import { ProfileVerification } from "./profile-verification";
-import { PrivacySettings } from "./privacy-settings";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { AlertTriangle, Trash2, X, Download, Shield } from 'lucide-react';
+import { DeleteConfirmationDialog } from './delete-confirmation-dialog';
+import { DataBackup } from './data-backup';
+import { ProfileVerification } from './profile-verification';
+import { PrivacySettings } from './privacy-settings';
 
 export function ProfileDeletion() {
   const [isConfirming, setIsConfirming] = useState(false);
-  const [confirmationText, setConfirmationText] = useState("");
+  const [confirmationText, setConfirmationText] = useState('');
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const [acknowledgements, setAcknowledgements] = useState({
     dataLoss: false,
@@ -32,25 +26,25 @@ export function ProfileDeletion() {
   const handleDelete = async () => {
     try {
       // Simulate API call to delete account
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      toast.success("Account deleted successfully");
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      toast.success('Account deleted successfully');
       // Redirect to home page or show success message
     } catch (error) {
-      console.error("Error deleting account:", error);
-      toast.error("Failed to delete account");
+      console.error('Error deleting account:', error);
+      toast.error('Failed to delete account');
     }
   };
 
   const handleAcknowledge = (key: keyof typeof acknowledgements) => {
-    setAcknowledgements((prev) => ({
+    setAcknowledgements(prev => ({
       ...prev,
       [key]: !prev[key],
     }));
   };
 
   const allAcknowledged = Object.values(acknowledgements).every(Boolean);
-  const canDelete = allAcknowledged && confirmationText === "DELETE MY ACCOUNT";
+  const canDelete = allAcknowledged && confirmationText === 'DELETE MY ACCOUNT';
 
   return (
     <div className="space-y-6">
@@ -60,7 +54,7 @@ export function ProfileDeletion() {
       </div>
 
       <PrivacySettings />
-      
+
       <Card className="border-destructive">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-destructive">
@@ -90,7 +84,7 @@ export function ProfileDeletion() {
                 <Checkbox
                   id="dataLoss"
                   checked={acknowledgements.dataLoss}
-                  onCheckedChange={() => handleAcknowledge("dataLoss")}
+                  onCheckedChange={() => handleAcknowledge('dataLoss')}
                 />
                 <div className="space-y-1">
                   <Label htmlFor="dataLoss">
@@ -106,12 +100,10 @@ export function ProfileDeletion() {
                 <Checkbox
                   id="irreversible"
                   checked={acknowledgements.irreversible}
-                  onCheckedChange={() => handleAcknowledge("irreversible")}
+                  onCheckedChange={() => handleAcknowledge('irreversible')}
                 />
                 <div className="space-y-1">
-                  <Label htmlFor="irreversible">
-                    I understand this action is irreversible
-                  </Label>
+                  <Label htmlFor="irreversible">I understand this action is irreversible</Label>
                   <p className="text-sm text-muted-foreground">
                     Once deleted, your account cannot be recovered
                   </p>
@@ -122,12 +114,10 @@ export function ProfileDeletion() {
                 <Checkbox
                   id="backup"
                   checked={acknowledgements.backup}
-                  onCheckedChange={() => handleAcknowledge("backup")}
+                  onCheckedChange={() => handleAcknowledge('backup')}
                 />
                 <div className="space-y-1">
-                  <Label htmlFor="backup">
-                    I have exported my data and created a backup
-                  </Label>
+                  <Label htmlFor="backup">I have exported my data and created a backup</Label>
                   <p className="text-sm text-muted-foreground">
                     Make sure to download your data before proceeding
                   </p>
@@ -138,7 +128,7 @@ export function ProfileDeletion() {
                 <Checkbox
                   id="verification"
                   checked={acknowledgements.verification}
-                  onCheckedChange={() => handleAcknowledge("verification")}
+                  onCheckedChange={() => handleAcknowledge('verification')}
                 />
                 <div className="space-y-1">
                   <Label htmlFor="verification">
@@ -154,12 +144,10 @@ export function ProfileDeletion() {
                 <Checkbox
                   id="privacy"
                   checked={acknowledgements.privacy}
-                  onCheckedChange={() => handleAcknowledge("privacy")}
+                  onCheckedChange={() => handleAcknowledge('privacy')}
                 />
                 <div className="space-y-1">
-                  <Label htmlFor="privacy">
-                    I understand my privacy settings will be removed
-                  </Label>
+                  <Label htmlFor="privacy">I understand my privacy settings will be removed</Label>
                   <p className="text-sm text-muted-foreground">
                     All privacy preferences will be permanently deleted
                   </p>
@@ -169,13 +157,11 @@ export function ProfileDeletion() {
 
             {allAcknowledged && (
               <div className="space-y-2">
-                <Label htmlFor="confirmation">
-                  Type "DELETE MY ACCOUNT" to confirm
-                </Label>
+                <Label htmlFor="confirmation">Type "DELETE MY ACCOUNT" to confirm</Label>
                 <Input
                   id="confirmation"
                   value={confirmationText}
-                  onChange={(e) => setConfirmationText(e.target.value)}
+                  onChange={e => setConfirmationText(e.target.value)}
                   placeholder="DELETE MY ACCOUNT"
                   className="font-mono"
                 />
@@ -183,11 +169,7 @@ export function ProfileDeletion() {
             )}
 
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                className="flex-1"
-                onClick={() => setIsConfirming(false)}
-              >
+              <Button variant="outline" className="flex-1" onClick={() => setIsConfirming(false)}>
                 <X className="mr-2 h-4 w-4" />
                 Cancel
               </Button>
@@ -212,4 +194,4 @@ export function ProfileDeletion() {
       />
     </div>
   );
-} 
+}

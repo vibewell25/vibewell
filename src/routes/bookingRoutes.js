@@ -5,7 +5,7 @@ import {
   getBooking,
   createBooking,
   updateBooking,
-  deleteBooking
+  deleteBooking,
 } from '../controllers/bookingController';
 
 // Include review router for nested routes
@@ -19,13 +19,12 @@ import { protect, authorize } from '../middleware/auth';
 router.use('/:bookingId/reviews', reviewRouter);
 
 // Booking routes
-router.route('/')
-  .get(protect, getBookings)
-  .post(protect, authorize('customer'), createBooking);
+router.route('/').get(protect, getBookings).post(protect, authorize('customer'), createBooking);
 
-router.route('/:id')
+router
+  .route('/:id')
   .get(protect, getBooking)
   .put(protect, updateBooking)
   .delete(protect, deleteBooking);
 
-export default router; 
+export default router;

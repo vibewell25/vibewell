@@ -129,7 +129,7 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
   // Add timer effect
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    
+
     if (isPlaying) {
       interval = setInterval(() => {
         setMeditationTimer(prev => prev + 1);
@@ -186,34 +186,23 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
           {error}
         </div>
       )}
-      
-      <Canvas
-        camera={{ position: [0, 5, 10], fov: 75 }}
-        shadows
-        gl={{ antialias: true }}
-      >
+
+      <Canvas camera={{ position: [0, 5, 10], fov: 75 }} shadows gl={{ antialias: true }}>
         <Environment preset={THEME_SETTINGS[theme].environmentPreset as any} />
-        
-        <ambientLight
-          color={THEME_SETTINGS[theme].ambientLight}
-          intensity={lightingIntensity}
-        />
-        
-        <directionalLight
-          position={[5, 5, 5]}
-          intensity={0.5}
-          castShadow
-        />
+
+        <ambientLight color={THEME_SETTINGS[theme].ambientLight} intensity={lightingIntensity} />
+
+        <directionalLight position={[5, 5, 5]} intensity={0.5} castShadow />
 
         <ThemeComponent />
-        
+
         {particleEffects && (
           <ParticleSystem
             count={THEME_SETTINGS[theme].particleCount}
             color={THEME_SETTINGS[theme].particleColor}
           />
         )}
-        
+
         <OrbitControls
           enableZoom={true}
           enablePan={true}
@@ -227,12 +216,14 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">
-              {theme.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')} Meditation
+              {theme
+                .split('-')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ')}{' '}
+              Meditation
             </h3>
             <button
-              className={`px-4 py-2 rounded ${
-                isPlaying ? 'bg-red-500' : 'bg-blue-500'
-              } text-white`}
+              className={`px-4 py-2 rounded ${isPlaying ? 'bg-red-500' : 'bg-blue-500'} text-white`}
               onClick={toggleMeditation}
             >
               {isPlaying ? 'End Session' : 'Begin Meditation'}
@@ -242,7 +233,8 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
           {isPlaying && (
             <div className="flex items-center gap-4">
               <div className="text-lg font-medium">
-                {Math.floor(meditationTimer / 60)}:{(meditationTimer % 60).toString().padStart(2, '0')}
+                {Math.floor(meditationTimer / 60)}:
+                {(meditationTimer % 60).toString().padStart(2, '0')}
               </div>
               <div className="flex-1 bg-gray-200 h-2 rounded-full overflow-hidden">
                 <motion.div
@@ -257,15 +249,15 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">
-                Ambient Sound
-              </label>
+              <label className="block text-sm font-medium mb-1">Ambient Sound</label>
               <select
                 className="w-full rounded border-gray-300"
                 value={soundscape}
-                onChange={(e) => onStateChange?.({ 
-                  soundscape: e.target.value as MeditationEnvironmentProps['soundscape']
-                })}
+                onChange={e =>
+                  onStateChange?.({
+                    soundscape: e.target.value as MeditationEnvironmentProps['soundscape'],
+                  })
+                }
               >
                 <option value="silence">Silence</option>
                 <option value="rain">Rain</option>
@@ -276,16 +268,14 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">
-                Lighting
-              </label>
+              <label className="block text-sm font-medium mb-1">Lighting</label>
               <input
                 type="range"
                 min="0"
                 max="2"
                 step="0.1"
                 value={lightingIntensity}
-                onChange={(e) => onStateChange?.({ lightingIntensity: parseFloat(e.target.value) })}
+                onChange={e => onStateChange?.({ lightingIntensity: parseFloat(e.target.value) })}
                 className="w-full"
               />
             </div>
@@ -298,4 +288,4 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
   );
 };
 
-export default MeditationEnvironment; 
+export default MeditationEnvironment;

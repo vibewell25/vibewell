@@ -3,10 +3,11 @@
  * Contains mocks for drei components and hooks
  */
 
-const React = require('react');
+import { vi } from 'vitest';
+import React from 'react';
 
 // Mock for common drei components
-const OrbitControls = jest.fn(({ children, ...props }) => {
+const OrbitControls = vi.fn(({ children, ...props }) => {
   return React.createElement('div', {
     'data-testid': 'drei-orbit-controls',
     ...props,
@@ -14,7 +15,7 @@ const OrbitControls = jest.fn(({ children, ...props }) => {
   });
 });
 
-const TransformControls = jest.fn(({ children, ...props }) => {
+const TransformControls = vi.fn(({ children, ...props }) => {
   return React.createElement('div', {
     'data-testid': 'drei-transform-controls',
     ...props,
@@ -22,7 +23,7 @@ const TransformControls = jest.fn(({ children, ...props }) => {
   });
 });
 
-const PresentationControls = jest.fn(({ children, ...props }) => {
+const PresentationControls = vi.fn(({ children, ...props }) => {
   return React.createElement('div', {
     'data-testid': 'drei-presentation-controls',
     ...props,
@@ -30,7 +31,7 @@ const PresentationControls = jest.fn(({ children, ...props }) => {
   });
 });
 
-const Environment = jest.fn(({ children, ...props }) => {
+const Environment = vi.fn(({ children, ...props }) => {
   // If there is a preset or path prop, trigger environment map loading simulation
   if (props.preset || props.files || props.path) {
     // Call any onLoad callback provided
@@ -40,7 +41,7 @@ const Environment = jest.fn(({ children, ...props }) => {
           isTexture: true,
           encoding: 3001, // sRGBEncoding
           mapping: 301,   // CubeReflectionMapping
-          dispose: jest.fn()
+          dispose: vi.fn()
         };
         props.onLoad(mockEnvMap);
       }, 0);
@@ -54,7 +55,7 @@ const Environment = jest.fn(({ children, ...props }) => {
   });
 });
 
-const Sky = jest.fn(({ children, ...props }) => {
+const Sky = vi.fn(({ children, ...props }) => {
   return React.createElement('div', {
     'data-testid': 'drei-sky',
     ...props,
@@ -62,7 +63,7 @@ const Sky = jest.fn(({ children, ...props }) => {
   });
 });
 
-const ContactShadows = jest.fn(({ children, ...props }) => {
+const ContactShadows = vi.fn(({ children, ...props }) => {
   return React.createElement('div', {
     'data-testid': 'drei-contact-shadows',
     ...props,
@@ -70,7 +71,7 @@ const ContactShadows = jest.fn(({ children, ...props }) => {
   });
 });
 
-const Text = jest.fn(({ children, ...props }) => {
+const Text = vi.fn(({ children, ...props }) => {
   return React.createElement('div', {
     'data-testid': 'drei-text',
     ...props,

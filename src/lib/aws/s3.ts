@@ -22,14 +22,14 @@ export async function uploadToS3(file: File, key?: string): Promise<string> {
     const fileKey = key || `uploads/${uuidv4()}`;
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    
+
     const params = {
       Bucket: BUCKET_NAME,
       Key: fileKey,
       Body: buffer,
       ContentType: file.type,
     };
-    
+
     await s3.upload(params).promise();
     return fileKey;
   } catch (error) {
@@ -51,7 +51,7 @@ export function getSignedUrl(key: string, expiresIn: number = 3600): string {
       Key: key,
       Expires: expiresIn,
     };
-    
+
     return s3.getSignedUrl('getObject', params);
   } catch (error) {
     console.error('Error generating signed URL:', error);
@@ -69,10 +69,10 @@ export async function deleteFromS3(key: string): Promise<void> {
       Bucket: BUCKET_NAME,
       Key: key,
     };
-    
+
     await s3.deleteObject(params).promise();
   } catch (error) {
     console.error('Error deleting file from S3:', error);
     throw new Error('Failed to delete file');
   }
-} 
+}

@@ -71,10 +71,7 @@ export const mockPractitioners = [
       'Certified Aromatherapist',
       'Deep Tissue Specialist',
     ],
-    education: [
-      'Massage Therapy - Wellness Institute',
-      'Advanced Bodywork - Healing Arts Center',
-    ],
+    education: ['Massage Therapy - Wellness Institute', 'Advanced Bodywork - Healing Arts Center'],
     languages: ['English', 'Mandarin'],
     services: [
       {
@@ -127,10 +124,7 @@ export const mockPractitioners = [
       'Medical Skincare Specialist',
       'Advanced Chemical Peel Certification',
     ],
-    education: [
-      'Esthetics Program - Beauty Institute',
-      'Advanced Skincare - Dermal Institute',
-    ],
+    education: ['Esthetics Program - Beauty Institute', 'Advanced Skincare - Dermal Institute'],
     languages: ['English', 'Spanish', 'Portuguese'],
     services: [
       {
@@ -176,10 +170,7 @@ export const mockPractitioners = [
       'Advanced Nail Art Specialist',
       'Gel Application Expert',
     ],
-    education: [
-      'Nail Technology - Beauty Academy',
-      'Advanced Nail Art - Creative Institute',
-    ],
+    education: ['Nail Technology - Beauty Academy', 'Advanced Nail Art - Creative Institute'],
     languages: ['English', 'Korean'],
     services: [
       {
@@ -225,10 +216,7 @@ export const mockPractitioners = [
       'Meditation Teacher Training',
       'Holistic Wellness Coach',
     ],
-    education: [
-      'Yoga Teacher Training - Mindful Institute',
-      'Wellness Coaching - Health Academy',
-    ],
+    education: ['Yoga Teacher Training - Mindful Institute', 'Wellness Coaching - Health Academy'],
     languages: ['English', 'Hindi', 'Gujarati'],
     services: [
       {
@@ -264,9 +252,9 @@ export const mockPractitioners = [
       },
     ],
     servicesCount: 3,
-  }
+  },
 ];
 
 export const mockSpecializations = Array.from(
   new Set(mockPractitioners.flatMap(p => p.specialization))
-).sort(); 
+).sort();

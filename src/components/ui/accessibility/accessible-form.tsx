@@ -20,47 +20,37 @@ export interface AccessibleFormProps {
   success?: string;
 }
 
-export function FormField({
-  id,
-  label,
-  error,
-  required,
-  children,
-  description
-}: FormFieldProps) {
+export function FormField({ id, label, error, required, children, description }: FormFieldProps) {
   return (
     <div className="mb-4">
-      <label
-        htmlFor={id}
-        className="block text-sm font-medium text-gray-700 mb-1"
-      >
+      <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">
         {label}
         {required && (
-          <span className="text-red-500 ml-1" aria-hidden="true">*</span>
+          <span className="text-red-500 ml-1" aria-hidden="true">
+            *
+          </span>
         )}
       </label>
-      
+
       {description && (
         <p className="text-sm text-gray-500 mb-1" id={`${id}-description`}>
           {description}
         </p>
       )}
-      
+
       <div
-        aria-describedby={
-          [
-            description ? `${id}-description` : undefined,
-            error ? `${id}-error` : undefined
-          ]
-            .filter(Boolean)
-            .join(' ')
-        }
+        aria-describedby={[
+          description ? `${id}-description` : undefined,
+          error ? `${id}-error` : undefined,
+        ]
+          .filter(Boolean)
+          .join(' ')}
         aria-invalid={!!error}
         aria-required={required}
       >
         {children}
       </div>
-      
+
       <ErrorMessage id={id} error={error} />
     </div>
   );
@@ -71,34 +61,23 @@ export function AccessibleForm({
   isLoading = false,
   children,
   error,
-  success
+  success,
 }: AccessibleFormProps) {
   return (
     <LoadingState isLoading={isLoading}>
-      <form
-        onSubmit={onSubmit}
-        noValidate
-        aria-busy={isLoading}
-        aria-live="polite"
-      >
+      <form onSubmit={onSubmit} noValidate aria-busy={isLoading} aria-live="polite">
         {error && (
-          <div
-            role="alert"
-            className="mb-4 p-4 text-sm text-red-700 bg-red-100 rounded"
-          >
+          <div role="alert" className="mb-4 p-4 text-sm text-red-700 bg-red-100 rounded">
             {error}
           </div>
         )}
-        
+
         {success && (
-          <div
-            role="status"
-            className="mb-4 p-4 text-sm text-green-700 bg-green-100 rounded"
-          >
+          <div role="status" className="mb-4 p-4 text-sm text-green-700 bg-green-100 rounded">
             {success}
           </div>
         )}
-        
+
         {children}
       </form>
     </LoadingState>
@@ -149,4 +128,4 @@ export function AccessibleForm({
     {isSubmitting ? 'Submitting...' : 'Submit'}
   </button>
 </AccessibleForm>
-*/ 
+*/

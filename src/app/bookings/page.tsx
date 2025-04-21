@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { BookingList } from '@/components/booking/booking-list';
 import { BookingDetails } from '@/components/booking/booking-details';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Suspense } from 'react';
 
 function BookingsContent() {
@@ -32,18 +32,17 @@ function BookingsContent() {
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-8">My Bookings</h1>
-      <BookingList
-        userId={user.id}
-        role={user.role as 'customer' | 'provider'}
-      />
+      <BookingList userId={user.id} role={user.role as 'customer' | 'provider'} />
     </div>
   );
 }
 
 export default function BookingsPage() {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center h-64">Loading bookings...</div>}>
+    <Suspense
+      fallback={<div className="flex justify-center items-center h-64">Loading bookings...</div>}
+    >
       <BookingsContent />
     </Suspense>
   );
-} 
+}

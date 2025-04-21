@@ -1,155 +1,162 @@
 import mongoose from 'mongoose';
 
-const ReviewSchema = new mongoose.Schema({
-  customer: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'CustomerProfile',
-    required: true,
-  },
-  provider: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'ProviderProfile',
-    required: true,
-  },
-  booking: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Booking',
-    required: true,
-  },
-  serviceType: {
-    type: String,
-    enum: ['service', 'bundle', 'training'],
-    required: true,
-  },
-  service: {
-    type: mongoose.Schema.Types.ObjectId,
-    refPath: 'serviceModel',
-  },
-  serviceModel: {
-    type: String,
-    enum: ['Service', 'ServiceBundle', 'TrainingProgram'],
-    required: function() {
-      return this.service !== undefined;
+const ReviewSchema = new mongoose.Schema(
+  {
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'CustomerProfile',
+      required: true,
     },
-  },
-  rating: {
-    type: Number,
-    min: 1,
-    max: 5,
-    required: [true, 'Please add a rating between 1 and 5']
-  },
-  title: {
-    type: String,
-    trim: true,
-    required: [true, 'Please add a title for the review'],
-    maxlength: 100
-  },
-  text: {
-    type: String,
-    required: [true, 'Please add some text']
-  },
-  images: [{
-    url: String,
-    caption: String,
-  }],
-  categories: {
-    cleanliness: {
-      type: Number,
-      min: 1,
-      max: 5,
+    provider: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'ProviderProfile',
+      required: true,
     },
-    value: {
-      type: Number,
-      min: 1,
-      max: 5,
+    booking: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Booking',
+      required: true,
+    },
+    serviceType: {
+      type: String,
+      enum: ['service', 'bundle', 'training'],
+      required: true,
     },
     service: {
-      type: Number,
-      min: 1,
-      max: 5,
-    },
-    communication: {
-      type: Number,
-      min: 1,
-      max: 5,
-    },
-    expertise: {
-      type: Number,
-      min: 1,
-      max: 5,
-    },
-  },
-  isVerified: {
-    type: Boolean,
-    default: true, // True because it's linked to a booking
-  },
-  isPublic: {
-    type: Boolean,
-    default: true,
-  },
-  helpful: {
-    count: {
-      type: Number,
-      default: 0,
-    },
-    users: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    }],
-  },
-  status: {
-    type: String,
-    enum: ['pending', 'approved', 'rejected', 'flagged'],
-    default: 'pending',
-  },
-  moderationNotes: String,
-  providerResponse: {
-    text: String,
-    createdAt: {
-      type: Date,
-      default: null,
+      refPath: 'serviceModel',
     },
-    updatedAt: {
-      type: Date,
-      default: null,
+    serviceModel: {
+      type: String,
+      enum: ['Service', 'ServiceBundle', 'TrainingProgram'],
+      required: function () {
+        return this.service !== undefined;
+      },
     },
-  },
-  adminResponse: {
-    text: String,
-    createdAt: {
-      type: Date,
-      default: null,
+    rating: {
+      type: Number,
+      min: 1,
+      max: 5,
+      required: [true, 'Please add a rating between 1 and 5'],
     },
-    updatedAt: {
-      type: Date,
-      default: null,
+    title: {
+      type: String,
+      trim: true,
+      required: [true, 'Please add a title for the review'],
+      maxlength: 100,
     },
-  },
-  reported: {
-    isReported: {
+    text: {
+      type: String,
+      required: [true, 'Please add some text'],
+    },
+    images: [
+      {
+        url: String,
+        caption: String,
+      },
+    ],
+    categories: {
+      cleanliness: {
+        type: Number,
+        min: 1,
+        max: 5,
+      },
+      value: {
+        type: Number,
+        min: 1,
+        max: 5,
+      },
+      service: {
+        type: Number,
+        min: 1,
+        max: 5,
+      },
+      communication: {
+        type: Number,
+        min: 1,
+        max: 5,
+      },
+      expertise: {
+        type: Number,
+        min: 1,
+        max: 5,
+      },
+    },
+    isVerified: {
       type: Boolean,
-      default: false,
+      default: true, // True because it's linked to a booking
     },
-    reason: String,
-    reportedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+    isPublic: {
+      type: Boolean,
+      default: true,
     },
-    reportedAt: Date,
+    helpful: {
+      count: {
+        type: Number,
+        default: 0,
+      },
+      users: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+        },
+      ],
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'approved', 'rejected', 'flagged'],
+      default: 'pending',
+    },
+    moderationNotes: String,
+    providerResponse: {
+      text: String,
+      createdAt: {
+        type: Date,
+        default: null,
+      },
+      updatedAt: {
+        type: Date,
+        default: null,
+      },
+    },
+    adminResponse: {
+      text: String,
+      createdAt: {
+        type: Date,
+        default: null,
+      },
+      updatedAt: {
+        type: Date,
+        default: null,
+      },
+    },
+    reported: {
+      isReported: {
+        type: Boolean,
+        default: false,
+      },
+      reason: String,
+      reportedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+      reportedAt: Date,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
-}, {
-  timestamps: true,
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true }
-});
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
 
 // Update the updatedAt field on save
 ReviewSchema.pre('save', function (next) {
@@ -170,25 +177,25 @@ ReviewSchema.index({ serviceType: 1, service: 1 }); // For service-specific revi
 ReviewSchema.index({ booking: 1, customer: 1 }, { unique: true });
 
 // Static method to get avg rating and save
-ReviewSchema.statics.getAvgRatingAndSave = async function(providerId) {
+ReviewSchema.statics.getAvgRatingAndSave = async function (providerId) {
   const obj = await this.aggregate([
     {
-      $match: { provider: providerId }
+      $match: { provider: providerId },
     },
     {
       $group: {
         _id: '$provider',
-        averageRating: { $avg: '$rating' }
-      }
-    }
+        averageRating: { $avg: '$rating' },
+      },
+    },
   ]);
 
   try {
     const avgRating = obj[0] ? obj[0].averageRating : 0;
-    
+
     await this.model('ProviderProfile').findByIdAndUpdate(providerId, {
       rating: avgRating,
-      reviewCount: await this.countDocuments({ provider: providerId })
+      reviewCount: await this.countDocuments({ provider: providerId }),
     });
   } catch (err) {
     console.error('Error updating provider average rating:', err);
@@ -196,15 +203,15 @@ ReviewSchema.statics.getAvgRatingAndSave = async function(providerId) {
 };
 
 // Call getAvgRatingAndSave after save
-ReviewSchema.post('save', function() {
+ReviewSchema.post('save', function () {
   this.constructor.getAvgRatingAndSave(this.provider);
 });
 
 // Call getAvgRatingAndSave before remove
-ReviewSchema.pre('remove', function() {
+ReviewSchema.pre('remove', function () {
   this.constructor.getAvgRatingAndSave(this.provider);
 });
 
 const Review = mongoose.model('Review', ReviewSchema);
 
-export default Review; 
+export default Review;

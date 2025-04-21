@@ -8,10 +8,7 @@ export async function POST(req: NextRequest) {
       const { amount, currency = 'usd', description, metadata = {} } = await req.json();
 
       if (!amount || amount <= 0) {
-        return NextResponse.json(
-          { error: 'Invalid amount' },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
       }
 
       // Find or create a Stripe customer
@@ -19,7 +16,7 @@ export async function POST(req: NextRequest) {
 
       if (user.email) {
         const customer = await getCustomerByEmail(user.email);
-        
+
         if (customer) {
           customerId = customer.id;
         } else {
@@ -31,7 +28,7 @@ export async function POST(req: NextRequest) {
               userId: user.sub,
             },
           });
-          
+
           customerId = newCustomer.id;
         }
       }
@@ -54,10 +51,7 @@ export async function POST(req: NextRequest) {
       });
     } catch (error) {
       console.error('Error creating payment intent:', error);
-      return NextResponse.json(
-        { error: 'Failed to create payment' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: 'Failed to create payment' }, { status: 500 });
     }
   });
-} 
+}

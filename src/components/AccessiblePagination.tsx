@@ -48,9 +48,10 @@ export const AccessiblePagination: React.FC<AccessiblePaginationProps> = ({
       onClick={() => handlePageChange(page)}
       className={`
         px-3 py-1 rounded
-        ${currentPage === page
-          ? 'bg-primary text-white'
-          : 'bg-white text-gray-700 hover:bg-gray-100'
+        ${
+          currentPage === page
+            ? 'bg-primary text-white'
+            : 'bg-white text-gray-700 hover:bg-gray-100'
         }
         focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
       `}
@@ -72,10 +73,7 @@ export const AccessiblePagination: React.FC<AccessiblePaginationProps> = ({
       disabled={disabled}
       className={`
         px-3 py-1 rounded
-        ${disabled
-          ? 'opacity-50 cursor-not-allowed'
-          : 'hover:bg-gray-100'
-        }
+        ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'}
         focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
       `}
       aria-label={ariaLabel}
@@ -85,20 +83,10 @@ export const AccessiblePagination: React.FC<AccessiblePaginationProps> = ({
   );
 
   return (
-    <nav
-      aria-label="Pagination"
-      className={className}
-    >
+    <nav aria-label="Pagination" className={className}>
       <ul className="flex items-center space-x-1">
         {showFirstLast && (
-          <li>
-            {renderNavigationButton(
-              'First',
-              1,
-              currentPage === 1,
-              'Go to first page'
-            )}
-          </li>
+          <li>{renderNavigationButton('First', 1, currentPage === 1, 'Go to first page')}</li>
         )}
         {showPrevNext && (
           <li>
@@ -136,4 +124,4 @@ export const AccessiblePagination: React.FC<AccessiblePaginationProps> = ({
   );
 };
 
-export default AccessiblePagination; 
+export default AccessiblePagination;

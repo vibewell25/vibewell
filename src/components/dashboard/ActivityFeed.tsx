@@ -41,17 +41,12 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
   }
   return (
     <div className="space-y-4">
-      {activities.map((activity) => (
-        <div
-          key={activity.id}
-          className="flex items-start gap-4 rounded-lg border p-4"
-        >
+      {activities.map(activity => (
+        <div key={activity.id} className="flex items-start gap-4 rounded-lg border p-4">
           <div className="mt-1">{getActivityIcon(activity.type)}</div>
           <div className="flex-1 space-y-1">
             <p className="font-medium">{activity.title}</p>
-            <p className="text-sm text-muted-foreground">
-              {activity.description}
-            </p>
+            <p className="text-sm text-muted-foreground">{activity.description}</p>
             <p className="text-xs text-muted-foreground">
               {format(new Date(activity.date), 'MMM d, yyyy h:mm a')}
             </p>
@@ -60,4 +55,4 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
       ))}
     </div>
   );
-} 
+}

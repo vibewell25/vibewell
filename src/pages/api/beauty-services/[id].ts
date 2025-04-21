@@ -1,13 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from '@/types/api';
 import { getAuth } from '@clerk/nextjs/server';
 import { BeautyServiceService } from '../../../services/beautyService.service';
 
 const beautyServiceService = new BeautyServiceService();
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { userId } = getAuth(req);
   const { id } = req.query;
 
@@ -23,7 +20,7 @@ export default async function handler(
     case 'GET':
       try {
         const service = await beautyServiceService.getServiceById(id);
-        
+
         if (!service) {
           return res.status(404).json({ error: 'Service not found' });
         }
@@ -56,4 +53,4 @@ export default async function handler(
       res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);
       return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
   }
-} 
+}

@@ -1,14 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from '@/types/api';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { MFAService, MFAMethod } from '@/services/mfaService';
 
 const mfaService = new MFAService();
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -26,10 +23,7 @@ export default async function handler(
     }
 
     // Enable MFA for the user
-    const result = await mfaService.enableMFA(
-      session.user.id,
-      method as MFAMethod
-    );
+    const result = await mfaService.enableMFA(session.user.id, method as MFAMethod);
 
     // If phone number or email is provided, update user settings
     if (phoneNumber || email) {
@@ -46,7 +40,7 @@ export default async function handler(
       return res.status(200).json({
         success: true,
         secret: result.secret,
-        otpauthUrl: `otpauth://totp/Vibewell:${session.user.email}?secret=${result.secret}&issuer=Vibewell`
+        otpauthUrl: `otpauth://totp/Vibewell:${session.user.email}?secret=${result.secret}&issuer=Vibewell`,
       });
     }
 
@@ -60,4 +54,4 @@ export default async function handler(
     console.error('MFA setup error:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
-} 
+}

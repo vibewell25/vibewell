@@ -37,9 +37,7 @@ export function SharePost({ postId, postContent }: SharePostProps) {
   };
   // Truncate long content for sharing
   const getTruncatedContent = () => {
-    return postContent.length > 60 
-      ? `${postContent.substring(0, 60)}...` 
-      : postContent;
+    return postContent.length > 60 ? `${postContent.substring(0, 60)}...` : postContent;
   };
   return (
     <div className="relative" ref={shareRef}>
@@ -63,14 +61,12 @@ export function SharePost({ postId, postContent }: SharePostProps) {
               <span className="text-sm">Send as message</span>
             </Link>
             {/* Share in community */}
-            <button 
-              className="w-full flex items-center space-x-2 p-2 hover:bg-muted rounded-md transition-colors"
-            >
+            <button className="w-full flex items-center space-x-2 p-2 hover:bg-muted rounded-md transition-colors">
               <Icons.ChatBubbleLeftEllipsisIcon className="h-4 w-4" />
               <span className="text-sm">Share to community</span>
             </button>
             {/* Copy link */}
-            <button 
+            <button
               className="w-full flex items-center space-x-2 p-2 hover:bg-muted rounded-md transition-colors"
               onClick={copyToClipboard}
             >
@@ -85,13 +81,11 @@ export function SharePost({ postId, postContent }: SharePostProps) {
           <div className="mt-3 pt-2 border-t border-border">
             <div className="flex items-center space-x-2">
               <Icons.LinkIcon className="h-4 w-4 text-muted-foreground" />
-              <p className="text-xs text-muted-foreground truncate">
-                {getTruncatedContent()}
-              </p>
+              <p className="text-xs text-muted-foreground truncate">{getTruncatedContent()}</p>
             </div>
           </div>
         </div>
       )}
     </div>
   );
-} 
+}

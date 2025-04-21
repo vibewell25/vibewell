@@ -30,12 +30,12 @@ export const VirtualizedProviderList: React.FC<VirtualizedProviderListProps> = (
     onSelectProvider(provider);
   };
 
-  const ProviderRow = ({ index, style }: { index: number, style: React.CSSProperties }) => {
+  const ProviderRow = ({ index, style }: { index: number; style: React.CSSProperties }) => {
     const provider = providers[index];
     const isSelected = selectedId === provider.id;
-    
+
     return (
-      <div 
+      <div
         style={style}
         className={`p-4 border-b ${isSelected ? 'bg-blue-50' : 'hover:bg-gray-50'} transition-colors`}
         onClick={() => handleSelectProvider(provider)}
@@ -46,8 +46,8 @@ export const VirtualizedProviderList: React.FC<VirtualizedProviderListProps> = (
       >
         <div className="flex items-center">
           <div className="relative h-12 w-12 rounded-full overflow-hidden mr-3">
-            <Image 
-              src={provider.imageUrl} 
+            <Image
+              src={provider.imageUrl}
               alt={provider.name}
               fill
               sizes="48px"

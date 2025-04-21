@@ -1,7 +1,5 @@
 import { prisma } from '@/lib/database/client';
 
-
-
 export interface Product {
   id: string;
   name: string;
@@ -54,8 +52,7 @@ export class ProductService {
    */
   async getProduct(id: string): Promise<Product | null> {
     try {
-      const products = await prisma.product.findMany({ where: { id: id } })
-        .single();
+      const products = await prisma.product.findMany({ where: { id: id } }).single();
 
       if (error) throw error;
       return data as Product;
@@ -68,7 +65,10 @@ export class ProductService {
   /**
    * Get all products with optional pagination
    */
-  async getProducts(page: number = 1, limit: number = 20): Promise<{ products: Product[], total: number }> {
+  async getProducts(
+    page: number = 1,
+    limit: number = 20
+  ): Promise<{ products: Product[]; total: number }> {
     try {
       // Get total count first
       const { count, error: countError } = await supabase
@@ -78,7 +78,8 @@ export class ProductService {
       if (countError) throw countError;
 
       // Then get paginated results
-      const products = await prisma.product.findMany()
+      const products = await prisma.product
+        .findMany()
         .range((page - 1) * limit, page * limit - 1)
         .order('created_at', { ascending: false });
 
@@ -95,7 +96,8 @@ export class ProductService {
    */
   async getFeaturedProducts(limit: number = 6): Promise<Product[]> {
     try {
-      const products = await prisma.product.findMany({ where: { featured: true } })
+      const products = await prisma.product
+        .findMany({ where: { featured: true } })
         .order('rating', { ascending: false })
         .limit(limit);
 
@@ -112,7 +114,8 @@ export class ProductService {
    */
   async getTrendingProducts(limit: number = 6): Promise<Product[]> {
     try {
-      const products = await prisma.product.findMany({ where: { trending: true } })
+      const products = await prisma.product
+        .findMany({ where: { trending: true } })
         .order('rating', { ascending: false })
         .limit(limit);
 
@@ -129,7 +132,8 @@ export class ProductService {
    */
   async getProductsByType(type: string, limit: number = 20): Promise<Product[]> {
     try {
-      const products = await prisma.product.findMany({ where: { type: type } })
+      const products = await prisma.product
+        .findMany({ where: { type: type } })
         .order('rating', { ascending: false })
         .limit(limit);
 
@@ -144,24 +148,26 @@ export class ProductService {
   /**
    * Get product categories and subcategories for filtering
    */
-  async getProductCategories(): Promise<{ categories: string[], subcategories: Record<string, string[]> }> {
+  async getProductCategories(): Promise<{
+    categories: string[];
+    subcategories: Record<string, string[]>;
+  }> {
     try {
-      const products = await prisma.product.findMany()
-        .not('category', 'is', null);
+      const products = await prisma.product.findMany().not('category', 'is', null);
 
       if (error) throw error;
 
       // Extract unique categories
       const categories = Array.from(new Set(data.map(item => item.category))).sort();
-      
+
       // Group subcategories by category
       const subcategories: Record<string, string[]> = {};
-      
+
       categories.forEach(category => {
         const categorySubcategories = data
           .filter(item => item.category === category)
           .map(item => item.subcategory);
-          
+
         subcategories[category] = Array.from(new Set(categorySubcategories)).sort();
       });
 
@@ -177,8 +183,7 @@ export class ProductService {
    */
   async getProductBrands(): Promise<string[]> {
     try {
-      const products = await prisma.product.findMany()
-        .not('brand', 'is', null);
+      const products = await prisma.product.findMany().not('brand', 'is', null);
 
       if (error) throw error;
       return Array.from(new Set(data.map(item => item.brand))).sort();
@@ -196,7 +201,7 @@ export class ProductService {
       const products = await prisma.product.findMany();
 
       if (error) throw error;
-      
+
       // Flatten and get unique tags
       const allTags = data.flatMap(item => item.tags || []);
       return Array.from(new Set(allTags)).sort();
@@ -214,7 +219,7 @@ export class ProductService {
     sort: ProductSortOption = { field: 'rating', direction: 'desc' },
     page: number = 1,
     limit: number = 20
-  ): Promise<{ products: Product[], total: number }> {
+  ): Promise<{ products: Product[]; total: number }> {
     try {
       let query = supabase.from('products').select('*', { count: 'exact' });
 
@@ -295,17 +300,15 @@ export class ProductService {
         filteredData = filteredData.filter(product => {
           if (!product.tags) return false;
           // Check if product has all requested tags
-          return filter.tags!.every(tag => 
-            product.tags.some(productTag => 
-              productTag.toLowerCase().includes(tag.toLowerCase())
-            )
+          return filter.tags!.every(tag =>
+            product.tags.some(productTag => productTag.toLowerCase().includes(tag.toLowerCase()))
           );
         });
       }
 
-      return { 
-        products: (filteredData as Product[]) || [], 
-        total: filter.tags?.length ? filteredData.length : (count || 0) 
+      return {
+        products: (filteredData as Product[]) || [],
+        total: filter.tags?.length ? filteredData.length : count || 0,
       };
     } catch (error) {
       console.error('Error searching products:', error);
@@ -319,13 +322,13 @@ export class ProductService {
   async getRelatedProducts(productId: string, limit: number = 4): Promise<Product[]> {
     try {
       // First get the original product
-      const product = await prisma.product.findMany({ where: { id: productId } })
-        .single();
+      const product = await prisma.product.findMany({ where: { id: productId } }).single();
 
       if (productError) throw productError;
 
       // Then get related products of the same type and category
-      const products = await prisma.product.findMany({ where: { type: product.type } })
+      const products = await prisma.product
+        .findMany({ where: { type: product.type } })
         .eq('category', product.category)
         .neq('id', productId)
         .order('rating', { ascending: false })
@@ -336,7 +339,8 @@ export class ProductService {
       // If not enough products found, get more based on type only
       if (data.length < limit) {
         const remaining = limit - data.length;
-        const moreData = await prisma.product.findMany({ where: { type: product.type } })
+        const moreData = await prisma.product
+          .findMany({ where: { type: product.type } })
           .neq('id', productId)
           .not('id', 'in', `(${data.map(p => p.id).join(',')})`)
           .order('rating', { ascending: false })
@@ -352,4 +356,4 @@ export class ProductService {
       return [];
     }
   }
-} 
+}

@@ -1,8 +1,5 @@
 import { useState, useCallback } from 'react';
-import {
-  startRegistration,
-  startAuthentication,
-} from '@simplewebauthn/browser';
+import { startRegistration, startAuthentication } from '@simplewebauthn/browser';
 import { WebAuthnError } from '@/lib/auth/webauthn-types';
 
 interface WebAuthnOptions {
@@ -24,7 +21,7 @@ export function useWebAuthn() {
       const optionsResponse = await fetch('/api/auth/webauthn/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ options })
+        body: JSON.stringify({ options }),
       });
 
       if (!optionsResponse.ok) {
@@ -47,8 +44,8 @@ export function useWebAuthn() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           response: registrationResponse,
-          options
-        })
+          options,
+        }),
       });
 
       if (!verificationResponse.ok) {
@@ -79,7 +76,7 @@ export function useWebAuthn() {
       // Get authentication options from server
       const searchParams = new URLSearchParams({
         requireBiometrics: options.requireBiometrics ? 'true' : 'false',
-        userVerification: options.userVerificationLevel || 'preferred'
+        userVerification: options.userVerificationLevel || 'preferred',
       });
 
       const optionsResponse = await fetch(
@@ -107,8 +104,8 @@ export function useWebAuthn() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           response: authenticationResponse,
-          options
-        })
+          options,
+        }),
       });
 
       if (!verificationResponse.ok) {
@@ -135,6 +132,6 @@ export function useWebAuthn() {
     register,
     authenticate,
     isLoading,
-    error
+    error,
   };
-} 
+}

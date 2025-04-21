@@ -77,7 +77,7 @@ export const AccessibleTabs: React.FC<AccessibleTabsProps> = ({
         className="flex border-b border-gray-200"
         aria-label="Tabs"
       >
-        {tabs.map((tab) => (
+        {tabs.map(tab => (
           <button
             key={tab.id}
             role="tab"
@@ -88,21 +88,22 @@ export const AccessibleTabs: React.FC<AccessibleTabsProps> = ({
             disabled={tab.disabled}
             className={`
               px-4 py-2 text-sm font-medium
-              ${activeTab === tab.id
-                ? 'border-b-2 border-primary text-primary'
-                : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              ${
+                activeTab === tab.id
+                  ? 'border-b-2 border-primary text-primary'
+                  : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }
               ${tab.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
             `}
             onClick={() => handleTabClick(tab.id)}
-            onKeyDown={(e) => handleKeyDown(e, tab.id)}
+            onKeyDown={e => handleKeyDown(e, tab.id)}
           >
             {tab.label}
           </button>
         ))}
       </div>
 
-      {tabs.map((tab) => (
+      {tabs.map(tab => (
         <div
           key={tab.id}
           role="tabpanel"
@@ -117,4 +118,4 @@ export const AccessibleTabs: React.FC<AccessibleTabsProps> = ({
   );
 };
 
-export default AccessibleTabs; 
+export default AccessibleTabs;

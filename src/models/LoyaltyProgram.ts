@@ -54,21 +54,25 @@ const loyaltyMemberSchema = new Schema<LoyaltyMember>({
   currentTier: { type: String, required: true, default: 'Bronze' },
   joinDate: { type: Date, default: Date.now },
   lastActivityDate: { type: Date, default: Date.now },
-  pointsHistory: [{
-    id: { type: String, required: true },
-    type: { type: String, enum: ['earn', 'redeem', 'expire', 'adjust'], required: true },
-    points: { type: Number, required: true },
-    description: { type: String, required: true },
-    bookingId: { type: String },
-    rewardId: { type: String },
-    createdAt: { type: Date, default: Date.now }
-  }],
-  redeemedRewards: [{
-    rewardId: { type: String, required: true },
-    redeemedAt: { type: Date, default: Date.now },
-    expiresAt: { type: Date, required: true },
-    status: { type: String, enum: ['active', 'used', 'expired'], default: 'active' }
-  }]
+  pointsHistory: [
+    {
+      id: { type: String, required: true },
+      type: { type: String, enum: ['earn', 'redeem', 'expire', 'adjust'], required: true },
+      points: { type: Number, required: true },
+      description: { type: String, required: true },
+      bookingId: { type: String },
+      rewardId: { type: String },
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
+  redeemedRewards: [
+    {
+      rewardId: { type: String, required: true },
+      redeemedAt: { type: Date, default: Date.now },
+      expiresAt: { type: Date, required: true },
+      status: { type: String, enum: ['active', 'used', 'expired'], default: 'active' },
+    },
+  ],
 });
 
-export const LoyaltyMemberModel = model<LoyaltyMember>('LoyaltyMember', loyaltyMemberSchema); 
+export const LoyaltyMemberModel = model<LoyaltyMember>('LoyaltyMember', loyaltyMemberSchema);

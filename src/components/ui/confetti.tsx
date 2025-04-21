@@ -49,4 +49,4 @@ export function Confetti({ active, duration = 3000 }: ConfettiProps) {
       colors={['#FF5E5B', '#D8D8D8', '#FFFFEA', '#00CECB', '#FFED66']}
     />
   );
-} 
+}

@@ -1,10 +1,10 @@
 /**
  * API Rate Limiter (Legacy Import)
- * 
+ *
  * @deprecated Use the consolidated rate limiter from '@/lib/rate-limiter' instead
  */
 
-import { 
+import {
   apiRateLimiter,
   authRateLimiter,
   sensitiveApiRateLimiter,
@@ -17,7 +17,7 @@ import {
   applyRateLimit,
   withRateLimit,
   type RateLimitOptions,
-  type RateLimitResult
+  type RateLimitResult,
 } from '@/lib/rate-limiter';
 
 // Re-export the consolidated implementations
@@ -32,8 +32,8 @@ export {
   adminRateLimiter,
   createRateLimiter,
   applyRateLimit,
-  withRateLimit
+  withRateLimit,
 };
 
 // Re-export types
-export type { RateLimitOptions, RateLimitResult }; 
+export type { RateLimitOptions, RateLimitResult };

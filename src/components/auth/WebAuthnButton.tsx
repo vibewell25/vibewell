@@ -15,7 +15,7 @@ export function WebAuthnButton({
   onSuccess,
   onError,
   requireBiometrics = false,
-  className = ''
+  className = '',
 }: WebAuthnButtonProps) {
   const { register, authenticate, isLoading, error } = useWebAuthn();
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -25,21 +25,16 @@ export function WebAuthnButton({
       setStatus('loading');
       const options = {
         requireBiometrics,
-        userVerificationLevel: requireBiometrics ? ('required' as const) : ('preferred' as const)
+        userVerificationLevel: requireBiometrics ? ('required' as const) : ('preferred' as const),
       };
 
-      const verified = await (mode === 'register' 
-        ? register(options)
-        : authenticate(options));
+      const verified = await (mode === 'register' ? register(options) : authenticate(options));
 
       if (verified) {
         setStatus('success');
         onSuccess?.();
       } else {
-        throw new WebAuthnError(
-          'Verification failed',
-          'VERIFICATION_FAILED'
-        );
+        throw new WebAuthnError('Verification failed', 'VERIFICATION_FAILED');
       }
     } catch (err) {
       setStatus('error');
@@ -106,4 +101,4 @@ export function WebAuthnButton({
       )}
     </button>
   );
-} 
+}

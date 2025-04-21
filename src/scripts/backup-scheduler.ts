@@ -2,7 +2,7 @@
 
 /**
  * Backup Scheduler Script
- * 
+ *
  * This script sets up cron jobs for automated backups.
  * It loads backup configurations from the database or environment
  * and schedules them according to their cron expressions.
@@ -25,9 +25,9 @@ const BACKUP_JOBS: BackupJobSchedule[] = [
       bucketName: process.env.AWS_BACKUP_BUCKET || 'vibewell-backups',
       region: process.env.AWS_REGION || 'us-west-2',
       prefix: 'users',
-      retentionDays: 30
+      retentionDays: 30,
     },
-    enabled: true
+    enabled: true,
   },
   {
     id: 'weekly-full-backup',
@@ -37,9 +37,9 @@ const BACKUP_JOBS: BackupJobSchedule[] = [
       provider: 'google',
       bucketName: process.env.GCP_BACKUP_BUCKET || 'vibewell-backups',
       prefix: 'database',
-      retentionDays: 90
+      retentionDays: 90,
     },
-    enabled: true
+    enabled: true,
   },
   {
     id: 'hourly-transactions-backup',
@@ -49,22 +49,22 @@ const BACKUP_JOBS: BackupJobSchedule[] = [
       provider: 'azure',
       bucketName: process.env.AZURE_BACKUP_CONTAINER || 'vibewell-backups',
       prefix: 'transactions',
-      retentionDays: 7
+      retentionDays: 7,
     },
-    enabled: process.env.NODE_ENV === 'production' // Only enable in production
-  }
+    enabled: process.env.NODE_ENV === 'production', // Only enable in production
+  },
 ];
 
 // Scheduler class to handle backup jobs
 class BackupScheduler {
   private jobs: Map<string, cron.ScheduledTask> = new Map();
   private logDir: string;
-  
+
   constructor(logDirectory: string = 'logs') {
     this.logDir = logDirectory;
     this.ensureLogDirectory();
   }
-  
+
   // Make sure log directory exists
   private ensureLogDirectory() {
     const dir = path.resolve(process.cwd(), this.logDir);
@@ -72,45 +72,45 @@ class BackupScheduler {
       fs.mkdirSync(dir, { recursive: true });
     }
   }
-  
+
   // Log backup results
   private logBackupResult(jobId: string, result: any) {
     const logFile = path.resolve(process.cwd(), this.logDir, `${jobId}.log`);
     const timestamp = new Date().toISOString();
     const logEntry = `[${timestamp}] ${JSON.stringify(result)}\n`;
-    
+
     fs.appendFileSync(logFile, logEntry);
   }
-  
+
   // Execute a backup job
   private async executeBackupJob(job: BackupJobSchedule) {
     console.log(`Starting backup job: ${job.name} (${job.id})`);
-    
+
     try {
       // In a real app, this would fetch the actual data to back up
       const data = await this.fetchDataToBackup(job.id);
-      
+
       // Create a backup service instance with the job's configuration
       const backupService = new BackupService(job.backupConfig);
-      
+
       // Perform the backup
       const result = await backupService.backup(data, job.id);
-      
+
       // Log the result
       this.logBackupResult(job.id, result);
-      
+
       console.log(`Backup job completed: ${job.name} (${job.id})`);
       console.log(`Result: ${result.success ? 'Success' : 'Failed'}`);
       if (result.location) {
         console.log(`Location: ${result.location}`);
       }
-      
+
       // Clean up old backups
       if (job.backupConfig.retentionDays) {
         const deletedBackups = await backupService.cleanupOldBackups();
         console.log(`Cleaned up ${deletedBackups.length} old backups`);
       }
-      
+
       return result;
     } catch (error) {
       console.error(`Error executing backup job ${job.id}:`, error);
@@ -118,21 +118,21 @@ class BackupScheduler {
       throw error;
     }
   }
-  
+
   // Mock fetching data to back up
   private async fetchDataToBackup(jobId: string): Promise<any> {
     // In a real app, this would query databases or APIs for the data to back up
     console.log(`Fetching data for backup job: ${jobId}`);
-    
+
     // Just return mock data for this example
     return {
       timestamp: new Date().toISOString(),
       jobId,
       mockData: `Sample data for ${jobId}`,
-      records: 1000
+      records: 1000,
     };
   }
-  
+
   // Schedule all backup jobs
   public scheduleAllJobs(jobs: BackupJobSchedule[]) {
     jobs.forEach(job => {
@@ -143,23 +143,23 @@ class BackupScheduler {
       }
     });
   }
-  
+
   // Schedule a single backup job
   public scheduleJob(job: BackupJobSchedule) {
     if (this.jobs.has(job.id)) {
       console.log(`Job ${job.id} is already scheduled, stopping it first`);
       this.stopJob(job.id);
     }
-    
+
     console.log(`Scheduling backup job: ${job.name} (${job.id}) with cron: ${job.cronExpression}`);
-    
+
     const scheduledJob = cron.schedule(job.cronExpression, async () => {
       await this.executeBackupJob(job);
     });
-    
+
     this.jobs.set(job.id, scheduledJob);
   }
-  
+
   // Stop a scheduled job
   public stopJob(jobId: string) {
     const job = this.jobs.get(jobId);
@@ -169,7 +169,7 @@ class BackupScheduler {
       console.log(`Stopped job: ${jobId}`);
     }
   }
-  
+
   // Run a job immediately
   public async runJobNow(jobId: string) {
     const job = BACKUP_JOBS.find(j => j.id === jobId);
@@ -195,4 +195,4 @@ process.on('SIGINT', () => {
 });
 
 // Export scheduler for programmatic use
-export default scheduler; 
+export default scheduler;

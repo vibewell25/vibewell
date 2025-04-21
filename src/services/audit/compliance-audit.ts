@@ -155,7 +155,7 @@ class ComplianceAuditService {
    */
   public async updateGDPRStatus(status: GDPRComplianceStatus): Promise<void> {
     this.gdprStatus = status;
-    
+
     // Update requirements
     status.requirements.forEach(req => {
       const requirementId = `GDPR_${req.id}`;
@@ -167,7 +167,7 @@ class ComplianceAuditService {
         evidence: req.evidence,
         lastChecked: status.lastChecked,
       });
-      
+
       // Report non-compliant requirements
       if (req.status === 'non_compliant') {
         auditService.reportIssue(
@@ -201,7 +201,7 @@ class ComplianceAuditService {
         );
       }
     });
-    
+
     // Report overall status if non-compliant
     if (status.overallStatus === 'non_compliant') {
       auditService.reportIssue(
@@ -214,7 +214,9 @@ class ComplianceAuditService {
           metadata: {
             lastChecked: status.lastChecked,
             nonCompliantCount: status.requirements.filter(r => r.status === 'non_compliant').length,
-            partiallyCompliantCount: status.requirements.filter(r => r.status === 'partially_compliant').length,
+            partiallyCompliantCount: status.requirements.filter(
+              r => r.status === 'partially_compliant'
+            ).length,
           },
         }
       );
@@ -229,12 +231,14 @@ class ComplianceAuditService {
           metadata: {
             lastChecked: status.lastChecked,
             nonCompliantCount: status.requirements.filter(r => r.status === 'non_compliant').length,
-            partiallyCompliantCount: status.requirements.filter(r => r.status === 'partially_compliant').length,
+            partiallyCompliantCount: status.requirements.filter(
+              r => r.status === 'partially_compliant'
+            ).length,
           },
         }
       );
     }
-    
+
     // Log GDPR status
     logEvent('gdpr_compliance_status_updated', {
       overallStatus: status.overallStatus,
@@ -249,7 +253,7 @@ class ComplianceAuditService {
    */
   public async updateCCPAStatus(status: CCPAComplianceStatus): Promise<void> {
     this.ccpaStatus = status;
-    
+
     // Update requirements
     status.requirements.forEach(req => {
       const requirementId = `CCPA_${req.id}`;
@@ -261,7 +265,7 @@ class ComplianceAuditService {
         evidence: req.evidence,
         lastChecked: status.lastChecked,
       });
-      
+
       // Report non-compliant requirements
       if (req.status === 'non_compliant') {
         auditService.reportIssue(
@@ -295,7 +299,7 @@ class ComplianceAuditService {
         );
       }
     });
-    
+
     // Report overall status if non-compliant
     if (status.overallStatus === 'non_compliant') {
       auditService.reportIssue(
@@ -308,7 +312,9 @@ class ComplianceAuditService {
           metadata: {
             lastChecked: status.lastChecked,
             nonCompliantCount: status.requirements.filter(r => r.status === 'non_compliant').length,
-            partiallyCompliantCount: status.requirements.filter(r => r.status === 'partially_compliant').length,
+            partiallyCompliantCount: status.requirements.filter(
+              r => r.status === 'partially_compliant'
+            ).length,
           },
         }
       );
@@ -323,12 +329,14 @@ class ComplianceAuditService {
           metadata: {
             lastChecked: status.lastChecked,
             nonCompliantCount: status.requirements.filter(r => r.status === 'non_compliant').length,
-            partiallyCompliantCount: status.requirements.filter(r => r.status === 'partially_compliant').length,
+            partiallyCompliantCount: status.requirements.filter(
+              r => r.status === 'partially_compliant'
+            ).length,
           },
         }
       );
     }
-    
+
     // Log CCPA status
     logEvent('ccpa_compliance_status_updated', {
       overallStatus: status.overallStatus,
@@ -343,11 +351,11 @@ class ComplianceAuditService {
    */
   public async auditFinancialTransaction(audit: FinancialTransactionAudit): Promise<void> {
     this.transactionAudits.set(audit.id, audit);
-    
+
     // Report critical and high severity issues
     const criticalIssues = audit.issues.filter(issue => issue.severity === 'critical');
     const highIssues = audit.issues.filter(issue => issue.severity === 'high');
-    
+
     if (criticalIssues.length > 0) {
       await auditService.reportIssue(
         AuditCategory.FINANCIAL,
@@ -369,7 +377,7 @@ class ComplianceAuditService {
         }
       );
     }
-    
+
     if (highIssues.length > 0) {
       await auditService.reportIssue(
         AuditCategory.FINANCIAL,
@@ -391,7 +399,7 @@ class ComplianceAuditService {
         }
       );
     }
-    
+
     // Log transaction audit
     logEvent('financial_transaction_audited', {
       transactionId: audit.id,
@@ -408,14 +416,15 @@ class ComplianceAuditService {
    */
   public async auditDataRetention(audit: DataRetentionAudit): Promise<void> {
     this.dataRetentionAudits.set(audit.dataType, audit);
-    
+
     // Check if retention period is compliant
     if (audit.status === 'non_compliant') {
       const requiredPeriod = this.config.dataRetentionPeriods[audit.dataType];
-      const severity = requiredPeriod && audit.currentRetention > requiredPeriod * 2
-        ? AuditSeverity.HIGH
-        : AuditSeverity.MEDIUM;
-      
+      const severity =
+        requiredPeriod && audit.currentRetention > requiredPeriod * 2
+          ? AuditSeverity.HIGH
+          : AuditSeverity.MEDIUM;
+
       await auditService.reportIssue(
         AuditCategory.COMPLIANCE,
         severity,
@@ -434,7 +443,7 @@ class ComplianceAuditService {
         }
       );
     }
-    
+
     // Log data retention audit
     logEvent('data_retention_audited', {
       dataType: audit.dataType,
@@ -449,7 +458,7 @@ class ComplianceAuditService {
    */
   public async auditUserConsent(audit: UserConsentAudit): Promise<void> {
     this.userConsentAudits.set(audit.consentType, audit);
-    
+
     // Check if consent implementation is compliant
     if (audit.implementationStatus === 'missing') {
       await auditService.reportIssue(
@@ -504,7 +513,7 @@ class ComplianceAuditService {
         }
       );
     }
-    
+
     // Log user consent audit
     logEvent('user_consent_audited', {
       consentType: audit.consentType,
@@ -541,17 +550,21 @@ class ComplianceAuditService {
   } {
     // Generate data retention summary
     const retentionAudits = Array.from(this.dataRetentionAudits.values());
-    const compliantTypes = retentionAudits.filter(a => a.status === 'compliant').map(a => a.dataType);
-    const nonCompliantTypes = retentionAudits.filter(a => a.status === 'non_compliant').map(a => a.dataType);
-    
+    const compliantTypes = retentionAudits
+      .filter(a => a.status === 'compliant')
+      .map(a => a.dataType);
+    const nonCompliantTypes = retentionAudits
+      .filter(a => a.status === 'non_compliant')
+      .map(a => a.dataType);
+
     // Calculate average retention excess
     let totalExcess = 0;
     let excessCount = 0;
-    
+
     nonCompliantTypes.forEach(type => {
       const audit = this.dataRetentionAudits.get(type);
       const requiredPeriod = this.config.dataRetentionPeriods[type];
-      
+
       if (audit && requiredPeriod) {
         const excess = audit.currentRetention - requiredPeriod;
         if (excess > 0) {
@@ -560,42 +573,43 @@ class ComplianceAuditService {
         }
       }
     });
-    
+
     const averageRetentionExcess = excessCount > 0 ? totalExcess / excessCount : 0;
-    
+
     // Generate user consent summary
     const consentAudits = Array.from(this.userConsentAudits.values());
     const implementedTypes = consentAudits
       .filter(a => a.implementationStatus === 'implemented')
       .map(a => a.consentType);
-      
+
     const partiallyImplementedTypes = consentAudits
       .filter(a => a.implementationStatus === 'partial')
       .map(a => a.consentType);
-      
+
     const missingTypes = consentAudits
       .filter(a => a.implementationStatus === 'missing')
       .map(a => a.consentType);
-    
+
     // Calculate average coverage
-    const averageCoverage = consentAudits.length > 0
-      ? consentAudits.reduce((sum, audit) => sum + audit.userCoverage, 0) / consentAudits.length
-      : 0;
-    
+    const averageCoverage =
+      consentAudits.length > 0
+        ? consentAudits.reduce((sum, audit) => sum + audit.userCoverage, 0) / consentAudits.length
+        : 0;
+
     // Generate financial transactions summary
     const transactionAudits = Array.from(this.transactionAudits.values());
-    
+
     // Count issues by type and severity
     const issuesByType: Record<string, number> = {};
     const issuesBySeverity: Record<string, number> = {};
-    
+
     transactionAudits.forEach(audit => {
       audit.issues.forEach(issue => {
         issuesByType[issue.type] = (issuesByType[issue.type] || 0) + 1;
         issuesBySeverity[issue.severity] = (issuesBySeverity[issue.severity] || 0) + 1;
       });
     });
-    
+
     // Return comprehensive compliance report
     return {
       regulations: {
@@ -636,4 +650,4 @@ class ComplianceAuditService {
 
 // Export singleton instance
 const complianceAuditService = new ComplianceAuditService();
-export default complianceAuditService; 
+export default complianceAuditService;

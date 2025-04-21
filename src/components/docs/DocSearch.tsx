@@ -25,7 +25,7 @@ export function DocSearch({ className }: DocSearchProps) {
           role="searchbox"
           placeholder="Search documentation..."
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={e => setQuery(e.target.value)}
           className="w-full pl-10"
         />
         <svg
@@ -48,4 +48,4 @@ export function DocSearch({ className }: DocSearchProps) {
       </div>
     </form>
   );
-} 
+}

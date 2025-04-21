@@ -5,21 +5,14 @@ interface FormErrorMessageProps {
   children: React.ReactNode;
 }
 
-export const FormErrorMessage: React.FC<FormErrorMessageProps> = ({ 
-  id, 
-  children 
-}) => {
+export const FormErrorMessage: React.FC<FormErrorMessageProps> = ({ id, children }) => {
   if (!children) return null;
-  
+
   return (
-    <div 
-      id={id}
-      role="alert"
-      className="text-sm text-error mt-1"
-    >
+    <div id={id} role="alert" className="text-sm text-error mt-1">
       {children}
     </div>
   );
 };
 
-export default FormErrorMessage; 
+export default FormErrorMessage;

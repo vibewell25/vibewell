@@ -46,14 +46,12 @@ export class WebAuthnService {
   private static rpID = process.env.WEBAUTHN_RP_ID || 'localhost';
   private static origin = process.env.WEBAUTHN_ORIGIN || `https://${this.rpID}`;
 
-  constructor(
-    private prisma: PrismaClient,
-  ) {}
+  constructor(private prisma: PrismaClient) {}
 
   static async startRegistration(userId: string) {
-    const user = await prisma.user.findUnique({ 
+    const user = await prisma.user.findUnique({
       where: { id: userId },
-      include: { authenticators: true }
+      include: { authenticators: true },
     });
 
     if (!user) throw new Error('User not found');
@@ -87,13 +85,10 @@ export class WebAuthnService {
     return options;
   }
 
-  static async verifyRegistration(
-    userId: string,
-    response: RegistrationResponseJSON,
-  ) {
-    const user = await prisma.user.findUnique({ 
+  static async verifyRegistration(userId: string, response: RegistrationResponseJSON) {
+    const user = await prisma.user.findUnique({
       where: { id: userId },
-      include: { challenges: true }
+      include: { challenges: true },
     });
 
     if (!user) throw new Error('User not found');
@@ -158,10 +153,7 @@ export class WebAuthnService {
     return options;
   }
 
-  static async verifyAuthentication(
-    userId: string,
-    response: AuthenticationResponseJSON,
-  ) {
+  static async verifyAuthentication(userId: string, response: AuthenticationResponseJSON) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
       include: { authenticators: true, challenges: true },
@@ -173,7 +165,7 @@ export class WebAuthnService {
     if (!challenge) throw new Error('Challenge not found');
 
     const authenticator = user.authenticators.find(
-      auth => auth.credentialID === Buffer.from(response.id, 'base64').toString('base64'),
+      auth => auth.credentialID === Buffer.from(response.id, 'base64').toString('base64')
     );
 
     if (!authenticator) throw new Error('Authenticator not found');

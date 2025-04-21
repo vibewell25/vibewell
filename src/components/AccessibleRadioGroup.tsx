@@ -42,16 +42,13 @@ export const AccessibleRadioGroup: React.FC<AccessibleRadioGroupProps> = ({
         aria-invalid={error ? 'true' : 'false'}
         aria-required={required}
       >
-        <label
-          id={`${groupId}-label`}
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
+        <label id={`${groupId}-label`} className="block text-sm font-medium text-gray-700 mb-2">
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
 
         <div className="space-y-2">
-          {options.map((option) => (
+          {options.map(option => (
             <div key={option.value} className="flex items-center">
               <input
                 id={`${groupId}-${option.value}`}
@@ -59,7 +56,7 @@ export const AccessibleRadioGroup: React.FC<AccessibleRadioGroupProps> = ({
                 type="radio"
                 value={option.value}
                 checked={value === option.value}
-                onChange={(e) => onChange?.(e.target.value)}
+                onChange={e => onChange?.(e.target.value)}
                 disabled={option.disabled}
                 className={`
                   h-4 w-4 border-gray-300
@@ -98,4 +95,4 @@ export const AccessibleRadioGroup: React.FC<AccessibleRadioGroupProps> = ({
   );
 };
 
-export default AccessibleRadioGroup; 
+export default AccessibleRadioGroup;

@@ -1,100 +1,100 @@
 /* RTL Support */
-[dir="rtl"] {
+[dir='rtl'] {
   text-align: right;
 }
 
-[dir="rtl"] .float-right {
+[dir='rtl'] .float-right {
   float: left !important;
 }
 
-[dir="rtl"] .float-left {
+[dir='rtl'] .float-left {
   float: right !important;
 }
 
-[dir="rtl"] .text-left {
+[dir='rtl'] .text-left {
   text-align: right !important;
 }
 
-[dir="rtl"] .text-right {
+[dir='rtl'] .text-right {
   text-align: left !important;
 }
 
-[dir="rtl"] .mr-1,
-[dir="rtl"] .mr-2,
-[dir="rtl"] .mr-3,
-[dir="rtl"] .mr-4 {
+[dir='rtl'] .mr-1,
+[dir='rtl'] .mr-2,
+[dir='rtl'] .mr-3,
+[dir='rtl'] .mr-4 {
   margin-right: 0 !important;
   margin-left: 0.25rem !important;
 }
 
-[dir="rtl"] .ml-1,
-[dir="rtl"] .ml-2,
-[dir="rtl"] .ml-3,
-[dir="rtl"] .ml-4 {
+[dir='rtl'] .ml-1,
+[dir='rtl'] .ml-2,
+[dir='rtl'] .ml-3,
+[dir='rtl'] .ml-4 {
   margin-left: 0 !important;
   margin-right: 0.25rem !important;
 }
 
-[dir="rtl"] .pr-1,
-[dir="rtl"] .pr-2,
-[dir="rtl"] .pr-3,
-[dir="rtl"] .pr-4 {
+[dir='rtl'] .pr-1,
+[dir='rtl'] .pr-2,
+[dir='rtl'] .pr-3,
+[dir='rtl'] .pr-4 {
   padding-right: 0 !important;
   padding-left: 0.25rem !important;
 }
 
-[dir="rtl"] .pl-1,
-[dir="rtl"] .pl-2,
-[dir="rtl"] .pl-3,
-[dir="rtl"] .pl-4 {
+[dir='rtl'] .pl-1,
+[dir='rtl'] .pl-2,
+[dir='rtl'] .pl-3,
+[dir='rtl'] .pl-4 {
   padding-left: 0 !important;
   padding-right: 0.25rem !important;
 }
 
 /* RTL Grid and Flexbox */
-[dir="rtl"] .flex-row {
+[dir='rtl'] .flex-row {
   flex-direction: row-reverse !important;
 }
 
-[dir="rtl"] .justify-start {
+[dir='rtl'] .justify-start {
   justify-content: flex-end !important;
 }
 
-[dir="rtl"] .justify-end {
+[dir='rtl'] .justify-end {
   justify-content: flex-start !important;
 }
 
 /* RTL Borders */
-[dir="rtl"] .border-r {
+[dir='rtl'] .border-r {
   border-right: none !important;
   border-left: 1px solid currentColor !important;
 }
 
-[dir="rtl"] .border-l {
+[dir='rtl'] .border-l {
   border-left: none !important;
   border-right: 1px solid currentColor !important;
 }
 
 /* RTL Icons and Images */
-[dir="rtl"] .transform-rotate-180 {
+[dir='rtl'] .transform-rotate-180 {
   transform: rotate(180deg);
 }
 
 /* RTL Form Elements */
-[dir="rtl"] input[type="text"],
-[dir="rtl"] input[type="email"],
-[dir="rtl"] input[type="password"],
-[dir="rtl"] textarea {
+[dir='rtl'] input[type='text'],
+[dir='rtl'] input[type='email'],
+[dir='rtl'] input[type='password'],
+[dir='rtl'] textarea {
   text-align: right;
 }
 
 /* RTL Navigation */
-[dir="rtl"] .nav-item {
+[dir='rtl'] .nav-item {
   margin-right: 0;
   margin-left: 1rem;
 }
 
-[dir="rtl"] .dropdown-menu {
+[dir='rtl'] .dropdown-menu {
   right: 0;
   left: auto;
 }
@@ -109,6 +109,6 @@
   }
 }
 
-[dir="rtl"] .slide-animation {
+[dir='rtl'] .slide-animation {
   animation: slide-rtl 0.3s ease-out;
-} 
+}

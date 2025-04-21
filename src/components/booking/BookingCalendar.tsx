@@ -24,7 +24,7 @@ export function BookingCalendar({
   serviceId,
   serviceDuration,
   onSelectSlot,
-  className
+  className,
 }: BookingCalendarProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
@@ -45,16 +45,18 @@ export function BookingCalendar({
       const response = await fetch(
         `/api/bookings/availability?practitionerId=${practitionerId}&serviceId=${serviceId}&date=${format(selectedDate, 'yyyy-MM-dd')}`
       );
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch available slots');
       }
 
       const data = await response.json();
-      setTimeSlots(data.availableSlots.map((time: string) => ({
-        time,
-        available: true
-      })));
+      setTimeSlots(
+        data.availableSlots.map((time: string) => ({
+          time,
+          available: true,
+        }))
+      );
     } catch (error) {
       console.error('Error fetching available slots:', error);
       setTimeSlots([]);
@@ -81,7 +83,7 @@ export function BookingCalendar({
         const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
         slots.push({
           time,
-          available: timeSlots.some(slot => slot.time === time)
+          available: timeSlots.some(slot => slot.time === time),
         });
       }
     }
@@ -98,10 +100,11 @@ export function BookingCalendar({
             selected={selectedDate}
             onSelect={setSelectedDate}
             className="rounded-md border"
-            disabled={(date) => 
-              date < new Date() || // Past dates
-              date.getDay() === 0 || // Sundays
-              date > new Date(new Date().setMonth(new Date().getMonth() + 2)) // More than 2 months ahead
+            disabled={
+              date =>
+                date < new Date() || // Past dates
+                date.getDay() === 0 || // Sundays
+                date > new Date(new Date().setMonth(new Date().getMonth() + 2)) // More than 2 months ahead
             }
           />
         </CardContent>
@@ -117,14 +120,11 @@ export function BookingCalendar({
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-2">
-                {generateTimeSlots().map((slot) => (
+                {generateTimeSlots().map(slot => (
                   <Button
                     key={slot.time}
                     variant={selectedTime === slot.time ? 'default' : 'outline'}
-                    className={cn(
-                      'w-full',
-                      !slot.available && 'opacity-50 cursor-not-allowed'
-                    )}
+                    className={cn('w-full', !slot.available && 'opacity-50 cursor-not-allowed')}
                     disabled={!slot.available}
                     onClick={() => handleTimeSelect(slot.time)}
                   >
@@ -138,4 +138,4 @@ export function BookingCalendar({
       </Card>
     </div>
   );
-} 
+}

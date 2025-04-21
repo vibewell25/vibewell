@@ -17,7 +17,11 @@ interface EventCheckinFeedbackProps {
   onCheckIn: (code: string) => void;
   onFeedbackSubmit: (rating: number, comment: string) => void;
 }
-export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: EventCheckinFeedbackProps) {
+export function EventCheckinFeedback({
+  event,
+  onCheckIn,
+  onFeedbackSubmit,
+}: EventCheckinFeedbackProps) {
   const [activeTab, setActiveTab] = useState('checkin');
   const [checkInCode, setCheckInCode] = useState('');
   const [rating, setRating] = useState(0);
@@ -67,7 +71,7 @@ export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: Eve
                   type="text"
                   placeholder="Enter check-in code"
                   value={checkInCode}
-                  onChange={(e) => setCheckInCode(e.target.value)}
+                  onChange={e => setCheckInCode(e.target.value)}
                 />
                 <Button onClick={handleCheckIn}>
                   <Icons.CheckCircleIcon className="h-4 w-4 mr-2" />
@@ -95,7 +99,7 @@ export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: Eve
               <div className="space-y-2">
                 <Label>Checked-in Participants</Label>
                 <div className="space-y-2">
-                  {event.checkedInParticipants.map((participant) => (
+                  {event.checkedInParticipants.map(participant => (
                     <div
                       key={participant.userId}
                       className="flex items-center justify-between p-2 border rounded-md"
@@ -117,9 +121,7 @@ export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: Eve
                           </p>
                         </div>
                       </div>
-                      <Badge variant="default">
-                        Checked In
-                      </Badge>
+                      <Badge variant="default">Checked In</Badge>
                     </div>
                   ))}
                 </div>
@@ -131,19 +133,14 @@ export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: Eve
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>Rating</Label>
-              <Rating
-                value={rating}
-                onChange={setRating}
-                max={5}
-                size="lg"
-              />
+              <Rating value={rating} onChange={setRating} max={5} size="lg" />
             </div>
             <div className="space-y-2">
               <Label>Feedback</Label>
               <Textarea
                 placeholder="Share your experience..."
                 value={feedback}
-                onChange={(e) => setFeedback(e.target.value)}
+                onChange={e => setFeedback(e.target.value)}
                 rows={4}
               />
             </div>
@@ -157,12 +154,7 @@ export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: Eve
               <div className="space-y-2">
                 <Label>Event Rating</Label>
                 <div className="flex items-center gap-2">
-                  <Rating
-                    value={event.averageRating}
-                    readOnly
-                    max={5}
-                    size="lg"
-                  />
+                  <Rating value={event.averageRating} readOnly max={5} size="lg" />
                   <span className="text-sm text-muted-foreground">
                     ({event.ratingCount} reviews)
                   </span>
@@ -174,4 +166,4 @@ export function EventCheckinFeedback({ event, onCheckIn, onFeedbackSubmit }: Eve
       </CardContent>
     </Card>
   );
-} 
+}

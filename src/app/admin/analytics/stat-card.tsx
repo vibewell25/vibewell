@@ -1,17 +1,17 @@
-'use client'
+'use client';
 
-import React from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
-import { ArrowDown, ArrowUp } from 'lucide-react'
+import React from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import { ArrowDown, ArrowUp } from 'lucide-react';
 
 interface StatCardProps {
-  title: string
-  value: string
-  description?: string
-  icon?: React.ReactNode
-  trend?: 'up' | 'down' | 'neutral'
-  className?: string
+  title: string;
+  value: string;
+  description?: string;
+  icon?: React.ReactNode;
+  trend?: 'up' | 'down' | 'neutral';
+  className?: string;
 }
 
 export function StatCard({
@@ -23,7 +23,7 @@ export function StatCard({
   className,
 }: StatCardProps) {
   return (
-    <Card className={cn("overflow-hidden", className)}>
+    <Card className={cn('overflow-hidden', className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         {icon}
@@ -39,5 +39,5 @@ export function StatCard({
         )}
       </CardContent>
     </Card>
-  )
-} 
+  );
+}

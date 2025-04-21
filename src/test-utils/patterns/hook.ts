@@ -70,4 +70,4 @@ export function createHookErrorTestCase<TProps, TResult>(
       expect(result.current).toThrow(expectedError);
     },
   };
-} 
+}

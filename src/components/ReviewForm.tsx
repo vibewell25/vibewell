@@ -5,9 +5,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 // Define form schema with zod
 const reviewSchema = z.object({
-  title: z.string().min(3, 'Title must be at least 3 characters').max(100, 'Title must be at most 100 characters'),
-  text: z.string().min(10, 'Review text must be at least 10 characters').max(1000, 'Review text must be at most 1000 characters'),
-  rating: z.number().min(1, 'Please select a rating').max(5, 'Maximum rating is 5 stars')
+  title: z
+    .string()
+    .min(3, 'Title must be at least 3 characters')
+    .max(100, 'Title must be at most 100 characters'),
+  text: z
+    .string()
+    .min(10, 'Review text must be at least 10 characters')
+    .max(1000, 'Review text must be at most 1000 characters'),
+  rating: z.number().min(1, 'Please select a rating').max(5, 'Maximum rating is 5 stars'),
 });
 type ReviewFormInputs = z.infer<typeof reviewSchema>;
 interface ReviewFormProps {
@@ -28,7 +34,7 @@ export default function ReviewForm({
   initialData,
   isEdit = false,
   onSubmit,
-  onCancel
+  onCancel,
 }: ReviewFormProps) {
   const [hover, setHover] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -37,20 +43,20 @@ export default function ReviewForm({
     handleSubmit,
     setValue,
     watch,
-    formState: { errors }
+    formState: { errors },
   } = useForm<ReviewFormInputs>({
     resolver: zodResolver(reviewSchema),
     defaultValues: initialData || {
       title: '',
       text: '',
-      rating: 0
-    }
+      rating: 0,
+    },
   });
   const currentRating = watch('rating');
   const handleRatingClick = (rating: number) => {
     setValue('rating', rating, { shouldValidate: true });
   };
-  const submitHandler: SubmitHandler<ReviewFormInputs> = async (data) => {
+  const submitHandler: SubmitHandler<ReviewFormInputs> = async data => {
     setSubmitting(true);
     try {
       await onSubmit(data);
@@ -68,7 +74,7 @@ export default function ReviewForm({
       <div className="mb-4">
         <label className="block text-gray-700 font-medium mb-2">Rating</label>
         <div className="flex">
-          {[1, 2, 3, 4, 5].map((rating) => (
+          {[1, 2, 3, 4, 5].map(rating => (
             <button
               type="button"
               key={rating}
@@ -77,16 +83,14 @@ export default function ReviewForm({
               onMouseLeave={() => setHover(null)}
               className="focus:outline-none"
             >
-              <Star 
+              <Star
                 className={`h-8 w-8 text-yellow-400 ${rating <= (hover !== null ? hover : currentRating) ? 'fill-yellow-400' : ''}`}
                 fill={rating <= (hover !== null ? hover : currentRating) ? 'currentColor' : 'none'}
               />
             </button>
           ))}
         </div>
-        {errors.rating && (
-          <p className="text-red-500 text-sm mt-1">{errors.rating.message}</p>
-        )}
+        {errors.rating && <p className="text-red-500 text-sm mt-1">{errors.rating.message}</p>}
       </div>
       <div className="mb-4">
         <label htmlFor="title" className="block text-gray-700 font-medium mb-2">
@@ -99,9 +103,7 @@ export default function ReviewForm({
           placeholder="Summarize your experience"
           {...register('title')}
         />
-        {errors.title && (
-          <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
-        )}
+        {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
       </div>
       <div className="mb-6">
         <label htmlFor="text" className="block text-gray-700 font-medium mb-2">
@@ -114,9 +116,7 @@ export default function ReviewForm({
           placeholder="Share your experience with this service provider"
           {...register('text')}
         ></textarea>
-        {errors.text && (
-          <p className="text-red-500 text-sm mt-1">{errors.text.message}</p>
-        )}
+        {errors.text && <p className="text-red-500 text-sm mt-1">{errors.text.message}</p>}
       </div>
       <div className="flex justify-end space-x-4">
         {onCancel && (
@@ -136,17 +136,35 @@ export default function ReviewForm({
         >
           {submitting ? (
             <span className="flex items-center">
-              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <svg
+                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
               </svg>
               Processing...
             </span>
+          ) : isEdit ? (
+            'Update Review'
           ) : (
-            isEdit ? 'Update Review' : 'Submit Review'
+            'Submit Review'
           )}
         </button>
       </div>
     </form>
   );
-} 
+}

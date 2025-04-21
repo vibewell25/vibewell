@@ -11,15 +11,15 @@ export function withPerformanceMonitoring<P extends object>(
   componentName: string
 ): React.FC<P> {
   const displayName = Component.displayName || Component.name || componentName;
-  
+
   // Create a monitored component
-  const MonitoredComponent: React.FC<P> = (props) => {
+  const MonitoredComponent: React.FC<P> = props => {
     // Start measuring component render time
     const startMark = startComponentRender(componentName);
-    
+
     // Reference for cleanup - explicitly store as string | null
     const markRef = React.useRef<string | null>(startMark);
-    
+
     // Effect to end measurement after render
     React.useEffect(() => {
       // We need to check if markRef.current exists
@@ -30,7 +30,7 @@ export function withPerformanceMonitoring<P extends object>(
         // If we don't have a mark, just use the name
         endComponentRender(componentName);
       }
-      
+
       // Cleanup on unmount
       return () => {
         if (markRef.current) {
@@ -42,14 +42,14 @@ export function withPerformanceMonitoring<P extends object>(
         }
       };
     }, []);
-    
+
     // Render the wrapped component
     return <Component {...props} />;
   };
-  
+
   // Set display name for debugging
   MonitoredComponent.displayName = `WithPerformanceMonitoring(${displayName})`;
-  
+
   return MonitoredComponent;
 }
 
@@ -63,7 +63,7 @@ export const PerformanceMeasure: React.FC<{
 }> = ({ id, children }) => {
   // Start measuring on mount - explicitly type as string | null
   const startMark = React.useRef<string | null>(startComponentRender(id));
-  
+
   // End measuring on unmount
   React.useEffect(() => {
     return () => {
@@ -76,6 +76,6 @@ export const PerformanceMeasure: React.FC<{
       }
     };
   }, [id]);
-  
+
   return <>{children}</>;
-}; 
+};

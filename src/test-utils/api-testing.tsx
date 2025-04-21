@@ -1,10 +1,10 @@
 /**
  * API testing utilities
- * 
+ *
  * This file provides utilities for testing API endpoints, services, and requests.
  */
 import { jest } from '@jest/globals';
-import { mockApiResponse } from './mock-utils';
+import { mockApiResponse } from '@/types/api';
 
 /**
  * Mock for the api-client used in services
@@ -13,60 +13,52 @@ import { mockApiResponse } from './mock-utils';
  */
 export function createMockApiClient(responses = {}) {
   return {
-    get: jest.fn((path) => {
+    get: jest.fn(path => {
       if (responses[path]) {
         return Promise.resolve(responses[path]);
       }
       return Promise.resolve(mockApiResponse({ message: 'Mock GET response' }));
     }),
-    
+
     post: jest.fn((path, data) => {
       if (responses[path]) {
         return Promise.resolve(
-          typeof responses[path] === 'function' 
-            ? responses[path](data) 
-            : responses[path]
+          typeof responses[path] === 'function' ? responses[path](data) : responses[path]
         );
       }
       return Promise.resolve(mockApiResponse({ message: 'Mock POST response', data }));
     }),
-    
+
     put: jest.fn((path, data) => {
       if (responses[path]) {
         return Promise.resolve(
-          typeof responses[path] === 'function' 
-            ? responses[path](data) 
-            : responses[path]
+          typeof responses[path] === 'function' ? responses[path](data) : responses[path]
         );
       }
       return Promise.resolve(mockApiResponse({ message: 'Mock PUT response', data }));
     }),
-    
+
     patch: jest.fn((path, data) => {
       if (responses[path]) {
         return Promise.resolve(
-          typeof responses[path] === 'function' 
-            ? responses[path](data) 
-            : responses[path]
+          typeof responses[path] === 'function' ? responses[path](data) : responses[path]
         );
       }
       return Promise.resolve(mockApiResponse({ message: 'Mock PATCH response', data }));
     }),
-    
-    delete: jest.fn((path) => {
+
+    delete: jest.fn(path => {
       if (responses[path]) {
         return Promise.resolve(responses[path]);
       }
       return Promise.resolve(mockApiResponse({ message: 'Mock DELETE response' }));
     }),
-    
-    request: jest.fn((config) => {
+
+    request: jest.fn(config => {
       const { url, method = 'GET', data } = config;
       if (responses[url]) {
         return Promise.resolve(
-          typeof responses[url] === 'function' 
-            ? responses[url](data, method) 
-            : responses[url]
+          typeof responses[url] === 'function' ? responses[url](data, method) : responses[url]
         );
       }
       return Promise.resolve(mockApiResponse({ message: `Mock ${method} response`, data }));
@@ -87,61 +79,61 @@ export function createMockResponse() {
     cookies: {},
     finished: false,
     _sent: false,
-    
-    status: jest.fn(function(statusCode) {
+
+    status: jest.fn(function (statusCode) {
       this.statusCode = statusCode;
       return this;
     }),
-    
-    json: jest.fn(function(data) {
+
+    json: jest.fn(function (data) {
       this._sent = true;
       this.data = data;
       return this;
     }),
-    
-    send: jest.fn(function(data) {
+
+    send: jest.fn(function (data) {
       this._sent = true;
       this.data = data;
       return this;
     }),
-    
-    setHeader: jest.fn(function(name, value) {
+
+    setHeader: jest.fn(function (name, value) {
       this.headers[name.toLowerCase()] = value;
       return this;
     }),
-    
-    getHeader: jest.fn(function(name) {
+
+    getHeader: jest.fn(function (name) {
       return this.headers[name.toLowerCase()];
     }),
-    
-    removeHeader: jest.fn(function(name) {
+
+    removeHeader: jest.fn(function (name) {
       delete this.headers[name.toLowerCase()];
       return this;
     }),
-    
-    setCookie: jest.fn(function(name, value, options) {
+
+    setCookie: jest.fn(function (name, value, options) {
       this.cookies[name] = { value, options };
       return this;
     }),
-    
-    clearCookie: jest.fn(function(name) {
+
+    clearCookie: jest.fn(function (name) {
       delete this.cookies[name];
       return this;
     }),
-    
-    redirect: jest.fn(function(url) {
+
+    redirect: jest.fn(function (url) {
       this._sent = true;
       this.redirectUrl = url;
       return this;
     }),
-    
-    end: jest.fn(function(data) {
+
+    end: jest.fn(function (data) {
       this._sent = true;
       if (data) this.data = data;
       return this;
     }),
   };
-  
+
   return res;
 }
 
@@ -161,12 +153,12 @@ export function createMockRequest(options = {}) {
     body = null,
     session = null,
   } = options;
-  
+
   return {
     method,
     url,
     headers: {
-      'host': 'localhost:3000',
+      host: 'localhost:3000',
       'content-type': 'application/json',
       ...headers,
     },
@@ -219,4 +211,4 @@ export function createServiceTestWrapper(Service, mockApiClient) {
       apiClient: mockApiClient,
     };
   }
-} 
+}

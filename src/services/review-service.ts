@@ -54,7 +54,7 @@ export class ReviewService {
       // If there's a comment, analyze its sentiment
       if (input.comment) {
         const sentiment = await this.sentimentAnalysis.analyzeSentiment(input.comment);
-        
+
         // Store sentiment analysis results
         await prisma.reviewSentiment.create({
           data: {
@@ -198,4 +198,4 @@ export class ReviewService {
       throw error;
     }
   }
-} 
+}

@@ -12,7 +12,7 @@ The caching system is designed with a modular architecture:
 ```
 cache/
 ├── index.ts         # Main exports and unified interface
-├── api-cache.ts     # API response caching implementation 
+├── api-cache.ts     # API response caching implementation
 ├── ar-cache.ts      # AR model caching implementation
 └── README.md        # This documentation
 ```
@@ -38,7 +38,9 @@ await cache.clearAll();
 
 // Get storage statistics
 const stats = await cache.getStorageStats();
-console.log(`AR cache: ${stats.ar.modelCount} models, ${Math.round(stats.ar.totalSize / 1024 / 1024)}MB`);
+console.log(
+  `AR cache: ${stats.ar.modelCount} models, ${Math.round(stats.ar.totalSize / 1024 / 1024)}MB`
+);
 console.log(`API cache: ${stats.api.entryCount} entries`);
 ```
 
@@ -52,9 +54,9 @@ const userData = apiCache.get('user/profile');
 apiCache.set('user/profile', { name: 'John', role: 'admin' }, { ttl: 60 * 1000 });
 
 // Use wrapper for fetch with automatic caching
-const posts = await cachedFetch('/api/posts', { 
-  ttl: 5 * 60 * 1000,  // 5 minute cache
-  params: { limit: 10 } // Parameters for cache key generation
+const posts = await cachedFetch('/api/posts', {
+  ttl: 5 * 60 * 1000, // 5 minute cache
+  params: { limit: 10 }, // Parameters for cache key generation
 });
 
 // Clear all cached items for a specific URL pattern
@@ -88,7 +90,7 @@ await arModelCache.clearCache();
 // Update cache settings
 await arModelCache.updateSettings({
   maxCacheSizeMB: 100, // Increase cache size to 100MB
-  maxCacheAge: 7 * 24 * 60 * 60 * 1000 // Reduce max age to 7 days
+  maxCacheAge: 7 * 24 * 60 * 60 * 1000, // Reduce max age to 7 days
 });
 ```
 
@@ -101,4 +103,4 @@ The cache implementations use different storage mechanisms based on their requir
 
 ## Browser Compatibility
 
-Both cache implementations include fallbacks for environments where storage may not be available (e.g., server-side rendering). 
+Both cache implementations include fallbacks for environments where storage may not be available (e.g., server-side rendering).

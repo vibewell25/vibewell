@@ -34,9 +34,12 @@ export const WebGLProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     // Initialize WebGL scene here
   };
 
-  const updateScene = ({ lightingIntensity, particleEffects }: { 
-    lightingIntensity?: number; 
-    particleEffects?: boolean 
+  const updateScene = ({
+    lightingIntensity,
+    particleEffects,
+  }: {
+    lightingIntensity?: number;
+    particleEffects?: boolean;
   }) => {
     if (!glRef.current) return;
     // Update WebGL scene parameters here
@@ -66,4 +69,4 @@ export const WebGLProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       {children}
     </WebGLContext.Provider>
   );
-}; 
+};

@@ -1,10 +1,11 @@
 /**
  * Mock utilities for testing
- * 
+ *
  * This file provides utilities for mocking various parts of the application
  * including API responses, services, localStorage, and more.
  */
-import { jest } from '@jest/globals';
+import { vi, type Mock, type SpyInstance } from 'vitest';
+import type { Procedure } from '@trpc/server';
 
 /**
  * Interface for mock API response
@@ -14,30 +15,15 @@ export interface MockApiResponse<T = any> {
   status: number;
   headers: Record<string, string>;
   ok: boolean;
-  json: jest.Mock;
-  text: jest.Mock;
+  json: Mock;
+  text: Mock;
 }
 
 /**
  * Create a mock API response
- * @param data - The data to include in the response
- * @param status - HTTP status code
- * @param headers - HTTP headers
- * @returns Mock API response
  */
-export function mockApiResponse<T = any>(
-  data: T, 
-  status: number = 200, 
-  headers: Record<string, string> = {}
-): MockApiResponse<T> {
-  return {
-    data,
-    status,
-    headers,
-    ok: status >= 200 && status < 300,
-    json: jest.fn().mockResolvedValue(data),
-    text: jest.fn().mockResolvedValue(JSON.stringify(data)),
-  };
+export function mockApiResponse<T>(data: T): Mock {
+  return vi.fn().mockResolvedValue({ data });
 }
 
 /**
@@ -47,163 +33,119 @@ export function mockApiResponse<T = any>(
  */
 export function mockFetch<T = any>(
   response: MockApiResponse<T> | (() => MockApiResponse<T>)
-): jest.Mock {
-  return jest.fn().mockResolvedValue(
-    typeof response === 'function' 
-      ? response() 
-      : response
-  );
+): vi.Mock {
+  return vi.fn().mockResolvedValue(typeof response === 'function' ? response() : response);
 }
 
 /**
- * Interface for mock storage
+ * Mock storage interface
  */
 export interface MockStorage {
-  getItem: jest.Mock<string | null, [key: string]>;
-  setItem: jest.Mock<void, [key: string, value: string]>;
-  removeItem: jest.Mock<void, [key: string]>;
-  clear: jest.Mock<void, []>;
-  key: jest.Mock<string | null, [index: number]>;
+  getItem: Mock;
+  setItem: Mock;
+  removeItem: Mock;
+  clear: Mock;
+  key: Mock;
   length: number;
   _getStore: () => Record<string, string>;
 }
 
 /**
- * Setup mock for localStorage
+ * Create a mock storage object (localStorage/sessionStorage)
  */
-export function setupLocalStorageMock(): MockStorage {
-  const localStorageMock = (() => {
-    let store: Record<string, string> = {};
-    return {
-      getItem: jest.fn((key: string) => store[key] || null),
-      setItem: jest.fn((key: string, value: string) => {
-        store[key] = String(value);
-      }),
-      removeItem: jest.fn((key: string) => {
-        delete store[key];
-      }),
-      clear: jest.fn(() => {
-        store = {};
-      }),
-      key: jest.fn((index: number) => Object.keys(store)[index] || null),
-      get length() {
-        return Object.keys(store).length;
-      },
-      // For testing purposes, access to the store
-      _getStore: () => store,
-    };
-  })();
-
-  Object.defineProperty(window, 'localStorage', {
-    value: localStorageMock,
-    writable: true,
-  });
-  
-  return localStorageMock;
+export function createMockStorage(): MockStorage {
+  const store: Record<string, string | undefined> = {};
+  return {
+    getItem: vi.fn((key: string) => store[key] || null),
+    setItem: vi.fn((key: string, value: string) => {
+      store[key] = String(value);
+    }),
+    removeItem: vi.fn((key: string) => {
+      store[key] = undefined;
+    }),
+    clear: vi.fn(() => {
+      Object.keys(store).forEach(key => {
+        store[key] = undefined;
+      });
+    }),
+    key: vi.fn((index: number) => Object.keys(store)[index] || null),
+    get length() {
+      return Object.keys(store).length;
+    },
+    _getStore: () =>
+      Object.fromEntries(Object.entries(store).filter(([_, v]) => v !== undefined)) as Record<
+        string,
+        string
+      >,
+  };
 }
 
 /**
- * Setup mock for sessionStorage
- */
-export function setupSessionStorageMock(): MockStorage {
-  const sessionStorageMock = (() => {
-    let store: Record<string, string> = {};
-    return {
-      getItem: jest.fn((key: string) => store[key] || null),
-      setItem: jest.fn((key: string, value: string) => {
-        store[key] = String(value);
-      }),
-      removeItem: jest.fn((key: string) => {
-        delete store[key];
-      }),
-      clear: jest.fn(() => {
-        store = {};
-      }),
-      key: jest.fn((index: number) => Object.keys(store)[index] || null),
-      get length() {
-        return Object.keys(store).length;
-      },
-      // For testing purposes, access to the store
-      _getStore: () => store,
-    };
-  })();
-
-  Object.defineProperty(window, 'sessionStorage', {
-    value: sessionStorageMock,
-    writable: true,
-  });
-  
-  return sessionStorageMock;
-}
-
-/**
- * Interface for mock media query list
+ * Mock MediaQueryList interface
  */
 export interface MockMediaQueryList {
   matches: boolean;
   media: string;
   onchange: ((this: MediaQueryList, ev: MediaQueryListEvent) => any) | null;
-  addListener: jest.Mock;
-  removeListener: jest.Mock;
-  addEventListener: jest.Mock;
-  removeEventListener: jest.Mock;
-  dispatchEvent: jest.Mock;
+  addListener: Mock;
+  removeListener: Mock;
+  addEventListener: Mock;
+  removeEventListener: Mock;
+  dispatchEvent: Mock;
 }
 
 /**
  * Mock window.matchMedia
  */
-export function setupMatchMediaMock(): jest.Mock<MockMediaQueryList, [query: string]> {
-  const matchMediaMock = jest.fn().mockImplementation((query: string) => ({
+export function setupMatchMediaMock(): Mock {
+  const matchMediaMock = vi.fn().mockImplementation((query: string) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(), // deprecated
-    removeListener: jest.fn(), // deprecated
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   }));
 
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: matchMediaMock,
   });
-  
+
   return matchMediaMock;
 }
 
 /**
- * Interface for mock IntersectionObserver
+ * Mock IntersectionObserver interface
  */
 export interface MockIntersectionObserver {
   root: Element | null;
   rootMargin: string;
   thresholds: ReadonlyArray<number>;
-  observe: jest.Mock;
-  unobserve: jest.Mock;
-  disconnect: jest.Mock;
-  takeRecords: jest.Mock;
+  observe: Mock;
+  unobserve: Mock;
+  disconnect: Mock;
+  takeRecords: Mock;
 }
 
 /**
  * Mock IntersectionObserver
  */
-export function setupIntersectionObserverMock(): jest.Mock<MockIntersectionObserver, [callback: IntersectionObserverCallback, options?: IntersectionObserverInit]> {
-  const mockIntersectionObserver = jest.fn().mockImplementation(function(
+export function setupIntersectionObserverMock(): Mock {
+  const mockIntersectionObserver = vi.fn().mockImplementation(function (
     callback: IntersectionObserverCallback,
     options?: IntersectionObserverInit
-  ): MockIntersectionObserver {
+  ) {
     return {
       root: options?.root || null,
-      rootMargin: options?.rootMargin || '',
-      thresholds: Array.isArray(options?.threshold)
-        ? options.threshold
-        : [options?.threshold || 0],
-      observe: jest.fn(),
-      unobserve: jest.fn(),
-      disconnect: jest.fn(),
-      takeRecords: jest.fn().mockReturnValue([]),
+      rootMargin: options?.rootMargin || '0px',
+      thresholds: Array.isArray(options?.threshold) ? options.threshold : [options?.threshold || 0],
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
+      takeRecords: vi.fn().mockReturnValue([]),
     };
   });
 
@@ -211,28 +153,28 @@ export function setupIntersectionObserverMock(): jest.Mock<MockIntersectionObser
     writable: true,
     value: mockIntersectionObserver,
   });
-  
+
   return mockIntersectionObserver;
 }
 
 /**
- * Interface for mock ResizeObserver
+ * Mock ResizeObserver interface
  */
 export interface MockResizeObserver {
-  observe: jest.Mock;
-  unobserve: jest.Mock;
-  disconnect: jest.Mock;
+  observe: Mock;
+  unobserve: Mock;
+  disconnect: Mock;
 }
 
 /**
  * Mock ResizeObserver
  */
-export function setupResizeObserverMock(): jest.Mock<MockResizeObserver, []> {
-  const mockResizeObserver = jest.fn().mockImplementation(function(): MockResizeObserver {
+export function setupResizeObserverMock(): Mock {
+  const mockResizeObserver = vi.fn().mockImplementation(function () {
     return {
-      observe: jest.fn(),
-      unobserve: jest.fn(),
-      disconnect: jest.fn(),
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
     };
   });
 
@@ -240,7 +182,7 @@ export function setupResizeObserverMock(): jest.Mock<MockResizeObserver, []> {
     writable: true,
     value: mockResizeObserver,
   });
-  
+
   return mockResizeObserver;
 }
 
@@ -250,9 +192,12 @@ export function setupResizeObserverMock(): jest.Mock<MockResizeObserver, []> {
 export interface BrowserMocks {
   localStorage: MockStorage;
   sessionStorage: MockStorage;
-  matchMedia: jest.Mock<MockMediaQueryList, [query: string]>;
-  intersectionObserver: jest.Mock<MockIntersectionObserver, [callback: IntersectionObserverCallback, options?: IntersectionObserverInit]>;
-  resizeObserver: jest.Mock<MockResizeObserver, []>;
+  matchMedia: vi.Mock<MockMediaQueryList, [query: string]>;
+  intersectionObserver: vi.Mock<
+    MockIntersectionObserver,
+    [callback: IntersectionObserverCallback, options?: IntersectionObserverInit]
+  >;
+  resizeObserver: vi.Mock<MockResizeObserver, []>;
 }
 
 /**
@@ -261,8 +206,8 @@ export interface BrowserMocks {
  */
 export function setupAllBrowserMocks(): BrowserMocks {
   return {
-    localStorage: setupLocalStorageMock(),
-    sessionStorage: setupSessionStorageMock(),
+    localStorage: createMockStorage(),
+    sessionStorage: createMockStorage(),
     matchMedia: setupMatchMediaMock(),
     intersectionObserver: setupIntersectionObserverMock(),
     resizeObserver: setupResizeObserverMock(),
@@ -276,10 +221,13 @@ export function setupAllBrowserMocks(): BrowserMocks {
  */
 export function createMockService<T extends Record<string, any>>(methods: Partial<T> = {}): T {
   return {
-    ...Object.keys(methods).reduce((acc, key) => {
-      acc[key] = jest.fn(methods[key]);
-      return acc;
-    }, {} as Record<string, jest.Mock>),
+    ...Object.keys(methods).reduce(
+      (acc, key) => {
+        acc[key] = vi.fn(methods[key]);
+        return acc;
+      },
+      {} as Record<string, vi.Mock>
+    ),
   } as T;
 }
 
@@ -290,12 +238,12 @@ export function createMockService<T extends Record<string, any>>(methods: Partia
 export function mockWindowLocation(properties = {}) {
   const originalLocation = window.location;
   delete window.location;
-  
+
   window.location = {
-    assign: jest.fn(),
-    reload: jest.fn(),
-    replace: jest.fn(),
-    toString: jest.fn(),
+    assign: vi.fn(),
+    reload: vi.fn(),
+    replace: vi.fn(),
+    toString: vi.fn(),
     hash: '',
     host: 'localhost:3000',
     hostname: 'localhost',
@@ -307,50 +255,92 @@ export function mockWindowLocation(properties = {}) {
     search: '',
     ...properties,
   };
-  
+
   return () => {
     window.location = originalLocation;
   };
 }
 
 /**
- * Mock console methods for testing errors or warnings
- * @param {Array} methods - Methods to mock (e.g., ['error', 'warn'])
+ * Mock console methods
  */
-export function mockConsole(methods = ['error', 'warn', 'log', 'info', 'debug']) {
-  const originalMethods = {};
-  
+export function mockConsole(
+  methods: (keyof Console)[] = ['log', 'error', 'warn', 'info', 'debug']
+): () => void {
+  const originalMethods: Partial<Record<keyof Console, any>> = {};
+
   methods.forEach(method => {
-    originalMethods[method] = console[method];
-    console[method] = jest.fn();
+    if (console[method]) {
+      originalMethods[method] = console[method];
+      (console[method] as any) = vi.fn();
+    }
   });
-  
+
   return () => {
     methods.forEach(method => {
-      console[method] = originalMethods[method];
+      if (originalMethods[method]) {
+        console[method] = originalMethods[method];
+      }
     });
   };
 }
 
 /**
  * Mock global Date object
- * @param {string|number|Date} mockDate - Date to mock
  */
-export function mockDate(mockDate) {
-  const realDate = global.Date;
-  const mockDateObj = new realDate(mockDate);
-  
-  global.Date = class extends realDate {
-    constructor(...args) {
-      return args.length ? new realDate(...args) : mockDateObj;
+export function mockDate(mockDate: string | number | Date): () => void {
+  const RealDate = Date;
+  const mockDateObj = new RealDate(mockDate);
+
+  class MockDate extends RealDate {
+    constructor(...args: ConstructorParameters<typeof Date>) {
+      super();
+      if (args.length) {
+        return new RealDate(...args);
+      }
+      return mockDateObj;
     }
-    
-    static now() {
+
+    static override now() {
       return mockDateObj.getTime();
     }
-  };
-  
+  }
+
+  global.Date = MockDate as DateConstructor;
+
   return () => {
-    global.Date = realDate;
+    global.Date = RealDate;
   };
-} 
+}
+
+export function mockLocation(): void {
+  const mockLocation = {
+    assign: vi.fn(),
+    reload: vi.fn(),
+    replace: vi.fn(),
+    toString: vi.fn(),
+    hash: '',
+    host: '',
+    hostname: '',
+    href: '',
+    origin: '',
+    pathname: '',
+    port: '',
+    protocol: '',
+    search: '',
+  } as unknown as Location;
+
+  Object.defineProperty(window, 'location', {
+    configurable: true,
+    value: mockLocation,
+    writable: true,
+  });
+}
+
+export function mockProcedure<T>(data: T): Procedure<any, any, any, any> {
+  return {
+    _def: {
+      query: vi.fn().mockResolvedValue(data),
+    },
+  } as unknown as Procedure<any, any, any, any>;
+}

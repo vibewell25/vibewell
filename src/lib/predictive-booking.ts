@@ -108,13 +108,12 @@ export class PredictiveBookingService {
   /**
    * Calculate optimal resource allocation based on predictions
    */
-  async calculateResourceAllocation(
-    businessId: string,
-    date: Date
-  ): Promise<Map<string, number>> {
+  async calculateResourceAllocation(businessId: string, date: Date): Promise<Map<string, number>> {
     try {
       // Get all predictions for the date
-      const predictions = await prisma.$queryRaw<Array<{ serviceId: string; predictedDemand: number }>>`
+      const predictions = await prisma.$queryRaw<
+        Array<{ serviceId: string; predictedDemand: number }>
+      >`
         SELECT "serviceId", "predictedDemand"
         FROM "BookingPrediction"
         WHERE "businessId" = ${businessId}
@@ -187,28 +186,28 @@ export class PredictiveBookingService {
 
   private calculateSeasonalFactor(date: Date): number {
     const month = date.getMonth();
-    
+
     // Simple seasonal factors (can be enhanced with actual historical data)
     const seasonalFactors: SeasonalFactors = {
       // Peak seasons (summer, holidays)
-      5: 1.2,  // June
-      6: 1.2,  // July
-      7: 1.2,  // August
+      5: 1.2, // June
+      6: 1.2, // July
+      7: 1.2, // August
       11: 1.3, // December
-      
+
       // Shoulder seasons
-      2: 1.1,  // March
-      3: 1.1,  // April
-      8: 1.1,  // September
-      9: 1.1,  // October
-      
+      2: 1.1, // March
+      3: 1.1, // April
+      8: 1.1, // September
+      9: 1.1, // October
+
       // Off-peak seasons
-      0: 0.9,  // January
-      1: 0.9,  // February
-      4: 1.0,  // May
+      0: 0.9, // January
+      1: 0.9, // February
+      4: 1.0, // May
       10: 1.0, // November
     };
 
     return seasonalFactors[month] || 1.0;
   }
-} 
+}

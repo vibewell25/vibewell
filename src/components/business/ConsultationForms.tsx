@@ -167,10 +167,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                   >
                     Preview
                   </Button>
-                  <Button
-                    variant="destructive"
-                    onClick={() => form.id && handleDelete(form.id)}
-                  >
+                  <Button variant="destructive" onClick={() => form.id && handleDelete(form.id)}>
                     Delete
                   </Button>
                 </div>
@@ -183,9 +180,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
             <Card className="w-full max-w-4xl mx-4 h-[80vh] overflow-auto">
               <CardHeader>
-                <CardTitle>
-                  {editingForm.id ? 'Edit Form' : 'New Form'}
-                </CardTitle>
+                <CardTitle>{editingForm.id ? 'Edit Form' : 'New Form'}</CardTitle>
               </CardHeader>
               <CardContent>
                 <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -199,9 +194,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                       <Label>Name</Label>
                       <Input
                         value={editingForm.name}
-                        onChange={(e) =>
-                          setEditingForm({ ...editingForm, name: e.target.value })
-                        }
+                        onChange={e => setEditingForm({ ...editingForm, name: e.target.value })}
                         required
                       />
                     </div>
@@ -210,7 +203,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                       <Label>Description</Label>
                       <Textarea
                         value={editingForm.description || ''}
-                        onChange={(e) =>
+                        onChange={e =>
                           setEditingForm({
                             ...editingForm,
                             description: e.target.value,
@@ -222,7 +215,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                     <div className="flex items-center space-x-2">
                       <Switch
                         checked={editingForm.isRequired}
-                        onCheckedChange={(checked) => handleSwitchChange(checked, 'isRequired')}
+                        onCheckedChange={checked => handleSwitchChange(checked, 'isRequired')}
                       />
                       <Label>Required</Label>
                     </div>
@@ -230,7 +223,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                     <div className="flex items-center space-x-2">
                       <Switch
                         checked={editingForm.isActive}
-                        onCheckedChange={(checked) => handleSwitchChange(checked, 'isActive')}
+                        onCheckedChange={checked => handleSwitchChange(checked, 'isActive')}
                       />
                       <Label>Active</Label>
                     </div>
@@ -239,9 +232,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                       <Label>Form Fields</Label>
                       <FormFieldEditor
                         fields={editingForm.fields}
-                        onChange={(fields) =>
-                          setEditingForm({ ...editingForm, fields })
-                        }
+                        onChange={fields => setEditingForm({ ...editingForm, fields })}
                       />
                     </div>
                   </TabsContent>
@@ -256,11 +247,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                 </Tabs>
 
                 <div className="flex justify-end space-x-2 mt-6">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setEditingForm(null)}
-                  >
+                  <Button type="button" variant="outline" onClick={() => setEditingForm(null)}>
                     Cancel
                   </Button>
                   <Button onClick={() => handleSave(editingForm)}>Save</Button>
@@ -272,4 +259,4 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
       </CardContent>
     </Card>
   );
-} 
+}

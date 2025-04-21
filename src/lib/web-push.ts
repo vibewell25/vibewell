@@ -10,17 +10,13 @@ if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || !process.env.VAPID_PRIVATE_KEY)
 const vapidDetails = {
   publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
   privateKey: process.env.VAPID_PRIVATE_KEY!,
-  subject: `mailto:${process.env.VAPID_EMAIL || 'webmaster@vibewell.com'}`
+  subject: `mailto:${process.env.VAPID_EMAIL || 'webmaster@vibewell.com'}`,
 };
 
-webpush.setVapidDetails(
-  vapidDetails.subject,
-  vapidDetails.publicKey,
-  vapidDetails.privateKey
-);
+webpush.setVapidDetails(vapidDetails.subject, vapidDetails.publicKey, vapidDetails.privateKey);
 
 export const webPushConfig = {
-  publicKey: vapidDetails.publicKey
+  publicKey: vapidDetails.publicKey,
 };
 
 export async function sendPushNotification(subscription: PushSubscription, payload: any) {
@@ -35,4 +31,4 @@ export async function sendPushNotification(subscription: PushSubscription, paylo
 
 export function isPushNotificationSupported() {
   return 'serviceWorker' in navigator && 'PushManager' in window;
-} 
+}

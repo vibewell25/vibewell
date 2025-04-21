@@ -3,16 +3,22 @@ import { AnalyticsService, ProductMetrics } from '@/services/analytics-service';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format, subDays, subWeeks, subMonths } from 'date-fns';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   PieChart,
   Pie,
@@ -21,7 +27,7 @@ import {
   Line,
   Legend,
   AreaChart,
-  Area
+  Area,
 } from 'recharts';
 import { ArrowUp, ArrowDown, Download, Search } from 'lucide-react';
 import { ProductService } from '@/services/product-service';
@@ -30,37 +36,33 @@ import { Input } from '@/components/ui/input';
 // Add utility function for CSV export
 const exportToCSV = (data: any[], filename: string) => {
   // Convert data to CSV format
-  let csvContent = "";
-  
+  let csvContent = '';
+
   // Get all possible keys from all objects
-  const allKeys = Array.from(
-    new Set(
-      data.flatMap(item => Object.keys(item))
-    )
-  );
-  
+  const allKeys = Array.from(new Set(data.flatMap(item => Object.keys(item))));
+
   // Create header row
-  csvContent += allKeys.join(",") + "\n";
-  
+  csvContent += allKeys.join(',') + '\n';
+
   // Add each data row
   data.forEach(item => {
-    const row = allKeys.map(key => {
-      const value = item[key] === undefined ? "" : item[key];
-      // Escape commas and quotes in values
-      const escapedValue = typeof value === "string" ? 
-        `"${value.replace(/"/g, '""')}"` : 
-        value;
-      return escapedValue;
-    }).join(",");
-    csvContent += row + "\n";
+    const row = allKeys
+      .map(key => {
+        const value = item[key] === undefined ? '' : item[key];
+        // Escape commas and quotes in values
+        const escapedValue = typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value;
+        return escapedValue;
+      })
+      .join(',');
+    csvContent += row + '\n';
   });
-  
+
   // Create download link
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute("download", filename);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
   link.style.visibility = 'hidden';
   document.body.appendChild(link);
   link.click();
@@ -87,7 +89,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   const [selectedProductId, setSelectedProductId] = useState<string | null>(productId || null);
   const [metrics, setMetrics] = useState<Record<string, ProductMetrics>>({});
   const [searchTerm, setSearchTerm] = useState<string>('');
-  
+
   // Colors for charts
   const COLORS = ['#4f46e5', '#2563eb', '#7c3aed', '#c026d3', '#ec4899', '#10b981'];
 
@@ -95,7 +97,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   const getDateRange = () => {
     const end = new Date();
     let start;
-    
+
     switch (timeRange) {
       case 'day':
         start = subDays(end, 1);
@@ -108,10 +110,10 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
         start = subWeeks(end, 1);
         break;
     }
-    
+
     return {
       start: start.toISOString(),
-      end: end.toISOString()
+      end: end.toISOString(),
     };
   };
 
@@ -121,19 +123,19 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
       try {
         const productService = new ProductService();
         const { data, error } = await productService.getAllProducts();
-        
+
         if (error) throw error;
-        
+
         const productList = data.map(product => ({
           id: product.id,
           name: product.name,
           category: product.category,
           subcategory: product.subcategory,
-          brand: product.brand
+          brand: product.brand,
         }));
-        
+
         setProducts(productList);
-        
+
         // If no product is selected and we have products, select the first one
         if (!selectedProductId && productList.length > 0 && !productId) {
           setSelectedProductId(productList[0].id);
@@ -143,7 +145,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
         setError('Failed to load products');
       }
     }
-    
+
     fetchProducts();
   }, []);
 
@@ -151,39 +153,39 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   useEffect(() => {
     async function fetchMetrics() {
       if (!selectedProductId && !productId) return;
-      
+
       setLoading(true);
       setError(null);
-      
+
       try {
         const analyticsService = new AnalyticsService();
         const { start, end } = getDateRange();
-        
+
         // If a specific product is selected, fetch only that product's metrics
         if (selectedProductId || productId) {
           const productIdToUse = selectedProductId || productId;
           const productMetrics = await analyticsService.getProductMetrics(productIdToUse!, {
             start,
-            end
+            end,
           });
-          
+
           setMetrics({
-            [productIdToUse!]: productMetrics
+            [productIdToUse!]: productMetrics,
           });
         } else {
           // Fetch metrics for all products (simplified for this example)
           // In a real implementation, you might want a separate endpoint to get all metrics at once
           const metricsMap: Record<string, ProductMetrics> = {};
-          
+
           for (const product of products) {
             const productMetrics = await analyticsService.getProductMetrics(product.id, {
               start,
-              end
+              end,
             });
-            
+
             metricsMap[product.id] = productMetrics;
           }
-          
+
           setMetrics(metricsMap);
         }
       } catch (err) {
@@ -193,15 +195,16 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
         setLoading(false);
       }
     }
-    
+
     fetchMetrics();
   }, [selectedProductId, timeRange]);
 
   // Filter products based on search term
-  const filteredProducts = products.filter(product => 
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.brand.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = products.filter(
+    product =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.brand.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Handle product selection
@@ -216,7 +219,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
           <Skeleton className="h-10 w-48" />
           <Skeleton className="h-10 w-32" />
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {Array.from({ length: 3 }).map((_, i) => (
             <Card key={i}>
@@ -229,7 +232,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
             </Card>
           ))}
         </div>
-        
+
         <Card>
           <CardHeader>
             <Skeleton className="h-6 w-40" />
@@ -251,11 +254,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
         </CardHeader>
         <CardContent>
           <p className="text-destructive">{error}</p>
-          <Button 
-            onClick={() => window.location.reload()} 
-            variant="outline" 
-            className="mt-4"
-          >
+          <Button onClick={() => window.location.reload()} variant="outline" className="mt-4">
             Retry
           </Button>
         </CardContent>
@@ -280,27 +279,33 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   }
 
   // Prepare comparison data for views, unique views and try-ons
-  const viewsComparisonData = Object.entries(metrics).map(([id, productMetrics]) => {
-    const product = products.find(p => p.id === id);
-    return {
-      id,
-      name: product?.name || `Product ${id.substring(0, 6)}`,
-      views: productMetrics.totalViews,
-      uniqueViews: productMetrics.uniqueViews,
-      tryOns: productMetrics.tryOnCount
-    };
-  }).sort((a, b) => b.views - a.views).slice(0, 10);
+  const viewsComparisonData = Object.entries(metrics)
+    .map(([id, productMetrics]) => {
+      const product = products.find(p => p.id === id);
+      return {
+        id,
+        name: product?.name || `Product ${id.substring(0, 6)}`,
+        views: productMetrics.totalViews,
+        uniqueViews: productMetrics.uniqueViews,
+        tryOns: productMetrics.tryOnCount,
+      };
+    })
+    .sort((a, b) => b.views - a.views)
+    .slice(0, 10);
 
   // Prepare conversion and CTR data
-  const conversionData = Object.entries(metrics).map(([id, productMetrics]) => {
-    const product = products.find(p => p.id === id);
-    return {
-      id,
-      name: product?.name || `Product ${id.substring(0, 6)}`,
-      conversion: productMetrics.conversionRate,
-      ctr: productMetrics.clickThroughRate
-    };
-  }).sort((a, b) => b.conversion - a.conversion).slice(0, 10);
+  const conversionData = Object.entries(metrics)
+    .map(([id, productMetrics]) => {
+      const product = products.find(p => p.id === id);
+      return {
+        id,
+        name: product?.name || `Product ${id.substring(0, 6)}`,
+        conversion: productMetrics.conversionRate,
+        ctr: productMetrics.clickThroughRate,
+      };
+    })
+    .sort((a, b) => b.conversion - a.conversion)
+    .slice(0, 10);
 
   // Generate mock time series data (in a real app, you would fetch this from the API)
   const generateTimeSeriesData = () => {
@@ -308,7 +313,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
     const startDate = new Date(start);
     const endDate = new Date(end);
     const data = [];
-    
+
     let currentDate = new Date(startDate);
     while (currentDate <= endDate) {
       const baseViews = Math.floor(Math.random() * 100) + 50;
@@ -316,9 +321,9 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
         date: format(currentDate, 'MMM dd'),
         views: baseViews,
         uniqueViews: Math.floor(baseViews * 0.7),
-        tryOns: Math.floor(baseViews * 0.3)
+        tryOns: Math.floor(baseViews * 0.3),
       });
-      
+
       if (timeRange === 'day') {
         // Hourly for day view
         currentDate = new Date(currentDate.setHours(currentDate.getHours() + 2));
@@ -330,20 +335,20 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
         currentDate = new Date(currentDate.setDate(currentDate.getDate() + 3));
       }
     }
-    
+
     return data;
   };
-  
+
   const timeSeriesData = generateTimeSeriesData();
 
   // Add handlers for exporting data
   const handleExportMetrics = () => {
     if (!selectedMetrics || !selectedProduct) return;
-    
+
     const { start, end } = getDateRange();
     const startDate = format(new Date(start), 'yyyy-MM-dd');
     const endDate = format(new Date(end), 'yyyy-MM-dd');
-    
+
     const exportData = [
       {
         productId: selectedProduct.id,
@@ -356,43 +361,40 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
         tryOnCount: selectedMetrics.tryOnCount,
         conversionRate: selectedMetrics.conversionRate,
         clickThroughRate: selectedMetrics.clickThroughRate,
-        timeRange: `${startDate} to ${endDate}`
-      }
+        timeRange: `${startDate} to ${endDate}`,
+      },
     ];
-    
-    exportToCSV(exportData, `product-metrics-${selectedProduct.name}-${startDate}-to-${endDate}.csv`);
+
+    exportToCSV(
+      exportData,
+      `product-metrics-${selectedProduct.name}-${startDate}-to-${endDate}.csv`
+    );
   };
-  
+
   const handleExportComparisonData = (dataType: 'views' | 'conversion') => {
     if (dataType === 'views' && viewsComparisonData.length > 0) {
       const { start, end } = getDateRange();
       const startDate = format(new Date(start), 'yyyy-MM-dd');
       const endDate = format(new Date(end), 'yyyy-MM-dd');
-      
-      exportToCSV(
-        viewsComparisonData, 
-        `product-views-comparison-${startDate}-to-${endDate}.csv`
-      );
+
+      exportToCSV(viewsComparisonData, `product-views-comparison-${startDate}-to-${endDate}.csv`);
     } else if (dataType === 'conversion' && conversionData.length > 0) {
       const { start, end } = getDateRange();
       const startDate = format(new Date(start), 'yyyy-MM-dd');
       const endDate = format(new Date(end), 'yyyy-MM-dd');
-      
-      exportToCSV(
-        conversionData, 
-        `product-conversion-comparison-${startDate}-to-${endDate}.csv`
-      );
+
+      exportToCSV(conversionData, `product-conversion-comparison-${startDate}-to-${endDate}.csv`);
     }
   };
-  
+
   const handleExportTimeSeriesData = () => {
     if (timeSeriesData.length > 0) {
       const { start, end } = getDateRange();
       const startDate = format(new Date(start), 'yyyy-MM-dd');
       const endDate = format(new Date(end), 'yyyy-MM-dd');
-      
+
       exportToCSV(
-        timeSeriesData, 
+        timeSeriesData,
         `product-${selectedProduct?.name}-time-series-${startDate}-to-${endDate}.csv`
       );
     }
@@ -409,11 +411,11 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
               placeholder="Search products..."
               className="pl-8 w-full md:w-64"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </div>
           <div className="flex flex-wrap gap-2 mt-4 max-h-32 overflow-y-auto">
-            {filteredProducts.map((product) => (
+            {filteredProducts.map(product => (
               <button
                 key={product.id}
                 onClick={() => handleProductSelect(product.id)}
@@ -428,12 +430,9 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
             ))}
           </div>
         </div>
-        
+
         <div className="flex gap-2">
-          <Select 
-            value={timeRange} 
-            onValueChange={(value) => setTimeRange(value as any)}
-          >
+          <Select value={timeRange} onValueChange={value => setTimeRange(value as any)}>
             <SelectTrigger className="w-32">
               <SelectValue placeholder="Time Range" />
             </SelectTrigger>
@@ -443,10 +442,10 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
               <SelectItem value="month">Last Month</SelectItem>
             </SelectContent>
           </Select>
-          
-          <Button 
-            variant="outline" 
-            size="icon" 
+
+          <Button
+            variant="outline"
+            size="icon"
             onClick={handleExportMetrics}
             title="Export current product metrics to CSV"
           >
@@ -454,7 +453,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
           </Button>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-2">
@@ -473,7 +472,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Unique Visitors</CardTitle>
@@ -491,7 +490,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Try-On Sessions</CardTitle>
@@ -510,7 +509,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
           </CardContent>
         </Card>
       </div>
-      
+
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-4">
           <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -518,7 +517,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
           <TabsTrigger value="comparison">Comparison</TabsTrigger>
           <TabsTrigger value="conversion">Conversion</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="overview" className="space-y-4">
           <Card>
             <CardHeader>
@@ -526,12 +525,14 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
                 <div>
                   <CardTitle>Product Performance Summary</CardTitle>
                   <CardDescription>
-                    Metrics for {selectedProduct.name} ({format(new Date(selectedMetrics.timeRange.start), 'MMM dd, yyyy')} - {format(new Date(selectedMetrics.timeRange.end), 'MMM dd, yyyy')})
+                    Metrics for {selectedProduct.name} (
+                    {format(new Date(selectedMetrics.timeRange.start), 'MMM dd, yyyy')} -{' '}
+                    {format(new Date(selectedMetrics.timeRange.end), 'MMM dd, yyyy')})
                   </CardDescription>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={handleExportTimeSeriesData}
                   className="flex items-center gap-1"
                 >
@@ -552,64 +553,66 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Area 
-                      type="monotone" 
-                      dataKey="views" 
+                    <Area
+                      type="monotone"
+                      dataKey="views"
                       stackId="1"
-                      stroke={COLORS[0]} 
-                      fill={COLORS[0]} 
+                      stroke={COLORS[0]}
+                      fill={COLORS[0]}
                     />
-                    <Area 
-                      type="monotone" 
-                      dataKey="uniqueViews" 
+                    <Area
+                      type="monotone"
+                      dataKey="uniqueViews"
                       stackId="2"
-                      stroke={COLORS[1]} 
-                      fill={COLORS[1]} 
+                      stroke={COLORS[1]}
+                      fill={COLORS[1]}
                     />
-                    <Area 
-                      type="monotone" 
-                      dataKey="tryOns" 
+                    <Area
+                      type="monotone"
+                      dataKey="tryOns"
                       stackId="3"
-                      stroke={COLORS[2]} 
-                      fill={COLORS[2]} 
+                      stroke={COLORS[2]}
+                      fill={COLORS[2]}
                     />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Card>
               <CardHeader>
                 <CardTitle>Conversion Metrics</CardTitle>
-                <CardDescription>
-                  Click-through and try-on conversion rates
-                </CardDescription>
+                <CardDescription>Click-through and try-on conversion rates</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <div className="text-sm font-medium">Click-Through Rate</div>
-                      <div className="text-sm font-medium">{selectedMetrics.clickThroughRate.toFixed(1)}%</div>
+                      <div className="text-sm font-medium">
+                        {selectedMetrics.clickThroughRate.toFixed(1)}%
+                      </div>
                     </div>
                     <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-blue-500 rounded-full" 
+                      <div
+                        className="h-full bg-blue-500 rounded-full"
                         style={{ width: `${Math.min(selectedMetrics.clickThroughRate, 100)}%` }}
                       />
                     </div>
                   </div>
-                  
+
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <div className="text-sm font-medium">Try-On Conversion</div>
-                      <div className="text-sm font-medium">{selectedMetrics.conversionRate.toFixed(1)}%</div>
+                      <div className="text-sm font-medium">
+                        {selectedMetrics.conversionRate.toFixed(1)}%
+                      </div>
                     </div>
                     <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-indigo-500 rounded-full" 
+                      <div
+                        className="h-full bg-indigo-500 rounded-full"
                         style={{ width: `${Math.min(selectedMetrics.conversionRate, 100)}%` }}
                       />
                     </div>
@@ -617,13 +620,11 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader>
                 <CardTitle>Product Details</CardTitle>
-                <CardDescription>
-                  Information about {selectedProduct.name}
-                </CardDescription>
+                <CardDescription>Information about {selectedProduct.name}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
@@ -642,10 +643,9 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
                   <div className="grid grid-cols-2">
                     <div className="text-sm text-muted-foreground">Try-On to View Ratio</div>
                     <div className="text-sm font-medium">
-                      {selectedMetrics.totalViews > 0 
+                      {selectedMetrics.totalViews > 0
                         ? `${((selectedMetrics.tryOnCount / selectedMetrics.totalViews) * 100).toFixed(1)}%`
-                        : '0%'
-                      }
+                        : '0%'}
                     </div>
                   </div>
                   <div className="grid grid-cols-2">
@@ -657,20 +657,18 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
             </Card>
           </div>
         </TabsContent>
-        
+
         <TabsContent value="trends" className="space-y-4">
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle>Performance Trends</CardTitle>
-                  <CardDescription>
-                    View and conversion trends over time
-                  </CardDescription>
+                  <CardDescription>View and conversion trends over time</CardDescription>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={handleExportTimeSeriesData}
                   className="flex items-center gap-1"
                 >
@@ -691,42 +689,27 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line 
-                      type="monotone" 
-                      dataKey="views" 
-                      stroke={COLORS[0]} 
-                      activeDot={{ r: 8 }} 
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="uniqueViews" 
-                      stroke={COLORS[1]} 
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="tryOns" 
-                      stroke={COLORS[2]} 
-                    />
+                    <Line type="monotone" dataKey="views" stroke={COLORS[0]} activeDot={{ r: 8 }} />
+                    <Line type="monotone" dataKey="uniqueViews" stroke={COLORS[1]} />
+                    <Line type="monotone" dataKey="tryOns" stroke={COLORS[2]} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="comparison" className="space-y-4">
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle>Product Views Comparison</CardTitle>
-                  <CardDescription>
-                    Compare views and try-ons across top products
-                  </CardDescription>
+                  <CardDescription>Compare views and try-ons across top products</CardDescription>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => handleExportComparisonData('views')}
                   className="flex items-center gap-1"
                 >
@@ -745,12 +728,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type="number" />
-                    <YAxis 
-                      dataKey="name" 
-                      type="category" 
-                      width={80}
-                      tick={{ fontSize: 12 }}
-                    />
+                    <YAxis dataKey="name" type="category" width={80} tick={{ fontSize: 12 }} />
                     <Tooltip />
                     <Legend />
                     <Bar dataKey="views" name="Total Views" fill={COLORS[0]} />
@@ -762,7 +740,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="conversion" className="space-y-4">
           <Card>
             <CardHeader>
@@ -773,9 +751,9 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
                     Compare try-on conversion and click-through rates
                   </CardDescription>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => handleExportComparisonData('conversion')}
                   className="flex items-center gap-1"
                 >
@@ -794,24 +772,11 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type="number" domain={[0, 100]} />
-                    <YAxis 
-                      dataKey="name" 
-                      type="category" 
-                      width={80}
-                      tick={{ fontSize: 12 }}
-                    />
+                    <YAxis dataKey="name" type="category" width={80} tick={{ fontSize: 12 }} />
                     <Tooltip />
                     <Legend />
-                    <Bar 
-                      dataKey="conversion" 
-                      name="Try-On Conversion (%)" 
-                      fill={COLORS[3]} 
-                    />
-                    <Bar 
-                      dataKey="ctr" 
-                      name="Click-Through Rate (%)" 
-                      fill={COLORS[4]} 
-                    />
+                    <Bar dataKey="conversion" name="Try-On Conversion (%)" fill={COLORS[3]} />
+                    <Bar dataKey="ctr" name="Click-Through Rate (%)" fill={COLORS[4]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -821,4 +786,4 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
       </Tabs>
     </div>
   );
-} 
+}

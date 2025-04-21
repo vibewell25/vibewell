@@ -12,19 +12,22 @@ export function createRedisTLSClient(options = {}) {
     host: process.env.REDIS_HOST || 'localhost',
     port: process.env.REDIS_PORT || 6379,
     password: process.env.REDIS_PASSWORD,
-    tls: process.env.REDIS_TLS === 'true' ? {
-      ca: process.env.REDIS_CA_CERT ? fs.readFileSync(process.env.REDIS_CA_CERT) : undefined,
-      cert: process.env.REDIS_CERT ? fs.readFileSync(process.env.REDIS_CERT) : undefined,
-      key: process.env.REDIS_KEY ? fs.readFileSync(process.env.REDIS_KEY) : undefined,
-      rejectUnauthorized: process.env.REDIS_REJECT_UNAUTHORIZED !== 'false'
-    } : undefined,
-    ...options
+    tls:
+      process.env.REDIS_TLS === 'true'
+        ? {
+            ca: process.env.REDIS_CA_CERT ? fs.readFileSync(process.env.REDIS_CA_CERT) : undefined,
+            cert: process.env.REDIS_CERT ? fs.readFileSync(process.env.REDIS_CERT) : undefined,
+            key: process.env.REDIS_KEY ? fs.readFileSync(process.env.REDIS_KEY) : undefined,
+            rejectUnauthorized: process.env.REDIS_REJECT_UNAUTHORIZED !== 'false',
+          }
+        : undefined,
+    ...options,
   };
 
   const client = redis.createClient(tlsOptions);
-  
+
   // Add error handler
-  client.on('error', (err) => {
+  client.on('error', err => {
     console.error('Redis Client Error:', err);
   });
 
@@ -49,12 +52,18 @@ export async function runRedisBenchmarkWithTLS(options = {}) {
 
   return new Promise((resolve, reject) => {
     const args = [
-      '-h', host,
-      '-p', port,
-      '-c', clients.toString(),
-      '-n', requests.toString(),
-      '-r', keyspacelen.toString(),
-      '-d', datasize.toString()
+      '-h',
+      host,
+      '-p',
+      port,
+      '-c',
+      clients.toString(),
+      '-n',
+      requests.toString(),
+      '-r',
+      keyspacelen.toString(),
+      '-d',
+      datasize.toString(),
     ];
 
     if (password) {
@@ -63,26 +72,26 @@ export async function runRedisBenchmarkWithTLS(options = {}) {
 
     if (tls) {
       args.push('--tls');
-      
+
       if (ca) args.push('--cacert', ca);
       if (cert) args.push('--cert', cert);
       if (key) args.push('--key', key);
     }
 
     const benchmark = spawn('redis-benchmark', args);
-    
+
     let output = '';
     let error = '';
 
-    benchmark.stdout.on('data', (data) => {
+    benchmark.stdout.on('data', data => {
       output += data.toString();
     });
 
-    benchmark.stderr.on('data', (data) => {
+    benchmark.stderr.on('data', data => {
       error += data.toString();
     });
 
-    benchmark.on('close', (code) => {
+    benchmark.on('close', code => {
       if (code !== 0) {
         reject(new Error(`Redis benchmark failed with code ${code}: ${error}`));
       } else {
@@ -107,10 +116,7 @@ export function enhancedRedisCLI(options = {}) {
   } = options;
 
   return new Promise((resolve, reject) => {
-    const args = [
-      '-h', host,
-      '-p', port,
-    ];
+    const args = ['-h', host, '-p', port];
 
     if (password) {
       args.push('-a', password);
@@ -118,7 +124,7 @@ export function enhancedRedisCLI(options = {}) {
 
     if (tls) {
       args.push('--tls');
-      
+
       if (ca) args.push('--cacert', ca);
       if (cert) args.push('--cert', cert);
       if (key) args.push('--key', key);
@@ -133,19 +139,19 @@ export function enhancedRedisCLI(options = {}) {
     }
 
     const cli = spawn('redis-cli', args);
-    
+
     let output = '';
     let error = '';
 
-    cli.stdout.on('data', (data) => {
+    cli.stdout.on('data', data => {
       output += data.toString();
     });
 
-    cli.stderr.on('data', (data) => {
+    cli.stderr.on('data', data => {
       error += data.toString();
     });
 
-    cli.on('close', (code) => {
+    cli.on('close', code => {
       if (code !== 0) {
         reject(new Error(`Redis CLI failed with code ${code}: ${error}`));
       } else {

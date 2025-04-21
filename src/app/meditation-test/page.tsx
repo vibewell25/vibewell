@@ -5,7 +5,9 @@ import { MeditationEnvironment } from '@/components/ar/MeditationEnvironment';
 
 export default function MeditationTest() {
   const [theme, setTheme] = useState<'forest' | 'beach' | 'mountain' | 'zen-garden'>('forest');
-  const [soundscape, setSoundscape] = useState<'rain' | 'waves' | 'wind' | 'birds' | 'silence'>('silence');
+  const [soundscape, setSoundscape] = useState<'rain' | 'waves' | 'wind' | 'birds' | 'silence'>(
+    'silence'
+  );
   const [lightingIntensity, setLightingIntensity] = useState(1);
   const [particleEffects, setParticleEffects] = useState(true);
 
@@ -14,14 +16,14 @@ export default function MeditationTest() {
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h1 className="text-3xl font-bold mb-6">Meditation Environment Test</h1>
-          
+
           <div className="grid grid-cols-2 gap-6 mb-6">
             <div>
               <label className="block text-sm font-medium mb-2">Theme</label>
               <select
                 className="w-full rounded border-gray-300 p-2"
                 value={theme}
-                onChange={(e) => setTheme(e.target.value as typeof theme)}
+                onChange={e => setTheme(e.target.value as typeof theme)}
               >
                 <option value="forest">Forest</option>
                 <option value="beach">Beach</option>
@@ -35,7 +37,7 @@ export default function MeditationTest() {
               <select
                 className="w-full rounded border-gray-300 p-2"
                 value={soundscape}
-                onChange={(e) => setSoundscape(e.target.value as typeof soundscape)}
+                onChange={e => setSoundscape(e.target.value as typeof soundscape)}
               >
                 <option value="silence">Silence</option>
                 <option value="rain">Rain</option>
@@ -55,20 +57,18 @@ export default function MeditationTest() {
                 max="2"
                 step="0.1"
                 value={lightingIntensity}
-                onChange={(e) => setLightingIntensity(parseFloat(e.target.value))}
+                onChange={e => setLightingIntensity(parseFloat(e.target.value))}
                 className="w-full"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Particle Effects
-              </label>
+              <label className="block text-sm font-medium mb-2">Particle Effects</label>
               <div className="flex items-center">
                 <input
                   type="checkbox"
                   checked={particleEffects}
-                  onChange={(e) => setParticleEffects(e.target.checked)}
+                  onChange={e => setParticleEffects(e.target.checked)}
                   className="h-4 w-4 text-blue-600"
                 />
                 <span className="ml-2">Enable particle effects</span>
@@ -83,10 +83,11 @@ export default function MeditationTest() {
             soundscape={soundscape}
             lightingIntensity={lightingIntensity}
             particleEffects={particleEffects}
-            onStateChange={(state) => {
+            onStateChange={state => {
               if (state.theme) setTheme(state.theme);
               if (state.soundscape) setSoundscape(state.soundscape);
-              if (state.lightingIntensity !== undefined) setLightingIntensity(state.lightingIntensity);
+              if (state.lightingIntensity !== undefined)
+                setLightingIntensity(state.lightingIntensity);
             }}
           />
         </div>
@@ -94,7 +95,10 @@ export default function MeditationTest() {
         <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Testing Instructions</h2>
           <ol className="list-decimal list-inside space-y-2">
-            <li>Try each theme (Forest, Beach, Mountain, Zen Garden) and verify the 3D models load correctly</li>
+            <li>
+              Try each theme (Forest, Beach, Mountain, Zen Garden) and verify the 3D models load
+              correctly
+            </li>
             <li>Test all soundscapes and ensure the audio plays/stops properly</li>
             <li>Adjust lighting intensity and check how it affects the environment</li>
             <li>Toggle particle effects and verify they appear/disappear</li>
@@ -106,4 +110,4 @@ export default function MeditationTest() {
       </div>
     </div>
   );
-} 
+}

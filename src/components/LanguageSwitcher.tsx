@@ -17,7 +17,7 @@ export default function LanguageSwitcher() {
 
   const handleLanguageChange = async (languageCode: string) => {
     await changeLanguage(languageCode);
-    
+
     // Refresh the page to ensure all components update correctly
     router.refresh();
   };
@@ -26,10 +26,10 @@ export default function LanguageSwitcher() {
     <div className="relative inline-block text-left">
       <select
         value={i18n.language}
-        onChange={(e) => handleLanguageChange(e.target.value)}
+        onChange={e => handleLanguageChange(e.target.value)}
         className="block w-full px-4 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
       >
-        {languages.map((language) => (
+        {languages.map(language => (
           <option key={language.code} value={language.code}>
             {language.name}
           </option>
@@ -37,4 +37,4 @@ export default function LanguageSwitcher() {
       </select>
     </div>
   );
-} 
+}

@@ -15,7 +15,7 @@ function EngagementContent() {
   const { data: session, status } = useSession();
   const isLoading = status === 'loading';
   const isAuthenticated = status === 'authenticated';
-  
+
   if (isLoading) {
     return (
       <div className="container mx-auto py-8 space-y-6 animate-pulse">
@@ -25,42 +25,38 @@ function EngagementContent() {
       </div>
     );
   }
-  
+
   if (!isAuthenticated) {
     return (
       <div className="container mx-auto py-8">
         <Card>
           <CardHeader>
             <CardTitle>Sign In Required</CardTitle>
-            <CardDescription>
-              Please sign in to view your engagement profile.
-            </CardDescription>
+            <CardDescription>Please sign in to view your engagement profile.</CardDescription>
           </CardHeader>
         </Card>
       </div>
     );
   }
-  
+
   return (
     <EngagementProvider>
       <div className="container mx-auto py-8 space-y-6">
         <h1 className="text-3xl font-bold">Your Engagement Profile</h1>
-        
+
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Star className="h-5 w-5 text-primary" />
               Progress & Level
             </CardTitle>
-            <CardDescription>
-              Track your progress and level up as you use ViBEWELL
-            </CardDescription>
+            <CardDescription>Track your progress and level up as you use ViBEWELL</CardDescription>
           </CardHeader>
           <CardContent>
             <LevelProgress showDetails={true} />
           </CardContent>
         </Card>
-        
+
         <Tabs defaultValue="badges">
           <TabsList className="grid w-full grid-cols-2 mb-4">
             <TabsTrigger value="badges" className="flex gap-2 items-center">
@@ -72,7 +68,7 @@ function EngagementContent() {
               Recommendations
             </TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="badges">
             <Card>
               <CardHeader>
@@ -86,14 +82,12 @@ function EngagementContent() {
               </CardContent>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="recommendations">
             <Card>
               <CardHeader>
                 <CardTitle>Recommended for You</CardTitle>
-                <CardDescription>
-                  Based on your try-on history and preferences
-                </CardDescription>
+                <CardDescription>Based on your try-on history and preferences</CardDescription>
               </CardHeader>
               <CardContent>
                 <Recommendations showTitle={false} maxItems={6} />
@@ -110,12 +104,12 @@ function EngagementContent() {
 export default function EngagementPage() {
   // Move the client-state management to the wrapper component
   const [hasMounted, setHasMounted] = useState(false);
-  
+
   // Simple effect to ensure we're only rendering on the client
   useEffect(() => {
     setHasMounted(true);
   }, []);
-  
+
   // Safeguard against server-rendering session-dependent components
   if (!hasMounted) {
     return (
@@ -126,16 +120,18 @@ export default function EngagementPage() {
       </div>
     );
   }
-  
+
   return (
-    <Suspense fallback={
-      <div className="container mx-auto py-8 space-y-6 animate-pulse">
-        <div className="h-8 w-48 bg-gray-200 rounded-lg" />
-        <div className="h-24 w-full bg-gray-200 rounded-lg" />
-        <div className="h-64 w-full bg-gray-200 rounded-lg" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="container mx-auto py-8 space-y-6 animate-pulse">
+          <div className="h-8 w-48 bg-gray-200 rounded-lg" />
+          <div className="h-24 w-full bg-gray-200 rounded-lg" />
+          <div className="h-64 w-full bg-gray-200 rounded-lg" />
+        </div>
+      }
+    >
       <EngagementContent />
     </Suspense>
   );
-} 
+}

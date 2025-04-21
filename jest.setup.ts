@@ -1,45 +1,34 @@
 import '@testing-library/jest-dom';
-import { configure } from '@testing-library/react';
 import 'jest-axe/extend-expect';
-import { TextEncoder, TextDecoder } from 'util';
+import { server } from './src/mocks/server';
 
-// Setup DOM environment
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder;
+// Enable API mocking before tests
+beforeAll(() => server.listen());
 
-// Configure testing library
-configure({
-  testIdAttribute: 'data-testid',
+// Reset request handlers between tests
+afterEach(() => {
+  server.resetHandlers();
+  jest.clearAllMocks();
 });
 
-// Mock WebGL context
-class WebGLRenderingContext {
-  canvas: HTMLCanvasElement;
-  drawingBufferWidth: number;
-  drawingBufferHeight: number;
+// Clean up after tests
+afterAll(() => server.close());
 
-  constructor() {
-    this.canvas = document.createElement('canvas');
-    this.drawingBufferWidth = 0;
-    this.drawingBufferHeight = 0;
-  }
-
-  // Add minimal WebGL methods needed for testing
-  viewport() {}
-  clearColor() {}
-  clear() {}
-  enable() {}
-  disable() {}
-  getExtension() { return null; }
+// Mock IntersectionObserver
+class MockIntersectionObserver implements IntersectionObserver {
+  readonly root: Element | null = null;
+  readonly rootMargin: string = '';
+  readonly thresholds: ReadonlyArray<number> = [];
+  
+  constructor(private callback: IntersectionObserverCallback) {}
+  
+  observe = jest.fn();
+  unobserve = jest.fn();
+  disconnect = jest.fn();
+  takeRecords = jest.fn().mockReturnValue([]);
 }
 
-// Mock HTMLCanvasElement.getContext
-HTMLCanvasElement.prototype.getContext = function(contextType: string) {
-  if (contextType === 'webgl' || contextType === 'webgl2') {
-    return new WebGLRenderingContext();
-  }
-  return null;
-};
+global.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -56,44 +45,48 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-// Mock IntersectionObserver
-class IntersectionObserver {
-  observe = jest.fn();
-  unobserve = jest.fn();
-  disconnect = jest.fn();
-}
-
-Object.defineProperty(window, 'IntersectionObserver', {
-  writable: true,
-  value: IntersectionObserver,
-});
-
 // Mock ResizeObserver
-class ResizeObserver {
+class MockResizeObserver {
   observe = jest.fn();
   unobserve = jest.fn();
   disconnect = jest.fn();
 }
 
-Object.defineProperty(window, 'ResizeObserver', {
-  writable: true,
-  value: ResizeObserver,
-});
+global.ResizeObserver = MockResizeObserver;
 
-// Suppress console errors during tests
+// Mock window.scroll
+global.scroll = jest.fn();
+global.scrollTo = jest.fn();
+
+// Mock console.error to fail tests on prop-type errors
 const originalError = console.error;
-beforeAll(() => {
-  console.error = (...args: any[]) => {
-    if (
-      typeof args[0] === 'string' &&
-      args[0].includes('Warning: ReactDOM.render is no longer supported')
-    ) {
-      return;
-    }
-    originalError.call(console, ...args);
-  };
+console.error = (...args) => {
+  const propTypeErrors = [
+    'Failed prop type',
+    'Invalid prop',
+    'Invalid event handler',
+    'React does not recognize',
+    'Unknown prop',
+  ];
+
+  if (propTypeErrors.some(err => args.join(' ').includes(err))) {
+    throw new Error(args.join(' '));
+  }
+
+  originalError.call(console, ...args);
+};
+
+// Set up fake timers
+beforeEach(() => {
+  jest.useFakeTimers();
 });
 
-afterAll(() => {
-  console.error = originalError;
+afterEach(() => {
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
+
+// Clean up after each test
+afterEach(() => {
+  jest.clearAllMocks();
 }); 

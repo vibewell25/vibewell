@@ -38,7 +38,7 @@ interface UserPreferencesProps {
 /**
  * A component that allows users to manage their preferences,
  * which are stored in localStorage
- * 
+ *
  * @param {UserPreferencesProps} props - Component properties
  * @returns {JSX.Element} Rendered preferences panel
  */
@@ -50,7 +50,7 @@ export const UserPreferencesPanel: React.FC<UserPreferencesProps> = ({ className
 
   /**
    * Handle toggle changes for checkbox inputs
-   * 
+   *
    * @param {React.ChangeEvent<HTMLInputElement>} e - Change event from checkbox
    */
   const handleToggleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +63,7 @@ export const UserPreferencesPanel: React.FC<UserPreferencesProps> = ({ className
 
   /**
    * Handle select changes for dropdown inputs
-   * 
+   *
    * @param {React.ChangeEvent<HTMLSelectElement>} e - Change event from select
    */
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -84,7 +84,7 @@ export const UserPreferencesPanel: React.FC<UserPreferencesProps> = ({ className
   return (
     <div className={`user-preferences-panel ${className}`}>
       <h2 className="text-xl font-bold mb-4">User Preferences</h2>
-      
+
       <div className="space-y-6">
         {/* Notifications */}
         <div className="flex items-center justify-between">
@@ -100,7 +100,7 @@ export const UserPreferencesPanel: React.FC<UserPreferencesProps> = ({ className
             className="h-4 w-4"
           />
         </div>
-        
+
         {/* Email Frequency */}
         <div className="space-y-2">
           <label htmlFor="emailFrequency" className="block font-medium">
@@ -119,7 +119,7 @@ export const UserPreferencesPanel: React.FC<UserPreferencesProps> = ({ className
             <option value="never">Never</option>
           </select>
         </div>
-        
+
         {/* Language */}
         <div className="space-y-2">
           <label htmlFor="language" className="block font-medium">
@@ -138,7 +138,7 @@ export const UserPreferencesPanel: React.FC<UserPreferencesProps> = ({ className
             <option value="de">German</option>
           </select>
         </div>
-        
+
         {/* Font Size */}
         <div className="space-y-2">
           <label htmlFor="fontSize" className="block font-medium">
@@ -156,7 +156,7 @@ export const UserPreferencesPanel: React.FC<UserPreferencesProps> = ({ className
             <option value="large">Large</option>
           </select>
         </div>
-        
+
         {/* Reset Button */}
         <button
           onClick={resetPreferences}
@@ -167,4 +167,4 @@ export const UserPreferencesPanel: React.FC<UserPreferencesProps> = ({ className
       </div>
     </div>
   );
-}; 
+};

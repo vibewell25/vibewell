@@ -18,7 +18,7 @@ export function StarRating({
   readonly = false,
   onChange,
   showCount = false,
-  count = 0
+  count = 0,
 }: StarRatingProps) {
   const [rating, setRating] = useState<number | null>(initialRating);
   const [hover, setHover] = useState<number | null>(null);
@@ -31,7 +31,7 @@ export function StarRating({
   const sizeClasses = {
     sm: 'h-4 w-4',
     md: 'h-5 w-5',
-    lg: 'h-6 w-6'
+    lg: 'h-6 w-6',
   };
   const starClass = sizeClasses[size];
 
@@ -52,7 +52,7 @@ export function StarRating({
   return (
     <div className="flex items-center">
       <div className="flex">
-        {[1, 2, 3, 4, 5].map((star) => {
+        {[1, 2, 3, 4, 5].map(star => {
           const isHighlighted = (hover || rating || 0) >= star;
           return (
             <button
@@ -65,19 +65,15 @@ export function StarRating({
               disabled={readonly}
               aria-label={`Rate ${star} out of 5 stars`}
             >
-              <Star 
-                className={`${starClass} ${isHighlighted ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
+              <Star
+                className={`${starClass} ${isHighlighted ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
                 fill={isHighlighted ? 'currentColor' : 'none'}
               />
             </button>
           );
         })}
       </div>
-      {showCount && (
-        <span className="ml-2 text-sm text-gray-500">
-          {formatCount(count)}
-        </span>
-      )}
+      {showCount && <span className="ml-2 text-sm text-gray-500">{formatCount(count)}</span>}
     </div>
   );
-} 
+}

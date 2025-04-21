@@ -9,15 +9,15 @@ interface AudioControlsProps {
 }
 
 const AudioControls: React.FC<AudioControlsProps> = ({ soundscapes }) => {
-  const { 
-    isPlaying, 
-    volume, 
+  const {
+    isPlaying,
+    volume,
     currentSoundscape,
-    playAudio, 
-    pauseAudio, 
-    resumeAudio, 
-    stopAudio, 
-    setVolume 
+    playAudio,
+    pauseAudio,
+    resumeAudio,
+    stopAudio,
+    setVolume,
   } = useAudio();
 
   const handlePlayPause = () => {
@@ -45,17 +45,11 @@ const AudioControls: React.FC<AudioControlsProps> = ({ soundscapes }) => {
 
   return (
     <div className="audio-controls">
-      <button 
-        onClick={handlePlayPause}
-        aria-label={isPlaying ? 'Pause' : 'Play'}
-      >
+      <button onClick={handlePlayPause} aria-label={isPlaying ? 'Pause' : 'Play'}>
         {isPlaying ? '⏸️' : '▶️'}
       </button>
 
-      <button 
-        onClick={stopAudio}
-        aria-label="Stop"
-      >
+      <button onClick={stopAudio} aria-label="Stop">
         ⏹️
       </button>
 
@@ -117,7 +111,7 @@ const AudioControls: React.FC<AudioControlsProps> = ({ soundscapes }) => {
           gap: 0.5rem;
         }
 
-        input[type="range"] {
+        input[type='range'] {
           width: 100px;
         }
       `}</style>
@@ -125,4 +119,4 @@ const AudioControls: React.FC<AudioControlsProps> = ({ soundscapes }) => {
   );
 };
 
-export default AudioControls; 
+export default AudioControls;

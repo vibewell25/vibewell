@@ -1,9 +1,9 @@
-import { 
+import {
   PerformanceReviewModel,
   PerformanceReview,
   PerformanceMetric,
   MetricEvaluation,
-  DevelopmentGoal 
+  DevelopmentGoal,
 } from '../models/PerformanceReview';
 import { NotificationService } from './notification-service';
 import { AnalyticsService } from './analytics-service';
@@ -25,8 +25,8 @@ export class PerformanceReviewService {
         excellent: 'Consistently exceeds client expectations with exceptional service',
         good: 'Regularly meets client expectations with quality service',
         satisfactory: 'Generally meets basic service requirements',
-        needsImprovement: 'Frequently falls below expected service standards'
-      }
+        needsImprovement: 'Frequently falls below expected service standards',
+      },
     },
     {
       id: 'CLIENT_SATISFACTION',
@@ -38,8 +38,8 @@ export class PerformanceReviewService {
         excellent: 'Outstanding client feedback with high retention rate',
         good: 'Positive client feedback with good retention',
         satisfactory: 'Mixed client feedback with average retention',
-        needsImprovement: 'Poor client feedback with low retention'
-      }
+        needsImprovement: 'Poor client feedback with low retention',
+      },
     },
     {
       id: 'EFFICIENCY',
@@ -51,8 +51,8 @@ export class PerformanceReviewService {
         excellent: 'Highly efficient with optimal resource utilization',
         good: 'Good time management and resource usage',
         satisfactory: 'Adequate efficiency in operations',
-        needsImprovement: 'Inefficient operations and resource usage'
-      }
+        needsImprovement: 'Inefficient operations and resource usage',
+      },
     },
     {
       id: 'REVENUE',
@@ -64,8 +64,8 @@ export class PerformanceReviewService {
         excellent: 'Consistently exceeds revenue targets',
         good: 'Regularly meets revenue targets',
         satisfactory: 'Sometimes meets revenue targets',
-        needsImprovement: 'Rarely meets revenue targets'
-      }
+        needsImprovement: 'Rarely meets revenue targets',
+      },
     },
     {
       id: 'PROFESSIONAL_DEVELOPMENT',
@@ -77,15 +77,12 @@ export class PerformanceReviewService {
         excellent: 'Proactively pursues development opportunities',
         good: 'Regularly participates in development activities',
         satisfactory: 'Completes required development activities',
-        needsImprovement: 'Minimal engagement in development'
-      }
-    }
+        needsImprovement: 'Minimal engagement in development',
+      },
+    },
   ];
 
-  constructor(
-    notificationService: NotificationService,
-    analyticsService: AnalyticsService
-  ) {
+  constructor(notificationService: NotificationService, analyticsService: AnalyticsService) {
     this.notificationService = notificationService;
     this.analyticsService = analyticsService;
   }
@@ -103,7 +100,7 @@ export class PerformanceReviewService {
       practitionerId,
       reviewType,
       'reviewPeriod.start': { $lte: period.end },
-      'reviewPeriod.end': { $gte: period.start }
+      'reviewPeriod.end': { $gte: period.start },
     });
 
     if (existingReview) {
@@ -119,8 +116,8 @@ export class PerformanceReviewService {
         score: 0,
         notes: '',
         evaluatorId: null,
-        evaluationDate: null
-      }))
+        evaluationDate: null,
+      })),
     });
 
     await review.save();
@@ -129,7 +126,7 @@ export class PerformanceReviewService {
     await this.notificationService.notifyUser(practitionerId, {
       type: 'REVIEW',
       title: 'New Performance Review',
-      message: `A new ${reviewType} review has been created for the period ${period.start.toLocaleDateString()} to ${period.end.toLocaleDateString()}`
+      message: `A new ${reviewType} review has been created for the period ${period.start.toLocaleDateString()} to ${period.end.toLocaleDateString()}`,
     });
 
     return review;
@@ -158,14 +155,14 @@ export class PerformanceReviewService {
     review.metrics[metricIndex] = {
       ...review.metrics[metricIndex],
       ...evaluation,
-      evaluationDate: new Date()
+      evaluationDate: new Date(),
     };
 
     // Calculate overall score
     const totalWeight = this.STANDARD_METRICS.reduce((sum, m) => sum + m.weight, 0);
     const weightedSum = review.metrics.reduce((sum, m) => {
       const metric = this.STANDARD_METRICS.find(sm => sm.id === m.metricId);
-      return sum + (m.score * (metric?.weight || 0));
+      return sum + m.score * (metric?.weight || 0);
     }, 0);
 
     review.overallScore = weightedSum / totalWeight;
@@ -190,7 +187,7 @@ export class PerformanceReviewService {
       ...goal,
       id: uuidv4(),
       status: 'not_started',
-      progress: 0
+      progress: 0,
     };
 
     review.developmentGoals.push(newGoal);
@@ -235,7 +232,7 @@ export class PerformanceReviewService {
       goal.milestones = goal.milestones.map(m => ({
         ...m,
         status: update.completedMilestones?.includes(m.title) ? 'completed' : m.status,
-        completedDate: update.completedMilestones?.includes(m.title) ? new Date() : m.completedDate
+        completedDate: update.completedMilestones?.includes(m.title) ? new Date() : m.completedDate,
       }));
     }
 
@@ -262,7 +259,7 @@ export class PerformanceReviewService {
 
     review.feedback.peerFeedback.push({
       ...feedback,
-      date: new Date()
+      date: new Date(),
     } as any);
 
     return await review.save();
@@ -287,7 +284,7 @@ export class PerformanceReviewService {
 
     review.feedback.selfAssessment = {
       ...assessment,
-      submitted: new Date()
+      submitted: new Date(),
     };
 
     return await review.save();
@@ -313,7 +310,7 @@ export class PerformanceReviewService {
     review.reviewMeetings.push({
       ...meeting,
       notes: '',
-      actionItems: []
+      actionItems: [],
     } as any);
 
     await review.save();
@@ -323,7 +320,7 @@ export class PerformanceReviewService {
       await this.notificationService.notifyUser(attendeeId, {
         type: 'REVIEW',
         title: 'Performance Review Meeting Scheduled',
-        message: `A review meeting has been scheduled for ${meeting.scheduledDate.toLocaleString()}`
+        message: `A review meeting has been scheduled for ${meeting.scheduledDate.toLocaleString()}`,
       });
     }
 
@@ -367,16 +364,16 @@ export class PerformanceReviewService {
       areasForImprovement: completionData.areasForImprovement,
       compensation: {
         ...review.compensation,
-        ...completionData.compensation
+        ...completionData.compensation,
       },
       signatures: {
         ...review.signatures,
         reviewer: {
           userId: reviewerId,
           signed: true,
-          date: new Date()
-        }
-      }
+          date: new Date(),
+        },
+      },
     });
 
     await review.save();
@@ -385,7 +382,7 @@ export class PerformanceReviewService {
     await this.notificationService.notifyUser(review.practitionerId.toString(), {
       type: 'REVIEW',
       title: 'Performance Review Completed',
-      message: 'Your performance review has been completed. Please sign to acknowledge.'
+      message: 'Your performance review has been completed. Please sign to acknowledge.',
     });
 
     return review;
@@ -399,18 +396,18 @@ export class PerformanceReviewService {
       practitionerId,
       ...(period && {
         'reviewPeriod.start': { $gte: period.start },
-        'reviewPeriod.end': { $lte: period.end }
-      })
+        'reviewPeriod.end': { $lte: period.end },
+      }),
     };
 
-    const reviews = await PerformanceReviewModel.find(query)
-      .sort({ 'reviewPeriod.start': -1 });
+    const reviews = await PerformanceReviewModel.find(query).sort({ 'reviewPeriod.start': -1 });
 
     return {
       totalReviews: reviews.length,
       averageScore: reviews.reduce((sum, r) => sum + (r.overallScore || 0), 0) / reviews.length,
-      completedGoals: reviews.reduce((sum, r) => 
-        sum + r.developmentGoals.filter(g => g.status === 'completed').length, 0
+      completedGoals: reviews.reduce(
+        (sum, r) => sum + r.developmentGoals.filter(g => g.status === 'completed').length,
+        0
       ),
       strengthAreas: this.aggregateStrengths(reviews),
       improvementAreas: this.aggregateImprovements(reviews),
@@ -419,14 +416,14 @@ export class PerformanceReviewService {
         period: r.reviewPeriod,
         type: r.reviewType,
         status: r.status,
-        score: r.overallScore
-      }))
+        score: r.overallScore,
+      })),
     };
   }
 
   private aggregateStrengths(reviews: PerformanceReview[]): { area: string; frequency: number }[] {
     const strengthCounts = new Map<string, number>();
-    
+
     reviews.forEach(review => {
       review.strengths.forEach(strength => {
         strengthCounts.set(strength, (strengthCounts.get(strength) || 0) + 1);
@@ -438,9 +435,11 @@ export class PerformanceReviewService {
       .sort((a, b) => b.frequency - a.frequency);
   }
 
-  private aggregateImprovements(reviews: PerformanceReview[]): { area: string; frequency: number }[] {
+  private aggregateImprovements(
+    reviews: PerformanceReview[]
+  ): { area: string; frequency: number }[] {
     const improvementCounts = new Map<string, number>();
-    
+
     reviews.forEach(review => {
       review.areasForImprovement.forEach(area => {
         improvementCounts.set(area, (improvementCounts.get(area) || 0) + 1);
@@ -451,4 +450,4 @@ export class PerformanceReviewService {
       .map(([area, frequency]) => ({ area, frequency }))
       .sort((a, b) => b.frequency - a.frequency);
   }
-} 
+}

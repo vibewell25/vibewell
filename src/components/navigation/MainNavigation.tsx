@@ -34,19 +34,15 @@ export const MainNavigation: React.FC = () => {
       <div className="container flex h-14 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="hidden font-bold sm:inline-block">
-              VibeWell
-            </span>
+            <span className="hidden font-bold sm:inline-block">VibeWell</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
-            {navigationItems.map((item) => (
+            {navigationItems.map(item => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={`flex items-center space-x-2 transition-colors hover:text-foreground/80 ${
-                  isActive(item.href)
-                    ? 'text-foreground'
-                    : 'text-foreground/60'
+                  isActive(item.href) ? 'text-foreground' : 'text-foreground/60'
                 }`}
               >
                 {item.icon}
@@ -77,14 +73,12 @@ export const MainNavigation: React.FC = () => {
               </Link>
             </div>
             <nav className="flex flex-col space-y-4 px-7 pb-4 pt-4">
-              {navigationItems.map((item) => (
+              {navigationItems.map(item => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={`flex items-center space-x-2 text-sm font-medium transition-colors hover:text-foreground/80 ${
-                    isActive(item.href)
-                      ? 'text-foreground'
-                      : 'text-foreground/60'
+                    isActive(item.href) ? 'text-foreground' : 'text-foreground/60'
                   }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
@@ -98,4 +92,4 @@ export const MainNavigation: React.FC = () => {
       </div>
     </nav>
   );
-}; 
+};

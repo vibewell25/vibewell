@@ -27,27 +27,25 @@ export default function ProductAnalytics() {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Product Analytics</h2>
-      
+
       <Tabs defaultValue="metrics" className="w-full">
         <TabsList className="mb-6">
           <TabsTrigger value="metrics">Performance Metrics</TabsTrigger>
           <TabsTrigger value="feedback">Customer Feedback</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="metrics" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Product Performance Metrics</CardTitle>
-              <CardDescription>
-                Detailed performance metrics for this product
-              </CardDescription>
+              <CardDescription>Detailed performance metrics for this product</CardDescription>
             </CardHeader>
             <CardContent>
               <ProductMetricsDashboard productId={productId} />
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="feedback" className="space-y-4">
           <Card>
             <CardHeader>
@@ -64,4 +62,4 @@ export default function ProductAnalytics() {
       </Tabs>
     </div>
   );
-} 
+}

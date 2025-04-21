@@ -1,0 +1,13 @@
+{
+  "defaults": {
+    "timeout": 10000,
+    "wait": 1000,
+    "standard": "WCAG2AA",
+    "ignore": []
+  },
+  "urls": [
+    "http://localhost:3000",
+    "http://localhost:3000/about",
+    "http://localhost:3000/contact"
+  ]
+} 

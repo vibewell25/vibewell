@@ -70,7 +70,7 @@ export function TipModal({ bookingId, open, onOpenChange }: TipModalProps) {
               min="0"
               step="0.01"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={e => setAmount(e.target.value)}
               placeholder="Enter tip amount"
               required
             />
@@ -79,7 +79,7 @@ export function TipModal({ bookingId, open, onOpenChange }: TipModalProps) {
             <Label>Message (Optional)</Label>
             <Textarea
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={e => setMessage(e.target.value)}
               placeholder="Add a message to your tip"
               rows={3}
             />
@@ -93,4 +93,4 @@ export function TipModal({ bookingId, open, onOpenChange }: TipModalProps) {
       </DialogContent>
     </Dialog>
   );
-} 
+}

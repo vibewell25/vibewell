@@ -31,7 +31,10 @@ export class BackupScheduler {
           await this.backupService.createBackup('full');
           logger.info('Completed scheduled full backup');
         } catch (error: unknown) {
-          logger.error('Error during scheduled full backup:', error instanceof Error ? error.message : String(error));
+          logger.error(
+            'Error during scheduled full backup:',
+            error instanceof Error ? error.message : String(error)
+          );
         }
       });
 
@@ -43,7 +46,10 @@ export class BackupScheduler {
           await this.backupService.createBackup('incremental');
           logger.info('Completed scheduled incremental backup');
         } catch (error: unknown) {
-          logger.error('Error during scheduled incremental backup:', error instanceof Error ? error.message : String(error));
+          logger.error(
+            'Error during scheduled incremental backup:',
+            error instanceof Error ? error.message : String(error)
+          );
         }
       });
 
@@ -54,13 +60,19 @@ export class BackupScheduler {
           await this.backupService.cleanupOldBackups();
           logger.info('Completed scheduled backup cleanup');
         } catch (error: unknown) {
-          logger.error('Error during scheduled backup cleanup:', error instanceof Error ? error.message : String(error));
+          logger.error(
+            'Error during scheduled backup cleanup:',
+            error instanceof Error ? error.message : String(error)
+          );
         }
       });
 
       logger.info('Backup scheduler started successfully');
     } catch (error: unknown) {
-      logger.error('Error starting backup scheduler:', error instanceof Error ? error.message : String(error));
+      logger.error(
+        'Error starting backup scheduler:',
+        error instanceof Error ? error.message : String(error)
+      );
       throw error;
     }
   }
@@ -83,7 +95,7 @@ export class BackupScheduler {
 
   private getCronExpression(config: ScheduleConfig): string {
     const [hours, minutes] = config.timeOfDay.split(':').map(Number);
-    
+
     switch (config.frequency) {
       case 'daily':
         return `${minutes} ${hours} * * *`;
@@ -101,4 +113,4 @@ export class BackupScheduler {
         throw new Error(`Unsupported backup frequency: ${config.frequency}`);
     }
   }
-} 
+}

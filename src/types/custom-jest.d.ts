@@ -12,4 +12,4 @@ declare global {
 }
 
 // Export empty object to satisfy module requirements
-export {}; 
+export {};

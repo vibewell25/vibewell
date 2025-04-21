@@ -20,12 +20,12 @@ declare global {
 }
 
 // Mock global fetch
-global.fetch = jest.fn(() => 
+global.fetch = jest.fn(() =>
   Promise.resolve({
     json: () => Promise.resolve({}),
     ok: true,
     status: 200,
-    text: () => Promise.resolve(""),
+    text: () => Promise.resolve(''),
   } as Response)
 );
 
@@ -37,4 +37,4 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-export {}; 
+export {};

@@ -10,29 +10,28 @@ import { GoalList } from '@/components/wellness/GoalList';
 import { DeleteConfirmationModal } from '@/components/wellness/DeleteConfirmationModal';
 import { useWellnessData } from '@/hooks/useWellnessData';
 import { GoalType, Goal } from '@/types/progress';
-;
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Icons } from '@/components/icons';
 export default function ProgressPage() {
   const { user, loading: authLoading } = useAuth();
-  const { 
-    goals, 
-    habitLogs, 
-    wellnessDays, 
-    summary, 
+  const {
+    goals,
+    habitLogs,
+    wellnessDays,
+    summary,
     isLoading,
     logHabit,
     createGoal,
     updateGoal,
-    deleteGoal
+    deleteGoal,
   } = useWellnessData();
   const [selectedType, setSelectedType] = useState<GoalType>('meditation');
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('7d');
   const [activeView, setActiveView] = useState<'summary' | 'charts' | 'tracker'>('summary');
   const [showGoalCreationModal, setShowGoalCreationModal] = useState(false);
   const [goalToEdit, setGoalToEdit] = useState<Goal | undefined>(undefined);
-  const [goalToDelete, setGoalToDelete] = useState<{ id: string, title: string } | null>(null);
-  // Handle goal tracking 
+  const [goalToDelete, setGoalToDelete] = useState<{ id: string; title: string } | null>(null);
+  // Handle goal tracking
   const handleLogProgress = (goalId: string, value: number) => {
     logHabit(goalId, value);
   };
@@ -52,7 +51,7 @@ export default function ProgressPage() {
         ...editedGoal,
         // Keep the current value and status from the original goal
         current: goalToEdit.current,
-        status: goalToEdit.status
+        status: goalToEdit.status,
       });
       setGoalToEdit(undefined);
     }
@@ -93,8 +92,12 @@ export default function ProgressPage() {
         <div className="container-app py-12">
           <div className="flex flex-col justify-center items-center h-[60vh]">
             <h1 className="text-2xl font-bold mb-4">Sign in to track your progress</h1>
-            <p className="text-muted-foreground mb-6">You need to be logged in to access your wellness progress tracking.</p>
-            <a href="/auth/signin" className="btn-primary">Sign In</a>
+            <p className="text-muted-foreground mb-6">
+              You need to be logged in to access your wellness progress tracking.
+            </p>
+            <a href="/auth/signin" className="btn-primary">
+              Sign In
+            </a>
           </div>
         </div>
       </Layout>
@@ -111,7 +114,7 @@ export default function ProgressPage() {
             </p>
           </div>
           <div className="flex gap-2">
-            <button 
+            <button
               className="btn-primary flex items-center gap-1"
               onClick={() => setShowGoalCreationModal(true)}
             >
@@ -124,8 +127,8 @@ export default function ProgressPage() {
         <div className="flex border-b border-border mb-8">
           <button
             className={`pb-2 px-4 font-medium ${
-              activeView === 'summary' 
-                ? 'text-primary border-b-2 border-primary' 
+              activeView === 'summary'
+                ? 'text-primary border-b-2 border-primary'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
             onClick={() => setActiveView('summary')}
@@ -134,8 +137,8 @@ export default function ProgressPage() {
           </button>
           <button
             className={`pb-2 px-4 font-medium ${
-              activeView === 'charts' 
-                ? 'text-primary border-b-2 border-primary' 
+              activeView === 'charts'
+                ? 'text-primary border-b-2 border-primary'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
             onClick={() => setActiveView('charts')}
@@ -144,8 +147,8 @@ export default function ProgressPage() {
           </button>
           <button
             className={`pb-2 px-4 font-medium ${
-              activeView === 'tracker' 
-                ? 'text-primary border-b-2 border-primary' 
+              activeView === 'tracker'
+                ? 'text-primary border-b-2 border-primary'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
             onClick={() => setActiveView('tracker')}
@@ -161,7 +164,7 @@ export default function ProgressPage() {
               <ProgressSummaryCard summary={summary} />
             </div>
             {/* Goal List */}
-            <GoalList 
+            <GoalList
               goals={goals}
               onLogProgress={handleLogProgress}
               onAddGoal={() => setShowGoalCreationModal(true)}
@@ -177,8 +180,8 @@ export default function ProgressPage() {
             <div className="mb-6 flex flex-wrap gap-3">
               <button
                 className={`px-3 py-1.5 rounded-full text-sm ${
-                  selectedType === 'meditation' 
-                    ? 'bg-purple-500 text-white' 
+                  selectedType === 'meditation'
+                    ? 'bg-purple-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
                 }`}
                 onClick={() => setSelectedType('meditation')}
@@ -187,8 +190,8 @@ export default function ProgressPage() {
               </button>
               <button
                 className={`px-3 py-1.5 rounded-full text-sm ${
-                  selectedType === 'workout' 
-                    ? 'bg-pink-500 text-white' 
+                  selectedType === 'workout'
+                    ? 'bg-pink-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
                 }`}
                 onClick={() => setSelectedType('workout')}
@@ -197,8 +200,8 @@ export default function ProgressPage() {
               </button>
               <button
                 className={`px-3 py-1.5 rounded-full text-sm ${
-                  selectedType === 'water' 
-                    ? 'bg-blue-500 text-white' 
+                  selectedType === 'water'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
                 }`}
                 onClick={() => setSelectedType('water')}
@@ -207,8 +210,8 @@ export default function ProgressPage() {
               </button>
               <button
                 className={`px-3 py-1.5 rounded-full text-sm ${
-                  selectedType === 'sleep' 
-                    ? 'bg-indigo-500 text-white' 
+                  selectedType === 'sleep'
+                    ? 'bg-indigo-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
                 }`}
                 onClick={() => setSelectedType('sleep')}
@@ -217,8 +220,8 @@ export default function ProgressPage() {
               </button>
               <button
                 className={`px-3 py-1.5 rounded-full text-sm ${
-                  selectedType === 'steps' 
-                    ? 'bg-green-500 text-white' 
+                  selectedType === 'steps'
+                    ? 'bg-green-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
                 }`}
                 onClick={() => setSelectedType('steps')}
@@ -230,8 +233,8 @@ export default function ProgressPage() {
             <div className="mb-6 flex gap-2">
               <button
                 className={`px-3 py-1 rounded-md text-sm ${
-                  timeRange === '7d' 
-                    ? 'bg-primary text-white' 
+                  timeRange === '7d'
+                    ? 'bg-primary text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
                 }`}
                 onClick={() => setTimeRange('7d')}
@@ -240,8 +243,8 @@ export default function ProgressPage() {
               </button>
               <button
                 className={`px-3 py-1 rounded-md text-sm ${
-                  timeRange === '30d' 
-                    ? 'bg-primary text-white' 
+                  timeRange === '30d'
+                    ? 'bg-primary text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
                 }`}
                 onClick={() => setTimeRange('30d')}
@@ -250,8 +253,8 @@ export default function ProgressPage() {
               </button>
               <button
                 className={`px-3 py-1 rounded-md text-sm ${
-                  timeRange === '90d' 
-                    ? 'bg-primary text-white' 
+                  timeRange === '90d'
+                    ? 'bg-primary text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
                 }`}
                 onClick={() => setTimeRange('90d')}
@@ -260,8 +263,8 @@ export default function ProgressPage() {
               </button>
             </div>
             {/* Charts */}
-            <ProgressCharts 
-              wellnessDays={wellnessDays} 
+            <ProgressCharts
+              wellnessDays={wellnessDays}
               habitLogs={habitLogs}
               selectedType={selectedType}
               timeRange={timeRange}
@@ -271,11 +274,7 @@ export default function ProgressPage() {
         {/* Habit Tracker View */}
         {activeView === 'tracker' && (
           <div>
-            <HabitTracker 
-              goals={goals} 
-              habitLogs={habitLogs} 
-              onLogHabit={handleLogProgress} 
-            />
+            <HabitTracker goals={goals} habitLogs={habitLogs} onLogHabit={handleLogProgress} />
             {/* Quick Stats */}
             {summary && (
               <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -283,7 +282,9 @@ export default function ProgressPage() {
                   <div className="text-center">
                     <span className="text-xl block mb-1">🧘‍♂️</span>
                     <p className="font-medium">Meditation</p>
-                    <p className="text-2xl font-bold mt-1">{summary.thisWeekProgress.meditation} min</p>
+                    <p className="text-2xl font-bold mt-1">
+                      {summary.thisWeekProgress.meditation} min
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       {summary.improvement.meditation > 0 ? '+' : ''}
                       {summary.improvement.meditation}% vs last week
@@ -294,7 +295,9 @@ export default function ProgressPage() {
                   <div className="text-center">
                     <span className="text-xl block mb-1">🏋️‍♂️</span>
                     <p className="font-medium">Workout</p>
-                    <p className="text-2xl font-bold mt-1">{summary.thisWeekProgress.workout} min</p>
+                    <p className="text-2xl font-bold mt-1">
+                      {summary.thisWeekProgress.workout} min
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       {summary.improvement.workout > 0 ? '+' : ''}
                       {summary.improvement.workout}% vs last week
@@ -305,7 +308,9 @@ export default function ProgressPage() {
                   <div className="text-center">
                     <span className="text-xl block mb-1">💧</span>
                     <p className="font-medium">Water</p>
-                    <p className="text-2xl font-bold mt-1">{summary.thisWeekProgress.water} glasses</p>
+                    <p className="text-2xl font-bold mt-1">
+                      {summary.thisWeekProgress.water} glasses
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       {summary.improvement.water > 0 ? '+' : ''}
                       {summary.improvement.water}% vs last week
@@ -316,7 +321,9 @@ export default function ProgressPage() {
                   <div className="text-center">
                     <span className="text-xl block mb-1">😴</span>
                     <p className="font-medium">Sleep</p>
-                    <p className="text-2xl font-bold mt-1">{summary.thisWeekProgress.sleep.toFixed(1)} hrs</p>
+                    <p className="text-2xl font-bold mt-1">
+                      {summary.thisWeekProgress.sleep.toFixed(1)} hrs
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       {summary.improvement.sleep > 0 ? '+' : ''}
                       {summary.improvement.sleep}% vs last week
@@ -328,8 +335,8 @@ export default function ProgressPage() {
           </div>
         )}
         {/* Goal Creation/Editing Modal */}
-        <GoalCreationModal 
-          isOpen={showGoalCreationModal} 
+        <GoalCreationModal
+          isOpen={showGoalCreationModal}
           onClose={handleCloseCreationModal}
           onSave={goalToEdit ? handleSaveEdit : handleCreateGoal}
           editingGoal={goalToEdit}
@@ -345,4 +352,4 @@ export default function ProgressPage() {
       </div>
     </Layout>
   );
-} 
+}

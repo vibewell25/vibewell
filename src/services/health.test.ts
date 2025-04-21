@@ -31,13 +31,13 @@ describe('Health Service', () => {
     // Override the default handler for this test
     server.use(
       http.get('/api/health', () => {
-        return HttpResponse.json({ 
+        return HttpResponse.json({
           status: 'degraded',
           services: {
             database: 'ok',
             cache: 'degraded',
-            storage: 'ok'
-          }
+            storage: 'ok',
+          },
         });
       })
     );
@@ -48,8 +48,8 @@ describe('Health Service', () => {
       services: {
         database: 'ok',
         cache: 'degraded',
-        storage: 'ok'
-      }
+        storage: 'ok',
+      },
     });
   });
 
@@ -59,7 +59,7 @@ describe('Health Service', () => {
       http.get('/api/health', () => {
         return new HttpResponse(null, {
           status: 500,
-          statusText: 'Internal Server Error'
+          statusText: 'Internal Server Error',
         });
       })
     );
@@ -77,4 +77,4 @@ describe('Health Service', () => {
 
     await expect(fetchHealthStatus()).rejects.toThrow('Failed to fetch health status');
   });
-}); 
+});

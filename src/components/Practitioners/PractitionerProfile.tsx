@@ -100,7 +100,7 @@ export function PractitionerProfile({
                   Specializations
                 </Text>
                 <Stack direction="row" flexWrap="wrap" gap={2}>
-                  {specialization.map((spec) => (
+                  {specialization.map(spec => (
                     <Badge key={spec} colorScheme="purple">
                       {spec}
                     </Badge>
@@ -123,7 +123,7 @@ export function PractitionerProfile({
                   <Text fontWeight="semibold">Certifications</Text>
                 </Stack>
                 <Stack spacing={1}>
-                  {certifications.map((cert) => (
+                  {certifications.map(cert => (
                     <Text key={cert} color="gray.600">
                       {cert}
                     </Text>
@@ -137,7 +137,7 @@ export function PractitionerProfile({
                   <Text fontWeight="semibold">Education</Text>
                 </Stack>
                 <Stack spacing={1}>
-                  {education.map((edu) => (
+                  {education.map(edu => (
                     <Text key={edu} color="gray.600">
                       {edu}
                     </Text>
@@ -151,7 +151,7 @@ export function PractitionerProfile({
                   <Text fontWeight="semibold">Languages</Text>
                 </Stack>
                 <Stack direction="row" flexWrap="wrap" gap={2}>
-                  {languages.map((lang) => (
+                  {languages.map(lang => (
                     <Badge key={lang} colorScheme="green">
                       {lang}
                     </Badge>
@@ -168,7 +168,7 @@ export function PractitionerProfile({
                   Services
                 </Text>
                 <SimpleGrid columns={{ base: 1, lg: 2 }} gap={4}>
-                  {services.map((service) => (
+                  {services.map(service => (
                     <Box
                       key={service.id}
                       p={4}
@@ -205,13 +205,8 @@ export function PractitionerProfile({
                     Portfolio
                   </Text>
                   <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
-                    {portfolio.map((item) => (
-                      <Box
-                        key={item.id}
-                        borderWidth="1px"
-                        borderRadius="md"
-                        overflow="hidden"
-                      >
+                    {portfolio.map(item => (
+                      <Box key={item.id} borderWidth="1px" borderRadius="md" overflow="hidden">
                         <Image
                           src={item.imageUrl}
                           alt={item.title}
@@ -227,7 +222,7 @@ export function PractitionerProfile({
                             </Text>
                           )}
                           <Stack direction="row" mt={2} flexWrap="wrap" gap={1}>
-                            {item.tags.map((tag) => (
+                            {item.tags.map(tag => (
                               <Badge key={tag} colorScheme="blue" variant="subtle">
                                 {tag}
                               </Badge>
@@ -245,4 +240,4 @@ export function PractitionerProfile({
       </Box>
     </ChakraProvider>
   );
-} 
+}

@@ -1,6 +1,6 @@
 /**
  * Responsive checker utility for VibeWell
- * 
+ *
  * This utility provides functions to detect device types, check screen sizes,
  * and help with responsive behavior across the platform.
  */
@@ -52,10 +52,12 @@ export function isTouchDevice(): boolean {
   if (typeof window === 'undefined') {
     return false; // Default for server-side rendering
   }
-  
-  return 'ontouchstart' in window || 
-    navigator.maxTouchPoints > 0 || 
-    (navigator as any).msMaxTouchPoints > 0;
+
+  return (
+    'ontouchstart' in window ||
+    navigator.maxTouchPoints > 0 ||
+    (navigator as any).msMaxTouchPoints > 0
+  );
 }
 
 /**
@@ -65,7 +67,7 @@ export function getViewportDimensions(): { width: number; height: number } {
   if (typeof window === 'undefined') {
     return { width: 0, height: 0 }; // Default for server-side rendering
   }
-  
+
   return {
     width: window.innerWidth,
     height: window.innerHeight,
@@ -79,9 +81,9 @@ export function matchesBreakpoint(breakpoint: keyof typeof BREAKPOINTS): boolean
   if (typeof window === 'undefined') {
     return false; // Default for server-side rendering
   }
-  
+
   const { width } = getViewportDimensions();
-  
+
   switch (breakpoint) {
     case 'xs':
       return width >= BREAKPOINTS.xs && width < BREAKPOINTS.sm;
@@ -118,12 +120,12 @@ export function createResponsiveListener(
 
   // Add event listener
   window.addEventListener('resize', handleResize);
-  
+
   // Initial call
   handleResize();
-  
+
   // Return cleanup function
   return () => {
     window.removeEventListener('resize', handleResize);
   };
-} 
+}

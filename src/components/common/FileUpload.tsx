@@ -46,10 +46,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         onDragOver={handleDragOver}
       >
         <div className="text-center">
-          <UploadCloud
-            className="mx-auto h-12 w-12 text-gray-300"
-            aria-hidden="true"
-          />
+          <UploadCloud className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
           <div className="mt-4 flex text-sm leading-6 text-gray-600">
             <label
               htmlFor="file-upload"
@@ -80,4 +77,4 @@ export const FileUpload: React.FC<FileUploadProps> = ({
       )}
     </div>
   );
-}; 
+};

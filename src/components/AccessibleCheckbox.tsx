@@ -1,7 +1,8 @@
 import React from 'react';
 import BaseCheckbox from './BaseCheckbox';
 
-export interface AccessibleCheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+export interface AccessibleCheckboxProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;
   error?: string;
   helperText?: string;
@@ -31,4 +32,4 @@ export const AccessibleCheckbox: React.FC<AccessibleCheckboxProps> = ({
   );
 };
 
-export default AccessibleCheckbox; 
+export default AccessibleCheckbox;

@@ -17,7 +17,7 @@ interface RatingBreakdownProps {
 export default function RatingBreakdown({
   distribution,
   totalReviews,
-  averageRating
+  averageRating,
 }: RatingBreakdownProps) {
   // Function to calculate percentage for a given rating
   const calculatePercentage = (rating: 1 | 2 | 3 | 4 | 5): number => {
@@ -45,8 +45,8 @@ export default function RatingBreakdown({
           </div>
           <div className="flex-1">
             <div className="bg-gray-200 rounded-full h-2.5 w-full">
-              <div 
-                className="bg-yellow-400 h-2.5 rounded-full" 
+              <div
+                className="bg-yellow-400 h-2.5 rounded-full"
                 style={{ width: `${calculatePercentage(5)}%` }}
               ></div>
             </div>
@@ -63,8 +63,8 @@ export default function RatingBreakdown({
           </div>
           <div className="flex-1">
             <div className="bg-gray-200 rounded-full h-2.5 w-full">
-              <div 
-                className="bg-yellow-400 h-2.5 rounded-full" 
+              <div
+                className="bg-yellow-400 h-2.5 rounded-full"
                 style={{ width: `${calculatePercentage(4)}%` }}
               ></div>
             </div>
@@ -81,8 +81,8 @@ export default function RatingBreakdown({
           </div>
           <div className="flex-1">
             <div className="bg-gray-200 rounded-full h-2.5 w-full">
-              <div 
-                className="bg-yellow-400 h-2.5 rounded-full" 
+              <div
+                className="bg-yellow-400 h-2.5 rounded-full"
                 style={{ width: `${calculatePercentage(3)}%` }}
               ></div>
             </div>
@@ -99,8 +99,8 @@ export default function RatingBreakdown({
           </div>
           <div className="flex-1">
             <div className="bg-gray-200 rounded-full h-2.5 w-full">
-              <div 
-                className="bg-yellow-400 h-2.5 rounded-full" 
+              <div
+                className="bg-yellow-400 h-2.5 rounded-full"
                 style={{ width: `${calculatePercentage(2)}%` }}
               ></div>
             </div>
@@ -117,8 +117,8 @@ export default function RatingBreakdown({
           </div>
           <div className="flex-1">
             <div className="bg-gray-200 rounded-full h-2.5 w-full">
-              <div 
-                className="bg-yellow-400 h-2.5 rounded-full" 
+              <div
+                className="bg-yellow-400 h-2.5 rounded-full"
                 style={{ width: `${calculatePercentage(1)}%` }}
               ></div>
             </div>
@@ -130,4 +130,4 @@ export default function RatingBreakdown({
       </div>
     </div>
   );
-} 
+}

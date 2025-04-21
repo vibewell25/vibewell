@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { StarRating } from '@/components/star-rating';
 import { getUserRating, saveRating, getAverageRating } from '@/lib/ratings';
 import { formatDistanceToNow } from 'date-fns';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 // Types for reviews
 export interface Review {
   id: string;
@@ -54,14 +54,15 @@ export function addReview(review: Omit<Review, 'id' | 'createdAt'>): Review {
     const allReviews: Review[] = storedReviews ? JSON.parse(storedReviews) : [];
     // Check if user already reviewed this resource
     const existingIndex = allReviews.findIndex(
-      r => r.resourceId === review.resourceId && 
-           r.resourceType === review.resourceType && 
-           r.userId === review.userId
+      r =>
+        r.resourceId === review.resourceId &&
+        r.resourceType === review.resourceType &&
+        r.userId === review.userId
     );
     const newReview = {
       ...review,
       id: existingIndex >= 0 ? allReviews[existingIndex].id : `review_${Date.now()}`,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
     if (existingIndex >= 0) {
       // Update existing review
@@ -80,7 +81,10 @@ export function addReview(review: Omit<Review, 'id' | 'createdAt'>): Review {
 export function ResourceReview({ resourceId, resourceType, onReviewAdded }: ResourceReviewProps) {
   const { user } = useAuth();
   const [userRating, setUserRating] = useState<number | null>(null);
-  const [averageRating, setAverageRating] = useState<{ average: number, count: number }>({ average: 0, count: 0 });
+  const [averageRating, setAverageRating] = useState<{ average: number; count: number }>({
+    average: 0,
+    count: 0,
+  });
   const [reviewTitle, setReviewTitle] = useState('');
   const [reviewComment, setReviewComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -136,7 +140,7 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
         rating: userRating,
         title: reviewTitle,
         comment: reviewComment,
-        isVerified: true
+        isVerified: true,
       };
       const savedReview = addReview(review);
       // Update local state
@@ -182,11 +186,7 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
           <span className="text-3xl font-bold text-gray-900">
             {averageRating.average.toFixed(1)}
           </span>
-          <StarRating
-            initialRating={averageRating.average}
-            readonly={true}
-            size="md"
-          />
+          <StarRating initialRating={averageRating.average} readonly={true} size="md" />
           <span className="text-sm text-gray-500 mt-1">
             {averageRating.count} {averageRating.count === 1 ? 'review' : 'reviews'}
           </span>
@@ -196,27 +196,24 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
             userReviewed ? (
               <div>
                 <p className="mb-2 text-gray-700">You've already reviewed this {resourceType}.</p>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setShowForm(!showForm)}
-                >
+                <Button variant="outline" onClick={() => setShowForm(!showForm)}>
                   {showForm ? 'Cancel Edit' : 'Edit Your Review'}
                 </Button>
               </div>
             ) : (
               <div>
                 <p className="mb-2 text-gray-700">Share your thoughts about this {resourceType}.</p>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setShowForm(!showForm)}
-                >
+                <Button variant="outline" onClick={() => setShowForm(!showForm)}>
                   Write a Review
                 </Button>
               </div>
             )
           ) : (
             <p className="text-gray-700">
-              <a href="/auth/sign-in" className="text-blue-600 hover:underline">Sign in</a> to leave a review.
+              <a href="/auth/sign-in" className="text-blue-600 hover:underline">
+                Sign in
+              </a>{' '}
+              to leave a review.
             </p>
           )}
         </div>
@@ -226,19 +223,11 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
         <div className="bg-gray-50 p-4 rounded-lg mb-6">
           <h4 className="font-semibold mb-3">Your Review</h4>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Rating
-            </label>
-            <StarRating
-              initialRating={userRating}
-              onChange={handleRatingChange}
-              size="lg"
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Rating</label>
+            <StarRating initialRating={userRating} onChange={handleRatingChange} size="lg" />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Title
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
             <Input
               value={reviewTitle}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReviewTitle(e.target.value)}
@@ -247,12 +236,12 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Review
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Review</label>
             <textarea
               value={reviewComment}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setReviewComment(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setReviewComment(e.target.value)
+              }
               placeholder="Share your experience with this resource"
               className="w-full h-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -270,18 +259,16 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
       {/* Reviews List */}
       <div className="space-y-6">
         {reviews.length === 0 ? (
-          <p className="text-gray-500 italic">No reviews yet. Be the first to review this {resourceType}!</p>
+          <p className="text-gray-500 italic">
+            No reviews yet. Be the first to review this {resourceType}!
+          </p>
         ) : (
-          reviews.map((review) => (
+          reviews.map(review => (
             <div key={review.id} className="border-b border-gray-200 pb-6 last:border-b-0">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center">
-                    <StarRating
-                      initialRating={review.rating}
-                      readonly={true}
-                      size="sm"
-                    />
+                    <StarRating initialRating={review.rating} readonly={true} size="sm" />
                     <h4 className="ml-2 font-semibold">{review.title}</h4>
                   </div>
                   <div className="flex items-center text-sm text-gray-500 mt-1">
@@ -294,15 +281,13 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
                     )}
                   </div>
                 </div>
-                <div className="text-sm text-gray-500">
-                  {formatRelativeTime(review.createdAt)}
-                </div>
+                <div className="text-sm text-gray-500">{formatRelativeTime(review.createdAt)}</div>
               </div>
               <div className="mt-2 text-gray-700">
                 <p>{review.comment}</p>
               </div>
               <div className="mt-2 flex justify-end">
-                <button 
+                <button
                   className="text-xs text-gray-500 flex items-center hover:text-gray-700"
                   title="Report review"
                 >
@@ -316,4 +301,4 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
       </div>
     </div>
   );
-} 
+}

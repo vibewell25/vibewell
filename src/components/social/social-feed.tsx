@@ -5,7 +5,7 @@ import { Avatar } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Icons } from '@/components/ui/icons';
 import { toast } from '@/components/ui/use-toast';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 
 interface Post {
   id: string;
@@ -71,7 +71,7 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
       const post = await response.json();
       setPosts([post, ...posts]);
       setNewPost('');
-      
+
       toast({
         title: 'Success',
         description: 'Post created successfully',
@@ -94,16 +94,18 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
 
       if (!response.ok) throw new Error('Failed to like post');
 
-      setPosts(posts.map(post => {
-        if (post.id === postId) {
-          return {
-            ...post,
-            likes: post.hasLiked ? post.likes - 1 : post.likes + 1,
-            hasLiked: !post.hasLiked,
-          };
-        }
-        return post;
-      }));
+      setPosts(
+        posts.map(post => {
+          if (post.id === postId) {
+            return {
+              ...post,
+              likes: post.hasLiked ? post.likes - 1 : post.likes + 1,
+              hasLiked: !post.hasLiked,
+            };
+          }
+          return post;
+        })
+      );
     } catch (error) {
       console.error('Error liking post:', error);
       toast({
@@ -135,7 +137,7 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
               <Input
                 placeholder="Share something..."
                 value={newPost}
-                onChange={(e) => setNewPost(e.target.value)}
+                onChange={e => setNewPost(e.target.value)}
                 className="mb-2"
               />
               <Button onClick={handleCreatePost} disabled={!newPost.trim()}>
@@ -148,15 +150,12 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
 
       {/* Posts Feed */}
       <div className="space-y-4">
-        {posts.map((post) => (
+        {posts.map(post => (
           <Card key={post.id}>
             <CardHeader>
               <div className="flex items-center space-x-4">
                 <Avatar>
-                  <img 
-                    src={post.author.avatar || '/default-avatar.png'} 
-                    alt={post.author.name} 
-                  />
+                  <img src={post.author.avatar || '/default-avatar.png'} alt={post.author.name} />
                 </Avatar>
                 <div>
                   <CardTitle className="text-base">{post.author.name}</CardTitle>
@@ -169,9 +168,9 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
             <CardContent>
               <p className="mb-4">{post.content}</p>
               {post.imageUrl && (
-                <img 
-                  src={post.imageUrl} 
-                  alt="Post" 
+                <img
+                  src={post.imageUrl}
+                  alt="Post"
                   className="rounded-lg mb-4 max-h-96 w-full object-cover"
                 />
               )}
@@ -196,4 +195,4 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
       </div>
     </div>
   );
-} 
+}

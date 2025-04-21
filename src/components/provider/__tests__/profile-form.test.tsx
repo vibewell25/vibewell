@@ -10,14 +10,14 @@ jest.mock('@/lib/supabase/client', () => ({
     auth: {
       getUser: jest.fn().mockResolvedValue({
         data: {
-          user: { id: 'test-user-id' }
+          user: { id: 'test-user-id' },
         },
-        error: null
+        error: null,
       }),
       resend: jest.fn().mockResolvedValue({
         data: {},
-        error: null
-      })
+        error: null,
+      }),
     },
     from: jest.fn().mockReturnValue({
       select: jest.fn().mockReturnThis(),
@@ -49,23 +49,23 @@ jest.mock('@/lib/supabase/client', () => ({
               booking_reminders: true,
               messages_notifications: true,
               promotional_notifications: false,
-              newsletter: false
+              newsletter: false,
             },
             created_at: '2023-01-01T00:00:00.000Z',
-            updated_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z',
           },
-          error: null
-        })
-      })
-    })
-  }
+          error: null,
+        }),
+      }),
+    }),
+  },
 }));
 
 // Mock the toast
 jest.mock('@/components/ui/use-toast', () => ({
   useToast: () => ({
-    toast: jest.fn()
-  })
+    toast: jest.fn(),
+  }),
 }));
 
 describe('ProviderProfileForm', () => {
@@ -77,12 +77,12 @@ describe('ProviderProfileForm', () => {
     await act(async () => {
       render(<ProviderProfileForm />);
     });
-    
+
     // Wait for profile to load
     await waitFor(() => {
       expect(screen.getByText('Personal Info')).toBeInTheDocument();
     });
-    
+
     // Check that personal info tab is selected
     expect(screen.getByText('Email Verification')).toBeInTheDocument();
     expect(screen.getByText('test@example.com')).toBeInTheDocument();
@@ -92,25 +92,25 @@ describe('ProviderProfileForm', () => {
     await act(async () => {
       render(<ProviderProfileForm />);
     });
-    
+
     // Wait for profile to load
     await waitFor(() => {
       expect(screen.getByText('Personal Info')).toBeInTheDocument();
     });
-    
+
     // Click on Privacy & Visibility tab
     await act(async () => {
       fireEvent.click(screen.getByText('Privacy & Visibility'));
     });
-    
+
     // Check that privacy tab content is shown
     expect(screen.getByText('Profile Visibility')).toBeInTheDocument();
-    
+
     // Click on Notifications tab
     await act(async () => {
       fireEvent.click(screen.getByText('Notifications'));
     });
-    
+
     // Check that notifications tab content is shown
     expect(screen.getByText('Notification Preferences')).toBeInTheDocument();
   });
@@ -119,14 +119,16 @@ describe('ProviderProfileForm', () => {
     await act(async () => {
       render(<ProviderProfileForm />);
     });
-    
+
     // Wait for profile to load
     await waitFor(() => {
       expect(screen.getByText('Email Verification')).toBeInTheDocument();
     });
-    
+
     // Check email verification status
-    expect(screen.getByText('Email not verified. Please check your inbox for verification link.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Email not verified. Please check your inbox for verification link.')
+    ).toBeInTheDocument();
     expect(screen.getByText('Resend Verification')).toBeInTheDocument();
   });
 
@@ -134,22 +136,22 @@ describe('ProviderProfileForm', () => {
     await act(async () => {
       render(<ProviderProfileForm />);
     });
-    
+
     // Wait for profile to load
     await waitFor(() => {
       expect(screen.getByText('Email Verification')).toBeInTheDocument();
     });
-    
+
     // Click on resend verification button
     await act(async () => {
       fireEvent.click(screen.getByText('Resend Verification'));
     });
-    
+
     // Check that supabase auth.resend was called
     const { supabase } = require('@/lib/supabase/client');
     expect(supabase.auth.resend).toHaveBeenCalledWith({
       type: 'signup',
-      email: 'test@example.com'
+      email: 'test@example.com',
     });
   });
 
@@ -157,66 +159,68 @@ describe('ProviderProfileForm', () => {
     await act(async () => {
       render(<ProviderProfileForm />);
     });
-    
+
     // Wait for profile to load
     await waitFor(() => {
       expect(screen.getByLabelText('Full Name')).toBeInTheDocument();
     });
-    
+
     // Update name field
     await act(async () => {
       fireEvent.change(screen.getByLabelText('Full Name'), {
-        target: { value: 'Updated Name' }
+        target: { value: 'Updated Name' },
       });
     });
-    
+
     // Submit the form
     await act(async () => {
       fireEvent.click(screen.getByText('Update Profile'));
     });
-    
+
     // Check that supabase update was called with the right data
     const { supabase } = require('@/lib/supabase/client');
-    expect(supabase.from().update).toHaveBeenCalledWith(expect.objectContaining({
-      full_name: 'Updated Name'
-    }));
+    expect(supabase.from().update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        full_name: 'Updated Name',
+      })
+    );
   });
 
   it('allows changing notification preferences', async () => {
     await act(async () => {
       render(<ProviderProfileForm />);
     });
-    
+
     // Wait for profile to load
     await waitFor(() => {
       expect(screen.getByText('Personal Info')).toBeInTheDocument();
     });
-    
+
     // Click on Notifications tab
     await act(async () => {
       fireEvent.click(screen.getByText('Notifications'));
     });
-    
+
     // Find the Marketing Emails switch and click it
     const marketingEmailsSwitch = screen.getAllByRole('switch')[4]; // This is the marketing emails switch based on the order
-    
+
     await act(async () => {
       fireEvent.click(marketingEmailsSwitch);
     });
-    
+
     // Submit the form
     await act(async () => {
       fireEvent.click(screen.getByText('Update Profile'));
     });
-    
+
     // Check that supabase update was called with the right notification preferences
     const { supabase } = require('@/lib/supabase/client');
     expect(supabase.from().update).toHaveBeenCalledWith(
       expect.objectContaining({
         notification_preferences: expect.objectContaining({
-          marketing_emails: true
-        })
+          marketing_emails: true,
+        }),
       })
     );
   });
-}); 
+});

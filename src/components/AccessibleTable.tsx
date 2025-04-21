@@ -107,7 +107,7 @@ export const AccessibleTable: React.FC<AccessibleTableProps> = ({
                   ${column.sortable ? 'cursor-pointer' : ''}
                 `}
                 onClick={() => column.sortable && handleSort(column.key)}
-                onKeyDown={(e) => handleKeyDown(e, 0, columnIndex)}
+                onKeyDown={e => handleKeyDown(e, 0, columnIndex)}
                 tabIndex={0}
                 aria-sort={
                   column.sortable
@@ -123,11 +123,7 @@ export const AccessibleTable: React.FC<AccessibleTableProps> = ({
                   {column.header}
                   {column.sortable && (
                     <span className="ml-2">
-                      {sortedColumn === column.key
-                        ? sortDirection === 'asc'
-                          ? '↑'
-                          : '↓'
-                        : '↕'}
+                      {sortedColumn === column.key ? (sortDirection === 'asc' ? '↑' : '↓') : '↕'}
                     </span>
                   )}
                 </div>
@@ -137,16 +133,13 @@ export const AccessibleTable: React.FC<AccessibleTableProps> = ({
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {data.map((row, rowIndex) => (
-            <tr
-              key={rowIndex}
-              className="hover:bg-gray-50"
-            >
+            <tr key={rowIndex} className="hover:bg-gray-50">
               {columns.map((column, columnIndex) => (
                 <td
                   key={column.key}
                   className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
                   tabIndex={0}
-                  onKeyDown={(e) => handleKeyDown(e, rowIndex, columnIndex)}
+                  onKeyDown={e => handleKeyDown(e, rowIndex, columnIndex)}
                 >
                   {row[column.key]}
                 </td>
@@ -159,4 +152,4 @@ export const AccessibleTable: React.FC<AccessibleTableProps> = ({
   );
 };
 
-export default AccessibleTable; 
+export default AccessibleTable;

@@ -1,6 +1,6 @@
 /**
  * Redis Metrics Collection Cron Job
- * 
+ *
  * This module schedules regular collection of Redis metrics
  * for monitoring and analysis of rate limiting behavior.
  */
@@ -16,13 +16,13 @@ import { logger } from '../lib/logger';
 const metricsCollectionJob = new CronJob(
   // Cron expression: run every 5 minutes
   '*/5 * * * *',
-  
+
   // Job function to execute
-  async function() {
+  async function () {
     try {
       logger.info('Collecting Redis metrics', 'redis-metrics-job');
       const metrics = await collectRedisMetrics();
-      
+
       if (metrics) {
         // Store metrics in Redis for historical analysis
         await storeMetricsInRedis(metrics);
@@ -40,13 +40,13 @@ const metricsCollectionJob = new CronJob(
       });
     }
   },
-  
+
   // onComplete (null = no onComplete)
   null,
-  
+
   // start automatically
   false,
-  
+
   // timezone (null = server timezone)
   null
 );
@@ -64,7 +64,10 @@ export function startRedisMetricsCollection(): void {
       nextRun: metricsCollectionJob.nextDate().toISOString(),
     });
   } else {
-    logger.info('Redis metrics collection not started (not in production or Redis not enabled)', 'redis-metrics-job');
+    logger.info(
+      'Redis metrics collection not started (not in production or Redis not enabled)',
+      'redis-metrics-job'
+    );
   }
 }
 
@@ -87,7 +90,7 @@ export async function collectMetricsNow(): Promise<void> {
   try {
     logger.info('Running immediate Redis metrics collection', 'redis-metrics-job');
     const metrics = await collectRedisMetrics();
-    
+
     if (metrics) {
       await storeMetricsInRedis(metrics);
       logger.info('Immediate Redis metrics collection completed', 'redis-metrics-job');
@@ -99,4 +102,4 @@ export async function collectMetricsNow(): Promise<void> {
       error: error instanceof Error ? error.message : String(error),
     });
   }
-} 
+}

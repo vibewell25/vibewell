@@ -22,17 +22,14 @@ export async function POST(request: Request) {
 
     // Validate the amount
     if (!amount || isNaN(amount) || amount <= 0) {
-      return NextResponse.json(
-        { error: 'Invalid amount provided' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid amount provided' }, { status: 400 });
     }
 
     // Get or create customer
     let customer;
     const existingCustomer = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { stripeCustomerId: true }
+      select: { stripeCustomerId: true },
     });
 
     if (existingCustomer?.stripeCustomerId) {
@@ -41,13 +38,13 @@ export async function POST(request: Request) {
       const newCustomer = await stripe.customers.create({
         email: session.user.email!,
         metadata: {
-          userId: session.user.id
-        }
+          userId: session.user.id,
+        },
       });
 
       await prisma.user.update({
         where: { id: session.user.id },
-        data: { stripeCustomerId: newCustomer.id }
+        data: { stripeCustomerId: newCustomer.id },
       });
 
       customer = newCustomer.id;
@@ -61,7 +58,7 @@ export async function POST(request: Request) {
       description,
       metadata: {
         userId: session.user.id,
-        ...metadata
+        ...metadata,
       },
       automatic_payment_methods: {
         enabled: true,
@@ -78,7 +75,7 @@ export async function POST(request: Request) {
         bookingId: metadata.bookingId,
         businessId: metadata.businessId || '',
         paymentMethod: 'card',
-      }
+      },
     });
 
     // Return the client secret to the client
@@ -87,16 +84,10 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error('Error creating payment intent:', error);
-    return NextResponse.json(
-      { error: 'Error creating payment intent' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Error creating payment intent' }, { status: 500 });
   }
 }
 
 export async function GET() {
-  return NextResponse.json(
-    { error: 'Method not allowed' },
-    { status: 405 }
-  );
-} 
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+}

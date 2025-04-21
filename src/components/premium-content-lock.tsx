@@ -3,7 +3,7 @@
 import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import Link from 'next/link';
 
 interface PremiumContentLockProps {
@@ -26,7 +26,7 @@ export function PremiumContentLock({
   const checkPremiumStatus = async () => {
     setCheckingSubscription(true);
     // Simulate API call to check subscription status
-    const mockApiCall = new Promise<boolean>((resolve) => {
+    const mockApiCall = new Promise<boolean>(resolve => {
       setTimeout(() => {
         // For demo purposes, assume user with email containing "premium" has a subscription
         const hasPremium = user?.email?.includes('premium') || false;
@@ -51,11 +51,11 @@ export function PremiumContentLock({
       const key = `resource_access_${name.replace(/\s+/g, '_')}`;
       try {
         const accessData = JSON.parse(localStorage.getItem('resource_access_log') || '{}');
-        accessData[key] = { 
-          name, 
-          type, 
+        accessData[key] = {
+          name,
+          type,
           lastAccessed: now,
-          count: (accessData[key]?.count || 0) + 1
+          count: (accessData[key]?.count || 0) + 1,
         };
         localStorage.setItem('resource_access_log', JSON.stringify(accessData));
       } catch (e) {
@@ -94,9 +94,7 @@ export function PremiumContentLock({
           </p>
           <div className="space-y-3">
             <Link href={redirectPath}>
-              <Button className="bg-amber-600 hover:bg-amber-700">
-                Upgrade to Premium
-              </Button>
+              <Button className="bg-amber-600 hover:bg-amber-700">Upgrade to Premium</Button>
             </Link>
             <p className="text-sm text-amber-700">
               Starting at $19.99/month - Unlock all premium resources
@@ -112,20 +110,19 @@ export function PremiumContentLock({
       <div className="flex flex-col items-center text-center">
         <Icons.LockClosedIcon className="h-12 w-12 text-amber-500 mb-4" />
         <h3 className="text-xl font-bold mb-2">Premium {resourceType} Locked</h3>
-        <p className="mb-6 text-amber-800">
-          Please sign in to access this premium {resourceType}.
-        </p>
+        <p className="mb-6 text-amber-800">Please sign in to access this premium {resourceType}.</p>
         <div className="space-y-3">
           <Link href="/auth/sign-in">
-            <Button className="bg-amber-600 hover:bg-amber-700">
-              Sign In
-            </Button>
+            <Button className="bg-amber-600 hover:bg-amber-700">Sign In</Button>
           </Link>
           <p className="text-sm text-amber-700">
-            Don't have an account? <Link href="/auth/sign-up" className="text-amber-800 underline">Register</Link>
+            Don't have an account?{' '}
+            <Link href="/auth/sign-up" className="text-amber-800 underline">
+              Register
+            </Link>
           </p>
         </div>
       </div>
     </div>
   );
-} 
+}

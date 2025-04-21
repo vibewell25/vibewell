@@ -3,7 +3,12 @@ import { NotificationService } from './notification-service';
 import { logger } from '@/lib/logger';
 import { Prisma } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
-import { LoyaltyMemberModel, LoyaltyTier, Reward, LoyaltyTransaction } from '../models/LoyaltyProgram';
+import {
+  LoyaltyMemberModel,
+  LoyaltyTier,
+  Reward,
+  LoyaltyTransaction,
+} from '../models/LoyaltyProgram';
 import { PrismaClient, Program, Member, Tier, Reward as PrismaReward } from '@prisma/client';
 
 const prismaClient = new PrismaClient();
@@ -88,12 +93,12 @@ interface LoyaltyTierInput {
 enum ReferralStatusType {
   PENDING = 'PENDING',
   COMPLETED = 'COMPLETED',
-  EXPIRED = 'EXPIRED'
+  EXPIRED = 'EXPIRED',
 }
 
 export class LoyaltyService {
   private readonly notificationService: NotificationService;
-  
+
   // Define loyalty tiers
   private readonly LOYALTY_TIERS: LoyaltyTier[] = [
     {
@@ -101,29 +106,29 @@ export class LoyaltyService {
       minimumPoints: 0,
       benefits: ['Basic booking privileges', 'Points on services'],
       pointMultiplier: 1,
-      specialPerks: []
+      specialPerks: [],
     },
     {
       name: 'Silver',
       minimumPoints: 1000,
       benefits: ['5% service discount', 'Priority booking', '24hr cancellation'],
       pointMultiplier: 1.2,
-      specialPerks: ['Extended booking window']
+      specialPerks: ['Extended booking window'],
     },
     {
       name: 'Gold',
       minimumPoints: 5000,
       benefits: ['10% service discount', 'VIP booking', '48hr cancellation'],
       pointMultiplier: 1.5,
-      specialPerks: ['Exclusive events access', 'Birthday bonus points']
+      specialPerks: ['Exclusive events access', 'Birthday bonus points'],
     },
     {
       name: 'Platinum',
       minimumPoints: 10000,
       benefits: ['15% service discount', 'Concierge booking', '72hr cancellation'],
       pointMultiplier: 2,
-      specialPerks: ['Personal wellness consultant', 'Quarterly bonus rewards']
-    }
+      specialPerks: ['Personal wellness consultant', 'Quarterly bonus rewards'],
+    },
   ];
 
   // Define rewards catalog
@@ -136,7 +141,7 @@ export class LoyaltyService {
       type: 'service_discount',
       value: 10,
       expiryDays: 90,
-      isActive: true
+      isActive: true,
     },
     {
       id: 'R2',
@@ -147,7 +152,7 @@ export class LoyaltyService {
       value: 50,
       minimumTier: 'Silver',
       expiryDays: 90,
-      isActive: true
+      isActive: true,
     },
     // Add more rewards as needed
   ];
@@ -170,7 +175,10 @@ export class LoyaltyService {
       return program;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        logger.error('Prisma error creating loyalty program', 'loyalty', { error: error.message, code: error.code });
+        logger.error('Prisma error creating loyalty program', 'loyalty', {
+          error: error.message,
+          code: error.code,
+        });
       } else {
         logger.error('Error creating loyalty program', 'loyalty', { error: String(error) });
       }
@@ -193,7 +201,10 @@ export class LoyaltyService {
       return tier;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        logger.error('Prisma error creating loyalty tier', 'loyalty', { error: error.message, code: error.code });
+        logger.error('Prisma error creating loyalty tier', 'loyalty', {
+          error: error.message,
+          code: error.code,
+        });
       } else {
         logger.error('Error creating loyalty tier', 'loyalty', { error: String(error) });
       }
@@ -218,7 +229,10 @@ export class LoyaltyService {
       return reward;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        logger.error('Prisma error creating loyalty reward', 'loyalty', { error: error.message, code: error.code });
+        logger.error('Prisma error creating loyalty reward', 'loyalty', {
+          error: error.message,
+          code: error.code,
+        });
       } else {
         logger.error('Error creating loyalty reward', 'loyalty', { error: String(error) });
       }
@@ -226,11 +240,7 @@ export class LoyaltyService {
     }
   }
 
-  async createLoyaltyMember(params: {
-    userId: string;
-    programId: string;
-    tierId: string;
-  }) {
+  async createLoyaltyMember(params: { userId: string; programId: string; tierId: string }) {
     try {
       const member = await prisma.loyaltyMember.create({
         data: {
@@ -244,7 +254,10 @@ export class LoyaltyService {
       return member;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        logger.error('Prisma error creating loyalty member', 'loyalty', { error: error.message, code: error.code });
+        logger.error('Prisma error creating loyalty member', 'loyalty', {
+          error: error.message,
+          code: error.code,
+        });
       } else {
         logger.error('Error creating loyalty member', 'loyalty', { error: String(error) });
       }
@@ -266,7 +279,7 @@ export class LoyaltyService {
    */
   async awardBookingPoints(userId: string, bookingId: string, amount: number): Promise<void> {
     const member = await LoyaltyMemberModel.findOne({ userId });
-    
+
     if (!member) {
       throw new Error('Loyalty member not found');
     }
@@ -279,7 +292,7 @@ export class LoyaltyService {
       points,
       description: `Points earned from booking #${bookingId}`,
       bookingId,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     // Update member points
@@ -289,16 +302,16 @@ export class LoyaltyService {
     member.pointsHistory.push(transaction);
 
     // Check for tier upgrade
-    const newTier = this.LOYALTY_TIERS
-      .filter(tier => tier.minimumPoints <= member.lifetimePoints)
-      .sort((a, b) => b.minimumPoints - a.minimumPoints)[0];
+    const newTier = this.LOYALTY_TIERS.filter(
+      tier => tier.minimumPoints <= member.lifetimePoints
+    ).sort((a, b) => b.minimumPoints - a.minimumPoints)[0];
 
     if (newTier.name !== member.currentTier) {
       member.currentTier = newTier.name;
       await this.notificationService.notifyUser(userId, {
         type: 'LOYALTY',
         title: 'Tier Upgrade!',
-        message: `Congratulations! You've been upgraded to ${newTier.name} tier!`
+        message: `Congratulations! You've been upgraded to ${newTier.name} tier!`,
       });
     }
 
@@ -310,13 +323,13 @@ export class LoyaltyService {
    */
   async redeemReward(userId: string, rewardId: string): Promise<void> {
     const member = await LoyaltyMemberModel.findOne({ userId });
-    
+
     if (!member) {
       throw new Error('Loyalty member not found');
     }
 
     const reward = this.REWARDS_CATALOG.find(r => r.id === rewardId);
-    
+
     if (!reward) {
       throw new Error('Reward not found');
     }
@@ -340,7 +353,7 @@ export class LoyaltyService {
       points: -reward.pointsCost,
       description: `Redeemed reward: ${reward.name}`,
       rewardId,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     const expiryDate = new Date();
@@ -353,7 +366,7 @@ export class LoyaltyService {
       rewardId,
       redeemedAt: new Date(),
       expiresAt: expiryDate,
-      status: 'active'
+      status: 'active',
     });
 
     await member.save();
@@ -361,7 +374,7 @@ export class LoyaltyService {
     await this.notificationService.notifyUser(userId, {
       type: 'LOYALTY',
       title: 'Reward Redeemed',
-      message: `You've successfully redeemed ${reward.name}. Valid until ${expiryDate.toLocaleDateString()}`
+      message: `You've successfully redeemed ${reward.name}. Valid until ${expiryDate.toLocaleDateString()}`,
     });
   }
 
@@ -378,7 +391,7 @@ export class LoyaltyService {
    */
   async getMemberStatus(userId: string) {
     const member = await LoyaltyMemberModel.findOne({ userId });
-    
+
     if (!member) {
       throw new Error('Loyalty member not found');
     }
@@ -395,7 +408,7 @@ export class LoyaltyService {
       pointsToNextTier: nextTier ? nextTier.minimumPoints - member.lifetimePoints : 0,
       nextTierName: nextTier?.name || 'Maximum tier reached',
       joinDate: member.joinDate,
-      lastActivity: member.lastActivityDate
+      lastActivity: member.lastActivityDate,
     };
   }
 
@@ -404,7 +417,7 @@ export class LoyaltyService {
    */
   async getAvailableRewards(userId: string): Promise<Reward[]> {
     const member = await LoyaltyMemberModel.findOne({ userId });
-    
+
     if (!member) {
       throw new Error('Loyalty member not found');
     }
@@ -412,9 +425,9 @@ export class LoyaltyService {
     return this.REWARDS_CATALOG.filter(reward => {
       const isActive = reward.isActive;
       const hasEnoughPoints = member.currentPoints >= reward.pointsCost;
-      const meetsMinimumTier = !reward.minimumTier || 
-        this.isEligibleForTier(member.currentTier, reward.minimumTier);
-      
+      const meetsMinimumTier =
+        !reward.minimumTier || this.isEligibleForTier(member.currentTier, reward.minimumTier);
+
       return isActive && hasEnoughPoints && meetsMinimumTier;
     });
   }
@@ -424,7 +437,7 @@ export class LoyaltyService {
    */
   async getTransactionHistory(userId: string, limit: number = 10, offset: number = 0) {
     const member = await LoyaltyMemberModel.findOne({ userId });
-    
+
     if (!member) {
       throw new Error('Loyalty member not found');
     }
@@ -488,7 +501,10 @@ export class LoyaltyService {
       return program;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        logger.error('Prisma error getting loyalty program', 'loyalty', { error: error.message, code: error.code });
+        logger.error('Prisma error getting loyalty program', 'loyalty', {
+          error: error.message,
+          code: error.code,
+        });
       } else {
         logger.error('Error getting loyalty program', 'loyalty', { error: String(error) });
       }
@@ -502,8 +518,8 @@ export class LoyaltyService {
         where: { id: memberId },
         include: {
           user: true,
-          program: true
-        }
+          program: true,
+        },
       });
 
       if (!member) {
@@ -513,10 +529,12 @@ export class LoyaltyService {
       await this.notificationService.notifyUser(member.user.id, {
         type: 'SYSTEM',
         title: 'Points Expiring Soon',
-        message: `You have ${member.points} points that will expire in 30 days. Don't forget to use them!`
+        message: `You have ${member.points} points that will expire in 30 days. Don't forget to use them!`,
       });
     } catch (error) {
-      logger.error('Error sending points expiring notification', 'loyalty', { error: String(error) });
+      logger.error('Error sending points expiring notification', 'loyalty', {
+        error: String(error),
+      });
       throw error;
     }
   }
@@ -527,8 +545,8 @@ export class LoyaltyService {
         where: { id: memberId },
         include: {
           user: true,
-          program: true
-        }
+          program: true,
+        },
       });
 
       if (!member) {
@@ -538,10 +556,12 @@ export class LoyaltyService {
       await this.notificationService.notifyUser(member.user.id, {
         type: 'SYSTEM',
         title: 'Points Multiplier Event',
-        message: `Earn ${multiplier}x points on all services until ${endDate.toLocaleDateString()}!`
+        message: `Earn ${multiplier}x points on all services until ${endDate.toLocaleDateString()}!`,
       });
     } catch (error) {
-      logger.error('Error sending points multiplier notification', 'loyalty', { error: String(error) });
+      logger.error('Error sending points multiplier notification', 'loyalty', {
+        error: String(error),
+      });
       throw error;
     }
   }
@@ -553,12 +573,12 @@ export class LoyaltyService {
           where: { id: memberId },
           include: {
             user: true,
-            program: true
-          }
+            program: true,
+          },
         }),
         prisma.loyaltyReward.findUnique({
-          where: { id: rewardId }
-        })
+          where: { id: rewardId },
+        }),
       ]);
 
       if (!member || !reward) {
@@ -568,10 +588,12 @@ export class LoyaltyService {
       await this.notificationService.notifyUser(member.user.id, {
         type: 'SYSTEM',
         title: 'New Reward Unlocked',
-        message: `You've unlocked ${reward.name}! Redeem it now for ${reward.pointsCost} points.`
+        message: `You've unlocked ${reward.name}! Redeem it now for ${reward.pointsCost} points.`,
       });
     } catch (error) {
-      logger.error('Error sending reward unlocked notification', 'loyalty', { error: String(error) });
+      logger.error('Error sending reward unlocked notification', 'loyalty', {
+        error: String(error),
+      });
       throw error;
     }
   }
@@ -582,8 +604,8 @@ export class LoyaltyService {
         where: { id: memberId },
         include: {
           user: true,
-          program: true
-        }
+          program: true,
+        },
       });
 
       if (!member) {
@@ -593,24 +615,26 @@ export class LoyaltyService {
       await this.notificationService.notifyUser(member.user.id, {
         type: 'SYSTEM',
         title: 'New Seasonal Challenge',
-        message: `Join our ${challengeName} challenge! Complete it to earn ${reward}.`
+        message: `Join our ${challengeName} challenge! Complete it to earn ${reward}.`,
       });
     } catch (error) {
-      logger.error('Error sending seasonal challenge notification', 'loyalty', { error: String(error) });
+      logger.error('Error sending seasonal challenge notification', 'loyalty', {
+        error: String(error),
+      });
       throw error;
     }
   }
 
   async createProgram(businessId: string, data: LoyaltyProgramInput) {
     try {
-      const program = await prisma.$transaction(async (tx) => {
+      const program = await prisma.$transaction(async tx => {
         // Create the program
         const program = await tx.program.create({
           data: {
             ...data,
             businessId,
             isActive: true,
-          }
+          },
         });
 
         // Create default tier
@@ -619,8 +643,8 @@ export class LoyaltyService {
             name: 'Bronze',
             description: 'Base membership tier',
             pointsRequired: 0,
-            programId: program.id
-          }
+            programId: program.id,
+          },
         });
 
         return program;
@@ -636,12 +660,12 @@ export class LoyaltyService {
 
   async createTier(programId: string, data: LoyaltyTierInput) {
     try {
-      const tier = await prisma.$transaction(async (tx) => {
+      const tier = await prisma.$transaction(async tx => {
         return tx.tier.create({
           data: {
             ...data,
             programId,
-          }
+          },
         });
       });
 
@@ -655,13 +679,13 @@ export class LoyaltyService {
 
   async enrollMember(userId: string, programId: string) {
     try {
-      const member = await prisma.$transaction(async (tx) => {
+      const member = await prisma.$transaction(async tx => {
         // Get the base tier
         const baseTier = await tx.tier.findFirst({
           where: {
             programId,
-            pointsRequired: 0
-          }
+            pointsRequired: 0,
+          },
         });
 
         if (!baseTier) {
@@ -673,8 +697,8 @@ export class LoyaltyService {
             userId,
             programId,
             tierId: baseTier.id,
-            points: 0
-          }
+            points: 0,
+          },
         });
       });
 
@@ -686,14 +710,19 @@ export class LoyaltyService {
     }
   }
 
-  async awardPoints(memberId: string, points: number, source: string, sourceId?: string): Promise<void> {
+  async awardPoints(
+    memberId: string,
+    points: number,
+    source: string,
+    sourceId?: string
+  ): Promise<void> {
     try {
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async tx => {
         // Update member points
         const member = await tx.member.update({
           where: { id: memberId },
           data: { points: { increment: points } },
-          include: { program: true }
+          include: { program: true },
         });
 
         // Create transaction record
@@ -703,8 +732,8 @@ export class LoyaltyService {
             points,
             type: 'EARN',
             source,
-            sourceId
-          }
+            sourceId,
+          },
         });
 
         // Check for tier upgrade
@@ -713,21 +742,21 @@ export class LoyaltyService {
             programId: member.programId,
             pointsRequired: {
               gt: member.points,
-              lte: member.points + points
-            }
+              lte: member.points + points,
+            },
           },
-          orderBy: { pointsRequired: 'desc' }
+          orderBy: { pointsRequired: 'desc' },
         });
 
         if (nextTier) {
           await tx.member.update({
             where: { id: memberId },
-            data: { tierId: nextTier.id }
+            data: { tierId: nextTier.id },
           });
 
           logger.info('Member upgraded to new tier', 'LoyaltyService', {
             memberId,
-            newTierId: nextTier.id
+            newTierId: nextTier.id,
           });
         }
       });
@@ -739,21 +768,24 @@ export class LoyaltyService {
     }
   }
 
-  async createPointsMultiplier(programId: string, data: {
-    name: string;
-    description?: string;
-    multiplier: number;
-    startDate: Date;
-    endDate: Date;
-    conditions?: Record<string, any>;
-  }) {
+  async createPointsMultiplier(
+    programId: string,
+    data: {
+      name: string;
+      description?: string;
+      multiplier: number;
+      startDate: Date;
+      endDate: Date;
+      conditions?: Record<string, any>;
+    }
+  ) {
     try {
-      const event = await prisma.$transaction(async (tx) => {
+      const event = await prisma.$transaction(async tx => {
         return tx.pointsMultiplierEvent.create({
           data: {
             ...data,
-            programId
-          }
+            programId,
+          },
         });
       });
 
@@ -765,18 +797,21 @@ export class LoyaltyService {
     }
   }
 
-  async createReferralProgram(programId: string, data: {
-    referrerPoints: number;
-    refereePoints: number;
-    maxReferrals?: number;
-  }) {
+  async createReferralProgram(
+    programId: string,
+    data: {
+      referrerPoints: number;
+      refereePoints: number;
+      maxReferrals?: number;
+    }
+  ) {
     try {
-      const referralProgram = await prisma.$transaction(async (tx) => {
+      const referralProgram = await prisma.$transaction(async tx => {
         return tx.referralProgram.create({
           data: {
             ...data,
-            programId
-          }
+            programId,
+          },
         });
       });
 
@@ -791,22 +826,24 @@ export class LoyaltyService {
   async createReferral(programId: string, referrerId: string, refereeId: string) {
     try {
       // Check if referrer has reached max referrals
-      const referralProgram = await prisma.$transaction(async (tx) => {
+      const referralProgram = await prisma.$transaction(async tx => {
         const referralProgram = await tx.referralProgram.findUnique({
           where: { programId },
           include: {
             referrals: {
-              where: { referrerId, status: ReferralStatus.COMPLETED }
-            }
-          }
+              where: { referrerId, status: ReferralStatus.COMPLETED },
+            },
+          },
         });
 
         if (!referralProgram) {
           throw new Error('Referral program not found');
         }
 
-        if (referralProgram.maxReferrals && 
-            referralProgram.referrals.length >= referralProgram.maxReferrals) {
+        if (
+          referralProgram.maxReferrals &&
+          referralProgram.referrals.length >= referralProgram.maxReferrals
+        ) {
           throw new Error('Referrer has reached maximum referrals');
         }
 
@@ -815,8 +852,8 @@ export class LoyaltyService {
             programId,
             referrerId,
             refereeId,
-            status: ReferralStatus.PENDING
-          }
+            status: ReferralStatus.PENDING,
+          },
         });
 
         return referralProgram;
@@ -832,31 +869,31 @@ export class LoyaltyService {
 
   async completeReferral(referralId: string) {
     try {
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async tx => {
         const referral = await tx.referral.update({
           where: { id: referralId },
-          data: { 
+          data: {
             status: ReferralStatus.COMPLETED,
-            pointsAwarded: true
+            pointsAwarded: true,
           },
           include: {
-            program: true
-          }
+            program: true,
+          },
         });
 
         // Award points to referrer and referee
         const referrerMember = await tx.member.findFirst({
           where: {
             userId: referral.referrerId,
-            programId: referral.programId
-          }
+            programId: referral.programId,
+          },
         });
 
         const refereeMember = await tx.member.findFirst({
           where: {
             userId: referral.refereeId,
-            programId: referral.programId
-          }
+            programId: referral.programId,
+          },
         });
 
         if (referrerMember) {
@@ -885,13 +922,17 @@ export class LoyaltyService {
     }
   }
 
-  async awardSocialEngagementPoints(userId: string, action: 'POST' | 'COMMENT' | 'REACTION', contentId: string): Promise<void> {
+  async awardSocialEngagementPoints(
+    userId: string,
+    action: 'POST' | 'COMMENT' | 'REACTION',
+    contentId: string
+  ): Promise<void> {
     try {
-      const member = await prisma.$transaction(async (tx) => {
+      const member = await prisma.$transaction(async tx => {
         // Get user's loyalty membership
         const member = await tx.member.findFirst({
           where: { userId },
-          include: { program: true }
+          include: { program: true },
         });
 
         if (!member) {
@@ -902,16 +943,11 @@ export class LoyaltyService {
         const pointsMap = {
           POST: 50,
           COMMENT: 20,
-          REACTION: 10
+          REACTION: 10,
         };
 
         // Award points
-        await this.awardPoints(
-          member.id,
-          pointsMap[action],
-          'SOCIAL_ENGAGEMENT',
-          contentId
-        );
+        await this.awardPoints(member.id, pointsMap[action], 'SOCIAL_ENGAGEMENT', contentId);
 
         return member;
       });
@@ -919,10 +955,12 @@ export class LoyaltyService {
       logger.info('Awarded social engagement points', 'LoyaltyService', {
         userId,
         action,
-        points: member.points
+        points: member.points,
       });
     } catch (error) {
-      logger.error('Failed to award social engagement points', 'LoyaltyService', { error: String(error) });
+      logger.error('Failed to award social engagement points', 'LoyaltyService', {
+        error: String(error),
+      });
       throw error;
     }
   }
@@ -930,18 +968,18 @@ export class LoyaltyService {
   async scheduleSpecialOccasionRewards(): Promise<void> {
     try {
       const today = new Date();
-      
-      await prisma.$transaction(async (tx) => {
+
+      await prisma.$transaction(async tx => {
         // Find users with birthdays today
         const birthdayUsers = await tx.user.findMany({
           where: {
             birthDate: {
-              equals: today
-            }
+              equals: today,
+            },
           },
           include: {
-            loyaltyMemberships: true
-          }
+            loyaltyMemberships: true,
+          },
         });
 
         // Award birthday rewards
@@ -955,9 +993,9 @@ export class LoyaltyService {
         const anniversaryMembers = await tx.member.findMany({
           where: {
             createdAt: {
-              equals: today
-            }
-          }
+              equals: today,
+            },
+          },
         });
 
         // Award anniversary rewards
@@ -968,20 +1006,22 @@ export class LoyaltyService {
 
       logger.info('Processed special occasion rewards', 'LoyaltyService');
     } catch (error) {
-      logger.error('Failed to process special occasion rewards', 'LoyaltyService', { error: String(error) });
+      logger.error('Failed to process special occasion rewards', 'LoyaltyService', {
+        error: String(error),
+      });
       throw error;
     }
   }
 
   private async awardBirthdayReward(memberId: string): Promise<void> {
     try {
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async tx => {
         // Award birthday points
         await this.awardPoints(memberId, 500, 'BIRTHDAY_REWARD');
 
         // Get member's program ID
         const member = await tx.member.findUnique({
-          where: { id: memberId }
+          where: { id: memberId },
         });
 
         if (!member) throw new Error('Member not found');
@@ -997,10 +1037,10 @@ export class LoyaltyService {
             value: JSON.stringify({
               type: 'percentage',
               amount: 20,
-              expiresIn: '30d'
+              expiresIn: '30d',
             }),
-            isActive: true
-          }
+            isActive: true,
+          },
         });
       });
 
@@ -1013,10 +1053,10 @@ export class LoyaltyService {
 
   private async awardAnniversaryReward(memberId: string): Promise<void> {
     try {
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async tx => {
         // Get membership duration in years
         const member = await tx.member.findUnique({
-          where: { id: memberId }
+          where: { id: memberId },
         });
 
         if (!member) throw new Error('Member not found');
@@ -1026,7 +1066,7 @@ export class LoyaltyService {
         );
 
         // Award anniversary points (increases with years)
-        const anniversaryPoints = 1000 + (yearsSinceJoining * 500);
+        const anniversaryPoints = 1000 + yearsSinceJoining * 500;
         await this.awardPoints(memberId, anniversaryPoints, 'ANNIVERSARY_REWARD');
 
         // Create special anniversary reward
@@ -1040,17 +1080,19 @@ export class LoyaltyService {
             value: JSON.stringify({
               type: 'percentage',
               amount: Math.min(15 + yearsSinceJoining * 5, 50), // Increases with years, max 50%
-              expiresIn: '60d'
+              expiresIn: '60d',
             }),
-            isActive: true
-          }
+            isActive: true,
+          },
         });
       });
 
       logger.info('Awarded anniversary reward', 'LoyaltyService', { memberId });
     } catch (error) {
-      logger.error('Failed to award anniversary reward', 'LoyaltyService', { error: String(error) });
+      logger.error('Failed to award anniversary reward', 'LoyaltyService', {
+        error: String(error),
+      });
       throw error;
     }
   }
-} 
+}

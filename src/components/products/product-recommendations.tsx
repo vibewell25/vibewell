@@ -6,7 +6,7 @@ import { Product } from '@/services/product-service';
 import { ProductCard } from './product-card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 
 interface ProductRecommendationsProps {
   productId?: string; // Optional product ID for item-based recommendations
@@ -31,13 +31,13 @@ export function ProductRecommendations({
   const [feedbackItems, setFeedbackItems] = useState<Product[]>([]);
   const [activeTab, setActiveTab] = useState<'for-you' | 'related' | 'feedback'>('for-you');
   const recommendationService = new RecommendationService();
-  
+
   // Fetch recommendations on component mount
   useEffect(() => {
     const fetchRecommendations = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
         // If product ID is provided, fetch related items
         if (productId) {
@@ -48,7 +48,7 @@ export function ProductRecommendations({
           setRelatedItems(relatedProducts);
           setActiveTab('related');
         }
-        
+
         // Also fetch personalized recommendations if user is logged in
         if (user?.id) {
           const personalizedProducts = await recommendationService.getRecommendations({
@@ -56,7 +56,7 @@ export function ProductRecommendations({
             limit,
           });
           setRecommendations(personalizedProducts);
-          
+
           // Fetch feedback-based recommendations if user is logged in and feedback tab is shown
           if (showFeedbackTab) {
             const feedbackProducts = await recommendationService.getFeedbackBasedRecommendations(
@@ -64,13 +64,13 @@ export function ProductRecommendations({
               limit
             );
             setFeedbackItems(feedbackProducts);
-            
+
             // If feedback-based recommendations are available, make that the default tab
             if (feedbackProducts.length > 0 && !productId) {
               setActiveTab('feedback');
             }
           }
-          
+
           // If no product ID and no feedback recommendations, set active tab to 'for-you'
           if (!productId && (feedbackItems.length === 0 || !showFeedbackTab)) {
             setActiveTab('for-you');
@@ -89,10 +89,10 @@ export function ProductRecommendations({
         setLoading(false);
       }
     };
-    
+
     fetchRecommendations();
   }, [productId, user?.id, limit, showFeedbackTab]);
-  
+
   // Track product view when it's displayed in recommendations
   const handleProductClick = async (product: Product) => {
     if (user?.id) {
@@ -103,7 +103,7 @@ export function ProductRecommendations({
       }
     }
   };
-  
+
   // Function to render the product grid
   const renderProductGrid = (products: Product[]) => {
     if (loading) {
@@ -120,7 +120,7 @@ export function ProductRecommendations({
         </div>
       );
     }
-    
+
     if (error) {
       return (
         <div className="text-center py-4">
@@ -128,7 +128,7 @@ export function ProductRecommendations({
         </div>
       );
     }
-    
+
     if (products.length === 0) {
       return (
         <div className="text-center py-4">
@@ -136,10 +136,10 @@ export function ProductRecommendations({
         </div>
       );
     }
-    
+
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {products.map((product) => (
+        {products.map(product => (
           <div key={product.id} onClick={() => handleProductClick(product)}>
             <ProductCard product={product} />
           </div>
@@ -147,15 +147,15 @@ export function ProductRecommendations({
       </div>
     );
   };
-  
+
   // If no tabs needed (e.g., just showing recommendations)
   if (!showTabs || (!productId && recommendations.length === 0 && feedbackItems.length === 0)) {
     return (
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold">{title}</h2>
         {renderProductGrid(
-          activeTab === 'for-you' 
-            ? recommendations 
+          activeTab === 'for-you'
+            ? recommendations
             : activeTab === 'related'
               ? relatedItems
               : feedbackItems
@@ -163,34 +163,32 @@ export function ProductRecommendations({
       </div>
     );
   }
-  
+
   // Helper to decide which tabs to show
   const shouldShowFeedbackTab = () => {
     return showFeedbackTab && user?.id && feedbackItems.length > 0;
   };
-  
+
   // With tabs (for both related items and personalized recommendations)
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-semibold">{title}</h2>
-      
-      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
+
+      <Tabs value={activeTab} onValueChange={value => setActiveTab(value as any)}>
         <TabsList className="mb-4">
-          {productId && (
-            <TabsTrigger value="related">Related Items</TabsTrigger>
-          )}
+          {productId && <TabsTrigger value="related">Related Items</TabsTrigger>}
           {shouldShowFeedbackTab() && (
             <TabsTrigger value="feedback">Based on Your Feedback</TabsTrigger>
           )}
           <TabsTrigger value="for-you">Recommended For You</TabsTrigger>
         </TabsList>
-        
+
         {productId && (
           <TabsContent value="related" className="space-y-4">
             {renderProductGrid(relatedItems)}
           </TabsContent>
         )}
-        
+
         {shouldShowFeedbackTab() && (
           <TabsContent value="feedback" className="space-y-4">
             <div className="mb-4">
@@ -201,11 +199,11 @@ export function ProductRecommendations({
             {renderProductGrid(feedbackItems)}
           </TabsContent>
         )}
-        
+
         <TabsContent value="for-you" className="space-y-4">
           {renderProductGrid(recommendations)}
         </TabsContent>
       </Tabs>
     </div>
   );
-} 
+}

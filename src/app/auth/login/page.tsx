@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Icons } from '@/components/icons';
 import { ROUTES } from '@/constants/routes';
 import { AuthForm, AuthFormInput, AuthSubmitButton } from '@/components/auth/auth-form';
@@ -47,8 +47,8 @@ export default function LoginPage() {
       isLoading={isLoading}
       footerText="Don't have an account?"
       footerLink={{
-        text: "Sign up",
-        href: ROUTES.AUTH.SIGNUP
+        text: 'Sign up',
+        href: ROUTES.AUTH.SIGNUP,
       }}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -58,7 +58,7 @@ export default function LoginPage() {
           type="email"
           placeholder="name@example.com"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           required
           disabled={isLoading}
         />
@@ -69,21 +69,20 @@ export default function LoginPage() {
           type="password"
           placeholder="••••••••"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           required
           disabled={isLoading}
           rightElement={
-            <Link href={ROUTES.AUTH.FORGOT_PASSWORD} className="text-sm text-primary hover:underline">
+            <Link
+              href={ROUTES.AUTH.FORGOT_PASSWORD}
+              className="text-sm text-primary hover:underline"
+            >
               Forgot password?
             </Link>
           }
         />
 
-        <AuthSubmitButton
-          isLoading={isLoading}
-          loadingText="Signing in..."
-          text="Sign in"
-        />
+        <AuthSubmitButton isLoading={isLoading} loadingText="Signing in..." text="Sign in" />
       </form>
 
       <div className="relative my-6">
@@ -91,9 +90,7 @@ export default function LoginPage() {
           <div className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
+          <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
         </div>
       </div>
 
@@ -122,4 +119,4 @@ export default function LoginPage() {
       </div>
     </AuthForm>
   );
-} 
+}

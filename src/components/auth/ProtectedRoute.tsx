@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/auth';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Spinner } from '@/components/ui/spinner';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { ReactNode } from 'react';
@@ -13,13 +13,10 @@ interface ProtectedRouteProps {
   requiredRoles?: string[];
 }
 
-export default function ProtectedRoute({ 
-  children, 
-  requiredRoles = [] 
-}: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, requiredRoles = [] }: ProtectedRouteProps) {
   const router = useRouter();
   const { user, isLoading, error } = useUser();
-  
+
   // Extract Auth0 namespace from env or use default
   const namespace = process.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell.com';
 
@@ -44,7 +41,7 @@ export default function ProtectedRoute({
     if (requiredRoles.length > 0) {
       const userRoles = user[`${namespace}/roles`] || [];
       const hasRequiredRole = requiredRoles.some(role => userRoles.includes(role));
-      
+
       if (!hasRequiredRole) {
         router.push('/unauthorized');
       }
@@ -70,12 +67,14 @@ export default function ProtectedRoute({
   }
 
   // Show unauthorized state
-  if (!user || (requiredRoles.length > 0 && !requiredRoles.some(role => 
-    (user[`${namespace}/roles`] || []).includes(role)
-  ))) {
+  if (
+    !user ||
+    (requiredRoles.length > 0 &&
+      !requiredRoles.some(role => (user[`${namespace}/roles`] || []).includes(role)))
+  ) {
     return null; // The useEffect will handle the redirect
   }
 
   // User is authenticated and has the required roles
   return <>{children}</>;
-} 
+}

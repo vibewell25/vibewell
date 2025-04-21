@@ -1,6 +1,6 @@
 /**
  * Script to run the icon tests
- * 
+ *
  * Usage: npx ts-node src/scripts/run-icon-tests.ts
  */
 
@@ -22,25 +22,25 @@ const runTests = async () => {
     const { Icons } = await import('../components/icons');
     const IconsModule = await import('../components/icons');
     const IconsIndex = await import('../components/icons/index');
-    
+
     const { describe, test, expect, run } = createTestRunner();
-    
+
     describe('Icons Component', () => {
       test('Icons object contains all the required icons', () => {
         // Test the main export
         expect(Icons).toBeDefined();
-        
+
         // Test social icons
         expect(Icons.google).toBeDefined();
         expect(Icons.facebook).toBeDefined();
         expect(Icons.apple).toBeDefined();
-        
+
         // And other tests...
       });
-      
+
       // Additional test cases could be added here
     });
-    
+
     await run();
     console.log('All tests completed');
     process.exit(0);
@@ -50,4 +50,4 @@ const runTests = async () => {
   }
 };
 
-runTests(); 
+runTests();

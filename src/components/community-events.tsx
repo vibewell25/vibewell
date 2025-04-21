@@ -15,4 +15,4 @@ interface Event {
 }
 
 const capacity = event.capacity || 0;
-const progress = capacity > 0 ? (event.attendees.length / capacity) * 100 : 0; 
+const progress = capacity > 0 ? (event.attendees.length / capacity) * 100 : 0;

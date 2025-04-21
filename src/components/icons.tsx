@@ -24,12 +24,23 @@ import {
   MessageCircle as Message,
   Star,
   Activity,
+  ArrowLeft,
+  CheckCircle,
+  MapPin,
+  Share,
+  Users,
+  Video as VideoCamera,
+  Clock,
+  Download,
+  Copy,
+  DollarSign,
 } from 'lucide-react';
 
 export const Icons = {
   spinner: Loader2,
   gitHub: Github,
   arrowRight: ArrowRight,
+  arrowLeft: ArrowLeft,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
   sun: Sun,
@@ -44,6 +55,15 @@ export const Icons = {
   message: Message,
   star: Star,
   activity: Activity,
+  checkCircle: CheckCircle,
+  mapPin: MapPin,
+  share: Share,
+  users: Users,
+  videoCamera: VideoCamera,
+  clock: Clock,
+  download: Download,
+  copy: Copy,
+  dollarSign: DollarSign,
 } as const;
 
 export type Icon = typeof Icons;
@@ -55,11 +75,7 @@ export interface IconProps extends SVGProps<SVGSVGElement> {
 // Create a function to enhance heroicon components with size prop
 const enhanceIconWithSize = (Icon: React.FC<SVGProps<SVGSVGElement>>) => {
   return ({ size, ...props }: IconProps) => (
-    <Icon
-      width={size || props.width || 24}
-      height={size || props.height || 24}
-      {...props}
-    />
+    <Icon width={size || props.width || 24} height={size || props.height || 24} {...props} />
   );
 };
 
@@ -76,7 +92,9 @@ const enhancedOutlineIcons = Object.entries(OutlineIcons).reduce(
 const enhancedSolidIcons = Object.entries(SolidIcons).reduce(
   (acc, [key, Icon]) => ({
     ...acc,
-    [`${key.replace('Icon', '')}Solid`]: enhanceIconWithSize(Icon as React.FC<SVGProps<SVGSVGElement>>),
+    [`${key.replace('Icon', '')}Solid`]: enhanceIconWithSize(
+      Icon as React.FC<SVGProps<SVGSVGElement>>
+    ),
   }),
   {} as Record<string, React.FC<IconProps>>
 );
@@ -86,6 +104,7 @@ export const {
   spinner: Spinner,
   gitHub: GitHub,
   arrowRight: ArrowRightIcon,
+  arrowLeft: ArrowLeftIcon,
   chevronLeft: ChevronLeftIcon,
   chevronRight: ChevronRightIcon,
   sun: SunIcon,
@@ -100,4 +119,13 @@ export const {
   message: MessageIcon,
   star: StarIcon,
   activity: ActivityIcon,
+  checkCircle: CheckCircleIcon,
+  mapPin: MapPinIcon,
+  share: ShareIcon,
+  users: UsersIcon,
+  videoCamera: VideoCameraIcon,
+  clock: ClockIcon,
+  download: DownloadIcon,
+  copy: CopyIcon,
+  dollarSign: DollarSignIcon,
 } = Icons;

@@ -37,7 +37,6 @@ export function AuthForm({
   footerText,
   footerLink,
 }: AuthFormProps) {
-  
   if (isSuccessful && successContent) {
     return (
       <div className="container max-w-md mx-auto py-8 px-4">
@@ -54,17 +53,11 @@ export function AuthForm({
       <div className="flex flex-col items-center mb-8">
         <Icons.logo className="h-12 w-12 mb-4 text-primary" />
         <h1 className="text-2xl font-bold mb-2">{title}</h1>
-        {subtitle && (
-          <p className="text-muted-foreground text-center">
-            {subtitle}
-          </p>
-        )}
+        {subtitle && <p className="text-muted-foreground text-center">{subtitle}</p>}
       </div>
 
       {error && (
-        <div className="bg-destructive/20 text-destructive p-3 rounded-md mb-4">
-          {error}
-        </div>
+        <div className="bg-destructive/20 text-destructive p-3 rounded-md mb-4">{error}</div>
       )}
 
       {children}
@@ -129,11 +122,7 @@ export function AuthFormInput({
         className="w-full p-2 border rounded-md"
         disabled={disabled}
       />
-      {helpText && (
-        <p className="text-xs text-muted-foreground">
-          {helpText}
-        </p>
-      )}
+      {helpText && <p className="text-xs text-muted-foreground">{helpText}</p>}
     </div>
   );
 }
@@ -159,7 +148,7 @@ export function AuthSubmitButton({
       className="w-full bg-primary text-primary-foreground py-2 rounded-md font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
       disabled={isLoading || disabled}
     >
-      {isLoading ? (loadingText || 'Loading...') : text}
+      {isLoading ? loadingText || 'Loading...' : text}
     </button>
   );
-} 
+}

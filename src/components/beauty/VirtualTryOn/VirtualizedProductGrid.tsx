@@ -79,12 +79,14 @@ export default function VirtualizedProductGrid({
         style={style}
         className={`p-2 ${isSelected ? 'opacity-100 scale-105' : 'opacity-90 hover:opacity-100'} transition-all duration-200`}
       >
-        <div 
+        <div
           className={`cursor-pointer rounded-lg overflow-hidden border ${
-            isSelected ? 'border-pink-500 ring-2 ring-pink-300' : 'border-gray-200 hover:border-gray-300'
+            isSelected
+              ? 'border-pink-500 ring-2 ring-pink-300'
+              : 'border-gray-200 hover:border-gray-300'
           }`}
           onClick={() => onSelectProduct(product)}
-          onKeyDown={(e) => {
+          onKeyDown={e => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
               onSelectProduct(product);
@@ -96,7 +98,7 @@ export default function VirtualizedProductGrid({
           aria-selected={isSelected}
         >
           <div className="relative aspect-square">
-            <Image 
+            <Image
               src={imageUrl}
               alt={product.name}
               fill
@@ -121,7 +123,9 @@ export default function VirtualizedProductGrid({
             <h3 className="text-sm font-medium line-clamp-1">{product.name}</h3>
             <p className="text-xs text-gray-500 line-clamp-1">{product.brand}</p>
             <div className="flex items-center justify-between mt-2">
-              <span className="text-sm font-medium">${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}</span>
+              <span className="text-sm font-medium">
+                ${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}
+              </span>
               <div className="flex items-center">
                 <span className="text-xs text-yellow-500 mr-1">★</span>
                 <span className="text-xs text-gray-500">{product.ratingAverage}</span>
@@ -152,4 +156,4 @@ export default function VirtualizedProductGrid({
       </AutoSizer>
     </div>
   );
-} 
+}

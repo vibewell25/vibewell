@@ -6,4 +6,4 @@ export type BadgeProps = ComponentProps<typeof Badge>;
 export type TabsProps = ComponentProps<typeof Tabs>;
 export type AvatarProps = ComponentProps<typeof Avatar>;
 export type TooltipProps = ComponentProps<typeof Tooltip>;
-export type ProgressProps = ComponentProps<typeof Progress>; 
+export type ProgressProps = ComponentProps<typeof Progress>;

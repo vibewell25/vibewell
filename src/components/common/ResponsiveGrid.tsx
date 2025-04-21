@@ -29,4 +29,4 @@ export const ResponsiveGrid: React.FC<ResponsiveGridProps> = ({
   `;
 
   return <div className={gridClasses}>{children}</div>;
-}; 
+};

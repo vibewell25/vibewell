@@ -7,10 +7,7 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const businesses = await prisma.business.findMany({
@@ -36,9 +33,10 @@ export async function GET() {
 
     const formattedBusinesses = businesses.map(business => {
       const totalReviews = business.reviews.length;
-      const averageRating = totalReviews > 0
-        ? business.reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews
-        : 0;
+      const averageRating =
+        totalReviews > 0
+          ? business.reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews
+          : 0;
 
       return {
         id: business.id,
@@ -56,9 +54,6 @@ export async function GET() {
     return NextResponse.json(formattedBusinesses);
   } catch (error) {
     console.error('Error fetching businesses:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch businesses' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch businesses' }, { status: 500 });
   }
-} 
+}

@@ -27,13 +27,13 @@ export function NotificationBadge({ maxCount = 99 }: Partial<NotificationBadgePr
   }, [unreadCount]);
   const displayCount = unreadCount > maxCount ? `${maxCount}+` : unreadCount;
   return (
-    <Link 
-      href="/notifications" 
+    <Link
+      href="/notifications"
       className="relative inline-flex items-center justify-center p-1.5 rounded-md hover:bg-muted transition-colors"
     >
       <Bell className="h-5 w-5" />
       {unreadCount > 0 && (
-        <span 
+        <span
           className={`absolute -top-1 -right-1 flex items-center justify-center h-5 min-w-5 px-1 text-xs font-bold text-white bg-secondary rounded-full ${
             hasAnimated ? 'animate-pulse' : ''
           }`}
@@ -44,4 +44,4 @@ export function NotificationBadge({ maxCount = 99 }: Partial<NotificationBadgePr
       )}
     </Link>
   );
-} 
+}

@@ -52,15 +52,15 @@ export class AlertService {
           metric: alert.metric,
           condition: alert.condition,
           threshold: alert.threshold,
-          notificationMethods: alert.notification_methods
-        }
+          notificationMethods: alert.notification_methods,
+        },
       });
 
       // Track alert creation
       this.analyticsService.trackEvent('alert_created', {
         alert_id: data.id,
         product_id: data.productId,
-        metric: data.metric
+        metric: data.metric,
       });
 
       // Convert Prisma model back to the interface format
@@ -75,7 +75,7 @@ export class AlertService {
         threshold: data.threshold,
         notification_methods: data.notificationMethods,
         created_at: data.createdAt.toISOString(),
-        updated_at: data.updatedAt.toISOString()
+        updated_at: data.updatedAt.toISOString(),
       };
     } catch (error) {
       console.error('Error creating alert:', error);
@@ -98,15 +98,15 @@ export class AlertService {
           metric: alert.metric,
           condition: alert.condition,
           threshold: alert.threshold,
-          notificationMethods: alert.notification_methods
-        }
+          notificationMethods: alert.notification_methods,
+        },
       });
 
       // Track alert update
       this.analyticsService.trackEvent('alert_updated', {
         alert_id: data.id,
         product_id: data.productId,
-        metric: data.metric
+        metric: data.metric,
       });
 
       // Convert Prisma model back to the interface format
@@ -121,7 +121,7 @@ export class AlertService {
         threshold: data.threshold,
         notification_methods: data.notificationMethods,
         created_at: data.createdAt.toISOString(),
-        updated_at: data.updatedAt.toISOString()
+        updated_at: data.updatedAt.toISOString(),
       };
     } catch (error) {
       console.error('Error updating alert:', error);
@@ -135,7 +135,7 @@ export class AlertService {
   async deleteAlert(id: string): Promise<void> {
     try {
       await prisma.alertThreshold.delete({
-        where: { id }
+        where: { id },
       });
 
       // Track alert deletion
@@ -152,7 +152,7 @@ export class AlertService {
   async getAlertById(id: string): Promise<AlertThreshold | null> {
     try {
       const data = await prisma.alertThreshold.findUnique({
-        where: { id }
+        where: { id },
       });
 
       if (!data) return null;
@@ -169,7 +169,7 @@ export class AlertService {
         threshold: data.threshold,
         notification_methods: data.notificationMethods,
         created_at: data.createdAt.toISOString(),
-        updated_at: data.updatedAt.toISOString()
+        updated_at: data.updatedAt.toISOString(),
       };
     } catch (error) {
       console.error('Error fetching alert:', error);
@@ -183,7 +183,7 @@ export class AlertService {
   async getAlertsByProduct(productId: string): Promise<AlertThreshold[]> {
     try {
       const data = await prisma.alertThreshold.findMany({
-        where: { productId }
+        where: { productId },
       });
 
       // Convert Prisma models back to the interface format
@@ -198,7 +198,7 @@ export class AlertService {
         threshold: item.threshold,
         notification_methods: item.notificationMethods,
         created_at: item.createdAt.toISOString(),
-        updated_at: item.updatedAt.toISOString()
+        updated_at: item.updatedAt.toISOString(),
       }));
     } catch (error) {
       console.error('Error fetching alerts for product:', error);
@@ -213,7 +213,7 @@ export class AlertService {
     try {
       const data = await prisma.alertThreshold.findMany({
         where: options.isActive !== undefined ? { isActive: options.isActive } : undefined,
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       });
 
       // Convert Prisma models back to the interface format
@@ -228,7 +228,7 @@ export class AlertService {
         threshold: item.threshold,
         notification_methods: item.notificationMethods,
         created_at: item.createdAt.toISOString(),
-        updated_at: item.updatedAt.toISOString()
+        updated_at: item.updatedAt.toISOString(),
       }));
     } catch (error) {
       console.error('Error fetching all alerts:', error);
@@ -249,15 +249,15 @@ export class AlertService {
             alert_id: notification.alert_id,
             product_id: notification.product_id,
             current_value: notification.current_value,
-            threshold_value: notification.threshold_value
+            threshold_value: notification.threshold_value,
           },
-          isRead: false
-        }
+          isRead: false,
+        },
       });
 
       // Get the alert to determine notification methods
       const alert = await this.getAlertById(notification.alert_id);
-      
+
       if (alert && alert.notification_methods) {
         // Send notifications based on alert's notification_methods
         if (alert.notification_methods.includes('email')) {
@@ -270,18 +270,18 @@ export class AlertService {
               productId: alert.product_id,
               metric: alert.metric,
               currentValue: notification.current_value,
-              threshold: alert.threshold
-            }
+              threshold: alert.threshold,
+            },
           });
         }
-        
+
         if (alert.notification_methods.includes('sms')) {
           await this.notificationService.sendSMSNotification({
             message: `VibeWell Alert: ${alert.name} - ${alert.metric} is now ${notification.current_value} (threshold: ${alert.threshold})`,
             data: {
               alertId: alert.id,
-              productId: alert.product_id
-            }
+              productId: alert.product_id,
+            },
           });
         }
       }
@@ -295,7 +295,7 @@ export class AlertService {
         current_value: content.current_value,
         threshold_value: content.threshold_value,
         is_read: data.isRead,
-        created_at: data.createdAt.toISOString()
+        created_at: data.createdAt.toISOString(),
       };
     } catch (error) {
       console.error('Error creating alert notification:', error);
@@ -310,7 +310,7 @@ export class AlertService {
     try {
       const { data, error } = await prisma.dashboardNotification.findMany({
         where: { alert_id: alertId },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       });
 
       if (error) throw error;
@@ -321,7 +321,7 @@ export class AlertService {
         current_value: item.content.current_value,
         threshold_value: item.content.threshold_value,
         is_read: item.isRead,
-        created_at: item.createdAt.toISOString()
+        created_at: item.createdAt.toISOString(),
       }));
     } catch (error) {
       console.error('Error fetching notifications for alert:', error);
@@ -336,7 +336,7 @@ export class AlertService {
     try {
       const { data, error } = await prisma.dashboardNotification.findMany({
         where: { isRead: false },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       });
 
       if (error) throw error;
@@ -347,7 +347,7 @@ export class AlertService {
         current_value: item.content.current_value,
         threshold_value: item.content.threshold_value,
         is_read: item.isRead,
-        created_at: item.createdAt.toISOString()
+        created_at: item.createdAt.toISOString(),
       }));
     } catch (error) {
       console.error('Error fetching unread notifications:', error);
@@ -362,7 +362,7 @@ export class AlertService {
     try {
       await prisma.dashboardNotification.update({
         where: { id: notificationId },
-        data: { isRead: true }
+        data: { isRead: true },
       });
     } catch (error) {
       console.error('Error marking notification as read:', error);
@@ -373,20 +373,23 @@ export class AlertService {
   /**
    * Check metrics against alert thresholds and create notifications if needed
    */
-  async checkMetricsAgainstAlerts(productId: string, metrics: Record<string, number>): Promise<void> {
+  async checkMetricsAgainstAlerts(
+    productId: string,
+    metrics: Record<string, number>
+  ): Promise<void> {
     try {
       // Get active alerts for this product
       const alerts = await this.getAlertsByProduct(productId);
       const activeAlerts = alerts.filter(alert => alert.is_active);
-      
+
       // Check each alert
       for (const alert of activeAlerts) {
         if (metrics[alert.metric] !== undefined) {
           const currentValue = metrics[alert.metric];
-          const shouldTrigger = 
+          const shouldTrigger =
             (alert.condition === 'below' && currentValue < alert.threshold) ||
             (alert.condition === 'above' && currentValue > alert.threshold);
-          
+
           if (shouldTrigger) {
             // Create notification
             await this.createAlertNotification({
@@ -394,16 +397,16 @@ export class AlertService {
               product_id: productId,
               current_value: currentValue,
               threshold_value: alert.threshold,
-              is_read: false
+              is_read: false,
             });
-            
+
             // Track alert triggered event
             this.analyticsService.trackEvent('alert_triggered', {
               alert_id: alert.id,
               product_id: productId,
               metric: alert.metric,
               current_value: currentValue,
-              threshold: alert.threshold
+              threshold: alert.threshold,
             });
           }
         }
@@ -413,4 +416,4 @@ export class AlertService {
       throw error;
     }
   }
-} 
+}

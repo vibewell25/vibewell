@@ -36,7 +36,7 @@ export interface RecurringBooking {
 export enum RecurringFrequency {
   WEEKLY = 'WEEKLY',
   BIWEEKLY = 'BIWEEKLY',
-  MONTHLY = 'MONTHLY'
+  MONTHLY = 'MONTHLY',
 }
 
 export interface WaitlistEntry {
@@ -54,7 +54,7 @@ export enum WaitlistStatus {
   PENDING = 'PENDING',
   NOTIFIED = 'NOTIFIED',
   BOOKED = 'BOOKED',
-  EXPIRED = 'EXPIRED'
+  EXPIRED = 'EXPIRED',
 }
 
 export interface BookingAnalytics {
@@ -83,4 +83,4 @@ export interface UpdateBookingDTO {
   notes?: string;
   startTime?: Date;
   endTime?: Date;
-} 
+}

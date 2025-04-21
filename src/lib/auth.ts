@@ -31,7 +31,7 @@ export async function getUserFromRequest(request: NextRequest): Promise<User | n
     // For demo purposes, we'll create a mock user
     const authHeader = request.headers.get('authorization');
     let token: string | null = null;
-    
+
     if (authHeader && authHeader.startsWith('Bearer ')) {
       token = authHeader.substring(7);
     } else {
@@ -41,7 +41,7 @@ export async function getUserFromRequest(request: NextRequest): Promise<User | n
         token = cookieToken;
       }
     }
-    
+
     // Validate token (simplified for demo)
     if (token) {
       // Mock user - in a real app, you would decode and validate the JWT
@@ -50,10 +50,10 @@ export async function getUserFromRequest(request: NextRequest): Promise<User | n
         email: 'user@example.com',
         name: 'Demo User',
         role: 'user',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/1.jpg'
+        avatarUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
       };
     }
-    
+
     return null;
   } catch (error) {
     console.error('Error authenticating user:', error);
@@ -76,10 +76,10 @@ export async function verifyToken(token: string): Promise<User | null> {
         email: 'user@example.com',
         name: 'Demo User',
         role: 'user',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/1.jpg'
+        avatarUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
       };
     }
-    
+
     return null;
   } catch (error) {
     console.error('Error verifying token:', error);
@@ -94,11 +94,11 @@ export async function verifyToken(token: string): Promise<User | null> {
 export async function getCurrentUser(): Promise<User | null> {
   try {
     const token = getStoredAuthToken();
-    
+
     if (!token) {
       return null;
     }
-    
+
     // In a real app, you would make an API call to validate the token
     // For demo purposes, we'll just check if it exists
     if (token.startsWith('mock-token')) {
@@ -107,10 +107,10 @@ export async function getCurrentUser(): Promise<User | null> {
         email: 'user@example.com',
         name: 'Demo User',
         role: 'user',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/1.jpg'
+        avatarUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
       };
     }
-    
+
     return null;
   } catch (error) {
     console.error('Error getting current user:', error);
@@ -143,7 +143,7 @@ export const auth = {
   getUserFromRequest,
   verifyToken,
   getCurrentUser,
-  authOptions
+  authOptions,
 };
 
 export async function auth() {
@@ -200,4 +200,4 @@ export const getAuthenticatedUser = async (req: any, res: any) => {
 
 export const withPageAuthRequired = auth0.withPageAuthRequired;
 export const withApiAuthRequired = auth0.withApiAuthRequired;
-export const getAccessToken = auth0.getAccessToken; 
+export const getAccessToken = auth0.getAccessToken;

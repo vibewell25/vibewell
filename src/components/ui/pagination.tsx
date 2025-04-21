@@ -1,131 +1,159 @@
 'use client';
 
+import React from 'react';
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  siblingCount?: number;
-  onPageChange: (page: number) => void;
+export interface PaginationProps extends React.HTMLAttributes<HTMLDivElement> {
+  currentPage?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
+  className?: string;
 }
 
 export function Pagination({
   currentPage,
   totalPages,
-  siblingCount = 1,
   onPageChange,
+  className,
+  children,
+  ...props
 }: PaginationProps) {
-  // Generate page ranges
-  const generatePagination = () => {
-    // Always show first and last page
-    const firstPage = 1;
-    const lastPage = totalPages;
-
-    // Calculate the range of pages to show
-    const leftSiblingIndex = Math.max(currentPage - siblingCount, firstPage);
-    const rightSiblingIndex = Math.min(currentPage + siblingCount, lastPage);
-
-    // Should we show dots
-    const shouldShowLeftDots = leftSiblingIndex > firstPage + 1;
-    const shouldShowRightDots = rightSiblingIndex < lastPage - 1;
-
-    // Generate the page array
-    const pageArray: (number | string)[] = [];
-
-    // Always add first page
-    pageArray.push(firstPage);
-
-    // Add left dots if needed
-    if (shouldShowLeftDots) {
-      pageArray.push('leftDots');
-    }
-
-    // Add pages in range
-    for (let i = leftSiblingIndex; i <= rightSiblingIndex; i++) {
-      if (i !== firstPage && i !== lastPage) {
-        pageArray.push(i);
-      }
-    }
-
-    // Add right dots if needed
-    if (shouldShowRightDots) {
-      pageArray.push('rightDots');
-    }
-
-    // Always add last page if there's more than one page
-    if (lastPage > firstPage) {
-      pageArray.push(lastPage);
-    }
-
-    return pageArray;
-  };
-
-  const pages = generatePagination();
-
-  if (totalPages <= 1) {
-    return null;
-  }
-
   return (
-    <nav role="navigation" aria-label="Pagination Navigation">
-      <ul className="flex items-center gap-1">
-        {/* Previous Page Button */}
-        <li>
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => onPageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            aria-label="Go to previous page"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-        </li>
-
-        {/* Page Numbers */}
-        {pages.map((page, index) => {
-          if (page === 'leftDots' || page === 'rightDots') {
-            return (
-              <li key={`dots-${index}`}>
-                <span className="flex h-8 w-8 items-center justify-center">
-                  <MoreHorizontal className="h-4 w-4" />
-                </span>
-              </li>
-            );
-          }
-
-          return (
-            <li key={`page-${page}`}>
-              <Button
-                variant={currentPage === page ? 'default' : 'outline'}
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => onPageChange(page as number)}
-                aria-current={currentPage === page ? 'page' : undefined}
-                aria-label={`Go to page ${page}`}
-              >
-                {page}
-              </Button>
-            </li>
-          );
-        })}
-
-        {/* Next Page Button */}
-        <li>
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => onPageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            aria-label="Go to next page"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </li>
-      </ul>
-    </nav>
+    <div
+      className={cn('flex items-center gap-1', className)}
+      {...props}
+    >
+      {children}
+    </div>
   );
-} 
+}
+
+export function PaginationContent({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn('flex flex-row items-center gap-1', className)}
+      {...props}
+    />
+  );
+}
+
+export function PaginationItem({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div className={cn('', className)} {...props} />
+  );
+}
+
+export function PaginationLink({
+  className,
+  isActive,
+  ...props
+}: React.ComponentProps<'button'> & {
+  isActive?: boolean;
+}) {
+  return (
+    <button
+      className={cn(
+        'h-8 w-8 rounded-md border border-input flex items-center justify-center text-sm transition-colors',
+        isActive
+          ? 'bg-primary text-primary-foreground'
+          : 'bg-background hover:bg-muted hover:text-accent-foreground',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function PaginationPrevious({
+  className,
+  ...props
+}: React.ComponentProps<'button'>) {
+  return (
+    <button
+      className={cn('h-8 px-2 rounded-md border border-input flex items-center justify-center text-sm transition-colors bg-background hover:bg-muted hover:text-accent-foreground', className)}
+      {...props}
+    >
+      <span className="sr-only">Previous page</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-4 w-4"
+      >
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+    </button>
+  );
+}
+
+export function PaginationNext({
+  className,
+  ...props
+}: React.ComponentProps<'button'>) {
+  return (
+    <button
+      className={cn('h-8 px-2 rounded-md border border-input flex items-center justify-center text-sm transition-colors bg-background hover:bg-muted hover:text-accent-foreground', className)}
+      {...props}
+    >
+      <span className="sr-only">Next page</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-4 w-4"
+      >
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+    </button>
+  );
+}
+
+export function PaginationEllipsis({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span
+      className={cn('flex h-8 w-8 items-center justify-center', className)}
+      {...props}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-4 w-4"
+      >
+        <circle cx="12" cy="12" r="1" />
+        <circle cx="19" cy="12" r="1" />
+        <circle cx="5" cy="12" r="1" />
+      </svg>
+      <span className="sr-only">More pages</span>
+    </span>
+  );
+}

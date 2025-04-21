@@ -7,7 +7,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { PostReaction, ReactionType } from '@/components/post-reaction';
 import { SharePost } from '@/components/share-post';
 import { UserAvatar } from '@/components/user-avatar';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 
 /**
  * Represents a user in the context of a post
@@ -87,7 +87,7 @@ export interface PostProps {
 
 /**
  * Post component for displaying social media posts with reactions and comments
- * 
+ *
  * Displays a post with user information, content, image (if available),
  * reaction buttons, comments section, and comment form for authenticated users.
  *
@@ -103,7 +103,7 @@ export function Post({
   onReactionChange,
   onToggleSave,
   onCommentSubmit,
-  customActions
+  customActions,
 }: PostProps) {
   const { user: currentUser } = useAuth();
   const [commentText, setCommentText] = useState('');
@@ -149,11 +149,7 @@ export function Post({
     <div className="card p-4">
       {/* Post Header */}
       <div className="flex items-start space-x-3 mb-4">
-        <UserAvatar 
-          src={post.user.avatar} 
-          alt={`${post.user.name}'s avatar`}
-          size="md"
-        />
+        <UserAvatar src={post.user.avatar} alt={`${post.user.name}'s avatar`} size="md" />
         <div>
           <h3 className="font-medium">{post.user.name}</h3>
           <p className="text-xs text-muted-foreground">{formatDateTime(post.createdAt)}</p>
@@ -172,13 +168,13 @@ export function Post({
       {/* Post Actions */}
       <div className="flex items-center justify-between pt-2 border-t border-border">
         <div className="flex items-center space-x-2">
-          <PostReaction 
-            postId={post.id.toString()} 
-            initialReactions={post.reactions} 
+          <PostReaction
+            postId={post.id.toString()}
+            initialReactions={post.reactions}
             userReaction={currentUserReaction}
             onReactionChange={(postId, reactionType) => onReactionChange(reactionType)}
           />
-          <button 
+          <button
             className="flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
             onClick={toggleComments}
           >
@@ -188,11 +184,9 @@ export function Post({
           <SharePost postId={post.id.toString()} postContent={post.content} />
           {customActions}
         </div>
-        <button 
+        <button
           className={`p-2 rounded-md ${
-            isSaved 
-              ? 'text-primary' 
-              : 'text-muted-foreground hover:text-foreground'
+            isSaved ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
           }`}
           onClick={onToggleSave}
           disabled={!isAuthenticated}
@@ -203,9 +197,12 @@ export function Post({
       {/* Comments */}
       {expandedComments && (
         <div className="mt-4 space-y-4">
-          {post.comments.map((comment) => (
-            <div key={comment.id} className="flex items-start space-x-3 pl-4 border-l-2 border-muted mt-3">
-              <UserAvatar 
+          {post.comments.map(comment => (
+            <div
+              key={comment.id}
+              className="flex items-start space-x-3 pl-4 border-l-2 border-muted mt-3"
+            >
+              <UserAvatar
                 src={comment.user.avatar}
                 alt={`${comment.user.name}'s avatar`}
                 size="sm"
@@ -213,7 +210,9 @@ export function Post({
               <div className="flex-grow">
                 <div className="flex items-baseline space-x-2">
                   <h4 className="font-medium text-sm">{comment.user.name}</h4>
-                  <span className="text-xs text-muted-foreground">{formatDateTime(comment.createdAt)}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {formatDateTime(comment.createdAt)}
+                  </span>
                 </div>
                 <p className="text-sm mt-1">{comment.content}</p>
               </div>
@@ -222,8 +221,12 @@ export function Post({
           {/* Comment Form */}
           {isAuthenticated ? (
             <form onSubmit={handleCommentSubmit} className="flex items-start space-x-3 mt-3">
-              <UserAvatar 
-                src={currentUser?.name ? `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}` : undefined}
+              <UserAvatar
+                src={
+                  currentUser?.name
+                    ? `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}`
+                    : undefined
+                }
                 alt={currentUser?.name || 'User'}
                 fallbackInitials={currentUser?.name}
                 size="sm"
@@ -234,7 +237,7 @@ export function Post({
                   className="form-input pr-10 py-2 text-sm w-full"
                   placeholder="Add a comment..."
                   value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
+                  onChange={e => setCommentText(e.target.value)}
                 />
                 <button
                   type="submit"
@@ -247,7 +250,10 @@ export function Post({
             </form>
           ) : (
             <div className="mt-3 text-sm text-center text-muted-foreground p-2 bg-muted/30 rounded">
-              <Link href="/auth/sign-in" className="text-primary hover:underline">Sign in</Link> to add a comment
+              <Link href="/auth/sign-in" className="text-primary hover:underline">
+                Sign in
+              </Link>{' '}
+              to add a comment
             </div>
           )}
         </div>
@@ -263,4 +269,4 @@ export function Post({
       )}
     </div>
   );
-} 
+}

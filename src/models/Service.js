@@ -48,7 +48,7 @@ const ServiceSchema = new mongoose.Schema({
     type: Number,
     min: [0, 'Discounted price must be positive'],
     validate: {
-      validator: function(value) {
+      validator: function (value) {
         return !value || value < this.price;
       },
       message: 'Discounted price must be less than regular price',
@@ -110,25 +110,31 @@ const ServiceSchema = new mongoose.Schema({
     type: Number, // Buffer time in minutes after the service
     default: 0,
   },
-  availableDays: [{
-    type: String,
-    enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
-  }],
-  customAvailability: [{
-    day: {
+  availableDays: [
+    {
       type: String,
       enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
-      required: true,
     },
-    isAvailable: {
-      type: Boolean,
-      default: true,
+  ],
+  customAvailability: [
+    {
+      day: {
+        type: String,
+        enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+        required: true,
+      },
+      isAvailable: {
+        type: Boolean,
+        default: true,
+      },
+      slots: [
+        {
+          startTime: String, // HH:MM format
+          endTime: String, // HH:MM format
+        },
+      ],
     },
-    slots: [{
-      startTime: String, // HH:MM format
-      endTime: String, // HH:MM format
-    }],
-  }],
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
@@ -150,4 +156,4 @@ ServiceSchema.pre('save', function (next) {
 
 const Service = mongoose.model('Service', ServiceSchema);
 
-export default Service; 
+export default Service;

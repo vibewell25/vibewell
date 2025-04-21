@@ -6,8 +6,8 @@ export class ProductService {
       category: 'Wellness',
       subcategory: 'Fitness',
       brand: 'TestBrand',
-      description: 'A test product'
-    }
+      description: 'A test product',
+    },
   });
 }
 
@@ -18,12 +18,12 @@ export class FeedbackService {
       '2': 10,
       '3': 15,
       '4': 25,
-      '5': 45
-    }
+      '5': 45,
+    },
   });
 }
 
 export class AnalyticsService {
   trackEvent = jest.fn();
   trackTryOnSession = jest.fn();
-} 
+}

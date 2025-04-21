@@ -13,11 +13,11 @@ export const content = [
       avatar: '/avatars/sarah.jpg',
       rating: 4.9,
       reviews: 128,
-      location: 'Downtown Beauty Studio'
+      location: 'Downtown Beauty Studio',
     },
     tags: ['trending', 'summer', 'color'],
     popularity: 95,
-    availableSlots: 5
+    availableSlots: 5,
   },
   {
     id: 2,
@@ -33,11 +33,11 @@ export const content = [
       avatar: '/avatars/michael.jpg',
       rating: 4.8,
       reviews: 75,
-      location: 'Zen Wellness Center'
+      location: 'Zen Wellness Center',
     },
     tags: ['meditation', 'mindfulness', 'stress-relief'],
     popularity: 88,
-    availableSlots: 8
+    availableSlots: 8,
   },
   {
     id: 3,
@@ -53,10 +53,10 @@ export const content = [
       avatar: '/avatars/emma.jpg',
       rating: 4.9,
       reviews: 92,
-      location: 'Sunrise Yoga Studio'
+      location: 'Sunrise Yoga Studio',
     },
     tags: ['yoga', 'fitness', 'flexibility'],
     popularity: 92,
-    availableSlots: 6
-  }
-]; 
+    availableSlots: 6,
+  },
+];

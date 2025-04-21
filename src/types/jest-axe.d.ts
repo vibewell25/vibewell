@@ -1,3 +1,5 @@
+import 'jest-axe';
+
 declare module 'jest-axe' {
   import { AxeResults } from 'axe-core';
 

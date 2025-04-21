@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -12,9 +12,9 @@ interface ProtectedRouteProps {
 
 /**
  * ProtectedRoute Component
- * 
+ *
  * This component protects routes based on user authentication state and roles.
- * 
+ *
  * @param children - The content to render if the user is authenticated and has the required role
  * @param requiredRole - The role required to access this route (optional)
  * @param redirectTo - The path to redirect to if the user is not authenticated (defaults to /auth/login)
@@ -57,4 +57,4 @@ export function ProtectedRoute({
 
   // If authenticated and role check passes, render the children
   return <>{children}</>;
-} 
+}

@@ -1,16 +1,44 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AnalyticsService, ProductMetrics } from '@/services/analytics-service';
 import { FeedbackService, FeedbackStats } from '@/services/feedback-service';
 import { ProductService } from '@/services/product-service';
 import { Skeleton } from '@/components/ui/skeleton';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from 'recharts';
 import { format, subWeeks } from 'date-fns';
 import Link from 'next/link';
-import { ArrowRight, ArrowUp, ArrowDown, Users, Eye, Star, BarChart3, Download, FileText } from 'lucide-react';
+import {
+  ArrowRight,
+  ArrowUp,
+  ArrowDown,
+  Users,
+  Eye,
+  Star,
+  BarChart3,
+  Download,
+  FileText,
+} from 'lucide-react';
 
 interface Product {
   id: string;
@@ -21,37 +49,33 @@ interface Product {
 // Add utility function for CSV export
 const exportToCSV = (data: any[], filename: string) => {
   // Convert data to CSV format
-  let csvContent = "";
-  
+  let csvContent = '';
+
   // Get all possible keys from all objects
-  const allKeys = Array.from(
-    new Set(
-      data.flatMap(item => Object.keys(item))
-    )
-  );
-  
+  const allKeys = Array.from(new Set(data.flatMap(item => Object.keys(item))));
+
   // Create header row
-  csvContent += allKeys.join(",") + "\n";
-  
+  csvContent += allKeys.join(',') + '\n';
+
   // Add each data row
   data.forEach(item => {
-    const row = allKeys.map(key => {
-      const value = item[key] === undefined ? "" : item[key];
-      // Escape commas and quotes in values
-      const escapedValue = typeof value === "string" ? 
-        `"${value.replace(/"/g, '""')}"` : 
-        value;
-      return escapedValue;
-    }).join(",");
-    csvContent += row + "\n";
+    const row = allKeys
+      .map(key => {
+        const value = item[key] === undefined ? '' : item[key];
+        // Escape commas and quotes in values
+        const escapedValue = typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value;
+        return escapedValue;
+      })
+      .join(',');
+    csvContent += row + '\n';
   });
-  
+
   // Create download link
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute("download", filename);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
   link.style.visibility = 'hidden';
   document.body.appendChild(link);
   link.click();
@@ -70,10 +94,10 @@ export default function DashboardOverview() {
   const [avgConversionRate, setAvgConversionRate] = useState(0);
   const [productMetricsData, setProductMetricsData] = useState<Record<string, ProductMetrics>>({});
   const [generatingReport, setGeneratingReport] = useState(false);
-  
+
   // Colors for charts
   const COLORS = ['#4f46e5', '#2563eb', '#7c3aed', '#c026d3', '#ec4899'];
-  
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -81,83 +105,84 @@ export default function DashboardOverview() {
         const analyticsService = new AnalyticsService();
         const feedbackService = new FeedbackService();
         const productService = new ProductService();
-        
+
         // Calculate date range - last 4 weeks
         const endDate = new Date();
         const startDate = subWeeks(endDate, 4);
-        
+
         // Fetch all products first
         const result = await productService.getProducts();
         const productsData = result.products;
-        
+
         if (!productsData || productsData.length === 0) {
           throw new Error('Failed to fetch products');
         }
-        
+
         const productsList = productsData.map((product: any) => ({
           id: product.id,
           name: product.name,
-          category: product.category
+          category: product.category,
         }));
-        
+
         setProducts(productsList);
-        
+
         // Fetch metrics for each product
         let views = 0;
         let uniqueViews = 0;
         let tryOns = 0;
         let conversionRateSum = 0;
         let productsWithData = 0;
-        
+
         const productMetrics: { id: string; name: string; views: number }[] = [];
         const allProductMetrics: Record<string, ProductMetrics> = {};
-        
+
         for (const product of productsList) {
           try {
             const metrics = await analyticsService.getProductMetrics(product.id, {
               start: startDate.toISOString(),
-              end: endDate.toISOString()
+              end: endDate.toISOString(),
             });
-            
+
             views += metrics.totalViews;
             uniqueViews += metrics.uniqueViews;
             tryOns += metrics.tryOnCount;
-            
+
             if (metrics.totalViews > 0) {
               conversionRateSum += metrics.conversionRate;
               productsWithData++;
             }
-            
+
             productMetrics.push({
               id: product.id,
               name: product.name,
-              views: metrics.totalViews
+              views: metrics.totalViews,
             });
-            
+
             allProductMetrics[product.id] = metrics;
           } catch (err) {
             console.error(`Error fetching metrics for ${product.name}:`, err);
           }
         }
-        
+
         // Store all product metrics for report generation
         setProductMetricsData(allProductMetrics);
-        
+
         // Sort products by views and get top 5
         const sortedProducts = [...productMetrics].sort((a, b) => b.views - a.views).slice(0, 5);
         setTopProducts(sortedProducts);
-        
+
         // Set aggregated metrics
         setTotalViews(views);
         setTotalUniqueViews(uniqueViews);
         setTotalTryOns(tryOns);
         setAvgConversionRate(productsWithData > 0 ? conversionRateSum / productsWithData : 0);
-        
+
         // Fetch feedback stats
-        const { data: feedbackData, error: feedbackError } = await feedbackService.getAllFeedbackStats();
-        
+        const { data: feedbackData, error: feedbackError } =
+          await feedbackService.getAllFeedbackStats();
+
         if (feedbackError) throw new Error('Failed to fetch feedback stats');
-        
+
         setFeedbackStats(feedbackData);
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
@@ -166,43 +191,45 @@ export default function DashboardOverview() {
         setLoading(false);
       }
     }
-    
+
     fetchData();
   }, []);
-  
+
   // Generate comprehensive product performance report
   const generateReport = async () => {
     try {
       setGeneratingReport(true);
-      
+
       // Summary report data
-      const summaryData = [{
-        reportType: 'Summary',
-        generatedAt: new Date().toISOString(),
-        dateRange: `${format(subWeeks(new Date(), 4), 'yyyy-MM-dd')} to ${format(new Date(), 'yyyy-MM-dd')}`,
-        totalProducts: products.length,
-        totalCategories: new Set(products.map(p => p.category)).size,
-        totalProductViews: totalViews,
-        totalUniqueVisitors: totalUniqueViews,
-        totalTryOns: totalTryOns,
-        averageConversionRate: avgConversionRate.toFixed(2) + '%',
-      }];
-      
+      const summaryData = [
+        {
+          reportType: 'Summary',
+          generatedAt: new Date().toISOString(),
+          dateRange: `${format(subWeeks(new Date(), 4), 'yyyy-MM-dd')} to ${format(new Date(), 'yyyy-MM-dd')}`,
+          totalProducts: products.length,
+          totalCategories: new Set(products.map(p => p.category)).size,
+          totalProductViews: totalViews,
+          totalUniqueVisitors: totalUniqueViews,
+          totalTryOns: totalTryOns,
+          averageConversionRate: avgConversionRate.toFixed(2) + '%',
+        },
+      ];
+
       // Product metrics data
       const productMetricsReport = products.map(product => {
-        const metrics = productMetricsData[product.id] || { 
-          totalViews: 0, 
-          uniqueViews: 0, 
-          tryOnCount: 0, 
-          conversionRate: 0, 
-          clickThroughRate: 0 
+        const metrics = productMetricsData[product.id] || {
+          totalViews: 0,
+          uniqueViews: 0,
+          tryOnCount: 0,
+          conversionRate: 0,
+          clickThroughRate: 0,
         };
-        const feedbackStat = feedbackStats[product.id] || { 
-          averageRating: 0, 
-          totalRatings: 0, 
-          percentWouldTryInRealLife: 0 
+        const feedbackStat = feedbackStats[product.id] || {
+          averageRating: 0,
+          totalRatings: 0,
+          percentWouldTryInRealLife: 0,
         };
-        
+
         return {
           reportSection: 'Product Metrics',
           productId: product.id,
@@ -215,74 +242,73 @@ export default function DashboardOverview() {
           clickThroughRate: metrics.clickThroughRate.toFixed(2) + '%',
           averageRating: feedbackStat.averageRating.toFixed(1),
           totalFeedbacks: feedbackStat.totalRatings,
-          percentWouldTryInRealLife: feedbackStat.percentWouldTryInRealLife.toFixed(1) + '%'
+          percentWouldTryInRealLife: feedbackStat.percentWouldTryInRealLife.toFixed(1) + '%',
         };
       });
-      
+
       // Prepare rating distribution data
       const ratingDistribution = prepareRatingDistributionData().map(item => ({
         reportSection: 'Rating Distribution',
         rating: item.rating,
-        count: item.count
+        count: item.count,
       }));
-      
+
       // Combine all data for the report
-      const reportData = [
-        ...summaryData,
-        ...productMetricsReport,
-        ...ratingDistribution
-      ];
-      
+      const reportData = [...summaryData, ...productMetricsReport, ...ratingDistribution];
+
       // Export to CSV
-      exportToCSV(reportData, `vibewell-product-analytics-report-${format(new Date(), 'yyyy-MM-dd')}.csv`);
+      exportToCSV(
+        reportData,
+        `vibewell-product-analytics-report-${format(new Date(), 'yyyy-MM-dd')}.csv`
+      );
     } catch (err) {
       console.error('Error generating report:', err);
     } finally {
       setGeneratingReport(false);
     }
   };
-  
+
   // Calculate average rating across all products
   const calculateAverageRating = () => {
     if (Object.keys(feedbackStats).length === 0) return 0;
-    
+
     let totalRating = 0;
     let totalProducts = 0;
-    
+
     Object.values(feedbackStats).forEach(stats => {
       if (stats.totalRatings > 0) {
         totalRating += stats.averageRating;
         totalProducts++;
       }
     });
-    
+
     return totalProducts > 0 ? totalRating / totalProducts : 0;
   };
-  
+
   // Prepare data for rating distribution chart
   const prepareRatingDistributionData = () => {
     if (Object.keys(feedbackStats).length === 0) return [];
-    
-    const distribution: Record<string, number> = { 
-      '1': 0, 
-      '2': 0, 
-      '3': 0, 
-      '4': 0, 
-      '5': 0 
+
+    const distribution: Record<string, number> = {
+      '1': 0,
+      '2': 0,
+      '3': 0,
+      '4': 0,
+      '5': 0,
     };
-    
+
     Object.values(feedbackStats).forEach(stats => {
       Object.entries(stats.ratingDistribution).forEach(([rating, count]) => {
         distribution[rating] += count;
       });
     });
-    
+
     return Object.entries(distribution).map(([rating, count]) => ({
       rating: `${rating} Star${rating !== '1' ? 's' : ''}`,
-      count
+      count,
     }));
   };
-  
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -298,7 +324,7 @@ export default function DashboardOverview() {
             </Card>
           ))}
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
@@ -308,7 +334,7 @@ export default function DashboardOverview() {
               <Skeleton className="h-[200px] w-full" />
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <Skeleton className="h-6 w-40" />
@@ -321,7 +347,7 @@ export default function DashboardOverview() {
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <Card>
@@ -337,18 +363,18 @@ export default function DashboardOverview() {
       </Card>
     );
   }
-  
+
   const averageRating = calculateAverageRating();
   const ratingDistributionData = prepareRatingDistributionData();
-  
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <h2 className="text-2xl font-bold">Dashboard Overview</h2>
-        
-        <Button 
-          variant="outline" 
-          onClick={generateReport} 
+
+        <Button
+          variant="outline"
+          onClick={generateReport}
           disabled={generatingReport}
           className="flex items-center gap-2"
         >
@@ -362,7 +388,7 @@ export default function DashboardOverview() {
           )}
         </Button>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="pb-2">
@@ -378,7 +404,7 @@ export default function DashboardOverview() {
             </p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center">
@@ -393,7 +419,7 @@ export default function DashboardOverview() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center">
@@ -403,12 +429,10 @@ export default function DashboardOverview() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{averageRating.toFixed(1)}/5.0</div>
-            <p className="text-xs text-muted-foreground">
-              Based on customer feedback
-            </p>
+            <p className="text-xs text-muted-foreground">Based on customer feedback</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center">
@@ -424,21 +448,24 @@ export default function DashboardOverview() {
           </CardContent>
         </Card>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Top Products by Views</CardTitle>
-                <CardDescription>
-                  Most viewed products in the last 4 weeks
-                </CardDescription>
+                <CardDescription>Most viewed products in the last 4 weeks</CardDescription>
               </div>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => exportToCSV(topProducts, `vibewell-top-products-${format(new Date(), 'yyyy-MM-dd')}.csv`)}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() =>
+                  exportToCSV(
+                    topProducts,
+                    `vibewell-top-products-${format(new Date(), 'yyyy-MM-dd')}.csv`
+                  )
+                }
               >
                 Export
               </Button>
@@ -459,13 +486,13 @@ export default function DashboardOverview() {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
                     dataKey="name"
-                    tickFormatter={(str) => {
+                    tickFormatter={str => {
                       return str.length > 10 ? `${str.slice(0, 10)}...` : str;
                     }}
                   />
                   <YAxis />
                   <Tooltip
-                    labelFormatter={(value) => {
+                    labelFormatter={value => {
                       return `Views: ${value}`;
                     }}
                   />
@@ -475,20 +502,23 @@ export default function DashboardOverview() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Rating Distribution</CardTitle>
-                <CardDescription>
-                  Distribution of product ratings
-                </CardDescription>
+                <CardDescription>Distribution of product ratings</CardDescription>
               </div>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => exportToCSV(ratingDistributionData, `vibewell-rating-distribution-${format(new Date(), 'yyyy-MM-dd')}.csv`)}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() =>
+                  exportToCSV(
+                    ratingDistributionData,
+                    `vibewell-rating-distribution-${format(new Date(), 'yyyy-MM-dd')}.csv`
+                  )
+                }
               >
                 Export
               </Button>
@@ -512,7 +542,7 @@ export default function DashboardOverview() {
                     ))}
                   </Pie>
                   <Tooltip
-                    labelFormatter={(value) => {
+                    labelFormatter={value => {
                       return `${value} products`;
                     }}
                   />

@@ -36,9 +36,7 @@ export function EventAnalytics({ event }: EventAnalyticsProps) {
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <Icons.ClockIcon className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm">
-              {format(startDate, 'EEEE, MMMM d, yyyy')}
-            </span>
+            <span className="text-sm">{format(startDate, 'EEEE, MMMM d, yyyy')}</span>
           </div>
           {!isVirtual && event.location.address && (
             <div className="flex items-center gap-2">
@@ -63,12 +61,10 @@ export function EventAnalytics({ event }: EventAnalyticsProps) {
           </div>
           <div className="space-y-1">
             <p className="text-sm text-muted-foreground">Time Until Event</p>
-            <p className="text-lg font-semibold">
-              {format(startDate, 'MMM d')}
-            </p>
+            <p className="text-lg font-semibold">{format(startDate, 'MMM d')}</p>
           </div>
         </div>
       </CardContent>
     </Card>
   );
-} 
+}

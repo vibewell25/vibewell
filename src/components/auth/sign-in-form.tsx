@@ -5,11 +5,18 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Link from 'next/link';
 import { Icons } from '@/components/ui/icons';
@@ -52,7 +59,7 @@ export function SignInForm() {
 
     try {
       const { error: signInError } = await signIn(data.email, data.password);
-      
+
       if (signInError) {
         // Handle login failure
         setFailedAttempts(prev => prev + 1);
@@ -106,9 +113,7 @@ export function SignInForm() {
     <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle>Sign In</CardTitle>
-        <CardDescription>
-          Enter your credentials to access your account
-        </CardDescription>
+        <CardDescription>Enter your credentials to access your account</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -123,7 +128,9 @@ export function SignInForm() {
               aria-describedby={errors.email ? 'email-error' : undefined}
             />
             {errors.email && (
-              <p id="email-error" className="text-sm text-red-500">{errors.email.message}</p>
+              <p id="email-error" className="text-sm text-red-500">
+                {errors.email.message}
+              </p>
             )}
           </div>
           <div className="space-y-2">
@@ -137,7 +144,9 @@ export function SignInForm() {
               aria-describedby={errors.password ? 'password-error' : undefined}
             />
             {errors.password && (
-              <p id="password-error" className="text-sm text-red-500">{errors.password.message}</p>
+              <p id="password-error" className="text-sm text-red-500">
+                {errors.password.message}
+              </p>
             )}
           </div>
           <div className="flex items-center space-x-2">
@@ -157,7 +166,7 @@ export function SignInForm() {
                   id="captcha"
                   type="text"
                   value={captchaValue}
-                  onChange={(e) => setCaptchaValue(e.target.value)}
+                  onChange={e => setCaptchaValue(e.target.value)}
                   placeholder="Enter CAPTCHA"
                 />
                 <div className="bg-gray-100 p-2 rounded">
@@ -188,9 +197,7 @@ export function SignInForm() {
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
+            <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
           </div>
         </div>
 
@@ -228,19 +235,13 @@ export function SignInForm() {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Link
-          href="/auth/forgot-password"
-          className="text-sm text-blue-600 hover:text-blue-800"
-        >
+        <Link href="/auth/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">
           Forgot password?
         </Link>
-        <Link
-          href="/auth/signup"
-          className="text-sm text-blue-600 hover:text-blue-800"
-        >
+        <Link href="/auth/signup" className="text-sm text-blue-600 hover:text-blue-800">
           Create an account
         </Link>
       </CardFooter>
     </Card>
   );
-} 
+}

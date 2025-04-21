@@ -6,4 +6,4 @@ export const useRouter = jest.fn().mockReturnValue({
   forward: jest.fn(),
 });
 export const useSearchParams = jest.fn().mockReturnValue(new URLSearchParams());
-export const useParams = jest.fn().mockReturnValue({}); 
+export const useParams = jest.fn().mockReturnValue({});

@@ -16,4 +16,4 @@ export interface Business {
     email: string;
     website?: string;
   };
-} 
+}

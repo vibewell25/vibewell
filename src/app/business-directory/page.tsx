@@ -3,11 +3,15 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
-;
-;
 import Link from 'next/link';
 import Image from 'next/image';
 import { Icons } from '@/components/icons';
@@ -48,7 +52,8 @@ function BusinessDirectoryContent() {
           name: 'Serenity Spa & Wellness',
           category: 'spa',
           subCategory: 'massage',
-          description: 'Luxury spa offering a range of massage and wellness treatments in a tranquil environment.',
+          description:
+            'Luxury spa offering a range of massage and wellness treatments in a tranquil environment.',
           location: 'New York, NY',
           image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef',
           rating: 4.8,
@@ -58,16 +63,17 @@ function BusinessDirectoryContent() {
           services: [
             { name: 'Deep Tissue Massage', price: 120 },
             { name: 'Facial Treatment', price: 95 },
-            { name: 'Hot Stone Therapy', price: 150 }
+            { name: 'Hot Stone Therapy', price: 150 },
           ],
-          availableSlots: 8
+          availableSlots: 8,
         },
         {
           id: '2',
           name: 'Glow Beauty Studio',
           category: 'beauty',
           subCategory: 'salon',
-          description: 'Full-service beauty salon specializing in hair styling, makeup, and skincare treatments.',
+          description:
+            'Full-service beauty salon specializing in hair styling, makeup, and skincare treatments.',
           location: 'Los Angeles, CA',
           image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035',
           rating: 4.6,
@@ -77,16 +83,17 @@ function BusinessDirectoryContent() {
           services: [
             { name: 'Haircut & Style', price: 85 },
             { name: 'Full Makeup', price: 120 },
-            { name: 'Manicure & Pedicure', price: 65 }
+            { name: 'Manicure & Pedicure', price: 65 },
           ],
-          availableSlots: 5
+          availableSlots: 5,
         },
         {
           id: '3',
           name: 'Mindful Meditation Center',
           category: 'wellness',
           subCategory: 'meditation',
-          description: 'Guided meditation sessions and mindfulness training for stress reduction and mental wellness.',
+          description:
+            'Guided meditation sessions and mindfulness training for stress reduction and mental wellness.',
           location: 'San Francisco, CA',
           image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773',
           rating: 4.9,
@@ -96,16 +103,17 @@ function BusinessDirectoryContent() {
           services: [
             { name: 'Group Meditation', price: 25 },
             { name: 'Private Session', price: 90 },
-            { name: 'Mindfulness Workshop', price: 45 }
+            { name: 'Mindfulness Workshop', price: 45 },
           ],
-          availableSlots: 12
+          availableSlots: 12,
         },
         {
           id: '4',
           name: 'Fit Life Coaching',
           category: 'fitness',
           subCategory: 'personal-training',
-          description: 'Personalized fitness coaching and nutrition planning for achieving your health goals.',
+          description:
+            'Personalized fitness coaching and nutrition planning for achieving your health goals.',
           location: 'Chicago, IL',
           image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b',
           rating: 4.7,
@@ -115,16 +123,17 @@ function BusinessDirectoryContent() {
           services: [
             { name: 'Personal Training Session', price: 75 },
             { name: 'Nutrition Consultation', price: 120 },
-            { name: 'Group Fitness Class', price: 30 }
+            { name: 'Group Fitness Class', price: 30 },
           ],
-          availableSlots: 7
+          availableSlots: 7,
         },
         {
           id: '5',
           name: 'Healing Hands Therapy',
           category: 'wellness',
           subCategory: 'physical-therapy',
-          description: 'Physical therapy and rehabilitation services for injury recovery and pain management.',
+          description:
+            'Physical therapy and rehabilitation services for injury recovery and pain management.',
           location: 'Boston, MA',
           image: 'https://images.unsplash.com/photo-1573497620053-ea5300f94f21',
           rating: 4.5,
@@ -134,9 +143,9 @@ function BusinessDirectoryContent() {
           services: [
             { name: 'Initial Assessment', price: 150 },
             { name: 'Therapy Session', price: 100 },
-            { name: 'Sports Rehabilitation', price: 130 }
+            { name: 'Sports Rehabilitation', price: 130 },
           ],
-          availableSlots: 4
+          availableSlots: 4,
         },
         {
           id: '6',
@@ -153,10 +162,10 @@ function BusinessDirectoryContent() {
           services: [
             { name: 'Group Yoga Class', price: 20 },
             { name: 'Private Yoga Session', price: 85 },
-            { name: 'Yoga Workshop', price: 45 }
+            { name: 'Yoga Workshop', price: 45 },
           ],
-          availableSlots: 10
-        }
+          availableSlots: 10,
+        },
       ];
       setBusinesses(mockBusinesses);
       setFilteredBusinesses(mockBusinesses);
@@ -169,10 +178,11 @@ function BusinessDirectoryContent() {
     let filtered = [...businesses];
     // Search filter
     if (searchTerm) {
-      filtered = filtered.filter(business => 
-        business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        business.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        business.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      filtered = filtered.filter(
+        business =>
+          business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          business.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          business.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
     // Category filter
@@ -185,7 +195,9 @@ function BusinessDirectoryContent() {
     }
     // Price range filter
     filtered = filtered.filter(business => {
-      const avgPrice = business.services.reduce((sum, service) => sum + service.price, 0) / business.services.length;
+      const avgPrice =
+        business.services.reduce((sum, service) => sum + service.price, 0) /
+        business.services.length;
       return avgPrice >= priceRange[0] && avgPrice <= priceRange[1];
     });
     // Rating filter
@@ -206,7 +218,8 @@ function BusinessDirectoryContent() {
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">Business Directory</h1>
           <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-            Discover top wellness and beauty service providers in your area. From spas and salons to fitness trainers and wellness coaches.
+            Discover top wellness and beauty service providers in your area. From spas and salons to
+            fitness trainers and wellness coaches.
           </p>
           <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg p-4 md:p-6 max-w-4xl mx-auto mb-8">
             <div className="flex flex-col md:flex-row gap-4">
@@ -216,7 +229,8 @@ function BusinessDirectoryContent() {
               </h3>
               <div className="flex-grow">
                 <p className="text-gray-700 text-sm md:text-base">
-                  Boost your visibility with a premium listing. Get featured placement, enhanced profile features, and more client leads.
+                  Boost your visibility with a premium listing. Get featured placement, enhanced
+                  profile features, and more client leads.
                 </p>
               </div>
               <Button className="bg-indigo-600 hover:bg-indigo-700 whitespace-nowrap">
@@ -234,11 +248,13 @@ function BusinessDirectoryContent() {
                   placeholder="Search by name, service, or keyword..."
                   className="pl-10"
                   value={searchTerm}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setSearchTerm(e.target.value)
+                  }
                 />
               </div>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="flex items-center"
                 onClick={() => setShowFilters(!showFilters)}
               >
@@ -279,11 +295,13 @@ function BusinessDirectoryContent() {
                   </Select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Price Range</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Price Range
+                  </label>
                   <div className="px-2">
-                    <Slider 
-                      defaultValue={[0, 200]} 
-                      max={200} 
+                    <Slider
+                      defaultValue={[0, 200]}
+                      max={200}
                       step={10}
                       value={priceRange}
                       onValueChange={setPriceRange}
@@ -295,8 +313,13 @@ function BusinessDirectoryContent() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Minimum Rating</label>
-                  <Select value={rating.toString()} onValueChange={(value: string) => setRating(Number(value))}>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Minimum Rating
+                  </label>
+                  <Select
+                    value={rating.toString()}
+                    onValueChange={(value: string) => setRating(Number(value))}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Any rating" />
                     </SelectTrigger>
@@ -332,8 +355,11 @@ function BusinessDirectoryContent() {
           <>
             <p className="text-gray-600 mb-6">{filteredBusinesses.length} businesses found</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredBusinesses.map((business) => (
-                <div key={business.id} className={`bg-white rounded-lg shadow-md overflow-hidden transition-all hover:shadow-lg ${business.isPremium ? 'ring-2 ring-indigo-500 ring-opacity-50' : ''}`}>
+              {filteredBusinesses.map(business => (
+                <div
+                  key={business.id}
+                  className={`bg-white rounded-lg shadow-md overflow-hidden transition-all hover:shadow-lg ${business.isPremium ? 'ring-2 ring-indigo-500 ring-opacity-50' : ''}`}
+                >
                   <div className="relative h-48 w-full">
                     <Image
                       src={business.image}
@@ -362,20 +388,24 @@ function BusinessDirectoryContent() {
                       <Icons.MapPinSolid className="h-4 w-4 mr-1" />
                       {business.location}
                     </div>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">{business.description}</p>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                      {business.description}
+                    </p>
                     <div className="flex flex-wrap gap-1 mb-4">
-                      {business.tags.map((tag) => (
+                      {business.tags.map(tag => (
                         <Badge key={tag} variant="outline" className="text-xs bg-gray-100">
                           {tag}
                         </Badge>
                       ))}
                     </div>
                     <div className="text-sm text-gray-500 mb-4">
-                      <span className="font-medium">Services from:</span>{' '}
-                      ${Math.min(...business.services.map(s => s.price))}
+                      <span className="font-medium">Services from:</span> $
+                      {Math.min(...business.services.map(s => s.price))}
                     </div>
                     <div className="flex items-center justify-between mt-4">
-                      <span className="text-sm text-gray-600">{business.availableSlots} slots available</span>
+                      <span className="text-sm text-gray-600">
+                        {business.availableSlots} slots available
+                      </span>
                       <Link href={`/providers/${business.id}`}>
                         <Button>View Profile</Button>
                       </Link>
@@ -388,8 +418,8 @@ function BusinessDirectoryContent() {
               <div className="text-center py-12">
                 <h3 className="text-lg font-medium text-gray-900 mb-2">No businesses found</h3>
                 <p className="text-gray-500 mb-6">Try adjusting your filters or search terms</p>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => {
                     setSearchTerm('');
                     setCategory('all');
@@ -409,9 +439,12 @@ function BusinessDirectoryContent() {
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-col md:flex-row gap-8 items-center">
               <div className="md:w-2/3">
-                <h2 className="text-2xl font-bold mb-4">Boost Your Business with a Premium Listing</h2>
+                <h2 className="text-2xl font-bold mb-4">
+                  Boost Your Business with a Premium Listing
+                </h2>
                 <p className="text-gray-700 mb-4">
-                  Stand out from the competition and attract more clients with our premium business listings.
+                  Stand out from the competition and attract more clients with our premium business
+                  listings.
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-start">
@@ -484,4 +517,4 @@ export default function BusinessDirectory() {
       <BusinessDirectoryContent />
     </Suspense>
   );
-} 
+}

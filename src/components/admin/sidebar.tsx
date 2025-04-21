@@ -3,7 +3,16 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, ShoppingBag, MessageSquare, CalendarClock, BarChart3, Database, Settings } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Users,
+  ShoppingBag,
+  MessageSquare,
+  CalendarClock,
+  BarChart3,
+  Database,
+  Settings,
+} from 'lucide-react';
 
 // Define sidebar navigation items
 const navItems = [
@@ -30,16 +39,14 @@ export const Sidebar = () => {
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1 overflow-auto">
-        {navItems.map((item) => {
+        {navItems.map(item => {
           const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
           return (
             <Link
               key={item.href}
               href={item.href}
               className={`flex items-center px-4 py-3 text-sm rounded-md transition-colors ${
-                isActive 
-                  ? 'bg-blue-50 text-blue-700' 
-                  : 'text-gray-700 hover:bg-gray-100'
+                isActive ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100'
               }`}
             >
               <span className={`mr-3 ${isActive ? 'text-blue-700' : 'text-gray-500'}`}>
@@ -68,4 +75,4 @@ export const Sidebar = () => {
 };
 
 // Also export as default for flexibility
-export default Sidebar; 
+export default Sidebar;

@@ -1,6 +1,6 @@
 /**
  * Testing Library Adapter
- * 
+ *
  * This adapter provides a consistent interface to @testing-library/react
  * across different versions, ensuring our test utilities work correctly.
  */
@@ -27,4 +27,4 @@ export const userEvent = userEventLib.default || userEventLib;
 
 // Define proper types for users of this adapter
 export type RenderResult = ReturnType<typeof ReactTestingLibrary.render>;
-export type RenderOptions = Parameters<typeof ReactTestingLibrary.render>[1]; 
+export type RenderOptions = Parameters<typeof ReactTestingLibrary.render>[1];

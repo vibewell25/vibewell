@@ -25,4 +25,4 @@ export function TimeInput({ value, onChange, className }: TimeInputProps) {
       step="300" // 5-minute intervals
     />
   );
-} 
+}

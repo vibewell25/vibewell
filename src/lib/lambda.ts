@@ -72,4 +72,4 @@ export const invokeLambdaAsync = async <T>({
   });
 };
 
-export default lambdaClient; 
+export default lambdaClient;

@@ -1,6 +1,5 @@
 'use client';
 import { useRouter } from 'next/navigation';
-;
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { Icons } from '@/components/icons';
 export default function SelectRolePage() {
@@ -11,29 +10,29 @@ export default function SelectRolePage() {
       title: 'Service Seeker',
       description: '(Customer)',
       icon: <Icons.UserIcon className="w-6 h-6 text-primary" />,
-      onClick: () => router.push('/feed')
+      onClick: () => router.push('/feed'),
     },
     {
       id: 'provider',
       title: 'Service Provider',
       description: '(Beautician/Practitioner)',
       icon: <Icons.UserIcon className="w-6 h-6 text-primary" />,
-      onClick: () => router.push('/provider/dashboard')
+      onClick: () => router.push('/provider/dashboard'),
     },
     {
       id: 'admin',
       title: 'Admin',
       description: '(Web-Based Panel)',
       icon: <Icons.UserIcon className="w-6 h-6 text-primary" />,
-      onClick: () => router.push('/admin/dashboard')
-    }
+      onClick: () => router.push('/admin/dashboard'),
+    },
   ];
   return (
     <MobileLayout hideNavigation>
       <div className="flex flex-col px-6 py-12 h-full">
         <h1 className="text-2xl font-bold mb-8">Select Your Role</h1>
         <div className="space-y-4">
-          {roles.map((role) => (
+          {roles.map(role => (
             <button
               key={role.id}
               onClick={role.onClick}
@@ -65,4 +64,4 @@ export default function SelectRolePage() {
       </div>
     </MobileLayout>
   );
-} 
+}

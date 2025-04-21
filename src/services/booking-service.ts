@@ -2,16 +2,23 @@
  * Booking Service
  * Handles API requests for booking-related functionality
  */
-import { apiClient, ApiResponse } from './api-client';
-import { withApiErrorHandling, handleResponse, getResponseData, hasData } from '../utils/api-response-utils';
-import { PrismaClient, BookingStatus, Booking, ServiceBooking, RecurringFrequency, WaitlistStatus } from '@prisma/client';
+import { apiClient, ApiResponse } from '@/types/api';
+import {
+  withApiErrorHandling,
+  handleResponse,
+  getResponseData,
+  hasData,
+} from '@/types/api';
+import {
+  PrismaClient,
+  BookingStatus,
+  Booking,
+  ServiceBooking,
+  RecurringFrequency,
+  WaitlistStatus,
+} from '@prisma/client';
 import { Redis } from 'ioredis';
-import { 
-  Service, 
-  RecurringBooking,
-  WaitlistEntry,
-  BookingAnalytics 
-} from '@/types/booking';
+import { Service, RecurringBooking, WaitlistEntry, BookingAnalytics } from '@/types/booking';
 import { logger } from '@/lib/logger';
 import { NotificationService } from './notification-service';
 import { CalendarService } from './calendar-service';
@@ -85,93 +92,87 @@ export const bookingService = {
   /**
    * Get all bookings with optional filters
    */
-  async getBookings(
-    filters: BookingFilterParams = {}
-  ): Promise<ApiResponse<Booking[]>> {
+  async getBookings(filters: BookingFilterParams = {}): Promise<ApiResponse<Booking[]>> {
     // Convert filters to query parameters
     const queryParams = new URLSearchParams();
-    
+
     if (filters.status) {
       const statuses = Array.isArray(filters.status) ? filters.status : [filters.status];
       statuses.forEach(status => queryParams.append('status', status));
     }
-    
+
     if (filters.providerId) {
       queryParams.append('providerId', filters.providerId);
     }
-    
+
     if (filters.serviceId) {
       queryParams.append('serviceId', filters.serviceId);
     }
-    
+
     if (filters.fromDate) {
       queryParams.append('fromDate', filters.fromDate);
     }
-    
+
     if (filters.toDate) {
       queryParams.append('toDate', filters.toDate);
     }
-    
+
     if (filters.page) {
       queryParams.append('page', filters.page.toString());
     }
-    
+
     if (filters.limit) {
       queryParams.append('limit', filters.limit.toString());
     }
-    
+
     const query = queryParams.toString();
     const url = `/api/bookings${query ? `?${query}` : ''}`;
-    
+
     return apiClient.get<Booking[]>(url);
   },
-  
+
   /**
    * Get a booking by ID
    */
   async getBooking(id: string): Promise<ApiResponse<Booking>> {
     return apiClient.get<Booking>(`/api/bookings/${id}`);
   },
-  
+
   /**
    * Create a new booking
    */
-  async createBooking(
-    params: CreateBookingParams
-  ): Promise<ApiResponse<ServiceBooking>> {
+  async createBooking(params: CreateBookingParams): Promise<ApiResponse<ServiceBooking>> {
     return apiClient.post<ServiceBooking>('/api/bookings', params);
   },
-  
+
   /**
    * Update an existing booking
    */
-  async updateBooking(
-    params: UpdateBookingParams
-  ): Promise<ApiResponse<Booking>> {
+  async updateBooking(params: UpdateBookingParams): Promise<ApiResponse<Booking>> {
     const { id, ...updateData } = params;
     return apiClient.put<Booking>(`/api/bookings/${id}`, updateData);
   },
-  
+
   /**
    * Cancel a booking
    */
   async cancelBooking(id: string, reason?: string): Promise<ApiResponse<Booking>> {
     return apiClient.put<Booking>(`/api/bookings/${id}/cancel`, { reason });
   },
-  
+
   /**
    * Complete a booking
    */
   async completeBooking(id: string): Promise<ApiResponse<Booking>> {
     return apiClient.put<Booking>(`/api/bookings/${id}/complete`, {});
   },
-  
+
   /**
    * Delete a booking
    */
   async deleteBooking(id: string): Promise<ApiResponse<void>> {
     return apiClient.delete<void>(`/api/bookings/${id}`);
-  }
+  },
 };
 
 /**
@@ -185,7 +186,7 @@ export const typeSafeBookingService = {
    * // Using the type-safe API with callbacks for success/error
    * handleResponse(
    *   await typeSafeBookingService.getBookings({ status: 'pending' }),
-   *   (bookings) => { 
+   *   (bookings) => {
    *     // TypeScript knows bookings is Booking[] here
    *     return bookings.map(b => b.id);
    *   },
@@ -196,7 +197,7 @@ export const typeSafeBookingService = {
    * );
    */
   getBookings: withApiErrorHandling(bookingService.getBookings),
-  
+
   /**
    * Get a booking by ID with type-safe error handling
    * @example
@@ -209,7 +210,7 @@ export const typeSafeBookingService = {
    * }
    */
   getBooking: withApiErrorHandling(bookingService.getBooking),
-  
+
   /**
    * Create a booking with type-safe error handling
    * @example
@@ -221,26 +222,26 @@ export const typeSafeBookingService = {
    * }
    */
   createBooking: withApiErrorHandling(bookingService.createBooking),
-  
+
   /**
    * Update a booking with type-safe error handling
    */
   updateBooking: withApiErrorHandling(bookingService.updateBooking),
-  
+
   /**
    * Cancel a booking with type-safe error handling
    */
   cancelBooking: withApiErrorHandling(bookingService.cancelBooking),
-  
+
   /**
    * Complete a booking with type-safe error handling
    */
   completeBooking: withApiErrorHandling(bookingService.completeBooking),
-  
+
   /**
    * Delete a booking with type-safe error handling
    */
-  deleteBooking: withApiErrorHandling(bookingService.deleteBooking)
+  deleteBooking: withApiErrorHandling(bookingService.deleteBooking),
 };
 
 interface MobileBookingOptimization {
@@ -270,7 +271,7 @@ export class BookingService {
       const endTime = new Date(params.startTime.getTime() + totalDuration * 60000);
 
       // Start transaction
-      return await prisma.$transaction(async (tx) => {
+      return await prisma.$transaction(async tx => {
         // Create the main booking
         const booking = await tx.serviceBooking.create({
           data: {
@@ -286,15 +287,15 @@ export class BookingService {
               create: params.services.map(service => ({
                 serviceId: service.serviceId,
                 price: service.price,
-                duration: service.duration
-              }))
-            }
+                duration: service.duration,
+              })),
+            },
           },
           include: {
             services: true,
             user: true,
-            provider: true
-          }
+            provider: true,
+          },
         });
 
         // If recurring, create future bookings
@@ -334,7 +335,10 @@ export class BookingService {
           userId: params.userId,
           providerId: params.providerId,
           startTime: date,
-          endTime: new Date(date.getTime() + params.services.reduce((total, service) => total + service.duration, 0) * 60000),
+          endTime: new Date(
+            date.getTime() +
+              params.services.reduce((total, service) => total + service.duration, 0) * 60000
+          ),
           notes: params.notes,
           isRecurring: true,
           recurringId: originalBooking.id,
@@ -344,10 +348,10 @@ export class BookingService {
             create: params.services.map(service => ({
               serviceId: service.serviceId,
               price: service.price,
-              duration: service.duration
-            }))
-          }
-        }
+              duration: service.duration,
+            })),
+          },
+        },
       });
     }
   }
@@ -397,8 +401,8 @@ export class BookingService {
           serviceId,
           preferredTime,
           notes,
-          status: WaitlistStatus.PENDING
-        }
+          status: WaitlistStatus.PENDING,
+        },
       });
 
       await this.notificationService.sendWaitlistConfirmation(userId, serviceId);
@@ -413,21 +417,21 @@ export class BookingService {
       const waitlistEntries = await prisma.waitlist.findMany({
         where: {
           serviceId,
-          status: WaitlistStatus.PENDING
+          status: WaitlistStatus.PENDING,
         },
         orderBy: {
-          createdAt: 'asc'
+          createdAt: 'asc',
         },
         include: {
           user: true,
-          service: true
-        }
+          service: true,
+        },
       });
 
       for (const entry of waitlistEntries) {
         await prisma.waitlist.update({
           where: { id: entry.id },
-          data: { status: WaitlistStatus.NOTIFIED }
+          data: { status: WaitlistStatus.NOTIFIED },
         });
 
         await this.notificationService.sendWaitlistNotification(
@@ -452,8 +456,8 @@ export class BookingService {
         include: {
           services: true,
           user: true,
-          provider: true
-        }
+          provider: true,
+        },
       });
     } catch (error) {
       logger.error('Error getting booking', error);
@@ -469,15 +473,15 @@ export class BookingService {
       return await prisma.serviceBooking.findMany({
         where: {
           userId,
-          ...(status && { status })
+          ...(status && { status }),
         },
         include: {
           services: true,
-          user: true
+          user: true,
         },
         orderBy: {
-          startTime: 'desc'
-        }
+          startTime: 'desc',
+        },
       });
     } catch (error) {
       logger.error('Error getting user bookings', error);
@@ -488,20 +492,23 @@ export class BookingService {
   /**
    * Get practitioner's bookings
    */
-  async getPractitionerBookings(practitionerId: string, status?: BookingStatus): Promise<ServiceBooking[]> {
+  async getPractitionerBookings(
+    practitionerId: string,
+    status?: BookingStatus
+  ): Promise<ServiceBooking[]> {
     try {
       return await prisma.serviceBooking.findMany({
         where: {
           practitionerId,
-          ...(status && { status })
+          ...(status && { status }),
         },
         include: {
           services: true,
-          user: true
+          user: true,
         },
         orderBy: {
-          startTime: 'desc'
-        }
+          startTime: 'desc',
+        },
       });
     } catch (error) {
       logger.error('Error getting practitioner bookings', error);
@@ -518,8 +525,8 @@ export class BookingService {
         where: { id: bookingId },
         include: {
           services: true,
-          user: true
-        }
+          user: true,
+        },
       });
 
       if (!booking) {
@@ -533,8 +540,8 @@ export class BookingService {
           deviceType: mobileData.deviceType,
           screenSize: mobileData.screenSize,
           platform: mobileData.platform,
-          optimizationVersion: '1.0'
-        }
+          optimizationVersion: '1.0',
+        },
       });
 
       // Return mobile-optimized booking data
@@ -542,7 +549,7 @@ export class BookingService {
         ...booking,
         mobileOptimized: true,
         quickActions: this.generateQuickActions(booking),
-        responsiveLayout: this.getResponsiveLayout(mobileData.screenSize)
+        responsiveLayout: this.getResponsiveLayout(mobileData.screenSize),
       };
     } catch (error) {
       logger.error('Error optimizing booking for mobile', error);
@@ -555,7 +562,7 @@ export class BookingService {
       reschedule: `/booking/${booking.id}/reschedule`,
       cancel: `/booking/${booking.id}/cancel`,
       directions: `/location/${booking.locationId}`,
-      contact: `/service/${booking.serviceId}/contact`
+      contact: `/service/${booking.serviceId}/contact`,
     };
   }
 
@@ -566,10 +573,10 @@ export class BookingService {
       elements: {
         calendar: { size: 'adaptive' },
         timeSlots: { display: 'scrollable' },
-        confirmationSteps: { type: 'wizard' }
-      }
+        confirmationSteps: { type: 'wizard' },
+      },
     };
   }
 }
 
-export const bookingServiceInstance = new BookingService(); 
+export const bookingServiceInstance = new BookingService();

@@ -10,9 +10,9 @@ export class CleanupService {
       const result = await prisma.webAuthnChallenge.deleteMany({
         where: {
           expiresAt: {
-            lt: new Date()
-          }
-        }
+            lt: new Date(),
+          },
+        },
       });
 
       return result.count;
@@ -34,4 +34,4 @@ export class CleanupService {
       }
     }, intervalMs);
   }
-} 
+}

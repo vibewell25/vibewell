@@ -8,11 +8,7 @@ interface TwoFactorSetupProps {
   onCancel: () => void;
 }
 
-export const TwoFactorSetup: React.FC<TwoFactorSetupProps> = ({
-  secret,
-  onVerify,
-  onCancel,
-}) => {
+export const TwoFactorSetup: React.FC<TwoFactorSetupProps> = ({ secret, onVerify, onCancel }) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [error, setError] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
@@ -38,10 +34,9 @@ export const TwoFactorSetup: React.FC<TwoFactorSetupProps> = ({
         <Text fontSize="xl" fontWeight="bold">
           Set up Two-Factor Authentication
         </Text>
-        
+
         <Text>
-          Scan this QR code with your authenticator app (like Google Authenticator
-          or Authy)
+          Scan this QR code with your authenticator app (like Google Authenticator or Authy)
         </Text>
 
         <Flex justify="center" p={4} bg="white" borderRadius="md">
@@ -69,23 +64,14 @@ export const TwoFactorSetup: React.FC<TwoFactorSetupProps> = ({
         )}
 
         <Flex gap={4} w="100%">
-          <Button
-            variant="outline"
-            onClick={onCancel}
-            flex={1}
-          >
+          <Button variant="outline" onClick={onCancel} flex={1}>
             Cancel
           </Button>
-          <Button
-            colorScheme="blue"
-            onClick={handleVerify}
-            isLoading={isVerifying}
-            flex={1}
-          >
+          <Button colorScheme="blue" onClick={handleVerify} isLoading={isVerifying} flex={1}>
             Verify
           </Button>
         </Flex>
       </VStack>
     </Card>
   );
-}; 
+};

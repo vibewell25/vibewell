@@ -9,12 +9,9 @@ type BusinessWithRelations = Awaited<ReturnType<typeof prisma.business.findUniqu
   }>;
 };
 
-export async function GET(
-  request: Request,
-  { params }: { params: { businessId: string } }
-) {
+export async function GET(request: Request, { params }: { params: { businessId: string } }) {
   try {
-    const business = await prisma.business.findUnique({
+    const business = (await prisma.business.findUnique({
       where: {
         id: params.businessId,
       },
@@ -26,13 +23,10 @@ export async function GET(
           },
         },
       },
-    }) as BusinessWithRelations;
+    })) as BusinessWithRelations;
 
     if (!business) {
-      return NextResponse.json(
-        { error: 'Business not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Business not found' }, { status: 404 });
     }
 
     // Calculate average rating
@@ -40,9 +34,10 @@ export async function GET(
     const practitionerReviews = business.practitioners?.flatMap(p => p.reviews) || [];
     const allReviews = [...reviews, ...practitionerReviews];
 
-    const averageRating = allReviews.reduce((acc: number, review: ServiceReview) => {
-      return acc + review.rating;
-    }, 0) / (allReviews.length || 1);
+    const averageRating =
+      allReviews.reduce((acc: number, review: ServiceReview) => {
+        return acc + review.rating;
+      }, 0) / (allReviews.length || 1);
 
     return NextResponse.json({
       ...business,
@@ -51,9 +46,6 @@ export async function GET(
     });
   } catch (error) {
     console.error('Error fetching business:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch business' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch business' }, { status: 500 });
   }
-} 
+}

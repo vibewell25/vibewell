@@ -1,7 +1,7 @@
 import { NextApiRequest } from 'next';
 import { Server as ServerIO } from 'socket.io';
 import { Server as NetServer } from 'http';
-import { NextApiResponse } from 'next';
+import { NextApiResponse } from '@/types/api';
 import { webSocketRateLimiter } from '@/lib/rate-limiter';
 import { logger } from '@/lib/logger';
 
@@ -56,7 +56,7 @@ export default async function handler(
 
         // Register the connection
         webSocketRateLimiter.registerConnection(String(ip), clientId);
-        
+
         // Continue with connection
         next();
       } catch (error) {
@@ -66,10 +66,10 @@ export default async function handler(
     });
 
     // Connection event listener
-    io.on('connection', (socket) => {
+    io.on('connection', socket => {
       const ip = String(socket.handshake.headers['x-forwarded-for'] || socket.handshake.address);
       const clientId = socket.id;
-      
+
       logger.info(`WebSocket client connected: ${clientId}`, 'websocket', {
         ip,
         clientId,
@@ -79,8 +79,12 @@ export default async function handler(
       socket.use(async ([event, ...args], next) => {
         try {
           const messageSize = JSON.stringify(args).length;
-          const canSendMessage = await webSocketRateLimiter.canSendMessage(ip, clientId, messageSize);
-          
+          const canSendMessage = await webSocketRateLimiter.canSendMessage(
+            ip,
+            clientId,
+            messageSize
+          );
+
           if (!canSendMessage) {
             logger.warn(`WebSocket message blocked due to rate limit: ${clientId}`, 'websocket', {
               ip,
@@ -90,7 +94,7 @@ export default async function handler(
             });
             return next(new Error('Message rate limit exceeded'));
           }
-          
+
           next();
         } catch (error) {
           logger.error('Error in WebSocket message middleware', 'websocket', { error });
@@ -101,16 +105,16 @@ export default async function handler(
       // Handle disconnect
       socket.on('disconnect', () => {
         logger.info(`WebSocket client disconnected: ${clientId}`, 'websocket', {
-          ip, 
+          ip,
           clientId,
         });
-        
+
         // Unregister connection
         webSocketRateLimiter.unregisterConnection(ip, clientId);
       });
 
       // Custom event handlers
-      socket.on('message', (data) => {
+      socket.on('message', data => {
         // Process message and broadcast to appropriate recipients
         socket.emit('message_received', { id: Date.now(), data });
       });
@@ -118,7 +122,7 @@ export default async function handler(
 
     // Save the io instance on the server
     res.socket.server.io = io;
-    
+
     logger.info('WebSocket server initialized', 'websocket');
   } catch (error) {
     logger.error('Failed to initialize WebSocket server', 'websocket', { error });
@@ -126,4 +130,4 @@ export default async function handler(
   }
 
   res.end();
-} 
+}

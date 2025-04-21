@@ -60,28 +60,19 @@ export function AuthenticatorList({ onDelete, onRename }: AuthenticatorListProps
   }
 
   if (error) {
-    return (
-      <div className="p-4 text-red-500 bg-red-50 rounded-lg">
-        Error: {error}
-      </div>
-    );
+    return <div className="p-4 text-red-500 bg-red-50 rounded-lg">Error: {error}</div>;
   }
 
   if (authenticators.length === 0) {
     return (
-      <div className="p-4 text-gray-500 bg-gray-50 rounded-lg">
-        No authenticators registered
-      </div>
+      <div className="p-4 text-gray-500 bg-gray-50 rounded-lg">No authenticators registered</div>
     );
   }
 
   return (
     <div className="space-y-4">
-      {authenticators.map((auth) => (
-        <div
-          key={auth.id}
-          className="p-4 bg-white rounded-lg shadow-sm border border-gray-200"
-        >
+      {authenticators.map(auth => (
+        <div key={auth.id} className="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               {editingId === auth.id ? (
@@ -89,7 +80,7 @@ export function AuthenticatorList({ onDelete, onRename }: AuthenticatorListProps
                   <input
                     type="text"
                     value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
+                    onChange={e => setNewName(e.target.value)}
                     className="px-2 py-1 border rounded"
                     placeholder="Enter new name"
                   />
@@ -120,9 +111,8 @@ export function AuthenticatorList({ onDelete, onRename }: AuthenticatorListProps
                     )}
                   </h3>
                   <p className="text-sm text-gray-500">
-                    Last used: {auth.lastUsed 
-                      ? new Date(auth.lastUsed).toLocaleDateString()
-                      : 'Never'}
+                    Last used:{' '}
+                    {auth.lastUsed ? new Date(auth.lastUsed).toLocaleDateString() : 'Never'}
                   </p>
                 </>
               )}
@@ -161,4 +151,4 @@ export function AuthenticatorList({ onDelete, onRename }: AuthenticatorListProps
       ))}
     </div>
   );
-} 
+}

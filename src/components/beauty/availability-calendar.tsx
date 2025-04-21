@@ -1,10 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { useState } from "react";
-import { format } from "date-fns";
-import { TimeSlotList } from "./time-slot-list";
-import { AvailabilityService } from "@/lib/availability-service";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { useState } from 'react';
+import { format } from 'date-fns';
+import { TimeSlotList } from './time-slot-list';
+import { AvailabilityService } from '@/lib/availability-service';
 
 interface AvailabilityCalendarProps {
   providerId: string;
@@ -17,19 +17,19 @@ export function AvailabilityCalendar({ providerId }: AvailabilityCalendarProps) 
 
   const handleDateSelect = async (selectedDate: Date | undefined) => {
     if (!selectedDate) return;
-    
+
     setDate(selectedDate);
     setLoading(true);
-    
+
     try {
       const availabilityService = AvailabilityService.getInstance();
       const slots = await availabilityService.getAvailability(
         providerId,
-        format(selectedDate, "yyyy-MM-dd")
+        format(selectedDate, 'yyyy-MM-dd')
       );
       setTimeSlots(slots);
     } catch (error) {
-      console.error("Error fetching availability:", error);
+      console.error('Error fetching availability:', error);
     } finally {
       setLoading(false);
     }
@@ -63,7 +63,7 @@ export function AvailabilityCalendar({ providerId }: AvailabilityCalendarProps) 
           ) : date ? (
             <TimeSlotList
               providerId={providerId}
-              date={format(date, "yyyy-MM-dd")}
+              date={format(date, 'yyyy-MM-dd')}
               timeSlots={timeSlots}
             />
           ) : (
@@ -75,4 +75,4 @@ export function AvailabilityCalendar({ providerId }: AvailabilityCalendarProps) 
       </Card>
     </div>
   );
-} 
+}

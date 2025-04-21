@@ -1,8 +1,8 @@
 import { Icons } from '@/components/icons';
-'use client';
+('use client');
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 export function MessageNotificationBadge() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -23,9 +23,10 @@ export function MessageNotificationBadge() {
         }
         const data = await response.json();
         // Calculate total unread messages across all conversations
-        const totalUnread = data.conversations?.reduce((total: number, conversation: any) => {
-          return total + (conversation.unreadCount || 0);
-        }, 0) || 0;
+        const totalUnread =
+          data.conversations?.reduce((total: number, conversation: any) => {
+            return total + (conversation.unreadCount || 0);
+          }, 0) || 0;
         setUnreadCount(totalUnread);
       } catch (error) {
         console.error('Error fetching unread messages:', error);
@@ -52,4 +53,4 @@ export function MessageNotificationBadge() {
       )}
     </Link>
   );
-} 
+}

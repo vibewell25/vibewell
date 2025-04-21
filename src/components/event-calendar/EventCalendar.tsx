@@ -1,7 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
-import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isToday, isEqual, parse } from 'date-fns';
+import {
+  format,
+  addMonths,
+  subMonths,
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  isSameMonth,
+  isToday,
+  isEqual,
+  parse,
+} from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Calendar, Calendar as CalendarIcon } from 'lucide-react';
 
@@ -22,7 +33,7 @@ interface EventCalendarProps {
 
 /**
  * Event Calendar Component
- * 
+ *
  * A heavy component for displaying and interacting with events in a calendar view
  */
 export default function EventCalendar({ events, onEventClick, onDateSelect }: EventCalendarProps) {
@@ -32,22 +43,22 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
   // Navigation functions
   const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
   const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
-  
+
   // Calendar logic
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
   const monthDays = eachDayOfInterval({ start: monthStart, end: monthEnd });
-  
+
   // Get events for a specific date
   const getEventsForDay = (day: Date) => {
-    return events.filter(event => 
+    return events.filter(event =>
       isEqual(
         new Date(event.date.getFullYear(), event.date.getMonth(), event.date.getDate()),
         new Date(day.getFullYear(), day.getMonth(), day.getDate())
       )
     );
   };
-  
+
   // Handle date click
   const handleDateClick = (day: Date) => {
     setSelectedDate(day);
@@ -55,21 +66,27 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
       onDateSelect(day);
     }
   };
-  
+
   // Get events for selected date
   const selectedDateEvents = getEventsForDay(selectedDate);
-  
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-4">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">{format(currentMonth, 'MMMM yyyy')}</h2>
         <div className="flex space-x-2">
-          <Button variant="outline" size="sm" onClick={prevMonth}>Previous</Button>
-          <Button variant="outline" size="sm" onClick={() => setCurrentMonth(new Date())}>Today</Button>
-          <Button variant="outline" size="sm" onClick={nextMonth}>Next</Button>
+          <Button variant="outline" size="sm" onClick={prevMonth}>
+            Previous
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => setCurrentMonth(new Date())}>
+            Today
+          </Button>
+          <Button variant="outline" size="sm" onClick={nextMonth}>
+            Next
+          </Button>
         </div>
       </div>
-      
+
       {/* Calendar Grid */}
       <div className="grid grid-cols-7 gap-1 mb-6">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
@@ -77,12 +94,12 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
             {day}
           </div>
         ))}
-        
+
         {monthDays.map(day => {
           const dayEvents = getEventsForDay(day);
           const isCurrentMonth = isSameMonth(day, currentMonth);
           const isSelected = isEqual(day, selectedDate);
-          
+
           return (
             <div
               key={day.toISOString()}
@@ -96,7 +113,7 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
               <div className="text-right mb-1">{format(day, 'd')}</div>
               <div className="space-y-1">
                 {dayEvents.slice(0, 2).map(event => (
-                  <div 
+                  <div
                     key={event.id}
                     className={`px-1 py-0.5 text-xs rounded truncate
                       ${event.type === 'appointment' ? 'bg-pink-100 text-pink-800' : ''}
@@ -104,12 +121,13 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
                       ${event.type === 'meeting' ? 'bg-blue-100 text-blue-800' : ''}
                       ${event.type === 'personal' ? 'bg-purple-100 text-purple-800' : ''}
                     `}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       onEventClick && onEventClick(event);
                     }}
                   >
-                    {event.time && `${event.time} · `}{event.title}
+                    {event.time && `${event.time} · `}
+                    {event.title}
                   </div>
                 ))}
                 {dayEvents.length > 2 && (
@@ -120,7 +138,7 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
           );
         })}
       </div>
-      
+
       {/* Selected Date Events */}
       {selectedDateEvents.length > 0 && (
         <div className="border-t pt-4">
@@ -130,8 +148,8 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
           </h3>
           <div className="space-y-2">
             {selectedDateEvents.map(event => (
-              <div 
-                key={event.id} 
+              <div
+                key={event.id}
                 className="p-3 border rounded-md hover:bg-gray-50 cursor-pointer"
                 onClick={() => onEventClick && onEventClick(event)}
               >
@@ -142,12 +160,14 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
                 {event.description && (
                   <p className="text-gray-600 text-sm mt-1">{event.description}</p>
                 )}
-                <div className={`inline-block px-2 py-0.5 text-xs rounded mt-2
+                <div
+                  className={`inline-block px-2 py-0.5 text-xs rounded mt-2
                   ${event.type === 'appointment' ? 'bg-pink-100 text-pink-800' : ''}
                   ${event.type === 'class' ? 'bg-green-100 text-green-800' : ''}
                   ${event.type === 'meeting' ? 'bg-blue-100 text-blue-800' : ''}
                   ${event.type === 'personal' ? 'bg-purple-100 text-purple-800' : ''}
-                `}>
+                `}
+                >
                   {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
                 </div>
               </div>
@@ -157,4 +177,4 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
       )}
     </div>
   );
-} 
+}

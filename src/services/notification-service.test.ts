@@ -8,7 +8,7 @@ jest.mock('./api-client', () => ({
     post: jest.fn(),
     put: jest.fn(),
     delete: jest.fn(),
-  }
+  },
 }));
 
 describe('NotificationService', () => {
@@ -34,7 +34,7 @@ describe('NotificationService', () => {
       status: 'read',
       createdAt: '2023-06-14T09:15:00Z',
       readAt: '2023-06-14T10:00:00Z',
-    }
+    },
   ];
 
   const mockPreferences: NotificationPreferences = {
@@ -70,7 +70,7 @@ describe('NotificationService', () => {
       message_received: false,
       system_update: false,
       promotion: false,
-    }
+    },
   };
 
   // Reset mocks before each test
@@ -84,7 +84,7 @@ describe('NotificationService', () => {
       (apiClient.get as jest.Mock).mockResolvedValue({
         data: mockNotifications,
         status: 200,
-        success: true
+        success: true,
       });
 
       // Call the service
@@ -101,7 +101,7 @@ describe('NotificationService', () => {
       (apiClient.get as jest.Mock).mockResolvedValue({
         data: [mockNotification],
         status: 200,
-        success: true
+        success: true,
       });
 
       // Call the service with filter
@@ -117,7 +117,7 @@ describe('NotificationService', () => {
       (apiClient.get as jest.Mock).mockResolvedValue({
         data: [mockNotification],
         status: 200,
-        success: true
+        success: true,
       });
 
       // Call the service with multiple filters
@@ -127,14 +127,12 @@ describe('NotificationService', () => {
         fromDate: '2023-06-01',
         toDate: '2023-06-30',
         page: 1,
-        limit: 10
+        limit: 10,
       });
 
       // Assertions
-      expect(apiClient.get).toHaveBeenCalledWith(
-        expect.stringContaining('/api/notifications?')
-      );
-      
+      expect(apiClient.get).toHaveBeenCalledWith(expect.stringContaining('/api/notifications?'));
+
       // Check that all params are included
       const url = (apiClient.get as jest.Mock).mock.calls[0][0];
       expect(url).toContain('status=unread');
@@ -144,7 +142,7 @@ describe('NotificationService', () => {
       expect(url).toContain('toDate=2023-06-30');
       expect(url).toContain('page=1');
       expect(url).toContain('limit=10');
-      
+
       expect(result.data).toEqual([mockNotification]);
     });
 
@@ -153,7 +151,7 @@ describe('NotificationService', () => {
       (apiClient.get as jest.Mock).mockResolvedValue({
         error: 'Failed to fetch notifications',
         status: 500,
-        success: false
+        success: false,
       });
 
       // Call the service
@@ -171,7 +169,7 @@ describe('NotificationService', () => {
       (apiClient.get as jest.Mock).mockResolvedValue({
         data: { count: 5 },
         status: 200,
-        success: true
+        success: true,
       });
 
       // Call the service
@@ -189,7 +187,7 @@ describe('NotificationService', () => {
       (apiClient.put as jest.Mock).mockResolvedValue({
         data: { ...mockNotification, status: 'read', readAt: '2023-06-15T11:00:00Z' },
         status: 200,
-        success: true
+        success: true,
       });
 
       // Call the service
@@ -208,7 +206,7 @@ describe('NotificationService', () => {
       (apiClient.put as jest.Mock).mockResolvedValue({
         data: { success: true, count: 3 },
         status: 200,
-        success: true
+        success: true,
       });
 
       // Call the service
@@ -226,7 +224,7 @@ describe('NotificationService', () => {
       (apiClient.put as jest.Mock).mockResolvedValue({
         data: { ...mockNotification, status: 'archived' },
         status: 200,
-        success: true
+        success: true,
       });
 
       // Call the service
@@ -243,7 +241,7 @@ describe('NotificationService', () => {
       // Setup mock response
       (apiClient.delete as jest.Mock).mockResolvedValue({
         status: 204,
-        success: true
+        success: true,
       });
 
       // Call the service
@@ -261,7 +259,7 @@ describe('NotificationService', () => {
       (apiClient.get as jest.Mock).mockResolvedValue({
         data: mockPreferences,
         status: 200,
-        success: true
+        success: true,
       });
 
       // Call the service
@@ -278,8 +276,8 @@ describe('NotificationService', () => {
       const updatedPreferences = {
         email: {
           ...mockPreferences.email,
-          promotion: true
-        }
+          promotion: true,
+        },
       };
 
       // Setup mock response
@@ -288,18 +286,21 @@ describe('NotificationService', () => {
           ...mockPreferences,
           email: {
             ...mockPreferences.email,
-            promotion: true
-          }
+            promotion: true,
+          },
         },
         status: 200,
-        success: true
+        success: true,
       });
 
       // Call the service
       const result = await notificationService.updatePreferences(updatedPreferences);
 
       // Assertions
-      expect(apiClient.put).toHaveBeenCalledWith('/api/notifications/preferences', updatedPreferences);
+      expect(apiClient.put).toHaveBeenCalledWith(
+        '/api/notifications/preferences',
+        updatedPreferences
+      );
       expect(result.data?.email.promotion).toBe(true);
     });
   });
@@ -310,14 +311,14 @@ describe('NotificationService', () => {
       const subscription = {
         endpoint: 'https://example.com/push/123',
         expirationTime: null,
-        keys: { auth: 'auth123', p256dh: 'key123' }
+        keys: { auth: 'auth123', p256dh: 'key123' },
       } as unknown as PushSubscription;
 
       // Setup mock response
       (apiClient.post as jest.Mock).mockResolvedValue({
         data: { success: true },
         status: 200,
-        success: true
+        success: true,
       });
 
       // Call the service
@@ -325,7 +326,7 @@ describe('NotificationService', () => {
 
       // Assertions
       expect(apiClient.post).toHaveBeenCalledWith('/api/notifications/push/subscribe', {
-        subscription: JSON.stringify(subscription)
+        subscription: JSON.stringify(subscription),
       });
       expect(result.data?.success).toBe(true);
     });
@@ -337,14 +338,14 @@ describe('NotificationService', () => {
       const subscription = {
         endpoint: 'https://example.com/push/123',
         expirationTime: null,
-        keys: { auth: 'auth123', p256dh: 'key123' }
+        keys: { auth: 'auth123', p256dh: 'key123' },
       } as unknown as PushSubscription;
 
       // Setup mock response
       (apiClient.post as jest.Mock).mockResolvedValue({
         data: { success: true },
         status: 200,
-        success: true
+        success: true,
       });
 
       // Call the service
@@ -352,9 +353,9 @@ describe('NotificationService', () => {
 
       // Assertions
       expect(apiClient.post).toHaveBeenCalledWith('/api/notifications/push/unsubscribe', {
-        subscription: JSON.stringify(subscription)
+        subscription: JSON.stringify(subscription),
       });
       expect(result.data?.success).toBe(true);
     });
   });
-}); 
+});

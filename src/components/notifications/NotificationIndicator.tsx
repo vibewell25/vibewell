@@ -74,14 +74,12 @@ export const NotificationIndicator = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to mark notification as read: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `Failed to mark notification as read: ${response.status} ${response.statusText}`
+        );
       }
 
-      setNotifications(prev =>
-        prev.map(n =>
-          n.id === notificationId ? { ...n, read: true } : n
-        )
-      );
+      setNotifications(prev => prev.map(n => (n.id === notificationId ? { ...n, read: true } : n)));
     } catch (error) {
       console.error('Error marking notification as read:', error);
       toast.error('Failed to mark notification as read');
@@ -121,26 +119,18 @@ export const NotificationIndicator = () => {
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div>
               </div>
             ) : notifications.length === 0 ? (
-              <p className="text-sm text-gray-500 text-center py-4">
-                No new notifications
-              </p>
+              <p className="text-sm text-gray-500 text-center py-4">No new notifications</p>
             ) : (
               <div className="space-y-4">
-                {notifications.map((notification) => (
+                {notifications.map(notification => (
                   <div
                     key={notification.id}
-                    className={`p-3 rounded-lg ${
-                      !notification.read ? 'bg-blue-50' : 'bg-gray-50'
-                    }`}
+                    className={`p-3 rounded-lg ${!notification.read ? 'bg-blue-50' : 'bg-gray-50'}`}
                   >
                     <div className="flex items-start">
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900">
-                          {notification.title}
-                        </p>
-                        <p className="mt-1 text-sm text-gray-500">
-                          {notification.message}
-                        </p>
+                        <p className="text-sm font-medium text-gray-900">{notification.title}</p>
+                        <p className="mt-1 text-sm text-gray-500">{notification.message}</p>
                       </div>
                       {!notification.read && (
                         <button
@@ -160,4 +150,4 @@ export const NotificationIndicator = () => {
       )}
     </div>
   );
-}; 
+};

@@ -5,10 +5,44 @@ snapshot:
     - 768  # Tablet
     - 1280 # Desktop
   minHeight: 1024
+  percyCSS: |
+    /* Hide dynamic content that changes between snapshots */
+    [data-percy-hidden] {
+      visibility: hidden;
+    }
+    /* Disable animations during Percy snapshots */
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  enableJavaScript: true
+  cliEnableJavaScript: true
 discovery:
   allowedHostnames: []
   disallowedHostnames: []
   networkIdleTimeout: 100
 upload:
   files: "**/*.{png,jpg,jpeg}"
-  ignore: "node_modules/**/*" 
+  ignore:
+    - "node_modules/**"
+    - ".git/**"
+    - "dist/**"
+    - "build/**"
+agent:
+  assetDiscovery:
+    allowedHostnames: []
+    requestHeaders: {}
+    networkIdleTimeout: 100
+  asset:
+    baseUrl: /
+static:
+  baseUrl: /
+  cleanUrls: true
+  trailingSlash: false
+  headers:
+    "/*":
+      - "X-Frame-Options: DENY"
+      - "X-XSS-Protection: 1; mode=block"
+      - "X-Content-Type-Options: nosniff"
+  rewrites: []
+  redirects: [] 

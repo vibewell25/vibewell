@@ -96,6 +96,9 @@ model User {
   // Booking predictions
   bookingPredictions BookingPrediction[]
 
+  // Subscription relation
+  subscription Subscription?
+
   @@map("users")
 }
 
@@ -1361,9 +1364,11 @@ model Notification {
   title     String
   message   String
   data      Json?
+  read      Boolean           @default(false)
   status    NotificationStatus @default(PENDING)
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
+  linkUrl   String?           // Optional URL to navigate to when clicked
 
   // Relations
   user      User              @relation(fields: [userId], references: [id])
@@ -1371,6 +1376,7 @@ model Notification {
   @@index([userId])
   @@index([type])
   @@index([status])
+  @@index([read])
 }
 
 model UserPushToken {
@@ -1922,4 +1928,31 @@ model TeamMetrics {
   createdAt          DateTime  @default(now())
 
   team               Team      @relation(fields: [teamId], references: [id])
+}
+
+model ScheduledNotification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  scheduledFor DateTime
+  sent      Boolean  @default(false)
+  sentAt    DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model Subscription {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status           String   // active, canceled, past_due
+  plan             String   // basic, premium, professional
+  currentPeriodEnd DateTime
+  cancelAtPeriodEnd Boolean @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }

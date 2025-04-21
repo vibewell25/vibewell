@@ -125,7 +125,7 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
       request.onerror = () => reject(request.error);
       request.onsuccess = () => resolve(request.result);
 
-      request.onupgradeneeded = (event) => {
+      request.onupgradeneeded = event => {
         const db = (event.target as IDBOpenDBRequest).result;
         if (!db.objectStoreNames.contains('cachedData')) {
           db.createObjectStore('cachedData', { keyPath: 'id' });
@@ -141,9 +141,7 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
           <span>Offline Support</span>
           <div className="flex items-center space-x-2">
             <span className={`h-3 w-3 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'}`} />
-            <span className="text-sm font-normal">
-              {isOnline ? 'Online' : 'Offline'}
-            </span>
+            <span className="text-sm font-normal">{isOnline ? 'Online' : 'Offline'}</span>
           </div>
         </CardTitle>
       </CardHeader>
@@ -197,4 +195,4 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
       </CardContent>
     </Card>
   );
-} 
+}

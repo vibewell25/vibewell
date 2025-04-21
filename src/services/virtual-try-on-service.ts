@@ -54,7 +54,7 @@ export class VirtualTryOnService {
 
   constructor() {
     this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY || ''
+      apiKey: process.env.OPENAI_API_KEY || '',
     });
     this.arSessions = new Map();
     this.gltfLoader = new GLTFLoader();
@@ -78,15 +78,20 @@ export class VirtualTryOnService {
     try {
       // Initialize Three.js scene
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+
       const session: ARSession = {
         id: Math.random().toString(36).substring(7),
         filters: [],
         state: {
           camera,
-          scene
-        }
+          scene,
+        },
       };
 
       this.arSessions.set(session.id, session);
@@ -100,8 +105,8 @@ export class VirtualTryOnService {
           arSessionId: session.id,
           settings: {},
           imageUrl: '',
-          resultUrl: ''
-        }
+          resultUrl: '',
+        },
       });
 
       logger.info('AR session started', 'VirtualTryOn', { sessionId: session.id });
@@ -119,19 +124,19 @@ export class VirtualTryOnService {
 
       // Update face mesh with new frame
       const results = await this.mediaPipeService.detectFace(frameData);
-      
+
       if (!results?.multiFaceLandmarks?.length) {
         return frameData;
       }
 
       const landmarks = results.multiFaceLandmarks[0];
-      
+
       // Create canvas for processing
       const canvas = document.createElement('canvas');
       canvas.width = frameData.width;
       canvas.height = frameData.height;
       const ctx = canvas.getContext('2d');
-      
+
       if (!ctx) throw new Error('Could not get canvas context');
 
       // Draw original frame
@@ -154,7 +159,7 @@ export class VirtualTryOnService {
 
       // Update session state
       session.state.lastFrame = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      
+
       return session.state.lastFrame;
     } catch (error) {
       logger.error('Error processing AR frame', 'VirtualTryOn', { error });
@@ -212,18 +217,14 @@ export class VirtualTryOnService {
     // Update hair model position based on head pose
     const headPose = await this.mediaPipeService.estimateHeadPose(landmarks);
     const hairModel = state.scene.getObjectByName('hairModel');
-    
+
     if (hairModel) {
       hairModel.position.set(
         headPose.translation.x,
         headPose.translation.y,
         headPose.translation.z
       );
-      hairModel.rotation.set(
-        headPose.rotation.x,
-        headPose.rotation.y,
-        headPose.rotation.z
-      );
+      hairModel.rotation.set(headPose.rotation.x, headPose.rotation.y, headPose.rotation.z);
     }
 
     // Render the 3D scene
@@ -259,11 +260,11 @@ export class VirtualTryOnService {
     const data = new Uint8ClampedArray(imageData.data);
     const width = imageData.width;
     const height = imageData.height;
-    
+
     for (let y = 1; y < height - 1; y++) {
       for (let x = 1; x < width - 1; x++) {
         const idx = (y * width + x) * 4;
-        
+
         // Apply gaussian blur
         for (let c = 0; c < 3; c++) {
           let sum = 0;
@@ -272,32 +273,35 @@ export class VirtualTryOnService {
           sum += data[idx + c] * 0.6;
           sum += data[idx + 4 + c] * 0.1;
           sum += data[idx + width * 4 + c] * 0.1;
-          
+
           data[idx + c] = sum * strength + data[idx + c] * (1 - strength);
         }
       }
     }
-    
+
     return new ImageData(data, width, height);
   }
 
-  private adjustSkinTone(imageData: ImageData, adjustment: { hue: number; saturation: number; brightness: number }): ImageData {
+  private adjustSkinTone(
+    imageData: ImageData,
+    adjustment: { hue: number; saturation: number; brightness: number }
+  ): ImageData {
     const data = new Uint8ClampedArray(imageData.data);
-    
+
     for (let i = 0; i < data.length; i += 4) {
       const [h, s, l] = this.colorUtils.rgbToHsl(data[i], data[i + 1], data[i + 2]);
-      
+
       const newHue = (h + adjustment.hue) % 360;
       const newSat = Math.max(0, Math.min(100, s + adjustment.saturation));
       const newLight = Math.max(0, Math.min(100, l + adjustment.brightness));
-      
+
       const [r, g, b] = this.colorUtils.hslToRgb(newHue, newSat, newLight);
-      
+
       data[i] = r;
       data[i + 1] = g;
       data[i + 2] = b;
     }
-    
+
     return new ImageData(data, imageData.width, imageData.height);
   }
 
@@ -308,7 +312,7 @@ export class VirtualTryOnService {
       const detections = await this.faceApiService.detectFace(image, {
         withLandmarks: true,
         withExpressions: true,
-        withAgeAndGender: true
+        withAgeAndGender: true,
       });
 
       if (!detections.length) {
@@ -321,7 +325,7 @@ export class VirtualTryOnService {
       // Process image for skin analysis model
       const preprocessed = this.preprocessImage(await tf.browser.fromPixels(image));
       const predictions = await this.faceModel.predict(preprocessed);
-      
+
       // Process predictions
       const analysis = this.processSkinAnalysis(predictions);
 
@@ -342,10 +346,10 @@ export class VirtualTryOnService {
               concerns: analysis.concerns,
               score: analysis.score,
               analysis: analysis.analysis,
-              recommendations
-            }
-          }
-        }
+              recommendations,
+            },
+          },
+        },
       });
 
       logger.info('Skin analysis completed', 'VirtualTryOn', { userId });
@@ -354,7 +358,7 @@ export class VirtualTryOnService {
         concerns: analysis.concerns,
         score: analysis.score,
         analysis: analysis.analysis,
-        recommendations
+        recommendations,
       };
     } catch (error) {
       logger.error('Error analyzing skin', 'VirtualTryOn', { error });
@@ -368,7 +372,7 @@ export class VirtualTryOnService {
       const image = await this.loadImage(imageUrl);
       const detections = await this.faceApiService.detectFace(image, {
         withLandmarks: true,
-        withExpressions: true
+        withExpressions: true,
       });
 
       if (!detections.length) {
@@ -381,7 +385,7 @@ export class VirtualTryOnService {
       // Analyze skin tone for foundation matching
       const attributes = await this.faceApiService.analyzeFaceAttributes(detections[0]);
       const skinTone = attributes.skinTone || 'medium';
-      
+
       // Generate color recommendations
       const colorPalette = await this.generateColorPalette(skinTone);
 
@@ -396,7 +400,7 @@ export class VirtualTryOnService {
       ctx.drawImage(image, 0, 0);
       await this.applyMakeupFilter(ctx, faceMeshResults.multiFaceLandmarks![0], {
         products,
-        skinTone
+        skinTone,
       });
 
       const resultUrl = canvas.toDataURL();
@@ -414,10 +418,10 @@ export class VirtualTryOnService {
               foundationShade: skinTone,
               colorPalette,
               products,
-              facialFeatures: detections[0].landmarks
-            }
-          }
-        }
+              facialFeatures: detections[0].landmarks,
+            },
+          },
+        },
       });
 
       logger.info('Makeup try-on completed', 'VirtualTryOn', { userId });
@@ -425,7 +429,7 @@ export class VirtualTryOnService {
         foundationShade: skinTone,
         colorPalette,
         products,
-        facialFeatures: detections[0].landmarks
+        facialFeatures: detections[0].landmarks,
       };
     } catch (error) {
       logger.error('Error trying on makeup', 'VirtualTryOn', { error });
@@ -438,7 +442,7 @@ export class VirtualTryOnService {
       // Load and analyze image
       const image = await this.loadImage(imageUrl);
       const detections = await this.faceApiService.detectFace(image, {
-        withLandmarks: true
+        withLandmarks: true,
       });
 
       if (!detections.length) {
@@ -457,17 +461,15 @@ export class VirtualTryOnService {
       scene.add(hairModel);
 
       // Position hair model based on head pose
-      const headPose = await this.mediaPipeService.estimateHeadPose(faceMeshResults.multiFaceLandmarks![0]);
+      const headPose = await this.mediaPipeService.estimateHeadPose(
+        faceMeshResults.multiFaceLandmarks![0]
+      );
       hairModel.position.set(
         headPose.translation.x,
         headPose.translation.y,
         headPose.translation.z
       );
-      hairModel.rotation.set(
-        headPose.rotation.x,
-        headPose.rotation.y,
-        headPose.rotation.z
-      );
+      hairModel.rotation.set(headPose.rotation.x, headPose.rotation.y, headPose.rotation.z);
 
       // Render the result
       const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -494,8 +496,8 @@ export class VirtualTryOnService {
           imageUrl,
           resultUrl,
           type: TryOnType.HAIR,
-          settings: { hairstyleId }
-        }
+          settings: { hairstyleId },
+        },
       });
 
       logger.info('Hairstyle try-on completed', 'VirtualTryOn', { userId });
@@ -519,10 +521,7 @@ export class VirtualTryOnService {
   }
 
   private preprocessImage(image: tf.Tensor3D): tf.Tensor4D {
-    return image
-      .resizeBilinear([224, 224])
-      .expandDims(0)
-      .div(255);
+    return image.resizeBilinear([224, 224]).expandDims(0).div(255);
   }
 
   private processSkinAnalysis(predictions: tf.Tensor | tf.Tensor[]): {
@@ -533,7 +532,7 @@ export class VirtualTryOnService {
   } {
     // Convert predictions to array if it's a single tensor
     const predArray = Array.isArray(predictions) ? predictions : [predictions];
-    
+
     // Get the highest confidence prediction
     const confidences = predArray[0].dataSync();
     const maxIndex = confidences.indexOf(Math.max(...confidences));
@@ -548,7 +547,7 @@ export class VirtualTryOnService {
       acne: 0.6,
       wrinkles: 0.6,
       pigmentation: 0.6,
-      sensitivity: 0.6
+      sensitivity: 0.6,
     };
 
     if (predArray[1]) {
@@ -567,13 +566,13 @@ export class VirtualTryOnService {
         confidence: confidences[maxIndex],
         allTypes: skinTypes.map((type, i) => ({
           type,
-          confidence: confidences[i]
+          confidence: confidences[i],
         })),
         concerns: concerns.map(concern => ({
           type: concern,
-          confidence: predArray[1].dataSync()[concerns.indexOf(concern)]
-        }))
-      }
+          confidence: predArray[1].dataSync()[concerns.indexOf(concern)],
+        })),
+      },
     };
   }
 
@@ -585,19 +584,19 @@ export class VirtualTryOnService {
         Score: ${analysis.score}`;
 
       const response = await this.openai.chat.completions.create({
-        model: "gpt-4",
+        model: 'gpt-4',
         messages: [
           {
-            role: "system",
-            content: "You are a skincare expert providing product recommendations."
+            role: 'system',
+            content: 'You are a skincare expert providing product recommendations.',
           },
           {
-            role: "user",
-            content: prompt
-          }
+            role: 'user',
+            content: prompt,
+          },
         ],
         temperature: 0.7,
-        max_tokens: 200
+        max_tokens: 200,
       });
 
       return JSON.parse(response.choices[0].message.content || '{}');
@@ -612,19 +611,19 @@ export class VirtualTryOnService {
       const prompt = `Generate a makeup color palette for ${skinTone} skin tone.`;
 
       const response = await this.openai.chat.completions.create({
-        model: "gpt-4",
+        model: 'gpt-4',
         messages: [
           {
-            role: "system",
-            content: "You are a makeup artist creating personalized color palettes."
+            role: 'system',
+            content: 'You are a makeup artist creating personalized color palettes.',
           },
           {
-            role: "user",
-            content: prompt
-          }
+            role: 'user',
+            content: prompt,
+          },
         ],
         temperature: 0.7,
-        max_tokens: 200
+        max_tokens: 200,
       });
 
       return JSON.parse(response.choices[0].message.content || '{}');
@@ -638,7 +637,7 @@ export class VirtualTryOnService {
     return new Promise((resolve, reject) => {
       this.gltfLoader.load(
         `/models/hairstyles/${hairstyleId}.glb`,
-        (gltf) => {
+        gltf => {
           const model = gltf.scene;
           model.name = 'hairModel';
           resolve(model);
@@ -648,4 +647,4 @@ export class VirtualTryOnService {
       );
     });
   }
-} 
+}

@@ -20,17 +20,19 @@ export const TranslationLoader: React.FC<TranslationLoaderProps> = ({
       try {
         setIsLoading(true);
         setError(null);
-        
+
         // Try to load translations for current language
         try {
           await i18n.loadNamespaces(namespaces);
         } catch (e) {
           // If loading fails, try fallback language
-          console.warn(`Failed to load translations for ${i18n.language}, falling back to ${fallbackLng}`);
+          console.warn(
+            `Failed to load translations for ${i18n.language}, falling back to ${fallbackLng}`
+          );
           await i18n.changeLanguage(fallbackLng);
           await i18n.loadNamespaces(namespaces);
         }
-        
+
         setIsLoading(false);
       } catch (error) {
         console.error('Error loading translations:', error);
@@ -61,4 +63,4 @@ const DefaultLoadingSpinner = () => (
   <div className="flex items-center justify-center p-4">
     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
   </div>
-); 
+);

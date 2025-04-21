@@ -9,7 +9,14 @@ export const supportedLanguages = ['en', 'es', 'fr'];
 export const rtlLanguages = ['ar', 'he', 'fa'];
 
 // Define all available namespaces
-export const namespaces = ['common', 'auth', 'beauty-wellness', 'booking', 'profile', 'settings'] as const;
+export const namespaces = [
+  'common',
+  'auth',
+  'beauty-wellness',
+  'booking',
+  'profile',
+  'settings',
+] as const;
 
 i18n
   .use(Backend)
@@ -45,13 +52,9 @@ export const changeLanguage = async (language: string) => {
     await i18n.changeLanguage(language);
     document.documentElement.lang = language;
     document.documentElement.dir = isRtl(language) ? 'rtl' : 'ltr';
-    
+
     // Ensure translations are loaded
-    await Promise.all(
-      namespaces.map(ns => 
-        i18n.loadNamespaces(ns)
-      )
-    );
+    await Promise.all(namespaces.map(ns => i18n.loadNamespaces(ns)));
   }
 };
 
@@ -61,7 +64,7 @@ export const loadTranslations = async (language: string, ns: string = 'common') 
     console.warn(`Language ${language} is not supported`);
     language = fallbackLng;
   }
-  
+
   try {
     await i18n.loadNamespaces(ns);
   } catch (error) {
@@ -71,4 +74,4 @@ export const loadTranslations = async (language: string, ns: string = 'common') 
   }
 };
 
-export default i18n; 
+export default i18n;

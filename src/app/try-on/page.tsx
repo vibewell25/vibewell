@@ -6,7 +6,7 @@ import { ProductSelector } from '@/components/virtual-try-on/ProductSelector';
 import { TryOnViewer } from '@/components/virtual-try-on/TryOnViewer';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 
 interface Product {
@@ -26,32 +26,32 @@ export default function TryOnPage() {
   const { user } = useAuth();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  
+
   // Handle product selection
   const handleSelectProduct = (product: Product) => {
     setSelectedProduct(product);
     setCapturedImage(null);
   };
-  
+
   // Handle going back to product selection
   const handleBackToProducts = () => {
     setSelectedProduct(null);
     setCapturedImage(null);
   };
-  
+
   // Handle image capture
   const handleCapture = (imageUrl: string) => {
     setCapturedImage(imageUrl);
   };
-  
+
   // Handle sharing
   const handleShare = async (imageUrl: string) => {
     try {
       if (navigator.share) {
         // Web Share API is supported
-        const blob = await fetch(imageUrl).then((r) => r.blob());
+        const blob = await fetch(imageUrl).then(r => r.blob());
         const file = new File([blob], 'vibewell-try-on.png', { type: 'image/png' });
-        
+
         await navigator.share({
           title: `Vibewell - Try On ${selectedProduct?.name || 'Product'}`,
           text: 'Check out how this looks on me using Vibewell virtual try-on!',
@@ -66,7 +66,7 @@ export default function TryOnPage() {
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
-        
+
         alert('Image URL copied to clipboard!');
       }
     } catch (error) {
@@ -74,7 +74,7 @@ export default function TryOnPage() {
       alert('Failed to share. Try downloading the image instead.');
     }
   };
-  
+
   return (
     <ErrorBoundary>
       <Layout>
@@ -85,8 +85,8 @@ export default function TryOnPage() {
               <div className="flex flex-col items-center justify-center text-center py-12">
                 <h2 className="text-2xl font-bold mb-4">Sign In to Use Virtual Try-On</h2>
                 <p className="text-gray-600 mb-6 max-w-md">
-                  To experience our virtual try-on feature and see how products look on you,
-                  please sign in to your account.
+                  To experience our virtual try-on feature and see how products look on you, please
+                  sign in to your account.
                 </p>
                 <Button href="/auth/sign-in" className="max-w-xs">
                   Sign In
@@ -103,7 +103,7 @@ export default function TryOnPage() {
                   onShare={handleShare}
                   onBack={handleBackToProducts}
                 />
-                
+
                 {/* Related products and recommendations could go here */}
               </div>
             ) : (
@@ -115,4 +115,4 @@ export default function TryOnPage() {
       </Layout>
     </ErrorBoundary>
   );
-} 
+}

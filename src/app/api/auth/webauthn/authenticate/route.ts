@@ -10,23 +10,19 @@ export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const searchParams = req.nextUrl.searchParams;
     const requireBiometrics = searchParams.get('requireBiometrics') === 'true';
-    const userVerification = searchParams.get('userVerification') as 'required' | 'preferred' | 'discouraged' || 'preferred';
+    const userVerification =
+      (searchParams.get('userVerification') as 'required' | 'preferred' | 'discouraged') ||
+      'preferred';
 
-    const options = await webAuthnService.generateAuthenticationOptions(
-      session.user.id,
-      { 
-        requireBiometrics,
-        userVerificationLevel: userVerification
-      }
-    );
+    const options = await webAuthnService.generateAuthenticationOptions(session.user.id, {
+      requireBiometrics,
+      userVerificationLevel: userVerification,
+    });
 
     return NextResponse.json(options);
   } catch (error) {
@@ -36,10 +32,7 @@ export async function GET(req: NextRequest) {
         { status: 400 }
       );
     }
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -47,20 +40,14 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await req.json();
     const { response, options = {} } = body;
 
     if (!response) {
-      return NextResponse.json(
-        { error: 'Missing authentication response' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing authentication response' }, { status: 400 });
     }
 
     const verification = await webAuthnService.verifyAuthentication(
@@ -77,9 +64,6 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-} 
+}

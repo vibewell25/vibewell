@@ -9,4 +9,4 @@ export * from './accessible-navigation';
 // Re-export common types
 export type { NavItem, AccessibleNavigationProps } from './accessible-navigation';
 export type { AccessibleButtonProps } from './accessible-button';
-export type { FormFieldProps, AccessibleFormProps } from './accessible-form'; 
+export type { FormFieldProps, AccessibleFormProps } from './accessible-form';

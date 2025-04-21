@@ -1,6 +1,6 @@
 /**
  * Performance testing utilities
- * 
+ *
  * This file provides utilities for measuring and testing performance
  * of components and API endpoints.
  */
@@ -13,10 +13,10 @@
  */
 export function measureRenderTime(renderFn, iterations = 5) {
   const times = [];
-  
+
   // Warmup render
   renderFn();
-  
+
   // Measure render time for each iteration
   for (let i = 0; i < iterations; i++) {
     const start = performance.now();
@@ -24,7 +24,7 @@ export function measureRenderTime(renderFn, iterations = 5) {
     const end = performance.now();
     times.push(end - start);
   }
-  
+
   // Calculate statistics
   return {
     times,
@@ -44,25 +44,25 @@ export function measureRenderTime(renderFn, iterations = 5) {
  */
 export function measureUpdateTime(renderFn, updateFn, iterations = 5) {
   const times = [];
-  
+
   // Initial render
   const { rerender } = renderFn();
-  
+
   // Warmup update
   updateFn();
   rerender();
-  
+
   // Measure update time for each iteration
   for (let i = 0; i < iterations; i++) {
     updateFn();
-    
+
     const start = performance.now();
     rerender();
     const end = performance.now();
-    
+
     times.push(end - start);
   }
-  
+
   // Calculate statistics
   return {
     times,
@@ -82,12 +82,12 @@ export function measureUpdateTime(renderFn, updateFn, iterations = 5) {
  */
 export function testRenderPerformance(renderFn, timeBudget, iterations = 5) {
   const { average } = measureRenderTime(renderFn, iterations);
-  
+
   expect(average).toBeLessThanOrEqual(
     timeBudget,
     `Component rendered in ${average.toFixed(2)}ms, which exceeds the time budget of ${timeBudget}ms`
   );
-  
+
   return average <= timeBudget;
 }
 
@@ -104,22 +104,22 @@ export function measureMemoryUsage(renderFn) {
       message: 'Memory measurement not supported in this environment',
     };
   }
-  
+
   // Measure memory before rendering
   const before = {
     usedJSHeapSize: performance.memory.usedJSHeapSize,
     totalJSHeapSize: performance.memory.totalJSHeapSize,
   };
-  
+
   // Render the component
   renderFn();
-  
+
   // Measure memory after rendering
   const after = {
     usedJSHeapSize: performance.memory.usedJSHeapSize,
     totalJSHeapSize: performance.memory.totalJSHeapSize,
   };
-  
+
   return {
     supported: true,
     before,
@@ -139,10 +139,10 @@ export function measureMemoryUsage(renderFn) {
  */
 export async function measureApiResponseTime(apiFn, iterations = 5) {
   const times = [];
-  
+
   // Warmup call
   await apiFn();
-  
+
   // Measure API call time for each iteration
   for (let i = 0; i < iterations; i++) {
     const start = performance.now();
@@ -150,7 +150,7 @@ export async function measureApiResponseTime(apiFn, iterations = 5) {
     const end = performance.now();
     times.push(end - start);
   }
-  
+
   // Calculate statistics
   return {
     times,
@@ -170,12 +170,12 @@ export async function measureApiResponseTime(apiFn, iterations = 5) {
  */
 export async function testApiPerformance(apiFn, timeBudget, iterations = 5) {
   const { average } = await measureApiResponseTime(apiFn, iterations);
-  
+
   expect(average).toBeLessThanOrEqual(
     timeBudget,
     `API responded in ${average.toFixed(2)}ms, which exceeds the time budget of ${timeBudget}ms`
   );
-  
+
   return average <= timeBudget;
 }
 
@@ -189,27 +189,27 @@ export async function testApiPerformance(apiFn, timeBudget, iterations = 5) {
 export async function measureFrameRate(renderFn, interactionFn, durationMs = 1000) {
   let frames = 0;
   let rafId;
-  
+
   // Render the component
   renderFn();
-  
+
   // Start measuring frame rate
   const startTime = performance.now();
-  
+
   // Create a promise that resolves after the duration
   const frameRatePromise = new Promise(resolve => {
     // Function to count frames
     const countFrame = () => {
       frames++;
       const currentTime = performance.now();
-      
+
       if (currentTime - startTime < durationMs) {
         rafId = requestAnimationFrame(countFrame);
       } else {
         // Calculate frame rate
         const elapsed = currentTime - startTime;
         const fps = (frames / elapsed) * 1000;
-        
+
         resolve({
           frames,
           durationMs: elapsed,
@@ -217,20 +217,20 @@ export async function measureFrameRate(renderFn, interactionFn, durationMs = 100
         });
       }
     };
-    
+
     // Start counting frames
     rafId = requestAnimationFrame(countFrame);
   });
-  
+
   // Perform interactions while measuring frame rate
   await interactionFn();
-  
+
   // Wait for the measurement to complete
   const result = await frameRatePromise;
-  
+
   // Clean up
   cancelAnimationFrame(rafId);
-  
+
   return result;
 }
 
@@ -244,12 +244,12 @@ export async function measureFrameRate(renderFn, interactionFn, durationMs = 100
  */
 export async function testFrameRate(renderFn, interactionFn, minFps = 30, durationMs = 1000) {
   const { fps } = await measureFrameRate(renderFn, interactionFn, durationMs);
-  
+
   expect(fps).toBeGreaterThanOrEqual(
     minFps,
     `Component ran at ${fps.toFixed(2)} FPS, which is below the minimum of ${minFps} FPS`
   );
-  
+
   return fps >= minFps;
 }
 
@@ -261,7 +261,7 @@ export async function testFrameRate(renderFn, interactionFn, minFps = 30, durati
  */
 export function formatPerformanceMeasurement(measurement, name) {
   const { min, max, average, median } = measurement;
-  
+
   return `
 Performance measurement: ${name}
   Min: ${min.toFixed(2)}ms
@@ -269,4 +269,4 @@ Performance measurement: ${name}
   Average: ${average.toFixed(2)}ms
   Median: ${median.toFixed(2)}ms
   `.trim();
-} 
+}

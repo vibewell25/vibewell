@@ -32,7 +32,7 @@ export class GroupBookingService {
     try {
       const service = await prisma.beautyService.findUnique({
         where: { id: data.serviceId },
-        include: { business: true }
+        include: { business: true },
       });
 
       if (!service) {
@@ -64,23 +64,23 @@ export class GroupBookingService {
               {
                 userId: data.organizerId,
                 role: 'ORGANIZER',
-                status: 'CONFIRMED'
+                status: 'CONFIRMED',
               },
               ...data.participants.map(userId => ({
                 userId,
                 role: 'PARTICIPANT',
-                status: 'PENDING'
-              }))
-            ]
-          }
+                status: 'PENDING',
+              })),
+            ],
+          },
         },
         include: {
           participants: {
             include: {
-              user: true
-            }
-          }
-        }
+              user: true,
+            },
+          },
+        },
       });
 
       // Send notifications to participants
@@ -96,8 +96,9 @@ export class GroupBookingService {
                 groupBookingId: groupBooking.id,
                 serviceName: service.name,
                 startTime: data.startTime.toISOString(),
-                organizerName: groupBooking.participants.find(p => p.role === 'ORGANIZER')?.user.name
-              }
+                organizerName: groupBooking.participants.find(p => p.role === 'ORGANIZER')?.user
+                  .name,
+              },
             })
           )
       );
@@ -121,18 +122,18 @@ export class GroupBookingService {
         where: {
           groupBookingId_userId: {
             groupBookingId,
-            userId
-          }
+            userId,
+          },
         },
         data: { status },
         include: {
           groupBooking: {
             include: {
               participants: true,
-              service: true
-            }
-          }
-        }
+              service: true,
+            },
+          },
+        },
       });
 
       // Check if minimum participants requirement is met
@@ -140,11 +141,14 @@ export class GroupBookingService {
         p => p.status === 'CONFIRMED'
       ).length;
 
-      if (status === 'CONFIRMED' && confirmedCount >= (participant.groupBooking.minParticipants || 0)) {
+      if (
+        status === 'CONFIRMED' &&
+        confirmedCount >= (participant.groupBooking.minParticipants || 0)
+      ) {
         // Update group booking status to confirmed
         await prisma.groupBooking.update({
           where: { id: groupBookingId },
-          data: { status: 'CONFIRMED' }
+          data: { status: 'CONFIRMED' },
         });
 
         // Notify all participants
@@ -157,8 +161,8 @@ export class GroupBookingService {
               data: {
                 groupBookingId,
                 serviceName: participant.groupBooking.service.name,
-                startTime: participant.groupBooking.startTime.toISOString()
-              }
+                startTime: participant.groupBooking.startTime.toISOString(),
+              },
             })
           )
         );
@@ -167,7 +171,7 @@ export class GroupBookingService {
       logger.info(`Updated participant status`, {
         groupBookingId,
         userId,
-        status
+        status,
       });
 
       return participant;
@@ -186,10 +190,10 @@ export class GroupBookingService {
           service: true,
           participants: {
             include: {
-              user: true
-            }
-          }
-        }
+              user: true,
+            },
+          },
+        },
       });
 
       if (!groupBooking) {
@@ -210,16 +214,16 @@ export class GroupBookingService {
         where: { id: groupBookingId },
         data: {
           status: 'CANCELLED',
-          cancellationReason: reason
+          cancellationReason: reason,
         },
         include: {
           participants: {
             include: {
-              user: true
-            }
+              user: true,
+            },
           },
-          service: true
-        }
+          service: true,
+        },
       });
 
       // Notify all participants
@@ -234,15 +238,15 @@ export class GroupBookingService {
             data: {
               groupBookingId,
               serviceName: groupBooking.service.name,
-              startTime: groupBooking.startTime.toISOString()
-            }
+              startTime: groupBooking.startTime.toISOString(),
+            },
           })
         )
       );
 
       logger.info(`Cancelled group booking`, {
         groupBookingId,
-        reason
+        reason,
       });
 
       return groupBooking;
@@ -254,4 +258,4 @@ export class GroupBookingService {
   }
 }
 
-export const groupBookingService = new GroupBookingService(new NotificationService()); 
+export const groupBookingService = new GroupBookingService(new NotificationService());

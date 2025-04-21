@@ -65,7 +65,7 @@ global.TextEncoder = TextEncoder;
   hostname: string;
   port: string;
   protocol: string;
-  
+
   constructor(url: string, base?: string) {
     this.href = url;
     this.pathname = '/' + url.split('/').slice(3).join('/');
@@ -84,8 +84,8 @@ global.TextEncoder = TextEncoder;
 const originalConsoleError = console.error;
 console.error = (...args) => {
   if (
-    args[0]?.includes?.('Warning: An update to') && 
-    args[0]?.includes?.('inside a test was not wrapped in act(...)') ||
+    (args[0]?.includes?.('Warning: An update to') &&
+      args[0]?.includes?.('inside a test was not wrapped in act(...)')) ||
     args[0]?.includes?.('was not wrapped in act(...)')
   ) {
     return; // Suppress act() warnings
@@ -95,33 +95,35 @@ console.error = (...args) => {
 
 // Mock the ARViewer component
 jest.mock('@/components/ar/ar-viewer', () => ({
-  ARViewer: jest.fn().mockImplementation(({ modelUrl, type }) => null)
+  ARViewer: jest.fn().mockImplementation(({ modelUrl, type }) => null),
 }));
 
 // Mock for global fetch
-global.fetch = jest.fn((_input: RequestInfo | URL, _init?: RequestInit) => Promise.resolve({
-  json: () => Promise.resolve({}),
-  ok: true,
-  status: 200,
-  statusText: 'OK',
-})) as jest.Mock;
+global.fetch = jest.fn((_input: RequestInfo | URL, _init?: RequestInit) =>
+  Promise.resolve({
+    json: () => Promise.resolve({}),
+    ok: true,
+    status: 200,
+    statusText: 'OK',
+  })
+) as jest.Mock;
 
 // Set up localStorage mock
 class LocalStorageMock {
   store: Record<string, string> = {};
-  
+
   getItem(key: string): string | null {
     return this.store[key] || null;
   }
-  
+
   setItem(key: string, value: string): void {
     this.store[key] = value;
   }
-  
+
   removeItem(key: string): void {
     delete this.store[key];
   }
-  
+
   clear(): void {
     this.store = {};
   }
@@ -161,7 +163,75 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
+// Mock window.performance
+Object.defineProperty(window, 'performance', {
+  value: {
+    now: jest.fn(),
+    memory: {
+      jsHeapSizeLimit: 0,
+      totalJSHeapSize: 0,
+      usedJSHeapSize: 0,
+    },
+    getEntriesByName: jest.fn(),
+    getEntriesByType: jest.fn(),
+    mark: jest.fn(),
+    measure: jest.fn(),
+    clearMarks: jest.fn(),
+    clearMeasures: jest.fn(),
+  },
+});
+
+// Mock requestAnimationFrame
+window.requestAnimationFrame = (callback: FrameRequestCallback): number => {
+  return setTimeout(() => callback(performance.now()), 16) as unknown as number;
+};
+
+// Mock PerformanceObserver
+class MockPerformanceObserver {
+  private callback: (entries: PerformanceObserverEntryList) => void;
+
+  constructor(callback: (entries: PerformanceObserverEntryList) => void) {
+    this.callback = callback;
+  }
+
+  observe() {}
+  disconnect() {}
+  takeRecords() {
+    return [];
+  }
+}
+
+(global as any).PerformanceObserver = MockPerformanceObserver;
+
+// Mock fetch
+const mockResponse = {
+  ok: true,
+  redirected: false,
+  status: 200,
+  statusText: 'OK',
+  type: 'basic' as ResponseType,
+  url: 'https://example.com',
+  json: () => Promise.resolve({}),
+  text: () => Promise.resolve(''),
+  blob: () => Promise.resolve(new Blob()),
+  arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)),
+  formData: () => Promise.resolve(new FormData()),
+  headers: new Headers(),
+  clone: () => ({ ...mockResponse }),
+  body: null,
+  bodyUsed: false,
+};
+
+global.fetch = jest
+  .fn()
+  .mockImplementation(async (): Promise<Response> => mockResponse as Response);
+
 // Reset mocks between tests
 beforeEach(() => {
   jest.clearAllMocks();
-}); 
+});
+
+// Cleanup after each test
+afterEach(() => {
+  jest.clearAllMocks();
+});

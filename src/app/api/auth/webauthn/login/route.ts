@@ -18,28 +18,24 @@ export async function GET(request: NextRequest) {
   try {
     const email = request.nextUrl.searchParams.get('email');
     if (!email) {
-      return NextResponse.json(
-        { error: 'Email is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
 
     // Get authenticator for this user
     const authenticator = authenticators.get(email);
     if (!authenticator) {
-      return NextResponse.json(
-        { error: 'No authenticator found for this user' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'No authenticator found for this user' }, { status: 404 });
     }
 
     const options = await generateAuthenticationOptions({
       rpID,
-      allowCredentials: [{
-        id: authenticator.credentialID,
-        type: 'public-key',
-        transports: authenticator.transports || [],
-      }],
+      allowCredentials: [
+        {
+          id: authenticator.credentialID,
+          type: 'public-key',
+          transports: authenticator.transports || [],
+        },
+      ],
       userVerification: 'preferred',
     });
 
@@ -68,19 +64,13 @@ export async function POST(request: NextRequest) {
     const challenge = cookies().get('current_challenge')?.value;
 
     if (!email || !challenge) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     // Get authenticator for this user
     const authenticator = authenticators.get(email);
     if (!authenticator) {
-      return NextResponse.json(
-        { error: 'No authenticator found for this user' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'No authenticator found for this user' }, { status: 404 });
     }
 
     const verification = await verifyAuthenticationResponse({
@@ -128,15 +118,9 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    return NextResponse.json(
-      { error: 'Authentication verification failed' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Authentication verification failed' }, { status: 400 });
   } catch (error) {
     console.error('WebAuthn authentication verification error:', error);
-    return NextResponse.json(
-      { error: 'Authentication verification failed' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Authentication verification failed' }, { status: 500 });
   }
-} 
+}

@@ -1,6 +1,6 @@
 /**
  * Test Pattern Exports
- * 
+ *
  * This file centralizes exports for all test patterns
  */
 
@@ -14,4 +14,4 @@ export type { HookTestCase } from './hook';
 
 // Service testing patterns
 export { createServiceTestSuite, createServiceMock } from './service';
-export type { ServiceTestCase } from './service'; 
+export type { ServiceTestCase } from './service';

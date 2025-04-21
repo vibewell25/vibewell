@@ -54,11 +54,7 @@ export class Cache {
     }
   }
 
-  async getOrSet<T>(
-    key: string,
-    fetchFn: () => Promise<T>,
-    ttl?: number
-  ): Promise<T> {
+  async getOrSet<T>(key: string, fetchFn: () => Promise<T>, ttl?: number): Promise<T> {
     const cached = await this.get<T>(key);
     if (cached !== null) {
       return cached;
@@ -69,11 +65,7 @@ export class Cache {
     return value;
   }
 
-  async withCache<T>(
-    key: string,
-    fetchFn: () => Promise<T>,
-    ttl?: number
-  ): Promise<T> {
+  async withCache<T>(key: string, fetchFn: () => Promise<T>, ttl?: number): Promise<T> {
     return this.getOrSet(key, fetchFn, ttl);
   }
 }
@@ -103,4 +95,4 @@ export const cacheMiddleware = (duration: number) => {
 
     next();
   };
-}; 
+};

@@ -53,10 +53,7 @@ export class DeploymentService {
       }
 
       // Store deployment config
-      await this.redis.set(
-        `${this.keyPrefix}:config:${config.version}`,
-        JSON.stringify(config)
-      );
+      await this.redis.set(`${this.keyPrefix}:config:${config.version}`, JSON.stringify(config));
 
       // If canary is enabled, start with small percentage
       if (config.canary.enabled) {
@@ -83,7 +80,7 @@ export class DeploymentService {
         JSON.stringify({
           percentage: config.canary.percentage,
           startTime: new Date(),
-          status: 'active'
+          status: 'active',
         })
       );
 
@@ -132,9 +129,7 @@ export class DeploymentService {
       }
 
       // If healthy and not at 100%, increase percentage
-      const canaryData = await this.redis.get(
-        `${this.keyPrefix}:canary:${config.version}`
-      );
+      const canaryData = await this.redis.get(`${this.keyPrefix}:canary:${config.version}`);
 
       if (canaryData) {
         const canary = JSON.parse(canaryData);
@@ -147,7 +142,7 @@ export class DeploymentService {
       logger.error('Canary health evaluation failed', 'deployment', {
         error,
         config,
-        metrics
+        metrics,
       });
       throw error;
     }
@@ -161,7 +156,7 @@ export class DeploymentService {
       errorRate: 0.01, // 1%
       responseTime: 500, // ms
       cpuUsage: 80, // %
-      memoryUsage: 80 // %
+      memoryUsage: 80, // %
     };
 
     return (
@@ -175,10 +170,7 @@ export class DeploymentService {
   /**
    * Update canary deployment percentage
    */
-  private async updateCanaryPercentage(
-    version: string,
-    percentage: number
-  ): Promise<void> {
+  private async updateCanaryPercentage(version: string, percentage: number): Promise<void> {
     const key = `${this.keyPrefix}:canary:${version}`;
     const canaryData = await this.redis.get(key);
 
@@ -189,7 +181,7 @@ export class DeploymentService {
 
       logger.info('Canary percentage updated', 'deployment', {
         version,
-        percentage
+        percentage,
       });
     }
   }
@@ -200,10 +192,7 @@ export class DeploymentService {
   private async fullDeployment(config: DeploymentConfig): Promise<void> {
     try {
       // Update active version
-      await this.redis.set(
-        `${this.keyPrefix}:active:${config.environment}`,
-        config.version
-      );
+      await this.redis.set(`${this.keyPrefix}:active:${config.environment}`, config.version);
 
       // Enable all features
       await this.updateFeatureFlags(config.version, config.features);
@@ -233,10 +222,7 @@ export class DeploymentService {
       }
 
       // Restore previous version
-      await this.redis.set(
-        `${this.keyPrefix}:active:${config.environment}`,
-        previousVersion
-      );
+      await this.redis.set(`${this.keyPrefix}:active:${config.environment}`, previousVersion);
 
       // Stop canary if active
       await this.stopCanary(version);
@@ -248,13 +234,13 @@ export class DeploymentService {
         details: {
           version,
           previousVersion,
-          reason: 'Unhealthy metrics detected'
-        }
+          reason: 'Unhealthy metrics detected',
+        },
       });
 
       logger.info('Deployment rolled back', 'deployment', {
         version,
-        previousVersion
+        previousVersion,
       });
     } catch (error) {
       logger.error('Rollback failed', 'deployment', { error, version });
@@ -266,9 +252,7 @@ export class DeploymentService {
    * Stop canary deployment
    */
   private async stopCanary(version: string): Promise<void> {
-    const monitoringInterval = await this.redis.get(
-      `${this.keyPrefix}:monitoring:${version}`
-    );
+    const monitoringInterval = await this.redis.get(`${this.keyPrefix}:monitoring:${version}`);
 
     if (monitoringInterval) {
       clearInterval(parseInt(monitoringInterval));
@@ -281,12 +265,8 @@ export class DeploymentService {
   /**
    * Get deployment configuration
    */
-  private async getDeploymentConfig(
-    version: string
-  ): Promise<DeploymentConfig | null> {
-    const config = await this.redis.get(
-      `${this.keyPrefix}:config:${version}`
-    );
+  private async getDeploymentConfig(version: string): Promise<DeploymentConfig | null> {
+    const config = await this.redis.get(`${this.keyPrefix}:config:${version}`);
     return config ? JSON.parse(config) : null;
   }
 
@@ -297,10 +277,7 @@ export class DeploymentService {
     version: string,
     features: Record<string, boolean>
   ): Promise<void> {
-    await this.redis.set(
-      `${this.keyPrefix}:features:${version}`,
-      JSON.stringify(features)
-    );
+    await this.redis.set(`${this.keyPrefix}:features:${version}`, JSON.stringify(features));
   }
 
   /**
@@ -318,8 +295,8 @@ export class DeploymentService {
         cpuUsage: Math.random() * 100, // 0-100%
         memoryUsage: Math.random() * 100, // 0-100%
         activeUsers: Math.floor(Math.random() * 1000),
-        customMetrics: {}
-      }
+        customMetrics: {},
+      },
     };
   }
 
@@ -327,9 +304,7 @@ export class DeploymentService {
    * Check if a request should be routed to canary
    */
   async shouldRouteToCanary(version: string): Promise<boolean> {
-    const canaryData = await this.redis.get(
-      `${this.keyPrefix}:canary:${version}`
-    );
+    const canaryData = await this.redis.get(`${this.keyPrefix}:canary:${version}`);
 
     if (!canaryData) return false;
 
@@ -339,4 +314,4 @@ export class DeploymentService {
     // Route based on percentage
     return Math.random() * 100 < canary.percentage;
   }
-} 
+}

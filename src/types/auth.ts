@@ -12,4 +12,4 @@ export interface Session {
 export interface AuthState {
   user: User | null;
   loading: boolean;
-} 
+}

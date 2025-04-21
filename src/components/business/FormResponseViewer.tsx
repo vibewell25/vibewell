@@ -30,11 +30,7 @@ interface FormResponseViewerProps {
   onDownload?: (attachmentId: string) => void;
 }
 
-export function FormResponseViewer({
-  response,
-  fields,
-  onDownload,
-}: FormResponseViewerProps) {
+export function FormResponseViewer({ response, fields, onDownload }: FormResponseViewerProps) {
   const formatValue = (field: FormField, value: any) => {
     switch (field.type) {
       case 'checkbox':
@@ -42,18 +38,12 @@ export function FormResponseViewer({
       case 'select':
         return value;
       case 'file':
-        const attachment = response.attachments.find(
-          (a) => a.id === value
-        );
+        const attachment = response.attachments.find(a => a.id === value);
         if (!attachment) return 'No file';
         return (
           <div className="flex items-center space-x-2">
             <span>{attachment.filename}</span>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => onDownload?.(attachment.id)}
-            >
+            <Button variant="outline" size="icon" onClick={() => onDownload?.(attachment.id)}>
               <Download size={16} />
             </Button>
             <Button
@@ -80,7 +70,7 @@ export function FormResponseViewer({
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {fields.map((field) => (
+          {fields.map(field => (
             <div key={field.id} className="space-y-1">
               <div className="font-medium">{field.label}</div>
               <div className="text-gray-700">
@@ -92,4 +82,4 @@ export function FormResponseViewer({
       </CardContent>
     </Card>
   );
-} 
+}

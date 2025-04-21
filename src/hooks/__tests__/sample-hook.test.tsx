@@ -1,8 +1,18 @@
+/**
+ * @vitest-environment jsdom
+ */
 import { useState } from 'react';
 import { renderHookWithProviders, testHookUpdates } from '../../test-utils/hook-testing';
+import { describe, it, expect } from 'vitest';
+
+interface CounterHook {
+  count: number;
+  increment: () => void;
+  decrement: () => void;
+}
 
 // Example Hook to Test
-function useCounter(initialValue = 0) {
+function useCounter(initialValue = 0): CounterHook {
   const [count, setCount] = useState(initialValue);
   const increment = () => setCount(prev => prev + 1);
   const decrement = () => setCount(prev => prev - 1);
@@ -11,22 +21,22 @@ function useCounter(initialValue = 0) {
 
 describe('useCounter', () => {
   it('should initialize with the default value', () => {
-    const { result } = renderHookWithProviders(() => useCounter());
+    const { result } = renderHookWithProviders<void, CounterHook>(() => useCounter());
     expect(result.current.count).toBe(0);
   });
 
   it('should initialize with the provided value', () => {
-    const { result } = renderHookWithProviders(() => useCounter(10));
+    const { result } = renderHookWithProviders<void, CounterHook>(() => useCounter(10));
     expect(result.current.count).toBe(10);
   });
 
   it('should increment count', async () => {
-    await testHookUpdates(
+    await testHookUpdates<void, CounterHook>(
       () => useCounter(),
       [
         {
-          act: (result) => result.result.current.increment(),
-          assert: (result) => {
+          act: result => result.result.current.increment(),
+          assert: result => {
             expect(result.result.current.count).toBe(1);
           },
         },
@@ -35,12 +45,12 @@ describe('useCounter', () => {
   });
 
   it('should decrement count', async () => {
-    await testHookUpdates(
+    await testHookUpdates<void, CounterHook>(
       () => useCounter(5),
       [
         {
-          act: (result) => result.result.current.decrement(),
-          assert: (result) => {
+          act: result => result.result.current.decrement(),
+          assert: result => {
             expect(result.result.current.count).toBe(4);
           },
         },
@@ -49,28 +59,28 @@ describe('useCounter', () => {
   });
 
   it('should handle multiple updates', async () => {
-    await testHookUpdates(
+    await testHookUpdates<void, CounterHook>(
       () => useCounter(),
       [
         {
-          act: (result) => result.result.current.increment(),
-          assert: (result) => {
+          act: result => result.result.current.increment(),
+          assert: result => {
             expect(result.result.current.count).toBe(1);
           },
         },
         {
-          act: (result) => result.result.current.increment(),
-          assert: (result) => {
+          act: result => result.result.current.increment(),
+          assert: result => {
             expect(result.result.current.count).toBe(2);
           },
         },
         {
-          act: (result) => result.result.current.decrement(),
-          assert: (result) => {
+          act: result => result.result.current.decrement(),
+          assert: result => {
             expect(result.result.current.count).toBe(1);
           },
         },
       ]
     );
   });
-}); 
+});

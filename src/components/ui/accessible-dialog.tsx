@@ -47,13 +47,13 @@ export function AccessibleDialog({
   }, [isOpen]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent 
+    <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
+      <DialogContent
         ref={initialFocusRef}
         tabIndex={-1}
         className={className}
         aria-labelledby="dialog-title"
-        aria-describedby={description ? "dialog-description" : undefined}
+        aria-describedby={description ? 'dialog-description' : undefined}
       >
         <DialogHeader>
           <DialogTitle id="dialog-title">{title}</DialogTitle>
@@ -63,13 +63,11 @@ export function AccessibleDialog({
             </p>
           )}
         </DialogHeader>
-        
+
         <div className="py-4">{children}</div>
-        
-        {footer && (
-          <DialogFooter>{footer}</DialogFooter>
-        )}
+
+        {footer && <DialogFooter>{footer}</DialogFooter>}
       </DialogContent>
     </Dialog>
   );
-} 
+}

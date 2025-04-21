@@ -1,6 +1,6 @@
 /**
  * Redis Metrics Collector
- * 
+ *
  * This module collects and processes metrics from Redis for monitoring
  * rate limiting behavior and Redis performance in production.
  */
@@ -30,39 +30,39 @@ interface RateLimitMetrics {
 }
 
 /**
- * Collects comprehensive Redis metrics for monitoring 
+ * Collects comprehensive Redis metrics for monitoring
  * and analysis of rate limiting behavior
  */
 export async function collectRedisMetrics(): Promise<RedisMetrics | null> {
   try {
     // Get basic Redis INFO
     const info = await redisClient.info();
-    
+
     // Parse general metrics from INFO command
     const generalMetrics = parseRedisInfo(info);
-    
+
     // Get rate limiting specific metrics
     const rateLimitMetrics = await collectRateLimitMetrics();
-    
+
     const metrics: RedisMetrics = {
       timestamp: Date.now(),
       ...generalMetrics,
       rateLimitMetrics,
     };
-    
+
     // Log metrics at debug level
-    logger.debug('Redis metrics collected', 'redis-metrics', { 
+    logger.debug('Redis metrics collected', 'redis-metrics', {
       usedMemory: metrics.usedMemory,
       clients: metrics.connectedClients,
       hitRate: metrics.hitRate,
       rateLimitedRequests: metrics.rateLimitMetrics.rateLimitedRequests,
-      blockedIPs: metrics.rateLimitMetrics.blockedIPs
+      blockedIPs: metrics.rateLimitMetrics.blockedIPs,
     });
-    
+
     return metrics;
   } catch (error) {
-    logger.error('Failed to collect Redis metrics', 'redis-metrics', { 
-      error: error instanceof Error ? error.message : String(error)
+    logger.error('Failed to collect Redis metrics', 'redis-metrics', {
+      error: error instanceof Error ? error.message : String(error),
     });
     return null;
   }
@@ -74,7 +74,7 @@ export async function collectRedisMetrics(): Promise<RedisMetrics | null> {
 function parseRedisInfo(info: string) {
   const metrics: Record<string, string> = {};
   const sections = info.split('#');
-  
+
   for (const section of sections) {
     const lines = section.split('\r\n').filter(Boolean);
     for (const line of lines) {
@@ -86,7 +86,7 @@ function parseRedisInfo(info: string) {
       }
     }
   }
-  
+
   return {
     usedMemory: parseInt(metrics.used_memory || '0', 10),
     connectedClients: parseInt(metrics.connected_clients || '0', 10),
@@ -115,28 +115,28 @@ async function collectRateLimitMetrics(): Promise<RateLimitMetrics> {
   try {
     // Get all rate limit keys
     const allKeys = await redisClient.keys('vibewell:ratelimit:*');
-    
+
     // Get blocked IPs
     const blockedIPs = await redisClient.keys('vibewell:ratelimit:blocked:*');
-    
+
     // Count rate limited events in the last hour
     const now = Date.now();
-    const hourAgo = now - (60 * 60 * 1000);
+    const hourAgo = now - 60 * 60 * 1000;
     let rateLimitedRequests = 0;
-    
+
     try {
       const eventKey = 'ratelimit:events';
       const recentEvents = await redisClient.zrangebyscore(eventKey, hourAgo, now);
       rateLimitedRequests = recentEvents.length;
     } catch (error) {
       logger.warn('Could not get rate limited events count', 'redis-metrics', {
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       });
     }
-    
+
     // Get suspicious IPs
     const suspiciousKeys = await redisClient.keys('vibewell:ratelimit:suspicious:*');
-    
+
     // Count keys by type
     const keysByType: Record<string, number> = {};
     for (const key of allKeys) {
@@ -146,7 +146,7 @@ async function collectRateLimitMetrics(): Promise<RateLimitMetrics> {
         keysByType[type] = (keysByType[type] || 0) + 1;
       }
     }
-    
+
     return {
       totalKeys: allKeys.length,
       blockedIPs: blockedIPs.length,
@@ -155,10 +155,10 @@ async function collectRateLimitMetrics(): Promise<RateLimitMetrics> {
       keysByType,
     };
   } catch (error) {
-    logger.error('Failed to collect rate limit metrics', 'redis-metrics', { 
-      error: error instanceof Error ? error.message : String(error)
+    logger.error('Failed to collect rate limit metrics', 'redis-metrics', {
+      error: error instanceof Error ? error.message : String(error),
     });
-    
+
     return {
       totalKeys: 0,
       blockedIPs: 0,
@@ -177,20 +177,20 @@ export async function storeMetricsInRedis(metrics: RedisMetrics): Promise<boolea
   try {
     const timestamp = metrics.timestamp;
     const metricsKey = 'vibewell:metrics:redis';
-    
+
     // Store serialized metrics in a Redis sorted set with time as score
     await redisClient.zadd(metricsKey, timestamp, JSON.stringify(metrics));
-    
+
     // Keep only the last 1000 metrics entries (sliding window)
     await redisClient.zremrangebyrank(metricsKey, 0, -1001);
-    
+
     // Set expiration for metrics (7 days)
     await redisClient.expire(metricsKey, 7 * 24 * 60 * 60);
-    
+
     return true;
   } catch (error) {
-    logger.error('Failed to store Redis metrics', 'redis-metrics', { 
-      error: error instanceof Error ? error.message : String(error)
+    logger.error('Failed to store Redis metrics', 'redis-metrics', {
+      error: error instanceof Error ? error.message : String(error),
     });
     return false;
   }
@@ -203,11 +203,11 @@ export async function getRedisMetricsHistory(limit = 100): Promise<RedisMetrics[
   try {
     const metricsKey = 'vibewell:metrics:redis';
     const results = await redisClient.zrevrange(metricsKey, 0, limit - 1);
-    
+
     return results.map((item: string) => JSON.parse(item)) as RedisMetrics[];
   } catch (error) {
-    logger.error('Failed to get Redis metrics history', 'redis-metrics', { 
-      error: error instanceof Error ? error.message : String(error)
+    logger.error('Failed to get Redis metrics history', 'redis-metrics', {
+      error: error instanceof Error ? error.message : String(error),
     });
     return [];
   }
@@ -220,11 +220,11 @@ export async function calculateRedisStats(): Promise<Record<string, any>> {
   try {
     // Get last hour of metrics
     const metrics = await getRedisMetricsHistory(60);
-    
+
     if (metrics.length === 0) {
       return {};
     }
-    
+
     // Calculate averages, min, max for key metrics
     const stats = {
       period: {
@@ -248,13 +248,13 @@ export async function calculateRedisStats(): Promise<Record<string, any>> {
         totalBlocked: metrics[0]?.rateLimitMetrics.blockedIPs || 0,
         suspiciousIPs: metrics[0]?.rateLimitMetrics.suspiciousIPs || 0,
         hourlyRateLimited: metrics[0]?.rateLimitMetrics.rateLimitedRequests || 0,
-      }
+      },
     };
-    
+
     return stats;
   } catch (error) {
-    logger.error('Failed to calculate Redis stats', 'redis-metrics', { 
-      error: error instanceof Error ? error.message : String(error)
+    logger.error('Failed to calculate Redis stats', 'redis-metrics', {
+      error: error instanceof Error ? error.message : String(error),
     });
     return {};
   }
@@ -264,9 +264,7 @@ export async function calculateRedisStats(): Promise<Record<string, any>> {
  * Calculate the average of an array of numbers
  */
 function average(values: number[]): number {
-  return values.length > 0 
-    ? values.reduce((sum, val) => sum + val, 0) / values.length 
-    : 0;
+  return values.length > 0 ? values.reduce((sum, val) => sum + val, 0) / values.length : 0;
 }
 
 /**
@@ -275,19 +273,19 @@ function average(values: number[]): number {
  */
 function calculateTrend(values: number[]): number {
   if (values.length < 2) return 0;
-  
+
   // Use simple linear regression to determine trend
   const n = values.length;
   const xValues = Array.from({ length: n }, (_, i) => i);
-  
+
   const sumX = xValues.reduce((sum, x) => sum + x, 0);
   const sumY = values.reduce((sum, y) => sum + y, 0);
   const sumXY = xValues.reduce((sum, x, i) => sum + x * values[i], 0);
   const sumXX = xValues.reduce((sum, x) => sum + x * x, 0);
-  
+
   const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
   const maxSlope = Math.max(...values) / n;
-  
+
   // Normalize slope to be between -1 and 1
   return Math.max(-1, Math.min(1, slope / maxSlope));
-} 
+}

@@ -32,10 +32,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Invalid credentials');
         }
 
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
+        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
 
         if (!isPasswordValid) {
           throw new Error('Invalid credentials');
@@ -67,4 +64,4 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
   },
-}; 
+};

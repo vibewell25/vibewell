@@ -21,10 +21,10 @@ describe('ThemeToggle', () => {
   it('renders with light theme by default', () => {
     // Arrange - Mock hook to return light theme
     jest.spyOn(useLocalStorageModule, 'useLocalStorage').mockReturnValue(['light', jest.fn()]);
-    
+
     // Act
     render(<ThemeToggle />);
-    
+
     // Assert
     const toggleButton = screen.getByRole('button');
     expect(toggleButton).toBeInTheDocument();
@@ -36,11 +36,11 @@ describe('ThemeToggle', () => {
     const setThemeMock = jest.fn();
     jest.spyOn(useLocalStorageModule, 'useLocalStorage').mockReturnValue(['light', setThemeMock]);
     render(<ThemeToggle />);
-    
+
     // Act
     const toggleButton = screen.getByRole('button');
     fireEvent.click(toggleButton);
-    
+
     // Assert
     expect(setThemeMock).toHaveBeenCalledWith(expect.any(Function));
     // The function passed to setTheme should toggle from 'light' to 'dark'
@@ -51,10 +51,10 @@ describe('ThemeToggle', () => {
   it('renders with dark theme if localStorage has dark theme', () => {
     // Arrange - Mock hook to return dark theme
     jest.spyOn(useLocalStorageModule, 'useLocalStorage').mockReturnValue(['dark', jest.fn()]);
-    
+
     // Act
     render(<ThemeToggle />);
-    
+
     // Assert
     const toggleButton = screen.getByRole('button');
     expect(toggleButton).toHaveAttribute('aria-label', 'Switch to light theme');
@@ -63,10 +63,10 @@ describe('ThemeToggle', () => {
   it('applies custom className', () => {
     // Arrange & Act
     render(<ThemeToggle className="custom-class" />);
-    
+
     // Assert
     const toggleButton = screen.getByRole('button');
     expect(toggleButton).toHaveClass('custom-class');
     expect(toggleButton).toHaveClass('theme-toggle');
   });
-}); 
+});

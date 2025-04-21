@@ -97,4 +97,4 @@ export const AccessibleNotification: React.FC<AccessibleNotificationProps> = ({
   );
 };
 
-export default AccessibleNotification; 
+export default AccessibleNotification;

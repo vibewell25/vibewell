@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ProductService } from '@/services/product-service';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -26,40 +26,40 @@ export default function TryOnPage() {
   const [product, setProduct] = useState<any>(null);
   const productService = new ProductService();
   const tryOnService = new TryOnService();
-  
+
   useEffect(() => {
     const loadProduct = async () => {
       try {
         setLoading(true);
         const productId = Array.isArray(id) ? id[0] : id;
-        
+
         if (!productId) {
           setError('Product ID is missing');
           return;
         }
-        
+
         // Fetch product details
         const productData = await productService.getProduct(productId);
-        
+
         if (!productData) {
           setError('Product not found');
           return;
         }
-        
+
         if (!productData.ar_compatible) {
           setError('This product is not AR compatible');
           return;
         }
-        
+
         setProduct(productData);
-        
+
         // Here you would initialize the AR experience using the product.model_url
         // For demonstration purposes, we'll just set a timeout to simulate loading
         setTimeout(() => {
           setModelLoaded(true);
           setLoading(false);
         }, 2000);
-        
+
         // Track this as a try-on session
         if (user?.id) {
           try {
@@ -77,24 +77,26 @@ export default function TryOnPage() {
         setLoading(false);
       }
     };
-    
+
     loadProduct();
-    
+
     // Clean up function to end the session
     return () => {
       if (sessionId && user?.id && startTime) {
         const endTime = new Date();
         const durationSeconds = Math.round((endTime.getTime() - startTime.getTime()) / 1000);
-        
-        tryOnService.completeSession(sessionId, user.id, {
-          duration_seconds: durationSeconds
-        }).catch(err => {
-          console.error('Error completing try-on session:', err);
-        });
+
+        tryOnService
+          .completeSession(sessionId, user.id, {
+            duration_seconds: durationSeconds,
+          })
+          .catch(err => {
+            console.error('Error completing try-on session:', err);
+          });
       }
     };
   }, [id, user?.id]);
-  
+
   const handleShare = async () => {
     try {
       if (navigator.share) {
@@ -111,38 +113,38 @@ export default function TryOnPage() {
       console.error('Error sharing try-on:', err);
     }
   };
-  
+
   const handleCapture = async () => {
     // This would take a screenshot of the current AR view
     alert('Capture feature coming soon!');
-    
+
     // In a real implementation, you would:
     // 1. Capture the current AR view as an image
     // 2. Upload it to storage
     // 3. Update the session with the screenshot URL
-    
+
     if (sessionId && user?.id) {
       try {
         // Mock screenshot URL for demonstration
         const mockScreenshotUrl = `https://example.com/screenshots/${sessionId}-${Date.now()}.jpg`;
-        
+
         await tryOnService.completeSession(sessionId, user?.id, {
-          screenshots: [mockScreenshotUrl]
+          screenshots: [mockScreenshotUrl],
         });
       } catch (err) {
         console.error('Error saving screenshot:', err);
       }
     }
   };
-  
+
   const handleFinishTryOn = () => {
     setShowFeedback(true);
   };
-  
+
   const handleFeedbackClose = () => {
     setShowFeedback(false);
   };
-  
+
   if (error) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -154,13 +156,13 @@ export default function TryOnPage() {
             </Button>
           </Link>
         </div>
-        
+
         <Alert variant="destructive" className="mb-6">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
-        
+
         <div className="mt-8">
           <h2 className="text-2xl font-semibold mb-4">Explore Other AR-Ready Products</h2>
           <ProductRecommendations limit={4} />
@@ -168,7 +170,7 @@ export default function TryOnPage() {
       </div>
     );
   }
-  
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-4">
@@ -179,9 +181,9 @@ export default function TryOnPage() {
           </Button>
         </Link>
       </div>
-      
+
       <h1 className="text-3xl font-bold mb-6">Virtual Try-On</h1>
-      
+
       <div className="bg-muted rounded-lg overflow-hidden relative">
         {loading ? (
           <div className="aspect-video w-full">
@@ -199,7 +201,7 @@ export default function TryOnPage() {
                 <Button>Start AR Experience</Button>
               </div>
             </div>
-            
+
             {/* Controls overlay - would be shown during active AR session */}
             <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
               <Button variant="secondary" size="icon" onClick={handleCapture}>
@@ -215,7 +217,7 @@ export default function TryOnPage() {
           </>
         )}
       </div>
-      
+
       <div className="mt-6 text-center max-w-xl mx-auto">
         <h2 className="text-xl font-semibold mb-2">How to Use</h2>
         <ol className="text-left space-y-2 text-muted-foreground">
@@ -237,15 +239,15 @@ export default function TryOnPage() {
           </li>
         </ol>
       </div>
-      
+
       <div className="mt-16">
         <h2 className="text-2xl font-semibold mb-4">Similar Products to Try</h2>
         <ProductRecommendations productId={Array.isArray(id) ? id[0] : id} showTabs={false} />
       </div>
-      
+
       {/* Feedback Dialog */}
       {user?.id && sessionId && product && (
-        <FeedbackDialog 
+        <FeedbackDialog
           isOpen={showFeedback}
           onClose={handleFeedbackClose}
           sessionId={sessionId}
@@ -255,4 +257,4 @@ export default function TryOnPage() {
       )}
     </div>
   );
-} 
+}

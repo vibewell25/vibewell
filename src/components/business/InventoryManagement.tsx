@@ -78,10 +78,7 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Inventory Management</h2>
-        <button
-          onClick={() => setIsAddModalOpen(true)}
-          className="btn-primary flex items-center"
-        >
+        <button onClick={() => setIsAddModalOpen(true)} className="btn-primary flex items-center">
           <Icons.PlusIcon className="h-5 w-5 mr-2" />
           Add Item
         </button>
@@ -114,16 +111,20 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {items.map((item) => (
+            {items.map(item => (
               <tr key={item.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">{item.name}</div>
                   <div className="text-sm text-gray-500">{item.description}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    item.type === 'product' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
-                  }`}>
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      item.type === 'product'
+                        ? 'bg-blue-100 text-blue-800'
+                        : 'bg-green-100 text-green-800'
+                    }`}
+                  >
                     {item.type}
                   </span>
                 </td>
@@ -137,9 +138,13 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                   {item.quantity || '-'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    item.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                  }`}>
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      item.status === 'active'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-red-100 text-red-800'
+                    }`}
+                  >
                     {item.status}
                   </span>
                 </td>
@@ -173,7 +178,7 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                 <input
                   type="text"
                   value={newItem.name}
-                  onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
+                  onChange={e => setNewItem({ ...newItem, name: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -181,7 +186,9 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                 <label className="block text-sm font-medium text-gray-700">Type</label>
                 <select
                   value={newItem.type}
-                  onChange={(e) => setNewItem({ ...newItem, type: e.target.value as 'product' | 'service' })}
+                  onChange={e =>
+                    setNewItem({ ...newItem, type: e.target.value as 'product' | 'service' })
+                  }
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 >
                   <option value="product">Product</option>
@@ -192,7 +199,7 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                 <label className="block text-sm font-medium text-gray-700">Description</label>
                 <textarea
                   value={newItem.description}
-                  onChange={(e) => setNewItem({ ...newItem, description: e.target.value })}
+                  onChange={e => setNewItem({ ...newItem, description: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -201,7 +208,7 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                 <input
                   type="number"
                   value={newItem.price}
-                  onChange={(e) => setNewItem({ ...newItem, price: parseFloat(e.target.value) })}
+                  onChange={e => setNewItem({ ...newItem, price: parseFloat(e.target.value) })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -211,7 +218,7 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                   <input
                     type="number"
                     value={newItem.quantity}
-                    onChange={(e) => setNewItem({ ...newItem, quantity: parseInt(e.target.value) })}
+                    onChange={e => setNewItem({ ...newItem, quantity: parseInt(e.target.value) })}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </div>
@@ -221,22 +228,16 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                 <input
                   type="text"
                   value={newItem.category}
-                  onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
+                  onChange={e => setNewItem({ ...newItem, category: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
             </div>
             <div className="mt-6 flex justify-end space-x-3">
-              <button
-                onClick={() => setIsAddModalOpen(false)}
-                className="btn-secondary"
-              >
+              <button onClick={() => setIsAddModalOpen(false)} className="btn-secondary">
                 Cancel
               </button>
-              <button
-                onClick={handleAddItem}
-                className="btn-primary"
-              >
+              <button onClick={handleAddItem} className="btn-primary">
                 Add Item
               </button>
             </div>
@@ -254,7 +255,7 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                 <input
                   type="text"
                   value={editingItem.name}
-                  onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
+                  onChange={e => setEditingItem({ ...editingItem, name: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -262,7 +263,12 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                 <label className="block text-sm font-medium text-gray-700">Type</label>
                 <select
                   value={editingItem.type}
-                  onChange={(e) => setEditingItem({ ...editingItem, type: e.target.value as 'product' | 'service' })}
+                  onChange={e =>
+                    setEditingItem({
+                      ...editingItem,
+                      type: e.target.value as 'product' | 'service',
+                    })
+                  }
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 >
                   <option value="product">Product</option>
@@ -273,7 +279,7 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                 <label className="block text-sm font-medium text-gray-700">Description</label>
                 <textarea
                   value={editingItem.description}
-                  onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
+                  onChange={e => setEditingItem({ ...editingItem, description: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -282,7 +288,9 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                 <input
                   type="number"
                   value={editingItem.price}
-                  onChange={(e) => setEditingItem({ ...editingItem, price: parseFloat(e.target.value) })}
+                  onChange={e =>
+                    setEditingItem({ ...editingItem, price: parseFloat(e.target.value) })
+                  }
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -292,7 +300,9 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                   <input
                     type="number"
                     value={editingItem.quantity}
-                    onChange={(e) => setEditingItem({ ...editingItem, quantity: parseInt(e.target.value) })}
+                    onChange={e =>
+                      setEditingItem({ ...editingItem, quantity: parseInt(e.target.value) })
+                    }
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </div>
@@ -302,7 +312,7 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                 <input
                   type="text"
                   value={editingItem.category}
-                  onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
+                  onChange={e => setEditingItem({ ...editingItem, category: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
@@ -310,7 +320,12 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
                 <label className="block text-sm font-medium text-gray-700">Status</label>
                 <select
                   value={editingItem.status}
-                  onChange={(e) => setEditingItem({ ...editingItem, status: e.target.value as 'active' | 'inactive' })}
+                  onChange={e =>
+                    setEditingItem({
+                      ...editingItem,
+                      status: e.target.value as 'active' | 'inactive',
+                    })
+                  }
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 >
                   <option value="active">Active</option>
@@ -319,16 +334,10 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
               </div>
             </div>
             <div className="mt-6 flex justify-end space-x-3">
-              <button
-                onClick={() => setEditingItem(null)}
-                className="btn-secondary"
-              >
+              <button onClick={() => setEditingItem(null)} className="btn-secondary">
                 Cancel
               </button>
-              <button
-                onClick={handleUpdateItem}
-                className="btn-primary"
-              >
+              <button onClick={handleUpdateItem} className="btn-primary">
                 Save Changes
               </button>
             </div>
@@ -337,4 +346,4 @@ export const InventoryManagement: React.FC<InventoryManagementProps> = ({
       )}
     </div>
   );
-}; 
+};

@@ -22,10 +22,10 @@ export class SegmentProvider implements AnalyticsProvider {
     try {
       // Load Segment analytics.js
       await this.loadSegmentScript();
-      
+
       // Initialize with write key
       (window as any).analytics.load(this.segmentWriteKey);
-      
+
       this.isInitialized = true;
       console.log('Segment analytics initialized successfully');
     } catch (error) {
@@ -52,12 +52,25 @@ export class SegmentProvider implements AnalyticsProvider {
 
       try {
         // Create analytics stub
-        const analytics = (window as any).analytics = (window as any).analytics || [];
+        const analytics = ((window as any).analytics = (window as any).analytics || []);
 
         // Define analytics methods
         const methods = [
-          'identify', 'track', 'trackLink', 'trackForm', 'trackClick', 'trackSubmit',
-          'page', 'pageview', 'ab', 'alias', 'ready', 'group', 'on', 'once', 'off'
+          'identify',
+          'track',
+          'trackLink',
+          'trackForm',
+          'trackClick',
+          'trackSubmit',
+          'page',
+          'pageview',
+          'ab',
+          'alias',
+          'ready',
+          'group',
+          'on',
+          'once',
+          'off',
         ];
 
         // Stub analytics methods
@@ -76,11 +89,11 @@ export class SegmentProvider implements AnalyticsProvider {
         script.type = 'text/javascript';
         script.async = true;
         script.src = `https://cdn.segment.com/analytics.js/v1/${this.segmentWriteKey}/analytics.min.js`;
-        
+
         // Set up callbacks
         script.onload = () => resolve();
-        script.onerror = (error) => reject(new Error(`Failed to load Segment script: ${error}`));
-        
+        script.onerror = error => reject(new Error(`Failed to load Segment script: ${error}`));
+
         // Add to document
         const first = document.getElementsByTagName('script')[0];
         if (first && first.parentNode) {
@@ -104,7 +117,7 @@ export class SegmentProvider implements AnalyticsProvider {
 
     try {
       const { eventName, properties } = event;
-      
+
       // Track event
       (window as any).analytics.track(eventName, properties);
     } catch (error) {
@@ -127,4 +140,4 @@ export class SegmentProvider implements AnalyticsProvider {
       console.error('Segment set user error:', error);
     }
   }
-} 
+}

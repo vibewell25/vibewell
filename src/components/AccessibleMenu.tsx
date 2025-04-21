@@ -117,7 +117,7 @@ export const AccessibleMenu: React.FC<AccessibleMenuProps> = ({
     <div className="relative">
       <button
         ref={triggerRef}
-        onClick={() => isOpen ? closeMenu() : openMenu()}
+        onClick={() => (isOpen ? closeMenu() : openMenu())}
         aria-haspopup="true"
         aria-expanded={isOpen}
         className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
@@ -151,9 +151,10 @@ export const AccessibleMenu: React.FC<AccessibleMenuProps> = ({
                 disabled={item.disabled}
                 className={`
                   w-full text-left px-4 py-2 text-sm
-                  ${item.disabled
-                    ? 'text-gray-400 cursor-not-allowed'
-                    : 'text-gray-700 hover:bg-gray-100'
+                  ${
+                    item.disabled
+                      ? 'text-gray-400 cursor-not-allowed'
+                      : 'text-gray-700 hover:bg-gray-100'
                   }
                   ${focusedIndex === index ? 'bg-gray-100' : ''}
                   focus:outline-none focus:bg-gray-100
@@ -173,4 +174,4 @@ export const AccessibleMenu: React.FC<AccessibleMenuProps> = ({
   );
 };
 
-export default AccessibleMenu; 
+export default AccessibleMenu;

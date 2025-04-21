@@ -16,23 +16,22 @@ const sdk = new NodeSDK({
       'api-key': process.env.OTEL_EXPORTER_OTLP_HEADERS_API_KEY,
     },
   }),
-  instrumentations: [
-    getNodeAutoInstrumentations(),
-    new PrismaInstrumentation(),
-  ],
+  instrumentations: [getNodeAutoInstrumentations(), new PrismaInstrumentation()],
 });
 
 export function initializeMonitoring() {
   if (process.env.NODE_ENV === 'production') {
-    sdk.start()
+    sdk
+      .start()
       .then(() => console.log('Monitoring initialized'))
-      .catch((error) => console.error('Error initializing monitoring:', error));
+      .catch(error => console.error('Error initializing monitoring:', error));
   }
 }
 
 process.on('SIGTERM', () => {
-  sdk.shutdown()
+  sdk
+    .shutdown()
     .then(() => console.log('Monitoring shut down'))
-    .catch((error) => console.error('Error shutting down monitoring:', error))
+    .catch(error => console.error('Error shutting down monitoring:', error))
     .finally(() => process.exit(0));
-}); 
+});

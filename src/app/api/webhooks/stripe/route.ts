@@ -16,10 +16,7 @@ export async function POST(req: NextRequest) {
 
     if (!endpointSecret) {
       console.warn('STRIPE_WEBHOOK_SECRET is not set. Webhook verification is disabled.');
-      return NextResponse.json(
-        { error: 'Webhook secret is not configured' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: 'Webhook secret is not configured' }, { status: 500 });
     }
 
     let event: Stripe.Event;
@@ -54,10 +51,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ received: true });
   } catch (error) {
     console.error('Error processing webhook:', error);
-    return NextResponse.json(
-      { error: 'Webhook handler failed' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Webhook handler failed' }, { status: 500 });
   }
 }
 
@@ -67,22 +61,22 @@ export async function POST(req: NextRequest) {
 async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent) {
   try {
     console.log('Processing successful payment:', paymentIntent.id);
-    
+
     // Get the metadata from the payment intent
     const { userId, productId, bookingId } = paymentIntent.metadata || {};
-    
+
     if (bookingId) {
       // Update booking status in your database
       // await prisma.booking.update({ where: { id: bookingId }, data: { status: 'paid' } });
       console.log(`Booking ${bookingId} marked as paid`);
     }
-    
+
     if (productId) {
       // Process product purchase
       // await prisma.order.create({ ... });
       console.log(`Product ${productId} purchase processed`);
     }
-    
+
     // Send confirmation email to customer
     // await sendPaymentConfirmation(paymentIntent.receipt_email, paymentIntent.amount, paymentIntent.currency);
   } catch (error) {
@@ -97,15 +91,15 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
 async function handlePaymentIntentFailed(paymentIntent: Stripe.PaymentIntent) {
   try {
     console.log('Processing failed payment:', paymentIntent.id);
-    
+
     const { userId, bookingId } = paymentIntent.metadata || {};
-    
+
     if (bookingId) {
       // Update booking status in your database
       // await prisma.booking.update({ where: { id: bookingId }, data: { status: 'payment_failed' } });
       console.log(`Booking ${bookingId} marked as payment failed`);
     }
-    
+
     // Notify customer about the failed payment
     // await sendPaymentFailureNotification(paymentIntent.receipt_email);
   } catch (error) {
@@ -119,14 +113,14 @@ async function handlePaymentIntentFailed(paymentIntent: Stripe.PaymentIntent) {
 async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
   try {
     console.log('Processing checkout session:', session.id);
-    
+
     // Retrieve the session with line items
     const expandedSession = await stripe.checkout.sessions.retrieve(session.id, {
       expand: ['line_items'],
     });
-    
+
     const lineItems = expandedSession.line_items;
-    
+
     // Process subscription or one-time payment
     if (session.mode === 'subscription') {
       // Handle subscription
@@ -140,4 +134,4 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   } catch (error) {
     console.error('Error handling checkout.session.completed:', error);
   }
-} 
+}

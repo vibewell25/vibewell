@@ -1,78 +1,208 @@
-import { Suspense } from 'react';
-import { withPageAuthRequired } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
-import { DataTable } from '@/components/admin/DataTable';
-import { UserList } from '@/components/admin/UserList';
-import { SubscriptionStats } from '@/components/admin/SubscriptionStats';
-import { AdminMetrics } from '@/components/admin/AdminMetrics';
+'use client';
 
-export const metadata = {
-  title: 'Admin Dashboard | Vibewell',
-  description: 'Manage users, subscriptions, and view analytics',
-};
+import { useEffect, useState } from 'react';
+import { useAuth } from '@/contexts/unified-auth-context';
+import { analytics } from '@/utils/analytics';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useDeviceType } from '@/utils/responsive';
+import { useRouter } from 'next/navigation';
+import { Icons } from '@/components/icons';
 
-async function getAdminData() {
-  const [users, subscriptions, metrics] = await Promise.all([
-    prisma.user.findMany({
-      include: {
-        subscriptions: true,
-        bookings: true,
-      },
-    }),
-    prisma.subscription.findMany({
-      include: {
-        user: true,
-      },
-    }),
-    prisma.metrics.findFirst({
-      orderBy: {
-        createdAt: 'desc',
-      },
-    }),
-  ]);
-
-  return {
-    users,
-    subscriptions,
-    metrics,
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  createdAt: string;
+  subscription?: {
+    status: string;
+    plan: string;
+    validUntil: string;
   };
 }
 
-export default withPageAuthRequired(async function AdminDashboard() {
-  const data = await getAdminData();
+export default function AdminDashboard() {
+  const { user, isAdmin } = useAuth();
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  const deviceType = useDeviceType();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isAdmin()) {
+      window.location.href = '/';
+      return;
+    }
+
+    fetchUsers();
+    analytics.trackPageView('/admin');
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('/api/admin/users');
+      const data = await response.json();
+      setUsers(data);
+    } catch (error) {
+      analytics.trackError(error as Error);
+      console.error('Error fetching users:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUserAction = async (userId: string, action: 'suspend' | 'activate' | 'delete') => {
+    try {
+      const response = await fetch(`/api/admin/users/${userId}/${action}`, {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        fetchUsers();
+        analytics.trackEvent({
+          name: `user_${action}d`,
+          properties: { userId },
+          category: 'user',
+        });
+      }
+    } catch (error) {
+      analytics.trackError(error as Error);
+      console.error(`Error ${action}ing user:`, error);
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <Suspense fallback={<div>Loading metrics...</div>}>
-          <AdminMetrics metrics={data.metrics} />
-        </Suspense>
+    <div className="container mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <Card className="md:col-span-2 flex flex-col">
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent className="flex-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Button 
+                className="flex items-center justify-center h-32 text-lg"
+                onClick={() => router.push('/admin/analytics')}
+              >
+                <Icons.activity className="mr-2 h-6 w-6" />
+                Analytics Dashboard
+              </Button>
+              <Button 
+                className="flex items-center justify-center h-32 text-lg"
+                variant="outline"
+                onClick={() => router.push('/admin/users')}
+              >
+                <Icons.user className="mr-2 h-6 w-6" />
+                User Management
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>User Statistics</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <p>Total Users: {users.length}</p>
+              <p>Active Users: {users.filter(u => u.subscription?.status === 'active').length}</p>
+              <p>Premium Users: {users.filter(u => u.subscription?.plan === 'premium').length}</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <p>
+                New Users (24h):{' '}
+                {
+                  users.filter(u => {
+                    const created = new Date(u.createdAt);
+                    const now = new Date();
+                    return now.getTime() - created.getTime() < 24 * 60 * 60 * 1000;
+                  }).length
+                }
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">User Management</h2>
-          <Suspense fallback={<div>Loading users...</div>}>
-            <UserList users={data.users} />
-          </Suspense>
+      <div className="mt-8">
+        <h2 className="text-2xl font-semibold mb-4">User Management</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="p-4 text-left">Name</th>
+                <th className="p-4 text-left">Email</th>
+                <th className="p-4 text-left">Role</th>
+                <th className="p-4 text-left">Subscription</th>
+                <th className="p-4 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map(user => (
+                <tr key={user.id} className="border-b">
+                  <td className="p-4">{user.name}</td>
+                  <td className="p-4">{user.email}</td>
+                  <td className="p-4">{user.role}</td>
+                  <td className="p-4">
+                    {user.subscription ? (
+                      <span
+                        className={`px-2 py-1 rounded ${
+                          user.subscription.status === 'active'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}
+                      >
+                        {user.subscription.plan} - {user.subscription.status}
+                      </span>
+                    ) : (
+                      'No subscription'
+                    )}
+                  </td>
+                  <td className="p-4">
+                    <div className="flex space-x-2">
+                      <Button
+                        variant="outline"
+                        size={deviceType === 'mobile' ? 'sm' : 'md'}
+                        onClick={() =>
+                          handleUserAction(
+                            user.id,
+                            user.subscription?.status === 'active' ? 'suspend' : 'activate'
+                          )
+                        }
+                      >
+                        {user.subscription?.status === 'active' ? 'Suspend' : 'Activate'}
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size={deviceType === 'mobile' ? 'sm' : 'md'}
+                        onClick={() => handleUserAction(user.id, 'delete')}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">Subscription Overview</h2>
-          <Suspense fallback={<div>Loading subscriptions...</div>}>
-            <SubscriptionStats subscriptions={data.subscriptions} />
-          </Suspense>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold mb-4">Detailed User Data</h2>
-        <Suspense fallback={<div>Loading table...</div>}>
-          <DataTable data={data.users} />
-        </Suspense>
       </div>
     </div>
   );
-}); 
+}

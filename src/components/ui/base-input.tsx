@@ -22,7 +22,7 @@ export interface BaseInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
 
 /**
  * BaseInput - A foundational input component that can be extended by other input components
- * 
+ *
  * This component provides common input functionality with support for:
  * - Labels
  * - Error messages
@@ -33,44 +33,47 @@ export interface BaseInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
  * - All standard input attributes
  */
 export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
-  ({ 
-    label,
-    error,
-    leftIcon,
-    rightIcon,
-    className = '',
-    wrapperClassName = '',
-    containerClassName = '',
-    labelClassName = '',
-    errorClassName = '',
-    iconContainerClassName = '',
-    description,
-    descriptionClassName = '',
-    helpText,
-    helpTextClassName = '',
-    fullWidth = false,
-    size = 'md',
-    variant = 'default',
-    id,
-    ...props 
-  }, ref) => {
+  (
+    {
+      label,
+      error,
+      leftIcon,
+      rightIcon,
+      className = '',
+      wrapperClassName = '',
+      containerClassName = '',
+      labelClassName = '',
+      errorClassName = '',
+      iconContainerClassName = '',
+      description,
+      descriptionClassName = '',
+      helpText,
+      helpTextClassName = '',
+      fullWidth = false,
+      size = 'md',
+      variant = 'default',
+      id,
+      ...props
+    },
+    ref
+  ) => {
     // Generate a unique ID if none is provided
     const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Size-based classes
     const sizeClasses = {
       sm: 'h-8 text-xs px-2',
       md: 'h-9 text-sm px-3',
-      lg: 'h-10 text-base px-4'
+      lg: 'h-10 text-base px-4',
     };
-    
+
     // Variant-based classes
     const variantClasses = {
       default: 'border border-input bg-background',
       ghost: 'border-0 bg-transparent',
-      outline: 'border border-input bg-transparent'
+      outline: 'border border-input bg-transparent',
     };
-    
+
     return (
       <div className={cn('w-full', fullWidth ? 'w-full' : 'inline-block', wrapperClassName)}>
         {label && (
@@ -86,21 +89,23 @@ export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
             {label}
           </label>
         )}
-        
+
         {description && (
           <div className={cn('text-sm text-muted-foreground mb-2', descriptionClassName)}>
             {description}
           </div>
         )}
-        
+
         <div className={cn('relative rounded-md', containerClassName)}>
           {leftIcon && (
-            <div className={cn(
-              'absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none',
-              size === 'sm' && 'pl-2',
-              size === 'lg' && 'pl-4',
-              iconContainerClassName
-            )}>
+            <div
+              className={cn(
+                'absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none',
+                size === 'sm' && 'pl-2',
+                size === 'lg' && 'pl-4',
+                iconContainerClassName
+              )}
+            >
               {leftIcon}
             </div>
           )}
@@ -125,17 +130,19 @@ export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
             {...props}
           />
           {rightIcon && (
-            <div className={cn(
-              'absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none',
-              size === 'sm' && 'pr-2',
-              size === 'lg' && 'pr-4',
-              iconContainerClassName
-            )}>
+            <div
+              className={cn(
+                'absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none',
+                size === 'sm' && 'pr-2',
+                size === 'lg' && 'pr-4',
+                iconContainerClassName
+              )}
+            >
               {rightIcon}
             </div>
           )}
         </div>
-        
+
         {error && (
           <div
             id={`${inputId}-error`}
@@ -145,7 +152,7 @@ export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
             {error}
           </div>
         )}
-        
+
         {helpText && !error && (
           <div className={cn('mt-1 text-sm text-muted-foreground', helpTextClassName)}>
             {helpText}
@@ -158,4 +165,4 @@ export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
 
 BaseInput.displayName = 'BaseInput';
 
-export default BaseInput; 
+export default BaseInput;

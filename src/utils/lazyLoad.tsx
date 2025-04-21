@@ -22,7 +22,7 @@ export const LazyComponent = <P extends object>({
 }: LazyComponentProps<P>) => {
   return (
     <Suspense fallback={fallback}>
-      <Component {...props as P} />
+      <Component {...(props as P)} />
     </Suspense>
   );
 };
@@ -33,10 +33,10 @@ export function withLazyLoading<P extends object>(
   fallback: React.ReactNode = <LoadingFallback />
 ) {
   const LazyLoadedComponent = React.lazy(importFunc);
-  
+
   return (props: P) => (
     <Suspense fallback={fallback}>
       <LazyLoadedComponent {...props} />
     </Suspense>
   );
-} 
+}

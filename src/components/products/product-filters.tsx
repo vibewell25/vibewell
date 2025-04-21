@@ -6,7 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FilterX } from 'lucide-react';
 
@@ -29,8 +34,12 @@ export function ProductFilters({
 }: ProductFiltersProps) {
   // State for each filter type
   const [selectedTypes, setSelectedTypes] = useState<string[]>(initialFilter.types || []);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(initialFilter.categories || []);
-  const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(initialFilter.subcategories || []);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    initialFilter.categories || []
+  );
+  const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(
+    initialFilter.subcategories || []
+  );
   const [selectedBrands, setSelectedBrands] = useState<string[]>(initialFilter.brands || []);
   const [selectedTags, setSelectedTags] = useState<string[]>(initialFilter.tags || []);
   const [priceRange, setPriceRange] = useState<[number, number]>([
@@ -42,9 +51,10 @@ export function ProductFilters({
   const [activeFiltersCount, setActiveFiltersCount] = useState(0);
 
   // Get available subcategories based on selected categories
-  const availableSubcategories = selectedCategories.length > 0
-    ? selectedCategories.flatMap(cat => subcategories[cat] || [])
-    : Object.values(subcategories).flat();
+  const availableSubcategories =
+    selectedCategories.length > 0
+      ? selectedCategories.flatMap(cat => subcategories[cat] || [])
+      : Object.values(subcategories).flat();
 
   // Get filtered tags based on current selection (optional feature, may be resource intensive)
   const filteredTags = tags.slice(0, 15); // Show top 15 tags for simplicity
@@ -56,43 +66,43 @@ export function ProductFilters({
   useEffect(() => {
     // Build filter object
     const filter: ProductFilter = {};
-    
+
     if (selectedTypes.length > 0) {
       filter.types = selectedTypes;
     }
-    
+
     if (selectedCategories.length > 0) {
       filter.categories = selectedCategories;
     }
-    
+
     if (selectedSubcategories.length > 0) {
       filter.subcategories = selectedSubcategories;
     }
-    
+
     if (selectedBrands.length > 0) {
       filter.brands = selectedBrands;
     }
-    
+
     if (selectedTags.length > 0) {
       filter.tags = selectedTags;
     }
-    
+
     if (priceRange[0] > 0) {
       filter.minPrice = priceRange[0];
     }
-    
+
     if (priceRange[1] < 200) {
       filter.maxPrice = priceRange[1];
     }
-    
+
     if (minRating > 0) {
       filter.minRating = minRating;
     }
-    
+
     if (arCompatible) {
       filter.arCompatible = true;
     }
-    
+
     // Count active filters
     let count = 0;
     count += selectedTypes.length > 0 ? 1 : 0;
@@ -103,9 +113,9 @@ export function ProductFilters({
     count += priceRange[0] > 0 || priceRange[1] < 200 ? 1 : 0;
     count += minRating > 0 ? 1 : 0;
     count += arCompatible ? 1 : 0;
-    
+
     setActiveFiltersCount(count);
-    
+
     // Call onChange with the new filter
     onChange(filter);
   }, [
@@ -184,12 +194,7 @@ export function ProductFilters({
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">Filters</CardTitle>
           {activeFiltersCount > 0 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={resetFilters}
-              className="h-8 px-2 text-xs"
-            >
+            <Button variant="ghost" size="sm" onClick={resetFilters} className="h-8 px-2 text-xs">
               <FilterX className="mr-1 h-3 w-3" />
               Clear All
             </Button>
@@ -223,12 +228,12 @@ export function ProductFilters({
             <AccordionTrigger className="px-4 text-sm">Product Type</AccordionTrigger>
             <AccordionContent className="px-4 pt-2 pb-3">
               <div className="space-y-2">
-                {productTypes.map((type) => (
+                {productTypes.map(type => (
                   <div key={type} className="flex items-center space-x-2">
                     <Checkbox
                       id={`type-${type}`}
                       checked={selectedTypes.includes(type)}
-                      onCheckedChange={(checked) => handleTypeChange(type, checked === true)}
+                      onCheckedChange={checked => handleTypeChange(type, checked === true)}
                     />
                     <label
                       htmlFor={`type-${type}`}
@@ -247,13 +252,15 @@ export function ProductFilters({
             <AccordionTrigger className="px-4 text-sm">Category</AccordionTrigger>
             <AccordionContent className="px-4 pt-2 pb-3">
               <div className="space-y-2">
-                {categories.map((category) => (
+                {categories.map(category => (
                   <div key={category} className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id={`category-${category}`}
                         checked={selectedCategories.includes(category)}
-                        onCheckedChange={(checked) => handleCategoryChange(category, checked === true)}
+                        onCheckedChange={checked =>
+                          handleCategoryChange(category, checked === true)
+                        }
                       />
                       <label
                         htmlFor={`category-${category}`}
@@ -262,27 +269,30 @@ export function ProductFilters({
                         {category}
                       </label>
                     </div>
-                    
+
                     {/* Show subcategories if category is selected */}
-                    {selectedCategories.includes(category) && subcategories[category]?.length > 0 && (
-                      <div className="ml-6 space-y-1 border-l-2 pl-2 border-muted-foreground/20">
-                        {subcategories[category].map((sub) => (
-                          <div key={sub} className="flex items-center space-x-2">
-                            <Checkbox
-                              id={`subcategory-${sub}`}
-                              checked={selectedSubcategories.includes(sub)}
-                              onCheckedChange={(checked) => handleSubcategoryChange(sub, checked === true)}
-                            />
-                            <label
-                              htmlFor={`subcategory-${sub}`}
-                              className="text-xs cursor-pointer"
-                            >
-                              {sub}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    {selectedCategories.includes(category) &&
+                      subcategories[category]?.length > 0 && (
+                        <div className="ml-6 space-y-1 border-l-2 pl-2 border-muted-foreground/20">
+                          {subcategories[category].map(sub => (
+                            <div key={sub} className="flex items-center space-x-2">
+                              <Checkbox
+                                id={`subcategory-${sub}`}
+                                checked={selectedSubcategories.includes(sub)}
+                                onCheckedChange={checked =>
+                                  handleSubcategoryChange(sub, checked === true)
+                                }
+                              />
+                              <label
+                                htmlFor={`subcategory-${sub}`}
+                                className="text-xs cursor-pointer"
+                              >
+                                {sub}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                   </div>
                 ))}
               </div>
@@ -294,12 +304,12 @@ export function ProductFilters({
             <AccordionTrigger className="px-4 text-sm">Brand</AccordionTrigger>
             <AccordionContent className="px-4 pt-2 pb-3">
               <div className="space-y-2 max-h-40 overflow-y-auto pr-2">
-                {brands.map((brand) => (
+                {brands.map(brand => (
                   <div key={brand} className="flex items-center space-x-2">
                     <Checkbox
                       id={`brand-${brand}`}
                       checked={selectedBrands.includes(brand)}
-                      onCheckedChange={(checked) => handleBrandChange(brand, checked === true)}
+                      onCheckedChange={checked => handleBrandChange(brand, checked === true)}
                     />
                     <label
                       htmlFor={`brand-${brand}`}
@@ -323,16 +333,12 @@ export function ProductFilters({
                 max={200}
                 step={5}
                 value={priceRange}
-                onValueChange={(value) => setPriceRange(value as [number, number])}
+                onValueChange={value => setPriceRange(value as [number, number])}
                 className="mb-4"
               />
               <div className="flex items-center justify-between">
-                <span className="text-sm">
-                  ${priceRange[0]}
-                </span>
-                <span className="text-sm">
-                  ${priceRange[1]}+
-                </span>
+                <span className="text-sm">${priceRange[0]}</span>
+                <span className="text-sm">${priceRange[1]}+</span>
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -347,7 +353,7 @@ export function ProductFilters({
                 max={5}
                 step={0.5}
                 value={[minRating]}
-                onValueChange={(value) => setMinRating(value[0])}
+                onValueChange={value => setMinRating(value[0])}
                 className="mb-4"
               />
               <div className="flex items-center justify-between">
@@ -361,10 +367,10 @@ export function ProductFilters({
             <AccordionTrigger className="px-4 text-sm">Tags</AccordionTrigger>
             <AccordionContent className="px-4 pt-2 pb-3">
               <div className="flex flex-wrap gap-2">
-                {filteredTags.map((tag) => (
+                {filteredTags.map(tag => (
                   <div key={tag} className="inline-flex">
                     <Badge
-                      variant={selectedTags.includes(tag) ? "default" : "outline"}
+                      variant={selectedTags.includes(tag) ? 'default' : 'outline'}
                       className="cursor-pointer text-xs"
                       onClick={() => handleTagChange(tag, !selectedTags.includes(tag))}
                     >
@@ -385,12 +391,9 @@ export function ProductFilters({
                   <Checkbox
                     id="ar-compatible"
                     checked={arCompatible}
-                    onCheckedChange={(checked) => setArCompatible(checked === true)}
+                    onCheckedChange={checked => setArCompatible(checked === true)}
                   />
-                  <label
-                    htmlFor="ar-compatible"
-                    className="text-sm leading-none cursor-pointer"
-                  >
+                  <label htmlFor="ar-compatible" className="text-sm leading-none cursor-pointer">
                     AR Compatible
                   </label>
                 </div>
@@ -401,4 +404,4 @@ export function ProductFilters({
       </CardContent>
     </Card>
   );
-} 
+}

@@ -22,15 +22,15 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
   // Add a new search term
   const addSearch = (term: string) => {
     if (!term.trim()) return;
-    
+
     setSearches(prev => {
       // Remove the term if it already exists (to avoid duplicates)
       const filteredSearches = prev.filter(s => s !== term);
-      
+
       // Add the new term at the beginning and limit the number of searches
       return [term, ...filteredSearches].slice(0, maxSearches);
     });
-    
+
     setSearchTerm('');
   };
 
@@ -60,7 +60,7 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
   return (
     <div className={`recent-searches ${className}`}>
       <h2 className="text-lg font-medium mb-2">Recent Searches</h2>
-      
+
       {/* Search form */}
       <form onSubmit={handleSubmit} className="mb-4 flex">
         <input
@@ -79,7 +79,7 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
           Search
         </button>
       </form>
-      
+
       {/* Recent searches list */}
       {searches.length > 0 ? (
         <>
@@ -107,7 +107,7 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
               </li>
             ))}
           </ul>
-          
+
           <button
             onClick={clearSearches}
             className="mt-4 text-sm text-gray-600 hover:text-gray-800"
@@ -121,4 +121,4 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
       )}
     </div>
   );
-}; 
+};

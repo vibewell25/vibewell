@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -10,7 +10,11 @@ type ProtectedRouteProps = {
   redirectTo?: string;
 };
 
-export function ProtectedRoute({ children, requiredRole, redirectTo = '/auth/login' }: ProtectedRouteProps) {
+export function ProtectedRoute({
+  children,
+  requiredRole,
+  redirectTo = '/auth/login',
+}: ProtectedRouteProps) {
   const { user, loading, hasRole, isAuthenticated } = useAuth();
   const router = useRouter();
 
@@ -41,4 +45,4 @@ export function ProtectedRoute({ children, requiredRole, redirectTo = '/auth/log
   }
 
   return <>{children}</>;
-} 
+}

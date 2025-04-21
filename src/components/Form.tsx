@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { useCsrfToken } from '../utils/csrf';
+import { validateForm } from '../utils/form-validation';
 
 interface FormProps {
   onSuccess?: (data: any) => void;
@@ -8,7 +9,7 @@ interface FormProps {
 
 /**
  * A form component with built-in validation and CSRF protection
- * 
+ *
  * @component
  * @example
  * ```tsx
@@ -22,32 +23,23 @@ export function Form({ onSuccess }: FormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { token, addTokenToHeaders } = useCsrfToken();
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-    
-    if (!email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Please enter a valid email';
-    }
-    
-    if (!password) {
-      newErrors.password = 'Password is required';
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const validateFormData = () => {
+    // Use the centralized form validation utility
+    const formData = { email, password };
+    const validationResult = validateForm(formData);
+    setErrors(validationResult.errors);
+    return validationResult.isValid;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
+
+    if (!validateFormData()) {
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     try {
       const response = await fetch('/api/submit-form', {
         method: 'POST',
@@ -56,9 +48,9 @@ export function Form({ onSuccess }: FormProps) {
         }),
         body: JSON.stringify({ email, password }),
       });
-      
+
       const data = await response.json();
-      
+
       if (response.ok) {
         if (onSuccess) {
           onSuccess(data);
@@ -80,7 +72,7 @@ export function Form({ onSuccess }: FormProps) {
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Hidden CSRF token input */}
       <input type="hidden" name="csrf_token" value={token || ''} />
-      
+
       <div>
         <label htmlFor="email" className="block text-sm font-medium">
           Email
@@ -89,10 +81,10 @@ export function Form({ onSuccess }: FormProps) {
           id="email"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           aria-invalid={!!errors.email}
-          aria-describedby={errors.email ? "email-error" : undefined}
+          aria-describedby={errors.email ? 'email-error' : undefined}
         />
         {errors.email && (
           <span id="email-error" className="text-red-500 text-sm" role="alert">
@@ -100,7 +92,7 @@ export function Form({ onSuccess }: FormProps) {
           </span>
         )}
       </div>
-      
+
       <div>
         <label htmlFor="password" className="block text-sm font-medium">
           Password
@@ -109,10 +101,10 @@ export function Form({ onSuccess }: FormProps) {
           id="password"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           aria-invalid={!!errors.password}
-          aria-describedby={errors.password ? "password-error" : undefined}
+          aria-describedby={errors.password ? 'password-error' : undefined}
         />
         {errors.password && (
           <span id="password-error" className="text-red-500 text-sm" role="alert">
@@ -120,18 +112,16 @@ export function Form({ onSuccess }: FormProps) {
           </span>
         )}
       </div>
-      
+
       {errors.form && (
-        <div className="text-red-500 text-sm" role="alert">{errors.form}</div>
+        <div className="text-red-500 text-sm" role="alert">
+          {errors.form}
+        </div>
       )}
-      
-      <Button 
-        type="submit" 
-        disabled={isSubmitting}
-        aria-busy={isSubmitting}
-      >
+
+      <Button type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>
         {isSubmitting ? 'Submitting...' : 'Submit'}
       </Button>
     </form>
   );
-} 
+}

@@ -27,7 +27,7 @@ export const AccessibleModal: React.FC<AccessibleModalProps> = ({
     if (isOpen) {
       // Store the element that had focus when modal was opened
       lastFocusedElement.current = document.activeElement as HTMLElement;
-      
+
       // Focus the modal when it opens
       modalRef.current?.focus();
 
@@ -71,7 +71,7 @@ export const AccessibleModal: React.FC<AccessibleModalProps> = ({
       className="fixed inset-0 z-50 overflow-y-auto"
     >
       <div className="fixed inset-0 bg-black bg-opacity-50" />
-      
+
       <div className="flex min-h-full items-center justify-center p-4">
         <div
           className={`
@@ -91,7 +91,12 @@ export const AccessibleModal: React.FC<AccessibleModalProps> = ({
             >
               <span className="sr-only">Close</span>
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -104,4 +109,4 @@ export const AccessibleModal: React.FC<AccessibleModalProps> = ({
   );
 };
 
-export default AccessibleModal; 
+export default AccessibleModal;

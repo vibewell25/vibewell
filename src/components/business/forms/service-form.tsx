@@ -2,34 +2,34 @@
 
 import { useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import { 
-  BusinessProfileFormValues, 
-  ServiceFormProps 
+import {
+  BusinessProfileFormValues,
+  ServiceFormProps,
 } from '@/components/business/business-profile-wizard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Form, 
-  FormControl, 
-  FormDescription, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
-import { 
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -43,66 +43,107 @@ const SERVICE_CATEGORIES = [
     label: 'Hair',
     value: 'hair',
     subcategories: [
-      'Hair Cutting', 'Hair Coloring', 'Hair Styling', 'Hair Extensions', 
-      'Hair Treatments', 'Braiding', 'Weaves', 'Men\'s Grooming'
-    ]
+      'Hair Cutting',
+      'Hair Coloring',
+      'Hair Styling',
+      'Hair Extensions',
+      'Hair Treatments',
+      'Braiding',
+      'Weaves',
+      "Men's Grooming",
+    ],
   },
   {
     label: 'Skin',
     value: 'skin',
     subcategories: [
-      'Facials', 'Skin Treatments', 'Acne Treatments', 'Anti-Aging', 
-      'Microdermabrasion', 'Chemical Peels', 'Dermaplane'
-    ]
+      'Facials',
+      'Skin Treatments',
+      'Acne Treatments',
+      'Anti-Aging',
+      'Microdermabrasion',
+      'Chemical Peels',
+      'Dermaplane',
+    ],
   },
   {
     label: 'Makeup',
     value: 'makeup',
     subcategories: [
-      'Full Face Makeup', 'Bridal Makeup', 'Makeup Lessons', 
-      'Special Occasion Makeup', 'Eyelash Extensions', 'Eyebrow Tinting'
-    ]
+      'Full Face Makeup',
+      'Bridal Makeup',
+      'Makeup Lessons',
+      'Special Occasion Makeup',
+      'Eyelash Extensions',
+      'Eyebrow Tinting',
+    ],
   },
   {
     label: 'Nails',
     value: 'nails',
     subcategories: [
-      'Manicure', 'Pedicure', 'Gel Nails', 'Acrylic Nails', 'Nail Art', 
-      'Nail Repair', 'Dipping Powder'
-    ]
+      'Manicure',
+      'Pedicure',
+      'Gel Nails',
+      'Acrylic Nails',
+      'Nail Art',
+      'Nail Repair',
+      'Dipping Powder',
+    ],
   },
   {
     label: 'Massage',
     value: 'massage',
     subcategories: [
-      'Swedish Massage', 'Deep Tissue Massage', 'Hot Stone Massage', 
-      'Sports Massage', 'Prenatal Massage', 'Couples Massage', 'Reflexology'
-    ]
+      'Swedish Massage',
+      'Deep Tissue Massage',
+      'Hot Stone Massage',
+      'Sports Massage',
+      'Prenatal Massage',
+      'Couples Massage',
+      'Reflexology',
+    ],
   },
   {
     label: 'Spa',
     value: 'spa',
     subcategories: [
-      'Body Wraps', 'Body Scrubs', 'Hydrotherapy', 'Aromatherapy', 
-      'Sauna', 'Steam Room', 'Full Spa Packages'
-    ]
+      'Body Wraps',
+      'Body Scrubs',
+      'Hydrotherapy',
+      'Aromatherapy',
+      'Sauna',
+      'Steam Room',
+      'Full Spa Packages',
+    ],
   },
   {
     label: 'Fitness',
     value: 'fitness',
     subcategories: [
-      'Personal Training', 'Yoga', 'Pilates', 'Group Fitness', 
-      'Nutrition Coaching', 'Weight Management', 'Meditation'
-    ]
+      'Personal Training',
+      'Yoga',
+      'Pilates',
+      'Group Fitness',
+      'Nutrition Coaching',
+      'Weight Management',
+      'Meditation',
+    ],
   },
   {
     label: 'Other',
     value: 'other',
     subcategories: [
-      'Waxing', 'Threading', 'Tanning', 'Ear Piercing', 'Body Piercing', 
-      'Tattoo', 'Permanent Makeup', 'Wellness Consultation'
-    ]
-  }
+      'Waxing',
+      'Threading',
+      'Tanning',
+      'Ear Piercing',
+      'Body Piercing',
+      'Tattoo',
+      'Permanent Makeup',
+      'Wellness Consultation',
+    ],
+  },
 ];
 
 // Service durations in minutes
@@ -118,7 +159,7 @@ const SERVICE_DURATIONS = [
   { value: '150', label: '2 hours 30 minutes' },
   { value: '180', label: '3 hours' },
   { value: '240', label: '4 hours' },
-  { value: 'custom', label: 'Custom duration' }
+  { value: 'custom', label: 'Custom duration' },
 ];
 
 export function ServiceForm({ form }: ServiceFormProps) {
@@ -152,7 +193,8 @@ export function ServiceForm({ form }: ServiceFormProps) {
       name: newServiceName.trim(),
       category: selectedCategory,
       price: parseFloat(newServicePrice),
-      duration: newServiceDuration === 'custom' ? parseInt(customDuration) : parseInt(newServiceDuration),
+      duration:
+        newServiceDuration === 'custom' ? parseInt(customDuration) : parseInt(newServiceDuration),
       description: newServiceDescription.trim(),
     };
 
@@ -191,9 +233,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>Add Services</CardTitle>
-          <CardDescription>
-            List the services you offer with pricing and duration
-          </CardDescription>
+          <CardDescription>List the services you offer with pricing and duration</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -201,27 +241,24 @@ export function ServiceForm({ form }: ServiceFormProps) {
               <FormItem>
                 <FormLabel>Service Name</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="e.g. Haircut & Style" 
+                  <Input
+                    placeholder="e.g. Haircut & Style"
                     value={newServiceName}
-                    onChange={(e) => setNewServiceName(e.target.value)}
+                    onChange={e => setNewServiceName(e.target.value)}
                   />
                 </FormControl>
               </FormItem>
 
               <FormItem>
                 <FormLabel>Category</FormLabel>
-                <Select
-                  value={selectedCategory}
-                  onValueChange={setSelectedCategory}
-                >
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {SERVICE_CATEGORIES.map((category) => (
+                    {SERVICE_CATEGORIES.map(category => (
                       <SelectItem key={category.value} value={category.value}>
                         {category.label}
                       </SelectItem>
@@ -240,10 +277,10 @@ export function ServiceForm({ form }: ServiceFormProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
-                      {SERVICE_CATEGORIES.find(c => c.value === selectedCategory)?.subcategories.map((sub) => (
-                        <DropdownMenuItem key={sub}>
-                          {sub}
-                        </DropdownMenuItem>
+                      {SERVICE_CATEGORIES.find(
+                        c => c.value === selectedCategory
+                      )?.subcategories.map(sub => (
+                        <DropdownMenuItem key={sub}>{sub}</DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -257,12 +294,12 @@ export function ServiceForm({ form }: ServiceFormProps) {
                 <FormControl>
                   <div className="relative">
                     <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input 
+                    <Input
                       type="number"
-                      placeholder="e.g. 75" 
+                      placeholder="e.g. 75"
                       className="pl-10"
                       value={newServicePrice}
-                      onChange={(e) => setNewServicePrice(e.target.value)}
+                      onChange={e => setNewServicePrice(e.target.value)}
                       min={0}
                       step="0.01"
                     />
@@ -272,17 +309,14 @@ export function ServiceForm({ form }: ServiceFormProps) {
 
               <FormItem>
                 <FormLabel>Duration</FormLabel>
-                <Select
-                  value={newServiceDuration}
-                  onValueChange={handleDurationChange}
-                >
+                <Select value={newServiceDuration} onValueChange={handleDurationChange}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select duration" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {SERVICE_DURATIONS.map((duration) => (
+                    {SERVICE_DURATIONS.map(duration => (
                       <SelectItem key={duration.value} value={duration.value}>
                         {duration.label}
                       </SelectItem>
@@ -295,11 +329,11 @@ export function ServiceForm({ form }: ServiceFormProps) {
                 <FormItem>
                   <FormLabel>Custom Duration (minutes)</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       type="number"
-                      placeholder="Enter minutes" 
+                      placeholder="Enter minutes"
                       value={customDuration}
-                      onChange={(e) => setCustomDuration(e.target.value)}
+                      onChange={e => setCustomDuration(e.target.value)}
                       min={1}
                     />
                   </FormControl>
@@ -311,23 +345,17 @@ export function ServiceForm({ form }: ServiceFormProps) {
           <FormItem>
             <FormLabel>Description (Optional)</FormLabel>
             <FormControl>
-              <Textarea 
-                placeholder="Describe what this service includes..." 
+              <Textarea
+                placeholder="Describe what this service includes..."
                 value={newServiceDescription}
-                onChange={(e) => setNewServiceDescription(e.target.value)}
+                onChange={e => setNewServiceDescription(e.target.value)}
                 rows={3}
               />
             </FormControl>
-            <FormDescription>
-              Provide details about what's included in this service
-            </FormDescription>
+            <FormDescription>Provide details about what's included in this service</FormDescription>
           </FormItem>
 
-          <Button 
-            type="button" 
-            onClick={addService}
-            className="w-full"
-          >
+          <Button type="button" onClick={addService} className="w-full">
             <Plus className="mr-2 h-4 w-4" /> Add Service
           </Button>
 
@@ -336,9 +364,9 @@ export function ServiceForm({ form }: ServiceFormProps) {
               <h3 className="font-medium mb-3">Your Services</h3>
               <ScrollArea className="h-[300px] rounded-md border">
                 <div className="p-4 space-y-4">
-                  {services.map((service) => (
-                    <div 
-                      key={service.id} 
+                  {services.map(service => (
+                    <div
+                      key={service.id}
                       className="flex items-start justify-between bg-muted/50 rounded-lg p-4"
                     >
                       <div className="space-y-1">
@@ -346,19 +374,23 @@ export function ServiceForm({ form }: ServiceFormProps) {
                           <h4 className="font-medium">{service.name}</h4>
                           {service.category && (
                             <Badge variant="outline" className="text-xs">
-                              {SERVICE_CATEGORIES.find(c => c.value === service.category)?.label || service.category}
+                              {SERVICE_CATEGORIES.find(c => c.value === service.category)?.label ||
+                                service.category}
                             </Badge>
                           )}
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          <span className="font-medium">${service.price.toFixed(2)}</span> • {service.duration} minutes
+                          <span className="font-medium">${service.price.toFixed(2)}</span> •{' '}
+                          {service.duration} minutes
                         </div>
                         {service.description && (
-                          <p className="text-sm text-muted-foreground mt-1">{service.description}</p>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {service.description}
+                          </p>
                         )}
                       </div>
                       <Button
-                        variant="ghost" 
+                        variant="ghost"
                         size="icon"
                         onClick={() => deleteService(service.id)}
                         className="h-8 w-8 text-destructive"
@@ -377,9 +409,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>Special Offers & Packages</CardTitle>
-          <CardDescription>
-            Create special promotions or service bundles
-          </CardDescription>
+          <CardDescription>Create special promotions or service bundles</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -389,15 +419,10 @@ export function ServiceForm({ form }: ServiceFormProps) {
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                   <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>
-                      Offer Service Packages
-                    </FormLabel>
+                    <FormLabel>Offer Service Packages</FormLabel>
                     <FormDescription>
                       Bundle multiple services together at a special rate
                     </FormDescription>
@@ -412,15 +437,10 @@ export function ServiceForm({ form }: ServiceFormProps) {
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                   <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>
-                      Offer Special Discounts
-                    </FormLabel>
+                    <FormLabel>Offer Special Discounts</FormLabel>
                     <FormDescription>
                       First-time customer discounts, seasonal promotions, etc.
                     </FormDescription>
@@ -435,15 +455,10 @@ export function ServiceForm({ form }: ServiceFormProps) {
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                   <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>
-                      Offer Gift Cards
-                    </FormLabel>
+                    <FormLabel>Offer Gift Cards</FormLabel>
                     <FormDescription>
                       Allow customers to purchase gift cards for your services
                     </FormDescription>
@@ -460,8 +475,8 @@ export function ServiceForm({ form }: ServiceFormProps) {
               <FormItem className="mt-6">
                 <FormLabel>Special Offers Details (Optional)</FormLabel>
                 <FormControl>
-                  <Textarea 
-                    placeholder="Describe any special offers, packages, or discounts you provide..." 
+                  <Textarea
+                    placeholder="Describe any special offers, packages, or discounts you provide..."
                     rows={3}
                     {...field}
                   />
@@ -473,4 +488,4 @@ export function ServiceForm({ form }: ServiceFormProps) {
       </Card>
     </div>
   );
-} 
+}

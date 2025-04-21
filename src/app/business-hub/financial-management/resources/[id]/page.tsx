@@ -4,13 +4,17 @@ import { useParams, useRouter, notFound } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-;
 import { PremiumContentLock } from '@/components/premium-content-lock';
 import Link from 'next/link';
 import { Layout } from '@/components/layout';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
 import { FinancialNav } from '@/components/financial-nav';
-import { addBookmark, removeBookmark, isBookmarked as checkIsBookmarked, trackRecentView } from '@/lib/bookmarks';
+import {
+  addBookmark,
+  removeBookmark,
+  isBookmarked as checkIsBookmarked,
+  trackRecentView,
+} from '@/lib/bookmarks';
 import { getUserRating, saveRating, getAverageRating } from '@/lib/ratings';
 import { StarRating } from '@/components/star-rating';
 import { ResourceReview } from '@/components/resource-review';
@@ -51,7 +55,7 @@ const financialResources = [
       <h2>Cash Flow Management</h2>
       <p>The wellness industry often experiences seasonal fluctuations. Maintaining a 3-6 month cash reserve is recommended to navigate slower periods and unexpected expenses.</p>
     `,
-    relatedResources: ['2', '5', '7']
+    relatedResources: ['2', '5', '7'],
   },
   {
     id: '2',
@@ -80,7 +84,7 @@ const financialResources = [
       <h2>Record Keeping Best Practices</h2>
       <p>Proper documentation is essential for maximizing deductions while staying compliant with tax regulations.</p>
     `,
-    relatedResources: ['1', '3', '6']
+    relatedResources: ['1', '3', '6'],
   },
   {
     id: '3',
@@ -102,7 +106,7 @@ const financialResources = [
       <h2>Handling Price Objections</h2>
       <p>Strategies for confidently addressing concerns about your pricing.</p>
     `,
-    relatedResources: ['1', '4', '7']
+    relatedResources: ['1', '4', '7'],
   },
   {
     id: '4',
@@ -124,7 +128,7 @@ const financialResources = [
       <h2>Using Technology to Improve Cash Flow</h2>
       <p>How modern payment systems, automated billing, and financial software can improve your cash flow management.</p>
     `,
-    relatedResources: ['1', '5', '7']
+    relatedResources: ['1', '5', '7'],
   },
   {
     id: '5',
@@ -146,7 +150,7 @@ const financialResources = [
       <h2>Profitability Analysis by Service</h2>
       <p>How to calculate and track the true profitability of each service you offer.</p>
     `,
-    relatedResources: ['1', '4', '6']
+    relatedResources: ['1', '4', '6'],
   },
   {
     id: '6',
@@ -168,7 +172,7 @@ const financialResources = [
       <h2>Budgeting for Growth</h2>
       <p>How to create a budget that supports your growth objectives while maintaining financial stability.</p>
     `,
-    relatedResources: ['1', '2', '5']
+    relatedResources: ['1', '2', '5'],
   },
   {
     id: '7',
@@ -190,8 +194,8 @@ const financialResources = [
       <h2>Implementing the Profit First System</h2>
       <p>A practical guide to adapting the Profit First methodology for wellness businesses.</p>
     `,
-    relatedResources: ['3', '4', '5']
-  }
+    relatedResources: ['3', '4', '5'],
+  },
 ];
 // Analytics tracking function
 const trackResourceView = (resourceId: string, resourceName: string) => {
@@ -200,11 +204,11 @@ const trackResourceView = (resourceId: string, resourceName: string) => {
     const now = new Date().toISOString();
     try {
       const viewData = JSON.parse(localStorage.getItem('resource_view_log') || '{}');
-      viewData[resourceId] = { 
+      viewData[resourceId] = {
         id: resourceId,
-        name: resourceName, 
+        name: resourceName,
         lastViewed: now,
-        views: (viewData[resourceId]?.views || 0) + 1
+        views: (viewData[resourceId]?.views || 0) + 1,
       };
       localStorage.setItem('resource_view_log', JSON.stringify(viewData));
       // Also update a "popular resources" counter
@@ -225,7 +229,10 @@ export default function ResourceDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [userRating, setUserRating] = useState<number | null>(null);
-  const [averageRating, setAverageRating] = useState<{ average: number, count: number }>({ average: 0, count: 0 });
+  const [averageRating, setAverageRating] = useState<{ average: number; count: number }>({
+    average: 0,
+    count: 0,
+  });
   // Check if the resource is bookmarked
   useEffect(() => {
     if (typeof window !== 'undefined' && resourceId) {
@@ -261,7 +268,7 @@ export default function ResourceDetailPage() {
           title: foundResource.title,
           description: foundResource.content.substring(0, 100) + '...',
           url: `/business-hub/financial-management/resources/${resourceId}`,
-          category: foundResource.category
+          category: foundResource.category,
         });
       } else {
         setError('Resource not found');
@@ -288,7 +295,7 @@ export default function ResourceDetailPage() {
         title: resource.title,
         description: resource.content.substring(0, 100) + '...',
         url: `/business-hub/financial-management/resources/${resourceId}`,
-        category: resource.category
+        category: resource.category,
       });
       setIsBookmarked(true);
     }
@@ -308,7 +315,9 @@ export default function ResourceDetailPage() {
       <Layout>
         <div className="container mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
-          <p className="text-gray-600 mb-6">Tools, resources, and education to grow your wellness business</p>
+          <p className="text-gray-600 mb-6">
+            Tools, resources, and education to grow your wellness business
+          </p>
           {/* Main Navigation */}
           <BusinessHubNavigation />
           {/* Financial Management Navigation */}
@@ -335,7 +344,9 @@ export default function ResourceDetailPage() {
       <Layout>
         <div className="container mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
-          <p className="text-gray-600 mb-6">Tools, resources, and education to grow your wellness business</p>
+          <p className="text-gray-600 mb-6">
+            Tools, resources, and education to grow your wellness business
+          </p>
           {/* Main Navigation */}
           <BusinessHubNavigation />
           {/* Financial Management Navigation */}
@@ -346,9 +357,7 @@ export default function ResourceDetailPage() {
             </h1>
             <p className="mb-6">The resource you're looking for could not be found.</p>
             <Link href="/business-hub/financial-management">
-              <Button>
-                Back to Financial Resources
-              </Button>
+              <Button>Back to Financial Resources</Button>
             </Link>
           </div>
         </div>
@@ -356,26 +365,31 @@ export default function ResourceDetailPage() {
     );
   }
   // Find related resources
-  const relatedResources = financialResources.filter(item => 
-    resource.relatedResources.includes(item.id)
-  ).slice(0, 3);
+  const relatedResources = financialResources
+    .filter(item => resource.relatedResources.includes(item.id))
+    .slice(0, 3);
   return (
     <Layout>
       <div className="container mx-auto py-8 px-4">
         <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
-        <p className="text-gray-600 mb-6">Tools, resources, and education to grow your wellness business</p>
+        <p className="text-gray-600 mb-6">
+          Tools, resources, and education to grow your wellness business
+        </p>
         {/* Main Navigation */}
         <BusinessHubNavigation />
         {/* Financial Management Navigation */}
         <FinancialNav />
-        <Link href="/business-hub/financial-management" className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6">
+        <Link
+          href="/business-hub/financial-management"
+          className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6"
+        >
           <Icons.ArrowLeftIcon className="h-4 w-4 mr-2" />
           Back to Financial Management
         </Link>
         <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
           <div className="flex justify-between p-4">
             <div className="flex items-center">
-              <StarRating 
+              <StarRating
                 initialRating={averageRating.average}
                 readonly={true}
                 showCount={true}
@@ -392,7 +406,7 @@ export default function ResourceDetailPage() {
           </div>
           {resource.imageUrl && (
             <div className="relative h-64 w-full bg-gray-200">
-              <div 
+              <div
                 className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url(${resource.imageUrl})` }}
               />
@@ -414,7 +428,7 @@ export default function ResourceDetailPage() {
               <Icons.ClockIcon className="h-4 w-4 mr-1" />
               <span>{resource.readTime}</span>
             </div>
-            <div 
+            <div
               className="prose max-w-none prose-blue prose-headings:text-gray-800"
               dangerouslySetInnerHTML={{ __html: resource.content }}
             />
@@ -428,13 +442,15 @@ export default function ResourceDetailPage() {
             <h2 className="text-xl font-bold mb-4">Related Resources</h2>
             <div className="grid md:grid-cols-3 gap-6">
               {relatedResources.map(related => (
-                <Link 
-                  key={related.id} 
+                <Link
+                  key={related.id}
                   href={`/business-hub/financial-management/resources/${related.id}`}
                   className="block bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
                   <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">{related.title}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                      {related.title}
+                    </h3>
                     <div className="flex items-center text-gray-500 text-sm">
                       <Icons.DocumentTextIcon className="h-4 w-4 mr-1" />
                       <span className="mr-2">{related.category}</span>
@@ -450,4 +466,4 @@ export default function ResourceDetailPage() {
       </div>
     </Layout>
   );
-} 
+}

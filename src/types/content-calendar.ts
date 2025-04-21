@@ -6,7 +6,16 @@ export interface ContentItem {
   dueDate: string;
   assignedTo: string;
   platformIds: string[];
-  contentType: 'blog' | 'social' | 'email' | 'video' | 'image' | 'promotion' | 'testimonial' | 'newsletter' | 'other';
+  contentType:
+    | 'blog'
+    | 'social'
+    | 'email'
+    | 'video'
+    | 'image'
+    | 'promotion'
+    | 'testimonial'
+    | 'newsletter'
+    | 'other';
   attachments: ContentAttachment[];
   tags: string[];
   comments: ContentComment[];
@@ -67,4 +76,4 @@ export interface DraggableItemProps {
   platforms: ContentPlatform[];
   onEdit: (item: ContentItem) => void;
   onDelete: (id: string) => void;
-} 
+}

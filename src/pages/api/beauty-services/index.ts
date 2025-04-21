@@ -1,13 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from '@/types/api';
 import { getAuth } from '@clerk/nextjs/server';
 import { BeautyServiceService } from '../../../services/beautyService.service';
 
 const beautyServiceService = new BeautyServiceService();
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { userId } = getAuth(req);
 
   if (!userId) {
@@ -46,4 +43,4 @@ export default async function handler(
       res.setHeader('Allow', ['POST', 'GET']);
       return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
   }
-} 
+}

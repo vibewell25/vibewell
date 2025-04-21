@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Icons } from '@/components/icons';
 import { ROUTES } from '@/constants/routes';
 
@@ -33,7 +33,11 @@ export default function ForgotPasswordPage() {
         setIsSuccessful(true);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to send password reset email. Please try again.');
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Failed to send password reset email. Please try again.'
+      );
     } finally {
       setIsLoading(false);
     }
@@ -46,8 +50,8 @@ export default function ForgotPasswordPage() {
           <Icons.logo className="h-12 w-12 mb-4 text-primary" />
           <h1 className="text-2xl font-bold mb-2">Check your email</h1>
           <p className="text-muted-foreground text-center">
-            We've sent a password reset link to <strong>{email}</strong>. 
-            Please check your email and click the link to reset your password.
+            We've sent a password reset link to <strong>{email}</strong>. Please check your email
+            and click the link to reset your password.
           </p>
         </div>
         <Link
@@ -71,9 +75,7 @@ export default function ForgotPasswordPage() {
       </div>
 
       {error && (
-        <div className="bg-destructive/20 text-destructive p-3 rounded-md mb-4">
-          {error}
-        </div>
+        <div className="bg-destructive/20 text-destructive p-3 rounded-md mb-4">{error}</div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -86,7 +88,7 @@ export default function ForgotPasswordPage() {
             type="email"
             placeholder="name@example.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
             required
             className="w-full p-2 border rounded-md"
             disabled={isLoading}
@@ -110,4 +112,4 @@ export default function ForgotPasswordPage() {
       </p>
     </div>
   );
-} 
+}

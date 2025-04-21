@@ -49,33 +49,33 @@ export function ThemeProvider({
     }
     return defaultTheme;
   });
-  
+
   const [systemTheme, setSystemTheme] = useState<'dark' | 'light'>('light');
-  
+
   // Update system theme based on media query
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
+
     const handleChange = (e: MediaQueryListEvent) => {
       setSystemTheme(e.matches ? 'dark' : 'light');
     };
-    
+
     // Set initial system theme
     setSystemTheme(mediaQuery.matches ? 'dark' : 'light');
-    
+
     // Listen for changes
     mediaQuery.addEventListener('change', handleChange);
-    
+
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
-  
+
   // Calculate the resolved theme
   const resolvedTheme = theme === 'system' ? systemTheme : theme;
-  
+
   // Custom setTheme function that persists to localStorage
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    
+
     // Save to localStorage
     if (typeof window !== 'undefined') {
       try {
@@ -121,4 +121,4 @@ export const useTheme = () => {
   }
 
   return context;
-}; 
+};

@@ -76,7 +76,7 @@ export class RealTimeAnalytics extends EventEmitter {
       this.eventBuffer = [];
 
       // Batch insert events into database
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async tx => {
         for (const event of events) {
           switch (event.type) {
             case 'view':
@@ -85,8 +85,8 @@ export class RealTimeAnalytics extends EventEmitter {
                   sessionId: event.sessionId,
                   userId: event.userId,
                   timestamp: new Date(event.timestamp),
-                  ...event.data
-                }
+                  ...event.data,
+                },
               });
               break;
             case 'interaction':
@@ -95,8 +95,8 @@ export class RealTimeAnalytics extends EventEmitter {
                   sessionId: event.sessionId,
                   userId: event.userId,
                   timestamp: new Date(event.timestamp),
-                  ...event.data
-                }
+                  ...event.data,
+                },
               });
               break;
             case 'conversion':
@@ -105,8 +105,8 @@ export class RealTimeAnalytics extends EventEmitter {
                   sessionId: event.sessionId,
                   userId: event.userId,
                   timestamp: new Date(event.timestamp),
-                  ...event.data
-                }
+                  ...event.data,
+                },
               });
               break;
             case 'error':
@@ -115,8 +115,8 @@ export class RealTimeAnalytics extends EventEmitter {
                   sessionId: event.sessionId,
                   userId: event.userId,
                   timestamp: new Date(event.timestamp),
-                  ...event.data
-                }
+                  ...event.data,
+                },
               });
               break;
           }
@@ -136,17 +136,17 @@ export class RealTimeAnalytics extends EventEmitter {
 
       const [views, interactions, conversions, errors] = await Promise.all([
         prisma.analyticsView.count({
-          where: { timestamp: { gte: fiveMinutesAgo } }
+          where: { timestamp: { gte: fiveMinutesAgo } },
         }),
         prisma.analyticsInteraction.count({
-          where: { timestamp: { gte: fiveMinutesAgo } }
+          where: { timestamp: { gte: fiveMinutesAgo } },
         }),
         prisma.analyticsConversion.count({
-          where: { timestamp: { gte: fiveMinutesAgo } }
+          where: { timestamp: { gte: fiveMinutesAgo } },
         }),
         prisma.analyticsError.count({
-          where: { timestamp: { gte: fiveMinutesAgo } }
-        })
+          where: { timestamp: { gte: fiveMinutesAgo } },
+        }),
       ]);
 
       return {
@@ -156,12 +156,12 @@ export class RealTimeAnalytics extends EventEmitter {
           interactions,
           conversions,
           errors,
-          conversionRate: views > 0 ? (conversions / views) * 100 : 0
-        }
+          conversionRate: views > 0 ? (conversions / views) * 100 : 0,
+        },
       };
     } catch (error) {
       logger.error('Error getting realtime metrics:', error);
       throw error;
     }
   }
-} 
+}

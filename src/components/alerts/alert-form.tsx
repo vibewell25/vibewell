@@ -7,7 +7,13 @@ import { ProductService } from '@/services/product-service';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -36,7 +42,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
     metric: 'rating',
     condition: 'below',
     threshold: 3,
-    notification_methods: ['email', 'dashboard']
+    notification_methods: ['email', 'dashboard'],
   });
 
   useEffect(() => {
@@ -56,7 +62,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
 
     const fetchAlert = async () => {
       if (!alertId) return;
-      
+
       setLoading(true);
       try {
         const alertData = await alertService.getAlertById(alertId);
@@ -97,14 +103,14 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
   const handleNotificationMethodChange = (method: string, checked: boolean) => {
     setAlert(prev => {
       const methods = [...prev.notification_methods];
-      
+
       if (checked && !methods.includes(method)) {
         methods.push(method);
       } else if (!checked && methods.includes(method)) {
         const index = methods.indexOf(method);
         methods.splice(index, 1);
       }
-      
+
       return { ...prev, notification_methods: methods };
     });
   };
@@ -118,8 +124,14 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!alert.name || !alert.product_id || !alert.metric || !alert.condition || !alert.notification_methods.length) {
+
+    if (
+      !alert.name ||
+      !alert.product_id ||
+      !alert.metric ||
+      !alert.condition ||
+      !alert.notification_methods.length
+    ) {
       toast({
         title: 'Validation Error',
         description: 'Please fill in all required fields.',
@@ -129,7 +141,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
     }
 
     setLoading(true);
-    
+
     try {
       if (alertId) {
         await alertService.updateAlert(alertId, alert);
@@ -144,7 +156,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
           description: 'New alert has been created successfully.',
         });
       }
-      
+
       if (onSuccess) {
         onSuccess();
       } else {
@@ -181,7 +193,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                 required
               />
             </div>
-            
+
             <div>
               <Label htmlFor="description">Description</Label>
               <Textarea
@@ -193,19 +205,19 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                 rows={3}
               />
             </div>
-            
+
             <div>
               <Label htmlFor="product_id">Product*</Label>
               <Select
                 value={alert.product_id}
-                onValueChange={(value) => handleSelectChange('product_id', value)}
+                onValueChange={value => handleSelectChange('product_id', value)}
                 disabled={!!productId}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a product" />
                 </SelectTrigger>
                 <SelectContent>
-                  {products.map((product) => (
+                  {products.map(product => (
                     <SelectItem key={product.id} value={product.id}>
                       {product.name}
                     </SelectItem>
@@ -213,13 +225,13 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <Label htmlFor="metric">Metric*</Label>
                 <Select
                   value={alert.metric}
-                  onValueChange={(value) => handleSelectChange('metric', value)}
+                  onValueChange={value => handleSelectChange('metric', value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select metric" />
@@ -232,12 +244,12 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div>
                 <Label htmlFor="condition">Condition*</Label>
                 <Select
                   value={alert.condition}
-                  onValueChange={(value) => handleSelectChange('condition', value)}
+                  onValueChange={value => handleSelectChange('condition', value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select condition" />
@@ -248,7 +260,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div>
                 <Label htmlFor="threshold">Threshold*</Label>
                 <Input
@@ -263,7 +275,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                 />
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-2 pt-2">
               <Switch
                 id="is_active"
@@ -272,7 +284,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
               />
               <Label htmlFor="is_active">Active</Label>
             </div>
-            
+
             <div className="space-y-2">
               <Label>Notification Methods*</Label>
               <div className="flex flex-col space-y-2">
@@ -280,7 +292,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                   <Checkbox
                     id="email"
                     checked={alert.notification_methods.includes('email')}
-                    onCheckedChange={(checked) => 
+                    onCheckedChange={checked =>
                       handleNotificationMethodChange('email', checked as boolean)
                     }
                   />
@@ -290,7 +302,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                   <Checkbox
                     id="dashboard"
                     checked={alert.notification_methods.includes('dashboard')}
-                    onCheckedChange={(checked) => 
+                    onCheckedChange={checked =>
                       handleNotificationMethodChange('dashboard', checked as boolean)
                     }
                   />
@@ -300,7 +312,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                   <Checkbox
                     id="sms"
                     checked={alert.notification_methods.includes('sms')}
-                    onCheckedChange={(checked) => 
+                    onCheckedChange={checked =>
                       handleNotificationMethodChange('sms', checked as boolean)
                     }
                   />
@@ -309,7 +321,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
               </div>
             </div>
           </div>
-          
+
           <div className="flex justify-end space-x-2 pt-4">
             <Button
               type="button"
@@ -327,4 +339,4 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
       </CardContent>
     </Card>
   );
-} 
+}

@@ -2,8 +2,8 @@ import { Redis } from 'ioredis';
 import { logger } from '@/lib/logger';
 
 export interface RateLimitConfig {
-  points: number;      // Number of requests allowed
-  duration: number;    // Time window in seconds
+  points: number; // Number of requests allowed
+  duration: number; // Time window in seconds
   blockDuration?: number; // How long to block if limit exceeded (seconds)
 }
 
@@ -23,18 +23,18 @@ export class RateLimitService {
   ): Promise<{ limited: boolean; remaining: number; resetTime?: Date }> {
     const now = Date.now();
     const keyPrefix = `rate-limit:${key}`;
-    
+
     try {
       // Check if currently blocked
       const blockKey = `${keyPrefix}:blocked`;
       const isBlocked = await this.redis.get(blockKey);
-      
+
       if (isBlocked) {
         const ttl = await this.redis.ttl(blockKey);
         return {
           limited: true,
           remaining: 0,
-          resetTime: new Date(now + ttl * 1000)
+          resetTime: new Date(now + ttl * 1000),
         };
       }
 
@@ -53,19 +53,16 @@ export class RateLimitService {
         return {
           limited: true,
           remaining: 0,
-          resetTime: new Date(now + ttl * 1000)
+          resetTime: new Date(now + ttl * 1000),
         };
       }
 
       // Increment points
-      await this.redis.multi()
-        .incr(pointsKey)
-        .expire(pointsKey, config.duration)
-        .exec();
+      await this.redis.multi().incr(pointsKey).expire(pointsKey, config.duration).exec();
 
       return {
         limited: false,
-        remaining: config.points - (currentPoints + 1)
+        remaining: config.points - (currentPoints + 1),
       };
     } catch (error) {
       logger.error('Rate limiting error', 'rate-limit', { error, key });
@@ -81,7 +78,7 @@ export class RateLimitService {
     const keyPrefix = `rate-limit:${key}`;
     await Promise.all([
       this.redis.del(`${keyPrefix}:points`),
-      this.redis.del(`${keyPrefix}:blocked`)
+      this.redis.del(`${keyPrefix}:blocked`),
     ]);
   }
 }
@@ -90,39 +87,39 @@ export class RateLimitService {
 export const RATE_LIMITS = {
   // General API limits
   api: {
-    points: 100,        // 100 requests
-    duration: 60,       // per minute
-    blockDuration: 300  // 5 minute block if exceeded
+    points: 100, // 100 requests
+    duration: 60, // per minute
+    blockDuration: 300, // 5 minute block if exceeded
   },
-  
+
   // Login attempts
   login: {
-    points: 5,          // 5 attempts
-    duration: 300,      // per 5 minutes
-    blockDuration: 900  // 15 minute block if exceeded
+    points: 5, // 5 attempts
+    duration: 300, // per 5 minutes
+    blockDuration: 900, // 15 minute block if exceeded
   },
-  
+
   // MFA verification attempts
   mfa: {
-    points: 3,          // 3 attempts
-    duration: 300,      // per 5 minutes
-    blockDuration: 1800 // 30 minute block if exceeded
+    points: 3, // 3 attempts
+    duration: 300, // per 5 minutes
+    blockDuration: 1800, // 30 minute block if exceeded
   },
-  
+
   // Password reset requests
   passwordReset: {
-    points: 3,          // 3 attempts
-    duration: 3600,     // per hour
-    blockDuration: 7200 // 2 hour block if exceeded
+    points: 3, // 3 attempts
+    duration: 3600, // per hour
+    blockDuration: 7200, // 2 hour block if exceeded
   },
-  
+
   // SMS/Email code requests
   otpRequest: {
-    points: 5,          // 5 requests
-    duration: 3600,     // per hour
-    blockDuration: 3600 // 1 hour block if exceeded
-  }
+    points: 5, // 5 requests
+    duration: 3600, // per hour
+    blockDuration: 3600, // 1 hour block if exceeded
+  },
 };
 
 // Export singleton instance
-export const rateLimitService = new RateLimitService(); 
+export const rateLimitService = new RateLimitService();

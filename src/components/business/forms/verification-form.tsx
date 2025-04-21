@@ -5,16 +5,22 @@ import { UseFormReturn } from 'react-hook-form';
 import { BusinessProfileFormValues } from '@/components/business/business-profile-wizard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Badge } from '@/components/ui/badge';
@@ -28,29 +34,30 @@ export function VerificationForm({ form }: VerificationFormProps) {
   const [documentType, setDocumentType] = useState<string>('business_license');
   const [documentPreview, setDocumentPreview] = useState<string | null>(null);
   const [documentName, setDocumentName] = useState<string | null>(null);
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Handle document file selection
   const handleDocumentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     // Validate file type and size
     const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
     if (!validTypes.includes(file.type)) {
       alert('Please select a PDF, JPG, or PNG file');
       return;
     }
-    
-    if (file.size > 10 * 1024 * 1024) { // 10MB max
+
+    if (file.size > 10 * 1024 * 1024) {
+      // 10MB max
       alert('File must be less than 10MB');
       return;
     }
-    
+
     // Set file name for display
     setDocumentName(file.name);
-    
+
     // Create preview if it's an image
     if (file.type.startsWith('image/')) {
       const reader = new FileReader();
@@ -62,7 +69,7 @@ export function VerificationForm({ form }: VerificationFormProps) {
       // For PDFs, just show an icon (no preview)
       setDocumentPreview(null);
     }
-    
+
     // Set form value
     form.setValue('verificationDocument', file, { shouldValidate: true });
     form.setValue('verificationType', documentType, { shouldValidate: true });
@@ -127,10 +134,7 @@ export function VerificationForm({ form }: VerificationFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Business Type</FormLabel>
-                <Select 
-                  onValueChange={field.onChange} 
-                  defaultValue={field.value}
-                >
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select business type" />
@@ -155,9 +159,7 @@ export function VerificationForm({ form }: VerificationFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>Verification Document</CardTitle>
-          <CardDescription>
-            Upload a document to verify your business
-          </CardDescription>
+          <CardDescription>Upload a document to verify your business</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-4">
@@ -169,7 +171,7 @@ export function VerificationForm({ form }: VerificationFormProps) {
                   <FormLabel>Document Type</FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={(value) => {
+                      onValueChange={value => {
                         field.onChange(value);
                         setDocumentType(value);
                       }}
@@ -215,18 +217,14 @@ export function VerificationForm({ form }: VerificationFormProps) {
                     <div>
                       <p className="text-sm font-medium">{documentName}</p>
                       <p className="text-xs text-muted-foreground">
-                        {documentType.split('_').map(word => 
-                          word.charAt(0).toUpperCase() + word.slice(1)
-                        ).join(' ')}
+                        {documentType
+                          .split('_')
+                          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                          .join(' ')}
                       </p>
                     </div>
                   </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={removeDocument}
-                  >
+                  <Button type="button" variant="ghost" size="sm" onClick={removeDocument}>
                     <X className="h-4 w-4" />
                   </Button>
                 </div>
@@ -239,7 +237,7 @@ export function VerificationForm({ form }: VerificationFormProps) {
                   <Badge variant="outline">PDF, JPG, PNG (Max 10MB)</Badge>
                 </div>
               )}
-              
+
               <div className="flex justify-center">
                 <input
                   ref={fileInputRef}
@@ -267,17 +265,15 @@ export function VerificationForm({ form }: VerificationFormProps) {
             render={({ field }) => (
               <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                 <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
+                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormLabel>
                     I certify that all the information provided is accurate and complete
                   </FormLabel>
                   <p className="text-xs text-muted-foreground">
-                    By checking this box, you agree to our verification process and understand that providing false information may result in account termination.
+                    By checking this box, you agree to our verification process and understand that
+                    providing false information may result in account termination.
                   </p>
                 </div>
               </FormItem>
@@ -287,4 +283,4 @@ export function VerificationForm({ form }: VerificationFormProps) {
       </Card>
     </div>
   );
-} 
+}

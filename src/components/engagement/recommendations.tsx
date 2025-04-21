@@ -20,10 +20,10 @@ export function Recommendations({
   className = '',
 }: RecommendationsProps) {
   const { recommendations, isLoading } = useEngagement();
-  
+
   // Limit the number of recommendations to display
   const displayRecommendations = recommendations.slice(0, maxItems);
-  
+
   if (isLoading) {
     return (
       <div className={className}>
@@ -40,11 +40,11 @@ export function Recommendations({
       </div>
     );
   }
-  
+
   if (displayRecommendations.length === 0) {
     return null;
   }
-  
+
   return (
     <div className={className}>
       {showTitle && (
@@ -53,9 +53,9 @@ export function Recommendations({
           <h3 className="font-semibold">Recommended for You</h3>
         </div>
       )}
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {displayRecommendations.map((product) => (
+        {displayRecommendations.map(product => (
           <Card key={product.id} className="overflow-hidden group">
             <div className="relative h-36">
               <Image
@@ -76,11 +76,11 @@ export function Recommendations({
                 <div className="flex items-center">
                   <div className="flex">
                     {[...Array(Math.floor(product.rating))].map((_, i) => (
-                      <span key={i} className="text-yellow-400 text-xs">★</span>
+                      <span key={i} className="text-yellow-400 text-xs">
+                        ★
+                      </span>
                     ))}
-                    {product.rating % 1 > 0 && (
-                      <span className="text-yellow-400 text-xs">☆</span>
-                    )}
+                    {product.rating % 1 > 0 && <span className="text-yellow-400 text-xs">☆</span>}
                   </div>
                   <span className="text-xs ml-1 text-muted-foreground">
                     {product.rating.toFixed(1)}
@@ -96,7 +96,7 @@ export function Recommendations({
           </Card>
         ))}
       </div>
-      
+
       {recommendations.length > maxItems && (
         <div className="flex justify-center mt-4">
           <Link href="/recommendations">
@@ -108,4 +108,4 @@ export function Recommendations({
       )}
     </div>
   );
-} 
+}

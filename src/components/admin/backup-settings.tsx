@@ -4,16 +4,42 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BackupConfig } from '@/lib/backup/backup-service';
-import { backupConfig, storageConfig, encryptionConfig, compressionConfig } from '@/config/backup-config';
+import {
+  backupConfig,
+  storageConfig,
+  encryptionConfig,
+  compressionConfig,
+} from '@/config/backup-config';
 import { AlertTriangle, Save, RefreshCw } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 
@@ -24,18 +50,24 @@ const backupSettingsSchema = z.object({
   encryptionEnabled: z.boolean(),
   compressionEnabled: z.boolean(),
   storageLocation: z.enum(['local', 's3', 'gcs']),
-  s3Config: z.object({
-    bucket: z.string().min(1),
-    region: z.string().min(1),
-    path: z.string(),
-  }).optional(),
-  gcsConfig: z.object({
-    bucket: z.string().min(1),
-    path: z.string(),
-  }).optional(),
-  localConfig: z.object({
-    path: z.string().min(1),
-  }).optional(),
+  s3Config: z
+    .object({
+      bucket: z.string().min(1),
+      region: z.string().min(1),
+      path: z.string(),
+    })
+    .optional(),
+  gcsConfig: z
+    .object({
+      bucket: z.string().min(1),
+      path: z.string(),
+    })
+    .optional(),
+  localConfig: z
+    .object({
+      path: z.string().min(1),
+    })
+    .optional(),
   encryption: z.object({
     algorithm: z.string(),
     keySize: z.number(),
@@ -76,7 +108,7 @@ export function BackupSettings() {
       setLoading(true);
       setError(null);
 
-      import { updateBackupSettings } from "../../implementation-files/backup-settings-update";
+      import { updateBackupSettings } from '../../implementation-files/backup-settings-update';
       console.log('Updating backup settings:', values);
 
       toast({
@@ -114,10 +146,7 @@ export function BackupSettings() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Backup Frequency</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select backup frequency" />
@@ -129,9 +158,7 @@ export function BackupSettings() {
                         <SelectItem value="monthly">Monthly</SelectItem>
                       </SelectContent>
                     </Select>
-                    <FormDescription>
-                      How often to perform automated backups
-                    </FormDescription>
+                    <FormDescription>How often to perform automated backups</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -147,7 +174,7 @@ export function BackupSettings() {
                       <Input
                         type="number"
                         {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value))}
+                        onChange={e => field.onChange(parseInt(e.target.value))}
                       />
                     </FormControl>
                     <FormDescription>
@@ -166,18 +193,11 @@ export function BackupSettings() {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                     <div className="space-y-0.5">
-                      <FormLabel className="text-base">
-                        Encryption
-                      </FormLabel>
-                      <FormDescription>
-                        Enable encryption for backup data
-                      </FormDescription>
+                      <FormLabel className="text-base">Encryption</FormLabel>
+                      <FormDescription>Enable encryption for backup data</FormDescription>
                     </div>
                     <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -189,18 +209,11 @@ export function BackupSettings() {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                     <div className="space-y-0.5">
-                      <FormLabel className="text-base">
-                        Compression
-                      </FormLabel>
-                      <FormDescription>
-                        Enable compression for backup data
-                      </FormDescription>
+                      <FormLabel className="text-base">Compression</FormLabel>
+                      <FormDescription>Enable compression for backup data</FormDescription>
                     </div>
                     <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -213,10 +226,7 @@ export function BackupSettings() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Storage Location</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select storage location" />
@@ -228,9 +238,7 @@ export function BackupSettings() {
                       <SelectItem value="gcs">Google Cloud Storage</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormDescription>
-                    Where to store backup files
-                  </FormDescription>
+                  <FormDescription>Where to store backup files</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -303,10 +311,7 @@ export function BackupSettings() {
             )}
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button
-              type="submit"
-              disabled={loading}
-            >
+            <Button type="submit" disabled={loading}>
               {loading ? (
                 <>
                   <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
@@ -332,4 +337,4 @@ export function BackupSettings() {
       </form>
     </Form>
   );
-} 
+}

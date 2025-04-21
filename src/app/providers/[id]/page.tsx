@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { Layout } from '@/components/layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-;
 import ReviewsList from '@/components/ReviewsList';
 import ReviewForm from '@/components/ReviewForm';
 import RatingBreakdown from '@/components/RatingBreakdown';
@@ -59,7 +58,7 @@ export default function ProviderProfilePage() {
     summary,
     isLoading: reviewsLoading,
     addReview,
-    getRatingPercentage
+    getRatingPercentage,
   } = useProviderReviews(id as string);
   // Fetch provider data
   useEffect(() => {
@@ -73,79 +72,80 @@ export default function ProviderProfilePage() {
           // Mock data for demo purposes
           const mockProvider: ProviderData = {
             id: id as string,
-            name: "Sarah Johnson",
-            profileImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
-            coverImage: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f",
-            tagline: "Expert Hair Stylist & Makeup Artist",
-            description: "With over 10 years of experience in the beauty industry, I specialize in cutting-edge hair styling techniques and professional makeup for all occasions. My passion is to help clients look and feel their best.",
-            location: "New York, NY",
-            address: "123 Beauty Lane, New York, NY 10001",
+            name: 'Sarah Johnson',
+            profileImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
+            coverImage: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f',
+            tagline: 'Expert Hair Stylist & Makeup Artist',
+            description:
+              'With over 10 years of experience in the beauty industry, I specialize in cutting-edge hair styling techniques and professional makeup for all occasions. My passion is to help clients look and feel their best.',
+            location: 'New York, NY',
+            address: '123 Beauty Lane, New York, NY 10001',
             coordinates: {
               lat: 40.7128,
-              lng: -74.0060
+              lng: -74.006,
             },
             services: [
               {
-                id: "s1",
-                name: "Haircut & Styling",
+                id: 's1',
+                name: 'Haircut & Styling',
                 price: 85,
                 duration: 60,
-                description: "Includes consultation, shampoo, cut, and style."
+                description: 'Includes consultation, shampoo, cut, and style.',
               },
               {
-                id: "s2",
-                name: "Full Makeup Application",
+                id: 's2',
+                name: 'Full Makeup Application',
                 price: 120,
                 duration: 75,
-                description: "Complete makeup look for any occasion."
+                description: 'Complete makeup look for any occasion.',
               },
               {
-                id: "s3",
-                name: "Hair Coloring",
+                id: 's3',
+                name: 'Hair Coloring',
                 price: 150,
                 duration: 120,
-                description: "Custom hair color including consultation."
-              }
+                description: 'Custom hair color including consultation.',
+              },
             ],
             certifications: [
               {
-                id: "c1",
-                name: "Professional Makeup Artist Certificate",
-                issuer: "Beauty Academy of New York",
-                year: 2015
+                id: 'c1',
+                name: 'Professional Makeup Artist Certificate',
+                issuer: 'Beauty Academy of New York',
+                year: 2015,
               },
               {
-                id: "c2",
-                name: "Advanced Hair Coloring Techniques",
-                issuer: "International Hair Association",
-                year: 2018
-              }
+                id: 'c2',
+                name: 'Advanced Hair Coloring Techniques',
+                issuer: 'International Hair Association',
+                year: 2018,
+              },
             ],
             availability: [
               {
-                day: "Monday",
+                day: 'Monday',
                 slots: [
-                  { start: "09:00", end: "12:00" },
-                  { start: "13:00", end: "17:00" }
-                ]
+                  { start: '09:00', end: '12:00' },
+                  { start: '13:00', end: '17:00' },
+                ],
               },
               {
-                day: "Wednesday",
+                day: 'Wednesday',
                 slots: [
-                  { start: "09:00", end: "12:00" },
-                  { start: "13:00", end: "17:00" }
-                ]
+                  { start: '09:00', end: '12:00' },
+                  { start: '13:00', end: '17:00' },
+                ],
               },
               {
-                day: "Friday",
+                day: 'Friday',
                 slots: [
-                  { start: "10:00", end: "14:00" },
-                  { start: "15:00", end: "19:00" }
-                ]
-              }
+                  { start: '10:00', end: '14:00' },
+                  { start: '15:00', end: '19:00' },
+                ],
+              },
             ],
             rating: 4.8,
-            reviewCount: summary.totalReviews || 24
+            reviewCount: summary.totalReviews || 24,
           };
           setProvider(mockProvider);
           setIsLoading(false);
@@ -260,7 +260,10 @@ export default function ProviderProfilePage() {
                     <p className="font-medium">Availability</p>
                     <ul className="text-gray-600">
                       {provider.availability.map((item, index) => (
-                        <li key={index}>{item.day}: {item.slots.map(slot => `${slot.start}-${slot.end}`).join(', ')}</li>
+                        <li key={index}>
+                          {item.day}:{' '}
+                          {item.slots.map(slot => `${slot.start}-${slot.end}`).join(', ')}
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -276,7 +279,9 @@ export default function ProviderProfilePage() {
                     <Icons.CheckSolid className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                     <div>
                       <p className="font-medium">{cert.name}</p>
-                      <p className="text-sm text-gray-600">{cert.issuer}, {cert.year}</p>
+                      <p className="text-sm text-gray-600">
+                        {cert.issuer}, {cert.year}
+                      </p>
                     </div>
                   </li>
                 ))}
@@ -325,15 +330,13 @@ export default function ProviderProfilePage() {
                 <div className="bg-white rounded-lg shadow p-6 mb-6">
                   <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-semibold">Customer Reviews</h2>
-                    <Button 
-                      onClick={() => setShowReviewForm(!showReviewForm)}
-                    >
+                    <Button onClick={() => setShowReviewForm(!showReviewForm)}>
                       {showReviewForm ? 'Cancel' : 'Write a Review'}
                     </Button>
                   </div>
                   {showReviewForm && (
                     <div className="mb-8">
-                      <ReviewForm 
+                      <ReviewForm
                         providerId={id as string}
                         onSubmit={handleAddReview}
                         onCancel={() => setShowReviewForm(false)}
@@ -342,7 +345,7 @@ export default function ProviderProfilePage() {
                   )}
                   <div className="flex flex-col lg:flex-row gap-6">
                     <div className="lg:w-1/3">
-                      <RatingBreakdown 
+                      <RatingBreakdown
                         distribution={summary.ratingDistribution}
                         totalReviews={summary.totalReviews}
                         averageRating={summary.averageRating}
@@ -376,10 +379,7 @@ export default function ProviderProfilePage() {
                       )}
                     </div>
                     <div className="lg:w-2/3">
-                      <ReviewsList 
-                        reviews={reviews}
-                        isLoading={reviewsLoading}
-                      />
+                      <ReviewsList reviews={reviews} isLoading={reviewsLoading} />
                     </div>
                   </div>
                 </div>
@@ -390,4 +390,4 @@ export default function ProviderProfilePage() {
       </div>
     </Layout>
   );
-} 
+}

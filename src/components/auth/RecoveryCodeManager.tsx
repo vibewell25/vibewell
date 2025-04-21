@@ -11,10 +11,7 @@ interface RecoveryCodeManagerProps {
   onComplete?: () => void;
 }
 
-export const RecoveryCodeManager: React.FC<RecoveryCodeManagerProps> = ({
-  userId,
-  onComplete
-}) => {
+export const RecoveryCodeManager: React.FC<RecoveryCodeManagerProps> = ({ userId, onComplete }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
   const [codes, setCodes] = useState<string[]>([]);
@@ -30,7 +27,7 @@ export const RecoveryCodeManager: React.FC<RecoveryCodeManagerProps> = ({
       const response = await fetch('/api/auth/2fa/recovery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'count' })
+        body: JSON.stringify({ action: 'count' }),
       });
 
       if (!response.ok) throw new Error('Failed to fetch remaining codes');
@@ -48,7 +45,7 @@ export const RecoveryCodeManager: React.FC<RecoveryCodeManagerProps> = ({
       const response = await fetch('/api/auth/2fa/recovery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'generate' })
+        body: JSON.stringify({ action: 'generate' }),
       });
 
       if (!response.ok) {
@@ -78,10 +75,10 @@ export const RecoveryCodeManager: React.FC<RecoveryCodeManagerProps> = ({
       <Card className="p-6">
         <h3 className="text-lg font-semibold mb-4">Recovery Codes</h3>
         <p className="text-sm text-gray-600 mb-4">
-          Recovery codes allow you to access your account if you lose access to your
-          authenticator device. Each code can only be used once.
+          Recovery codes allow you to access your account if you lose access to your authenticator
+          device. Each code can only be used once.
         </p>
-        
+
         <div className="flex items-center justify-between mb-4">
           <span className="text-sm">
             Remaining codes: <strong>{remainingCodes}</strong>
@@ -89,7 +86,7 @@ export const RecoveryCodeManager: React.FC<RecoveryCodeManagerProps> = ({
           <Button
             onClick={generateNewCodes}
             disabled={isLoading}
-            variant={remainingCodes === 0 ? "default" : "outline"}
+            variant={remainingCodes === 0 ? 'default' : 'outline'}
           >
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {remainingCodes === 0 ? 'Generate Codes' : 'Generate New Codes'}
@@ -99,8 +96,8 @@ export const RecoveryCodeManager: React.FC<RecoveryCodeManagerProps> = ({
         {remainingCodes < 3 && (
           <Alert variant="warning" className="mt-4">
             <AlertDescription>
-              You have fewer than 3 recovery codes remaining. We recommend generating
-              new codes to ensure you don't lose access to your account.
+              You have fewer than 3 recovery codes remaining. We recommend generating new codes to
+              ensure you don't lose access to your account.
             </AlertDescription>
           </Alert>
         )}
@@ -111,11 +108,11 @@ export const RecoveryCodeManager: React.FC<RecoveryCodeManagerProps> = ({
           <DialogHeader>
             <DialogTitle>Your Recovery Codes</DialogTitle>
           </DialogHeader>
-          
+
           <div className="space-y-4">
             <p className="text-sm text-gray-600">
-              Save these recovery codes in a secure location. Each code can only be
-              used once to recover access to your account.
+              Save these recovery codes in a secure location. Each code can only be used once to
+              recover access to your account.
             </p>
 
             <div className="bg-gray-100 p-4 rounded-md">
@@ -129,9 +126,7 @@ export const RecoveryCodeManager: React.FC<RecoveryCodeManagerProps> = ({
             </div>
 
             <Alert>
-              <AlertDescription>
-                Keep these codes safe! They won't be shown again.
-              </AlertDescription>
+              <AlertDescription>Keep these codes safe! They won't be shown again.</AlertDescription>
             </Alert>
 
             <div className="flex justify-end space-x-2">
@@ -151,4 +146,4 @@ export const RecoveryCodeManager: React.FC<RecoveryCodeManagerProps> = ({
       </Dialog>
     </div>
   );
-}; 
+};

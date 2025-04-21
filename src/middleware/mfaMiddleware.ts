@@ -1,7 +1,9 @@
-import { NextApiRequest, NextApiResponse, NextApiHandler } from 'next';
+import { NextApiRequest, NextApiResponse, NextApiHandler } from '@/types/api';
 import { getSession } from 'next-auth/react';
 import { Redis } from 'ioredis';
 import { authOptions } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
+import { generateTOTP, verifyTOTP } from '@/lib/totp';
 
 interface ExtendedRequest extends NextApiRequest {
   mfaVerified?: boolean;
@@ -37,14 +39,69 @@ class MFAVerificationError extends Error implements MFAError {
 }
 
 class MFAService {
-  async isMFAEnabled(email: string): Promise<boolean> {
-    // TODO: Implement actual MFA check logic
-    return false;
+  private redis: Redis;
+
+  constructor(redisInstance: Redis) {
+    this.redis = redisInstance;
   }
 
-  async verifyMFA(email: string): Promise<boolean> {
-    // TODO: Implement actual MFA verification logic
-    return false;
+  async isMFAEnabled(email: string): Promise<boolean> {
+    try {
+      // Check if the user has MFA enabled in their profile
+      const user = await prisma.user.findUnique({
+        where: { email },
+        select: { mfaEnabled: true, id: true },
+      });
+
+      return !!user?.mfaEnabled;
+    } catch (error) {
+      console.error('Error checking MFA status:', error);
+      return false;
+    }
+  }
+
+  async verifyMFA(email: string, token?: string): Promise<boolean> {
+    if (!token) {
+      // If no token provided, check if this session has been verified within the time window
+      const hasVerifiedSession = await this.checkVerifiedSession(email);
+      return hasVerifiedSession;
+    }
+
+    try {
+      // Find user with this email
+      const user = await prisma.user.findUnique({
+        where: { email },
+        select: { id: true, mfaSecret: true },
+      });
+
+      if (!user?.mfaSecret) {
+        return false;
+      }
+
+      // Verify the provided TOTP token
+      const isValid = verifyTOTP(token, user.mfaSecret);
+
+      if (isValid) {
+        // Store successful verification in Redis with 30-minute expiry
+        await this.storeVerifiedSession(email);
+      }
+
+      return isValid;
+    } catch (error) {
+      console.error('Error verifying MFA token:', error);
+      return false;
+    }
+  }
+
+  private async storeVerifiedSession(email: string): Promise<void> {
+    const key = `mfa:verified:${email}`;
+    await this.redis.set(key, 'true', 'EX', 1800); // 30 minute expiry
+  }
+
+  private async checkVerifiedSession(email: string): Promise<boolean> {
+    const key = `mfa:verified:${email}`;
+    const verified = await this.redis.get(key);
+    return verified === 'true';
   }
 }
 
@@ -54,8 +111,8 @@ const SENSITIVE_ROUTES = [
   // Add other sensitive routes that require MFA
 ];
 
-const mfaService = new MFAService();
 const redis = new Redis(process.env.REDIS_URL || '');
+const mfaService = new MFAService(redis);
 
 export const mfaMiddleware = async (
   req: ExtendedRequest,
@@ -68,9 +125,7 @@ export const mfaMiddleware = async (
       return res.status(401).json({ error: 'Unauthorized: No session found' });
     }
 
-    const isSensitiveRoute = SENSITIVE_ROUTES.some((route) =>
-      req.url?.startsWith(route)
-    );
+    const isSensitiveRoute = SENSITIVE_ROUTES.some(route => req.url?.startsWith(route));
 
     if (!isSensitiveRoute) {
       return next();
@@ -82,15 +137,15 @@ export const mfaMiddleware = async (
       return next();
     }
 
-    if (!req.mfaVerified) {
+    // Check for MFA token in request headers or body
+    const mfaToken = (req.headers['x-mfa-token'] as string) || req.body?.mfaToken;
+
+    const isVerified = await mfaService.verifyMFA(session.user.email, mfaToken);
+    if (!isVerified) {
       throw new MFARequiredError();
     }
 
-    const isVerified = await mfaService.verifyMFA(session.user.email);
-    if (!isVerified) {
-      throw new MFAVerificationError();
-    }
-
+    req.mfaVerified = true;
     return next();
   } catch (error: unknown) {
     if (
@@ -100,16 +155,16 @@ export const mfaMiddleware = async (
       (error instanceof MFARequiredError || error instanceof MFAVerificationError)
     ) {
       console.error(`MFA Error: ${error.code} - ${error.message}`);
-      return res.status(error.statusCode).json({ 
+      return res.status(error.statusCode).json({
         error: error.message,
-        code: error.code 
+        code: error.code,
       });
     }
-    
+
     console.error('Unexpected error in MFA middleware:', error);
-    return res.status(500).json({ 
+    return res.status(500).json({
       error: 'Internal server error during MFA verification',
-      code: 'INTERNAL_SERVER_ERROR'
+      code: 'INTERNAL_SERVER_ERROR',
     });
   }
 };
@@ -124,7 +179,10 @@ export const withMFA = (handler: NextApiHandler): NextApiHandler => {
 
       const isMFAEnabled = await mfaService.isMFAEnabled(session.user.email);
       if (isMFAEnabled) {
-        const isVerified = await mfaService.verifyMFA(session.user.email);
+        // Check for MFA token in request headers or body
+        const mfaToken = (req.headers['x-mfa-token'] as string) || req.body?.mfaToken;
+
+        const isVerified = await mfaService.verifyMFA(session.user.email, mfaToken);
         if (!isVerified) {
           throw new MFARequiredError();
         }
@@ -139,4 +197,4 @@ export const withMFA = (handler: NextApiHandler): NextApiHandler => {
       throw error;
     }
   };
-}; 
+};

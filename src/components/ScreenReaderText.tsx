@@ -5,11 +5,7 @@ interface ScreenReaderTextProps {
 }
 
 export const ScreenReaderText: React.FC<ScreenReaderTextProps> = ({ children }) => {
-  return (
-    <span className="sr-only">
-      {children}
-    </span>
-  );
+  return <span className="sr-only">{children}</span>;
 };
 
-export default ScreenReaderText; 
+export default ScreenReaderText;

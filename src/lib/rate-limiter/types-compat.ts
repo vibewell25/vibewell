@@ -1,17 +1,17 @@
 /**
  * Rate Limiter Types (Legacy Compatibility)
- * 
+ *
  * @deprecated Use the types from '@/lib/rate-limiter/types' instead
  */
 
-import type { 
+import type {
   RateLimitOptions,
   RateLimitResult,
   RateLimitEvent,
   WebSocketRateLimitOptions,
   GraphQLContext,
   DEFAULT_OPTIONS,
-  DEFAULT_WEBSOCKET_OPTIONS
+  DEFAULT_WEBSOCKET_OPTIONS,
 } from './types';
 
 // Re-export all types
@@ -20,11 +20,8 @@ export type {
   RateLimitResult,
   RateLimitEvent,
   WebSocketRateLimitOptions,
-  GraphQLContext
+  GraphQLContext,
 };
 
 // Re-export constants
-export {
-  DEFAULT_OPTIONS,
-  DEFAULT_WEBSOCKET_OPTIONS
-}; 
+export { DEFAULT_OPTIONS, DEFAULT_WEBSOCKET_OPTIONS };

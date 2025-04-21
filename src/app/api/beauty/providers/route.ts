@@ -18,10 +18,7 @@ export async function GET(request: Request) {
     const providerId = searchParams.get('providerId');
 
     if (!providerId) {
-      return NextResponse.json(
-        { error: 'Provider ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Provider ID is required' }, { status: 400 });
     }
 
     // Find the provider with all necessary data
@@ -51,10 +48,10 @@ export async function GET(request: Request) {
                 price: true,
                 duration: true,
                 image: true,
-              }
-            }
-          }
-        }
+              },
+            },
+          },
+        },
       },
     });
 
@@ -79,8 +76,8 @@ export async function GET(request: Request) {
                 id: true,
                 name: true,
                 image: true,
-              }
-            }
+              },
+            },
           },
         },
       },
@@ -101,10 +98,7 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error('Error fetching provider:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch provider' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch provider' }, { status: 500 });
   }
 }
 
@@ -126,7 +120,10 @@ export async function PUT(request: Request) {
     });
 
     if (!userIsProvider) {
-      return NextResponse.json({ error: 'Only providers can update their profile' }, { status: 403 });
+      return NextResponse.json(
+        { error: 'Only providers can update their profile' },
+        { status: 403 }
+      );
     }
 
     // Update the provider profile with our new fields
@@ -149,15 +146,12 @@ export async function PUT(request: Request) {
         specialties: true,
         experience: true,
         phone: true,
-      }
+      },
     });
 
     return NextResponse.json(provider);
   } catch (error) {
     console.error('Error updating provider:', error);
-    return NextResponse.json(
-      { error: 'Failed to update provider' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to update provider' }, { status: 500 });
   }
-} 
+}

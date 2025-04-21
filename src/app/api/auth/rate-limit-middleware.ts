@@ -1,11 +1,11 @@
 /**
  * Rate limiting middleware for App Router API routes
- * 
+ *
  * @deprecated Use the consolidated rate limiter in src/lib/rate-limiter directly
  */
-import { 
+import {
   apiRateLimiter,
-  authRateLimiter, 
+  authRateLimiter,
   sensitiveApiRateLimiter,
   passwordResetRateLimiter,
   signupRateLimiter,
@@ -14,13 +14,13 @@ import {
   adminRateLimiter,
   applyRateLimit,
   createRateLimiter,
-  withRateLimit
+  withRateLimit,
 } from '@/lib/rate-limiter';
 
 // Re-export the rate limiters
 export {
   apiRateLimiter,
-  authRateLimiter, 
+  authRateLimiter,
   sensitiveApiRateLimiter,
   passwordResetRateLimiter,
   signupRateLimiter,
@@ -29,5 +29,5 @@ export {
   adminRateLimiter,
   applyRateLimit,
   createRateLimiter,
-  withRateLimit
-}; 
+  withRateLimit,
+};

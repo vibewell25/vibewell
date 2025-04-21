@@ -11,4 +11,4 @@ declare module 'next-auth' {
       role: Role;
     };
   }
-} 
+}

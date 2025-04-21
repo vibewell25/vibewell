@@ -17,11 +17,7 @@ export function dynamicImport<T extends Record<string, unknown>>(
   importFn: () => Promise<{ default: ComponentType<T> }>,
   options: DynamicImportOptions = {}
 ) {
-  const {
-    ssr = true,
-    loading: LoadingComponent,
-    suspense = false,
-  } = options;
+  const { ssr = true, loading: LoadingComponent, suspense = false } = options;
 
   return dynamic(importFn, {
     ssr,
@@ -36,7 +32,7 @@ export function dynamicImport<T extends Record<string, unknown>>(
  * @returns Dynamically imported component with loading state
  */
 export function lazyLoad<T extends Record<string, unknown>>(
-  importFn: () => Promise<{ default: ComponentType<T> }>,
+  importFn: () => Promise<{ default: ComponentType<T> }>
 ) {
   return dynamicImport<T>(importFn, {
     ssr: false,
@@ -50,7 +46,7 @@ export function lazyLoad<T extends Record<string, unknown>>(
  * @returns Dynamically imported component for client-side only
  */
 export function clientOnly<T extends Record<string, unknown>>(
-  importFn: () => Promise<{ default: ComponentType<T> }>,
+  importFn: () => Promise<{ default: ComponentType<T> }>
 ) {
   return dynamicImport<T>(importFn, {
     ssr: false,
@@ -63,7 +59,7 @@ export function clientOnly<T extends Record<string, unknown>>(
  * @returns Dynamically imported component with SSR enabled
  */
 export function ssrEnabled<T extends Record<string, unknown>>(
-  importFn: () => Promise<{ default: ComponentType<T> }>,
+  importFn: () => Promise<{ default: ComponentType<T> }>
 ) {
   return dynamicImport<T>(importFn, {
     ssr: true,
@@ -78,9 +74,9 @@ export function ssrEnabled<T extends Record<string, unknown>>(
  */
 export function withLoading<T extends Record<string, unknown>>(
   importFn: () => Promise<{ default: ComponentType<T> }>,
-  LoadingComponent: ComponentType,
+  LoadingComponent: ComponentType
 ) {
   return dynamicImport<T>(importFn, {
     loading: LoadingComponent,
   });
-} 
+}

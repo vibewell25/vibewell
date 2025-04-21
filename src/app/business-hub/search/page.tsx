@@ -6,7 +6,6 @@ import { BusinessHubNavigation } from '@/components/business-hub-navigation';
 import { HubSearch } from '@/components/hub-search';
 import Link from 'next/link';
 import Image from 'next/image';
-;
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { StarRating } from '@/components/star-rating';
@@ -40,9 +39,11 @@ function SearchLoadingSkeleton() {
           <Skeleton className="h-10 w-[150px]" />
         </div>
         <div className="grid gap-6">
-          {Array(5).fill(0).map((_, i) => (
-            <Skeleton key={i} className="h-32 w-full" />
-          ))}
+          {Array(5)
+            .fill(0)
+            .map((_, i) => (
+              <Skeleton key={i} className="h-32 w-full" />
+            ))}
         </div>
       </div>
     </Layout>
@@ -78,7 +79,7 @@ function SearchPageContent() {
           searchHistory.push({
             query,
             category,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
           });
           localStorage.setItem('search_history', JSON.stringify(searchHistory.slice(-20)));
         } catch (e) {
@@ -107,75 +108,81 @@ function SearchPageContent() {
         {
           id: '1',
           title: 'Social Media Marketing Guide for Wellness Businesses',
-          description: 'Learn how to effectively market your wellness business on social media platforms.',
+          description:
+            'Learn how to effectively market your wellness business on social media platforms.',
           type: 'resource',
           section: 'marketing',
           url: '/business-hub/marketing/resources/social-media-guide',
           image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7',
           tags: ['social-media', 'marketing', 'instagram'],
           date: '2023-08-15',
-          premium: false
+          premium: false,
         },
         {
           id: '2',
           title: 'Financial Planning Template for Spa Businesses',
-          description: 'A comprehensive financial planning template designed specifically for spa and wellness businesses.',
+          description:
+            'A comprehensive financial planning template designed specifically for spa and wellness businesses.',
           type: 'tool',
           section: 'financial',
           url: '/business-hub/financial-management/resources/financial-planning-template',
           image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f',
           tags: ['finance', 'planning', 'template'],
           date: '2023-10-05',
-          premium: true
+          premium: true,
         },
         {
           id: '3',
           title: 'Client Acquisition Strategies for Beauty Businesses',
-          description: 'Effective strategies to attract and retain clients for your beauty business.',
+          description:
+            'Effective strategies to attract and retain clients for your beauty business.',
           type: 'article',
           section: 'client-acquisition',
           url: '/business-hub/client-acquisition/strategies/beauty-business',
           image: 'https://images.unsplash.com/photo-1595247299149-85c93280604d',
           tags: ['clients', 'marketing', 'growth'],
           date: '2023-11-12',
-          premium: false
+          premium: false,
         },
         {
           id: '4',
           title: 'Employee Onboarding Checklist',
-          description: 'A comprehensive checklist for onboarding new employees in your wellness business.',
+          description:
+            'A comprehensive checklist for onboarding new employees in your wellness business.',
           type: 'resource',
           section: 'staff-management',
           url: '/business-hub/staff-management/resources/onboarding-checklist',
           image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df',
           tags: ['staff', 'onboarding', 'management'],
           date: '2024-01-18',
-          premium: false
+          premium: false,
         },
         {
           id: '5',
           title: 'Pricing Calculator for Wellness Services',
-          description: 'Calculate optimal pricing for your wellness services based on costs, competition, and value.',
+          description:
+            'Calculate optimal pricing for your wellness services based on costs, competition, and value.',
           type: 'tool',
           section: 'financial',
           url: '/business-hub/financial-management/tools/pricing-calculator',
           image: 'https://images.unsplash.com/photo-1553484771-371a605b060b',
           tags: ['pricing', 'finance', 'calculator'],
           date: '2023-12-03',
-          premium: true
+          premium: true,
         },
         {
           id: '6',
           title: 'Instagram Reels for Beauty Businesses Webinar',
-          description: 'Learn how to create engaging Instagram Reels to showcase your beauty services.',
+          description:
+            'Learn how to create engaging Instagram Reels to showcase your beauty services.',
           type: 'article',
           section: 'marketing',
           url: '/business-hub/marketing/webinars/instagram-reels',
           image: 'https://images.unsplash.com/photo-1611162616305-c69b3037f77d',
           tags: ['instagram', 'video', 'social-media'],
           date: '2024-02-22',
-          premium: true
-        }
+          premium: true,
+        },
       ];
       // Filter by category if specified
       if (searchCategory && searchCategory !== 'all') {
@@ -218,29 +225,27 @@ function SearchPageContent() {
         title: result.title,
         description: result.description,
         url: result.url,
-        category: result.section
+        category: result.section,
       });
     }
     setBookmarkedItems(prev => ({
       ...prev,
-      [result.id]: !currentStatus
+      [result.id]: !currentStatus,
     }));
   };
   // Toggle reviews visibility for a result
   const toggleReviews = (resultId: string) => {
     setExpandedReviews(prev => ({
       ...prev,
-      [resultId]: !prev[resultId]
+      [resultId]: !prev[resultId],
     }));
   };
   // Handle review added
   const handleReviewAdded = (review: Review) => {
     // Refresh average ratings after a review is added
     // In a real app, this might trigger a refetch of data
-    setResults(currentResults => 
-      currentResults.map(result => 
-        result.id === review.resourceId ? { ...result } : result
-      )
+    setResults(currentResults =>
+      currentResults.map(result => (result.id === review.resourceId ? { ...result } : result))
     );
   };
   // Filter results based on selected filters
@@ -283,7 +288,9 @@ function SearchPageContent() {
     <Layout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
-        <p className="text-gray-600 mb-6">Tools, resources, and education to grow your wellness business</p>
+        <p className="text-gray-600 mb-6">
+          Tools, resources, and education to grow your wellness business
+        </p>
         {/* Main Navigation */}
         <BusinessHubNavigation />
         <div className="max-w-5xl mx-auto">
@@ -308,7 +315,8 @@ function SearchPageContent() {
               <Icons.MagnifyingGlassIcon className="mx-auto h-12 w-12 text-gray-400 mb-4" />
               <h2 className="text-xl font-semibold mb-2">No results found</h2>
               <p className="text-gray-600 mb-6">
-                We couldn't find any matches for "{query}". Try adjusting your search terms or browse our popular resources below.
+                We couldn't find any matches for "{query}". Try adjusting your search terms or
+                browse our popular resources below.
               </p>
               <div className="flex justify-center">
                 <Link href="/business-hub">
@@ -322,7 +330,8 @@ function SearchPageContent() {
                 <h2 className="text-xl font-semibold">
                   Search Results
                   <span className="text-gray-500 font-normal ml-2">
-                    {filteredResults.length} {filteredResults.length === 1 ? 'result' : 'results'} for "{query}"
+                    {filteredResults.length} {filteredResults.length === 1 ? 'result' : 'results'}{' '}
+                    for "{query}"
                   </span>
                 </h2>
                 <div className="flex gap-2">
@@ -330,7 +339,7 @@ function SearchPageContent() {
                     <select
                       className="appearance-none bg-white border border-gray-300 rounded-md py-2 px-4 pr-8 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                       value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value as any)}
+                      onChange={e => setSortBy(e.target.value as any)}
                     >
                       <option value="relevance">Sort by Relevance</option>
                       <option value="date">Sort by Date</option>
@@ -419,12 +428,7 @@ function SearchPageContent() {
                             ) : (
                               <>
                                 {rating}
-                                <StarRating
-                                  initialRating={rating}
-                                  readonly={true}
-                                  size="sm"
-                                />
-                                & Up
+                                <StarRating initialRating={rating} readonly={true} size="sm" />& Up
                               </>
                             )}
                           </span>
@@ -449,9 +453,7 @@ function SearchPageContent() {
                 <div className="flex-1">
                   {sortedResults.length === 0 ? (
                     <div className="bg-white rounded-lg shadow-md p-8 text-center">
-                      <p className="text-gray-600 mb-4">
-                        No results match your current filters.
-                      </p>
+                      <p className="text-gray-600 mb-4">No results match your current filters.</p>
                       <Button
                         variant="outline"
                         onClick={() => {
@@ -464,8 +466,11 @@ function SearchPageContent() {
                     </div>
                   ) : (
                     <div className="space-y-6">
-                      {sortedResults.map((result) => (
-                        <div key={result.id} className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row border border-gray-100">
+                      {sortedResults.map(result => (
+                        <div
+                          key={result.id}
+                          className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row border border-gray-100"
+                        >
                           {result.image && (
                             <div className="md:w-1/3 h-48 md:h-auto relative">
                               <Image
@@ -503,22 +508,33 @@ function SearchPageContent() {
                                 <button
                                   onClick={() => toggleBookmark(result)}
                                   className={`p-1 rounded-full ${
-                                    bookmarkedItems[result.id] ? 'text-yellow-500' : 'text-gray-400 hover:text-gray-600'
+                                    bookmarkedItems[result.id]
+                                      ? 'text-yellow-500'
+                                      : 'text-gray-400 hover:text-gray-600'
                                   }`}
-                                  title={bookmarkedItems[result.id] ? 'Remove from bookmarks' : 'Add to bookmarks'}
+                                  title={
+                                    bookmarkedItems[result.id]
+                                      ? 'Remove from bookmarks'
+                                      : 'Add to bookmarks'
+                                  }
                                 >
                                   <Icons.BookmarkIcon className="h-5 w-5" />
                                 </button>
                               </div>
                             </div>
                             <Link href={result.url}>
-                              <h3 className="text-xl font-semibold mt-2 mb-2 hover:text-blue-600">{result.title}</h3>
+                              <h3 className="text-xl font-semibold mt-2 mb-2 hover:text-blue-600">
+                                {result.title}
+                              </h3>
                             </Link>
                             <p className="text-gray-600 mb-3 line-clamp-2">{result.description}</p>
                             <div className="flex items-center justify-between mt-4">
                               <div className="flex flex-wrap gap-1">
                                 {result.tags.map(tag => (
-                                  <span key={tag} className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
+                                  <span
+                                    key={tag}
+                                    className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full"
+                                  >
                                     {tag}
                                   </span>
                                 ))}
@@ -541,15 +557,15 @@ function SearchPageContent() {
                               <div className="mt-4 border-t pt-4">
                                 <div className="flex justify-between items-center mb-3">
                                   <h4 className="font-semibold">Reviews & Ratings</h4>
-                                  <button 
-                                    onClick={() => toggleReviews(result.id)} 
+                                  <button
+                                    onClick={() => toggleReviews(result.id)}
                                     className="text-gray-400 hover:text-gray-600"
                                   >
                                     <Icons.XMarkIcon className="h-5 w-5" />
                                   </button>
                                 </div>
-                                <ResourceReview 
-                                  resourceId={result.id} 
+                                <ResourceReview
+                                  resourceId={result.id}
                                   resourceType={result.type}
                                   onReviewAdded={handleReviewAdded}
                                 />
@@ -567,7 +583,8 @@ function SearchPageContent() {
             <div className="bg-white rounded-lg shadow-md p-8 text-center">
               <h2 className="text-xl font-semibold mb-4">Search the Business Hub</h2>
               <p className="text-gray-600 mb-6">
-                Find resources, tools, templates, and guides to help you grow your wellness business.
+                Find resources, tools, templates, and guides to help you grow your wellness
+                business.
               </p>
               <div className="flex justify-center gap-4 flex-wrap">
                 <Link href="/business-hub/marketing">
@@ -608,11 +625,11 @@ function SearchPageSkeleton() {
         <div className="h-8 w-64 bg-gray-200 rounded mb-4"></div>
         <div className="h-4 w-full max-w-2xl bg-gray-200 rounded mb-8"></div>
         <div className="grid gap-4">
-          {[1, 2, 3].map((i) => (
+          {[1, 2, 3].map(i => (
             <div key={i} className="h-32 bg-gray-200 rounded"></div>
           ))}
         </div>
       </div>
     </div>
   );
-} 
+}

@@ -5,15 +5,15 @@ import Image from 'next/image';
 import { PhotoFormProps } from '@/components/business/business-profile-wizard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  FormControl, 
-  FormDescription, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
-import { 
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -29,84 +29,84 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
-  
+
   // Get existing business photos from form or initialize an empty array
   const businessPhotos = form.watch('businessPhotos') || [];
 
   // Handle file selection
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || event.target.files.length === 0) return;
-    
+
     const newFiles = Array.from(event.target.files);
     setSelectedImages(prev => [...prev, ...newFiles]);
-    
+
     // Create object URLs for previews
     const newPreviews = newFiles.map(file => URL.createObjectURL(file));
     setPreviews(prev => [...prev, ...newPreviews]);
   };
-  
+
   // Handle file removal from preview
   const handleRemoveImage = (index: number) => {
     setSelectedImages(prev => prev.filter((_, i) => i !== index));
-    
+
     // Revoke the object URL to avoid memory leaks
     URL.revokeObjectURL(previews[index]);
     setPreviews(prev => prev.filter((_, i) => i !== index));
   };
-  
+
   // Handle image upload
   const handleUpload = async () => {
     if (selectedImages.length === 0) return;
-    
+
     setIsUploading(true);
-    
+
     try {
       // In a real implementation, you would upload the images to your storage service
       // and receive back URLs that you would save to the form
-      
+
       // Simulating API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // For the demo, we'll just use the preview URLs
       const uploadedImageUrls = [...previews];
-      
+
       // Update form with new images
-      form.setValue('businessPhotos', [...businessPhotos, ...uploadedImageUrls], { 
+      form.setValue('businessPhotos', [...businessPhotos, ...uploadedImageUrls], {
         shouldValidate: true,
-        shouldDirty: true 
+        shouldDirty: true,
       });
-      
+
       // Clear selected images after successful upload
       setSelectedImages([]);
       setPreviews([]);
-      
-      alert("Images uploaded successfully!");
+
+      alert('Images uploaded successfully!');
     } catch (error) {
-      console.error("Upload error:", error);
-      alert("There was an error uploading your images. Please try again.");
+      console.error('Upload error:', error);
+      alert('There was an error uploading your images. Please try again.');
     } finally {
       setIsUploading(false);
     }
   };
-  
+
   // Handle image deletion
   const handleDeleteSavedImage = (index: number) => {
     const updatedPhotos = [...businessPhotos];
     updatedPhotos.splice(index, 1);
-    
+
     form.setValue('businessPhotos', updatedPhotos, {
       shouldValidate: true,
-      shouldDirty: true
+      shouldDirty: true,
     });
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 mb-6">
         <Camera className="h-5 w-5 text-muted-foreground" />
         <h2 className="text-xl font-semibold">Business Photos</h2>
       </div>
-      
+
       {/* Photo Upload Instructions */}
       <Card>
         <CardHeader>
@@ -134,7 +134,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
               />
             </div>
           </div>
-          
+
           {/* Photo Guidelines */}
           <div className="bg-muted/50 p-4 rounded-lg">
             <div className="flex items-start gap-2">
@@ -151,7 +151,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
               </div>
             </div>
           </div>
-          
+
           {/* Selected Image Previews */}
           {previews.length > 0 && (
             <div className="space-y-4">
@@ -160,7 +160,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
                 {previews.map((preview, index) => (
                   <div key={index} className="relative group">
                     <div className="aspect-square relative rounded-md overflow-hidden border">
-                      <Image 
+                      <Image
                         src={preview}
                         alt={`Selected image ${index + 1}`}
                         fill
@@ -178,7 +178,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
                   </div>
                 ))}
               </div>
-              <Button 
+              <Button
                 onClick={handleUpload}
                 disabled={isUploading || previews.length === 0}
                 className="mt-4"
@@ -187,16 +187,18 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
               </Button>
             </div>
           )}
-          
+
           {/* Saved Business Photos */}
           {businessPhotos.length > 0 && (
             <div className="space-y-4 mt-8">
-              <h4 className="text-sm font-medium">Saved Business Photos ({businessPhotos.length})</h4>
+              <h4 className="text-sm font-medium">
+                Saved Business Photos ({businessPhotos.length})
+              </h4>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {businessPhotos.map((photo, index) => (
                   <div key={index} className="relative group">
                     <div className="aspect-square relative rounded-md overflow-hidden border">
-                      <Image 
+                      <Image
                         src={photo}
                         alt={`Business photo ${index + 1}`}
                         fill
@@ -221,7 +223,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
                           </DialogDescription>
                         </DialogHeader>
                         <div className="relative w-full h-[50vh]">
-                          <Image 
+                          <Image
                             src={photo}
                             alt={`Business photo ${index + 1}`}
                             fill
@@ -247,4 +249,4 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
       </Card>
     </div>
   );
-} 
+}

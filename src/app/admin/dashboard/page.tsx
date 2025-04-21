@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUsers } from '@/hooks/use-users';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { trackEvent } from '@/lib/monitoring/analytics';
 
 const columns = [
@@ -52,9 +52,10 @@ export default function AdminDashboard() {
     return <div>Error: {error.message}</div>;
   }
 
-  const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredUsers = users.filter(
+    user =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -74,19 +75,13 @@ export default function AdminDashboard() {
               <Input
                 placeholder="Search users..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="max-w-sm"
               />
               <Button onClick={() => handleAddUser()}>Add User</Button>
             </div>
 
-            <DataTable
-              columns={columns}
-              data={filteredUsers}
-              pagination
-              sorting
-              filtering
-            />
+            <DataTable columns={columns} data={filteredUsers} pagination sorting filtering />
           </Card>
         </TabsContent>
 
@@ -109,12 +104,12 @@ export default function AdminDashboard() {
 }
 
 // Handler functions
-const handleEdit = (user) => {
+const handleEdit = user => {
   trackEvent('admin_edit_user', { userId: user.id });
   // Implement edit functionality
 };
 
-const handleDelete = (user) => {
+const handleDelete = user => {
   trackEvent('admin_delete_user', { userId: user.id });
   // Implement delete functionality
 };
@@ -122,4 +117,4 @@ const handleDelete = (user) => {
 const handleAddUser = () => {
   trackEvent('admin_add_user');
   // Implement add user functionality
-}; 
+};

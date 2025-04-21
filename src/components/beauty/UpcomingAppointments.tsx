@@ -54,30 +54,30 @@ export function UpcomingAppointments() {
       <Card>
         <CardContent className="p-6 text-center">
           <p className="text-muted-foreground mb-4">No upcoming appointments</p>
-          <Button onClick={() => router.push('/beauty/book')}>
-            Book a Service
-          </Button>
+          <Button onClick={() => router.push('/beauty/book')}>Book a Service</Button>
         </CardContent>
       </Card>
     );
   }
   return (
     <div className="space-y-4">
-      {appointments.map((appointment) => (
+      {appointments.map(appointment => (
         <Card key={appointment.id}>
           <CardContent className="p-4">
             <div className="flex justify-between items-start">
               <div>
                 <h3 className="font-semibold">{appointment.serviceName}</h3>
-                <p className="text-sm text-muted-foreground">
-                  with {appointment.providerName}
-                </p>
+                <p className="text-sm text-muted-foreground">with {appointment.providerName}</p>
               </div>
-              <span className={`px-2 py-1 text-xs rounded-full ${
-                appointment.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                appointment.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                'bg-red-100 text-red-800'
-              }`}>
+              <span
+                className={`px-2 py-1 text-xs rounded-full ${
+                  appointment.status === 'confirmed'
+                    ? 'bg-green-100 text-green-800'
+                    : appointment.status === 'pending'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : 'bg-red-100 text-red-800'
+                }`}
+              >
                 {appointment.status}
               </span>
             </div>
@@ -99,4 +99,4 @@ export function UpcomingAppointments() {
       </Button>
     </div>
   );
-} 
+}

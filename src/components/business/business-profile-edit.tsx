@@ -28,7 +28,7 @@ export default function BusinessProfileEdit() {
     website: '',
     phone: '',
     logo: null,
-    bannerImage: null
+    bannerImage: null,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -38,11 +38,11 @@ export default function BusinessProfileEdit() {
   useEffect(() => {
     async function loadBusinessProfile() {
       if (!user) return;
-      
+
       try {
         setIsLoading(true);
         const profile = await fetchBusinessProfile(user.sub as string);
-        
+
         if (profile) {
           setFormData({
             name: profile.name || '',
@@ -51,13 +51,13 @@ export default function BusinessProfileEdit() {
             website: profile.website || '',
             phone: profile.phone || '',
             logo: null,
-            bannerImage: null
+            bannerImage: null,
           });
-          
+
           if (profile.logoUrl) {
             setLogoPreview(profile.logoUrl);
           }
-          
+
           if (profile.bannerImageUrl) {
             setBannerPreview(profile.bannerImageUrl);
           }
@@ -82,10 +82,10 @@ export default function BusinessProfileEdit() {
 
   const handleLogoChange = (file: File | null) => {
     setFormData(prev => ({ ...prev, logo: file }));
-    
+
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         setLogoPreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
@@ -96,10 +96,10 @@ export default function BusinessProfileEdit() {
 
   const handleBannerChange = (file: File | null) => {
     setFormData(prev => ({ ...prev, bannerImage: file }));
-    
+
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         setBannerPreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
@@ -110,21 +110,21 @@ export default function BusinessProfileEdit() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!user) {
       toast.error('You must be logged in to save your profile');
       return;
     }
-    
+
     setIsSaving(true);
-    
+
     try {
       await updateBusinessProfile(user.sub as string, {
         ...formData,
         logoFile: formData.logo,
         bannerImageFile: formData.bannerImage,
       });
-      
+
       toast.success('Business profile updated successfully');
       router.push('/business/profile');
     } catch (error) {
@@ -151,7 +151,7 @@ export default function BusinessProfileEdit() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Edit Business Profile</h1>
-      
+
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
           <div>
@@ -167,7 +167,7 @@ export default function BusinessProfileEdit() {
               required
             />
           </div>
-          
+
           <div>
             <label htmlFor="description" className="block text-sm font-medium mb-1">
               Description
@@ -181,7 +181,7 @@ export default function BusinessProfileEdit() {
               rows={4}
             />
           </div>
-          
+
           <div>
             <label htmlFor="location" className="block text-sm font-medium mb-1">
               Location
@@ -194,7 +194,7 @@ export default function BusinessProfileEdit() {
               placeholder="Business location"
             />
           </div>
-          
+
           <div>
             <label htmlFor="website" className="block text-sm font-medium mb-1">
               Website
@@ -208,7 +208,7 @@ export default function BusinessProfileEdit() {
               placeholder="https://your-website.com"
             />
           </div>
-          
+
           <div>
             <label htmlFor="phone" className="block text-sm font-medium mb-1">
               Phone Number
@@ -221,54 +221,50 @@ export default function BusinessProfileEdit() {
               placeholder="+1 (123) 456-7890"
             />
           </div>
-          
+
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Business Logo
-            </label>
+            <label className="block text-sm font-medium mb-2">Business Logo</label>
             <div className="flex items-center space-x-4">
               {logoPreview && (
                 <div className="w-24 h-24 rounded-full overflow-hidden">
-                  <img 
-                    src={logoPreview} 
-                    alt="Logo preview" 
+                  <img
+                    src={logoPreview}
+                    alt="Logo preview"
                     className="w-full h-full object-cover"
                   />
                 </div>
               )}
-              <FileUpload 
+              <FileUpload
                 accept="image/*"
                 onChange={handleLogoChange}
                 maxSizeMB={2}
-                buttonText={logoPreview ? "Change Logo" : "Upload Logo"}
+                buttonText={logoPreview ? 'Change Logo' : 'Upload Logo'}
               />
             </div>
           </div>
-          
+
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Banner Image
-            </label>
+            <label className="block text-sm font-medium mb-2">Banner Image</label>
             <div className="space-y-2">
               {bannerPreview && (
                 <div className="w-full h-40 rounded-md overflow-hidden">
-                  <img 
-                    src={bannerPreview} 
-                    alt="Banner preview" 
+                  <img
+                    src={bannerPreview}
+                    alt="Banner preview"
                     className="w-full h-full object-cover"
                   />
                 </div>
               )}
-              <FileUpload 
+              <FileUpload
                 accept="image/*"
                 onChange={handleBannerChange}
                 maxSizeMB={5}
-                buttonText={bannerPreview ? "Change Banner" : "Upload Banner"}
+                buttonText={bannerPreview ? 'Change Banner' : 'Upload Banner'}
               />
             </div>
           </div>
         </div>
-        
+
         <div className="flex space-x-4 pt-4">
           <Button
             type="button"
@@ -278,10 +274,7 @@ export default function BusinessProfileEdit() {
           >
             Cancel
           </Button>
-          <Button
-            type="submit"
-            disabled={isSaving}
-          >
+          <Button type="submit" disabled={isSaving}>
             {isSaving ? <Spinner size="sm" className="mr-2" /> : null}
             Save Profile
           </Button>
@@ -289,4 +282,4 @@ export default function BusinessProfileEdit() {
       </form>
     </div>
   );
-} 
+}

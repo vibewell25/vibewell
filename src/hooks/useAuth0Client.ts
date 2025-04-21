@@ -29,9 +29,9 @@ export function useAuth0Client() {
   const loadUserData = useCallback(async () => {
     try {
       setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
-      
+
       const response = await fetch('/api/auth/me');
-      
+
       if (response.ok) {
         const user = await response.json();
         setAuthState({
@@ -65,16 +65,22 @@ export function useAuth0Client() {
   }, [loadUserData]);
 
   // Login
-  const login = useCallback((redirectTo?: string) => {
-    const returnTo = redirectTo || router.asPath;
-    router.push(`/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`);
-  }, [router]);
+  const login = useCallback(
+    (redirectTo?: string) => {
+      const returnTo = redirectTo || router.asPath;
+      router.push(`/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`);
+    },
+    [router]
+  );
 
   // Logout
-  const logout = useCallback((redirectTo?: string) => {
-    const returnTo = redirectTo || '/';
-    router.push(`/api/auth/logout?returnTo=${encodeURIComponent(returnTo)}`);
-  }, [router]);
+  const logout = useCallback(
+    (redirectTo?: string) => {
+      const returnTo = redirectTo || '/';
+      router.push(`/api/auth/logout?returnTo=${encodeURIComponent(returnTo)}`);
+    },
+    [router]
+  );
 
   // Refresh user data
   const refreshUser = useCallback(() => {
@@ -82,13 +88,16 @@ export function useAuth0Client() {
   }, [loadUserData]);
 
   // Check if user has a specific role
-  const hasRole = useCallback((role: string) => {
-    if (!authState.user) return false;
-    
-    const namespace = process.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell.com';
-    const userRoles = authState.user[`${namespace}/roles`] || [];
-    return userRoles.includes(role);
-  }, [authState.user]);
+  const hasRole = useCallback(
+    (role: string) => {
+      if (!authState.user) return false;
+
+      const namespace = process.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell.com';
+      const userRoles = authState.user[`${namespace}/roles`] || [];
+      return userRoles.includes(role);
+    },
+    [authState.user]
+  );
 
   // Check if user is admin
   const isAdmin = useCallback(() => {
@@ -109,4 +118,4 @@ export function useAuth0Client() {
     isAdmin,
     isProvider,
   };
-} 
+}

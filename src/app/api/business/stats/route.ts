@@ -18,10 +18,10 @@ export async function GET(request: Request) {
         practitioner: {
           select: {
             id: true,
-            businessId: true
-          }
-        }
-      }
+            businessId: true,
+          },
+        },
+      },
     });
 
     if (!user?.practitioner?.businessId) {
@@ -36,9 +36,9 @@ export async function GET(request: Request) {
       where: {
         businessId,
         status: {
-          not: BookingStatus.CANCELLED
-        }
-      }
+          not: BookingStatus.CANCELLED,
+        },
+      },
     });
 
     // Calculate total revenue from completed bookings
@@ -47,12 +47,12 @@ export async function GET(request: Request) {
         businessId,
         status: 'COMPLETED',
         booking: {
-          status: BookingStatus.COMPLETED
-        }
+          status: BookingStatus.COMPLETED,
+        },
       },
       _sum: {
-        amount: true
-      }
+        amount: true,
+      },
     });
 
     // Get active customers (customers with completed bookings in last 30 days)
@@ -64,34 +64,30 @@ export async function GET(request: Request) {
         businessId,
         status: BookingStatus.COMPLETED,
         startTime: {
-          gte: thirtyDaysAgo
-        }
+          gte: thirtyDaysAgo,
+        },
       },
-      distinct: ['userId']
+      distinct: ['userId'],
     });
 
     // Calculate average rating from service reviews
     const reviews = await prisma.serviceReview.aggregate({
       where: {
-        businessId
+        businessId,
       },
       _avg: {
-        rating: true
-      }
+        rating: true,
+      },
     });
 
     return NextResponse.json({
       totalBookings,
       totalRevenue: totalRevenue._sum?.amount || 0,
       activeCustomers,
-      averageRating: reviews._avg?.rating || 0
+      averageRating: reviews._avg?.rating || 0,
     });
-
   } catch (error) {
     console.error('Error fetching business stats:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch business stats' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch business stats' }, { status: 500 });
   }
-} 
+}

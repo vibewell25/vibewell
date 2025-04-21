@@ -6,19 +6,11 @@ interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
   className?: string;
 }
 
-export const TextArea: React.FC<TextAreaProps> = ({
-  label,
-  error,
-  className = '',
-  ...props
-}) => {
+export const TextArea: React.FC<TextAreaProps> = ({ label, error, className = '', ...props }) => {
   return (
     <div className={className}>
       {label && (
-        <label
-          htmlFor={props.id}
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor={props.id} className="block text-sm font-medium text-gray-700 mb-1">
           {label}
         </label>
       )}
@@ -39,4 +31,4 @@ export const TextArea: React.FC<TextAreaProps> = ({
       )}
     </div>
   );
-}; 
+};

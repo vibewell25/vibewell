@@ -1,0 +1,240 @@
+import { Meta, Controls, Story } from '@storybook/blocks';
+import * as CardStories from './card.stories';
+
+<Meta of={CardStories} />
+
+# Card Component
+
+The Card component is a flexible container that groups related content and actions. It follows WAI-ARIA guidelines and best practices for accessibility.
+
+## Features
+
+- Multiple visual variants (default, outline, ghost, elevated)
+- Flexible padding options
+- Multiple size options
+- Customizable border radius
+- Support for headers and footers
+- Collapsible functionality
+- Interactive states (hoverable, clickable)
+- Accessible by default
+
+## Usage
+
+```tsx
+import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './card';
+
+// Basic usage
+<Card>
+  <CardContent>
+    Content goes here
+  </CardContent>
+</Card>
+
+// With header and footer
+<Card>
+  <CardHeader>
+    <CardTitle>Card Title</CardTitle>
+    <CardDescription>Optional description</CardDescription>
+  </CardHeader>
+  <CardContent>
+    Main content
+  </CardContent>
+  <CardFooter>
+    Footer content
+  </CardFooter>
+</Card>
+
+// Interactive card
+<Card isClickable isHoverable>
+  <CardContent>
+    Clickable and hoverable card
+  </CardContent>
+</Card>
+
+// Collapsible card
+<Card isCollapsible>
+  <CardHeader>
+    <CardTitle>Collapsible Section</CardTitle>
+  </CardHeader>
+  <CardContent>
+    Collapsible content
+  </CardContent>
+</Card>
+```
+
+## Accessibility Guidelines
+
+### Structure and Semantics
+
+- Use semantic HTML elements within cards
+- Maintain a logical heading hierarchy
+- Ensure content is properly structured for screen readers
+
+### Keyboard Navigation
+
+- When `isClickable` is true, the card is focusable and can be activated using Enter or Space
+- Collapsible cards can be toggled using Enter or Space
+- Focus states are clearly visible
+- Tab order follows a logical sequence
+
+### ARIA Attributes
+
+- Use appropriate ARIA landmarks when needed
+- Add `aria-labelledby` to associate card content with its title
+- Use `aria-expanded` for collapsible cards
+- Include `aria-controls` to associate collapsible content
+
+Example:
+```tsx
+<Card isCollapsible>
+  <CardHeader>
+    <CardTitle id="card-title">Section Title</CardTitle>
+  </CardHeader>
+  <CardContent
+    id="card-content"
+    aria-labelledby="card-title"
+    role="region"
+  >
+    Collapsible content
+  </CardContent>
+</Card>
+```
+
+### Interactive Elements
+
+- Maintain proper focus management for interactive cards
+- Ensure sufficient touch targets for mobile users
+- Provide clear visual feedback for interactive states
+
+```tsx
+<Card
+  isClickable
+  className="min-h-[44px]"
+  onClick={() => {}}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === 'Space') {
+      // Handle activation
+    }
+  }}
+>
+  <CardContent>Interactive content</CardContent>
+</Card>
+```
+
+### Color and Contrast
+
+- Maintain sufficient color contrast for all content
+- Ensure borders are visible in all themes
+- Make interactive states visually distinct
+- Consider color-blind users when using color to convey information
+
+## Props
+
+<Controls />
+
+## Examples
+
+### Basic Card
+
+<Story of={CardStories.Default} />
+
+### With Header and Footer
+
+<Story of={CardStories.WithHeaderAndFooter} />
+
+### Interactive Card
+
+<Story of={CardStories.Interactive} />
+
+### Collapsible Card
+
+<Story of={CardStories.Collapsible} />
+
+### With Actions
+
+<Story of={CardStories.WithActions} />
+
+### Custom Styling
+
+<Story of={CardStories.CustomStyling} />
+
+### Variants
+
+<Story of={CardStories.Variants} />
+
+### Sizes
+
+<Story of={CardStories.Sizes} />
+
+## Best Practices
+
+1. **Content Structure**
+   - Use appropriate heading levels
+   - Group related content logically
+   - Keep content concise and focused
+
+2. **Visual Hierarchy**
+   - Use consistent spacing
+   - Maintain clear visual hierarchy
+   - Use variants appropriately for different content types
+
+3. **Interactive Behavior**
+   - Provide clear feedback for interactive states
+   - Ensure smooth transitions
+   - Handle edge cases (loading, error states)
+
+4. **Responsive Design**
+   - Adapt layout for different screen sizes
+   - Consider content reflow
+   - Maintain readability at all sizes
+
+5. **Performance**
+   - Optimize images and media
+   - Use efficient animations
+   - Consider lazy loading for complex content
+
+## Accessibility Checklist
+
+- [ ] Cards have proper heading structure
+- [ ] Interactive elements are keyboard accessible
+- [ ] Focus states are visible
+- [ ] Color contrast meets WCAG guidelines
+- [ ] ARIA attributes are properly implemented
+- [ ] Content is screen reader friendly
+- [ ] Touch targets are sufficiently sized
+- [ ] Animations respect reduced motion preferences
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Card content overflow**
+   - Check content padding
+   - Verify max-width settings
+   - Consider content wrapping
+
+2. **Inconsistent spacing**
+   - Use consistent padding props
+   - Check for conflicting margin/padding
+   - Verify theme spacing values
+
+3. **Interactive issues**
+   - Check event handlers
+   - Verify focus management
+   - Test keyboard navigation
+
+### Browser Support
+
+The Card component is tested and supported in:
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+- Mobile browsers
+
+## Related Components
+
+- Button
+- Dialog
+- Alert
+- Panel 

@@ -18,23 +18,23 @@ const MODEL_PATHS: Record<string, string> = {
 // Component to render the 3D model
 function Model({ modelPath, onLoaded }: { modelPath: string; onLoaded: () => void }) {
   const { scene } = useGLTF(modelPath);
-  
+
   // Auto-rotate the model
   useFrame(({ clock }) => {
     scene.rotation.y = clock.getElapsedTime() * 0.15;
   });
-  
+
   // Call onLoaded after the model is rendered
   useEffect(() => {
     onLoaded();
   }, [onLoaded]);
-  
+
   return <primitive object={scene} scale={1.5} position={[0, 0, 0]} />;
 }
 
 /**
  * ARModelViewer component for rendering 3D models of beauty products
- * 
+ *
  * @component
  * @example
  * ```tsx
@@ -44,12 +44,12 @@ function Model({ modelPath, onLoaded }: { modelPath: string; onLoaded: () => voi
 export function ARModelViewer({ modelId }: ARModelViewerProps) {
   const [isLoading, setIsLoading] = useState(true);
   const modelPath = MODEL_PATHS[modelId] || '';
-  
+
   // Handle loading state
   const handleModelLoad = () => {
     setIsLoading(false);
   };
-  
+
   return (
     <div className="ar-model-viewer w-full h-full">
       {isLoading && (
@@ -60,12 +60,12 @@ export function ARModelViewer({ modelId }: ARModelViewerProps) {
           </div>
         </div>
       )}
-      
+
       <Canvas shadows camera={{ position: [0, 0, 4], fov: 50 }}>
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
         <pointLight position={[-10, -10, -10]} />
-        
+
         <Suspense fallback={null}>
           {modelPath && <Model modelPath={modelPath} onLoaded={handleModelLoad} />}
           <Environment preset="city" />
@@ -76,4 +76,4 @@ export function ARModelViewer({ modelId }: ARModelViewerProps) {
   );
 }
 
-export default ARModelViewer; 
+export default ARModelViewer;

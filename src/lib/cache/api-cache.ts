@@ -1,6 +1,6 @@
 /**
  * API Cache System
- * 
+ *
  * This module provides a client-side caching mechanism for API requests
  * to improve performance and reduce network requests.
  */
@@ -13,7 +13,7 @@ type CacheItem<T> = {
 
 interface CacheConfig {
   defaultTTL: number; // Default time-to-live in milliseconds
-  namespace: string;  // Namespace for the cache storage
+  namespace: string; // Namespace for the cache storage
   maxEntries?: number; // Maximum number of entries to keep in cache
 }
 
@@ -26,7 +26,7 @@ export class APICache {
       defaultTTL: 5 * 60 * 1000, // 5 minutes default
       namespace: 'vibewell_api_cache',
       maxEntries: 100,
-      ...config
+      ...config,
     };
 
     // Use localStorage for client-side caching
@@ -40,7 +40,7 @@ export class APICache {
         removeItem: () => {},
         clear: () => {},
         key: () => null,
-        length: 0
+        length: 0,
       };
     }
   }
@@ -58,13 +58,13 @@ export class APICache {
   private generateKey(url: string, params?: Record<string, any>): string {
     const baseKey = `${this.config.namespace}:${url}`;
     if (!params) return baseKey;
-    
+
     // Sort keys to ensure consistent hash for same params in different order
     const sortedParamKeys = Object.keys(params).sort();
     const paramString = sortedParamKeys
       .map(key => `${key}=${JSON.stringify(params[key])}`)
       .join('&');
-    
+
     return `${baseKey}?${paramString}`;
   }
 
@@ -74,18 +74,18 @@ export class APICache {
   get<T>(url: string, params?: Record<string, any>): T | null {
     const key = this.generateKey(url, params);
     const item = this.storage.getItem(key);
-    
+
     if (!item) return null;
-    
+
     try {
       const cachedItem = JSON.parse(item) as CacheItem<T>;
-      
+
       // Check if item is expired
       if (Date.now() > cachedItem.expiresAt) {
         this.storage.removeItem(key);
         return null;
       }
-      
+
       return cachedItem.data;
     } catch {
       // Handle parsing errors by removing the invalid item
@@ -99,18 +99,18 @@ export class APICache {
    */
   set<T>(url: string, data: T, params?: Record<string, any>, ttl?: number): void {
     if (typeof window === 'undefined') return; // No-op during SSR
-    
+
     const expiry = ttl || this.config.defaultTTL;
     const key = this.generateKey(url, params);
-    
+
     const item: CacheItem<T> = {
       data,
       timestamp: Date.now(),
-      expiresAt: Date.now() + expiry
+      expiresAt: Date.now() + expiry,
     };
-    
+
     this.storage.setItem(key, JSON.stringify(item));
-    
+
     // Enforce maximum entries limit
     this.enforceMaxEntries();
   }
@@ -128,7 +128,7 @@ export class APICache {
    */
   clear(): void {
     if (typeof window === 'undefined') return; // No-op during SSR
-    
+
     // Only clear items for our namespace
     for (let i = 0; i < this.storage.length; i++) {
       const key = this.storage.key(i);
@@ -143,9 +143,9 @@ export class APICache {
    */
   clearPattern(urlPattern: string): void {
     if (typeof window === 'undefined') return; // No-op during SSR
-    
+
     const pattern = `${this.config.namespace}:${urlPattern}`;
-    
+
     // Find and remove matching keys
     const keysToRemove: string[] = [];
     for (let i = 0; i < this.storage.length; i++) {
@@ -154,7 +154,7 @@ export class APICache {
         keysToRemove.push(key);
       }
     }
-    
+
     // Remove keys (separate from the loop to avoid issues with changing length)
     keysToRemove.forEach(key => this.storage.removeItem(key));
   }
@@ -164,9 +164,9 @@ export class APICache {
    */
   private enforceMaxEntries(): void {
     if (!this.config.maxEntries) return;
-    
+
     // Get all cache keys for our namespace
-    const namespaceKeys: {key: string; timestamp: number}[] = [];
+    const namespaceKeys: { key: string; timestamp: number }[] = [];
     for (let i = 0; i < this.storage.length; i++) {
       const key = this.storage.key(i);
       if (key?.startsWith(this.config.namespace)) {
@@ -174,19 +174,19 @@ export class APICache {
           const item = JSON.parse(this.storage.getItem(key) || '{}');
           namespaceKeys.push({
             key,
-            timestamp: item.timestamp || 0
+            timestamp: item.timestamp || 0,
           });
         } catch {
           // Skip invalid items
         }
       }
     }
-    
+
     // If we're over the limit, remove oldest entries
     if (namespaceKeys.length > this.config.maxEntries) {
       // Sort by timestamp (oldest first)
       namespaceKeys.sort((a, b) => a.timestamp - b.timestamp);
-      
+
       // Remove oldest entries until we're under the limit
       const entriesToRemove = namespaceKeys.length - this.config.maxEntries;
       for (let i = 0; i < entriesToRemove; i++) {
@@ -203,15 +203,15 @@ export const apiCache = new APICache();
  * A wrapper for fetch that uses the API cache
  */
 export async function cachedFetch<T>(
-  url: string, 
-  options?: RequestInit & { 
-    ttl?: number; 
+  url: string,
+  options?: RequestInit & {
+    ttl?: number;
     params?: Record<string, any>;
     bypassCache?: boolean;
   }
 ): Promise<T> {
   const { ttl, params, bypassCache, ...fetchOptions } = options || {};
-  
+
   // Don't use cache if explicitly bypassed or for non-GET requests
   const method = fetchOptions.method || 'GET';
   if (bypassCache || method !== 'GET') {
@@ -219,19 +219,19 @@ export async function cachedFetch<T>(
     const data = await response.json();
     return data as T;
   }
-  
+
   // Check cache first
   const cachedData = apiCache.get<T>(url, params);
   if (cachedData) {
     return cachedData;
   }
-  
+
   // Fetch from network
   const response = await fetch(url, fetchOptions);
   const data = await response.json();
-  
+
   // Cache the result
   apiCache.set(url, data, params, ttl);
-  
+
   return data as T;
-} 
+}

@@ -118,9 +118,9 @@ export function createTestRunner(): TestRunner {
     const summary = `\nResults: ${passed}/${total} passed (${
       Math.round((passed / total) * 100) || 0
     }%)`;
-    
+
     console.log(summary);
-    
+
     return {
       passed,
       failed,
@@ -135,4 +135,4 @@ export function createTestRunner(): TestRunner {
     expect,
     run,
   };
-} 
+}

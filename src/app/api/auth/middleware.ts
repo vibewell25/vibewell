@@ -11,21 +11,15 @@ export async function withAuth(
 ): Promise<NextResponse> {
   try {
     const session = await getSession(req);
-    
+
     if (!session?.user) {
-      return NextResponse.json(
-        { error: 'Unauthorized. Please log in.' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized. Please log in.' }, { status: 401 });
     }
-    
+
     return handler(req, session.user);
   } catch (error) {
     console.error('Auth middleware error:', error);
-    return NextResponse.json(
-      { error: 'Authentication error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Authentication error' }, { status: 500 });
   }
 }
 
@@ -41,16 +35,13 @@ export async function withRole(
     // Extract roles from Auth0 user
     // Note: This is implementation specific, adjust according to your Auth0 configuration
     const userRoles = user[`${process.env.AUTH0_NAMESPACE}/roles`] || [];
-    
+
     const hasRole = allowedRoles.some(role => userRoles.includes(role));
-    
+
     if (!hasRole) {
-      return NextResponse.json(
-        { error: 'Forbidden. Insufficient permissions.' },
-        { status: 403 }
-      );
+      return NextResponse.json({ error: 'Forbidden. Insufficient permissions.' }, { status: 403 });
     }
-    
+
     return handler(req, user);
   });
 }
@@ -73,4 +64,4 @@ export async function withProvider(
   handler: (req: NextRequest, user: any) => Promise<NextResponse>
 ): Promise<NextResponse> {
   return withRole(req, handler, ['provider', 'admin']);
-} 
+}

@@ -4,7 +4,14 @@ import { useState } from 'react';
 import { PaymentFormWrapper } from '@/components/payment/payment-form';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CreditCard, PaypalIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -12,12 +19,7 @@ import Link from 'next/link';
 // Mock PayPal icon since it doesn't exist in Lucide
 function PaypalIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path
         d="M20.927 8.588a4.252 4.252 0 0 0-1.531-3.51C18.577 4.367 17.422 4 16.103 4H9.53c-.366 0-.683.262-.742.622L6.059 18.415c-.08.48.278.915.742.915h3.386l-.12.786c-.71.45.27.859.731.859h3.013c.338 0 .635-.255.69-.59l.028-.15.537-3.42.035-.189a.699.699 0 0 1 .69-.59h.435c2.816 0 5.015-1.146 5.66-4.462.272-1.386.131-2.544-.533-3.356a2.212 2.212 0 0 0-.626-.63z"
         fill="#012169"
@@ -38,11 +40,11 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal'>('card');
   const [orderSummary, setOrderSummary] = useState({
     subtotal: 39.99,
-    tax: 3.20,
-    shipping: 6.80,
+    tax: 3.2,
+    shipping: 6.8,
     total: 49.99,
   });
-  
+
   // Simulated order details
   const orderItems = [
     {
@@ -50,39 +52,45 @@ export default function CheckoutPage() {
       name: 'Premium Makeup Bundle',
       price: 39.99,
       quantity: 1,
-    }
+    },
   ];
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8 text-center">Checkout</h1>
-      
+
       <div className="grid md:grid-cols-3 gap-8">
         <div className="md:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle>Payment Method</CardTitle>
-              <CardDescription>
-                Choose how you want to pay
-              </CardDescription>
+              <CardDescription>Choose how you want to pay</CardDescription>
             </CardHeader>
             <CardContent>
-              <Tabs 
+              <Tabs
                 defaultValue="card"
                 className="w-full"
-                onValueChange={(value) => setPaymentMethod(value as 'card' | 'paypal')}
+                onValueChange={value => setPaymentMethod(value as 'card' | 'paypal')}
               >
                 <TabsList className="grid w-full grid-cols-2 mb-8">
-                  <TabsTrigger value="card" className="flex items-center gap-2" data-cy="payment-method-card">
+                  <TabsTrigger
+                    value="card"
+                    className="flex items-center gap-2"
+                    data-cy="payment-method-card"
+                  >
                     <CreditCard className="h-4 w-4" />
                     Credit Card
                   </TabsTrigger>
-                  <TabsTrigger value="paypal" className="flex items-center gap-2" data-cy="payment-method-paypal">
+                  <TabsTrigger
+                    value="paypal"
+                    className="flex items-center gap-2"
+                    data-cy="payment-method-paypal"
+                  >
                     <PaypalIcon className="h-4 w-4" />
                     PayPal
                   </TabsTrigger>
                 </TabsList>
-                
+
                 <div className="mt-4 space-y-4" data-cy="payment-methods">
                   <TabsContent value="card">
                     <PaymentFormWrapper
@@ -91,7 +99,7 @@ export default function CheckoutPage() {
                       description="Payment for Premium Makeup Bundle"
                     />
                   </TabsContent>
-                  
+
                   <TabsContent value="paypal">
                     <div className="text-center p-8 border rounded-md">
                       <PaypalIcon className="h-16 w-16 mx-auto mb-4 text-blue-600" />
@@ -109,14 +117,14 @@ export default function CheckoutPage() {
             </CardContent>
           </Card>
         </div>
-        
+
         <div className="md:col-span-1">
           <Card>
             <CardHeader>
               <CardTitle>Order Summary</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {orderItems.map((item) => (
+              {orderItems.map(item => (
                 <div key={item.id} className="flex justify-between">
                   <div>
                     <p className="font-medium">{item.name}</p>
@@ -125,7 +133,7 @@ export default function CheckoutPage() {
                   <p>${item.price.toFixed(2)}</p>
                 </div>
               ))}
-              
+
               <div className="border-t pt-4 mt-4 space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Subtotal</span>
@@ -155,9 +163,13 @@ export default function CheckoutPage() {
               <div className="text-center text-sm text-gray-500">
                 <p>By completing this purchase, you agree to our</p>
                 <div className="flex justify-center space-x-2">
-                  <Link href="/terms" className="underline">Terms of Service</Link>
+                  <Link href="/terms" className="underline">
+                    Terms of Service
+                  </Link>
                   <span>and</span>
-                  <Link href="/privacy" className="underline">Privacy Policy</Link>
+                  <Link href="/privacy" className="underline">
+                    Privacy Policy
+                  </Link>
                 </div>
               </div>
             </CardFooter>
@@ -166,4 +178,4 @@ export default function CheckoutPage() {
       </div>
     </div>
   );
-} 
+}

@@ -1,13 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState, useEffect } from "react";
-import { toast } from "sonner";
-import { format } from "date-fns";
-import { Check, Plus, Trash2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
+import { format } from 'date-fns';
+import { Check, Plus, Trash2 } from 'lucide-react';
 
 interface Goal {
   id: string;
@@ -25,26 +31,26 @@ export function WellnessGoals() {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [loading, setLoading] = useState(true);
   const [newGoal, setNewGoal] = useState({
-    title: "",
-    description: "",
-    category: "",
+    title: '',
+    description: '',
+    category: '',
     target: 0,
-    unit: "",
-    deadline: "",
+    unit: '',
+    deadline: '',
   });
 
   useEffect(() => {
     const fetchGoals = async () => {
       try {
-        const response = await fetch("/api/wellness/goals");
+        const response = await fetch('/api/wellness/goals');
         if (!response.ok) {
-          throw new Error("Failed to fetch goals");
+          throw new Error('Failed to fetch goals');
         }
         const data = await response.json();
         setGoals(data);
       } catch (error) {
-        console.error("Error fetching goals:", error);
-        toast.error("Failed to load goals");
+        console.error('Error fetching goals:', error);
+        toast.error('Failed to load goals');
       } finally {
         setLoading(false);
       }
@@ -55,55 +61,55 @@ export function WellnessGoals() {
 
   const handleAddGoal = async () => {
     if (!newGoal.title || !newGoal.category || !newGoal.target || !newGoal.deadline) {
-      toast.error("Please fill in all required fields");
+      toast.error('Please fill in all required fields');
       return;
     }
 
     try {
-      const response = await fetch("/api/wellness/goals", {
-        method: "POST",
+      const response = await fetch('/api/wellness/goals', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(newGoal),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add goal");
+        throw new Error('Failed to add goal');
       }
 
       const data = await response.json();
       setGoals([...goals, data]);
       setNewGoal({
-        title: "",
-        description: "",
-        category: "",
+        title: '',
+        description: '',
+        category: '',
         target: 0,
-        unit: "",
-        deadline: "",
+        unit: '',
+        deadline: '',
       });
-      toast.success("Goal added successfully!");
+      toast.success('Goal added successfully!');
     } catch (error) {
-      console.error("Error adding goal:", error);
-      toast.error("Failed to add goal");
+      console.error('Error adding goal:', error);
+      toast.error('Failed to add goal');
     }
   };
 
   const handleDeleteGoal = async (goalId: string) => {
     try {
       const response = await fetch(`/api/wellness/goals/${goalId}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete goal");
+        throw new Error('Failed to delete goal');
       }
 
-      setGoals(goals.filter((goal) => goal.id !== goalId));
-      toast.success("Goal deleted successfully!");
+      setGoals(goals.filter(goal => goal.id !== goalId));
+      toast.success('Goal deleted successfully!');
     } catch (error) {
-      console.error("Error deleting goal:", error);
-      toast.error("Failed to delete goal");
+      console.error('Error deleting goal:', error);
+      toast.error('Failed to delete goal');
     }
   };
 
@@ -128,18 +134,14 @@ export function WellnessGoals() {
               <Input
                 id="title"
                 value={newGoal.title}
-                onChange={(e) =>
-                  setNewGoal({ ...newGoal, title: e.target.value })
-                }
+                onChange={e => setNewGoal({ ...newGoal, title: e.target.value })}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               <Select
                 value={newGoal.category}
-                onValueChange={(value) =>
-                  setNewGoal({ ...newGoal, category: value })
-                }
+                onValueChange={value => setNewGoal({ ...newGoal, category: value })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select category" />
@@ -158,9 +160,7 @@ export function WellnessGoals() {
                 id="target"
                 type="number"
                 value={newGoal.target}
-                onChange={(e) =>
-                  setNewGoal({ ...newGoal, target: Number(e.target.value) })
-                }
+                onChange={e => setNewGoal({ ...newGoal, target: Number(e.target.value) })}
               />
             </div>
             <div className="space-y-2">
@@ -168,9 +168,7 @@ export function WellnessGoals() {
               <Input
                 id="unit"
                 value={newGoal.unit}
-                onChange={(e) =>
-                  setNewGoal({ ...newGoal, unit: e.target.value })
-                }
+                onChange={e => setNewGoal({ ...newGoal, unit: e.target.value })}
               />
             </div>
             <div className="space-y-2">
@@ -179,9 +177,7 @@ export function WellnessGoals() {
                 id="deadline"
                 type="date"
                 value={newGoal.deadline}
-                onChange={(e) =>
-                  setNewGoal({ ...newGoal, deadline: e.target.value })
-                }
+                onChange={e => setNewGoal({ ...newGoal, deadline: e.target.value })}
               />
             </div>
             <div className="space-y-2">
@@ -189,9 +185,7 @@ export function WellnessGoals() {
               <Input
                 id="description"
                 value={newGoal.description}
-                onChange={(e) =>
-                  setNewGoal({ ...newGoal, description: e.target.value })
-                }
+                onChange={e => setNewGoal({ ...newGoal, description: e.target.value })}
               />
             </div>
           </div>
@@ -203,37 +197,28 @@ export function WellnessGoals() {
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {goals.map((goal) => (
+        {goals.map(goal => (
           <Card key={goal.id}>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg">{goal.title}</CardTitle>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleDeleteGoal(goal.id)}
-                >
+                <Button variant="ghost" size="icon" onClick={() => handleDeleteGoal(goal.id)}>
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">
-                  {goal.description}
-                </p>
+                <p className="text-sm text-muted-foreground">{goal.description}</p>
                 <div className="flex items-center justify-between">
                   <span className="text-sm">
                     {goal.current} / {goal.target} {goal.unit}
                   </span>
                   <span className="text-sm text-muted-foreground">
-                    Due: {format(new Date(goal.deadline), "MMM d, yyyy")}
+                    Due: {format(new Date(goal.deadline), 'MMM d, yyyy')}
                   </span>
                 </div>
-                <Progress
-                  value={(goal.current / goal.target) * 100}
-                  className="h-2"
-                />
+                <Progress value={(goal.current / goal.target) * 100} className="h-2" />
                 {goal.completed && (
                   <div className="flex items-center gap-2 text-sm text-green-500">
                     <Check className="h-4 w-4" />
@@ -247,4 +232,4 @@ export function WellnessGoals() {
       </div>
     </div>
   );
-} 
+}

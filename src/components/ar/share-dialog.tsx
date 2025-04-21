@@ -34,7 +34,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
   imageData,
   type,
   productName,
-  userId
+  userId,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -53,7 +53,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
         imageData,
         type,
         productName,
-        ...(userId && { userId })
+        ...(userId && { userId }),
       };
 
       const response = await fetch('/api/share', {
@@ -77,9 +77,9 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
         userId,
         platform: 'email',
         method: 'email',
-        success: true
+        success: true,
       });
-      
+
       // Track sharing achievement
       trackAchievement('share');
       trackAchievement('share_email');
@@ -91,7 +91,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
       trackEvent('share_success', { type, method: 'email' });
     } catch (error: unknown) {
       console.error('Error sharing image:', error);
-      
+
       // Track error with analytics service
       await analyticsService.trackShare({
         sessionId: 'unknown',
@@ -99,15 +99,19 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
         platform: 'email',
         method: 'email',
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown error',
       });
-      
+
       toast({
         title: 'Error',
         description: 'Failed to share image. Please try again.',
         variant: 'destructive',
       });
-      trackEvent('share_error', { type, method: 'email', error: error instanceof Error ? error.message : 'Unknown error' });
+      trackEvent('share_error', {
+        type,
+        method: 'email',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -121,24 +125,24 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       // Track download with analytics service
       analyticsService.trackShare({
         sessionId: 'download',
         userId,
         platform: 'local',
         method: 'download',
-        success: true
+        success: true,
       });
-      
+
       // Track download achievement
       trackAchievement('share');
       trackAchievement('download');
-      
+
       trackEvent('image_downloaded', { type });
     } catch (error: unknown) {
       console.error('Error downloading image:', error);
-      
+
       // Track error with analytics service
       analyticsService.trackShare({
         sessionId: 'download',
@@ -146,15 +150,18 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
         platform: 'local',
         method: 'download',
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown error',
       });
-      
+
       toast({
         title: 'Error',
         description: 'Failed to download image. Please try again.',
         variant: 'destructive',
       });
-      trackEvent('download_error', { type, error: error instanceof Error ? error.message : 'Unknown error' });
+      trackEvent('download_error', {
+        type,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
     }
   };
 
@@ -165,14 +172,14 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
       userId,
       platform,
       method: 'social',
-      success: true
+      success: true,
     });
-    
+
     // Track social sharing achievement
     trackAchievement('share');
     trackAchievement('share_social');
     trackAchievement(`share_${platform}`);
-    
+
     trackEvent('social_share', { type, platform });
   };
 
@@ -187,19 +194,15 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
         </DialogHeader>
         <div className="space-y-4">
           <div className="flex justify-center">
-            <img
-              src={imageData}
-              alt="Virtual try-on result"
-              className="max-h-48 rounded-lg"
-            />
+            <img src={imageData} alt="Virtual try-on result" className="max-h-48 rounded-lg" />
           </div>
-          
+
           <Tabs defaultValue="social" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="social">Social Media</TabsTrigger>
               <TabsTrigger value="email">Email</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="social" className="space-y-4">
               {shareUrl ? (
                 <SocialShareButtons
@@ -215,7 +218,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
                 </div>
               )}
             </TabsContent>
-            
+
             <TabsContent value="email" className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
@@ -224,25 +227,17 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
                   type="email"
                   placeholder="Enter email address"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                 />
               </div>
-              <Button
-                onClick={handleShare}
-                disabled={isLoading || !email}
-                className="w-full"
-              >
+              <Button onClick={handleShare} disabled={isLoading || !email} className="w-full">
                 {isLoading ? 'Sharing...' : 'Share via Email'}
               </Button>
             </TabsContent>
           </Tabs>
-          
+
           <div className="flex justify-center">
-            <Button
-              variant="outline"
-              onClick={handleDownload}
-              disabled={isLoading}
-            >
+            <Button variant="outline" onClick={handleDownload} disabled={isLoading}>
               Download Image
             </Button>
           </div>
@@ -250,4 +245,4 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
       </DialogContent>
     </Dialog>
   );
-}; 
+};

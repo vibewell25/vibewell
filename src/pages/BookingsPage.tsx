@@ -12,11 +12,11 @@ export const BookingsPage: React.FC = () => {
         <h1>Booking Management</h1>
         <p>Manage all your bookings with our type-safe, error-resilient booking system</p>
       </div>
-      
+
       <div className="page-content">
         <BookingApp />
       </div>
-      
+
       <div className="page-footer">
         <p>
           This example demonstrates the use of type-safe booking service with proper error handling.
@@ -33,4 +33,4 @@ export const BookingsPage: React.FC = () => {
   );
 };
 
-export default BookingsPage; 
+export default BookingsPage;

@@ -12,12 +12,12 @@ interface GoalListProps {
   onEditGoal: (goal: Goal) => void;
   onDeleteGoal: (goalId: string) => void;
 }
-export function GoalList({ 
-  goals, 
-  onLogProgress, 
+export function GoalList({
+  goals,
+  onLogProgress,
   onAddGoal,
   onEditGoal,
-  onDeleteGoal
+  onDeleteGoal,
 }: GoalListProps) {
   const [selectedType, setSelectedType] = useState<GoalType | 'all'>('all');
   const [selectedStatus, setSelectedStatus] = useState<GoalStatus | 'all'>('all');
@@ -32,10 +32,10 @@ export function GoalList({
   const sortedGoals = [...filteredGoals].sort((a, b) => {
     // First sort by status (in_progress first, then not_started, then completed, then failed)
     const statusOrder: Record<GoalStatus, number> = {
-      'in_progress': 0,
-      'not_started': 1,
-      'completed': 2,
-      'failed': 3,
+      in_progress: 0,
+      not_started: 1,
+      completed: 2,
+      failed: 3,
     };
     const statusDiff = statusOrder[a.status] - statusOrder[b.status];
     if (statusDiff !== 0) return statusDiff;
@@ -75,7 +75,7 @@ export function GoalList({
                 id="typeFilter"
                 className="form-select w-full"
                 value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value as GoalType | 'all')}
+                onChange={e => setSelectedType(e.target.value as GoalType | 'all')}
               >
                 <option value="all">All Types</option>
                 <option value="meditation">Meditation</option>
@@ -96,7 +96,7 @@ export function GoalList({
                 id="statusFilter"
                 className="form-select w-full"
                 value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value as GoalStatus | 'all')}
+                onChange={e => setSelectedStatus(e.target.value as GoalStatus | 'all')}
               >
                 <option value="all">All Statuses</option>
                 <option value="not_started">Not Started</option>
@@ -111,11 +111,10 @@ export function GoalList({
       {/* Goals */}
       {sortedGoals.length === 0 ? (
         <div className="text-center py-12 border border-dashed border-border rounded-lg">
-          <p className="text-muted-foreground mb-4">No goals found. Create your first goal to get started!</p>
-          <button
-            className="btn-primary flex items-center gap-1 mx-auto"
-            onClick={onAddGoal}
-          >
+          <p className="text-muted-foreground mb-4">
+            No goals found. Create your first goal to get started!
+          </p>
+          <button className="btn-primary flex items-center gap-1 mx-auto" onClick={onAddGoal}>
             <Icons.PlusIcon className="h-5 w-5" />
             Create Goal
           </button>
@@ -123,10 +122,10 @@ export function GoalList({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedGoals.map(goal => (
-            <GoalProgressCard 
-              key={goal.id} 
-              goal={goal} 
-              onLogProgress={(value) => onLogProgress(goal.id, value)}
+            <GoalProgressCard
+              key={goal.id}
+              goal={goal}
+              onLogProgress={value => onLogProgress(goal.id, value)}
               onEdit={() => onEditGoal(goal)}
               onDelete={() => onDeleteGoal(goal.id)}
             />
@@ -135,4 +134,4 @@ export function GoalList({
       )}
     </div>
   );
-} 
+}

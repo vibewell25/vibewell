@@ -10,7 +10,13 @@ import { cn } from '@/lib/utils';
 import { TimePickerDemo } from '../ui/time-picker';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface DateTimePickerProps {
   date: Date | undefined;
@@ -20,26 +26,26 @@ interface DateTimePickerProps {
 
 export function DateTimePicker({ date, setDate, disabled }: DateTimePickerProps) {
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(date);
-  
+
   // Update the parent component state when the internal state changes
   React.useEffect(() => {
     setDate(selectedDate);
   }, [selectedDate, setDate]);
-  
+
   // Update the internal state when the parent prop changes
   React.useEffect(() => {
     setSelectedDate(date);
   }, [date]);
-  
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
           className={cn(
-            "w-full justify-start text-left font-normal",
-            !selectedDate && "text-muted-foreground",
-            disabled && "opacity-50 cursor-not-allowed"
+            'w-full justify-start text-left font-normal',
+            !selectedDate && 'text-muted-foreground',
+            disabled && 'opacity-50 cursor-not-allowed'
           )}
           disabled={disabled}
         >
@@ -48,19 +54,14 @@ export function DateTimePicker({ date, setDate, disabled }: DateTimePickerProps)
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
-        <Calendar
-          mode="single"
-          selected={selectedDate}
-          onSelect={setSelectedDate}
-          initialFocus
-        />
+        <Calendar mode="single" selected={selectedDate} onSelect={setSelectedDate} initialFocus />
         {selectedDate && (
           <div className="p-3 border-t border-border">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium">Time</span>
             </div>
             <TimePickerDemo
-              setDate={function(date: Date): void {
+              setDate={function (date: Date): void {
                 setSelectedDate(date);
               }}
               date={selectedDate}
@@ -108,7 +109,7 @@ export function TimePickerDemo({ date, setDate, className }: TimePickerDemoProps
     if (period === 'AM' && hours === 12) {
       hours = 0;
     }
-    
+
     const newDate = new Date(date);
     newDate.setHours(hours);
     setDate(newDate);
@@ -144,7 +145,9 @@ export function TimePickerDemo({ date, setDate, className }: TimePickerDemoProps
   return (
     <div className={cn('flex justify-between items-end gap-2 pt-2', className)}>
       <div className="grid gap-1">
-        <Label htmlFor="hours" className="text-xs">Hours</Label>
+        <Label htmlFor="hours" className="text-xs">
+          Hours
+        </Label>
         <Input
           id="hours"
           className="w-16"
@@ -155,7 +158,9 @@ export function TimePickerDemo({ date, setDate, className }: TimePickerDemoProps
         />
       </div>
       <div className="grid gap-1">
-        <Label htmlFor="minutes" className="text-xs">Minutes</Label>
+        <Label htmlFor="minutes" className="text-xs">
+          Minutes
+        </Label>
         <Input
           id="minutes"
           className="w-16"
@@ -166,7 +171,9 @@ export function TimePickerDemo({ date, setDate, className }: TimePickerDemoProps
         />
       </div>
       <div className="grid gap-1">
-        <Label htmlFor="period" className="text-xs">Period</Label>
+        <Label htmlFor="period" className="text-xs">
+          Period
+        </Label>
         <Select value={getPeriod(date)} onValueChange={handlePeriodChange}>
           <SelectTrigger id="period" className="w-[70px]">
             <SelectValue placeholder="AM/PM" />
@@ -179,4 +186,4 @@ export function TimePickerDemo({ date, setDate, className }: TimePickerDemoProps
       </div>
     </div>
   );
-} 
+}

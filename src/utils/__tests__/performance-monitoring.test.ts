@@ -6,7 +6,7 @@ import {
   reportPerformanceViolation,
   getMetrics,
   checkBudgets,
-  initPerformanceMonitoring
+  initPerformanceMonitoring,
 } from '../performance-monitoring';
 
 // Mock performance API
@@ -17,7 +17,7 @@ const mockPerformance = {
   getEntriesByName: jest.fn().mockReturnValue([{ duration: 100 }]),
   clearMarks: jest.fn(),
   clearMeasures: jest.fn(),
-  now: jest.fn().mockReturnValue(1000)
+  now: jest.fn().mockReturnValue(1000),
 };
 
 // Mock console
@@ -25,7 +25,7 @@ const originalConsole = global.console;
 const mockConsole = {
   warn: jest.fn(),
   error: jest.fn(),
-  info: jest.fn()
+  info: jest.fn(),
 };
 
 describe('Performance Monitoring', () => {
@@ -49,12 +49,14 @@ describe('Performance Monitoring', () => {
   describe('Component rendering measurement', () => {
     it('should track component render time', () => {
       const markId = startComponentRender('TestComponent');
-      expect(mockPerformance.mark).toHaveBeenCalledWith(expect.stringContaining('component-start-TestComponent'));
-      
+      expect(mockPerformance.mark).toHaveBeenCalledWith(
+        expect.stringContaining('component-start-TestComponent')
+      );
+
       endComponentRender('TestComponent', markId);
       expect(mockPerformance.measure).toHaveBeenCalledWith(
         expect.stringContaining('component-TestComponent'),
-        expect.stringContaining('component-start-TestComponent'),
+        expect.stringContaining('component-start-TestComponent')
       );
     });
   });
@@ -62,12 +64,14 @@ describe('Performance Monitoring', () => {
   describe('API call measurement', () => {
     it('should track API call duration', () => {
       const markId = startApiCall('/api/test');
-      expect(mockPerformance.mark).toHaveBeenCalledWith(expect.stringContaining('api-start-/api/test'));
-      
+      expect(mockPerformance.mark).toHaveBeenCalledWith(
+        expect.stringContaining('api-start-/api/test')
+      );
+
       endApiCall('/api/test', markId);
       expect(mockPerformance.measure).toHaveBeenCalledWith(
         expect.stringContaining('api-/api/test'),
-        expect.stringContaining('api-start-/api/test'),
+        expect.stringContaining('api-start-/api/test')
       );
     });
   });
@@ -88,10 +92,10 @@ describe('Performance Monitoring', () => {
       // Create some sample metrics
       startComponentRender('TestComponent');
       endComponentRender('TestComponent', 'test-mark-id');
-      
+
       startApiCall('/api/test');
       endApiCall('/api/test', 'test-api-mark-id');
-      
+
       const metrics = getMetrics();
       expect(metrics).toBeDefined();
       expect(metrics.components).toBeDefined();
@@ -105,13 +109,13 @@ describe('Performance Monitoring', () => {
       jest.spyOn(global, 'getMetrics').mockImplementation(() => ({
         components: { TestComponent: 100 },
         api: { '/api/test': 200 },
-        core: { FCP: 300, LCP: 2500, CLS: 0.1 }
+        core: { FCP: 300, LCP: 2500, CLS: 0.1 },
       }));
-      
+
       checkBudgets();
-      
+
       // Should warn for any violations
       expect(mockConsole.warn).toHaveBeenCalled();
     });
   });
-}); 
+});

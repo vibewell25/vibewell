@@ -16,7 +16,7 @@ export class OfflineService {
     offlineBookings.push({
       ...bookingData,
       timestamp: new Date().toISOString(),
-      synced: false
+      synced: false,
     });
     await localforage.setItem(OFFLINE_STORE_KEY, offlineBookings);
   }
@@ -35,8 +35,8 @@ export class OfflineService {
         await this.prisma.booking.create({
           data: {
             ...booking,
-            createdAt: new Date(booking.timestamp)
-          }
+            createdAt: new Date(booking.timestamp),
+          },
         });
 
         // Mark as synced
@@ -59,7 +59,7 @@ export class OfflineService {
   }) {
     await localforage.setItem(MOBILE_DATA_KEY, {
       ...data,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -71,4 +71,4 @@ export class OfflineService {
     await localforage.removeItem(OFFLINE_STORE_KEY);
     await localforage.removeItem(MOBILE_DATA_KEY);
   }
-} 
+}

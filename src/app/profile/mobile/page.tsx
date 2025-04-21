@@ -8,7 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import Link from 'next/link';
 
 // Mobile profile components
@@ -28,7 +28,7 @@ function ProfileMobileContent() {
   // Handle tab changes
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
-    
+
     // Update URL without page reload
     const newParams = new URLSearchParams(searchParams.toString());
     newParams.set('tab', tab);
@@ -60,7 +60,7 @@ function ProfileMobileContent() {
           </Avatar>
           <h1 className="text-xl font-semibold mb-1">{user.fullName || 'User'}</h1>
           <p className="text-sm text-muted-foreground mb-3">{user.email}</p>
-          
+
           <div className="flex space-x-2 mb-3">
             <Badge variant="outline" className="text-xs px-2 py-1">
               {user.role || 'Customer'}
@@ -69,12 +69,12 @@ function ProfileMobileContent() {
               Member since {format(new Date(user.createdAt || Date.now()), 'MMM yyyy')}
             </Badge>
           </div>
-          
+
           <Button variant="outline" size="sm" asChild>
             <Link href="/profile/edit">Edit Profile</Link>
           </Button>
         </div>
-        
+
         {/* Profile Tabs */}
         <Tabs defaultValue={activeTab} onValueChange={handleTabChange}>
           <TabsList className="grid grid-cols-3 sticky top-0 z-10 bg-background">
@@ -82,7 +82,7 @@ function ProfileMobileContent() {
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="favorites">Favorites</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="activity" className="p-4">
             <h2 className="text-lg font-medium mb-4">Recent Activity</h2>
             <div className="space-y-4">
@@ -93,7 +93,7 @@ function ProfileMobileContent() {
                 </div>
                 <p className="text-sm">You reviewed "The Wellness Spa" (⭐⭐⭐⭐⭐)</p>
               </div>
-              
+
               <div className="bg-card p-4 rounded-lg border border-border">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">1 week ago</span>
@@ -101,7 +101,7 @@ function ProfileMobileContent() {
                 </div>
                 <p className="text-sm">Swedish Massage with Sarah at Serenity Spa</p>
               </div>
-              
+
               <div className="bg-card p-4 rounded-lg border border-border">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">2 weeks ago</span>
@@ -111,7 +111,7 @@ function ProfileMobileContent() {
               </div>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="bookings" className="p-4">
             <h2 className="text-lg font-medium mb-4">Your Bookings</h2>
             <div className="space-y-4">
@@ -125,11 +125,15 @@ function ProfileMobileContent() {
                 </div>
                 <p className="text-sm mb-3">June 15, 2023 • 2:00 PM</p>
                 <div className="flex space-x-2">
-                  <Button size="sm" variant="outline">Reschedule</Button>
-                  <Button size="sm" variant="destructive">Cancel</Button>
+                  <Button size="sm" variant="outline">
+                    Reschedule
+                  </Button>
+                  <Button size="sm" variant="destructive">
+                    Cancel
+                  </Button>
                 </div>
               </div>
-              
+
               <div className="bg-card p-4 rounded-lg border border-border">
                 <div className="flex justify-between items-start mb-2">
                   <div>
@@ -140,13 +144,17 @@ function ProfileMobileContent() {
                 </div>
                 <p className="text-sm mb-3">May 28, 2023 • 11:00 AM</p>
                 <div className="flex space-x-2">
-                  <Button size="sm" variant="outline">Book Again</Button>
-                  <Button size="sm" variant="outline">Leave Review</Button>
+                  <Button size="sm" variant="outline">
+                    Book Again
+                  </Button>
+                  <Button size="sm" variant="outline">
+                    Leave Review
+                  </Button>
                 </div>
               </div>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="favorites" className="p-4">
             <h2 className="text-lg font-medium mb-4">Your Favorites</h2>
             <div className="grid grid-cols-1 gap-4">
@@ -163,7 +171,7 @@ function ProfileMobileContent() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-card p-4 rounded-lg border border-border">
                 <div className="flex items-center gap-3">
                   <div className="w-16 h-16 rounded-md bg-gray-200"></div>
@@ -177,7 +185,7 @@ function ProfileMobileContent() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-card p-4 rounded-lg border border-border">
                 <div className="flex items-center gap-3">
                   <div className="w-16 h-16 rounded-md bg-gray-200"></div>
@@ -201,8 +209,14 @@ function ProfileMobileContent() {
 
 export default function ProfileMobilePage() {
   return (
-    <Suspense fallback={<MobileLayout><div className="flex justify-center items-center min-h-screen">Loading profile...</div></MobileLayout>}>
+    <Suspense
+      fallback={
+        <MobileLayout>
+          <div className="flex justify-center items-center min-h-screen">Loading profile...</div>
+        </MobileLayout>
+      }
+    >
       <ProfileMobileContent />
     </Suspense>
   );
-} 
+}

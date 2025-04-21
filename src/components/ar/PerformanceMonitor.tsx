@@ -31,7 +31,7 @@ interface PerformanceMonitorProps {
 
 /**
  * PerformanceMonitor component
- * 
+ *
  * A diagnostic component that monitors and displays real-time performance metrics
  * for a Three.js scene. Can apply automatic optimizations when performance drops.
  *
@@ -41,7 +41,7 @@ interface PerformanceMonitorProps {
 export function PerformanceMonitor({
   enableAdaptiveQuality = true,
   performanceThreshold = 30,
-  devModeOnly = true
+  devModeOnly = true,
 }: PerformanceMonitorProps) {
   const { gl } = useThree();
   const frameRate = useRef<number>(0);
@@ -52,7 +52,7 @@ export function PerformanceMonitor({
     triangles: 0,
     drawCalls: 0,
     memoryUsage: 0,
-    isPerformanceIssue: false
+    isPerformanceIssue: false,
   });
   const adaptiveQualityTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -61,28 +61,28 @@ export function PerformanceMonitor({
     frameCount.current += 1;
     const now = Date.now();
     const delta = now - lastUpdate.current;
-    
+
     if (delta > 1000) {
-      frameRate.current = frameCount.current * 1000 / delta;
-      
+      frameRate.current = (frameCount.current * 1000) / delta;
+
       // Update metrics
       const fpsValue = Math.round(frameRate.current);
       const isPerformanceIssue = fpsValue < performanceThreshold;
-      
+
       // Get renderer info
       const info = gl.info;
-      
+
       setMetrics({
         fps: fpsValue,
         triangles: info.render?.triangles || 0,
         drawCalls: info.render?.calls || 0,
         memoryUsage: (info.memory?.geometries || 0) * 0.25 + (info.memory?.textures || 0) * 2,
-        isPerformanceIssue
+        isPerformanceIssue,
       });
-      
+
       frameCount.current = 0;
       lastUpdate.current = now;
-      
+
       // Apply adaptive optimizations for sustained low performance
       if (enableAdaptiveQuality && isPerformanceIssue) {
         if (!adaptiveQualityTimer.current) {
@@ -90,13 +90,13 @@ export function PerformanceMonitor({
             // Apply progressive optimizations
             const pixelRatio = Math.max(1, window.devicePixelRatio * 0.75);
             gl.setPixelRatio(pixelRatio);
-            
+
             // Reduce shadow map size
             if (gl.shadowMap.enabled) {
               gl.shadowMap.autoUpdate = false;
               gl.shadowMap.needsUpdate = true;
             }
-            
+
             adaptiveQualityTimer.current = null;
           }, 2000); // Apply after 2 seconds of poor performance
         }
@@ -123,10 +123,12 @@ export function PerformanceMonitor({
 
   return (
     <div className="absolute top-0 left-0 bg-black bg-opacity-50 text-white text-xs p-1 rounded">
-      <div>FPS: {metrics.fps} {metrics.isPerformanceIssue && '⚠️'}</div>
+      <div>
+        FPS: {metrics.fps} {metrics.isPerformanceIssue && '⚠️'}
+      </div>
       <div>Triangles: {metrics.triangles.toLocaleString()}</div>
       <div>Draw calls: {metrics.drawCalls}</div>
       <div>Memory: {Math.round(metrics.memoryUsage)}MB</div>
     </div>
   );
-} 
+}

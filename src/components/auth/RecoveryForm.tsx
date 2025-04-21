@@ -21,8 +21,8 @@ export function RecoveryForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'verify',
-          code: code.trim().toUpperCase()
-        })
+          code: code.trim().toUpperCase(),
+        }),
       });
 
       const data = await response.json();
@@ -32,7 +32,7 @@ export function RecoveryForm() {
       }
 
       toast.success('Recovery code verified successfully');
-      
+
       // Redirect to the dashboard or home page
       router.push('/dashboard');
     } catch (error) {
@@ -53,7 +53,7 @@ export function RecoveryForm() {
             id="code"
             type="text"
             value={code}
-            onChange={(e) => setCode(e.target.value)}
+            onChange={e => setCode(e.target.value)}
             placeholder="XXXX-XXXX-XXXX-XXXX"
             pattern="^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$"
             required
@@ -65,11 +65,7 @@ export function RecoveryForm() {
           </p>
         </div>
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isLoading || !code.trim()}
-        >
+        <Button type="submit" className="w-full" disabled={isLoading || !code.trim()}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Verify Recovery Code
         </Button>
@@ -87,4 +83,4 @@ export function RecoveryForm() {
       </form>
     </Card>
   );
-} 
+}

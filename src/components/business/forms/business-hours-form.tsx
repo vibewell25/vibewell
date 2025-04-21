@@ -35,7 +35,7 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
       saturday: { isOpen: false },
       sunday: { isOpen: false },
     };
-    
+
     form.setValue('businessHours', standardHours, { shouldValidate: true });
   };
 
@@ -50,7 +50,7 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
       saturday: { isOpen: true, openTime: '10:00', closeTime: '18:00' },
       sunday: { isOpen: false },
     };
-    
+
     form.setValue('businessHours', extendedHours, { shouldValidate: true });
   };
 
@@ -65,14 +65,14 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
       saturday: { isOpen: true, openTime: '11:00', closeTime: '19:00' },
       sunday: { isOpen: true, openTime: '11:00', closeTime: '19:00' },
     };
-    
+
     form.setValue('businessHours', weekendHours, { shouldValidate: true });
   };
 
   // Toggle isOpen status for a day
   const toggleDay = (day: string, isOpen: boolean) => {
     const currentHours = form.watch('businessHours');
-    
+
     // Set default open and close times if toggling to open and they're not set
     let updatedDay = { isOpen };
     if (isOpen && !currentHours[day].openTime) {
@@ -82,7 +82,7 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
         closeTime: '17:00',
       };
     }
-    
+
     form.setValue(`businessHours.${day}`, updatedDay, { shouldValidate: true });
   };
 
@@ -94,25 +94,13 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
       </div>
 
       <div className="flex flex-wrap gap-2 mb-6">
-        <Button 
-          type="button" 
-          variant="outline" 
-          onClick={setStandardHours}
-        >
+        <Button type="button" variant="outline" onClick={setStandardHours}>
           Standard Hours
         </Button>
-        <Button 
-          type="button" 
-          variant="outline" 
-          onClick={setExtendedHours}
-        >
+        <Button type="button" variant="outline" onClick={setExtendedHours}>
           Extended Hours
         </Button>
-        <Button 
-          type="button" 
-          variant="outline" 
-          onClick={setWeekendHours}
-        >
+        <Button type="button" variant="outline" onClick={setWeekendHours}>
           Weekend Only
         </Button>
       </div>
@@ -120,63 +108,76 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>Set Your Hours</CardTitle>
-          <CardDescription>
-            Configure when your business is open for appointments
-          </CardDescription>
+          <CardDescription>Configure when your business is open for appointments</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {days.map(day => {
               const dayData = form.watch(`businessHours.${day.id}`);
               return (
-                <div key={day.id} className="grid grid-cols-6 items-center gap-4 py-2 border-b last:border-0">
+                <div
+                  key={day.id}
+                  className="grid grid-cols-6 items-center gap-4 py-2 border-b last:border-0"
+                >
                   <div className="col-span-2">
                     <div className="flex items-center space-x-2">
                       <Switch
                         id={`is-open-${day.id}`}
                         checked={dayData?.isOpen}
-                        onCheckedChange={(checked) => toggleDay(day.id, checked)}
+                        onCheckedChange={checked => toggleDay(day.id, checked)}
                       />
                       <Label htmlFor={`is-open-${day.id}`} className="font-medium">
                         {day.label}
                       </Label>
                     </div>
                   </div>
-                  
+
                   {dayData?.isOpen ? (
                     <>
                       <div className="col-span-2">
                         <div className="space-y-1">
-                          <Label htmlFor={`open-time-${day.id}`} className="text-xs text-muted-foreground">
+                          <Label
+                            htmlFor={`open-time-${day.id}`}
+                            className="text-xs text-muted-foreground"
+                          >
                             Open
                           </Label>
                           <Input
                             id={`open-time-${day.id}`}
                             type="time"
                             value={dayData.openTime || ''}
-                            onChange={(e) => form.setValue(`businessHours.${day.id}.openTime`, e.target.value, { shouldValidate: true })}
+                            onChange={e =>
+                              form.setValue(`businessHours.${day.id}.openTime`, e.target.value, {
+                                shouldValidate: true,
+                              })
+                            }
                           />
                         </div>
                       </div>
-                      
+
                       <div className="col-span-2">
                         <div className="space-y-1">
-                          <Label htmlFor={`close-time-${day.id}`} className="text-xs text-muted-foreground">
+                          <Label
+                            htmlFor={`close-time-${day.id}`}
+                            className="text-xs text-muted-foreground"
+                          >
                             Close
                           </Label>
                           <Input
                             id={`close-time-${day.id}`}
                             type="time"
                             value={dayData.closeTime || ''}
-                            onChange={(e) => form.setValue(`businessHours.${day.id}.closeTime`, e.target.value, { shouldValidate: true })}
+                            onChange={e =>
+                              form.setValue(`businessHours.${day.id}.closeTime`, e.target.value, {
+                                shouldValidate: true,
+                              })
+                            }
                           />
                         </div>
                       </div>
                     </>
                   ) : (
-                    <div className="col-span-4 text-muted-foreground">
-                      Closed
-                    </div>
+                    <div className="col-span-4 text-muted-foreground">Closed</div>
                   )}
                 </div>
               );
@@ -187,9 +188,15 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
 
       <div className="bg-muted/50 rounded-lg p-4 text-sm">
         <p className="font-medium mb-2">Note:</p>
-        <p>These hours will be displayed to customers and used to determine available appointment slots.</p>
-        <p className="mt-2">You'll be able to set more specific availability and exceptions in your business dashboard.</p>
+        <p>
+          These hours will be displayed to customers and used to determine available appointment
+          slots.
+        </p>
+        <p className="mt-2">
+          You'll be able to set more specific availability and exceptions in your business
+          dashboard.
+        </p>
       </div>
     </div>
   );
-} 
+}

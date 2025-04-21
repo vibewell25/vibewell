@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { Layout } from '@/components/layout';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
 import { MarketingNav } from '@/components/marketing-nav';
-;
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { StarRating } from '@/components/star-rating';
@@ -22,9 +21,10 @@ const resources = [
     readTime: '12 min',
     category: 'Social Media',
     imageUrl: '/images/social-media-marketing.jpg',
-    excerpt: 'Learn effective social media strategies tailored specifically for wellness businesses and practitioners.',
+    excerpt:
+      'Learn effective social media strategies tailored specifically for wellness businesses and practitioners.',
     tags: ['social media', 'digital marketing', 'content strategy'],
-    type: 'resource'
+    type: 'resource',
   },
   {
     id: '2',
@@ -34,10 +34,11 @@ const resources = [
     readTime: '15 min',
     category: 'Email Marketing',
     imageUrl: '/images/email-marketing.jpg',
-    excerpt: 'Discover how to set up effective email marketing automation to nurture leads and retain clients.',
+    excerpt:
+      'Discover how to set up effective email marketing automation to nurture leads and retain clients.',
     tags: ['email marketing', 'automation', 'client nurturing'],
     premium: true,
-    type: 'resource'
+    type: 'resource',
   },
   {
     id: '3',
@@ -47,11 +48,12 @@ const resources = [
     readTime: '18 min',
     category: 'Content Marketing',
     imageUrl: '/images/content-marketing.jpg',
-    excerpt: 'Create a comprehensive content marketing strategy that positions you as an expert in your wellness niche.',
+    excerpt:
+      'Create a comprehensive content marketing strategy that positions you as an expert in your wellness niche.',
     tags: ['content marketing', 'SEO', 'blogging'],
     downloadUrl: '/downloads/content-strategy-template.pdf',
-    type: 'resource'
-  }
+    type: 'resource',
+  },
 ];
 export default function MarketingResourcesPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -60,7 +62,7 @@ export default function MarketingResourcesPage() {
   const categories = Array.from(new Set(resources.map(resource => resource.category)));
   // Filter resources based on search term and selected category
   const filteredResources = resources.filter(resource => {
-    const matchesSearch = 
+    const matchesSearch =
       searchTerm === '' ||
       resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       resource.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -96,7 +98,8 @@ export default function MarketingResourcesPage() {
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h1 className="text-2xl font-bold mb-2">Marketing Resources</h1>
                 <p className="text-gray-600 mb-6">
-                  Discover marketing resources specifically designed for wellness professionals to attract, engage, and retain clients.
+                  Discover marketing resources specifically designed for wellness professionals to
+                  attract, engage, and retain clients.
                 </p>
                 {/* Search and Filter */}
                 <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -107,7 +110,7 @@ export default function MarketingResourcesPage() {
                       placeholder="Search resources..."
                       className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onChange={e => setSearchTerm(e.target.value)}
                     />
                   </div>
                   <div className="relative">
@@ -115,11 +118,13 @@ export default function MarketingResourcesPage() {
                     <select
                       className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
                       value={selectedCategory || ''}
-                      onChange={(e) => setSelectedCategory(e.target.value || null)}
+                      onChange={e => setSelectedCategory(e.target.value || null)}
                     >
                       <option value="">All Categories</option>
                       {categories.map(category => (
-                        <option key={category} value={category}>{category}</option>
+                        <option key={category} value={category}>
+                          {category}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -130,14 +135,25 @@ export default function MarketingResourcesPage() {
                     <div className="text-center py-12">
                       <Icons.MagnifyingGlassIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-gray-900 mb-2">No resources found</h3>
-                      <p className="text-gray-500 mb-4">Try adjusting your search or filter criteria</p>
-                      <Button variant="outline" onClick={() => {setSearchTerm(''); setSelectedCategory(null);}}>
+                      <p className="text-gray-500 mb-4">
+                        Try adjusting your search or filter criteria
+                      </p>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setSearchTerm('');
+                          setSelectedCategory(null);
+                        }}
+                      >
                         Clear filters
                       </Button>
                     </div>
                   ) : (
                     filteredResources.map(resource => (
-                      <div key={resource.id} className="flex flex-col md:flex-row bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                      <div
+                        key={resource.id}
+                        className="flex flex-col md:flex-row bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
+                      >
                         {resource.imageUrl && (
                           <div className="md:w-1/3 h-48 md:h-auto relative">
                             <Image
@@ -157,19 +173,24 @@ export default function MarketingResourcesPage() {
                           <div className="mb-2">
                             <Badge variant="outline">{resource.category}</Badge>
                             {resource.downloadUrl && (
-                              <Badge variant="outline" className="ml-2 bg-blue-50 text-blue-700 border-blue-200">
+                              <Badge
+                                variant="outline"
+                                className="ml-2 bg-blue-50 text-blue-700 border-blue-200"
+                              >
                                 Downloadable
                               </Badge>
                             )}
                           </div>
                           <Link href={`/business-hub/marketing/resources/${resource.id}`}>
-                            <h2 className="text-xl font-semibold mb-2 hover:text-blue-600">{resource.title}</h2>
+                            <h2 className="text-xl font-semibold mb-2 hover:text-blue-600">
+                              {resource.title}
+                            </h2>
                           </Link>
                           <p className="text-gray-600 mb-4">{resource.excerpt}</p>
                           <div className="flex flex-wrap gap-2 mb-4">
                             {resource.tags.map(tag => (
-                              <span 
-                                key={tag} 
+                              <span
+                                key={tag}
                                 className="inline-block bg-gray-100 rounded-full px-3 py-1 text-xs text-gray-700"
                               >
                                 {tag}
@@ -222,4 +243,4 @@ export default function MarketingResourcesPage() {
       </div>
     </Layout>
   );
-} 
+}

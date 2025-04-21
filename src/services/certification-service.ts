@@ -1,11 +1,11 @@
 import { NotificationService } from './notification-service';
-import { 
-  CertificationModel, 
+import {
+  CertificationModel,
   PractitionerCertificationModel,
   Certification,
   PractitionerCertification,
   CertificationProgress,
-  CertificationRequirement 
+  CertificationRequirement,
 } from '../models/Certification';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -32,7 +32,7 @@ export class CertificationService {
     certificationId: string
   ): Promise<PractitionerCertification> {
     const certification = await CertificationModel.findById(certificationId);
-    
+
     if (!certification) {
       throw new Error('Certification not found');
     }
@@ -40,14 +40,14 @@ export class CertificationService {
     // Create progress entries for each requirement
     const progress: CertificationProgress[] = certification.requirements.map(req => ({
       requirementId: req.id,
-      status: 'not_started'
+      status: 'not_started',
     }));
 
     const enrollment = new PractitionerCertificationModel({
       practitionerId,
       certificationId,
       status: 'in_progress',
-      progress
+      progress,
     });
 
     return await enrollment.save();
@@ -64,16 +64,14 @@ export class CertificationService {
   ): Promise<PractitionerCertification> {
     const enrollment = await PractitionerCertificationModel.findOne({
       practitionerId,
-      certificationId
+      certificationId,
     });
 
     if (!enrollment) {
       throw new Error('Certification enrollment not found');
     }
 
-    const requirementIndex = enrollment.progress.findIndex(
-      p => p.requirementId === requirementId
-    );
+    const requirementIndex = enrollment.progress.findIndex(p => p.requirementId === requirementId);
 
     if (requirementIndex === -1) {
       throw new Error('Requirement not found in progress');
@@ -82,20 +80,22 @@ export class CertificationService {
     // Update the specific requirement progress
     enrollment.progress[requirementIndex] = {
       ...enrollment.progress[requirementIndex],
-      ...update
+      ...update,
     };
 
     // Check if all requirements are completed
     const allCompleted = enrollment.progress.every(p => p.status === 'completed');
-    
+
     if (allCompleted && enrollment.status !== 'completed') {
       enrollment.status = 'completed';
       enrollment.issueDate = new Date();
-      
+
       // Set expiry date if certification has validity period
       const certification = await CertificationModel.findById(certificationId);
-      const validityPeriod = certification?.requirements.find(r => r.validityPeriod)?.validityPeriod;
-      
+      const validityPeriod = certification?.requirements.find(
+        r => r.validityPeriod
+      )?.validityPeriod;
+
       if (validityPeriod) {
         const expiryDate = new Date();
         expiryDate.setMonth(expiryDate.getMonth() + validityPeriod);
@@ -112,7 +112,7 @@ export class CertificationService {
       await this.notificationService.notifyUser(practitionerId, {
         type: 'CERTIFICATION',
         title: 'Certification Completed!',
-        message: `Congratulations! You have completed the ${certification?.name} certification.`
+        message: `Congratulations! You have completed the ${certification?.name} certification.`,
       });
     }
 
@@ -136,7 +136,7 @@ export class CertificationService {
     const enrollments = await PractitionerCertificationModel.find({
       practitionerId,
       status: 'completed',
-      expiryDate: { $exists: true }
+      expiryDate: { $exists: true },
     });
 
     const now = new Date();
@@ -153,14 +153,14 @@ export class CertificationService {
           await this.notificationService.notifyUser(practitionerId, {
             type: 'CERTIFICATION',
             title: 'Certification Expired',
-            message: `Your certification ${enrollment.certificationId} has expired. Please renew to maintain your credentials.`
+            message: `Your certification ${enrollment.certificationId} has expired. Please renew to maintain your credentials.`,
           });
         } else if (enrollment.expiryDate < thirtyDaysFromNow) {
           // Certification is expiring soon
           await this.notificationService.notifyUser(practitionerId, {
             type: 'CERTIFICATION',
             title: 'Certification Expiring Soon',
-            message: `Your certification ${enrollment.certificationId} will expire on ${enrollment.expiryDate.toLocaleDateString()}. Please renew soon.`
+            message: `Your certification ${enrollment.certificationId} will expire on ${enrollment.expiryDate.toLocaleDateString()}. Please renew soon.`,
           });
         }
       }
@@ -171,8 +171,9 @@ export class CertificationService {
    * Get practitioner's certification summary
    */
   async getPractitionerCertifications(practitionerId: string) {
-    const enrollments = await PractitionerCertificationModel.find({ practitionerId })
-      .populate('certificationId');
+    const enrollments = await PractitionerCertificationModel.find({ practitionerId }).populate(
+      'certificationId'
+    );
 
     return enrollments.map(enrollment => ({
       certification: enrollment.certificationId,
@@ -180,7 +181,7 @@ export class CertificationService {
       progress: this.calculateProgressPercentage(enrollment.progress),
       issueDate: enrollment.issueDate,
       expiryDate: enrollment.expiryDate,
-      certificateNumber: enrollment.certificateNumber
+      certificateNumber: enrollment.certificateNumber,
     }));
   }
 
@@ -195,16 +196,13 @@ export class CertificationService {
   /**
    * Get certification requirements and progress
    */
-  async getCertificationDetails(
-    practitionerId: string,
-    certificationId: string
-  ) {
+  async getCertificationDetails(practitionerId: string, certificationId: string) {
     const [certification, enrollment] = await Promise.all([
       CertificationModel.findById(certificationId),
       PractitionerCertificationModel.findOne({
         practitionerId,
-        certificationId
-      })
+        certificationId,
+      }),
     ]);
 
     if (!certification) {
@@ -217,7 +215,7 @@ export class CertificationService {
       status: enrollment?.status || 'not_enrolled',
       issueDate: enrollment?.issueDate,
       expiryDate: enrollment?.expiryDate,
-      certificateNumber: enrollment?.certificateNumber
+      certificateNumber: enrollment?.certificateNumber,
     };
   }
 
@@ -230,7 +228,7 @@ export class CertificationService {
   }> {
     const enrollment = await PractitionerCertificationModel.findOne({
       certificateNumber,
-      status: 'completed'
+      status: 'completed',
     }).populate('certificationId practitionerId');
 
     if (!enrollment || enrollment.status === 'expired') {
@@ -243,8 +241,8 @@ export class CertificationService {
         certification: enrollment.certificationId,
         issueDate: enrollment.issueDate,
         expiryDate: enrollment.expiryDate,
-        status: enrollment.status
-      }
+        status: enrollment.status,
+      },
     };
   }
-} 
+}

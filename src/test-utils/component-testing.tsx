@@ -1,12 +1,18 @@
 // @ts-nocheck
 /**
  * Component testing utilities
- * 
+ *
  * This file provides specialized utilities for testing UI components,
  * including accessibility testing and common UI testing patterns.
  */
 import React from 'react';
-import { render, fireEvent, screen, waitFor, cleanup as testingCleanup } from '@testing-library/react';
+import {
+  render,
+  fireEvent,
+  screen,
+  waitFor,
+  cleanup as testingCleanup,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { ThemeProvider } from '../components/theme-provider';
@@ -33,11 +39,7 @@ export function createWrapperWithProviders(providers = []) {
  */
 export function renderWithProviders(ui, options = {}) {
   // @ts-expect-error - Ignore property does not exist errors
-  const {
-    wrapper: CustomWrapper,
-    theme = 'light',
-    ...renderOptions
-  } = options;
+  const { wrapper: CustomWrapper, theme = 'light', ...renderOptions } = options;
 
   function Wrapper({ children }) {
     // @ts-expect-error - JSX in .ts file
@@ -67,13 +69,13 @@ export async function renderWithAccessibilityCheck(ui, options = {}) {
   // @ts-expect-error - Ignore property does not exist errors
   const { axeOptions, ...renderOptions } = options;
   const renderResult = renderWithProviders(ui, renderOptions);
-  
+
   // Run axe on the rendered component
   const axeResults = await axe(renderResult.container, axeOptions);
-  
+
   return {
     ...renderResult,
-    axeResults
+    axeResults,
   };
 }
 
@@ -90,28 +92,29 @@ export async function testForm({
   onSubmitMock = jest.fn(),
   expectedErrors = {},
   successMessage = null,
-  renderOptions = {}
+  renderOptions = {},
 }) {
   // Render the form
   const user = userEvent.setup();
   const result = renderWithProviders(formComponent, renderOptions);
-  
+
   // Fill in the form
   for (const [fieldName, value] of Object.entries(inputData)) {
-    const input = screen.getByLabelText(fieldName, { exact: false }) || 
-                 screen.getByPlaceholderText(fieldName, { exact: false }) ||
-                 screen.getByTestId(`input-${fieldName}`);
-    
+    const input =
+      screen.getByLabelText(fieldName, { exact: false }) ||
+      screen.getByPlaceholderText(fieldName, { exact: false }) ||
+      screen.getByTestId(`input-${fieldName}`);
+
     // @ts-expect-error - Ignore property access issues
     if (input.type === 'checkbox') {
       if (value) {
         await user.click(input);
       }
-    // @ts-expect-error - Ignore property access issues
+      // @ts-expect-error - Ignore property access issues
     } else if (input.type === 'select-one') {
       // @ts-expect-error - Ignore type compatibility issues
       await user.selectOptions(input, value);
-    // @ts-expect-error - Ignore property access issues
+      // @ts-expect-error - Ignore property access issues
     } else if (input.type === 'radio') {
       // @ts-expect-error - Ignore type compatibility issues
       const radioOption = screen.getByLabelText(value);
@@ -121,11 +124,11 @@ export async function testForm({
       await user.type(input, value);
     }
   }
-  
+
   // Submit the form
   const submitButton = screen.getByRole('button', { name: submitButtonText });
   await user.click(submitButton);
-  
+
   // Check for errors
   if (Object.keys(expectedErrors).length > 0) {
     for (const [fieldName, errorMessage] of Object.entries(expectedErrors)) {
@@ -134,16 +137,16 @@ export async function testForm({
       expect(errorElement).toBeInTheDocument();
     }
   }
-  
+
   // Check for success
   if (successMessage) {
     const successElement = await screen.findByText(successMessage);
     expect(successElement).toBeInTheDocument();
   }
-  
+
   return {
     ...result,
-    user
+    user,
   };
 }
 
@@ -162,40 +165,40 @@ export async function testModal({
   closeButtonText = 'Close',
   testContent = null,
   modalShouldClose = true,
-  renderOptions = {}
+  renderOptions = {},
 }) {
   // Render the component that contains the modal trigger
   const user = userEvent.setup();
   const result = renderWithProviders(triggerComponent, renderOptions);
-  
+
   // Find and click the trigger element
   const triggerElement = screen.getByText(triggerText);
   await user.click(triggerElement);
-  
+
   // Check if modal is open
   const modalTitleElement = await screen.findByText(modalTitle);
   expect(modalTitleElement).toBeInTheDocument();
-  
+
   // Check for specific content if provided
   if (testContent) {
     const contentElement = await screen.findByText(testContent);
     expect(contentElement).toBeInTheDocument();
   }
-  
+
   // Close the modal if required
   if (modalShouldClose) {
     const closeButton = screen.getByText(closeButtonText);
     await user.click(closeButton);
-    
+
     // Check if modal is closed
     await waitFor(() => {
       expect(screen.queryByText(modalTitle)).not.toBeInTheDocument();
     });
   }
-  
+
   return {
     ...result,
-    user
+    user,
   };
 }
 
@@ -213,15 +216,15 @@ export async function testAsyncComponent({
   loadedText,
   errorText = null,
   shouldError = false,
-  renderOptions = {}
+  renderOptions = {},
 }) {
   // Render the component
   const result = renderWithProviders(component, renderOptions);
-  
+
   // Check for loading state
   const loadingElement = screen.getByText(loadingText);
   expect(loadingElement).toBeInTheDocument();
-  
+
   if (shouldError) {
     // Wait for error state
     const errorElement = await screen.findByText(errorText);
@@ -232,7 +235,7 @@ export async function testAsyncComponent({
     expect(loadedElement).toBeInTheDocument();
     expect(screen.queryByText(loadingText)).not.toBeInTheDocument();
   }
-  
+
   return result;
 }
 
@@ -248,14 +251,14 @@ export function testThemeSupport(component, themeCheck) {
   themeCheck(lightResult, 'light');
   // @ts-expect-error - Use imported testingCleanup
   testingCleanup();
-  
+
   // Test in dark mode
   const darkResult = renderWithProviders(component, { theme: 'dark' });
   themeCheck(darkResult, 'dark');
-  
+
   return {
     lightResult,
-    darkResult
+    darkResult,
   };
 }
 
@@ -292,16 +295,16 @@ export async function testAccessibility(ui, options = {}) {
 export async function testComponentInteractions(ui, interactions, options = {}) {
   const result = renderWithProviders(ui, options);
   const user = setupUserEvent();
-  
+
   for (const { action, assert } of interactions) {
     if (action) {
       await action(result, user);
     }
-    
+
     if (assert) {
       assert(result);
     }
   }
-  
+
   return result;
 }

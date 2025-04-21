@@ -19,13 +19,13 @@ export async function POST(request: Request, { params }: { params: { id: string 
         service: true,
         practitioner: {
           include: {
-            user: true
-          }
+            user: true,
+          },
         },
         user: true,
         beautyService: true,
-        business: true
-      }
+        business: true,
+      },
     });
 
     if (!booking) {
@@ -41,19 +41,19 @@ export async function POST(request: Request, { params }: { params: { id: string 
     const updatedBooking = await prisma.booking.update({
       where: { id: params.id },
       data: {
-        status: BookingStatus.CONFIRMED
+        status: BookingStatus.CONFIRMED,
       },
       include: {
         service: true,
         practitioner: {
           include: {
-            user: true
-          }
+            user: true,
+          },
         },
         user: true,
         beautyService: true,
-        business: true
-      }
+        business: true,
+      },
     });
 
     // Add booking to calendar service
@@ -69,15 +69,12 @@ export async function POST(request: Request, { params }: { params: { id: string 
       status: updatedBooking.status,
       notes: updatedBooking.notes || undefined,
       createdAt: updatedBooking.createdAt,
-      updatedAt: updatedBooking.updatedAt
+      updatedAt: updatedBooking.updatedAt,
     });
 
     return NextResponse.json(updatedBooking);
   } catch (error) {
     console.error('Error confirming booking:', error);
-    return NextResponse.json(
-      { error: 'Failed to confirm booking' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to confirm booking' }, { status: 500 });
   }
-} 
+}

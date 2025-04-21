@@ -12,7 +12,7 @@ export class ColorMatchingService {
     light: { minL: 60, maxL: 70 },
     medium: { minL: 50, maxL: 60 },
     tan: { minL: 40, maxL: 50 },
-    deep: { minL: 0, maxL: 40 }
+    deep: { minL: 0, maxL: 40 },
   };
 
   /**
@@ -60,11 +60,11 @@ export class ColorMatchingService {
     for (const shade of availableShades) {
       const lab = await ColorUtils.hexToLab(shade);
       const matchScore = this.calculateMatchScore(skinTone, undertone, lab);
-      
+
       matches.push({
         matchScore,
         colorHex: shade,
-        undertone: undertone as 'warm' | 'cool' | 'neutral'
+        undertone: undertone as 'warm' | 'cool' | 'neutral',
       });
     }
 
@@ -85,7 +85,7 @@ export class ColorMatchingService {
     const blended = {
       r: Math.round(base.r * (1 - opacity) + makeup.r * opacity),
       g: Math.round(base.g * (1 - opacity) + makeup.g * opacity),
-      b: Math.round(base.b * (1 - opacity) + makeup.b * opacity)
+      b: Math.round(base.b * (1 - opacity) + makeup.b * opacity),
     };
 
     return ColorUtils.rgbToHex(blended);
@@ -98,14 +98,15 @@ export class ColorMatchingService {
   ): number {
     const range = ColorMatchingService.SKIN_TONE_RANGES[skinTone];
     const lightnessDiff = Math.abs((range.maxL + range.minL) / 2 - lab.L);
-    
+
     // Calculate undertone match (a and b values in Lab color space)
-    const undertoneMatch = undertone === 'warm' ? lab.a > 0 : undertone === 'cool' ? lab.a < 0 : Math.abs(lab.a) < 2;
-    
+    const undertoneMatch =
+      undertone === 'warm' ? lab.a > 0 : undertone === 'cool' ? lab.a < 0 : Math.abs(lab.a) < 2;
+
     // Weighted scoring
-    const lightnessScore = 1 - (lightnessDiff / 50); // Normalize to 0-1
+    const lightnessScore = 1 - lightnessDiff / 50; // Normalize to 0-1
     const undertoneScore = undertoneMatch ? 1 : 0;
-    
-    return (lightnessScore * 0.7) + (undertoneScore * 0.3); // 70% lightness, 30% undertone
+
+    return lightnessScore * 0.7 + undertoneScore * 0.3; // 70% lightness, 30% undertone
   }
-} 
+}

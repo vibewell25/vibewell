@@ -7,7 +7,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { prisma } from '@/lib/database/client';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 import { AlertTriangle, TrendingUp, TrendingDown, Database, HardDrive } from 'lucide-react';
 
 interface BackupStatistics {
@@ -42,9 +51,7 @@ export function BackupStatistics() {
 
   const loadStatistics = async () => {
     try {
-      const { data, error } = await supabase
-        .from('backup_statistics')
-        .select('*');
+      const { data, error } = await supabase.from('backup_statistics').select('*');
 
       if (error) throw error;
       setStatistics(data || []);
@@ -56,8 +63,9 @@ export function BackupStatistics() {
 
   const loadSummary = async () => {
     try {
-      const { data, error } = await supabase
-        .rpc('get_backup_summary', { days: parseInt(timeRange) });
+      const { data, error } = await supabase.rpc('get_backup_summary', {
+        days: parseInt(timeRange),
+      });
 
       if (error) throw error;
       setSummary(data || []);
@@ -96,7 +104,7 @@ export function BackupStatistics() {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {statistics.map((stat) => (
+        {statistics.map(stat => (
           <Card key={stat.type}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -111,13 +119,12 @@ export function BackupStatistics() {
                   {formatSize(stat.total_size)} total size
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Badge variant={stat.failed_backups === 0 ? "success" : "destructive"}>
-                    {getSuccessRate(stat.successful_backups, stat.total_backups).toFixed(1)}% success rate
+                  <Badge variant={stat.failed_backups === 0 ? 'success' : 'destructive'}>
+                    {getSuccessRate(stat.successful_backups, stat.total_backups).toFixed(1)}%
+                    success rate
                   </Badge>
                   {stat.failed_backups > 0 && (
-                    <Badge variant="destructive">
-                      {stat.failed_backups} failed
-                    </Badge>
+                    <Badge variant="destructive">{stat.failed_backups} failed</Badge>
                   )}
                 </div>
               </div>
@@ -129,13 +136,8 @@ export function BackupStatistics() {
       <Card>
         <CardHeader>
           <CardTitle>Backup Trends</CardTitle>
-          <CardDescription>
-            View backup success rates and storage usage over time
-          </CardDescription>
-          <Tabs
-            value={timeRange}
-            onValueChange={(value) => setTimeRange(value as '7' | '30' | '90')}
-          >
+          <CardDescription>View backup success rates and storage usage over time</CardDescription>
+          <Tabs value={timeRange} onValueChange={value => setTimeRange(value as '7' | '30' | '90')}>
             <TabsList>
               <TabsTrigger value="7">7 days</TabsTrigger>
               <TabsTrigger value="30">30 days</TabsTrigger>
@@ -183,9 +185,7 @@ export function BackupStatistics() {
         <Card>
           <CardHeader>
             <CardTitle>Storage Trends</CardTitle>
-            <CardDescription>
-              Total backup storage usage over time
-            </CardDescription>
+            <CardDescription>Total backup storage usage over time</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[200px]">
@@ -196,11 +196,7 @@ export function BackupStatistics() {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar
-                    dataKey="total_size"
-                    name="Storage Used"
-                    fill="#8884d8"
-                  />
+                  <Bar dataKey="total_size" name="Storage Used" fill="#8884d8" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -210,9 +206,7 @@ export function BackupStatistics() {
         <Card>
           <CardHeader>
             <CardTitle>Success Rate Trends</CardTitle>
-            <CardDescription>
-              Backup success rate over time
-            </CardDescription>
+            <CardDescription>Backup success rate over time</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[200px]">
@@ -223,11 +217,7 @@ export function BackupStatistics() {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar
-                    dataKey="success_rate"
-                    name="Success Rate"
-                    fill="#82ca9d"
-                  />
+                  <Bar dataKey="success_rate" name="Success Rate" fill="#82ca9d" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -236,4 +226,4 @@ export function BackupStatistics() {
       </div>
     </div>
   );
-} 
+}

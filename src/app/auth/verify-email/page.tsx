@@ -3,7 +3,7 @@
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -44,7 +44,7 @@ function VerifyEmailContent() {
         });
         router.push('/dashboard');
       })
-      .catch((error) => {
+      .catch(error => {
         toast({
           title: 'Error',
           description: 'Failed to verify email. Please try again.',
@@ -57,30 +57,21 @@ function VerifyEmailContent() {
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Verify your email
-          </h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Verify your email</h1>
           <p className="text-sm text-muted-foreground">
-            We've sent a verification email to your inbox. Please check your email and click the verification link.
+            We've sent a verification email to your inbox. Please check your email and click the
+            verification link.
           </p>
         </div>
         <div className="grid gap-4">
-          <Button
-            onClick={handleResendEmail}
-            disabled={isLoading}
-          >
-            {isLoading && (
-              <span className="mr-2 h-4 w-4 animate-spin" />
-            )}
+          <Button onClick={handleResendEmail} disabled={isLoading}>
+            {isLoading && <span className="mr-2 h-4 w-4 animate-spin" />}
             Resend Verification Email
           </Button>
         </div>
         <p className="px-8 text-center text-sm text-muted-foreground">
           Already verified?{' '}
-          <Link
-            href="/auth/login"
-            className="text-primary underline-offset-4 hover:underline"
-          >
+          <Link href="/auth/login" className="text-primary underline-offset-4 hover:underline">
             Sign in
           </Link>
         </p>
@@ -91,8 +82,10 @@ function VerifyEmailContent() {
 
 export default function VerifyEmailPage() {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+    <Suspense
+      fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}
+    >
       <VerifyEmailContent />
     </Suspense>
   );
-} 
+}

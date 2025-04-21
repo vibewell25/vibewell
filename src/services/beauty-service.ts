@@ -239,4 +239,4 @@ export class BeautyService {
       throw error;
     }
   }
-} 
+}

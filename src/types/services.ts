@@ -19,4 +19,4 @@ export interface ServiceItem {
   tags: string[];
   popularity: number;
   availableSlots: number;
-} 
+}

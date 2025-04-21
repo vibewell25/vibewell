@@ -1,5 +1,5 @@
-import { AnalyticsService } from "@/services/analytics-service";
-import { nanoid } from "nanoid";
+import { AnalyticsService } from '@/services/analytics-service';
+import { nanoid } from 'nanoid';
 
 /**
  * Track a try-on session in analytics
@@ -36,7 +36,7 @@ export async function trackTryOnSession({
       error,
     });
   } catch (error) {
-    console.error("Failed to track try-on session:", error);
+    console.error('Failed to track try-on session:', error);
     return null;
   }
 }
@@ -70,7 +70,7 @@ export async function trackShare({
       error,
     });
   } catch (error) {
-    console.error("Failed to track share event:", error);
+    console.error('Failed to track share event:', error);
     return null;
   }
 }
@@ -88,4 +88,4 @@ export function generateSessionId(): string {
 export function calculateSessionDuration(startTime: number): number {
   const endTime = Date.now();
   return Math.round((endTime - startTime) / 1000);
-} 
+}

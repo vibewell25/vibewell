@@ -1,19 +1,19 @@
 /**
  * Mobile optimization utilities for the Vibewell application
- * 
+ *
  * This module provides tools for optimizing app performance on mobile devices.
  */
 import { MobileOptimizationOptions, DevicePerformanceProfile } from './types';
-import { 
-  detectDevicePerformanceProfile, 
+import {
+  detectDevicePerformanceProfile,
   isMobileDevice,
-  applyDeviceClasses
+  applyDeviceClasses,
 } from './deviceDetection';
 import {
   applyLazyLoading,
   applyEventThrottling,
   throttle,
-  generateOptimizedImageUrl
+  generateOptimizedImageUrl,
 } from './optimizations';
 
 /**
@@ -23,7 +23,7 @@ import {
  */
 export function applyMobileOptimizations(options: MobileOptimizationOptions = {}): void {
   if (typeof window === 'undefined') return;
-  
+
   const {
     lazyLoadImages = true,
     reduceMotion = true,
@@ -33,18 +33,18 @@ export function applyMobileOptimizations(options: MobileOptimizationOptions = {}
     throttleEvents = true,
     enableDynamicCodeSplitting = true,
     monitorMemoryUsage = true,
-    enhanceOfflineSupport = true
+    enhanceOfflineSupport = true,
   } = options;
-  
-  // Get device profile 
+
+  // Get device profile
   const deviceProfile = detectDevicePerformanceProfile();
-  
+
   // Only apply full optimizations on mobile or low-end devices
   const shouldApplyFullOptimizations = isMobileDevice() || deviceProfile.type !== 'high';
-  
+
   // Apply device classes to body
   applyDeviceClasses();
-  
+
   // Apply reduced motion for better performance if enabled
   if (reduceMotion && (shouldApplyFullOptimizations || deviceProfile.type === 'low')) {
     document.body.classList.add('reduced-motion');
@@ -54,17 +54,17 @@ export function applyMobileOptimizations(options: MobileOptimizationOptions = {}
       document.body.style.setProperty('--app-transition-duration', '0.15s');
     }
   }
-  
+
   // Apply lazy loading for images
   if (lazyLoadImages) {
     applyLazyLoading(maxImageWidth, deviceProfile);
   }
-  
+
   // Apply event throttling
   if (throttleEvents && shouldApplyFullOptimizations) {
     applyEventThrottling(deviceProfile);
   }
-  
+
   console.log('[Performance] Mobile optimizations applied:', {
     deviceType: deviceProfile.type,
     isMobile: isMobileDevice(),
@@ -72,8 +72,8 @@ export function applyMobileOptimizations(options: MobileOptimizationOptions = {}
       lazyLoadImages,
       reduceMotion,
       throttleEvents,
-      compactUI
-    }
+      compactUI,
+    },
   });
 }
 
@@ -90,30 +90,30 @@ export function useMobilePerformanceMonitoring() {
         hasLowMemory: false,
         hasTouchScreen: false,
         hasSlowCPU: false,
-        hasSlowNetwork: false
+        hasSlowNetwork: false,
       },
-      applyMobileOptimizations
+      applyMobileOptimizations,
     };
   }
-  
+
   const deviceProfile = detectDevicePerformanceProfile();
-  
+
   return {
     isMobile: isMobileDevice(),
     deviceProfile,
-    applyMobileOptimizations
+    applyMobileOptimizations,
   };
 }
 
 /**
  * Initialize mobile optimizations with the given options
  * This is the main entry point for using mobile optimizations
- * 
+ *
  * @param options - Mobile optimization options
  */
 export function initMobileOptimizations(options: MobileOptimizationOptions = {}): void {
   if (typeof window === 'undefined') return;
-  
+
   // Apply optimizations on document load
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
@@ -130,7 +130,7 @@ export {
   isMobileDevice,
   applyDeviceClasses,
   throttle,
-  generateOptimizedImageUrl
+  generateOptimizedImageUrl,
 };
 
-export type { MobileOptimizationOptions, DevicePerformanceProfile }; 
+export type { MobileOptimizationOptions, DevicePerformanceProfile };

@@ -9,7 +9,7 @@ export interface InputProps extends BaseInputProps {}
  * This is a wrapper around the BaseInput component for consistent styling
  * across the application. Uses the common input style pattern.
  */
-export const Input: React.FC<InputProps> = (props) => {
+export const Input: React.FC<InputProps> = props => {
   return (
     <BaseInput
       wrapperClassName="mb-4"
@@ -21,4 +21,4 @@ export const Input: React.FC<InputProps> = (props) => {
   );
 };
 
-export default Input; 
+export default Input;

@@ -34,10 +34,10 @@ export async function POST(request: Request) {
       include: {
         practitioner: {
           include: {
-            business: true
-          }
-        }
-      }
+            business: true,
+          },
+        },
+      },
     });
 
     if (!user?.practitioner?.business) {
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
         category: service.category || '',
         tax: service.tax || 0,
         capacity: service.capacity || 1,
-        businessId: user.practitioner.business.id
+        businessId: user.practitioner.business.id,
       },
       update: {
         name: service.name,

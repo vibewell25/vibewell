@@ -17,11 +17,9 @@ export const Accordion: React.FC<AccordionProps> = ({
 }) => {
   const [openItems, setOpenItems] = useState<string[]>([]);
   const toggleItem = (itemId: string) => {
-    setOpenItems((prev) => {
+    setOpenItems(prev => {
       if (allowMultiple) {
-        return prev.includes(itemId)
-          ? prev.filter((id) => id !== itemId)
-          : [...prev, itemId];
+        return prev.includes(itemId) ? prev.filter(id => id !== itemId) : [...prev, itemId];
       } else {
         return prev.includes(itemId) ? [] : [itemId];
       }
@@ -29,7 +27,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   };
   return (
     <div className={`divide-y divide-gray-200 ${className}`}>
-      {items.map((item) => (
+      {items.map(item => (
         <div key={item.id}>
           <button
             type="button"
@@ -57,4 +55,4 @@ export const Accordion: React.FC<AccordionProps> = ({
       ))}
     </div>
   );
-}; 
+};

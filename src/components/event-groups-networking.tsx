@@ -19,17 +19,17 @@ interface EventGroupsNetworkingProps {
   onNetworkingMatch: () => void;
 }
 
-export function EventGroupsNetworking({ 
-  event, 
-  onGroupCreate, 
-  onMessageSend, 
+export function EventGroupsNetworking({
+  event,
+  onGroupCreate,
+  onMessageSend,
   onPhotoUpload,
-  onNetworkingMatch 
+  onNetworkingMatch,
 }: EventGroupsNetworkingProps) {
   const [activeTab, setActiveTab] = useState('groups');
   const [newGroup, setNewGroup] = useState({
     name: '',
-    description: ''
+    description: '',
   });
   const [newMessage, setNewMessage] = useState('');
   const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
@@ -90,7 +90,7 @@ export function EventGroupsNetworking({
                   <Label>Group Name</Label>
                   <Input
                     value={newGroup.name}
-                    onChange={(e) => setNewGroup({ ...newGroup, name: e.target.value })}
+                    onChange={e => setNewGroup({ ...newGroup, name: e.target.value })}
                     placeholder="Group name"
                   />
                 </div>
@@ -98,13 +98,11 @@ export function EventGroupsNetworking({
                   <Label>Description (Optional)</Label>
                   <Input
                     value={newGroup.description}
-                    onChange={(e) => setNewGroup({ ...newGroup, description: e.target.value })}
+                    onChange={e => setNewGroup({ ...newGroup, description: e.target.value })}
                     placeholder="Group description"
                   />
                 </div>
-                <Button onClick={handleGroupCreate}>
-                  Create Group
-                </Button>
+                <Button onClick={handleGroupCreate}>Create Group</Button>
               </div>
             </div>
             {event.groupId && (
@@ -115,9 +113,7 @@ export function EventGroupsNetworking({
                   <p className="text-sm text-muted-foreground mt-1">
                     Join the group to connect with other participants
                   </p>
-                  <Button className="mt-2">
-                    Join Group
-                  </Button>
+                  <Button className="mt-2">Join Group</Button>
                 </div>
               </div>
             )}
@@ -132,12 +128,10 @@ export function EventGroupsNetworking({
                   <div className="flex gap-2">
                     <Input
                       value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
+                      onChange={e => setNewMessage(e.target.value)}
                       placeholder="Type your message..."
                     />
-                    <Button onClick={handleMessageSend}>
-                      Send
-                    </Button>
+                    <Button onClick={handleMessageSend}>Send</Button>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -172,17 +166,13 @@ export function EventGroupsNetworking({
               <>
                 <div className="space-y-2">
                   <Label>Upload Photo</Label>
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePhotoSelect}
-                  />
+                  <Input type="file" accept="image/*" onChange={handlePhotoSelect} />
                 </div>
                 {event.photos && event.photos.length > 0 && (
                   <div className="space-y-2">
                     <Label>Event Photos</Label>
                     <div className="grid grid-cols-2 gap-4">
-                      {event.photos.map((photo) => (
+                      {event.photos.map(photo => (
                         <div
                           key={photo.id}
                           className="relative aspect-square rounded-md overflow-hidden"
@@ -195,12 +185,8 @@ export function EventGroupsNetworking({
                             sizes="(max-width: 640px) 50vw, 33vw"
                           />
                           <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/50 to-transparent">
-                            <p className="text-white text-sm">
-                              {photo.caption}
-                            </p>
-                            <p className="text-white/70 text-xs">
-                              By {photo.uploadedBy.name}
-                            </p>
+                            <p className="text-white text-sm">{photo.caption}</p>
+                            <p className="text-white/70 text-xs">By {photo.uploadedBy.name}</p>
                           </div>
                         </div>
                       ))}
@@ -222,11 +208,9 @@ export function EventGroupsNetworking({
                 <div className="space-y-2">
                   <Label>Networking Preferences</Label>
                   <div className="p-4 border rounded-md space-y-2">
-                    <p className="text-sm">
-                      Match with other participants based on:
-                    </p>
+                    <p className="text-sm">Match with other participants based on:</p>
                     <div className="flex gap-2">
-                      {event.networkingPreferences?.matchBy.map((criteria) => (
+                      {event.networkingPreferences?.matchBy.map(criteria => (
                         <Badge key={criteria} variant="secondary">
                           {criteria}
                         </Badge>
@@ -249,9 +233,7 @@ export function EventGroupsNetworking({
                         </Avatar>
                         <div>
                           <p className="font-medium">Jane Smith</p>
-                          <p className="text-sm text-muted-foreground">
-                            Wellness Coach
-                          </p>
+                          <p className="text-sm text-muted-foreground">Wellness Coach</p>
                         </div>
                         <Button variant="outline" size="sm">
                           Connect
@@ -271,4 +253,4 @@ export function EventGroupsNetworking({
       </CardContent>
     </Card>
   );
-} 
+}

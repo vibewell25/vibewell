@@ -76,12 +76,12 @@ UserSchema.pre('save', async function (next) {
   }
 
   this.updatedAt = Date.now();
-  
+
   if (this.isModified('password')) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
   }
-  
+
   next();
 });
 
@@ -90,4 +90,4 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-export default mongoose.model('User', UserSchema); 
+export default mongoose.model('User', UserSchema);

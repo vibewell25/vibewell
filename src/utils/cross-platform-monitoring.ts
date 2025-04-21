@@ -15,13 +15,13 @@ export interface PerformanceMetrics {
   renderTime?: Record<string, number>;
   apiCallDuration?: Record<string, number>;
   memoryUsage?: number;
-  
+
   // Web-specific metrics
   timeToFirstByte?: number;
   firstContentfulPaint?: number;
   largestContentfulPaint?: number;
   cumulativeLayoutShift?: number;
-  
+
   // React Native specific metrics
   jsThreadBlockTime?: number;
   frameDropRate?: number;
@@ -37,7 +37,7 @@ export function initCrossPlatformMonitoring(options = {}) {
     // React Native - use React Native specific implementation
     return initReactNativeMonitoring(options);
   }
-  
+
   // Fallback for server-side or unsupported environments
   return mockMonitoring();
 }
@@ -45,7 +45,7 @@ export function initCrossPlatformMonitoring(options = {}) {
 // React Native specific implementation
 function initReactNativeMonitoring(options = {}) {
   console.log('[Performance] React Native monitoring initialized');
-  
+
   // On React Native, we'd use libraries like react-native-performance or custom native modules
   // This is a placeholder implementation
   return {
@@ -54,7 +54,7 @@ function initReactNativeMonitoring(options = {}) {
       console.debug(`[Performance] Start measuring ${componentName}`);
       return componentName + '-' + timestamp;
     },
-    
+
     endComponentRender: (componentName: string, startMark?: string) => {
       const endTime = Date.now();
       const startTime = startMark ? parseInt(startMark.split('-')[1]) : 0;
@@ -63,13 +63,13 @@ function initReactNativeMonitoring(options = {}) {
         console.debug(`[Performance] Component ${componentName} rendered in ${duration}ms`);
       }
     },
-    
+
     startApiCall: (endpoint: string) => {
       const timestamp = Date.now();
       console.debug(`[Performance] Start API call to ${endpoint}`);
       return endpoint + '-' + timestamp;
     },
-    
+
     endApiCall: (endpoint: string, startMark?: string) => {
       const endTime = Date.now();
       const startTime = startMark ? parseInt(startMark.split('-')[1]) : 0;
@@ -78,14 +78,14 @@ function initReactNativeMonitoring(options = {}) {
         console.debug(`[Performance] API call to ${endpoint} completed in ${duration}ms`);
       }
     },
-    
+
     reportPerformanceViolation: (metricName: string, value: number, budget: number) => {
       console.warn(`[Performance] Budget exceeded for ${metricName}: ${value} (budget: ${budget})`);
     },
-    
+
     getMetrics: () => {
       return {}; // Placeholder
-    }
+    },
   };
 }
 
@@ -97,14 +97,14 @@ function mockMonitoring() {
     startApiCall: () => null,
     endApiCall: () => {},
     reportPerformanceViolation: () => {},
-    getMetrics: () => ({})
+    getMetrics: () => ({}),
   };
 }
 
 // Create and export the default cross-platform utility
 const crossPlatformMonitoring = {
   ...performanceMonitoring,
-  initCrossPlatformMonitoring
+  initCrossPlatformMonitoring,
 };
 
-export default crossPlatformMonitoring; 
+export default crossPlatformMonitoring;

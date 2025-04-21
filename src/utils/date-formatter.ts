@@ -10,9 +10,7 @@ import { format, formatDistance, formatRelative, isToday, isYesterday } from 'da
  * @returns Formatted date string
  */
 export const formatDate = (date: Date | string | number, formatStr = 'PPP'): string => {
-  const dateObj = typeof date === 'string' || typeof date === 'number' 
-    ? new Date(date) 
-    : date;
+  const dateObj = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
   return format(dateObj, formatStr);
 };
 
@@ -26,13 +24,10 @@ export const getRelativeTime = (
   date: Date | string | number,
   baseDate: Date | string | number = new Date()
 ): string => {
-  const dateObj = typeof date === 'string' || typeof date === 'number' 
-    ? new Date(date) 
-    : date;
-  const baseDateObj = typeof baseDate === 'string' || typeof baseDate === 'number' 
-    ? new Date(baseDate) 
-    : baseDate;
-  
+  const dateObj = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
+  const baseDateObj =
+    typeof baseDate === 'string' || typeof baseDate === 'number' ? new Date(baseDate) : baseDate;
+
   return formatDistance(dateObj, baseDateObj, { addSuffix: true });
 };
 
@@ -42,10 +37,8 @@ export const getRelativeTime = (
  * @returns Formatted smart date string
  */
 export const getSmartDate = (date: Date | string | number): string => {
-  const dateObj = typeof date === 'string' || typeof date === 'number' 
-    ? new Date(date) 
-    : date;
-  
+  const dateObj = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
+
   if (isToday(dateObj)) {
     return `Today, ${format(dateObj, 'h:mm a')}`;
   } else if (isYesterday(dateObj)) {
@@ -53,4 +46,4 @@ export const getSmartDate = (date: Date | string | number): string => {
   } else {
     return format(dateObj, 'PPP');
   }
-}; 
+};

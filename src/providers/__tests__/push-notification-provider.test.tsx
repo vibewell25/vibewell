@@ -1,47 +1,54 @@
+/**
+ * @vitest-environment jsdom
+ */
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { PushNotificationProvider } from '@/providers/push-notification-provider';
+import { PushNotificationProvider } from '../../providers/push-notification-provider';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 // Mock Firebase services
-jest.mock('firebase/app', () => ({
-  initializeApp: jest.fn(() => ({}))
+vi.mock('firebase/app', () => ({
+  initializeApp: vi.fn(() => ({})),
 }));
 
-jest.mock('firebase/messaging', () => ({
-  getMessaging: jest.fn(() => ({})),
-  getToken: jest.fn(() => Promise.resolve('mock-token')),
-  onMessage: jest.fn((_, callback) => {
+vi.mock('firebase/messaging', () => ({
+  getMessaging: vi.fn(() => ({})),
+  getToken: vi.fn(() => Promise.resolve('mock-token')),
+  onMessage: vi.fn((_, callback) => {
     // Store callback for tests to trigger
-    global.firebaseMessageCallback = callback;
-  })
+    (global as any).firebaseMessageCallback = callback;
+  }),
 }));
 
 // Mock the fetch API
-global.fetch = jest.fn(() => 
+global.fetch = vi.fn(() =>
   Promise.resolve({
     ok: true,
-    json: () => Promise.resolve({ success: true })
+    json: () => Promise.resolve({ success: true }),
   })
-) as jest.Mock;
+) as unknown as typeof fetch;
 
 // Mock the Notification API
 class NotificationMock {
   static permission = 'default';
-  static requestPermission = jest.fn(() => Promise.resolve('granted'));
+  static requestPermission = vi.fn(() => Promise.resolve('granted'));
 
-  constructor(public title: string, public options: any) {}
-  
+  constructor(
+    public title: string,
+    public options: any
+  ) {}
+
   onclick: () => void = () => {};
-  close = jest.fn();
+  close = vi.fn();
 }
 
-global.Notification = NotificationMock as any;
+(global as any).Notification = NotificationMock;
 
 describe('PushNotificationProvider', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    global.Notification.permission = 'default';
+    vi.clearAllMocks();
+    (global as any).Notification.permission = 'default';
   });
 
   it('renders its children', () => {
@@ -50,84 +57,86 @@ describe('PushNotificationProvider', () => {
         <div data-testid="test-child">Test Child</div>
       </PushNotificationProvider>
     );
-    
+
     expect(screen.getByTestId('test-child')).toBeInTheDocument();
   });
 
   it('requests notification permission when triggered', async () => {
     const { getByText } = render(
       <PushNotificationProvider>
-        <button onClick={() => {
-          // Access the provider's context in a real implementation
-          // For test, we'll just directly call the global method
-          Notification.requestPermission();
-        }}>
+        <button
+          onClick={() => {
+            // Access the provider's context in a real implementation
+            // For test, we'll just directly call the global method
+            Notification.requestPermission();
+          }}
+        >
           Request Permission
         </button>
       </PushNotificationProvider>
     );
-    
+
     fireEvent.click(getByText('Request Permission'));
-    
+
     await waitFor(() => {
       expect(Notification.requestPermission).toHaveBeenCalled();
     });
   });
 
   it('shows a notification', async () => {
-    global.Notification.permission = 'granted';
-    
-    const oldNotification = global.Notification;
-    const mockNotification = jest.fn();
-    global.Notification = mockNotification as any;
-    
+    (global as any).Notification.permission = 'granted';
+
+    const oldNotification = (global as any).Notification;
+    const mockNotification = vi.fn();
+    (global as any).Notification = mockNotification;
+
     render(
       <PushNotificationProvider>
         <div>Test</div>
       </PushNotificationProvider>
     );
-    
+
     // Simulate a message received
-    if (global.firebaseMessageCallback) {
-      global.firebaseMessageCallback({
+    if ((global as any).firebaseMessageCallback) {
+      (global as any).firebaseMessageCallback({
         notification: {
           title: 'Test Notification',
-          body: 'This is a test notification'
-        }
+          body: 'This is a test notification',
+        },
       });
     }
-    
+
     await waitFor(() => {
       expect(mockNotification).toHaveBeenCalledWith(
         'Test Notification',
         expect.objectContaining({
-          body: 'This is a test notification'
+          body: 'This is a test notification',
         })
       );
     });
-    
+
     // Restore original Notification
-    global.Notification = oldNotification;
+    (global as any).Notification = oldNotification;
   });
 
   it('saves token to the database after permission is granted', async () => {
-    global.Notification.permission = 'granted';
-    
+    (global as any).Notification.permission = 'granted';
+
     render(
       <PushNotificationProvider>
         <div>Test</div>
       </PushNotificationProvider>
     );
-    
+
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
         '/api/notifications/register-device',
         expect.objectContaining({
           method: 'POST',
           headers: expect.any(Object),
-          body: expect.stringContaining('token')
+          body: expect.stringContaining('token'),
         })
       );
     });
   });
-}); 
+});

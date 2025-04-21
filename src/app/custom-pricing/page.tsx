@@ -2,7 +2,6 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
-;
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { Icons } from '@/components/icons';
@@ -33,7 +32,7 @@ function CustomPricingContent() {
       description: 'Create your business profile with services, hours, and contact info',
       cost: 0,
       category: 'core',
-      included: true
+      included: true,
     },
     {
       id: 'booking-management',
@@ -41,7 +40,7 @@ function CustomPricingContent() {
       description: 'Allow clients to book appointments and manage your calendar',
       cost: 5,
       category: 'core',
-      included: false
+      included: false,
     },
     {
       id: 'review-management',
@@ -49,7 +48,7 @@ function CustomPricingContent() {
       description: 'Collect and respond to customer reviews',
       cost: 3,
       category: 'core',
-      included: false
+      included: false,
     },
     // Marketing Features
     {
@@ -58,7 +57,7 @@ function CustomPricingContent() {
       description: 'Get premium placement in search results and category pages',
       cost: 10,
       category: 'marketing',
-      included: false
+      included: false,
     },
     {
       id: 'promo-tools',
@@ -66,7 +65,7 @@ function CustomPricingContent() {
       description: 'Create and manage special offers and promotions',
       cost: 8,
       category: 'marketing',
-      included: false
+      included: false,
     },
     {
       id: 'social-sharing',
@@ -74,7 +73,7 @@ function CustomPricingContent() {
       description: 'Share your services and offers directly to social platforms',
       cost: 4,
       category: 'marketing',
-      included: false
+      included: false,
     },
     // Analytics Features
     {
@@ -83,7 +82,7 @@ function CustomPricingContent() {
       description: 'View basic performance metrics for your business',
       cost: 5,
       category: 'analytics',
-      included: false
+      included: false,
     },
     {
       id: 'advanced-analytics',
@@ -91,7 +90,7 @@ function CustomPricingContent() {
       description: 'Get detailed insights on customer behavior and business performance',
       cost: 12,
       category: 'analytics',
-      included: false
+      included: false,
     },
     {
       id: 'competitor-analysis',
@@ -99,7 +98,7 @@ function CustomPricingContent() {
       description: 'See how your business compares to similar providers in your area',
       cost: 15,
       category: 'analytics',
-      included: false
+      included: false,
     },
     // Advanced Features
     {
@@ -108,7 +107,7 @@ function CustomPricingContent() {
       description: 'Communicate with clients before and after appointments',
       cost: 7,
       category: 'advanced',
-      included: false
+      included: false,
     },
     {
       id: 'inventory',
@@ -116,7 +115,7 @@ function CustomPricingContent() {
       description: 'Sell products and manage your inventory',
       cost: 10,
       category: 'advanced',
-      included: false
+      included: false,
     },
     {
       id: 'staff-management',
@@ -124,8 +123,8 @@ function CustomPricingContent() {
       description: 'Add staff members with individual calendars and permissions',
       cost: 8,
       category: 'advanced',
-      included: false
-    }
+      included: false,
+    },
   ]);
   // Sample pre-defined plans for comparison
   const predefinedPlans: PricingTier[] = [
@@ -135,7 +134,7 @@ function CustomPricingContent() {
       description: 'Essential tools for small businesses',
       price: 9.99,
       features: ['business-profile', 'booking-management', 'review-management', 'basic-analytics'],
-      popular: false
+      popular: false,
     },
     {
       id: 'professional',
@@ -143,10 +142,15 @@ function CustomPricingContent() {
       description: 'Everything you need to grow your business',
       price: 24.99,
       features: [
-        'business-profile', 'booking-management', 'review-management', 
-        'basic-analytics', 'featured-listing', 'promo-tools', 'messaging'
+        'business-profile',
+        'booking-management',
+        'review-management',
+        'basic-analytics',
+        'featured-listing',
+        'promo-tools',
+        'messaging',
       ],
-      popular: true
+      popular: true,
     },
     {
       id: 'enterprise',
@@ -154,12 +158,20 @@ function CustomPricingContent() {
       description: 'Advanced features for established businesses',
       price: 49.99,
       features: [
-        'business-profile', 'booking-management', 'review-management', 
-        'advanced-analytics', 'competitor-analysis', 'featured-listing', 
-        'promo-tools', 'social-sharing', 'messaging', 'inventory', 'staff-management'
+        'business-profile',
+        'booking-management',
+        'review-management',
+        'advanced-analytics',
+        'competitor-analysis',
+        'featured-listing',
+        'promo-tools',
+        'social-sharing',
+        'messaging',
+        'inventory',
+        'staff-management',
       ],
-      popular: false
-    }
+      popular: false,
+    },
   ];
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [customPrice, setCustomPrice] = useState<number>(0);
@@ -172,19 +184,19 @@ function CustomPricingContent() {
     // Reset all features
     const resetFeatures = featureOptions.map(option => ({
       ...option,
-      included: false
+      included: false,
     }));
     // Set included features based on the plan
     const updatedFeatures = resetFeatures.map(option => ({
       ...option,
-      included: plan.features.includes(option.id)
+      included: plan.features.includes(option.id),
     }));
     setFeatureOptions(updatedFeatures);
   };
   // Toggle feature selection
   const toggleFeature = (featureId: string) => {
     setSelectedPlan('custom');
-    const updatedFeatures = featureOptions.map(option => 
+    const updatedFeatures = featureOptions.map(option =>
       option.id === featureId ? { ...option, included: !option.included } : option
     );
     setFeatureOptions(updatedFeatures);
@@ -208,20 +220,22 @@ function CustomPricingContent() {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Create Your Custom Plan</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Choose exactly what features you need and only pay for what you use. 
-            Build a plan that grows with your business.
+            Choose exactly what features you need and only pay for what you use. Build a plan that
+            grows with your business.
           </p>
         </div>
         {/* Pre-defined plans */}
         <div className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6 text-center">Start with a Template or Build from Scratch</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-center">
+            Start with a Template or Build from Scratch
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {predefinedPlans.map((plan) => (
-              <div 
+            {predefinedPlans.map(plan => (
+              <div
                 key={plan.id}
                 className={`border rounded-lg p-6 transition-all ${
-                  selectedPlan === plan.id 
-                    ? 'border-indigo-500 ring-2 ring-indigo-200' 
+                  selectedPlan === plan.id
+                    ? 'border-indigo-500 ring-2 ring-indigo-200'
                     : 'border-gray-200 hover:border-indigo-200'
                 } ${plan.popular ? 'relative' : ''}`}
               >
@@ -233,7 +247,9 @@ function CustomPricingContent() {
                 <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
                 <p className="text-gray-600 mb-4">{plan.description}</p>
                 <div className="mb-6">
-                  <span className="text-3xl font-bold">${annualBilling ? (plan.price * 10).toFixed(2) : plan.price}</span>
+                  <span className="text-3xl font-bold">
+                    ${annualBilling ? (plan.price * 10).toFixed(2) : plan.price}
+                  </span>
                   <span className="text-gray-500">/{annualBilling ? 'year' : 'month'}</span>
                 </div>
                 <ul className="mb-6 space-y-2">
@@ -244,10 +260,9 @@ function CustomPricingContent() {
                         <Icons.CheckSolid className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                         <span>{feature.name}</span>
                       </li>
-                    ))
-                  }
+                    ))}
                 </ul>
-                <Button 
+                <Button
                   className={`w-full ${selectedPlan === plan.id ? 'bg-indigo-700' : 'bg-indigo-600'}`}
                   onClick={() => selectPredefinedPlan(plan.id)}
                 >
@@ -260,14 +275,18 @@ function CustomPricingContent() {
             <label className="flex items-center cursor-pointer">
               <span className="mr-3 text-gray-700">Monthly Billing</span>
               <div className="relative">
-                <input 
-                  type="checkbox" 
-                  className="sr-only" 
+                <input
+                  type="checkbox"
+                  className="sr-only"
                   checked={annualBilling}
                   onChange={() => setAnnualBilling(!annualBilling)}
                 />
-                <div className={`w-12 h-6 rounded-full transition-colors ${annualBilling ? 'bg-indigo-600' : 'bg-gray-300'}`}></div>
-                <div className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform bg-white ${annualBilling ? 'transform translate-x-6' : ''}`}></div>
+                <div
+                  className={`w-12 h-6 rounded-full transition-colors ${annualBilling ? 'bg-indigo-600' : 'bg-gray-300'}`}
+                ></div>
+                <div
+                  className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform bg-white ${annualBilling ? 'transform translate-x-6' : ''}`}
+                ></div>
               </div>
               <span className="ml-3 text-gray-700">Annual Billing (Save 16%)</span>
             </label>
@@ -279,28 +298,32 @@ function CustomPricingContent() {
             {/* Feature selection */}
             <div className="md:w-2/3">
               <h2 className="text-2xl font-semibold mb-6">Customize Your Plan</h2>
-              {['core', 'marketing', 'analytics', 'advanced'].map((category) => (
+              {['core', 'marketing', 'analytics', 'advanced'].map(category => (
                 <div key={category} className="mb-8">
                   <h3 className="text-lg font-medium mb-4 capitalize">{category} Features</h3>
                   <div className="space-y-4">
                     {featureOptions
                       .filter(option => option.category === category)
                       .map(feature => (
-                        <div 
+                        <div
                           key={feature.id}
                           className={`border rounded-lg p-4 cursor-pointer transition-all ${
-                            feature.included 
-                              ? 'border-indigo-500 bg-indigo-50' 
+                            feature.included
+                              ? 'border-indigo-500 bg-indigo-50'
                               : 'border-gray-200 hover:border-indigo-200'
                           }`}
-                          onClick={() => feature.id !== 'business-profile' && toggleFeature(feature.id)}
+                          onClick={() =>
+                            feature.id !== 'business-profile' && toggleFeature(feature.id)
+                          }
                         >
                           <div className="flex items-start">
                             <div className="flex-grow">
                               <div className="flex items-center">
                                 <h4 className="font-medium">{feature.name}</h4>
                                 {feature.id === 'business-profile' && (
-                                  <span className="ml-2 text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded">Required</span>
+                                  <span className="ml-2 text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded">
+                                    Required
+                                  </span>
                                 )}
                               </div>
                               <p className="text-sm text-gray-600">{feature.description}</p>
@@ -309,16 +332,19 @@ function CustomPricingContent() {
                               <span className="font-medium text-gray-700 mr-3">
                                 {feature.cost === 0 ? 'Free' : `$${feature.cost}`}
                               </span>
-                              <div className={`h-5 w-5 rounded-full flex items-center justify-center ${
-                                feature.included ? 'bg-indigo-500' : 'border border-gray-300'
-                              }`}>
-                                {feature.included && <Icons.CheckSolid className="h-3 w-3 text-white" />}
+                              <div
+                                className={`h-5 w-5 rounded-full flex items-center justify-center ${
+                                  feature.included ? 'bg-indigo-500' : 'border border-gray-300'
+                                }`}
+                              >
+                                {feature.included && (
+                                  <Icons.CheckSolid className="h-3 w-3 text-white" />
+                                )}
                               </div>
                             </div>
                           </div>
                         </div>
-                      ))
-                    }
+                      ))}
                   </div>
                 </div>
               ))}
@@ -339,8 +365,7 @@ function CustomPricingContent() {
                         <span className="text-gray-600">{feature.name}</span>
                         <span>${feature.cost}</span>
                       </div>
-                    ))
-                  }
+                    ))}
                   <div className="border-t border-gray-200 my-4 pt-4">
                     <div className="flex justify-between font-medium">
                       <span>Monthly Total</span>
@@ -376,8 +401,7 @@ function CustomPricingContent() {
                           <Icons.CheckSolid className="h-4 w-4 text-green-500 mr-2 mt-0.5" />
                           <span>{feature.name}</span>
                         </li>
-                      ))
-                    }
+                      ))}
                   </ul>
                 </div>
               </div>
@@ -391,7 +415,9 @@ function CustomPricingContent() {
             <p className="mb-6">
               Our team can help you customize a plan that perfectly fits your business needs.
             </p>
-            <Button variant="outline" className="mr-4">See All Features</Button>
+            <Button variant="outline" className="mr-4">
+              See All Features
+            </Button>
             <Button>Contact Sales</Button>
           </div>
         </div>
@@ -401,8 +427,10 @@ function CustomPricingContent() {
 }
 export default function CustomPricing() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+    <Suspense
+      fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}
+    >
       <CustomPricingContent />
     </Suspense>
   );
-} 
+}

@@ -62,28 +62,32 @@ const CustomerProfileSchema = new mongoose.Schema({
       },
     },
   },
-  savedProviders: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'ProviderProfile',
-  }],
+  savedProviders: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'ProviderProfile',
+    },
+  ],
   loyaltyPoints: {
     type: Number,
     default: 0,
   },
-  paymentMethods: [{
-    type: {
-      type: String,
-      enum: ['card', 'paypal', 'applepay', 'googlepay', 'crypto'],
-      required: true,
+  paymentMethods: [
+    {
+      type: {
+        type: String,
+        enum: ['card', 'paypal', 'applepay', 'googlepay', 'crypto'],
+        required: true,
+      },
+      isDefault: {
+        type: Boolean,
+        default: false,
+      },
+      lastFour: String, // Last four digits of card if applicable
+      paymentToken: String, // Tokenized payment information
+      expiryDate: String, // MM/YY format for cards
     },
-    isDefault: {
-      type: Boolean,
-      default: false,
-    },
-    lastFour: String, // Last four digits of card if applicable
-    paymentToken: String, // Tokenized payment information
-    expiryDate: String, // MM/YY format for cards
-  }],
+  ],
   healthInformation: {
     allergies: [String],
     medicalConditions: [String],
@@ -115,4 +119,4 @@ CustomerProfileSchema.pre('save', function (next) {
 
 const CustomerProfile = mongoose.model('CustomerProfile', CustomerProfileSchema);
 
-export default CustomerProfile; 
+export default CustomerProfile;

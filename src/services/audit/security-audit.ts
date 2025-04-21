@@ -119,7 +119,7 @@ class SecurityAuditService {
     // Store vulnerabilities
     for (const result of results) {
       this.vulnerabilities.set(result.id, result);
-      
+
       // Convert severity to audit severity
       let auditSeverity: AuditSeverity;
       switch (result.severity) {
@@ -138,7 +138,7 @@ class SecurityAuditService {
         default:
           auditSeverity = AuditSeverity.INFO;
       }
-      
+
       // Only report vulnerabilities at or above the threshold
       if (result.cvssScore >= this.config.maxCvssThreshold) {
         await auditService.reportIssue(
@@ -156,7 +156,7 @@ class SecurityAuditService {
             },
           }
         );
-        
+
         // Log security event
         logEvent('security_vulnerability_detected', {
           id: result.id,
@@ -174,7 +174,7 @@ class SecurityAuditService {
    */
   public async updatePCIComplianceStatus(status: PCIComplianceStatus): Promise<void> {
     this.pciStatus = status;
-    
+
     // Check for non-compliant requirements
     for (const requirement of status.requirements) {
       if (requirement.status === 'non_compliant') {
@@ -207,7 +207,7 @@ class SecurityAuditService {
         );
       }
     }
-    
+
     // Log PCI status
     logEvent('pci_compliance_status_updated', {
       overallStatus: status.overallStatus,
@@ -222,7 +222,7 @@ class SecurityAuditService {
    */
   public async updateDataProtectionStatus(status: DataProtectionStatus): Promise<void> {
     this.dataProtectionStatus = status;
-    
+
     // Check for failing controls
     const failingControls = [
       status.encryptionAtRest,
@@ -234,37 +234,40 @@ class SecurityAuditService {
       status.rightToBeForgotten,
       status.dataPortability,
     ].filter(control => control.status === 'fail');
-    
+
     // Implement stronger encryption at rest
     if (status.encryptionAtRest.status === 'fail') {
       // Add AES-256 encryption for all sensitive data at rest
       status.encryptionAtRest.status = 'pass';
-      status.encryptionAtRest.details = 'Implemented AES-256 encryption for all sensitive data at rest';
+      status.encryptionAtRest.details =
+        'Implemented AES-256 encryption for all sensitive data at rest';
     }
-    
+
     // Implement TLS 1.3 for all data in transit
     if (status.encryptionInTransit.status === 'fail') {
       status.encryptionInTransit.status = 'pass';
       status.encryptionInTransit.details = 'Implemented TLS 1.3 for all data in transit';
     }
-    
+
     // Implement proper data retention policies
     if (status.dataRetention.status === 'fail') {
       status.dataRetention.status = 'pass';
-      status.dataRetention.details = 'Implemented automated data retention policies compliant with GDPR and CCPA';
+      status.dataRetention.details =
+        'Implemented automated data retention policies compliant with GDPR and CCPA';
     }
-    
+
     // Implement data minimization practices
     if (status.dataMinimization.status === 'fail') {
       status.dataMinimization.status = 'pass';
-      status.dataMinimization.details = 'Implemented data minimization practices across all user data collection points';
+      status.dataMinimization.details =
+        'Implemented data minimization practices across all user data collection points';
     }
-    
+
     // Update the data protection status with the fixed controls
     this.dataProtectionStatus = {
       ...status,
     };
-    
+
     for (const control of failingControls) {
       await auditService.reportIssue(
         AuditCategory.COMPLIANCE,
@@ -280,7 +283,7 @@ class SecurityAuditService {
         }
       );
     }
-    
+
     // Log data protection status
     logEvent('data_protection_status_updated', {
       failingControlCount: failingControls.length,
@@ -293,7 +296,7 @@ class SecurityAuditService {
    */
   public async updateSocialMediaSecurityStatus(status: SocialMediaSecurityStatus): Promise<void> {
     this.socialMediaStatus = status;
-    
+
     // Check for failing controls
     const failingControls = [
       status.contentModeration,
@@ -301,7 +304,7 @@ class SecurityAuditService {
       status.privacyControls,
       status.dataLeakagePrevention,
     ].filter(control => control.status === 'fail');
-    
+
     for (const control of failingControls) {
       await auditService.reportIssue(
         AuditCategory.SECURITY,
@@ -317,7 +320,7 @@ class SecurityAuditService {
         }
       );
     }
-    
+
     // Log social media security status
     logEvent('social_media_security_updated', {
       timestamp: status.lastChecked,
@@ -357,4 +360,4 @@ class SecurityAuditService {
 
 // Export singleton instance
 const securityAuditService = new SecurityAuditService();
-export default securityAuditService; 
+export default securityAuditService;

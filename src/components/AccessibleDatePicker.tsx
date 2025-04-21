@@ -143,10 +143,7 @@ export const AccessibleDatePicker: React.FC<AccessibleDatePickerProps> = ({
           disabled={isDisabled}
           className={`
             w-8 h-8 rounded-full flex items-center justify-center text-sm
-            ${isDisabled
-              ? 'text-gray-400 cursor-not-allowed'
-              : 'text-gray-700 hover:bg-gray-100'
-            }
+            ${isDisabled ? 'text-gray-400 cursor-not-allowed' : 'text-gray-700 hover:bg-gray-100'}
             ${isSelected ? 'bg-primary text-white' : ''}
             ${isFocused ? 'ring-2 ring-primary' : ''}
             focus:outline-none
@@ -169,10 +166,7 @@ export const AccessibleDatePicker: React.FC<AccessibleDatePickerProps> = ({
       >
         <div className="grid grid-cols-7 gap-1">
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-            <div
-              key={day}
-              className="text-center text-xs font-medium text-gray-500"
-            >
+            <div key={day} className="text-center text-xs font-medium text-gray-500">
               {day}
             </div>
           ))}
@@ -199,9 +193,10 @@ export const AccessibleDatePicker: React.FC<AccessibleDatePickerProps> = ({
           onClick={() => !disabled && setIsOpen(true)}
           className={`
             w-full px-3 py-2 border rounded-md
-            ${error
-              ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-              : 'border-gray-300 focus:ring-primary focus:border-primary'
+            ${
+              error
+                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                : 'border-gray-300 focus:ring-primary focus:border-primary'
             }
             ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}
             focus:outline-none
@@ -236,4 +231,4 @@ export const AccessibleDatePicker: React.FC<AccessibleDatePickerProps> = ({
   );
 };
 
-export default AccessibleDatePicker; 
+export default AccessibleDatePicker;

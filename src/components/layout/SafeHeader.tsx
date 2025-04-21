@@ -23,10 +23,10 @@ export const SafeHeader = withErrorBoundary<HeaderProps>(Header, {
       </div>
     </header>
   ),
-  onError: (error) => {
+  onError: error => {
     // You could send this error to your monitoring service (e.g. Sentry, LogRocket)
     console.error('Header component error:', error);
   },
 });
 
-export default SafeHeader; 
+export default SafeHeader;

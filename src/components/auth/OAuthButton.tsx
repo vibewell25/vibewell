@@ -1,13 +1,7 @@
 import React from 'react';
 import { Button } from '../ui/button';
 import { SupportedOAuthProvider } from '../../services/auth/oauth-service';
-import {
-  Apple,
-  Facebook,
-  Twitter,
-  Mail,
-  Loader2,
-} from 'lucide-react';
+import { Apple, Facebook, Twitter, Mail, Loader2 } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
 
 interface OAuthButtonProps {
@@ -77,4 +71,4 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
       {config.label}
     </Button>
   );
-}; 
+};

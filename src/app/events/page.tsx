@@ -7,8 +7,7 @@ import Image from 'next/image';
 import { format, parseISO, isAfter } from 'date-fns';
 import { Event, EventCategory } from '@/types/events';
 import { getEvents, getUpcomingEvents, registerForEvent } from '@/lib/api/events';
-import { useAuth } from '@/lib/auth';
-;
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { EventRecommendations } from '@/components/event-recommendations';
@@ -37,14 +36,17 @@ function EventsContent() {
     fetchEvents();
   }, []);
   // Filter events based on search and category
-  const filteredEvents = events.filter(event => {
-    const matchesSearch = !searchQuery || 
-      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesCategory = selectedCategory === 'all' || event.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  }).sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+  const filteredEvents = events
+    .filter(event => {
+      const matchesSearch =
+        !searchQuery ||
+        event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesCategory = selectedCategory === 'all' || event.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
   // Get unique categories
   const categories = Array.from(new Set(events.map(event => event.category)));
   const handleEventShare = async (event: Event) => {
@@ -60,7 +62,12 @@ function EventsContent() {
   const handleEventAttendance = async (event: Event) => {
     if (!user?.id) return;
     try {
-      await registerForEvent(event.id, user.id, user.user_metadata?.full_name || 'Anonymous', user.user_metadata?.avatar_url);
+      await registerForEvent(
+        event.id,
+        user.id,
+        user.user_metadata?.full_name || 'Anonymous',
+        user.user_metadata?.avatar_url
+      );
       // Refresh events
       const allEvents = await getEvents();
       setEvents(allEvents);
@@ -76,7 +83,9 @@ function EventsContent() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
               <div>
                 <h1 className="text-3xl font-bold">Community Events</h1>
-                <p className="text-gray-600 mt-1">Join wellness events and connect with the community</p>
+                <p className="text-gray-600 mt-1">
+                  Join wellness events and connect with the community
+                </p>
               </div>
               {user && (
                 <Link href="/events/create">
@@ -94,7 +103,7 @@ function EventsContent() {
                     placeholder="Search events..."
                     className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={e => setSearchQuery(e.target.value)}
                   />
                 </div>
                 <div className="relative min-w-[200px]">
@@ -102,11 +111,13 @@ function EventsContent() {
                   <select
                     className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary appearance-none"
                     value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value as EventCategory | 'all')}
+                    onChange={e => setSelectedCategory(e.target.value as EventCategory | 'all')}
                   >
                     <option value="all">All Categories</option>
                     {categories.map(category => (
-                      <option key={category} value={category}>{category}</option>
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -138,8 +149,8 @@ function EventsContent() {
                 <Icons.CalendarIcon className="mx-auto h-12 w-12 text-gray-400" />
                 <h3 className="mt-2 text-lg font-medium text-gray-900">No events found</h3>
                 <p className="mt-1 text-gray-500">
-                  {searchQuery || selectedCategory !== 'all' 
-                    ? 'Try adjusting your filters to find more events' 
+                  {searchQuery || selectedCategory !== 'all'
+                    ? 'Try adjusting your filters to find more events'
                     : 'There are no upcoming events at the moment'}
                 </p>
                 {(searchQuery || selectedCategory !== 'all') && (
@@ -176,10 +187,7 @@ function EventsContent() {
             )}
           </div>
           <div className="lg:col-span-1">
-            <EventRecommendations
-              onShare={handleEventShare}
-              onAttend={handleEventAttendance}
-            />
+            <EventRecommendations onShare={handleEventShare} onAttend={handleEventAttendance} />
           </div>
         </div>
       </div>
@@ -192,4 +200,4 @@ export default function EventsPage() {
       <EventsContent />
     </Suspense>
   );
-} 
+}

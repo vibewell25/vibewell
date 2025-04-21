@@ -8,7 +8,7 @@ class AuthService {
     if (!token) {
       return null;
     }
-    
+
     try {
       // In a real app, you would validate the token with your backend
       const userData = JSON.parse(localStorage.getItem('auth_user') || 'null');
@@ -20,7 +20,11 @@ class AuthService {
     }
   }
 
-  async signUp(email: string, password: string, name: string): Promise<{ user: User; session: Session }> {
+  async signUp(
+    email: string,
+    password: string,
+    name: string
+  ): Promise<{ user: User; session: Session }> {
     // In a real app, this would make an API call to your backend
     const response = await fetch('/api/auth/signup', {
       method: 'POST',
@@ -36,11 +40,11 @@ class AuthService {
     }
 
     const data = await response.json();
-    
+
     // Save auth data to local storage
     localStorage.setItem('auth_token', data.session.token);
     localStorage.setItem('auth_user', JSON.stringify(data.user));
-    
+
     return data;
   }
 
@@ -60,11 +64,11 @@ class AuthService {
     }
 
     const data = await response.json();
-    
+
     // Save auth data to local storage
     localStorage.setItem('auth_token', data.session.token);
     localStorage.setItem('auth_user', JSON.stringify(data.user));
-    
+
     return data;
   }
 
@@ -74,10 +78,10 @@ class AuthService {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+        Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
       },
     });
-    
+
     // Remove auth data from local storage
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');
@@ -100,4 +104,4 @@ class AuthService {
   }
 }
 
-export const authService = new AuthService(); 
+export const authService = new AuthService();

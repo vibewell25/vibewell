@@ -1,8 +1,6 @@
 'use client';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import Link from 'next/link';
-;
-;
 import { useTheme } from '@/components/theme-provider';
 import { Icons } from '@/components/icons';
 export default function SettingsPage() {
@@ -14,7 +12,7 @@ export default function SettingsPage() {
       description: 'Customize your experience',
       icon: PaintBrushIcon,
       href: '/profile/settings/theme',
-      indicator: theme === 'dark' ? 'Dark' : theme === 'light' ? 'Light' : 'System'
+      indicator: theme === 'dark' ? 'Dark' : theme === 'light' ? 'Light' : 'System',
     },
     {
       id: 'notifications',
@@ -36,7 +34,7 @@ export default function SettingsPage() {
       description: 'Set your preferences',
       icon: LanguageIcon,
       href: '/profile/settings/language',
-      indicator: 'English'
+      indicator: 'English',
     },
     {
       id: 'account',
@@ -66,7 +64,7 @@ export default function SettingsPage() {
         <div className="py-4">
           <div className="px-5 py-2">
             {settingsOptions.map((option, index) => (
-              <Link 
+              <Link
                 key={option.id}
                 href={option.href}
                 className="flex items-center justify-between py-3 border-b border-border last:border-0"

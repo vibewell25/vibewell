@@ -1,7 +1,7 @@
 // @ts-nocheck
 /**
  * Service Test Patterns
- * 
+ *
  * This file provides standardized patterns for testing services and API calls.
  */
 
@@ -24,7 +24,7 @@ export interface ServiceTestCase<ServiceResult, ServiceParams extends any[]> {
 /**
  * Standard service test suite generator
  * Creates a standard set of tests for a service function
- * 
+ *
  * @param name - Service name
  * @param serviceFunction - The service function to test
  * @param testCases - Test cases for the service
@@ -43,27 +43,27 @@ export function createServiceTestSuite<ServiceResult, ServiceParams extends any[
         if (mockFn && (testCase.mockResponse || testCase.mockError)) {
           mockFn(testCase.mockResponse, testCase.mockError);
         }
-        
+
         // Setup the test case
         if (testCase.setup) {
           await testCase.setup();
         }
-        
+
         // Initialize params
         const params = testCase.params || ([] as unknown as ServiceParams);
-        
+
         // Call the service function and handle result
         let result: ServiceResult | Error;
         try {
           result = await serviceFunction(...params);
-          
+
           // Run assertions if provided
           if (testCase.assertions) {
             await testCase.assertions(result);
           }
         } catch (error) {
           result = error as Error;
-          
+
           // Run error assertions if provided
           if (testCase.errorAssertions) {
             await testCase.errorAssertions(error as Error);
@@ -75,7 +75,7 @@ export function createServiceTestSuite<ServiceResult, ServiceParams extends any[
             throw error;
           }
         }
-        
+
         // Teardown the test case
         if (testCase.teardown) {
           await testCase.teardown();
@@ -87,7 +87,7 @@ export function createServiceTestSuite<ServiceResult, ServiceParams extends any[
 
 /**
  * Create a mock for a service function
- * 
+ *
  * @param serviceFunction - The original service function
  * @returns A mock function with the same signature
  */
@@ -100,14 +100,14 @@ export function createServiceMock<ServiceResult, ServiceParams extends any[]>(
 } {
   let mockResponse: ServiceResult;
   let mockError: Error | null = null;
-  
+
   const mock = async (...args: ServiceParams): Promise<ServiceResult> => {
     if (mockError) {
       throw mockError;
     }
     return mockResponse;
   };
-  
+
   return {
     mock,
     setMockResponse: (response: ServiceResult) => {
@@ -116,6 +116,6 @@ export function createServiceMock<ServiceResult, ServiceParams extends any[]>(
     },
     setMockError: (error: Error) => {
       mockError = error;
-    }
+    },
   };
-} 
+}

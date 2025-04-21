@@ -21,4 +21,4 @@ export * from '@testing-library/react/pure';
 /**
  * Re-export userEvent for cases where we need direct access
  */
-export { userEvent }; 
+export { userEvent };

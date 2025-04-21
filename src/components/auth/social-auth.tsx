@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { Icons } from '@/components/ui/icons';
@@ -76,4 +76,4 @@ export function SocialAuth() {
       </Button>
     </div>
   );
-} 
+}

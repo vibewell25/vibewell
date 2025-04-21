@@ -1,10 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
-import { toast } from "sonner";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useState } from 'react';
+import { toast } from 'sonner';
 import {
   Download,
   FileText,
@@ -14,7 +14,7 @@ import {
   User,
   Activity,
   Settings,
-} from "lucide-react";
+} from 'lucide-react';
 
 interface ExportOption {
   id: string;
@@ -24,29 +24,26 @@ interface ExportOption {
 }
 
 export function ProfileExport() {
-  const [format, setFormat] = useState<"json" | "csv" | "pdf">("json");
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([
-    "profile",
-    "activity",
-  ]);
+  const [format, setFormat] = useState<'json' | 'csv' | 'pdf'>('json');
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(['profile', 'activity']);
 
   const exportOptions: ExportOption[] = [
     {
-      id: "profile",
-      label: "Profile Information",
-      description: "Basic profile details and settings",
+      id: 'profile',
+      label: 'Profile Information',
+      description: 'Basic profile details and settings',
       icon: <User className="h-5 w-5" />,
     },
     {
-      id: "activity",
-      label: "Activity Logs",
-      description: "Account activity and security events",
+      id: 'activity',
+      label: 'Activity Logs',
+      description: 'Account activity and security events',
       icon: <Activity className="h-5 w-5" />,
     },
     {
-      id: "preferences",
-      label: "Preferences",
-      description: "Account preferences and settings",
+      id: 'preferences',
+      label: 'Preferences',
+      description: 'Account preferences and settings',
       icon: <Settings className="h-5 w-5" />,
     },
   ];
@@ -54,16 +51,16 @@ export function ProfileExport() {
   const handleExport = async () => {
     try {
       // Simulate API call to generate export
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      toast.success("Export generated successfully!");
-      
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      toast.success('Export generated successfully!');
+
       // Simulate file download
       const blob = new Blob([JSON.stringify({ format, selectedOptions })], {
-        type: "application/json",
+        type: 'application/json',
       });
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
       a.download = `profile-export-${new Date().toISOString()}.${format}`;
       document.body.appendChild(a);
@@ -71,16 +68,14 @@ export function ProfileExport() {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     } catch (error) {
-      console.error("Error generating export:", error);
-      toast.error("Failed to generate export");
+      console.error('Error generating export:', error);
+      toast.error('Failed to generate export');
     }
   };
 
   const toggleOption = (optionId: string) => {
-    setSelectedOptions((prev) =>
-      prev.includes(optionId)
-        ? prev.filter((id) => id !== optionId)
-        : [...prev, optionId]
+    setSelectedOptions(prev =>
+      prev.includes(optionId) ? prev.filter(id => id !== optionId) : [...prev, optionId]
     );
   };
 
@@ -95,15 +90,11 @@ export function ProfileExport() {
             <Label>Export Format</Label>
             <RadioGroup
               value={format}
-              onValueChange={(value: "json" | "csv" | "pdf") => setFormat(value)}
+              onValueChange={(value: 'json' | 'csv' | 'pdf') => setFormat(value)}
               className="grid grid-cols-3 gap-4"
             >
               <div>
-                <RadioGroupItem
-                  value="json"
-                  id="json"
-                  className="peer sr-only"
-                />
+                <RadioGroupItem value="json" id="json" className="peer sr-only" />
                 <Label
                   htmlFor="json"
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
@@ -113,11 +104,7 @@ export function ProfileExport() {
                 </Label>
               </div>
               <div>
-                <RadioGroupItem
-                  value="csv"
-                  id="csv"
-                  className="peer sr-only"
-                />
+                <RadioGroupItem value="csv" id="csv" className="peer sr-only" />
                 <Label
                   htmlFor="csv"
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
@@ -127,11 +114,7 @@ export function ProfileExport() {
                 </Label>
               </div>
               <div>
-                <RadioGroupItem
-                  value="pdf"
-                  id="pdf"
-                  className="peer sr-only"
-                />
+                <RadioGroupItem value="pdf" id="pdf" className="peer sr-only" />
                 <Label
                   htmlFor="pdf"
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
@@ -146,11 +129,8 @@ export function ProfileExport() {
           <div className="space-y-2">
             <Label>Data to Export</Label>
             <div className="space-y-4">
-              {exportOptions.map((option) => (
-                <div
-                  key={option.id}
-                  className="flex items-start space-x-4 rounded-lg border p-4"
-                >
+              {exportOptions.map(option => (
+                <div key={option.id} className="flex items-start space-x-4 rounded-lg border p-4">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
                     {option.icon}
                   </div>
@@ -162,20 +142,14 @@ export function ProfileExport() {
                         onCheckedChange={() => toggleOption(option.id)}
                       />
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      {option.description}
-                    </p>
+                    <p className="text-sm text-muted-foreground">{option.description}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <Button
-            className="w-full"
-            onClick={handleExport}
-            disabled={selectedOptions.length === 0}
-          >
+          <Button className="w-full" onClick={handleExport} disabled={selectedOptions.length === 0}>
             <Download className="mr-2 h-4 w-4" />
             Export Data
           </Button>
@@ -183,4 +157,4 @@ export function ProfileExport() {
       </CardContent>
     </Card>
   );
-} 
+}

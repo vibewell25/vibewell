@@ -103,4 +103,4 @@ export class VirtualTryOnService {
       where: { id },
     });
   }
-} 
+}

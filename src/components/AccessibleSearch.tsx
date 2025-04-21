@@ -135,9 +135,10 @@ export const AccessibleSearch: React.FC<AccessibleSearchProps> = ({
           placeholder={placeholder}
           className={`
             w-full px-3 py-2 border rounded-md
-            ${error
-              ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-              : 'border-gray-300 focus:ring-primary focus:border-primary'
+            ${
+              error
+                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                : 'border-gray-300 focus:ring-primary focus:border-primary'
             }
             ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}
             focus:outline-none
@@ -185,17 +186,11 @@ export const AccessibleSearch: React.FC<AccessibleSearchProps> = ({
           {helperText}
         </p>
       )}
-      <div
-        role="status"
-        aria-live="polite"
-        className="sr-only"
-      >
-        {results.length > 0
-          ? `${results.length} results found`
-          : query && 'No results found'}
+      <div role="status" aria-live="polite" className="sr-only">
+        {results.length > 0 ? `${results.length} results found` : query && 'No results found'}
       </div>
     </div>
   );
 };
 
-export default AccessibleSearch; 
+export default AccessibleSearch;

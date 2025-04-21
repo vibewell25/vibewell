@@ -1,3 +1,11 @@
+# DEPRECATED
+
+> **This document is deprecated.** 
+> 
+> Please refer to [PROJECT-STATUS.md](PROJECT-STATUS.md) for the current project status.
+
+---
+
 # Vibewell Project - Final Status Report
 
 ## Overview

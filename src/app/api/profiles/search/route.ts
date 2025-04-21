@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     const role = searchParams.get('role') || undefined;
     const limit = searchParams.has('limit') ? parseInt(searchParams.get('limit')!) : 20;
     const offset = searchParams.has('offset') ? parseInt(searchParams.get('offset')!) : 0;
-    
+
     // Basic validation
     if (query.length < 2) {
       return NextResponse.json(
@@ -31,7 +31,7 @@ export async function GET(request: Request) {
         { name: { contains: query, mode: 'insensitive' } },
         { email: { contains: query, mode: 'insensitive' } },
         { bio: { contains: query, mode: 'insensitive' } },
-      ]
+      ],
     };
 
     // Add role filter if provided
@@ -73,9 +73,6 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error('Error searching profiles:', error);
-    return NextResponse.json(
-      { error: 'Failed to search profiles' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to search profiles' }, { status: 500 });
   }
-} 
+}

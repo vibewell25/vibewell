@@ -28,33 +28,22 @@ export class AuditLoggingService {
   /**
    * Log an auditable action
    */
-  async log(
-    action: string,
-    details: Omit<AuditLog, 'id' | 'timestamp'>
-  ): Promise<void> {
+  async log(action: string, details: Omit<AuditLog, 'id' | 'timestamp'>): Promise<void> {
     const id = `${Date.now()}:${Math.random().toString(36).slice(2)}`;
     const log: AuditLog = {
       id,
       timestamp: new Date(),
       action,
-      ...details
+      ...details,
     };
 
     try {
       // Store in Redis with TTL
-      await this.redis.setex(
-        `audit:log:${id}`,
-        this.logTTL,
-        JSON.stringify(log)
-      );
+      await this.redis.setex(`audit:log:${id}`, this.logTTL, JSON.stringify(log));
 
       // Store index by user
       if (log.userId) {
-        await this.redis.zadd(
-          `audit:user:${log.userId}`,
-          log.timestamp.getTime(),
-          id
-        );
+        await this.redis.zadd(`audit:user:${log.userId}`, log.timestamp.getTime(), id);
       }
 
       // Store index by resource
@@ -72,7 +61,7 @@ export class AuditLoggingService {
         userId: log.userId,
         resourceType: log.resourceType,
         resourceId: log.resourceId,
-        changes: log.changes
+        changes: log.changes,
       });
     } catch (error) {
       logger.error('Failed to create audit log', 'audit', { error, log });
@@ -93,7 +82,7 @@ export class AuditLoggingService {
   ): Promise<AuditLog[]> {
     try {
       const { limit = 100, offset = 0, startTime, endTime } = options;
-      
+
       // Get log IDs from sorted set
       const logIds = await this.redis.zrevrangebyscore(
         `audit:user:${userId}`,
@@ -127,7 +116,7 @@ export class AuditLoggingService {
   ): Promise<AuditLog[]> {
     try {
       const { limit = 100, offset = 0, startTime, endTime } = options;
-      
+
       // Get log IDs from sorted set
       const logIds = await this.redis.zrevrangebyscore(
         `audit:resource:${resourceType}:${resourceId}`,
@@ -144,7 +133,7 @@ export class AuditLoggingService {
       logger.error('Failed to get resource audit logs', 'audit', {
         error,
         resourceType,
-        resourceId
+        resourceId,
       });
       return [];
     }
@@ -223,4 +212,4 @@ export class AuditLoggingService {
 
     return logs;
   }
-} 
+}

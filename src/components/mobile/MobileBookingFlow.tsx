@@ -24,15 +24,21 @@ interface MobileBookingFlowProps {
 
 type BookingStep = 'service' | 'datetime' | 'details' | 'payment' | 'confirmation';
 
-export function MobileBookingFlow({ services, practitionerId, practitionerName }: MobileBookingFlowProps) {
+export function MobileBookingFlow({
+  services,
+  practitionerId,
+  practitionerName,
+}: MobileBookingFlowProps) {
   const router = useRouter();
   const { toast } = useToast();
   const { isOnline } = useNetwork();
   const offlineService = new OfflineService();
-  
+
   const [currentStep, setCurrentStep] = useState<BookingStep>('service');
-  const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
-  const [selectedDateTime, setSelectedDateTime] = useState<{ date: Date; time: string } | null>(null);
+  const [selectedService, setSelectedService] = useState<(typeof services)[0] | null>(null);
+  const [selectedDateTime, setSelectedDateTime] = useState<{ date: Date; time: string } | null>(
+    null
+  );
   const [bookingDetails, setBookingDetails] = useState<{
     notes?: string;
     contactPreference?: string;
@@ -48,7 +54,7 @@ export function MobileBookingFlow({ services, practitionerId, practitionerName }
           deviceModel: navigator.userAgent,
           osVersion: navigator.appVersion,
           appVersion: '1.0.0', // Replace with actual app version
-          locationData: null // Add location data if available and permitted
+          locationData: null, // Add location data if available and permitted
         });
       } catch (error) {
         console.error('Failed to store mobile data:', error);
@@ -58,7 +64,7 @@ export function MobileBookingFlow({ services, practitionerId, practitionerName }
     storeMobileData();
   }, []);
 
-  const handleServiceSelect = (service: typeof services[0]) => {
+  const handleServiceSelect = (service: (typeof services)[0]) => {
     setSelectedService(service);
     setCurrentStep('datetime');
   };
@@ -80,12 +86,12 @@ export function MobileBookingFlow({ services, practitionerId, practitionerName }
         time: selectedDateTime!.time,
         notes: details?.notes,
         duration: selectedService!.duration,
-        status: 'PENDING'
+        status: 'PENDING',
       });
 
       toast({
         title: 'Booking Saved Offline',
-        description: 'Your booking will be synced when you\'re back online.',
+        description: "Your booking will be synced when you're back online.",
       });
 
       setCurrentStep('confirmation');
@@ -133,7 +139,9 @@ export function MobileBookingFlow({ services, practitionerId, practitionerName }
           { id: 'payment', title: 'Payment' },
           { id: 'confirmation', title: 'Done' },
         ]}
-        currentStep={['service', 'datetime', 'details', 'payment', 'confirmation'].indexOf(currentStep)}
+        currentStep={['service', 'datetime', 'details', 'payment', 'confirmation'].indexOf(
+          currentStep
+        )}
         className="mb-6"
       />
 
@@ -179,11 +187,9 @@ export function MobileBookingFlow({ services, practitionerId, practitionerName }
             {isOnline ? 'Booking Confirmed!' : 'Booking Saved Offline'}
           </h2>
           <p className="mb-6">
-            {isOnline ? (
-              `Your appointment has been scheduled for ${selectedDateTime?.date.toLocaleDateString()} at ${selectedDateTime?.time}`
-            ) : (
-              'Your booking will be synced when you\'re back online.'
-            )}
+            {isOnline
+              ? `Your appointment has been scheduled for ${selectedDateTime?.date.toLocaleDateString()} at ${selectedDateTime?.time}`
+              : "Your booking will be synced when you're back online."}
           </p>
           <Button onClick={() => router.push('/bookings')} className="w-full">
             View My Bookings
@@ -192,4 +198,4 @@ export function MobileBookingFlow({ services, practitionerId, practitionerName }
       )}
     </div>
   );
-} 
+}

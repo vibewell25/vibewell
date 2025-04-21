@@ -25,4 +25,4 @@ export interface NotificationState {
 export interface NotificationAction {
   type: string;
   payload?: any;
-} 
+}

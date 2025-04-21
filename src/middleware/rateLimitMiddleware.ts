@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from '@/types/api';
 import { rateLimitService, RATE_LIMITS } from '@/services/rateLimiting';
 
 interface RateLimitOptions {
@@ -14,9 +14,10 @@ export function withRateLimit(options: RateLimitOptions) {
   ) {
     try {
       // Get identifier for rate limiting
-      const identifier = options.identifier?.(req) || 
-        req.headers['x-forwarded-for'] || 
-        req.socket.remoteAddress || 
+      const identifier =
+        options.identifier?.(req) ||
+        req.headers['x-forwarded-for'] ||
+        req.socket.remoteAddress ||
         'unknown';
 
       // Check rate limit
@@ -35,7 +36,7 @@ export function withRateLimit(options: RateLimitOptions) {
       if (limited) {
         return res.status(429).json({
           error: 'Too Many Requests',
-          resetTime
+          resetTime,
         });
       }
 
@@ -53,8 +54,7 @@ export function combineRateLimits(...limiters: ReturnType<typeof withRateLimit>[
   return async (req: NextApiRequest, res: NextApiResponse, next: () => void) => {
     for (const limiter of limiters) {
       await new Promise<void>((resolve, reject) => {
-        limiter(req, res, () => resolve())
-          .catch(reject);
+        limiter(req, res, () => resolve()).catch(reject);
       });
 
       // If response is already sent (e.g., rate limited), stop processing
@@ -64,4 +64,4 @@ export function combineRateLimits(...limiters: ReturnType<typeof withRateLimit>[
     }
     return next();
   };
-} 
+}

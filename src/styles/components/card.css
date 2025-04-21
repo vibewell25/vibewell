@@ -1,0 +1,102 @@
+.card {
+  @apply rounded-lg overflow-hidden bg-white transition-all duration-200;
+}
+
+/* Variants */
+.card-elevated {
+  @apply shadow-md hover:shadow-lg;
+}
+
+.card-outlined {
+  @apply border border-gray-200;
+}
+
+.card-flat {
+  @apply bg-gray-50;
+}
+
+/* Interactive States */
+.card-clickable {
+  @apply cursor-pointer hover:transform hover:scale-[1.02] active:scale-[0.98];
+}
+
+.card-clickable:focus-visible {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+}
+
+/* Loading State */
+.card-loading {
+  @apply pointer-events-none;
+}
+
+.card-skeleton {
+  @apply p-4 space-y-4 animate-pulse;
+}
+
+.skeleton-line {
+  @apply h-4 bg-gray-200 rounded;
+}
+
+.skeleton-line:nth-child(2) {
+  @apply w-3/4;
+}
+
+.skeleton-line:nth-child(3) {
+  @apply w-1/2;
+}
+
+/* Responsive */
+.card-responsive {
+  @apply w-full;
+}
+
+@screen sm {
+  .card-responsive {
+    @apply max-w-sm;
+  }
+}
+
+@screen md {
+  .card-responsive {
+    @apply max-w-md;
+  }
+}
+
+/* Sub-components */
+.card-header {
+  @apply p-4 border-b border-gray-200;
+}
+
+.card-body {
+  @apply p-4;
+}
+
+.card-footer {
+  @apply p-4 border-t border-gray-200;
+}
+
+.card-image {
+  @apply w-full h-48 object-cover;
+}
+
+/* Dark Mode */
+.dark .card {
+  @apply bg-gray-800;
+}
+
+.dark .card-outlined {
+  @apply border-gray-700;
+}
+
+.dark .card-flat {
+  @apply bg-gray-900;
+}
+
+.dark .skeleton-line {
+  @apply bg-gray-700;
+}
+
+.dark .card-header,
+.dark .card-footer {
+  @apply border-gray-700;
+}

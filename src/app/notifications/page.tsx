@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { NotificationList } from '@/components/notifications/NotificationList';
 import { Layout } from '@/components/layout';
 import { Toaster } from 'react-hot-toast';
@@ -37,12 +37,10 @@ export default function NotificationsPage() {
         <Toaster position="top-right" />
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Notifications</h1>
-          <p className="text-muted-foreground">
-            Stay updated with your wellness journey
-          </p>
+          <p className="text-muted-foreground">Stay updated with your wellness journey</p>
         </div>
         <NotificationList />
       </div>
     </Layout>
   );
-} 
+}

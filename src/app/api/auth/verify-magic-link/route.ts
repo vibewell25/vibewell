@@ -12,18 +12,14 @@ export async function GET(request: NextRequest) {
     const email = searchParams.get('email');
 
     if (!token || !email) {
-      return NextResponse.redirect(
-        new URL('/auth/error?error=invalid_link', request.url)
-      );
+      return NextResponse.redirect(new URL('/auth/error?error=invalid_link', request.url));
     }
 
     // Verify the magic link token
     const isValid = await MagicLinkService.verifyToken(token, email);
 
     if (!isValid) {
-      return NextResponse.redirect(
-        new URL('/auth/error?error=expired_link', request.url)
-      );
+      return NextResponse.redirect(new URL('/auth/error?error=expired_link', request.url));
     }
 
     // Create a session token
@@ -49,9 +45,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   } catch (error) {
     console.error('Magic link verification error:', error);
-    return NextResponse.redirect(
-      new URL('/auth/error?error=verification_failed', request.url)
-    );
+    return NextResponse.redirect(new URL('/auth/error?error=verification_failed', request.url));
   }
 }
 
@@ -60,24 +54,15 @@ export async function POST(request: NextRequest) {
     const { email } = await request.json();
 
     if (!email) {
-      return NextResponse.json(
-        { error: 'Email is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
 
     // Send magic link
     await MagicLinkService.sendMagicLink(email);
 
-    return NextResponse.json(
-      { message: 'Magic link sent successfully' },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: 'Magic link sent successfully' }, { status: 200 });
   } catch (error) {
     console.error('Magic link generation error:', error);
-    return NextResponse.json(
-      { error: 'Failed to send magic link' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to send magic link' }, { status: 500 });
   }
-} 
+}

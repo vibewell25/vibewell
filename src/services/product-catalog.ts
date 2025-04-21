@@ -30,7 +30,7 @@ export interface ProductFilters {
 export class ProductCatalogService {
   static async getProducts(filters: ProductFilters = {}): Promise<Product[]> {
     const where: any = {};
-    
+
     if (filters.type) {
       where.type = filters.type;
     }
@@ -46,14 +46,14 @@ export class ProductCatalogService {
     if (filters.minPrice !== undefined) {
       where.price = {
         ...(where.price || {}),
-        gte: filters.minPrice
+        gte: filters.minPrice,
       };
     }
 
     if (filters.maxPrice !== undefined) {
       where.price = {
         ...(where.price || {}),
-        lte: filters.maxPrice
+        lte: filters.maxPrice,
       };
     }
 
@@ -64,7 +64,7 @@ export class ProductCatalogService {
     if (filters.search) {
       where.OR = [
         { name: { contains: filters.search, mode: 'insensitive' } },
-        { description: { contains: filters.search, mode: 'insensitive' } }
+        { description: { contains: filters.search, mode: 'insensitive' } },
       ];
     }
 
@@ -72,10 +72,10 @@ export class ProductCatalogService {
       const products = await prisma.product.findMany({
         where,
         orderBy: {
-          created_at: 'desc'
-        }
+          created_at: 'desc',
+        },
       });
-      
+
       return products as unknown as Product[];
     } catch (error: any) {
       throw new Error(`Failed to fetch products: ${error.message}`);
@@ -85,7 +85,7 @@ export class ProductCatalogService {
   static async getProductById(id: string): Promise<Product> {
     try {
       const product = await prisma.product.findUnique({
-        where: { id }
+        where: { id },
       });
 
       if (!product) {
@@ -106,10 +106,10 @@ export class ProductCatalogService {
         where: {
           type: product.type,
           id: {
-            not: productId
-          }
+            not: productId,
+          },
         },
-        take: 4
+        take: 4,
       });
 
       return relatedProducts as unknown as Product[];
@@ -122,9 +122,9 @@ export class ProductCatalogService {
     try {
       const products = await prisma.product.findMany({
         orderBy: {
-          rating: 'desc'
+          rating: 'desc',
         },
-        take: limit
+        take: limit,
       });
 
       return products as unknown as Product[];
@@ -137,9 +137,9 @@ export class ProductCatalogService {
     try {
       const distinctCategories = await prisma.product.findMany({
         select: {
-          category: true
+          category: true,
         },
-        distinct: ['category']
+        distinct: ['category'],
       });
 
       return distinctCategories.map((item: { category: string }) => item.category);
@@ -152,9 +152,9 @@ export class ProductCatalogService {
     try {
       const distinctBrands = await prisma.product.findMany({
         select: {
-          brand: true
+          brand: true,
         },
-        distinct: ['brand']
+        distinct: ['brand'],
       });
 
       return distinctBrands.map((item: { brand: string }) => item.brand);
@@ -162,4 +162,4 @@ export class ProductCatalogService {
       throw new Error(`Failed to fetch brands: ${error.message}`);
     }
   }
-} 
+}

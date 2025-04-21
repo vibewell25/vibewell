@@ -33,10 +33,7 @@ export async function rateLimit(
     }
 
     if (current > finalConfig.max) {
-      return NextResponse.json(
-        { error: finalConfig.message },
-        { status: finalConfig.statusCode }
-      );
+      return NextResponse.json({ error: finalConfig.message }, { status: finalConfig.statusCode });
     }
 
     return null;
@@ -58,20 +55,15 @@ export async function validateRequest(req: Request): Promise<NextResponse | null
 
   // Validate request size
   const contentLength = req.headers.get('content-length');
-  if (contentLength && parseInt(contentLength) > 1024 * 1024) { // 1MB limit
-    return NextResponse.json(
-      { error: 'Request body too large' },
-      { status: 413 }
-    );
+  if (contentLength && parseInt(contentLength) > 1024 * 1024) {
+    // 1MB limit
+    return NextResponse.json({ error: 'Request body too large' }, { status: 413 });
   }
 
   // Validate HTTP method
   const method = req.method;
   if (!['GET', 'POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
-    return NextResponse.json(
-      { error: 'Invalid HTTP method' },
-      { status: 405 }
-    );
+    return NextResponse.json({ error: 'Invalid HTTP method' }, { status: 405 });
   }
 
   return null;
@@ -123,14 +115,11 @@ export async function validateAndSanitizeRequest(
       data = await sanitizeInput(data);
     } catch (error) {
       return {
-        error: NextResponse.json(
-          { error: 'Invalid JSON in request body' },
-          { status: 400 }
-        ),
+        error: NextResponse.json({ error: 'Invalid JSON in request body' }, { status: 400 }),
         data: null,
       };
     }
   }
 
   return { error: null, data };
-} 
+}

@@ -14,12 +14,12 @@ export const ROUTES = {
     MFA_SETUP: '/auth/mfa-setup',
     CALLBACK: '/auth/callback',
   },
-  
+
   // Main application routes
   DASHBOARD: '/dashboard',
   PROFILE: '/profile',
   SETTINGS: '/settings',
-  
+
   // Feature routes
   WELLNESS: {
     INDEX: '/wellness',
@@ -34,14 +34,14 @@ export const ROUTES = {
   MESSAGES: '/messages',
   NOTIFICATIONS: '/notifications',
   SOCIAL: '/social',
-  
+
   // Admin routes
   ADMIN: {
     INDEX: '/admin',
     USERS: '/admin/users',
     CONTENT: '/admin/content',
   },
-  
+
   // Developer routes
   DEVELOPER: '/developer',
-}; 
+};

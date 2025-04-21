@@ -4,14 +4,7 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "strict": false,
-    "types": [
-      "jest",
-      "@testing-library/jest-dom"
-    ]
+    "types": ["jest", "@testing-library/jest-dom"]
   },
-  "include": [
-    "./**/*.ts",
-    "./**/*.tsx",
-    "../types/**/*.d.ts"
-  ]
-} 
+  "include": ["./**/*.ts", "./**/*.tsx", "../types/**/*.d.ts"]
+}

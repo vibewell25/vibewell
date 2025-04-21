@@ -30,7 +30,7 @@ export const BaseCheckbox: React.FC<BaseCheckboxProps> = ({
   const checkboxId = id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
   const errorId = error ? `${checkboxId}-error` : undefined;
   const helperId = helperText ? `${checkboxId}-helper` : undefined;
-  
+
   const checkboxElement = (
     <input
       id={checkboxId}
@@ -50,10 +50,7 @@ export const BaseCheckbox: React.FC<BaseCheckboxProps> = ({
   );
 
   const labelElement = label && (
-    <label
-      htmlFor={checkboxId}
-      className={labelClassName}
-    >
+    <label htmlFor={checkboxId} className={labelClassName}>
       {label}
       {required && <span className="text-red-500 ml-1">*</span>}
     </label>
@@ -62,17 +59,11 @@ export const BaseCheckbox: React.FC<BaseCheckboxProps> = ({
   return (
     <div className={containerClassName}>
       <div className="flex items-start">
-        {labelPosition === 'left' && labelElement && (
-          <div className="mr-3">{labelElement}</div>
-        )}
-        
-        <div className="flex items-center h-5">
-          {checkboxElement}
-        </div>
-        
-        {labelPosition === 'right' && labelElement && (
-          <div className="ml-3">{labelElement}</div>
-        )}
+        {labelPosition === 'left' && labelElement && <div className="mr-3">{labelElement}</div>}
+
+        <div className="flex items-center h-5">{checkboxElement}</div>
+
+        {labelPosition === 'right' && labelElement && <div className="ml-3">{labelElement}</div>}
       </div>
 
       {error && (
@@ -90,4 +81,4 @@ export const BaseCheckbox: React.FC<BaseCheckboxProps> = ({
   );
 };
 
-export default BaseCheckbox; 
+export default BaseCheckbox;

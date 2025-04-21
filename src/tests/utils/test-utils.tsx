@@ -9,9 +9,7 @@ function render(ui: React.ReactNode, options = {}) {
     return (
       <WebGLProvider>
         <AudioProvider>
-          <MeditationProvider>
-            {children}
-          </MeditationProvider>
+          <MeditationProvider>{children}</MeditationProvider>
         </AudioProvider>
       </WebGLProvider>
     );
@@ -64,7 +62,7 @@ const mockAudioContext = {
 // Setup global mocks
 const setupGlobalMocks = () => {
   // Mock WebGL
-  HTMLCanvasElement.prototype.getContext = jest.fn((contextId) => {
+  HTMLCanvasElement.prototype.getContext = jest.fn(contextId => {
     if (contextId === 'webgl') {
       return mockWebGLContext;
     }
@@ -82,8 +80,8 @@ const setupGlobalMocks = () => {
   }));
 
   // Mock requestAnimationFrame
-  global.requestAnimationFrame = jest.fn((callback) => setTimeout(callback, 0));
-  global.cancelAnimationFrame = jest.fn((id) => clearTimeout(id));
+  global.requestAnimationFrame = jest.fn(callback => setTimeout(callback, 0));
+  global.cancelAnimationFrame = jest.fn(id => clearTimeout(id));
 };
 
 // Cleanup global mocks
@@ -91,4 +89,4 @@ const cleanupGlobalMocks = () => {
   jest.restoreAllMocks();
 };
 
-export { render, fireEvent, waitFor, setupGlobalMocks, cleanupGlobalMocks }; 
+export { render, fireEvent, waitFor, setupGlobalMocks, cleanupGlobalMocks };

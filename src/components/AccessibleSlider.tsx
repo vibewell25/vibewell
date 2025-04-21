@@ -23,7 +23,7 @@ export const AccessibleSlider: React.FC<AccessibleSliderProps> = ({
   className = '',
   disabled = false,
   showValue = true,
-  formatValue = (val) => val.toString(),
+  formatValue = val => val.toString(),
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -105,14 +105,8 @@ export const AccessibleSlider: React.FC<AccessibleSliderProps> = ({
     <div className={className}>
       {label && (
         <div className="flex justify-between items-center mb-2">
-          <label className="text-sm font-medium text-gray-700">
-            {label}
-          </label>
-          {showValue && (
-            <span className="text-sm text-gray-500">
-              {formatValue(value)}
-            </span>
-          )}
+          <label className="text-sm font-medium text-gray-700">{label}</label>
+          {showValue && <span className="text-sm text-gray-500">{formatValue(value)}</span>}
         </div>
       )}
       <div
@@ -151,4 +145,4 @@ export const AccessibleSlider: React.FC<AccessibleSliderProps> = ({
   );
 };
 
-export default AccessibleSlider; 
+export default AccessibleSlider;

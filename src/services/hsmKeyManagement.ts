@@ -1,10 +1,10 @@
-import { 
-  KMSClient, 
+import {
+  KMSClient,
   GenerateDataKeyCommand,
   DecryptCommand,
   ReEncryptCommand,
   CreateKeyCommand,
-  UpdateAliasCommand
+  UpdateAliasCommand,
 } from '@aws-sdk/client-kms';
 import { logger } from '@/lib/logger';
 
@@ -24,7 +24,7 @@ export class HSMKeyManagementService {
     try {
       const command = new GenerateDataKeyCommand({
         KeyId: this.keyAlias,
-        KeySpec: 'AES_256'
+        KeySpec: 'AES_256',
       });
 
       const result = await this.kms.send(command);
@@ -35,7 +35,7 @@ export class HSMKeyManagementService {
 
       return {
         plaintextKey: Buffer.from(result.Plaintext),
-        encryptedKey: Buffer.from(result.CiphertextBlob)
+        encryptedKey: Buffer.from(result.CiphertextBlob),
       };
     } catch (error) {
       logger.error('Failed to generate data key', 'hsm', { error });
@@ -49,7 +49,7 @@ export class HSMKeyManagementService {
   async decryptDataKey(encryptedKey: Buffer): Promise<Buffer> {
     try {
       const command = new DecryptCommand({
-        CiphertextBlob: encryptedKey
+        CiphertextBlob: encryptedKey,
       });
 
       const result = await this.kms.send(command);
@@ -72,7 +72,7 @@ export class HSMKeyManagementService {
     try {
       const command = new ReEncryptCommand({
         CiphertextBlob: encryptedKey,
-        DestinationKeyId: this.keyAlias
+        DestinationKeyId: this.keyAlias,
       });
 
       const result = await this.kms.send(command);
@@ -96,7 +96,7 @@ export class HSMKeyManagementService {
       const createKeyCommand = new CreateKeyCommand({
         Description: 'New master key for Vibewell encryption',
         KeyUsage: 'ENCRYPT_DECRYPT',
-        Origin: 'AWS_KMS'
+        Origin: 'AWS_KMS',
       });
 
       const newKey = await this.kms.send(createKeyCommand);
@@ -108,7 +108,7 @@ export class HSMKeyManagementService {
       // Update the key alias to point to the new key
       const updateAliasCommand = new UpdateAliasCommand({
         AliasName: this.keyAlias,
-        TargetKeyId: newKey.KeyMetadata.KeyId
+        TargetKeyId: newKey.KeyMetadata.KeyId,
       });
 
       await this.kms.send(updateAliasCommand);
@@ -118,4 +118,4 @@ export class HSMKeyManagementService {
       throw new Error('Failed to rotate master key');
     }
   }
-} 
+}

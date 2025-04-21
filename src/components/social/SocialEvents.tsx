@@ -48,8 +48,8 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           content: newPost,
-          userId
-        })
+          userId,
+        }),
       });
 
       if (!response.ok) {
@@ -58,7 +58,7 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
 
       toast({
         title: 'Post Created',
-        description: 'Your post has been shared successfully!'
+        description: 'Your post has been shared successfully!',
       });
 
       setNewPost('');
@@ -67,7 +67,7 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
       toast({
         title: 'Error',
         description: 'Failed to create post. Please try again.',
-        variant: 'destructive'
+        variant: 'destructive',
       });
     }
   };
@@ -77,7 +77,7 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
       const response = await fetch(`/api/events/${eventId}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId })
+        body: JSON.stringify({ userId }),
       });
 
       if (!response.ok) {
@@ -86,7 +86,7 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
 
       toast({
         title: 'Registration Successful',
-        description: 'You have been registered for the event!'
+        description: 'You have been registered for the event!',
       });
 
       setSelectedEvent(null);
@@ -95,7 +95,7 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
       toast({
         title: 'Error',
         description: 'Failed to register for event. Please try again.',
-        variant: 'destructive'
+        variant: 'destructive',
       });
     }
   };
@@ -106,7 +106,7 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
       <section>
         <h2 className="text-2xl font-semibold mb-4">Upcoming Events</h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {events.map((event) => (
+          {events.map(event => (
             <Card key={event.id} className="p-4">
               {event.imageUrl && (
                 <img
@@ -120,16 +120,16 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
               <div className="space-y-2 text-sm">
                 <p>📅 {event.date.toLocaleDateString()}</p>
                 <p>📍 {event.location}</p>
-                <p>👥 {event.currentAttendees}/{event.maxAttendees} attending</p>
+                <p>
+                  👥 {event.currentAttendees}/{event.maxAttendees} attending
+                </p>
               </div>
               <Button
                 className="w-full mt-4"
                 disabled={event.currentAttendees >= event.maxAttendees}
                 onClick={() => handleEventRegistration(event.id)}
               >
-                {event.currentAttendees >= event.maxAttendees
-                  ? 'Event Full'
-                  : 'Register Now'}
+                {event.currentAttendees >= event.maxAttendees ? 'Event Full' : 'Register Now'}
               </Button>
             </Card>
           ))}
@@ -142,20 +142,17 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
         <Card className="p-4 mb-6">
           <Textarea
             value={newPost}
-            onChange={(e) => setNewPost(e.target.value)}
+            onChange={e => setNewPost(e.target.value)}
             placeholder="Share your thoughts with the community..."
             className="mb-4"
           />
-          <Button
-            onClick={handlePostSubmit}
-            disabled={!newPost.trim()}
-          >
+          <Button onClick={handlePostSubmit} disabled={!newPost.trim()}>
             Post
           </Button>
         </Card>
 
         <div className="space-y-4">
-          {posts.map((post) => (
+          {posts.map(post => (
             <Card key={post.id} className="p-4">
               <div className="flex items-start gap-4">
                 {post.author.avatar && (
@@ -181,12 +178,8 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
                     />
                   )}
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <button className="flex items-center gap-1">
-                      ❤️ {post.likes}
-                    </button>
-                    <button className="flex items-center gap-1">
-                      💬 {post.comments}
-                    </button>
+                    <button className="flex items-center gap-1">❤️ {post.likes}</button>
+                    <button className="flex items-center gap-1">💬 {post.comments}</button>
                   </div>
                 </div>
               </div>
@@ -196,4 +189,4 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
       </section>
     </div>
   );
-} 
+}

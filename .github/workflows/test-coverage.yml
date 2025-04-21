@@ -1,0 +1,176 @@
+name: Test Coverage
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    name: Test and Coverage
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests with coverage
+        run: npm run test:coverage
+      
+      - name: Check coverage thresholds
+        run: |
+          COVERAGE_LINES=$(cat coverage/coverage-summary.json | jq -r '.total.lines.pct')
+          COVERAGE_STMTS=$(cat coverage/coverage-summary.json | jq -r '.total.statements.pct')
+          COVERAGE_BRANCH=$(cat coverage/coverage-summary.json | jq -r '.total.branches.pct')
+          COVERAGE_FUNCS=$(cat coverage/coverage-summary.json | jq -r '.total.functions.pct')
+          
+          echo "Lines coverage: $COVERAGE_LINES%"
+          echo "Statements coverage: $COVERAGE_STMTS%"
+          echo "Branch coverage: $COVERAGE_BRANCH%"
+          echo "Function coverage: $COVERAGE_FUNCS%"
+          
+          if (( $(echo "$COVERAGE_LINES < 80" | bc -l) )); then
+            echo "Lines coverage below threshold: $COVERAGE_LINES% < 80%"
+            exit 1
+          fi
+          
+          if (( $(echo "$COVERAGE_STMTS < 80" | bc -l) )); then
+            echo "Statements coverage below threshold: $COVERAGE_STMTS% < 80%"
+            exit 1
+          fi
+          
+          if (( $(echo "$COVERAGE_BRANCH < 70" | bc -l) )); then
+            echo "Branch coverage below threshold: $COVERAGE_BRANCH% < 70%"
+            exit 1
+          fi
+          
+          if (( $(echo "$COVERAGE_FUNCS < 80" | bc -l) )); then
+            echo "Function coverage below threshold: $COVERAGE_FUNCS% < 80%"
+            exit 1
+          fi
+      
+      - name: Upload coverage report to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage/coverage-final.json
+          fail_ci_if_error: true
+      
+      - name: Generate coverage report artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/
+  
+  e2e-tests:
+    name: End-to-End Tests
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+      
+      - name: Run Playwright tests
+        run: npm run test:e2e
+      
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+  
+  critical-flows:
+    name: Critical User Flows
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      
+      - name: Start test server
+        run: npm run dev &
+        env:
+          NODE_ENV: test
+      
+      - name: Wait for server to start
+        run: sleep 10
+      
+      - name: Run critical flow tests
+        run: npm run test:critical-flows
+      
+      - name: Upload critical flow test report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: critical-flow-report
+          path: critical-flow-report/
+          retention-days: 30
+  
+  coverage-report:
+    name: Coverage Report
+    runs-on: ubuntu-latest
+    needs: [test, e2e-tests, critical-flows]
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Download coverage report
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage
+      
+      - name: Generate HTML report
+        run: |
+          npm install -g nyc
+          nyc report --reporter=html
+      
+      - name: Deploy coverage report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./coverage/lcov-report
+          destination_dir: coverage-report
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'docs: update coverage report' 

@@ -1,7 +1,14 @@
 /// <reference path="../../../src/types/testing.d.ts" />
 import '@testing-library/jest-dom';
-import { notificationService, NotificationType, NotificationStatus, NotificationFilterParams, Notification, NotificationPreferences } from '../notification-service';
-import { apiClient, ApiResponse } from '../api-client';
+import {
+  notificationService,
+  NotificationType,
+  NotificationStatus,
+  NotificationFilterParams,
+  Notification,
+  NotificationPreferences,
+} from '../notification-service';
+import { apiClient, ApiResponse } from '@/types/api';
 
 // Mock the API client
 jest.mock('../api-client', () => ({
@@ -9,10 +16,10 @@ jest.mock('../api-client', () => ({
     get: jest.fn(),
     post: jest.fn(),
     put: jest.fn(),
-    delete: jest.fn()
+    delete: jest.fn(),
   },
   // Preserve the ApiResponse interface
-  ApiResponse: jest.requireActual('../api-client').ApiResponse
+  ApiResponse: jest.requireActual('../api-client').ApiResponse,
 }));
 
 describe('NotificationService', () => {
@@ -24,7 +31,7 @@ describe('NotificationService', () => {
     title: 'New Booking',
     message: 'You have a new booking',
     status: 'unread',
-    createdAt: '2023-01-01T12:00:00Z'
+    createdAt: '2023-01-01T12:00:00Z',
   };
 
   const mockPreferences: NotificationPreferences = {
@@ -37,7 +44,7 @@ describe('NotificationService', () => {
       payment_failed: true,
       message_received: true,
       system_update: false,
-      promotion: false
+      promotion: false,
     },
     push: {
       booking_created: true,
@@ -48,7 +55,7 @@ describe('NotificationService', () => {
       payment_failed: true,
       message_received: true,
       system_update: true,
-      promotion: false
+      promotion: false,
     },
     sms: {
       booking_created: true,
@@ -59,20 +66,20 @@ describe('NotificationService', () => {
       payment_failed: true,
       message_received: false,
       system_update: false,
-      promotion: false
-    }
+      promotion: false,
+    },
   };
 
   const mockSuccessResponse = <T>(data: T): ApiResponse<T> => ({
     data,
     status: 200,
-    success: true
+    success: true,
   });
 
   const mockErrorResponse = <T>(error: string): ApiResponse<T> => ({
     error,
     status: 400,
-    success: false
+    success: false,
   });
 
   beforeEach(() => {
@@ -94,7 +101,7 @@ describe('NotificationService', () => {
       (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
 
       const filters: NotificationFilterParams = {
-        status: 'unread'
+        status: 'unread',
       };
 
       await notificationService.getNotifications(filters);
@@ -106,7 +113,7 @@ describe('NotificationService', () => {
       (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
 
       const filters: NotificationFilterParams = {
-        status: ['unread', 'read']
+        status: ['unread', 'read'],
       };
 
       await notificationService.getNotifications(filters);
@@ -118,7 +125,7 @@ describe('NotificationService', () => {
       (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
 
       const filters: NotificationFilterParams = {
-        type: 'booking_created'
+        type: 'booking_created',
       };
 
       await notificationService.getNotifications(filters);
@@ -135,7 +142,7 @@ describe('NotificationService', () => {
         fromDate: '2023-01-01',
         toDate: '2023-01-31',
         page: 1,
-        limit: 10
+        limit: 10,
       };
 
       await notificationService.getNotifications(filters);
@@ -146,7 +153,9 @@ describe('NotificationService', () => {
     });
 
     it('should handle errors correctly', async () => {
-      (apiClient.get as jest.Mock).mockResolvedValue(mockErrorResponse('Failed to fetch notifications'));
+      (apiClient.get as jest.Mock).mockResolvedValue(
+        mockErrorResponse('Failed to fetch notifications')
+      );
 
       const result = await notificationService.getNotifications();
 
@@ -178,7 +187,11 @@ describe('NotificationService', () => {
 
   describe('markAsRead', () => {
     it('should mark a notification as read', async () => {
-      const updatedNotification = { ...mockNotification, status: 'read', readAt: '2023-01-02T12:00:00Z' };
+      const updatedNotification = {
+        ...mockNotification,
+        status: 'read',
+        readAt: '2023-01-02T12:00:00Z',
+      };
       (apiClient.put as jest.Mock).mockResolvedValue(mockSuccessResponse(updatedNotification));
 
       const result = await notificationService.markAsRead('notification-1');
@@ -191,7 +204,9 @@ describe('NotificationService', () => {
 
   describe('markAllAsRead', () => {
     it('should mark all notifications as read', async () => {
-      (apiClient.put as jest.Mock).mockResolvedValue(mockSuccessResponse({ success: true, count: 5 }));
+      (apiClient.put as jest.Mock).mockResolvedValue(
+        mockSuccessResponse({ success: true, count: 5 })
+      );
 
       const result = await notificationService.markAllAsRead();
 
@@ -241,30 +256,33 @@ describe('NotificationService', () => {
     it('should update notification preferences', async () => {
       const partialPreferences = {
         email: {
-          promotion: true
+          promotion: true,
         },
         push: {
-          system_update: false
-        }
+          system_update: false,
+        },
       };
 
       const updatedPreferences = {
         ...mockPreferences,
         email: {
           ...mockPreferences.email,
-          promotion: true
+          promotion: true,
         },
         push: {
           ...mockPreferences.push,
-          system_update: false
-        }
+          system_update: false,
+        },
       };
 
       (apiClient.put as jest.Mock).mockResolvedValue(mockSuccessResponse(updatedPreferences));
 
       const result = await notificationService.updatePreferences(partialPreferences);
 
-      expect(apiClient.put).toHaveBeenCalledWith('/api/notifications/preferences', partialPreferences);
+      expect(apiClient.put).toHaveBeenCalledWith(
+        '/api/notifications/preferences',
+        partialPreferences
+      );
       expect(result.data).toEqual(updatedPreferences);
       expect(result.success).toBe(true);
     });
@@ -272,14 +290,17 @@ describe('NotificationService', () => {
 
   describe('subscribeToPush', () => {
     it('should subscribe to push notifications', async () => {
-      const mockSubscription = { endpoint: 'https://example.com', keys: { p256dh: 'key1', auth: 'key2' } } as unknown as PushSubscription;
-      
+      const mockSubscription = {
+        endpoint: 'https://example.com',
+        keys: { p256dh: 'key1', auth: 'key2' },
+      } as unknown as PushSubscription;
+
       (apiClient.post as jest.Mock).mockResolvedValue(mockSuccessResponse({ success: true }));
 
       const result = await notificationService.subscribeToPush(mockSubscription);
 
       expect(apiClient.post).toHaveBeenCalledWith('/api/notifications/push/subscribe', {
-        subscription: JSON.stringify(mockSubscription)
+        subscription: JSON.stringify(mockSubscription),
       });
       expect(result.data).toEqual({ success: true });
       expect(result.success).toBe(true);
@@ -288,17 +309,20 @@ describe('NotificationService', () => {
 
   describe('unsubscribeFromPush', () => {
     it('should unsubscribe from push notifications', async () => {
-      const mockSubscription = { endpoint: 'https://example.com', keys: { p256dh: 'key1', auth: 'key2' } } as unknown as PushSubscription;
-      
+      const mockSubscription = {
+        endpoint: 'https://example.com',
+        keys: { p256dh: 'key1', auth: 'key2' },
+      } as unknown as PushSubscription;
+
       (apiClient.post as jest.Mock).mockResolvedValue(mockSuccessResponse({ success: true }));
 
       const result = await notificationService.unsubscribeFromPush(mockSubscription);
 
       expect(apiClient.post).toHaveBeenCalledWith('/api/notifications/push/unsubscribe', {
-        subscription: JSON.stringify(mockSubscription)
+        subscription: JSON.stringify(mockSubscription),
       });
       expect(result.data).toEqual({ success: true });
       expect(result.success).toBe(true);
     });
   });
-}); 
+});

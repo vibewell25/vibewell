@@ -60,13 +60,7 @@ export function ServiceCard({
       _hover={{ shadow: 'md' }}
     >
       {imageUrl && (
-        <Image
-          src={imageUrl}
-          alt={name}
-          height="200px"
-          width="100%"
-          objectFit="cover"
-        />
+        <Image src={imageUrl} alt={name} height="200px" width="100%" objectFit="cover" />
       )}
 
       <VStack p={4} align="stretch" spacing={4}>
@@ -105,7 +99,7 @@ export function ServiceCard({
               Available Practitioners
             </Text>
             <HStack spacing={2} overflow="hidden">
-              {practitioners.slice(0, 3).map((practitioner) => (
+              {practitioners.slice(0, 3).map(practitioner => (
                 <Box
                   key={practitioner.id}
                   position="relative"
@@ -163,12 +157,7 @@ export function ServiceCard({
               Try Now
             </Button>
           )}
-          <Button
-            colorScheme="blue"
-            size="sm"
-            onClick={() => onBookNow?.(id)}
-            flex={1}
-          >
+          <Button colorScheme="blue" size="sm" onClick={() => onBookNow?.(id)} flex={1}>
             Book Now
           </Button>
         </HStack>
@@ -184,4 +173,4 @@ export function ServiceCard({
       )}
     </Box>
   );
-} 
+}

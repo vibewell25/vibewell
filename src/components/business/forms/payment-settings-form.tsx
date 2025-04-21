@@ -4,26 +4,32 @@ import { useState } from 'react';
 import { PaymentFormProps } from '@/components/business/business-profile-wizard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Form, 
-  FormControl, 
-  FormDescription, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/components/ui/textarea';
-import { CreditCard, DollarSign, AlertCircle, Building2 as Bank, CreditCard as CreditCardIcon } from 'lucide-react';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  CreditCard,
+  DollarSign,
+  AlertCircle,
+  Building2 as Bank,
+  CreditCard as CreditCardIcon,
+} from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
 
 // Payment methods
@@ -35,46 +41,46 @@ const PAYMENT_METHODS = [
   { id: 'venmo', label: 'Venmo' },
   { id: 'zelle', label: 'Zelle' },
   { id: 'apple-pay', label: 'Apple Pay' },
-  { id: 'google-pay', label: 'Google Pay' }
+  { id: 'google-pay', label: 'Google Pay' },
 ];
 
 // Deposit options
 const DEPOSIT_OPTIONS = [
   { value: 'none', label: 'No deposit required' },
   { value: 'fixed', label: 'Fixed amount' },
-  { value: 'percentage', label: 'Percentage of service cost' }
+  { value: 'percentage', label: 'Percentage of service cost' },
 ];
 
 export function PaymentSettingsForm({ form }: PaymentFormProps) {
   const [depositType, setDepositType] = useState<string>('none');
   const [acceptsDeposits, setAcceptsDeposits] = useState<boolean>(false);
-  
+
   // Get existing payment methods from form or initialize an empty array
   const paymentMethods = form.watch('paymentMethods') || [];
-  
+
   // Handle payment method selection
   const handlePaymentMethodChange = (methodId: string, checked: boolean) => {
     const updatedMethods = checked
       ? [...paymentMethods, methodId]
       : paymentMethods.filter(id => id !== methodId);
-    
-    form.setValue('paymentMethods', updatedMethods, { 
+
+    form.setValue('paymentMethods', updatedMethods, {
       shouldValidate: true,
-      shouldDirty: true 
+      shouldDirty: true,
     });
   };
-  
+
   // Toggle deposit acceptance
   const handleDepositToggle = (checked: boolean) => {
     setAcceptsDeposits(checked);
-    
+
     if (!checked) {
       setDepositType('none');
       form.setValue('depositAmount', undefined, { shouldValidate: true });
       form.setValue('depositPercentage', undefined, { shouldValidate: true });
     }
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 mb-6">
@@ -86,18 +92,16 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>Payment Methods</CardTitle>
-          <CardDescription>
-            Select the payment methods you accept from customers
-          </CardDescription>
+          <CardDescription>Select the payment methods you accept from customers</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {PAYMENT_METHODS.map((method) => (
+            {PAYMENT_METHODS.map(method => (
               <div key={method.id} className="flex items-start space-x-2">
-                <Checkbox 
+                <Checkbox
                   id={`payment-method-${method.id}`}
                   checked={paymentMethods.includes(method.id)}
-                  onCheckedChange={(checked) => 
+                  onCheckedChange={checked =>
                     handlePaymentMethodChange(method.id, checked as boolean)
                   }
                 />
@@ -110,26 +114,26 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
               </div>
             ))}
           </div>
-          
+
           {paymentMethods.length === 0 && (
             <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-md flex items-start space-x-3">
               <AlertCircle className="h-5 w-5 text-amber-500 mt-0.5" />
               <div>
                 <p className="text-sm font-medium">Please select at least one payment method</p>
-                <p className="text-xs mt-1">Customers need to know which payment options are available.</p>
+                <p className="text-xs mt-1">
+                  Customers need to know which payment options are available.
+                </p>
               </div>
             </div>
           )}
         </CardContent>
       </Card>
-      
+
       {/* Deposit Settings */}
       <Card>
         <CardHeader>
           <CardTitle>Booking Deposits</CardTitle>
-          <CardDescription>
-            Configure if and how you collect deposits for bookings
-          </CardDescription>
+          <CardDescription>Configure if and how you collect deposits for bookings</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex items-center justify-between">
@@ -139,12 +143,9 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
                 Require customers to pay a deposit when booking services
               </FormDescription>
             </div>
-            <Switch
-              checked={acceptsDeposits}
-              onCheckedChange={handleDepositToggle}
-            />
+            <Switch checked={acceptsDeposits} onCheckedChange={handleDepositToggle} />
           </div>
-          
+
           {acceptsDeposits && (
             <div className="space-y-4 mt-4 border-t pt-4">
               <FormField
@@ -155,7 +156,7 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
                     <FormLabel>Deposit Type</FormLabel>
                     <Select
                       value={depositType}
-                      onValueChange={(value) => {
+                      onValueChange={value => {
                         setDepositType(value);
                         field.onChange(value);
                       }}
@@ -166,7 +167,7 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {DEPOSIT_OPTIONS.map((option) => (
+                        {DEPOSIT_OPTIONS.map(option => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>
@@ -177,7 +178,7 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
                   </FormItem>
                 )}
               />
-              
+
               {depositType === 'fixed' && (
                 <FormField
                   control={form.control}
@@ -198,15 +199,13 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
                           />
                         </FormControl>
                       </div>
-                      <FormDescription>
-                        Fixed amount to charge as deposit
-                      </FormDescription>
+                      <FormDescription>Fixed amount to charge as deposit</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               )}
-              
+
               {depositType === 'percentage' && (
                 <FormField
                   control={form.control}
@@ -235,7 +234,7 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
                   )}
                 />
               )}
-              
+
               <FormField
                 control={form.control}
                 name="depositNotes"
@@ -261,7 +260,7 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
           )}
         </CardContent>
       </Card>
-      
+
       {/* Payment Integration (Future Feature) */}
       <Card className="border-dashed border-muted-foreground/30">
         <CardHeader>
@@ -272,7 +271,9 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
                 Connect payment processors to accept online payments
               </CardDescription>
             </div>
-            <Button variant="outline" disabled>Coming Soon</Button>
+            <Button variant="outline" disabled>
+              Coming Soon
+            </Button>
           </div>
         </CardHeader>
         <CardContent>
@@ -305,4 +306,4 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
       </Card>
     </div>
   );
-} 
+}

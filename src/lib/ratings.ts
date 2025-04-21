@@ -17,7 +17,7 @@ export function getUserRatings(): Record<string, Rating> {
   if (typeof window === 'undefined') {
     return {};
   }
-  
+
   try {
     const storedRatings = localStorage.getItem(RATINGS_STORAGE_KEY);
     return storedRatings ? JSON.parse(storedRatings) : {};
@@ -43,23 +43,22 @@ export function saveRating(id: string, type: Rating['type'], rating: number): vo
   if (rating < 1 || rating > 5 || typeof window === 'undefined') {
     return;
   }
-  
+
   try {
     const ratings = getUserRatings();
     const key = `${type}-${id}`;
-    
+
     ratings[key] = {
       id,
       type,
       rating,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
-    
+
     localStorage.setItem(RATINGS_STORAGE_KEY, JSON.stringify(ratings));
-    
+
     // Also update popular ratings for aggregated view
     updatePopularRatings(id, type, rating);
-    
   } catch (error) {
     console.error('Error saving rating:', error);
   }
@@ -79,11 +78,13 @@ interface PopularRating {
 function updatePopularRatings(id: string, type: string, rating: number): void {
   try {
     const storedPopular = localStorage.getItem(POPULAR_RATINGS_KEY);
-    const popularRatings: Record<string, PopularRating> = storedPopular ? JSON.parse(storedPopular) : {};
-    
+    const popularRatings: Record<string, PopularRating> = storedPopular
+      ? JSON.parse(storedPopular)
+      : {};
+
     const key = `${type}-${id}`;
     const existing = popularRatings[key];
-    
+
     if (existing) {
       existing.total += rating;
       existing.count += 1;
@@ -94,10 +95,10 @@ function updatePopularRatings(id: string, type: string, rating: number): void {
         type,
         total: rating,
         count: 1,
-        average: rating
+        average: rating,
       };
     }
-    
+
     localStorage.setItem(POPULAR_RATINGS_KEY, JSON.stringify(popularRatings));
   } catch (error) {
     console.error('Error updating popular ratings:', error);
@@ -107,25 +108,27 @@ function updatePopularRatings(id: string, type: string, rating: number): void {
 /**
  * Get average rating for a specific item
  */
-export function getAverageRating(id: string, type: string): { average: number, count: number } {
+export function getAverageRating(id: string, type: string): { average: number; count: number } {
   if (typeof window === 'undefined') {
     return { average: 0, count: 0 };
   }
-  
+
   try {
     const storedPopular = localStorage.getItem(POPULAR_RATINGS_KEY);
-    const popularRatings: Record<string, PopularRating> = storedPopular ? JSON.parse(storedPopular) : {};
-    
+    const popularRatings: Record<string, PopularRating> = storedPopular
+      ? JSON.parse(storedPopular)
+      : {};
+
     const key = `${type}-${id}`;
     const rating = popularRatings[key];
-    
+
     if (rating) {
       return {
         average: rating.average,
-        count: rating.count
+        count: rating.count,
       };
     }
-    
+
     return { average: 0, count: 0 };
   } catch (error) {
     console.error('Error getting average rating:', error);
@@ -140,11 +143,13 @@ export function getHighestRatedItems(limit: number = 5): PopularRating[] {
   if (typeof window === 'undefined') {
     return [];
   }
-  
+
   try {
     const storedPopular = localStorage.getItem(POPULAR_RATINGS_KEY);
-    const popularRatings: Record<string, PopularRating> = storedPopular ? JSON.parse(storedPopular) : {};
-    
+    const popularRatings: Record<string, PopularRating> = storedPopular
+      ? JSON.parse(storedPopular)
+      : {};
+
     return Object.values(popularRatings)
       .filter(rating => rating.count >= 2) // Require at least 2 ratings
       .sort((a, b) => b.average - a.average)
@@ -153,4 +158,4 @@ export function getHighestRatedItems(limit: number = 5): PopularRating[] {
     console.error('Error getting highest rated items:', error);
     return [];
   }
-} 
+}

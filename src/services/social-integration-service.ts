@@ -37,8 +37,8 @@ export class SocialIntegrationService {
         where: { id: businessId },
         data: {
           socialConfig: config,
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       });
 
       return business;
@@ -59,8 +59,8 @@ export class SocialIntegrationService {
           ...template,
           status: template.scheduledTime ? 'SCHEDULED' : 'PUBLISHED',
           createdAt: new Date(),
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       });
 
       if (!template.scheduledTime) {
@@ -82,8 +82,8 @@ export class SocialIntegrationService {
       const post = await prisma.socialPost.findUnique({
         where: { id: postId },
         include: {
-          business: true
-        }
+          business: true,
+        },
       });
 
       if (!post || !post.business.socialConfig) {
@@ -109,8 +109,8 @@ export class SocialIntegrationService {
         data: {
           status: 'PUBLISHED',
           publishedAt: new Date(),
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       });
     } catch (error) {
       logger.error('Error publishing social post', error);
@@ -128,19 +128,19 @@ export class SocialIntegrationService {
           businessId,
           createdAt: {
             gte: startDate,
-            lte: endDate
-          }
+            lte: endDate,
+          },
         },
         include: {
-          analytics: true
-        }
+          analytics: true,
+        },
       });
 
       return {
         totalPosts: posts.length,
         engagement: this.calculateEngagement(posts),
         platformBreakdown: this.getPlatformBreakdown(posts),
-        period: { startDate, endDate }
+        period: { startDate, endDate },
       };
     } catch (error) {
       logger.error('Error getting social analytics', error);
@@ -174,4 +174,4 @@ export class SocialIntegrationService {
   private async publishToTwitter(post: any) {
     // Implement Twitter API integration
   }
-} 
+}

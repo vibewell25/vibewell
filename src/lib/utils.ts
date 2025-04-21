@@ -33,16 +33,14 @@ export function formatNumber(number: number): string {
  */
 export function formatDate(
   date: Date | string | number,
-  options: Intl.DateTimeFormatOptions = { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+  options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   }
 ): string {
-  const dateObj = typeof date === 'string' || typeof date === 'number' 
-    ? new Date(date) 
-    : date;
-  
+  const dateObj = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
+
   return new Intl.DateTimeFormat('en-US', options).format(dateObj);
 }
 
@@ -50,9 +48,9 @@ export function formatDate(
  * Format a time string to a readable format
  */
 export function formatTime(date: Date | string): string {
-  return new Date(date).toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
+  return new Date(date).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
   });
 }
 
@@ -77,8 +75,8 @@ export function truncateString(str: string, len: number): string {
 export function generateSlug(text: string): string {
   return text
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 }
 
 /**
@@ -89,13 +87,13 @@ export function debounce<T extends (...args: any[]) => any>(
   wait: number
 ): (...args: Parameters<T>) => void {
   let timeout: ReturnType<typeof setTimeout> | null = null;
-  
-  return function(...args: Parameters<T>) {
+
+  return function (...args: Parameters<T>) {
     const later = () => {
       timeout = null;
       func(...args);
     };
-    
+
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
@@ -106,9 +104,9 @@ export function debounce<T extends (...args: any[]) => any>(
  */
 export function getInitials(name: string): string {
   return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
+    .split(' ')
+    .map(n => n[0])
+    .join('')
     .toUpperCase();
 }
 
@@ -140,9 +138,9 @@ export function isValidPhoneNumber(phone: string): boolean {
  * Format a number as currency
  */
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
   }).format(amount);
 }
 
@@ -158,15 +156,15 @@ export function formatRating(rating: number): string {
  */
 export function getRandomColor(): string {
   const colors = [
-    "bg-red-500",
-    "bg-blue-500",
-    "bg-green-500",
-    "bg-yellow-500",
-    "bg-purple-500",
-    "bg-pink-500",
-    "bg-indigo-500",
+    'bg-red-500',
+    'bg-blue-500',
+    'bg-green-500',
+    'bg-yellow-500',
+    'bg-purple-500',
+    'bg-pink-500',
+    'bg-indigo-500',
   ];
-  
+
   // Use secure random number generation
   if (typeof window !== 'undefined' && window.crypto) {
     // Browser environment
@@ -194,31 +192,28 @@ export function getNestedValue<T = any>(
   if (obj === null || obj === undefined) {
     return defaultValue;
   }
-  
+
   // Split the path by dots, brackets, or commas
   const travel = (regexp: RegExp) => {
     const result = String.prototype.split
       .call(path, regexp)
       .filter(Boolean)
-      .reduce(
-        (res, key) => {
-          // Check for null or undefined at each step
-          if (res === null || res === undefined) {
-            return res;
-          }
-          
-          // Access the property safely
-          return typeof res === 'object' && key in res ? res[key] : undefined;
-        },
-        obj
-      );
-    
+      .reduce((res, key) => {
+        // Check for null or undefined at each step
+        if (res === null || res === undefined) {
+          return res;
+        }
+
+        // Access the property safely
+        return typeof res === 'object' && key in res ? res[key] : undefined;
+      }, obj);
+
     return result;
   };
-  
+
   // Try with different regex patterns for different path formats
   const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
-  
+
   // Return default value if result is undefined or equal to the original object
   return (result === undefined || result === obj ? defaultValue : result) as T | undefined;
 }
@@ -230,11 +225,11 @@ export function generateRandomString(length: number): string {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
   const charactersLength = characters.length;
-  
+
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
-  
+
   return result;
 }
 
@@ -247,9 +242,9 @@ export function generateRandomString(length: number): string {
 export function truncateHash(hash: string, chars: number = 4): string {
   if (!hash) return '';
   if (hash.length <= chars * 2) return hash;
-  
+
   return `${hash.substring(0, chars)}...${hash.substring(hash.length - chars)}`;
 }
 
 // For backward compatibility
-export const truncateAddress = truncateHash; 
+export const truncateAddress = truncateHash;

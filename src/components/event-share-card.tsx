@@ -20,12 +20,7 @@ export function EventShareCard({ event, onShare, onAttend, isAttending }: EventS
       <CardHeader className="p-0">
         {event.imageUrl ? (
           <div className="relative h-48 w-full">
-            <Image
-              src={event.imageUrl}
-              alt={event.title}
-              fill
-              className="object-cover"
-            />
+            <Image src={event.imageUrl} alt={event.title} fill className="object-cover" />
           </div>
         ) : (
           <div className="h-48 bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center text-white">
@@ -35,9 +30,7 @@ export function EventShareCard({ event, onShare, onAttend, isAttending }: EventS
       </CardHeader>
       <CardContent className="p-4">
         <div className="flex gap-2 mb-2">
-          <Badge variant="secondary">
-            {event.category}
-          </Badge>
+          <Badge variant="secondary">{event.category}</Badge>
           {isVirtual && (
             <Badge variant="outline" className="bg-blue-50 text-blue-700">
               Virtual
@@ -73,8 +66,8 @@ export function EventShareCard({ event, onShare, onAttend, isAttending }: EventS
         <Button variant="outline" className="flex-1" onClick={onShare}>
           Share
         </Button>
-        <Button 
-          variant={isAttending ? "secondary" : "default"} 
+        <Button
+          variant={isAttending ? 'secondary' : 'default'}
           className="flex-1"
           onClick={onAttend}
         >
@@ -83,4 +76,4 @@ export function EventShareCard({ event, onShare, onAttend, isAttending }: EventS
       </CardFooter>
     </Card>
   );
-} 
+}

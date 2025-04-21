@@ -15,7 +15,7 @@ function AdminSetupContent() {
 
   const handleSetAdmin = async () => {
     if (!userId) return;
-    
+
     setLoading(true);
     try {
       const result = await setUserRole(userId, 'admin');
@@ -42,16 +42,17 @@ function AdminSetupContent() {
 
   const handleCreateFirstAdmin = async () => {
     if (!userId) return;
-    
+
     setLoading(true);
     try {
       const result = await createFirstAdmin(userId);
       if (result.success) {
         toast({
           title: 'Success',
-          description: 'firstAdmin' in result && result.firstAdmin 
-            ? 'First admin user created successfully' 
-            : 'Admin already exists',
+          description:
+            'firstAdmin' in result && result.firstAdmin
+              ? 'First admin user created successfully'
+              : 'Admin already exists',
         });
         setUserId('');
       } else {
@@ -79,13 +80,11 @@ function AdminSetupContent() {
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-8">Admin Setup</h1>
-      
+
       <Card className="max-w-md mx-auto">
         <CardHeader>
           <CardTitle>Set Admin Privileges</CardTitle>
-          <CardDescription>
-            Assign admin role to user accounts for dashboard access
-          </CardDescription>
+          <CardDescription>Assign admin role to user accounts for dashboard access</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="setAdmin">
@@ -93,50 +92,42 @@ function AdminSetupContent() {
               <TabsTrigger value="setAdmin">Set Admin</TabsTrigger>
               <TabsTrigger value="firstAdmin">Create First Admin</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="setAdmin" className="space-y-4 mt-4">
               <div className="space-y-2">
-                <p className="text-sm">
-                  Set a specific user as admin by entering their UUID:
-                </p>
+                <p className="text-sm">Set a specific user as admin by entering their UUID:</p>
                 <div className="flex gap-2">
-                  <Input 
-                    value={userId} 
-                    onChange={(e) => setUserId(e.target.value)}
+                  <Input
+                    value={userId}
+                    onChange={e => setUserId(e.target.value)}
                     placeholder="Enter user UUID"
                   />
-                  <Button 
-                    onClick={handleSetAdmin} 
-                    disabled={loading || !userId}
-                  >
+                  <Button onClick={handleSetAdmin} disabled={loading || !userId}>
                     {loading ? 'Processing...' : 'Make Admin'}
                   </Button>
                 </div>
               </div>
             </TabsContent>
-            
+
             <TabsContent value="firstAdmin" className="space-y-4 mt-4">
               <div className="space-y-2">
                 <p className="text-sm">
                   First-time setup: Create the initial admin account if none exists yet:
                 </p>
                 <div className="flex gap-2">
-                  <Input 
-                    value={userId} 
-                    onChange={(e) => setUserId(e.target.value)}
+                  <Input
+                    value={userId}
+                    onChange={e => setUserId(e.target.value)}
                     placeholder="Enter user UUID"
                   />
-                  <Button 
-                    onClick={handleCreateFirstAdmin} 
-                    disabled={loading || !userId}
-                  >
+                  <Button onClick={handleCreateFirstAdmin} disabled={loading || !userId}>
                     {loading ? 'Processing...' : 'Create First Admin'}
                   </Button>
                 </div>
               </div>
             </TabsContent>
           </Tabs>
-          
+
           <div className="mt-6 p-4 bg-gray-50 rounded-md">
             <h3 className="text-sm font-medium mb-2">How to find your User ID:</h3>
             <ol className="text-sm space-y-1 text-muted-foreground list-decimal list-inside">
@@ -158,4 +149,4 @@ export default function AdminSetupPage() {
       <AdminSetupContent />
     </Suspense>
   );
-} 
+}

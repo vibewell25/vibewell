@@ -20,25 +20,25 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Search, 
-  PlusCircle, 
-  Edit, 
-  Trash2, 
-  MoreVertical, 
+import {
+  Search,
+  PlusCircle,
+  Edit,
+  Trash2,
+  MoreVertical,
   AlertTriangle,
   Bell,
   BellOff,
-  Loader2
+  Loader2,
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -62,17 +62,17 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
-  
+
   const alertService = new AnalyticsAlertService();
-  
+
   // Fetch all alerts
   const fetchAlerts = useCallback(async () => {
     try {
       setLoading(true);
       const { data, error } = await alertService.getAlertsByUser(userId);
-      
+
       if (error) throw error;
-      
+
       setAlerts(data || []);
       setFilteredAlerts(data || []);
     } catch (err) {
@@ -82,36 +82,37 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
       setLoading(false);
     }
   }, [userId]);
-  
+
   useEffect(() => {
     fetchAlerts();
   }, [fetchAlerts]);
-  
+
   // Filter and sort alerts
   useEffect(() => {
     let result = [...alerts];
-    
+
     // Apply status filter
     if (filterStatus !== 'all') {
-      result = result.filter(alert => 
+      result = result.filter(alert =>
         filterStatus === 'active' ? alert.isActive : !alert.isActive
       );
     }
-    
+
     // Apply search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      result = result.filter(alert => 
-        alert.name.toLowerCase().includes(query) || 
-        (alert.description && alert.description.toLowerCase().includes(query))
+      result = result.filter(
+        alert =>
+          alert.name.toLowerCase().includes(query) ||
+          (alert.description && alert.description.toLowerCase().includes(query))
       );
     }
-    
+
     // Apply sorting
     result.sort((a, b) => {
       let valueA, valueB;
-      
-      switch(sortField) {
+
+      switch (sortField) {
         case 'name':
           valueA = a.name.toLowerCase();
           valueB = b.name.toLowerCase();
@@ -128,15 +129,15 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
           valueA = a.name.toLowerCase();
           valueB = b.name.toLowerCase();
       }
-      
+
       if (valueA < valueB) return sortOrder === 'asc' ? -1 : 1;
       if (valueA > valueB) return sortOrder === 'asc' ? 1 : -1;
       return 0;
     });
-    
+
     setFilteredAlerts(result);
   }, [alerts, filterStatus, searchQuery, sortField, sortOrder]);
-  
+
   const handleSort = (field: SortField) => {
     if (sortField === field) {
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
@@ -145,36 +146,34 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
       setSortOrder('asc');
     }
   };
-  
+
   const handleToggleActive = async (alert: Alert) => {
     try {
       const updatedAlert = {
         ...alert,
-        isActive: !alert.isActive
+        isActive: !alert.isActive,
       };
-      
+
       const { error } = await alertService.updateAlert(alert.id as string, updatedAlert);
-      
+
       if (error) throw error;
-      
+
       // Update local state
-      setAlerts(prev => 
-        prev.map(a => (a.id === alert.id ? updatedAlert : a))
-      );
+      setAlerts(prev => prev.map(a => (a.id === alert.id ? updatedAlert : a)));
     } catch (err) {
       console.error('Error toggling alert status:', err);
       // Show error notification
     }
   };
-  
+
   const handleDeleteAlert = async (alertId: string) => {
     if (!confirm('Are you sure you want to delete this alert?')) return;
-    
+
     try {
       const { error } = await alertService.deleteAlert(alertId);
-      
+
       if (error) throw error;
-      
+
       // Update local state
       setAlerts(prev => prev.filter(a => a.id !== alertId));
     } catch (err) {
@@ -182,20 +181,20 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
       // Show error notification
     }
   };
-  
+
   // Format metric type for display
   const formatMetricType = (type: string) => {
     const formats: Record<string, string> = {
-      'views': 'Views',
-      'uniqueVisitors': 'Unique Visitors',
-      'tryOns': 'Try-Ons',
-      'conversion': 'Conversion Rate',
-      'rating': 'Rating',
+      views: 'Views',
+      uniqueVisitors: 'Unique Visitors',
+      tryOns: 'Try-Ons',
+      conversion: 'Conversion Rate',
+      rating: 'Rating',
     };
-    
+
     return formats[type] || type;
   };
-  
+
   if (loading) {
     return (
       <div className="flex justify-center items-center p-8">
@@ -203,16 +202,14 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
       </div>
     );
   }
-  
+
   return (
     <Card>
       <CardHeader>
         <div className="flex justify-between items-center">
           <div>
             <CardTitle>Product Analytics Alerts</CardTitle>
-            <CardDescription>
-              Manage alerts for your product metrics
-            </CardDescription>
+            <CardDescription>Manage alerts for your product metrics</CardDescription>
           </div>
           <Button onClick={onCreateAlert}>
             <PlusCircle className="h-4 w-4 mr-2" />
@@ -227,7 +224,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
             <p>{error}</p>
           </div>
         )}
-        
+
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="relative flex-1">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -235,10 +232,10 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
               placeholder="Search alerts..."
               className="pl-8"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
             />
           </div>
-          
+
           <div className="flex gap-2">
             <Button
               variant={filterStatus === 'all' ? 'default' : 'outline'}
@@ -263,7 +260,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
             </Button>
           </div>
         </div>
-        
+
         {filteredAlerts.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
             {searchQuery || filterStatus !== 'all' ? (
@@ -283,38 +280,23 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort('name')}
-                  >
+                  <TableHead className="cursor-pointer" onClick={() => handleSort('name')}>
                     Alert Name
                     {sortField === 'name' && (
-                      <span className="ml-1">
-                        {sortOrder === 'asc' ? '↑' : '↓'}
-                      </span>
+                      <span className="ml-1">{sortOrder === 'asc' ? '↑' : '↓'}</span>
                     )}
                   </TableHead>
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort('metricType')}
-                  >
+                  <TableHead className="cursor-pointer" onClick={() => handleSort('metricType')}>
                     Metric
                     {sortField === 'metricType' && (
-                      <span className="ml-1">
-                        {sortOrder === 'asc' ? '↑' : '↓'}
-                      </span>
+                      <span className="ml-1">{sortOrder === 'asc' ? '↑' : '↓'}</span>
                     )}
                   </TableHead>
                   <TableHead>Threshold</TableHead>
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort('lastTriggered')}
-                  >
+                  <TableHead className="cursor-pointer" onClick={() => handleSort('lastTriggered')}>
                     Last Triggered
                     {sortField === 'lastTriggered' && (
-                      <span className="ml-1">
-                        {sortOrder === 'asc' ? '↑' : '↓'}
-                      </span>
+                      <span className="ml-1">{sortOrder === 'asc' ? '↑' : '↓'}</span>
                     )}
                   </TableHead>
                   <TableHead>Status</TableHead>
@@ -322,7 +304,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredAlerts.map((alert) => (
+                {filteredAlerts.map(alert => (
                   <TableRow key={alert.id}>
                     <TableCell className="font-medium">{alert.name}</TableCell>
                     <TableCell>{formatMetricType(alert.threshold.metricType)}</TableCell>
@@ -342,9 +324,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
                       )}
                     </TableCell>
                     <TableCell>
-                      <Badge
-                        variant={alert.isActive ? 'default' : 'outline'}
-                      >
+                      <Badge variant={alert.isActive ? 'default' : 'outline'}>
                         {alert.isActive ? 'Active' : 'Inactive'}
                       </Badge>
                     </TableCell>
@@ -398,4 +378,4 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
       </CardFooter>
     </Card>
   );
-} 
+}

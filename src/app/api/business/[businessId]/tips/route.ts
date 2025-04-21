@@ -3,17 +3,11 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check if user owns the business
@@ -25,10 +19,7 @@ export async function GET(
     });
 
     if (!business) {
-      return NextResponse.json(
-        { error: 'Business not found or unauthorized' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Business not found or unauthorized' }, { status: 404 });
     }
 
     const { searchParams } = new URL(request.url);
@@ -41,12 +32,13 @@ export async function GET(
     // Build the where clause
     const where = {
       businessId: params.id,
-      ...(startDate && endDate && {
-        createdAt: {
-          gte: new Date(startDate),
-          lte: new Date(endDate),
-        },
-      }),
+      ...(startDate &&
+        endDate && {
+          createdAt: {
+            gte: new Date(startDate),
+            lte: new Date(endDate),
+          },
+        }),
     };
 
     // Fetch tips with pagination
@@ -95,9 +87,6 @@ export async function GET(
     });
   } catch (error) {
     console.error('Error fetching tips:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch tips' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch tips' }, { status: 500 });
   }
-} 
+}

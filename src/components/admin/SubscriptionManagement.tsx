@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -98,20 +92,14 @@ export function SubscriptionManagement({ subscription }: SubscriptionManagementP
     <Card>
       <CardHeader>
         <CardTitle>Subscription Details</CardTitle>
-        <CardDescription>
-          Manage subscription for {subscription.user.name}
-        </CardDescription>
+        <CardDescription>Manage subscription for {subscription.user.name}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium">Status</p>
-              <Select
-                value={status}
-                onValueChange={handleStatusChange}
-                disabled={isLoading}
-              >
+              <Select value={status} onValueChange={handleStatusChange} disabled={isLoading}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
@@ -131,9 +119,7 @@ export function SubscriptionManagement({ subscription }: SubscriptionManagementP
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium">Start Date</p>
-              <p className="text-sm">
-                {new Date(subscription.startDate).toLocaleDateString()}
-              </p>
+              <p className="text-sm">{new Date(subscription.startDate).toLocaleDateString()}</p>
             </div>
             <div>
               <p className="text-sm font-medium">Next Billing Date</p>
@@ -156,4 +142,4 @@ export function SubscriptionManagement({ subscription }: SubscriptionManagementP
       </CardContent>
     </Card>
   );
-} 
+}

@@ -8,36 +8,34 @@ interface MFAMethodSelectorProps {
 
 export const MFAMethodSelector: React.FC<MFAMethodSelectorProps> = ({
   onMethodSelect,
-  selectedMethod
+  selectedMethod,
 }) => {
   const methods: { id: MFAMethod; title: string; description: string; icon: string }[] = [
     {
       id: 'totp',
       title: 'Authenticator App',
       description: 'Use Google Authenticator, Authy, or any other TOTP app',
-      icon: '🔐'
+      icon: '🔐',
     },
     {
       id: 'sms',
       title: 'SMS Verification',
       description: 'Receive codes via text message',
-      icon: '📱'
+      icon: '📱',
     },
     {
       id: 'email',
       title: 'Email Verification',
       description: 'Receive codes via email',
-      icon: '📧'
-    }
+      icon: '📧',
+    },
   ];
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold mb-4">
-        Choose Your Preferred Verification Method
-      </h3>
+      <h3 className="text-lg font-semibold mb-4">Choose Your Preferred Verification Method</h3>
       <div className="grid gap-4">
-        {methods.map((method) => (
+        {methods.map(method => (
           <button
             key={method.id}
             onClick={() => onMethodSelect(method.id)}
@@ -59,4 +57,4 @@ export const MFAMethodSelector: React.FC<MFAMethodSelectorProps> = ({
   );
 };
 
-export default MFAMethodSelector; 
+export default MFAMethodSelector;

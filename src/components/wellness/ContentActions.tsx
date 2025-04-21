@@ -6,11 +6,7 @@ interface ContentActionsProps {
   onEdit: () => void;
   onDelete: () => void;
 }
-export const ContentActions: React.FC<ContentActionsProps> = ({
-  contentId,
-  onEdit,
-  onDelete,
-}) => {
+export const ContentActions: React.FC<ContentActionsProps> = ({ contentId, onEdit, onDelete }) => {
   const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete this content?')) {
       return;
@@ -47,4 +43,4 @@ export const ContentActions: React.FC<ContentActionsProps> = ({
       </button>
     </div>
   );
-}; 
+};

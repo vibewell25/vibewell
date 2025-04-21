@@ -3,6 +3,16 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const chalk = require('chalk');
+
+// Configuration
+const MINIMUM_COVERAGE = 80;
+const CRITICAL_PATHS = [
+  'src/api',
+  'src/components',
+  'src/lib',
+  'src/utils',
+];
 
 // Function to find all test files recursively
 function findTestFiles(dir) {
@@ -59,24 +69,74 @@ function findComponentFiles(dir) {
   return results;
 }
 
+// Function to calculate coverage for a specific directory
+function calculateDirectoryCoverage(directory, testFiles, componentFiles) {
+  const dirTestFiles = testFiles.filter(file => file.startsWith(directory));
+  const dirComponentFiles = componentFiles.filter(file => file.startsWith(directory));
+  
+  if (dirComponentFiles.length === 0) return 100;
+  
+  return (dirTestFiles.length / dirComponentFiles.length) * 100;
+}
+
+// Function to get untested components
+function getUntestedComponents(componentFiles, testFiles) {
+  return componentFiles.filter(componentFile => {
+    const baseName = path.basename(componentFile, path.extname(componentFile));
+    return !testFiles.some(testFile => 
+      testFile.includes(`/${baseName}.test`) || 
+      testFile.includes(`/__tests__/${baseName}.`)
+    );
+  });
+}
+
+// Function to generate coverage badge
+function generateCoverageBadge(coverage) {
+  const color = coverage >= MINIMUM_COVERAGE ? 'green' : 'red';
+  const badgeContent = `![Coverage](https://img.shields.io/badge/coverage-${coverage}%25-${color})`;
+  return badgeContent;
+}
+
 // Main function
 function main() {
-  console.log('Checking test coverage...\n');
+  console.log(chalk.blue.bold('Checking test coverage...\n'));
   
   // Find all test files
   const testFiles = findTestFiles('./src');
-  console.log(`Found ${testFiles.length} test files.`);
+  console.log(chalk.cyan(`Found ${testFiles.length} test files.`));
   
   // Find all component files
   const srcPath = './src';
   const componentFiles = findComponentFiles(srcPath);
-  console.log(`Found ${componentFiles.length} source files.\n`);
+  console.log(chalk.cyan(`Found ${componentFiles.length} source files.\n`));
   
-  // Calculate percentage
+  // Calculate overall coverage
   const coverage = (testFiles.length / componentFiles.length * 100).toFixed(2);
-  console.log(`Test file coverage: ${coverage}%\n`);
+  const coverageColor = coverage >= MINIMUM_COVERAGE ? 'green' : 'red';
+  console.log(chalk.bold(`Overall test coverage: ${chalk[coverageColor](coverage)}%\n`));
   
-  // Group by directory
+  // Check critical paths
+  console.log(chalk.yellow.bold('Critical Path Coverage:'));
+  console.log(chalk.yellow('----------------------'));
+  
+  const criticalPathResults = CRITICAL_PATHS.map(dir => {
+    const dirCoverage = calculateDirectoryCoverage(dir, testFiles, componentFiles);
+    return {
+      directory: dir,
+      coverage: dirCoverage.toFixed(2),
+      status: dirCoverage >= MINIMUM_COVERAGE ? 'PASS' : 'FAIL'
+    };
+  });
+
+  criticalPathResults.forEach(({ directory, coverage, status }) => {
+    const statusColor = status === 'PASS' ? 'green' : 'red';
+    console.log(`${directory}: ${chalk[statusColor](coverage)}% (${chalk[statusColor](status)})`);
+  });
+  
+  // Directory coverage
+  console.log(chalk.bold('\nCoverage by directory:'));
+  console.log(chalk.bold('----------------------'));
+  
   const directoryMap = {};
   componentFiles.forEach(file => {
     const relativePath = file.replace(`${srcPath}/`, '');
@@ -101,53 +161,35 @@ function main() {
     }
   });
   
-  // Print directory coverage
-  console.log('Coverage by directory:');
-  console.log('----------------------');
-  
   Object.keys(directoryMap).sort().forEach(dir => {
     const { total, tested } = directoryMap[dir];
     const dirCoverage = (tested / total * 100).toFixed(2);
-    console.log(`${dir}: ${dirCoverage}% (${tested}/${total})`);
+    const coverageColor = dirCoverage >= MINIMUM_COVERAGE ? 'green' : 'red';
+    console.log(`${dir}: ${chalk[coverageColor](dirCoverage)}% (${tested}/${total})`);
   });
   
-  console.log('\nTest files:');
-  console.log('-----------');
-  testFiles.forEach(file => {
-    console.log(file.replace(`${process.cwd()}/`, ''));
-  });
+  // Untested components
+  const untestedComponents = getUntestedComponents(componentFiles, testFiles);
   
-  console.log('\nUntested components (sample):');
-  console.log('---------------------------');
+  console.log(chalk.bold('\nUntested components:'));
+  console.log(chalk.bold('-------------------'));
+  if (untestedComponents.length > 0) {
+    untestedComponents.forEach(file => {
+      console.log(chalk.red(`- ${file.replace(`${process.cwd()}/`, '')}`));
+    });
+  } else {
+    console.log(chalk.green('All components have tests!'));
+  }
   
-  // Find components without test files
-  const untestedComponents = componentFiles.filter(componentFile => {
-    const baseName = path.basename(componentFile, path.extname(componentFile));
-    return !testFiles.some(testFile => testFile.includes(`/${baseName}.test`));
-  });
+  // Generate coverage badge
+  const badgeContent = generateCoverageBadge(parseFloat(coverage));
+  fs.writeFileSync('coverage-badge.md', badgeContent);
   
-  // Show sample of 10 untested components
-  untestedComponents.slice(0, 10).forEach(file => {
-    console.log(file.replace(`${process.cwd()}/`, ''));
-  });
-  
-  console.log(`\n...and ${untestedComponents.length - 10} more untested components.`);
-  
-  // Recommend components to test next
-  console.log('\nRecommended components to test next:');
-  console.log('----------------------------------');
-  
-  // Focus on UI components first
-  const uiComponents = untestedComponents.filter(file => 
-    file.includes('/components/ui/') || 
-    file.includes('/components/form/') ||
-    file.includes('/components/layout/')
-  );
-  
-  // Show top 5 UI components to test
-  uiComponents.slice(0, 5).forEach(file => {
-    console.log(file.replace(`${process.cwd()}/`, ''));
-  });
+  // Exit with error if coverage is below minimum
+  if (coverage < MINIMUM_COVERAGE) {
+    console.log(chalk.red(`\nError: Coverage (${coverage}%) is below the minimum requirement (${MINIMUM_COVERAGE}%)`));
+    process.exit(1);
+  }
 }
 
 main(); 

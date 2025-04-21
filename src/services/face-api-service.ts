@@ -39,7 +39,7 @@ export class FaceApiService {
         faceapi.nets.faceLandmark68Net.loadFromUri('/models/face-api'),
         faceapi.nets.faceExpressionNet.loadFromUri('/models/face-api'),
         faceapi.nets.ageGenderNet.loadFromUri('/models/face-api'),
-        faceapi.nets.faceRecognitionNet.loadFromUri('/models/face-api')
+        faceapi.nets.faceRecognitionNet.loadFromUri('/models/face-api'),
       ]);
 
       this.isInitialized = true;
@@ -64,12 +64,12 @@ export class FaceApiService {
         withLandmarks = true,
         withExpressions = false,
         withAgeAndGender = false,
-        withDescriptors = false
+        withDescriptors = false,
       } = options;
 
       // Create detection tasks array
       const tasks = [
-        faceapi.detectAllFaces(image, new faceapi.SsdMobilenetv1Options({ minConfidence }))
+        faceapi.detectAllFaces(image, new faceapi.SsdMobilenetv1Options({ minConfidence })),
       ];
 
       if (withLandmarks) {
@@ -96,7 +96,7 @@ export class FaceApiService {
         expressions: result.expressions,
         age: result.age,
         gender: result.gender,
-        descriptor: result.descriptor
+        descriptor: result.descriptor,
       }));
     } catch (error) {
       logger.error('Face detection failed', 'FaceApiService', { error });
@@ -118,13 +118,15 @@ export class FaceApiService {
         return points.map(point => ({
           x: point.x / imageSize.width,
           y: point.y / imageSize.height,
-          z: 0 // face-api doesn't provide z-coordinates
+          z: 0, // face-api doesn't provide z-coordinates
         }));
       });
 
       return { multiFaceLandmarks };
     } catch (error) {
-      logger.error('Failed to convert face-api results to FaceMesh format', 'FaceApiService', { error });
+      logger.error('Failed to convert face-api results to FaceMesh format', 'FaceApiService', {
+        error,
+      });
       throw error;
     }
   }
@@ -150,7 +152,7 @@ export class FaceApiService {
         attributes.expressions = Object.fromEntries(
           Object.entries(detection.expressions).map(([key, value]) => [
             key,
-            parseFloat(value.toFixed(2))
+            parseFloat(value.toFixed(2)),
           ])
         );
       }
@@ -181,4 +183,4 @@ export class FaceApiService {
       throw error;
     }
   }
-} 
+}

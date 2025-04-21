@@ -112,4 +112,4 @@ export const seasonalChallengeTemplate = (challengeName: string, reward: string)
     </div>
   </div>
 </body>
-</html>`; 
+</html>`;

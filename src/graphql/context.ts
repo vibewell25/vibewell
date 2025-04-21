@@ -14,20 +14,20 @@ export interface GraphQLContext {
 export async function createContext({ req, res }): Promise<GraphQLContext> {
   // Get the user's session based on the request
   const session = await getServerSession(authOptions);
-  
+
   // If the user is not logged in, set user to null
   let user = null;
-  
+
   // If the user is logged in, get their record from the database
   if (session?.user?.id) {
     user = await prisma.user.findUnique({
       where: { id: session.user.id },
     });
   }
-  
+
   return {
     prisma,
     session,
     user,
   };
-} 
+}

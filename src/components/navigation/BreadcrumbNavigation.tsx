@@ -20,23 +20,23 @@ export const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
   const pathname = usePathname() || '/';
 
   // Generate breadcrumb items from the current path if none provided
-  const breadcrumbItems = items.length > 0 ? items : pathname
-    .split('/')
-    .filter(Boolean)
-    .map((segment, index, array) => ({
-      label: segment.charAt(0).toUpperCase() + segment.slice(1),
-      href: '/' + array.slice(0, index + 1).join('/'),
-    }));
+  const breadcrumbItems =
+    items.length > 0
+      ? items
+      : pathname
+          .split('/')
+          .filter(Boolean)
+          .map((segment, index, array) => ({
+            label: segment.charAt(0).toUpperCase() + segment.slice(1),
+            href: '/' + array.slice(0, index + 1).join('/'),
+          }));
 
   return (
     <nav
       aria-label="Breadcrumb"
       className={`flex items-center space-x-2 text-sm text-muted-foreground ${className}`}
     >
-      <Link
-        href="/"
-        className="flex items-center hover:text-foreground"
-      >
+      <Link href="/" className="flex items-center hover:text-foreground">
         <Home className="h-4 w-4" />
         <span className="sr-only">Home</span>
       </Link>
@@ -46,13 +46,9 @@ export const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
           <Link
             href={item.href}
             className={`hover:text-foreground ${
-              index === breadcrumbItems.length - 1
-                ? 'font-medium text-foreground'
-                : ''
+              index === breadcrumbItems.length - 1 ? 'font-medium text-foreground' : ''
             }`}
-            aria-current={
-              index === breadcrumbItems.length - 1 ? 'page' : undefined
-            }
+            aria-current={index === breadcrumbItems.length - 1 ? 'page' : undefined}
           >
             {item.label}
           </Link>
@@ -60,4 +56,4 @@ export const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
       ))}
     </nav>
   );
-}; 
+};

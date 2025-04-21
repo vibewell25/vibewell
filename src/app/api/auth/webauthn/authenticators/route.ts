@@ -9,10 +9,7 @@ export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const authenticators = await webAuthnService.listAuthenticators(session.user.id);
@@ -24,10 +21,7 @@ export async function GET(req: NextRequest) {
         { status: 400 }
       );
     }
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -35,20 +29,14 @@ export async function DELETE(req: NextRequest) {
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { searchParams } = new URL(req.url);
     const authenticatorId = searchParams.get('id');
-    
+
     if (!authenticatorId) {
-      return NextResponse.json(
-        { error: 'Missing authenticator ID' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing authenticator ID' }, { status: 400 });
     }
 
     await webAuthnService.deleteAuthenticator(session.user.id, authenticatorId);
@@ -60,10 +48,7 @@ export async function DELETE(req: NextRequest) {
         { status: 400 }
       );
     }
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -71,19 +56,13 @@ export async function PATCH(req: NextRequest) {
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { id, name } = await req.json();
-    
+
     if (!id || !name) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     await webAuthnService.renameAuthenticator(session.user.id, id, name);
@@ -95,9 +74,6 @@ export async function PATCH(req: NextRequest) {
         { status: 400 }
       );
     }
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-} 
+}

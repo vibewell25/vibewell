@@ -37,22 +37,23 @@ export class FeedbackService {
       this.analyticsService.trackEvent('product_feedback_submitted', {
         productId: feedback.productId,
         rating: feedback.rating,
-        wouldTryInRealLife: feedback.wouldTryInRealLife
+        wouldTryInRealLife: feedback.wouldTryInRealLife,
       });
 
       // Store feedback in database
-      const { data, error } = await this.supabase
-        .from('product_feedback')
-        .upsert({
+      const { data, error } = await this.supabase.from('product_feedback').upsert(
+        {
           user_id: feedback.userId,
           product_id: feedback.productId,
           rating: feedback.rating,
           would_try_in_real_life: feedback.wouldTryInRealLife,
           comment: feedback.comment,
-          created_at: new Date().toISOString()
-        }, {
-          onConflict: 'user_id,product_id'
-        });
+          created_at: new Date().toISOString(),
+        },
+        {
+          onConflict: 'user_id,product_id',
+        }
+      );
 
       return { data, error };
     } catch (error) {
@@ -79,7 +80,7 @@ export class FeedbackService {
         rating: item.rating,
         wouldTryInRealLife: item.would_try_in_real_life,
         comment: item.comment,
-        createdAt: item.created_at
+        createdAt: item.created_at,
       }));
 
       return { data: transformedData, error: null };
@@ -107,7 +108,7 @@ export class FeedbackService {
         rating: item.rating,
         wouldTryInRealLife: item.would_try_in_real_life,
         comment: item.comment,
-        createdAt: item.created_at
+        createdAt: item.created_at,
       }));
 
       return { data: transformedData, error: null };
@@ -117,21 +118,23 @@ export class FeedbackService {
     }
   }
 
-  async getProductFeedbackStats(productId: string): Promise<{ data: FeedbackStats | null; error: any }> {
+  async getProductFeedbackStats(
+    productId: string
+  ): Promise<{ data: FeedbackStats | null; error: any }> {
     try {
       const { data: feedbackData, error } = await this.getFeedbackByProduct(productId);
-      
+
       if (error) throw error;
       if (!feedbackData || feedbackData.length === 0) {
-        return { 
+        return {
           data: {
             averageRating: 0,
             totalRatings: 0,
             ratingDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
             percentWouldTryInRealLife: 0,
-            recentComments: []
-          }, 
-          error: null 
+            recentComments: [],
+          },
+          error: null,
         };
       }
 
@@ -139,7 +142,7 @@ export class FeedbackService {
       const totalRatings = feedbackData.length;
       const sumRatings = feedbackData.reduce((sum, item) => sum + item.rating, 0);
       const averageRating = sumRatings / totalRatings;
-      
+
       // Calculate rating distribution
       const ratingDistribution: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
       feedbackData.forEach(item => {
@@ -147,11 +150,11 @@ export class FeedbackService {
           ratingDistribution[item.rating] = (ratingDistribution[item.rating] || 0) + 1;
         }
       });
-      
+
       // Calculate percent who would try in real life
       const wouldTryCount = feedbackData.filter(item => item.wouldTryInRealLife === true).length;
       const percentWouldTryInRealLife = (wouldTryCount / totalRatings) * 100;
-      
+
       // Get recent comments
       const recentComments = feedbackData
         .filter(item => item.comment && item.comment.trim() !== '')
@@ -159,18 +162,18 @@ export class FeedbackService {
         .map(item => ({
           comment: item.comment || '',
           rating: item.rating,
-          createdAt: item.createdAt || ''
+          createdAt: item.createdAt || '',
         }));
-      
+
       return {
         data: {
           averageRating,
           totalRatings,
           ratingDistribution,
           percentWouldTryInRealLife,
-          recentComments
+          recentComments,
         },
-        error: null
+        error: null,
       };
     } catch (error) {
       console.error('Error calculating product feedback stats:', error);
@@ -180,15 +183,13 @@ export class FeedbackService {
 
   async getAllFeedbackStats(): Promise<{ data: Record<string, FeedbackStats>; error: any }> {
     try {
-      const { data, error } = await this.supabase
-        .from('product_feedback')
-        .select('*');
+      const { data, error } = await this.supabase.from('product_feedback').select('*');
 
       if (error) throw error;
 
       // Group feedback by product
       const feedbackByProduct: Record<string, ProductFeedback[]> = {};
-      
+
       (data || []).forEach(item => {
         const feedback: ProductFeedback = {
           id: item.id,
@@ -197,24 +198,24 @@ export class FeedbackService {
           rating: item.rating,
           wouldTryInRealLife: item.would_try_in_real_life,
           comment: item.comment,
-          createdAt: item.created_at
+          createdAt: item.created_at,
         };
-        
+
         if (!feedbackByProduct[item.product_id]) {
           feedbackByProduct[item.product_id] = [];
         }
-        
+
         feedbackByProduct[item.product_id].push(feedback);
       });
 
       // Calculate stats for each product
       const allStats: Record<string, FeedbackStats> = {};
-      
+
       for (const [productId, feedbackList] of Object.entries(feedbackByProduct)) {
         const totalRatings = feedbackList.length;
         const sumRatings = feedbackList.reduce((sum, item) => sum + item.rating, 0);
         const averageRating = sumRatings / totalRatings;
-        
+
         // Calculate rating distribution
         const ratingDistribution: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
         feedbackList.forEach(item => {
@@ -222,11 +223,11 @@ export class FeedbackService {
             ratingDistribution[item.rating] = (ratingDistribution[item.rating] || 0) + 1;
           }
         });
-        
+
         // Calculate percent who would try in real life
         const wouldTryCount = feedbackList.filter(item => item.wouldTryInRealLife === true).length;
         const percentWouldTryInRealLife = (wouldTryCount / totalRatings) * 100;
-        
+
         // Get recent comments
         const recentComments = feedbackList
           .filter(item => item.comment && item.comment.trim() !== '')
@@ -234,22 +235,22 @@ export class FeedbackService {
           .map(item => ({
             comment: item.comment || '',
             rating: item.rating,
-            createdAt: item.createdAt || ''
+            createdAt: item.createdAt || '',
           }));
-        
+
         allStats[productId] = {
           averageRating,
           totalRatings,
           ratingDistribution,
           percentWouldTryInRealLife,
-          recentComments
+          recentComments,
         };
       }
-      
+
       return { data: allStats, error: null };
     } catch (error) {
       console.error('Error calculating all feedback stats:', error);
       return { data: {}, error };
     }
   }
-} 
+}

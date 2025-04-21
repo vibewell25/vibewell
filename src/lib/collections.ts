@@ -40,7 +40,7 @@ export function getUserCollections(): Collection[] {
   if (typeof window === 'undefined') {
     return [];
   }
-  
+
   try {
     const storedCollections = localStorage.getItem(COLLECTIONS_STORAGE_KEY);
     return storedCollections ? JSON.parse(storedCollections) : [];
@@ -61,15 +61,20 @@ export function getCollectionById(id: string): Collection | null {
 /**
  * Create a new collection
  */
-export function createCollection(name: string, description: string = '', icon: string = '', isPublic: boolean = false): Collection {
+export function createCollection(
+  name: string,
+  description: string = '',
+  icon: string = '',
+  isPublic: boolean = false
+): Collection {
   if (typeof window === 'undefined') {
     throw new Error('Cannot create collection in server context');
   }
-  
+
   try {
     const collections = getUserCollections();
     const timestamp = new Date().toISOString();
-    
+
     const newCollection: Collection = {
       id: uniqueId('coll_'),
       name,
@@ -78,12 +83,12 @@ export function createCollection(name: string, description: string = '', icon: s
       updatedAt: timestamp,
       resourceIds: [],
       icon,
-      isPublic
+      isPublic,
     };
-    
+
     collections.push(newCollection);
     localStorage.setItem(COLLECTIONS_STORAGE_KEY, JSON.stringify(collections));
-    
+
     return newCollection;
   } catch (error) {
     console.error('Error creating collection:', error);
@@ -95,30 +100,30 @@ export function createCollection(name: string, description: string = '', icon: s
  * Update an existing collection
  */
 export function updateCollection(
-  id: string, 
+  id: string,
   updates: Partial<Omit<Collection, 'id' | 'createdAt' | 'resourceIds'>>
 ): Collection | null {
   if (typeof window === 'undefined') {
     throw new Error('Cannot update collection in server context');
   }
-  
+
   try {
     const collections = getUserCollections();
     const index = collections.findIndex(c => c.id === id);
-    
+
     if (index === -1) {
       return null;
     }
-    
+
     const updatedCollection = {
       ...collections[index],
       ...updates,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
-    
+
     collections[index] = updatedCollection;
     localStorage.setItem(COLLECTIONS_STORAGE_KEY, JSON.stringify(collections));
-    
+
     return updatedCollection;
   } catch (error) {
     console.error('Error updating collection:', error);
@@ -133,20 +138,20 @@ export function deleteCollection(id: string): boolean {
   if (typeof window === 'undefined') {
     throw new Error('Cannot delete collection in server context');
   }
-  
+
   try {
     const collections = getUserCollections();
     const filteredCollections = collections.filter(c => c.id !== id);
-    
+
     if (filteredCollections.length === collections.length) {
       return false; // Collection not found
     }
-    
+
     localStorage.setItem(COLLECTIONS_STORAGE_KEY, JSON.stringify(filteredCollections));
-    
+
     // Also remove any collection items
     removeCollectionItems(id);
-    
+
     return true;
   } catch (error) {
     console.error('Error deleting collection:', error);
@@ -157,37 +162,34 @@ export function deleteCollection(id: string): boolean {
 /**
  * Add a resource to a collection
  */
-export function addToCollection(
-  collectionId: string, 
-  resource: ResourceForCollection
-): boolean {
+export function addToCollection(collectionId: string, resource: ResourceForCollection): boolean {
   if (typeof window === 'undefined') {
     throw new Error('Cannot add to collection in server context');
   }
-  
+
   try {
     // Get the collection
     const collections = getUserCollections();
     const collectionIndex = collections.findIndex(c => c.id === collectionId);
-    
+
     if (collectionIndex === -1) {
       return false; // Collection not found
     }
-    
+
     // Get collection items
     const collectionItems = getCollectionItems();
-    
+
     // Add the resource ID to the collection if not already there
     const collection = collections[collectionIndex];
     if (!collection.resourceIds.includes(resource.id)) {
       collection.resourceIds.push(resource.id);
       collections[collectionIndex] = {
         ...collection,
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       };
       localStorage.setItem(COLLECTIONS_STORAGE_KEY, JSON.stringify(collections));
     }
-    
+
     // Add the resource details to collection items if not already there
     const itemKey = `${collectionId}:${resource.id}`;
     if (!collectionItems[itemKey]) {
@@ -196,11 +198,11 @@ export function addToCollection(
         resourceId: resource.id,
         resourceType: resource.type,
         addedAt: new Date().toISOString(),
-        ...resource
+        ...resource,
       };
       localStorage.setItem(COLLECTION_ITEMS_KEY, JSON.stringify(collectionItems));
     }
-    
+
     return true;
   } catch (error) {
     console.error('Error adding to collection:', error);
@@ -215,40 +217,40 @@ export function removeFromCollection(collectionId: string, resourceId: string): 
   if (typeof window === 'undefined') {
     throw new Error('Cannot remove from collection in server context');
   }
-  
+
   try {
     // Update the collection's resource IDs
     const collections = getUserCollections();
     const collectionIndex = collections.findIndex(c => c.id === collectionId);
-    
+
     if (collectionIndex === -1) {
       return false; // Collection not found
     }
-    
+
     const collection = collections[collectionIndex];
     const updatedResourceIds = collection.resourceIds.filter(id => id !== resourceId);
-    
+
     if (updatedResourceIds.length === collection.resourceIds.length) {
       return false; // Resource not in collection
     }
-    
+
     collections[collectionIndex] = {
       ...collection,
       resourceIds: updatedResourceIds,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
-    
+
     localStorage.setItem(COLLECTIONS_STORAGE_KEY, JSON.stringify(collections));
-    
+
     // Remove from collection items
     const collectionItems = getCollectionItems();
     const itemKey = `${collectionId}:${resourceId}`;
-    
+
     if (collectionItems[itemKey]) {
       delete collectionItems[itemKey];
       localStorage.setItem(COLLECTION_ITEMS_KEY, JSON.stringify(collectionItems));
     }
-    
+
     return true;
   } catch (error) {
     console.error('Error removing from collection:', error);
@@ -263,20 +265,20 @@ export function getCollectionResources(collectionId: string): ResourceForCollect
   if (typeof window === 'undefined') {
     return [];
   }
-  
+
   try {
     const collection = getCollectionById(collectionId);
     if (!collection) {
       return [];
     }
-    
+
     const collectionItems = getCollectionItems();
     const resources: ResourceForCollection[] = [];
-    
+
     collection.resourceIds.forEach(resourceId => {
       const itemKey = `${collectionId}:${resourceId}`;
       const item = collectionItems[itemKey];
-      
+
       if (item) {
         resources.push({
           id: item.resourceId,
@@ -285,11 +287,11 @@ export function getCollectionResources(collectionId: string): ResourceForCollect
           description: item.description,
           url: item.url,
           category: item.category,
-          imageUrl: item.imageUrl
+          imageUrl: item.imageUrl,
         });
       }
     });
-    
+
     return resources;
   } catch (error) {
     console.error('Error getting collection resources:', error);
@@ -333,15 +335,15 @@ function removeCollectionItems(collectionId: string): void {
   try {
     const collectionItems = getCollectionItems();
     const updatedItems: Record<string, CollectionItem & Partial<ResourceForCollection>> = {};
-    
+
     Object.entries(collectionItems).forEach(([key, item]) => {
       if (item.collectionId !== collectionId) {
         updatedItems[key] = item;
       }
     });
-    
+
     localStorage.setItem(COLLECTION_ITEMS_KEY, JSON.stringify(updatedItems));
   } catch (error) {
     console.error('Error removing collection items:', error);
   }
-} 
+}

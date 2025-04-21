@@ -1,19 +1,19 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { AnalyticsAlertService } from '@/services/analytics-alert-service';
 import { Alert } from '@/services/analytics-alert-service';
 import { AlertDialog } from '@/components/alerts/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Alert as AlertUI, AlertDescription } from '@/components/ui/alert';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card';
 import {
   Table,
@@ -33,7 +33,17 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/use-toast';
-import { Loader2, AlertTriangle, Bell, BellOff, MoreVertical, Edit, Trash2, Filter, Plus } from 'lucide-react';
+import {
+  Loader2,
+  AlertTriangle,
+  Bell,
+  BellOff,
+  MoreVertical,
+  Edit,
+  Trash2,
+  Filter,
+  Plus,
+} from 'lucide-react';
 
 export default function AlertsPage() {
   const { user } = useAuth();
@@ -53,15 +63,15 @@ export default function AlertsPage() {
   const loadAlerts = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const alertService = new AnalyticsAlertService();
       const response = await alertService.getAlertsByUser(user?.id || '');
-      
+
       if (response.error) {
         throw new Error(response.error.message);
       }
-      
+
       if (response.data) {
         setAlerts(response.data);
       }
@@ -71,7 +81,7 @@ export default function AlertsPage() {
       toast({
         title: 'Error',
         description: 'Failed to load alerts',
-        variant: 'destructive'
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -92,25 +102,25 @@ export default function AlertsPage() {
     try {
       const alertService = new AnalyticsAlertService();
       const response = await alertService.deleteAlert(alert.id);
-      
+
       if (response.error) {
         throw new Error(response.error.message);
       }
-      
+
       // Remove from state
       setAlerts(alerts.filter(a => a.id !== alert.id));
-      
+
       toast({
         title: 'Success',
         description: 'Alert deleted successfully',
-        variant: 'default'
+        variant: 'default',
       });
     } catch (error) {
       console.error('Error deleting alert:', error);
       toast({
         title: 'Error',
         description: 'Failed to delete alert',
-        variant: 'destructive'
+        variant: 'destructive',
       });
     }
   };
@@ -119,21 +129,21 @@ export default function AlertsPage() {
     try {
       const alertService = new AnalyticsAlertService();
       const updatedAlert = { ...alert, isActive: !alert.isActive };
-      
+
       const response = await alertService.updateAlert(alert.id, updatedAlert);
-      
+
       if (response.error) {
         throw new Error(response.error.message);
       }
-      
+
       if (response.data) {
         // Update in state
-        setAlerts(alerts.map(a => a.id === alert.id ? response.data : a));
-        
+        setAlerts(alerts.map(a => (a.id === alert.id ? response.data : a)));
+
         toast({
           title: 'Success',
           description: `Alert ${alert.isActive ? 'disabled' : 'enabled'} successfully`,
-          variant: 'default'
+          variant: 'default',
         });
       }
     } catch (error) {
@@ -141,17 +151,17 @@ export default function AlertsPage() {
       toast({
         title: 'Error',
         description: 'Failed to update alert status',
-        variant: 'destructive'
+        variant: 'destructive',
       });
     }
   };
 
   const handleAlertSuccess = (alert: Alert) => {
     const existingIndex = alerts.findIndex(a => a.id === alert.id);
-    
+
     if (existingIndex >= 0) {
       // Update existing alert
-      setAlerts(alerts.map(a => a.id === alert.id ? alert : a));
+      setAlerts(alerts.map(a => (a.id === alert.id ? alert : a)));
     } else {
       // Add new alert
       setAlerts([...alerts, alert]);
@@ -160,13 +170,13 @@ export default function AlertsPage() {
 
   const getMetricDisplayName = (metricType: string) => {
     const metricMap: Record<string, string> = {
-      'views': 'Product Views',
-      'uniqueVisitors': 'Unique Visitors',
-      'tryOns': 'Try-Ons',
-      'conversion': 'Conversion Rate',
-      'rating': 'Rating'
+      views: 'Product Views',
+      uniqueVisitors: 'Unique Visitors',
+      tryOns: 'Try-Ons',
+      conversion: 'Conversion Rate',
+      rating: 'Rating',
     };
-    
+
     return metricMap[metricType] || metricType;
   };
 
@@ -174,12 +184,12 @@ export default function AlertsPage() {
     let metric = getMetricDisplayName(alert.threshold.metricType);
     let condition = alert.threshold.condition === 'above' ? 'above' : 'below';
     let value = alert.threshold.value;
-    
+
     // Add % for conversion rate
     if (alert.threshold.metricType === 'conversion') {
       value = `${value}%`;
     }
-    
+
     return `${metric} ${condition} ${value}`;
   };
 
@@ -201,33 +211,34 @@ export default function AlertsPage() {
 
   const getNotificationMethodsDisplay = (alert: Alert) => {
     const methods = alert.notificationMethods.filter(m => m.enabled).map(m => m.type);
-    
+
     if (methods.length === 0) {
       return 'None';
     }
-    
-    return methods.map(m => {
-      if (m === 'email') return 'Email';
-      if (m === 'sms') return 'SMS';
-      if (m === 'inApp') return 'In-App';
-      return m;
-    }).join(', ');
+
+    return methods
+      .map(m => {
+        if (m === 'email') return 'Email';
+        if (m === 'sms') return 'SMS';
+        if (m === 'inApp') return 'In-App';
+        return m;
+      })
+      .join(', ');
   };
 
-  const filteredAlerts = activeTab === 'all' ? 
-    alerts : 
-    activeTab === 'active' ? 
-      alerts.filter(alert => alert.isActive) : 
-      alerts.filter(alert => !alert.isActive);
+  const filteredAlerts =
+    activeTab === 'all'
+      ? alerts
+      : activeTab === 'active'
+        ? alerts.filter(alert => alert.isActive)
+        : alerts.filter(alert => !alert.isActive);
 
   if (!user) {
     return (
       <div className="flex h-screen items-center justify-center">
         <AlertUI variant="destructive">
           <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>
-            You must be logged in to view this page.
-          </AlertDescription>
+          <AlertDescription>You must be logged in to view this page.</AlertDescription>
         </AlertUI>
       </div>
     );
@@ -283,18 +294,14 @@ export default function AlertsPage() {
               <Bell className="mx-auto h-12 w-12 text-muted-foreground/50" />
               <h3 className="mt-4 text-lg font-semibold">No alerts found</h3>
               <p className="text-muted-foreground mt-2">
-                {activeTab === 'all' 
-                  ? "You haven't created any alerts yet." 
-                  : activeTab === 'active' 
-                    ? "You don't have any active alerts." 
+                {activeTab === 'all'
+                  ? "You haven't created any alerts yet."
+                  : activeTab === 'active'
+                    ? "You don't have any active alerts."
                     : "You don't have any inactive alerts."}
               </p>
               {activeTab !== 'all' && (
-                <Button 
-                  variant="outline" 
-                  className="mt-4" 
-                  onClick={() => setActiveTab('all')}
-                >
+                <Button variant="outline" className="mt-4" onClick={() => setActiveTab('all')}>
                   View all alerts
                 </Button>
               )}
@@ -314,7 +321,7 @@ export default function AlertsPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredAlerts.map((alert) => (
+                  {filteredAlerts.map(alert => (
                     <TableRow key={alert.id}>
                       <TableCell className="font-medium">{alert.name}</TableCell>
                       <TableCell>{getThresholdDisplay(alert)}</TableCell>
@@ -322,8 +329,8 @@ export default function AlertsPage() {
                       <TableCell>{getProductSpecificText(alert)}</TableCell>
                       <TableCell>{getNotificationMethodsDisplay(alert)}</TableCell>
                       <TableCell>
-                        <Badge 
-                          variant={alert.isActive ? "default" : "secondary"}
+                        <Badge
+                          variant={alert.isActive ? 'default' : 'secondary'}
                           className="flex items-center gap-1 w-fit"
                         >
                           {alert.isActive ? (
@@ -366,7 +373,7 @@ export default function AlertsPage() {
                               )}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem 
+                            <DropdownMenuItem
                               className="text-destructive focus:text-destructive"
                               onClick={() => handleDeleteAlert(alert)}
                             >
@@ -385,7 +392,7 @@ export default function AlertsPage() {
         </CardContent>
       </Card>
 
-      <AlertDialog 
+      <AlertDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         onSuccess={handleAlertSuccess}
@@ -393,4 +400,4 @@ export default function AlertsPage() {
       />
     </div>
   );
-} 
+}

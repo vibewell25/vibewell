@@ -1,14 +1,14 @@
 /**
  * GraphQL Rate Limiter (Legacy Import)
- * 
+ *
  * @deprecated Use the consolidated rate limiter from '@/lib/rate-limiter' instead
  */
 
-import { 
+import {
   graphqlRateLimiter,
   createGraphQLRateLimiter,
   createGraphQLRateLimitMiddleware,
-  withGraphQLRateLimit
+  withGraphQLRateLimit,
 } from '@/lib/rate-limiter';
 
 // Re-export the consolidated implementations
@@ -16,7 +16,7 @@ export {
   graphqlRateLimiter,
   createGraphQLRateLimiter,
   createGraphQLRateLimitMiddleware,
-  withGraphQLRateLimit
+  withGraphQLRateLimit,
 };
 
 // Re-export the GraphQLContext type properly for compatibility
@@ -41,16 +41,18 @@ export function withRateLimit<T, Args extends unknown[]>(
   fn: (...args: Args) => Promise<T>,
   key: string | { limit?: number; window?: number; key?: string } = 'default'
 ): (...args: Args) => Promise<T> {
-  console.warn('Using deprecated withRateLimit from @/lib/graphql/rate-limiter. Use withGraphQLRateLimit instead.');
-  
+  console.warn(
+    'Using deprecated withRateLimit from @/lib/graphql/rate-limiter. Use withGraphQLRateLimit instead.'
+  );
+
   // If key is a string, it's the field name
   if (typeof key === 'string') {
     return withGraphQLRateLimit(fn, key);
   }
-  
+
   // Otherwise, it's an options object
   return withGraphQLRateLimit(fn, key.key || 'default', {
     windowMs: key.window,
-    max: key.limit
+    max: key.limit,
   });
-} 
+}

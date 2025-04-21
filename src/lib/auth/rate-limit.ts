@@ -82,4 +82,4 @@ class RateLimitService {
   }
 }
 
-export const rateLimitService = new RateLimitService(); 
+export const rateLimitService = new RateLimitService();

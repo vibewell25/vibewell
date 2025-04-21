@@ -19,23 +19,23 @@ export async function fetchBusinessProfile(userId: string) {
         userId: userId,
       },
     });
-    
+
     if (!profile) {
       return null;
     }
-    
+
     // Generate signed URLs for images if they exist
     let logoUrl = null;
     let bannerImageUrl = null;
-    
+
     if (profile.logoPath) {
       logoUrl = await getSignedUrl(profile.logoPath);
     }
-    
+
     if (profile.bannerImagePath) {
       bannerImageUrl = await getSignedUrl(profile.bannerImagePath);
     }
-    
+
     return {
       ...profile,
       logoUrl,
@@ -51,28 +51,28 @@ export async function updateBusinessProfile(userId: string, data: BusinessProfil
   try {
     let logoPath = undefined;
     let bannerImagePath = undefined;
-    
+
     // Upload logo if provided
     if (data.logoFile) {
       const fileName = `business-profiles/${userId}/logo-${uuidv4()}`;
       await uploadToS3(data.logoFile, fileName);
       logoPath = fileName;
     }
-    
+
     // Upload banner image if provided
     if (data.bannerImageFile) {
       const fileName = `business-profiles/${userId}/banner-${uuidv4()}`;
       await uploadToS3(data.bannerImageFile, fileName);
       bannerImagePath = fileName;
     }
-    
+
     // Check if profile exists
     const existingProfile = await prisma.businessProfile.findUnique({
       where: {
         userId: userId,
       },
     });
-    
+
     if (existingProfile) {
       // Update existing profile
       return await prisma.businessProfile.update({
@@ -109,4 +109,4 @@ export async function updateBusinessProfile(userId: string, data: BusinessProfil
     console.error('Error updating business profile:', error);
     throw new Error('Failed to update business profile');
   }
-} 
+}

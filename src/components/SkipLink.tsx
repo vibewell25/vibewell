@@ -9,7 +9,7 @@ interface SkipLinkProps {
 
 export const SkipLink: React.FC<SkipLinkProps> = ({
   targetId = 'main-content',
-  children = 'Skip to main content'
+  children = 'Skip to main content',
 }) => {
   return (
     <a

@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-;
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Icons } from '@/components/icons';
@@ -39,7 +45,8 @@ export default function SchedulingOptimizationPage() {
     {
       id: 'buffer-time',
       title: 'Strategic Buffer Times',
-      description: 'Add small buffers between appointments to prevent running behind and reduce stress.',
+      description:
+        'Add small buffers between appointments to prevent running behind and reduce stress.',
       icon: <Icons.ClockIcon className="h-10 w-10 text-blue-500" />,
       category: 'efficiency',
       difficulty: 'beginner',
@@ -50,13 +57,14 @@ export default function SchedulingOptimizationPage() {
         'Add 5-15 minute buffers between appointments based on service complexity',
         'Create separate service duration settings for new vs. returning clients',
         'Consider longer buffers after complex services',
-        'Review and adjust buffer times monthly based on actual appointment durations'
-      ]
+        'Review and adjust buffer times monthly based on actual appointment durations',
+      ],
     },
     {
       id: 'batch-services',
       title: 'Service Batching',
-      description: 'Group similar services together on specific days to improve efficiency and reduce setup time.',
+      description:
+        'Group similar services together on specific days to improve efficiency and reduce setup time.',
       icon: <Icons.ArrowPathIcon className="h-10 w-10 text-teal-500" />,
       category: 'efficiency',
       difficulty: 'intermediate',
@@ -68,13 +76,14 @@ export default function SchedulingOptimizationPage() {
         'Block your calendar to dedicate specific days to service types',
         'Communicate changes to clients with positive messaging',
         'Offer incentives for booking during preferred service time blocks',
-        'Evaluate efficiency improvements after one month'
-      ]
+        'Evaluate efficiency improvements after one month',
+      ],
     },
     {
       id: 'deposit-system',
       title: 'Appointment Deposit System',
-      description: 'Require a deposit for bookings to reduce no-shows and last-minute cancellations.',
+      description:
+        'Require a deposit for bookings to reduce no-shows and last-minute cancellations.',
       icon: <Icons.CurrencyDollarIcon className="h-10 w-10 text-green-500" />,
       category: 'no-shows',
       difficulty: 'intermediate',
@@ -86,13 +95,14 @@ export default function SchedulingOptimizationPage() {
         'Create clear policies for deposit refunds or transfers',
         'Communicate policy to existing clients before implementation',
         'Display deposit requirement prominently on booking page',
-        'Track no-show rates before and after implementation'
-      ]
+        'Track no-show rates before and after implementation',
+      ],
     },
     {
       id: 'reminder-sequence',
       title: 'Multi-Touch Reminder System',
-      description: 'Implement a series of appointment reminders across multiple channels to minimize no-shows.',
+      description:
+        'Implement a series of appointment reminders across multiple channels to minimize no-shows.',
       icon: <Icons.BellAlertIcon className="h-10 w-10 text-purple-500" />,
       category: 'no-shows',
       difficulty: 'beginner',
@@ -104,13 +114,14 @@ export default function SchedulingOptimizationPage() {
         'Send text reminder 24 hours before appointment',
         'Add optional final reminder 2 hours before appointment',
         'Include rescheduling instructions in each reminder',
-        'Track which reminder types have highest engagement'
-      ]
+        'Track which reminder types have highest engagement',
+      ],
     },
     {
       id: 'prime-time-pricing',
       title: 'Peak Time Premium Pricing',
-      description: 'Charge more for high-demand time slots to maximize revenue during your busiest periods.',
+      description:
+        'Charge more for high-demand time slots to maximize revenue during your busiest periods.',
       icon: <Icons.ChartBarIcon className="h-10 w-10 text-amber-500" />,
       category: 'revenue',
       difficulty: 'advanced',
@@ -123,13 +134,14 @@ export default function SchedulingOptimizationPage() {
         'Create clear communication about time-based pricing',
         'Update your booking system to reflect variable pricing',
         'Review client feedback and booking patterns after implementation',
-        'Adjust premium time blocks and pricing quarterly'
-      ]
+        'Adjust premium time blocks and pricing quarterly',
+      ],
     },
     {
       id: 'capacity-optimization',
       title: 'Capacity Utilization Analysis',
-      description: 'Analyze and optimize your schedule to maximize the number of clients you can serve.',
+      description:
+        'Analyze and optimize your schedule to maximize the number of clients you can serve.',
       icon: <Icons.UserGroupIcon className="h-10 w-10 text-indigo-500" />,
       category: 'capacity',
       difficulty: 'advanced',
@@ -142,13 +154,14 @@ export default function SchedulingOptimizationPage() {
         'Evaluate whether certain services should be shortened, lengthened, or repriced',
         'Create scheduling templates for optimal daily capacity',
         'Train staff on capacity optimization priorities',
-        'Review and adjust strategy monthly'
-      ]
+        'Review and adjust strategy monthly',
+      ],
     },
     {
       id: 'waitlist-system',
       title: 'Smart Waitlist Management',
-      description: 'Implement an effective waitlist system to quickly fill cancelled appointments and maximize bookings.',
+      description:
+        'Implement an effective waitlist system to quickly fill cancelled appointments and maximize bookings.',
       icon: <Icons.CalendarIcon className="h-10 w-10 text-red-500" />,
       category: 'capacity',
       difficulty: 'intermediate',
@@ -160,8 +173,8 @@ export default function SchedulingOptimizationPage() {
         'Establish process for immediately notifying waitlist clients of openings',
         'Offer incentives for clients who fill last-minute cancellations',
         'Track waitlist conversion rate and adjust strategy accordingly',
-        'Consider premium waitlist options for high-value clients'
-      ]
+        'Consider premium waitlist options for high-value clients',
+      ],
     },
     {
       id: 'cancellation-policy',
@@ -179,76 +192,83 @@ export default function SchedulingOptimizationPage() {
         'Require policy acknowledgment during booking process',
         'Train staff on consistent policy enforcement',
         'Implement system for tracking cancellation patterns by client',
-        'Review and revise policy based on effectiveness'
-      ]
-    }
+        'Review and revise policy based on effectiveness',
+      ],
+    },
   ];
   // Scheduling tools data
   const tools: SchedulingTool[] = [
     {
       id: '1',
       title: 'Schedule Efficiency Calculator',
-      description: 'Analyze your current booking patterns and identify opportunities to optimize your schedule for maximum productivity.',
+      description:
+        'Analyze your current booking patterns and identify opportunities to optimize your schedule for maximum productivity.',
       image: 'https://images.unsplash.com/photo-1506784365847-bbad939e9335',
       category: 'efficiency',
       premium: false,
-      url: '/business-hub/scheduling-optimization/efficiency-calculator'
+      url: '/business-hub/scheduling-optimization/efficiency-calculator',
     },
     {
       id: '2',
       title: 'No-Show Rate Tracker',
-      description: 'Track and analyze your no-show and late cancellation rates to measure the effectiveness of your policies.',
+      description:
+        'Track and analyze your no-show and late cancellation rates to measure the effectiveness of your policies.',
       image: 'https://images.unsplash.com/photo-1586282391129-76a4ed808dcb',
       category: 'no-shows',
       premium: false,
-      url: '/business-hub/scheduling-optimization/no-show-tracker'
+      url: '/business-hub/scheduling-optimization/no-show-tracker',
     },
     {
       id: '3',
       title: 'Dynamic Pricing Template',
-      description: 'Implement time-based pricing with this customizable template that helps you maximize revenue during peak hours.',
+      description:
+        'Implement time-based pricing with this customizable template that helps you maximize revenue during peak hours.',
       image: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74',
       category: 'revenue',
       premium: true,
-      url: '/business-hub/scheduling-optimization/dynamic-pricing'
+      url: '/business-hub/scheduling-optimization/dynamic-pricing',
     },
     {
       id: '4',
       title: 'Capacity Utilization Dashboard',
-      description: 'Visualize your schedule capacity utilization and identify opportunities to serve more clients.',
+      description:
+        'Visualize your schedule capacity utilization and identify opportunities to serve more clients.',
       image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71',
       category: 'capacity',
       premium: true,
-      url: '/business-hub/scheduling-optimization/capacity-dashboard'
+      url: '/business-hub/scheduling-optimization/capacity-dashboard',
     },
     {
       id: '5',
       title: 'Client Communication Templates',
-      description: 'Ready-to-use templates for communicating schedule changes, policies, and reminders to clients.',
+      description:
+        'Ready-to-use templates for communicating schedule changes, policies, and reminders to clients.',
       image: 'https://images.unsplash.com/photo-1577563908411-5077b6dc7624',
       category: 'no-shows',
       premium: false,
-      url: '/business-hub/scheduling-optimization/communication-templates'
+      url: '/business-hub/scheduling-optimization/communication-templates',
     },
     {
       id: '6',
       title: 'Revenue Gap Analyzer',
-      description: 'Identify missed revenue opportunities in your current scheduling practices with this analytical tool.',
+      description:
+        'Identify missed revenue opportunities in your current scheduling practices with this analytical tool.',
       image: 'https://images.unsplash.com/photo-1611174743420-3d7df880ce32',
       category: 'revenue',
       premium: true,
-      url: '/business-hub/scheduling-optimization/revenue-analyzer'
-    }
+      url: '/business-hub/scheduling-optimization/revenue-analyzer',
+    },
   ];
   // Filter strategies based on selected category and difficulty
   const filteredStrategies = strategies.filter(strategy => {
     const matchesCategory = selectedCategory === 'all' || strategy.category === selectedCategory;
-    const matchesDifficulty = selectedDifficulty === 'all' || strategy.difficulty === selectedDifficulty;
+    const matchesDifficulty =
+      selectedDifficulty === 'all' || strategy.difficulty === selectedDifficulty;
     return matchesCategory && matchesDifficulty;
   });
   // Filter tools based on selected category
-  const filteredTools = tools.filter(tool => 
-    selectedCategory === 'all' || tool.category === selectedCategory
+  const filteredTools = tools.filter(
+    tool => selectedCategory === 'all' || tool.category === selectedCategory
   );
   // Categories for filtering
   const categories = [
@@ -256,14 +276,14 @@ export default function SchedulingOptimizationPage() {
     { id: 'efficiency', name: 'Scheduling Efficiency' },
     { id: 'no-shows', name: 'Reducing No-Shows' },
     { id: 'capacity', name: 'Capacity Optimization' },
-    { id: 'revenue', name: 'Revenue Maximization' }
+    { id: 'revenue', name: 'Revenue Maximization' },
   ];
   // Difficulty levels for filtering
   const difficultyLevels = [
     { id: 'all', name: 'All Levels' },
     { id: 'beginner', name: 'Beginner' },
     { id: 'intermediate', name: 'Intermediate' },
-    { id: 'advanced', name: 'Advanced' }
+    { id: 'advanced', name: 'Advanced' },
   ];
   return (
     <div className="container mx-auto px-4 py-8">
@@ -272,21 +292,21 @@ export default function SchedulingOptimizationPage() {
         <div className="max-w-3xl">
           <h1 className="text-3xl font-bold mb-4">Scheduling Optimization</h1>
           <p className="text-lg mb-6">
-            Maximize your revenue and efficiency with proven scheduling strategies and tools designed 
-            for beauty and wellness businesses. Reduce no-shows, optimize booking capacity, and 
-            implement effective scheduling policies.
+            Maximize your revenue and efficiency with proven scheduling strategies and tools
+            designed for beauty and wellness businesses. Reduce no-shows, optimize booking capacity,
+            and implement effective scheduling policies.
           </p>
           <div className="flex space-x-4">
-            <Button 
-              variant="default" 
+            <Button
+              variant="default"
               className="bg-indigo-600 hover:bg-indigo-700"
               onClick={() => setActiveTab('strategies')}
             >
               <Icons.CalendarIcon className="h-5 w-5 mr-2" />
               Scheduling Strategies
             </Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="border-indigo-600 text-indigo-600 hover:bg-indigo-50"
               onClick={() => setActiveTab('tools')}
             >
@@ -308,7 +328,10 @@ export default function SchedulingOptimizationPage() {
               <h3 className="text-2xl font-bold">$24,000</h3>
             </div>
           </div>
-          <p className="text-gray-600">Average annual revenue loss for a beauty business due to no-shows and late cancellations.</p>
+          <p className="text-gray-600">
+            Average annual revenue loss for a beauty business due to no-shows and late
+            cancellations.
+          </p>
         </div>
         <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
           <div className="flex items-start mb-2">
@@ -320,7 +343,9 @@ export default function SchedulingOptimizationPage() {
               <h3 className="text-2xl font-bold">15-20%</h3>
             </div>
           </div>
-          <p className="text-gray-600">Potential increase in service capacity through optimized scheduling strategies.</p>
+          <p className="text-gray-600">
+            Potential increase in service capacity through optimized scheduling strategies.
+          </p>
         </div>
         <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
           <div className="flex items-start mb-2">
@@ -332,7 +357,10 @@ export default function SchedulingOptimizationPage() {
               <h3 className="text-2xl font-bold">30%+</h3>
             </div>
           </div>
-          <p className="text-gray-600">Potential revenue increase from implementing effective scheduling and cancellation policies.</p>
+          <p className="text-gray-600">
+            Potential revenue increase from implementing effective scheduling and cancellation
+            policies.
+          </p>
         </div>
       </div>
       {/* Category and Difficulty Filters */}
@@ -346,7 +374,9 @@ export default function SchedulingOptimizationPage() {
                 <Button
                   key={category.id}
                   variant={selectedCategory === category.id ? 'default' : 'outline'}
-                  className={selectedCategory === category.id ? 'bg-indigo-600 hover:bg-indigo-700' : ''}
+                  className={
+                    selectedCategory === category.id ? 'bg-indigo-600 hover:bg-indigo-700' : ''
+                  }
                   onClick={() => setSelectedCategory(category.id)}
                   size="sm"
                 >
@@ -362,7 +392,9 @@ export default function SchedulingOptimizationPage() {
                 <Button
                   key={level.id}
                   variant={selectedDifficulty === level.id ? 'default' : 'outline'}
-                  className={selectedDifficulty === level.id ? 'bg-indigo-600 hover:bg-indigo-700' : ''}
+                  className={
+                    selectedDifficulty === level.id ? 'bg-indigo-600 hover:bg-indigo-700' : ''
+                  }
                   onClick={() => setSelectedDifficulty(level.id)}
                   size="sm"
                 >
@@ -388,23 +420,27 @@ export default function SchedulingOptimizationPage() {
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-gray-100 rounded-lg">
-                          {strategy.icon}
-                        </div>
+                        <div className="p-2 bg-gray-100 rounded-lg">{strategy.icon}</div>
                         <CardTitle className="text-xl">{strategy.title}</CardTitle>
                       </div>
                       <div className="flex space-x-2">
                         {strategy.difficulty === 'beginner' && (
-                          <Badge className="bg-green-100 text-green-800 border-green-200">Beginner</Badge>
+                          <Badge className="bg-green-100 text-green-800 border-green-200">
+                            Beginner
+                          </Badge>
                         )}
                         {strategy.difficulty === 'intermediate' && (
-                          <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">Intermediate</Badge>
+                          <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                            Intermediate
+                          </Badge>
                         )}
                         {strategy.difficulty === 'advanced' && (
                           <Badge className="bg-red-100 text-red-800 border-red-200">Advanced</Badge>
                         )}
                         {strategy.impact === 'high' && (
-                          <Badge className="bg-purple-100 text-purple-800 border-purple-200">High Impact</Badge>
+                          <Badge className="bg-purple-100 text-purple-800 border-purple-200">
+                            High Impact
+                          </Badge>
                         )}
                       </div>
                     </div>
@@ -418,7 +454,9 @@ export default function SchedulingOptimizationPage() {
                       </div>
                       <div>
                         <p className="text-xs text-gray-500">Category</p>
-                        <p className="font-medium capitalize">{strategy.category.replace('-', ' ')}</p>
+                        <p className="font-medium capitalize">
+                          {strategy.category.replace('-', ' ')}
+                        </p>
                       </div>
                     </div>
                     <div>
@@ -431,10 +469,11 @@ export default function SchedulingOptimizationPage() {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Link href={`/business-hub/scheduling-optimization/strategies/${strategy.id}`} className="w-full">
-                      <Button 
-                        className="w-full bg-indigo-600 hover:bg-indigo-700"
-                      >
+                    <Link
+                      href={`/business-hub/scheduling-optimization/strategies/${strategy.id}`}
+                      className="w-full"
+                    >
+                      <Button className="w-full bg-indigo-600 hover:bg-indigo-700">
                         Get Detailed Guide
                       </Button>
                     </Link>
@@ -444,10 +483,12 @@ export default function SchedulingOptimizationPage() {
             </div>
           ) : (
             <div className="text-center py-12 bg-gray-50 rounded-lg">
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No strategies match your filters</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No strategies match your filters
+              </h3>
               <p className="text-gray-500 mb-6">Try adjusting your filter criteria</p>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => {
                   setSelectedCategory('all');
                   setSelectedDifficulty('all');
@@ -462,16 +503,17 @@ export default function SchedulingOptimizationPage() {
         <TabsContent value="tools">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTools.map(tool => (
-              <Card key={tool.id} className={`${tool.premium ? 'border-purple-200' : 'border-gray-200'}`}>
+              <Card
+                key={tool.id}
+                className={`${tool.premium ? 'border-purple-200' : 'border-gray-200'}`}
+              >
                 <div className="aspect-video w-full relative overflow-hidden rounded-t-lg">
-                  <Image
-                    src={tool.image}
-                    alt={tool.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                  />
+                  <Image src={tool.image} alt={tool.title} fill style={{ objectFit: 'cover' }} />
                   {tool.premium && (
-                    <Badge variant="secondary" className="absolute top-2 left-2 bg-purple-100 text-purple-800">
+                    <Badge
+                      variant="secondary"
+                      className="absolute top-2 left-2 bg-purple-100 text-purple-800"
+                    >
                       Premium
                     </Badge>
                   )}
@@ -488,7 +530,7 @@ export default function SchedulingOptimizationPage() {
                 </CardHeader>
                 <CardFooter>
                   <Link href={tool.url} className="w-full">
-                    <Button 
+                    <Button
                       className={`w-full ${tool.premium ? 'bg-purple-600 hover:bg-purple-700' : 'bg-indigo-600 hover:bg-indigo-700'}`}
                     >
                       {tool.premium ? 'Unlock Tool' : 'Access Tool'}
@@ -506,12 +548,11 @@ export default function SchedulingOptimizationPage() {
           <div className="md:w-2/3 md:pr-8">
             <h2 className="text-2xl font-bold mb-4">Get a Personalized Schedule Analysis</h2>
             <p className="text-gray-700 mb-4">
-              Upload your current schedule and receive a detailed analysis with personalized recommendations 
-              to optimize your booking system, reduce gaps, and maximize revenue potential.
+              Upload your current schedule and receive a detailed analysis with personalized
+              recommendations to optimize your booking system, reduce gaps, and maximize revenue
+              potential.
             </p>
-            <Button className="bg-indigo-600 hover:bg-indigo-700">
-              Schedule Free Analysis
-            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-700">Schedule Free Analysis</Button>
           </div>
           <div className="md:w-1/3 mt-6 md:mt-0 flex justify-center">
             <Image
@@ -529,8 +570,9 @@ export default function SchedulingOptimizationPage() {
         <h2 className="text-2xl font-bold mb-6">Cancellation Policy Generator</h2>
         <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
           <p className="text-gray-700 mb-6">
-            Create a professional, legally-sound cancellation policy tailored to your beauty or wellness business. 
-            Our generator creates policies that protect your business while maintaining positive client relationships.
+            Create a professional, legally-sound cancellation policy tailored to your beauty or
+            wellness business. Our generator creates policies that protect your business while
+            maintaining positive client relationships.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
@@ -557,9 +599,7 @@ export default function SchedulingOptimizationPage() {
             </div>
           </div>
           <div className="flex justify-end">
-            <Button className="bg-indigo-600 hover:bg-indigo-700">
-              Generate Policy
-            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-700">Generate Policy</Button>
           </div>
         </div>
       </div>
@@ -573,11 +613,15 @@ export default function SchedulingOptimizationPage() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 mb-4">
-                Understanding why clients miss appointments is key to preventing them. Learn the psychological 
-                factors behind no-shows and how to address them through effective communication strategies.
+                Understanding why clients miss appointments is key to preventing them. Learn the
+                psychological factors behind no-shows and how to address them through effective
+                communication strategies.
               </p>
               <Link href="/business-hub/scheduling-optimization/no-show-psychology">
-                <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50">
+                <Button
+                  variant="outline"
+                  className="border-indigo-600 text-indigo-600 hover:bg-indigo-50"
+                >
                   Read Full Article
                 </Button>
               </Link>
@@ -589,11 +633,14 @@ export default function SchedulingOptimizationPage() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 mb-4">
-                Chronically late clients can disrupt your entire day. Learn how to address tardiness professionally 
-                while maintaining client relationships and protecting your schedule.
+                Chronically late clients can disrupt your entire day. Learn how to address tardiness
+                professionally while maintaining client relationships and protecting your schedule.
               </p>
               <Link href="/business-hub/scheduling-optimization/late-clients">
-                <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50">
+                <Button
+                  variant="outline"
+                  className="border-indigo-600 text-indigo-600 hover:bg-indigo-50"
+                >
                   View Strategies
                 </Button>
               </Link>
@@ -603,4 +650,4 @@ export default function SchedulingOptimizationPage() {
       </div>
     </div>
   );
-} 
+}

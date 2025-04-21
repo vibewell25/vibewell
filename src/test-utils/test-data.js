@@ -1,6 +1,6 @@
 /**
  * Test data utilities
- * 
+ *
  * This file contains test data for various components and features.
  * Use these fixtures in tests to ensure consistent test data.
  */
@@ -315,4 +315,4 @@ export const testArModels = {
     rotation: { x: 0, y: 0, z: 0 },
     position: { x: 0, y: 0, z: 0 },
   },
-}; 
+};

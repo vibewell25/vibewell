@@ -48,12 +48,12 @@ class IntersectionObserverMock {
   readonly root: Element | null = null;
   readonly rootMargin: string = '';
   readonly thresholds: ReadonlyArray<number> = [];
-  
+
   constructor(
     private callback: IntersectionObserverCallback,
     private options?: IntersectionObserverInit
   ) {}
-  
+
   disconnect = jest.fn();
   observe = jest.fn();
   takeRecords = jest.fn(() => []);
@@ -69,7 +69,7 @@ Object.defineProperty(window, 'IntersectionObserver', {
 // Mock PerformanceObserver
 class PerformanceObserverMock {
   constructor(private callback: PerformanceObserverCallback) {}
-  
+
   disconnect = jest.fn();
   observe = jest.fn();
   takeRecords = jest.fn(() => []);
@@ -108,4 +108,4 @@ console.error = (...args) => {
     return;
   }
   originalConsoleError(...args);
-}; 
+};

@@ -14,9 +14,9 @@ export const {
   createReduxStateManager,
   createZustandStateManager,
   createState,
-  createSelector
+  createSelector,
 } = StateManagerModule;
 
 // Re-export the interface with a different name to avoid conflicts
 // @ts-expect-error - Ignore the .tsx extension
-export type { StateManager } from './state/index.tsx'; 
+export type { StateManager } from './state/index.tsx';

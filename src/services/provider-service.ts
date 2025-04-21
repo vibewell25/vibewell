@@ -67,11 +67,11 @@ export class ProviderService {
       .select('*')
       .range(offset, offset + limit - 1)
       .order('name');
-      
+
     if (error) throw error;
     return data || [];
   }
-  
+
   /**
    * Fetch a provider by ID with caching
    */
@@ -86,7 +86,7 @@ export class ProviderService {
       return null;
     }
   }
-  
+
   /**
    * Search providers with caching for short-lived results
    */
@@ -102,7 +102,7 @@ export class ProviderService {
       return [];
     }
   }
-  
+
   /**
    * Fetch featured providers (homepage content, longer cache)
    */
@@ -116,22 +116,25 @@ export class ProviderService {
       return [];
     }
   }
-  
+
   /**
    * Fetch providers by category
    */
   async getProvidersByCategory(category: string, limit = 20, offset = 0): Promise<Provider[]> {
     try {
-      return await cachedFetch<Provider[]>(`/api/providers/category/${encodeURIComponent(category)}`, {
-        params: { limit, offset },
-        ttl: 30 * 60 * 1000, // Cache for 30 minutes
-      });
+      return await cachedFetch<Provider[]>(
+        `/api/providers/category/${encodeURIComponent(category)}`,
+        {
+          params: { limit, offset },
+          ttl: 30 * 60 * 1000, // Cache for 30 minutes
+        }
+      );
     } catch (error) {
       console.error(`Error fetching providers by category ${category}:`, error);
       return [];
     }
   }
-  
+
   /**
    * Get provider services (medium-term cache)
    */
@@ -145,7 +148,7 @@ export class ProviderService {
       return [];
     }
   }
-  
+
   /**
    * Get providers near location (short-term cache due to location relevance)
    */
@@ -160,4 +163,4 @@ export class ProviderService {
       return [];
     }
   }
-} 
+}

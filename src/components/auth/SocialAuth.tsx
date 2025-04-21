@@ -31,7 +31,7 @@ export const SocialAuth: React.FC<SocialAuthProps> = ({ providers }) => {
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        {providers.map((provider) => (
+        {providers.map(provider => (
           <button
             key={provider.id}
             type="button"
@@ -45,4 +45,4 @@ export const SocialAuth: React.FC<SocialAuthProps> = ({ providers }) => {
       </div>
     </div>
   );
-}; 
+};

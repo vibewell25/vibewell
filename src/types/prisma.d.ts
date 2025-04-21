@@ -47,4 +47,4 @@ declare module '@prisma/client' {
     authenticators: WebAuthnAuthenticator[];
     challenges: WebAuthnChallenge[];
   }
-} 
+}

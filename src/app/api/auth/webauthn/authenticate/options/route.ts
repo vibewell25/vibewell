@@ -7,10 +7,7 @@ export async function POST(request: Request) {
     const { userId } = body;
 
     if (!userId) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     // In a real application, you would:
@@ -37,4 +34,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-} 
+}

@@ -35,7 +35,9 @@ describe('RootErrorBoundary', () => {
 
     // Check error UI is rendered
     expect(screen.getByText(/Oops, something went wrong/i)).toBeInTheDocument();
-    expect(screen.getByText(/We're sorry, but we encountered an unexpected error/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/We're sorry, but we encountered an unexpected error/i)
+    ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Refresh page/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Go to homepage/i })).toBeInTheDocument();
   });
@@ -69,7 +71,7 @@ describe('RootErrorBoundary', () => {
     process.env.NODE_ENV = originalNodeEnv;
   });
 
-  it('doesn\'t show error details in production mode', () => {
+  it("doesn't show error details in production mode", () => {
     const originalNodeEnv = process.env.NODE_ENV;
     process.env.NODE_ENV = 'production';
 
@@ -98,7 +100,7 @@ describe('RootErrorBoundary', () => {
     );
 
     fireEvent.click(screen.getByRole('button', { name: /Refresh page/i }));
-    
+
     // Check if reload was called
     expect(window.location.reload).toHaveBeenCalled();
 
@@ -123,4 +125,4 @@ describe('RootErrorBoundary', () => {
     );
     expect(container).toMatchSnapshot();
   });
-}); 
+});

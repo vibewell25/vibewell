@@ -7,7 +7,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Image from 'next/image';
@@ -22,19 +28,21 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
   const handleRecurringToggle = (enabled: boolean) => {
     onUpdate({
       isRecurring: enabled,
-      recurrencePattern: enabled ? {
-        frequency: 'weekly',
-        interval: 1,
-        daysOfWeek: [new Date(event.startDate).getDay()],
-      } : undefined
+      recurrencePattern: enabled
+        ? {
+            frequency: 'weekly',
+            interval: 1,
+            daysOfWeek: [new Date(event.startDate).getDay()],
+          }
+        : undefined,
     });
   };
   const handleRecurrenceChange = (field: string, value: any) => {
     onUpdate({
       recurrencePattern: {
         ...event.recurrencePattern,
-        [field]: value
-      }
+        [field]: value,
+      },
     });
   };
   // Handle waitlist settings
@@ -43,12 +51,12 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
       waitlistEnabled: enabled,
       waitlistCapacity: enabled ? 20 : undefined,
       waitlistCount: enabled ? 0 : undefined,
-      waitlistParticipants: enabled ? [] : undefined
+      waitlistParticipants: enabled ? [] : undefined,
     });
   };
   const handleWaitlistCapacityChange = (capacity: number) => {
     onUpdate({
-      waitlistCapacity: capacity
+      waitlistCapacity: capacity,
     });
   };
   return (
@@ -77,10 +85,7 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                   Set up recurring schedule for this event
                 </p>
               </div>
-              <Switch
-                checked={event.isRecurring}
-                onCheckedChange={handleRecurringToggle}
-              />
+              <Switch checked={event.isRecurring} onCheckedChange={handleRecurringToggle} />
             </div>
             {event.isRecurring && (
               <div className="space-y-4">
@@ -88,7 +93,7 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                   <Label>Frequency</Label>
                   <Select
                     value={event.recurrencePattern?.frequency}
-                    onValueChange={(value) => handleRecurrenceChange('frequency', value)}
+                    onValueChange={value => handleRecurrenceChange('frequency', value)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select frequency" />
@@ -107,7 +112,7 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                     type="number"
                     min="1"
                     value={event.recurrencePattern?.interval || 1}
-                    onChange={(e) => handleRecurrenceChange('interval', parseInt(e.target.value))}
+                    onChange={e => handleRecurrenceChange('interval', parseInt(e.target.value))}
                   />
                 </div>
                 {event.recurrencePattern?.frequency === 'weekly' && (
@@ -117,7 +122,11 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                       {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
                         <Button
                           key={day}
-                          variant={event.recurrencePattern?.daysOfWeek?.includes(index) ? 'default' : 'outline'}
+                          variant={
+                            event.recurrencePattern?.daysOfWeek?.includes(index)
+                              ? 'default'
+                              : 'outline'
+                          }
                           size="sm"
                           onClick={() => {
                             const days = event.recurrencePattern?.daysOfWeek || [];
@@ -138,7 +147,7 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                   <Input
                     type="date"
                     value={event.recurrencePattern?.endDate?.split('T')[0] || ''}
-                    onChange={(e) => handleRecurrenceChange('endDate', e.target.value)}
+                    onChange={e => handleRecurrenceChange('endDate', e.target.value)}
                   />
                 </div>
               </div>
@@ -150,14 +159,9 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label>Waitlist</Label>
-                <p className="text-sm text-muted-foreground">
-                  Enable waitlist when event is full
-                </p>
+                <p className="text-sm text-muted-foreground">Enable waitlist when event is full</p>
               </div>
-              <Switch
-                checked={event.waitlistEnabled}
-                onCheckedChange={handleWaitlistToggle}
-              />
+              <Switch checked={event.waitlistEnabled} onCheckedChange={handleWaitlistToggle} />
             </div>
             {event.waitlistEnabled && (
               <div className="space-y-4">
@@ -167,14 +171,14 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                     type="number"
                     min="1"
                     value={event.waitlistCapacity || 20}
-                    onChange={(e) => handleWaitlistCapacityChange(parseInt(e.target.value))}
+                    onChange={e => handleWaitlistCapacityChange(parseInt(e.target.value))}
                   />
                 </div>
                 {event.waitlistParticipants && event.waitlistParticipants.length > 0 && (
                   <div className="space-y-2">
                     <Label>Waitlist Participants</Label>
                     <div className="space-y-2">
-                      {event.waitlistParticipants.map((participant) => (
+                      {event.waitlistParticipants.map(participant => (
                         <div
                           key={participant.userId}
                           className="flex items-center justify-between p-2 border rounded-md"
@@ -201,8 +205,8 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                               participant.status === 'confirmed'
                                 ? 'default'
                                 : participant.status === 'notified'
-                                ? 'secondary'
-                                : 'outline'
+                                  ? 'secondary'
+                                  : 'outline'
                             }
                           >
                             {participant.status}
@@ -219,4 +223,4 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
       </CardContent>
     </Card>
   );
-} 
+}

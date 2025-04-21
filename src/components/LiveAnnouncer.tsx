@@ -32,11 +32,7 @@ const LiveAnnouncer = ({ politeness = 'polite' }: LiveAnnouncerProps) => {
   }, [announce]);
 
   return (
-    <div 
-      aria-live={politeness}
-      aria-atomic="true"
-      className="sr-only"
-    >
+    <div aria-live={politeness} aria-atomic="true" className="sr-only">
       {message}
     </div>
   );
@@ -51,4 +47,4 @@ declare global {
       announce: (message: string) => void;
     };
   }
-} 
+}

@@ -27,9 +27,11 @@ export function Messaging({
   className = '',
   height = 'h-[70vh]',
   defaultSelectedConversation,
-  loading = false
+  loading = false,
 }: MessagingProps) {
-  const [selectedConversation, setSelectedConversation] = useState<string | null>(defaultSelectedConversation || null);
+  const [selectedConversation, setSelectedConversation] = useState<string | null>(
+    defaultSelectedConversation || null
+  );
   const [newMessage, setNewMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
@@ -85,14 +87,14 @@ export function Messaging({
 
   if (loading) {
     return (
-      <div className={twMerge("flex justify-center items-center", height, className)}>
+      <div className={twMerge('flex justify-center items-center', height, className)}>
         <p>Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className={twMerge("grid grid-cols-1 md:grid-cols-3 gap-6", height, className)}>
+    <div className={twMerge('grid grid-cols-1 md:grid-cols-3 gap-6', height, className)}>
       {/* Conversation List */}
       <ConversationList
         conversations={conversations}
@@ -106,14 +108,11 @@ export function Messaging({
         onConfirmDelete={confirmDelete}
         onCancelDelete={cancelDelete}
       />
-      
+
       {/* Message View */}
       <div className="md:col-span-2 border rounded-lg overflow-hidden flex flex-col h-full">
-        <MessageList
-          conversation={currentConversation}
-          currentUserId={currentUserId}
-        />
-        
+        <MessageList conversation={currentConversation} currentUserId={currentUserId} />
+
         {currentConversation && (
           <MessageInput
             newMessage={newMessage}
@@ -132,4 +131,4 @@ export { default as ConversationList } from './ConversationList';
 export { default as MessageList } from './MessageList';
 export { default as MessageInput } from './MessageInput';
 
-export default Messaging; 
+export default Messaging;

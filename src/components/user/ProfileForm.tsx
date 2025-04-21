@@ -44,7 +44,7 @@ export function ProfileForm() {
           throw new Error('Failed to fetch profile');
         }
         const data = await response.json();
-        
+
         // Set form values
         setValue('name', data.name);
         setValue('email', data.email);
@@ -99,59 +99,32 @@ export function ProfileForm() {
       <div className="space-y-4">
         <div>
           <Label htmlFor="name">Name</Label>
-          <Input
-            id="name"
-            {...register('name')}
-            placeholder="Your name"
-          />
-          {errors.name && (
-            <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
-          )}
+          <Input id="name" {...register('name')} placeholder="Your name" />
+          {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>}
         </div>
 
         <div>
           <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            {...register('email')}
-            placeholder="your@email.com"
-          />
-          {errors.email && (
-            <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
-          )}
+          <Input id="email" type="email" {...register('email')} placeholder="your@email.com" />
+          {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
         </div>
 
         <div>
           <Label htmlFor="phone">Phone</Label>
-          <Input
-            id="phone"
-            type="tel"
-            {...register('phone')}
-            placeholder="+1 (555) 000-0000"
-          />
-          {errors.phone && (
-            <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>
-          )}
+          <Input id="phone" type="tel" {...register('phone')} placeholder="+1 (555) 000-0000" />
+          {errors.phone && <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>}
         </div>
 
         <div>
           <Label htmlFor="bio">Bio</Label>
-          <Textarea
-            id="bio"
-            {...register('bio')}
-            placeholder="Tell us about yourself"
-            rows={4}
-          />
-          {errors.bio && (
-            <p className="text-sm text-red-500 mt-1">{errors.bio.message}</p>
-          )}
+          <Textarea id="bio" {...register('bio')} placeholder="Tell us about yourself" rows={4} />
+          {errors.bio && <p className="text-sm text-red-500 mt-1">{errors.bio.message}</p>}
         </div>
       </div>
 
       <div className="space-y-4">
         <h3 className="font-medium">Preferences</h3>
-        
+
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <Label htmlFor="notifications">Notifications</Label>
@@ -159,10 +132,7 @@ export function ProfileForm() {
               Receive notifications about your account and services
             </p>
           </div>
-          <Switch
-            id="notifications"
-            {...register('preferences.notifications')}
-          />
+          <Switch id="notifications" {...register('preferences.notifications')} />
         </div>
 
         <div className="flex items-center justify-between">
@@ -172,10 +142,7 @@ export function ProfileForm() {
               Receive updates about new features and promotions
             </p>
           </div>
-          <Switch
-            id="marketingEmails"
-            {...register('preferences.marketingEmails')}
-          />
+          <Switch id="marketingEmails" {...register('preferences.marketingEmails')} />
         </div>
 
         <div className="flex items-center justify-between">
@@ -185,10 +152,7 @@ export function ProfileForm() {
               Enable dark mode for better visibility in low-light conditions
             </p>
           </div>
-          <Switch
-            id="darkMode"
-            {...register('preferences.darkMode')}
-          />
+          <Switch id="darkMode" {...register('preferences.darkMode')} />
         </div>
       </div>
 
@@ -199,4 +163,4 @@ export function ProfileForm() {
       </div>
     </form>
   );
-} 
+}

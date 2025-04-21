@@ -66,10 +66,10 @@ export class SecurityEducationService {
     try {
       // Get all tips
       const tips = await this.getAllTips();
-      
+
       // Get user's progress
       const progress = await this.getUserProgress(userId);
-      
+
       // Filter tips based on relevance
       return tips.filter(tip => {
         // Check if tip has been recently acknowledged
@@ -78,13 +78,14 @@ export class SecurityEducationService {
 
         // Check display conditions
         if (tip.displayConditions) {
-          if (tip.displayConditions.userRole && 
-              tip.displayConditions.userRole !== userRole) {
+          if (tip.displayConditions.userRole && tip.displayConditions.userRole !== userRole) {
             return false;
           }
-          
-          if (tip.displayConditions.userAction && 
-              tip.displayConditions.userAction !== currentAction) {
+
+          if (
+            tip.displayConditions.userAction &&
+            tip.displayConditions.userAction !== currentAction
+          ) {
             return false;
           }
         }
@@ -113,12 +114,9 @@ export class SecurityEducationService {
       const id = `tip:${Date.now()}:${Math.random().toString(36).slice(2)}`;
       const newTip: SecurityTip = { ...tip, id };
 
-      await this.redis.hset(
-        `${this.keyPrefix}:tips`,
-        {
-          [id]: JSON.stringify(newTip)
-        }
-      );
+      await this.redis.hset(`${this.keyPrefix}:tips`, {
+        [id]: JSON.stringify(newTip),
+      });
 
       logger.info('Security tip added', 'security_education', { tipId: id });
       return newTip;
@@ -134,8 +132,8 @@ export class SecurityEducationService {
   async getAvailableModules(userRole: string): Promise<SecurityAwarenessModule[]> {
     try {
       const moduleData = await this.redis.hgetall(`${this.keyPrefix}:modules`);
-      const modules = Object.values(moduleData).map(data => 
-        JSON.parse(data) as SecurityAwarenessModule
+      const modules = Object.values(moduleData).map(
+        data => JSON.parse(data) as SecurityAwarenessModule
       );
 
       // Filter modules based on user role if needed
@@ -149,19 +147,14 @@ export class SecurityEducationService {
   /**
    * Add a new security awareness module
    */
-  async addModule(
-    module: Omit<SecurityAwarenessModule, 'id'>
-  ): Promise<SecurityAwarenessModule> {
+  async addModule(module: Omit<SecurityAwarenessModule, 'id'>): Promise<SecurityAwarenessModule> {
     try {
       const id = `module:${Date.now()}:${Math.random().toString(36).slice(2)}`;
       const newModule: SecurityAwarenessModule = { ...module, id };
 
-      await this.redis.hset(
-        `${this.keyPrefix}:modules`,
-        {
-          [id]: JSON.stringify(newModule)
-        }
-      );
+      await this.redis.hset(`${this.keyPrefix}:modules`, {
+        [id]: JSON.stringify(newModule),
+      });
 
       logger.info('Security module added', 'security_education', { moduleId: id });
       return newModule;
@@ -182,26 +175,26 @@ export class SecurityEducationService {
   ): Promise<void> {
     try {
       const progress = await this.getUserProgress(userId);
-      
+
       progress.completedModules.push({
         moduleId,
         completedAt: new Date(),
         score,
-        timeSpent
+        timeSpent,
       });
 
       await this.updateUserProgress(userId, progress);
-      
+
       logger.info('Module completion recorded', 'security_education', {
         userId,
         moduleId,
-        score
+        score,
       });
     } catch (error) {
       logger.error('Failed to record module completion', 'security_education', {
         error,
         userId,
-        moduleId
+        moduleId,
       });
       throw error;
     }
@@ -213,7 +206,7 @@ export class SecurityEducationService {
   async acknowledgeTip(userId: string, tipId: string): Promise<void> {
     try {
       const progress = await this.getUserProgress(userId);
-      
+
       if (!progress.acknowledgedTips.includes(tipId)) {
         progress.acknowledgedTips.push(tipId);
         await this.updateUserProgress(userId, progress);
@@ -221,13 +214,13 @@ export class SecurityEducationService {
 
       logger.info('Security tip acknowledged', 'security_education', {
         userId,
-        tipId
+        tipId,
       });
     } catch (error) {
       logger.error('Failed to acknowledge tip', 'security_education', {
         error,
         userId,
-        tipId
+        tipId,
       });
       throw error;
     }
@@ -238,7 +231,7 @@ export class SecurityEducationService {
    */
   private async getUserProgress(userId: string): Promise<UserSecurityProgress> {
     const data = await this.redis.get(`${this.keyPrefix}:progress:${userId}`);
-    
+
     if (data) {
       return JSON.parse(data);
     }
@@ -247,21 +240,15 @@ export class SecurityEducationService {
     return {
       userId,
       completedModules: [],
-      acknowledgedTips: []
+      acknowledgedTips: [],
     };
   }
 
   /**
    * Update user's security education progress
    */
-  private async updateUserProgress(
-    userId: string,
-    progress: UserSecurityProgress
-  ): Promise<void> {
-    await this.redis.set(
-      `${this.keyPrefix}:progress:${userId}`,
-      JSON.stringify(progress)
-    );
+  private async updateUserProgress(userId: string, progress: UserSecurityProgress): Promise<void> {
+    await this.redis.set(`${this.keyPrefix}:progress:${userId}`, JSON.stringify(progress));
   }
 
   /**
@@ -269,7 +256,7 @@ export class SecurityEducationService {
    */
   async needsSecurityAssessment(userId: string): Promise<boolean> {
     const progress = await this.getUserProgress(userId);
-    
+
     if (!progress.lastAssessment) return true;
 
     // Check if last assessment was more than 6 months ago
@@ -285,25 +272,25 @@ export class SecurityEducationService {
   async recordAssessment(userId: string, score: number): Promise<void> {
     try {
       const progress = await this.getUserProgress(userId);
-      
+
       progress.lastAssessment = {
         date: new Date(),
-        score
+        score,
       };
 
       await this.updateUserProgress(userId, progress);
-      
+
       logger.info('Security assessment recorded', 'security_education', {
         userId,
-        score
+        score,
       });
     } catch (error) {
       logger.error('Failed to record assessment', 'security_education', {
         error,
         userId,
-        score
+        score,
       });
       throw error;
     }
   }
-} 
+}

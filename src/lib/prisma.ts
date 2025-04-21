@@ -1,4 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+/**
+ * Prisma client singleton
+ * This ensures we only create one instance of PrismaClient
+ */
+
+import { PrismaClient, Prisma } from '@prisma/client';
 
 // Define Prisma model types based on the schema
 type PrismaModels = {
@@ -15,22 +20,32 @@ type PrismaModels = {
   business: any;
   loyaltyTransaction: any;
   notification: any;
+  userPreference: any;
 };
 
 // Create a properly typed PrismaClient
 const PrismaClientWithModels = PrismaClient as {
-  new(options?: Prisma.PrismaClientOptions): PrismaClient & PrismaModels;
+  new (options?: Prisma.PrismaClientOptions): PrismaClient & PrismaModels;
 };
 
+// Add prisma to the global type
 declare global {
+  // eslint-disable-next-line no-var
   var prisma: PrismaClient | undefined;
 }
 
-const prismaGlobal = global.prisma || new PrismaClient();
+// Create a singleton PrismaClient instance
+// In development, this prevents multiple instances during hot-reloading
+export const prisma =
+  global.prisma ||
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  });
 
+// Store prisma in global object in development to prevent multiple instances
 if (process.env.NODE_ENV !== 'production') {
-  global.prisma = prismaGlobal;
+  global.prisma = prisma;
 }
 
-export const prisma = prismaGlobal;
-export default prisma; 
+// Export as default
+export default prisma;

@@ -73,26 +73,19 @@ declare module 'jest-axe' {
     incomplete: any[];
     inapplicable: any[];
   }
-  
-  export const axe: (
-    html: Element | string,
-    options?: any
-  ) => Promise<AxeResults>;
-  
+
+  export const axe: (html: Element | string, options?: any) => Promise<AxeResults>;
+
   export const toHaveNoViolations: {
     toHaveNoViolations(results: AxeResults): {
       pass: boolean;
       message(): string;
     };
   };
-  
-  export function configureAxe(options: any): (
-    html: Element | string,
-    options?: any
-  ) => Promise<AxeResults>;
-  
-  export function axeTest(
-    html: Element | string,
-    options?: any
-  ): Promise<AxeResults>;
-} 
+
+  export function configureAxe(
+    options: any
+  ): (html: Element | string, options?: any) => Promise<AxeResults>;
+
+  export function axeTest(html: Element | string, options?: any): Promise<AxeResults>;
+}

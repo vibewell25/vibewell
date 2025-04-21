@@ -11,12 +11,14 @@ interface PasswordResetProps {
   onResetPassword: (email: string) => Promise<void>;
 }
 
-export const PasswordReset: React.FC<PasswordResetProps> = ({
-  onResetPassword,
-}) => {
+export const PasswordReset: React.FC<PasswordResetProps> = ({ onResetPassword }) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<PasswordResetFormData>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PasswordResetFormData>();
 
   const onSubmit = async (data: PasswordResetFormData) => {
     try {
@@ -63,9 +65,7 @@ export const PasswordReset: React.FC<PasswordResetProps> = ({
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
               />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-              )}
+              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
             </div>
           </div>
 
@@ -92,4 +92,4 @@ export const PasswordReset: React.FC<PasswordResetProps> = ({
       </div>
     </div>
   );
-}; 
+};

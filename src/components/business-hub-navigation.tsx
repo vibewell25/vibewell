@@ -15,50 +15,50 @@ const navigationItems: NavigationItem[] = [
     name: 'Overview',
     href: '/business-hub',
     icon: <Icons.BuildingStorefrontIcon className="h-6 w-6" />,
-    description: 'Business hub home'
+    description: 'Business hub home',
   },
   {
     name: 'Marketing',
     href: '/business-hub/marketing',
     icon: <Icons.MegaphoneIcon className="h-6 w-6" />,
-    description: 'Marketing resources and tools'
+    description: 'Marketing resources and tools',
   },
   {
     name: 'Client Acquisition',
     href: '/business-hub/client-acquisition',
     icon: <Icons.UserGroupIcon className="h-6 w-6" />,
-    description: 'Strategies to attract new clients'
+    description: 'Strategies to attract new clients',
   },
   {
     name: 'Financial Management',
     href: '/business-hub/financial-management',
     icon: <Icons.CurrencyDollarIcon className="h-6 w-6" />,
-    description: 'Financial tools and resources'
+    description: 'Financial tools and resources',
   },
   {
     name: 'Analytics',
     href: '/business-hub/analytics',
     icon: <Icons.ChartBarIcon className="h-6 w-6" />,
-    description: 'Track and analyze your business performance'
+    description: 'Track and analyze your business performance',
   },
   {
     name: 'Resources',
     href: '/business-hub/resources',
     icon: <Icons.DocumentTextIcon className="h-6 w-6" />,
-    description: 'Guides, templates and more'
+    description: 'Guides, templates and more',
   },
   {
     name: 'Learning Center',
     href: '/business-hub/learning',
     icon: <Icons.AcademicCapIcon className="h-6 w-6" />,
-    description: 'Business education and courses'
+    description: 'Business education and courses',
   },
   {
     name: 'Bookmarks',
     href: '/business-hub/bookmarks',
     icon: <Icons.BookmarkIcon className="h-6 w-6" />,
-    description: 'Your saved resources and recent activity'
-  }
+    description: 'Your saved resources and recent activity',
+  },
 ];
 export function BusinessHubNavigation() {
   const pathname = usePathname();
@@ -109,10 +109,10 @@ export function BusinessHubNavigation() {
                 </>
               )}
             </div>
-            <button 
+            <button
               onClick={toggleMobileMenu}
               className="p-2 rounded-md hover:bg-gray-100"
-              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {isMobileMenuOpen ? (
                 <Icons.XMarkIcon className="h-6 w-6" />
@@ -124,7 +124,7 @@ export function BusinessHubNavigation() {
           {/* Mobile Dropdown Menu */}
           {isMobileMenuOpen && (
             <div className="border-t border-gray-200 py-2 px-4 space-y-1">
-              {navigationItems.map((item) => {
+              {navigationItems.map(item => {
                 const active = isActive(item.href);
                 return (
                   <Link
@@ -149,7 +149,7 @@ export function BusinessHubNavigation() {
       {/* Desktop Navigation */}
       {!isMobile && (
         <div className="flex flex-wrap items-center gap-1 p-1">
-          {navigationItems.map((item) => {
+          {navigationItems.map(item => {
             const active = isActive(item.href);
             return (
               <Link
@@ -171,4 +171,4 @@ export function BusinessHubNavigation() {
       )}
     </nav>
   );
-} 
+}

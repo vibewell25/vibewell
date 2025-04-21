@@ -16,7 +16,7 @@ interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
 
 /**
  * Grid - A flexible Grid layout component
- * 
+ *
  * This component provides a simple way to create grid layouts with configurable
  * columns, gaps, alignment, and other grid properties.
  */
@@ -48,58 +48,58 @@ export function Grid({
 
   // Map gap sizes to Tailwind classes
   const gapClasses = {
-    'none': 'gap-0',
-    'xs': 'gap-1',
-    'sm': 'gap-2',
-    'md': 'gap-4',
-    'lg': 'gap-6',
-    'xl': 'gap-8',
+    none: 'gap-0',
+    xs: 'gap-1',
+    sm: 'gap-2',
+    md: 'gap-4',
+    lg: 'gap-6',
+    xl: 'gap-8',
   };
 
   // Map row gap sizes to Tailwind classes
   const rowGapClasses = {
-    'none': 'row-gap-0',
-    'xs': 'row-gap-1',
-    'sm': 'row-gap-2',
-    'md': 'row-gap-4',
-    'lg': 'row-gap-6',
-    'xl': 'row-gap-8',
+    none: 'row-gap-0',
+    xs: 'row-gap-1',
+    sm: 'row-gap-2',
+    md: 'row-gap-4',
+    lg: 'row-gap-6',
+    xl: 'row-gap-8',
   };
 
   // Map column gap sizes to Tailwind classes
   const columnGapClasses = {
-    'none': 'col-gap-0',
-    'xs': 'col-gap-1',
-    'sm': 'col-gap-2',
-    'md': 'col-gap-4',
-    'lg': 'col-gap-6',
-    'xl': 'col-gap-8',
+    none: 'col-gap-0',
+    xs: 'col-gap-1',
+    sm: 'col-gap-2',
+    md: 'col-gap-4',
+    lg: 'col-gap-6',
+    xl: 'col-gap-8',
   };
 
   // Map alignment to Tailwind classes
   const alignClasses = {
-    'start': 'items-start',
-    'center': 'items-center',
-    'end': 'items-end',
-    'stretch': 'items-stretch',
-    'baseline': 'items-baseline',
+    start: 'items-start',
+    center: 'items-center',
+    end: 'items-end',
+    stretch: 'items-stretch',
+    baseline: 'items-baseline',
   };
 
   // Map justification to Tailwind classes
   const justifyClasses = {
-    'start': 'justify-start',
-    'center': 'justify-center',
-    'end': 'justify-end',
-    'between': 'justify-between',
-    'around': 'justify-around',
-    'evenly': 'justify-evenly',
+    start: 'justify-start',
+    center: 'justify-center',
+    end: 'justify-end',
+    between: 'justify-between',
+    around: 'justify-around',
+    evenly: 'justify-evenly',
   };
 
   // Map flow to Tailwind classes
   const flowClasses = {
-    'row': 'grid-flow-row',
-    'column': 'grid-flow-col',
-    'dense': 'grid-flow-dense',
+    row: 'grid-flow-row',
+    column: 'grid-flow-col',
+    dense: 'grid-flow-dense',
     'row-dense': 'grid-flow-row-dense',
     'column-dense': 'grid-flow-col-dense',
   };
@@ -143,14 +143,7 @@ interface GridItemProps extends React.HTMLAttributes<HTMLDivElement> {
 /**
  * GridItem - Individual grid item component
  */
-export function GridItem({
-  children,
-  span,
-  start,
-  end,
-  className,
-  ...props
-}: GridItemProps) {
+export function GridItem({ children, span, start, end, className, ...props }: GridItemProps) {
   // Map span values to Tailwind classes
   const spanClasses = {
     1: 'col-span-1',
@@ -165,7 +158,7 @@ export function GridItem({
     10: 'col-span-10',
     11: 'col-span-11',
     12: 'col-span-12',
-    'full': 'col-span-full',
+    full: 'col-span-full',
   };
 
   // Map start values to Tailwind classes
@@ -182,7 +175,7 @@ export function GridItem({
     10: 'col-start-10',
     11: 'col-start-11',
     12: 'col-start-12',
-    'auto': 'col-start-auto',
+    auto: 'col-start-auto',
   };
 
   // Map end values to Tailwind classes
@@ -200,7 +193,7 @@ export function GridItem({
     11: 'col-end-11',
     12: 'col-end-12',
     13: 'col-end-13',
-    'auto': 'col-end-auto',
+    auto: 'col-end-auto',
   };
 
   // Combine classes
@@ -216,4 +209,4 @@ export function GridItem({
       {children}
     </div>
   );
-} 
+}

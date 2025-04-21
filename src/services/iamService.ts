@@ -27,14 +27,11 @@ export class IAMService {
    */
   async upsertRole(role: Role): Promise<void> {
     try {
-      await this.redis.hset(
-        `${this.keyPrefix}:role:${role.id}`,
-        {
-          name: role.name,
-          permissions: JSON.stringify(role.permissions),
-          metadata: JSON.stringify(role.metadata || {})
-        }
-      );
+      await this.redis.hset(`${this.keyPrefix}:role:${role.id}`, {
+        name: role.name,
+        permissions: JSON.stringify(role.permissions),
+        metadata: JSON.stringify(role.metadata || {}),
+      });
 
       logger.info('Role updated', 'iam', { roleId: role.id });
     } catch (error) {
@@ -55,7 +52,7 @@ export class IAMService {
         id: roleId,
         name: roleData.name,
         permissions: JSON.parse(roleData.permissions),
-        metadata: JSON.parse(roleData.metadata)
+        metadata: JSON.parse(roleData.metadata),
       };
     } catch (error) {
       logger.error('Failed to get role', 'iam', { error, roleId });
@@ -99,13 +96,10 @@ export class IAMService {
   /**
    * Check if user has permission
    */
-  async hasPermission(
-    userId: string,
-    permission: Permission
-  ): Promise<boolean> {
+  async hasPermission(userId: string, permission: Permission): Promise<boolean> {
     try {
       const roles = await this.getUserRoles(userId);
-      
+
       for (const role of roles) {
         const hasPermission = role.permissions.some(p => {
           const [resource, action] = p.split(':');
@@ -134,7 +128,7 @@ export class IAMService {
         id: 'admin',
         name: 'Administrator',
         permissions: ['*:*'],
-        metadata: { isSystem: true }
+        metadata: { isSystem: true },
       },
       {
         id: 'user',
@@ -145,23 +139,20 @@ export class IAMService {
           'meditation:*',
           'booking:create',
           'booking:read',
-          'booking:update'
+          'booking:update',
         ],
-        metadata: { isSystem: true }
+        metadata: { isSystem: true },
       },
       {
         id: 'guest',
         name: 'Guest',
-        permissions: [
-          'meditation:read',
-          'booking:read'
-        ],
-        metadata: { isSystem: true }
-      }
+        permissions: ['meditation:read', 'booking:read'],
+        metadata: { isSystem: true },
+      },
     ];
 
     for (const role of defaultRoles) {
       await this.upsertRole(role);
     }
   }
-} 
+}

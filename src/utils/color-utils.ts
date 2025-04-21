@@ -1,7 +1,7 @@
 export enum ColorSpaces {
   RGB = 'rgb',
   HSL = 'hsl',
-  HSV = 'hsv'
+  HSV = 'hsv',
 }
 
 export interface RGB {
@@ -65,25 +65,21 @@ export class ColorUtils {
       const hue2rgb = (p: number, q: number, t: number) => {
         if (t < 0) t += 1;
         if (t > 1) t -= 1;
-        if (t < 1/6) return p + (q - p) * 6 * t;
-        if (t < 1/2) return q;
-        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        if (t < 1 / 6) return p + (q - p) * 6 * t;
+        if (t < 1 / 2) return q;
+        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
         return p;
       };
 
       const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
       const p = 2 * l - q;
 
-      r = hue2rgb(p, q, h + 1/3);
+      r = hue2rgb(p, q, h + 1 / 3);
       g = hue2rgb(p, q, h);
-      b = hue2rgb(p, q, h - 1/3);
+      b = hue2rgb(p, q, h - 1 / 3);
     }
 
-    return [
-      Math.round(r * 255),
-      Math.round(g * 255),
-      Math.round(b * 255)
-    ];
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
   }
 
   /**
@@ -91,7 +87,9 @@ export class ColorUtils {
    */
   public static async rgbToLab(imageData: ImageData): Promise<LAB> {
     // Get average RGB from image data
-    let r = 0, g = 0, b = 0;
+    let r = 0,
+      g = 0,
+      b = 0;
     for (let i = 0; i < imageData.data.length; i += 4) {
       r += imageData.data[i];
       g += imageData.data[i + 1];
@@ -109,17 +107,17 @@ export class ColorUtils {
 
     // Convert XYZ to Lab
     x = x / 0.95047;
-    y = y / 1.00000;
+    y = y / 1.0;
     z = z / 1.08883;
 
-    x = x > 0.008856 ? Math.pow(x, 1/3) : (7.787 * x) + 16/116;
-    y = y > 0.008856 ? Math.pow(y, 1/3) : (7.787 * y) + 16/116;
-    z = z > 0.008856 ? Math.pow(z, 1/3) : (7.787 * z) + 16/116;
+    x = x > 0.008856 ? Math.pow(x, 1 / 3) : 7.787 * x + 16 / 116;
+    y = y > 0.008856 ? Math.pow(y, 1 / 3) : 7.787 * y + 16 / 116;
+    z = z > 0.008856 ? Math.pow(z, 1 / 3) : 7.787 * z + 16 / 116;
 
     return {
-      L: (116 * y) - 16,
+      L: 116 * y - 16,
       a: 500 * (x - y),
-      b: 200 * (y - z)
+      b: 200 * (y - z),
     };
   }
 
@@ -139,17 +137,17 @@ export class ColorUtils {
 
     // Convert XYZ to Lab
     x = x / 0.95047;
-    y = y / 1.00000;
+    y = y / 1.0;
     z = z / 1.08883;
 
-    x = x > 0.008856 ? Math.pow(x, 1/3) : (7.787 * x) + 16/116;
-    y = y > 0.008856 ? Math.pow(y, 1/3) : (7.787 * y) + 16/116;
-    z = z > 0.008856 ? Math.pow(z, 1/3) : (7.787 * z) + 16/116;
+    x = x > 0.008856 ? Math.pow(x, 1 / 3) : 7.787 * x + 16 / 116;
+    y = y > 0.008856 ? Math.pow(y, 1 / 3) : 7.787 * y + 16 / 116;
+    z = z > 0.008856 ? Math.pow(z, 1 / 3) : 7.787 * z + 16 / 116;
 
     return {
-      L: (116 * y) - 16,
+      L: 116 * y - 16,
       a: 500 * (x - y),
-      b: 200 * (y - z)
+      b: 200 * (y - z),
     };
   }
 
@@ -161,11 +159,11 @@ export class ColorUtils {
     if (!result) {
       throw new Error('Invalid hex color');
     }
-    
+
     return {
       r: parseInt(result[1], 16),
       g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
+      b: parseInt(result[3], 16),
     };
   }
 
@@ -180,4 +178,4 @@ export class ColorUtils {
 
     return '#' + toHex(rgb.r) + toHex(rgb.g) + toHex(rgb.b);
   }
-} 
+}

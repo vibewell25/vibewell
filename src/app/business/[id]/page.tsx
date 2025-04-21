@@ -5,7 +5,6 @@ import { Layout } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-;
 import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
 import { ServiceBookingModal } from '@/components/business/ServiceBookingModal';
@@ -149,7 +148,7 @@ export default function BusinessPage({ params }: { params: { businessId: string 
         <div className="mt-12">
           <h2 className="text-2xl font-bold mb-6">Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {business.services.map((service) => (
+            {business.services.map(service => (
               <Card key={service.id}>
                 <CardContent className="p-6">
                   <h3 className="text-lg font-semibold mb-2">{service.name}</h3>
@@ -157,9 +156,7 @@ export default function BusinessPage({ params }: { params: { businessId: string 
                   <div className="flex justify-between items-center">
                     <div>
                       <span className="text-lg font-semibold">${service.price}</span>
-                      <span className="text-muted-foreground ml-2">
-                        ({service.duration} min)
-                      </span>
+                      <span className="text-muted-foreground ml-2">({service.duration} min)</span>
                     </div>
                     <Button
                       onClick={() => {
@@ -179,7 +176,7 @@ export default function BusinessPage({ params }: { params: { businessId: string 
         <div className="mt-12">
           <h2 className="text-2xl font-bold mb-6">Reviews</h2>
           <div className="space-y-6">
-            {business.reviews.map((review) => (
+            {business.reviews.map(review => (
               <Card key={review.id}>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-2">
@@ -210,4 +207,4 @@ export default function BusinessPage({ params }: { params: { businessId: string 
       </div>
     </Layout>
   );
-} 
+}

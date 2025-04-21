@@ -58,12 +58,7 @@ const POSE_CONFIGS = {
       shoulder: { min: 85, max: 95 },
       hip: { min: 170, max: 190 },
     },
-    instructions: [
-      'Lower body on ground',
-      'Arms slightly bent',
-      'Chest lifted',
-      'Shoulders down',
-    ],
+    instructions: ['Lower body on ground', 'Arms slightly bent', 'Chest lifted', 'Shoulders down'],
   },
   child: {
     keyPoints: ['hip', 'knee', 'ankle'],
@@ -71,12 +66,7 @@ const POSE_CONFIGS = {
       hip: { min: 45, max: 65 },
       knee: { min: 85, max: 95 },
     },
-    instructions: [
-      'Sitting on heels',
-      'Forehead on ground',
-      'Arms extended',
-      'Shoulders relaxed',
-    ],
+    instructions: ['Sitting on heels', 'Forehead on ground', 'Arms extended', 'Shoulders relaxed'],
   },
 };
 
@@ -143,10 +133,10 @@ const YogaPoseEstimation: React.FC<YogaPoseEstimationProps> = ({
     let score = 0;
 
     // Analyze each key point and angle
-    config.keyPoints.forEach((point) => {
+    config.keyPoints.forEach(point => {
       const angle = calculateAngle(detectedPose, point);
       const target = config.angles[point as keyof typeof config.angles];
-      
+
       if (angle < target.min) {
         newFeedback.push(`Increase ${point} angle`);
       } else if (angle > target.max) {
@@ -181,11 +171,7 @@ const YogaPoseEstimation: React.FC<YogaPoseEstimationProps> = ({
   return (
     <div className="relative w-full max-w-2xl mx-auto">
       <div className="relative aspect-video">
-        <video
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover"
-          playsInline
-        />
+        <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" playsInline />
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full"
@@ -195,9 +181,7 @@ const YogaPoseEstimation: React.FC<YogaPoseEstimationProps> = ({
 
         {/* Pose Score Indicator */}
         <div className="absolute top-4 right-4 bg-white/90 p-2 rounded-lg backdrop-blur-sm">
-          <div className="text-lg font-semibold">
-            Score: {poseScore.toFixed(0)}%
-          </div>
+          <div className="text-lg font-semibold">Score: {poseScore.toFixed(0)}%</div>
         </div>
       </div>
 
@@ -205,12 +189,14 @@ const YogaPoseEstimation: React.FC<YogaPoseEstimationProps> = ({
       <div className="mt-4 p-4 bg-white rounded-lg shadow">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold">
-            {pose.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')} Pose
+            {pose
+              .split('-')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ')}{' '}
+            Pose
           </h3>
           <button
-            className={`px-4 py-2 rounded ${
-              isAnalyzing ? 'bg-red-500' : 'bg-primary'
-            } text-white`}
+            className={`px-4 py-2 rounded ${isAnalyzing ? 'bg-red-500' : 'bg-primary'} text-white`}
             onClick={() => setIsAnalyzing(!isAnalyzing)}
           >
             {isAnalyzing ? 'Stop Analysis' : 'Start Analysis'}
@@ -222,7 +208,9 @@ const YogaPoseEstimation: React.FC<YogaPoseEstimationProps> = ({
           <h4 className="font-medium mb-2">Key Points:</h4>
           <ul className="list-disc pl-5 space-y-1">
             {POSE_CONFIGS[pose].instructions.map((instruction, index) => (
-              <li key={index} className="text-sm">{instruction}</li>
+              <li key={index} className="text-sm">
+                {instruction}
+              </li>
             ))}
           </ul>
         </div>
@@ -233,7 +221,9 @@ const YogaPoseEstimation: React.FC<YogaPoseEstimationProps> = ({
             <h4 className="font-medium mb-2">Adjustments Needed:</h4>
             <ul className="list-disc pl-5 space-y-1">
               {feedback.map((item, index) => (
-                <li key={index} className="text-sm text-yellow-800">{item}</li>
+                <li key={index} className="text-sm text-yellow-800">
+                  {item}
+                </li>
               ))}
             </ul>
           </div>
@@ -246,7 +236,7 @@ const YogaPoseEstimation: React.FC<YogaPoseEstimationProps> = ({
 // Helper functions
 const calculateAngle = (pose: poseDetection.Pose, joint: string): number => {
   const keypoints = pose.keypoints;
-  
+
   const jointConnections: Record<string, [string, string, string]> = {
     knee: ['hip', 'knee', 'ankle'],
     hip: ['shoulder', 'hip', 'knee'],
@@ -257,20 +247,14 @@ const calculateAngle = (pose: poseDetection.Pose, joint: string): number => {
   if (!jointConnections[joint]) return 0;
 
   const [p1Name, p2Name, p3Name] = jointConnections[joint];
-  
+
   const p1 = keypoints.find(kp => kp.name === p1Name);
   const p2 = keypoints.find(kp => kp.name === p2Name);
   const p3 = keypoints.find(kp => kp.name === p3Name);
 
   if (!p1?.x || !p1?.y || !p2?.x || !p2?.y || !p3?.x || !p3?.y) return 0;
 
-  const angle = Math.atan2(
-    p3.y - p2.y,
-    p3.x - p2.x
-  ) - Math.atan2(
-    p1.y - p2.y,
-    p1.x - p2.x
-  );
+  const angle = Math.atan2(p3.y - p2.y, p3.x - p2.x) - Math.atan2(p1.y - p2.y, p1.x - p2.x);
 
   return Math.abs(angle * (180 / Math.PI));
 };
@@ -298,4 +282,4 @@ const drawGuideLines = (ctx: CanvasRenderingContext2D, pose: string) => {
   // This would show the target pose alignment
 };
 
-export default YogaPoseEstimation; 
+export default YogaPoseEstimation;

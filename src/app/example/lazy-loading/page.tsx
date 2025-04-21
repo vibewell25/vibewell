@@ -8,7 +8,9 @@ const LazyResourceDetail = React.lazy(() => import('@/components/resource-detail
 const LazyEventCalendar = React.lazy(() => import('@/components/events-calendar'));
 
 // Or using our HOC
-const LazyNotifications = withLazyLoading(() => import('@/components/notifications/NotificationCenter'));
+const LazyNotifications = withLazyLoading(
+  () => import('@/components/notifications/NotificationCenter')
+);
 
 export default function LazyLoadingExample() {
   const [showResourceDetail, setShowResourceDetail] = useState(false);
@@ -26,14 +28,14 @@ export default function LazyLoadingExample() {
         >
           {showResourceDetail ? 'Hide' : 'Show'} Resource Detail
         </button>
-        
+
         <button
           onClick={() => setShowEventCalendar(!showEventCalendar)}
           className="p-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
         >
           {showEventCalendar ? 'Hide' : 'Show'} Event Calendar
         </button>
-        
+
         <button
           onClick={() => setShowNotifications(!showNotifications)}
           className="p-3 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors"
@@ -46,9 +48,11 @@ export default function LazyLoadingExample() {
         {showResourceDetail && (
           <div className="border p-4 rounded shadow-md">
             <h2 className="text-xl font-semibold mb-4">Resource Detail (Lazy Loaded)</h2>
-            <React.Suspense fallback={<div className="animate-pulse bg-gray-200 h-64 rounded"></div>}>
-              <LazyResourceDetail 
-                title="Sample Resource" 
+            <React.Suspense
+              fallback={<div className="animate-pulse bg-gray-200 h-64 rounded"></div>}
+            >
+              <LazyResourceDetail
+                title="Sample Resource"
                 description="This component was lazy loaded"
                 type="guide"
                 author="Jane Doe"
@@ -61,7 +65,9 @@ export default function LazyLoadingExample() {
         {showEventCalendar && (
           <div className="border p-4 rounded shadow-md">
             <h2 className="text-xl font-semibold mb-4">Event Calendar (Lazy Loaded)</h2>
-            <React.Suspense fallback={<div className="animate-pulse bg-gray-200 h-64 rounded"></div>}>
+            <React.Suspense
+              fallback={<div className="animate-pulse bg-gray-200 h-64 rounded"></div>}
+            >
               <LazyEventCalendar />
             </React.Suspense>
           </div>
@@ -81,7 +87,8 @@ export default function LazyLoadingExample() {
           <li>Components are only loaded when they are needed (when buttons are clicked)</li>
           <li>Loading states are shown while components are being fetched</li>
           <li>This reduces initial bundle size and improves performance</li>
-          <li>There are two ways to implement lazy loading shown here:
+          <li>
+            There are two ways to implement lazy loading shown here:
             <ol className="list-decimal pl-5 mt-2">
               <li>Using React.lazy directly with Suspense</li>
               <li>Using our custom withLazyLoading HOC that handles Suspense for you</li>
@@ -91,4 +98,4 @@ export default function LazyLoadingExample() {
       </div>
     </div>
   );
-} 
+}

@@ -13,4 +13,4 @@ export default function ApiDocs() {
       </div>
     </div>
   );
-} 
+}

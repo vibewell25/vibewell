@@ -36,16 +36,11 @@ export class InventoryPredictionService {
   ): Promise<DemandPrediction> {
     try {
       // Gather historical data
-      const [
-        usage,
-        seasonality,
-        events,
-        trends
-      ] = await Promise.all([
+      const [usage, seasonality, events, trends] = await Promise.all([
         this.getProductUsageHistory(productId),
         this.getSeasonalityData(productId),
         this.getUpcomingEvents(),
-        this.getMarketTrends()
+        this.getMarketTrends(),
       ]);
 
       // Prepare data for ML model
@@ -53,7 +48,7 @@ export class InventoryPredictionService {
         usage,
         seasonality,
         events,
-        trends
+        trends,
       });
 
       // Generate prediction using OpenAI
@@ -78,16 +73,11 @@ export class InventoryPredictionService {
   ): Promise<ReorderSuggestion> {
     try {
       // Get product data
-      const [
-        product,
-        demand,
-        supplier,
-        costs
-      ] = await Promise.all([
+      const [product, demand, supplier, costs] = await Promise.all([
         this.getProductDetails(productId),
         this.predictDemand(productId),
         this.getSupplierData(productId),
-        this.getInventoryCosts(productId)
+        this.getInventoryCosts(productId),
       ]);
 
       // Calculate optimal order quantity
@@ -95,14 +85,14 @@ export class InventoryPredictionService {
         annualDemand: demand.predictedDemand * (365 / demand.timeframe),
         orderingCost: costs.orderingCost,
         holdingCost: costs.holdingCost,
-        unitCost: product.cost
+        unitCost: product.cost,
       });
 
       // Calculate reorder point
       const reorderPoint = this.calculateReorderPoint({
         leadTime: supplier.leadTime,
         dailyDemand: demand.predictedDemand / demand.timeframe,
-        serviceLevel: 0.95 // 95% service level
+        serviceLevel: 0.95, // 95% service level
       });
 
       // Generate suggestion
@@ -114,13 +104,13 @@ export class InventoryPredictionService {
           currentStock,
           eoq,
           reorderPoint,
-          demand
+          demand,
         }),
         costOptimization: {
           batchSize: eoq,
           timing: this.suggestOrderTiming(currentStock, reorderPoint, demand),
-          potentialSavings: this.calculatePotentialSavings(eoq, costs)
-        }
+          potentialSavings: this.calculatePotentialSavings(eoq, costs),
+        },
       };
 
       return suggestion;
@@ -136,16 +126,11 @@ export class InventoryPredictionService {
   async analyzeSupplierPerformance(productId: string): Promise<Record<string, any>> {
     try {
       // Gather supplier data
-      const [
-        orders,
-        deliveries,
-        quality,
-        costs
-      ] = await Promise.all([
+      const [orders, deliveries, quality, costs] = await Promise.all([
         this.getSupplierOrders(productId),
         this.getDeliveryHistory(productId),
         this.getQualityMetrics(productId),
-        this.getSupplierCosts(productId)
+        this.getSupplierCosts(productId),
       ]);
 
       // Calculate performance metrics
@@ -153,7 +138,7 @@ export class InventoryPredictionService {
         reliability: this.calculateReliability(orders, deliveries),
         qualityScore: this.calculateQualityScore(quality),
         costEfficiency: this.calculateCostEfficiency(costs),
-        leadTimeConsistency: this.calculateLeadTimeConsistency(deliveries)
+        leadTimeConsistency: this.calculateLeadTimeConsistency(deliveries),
       };
 
       // Generate recommendations
@@ -162,7 +147,7 @@ export class InventoryPredictionService {
       return {
         metrics,
         recommendations,
-        trends: this.analyzePerformanceTrends(metrics)
+        trends: this.analyzePerformanceTrends(metrics),
       };
     } catch (error) {
       logger.error('Failed to analyze supplier performance', 'InventoryPrediction', { error });
@@ -175,8 +160,8 @@ export class InventoryPredictionService {
       where: { productId },
       orderBy: { createdAt: 'desc' },
       include: {
-        serviceHistory: true
-      }
+        serviceHistory: true,
+      },
     });
   }
 
@@ -189,16 +174,16 @@ export class InventoryPredictionService {
     return prisma.event.findMany({
       where: {
         date: {
-          gte: new Date()
-        }
-      }
+          gte: new Date(),
+        },
+      },
     });
   }
 
   private async getMarketTrends() {
     return prisma.marketTrend.findMany({
       orderBy: { createdAt: 'desc' },
-      take: 10
+      take: 10,
     });
   }
 
@@ -217,7 +202,7 @@ export class InventoryPredictionService {
       predictedDemand: 0,
       confidence: 0,
       seasonalFactors: [],
-      timeframe
+      timeframe,
     };
   }
 
@@ -225,7 +210,7 @@ export class InventoryPredictionService {
     // Implementation for storing prediction
     logger.info('Storing demand prediction', 'InventoryPrediction', {
       productId,
-      prediction
+      prediction,
     });
   }
 
@@ -234,8 +219,8 @@ export class InventoryPredictionService {
       where: { id: productId },
       include: {
         supplier: true,
-        performance: true
-      }
+        performance: true,
+      },
     });
   }
 
@@ -243,9 +228,9 @@ export class InventoryPredictionService {
     return prisma.supplier.findFirst({
       where: {
         products: {
-          some: { id: productId }
-        }
-      }
+          some: { id: productId },
+        },
+      },
     });
   }
 
@@ -254,7 +239,7 @@ export class InventoryPredictionService {
     return {
       orderingCost: 20, // Default values
       holdingCost: 5,
-      stockoutCost: 100
+      stockoutCost: 100,
     };
   }
 
@@ -275,7 +260,7 @@ export class InventoryPredictionService {
   }): number {
     const { leadTime, dailyDemand, serviceLevel } = params;
     const safetyStock = this.calculateSafetyStock(dailyDemand, serviceLevel);
-    return (leadTime * dailyDemand) + safetyStock;
+    return leadTime * dailyDemand + safetyStock;
   }
 
   private calculateSafetyStock(dailyDemand: number, serviceLevel: number): number {
@@ -283,10 +268,7 @@ export class InventoryPredictionService {
     return dailyDemand * 7; // 1 week safety stock as placeholder
   }
 
-  private calculateUrgency(
-    currentStock: number,
-    reorderPoint: number
-  ): 'LOW' | 'MEDIUM' | 'HIGH' {
+  private calculateUrgency(currentStock: number, reorderPoint: number): 'LOW' | 'MEDIUM' | 'HIGH' {
     const ratio = currentStock / reorderPoint;
     if (ratio <= 0.5) return 'HIGH';
     if (ratio <= 0.75) return 'MEDIUM';
@@ -312,10 +294,7 @@ export class InventoryPredictionService {
     return '';
   }
 
-  private calculatePotentialSavings(
-    eoq: number,
-    costs: Record<string, number>
-  ): number {
+  private calculatePotentialSavings(eoq: number, costs: Record<string, number>): number {
     // Implementation for calculating potential savings
     return 0;
   }
@@ -360,7 +339,9 @@ export class InventoryPredictionService {
     return 0;
   }
 
-  private async generateSupplierRecommendations(metrics: Record<string, number>): Promise<string[]> {
+  private async generateSupplierRecommendations(
+    metrics: Record<string, number>
+  ): Promise<string[]> {
     // Implementation for generating recommendations
     return [];
   }
@@ -369,4 +350,4 @@ export class InventoryPredictionService {
     // Implementation for analyzing performance trends
     return {};
   }
-} 
+}

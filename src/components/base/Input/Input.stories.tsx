@@ -81,7 +81,7 @@ export const Password: Story = {
 };
 
 export const WithLabel: Story = {
-  render: (args) => (
+  render: args => (
     <div className="space-y-2">
       <label htmlFor="email" className="text-sm font-medium">
         Email
@@ -92,20 +92,13 @@ export const WithLabel: Story = {
 };
 
 export const WithHelperText: Story = {
-  render: (args) => (
+  render: args => (
     <div className="space-y-2">
       <label htmlFor="password" className="text-sm font-medium">
         Password
       </label>
-      <Input
-        id="password"
-        type="password"
-        placeholder="Enter your password..."
-        {...args}
-      />
-      <p className="text-sm text-muted-foreground">
-        Password must be at least 8 characters long
-      </p>
+      <Input id="password" type="password" placeholder="Enter your password..." {...args} />
+      <p className="text-sm text-muted-foreground">Password must be at least 8 characters long</p>
     </div>
   ),
-}; 
+};

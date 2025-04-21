@@ -11,7 +11,7 @@ interface SharePageProps {
 
 export async function generateMetadata({ params }: SharePageProps): Promise<Metadata> {
   const shareData = await getShareData(params.id);
-  
+
   if (!shareData) {
     return {
       title: 'Share Not Found',
@@ -50,10 +50,10 @@ export async function generateMetadata({ params }: SharePageProps): Promise<Meta
 
 export default async function SharePage({ params }: SharePageProps) {
   const shareData = await getShareData(params.id);
-  
+
   if (!shareData) {
     notFound();
   }
 
   return <ShareView shareData={shareData} />;
-} 
+}

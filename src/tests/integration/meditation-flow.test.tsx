@@ -1,4 +1,10 @@
-import { render, fireEvent, waitFor, setupGlobalMocks, cleanupGlobalMocks } from '../utils/test-utils';
+import {
+  render,
+  fireEvent,
+  waitFor,
+  setupGlobalMocks,
+  cleanupGlobalMocks,
+} from '../utils/test-utils';
 import { act } from 'react-dom/test-utils';
 import MeditationEnvironment from '@/components/ar/MeditationEnvironment';
 import { MeditationProvider } from '@/contexts/MeditationContext';
@@ -25,7 +31,7 @@ describe('Meditation Flow Integration', () => {
 
   it('completes full meditation session flow', async () => {
     const onStateChange = jest.fn();
-    
+
     const { getByText, getByLabelText } = render(
       <MeditationEnvironment
         theme="zen-garden"
@@ -58,7 +64,7 @@ describe('Meditation Flow Integration', () => {
 
   it('handles meditation session interruptions', async () => {
     const onStateChange = jest.fn();
-    
+
     const { getByText } = render(
       <MeditationEnvironment
         theme="zen-garden"
@@ -71,12 +77,12 @@ describe('Meditation Flow Integration', () => {
 
     // Start session
     fireEvent.click(getByText('Begin Meditation'));
-    
+
     // Simulate page visibility change
     act(() => {
       Object.defineProperty(document, 'visibilityState', {
         value: 'hidden',
-        writable: true
+        writable: true,
       });
       document.dispatchEvent(new Event('visibilitychange'));
     });
@@ -87,7 +93,7 @@ describe('Meditation Flow Integration', () => {
     act(() => {
       Object.defineProperty(document, 'visibilityState', {
         value: 'visible',
-        writable: true
+        writable: true,
       });
       document.dispatchEvent(new Event('visibilitychange'));
     });
@@ -97,7 +103,7 @@ describe('Meditation Flow Integration', () => {
 
   it('maintains meditation preferences across sessions', async () => {
     const onStateChange = jest.fn();
-    
+
     const { getByText, getByLabelText, rerender } = render(
       <MeditationEnvironment
         theme="zen-garden"
@@ -110,14 +116,16 @@ describe('Meditation Flow Integration', () => {
 
     // Start and customize session
     fireEvent.click(getByText('Begin Meditation'));
-    
+
     // Adjust settings
     const volumeSlider = getByLabelText(/volume/i);
     fireEvent.change(volumeSlider, { target: { value: '0.6' } });
-    
-    expect(onStateChange).toHaveBeenCalledWith(expect.objectContaining({
-      volume: 0.6
-    }));
+
+    expect(onStateChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        volume: 0.6,
+      })
+    );
 
     // End session
     fireEvent.click(getByText('End Session'));
@@ -141,7 +149,7 @@ describe('Meditation Flow Integration', () => {
 
   it('handles errors gracefully', async () => {
     const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-    
+
     // Mock audio loading failure
     window.fetch = jest.fn().mockRejectedValue(new Error('Failed to load audio'));
 
@@ -156,16 +164,16 @@ describe('Meditation Flow Integration', () => {
     );
 
     fireEvent.click(getByText('Begin Meditation'));
-    
+
     // Verify error message
     expect(await findByText(/Failed to load audio/)).toBeInTheDocument();
-    
+
     consoleError.mockRestore();
   });
 
   it('syncs WebGL scene with meditation state', async () => {
     const mockUpdateScene = jest.fn();
-    
+
     const { getByLabelText } = render(
       <MeditationEnvironment
         theme="zen-garden"
@@ -183,9 +191,9 @@ describe('Meditation Flow Integration', () => {
     await waitFor(() => {
       expect(mockUpdateScene).toHaveBeenCalledWith(
         expect.objectContaining({
-          lightingIntensity: 1.0
+          lightingIntensity: 1.0,
         })
       );
     });
   });
-}); 
+});

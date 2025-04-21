@@ -3,9 +3,10 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { init as SentryInit, captureException, setUser, setTag } from '@sentry/nextjs';
 import posthog from 'posthog-js';
 import type { NextWebVitalsMetric } from 'next/app';
+import React from 'react';
 
 // Initialize monitoring services
-export function initMonitoring() {
+export function initMonitoring(): void {
   // Initialize Sentry for error tracking
   if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
     SentryInit({
@@ -39,16 +40,16 @@ export function initMonitoring() {
   }
 }
 
-// Analytics component wrapper
-export function AnalyticsWrapper({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      {children}
-      <Analytics />
-      <SpeedInsights />
-    </>
-  );
-}
+// Analytics component wrapper - moved to a separate file: monitoring/analytics-wrapper.tsx
+// export function AnalyticsWrapper({ children }: { children: React.ReactNode }) {
+//   return (
+//     <>
+//       {children}
+//       <Analytics />
+//       <SpeedInsights />
+//     </>
+//   );
+// }
 
 // Custom analytics events with type safety
 type EventName = 
@@ -77,14 +78,14 @@ interface EventProperties {
 export const trackEvent = <T extends EventName>(
   eventName: T,
   properties: EventProperties[T]
-) => {
+): void => {
   if (process.env.NODE_ENV === 'production') {
     posthog.capture(eventName, properties);
   }
 };
 
 // Performance monitoring
-export const trackWebVitals = ({ id, name, label, value }: NextWebVitalsMetric) => {
+export const trackWebVitals = ({ id, name, label, value }: NextWebVitalsMetric): void => {
   if (process.env.NODE_ENV === 'production') {
     posthog.capture('web_vitals', {
       metric_id: id,
@@ -103,7 +104,7 @@ interface UserData {
   role?: string;
 }
 
-export const trackUserSession = (userData: UserData) => {
+export const trackUserSession = (userData: UserData): void => {
   if (process.env.NODE_ENV === 'production') {
     // Set user in PostHog
     posthog.identify(userData.id, {
@@ -127,7 +128,7 @@ export const trackUserSession = (userData: UserData) => {
 };
 
 // Error tracking with context
-export const trackError = (error: Error, context?: Record<string, any>) => {
+export const trackError = (error: Error, context?: Record<string, unknown>): void => {
   if (process.env.NODE_ENV === 'production') {
     captureException(error, { extra: context });
     

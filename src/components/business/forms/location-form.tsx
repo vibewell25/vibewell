@@ -2,27 +2,27 @@
 
 import { useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import { 
-  BusinessProfileFormValues, 
-  LocationFormProps 
+import {
+  BusinessProfileFormValues,
+  LocationFormProps,
 } from '@/components/business/business-profile-wizard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
@@ -87,39 +87,39 @@ export function LocationForm({ form }: LocationFormProps) {
   const [virtualServices, setVirtualServices] = useState(
     form.getValues('offersVirtualServices') || false
   );
-  
+
   const [detectLocation, setDetectLocation] = useState(false);
 
   // Handle auto-detect location
   const handleDetectLocation = () => {
     setDetectLocation(true);
-    
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
+        async position => {
           try {
             // Reverse geocoding to get address from coordinates
             const response = await fetch(
               `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
             );
-            
+
             if (!response.ok) {
               throw new Error('Geocoding API request failed');
             }
-            
+
             const data = await response.json();
-            
+
             if (data.status === 'OK' && data.results[0]) {
               const addressComponents = data.results[0].address_components;
               let street = '';
               let city = '';
               let state = '';
               let zipCode = '';
-              
+
               // Extract address components
               for (const component of addressComponents) {
                 const types = component.types;
-                
+
                 if (types.includes('street_number')) {
                   street = component.long_name;
                 } else if (types.includes('route')) {
@@ -132,16 +132,20 @@ export function LocationForm({ form }: LocationFormProps) {
                   zipCode = component.long_name;
                 }
               }
-              
+
               // Update form values
               form.setValue('addressLine1', street.trim(), { shouldValidate: true });
               form.setValue('city', city, { shouldValidate: true });
               form.setValue('state', state, { shouldValidate: true });
               form.setValue('zipCode', zipCode, { shouldValidate: true });
-              
+
               // Save coordinates
-              form.setValue('latitude', position.coords.latitude.toString(), { shouldValidate: true });
-              form.setValue('longitude', position.coords.longitude.toString(), { shouldValidate: true });
+              form.setValue('latitude', position.coords.latitude.toString(), {
+                shouldValidate: true,
+              });
+              form.setValue('longitude', position.coords.longitude.toString(), {
+                shouldValidate: true,
+              });
             }
           } catch (error) {
             console.error('Error detecting location:', error);
@@ -149,7 +153,7 @@ export function LocationForm({ form }: LocationFormProps) {
             setDetectLocation(false);
           }
         },
-        (error) => {
+        error => {
           console.error('Geolocation error:', error);
           setDetectLocation(false);
         }
@@ -170,9 +174,7 @@ export function LocationForm({ form }: LocationFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>Physical Address</CardTitle>
-          <CardDescription>
-            Enter the physical location of your business
-          </CardDescription>
+          <CardDescription>Enter the physical location of your business</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex justify-end">
@@ -238,17 +240,14 @@ export function LocationForm({ form }: LocationFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>State</FormLabel>
-                  <Select 
-                    onValueChange={field.onChange} 
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select state" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {US_STATES.map((state) => (
+                      {US_STATES.map(state => (
                         <SelectItem key={state.value} value={state.value}>
                           {state.label}
                         </SelectItem>
@@ -260,7 +259,7 @@ export function LocationForm({ form }: LocationFormProps) {
               )}
             />
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -282,10 +281,7 @@ export function LocationForm({ form }: LocationFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Country</FormLabel>
-                  <Select 
-                    onValueChange={field.onChange} 
-                    defaultValue={field.value || 'US'}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value || 'US'}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select country" />
@@ -309,9 +305,9 @@ export function LocationForm({ form }: LocationFormProps) {
               <FormItem>
                 <FormLabel>Business Hours (Optional)</FormLabel>
                 <FormControl>
-                  <Textarea 
-                    placeholder="Example: Mon-Fri 9am-5pm, Sat 10am-3pm, Closed Sun" 
-                    {...field} 
+                  <Textarea
+                    placeholder="Example: Mon-Fri 9am-5pm, Sat 10am-3pm, Closed Sun"
+                    {...field}
                   />
                 </FormControl>
                 <FormMessage />
@@ -324,9 +320,7 @@ export function LocationForm({ form }: LocationFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>Service Area</CardTitle>
-          <CardDescription>
-            Define where you provide services
-          </CardDescription>
+          <CardDescription>Define where you provide services</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <FormField
@@ -357,7 +351,7 @@ export function LocationForm({ form }: LocationFormProps) {
                 <FormControl>
                   <Switch
                     checked={field.value}
-                    onCheckedChange={(checked) => {
+                    onCheckedChange={checked => {
                       field.onChange(checked);
                       setVirtualServices(checked);
                     }}
@@ -375,9 +369,9 @@ export function LocationForm({ form }: LocationFormProps) {
                 <FormItem>
                   <FormLabel>Virtual Services Description</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Describe the virtual services you offer and how they work" 
-                      {...field} 
+                    <Textarea
+                      placeholder="Describe the virtual services you offer and how they work"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -389,4 +383,4 @@ export function LocationForm({ form }: LocationFormProps) {
       </Card>
     </div>
   );
-} 
+}

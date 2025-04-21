@@ -167,4 +167,4 @@ export const AccessibleCarousel: React.FC<AccessibleCarouselProps> = ({
   );
 };
 
-export default AccessibleCarousel; 
+export default AccessibleCarousel;

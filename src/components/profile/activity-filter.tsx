@@ -1,9 +1,15 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, Calendar } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Search, Filter, Calendar } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 
 interface ActivityFilterProps {
   onSearch: (query: string) => void;
@@ -16,8 +22,8 @@ export function ActivityFilter({
   onFilterChange,
   onDateRangeChange,
 }: ActivityFilterProps) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filter, setFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filter, setFilter] = useState('all');
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: new Date(new Date().setDate(new Date().getDate() - 30)),
     to: new Date(),
@@ -48,7 +54,7 @@ export function ActivityFilter({
             id="search"
             placeholder="Search activities..."
             value={searchQuery}
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={e => handleSearch(e.target.value)}
             className="pl-8"
           />
         </div>
@@ -77,7 +83,7 @@ export function ActivityFilter({
           <Input
             type="date"
             value={dateRange.from.toISOString().substring(0, 10)}
-            onChange={(e) => {
+            onChange={e => {
               const newDate = new Date(e.target.value);
               const newRange = { from: newDate, to: dateRange.to };
               handleDateRangeChange(newRange);
@@ -88,15 +94,15 @@ export function ActivityFilter({
           <Input
             type="date"
             value={dateRange.to.toISOString().substring(0, 10)}
-            onChange={(e) => {
+            onChange={e => {
               const newDate = new Date(e.target.value);
               const newRange = { from: dateRange.from, to: newDate };
               handleDateRangeChange(newRange);
             }}
             className="w-full"
           />
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             size="icon"
             onClick={() => {
               const today = new Date();
@@ -111,4 +117,4 @@ export function ActivityFilter({
       </div>
     </div>
   );
-} 
+}

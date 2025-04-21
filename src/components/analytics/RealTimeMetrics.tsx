@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Download, RefreshCw } from 'lucide-react';
@@ -38,13 +47,16 @@ export function RealTimeMetrics() {
         setTimeout(connectWebSocket, 5000);
       };
 
-      ws.onmessage = (event) => {
+      ws.onmessage = event => {
         const data = JSON.parse(event.data);
         setMetricsHistory(prev => {
-          const newHistory = [...prev, {
-            timestamp: format(new Date(data.timestamp), 'HH:mm:ss'),
-            ...data.metrics
-          }].slice(-50); // Keep last 50 data points
+          const newHistory = [
+            ...prev,
+            {
+              timestamp: format(new Date(data.timestamp), 'HH:mm:ss'),
+              ...data.metrics,
+            },
+          ].slice(-50); // Keep last 50 data points
           return newHistory;
         });
         setLastUpdated(new Date());
@@ -69,9 +81,11 @@ export function RealTimeMetrics() {
         data.interactions,
         data.conversions,
         data.errors,
-        `${data.conversionRate.toFixed(2)}%`
-      ])
-    ].map(row => row.join(',')).join('\n');
+        `${data.conversionRate.toFixed(2)}%`,
+      ]),
+    ]
+      .map(row => row.join(','))
+      .join('\n');
 
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
@@ -120,7 +134,12 @@ export function RealTimeMetrics() {
                   <Tooltip />
                   <Legend />
                   <Line type="monotone" dataKey="views" stroke="#2563eb" name="Views" />
-                  <Line type="monotone" dataKey="interactions" stroke="#16a34a" name="Interactions" />
+                  <Line
+                    type="monotone"
+                    dataKey="interactions"
+                    stroke="#16a34a"
+                    name="Interactions"
+                  />
                   <Line type="monotone" dataKey="conversions" stroke="#9333ea" name="Conversions" />
                 </LineChart>
               </ResponsiveContainer>
@@ -136,7 +155,12 @@ export function RealTimeMetrics() {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="interactions" stroke="#16a34a" name="Interactions" />
+                  <Line
+                    type="monotone"
+                    dataKey="interactions"
+                    stroke="#16a34a"
+                    name="Interactions"
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -152,7 +176,12 @@ export function RealTimeMetrics() {
                   <Tooltip />
                   <Legend />
                   <Line type="monotone" dataKey="conversions" stroke="#9333ea" name="Conversions" />
-                  <Line type="monotone" dataKey="conversionRate" stroke="#f59e0b" name="Conversion Rate (%)" />
+                  <Line
+                    type="monotone"
+                    dataKey="conversionRate"
+                    stroke="#f59e0b"
+                    name="Conversion Rate (%)"
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -176,4 +205,4 @@ export function RealTimeMetrics() {
       </CardContent>
     </Card>
   );
-} 
+}

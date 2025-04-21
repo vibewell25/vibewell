@@ -27,13 +27,11 @@ export class RecoveryCodeService {
       });
 
       // Hash the codes before storing
-      const hashedCodes = await Promise.all(
-        codes.map(code => this.encryption.hash(code))
-      );
+      const hashedCodes = await Promise.all(codes.map(code => this.encryption.hash(code)));
 
       // Store the hashed codes in the database
       await prisma.recoveryCode.deleteMany({
-        where: { userId }
+        where: { userId },
       });
 
       await prisma.recoveryCode.createMany({
@@ -41,21 +39,21 @@ export class RecoveryCodeService {
           userId,
           code: hash,
           used: false,
-          createdAt: new Date()
-        }))
+          createdAt: new Date(),
+        })),
       });
 
       // Log the generation event (without the actual codes)
       logger.info('Generated new recovery codes', 'security', {
         userId,
-        count
+        count,
       });
 
       return codes;
     } catch (error) {
       logger.error('Failed to generate recovery codes', 'security', {
         error,
-        userId
+        userId,
       });
       throw new Error('Failed to generate recovery codes');
     }
@@ -72,28 +70,28 @@ export class RecoveryCodeService {
       const recoveryCodes = await prisma.recoveryCode.findMany({
         where: {
           userId,
-          used: false
-        }
+          used: false,
+        },
       });
 
       // Check each code
       for (const storedCode of recoveryCodes) {
         const isValid = await this.encryption.verify(code, storedCode.code);
-        
+
         if (isValid) {
           // Mark the code as used
           await prisma.recoveryCode.update({
             where: { id: storedCode.id },
-            data: { 
+            data: {
               used: true,
-              usedAt: new Date()
-            }
+              usedAt: new Date(),
+            },
           });
 
           // Log the usage
           logger.info('Recovery code used successfully', 'security', {
             userId,
-            codeId: storedCode.id
+            codeId: storedCode.id,
           });
 
           return true;
@@ -102,14 +100,14 @@ export class RecoveryCodeService {
 
       // Log failed attempt
       logger.warn('Invalid recovery code attempt', 'security', {
-        userId
+        userId,
       });
 
       return false;
     } catch (error) {
       logger.error('Failed to verify recovery code', 'security', {
         error,
-        userId
+        userId,
       });
       throw new Error('Failed to verify recovery code');
     }
@@ -124,15 +122,15 @@ export class RecoveryCodeService {
       return await prisma.recoveryCode.count({
         where: {
           userId,
-          used: false
-        }
+          used: false,
+        },
       });
     } catch (error) {
       logger.error('Failed to get remaining recovery code count', 'security', {
         error,
-        userId
+        userId,
       });
       throw new Error('Failed to get remaining recovery code count');
     }
   }
-} 
+}

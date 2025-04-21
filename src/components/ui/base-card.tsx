@@ -4,48 +4,45 @@ import React, { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const cardVariants = cva(
-  "rounded-lg border bg-card text-card-foreground shadow-sm",
-  {
-    variants: {
-      variant: {
-        default: "border-border",
-        outline: "border-border bg-transparent",
-        ghost: "border-transparent bg-transparent shadow-none",
-        elevated: "border-transparent shadow-md",
-      },
-      padding: {
-        none: "",
-        sm: "p-3",
-        md: "p-4",
-        lg: "p-6",
-      },
-      size: {
-        sm: "max-w-sm",
-        md: "max-w-md",
-        lg: "max-w-lg",
-        xl: "max-w-xl",
-        full: "w-full"
-      },
-      rounded: {
-        none: "rounded-none",
-        sm: "rounded-sm",
-        md: "rounded-md",
-        lg: "rounded-lg",
-        xl: "rounded-xl",
-        full: "rounded-full",
-      }
+const cardVariants = cva('rounded-lg border bg-card text-card-foreground shadow-sm', {
+  variants: {
+    variant: {
+      default: 'border-border',
+      outline: 'border-border bg-transparent',
+      ghost: 'border-transparent bg-transparent shadow-none',
+      elevated: 'border-transparent shadow-md',
     },
-    defaultVariants: {
-      variant: "default",
-      padding: "md",
-      size: "md",
-      rounded: "lg"
+    padding: {
+      none: '',
+      sm: 'p-3',
+      md: 'p-4',
+      lg: 'p-6',
     },
-  }
-);
+    size: {
+      sm: 'max-w-sm',
+      md: 'max-w-md',
+      lg: 'max-w-lg',
+      xl: 'max-w-xl',
+      full: 'w-full',
+    },
+    rounded: {
+      none: 'rounded-none',
+      sm: 'rounded-sm',
+      md: 'rounded-md',
+      lg: 'rounded-lg',
+      xl: 'rounded-xl',
+      full: 'rounded-full',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+    padding: 'md',
+    size: 'md',
+    rounded: 'lg',
+  },
+});
 
-export interface BaseCardProps 
+export interface BaseCardProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof cardVariants> {
   header?: ReactNode;
@@ -63,7 +60,7 @@ export interface BaseCardProps
 
 /**
  * BaseCard - A foundational card component that can be extended by other card components
- * 
+ *
  * This component provides common card functionality with support for:
  * - Headers and footers
  * - Multiple visual variants
@@ -75,70 +72,65 @@ export interface BaseCardProps
  * - All standard div attributes
  */
 export const BaseCard = React.forwardRef<HTMLDivElement, BaseCardProps>(
-  ({ 
-    className,
-    variant,
-    padding,
-    size,
-    rounded,
-    header,
-    footer,
-    headerClassName,
-    footerClassName,
-    bodyClassName,
-    wrapperClassName,
-    isHoverable = false,
-    isClickable = false,
-    isCollapsible = false,
-    isCollapsed = false,
-    onCollapse,
-    children,
-    ...props 
-  }, ref) => {
+  (
+    {
+      className,
+      variant,
+      padding,
+      size,
+      rounded,
+      header,
+      footer,
+      headerClassName,
+      footerClassName,
+      bodyClassName,
+      wrapperClassName,
+      isHoverable = false,
+      isClickable = false,
+      isCollapsible = false,
+      isCollapsed = false,
+      onCollapse,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     // Handle collapse toggle
     const handleToggleCollapse = () => {
       if (isCollapsible && onCollapse) {
         onCollapse();
       }
     };
-    
+
     return (
-      <div 
-        className={cn(wrapperClassName)}
-        ref={ref}
-      >
+      <div className={cn(wrapperClassName)} ref={ref}>
         <div
           className={cn(
             cardVariants({ variant, padding, size, rounded }),
-            isHoverable && "transition-shadow hover:shadow-md",
-            isClickable && "cursor-pointer hover:shadow-md",
+            isHoverable && 'transition-shadow hover:shadow-md',
+            isClickable && 'cursor-pointer hover:shadow-md',
             className
           )}
           {...props}
         >
           {header && (
-            <div 
+            <div
               className={cn(
-                "flex items-center justify-between border-b px-4 py-3",
+                'flex items-center justify-between border-b px-4 py-3',
                 headerClassName
               )}
             >
-              <div className="flex-1">
-                {header}
-              </div>
+              <div className="flex-1">{header}</div>
               {isCollapsible && (
                 <button
                   type="button"
                   onClick={handleToggleCollapse}
                   className="ml-2 rounded-md p-1 hover:bg-muted/50"
                   aria-expanded={!isCollapsed}
-                  aria-label={isCollapsed ? "Expand" : "Collapse"}
+                  aria-label={isCollapsed ? 'Expand' : 'Collapse'}
                 >
                   <svg
-                    className={cn(
-                      "h-4 w-4 transition-transform",
-                      isCollapsed && "rotate-180"
-                    )}
+                    className={cn('h-4 w-4 transition-transform', isCollapsed && 'rotate-180')}
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                   >
@@ -155,29 +147,22 @@ export const BaseCard = React.forwardRef<HTMLDivElement, BaseCardProps>(
               )}
             </div>
           )}
-          
+
           {!isCollapsed && (
-            <div 
+            <div
               className={cn(
-                "card-body",
-                !header && !padding && "pt-4",
-                !footer && !padding && "pb-4",
+                'card-body',
+                !header && !padding && 'pt-4',
+                !footer && !padding && 'pb-4',
                 bodyClassName
               )}
             >
               {children}
             </div>
           )}
-          
+
           {footer && !isCollapsed && (
-            <div 
-              className={cn(
-                "border-t px-4 py-3",
-                footerClassName
-              )}
-            >
-              {footer}
-            </div>
+            <div className={cn('border-t px-4 py-3', footerClassName)}>{footer}</div>
           )}
         </div>
       </div>
@@ -185,4 +170,4 @@ export const BaseCard = React.forwardRef<HTMLDivElement, BaseCardProps>(
   }
 );
 
-BaseCard.displayName = "BaseCard"; 
+BaseCard.displayName = 'BaseCard';

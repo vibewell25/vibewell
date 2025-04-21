@@ -53,59 +53,63 @@ const certificationSchema = new Schema<Certification>({
   provider: { type: String, required: true },
   description: { type: String, required: true },
   category: [{ type: String }],
-  level: { 
-    type: String, 
+  level: {
+    type: String,
     enum: ['beginner', 'intermediate', 'advanced', 'expert'],
-    required: true 
+    required: true,
   },
-  requirements: [{
-    id: { type: String, required: true },
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    type: { 
-      type: String, 
-      enum: ['training', 'exam', 'experience', 'document'],
-      required: true 
+  requirements: [
+    {
+      id: { type: String, required: true },
+      name: { type: String, required: true },
+      description: { type: String, required: true },
+      type: {
+        type: String,
+        enum: ['training', 'exam', 'experience', 'document'],
+        required: true,
+      },
+      minimumScore: Number,
+      minimumHours: Number,
+      validityPeriod: Number,
+      isRequired: { type: Boolean, default: true },
     },
-    minimumScore: Number,
-    minimumHours: Number,
-    validityPeriod: Number,
-    isRequired: { type: Boolean, default: true }
-  }],
+  ],
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
 const practitionerCertificationSchema = new Schema<PractitionerCertification>({
   practitionerId: { type: Schema.Types.ObjectId, ref: 'Practitioner', required: true },
   certificationId: { type: Schema.Types.ObjectId, ref: 'Certification', required: true },
-  status: { 
-    type: String, 
+  status: {
+    type: String,
     enum: ['pending', 'in_progress', 'completed', 'expired'],
-    default: 'pending'
+    default: 'pending',
   },
-  progress: [{
-    requirementId: { type: String, required: true },
-    status: { 
-      type: String,
-      enum: ['not_started', 'in_progress', 'completed', 'expired'],
-      default: 'not_started'
+  progress: [
+    {
+      requirementId: { type: String, required: true },
+      status: {
+        type: String,
+        enum: ['not_started', 'in_progress', 'completed', 'expired'],
+        default: 'not_started',
+      },
+      completionDate: Date,
+      expiryDate: Date,
+      score: Number,
+      hoursCompleted: Number,
+      verificationDocument: String,
+      verifiedBy: String,
+      notes: String,
     },
-    completionDate: Date,
-    expiryDate: Date,
-    score: Number,
-    hoursCompleted: Number,
-    verificationDocument: String,
-    verifiedBy: String,
-    notes: String
-  }],
+  ],
   issueDate: Date,
   expiryDate: Date,
   certificateNumber: String,
   verificationUrl: String,
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
 // Add indexes for better query performance
@@ -118,15 +122,18 @@ practitionerCertificationSchema.index({ status: 1 });
 practitionerCertificationSchema.index({ expiryDate: 1 });
 
 // Add pre-save middleware to update timestamps
-certificationSchema.pre('save', function(next) {
+certificationSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
 });
 
-practitionerCertificationSchema.pre('save', function(next) {
+practitionerCertificationSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
 });
 
 export const CertificationModel = model<Certification>('Certification', certificationSchema);
-export const PractitionerCertificationModel = model<PractitionerCertification>('PractitionerCertification', practitionerCertificationSchema); 
+export const PractitionerCertificationModel = model<PractitionerCertification>(
+  'PractitionerCertification',
+  practitionerCertificationSchema
+);

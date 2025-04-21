@@ -7,7 +7,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Scissors, Plus, Trash2, Pencil, Check, X, Sparkles } from 'lucide-react';
@@ -22,7 +29,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
     name: '',
     description: '',
     duration: 60,
-    price: 0
+    price: 0,
   });
 
   const serviceCategories = [
@@ -45,13 +52,13 @@ export function ServicesForm({ form }: ServicesFormProps) {
 
     const updatedServices = [...form.watch('services'), newService];
     form.setValue('services', updatedServices, { shouldValidate: true });
-    
+
     // Reset the new service form
     setNewService({
       name: '',
       description: '',
       duration: 60,
-      price: 0
+      price: 0,
     });
   };
 
@@ -64,24 +71,24 @@ export function ServicesForm({ form }: ServicesFormProps) {
   const handleEditService = (index: number) => {
     setEditingServiceIndex(index);
     const services = form.watch('services');
-    setNewService({...services[index]});
+    setNewService({ ...services[index] });
   };
 
   const handleUpdateService = () => {
     if (editingServiceIndex === null) return;
-    
+
     const services = [...form.watch('services')];
     services[editingServiceIndex] = newService;
-    
+
     form.setValue('services', services, { shouldValidate: true });
     setEditingServiceIndex(null);
-    
+
     // Reset the form
     setNewService({
       name: '',
       description: '',
       duration: 60,
-      price: 0
+      price: 0,
     });
   };
 
@@ -91,22 +98,24 @@ export function ServicesForm({ form }: ServicesFormProps) {
       name: '',
       description: '',
       duration: 60,
-      price: 0
+      price: 0,
     });
   };
 
   const handleCategoryChange = (categoryId: string, checked: boolean) => {
     const currentCategories = [...form.watch('serviceCategories')];
-    
+
     if (checked) {
       // Add category if it doesn't exist
       if (!currentCategories.includes(categoryId)) {
-        form.setValue('serviceCategories', [...currentCategories, categoryId], { shouldValidate: true });
+        form.setValue('serviceCategories', [...currentCategories, categoryId], {
+          shouldValidate: true,
+        });
       }
     } else {
       // Remove category
       form.setValue(
-        'serviceCategories', 
+        'serviceCategories',
         currentCategories.filter(id => id !== categoryId),
         { shouldValidate: true }
       );
@@ -123,9 +132,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>Service Categories</CardTitle>
-          <CardDescription>
-            Select the categories of services you offer
-          </CardDescription>
+          <CardDescription>Select the categories of services you offer</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -134,19 +141,18 @@ export function ServicesForm({ form }: ServicesFormProps) {
                 <Checkbox
                   id={`category-${category.id}`}
                   checked={form.watch('serviceCategories')?.includes(category.id)}
-                  onCheckedChange={(checked) => handleCategoryChange(category.id, checked as boolean)}
+                  onCheckedChange={checked => handleCategoryChange(category.id, checked as boolean)}
                 />
-                <Label
-                  htmlFor={`category-${category.id}`}
-                  className="font-normal cursor-pointer"
-                >
+                <Label htmlFor={`category-${category.id}`} className="font-normal cursor-pointer">
                   {category.label}
                 </Label>
               </div>
             ))}
           </div>
           {form.formState.errors.serviceCategories && (
-            <p className="text-sm text-red-500 mt-2">{form.formState.errors.serviceCategories.message}</p>
+            <p className="text-sm text-red-500 mt-2">
+              {form.formState.errors.serviceCategories.message}
+            </p>
           )}
         </CardContent>
       </Card>
@@ -164,7 +170,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
             <ScrollArea className="h-[200px] rounded-md border">
               <div className="p-4 space-y-2">
                 {form.watch('services').map((service, index) => (
-                  <div 
+                  <div
                     key={index}
                     className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
                   >
@@ -180,16 +186,12 @@ export function ServicesForm({ form }: ServicesFormProps) {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Button 
-                        variant="ghost" 
-                        size="icon"
-                        onClick={() => handleEditService(index)}
-                      >
+                      <Button variant="ghost" size="icon" onClick={() => handleEditService(index)}>
                         <Pencil className="h-4 w-4" />
                         <span className="sr-only">Edit</span>
                       </Button>
-                      <Button 
-                        variant="ghost" 
+                      <Button
+                        variant="ghost"
                         size="icon"
                         onClick={() => handleRemoveService(index)}
                       >
@@ -217,7 +219,9 @@ export function ServicesForm({ form }: ServicesFormProps) {
           {/* Add/Edit service form */}
           <Card>
             <CardHeader>
-              <CardTitle>{editingServiceIndex !== null ? 'Edit Service' : 'Add a Service'}</CardTitle>
+              <CardTitle>
+                {editingServiceIndex !== null ? 'Edit Service' : 'Add a Service'}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -225,7 +229,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
                 <Input
                   id="serviceName"
                   value={newService.name}
-                  onChange={(e) => setNewService({...newService, name: e.target.value})}
+                  onChange={e => setNewService({ ...newService, name: e.target.value })}
                   placeholder="Haircut, Massage, Facial, etc."
                 />
               </div>
@@ -235,7 +239,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
                 <Textarea
                   id="serviceDescription"
                   value={newService.description}
-                  onChange={(e) => setNewService({...newService, description: e.target.value})}
+                  onChange={e => setNewService({ ...newService, description: e.target.value })}
                   placeholder="Briefly describe what this service includes..."
                   rows={2}
                 />
@@ -248,7 +252,9 @@ export function ServicesForm({ form }: ServicesFormProps) {
                     id="serviceDuration"
                     type="number"
                     value={newService.duration}
-                    onChange={(e) => setNewService({...newService, duration: parseInt(e.target.value) || 0})}
+                    onChange={e =>
+                      setNewService({ ...newService, duration: parseInt(e.target.value) || 0 })
+                    }
                     placeholder="60"
                     min={5}
                   />
@@ -260,7 +266,9 @@ export function ServicesForm({ form }: ServicesFormProps) {
                     id="servicePrice"
                     type="number"
                     value={newService.price}
-                    onChange={(e) => setNewService({...newService, price: parseFloat(e.target.value) || 0})}
+                    onChange={e =>
+                      setNewService({ ...newService, price: parseFloat(e.target.value) || 0 })
+                    }
                     placeholder="0.00"
                     min={0}
                     step={0.01}
@@ -275,9 +283,9 @@ export function ServicesForm({ form }: ServicesFormProps) {
                   Cancel
                 </Button>
               )}
-              
+
               {editingServiceIndex !== null ? (
-                <Button 
+                <Button
                   onClick={handleUpdateService}
                   disabled={!newService.name || newService.price <= 0 || newService.duration <= 0}
                 >
@@ -285,7 +293,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
                   Update Service
                 </Button>
               ) : (
-                <Button 
+                <Button
                   onClick={handleAddService}
                   disabled={!newService.name || newService.price <= 0 || newService.duration <= 0}
                 >
@@ -299,4 +307,4 @@ export function ServicesForm({ form }: ServicesFormProps) {
       </Card>
     </div>
   );
-} 
+}

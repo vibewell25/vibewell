@@ -109,4 +109,4 @@ export async function DELETE(req: Request) {
     console.error('Error deleting consultation form:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-} 
+}

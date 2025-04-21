@@ -1,6 +1,6 @@
 /**
  * Backup Service
- * 
+ *
  * Utility class to handle data backups to cloud storage services.
  * Supports AWS S3, Google Cloud Storage and Azure Blob Storage
  * through a unified interface.
@@ -39,17 +39,17 @@ export interface BackupJobSchedule {
 export class BackupService {
   private config: BackupConfig;
   private provider: any;
-  
+
   constructor(config: BackupConfig) {
     this.config = config;
     this.provider = this.initializeProvider();
   }
-  
+
   /**
    * Initialize the appropriate cloud storage provider based on config
    */
   private initializeProvider() {
-    switch(this.config.provider) {
+    switch (this.config.provider) {
       case 'aws':
         return this.initializeAWS();
       case 'google':
@@ -60,7 +60,7 @@ export class BackupService {
         throw new Error(`Unsupported provider: ${this.config.provider}`);
     }
   }
-  
+
   /**
    * Initialize AWS S3 client
    */
@@ -70,11 +70,14 @@ export class BackupService {
     return {
       uploadBackup: async (data: any, key: string) => {
         console.log(`[MOCK] Uploading to AWS S3: ${this.config.bucketName}/${key}`);
-        return { location: `s3://${this.config.bucketName}/${key}`, size: JSON.stringify(data).length };
-      }
+        return {
+          location: `s3://${this.config.bucketName}/${key}`,
+          size: JSON.stringify(data).length,
+        };
+      },
     };
   }
-  
+
   /**
    * Initialize Google Cloud Storage client
    */
@@ -84,11 +87,14 @@ export class BackupService {
     return {
       uploadBackup: async (data: any, key: string) => {
         console.log(`[MOCK] Uploading to GCS: ${this.config.bucketName}/${key}`);
-        return { location: `gs://${this.config.bucketName}/${key}`, size: JSON.stringify(data).length };
-      }
+        return {
+          location: `gs://${this.config.bucketName}/${key}`,
+          size: JSON.stringify(data).length,
+        };
+      },
     };
   }
-  
+
   /**
    * Initialize Azure Blob Storage client
    */
@@ -98,11 +104,14 @@ export class BackupService {
     return {
       uploadBackup: async (data: any, key: string) => {
         console.log(`[MOCK] Uploading to Azure: ${this.config.bucketName}/${key}`);
-        return { location: `https://${this.config.bucketName}.blob.core.windows.net/${key}`, size: JSON.stringify(data).length };
-      }
+        return {
+          location: `https://${this.config.bucketName}.blob.core.windows.net/${key}`,
+          size: JSON.stringify(data).length,
+        };
+      },
     };
   }
-  
+
   /**
    * Backup data to configured cloud storage
    */
@@ -110,27 +119,27 @@ export class BackupService {
     try {
       const timestamp = new Date().toISOString();
       const key = `${this.config.prefix || 'backups'}/${name}-${timestamp}.json`;
-      
+
       console.log(`Starting backup: ${key}`);
-      
+
       const result = await this.provider.uploadBackup(data, key);
-      
+
       return {
         success: true,
         timestamp,
         location: result.location,
-        size: result.size
+        size: result.size,
       };
     } catch (error) {
       console.error('Backup failed:', error);
       return {
         success: false,
         timestamp: new Date().toISOString(),
-        error: error as Error
+        error: error as Error,
       };
     }
   }
-  
+
   /**
    * List all available backups
    */
@@ -139,16 +148,16 @@ export class BackupService {
     console.log(`Listing backups with prefix: ${prefix || this.config.prefix || 'backups'}`);
     return [`backup-${new Date().toISOString()}.json`];
   }
-  
+
   /**
    * Restore data from a specific backup
    */
   public async restore(backupPath: string): Promise<any> {
     // This is a mock implementation
     console.log(`Restoring from backup: ${backupPath}`);
-    return { data: "Mock restored data" };
+    return { data: 'Mock restored data' };
   }
-  
+
   /**
    * Delete old backups beyond retention period
    */
@@ -157,12 +166,12 @@ export class BackupService {
       console.log('No retention period specified, skipping cleanup');
       return [];
     }
-    
+
     // This is a mock implementation
     console.log(`Cleaning up backups older than ${this.config.retentionDays} days`);
-    return ["old-backup-deleted.json"];
+    return ['old-backup-deleted.json'];
   }
-  
+
   /**
    * Verify backup integrity
    */
@@ -171,4 +180,4 @@ export class BackupService {
     console.log(`Verifying backup integrity: ${backupPath}`);
     return true;
   }
-} 
+}

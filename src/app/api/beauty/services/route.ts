@@ -9,13 +9,10 @@ export async function GET() {
         reviews: true,
       },
     });
-    
+
     return NextResponse.json(services);
   } catch (error) {
     console.error('Error fetching beauty services:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch services' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch services' }, { status: 500 });
   }
-} 
+}

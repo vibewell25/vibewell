@@ -128,4 +128,4 @@ export function NotificationPermissionButton() {
       <span>{getButtonText()}</span>
     </button>
   );
-} 
+}

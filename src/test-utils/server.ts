@@ -18,16 +18,19 @@ export const commonHandlers = [
       environment: 'test',
     });
   }),
-  
+
   http.post('/api/auth/login', async ({ request }) => {
     const body = await request.json();
-    
+
     if (!body.email || !body.password) {
-      return HttpResponse.json({ 
-        error: 'Email and password are required' 
-      }, { status: 400 });
+      return HttpResponse.json(
+        {
+          error: 'Email and password are required',
+        },
+        { status: 400 }
+      );
     }
-    
+
     if (body.email === 'user@example.com' && body.password === 'Password123') {
       return HttpResponse.json({
         user: {
@@ -38,12 +41,15 @@ export const commonHandlers = [
         token: 'mock-jwt-token',
       });
     }
-    
-    return HttpResponse.json({ 
-      error: 'Invalid credentials' 
-    }, { status: 401 });
+
+    return HttpResponse.json(
+      {
+        error: 'Invalid credentials',
+      },
+      { status: 401 }
+    );
   }),
-  
+
   http.get('/api/profile', () => {
     return HttpResponse.json({
       id: 'user-123',
@@ -55,32 +61,32 @@ export const commonHandlers = [
       },
     });
   }),
-  
+
   http.get('/api/services', () => {
     return HttpResponse.json([
       { id: '1', name: 'Service 1', price: 100 },
       { id: '2', name: 'Service 2', price: 200 },
-      { id: '3', name: 'Service 3', price: 300 }
+      { id: '3', name: 'Service 3', price: 300 },
     ]);
   }),
-  
+
   http.post('/api/booking', async ({ request }) => {
     const body = await request.json();
-    
+
     if (!body.serviceId || !body.date) {
       return new HttpResponse(null, {
         status: 400,
-        statusText: 'Bad Request'
+        statusText: 'Bad Request',
       });
     }
-    
+
     return HttpResponse.json({
       id: '123',
       serviceId: body.serviceId,
       date: body.date,
-      status: 'confirmed'
+      status: 'confirmed',
     });
-  })
+  }),
 ];
 
 // Setup utilities
@@ -90,14 +96,14 @@ export function setupApiMocks() {
     server.use(...commonHandlers);
     server.listen({ onUnhandledRequest: 'bypass' });
   });
-  
+
   // Reset handlers after each test
   afterEach(() => {
     server.resetHandlers();
   });
-  
+
   // Clean up after all tests
   afterAll(() => {
     server.close();
   });
-} 
+}

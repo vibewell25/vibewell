@@ -15,7 +15,7 @@ export enum MetricType {
   RENDER = 'render',
   DATABASE = 'database',
   COMPUTATION = 'computation',
-  NETWORK = 'network'
+  NETWORK = 'network',
 }
 
 /**
@@ -27,7 +27,7 @@ export enum RemediationStrategy {
   LAZY_LOAD = 'lazy_load',
   REDUCE_QUALITY = 'reduce_quality',
   CIRCUIT_BREAKER = 'circuit_breaker',
-  NONE = 'none'
+  NONE = 'none',
 }
 
 /**
@@ -85,7 +85,7 @@ class PerformanceRemediationService extends EventEmitter {
       threshold: 50, // 50% above normal threshold
       maxAttempts: 3,
       cooldownPeriod: 5 * 60 * 1000, // 5 minutes
-      enabled: true
+      enabled: true,
     },
     {
       id: 'render-throttling',
@@ -95,7 +95,7 @@ class PerformanceRemediationService extends EventEmitter {
       threshold: 100, // 100% above normal threshold
       maxAttempts: 2,
       cooldownPeriod: 2 * 60 * 1000, // 2 minutes
-      enabled: true
+      enabled: true,
     },
     {
       id: 'database-circuit-breaker',
@@ -105,10 +105,10 @@ class PerformanceRemediationService extends EventEmitter {
       threshold: 200, // 200% above normal threshold
       maxAttempts: 1,
       cooldownPeriod: 10 * 60 * 1000, // 10 minutes
-      enabled: true
-    }
+      enabled: true,
+    },
   ];
-  
+
   constructor() {
     super();
     this.rules = [...this.defaultRules];
@@ -120,11 +120,14 @@ class PerformanceRemediationService extends EventEmitter {
    */
   private setupEventListeners(): void {
     // Subscribe to performance monitor events
-    (performanceMonitor as PerformanceMonitorType).on('performance_issue', (issue: PerformanceIssue) => {
-      if (this.enabled) {
-        this.handlePerformanceIssue(issue);
+    (performanceMonitor as PerformanceMonitorType).on(
+      'performance_issue',
+      (issue: PerformanceIssue) => {
+        if (this.enabled) {
+          this.handlePerformanceIssue(issue);
+        }
       }
-    });
+    );
   }
 
   /**
@@ -177,22 +180,22 @@ class PerformanceRemediationService extends EventEmitter {
   private handlePerformanceIssue(issue: PerformanceIssue): void {
     // Find applicable rules
     const applicableRules = this.findApplicableRules(issue);
-    
+
     if (applicableRules.length === 0) {
       console.debug('No applicable remediation rules found for issue:', issue.name);
       return;
     }
-    
+
     // Sort by priority (assuming most restrictive first)
     applicableRules.sort((a, b) => b.threshold - a.threshold);
-    
+
     // Try to apply the first applicable rule
     const rule = applicableRules[0];
     const issueKey = `${issue.type}_${issue.name}`;
-    
+
     // Check if we've already attempted remediation
     const attempt = this.attempts.get(issueKey);
-    
+
     if (attempt) {
       // Check if we're in cooldown period
       const now = Date.now();
@@ -200,13 +203,13 @@ class PerformanceRemediationService extends EventEmitter {
         console.debug(`Remediation for ${issueKey} is in cooldown period`);
         return;
       }
-      
+
       // Check if we've exceeded max attempts
       if (attempt.attemptCount >= rule.maxAttempts) {
         console.debug(`Max remediation attempts (${rule.maxAttempts}) reached for ${issueKey}`);
         return;
       }
-      
+
       // Update attempt count
       attempt.attemptCount++;
       attempt.lastAttemptTime = now;
@@ -218,34 +221,34 @@ class PerformanceRemediationService extends EventEmitter {
         strategy: rule.strategy,
         attemptCount: 1,
         lastAttemptTime: Date.now(),
-        successful: false
+        successful: false,
       });
     }
-    
+
     // Apply the remediation strategy
     const success = this.applyRemediation(rule.strategy, issue);
-    
+
     // Update attempt success status
     const currentAttempt = this.attempts.get(issueKey);
     if (currentAttempt) {
       currentAttempt.successful = success;
     }
-    
+
     // Log the remediation attempt
     logEvent('performance_remediation_attempt', {
       issueType: issue.type,
       issueName: issue.name,
       strategy: rule.strategy,
       success,
-      attemptCount: currentAttempt?.attemptCount || 1
+      attemptCount: currentAttempt?.attemptCount || 1,
     });
-    
+
     // Emit event for remediation attempt
     this.emit('remediation_attempt', {
       issue,
       rule,
       success,
-      attemptCount: currentAttempt?.attemptCount || 1
+      attemptCount: currentAttempt?.attemptCount || 1,
     });
   }
 
@@ -256,14 +259,14 @@ class PerformanceRemediationService extends EventEmitter {
     return this.rules.filter(rule => {
       // Check if rule is enabled
       if (!rule.enabled) return false;
-      
+
       // Check if type matches
       if (rule.type !== issue.type) return false;
-      
+
       // Check if performance is bad enough to trigger this rule
       const exceedPercentage = (issue.duration / issue.threshold) * 100 - 100;
       if (exceedPercentage < rule.threshold) return false;
-      
+
       // Check if pattern matches
       if (rule.pattern instanceof RegExp) {
         return rule.pattern.test(issue.name);
@@ -278,24 +281,24 @@ class PerformanceRemediationService extends EventEmitter {
    */
   private applyRemediation(strategy: RemediationStrategy, issue: PerformanceIssue): boolean {
     console.log(`Applying ${strategy} remediation for ${issue.type} issue: ${issue.name}`);
-    
+
     try {
       switch (strategy) {
         case RemediationStrategy.CACHE:
           return this.applyCachingStrategy(issue);
-          
+
         case RemediationStrategy.THROTTLE:
           return this.applyThrottlingStrategy(issue);
-          
+
         case RemediationStrategy.LAZY_LOAD:
           return this.applyLazyLoadingStrategy(issue);
-          
+
         case RemediationStrategy.REDUCE_QUALITY:
           return this.applyReduceQualityStrategy(issue);
-          
+
         case RemediationStrategy.CIRCUIT_BREAKER:
           return this.applyCircuitBreakerStrategy(issue);
-          
+
         case RemediationStrategy.NONE:
         default:
           console.log('No remediation strategy applied');
@@ -312,18 +315,20 @@ class PerformanceRemediationService extends EventEmitter {
    */
   private applyCachingStrategy(issue: PerformanceIssue): boolean {
     const cacheKey = `perf_cache_${issue.type}_${issue.name}`;
-    
+
     // Update global caching configuration
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('enhanced_caching_enabled', 'true');
       window.localStorage.setItem(cacheKey, 'true');
-      
+
       // Dispatch an event that can be listened to by the application
-      window.dispatchEvent(new CustomEvent('enhanced-caching-enabled', {
-        detail: { type: issue.type, name: issue.name }
-      }));
+      window.dispatchEvent(
+        new CustomEvent('enhanced-caching-enabled', {
+          detail: { type: issue.type, name: issue.name },
+        })
+      );
     }
-    
+
     console.log(`Enhanced caching enabled for ${issue.name}`);
     return true;
   }
@@ -333,17 +338,19 @@ class PerformanceRemediationService extends EventEmitter {
    */
   private applyThrottlingStrategy(issue: PerformanceIssue): boolean {
     const throttleKey = `perf_throttle_${issue.type}_${issue.name}`;
-    
+
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('enhanced_throttling_enabled', 'true');
       window.localStorage.setItem(throttleKey, 'true');
-      
+
       // Dispatch an event that can be listened to by the application
-      window.dispatchEvent(new CustomEvent('enhanced-throttling-enabled', {
-        detail: { type: issue.type, name: issue.name }
-      }));
+      window.dispatchEvent(
+        new CustomEvent('enhanced-throttling-enabled', {
+          detail: { type: issue.type, name: issue.name },
+        })
+      );
     }
-    
+
     console.log(`Enhanced throttling enabled for ${issue.name}`);
     return true;
   }
@@ -353,17 +360,19 @@ class PerformanceRemediationService extends EventEmitter {
    */
   private applyLazyLoadingStrategy(issue: PerformanceIssue): boolean {
     const lazyLoadKey = `perf_lazy_${issue.type}_${issue.name}`;
-    
+
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('enhanced_lazy_loading_enabled', 'true');
       window.localStorage.setItem(lazyLoadKey, 'true');
-      
+
       // Dispatch an event that can be listened to by the application
-      window.dispatchEvent(new CustomEvent('enhanced-lazy-loading-enabled', {
-        detail: { type: issue.type, name: issue.name }
-      }));
+      window.dispatchEvent(
+        new CustomEvent('enhanced-lazy-loading-enabled', {
+          detail: { type: issue.type, name: issue.name },
+        })
+      );
     }
-    
+
     console.log(`Enhanced lazy loading enabled for ${issue.name}`);
     return true;
   }
@@ -373,17 +382,19 @@ class PerformanceRemediationService extends EventEmitter {
    */
   private applyReduceQualityStrategy(issue: PerformanceIssue): boolean {
     const qualityKey = `perf_quality_${issue.type}_${issue.name}`;
-    
+
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('reduced_quality_enabled', 'true');
       window.localStorage.setItem(qualityKey, 'true');
-      
+
       // Dispatch an event that can be listened to by the application
-      window.dispatchEvent(new CustomEvent('reduced-quality-enabled', {
-        detail: { type: issue.type, name: issue.name }
-      }));
+      window.dispatchEvent(
+        new CustomEvent('reduced-quality-enabled', {
+          detail: { type: issue.type, name: issue.name },
+        })
+      );
     }
-    
+
     console.log(`Reduced quality mode enabled for ${issue.name}`);
     return true;
   }
@@ -393,17 +404,19 @@ class PerformanceRemediationService extends EventEmitter {
    */
   private applyCircuitBreakerStrategy(issue: PerformanceIssue): boolean {
     const circuitKey = `perf_circuit_${issue.type}_${issue.name}`;
-    
+
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('circuit_breaker_enabled', 'true');
       window.localStorage.setItem(circuitKey, 'true');
-      
+
       // Dispatch an event that can be listened to by the application
-      window.dispatchEvent(new CustomEvent('circuit-breaker-enabled', {
-        detail: { type: issue.type, name: issue.name }
-      }));
+      window.dispatchEvent(
+        new CustomEvent('circuit-breaker-enabled', {
+          detail: { type: issue.type, name: issue.name },
+        })
+      );
     }
-    
+
     console.log(`Circuit breaker enabled for ${issue.name}`);
     return true;
   }
@@ -416,21 +429,21 @@ class PerformanceRemediationService extends EventEmitter {
       totalAttempts: this.attempts.size,
       successfulAttempts: 0,
       byStrategy: {} as Record<string, number>,
-      byType: {} as Record<string, number>
+      byType: {} as Record<string, number>,
     };
-    
+
     // Count statistics
     this.attempts.forEach(attempt => {
       if (attempt.successful) {
         stats.successfulAttempts++;
       }
-      
+
       // Count by strategy
       if (!stats.byStrategy[attempt.strategy]) {
         stats.byStrategy[attempt.strategy] = 0;
       }
       stats.byStrategy[attempt.strategy]++;
-      
+
       // Count by type (extract from issueKey)
       const type = attempt.issueKey.split('_')[0];
       if (!stats.byType[type]) {
@@ -438,7 +451,7 @@ class PerformanceRemediationService extends EventEmitter {
       }
       stats.byType[type]++;
     });
-    
+
     return stats;
   }
 
@@ -452,4 +465,4 @@ class PerformanceRemediationService extends EventEmitter {
 
 // Create and export singleton instance
 const performanceRemediation = new PerformanceRemediationService();
-export default performanceRemediation; 
+export default performanceRemediation;

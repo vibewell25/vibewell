@@ -6,4 +6,4 @@ export { default as YogaPoseEstimation } from './YogaPoseEstimation';
 // Types
 export type { MeditationEnvironmentProps } from './MeditationEnvironment';
 export type { WorkoutFormCorrectionProps } from './WorkoutFormCorrection';
-export type { YogaPoseEstimationProps } from './YogaPoseEstimation'; 
+export type { YogaPoseEstimationProps } from './YogaPoseEstimation';

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { addServiceReview, ReviewInput } from '../../services/beautyService';
+import { validateForm } from '../../../utils/form-validation';
 
 interface BeautyReviewFormProps {
   serviceId: string;
@@ -32,26 +33,26 @@ const BeautyReviewForm: React.FC<BeautyReviewFormProps> = ({
     setRating(newRating);
   };
 
-  const validateForm = (): boolean => {
-    if (rating === 0) {
-      Alert.alert('Error', 'Please select a rating');
-      return false;
-    }
-    if (!comment.trim()) {
-      Alert.alert('Error', 'Please enter your review');
-      return false;
-    }
-    if (!name.trim()) {
-      Alert.alert('Error', 'Please enter your name');
-      return false;
-    }
-    return true;
-  };
-
   const handleSubmit = async () => {
     Keyboard.dismiss();
     
-    if (!validateForm()) {
+    const formData = {
+      rating,
+      comment: comment.trim(),
+      name: name.trim()
+    };
+    
+    const validationResult = validateForm(formData);
+    
+    // Add custom validation for rating
+    if (rating === 0) {
+      validationResult.errors.rating = 'Please select a rating';
+      validationResult.isValid = false;
+    }
+    
+    if (!validationResult.isValid) {
+      const errorMessage = Object.values(validationResult.errors)[0];
+      Alert.alert('Error', errorMessage);
       return;
     }
     

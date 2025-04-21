@@ -2,22 +2,41 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { 
-  PlusIcon, 
-  AlertTriangleIcon, 
-  BellIcon, 
-  TrashIcon, 
+import {
+  PlusIcon,
+  AlertTriangleIcon,
+  BellIcon,
+  TrashIcon,
   EditIcon,
   CheckIcon,
-  XIcon 
+  XIcon,
 } from 'lucide-react';
 import { AlertService, AlertThreshold } from '@/services/alert-service';
 import { ProductService } from '@/services/product-service';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } from '@/components/ui/form';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
@@ -34,7 +53,7 @@ interface Product {
 // Define the alert status interface
 interface AlertStatus {
   label: string;
-  color: "info" | "default" | "success" | "warning" | "destructive" | "outline" | "secondary";
+  color: 'info' | 'default' | 'success' | 'warning' | 'destructive' | 'outline' | 'secondary';
 }
 
 function AlertsContent() {
@@ -48,7 +67,9 @@ function AlertsContent() {
   const searchParams = useSearchParams();
 
   // Form state
-  const [formState, setFormState] = useState<Omit<AlertThreshold, 'id' | 'created_at' | 'updated_at'>>({
+  const [formState, setFormState] = useState<
+    Omit<AlertThreshold, 'id' | 'created_at' | 'updated_at'>
+  >({
     name: '',
     description: '',
     is_active: true,
@@ -140,7 +161,7 @@ function AlertsContent() {
       if (alert.id) {
         await alertService.updateAlert(alert.id, {
           ...alert,
-          is_active: !alert.is_active
+          is_active: !alert.is_active,
         });
         fetchAlerts();
       }
@@ -203,9 +224,7 @@ function AlertsContent() {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold">Analytics Alerts</h1>
-          <p className="text-muted-foreground">
-            Manage threshold-based alerts for product metrics
-          </p>
+          <p className="text-muted-foreground">Manage threshold-based alerts for product metrics</p>
         </div>
         <Button onClick={openNewAlertDialog}>
           <PlusIcon className="mr-2 h-4 w-4" />
@@ -214,9 +233,7 @@ function AlertsContent() {
       </div>
 
       {error && (
-        <div className="bg-destructive/15 text-destructive p-4 rounded-md mb-6">
-          {error}
-        </div>
+        <div className="bg-destructive/15 text-destructive p-4 rounded-md mb-6">{error}</div>
       )}
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
@@ -243,7 +260,7 @@ function AlertsContent() {
         </div>
       ) : (
         <div className="grid gap-4">
-          {filteredAlerts.map((alert) => {
+          {filteredAlerts.map(alert => {
             const status = getAlertStatus(alert);
             return (
               <Card key={alert.id} className="overflow-hidden">
@@ -264,9 +281,13 @@ function AlertsContent() {
                         variant="ghost"
                         size="icon"
                         onClick={() => handleToggleAlert(alert)}
-                        title={alert.is_active ? "Deactivate" : "Activate"}
+                        title={alert.is_active ? 'Deactivate' : 'Activate'}
                       >
-                        {alert.is_active ? <XIcon className="h-4 w-4" /> : <CheckIcon className="h-4 w-4" />}
+                        {alert.is_active ? (
+                          <XIcon className="h-4 w-4" />
+                        ) : (
+                          <CheckIcon className="h-4 w-4" />
+                        )}
                       </Button>
                       <Button
                         variant="ghost"
@@ -304,9 +325,7 @@ function AlertsContent() {
                     </div>
                     <div className="space-y-1">
                       <div className="text-sm text-muted-foreground">Notifications</div>
-                      <div className="font-medium">
-                        {alert.notification_methods.join(', ')}
-                      </div>
+                      <div className="font-medium">{alert.notification_methods.join(', ')}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -329,7 +348,7 @@ function AlertsContent() {
                 <Input
                   id="name"
                   value={formState.name}
-                  onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                  onChange={e => setFormState({ ...formState, name: e.target.value })}
                   placeholder="Critical Rating Drop"
                 />
               </div>
@@ -337,13 +356,13 @@ function AlertsContent() {
                 <FormLabel htmlFor="product">Product</FormLabel>
                 <Select
                   value={formState.product_id}
-                  onValueChange={(value) => setFormState({ ...formState, product_id: value })}
+                  onValueChange={value => setFormState({ ...formState, product_id: value })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select product" />
                   </SelectTrigger>
                   <SelectContent>
-                    {products.map((product) => (
+                    {products.map(product => (
                       <SelectItem key={product.id} value={product.id}>
                         {product.name}
                       </SelectItem>
@@ -357,7 +376,7 @@ function AlertsContent() {
               <Input
                 id="description"
                 value={formState.description}
-                onChange={(e) => setFormState({ ...formState, description: e.target.value })}
+                onChange={e => setFormState({ ...formState, description: e.target.value })}
                 placeholder="Alert when product rating drops below threshold"
               />
             </div>
@@ -366,10 +385,10 @@ function AlertsContent() {
                 <FormLabel htmlFor="metric">Metric</FormLabel>
                 <Select
                   value={formState.metric}
-                  onValueChange={(value) => 
-                    setFormState({ 
-                      ...formState, 
-                      metric: value as AlertThreshold['metric'] 
+                  onValueChange={value =>
+                    setFormState({
+                      ...formState,
+                      metric: value as AlertThreshold['metric'],
                     })
                   }
                 >
@@ -388,10 +407,10 @@ function AlertsContent() {
                 <FormLabel htmlFor="condition">Condition</FormLabel>
                 <Select
                   value={formState.condition}
-                  onValueChange={(value) => 
-                    setFormState({ 
-                      ...formState, 
-                      condition: value as AlertThreshold['condition'] 
+                  onValueChange={value =>
+                    setFormState({
+                      ...formState,
+                      condition: value as AlertThreshold['condition'],
                     })
                   }
                 >
@@ -411,7 +430,9 @@ function AlertsContent() {
                     id="threshold"
                     type="number"
                     value={formState.threshold}
-                    onChange={(e) => setFormState({ ...formState, threshold: parseFloat(e.target.value) })}
+                    onChange={e =>
+                      setFormState({ ...formState, threshold: parseFloat(e.target.value) })
+                    }
                     step={0.1}
                     min={0}
                     max={5}
@@ -427,7 +448,7 @@ function AlertsContent() {
                     type="checkbox"
                     id="email-notification"
                     checked={formState.notification_methods.includes('email')}
-                    onChange={(e) => {
+                    onChange={e => {
                       const methods = e.target.checked
                         ? [...formState.notification_methods, 'email']
                         : formState.notification_methods.filter(m => m !== 'email');
@@ -441,7 +462,7 @@ function AlertsContent() {
                     type="checkbox"
                     id="sms-notification"
                     checked={formState.notification_methods.includes('sms')}
-                    onChange={(e) => {
+                    onChange={e => {
                       const methods = e.target.checked
                         ? [...formState.notification_methods, 'sms']
                         : formState.notification_methods.filter(m => m !== 'sms');
@@ -455,7 +476,7 @@ function AlertsContent() {
                     type="checkbox"
                     id="push-notification"
                     checked={formState.notification_methods.includes('push')}
-                    onChange={(e) => {
+                    onChange={e => {
                       const methods = e.target.checked
                         ? [...formState.notification_methods, 'push']
                         : formState.notification_methods.filter(m => m !== 'push');
@@ -470,7 +491,7 @@ function AlertsContent() {
               <Switch
                 id="active"
                 checked={formState.is_active}
-                onCheckedChange={(checked) => setFormState({ ...formState, is_active: checked })}
+                onCheckedChange={checked => setFormState({ ...formState, is_active: checked })}
               />
               <label htmlFor="active">Active</label>
             </div>
@@ -495,4 +516,4 @@ export default function AlertsPage() {
       <AlertsContent />
     </Suspense>
   );
-} 
+}

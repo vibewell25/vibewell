@@ -3,11 +3,13 @@
  * Used in Jest tests to avoid actual Three.js dependency
  */
 
-const { Object3D, Mesh, MeshBasicMaterial, BoxGeometry } = require('three');
+import { vi } from 'vitest';
+import { Object3D, Mesh, MeshBasicMaterial, BoxGeometry } from 'three';
 
-const FBXLoader = jest.fn().mockImplementation(() => {
+// Mock for FBXLoader from Three.js
+const FBXLoader = vi.fn().mockImplementation(() => {
   return {
-    load: jest.fn().mockImplementation((url, onLoad, onProgress, onError) => {
+    load: vi.fn().mockImplementation((url, onLoad, onProgress, onError) => {
       // Create a mock FBX scene with basic structure
       const mockObject = new Object3D();
       mockObject.name = 'MockFBXModel';
@@ -55,10 +57,10 @@ const FBXLoader = jest.fn().mockImplementation(() => {
         loader: this
       };
     }),
-    setPath: jest.fn().mockReturnThis(),
-    setResourcePath: jest.fn().mockReturnThis(),
-    setCrossOrigin: jest.fn().mockReturnThis()
+    setPath: vi.fn().mockReturnThis(),
+    setResourcePath: vi.fn().mockReturnThis(),
+    setCrossOrigin: vi.fn().mockReturnThis()
   };
 });
 
-module.exports = { FBXLoader }; 
+export default FBXLoader; 

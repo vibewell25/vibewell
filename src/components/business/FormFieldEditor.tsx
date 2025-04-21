@@ -77,21 +77,14 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
 
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="fields">
-          {(provided) => (
+          {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {fields.map((field, index) => (
                 <Draggable key={field.id} draggableId={field.id} index={index}>
-                  {(provided) => (
-                    <Card
-                      className="p-4 mb-4"
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                    >
+                  {provided => (
+                    <Card className="p-4 mb-4" ref={provided.innerRef} {...provided.draggableProps}>
                       <div className="flex items-start space-x-4">
-                        <div
-                          {...provided.dragHandleProps}
-                          className="mt-2 cursor-move"
-                        >
+                        <div {...provided.dragHandleProps} className="mt-2 cursor-move">
                           <GripVertical size={20} />
                         </div>
                         <div className="flex-grow space-y-4">
@@ -100,9 +93,7 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
                               <Label>Field Label</Label>
                               <Input
                                 value={field.label}
-                                onChange={(e) =>
-                                  updateField(index, { label: e.target.value })
-                                }
+                                onChange={e => updateField(index, { label: e.target.value })}
                                 placeholder="Enter field label"
                               />
                             </div>
@@ -110,9 +101,7 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
                               <Label>Field Type</Label>
                               <Select
                                 value={field.type}
-                                onValueChange={(value: any) =>
-                                  updateField(index, { type: value })
-                                }
+                                onValueChange={(value: any) => updateField(index, { type: value })}
                               >
                                 <option value="text">Text</option>
                                 <option value="textarea">Text Area</option>
@@ -124,7 +113,7 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
                             <div className="flex items-center space-x-2 mt-6">
                               <Switch
                                 checked={field.required}
-                                onCheckedChange={(checked) =>
+                                onCheckedChange={checked =>
                                   updateField(index, { required: checked })
                                 }
                               />
@@ -146,29 +135,21 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
                               <div className="flex space-x-2">
                                 <Input
                                   value={newOption}
-                                  onChange={(e) => setNewOption(e.target.value)}
+                                  onChange={e => setNewOption(e.target.value)}
                                   placeholder="Add new option"
                                 />
-                                <Button
-                                  type="button"
-                                  onClick={() => addOption(index)}
-                                >
+                                <Button type="button" onClick={() => addOption(index)}>
                                   Add
                                 </Button>
                               </div>
                               <div className="space-y-2">
                                 {field.options?.map((option, optionIndex) => (
-                                  <div
-                                    key={optionIndex}
-                                    className="flex items-center space-x-2"
-                                  >
+                                  <div key={optionIndex} className="flex items-center space-x-2">
                                     <span>{option}</span>
                                     <Button
                                       variant="destructive"
                                       size="icon"
-                                      onClick={() =>
-                                        removeOption(index, optionIndex)
-                                      }
+                                      onClick={() => removeOption(index, optionIndex)}
                                     >
                                       <Trash2 size={16} />
                                     </Button>
@@ -190,4 +171,4 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
       </DragDropContext>
     </div>
   );
-} 
+}

@@ -7,17 +7,11 @@ expect.extend(toHaveNoViolations);
 
 // Define wrapper providers if needed
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
-const customRender = (
-  ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>,
-) => render(ui, { wrapper: AllTheProviders, ...options });
+const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
+  render(ui, { wrapper: AllTheProviders, ...options });
 
 // Re-export everything
 export * from '@testing-library/react';
@@ -108,4 +102,4 @@ export const setupTestEnvironment = () => {
   mockIntersectionObserver();
   mockResizeObserver();
   suppressConsoleErrors();
-}; 
+};

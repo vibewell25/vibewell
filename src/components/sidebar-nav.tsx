@@ -15,13 +15,10 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
 
   return (
     <nav
-      className={cn(
-        'flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1',
-        className
-      )}
+      className={cn('flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1', className)}
       {...props}
     >
-      {items.map((item) => (
+      {items.map(item => (
         <Link
           key={item.href}
           href={item.href}
@@ -38,4 +35,4 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
       ))}
     </nav>
   );
-} 
+}

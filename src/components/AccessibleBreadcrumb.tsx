@@ -43,7 +43,7 @@ const validateBreadcrumbItems = (items: BreadcrumbItem[]): void => {
   if (!Array.isArray(items)) {
     throw new Error('Items must be an array');
   }
-  
+
   if (items.length === 0) {
     throw new Error('Items array cannot be empty');
   }
@@ -52,7 +52,7 @@ const validateBreadcrumbItems = (items: BreadcrumbItem[]): void => {
     if (!item.label || typeof item.label !== 'string') {
       throw new Error(`Invalid label at index ${index}`);
     }
-    
+
     // Sanitize label to prevent XSS
     const sanitizedLabel = DOMPurify.sanitize(item.label);
     if (sanitizedLabel !== item.label) {
@@ -120,10 +120,7 @@ export const AccessibleBreadcrumb: React.FC<AccessibleBreadcrumbProps> = ({
 
   return (
     <ErrorBoundary fallback={<div>Error loading breadcrumb navigation</div>}>
-      <nav
-        className={`${className} ${mergedStyles.container}`}
-        aria-label="Breadcrumb"
-      >
+      <nav className={`${className} ${mergedStyles.container}`} aria-label="Breadcrumb">
         <ol>
           {items.map((item, index) => {
             const isLastItem = index === items.length - 1;
@@ -131,29 +128,20 @@ export const AccessibleBreadcrumb: React.FC<AccessibleBreadcrumbProps> = ({
             const sanitizedHref = item.href ? sanitizeUrl(item.href) : undefined;
 
             return (
-              <li
-                key={index}
-                className={mergedStyles.item}
-              >
+              <li key={index} className={mergedStyles.item}>
                 {index > 0 && (
-                  <span
-                    className={mergedStyles.separator}
-                    aria-hidden="true"
-                  >
+                  <span className={mergedStyles.separator} aria-hidden="true">
                     {separator}
                   </span>
                 )}
                 {isCurrent ? (
-                  <span
-                    className={mergedStyles.currentItem}
-                    aria-current="page"
-                  >
+                  <span className={mergedStyles.currentItem} aria-current="page">
                     {item.label}
                   </span>
                 ) : (
                   <a
                     href={sanitizedHref}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault();
                       onItemClick?.(item, index);
                     }}
@@ -173,4 +161,4 @@ export const AccessibleBreadcrumb: React.FC<AccessibleBreadcrumbProps> = ({
   );
 };
 
-export default AccessibleBreadcrumb; 
+export default AccessibleBreadcrumb;

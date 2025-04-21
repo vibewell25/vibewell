@@ -1,6 +1,6 @@
 /**
  * Application Logger
- * 
+ *
  * This module provides a unified logging interface for the application.
  * In production, it could be configured to use a logging service like Winston
  * or ship logs to a remote service.
@@ -13,14 +13,14 @@ interface LogPayload {
 
 /**
  * Sanitize sensitive data from log entries
- * 
+ *
  * @param data The data object to sanitize
  * @returns Sanitized data safe for logging
  */
 function sanitizeLogData<T extends object>(data: T): T {
   // Create a deep copy to avoid modifying the original
   const result = JSON.parse(JSON.stringify(data)) as T;
-  
+
   // List of sensitive fields to mask
   const sensitiveFields = [
     'password',
@@ -36,13 +36,13 @@ function sanitizeLogData<T extends object>(data: T): T {
     'apiKey',
     'api_key',
     'authorization',
-    'auth'
+    'auth',
   ];
-  
+
   // Recursively mask sensitive values
   function maskSensitiveData(obj: any) {
     if (!obj || typeof obj !== 'object') return;
-    
+
     for (const key of Object.keys(obj)) {
       // Check if this is a sensitive key
       if (sensitiveFields.some(field => key.toLowerCase().includes(field))) {
@@ -55,14 +55,14 @@ function sanitizeLogData<T extends object>(data: T): T {
       }
     }
   }
-  
+
   maskSensitiveData(result);
   return result;
 }
 
 /**
  * Format log entries consistently
- * 
+ *
  * @param level Log level
  * @param payload Log data
  * @returns Formatted log object
@@ -70,7 +70,7 @@ function sanitizeLogData<T extends object>(data: T): T {
 function formatLog(level: string, payload: LogPayload | string): object {
   const timestamp = new Date().toISOString();
   const data = typeof payload === 'string' ? { message: payload } : payload;
-  
+
   return {
     level,
     timestamp,
@@ -90,27 +90,27 @@ const logger = {
       console.debug(JSON.stringify(formatLog('debug', payload)));
     }
   },
-  
+
   /**
    * Log informational messages
    */
   info(payload: LogPayload | string): void {
     console.info(JSON.stringify(formatLog('info', payload)));
   },
-  
+
   /**
    * Log warning messages
    */
   warn(payload: LogPayload | string): void {
     console.warn(JSON.stringify(formatLog('warn', payload)));
   },
-  
+
   /**
    * Log error messages
    */
   error(payload: LogPayload | string): void {
     console.error(JSON.stringify(formatLog('error', payload)));
-  }
+  },
 };
 
-export default logger; 
+export default logger;

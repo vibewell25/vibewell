@@ -1,6 +1,6 @@
 /**
  * GraphQL API endpoint for the Next.js App Router
- * 
+ *
  * This implements a GraphQL API using Apollo Server integrated with Next.js.
  * It provides query and mutation capabilities for the VibeWell application.
  */
@@ -25,15 +25,15 @@ const server = new ApolloServer({
 function getClientIp(req: NextRequest): string {
   const forwarded = req.headers.get('x-forwarded-for');
   const realIp = req.headers.get('x-real-ip');
-  
+
   if (forwarded) {
     return forwarded.split(',')[0].trim();
   }
-  
+
   if (realIp) {
     return realIp;
   }
-  
+
   return 'unknown';
 }
 
@@ -42,26 +42,25 @@ const handler = startServerAndCreateNextHandler(server, {
   context: async (req: NextRequest) => {
     try {
       // Create Supabase client
-      
-      
+
       // Get auth token from header if available
       const authHeader = req.headers.get('authorization');
       let userId = null;
       let userRole = 'anonymous';
-      
+
       if (authHeader && authHeader.startsWith('Bearer ')) {
         const token = authHeader.substring(7);
         const { data, error } = await supabase.auth.getUser(token);
-        
+
         if (!error && data.user) {
           userId = data.user.id;
           userRole = data.user.user_metadata?.role || 'user';
         }
       }
-      
+
       // Get IP for rate limiting
       const ip = getClientIp(req);
-      
+
       // Return context for resolvers
       return {
         supabase,
@@ -89,4 +88,4 @@ export async function POST(req: NextRequest) {
 
 // Set runtime options
 export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic'; 
+export const dynamic = 'force-dynamic';

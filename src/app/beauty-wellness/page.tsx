@@ -15,16 +15,15 @@ import { Progress } from '@/components/ui/progress';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { ErrorMessage } from '@/components/ui/error-message';
-;
 import { useTranslation } from 'react-i18next';
 // Import types
-import type { 
-  CardProps, 
-  BadgeProps, 
-  TabsProps, 
-  AvatarProps, 
-  TooltipProps, 
-  ProgressProps 
+import type {
+  CardProps,
+  BadgeProps,
+  TabsProps,
+  AvatarProps,
+  TooltipProps,
+  ProgressProps,
 } from '@/components/ui/types';
 // Enhanced type definitions
 interface UserProgress {
@@ -47,12 +46,24 @@ interface ServiceItem extends ImportedServiceItem {
   provider: ServiceProvider;
 }
 // Dynamically import components with proper typing
-const DynamicCard = lazyLoad<CardProps>(() => import('@/components/ui/card').then(mod => ({ default: mod.Card })));
-const DynamicBadge = lazyLoad<BadgeProps>(() => import('@/components/ui/badge').then(mod => ({ default: mod.Badge })));
-const DynamicTabs = lazyLoad<TabsProps>(() => import('@/components/ui/tabs').then(mod => ({ default: mod.Tabs })));
-const DynamicAvatar = lazyLoad<AvatarProps>(() => import('@/components/ui/avatar').then(mod => ({ default: mod.Avatar })));
-const DynamicTooltip = lazyLoad<TooltipProps>(() => import('@/components/ui/tooltip').then(mod => ({ default: mod.Tooltip })));
-const DynamicProgress = lazyLoad<ProgressProps>(() => import('@/components/ui/progress').then(mod => ({ default: mod.Progress })));
+const DynamicCard = lazyLoad<CardProps>(() =>
+  import('@/components/ui/card').then(mod => ({ default: mod.Card }))
+);
+const DynamicBadge = lazyLoad<BadgeProps>(() =>
+  import('@/components/ui/badge').then(mod => ({ default: mod.Badge }))
+);
+const DynamicTabs = lazyLoad<TabsProps>(() =>
+  import('@/components/ui/tabs').then(mod => ({ default: mod.Tabs }))
+);
+const DynamicAvatar = lazyLoad<AvatarProps>(() =>
+  import('@/components/ui/avatar').then(mod => ({ default: mod.Avatar }))
+);
+const DynamicTooltip = lazyLoad<TooltipProps>(() =>
+  import('@/components/ui/tooltip').then(mod => ({ default: mod.Tooltip }))
+);
+const DynamicProgress = lazyLoad<ProgressProps>(() =>
+  import('@/components/ui/progress').then(mod => ({ default: mod.Progress }))
+);
 // Import categories and content from separate files
 import { categories } from '@/data/beauty-wellness/categories';
 import { content } from '@/data/beauty-wellness/content';
@@ -79,12 +90,12 @@ function BeautyWellnessContent(): JSX.Element {
   const [filters, setFilters] = useState<Filters>({
     priceRange: [0, 500],
     duration: 'any',
-    level: 'any'
+    level: 'any',
   });
   const [userProgress, setUserProgress] = useState<UserProgress>({
     wellnessStreak: 0,
     rewardsPoints: 0,
-    nextLevelPoints: 100
+    nextLevelPoints: 100,
   });
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -111,13 +122,17 @@ function BeautyWellnessContent(): JSX.Element {
   const filterContent = useMemo(() => {
     return content.filter(item => {
       const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
-      const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          item.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesPriceRange = Number(item.price.replace(/[^0-9.-]+/g,"")) >= filters.priceRange[0] && 
-                               Number(item.price.replace(/[^0-9.-]+/g,"")) <= filters.priceRange[1];
+      const matchesSearch =
+        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesPriceRange =
+        Number(item.price.replace(/[^0-9.-]+/g, '')) >= filters.priceRange[0] &&
+        Number(item.price.replace(/[^0-9.-]+/g, '')) <= filters.priceRange[1];
       const matchesDuration = filters.duration === 'any' || item.duration === filters.duration;
       const matchesLevel = filters.level === 'any' || item.level === filters.level;
-      return matchesCategory && matchesSearch && matchesPriceRange && matchesDuration && matchesLevel;
+      return (
+        matchesCategory && matchesSearch && matchesPriceRange && matchesDuration && matchesLevel
+      );
     });
   }, [selectedCategory, searchQuery, filters]);
   const filteredContent = useMemo(() => filterContent, [filterContent]);
@@ -127,16 +142,17 @@ function BeautyWellnessContent(): JSX.Element {
     return category?.icon || null;
   }, [selectedCategory]);
   // Memoize handlers
-  const handleCategoryChange = useMemo(() => 
-    (category: string) => setSelectedCategory(category),
+  const handleCategoryChange = useMemo(
+    () => (category: string) => setSelectedCategory(category),
     []
   );
-  const handleSearchChange = useMemo(() => 
-    (event: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(event.target.value),
+  const handleSearchChange = useMemo(
+    () => (event: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(event.target.value),
     []
   );
-  const handleFilterChange = useMemo(() => 
-    (filterUpdate: Partial<typeof filters>) => setFilters(prev => ({ ...prev, ...filterUpdate })),
+  const handleFilterChange = useMemo(
+    () => (filterUpdate: Partial<typeof filters>) =>
+      setFilters(prev => ({ ...prev, ...filterUpdate })),
     []
   );
   if (loading) {
@@ -158,14 +174,20 @@ function BeautyWellnessContent(): JSX.Element {
           </div>
         </Suspense>
         {/* Quick Action Cards */}
-        <Suspense fallback={
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {[...Array(4)].map((_, i) => (
-              <Skeleton key={i} className="h-48" />
-            ))}
-          </div>
-        }>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12" role="region" aria-label="Quick Actions">
+        <Suspense
+          fallback={
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+              {[...Array(4)].map((_, i) => (
+                <Skeleton key={i} className="h-48" />
+              ))}
+            </div>
+          }
+        >
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
+            role="region"
+            aria-label="Quick Actions"
+          >
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -175,9 +197,7 @@ function BeautyWellnessContent(): JSX.Element {
                         <Icons.CalendarIcon className="h-5 w-5" />
                         Book Now
                       </CardTitle>
-                      <CardDescription>
-                        Schedule your next appointment
-                      </CardDescription>
+                      <CardDescription>Schedule your next appointment</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <Button className="w-full" asChild>
@@ -200,9 +220,7 @@ function BeautyWellnessContent(): JSX.Element {
                         <Icons.SparklesIcon className="h-5 w-5" />
                         Virtual Try-On
                       </CardTitle>
-                      <CardDescription>
-                        Preview looks before your appointment
-                      </CardDescription>
+                      <CardDescription>Preview looks before your appointment</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <Button variant="secondary" className="w-full" asChild>
@@ -225,9 +243,7 @@ function BeautyWellnessContent(): JSX.Element {
                         <Icons.ChartBarIcon className="h-5 w-5" />
                         My Progress
                       </CardTitle>
-                      <CardDescription>
-                        Track your wellness journey
-                      </CardDescription>
+                      <CardDescription>Track your wellness journey</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-2">
@@ -236,7 +252,9 @@ function BeautyWellnessContent(): JSX.Element {
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <span className="font-medium">{userProgress.wellnessStreak} days</span>
+                                <span className="font-medium">
+                                  {userProgress.wellnessStreak} days
+                                </span>
                               </TooltipTrigger>
                               <TooltipContent>
                                 <p>Keep your streak going!</p>
@@ -263,9 +281,7 @@ function BeautyWellnessContent(): JSX.Element {
                         <Icons.GiftIcon className="h-5 w-5" />
                         Rewards
                       </CardTitle>
-                      <CardDescription>
-                        Earn points with every service
-                      </CardDescription>
+                      <CardDescription>Earn points with every service</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-2">
@@ -282,7 +298,10 @@ function BeautyWellnessContent(): JSX.Element {
                             </Tooltip>
                           </TooltipProvider>
                         </div>
-                        <Progress value={(userProgress.rewardsPoints / 1500) * 100} className="h-2" />
+                        <Progress
+                          value={(userProgress.rewardsPoints / 1500) * 100}
+                          className="h-2"
+                        />
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -364,20 +383,27 @@ function BeautyWellnessContent(): JSX.Element {
           </TabsList>
         </DynamicTabs>
         {/* Enhanced Search and Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8" role="search" aria-label="Service Search">
+        <div
+          className="flex flex-col md:flex-row gap-4 mb-8"
+          role="search"
+          aria-label="Service Search"
+        >
           <div className="flex-1">
             <div className="relative">
-              <Icons.MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              <Icons.MagnifyingGlassIcon
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground"
+                aria-hidden="true"
+              />
               <Input
                 placeholder="Search services, providers, or content..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="pl-10"
                 aria-label="Search services, providers, or content"
               />
             </div>
           </div>
-          <Button 
+          <Button
             variant="outline"
             aria-expanded={showFilters}
             aria-controls="filters-panel"
@@ -407,13 +433,15 @@ function BeautyWellnessContent(): JSX.Element {
           </div>
         </Suspense>
         {/* Content Grid */}
-        <Suspense fallback={
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[...Array(6)].map((_, i) => (
-              <Skeleton key={i} className="h-96" />
-            ))}
-          </div>
-        }>
+        <Suspense
+          fallback={
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {[...Array(6)].map((_, i) => (
+                <Skeleton key={i} className="h-96" />
+              ))}
+            </div>
+          }
+        >
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredContent.map((item: ServiceItem) => (
               <DynamicCard key={item.id} className="overflow-hidden">
@@ -426,10 +454,7 @@ function BeautyWellnessContent(): JSX.Element {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <DynamicBadge
-                          variant="secondary"
-                          className="absolute top-2 right-2"
-                        >
+                        <DynamicBadge variant="secondary" className="absolute top-2 right-2">
                           {item.availableSlots} slots left
                         </DynamicBadge>
                       </TooltipTrigger>
@@ -443,17 +468,13 @@ function BeautyWellnessContent(): JSX.Element {
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {item.description}
-                      </p>
+                      <p className="text-sm text-muted-foreground mb-2">{item.description}</p>
                       <div className="flex gap-2 mb-4">
-                        {item.tags.map((tag) => (
+                        {item.tags.map(tag => (
                           <TooltipProvider key={tag}>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <DynamicBadge variant="outline">
-                                  {tag}
-                                </DynamicBadge>
+                                <DynamicBadge variant="outline">{tag}</DynamicBadge>
                               </TooltipTrigger>
                               <TooltipContent>
                                 <p>Click to see more {tag} services</p>
@@ -488,7 +509,9 @@ function BeautyWellnessContent(): JSX.Element {
                             </Avatar>
                             <div>
                               <p className="text-sm font-medium">{item.provider.name}</p>
-                              <p className="text-xs text-muted-foreground">{item.provider.location}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {item.provider.location}
+                              </p>
                             </div>
                           </div>
                         </TooltipTrigger>
@@ -532,9 +555,7 @@ function BeautyWellnessContent(): JSX.Element {
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Button className="flex-1" asChild>
-                            <Link href={`/beauty-wellness/services/${item.id}`}>
-                              Book Now
-                            </Link>
+                            <Link href={`/beauty-wellness/services/${item.id}`}>Book Now</Link>
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent>
@@ -594,7 +615,7 @@ function BeautyWellnessSkeleton(): JSX.Element {
           <div className="h-10 w-72 bg-gray-200 rounded mb-4"></div>
           <div className="h-6 w-96 bg-gray-200 rounded mb-8"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
+            {[1, 2, 3, 4, 5, 6].map(i => (
               <div key={i} className="h-64 bg-gray-200 rounded"></div>
             ))}
           </div>
@@ -643,4 +664,4 @@ const ServiceCard = ({ service }: { service: ServiceItem }) => {
  *       200:
  *         description: List of users
  */
-throw new Error('Test error'); 
+throw new Error('Test error');

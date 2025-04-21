@@ -11,11 +11,7 @@ const pool = new Pool({
 // Query optimization utilities
 export const dbOptimization = {
   // Execute query with retry logic
-  async executeWithRetry<T>(
-    query: string,
-    params: any[] = [],
-    maxRetries = 3
-  ): Promise<T> {
+  async executeWithRetry<T>(query: string, params: any[] = [], maxRetries = 3): Promise<T> {
     let lastError;
     for (let i = 0; i < maxRetries; i++) {
       try {
@@ -32,11 +28,7 @@ export const dbOptimization = {
   },
 
   // Execute query with timeout
-  async executeWithTimeout<T>(
-    query: string,
-    params: any[] = [],
-    timeoutMs = 5000
-  ): Promise<T> {
+  async executeWithTimeout<T>(query: string, params: any[] = [], timeoutMs = 5000): Promise<T> {
     const client = await pool.connect();
     try {
       await client.query(`SET statement_timeout = ${timeoutMs}`);
@@ -74,12 +66,7 @@ export const dbOptimization = {
   },
 
   // Query result caching
-  async cachedQuery<T>(
-    key: string,
-    query: string,
-    params: any[] = [],
-    ttl = 3600
-  ): Promise<T> {
+  async cachedQuery<T>(key: string, query: string, params: any[] = [], ttl = 3600): Promise<T> {
     const cacheKey = `query:${key}:${JSON.stringify(params)}`;
     const cached = await pool.query(
       'SELECT result FROM query_cache WHERE key = $1 AND expires_at > NOW()',
@@ -136,4 +123,4 @@ export const dbOptimization = {
       client.release();
     }
   },
-}; 
+};

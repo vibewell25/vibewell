@@ -11,13 +11,13 @@ import { prisma } from '@/lib/database/client';
 import { Spinner } from '@/components/ui/spinner';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table';
 import {
   BarChart,
@@ -27,7 +27,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from 'recharts';
 import { AlertCircle, Clock, RefreshCw, Check, X } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
@@ -71,7 +71,9 @@ export default function RateLimitDashboard() {
   const [filter, setFilter] = useState('all');
   const [timeRange, setTimeRange] = useState('24h');
   const [statsData, setStatsData] = useState<any[]>([]);
-  const [authStatus, setAuthStatus] = useState<'loading' | 'authenticated' | 'unauthenticated'>('loading');
+  const [authStatus, setAuthStatus] = useState<'loading' | 'authenticated' | 'unauthenticated'>(
+    'loading'
+  );
   const [redisClient, setRedisClient] = useState<any>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
 
@@ -84,13 +86,13 @@ export default function RateLimitDashboard() {
       } catch (error) {
         console.error('Error loading Redis client:', error);
         toast({
-          title: "Error loading Redis client",
-          description: "Rate limit data may not be available",
-          variant: "destructive"
+          title: 'Error loading Redis client',
+          description: 'Rate limit data may not be available',
+          variant: 'destructive',
         });
       }
     };
-    
+
     loadRedisClient();
   }, []);
 
@@ -99,24 +101,24 @@ export default function RateLimitDashboard() {
     const checkAuth = async () => {
       try {
         if (userLoading) return;
-        
+
         if (userError) {
           throw userError;
         }
-        
+
         if (user) {
           setAuthStatus('authenticated');
-          
+
           // Fetch user role from database
           const response = await fetch('/api/user/role');
           const data = await response.json();
-          
+
           if (data.error) {
             throw new Error(data.error);
           }
-          
+
           setUserRole(data.role);
-          
+
           // Check if user is admin
           if (data.role !== 'admin') {
             router.push('/forbidden');
@@ -133,7 +135,7 @@ export default function RateLimitDashboard() {
         router.push('/api/auth/login?returnTo=/admin/rate-limits');
       }
     };
-    
+
     checkAuth();
   }, [user, userLoading, userError, router, redisClient]);
 
@@ -147,55 +149,53 @@ export default function RateLimitDashboard() {
   // Fetch rate limit events from Redis
   const fetchRateLimitEvents = async () => {
     if (!redisClient) return;
-    
+
     try {
       setLoading(true);
-      
+
       // Fetch rate limit events from Redis
       const events = await redisClient.getRateLimitEvents(500);
       const suspiciousIPs = await redisClient.getSuspiciousIPs(20);
-      
+
       // Filter events based on selected criteria
       let filteredEvents = [...events];
-      
+
       // Filter by time range
       const now = Date.now();
-      const timeRangeMs = timeRange === '24h' 
-        ? 24 * 60 * 60 * 1000 
-        : timeRange === '1h' 
-          ? 60 * 60 * 1000 
-          : 7 * 24 * 60 * 60 * 1000;
-      
-      filteredEvents = filteredEvents.filter(e => 
-        (now - e.timestamp) <= timeRangeMs
-      );
-      
+      const timeRangeMs =
+        timeRange === '24h'
+          ? 24 * 60 * 60 * 1000
+          : timeRange === '1h'
+            ? 60 * 60 * 1000
+            : 7 * 24 * 60 * 60 * 1000;
+
+      filteredEvents = filteredEvents.filter(e => now - e.timestamp <= timeRangeMs);
+
       // Filter by limiter type
       if (filter !== 'all') {
         if (filter === 'suspicious') {
           filteredEvents = filteredEvents.filter(e => e.suspicious === true);
         } else {
-          filteredEvents = filteredEvents.filter(e => 
+          filteredEvents = filteredEvents.filter(e =>
             e.limiterType.toLowerCase().includes(filter.toLowerCase())
           );
         }
       }
-      
+
       // Sort by timestamp, most recent first
       filteredEvents.sort((a, b) => b.timestamp - a.timestamp);
-      
+
       setEvents(filteredEvents);
       setSuspiciousIPs(suspiciousIPs);
-      
+
       // Generate statistics for charts
       generateStatsData(filteredEvents);
-      
     } catch (error) {
       console.error('Error fetching rate limit events:', error);
       toast({
-        title: "Error fetching rate limit data",
-        description: "There was a problem retrieving rate limit events from Redis",
-        variant: "destructive"
+        title: 'Error fetching rate limit data',
+        description: 'There was a problem retrieving rate limit events from Redis',
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -206,29 +206,29 @@ export default function RateLimitDashboard() {
   // Generate statistics for visualization
   const generateStatsData = (events: RateLimitEvent[]) => {
     // Count events by limiter type
-    const limiterCounts: Record<string, { exceeded: number, allowed: number }> = {};
-    
+    const limiterCounts: Record<string, { exceeded: number; allowed: number }> = {};
+
     events.forEach(event => {
       const limiterType = event.limiterType || 'unknown';
-      
+
       if (!limiterCounts[limiterType]) {
         limiterCounts[limiterType] = { exceeded: 0, allowed: 0 };
       }
-      
+
       if (event.exceeded) {
         limiterCounts[limiterType].exceeded++;
       } else {
         limiterCounts[limiterType].allowed++;
       }
     });
-    
+
     // Convert to chart data format
     const chartData = Object.entries(limiterCounts).map(([name, counts]) => ({
       name,
       exceeded: counts.exceeded,
-      allowed: counts.allowed
+      allowed: counts.allowed,
     }));
-    
+
     setStatsData(chartData);
   };
 
@@ -251,31 +251,32 @@ export default function RateLimitDashboard() {
   // Clear old events
   const clearOldEvents = async () => {
     if (!redisClient) return;
-    
+
     try {
       setLoading(true);
       // Clear events older than the selected time range
-      const timeRangeMs = timeRange === '24h' 
-        ? 24 * 60 * 60 * 1000 
-        : timeRange === '1h' 
-          ? 60 * 60 * 1000 
-          : 7 * 24 * 60 * 60 * 1000;
-          
+      const timeRangeMs =
+        timeRange === '24h'
+          ? 24 * 60 * 60 * 1000
+          : timeRange === '1h'
+            ? 60 * 60 * 1000
+            : 7 * 24 * 60 * 60 * 1000;
+
       const cleared = await redisClient.clearOldRateLimitEvents(timeRangeMs);
-      
+
       toast({
-        title: "Events cleared",
+        title: 'Events cleared',
         description: `${cleared} old events were removed from storage`,
       });
-      
+
       // Refresh the data
       fetchRateLimitEvents();
     } catch (error) {
       console.error('Error clearing old events:', error);
       toast({
-        title: "Error clearing events",
-        description: "There was a problem clearing old rate limit events",
-        variant: "destructive"
+        title: 'Error clearing events',
+        description: 'There was a problem clearing old rate limit events',
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -298,7 +299,7 @@ export default function RateLimitDashboard() {
           <select
             className="border rounded px-2 py-1"
             value={timeRange}
-            onChange={(e) => setTimeRange(e.target.value)}
+            onChange={e => setTimeRange(e.target.value)}
           >
             <option value="1h">Last Hour</option>
             <option value="24h">Last 24 Hours</option>
@@ -307,7 +308,7 @@ export default function RateLimitDashboard() {
           <select
             className="border rounded px-2 py-1"
             value={filter}
-            onChange={(e) => setFilter(e.target.value)}
+            onChange={e => setFilter(e.target.value)}
           >
             <option value="all">All Events</option>
             <option value="auth">Authentication</option>
@@ -317,18 +318,11 @@ export default function RateLimitDashboard() {
             <option value="admin">Admin Operations</option>
             <option value="suspicious">Suspicious Events</option>
           </select>
-          <Button 
-            onClick={handleRefresh} 
-            disabled={refreshing}
-            className="flex items-center"
-          >
+          <Button onClick={handleRefresh} disabled={refreshing} className="flex items-center">
             <RefreshCw className={`mr-1 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <Button 
-            variant="outline" 
-            onClick={clearOldEvents}
-          >
+          <Button variant="outline" onClick={clearOldEvents}>
             Clear Old Events
           </Button>
         </HStack>
@@ -345,25 +339,19 @@ export default function RateLimitDashboard() {
         <GridItem>
           <Card className="p-4">
             <h3 className="font-semibold">Rate Limited</h3>
-            <p className="text-2xl text-amber-500">
-              {events.filter(e => e.exceeded).length}
-            </p>
+            <p className="text-2xl text-amber-500">{events.filter(e => e.exceeded).length}</p>
           </Card>
         </GridItem>
         <GridItem>
           <Card className="p-4">
             <h3 className="font-semibold">Suspicious Activity</h3>
-            <p className="text-2xl text-red-500">
-              {events.filter(e => e.suspicious).length}
-            </p>
+            <p className="text-2xl text-red-500">{events.filter(e => e.suspicious).length}</p>
           </Card>
         </GridItem>
         <GridItem>
           <Card className="p-4">
             <h3 className="font-semibold">Unique IPs</h3>
-            <p className="text-2xl">
-              {new Set(events.map(e => e.ip)).size}
-            </p>
+            <p className="text-2xl">{new Set(events.map(e => e.ip)).size}</p>
           </Card>
         </GridItem>
       </Grid>
@@ -373,10 +361,7 @@ export default function RateLimitDashboard() {
         <Card className="p-4 mb-6">
           <h2 className="text-xl font-semibold mb-4">Rate Limiting by Category</h2>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart
-              data={statsData}
-              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-            >
+            <BarChart data={statsData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
@@ -414,7 +399,7 @@ export default function RateLimitDashboard() {
                 </TableHeader>
                 <TableBody>
                   {events.length > 0 ? (
-                    events.map((event) => (
+                    events.map(event => (
                       <TableRow key={event.id} className={event.suspicious ? 'bg-red-50' : ''}>
                         <TableCell>
                           <div className="flex items-center">
@@ -470,9 +455,7 @@ export default function RateLimitDashboard() {
           <Card>
             <div className="p-4">
               <h2 className="text-xl font-semibold mb-2">Suspicious IPs</h2>
-              <p className="text-sm text-gray-600 mb-4">
-                IPs with multiple rate limit violations
-              </p>
+              <p className="text-sm text-gray-600 mb-4">IPs with multiple rate limit violations</p>
             </div>
             <div className="max-h-[500px] overflow-auto">
               <Table>
@@ -484,7 +467,7 @@ export default function RateLimitDashboard() {
                 </TableHeader>
                 <TableBody>
                   {suspiciousIPs.length > 0 ? (
-                    suspiciousIPs.map((ip) => (
+                    suspiciousIPs.map(ip => (
                       <TableRow key={ip.ip}>
                         <TableCell>{ip.ip}</TableCell>
                         <TableCell>
@@ -512,4 +495,4 @@ export default function RateLimitDashboard() {
       </Grid>
     </div>
   );
-} 
+}

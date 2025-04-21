@@ -1,7 +1,7 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LucideIcon } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { LucideIcon } from 'lucide-react';
 
 interface DataCardProps {
   title: string;
@@ -31,17 +31,12 @@ export function DataCard({
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
-        {description && (
-          <p className="text-xs text-muted-foreground">{description}</p>
-        )}
+        {description && <p className="text-xs text-muted-foreground">{description}</p>}
         {trend && (
           <div className="flex items-center mt-1">
-            <span
-              className={`text-xs ${
-                trend.isPositive ? "text-green-500" : "text-red-500"
-              }`}
-            >
-              {trend.isPositive ? "+" : "-"}{Math.abs(trend.value)}%
+            <span className={`text-xs ${trend.isPositive ? 'text-green-500' : 'text-red-500'}`}>
+              {trend.isPositive ? '+' : '-'}
+              {Math.abs(trend.value)}%
             </span>
             <span className="text-xs text-muted-foreground ml-1">from last month</span>
           </div>
@@ -49,4 +44,4 @@ export function DataCard({
       </CardContent>
     </Card>
   );
-} 
+}

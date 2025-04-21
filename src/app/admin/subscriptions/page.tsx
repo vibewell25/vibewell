@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { DataTable, Column } from '@/components/ui/data-table';
 import { useSubscriptions, Subscription } from '@/hooks/use-subscriptions';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { trackEvent } from '@/lib/monitoring/analytics';
 import { formatCurrency } from '@/lib/utils';
 
@@ -11,10 +11,11 @@ const columns: Column[] = [
   { accessorKey: 'id', header: 'ID' },
   { accessorKey: 'customerName', header: 'Customer' },
   { accessorKey: 'plan', header: 'Plan' },
-  { 
+  {
     accessorKey: 'amount',
     header: 'Amount',
-    cell: ({ row: { original } }: { row: { original: Subscription } }) => formatCurrency(original.amount),
+    cell: ({ row: { original } }: { row: { original: Subscription } }) =>
+      formatCurrency(original.amount),
   },
   { accessorKey: 'status', header: 'Status' },
   { accessorKey: 'nextBillingDate', header: 'Next Billing' },
@@ -91,18 +92,10 @@ export default function SubscriptionManagement() {
       <Card className="p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold">Subscriptions</h2>
-          <Button onClick={() => handleCreateSubscription()}>
-            Create Subscription
-          </Button>
+          <Button onClick={() => handleCreateSubscription()}>Create Subscription</Button>
         </div>
 
-        <DataTable
-          columns={columns}
-          data={subscriptions}
-          pagination
-          sorting
-          filtering
-        />
+        <DataTable columns={columns} data={subscriptions} pagination sorting filtering />
       </Card>
     </div>
   );
@@ -122,4 +115,4 @@ const handleCancel = async (subscription: Subscription) => {
 const handleCreateSubscription = () => {
   trackEvent('subscription_create');
   // Implement subscription creation functionality
-}; 
+};

@@ -29,7 +29,9 @@ interface EngagementDashboardProps {
   initialTimeRange?: 'day' | 'week' | 'month' | 'custom';
 }
 
-export default function EngagementDashboard({ initialTimeRange = 'week' }: EngagementDashboardProps) {
+export default function EngagementDashboard({
+  initialTimeRange = 'week',
+}: EngagementDashboardProps) {
   const [metrics, setMetrics] = useState<EngagementMetrics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,11 +48,11 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
     async function fetchMetrics() {
       setLoading(true);
       setError(null);
-      
+
       try {
         let startDate: Date;
         let endDate = new Date();
-        
+
         // Handle predefined ranges
         if (timeRange !== 'custom') {
           switch (timeRange) {
@@ -66,23 +68,23 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
             default:
               startDate = subWeeks(endDate, 1);
           }
-          
+
           setDateRange({
             from: startDate,
-            to: endDate
+            to: endDate,
           });
         } else {
           // Use custom date range
           startDate = dateRange.from || subWeeks(endDate, 1);
           endDate = dateRange.to || endDate;
         }
-        
+
         const analyticsService = new AnalyticsService();
         const metrics = await analyticsService.getEngagementMetrics({
           start: startDate.toISOString(),
           end: endDate.toISOString(),
         });
-        
+
         setMetrics(metrics);
       } catch (err) {
         console.error('Error fetching analytics metrics:', err);
@@ -91,29 +93,33 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
         setLoading(false);
       }
     }
-    
+
     fetchMetrics();
   }, [timeRange, dateRange.from, dateRange.to]);
 
   // Prepare data for charts
-  const sessionTypeData = metrics ? [
-    { name: 'Makeup', value: metrics.makeupSessions },
-    { name: 'Hairstyle', value: metrics.hairstyleSessions },
-    { name: 'Accessory', value: metrics.accessorySessions },
-  ] : [];
+  const sessionTypeData = metrics
+    ? [
+        { name: 'Makeup', value: metrics.makeupSessions },
+        { name: 'Hairstyle', value: metrics.hairstyleSessions },
+        { name: 'Accessory', value: metrics.accessorySessions },
+      ]
+    : [];
 
-  const shareMethodData = metrics ? [
-    { name: 'Social', value: metrics.socialShares },
-    { name: 'Email', value: metrics.emailShares },
-    { name: 'Download', value: metrics.downloadShares },
-  ] : [];
+  const shareMethodData = metrics
+    ? [
+        { name: 'Social', value: metrics.socialShares },
+        { name: 'Email', value: metrics.emailShares },
+        { name: 'Download', value: metrics.downloadShares },
+      ]
+    : [];
 
   const topProductsData = metrics?.topViewedProducts || [];
 
-  const categoryBreakdownData = metrics 
+  const categoryBreakdownData = metrics
     ? Object.entries(metrics.productCategoryBreakdown).map(([category, count]) => ({
         name: category.charAt(0).toUpperCase() + category.slice(1),
-        value: count
+        value: count,
       }))
     : [];
 
@@ -123,7 +129,7 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
   // Helper function to export data to CSV
   const exportToCsv = () => {
     if (!metrics) return;
-    
+
     // Prepare data arrays
     const sessionData = [
       ['Type', 'Count'],
@@ -131,31 +137,31 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
       ['Hairstyle', metrics.hairstyleSessions.toString()],
       ['Accessory', metrics.accessorySessions.toString()],
     ];
-    
+
     const shareData = [
       ['Method', 'Count'],
       ['Social', metrics.socialShares.toString()],
       ['Email', metrics.emailShares.toString()],
       ['Download', metrics.downloadShares.toString()],
     ];
-    
+
     const productData = [
       ['Product ID', 'Name', 'Views'],
       ...metrics.topViewedProducts.map(product => [
         product.product_id,
         product.name,
-        product.views.toString()
+        product.views.toString(),
       ]),
     ];
-    
+
     const categoryData = [
       ['Category', 'Views'],
       ...Object.entries(metrics.productCategoryBreakdown).map(([category, count]) => [
         category,
-        count.toString()
+        count.toString(),
       ]),
     ];
-    
+
     const summaryData = [
       ['Metric', 'Value'],
       ['Total Sessions', metrics.totalSessions.toString()],
@@ -163,12 +169,12 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
       ['Avg. Duration (s)', metrics.averageDuration.toFixed(2)],
       ['Success Rate (%)', metrics.successRate.toFixed(2)],
     ];
-    
+
     // Convert array to CSV string
     const arrayToCsv = (data: string[][]) => {
       return data.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
     };
-    
+
     // Generate CSV content
     const csvContent = [
       '# VIBEWELL ENGAGEMENT ANALYTICS REPORT',
@@ -185,7 +191,7 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
       '\n# CATEGORY BREAKDOWN',
       arrayToCsv(categoryData),
     ].join('\n');
-    
+
     // Create and trigger download
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -202,9 +208,9 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
       {/* Controls section */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0">
         <div className="flex flex-wrap gap-2">
-          <Tabs 
-            value={timeRange} 
-            onValueChange={(value) => setTimeRange(value as 'day' | 'week' | 'month' | 'custom')}
+          <Tabs
+            value={timeRange}
+            onValueChange={value => setTimeRange(value as 'day' | 'week' | 'month' | 'custom')}
           >
             <TabsList>
               <TabsTrigger value="day">24 Hours</TabsTrigger>
@@ -213,7 +219,7 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
               <TabsTrigger value="custom">Custom</TabsTrigger>
             </TabsList>
           </Tabs>
-          
+
           {timeRange === 'custom' && (
             <div className="flex items-center gap-2">
               <Popover>
@@ -222,18 +228,18 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                     variant="outline"
                     size="sm"
                     className={cn(
-                      "justify-start text-left font-normal",
-                      !dateRange.from && "text-muted-foreground"
+                      'justify-start text-left font-normal',
+                      !dateRange.from && 'text-muted-foreground'
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {dateRange.from ? (
                       dateRange.to ? (
                         <>
-                          {format(dateRange.from, "MMM d")} - {format(dateRange.to, "MMM d, yyyy")}
+                          {format(dateRange.from, 'MMM d')} - {format(dateRange.to, 'MMM d, yyyy')}
                         </>
                       ) : (
-                        format(dateRange.from, "MMM d, yyyy")
+                        format(dateRange.from, 'MMM d, yyyy')
                       )
                     ) : (
                       <span>Pick a date range</span>
@@ -249,17 +255,17 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                       from: dateRange.from,
                       to: dateRange.to,
                     }}
-                    onSelect={(range) => {
+                    onSelect={range => {
                       setDateRange({
                         from: range?.from,
-                        to: range?.to
+                        to: range?.to,
                       });
                     }}
                     numberOfMonths={2}
                   />
                 </PopoverContent>
               </Popover>
-              
+
               <Button
                 variant="ghost"
                 size="icon"
@@ -271,30 +277,26 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                 }}
                 disabled={!dateRange.from || !dateRange.to || loading}
               >
-                <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
+                <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
               </Button>
             </div>
           )}
         </div>
-        
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={exportToCsv}
-          disabled={loading || !metrics}
-        >
+
+        <Button variant="outline" size="sm" onClick={exportToCsv} disabled={loading || !metrics}>
           <DownloadIcon className="h-4 w-4 mr-2" />
           Export Data
         </Button>
       </div>
-      
+
       {/* Time range info */}
       {metrics && metrics.timeRange && (
         <p className="text-sm text-muted-foreground">
-          Showing data from {format(new Date(metrics.timeRange.start), "PPP")} to {format(new Date(metrics.timeRange.end), "PPP")}
+          Showing data from {format(new Date(metrics.timeRange.start), 'PPP')} to{' '}
+          {format(new Date(metrics.timeRange.end), 'PPP')}
         </p>
       )}
-      
+
       {/* Loading state */}
       {loading && (
         <div className="w-full space-y-4">
@@ -310,7 +312,7 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
               </Card>
             ))}
           </div>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {Array.from({ length: 2 }).map((_, i) => (
               <Card key={i}>
@@ -326,7 +328,7 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
           </div>
         </div>
       )}
-      
+
       {/* Error state */}
       {!loading && error && (
         <Card>
@@ -338,7 +340,7 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
           </CardContent>
         </Card>
       )}
-      
+
       {/* Data display */}
       {!loading && !error && metrics && (
         <>
@@ -352,7 +354,7 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                 <div className="text-3xl font-bold">{metrics.totalSessions.toLocaleString()}</div>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium">Unique Users</CardTitle>
@@ -361,7 +363,7 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                 <div className="text-3xl font-bold">{metrics.uniqueUsers.toLocaleString()}</div>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium">Avg Duration</CardTitle>
@@ -370,7 +372,7 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                 <div className="text-3xl font-bold">{Math.round(metrics.averageDuration)}s</div>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
@@ -380,7 +382,7 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
               </CardContent>
             </Card>
           </div>
-          
+
           <Tabs defaultValue="overview" className="w-full">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -388,13 +390,15 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
               <TabsTrigger value="tryons">Try-Ons</TabsTrigger>
               <TabsTrigger value="sharing">Sharing</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="overview" className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card className="col-span-1">
                   <CardHeader>
                     <CardTitle>Activity by Product Category</CardTitle>
-                    <CardDescription>Distribution of views across product categories</CardDescription>
+                    <CardDescription>
+                      Distribution of views across product categories
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="h-80">
                     <ResponsiveContainer width="100%" height="100%">
@@ -419,11 +423,13 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                     </ResponsiveContainer>
                   </CardContent>
                 </Card>
-                
+
                 <Card className="col-span-1">
                   <CardHeader>
                     <CardTitle>Top Products</CardTitle>
-                    <CardDescription>Most viewed products during selected time period</CardDescription>
+                    <CardDescription>
+                      Most viewed products during selected time period
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="h-80">
                     <ResponsiveContainer width="100%" height="100%">
@@ -434,11 +440,11 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                       >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis type="number" />
-                        <YAxis 
-                          type="category" 
-                          dataKey="name" 
+                        <YAxis
+                          type="category"
+                          dataKey="name"
                           width={90}
-                          tickFormatter={(value) => 
+                          tickFormatter={value =>
                             value.length > 15 ? `${value.substring(0, 15)}...` : value
                           }
                         />
@@ -451,12 +457,14 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                 </Card>
               </div>
             </TabsContent>
-            
+
             <TabsContent value="products" className="space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Product Engagement Details</CardTitle>
-                  <CardDescription>Full list of products and their engagement metrics</CardDescription>
+                  <CardDescription>
+                    Full list of products and their engagement metrics
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="overflow-x-auto">
@@ -474,8 +482,12 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                           <tr key={index} className="border-b hover:bg-muted/50">
                             <td className="py-2 px-3">{product.name}</td>
                             <td className="text-right py-2 px-3">{product.views}</td>
-                            <td className="text-right py-2 px-3">{Math.round(product.views * 0.7)}</td>
-                            <td className="text-right py-2 px-3">{Math.round(Math.random() * 100)}%</td>
+                            <td className="text-right py-2 px-3">
+                              {Math.round(product.views * 0.7)}
+                            </td>
+                            <td className="text-right py-2 px-3">
+                              {Math.round(Math.random() * 100)}%
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -484,17 +496,22 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                 </CardContent>
               </Card>
             </TabsContent>
-            
+
             <TabsContent value="tryons" className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card className="col-span-1">
                   <CardHeader>
                     <CardTitle>Try-On Sessions by Type</CardTitle>
-                    <CardDescription>Distribution of sessions across different try-on types</CardDescription>
+                    <CardDescription>
+                      Distribution of sessions across different try-on types
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="h-80">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={sessionTypeData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                      <BarChart
+                        data={sessionTypeData}
+                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                      >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis />
@@ -505,7 +522,7 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                     </ResponsiveContainer>
                   </CardContent>
                 </Card>
-                
+
                 <Card className="col-span-1">
                   <CardHeader>
                     <CardTitle>Try-On Success Rate</CardTitle>
@@ -539,7 +556,9 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center">
-                          <div className="text-4xl font-bold">{Math.round(metrics.successRate)}%</div>
+                          <div className="text-4xl font-bold">
+                            {Math.round(metrics.successRate)}%
+                          </div>
                           <div className="text-sm text-muted-foreground">Success Rate</div>
                         </div>
                       </div>
@@ -551,13 +570,15 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                 </Card>
               </div>
             </TabsContent>
-            
+
             <TabsContent value="sharing" className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card className="col-span-1">
                   <CardHeader>
                     <CardTitle>Shares by Method</CardTitle>
-                    <CardDescription>Distribution of shares across different methods</CardDescription>
+                    <CardDescription>
+                      Distribution of shares across different methods
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="h-80">
                     <ResponsiveContainer width="100%" height="100%">
@@ -582,7 +603,7 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                     </ResponsiveContainer>
                   </CardContent>
                 </Card>
-                
+
                 <Card className="col-span-1">
                   <CardHeader>
                     <CardTitle>Share Statistics</CardTitle>
@@ -598,19 +619,25 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
                           {metrics.socialShares + metrics.emailShares + metrics.downloadShares}
                         </div>
                       </div>
-                      
+
                       <div>
                         <div className="text-sm font-medium text-muted-foreground mb-1">
                           Share to Try-On Ratio
                         </div>
                         <div className="text-2xl font-bold">
-                          {(metrics.totalSessions > 0
-                            ? ((metrics.socialShares + metrics.emailShares + metrics.downloadShares) / metrics.totalSessions * 100).toFixed(1)
-                            : '0'
-                          )}%
+                          {metrics.totalSessions > 0
+                            ? (
+                                ((metrics.socialShares +
+                                  metrics.emailShares +
+                                  metrics.downloadShares) /
+                                  metrics.totalSessions) *
+                                100
+                              ).toFixed(1)
+                            : '0'}
+                          %
                         </div>
                       </div>
-                      
+
                       <div className="pt-4">
                         <div className="text-sm font-medium mb-2">Share Method Breakdown</div>
                         <div className="space-y-2">
@@ -638,4 +665,4 @@ export default function EngagementDashboard({ initialTimeRange = 'week' }: Engag
       )}
     </div>
   );
-} 
+}

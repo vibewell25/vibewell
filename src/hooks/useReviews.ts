@@ -36,25 +36,23 @@ export default function useReviews(providerId?: string) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Fetch reviews (optionally filtered by provider ID)
   const fetchReviews = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
-      let query = supabase
-        .from('reviews')
-        .select('*, customer:profiles(*)');
-      
+      let query = supabase.from('reviews').select('*, customer:profiles(*)');
+
       if (providerId) {
         query = query.eq('provider_id', providerId);
       }
-      
+
       const { data, error } = await query.order('created_at', { ascending: false });
-      
+
       if (error) throw new Error(error.message);
-      
+
       setReviews(data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred while fetching reviews');
@@ -63,12 +61,12 @@ export default function useReviews(providerId?: string) {
       setIsLoading(false);
     }
   };
-  
+
   // Add a new review
   const addReview = async (review: ReviewInput, providerId: string, bookingId?: string) => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       // Call the API endpoint
       const response = await fetch('/api/reviews', {
@@ -79,17 +77,17 @@ export default function useReviews(providerId?: string) {
         body: JSON.stringify({
           ...review,
           providerId,
-          bookingId
+          bookingId,
         }),
       });
-      
+
       const result = await response.json();
-      
+
       if (!response.ok) throw new Error(result.error || 'Could not create review');
-      
+
       // Refresh the list of reviews
       await fetchReviews();
-      
+
       return result.data;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred while adding the review');
@@ -99,12 +97,12 @@ export default function useReviews(providerId?: string) {
       setIsLoading(false);
     }
   };
-  
+
   // Update a review
   const updateReview = async (reviewId: string, updates: Partial<ReviewInput>) => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       // Call the API endpoint
       const response = await fetch(`/api/reviews/${reviewId}`, {
@@ -114,14 +112,14 @@ export default function useReviews(providerId?: string) {
         },
         body: JSON.stringify(updates),
       });
-      
+
       const result = await response.json();
-      
+
       if (!response.ok) throw new Error(result.error || 'Could not update review');
-      
+
       // Refresh the list of reviews
       await fetchReviews();
-      
+
       return result.data;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred while updating the review');
@@ -131,25 +129,25 @@ export default function useReviews(providerId?: string) {
       setIsLoading(false);
     }
   };
-  
+
   // Delete a review
   const deleteReview = async (reviewId: string) => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       // Call the API endpoint
       const response = await fetch(`/api/reviews/${reviewId}`, {
         method: 'DELETE',
       });
-      
+
       const result = await response.json();
-      
+
       if (!response.ok) throw new Error(result.error || 'Could not delete review');
-      
+
       // Refresh the list of reviews
       await fetchReviews();
-      
+
       return true;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred while deleting the review');
@@ -159,21 +157,21 @@ export default function useReviews(providerId?: string) {
       setIsLoading(false);
     }
   };
-  
+
   // Fetch a single review by ID
   const getReviewById = async (reviewId: string) => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const { data, error } = await supabase
         .from('reviews')
         .select('*, customer:profiles(*)')
         .eq('id', reviewId)
         .single();
-      
+
       if (error) throw new Error(error.message);
-      
+
       return data;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred while fetching the review');
@@ -183,20 +181,20 @@ export default function useReviews(providerId?: string) {
       setIsLoading(false);
     }
   };
-  
+
   // Calculate average rating
   const getAverageRating = (): number => {
     if (reviews.length === 0) return 0;
-    
+
     const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
     return parseFloat((sum / reviews.length).toFixed(1));
   };
-  
+
   // Load reviews on mount or when providerId changes
   useEffect(() => {
     fetchReviews();
   }, [providerId]);
-  
+
   return {
     reviews,
     isLoading,
@@ -206,6 +204,6 @@ export default function useReviews(providerId?: string) {
     updateReview,
     deleteReview,
     getReviewById,
-    getAverageRating
+    getAverageRating,
   };
-} 
+}

@@ -32,7 +32,7 @@ const INITIAL_RECOMMENDATIONS = [
     avatar: '/avatar10.png',
     bio: 'Fitness trainer focused on functional movement',
     mutualConnections: 4,
-  }
+  },
 ];
 export function RecommendedConnections() {
   const [recommendations, setRecommendations] = useState(INITIAL_RECOMMENDATIONS);
@@ -67,8 +67,8 @@ export function RecommendedConnections() {
         {recommendations.map(user => (
           <div key={user.id} className="flex items-start justify-between">
             <div className="flex items-start space-x-3">
-              <UserAvatar 
-                src={user.avatar} 
+              <UserAvatar
+                src={user.avatar}
                 alt={`${user.name}'s avatar`}
                 fallbackInitials={user.name}
               />
@@ -76,7 +76,8 @@ export function RecommendedConnections() {
                 <h3 className="font-medium text-sm">{user.name}</h3>
                 <p className="text-xs text-muted-foreground line-clamp-2">{user.bio}</p>
                 <p className="text-xs text-primary mt-1">
-                  {user.mutualConnections} mutual connection{user.mutualConnections !== 1 ? 's' : ''}
+                  {user.mutualConnections} mutual connection
+                  {user.mutualConnections !== 1 ? 's' : ''}
                 </p>
               </div>
             </div>
@@ -108,4 +109,4 @@ export function RecommendedConnections() {
       </div>
     </div>
   );
-} 
+}

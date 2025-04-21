@@ -21,11 +21,11 @@ export default async function BusinessSettingsPage() {
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-2xl font-bold mb-8">Business Settings</h1>
-      
+
       <div className="space-y-8">
         <BusinessHours businessId={business.id} />
         <ConsultationForms businessId={business.id} />
       </div>
     </div>
   );
-} 
+}

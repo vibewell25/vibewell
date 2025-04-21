@@ -40,9 +40,7 @@ export class ModelErrorBoundary extends Component<Props, State> {
         <Card className="p-6">
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">Model Loading Failed</h2>
-            <p className="text-gray-500">
-              We couldn't load the 3D model. This might be due to:
-            </p>
+            <p className="text-gray-500">We couldn't load the 3D model. This might be due to:</p>
             <ul className="list-disc list-inside text-sm text-gray-500">
               <li>Poor internet connection</li>
               <li>Browser compatibility issues</li>
@@ -56,9 +54,7 @@ export class ModelErrorBoundary extends Component<Props, State> {
             </div>
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <div className="mt-4 p-4 bg-red-50 rounded-md">
-                <p className="text-sm text-red-500">
-                  Error details: {this.state.error.message}
-                </p>
+                <p className="text-sm text-red-500">Error details: {this.state.error.message}</p>
               </div>
             )}
           </div>
@@ -68,4 +64,4 @@ export class ModelErrorBoundary extends Component<Props, State> {
 
     return this.props.children;
   }
-} 
+}

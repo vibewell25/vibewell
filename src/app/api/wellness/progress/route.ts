@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -32,9 +32,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching wellness progress:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch wellness progress' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch wellness progress' }, { status: 500 });
   }
-} 
+}

@@ -32,8 +32,8 @@ export function CardFallback({ count = 1 }: { count?: number }) {
   return (
     <>
       {Array.from({ length: count }).map((_, index) => (
-        <div 
-          key={index} 
+        <div
+          key={index}
           className="rounded-lg border border-gray-200 shadow-sm overflow-hidden animate-pulse"
           aria-hidden="true"
         >
@@ -65,9 +65,9 @@ export function TableFallback({ rows = 5, columns = 4 }: { rows?: number; column
         {Array.from({ length: rows }).map((_, rowIndex) => (
           <div key={rowIndex} className="p-4 flex space-x-4">
             {Array.from({ length: columns }).map((_, colIndex) => (
-              <div 
-                key={colIndex} 
-                className="h-5 bg-gray-200 rounded" 
+              <div
+                key={colIndex}
+                className="h-5 bg-gray-200 rounded"
                 style={{ width: `${Math.floor(Math.random() * 30) + 10}%` }}
               />
             ))}
@@ -99,4 +99,4 @@ export function ProfileFallback() {
       <div className="h-10 bg-gray-200 rounded w-1/4" />
     </div>
   );
-} 
+}

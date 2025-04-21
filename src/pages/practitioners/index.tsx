@@ -34,7 +34,7 @@ interface PractitionersPageProps {
   specializations: string[];
 }
 
-export default function PractitionersPage({ 
+export default function PractitionersPage({
   practitioners: initialPractitioners,
   specializations,
 }: PractitionersPageProps) {
@@ -44,10 +44,10 @@ export default function PractitionersPage({
   const router = useRouter();
   const toast = useToast();
 
-  const filteredPractitioners = practitioners.filter((practitioner) => {
+  const filteredPractitioners = practitioners.filter(practitioner => {
     const matchesSearch = practitioner.user.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesSpecialization = !selectedSpecialization || 
-      practitioner.specialization.includes(selectedSpecialization);
+    const matchesSpecialization =
+      !selectedSpecialization || practitioner.specialization.includes(selectedSpecialization);
     return matchesSearch && matchesSpecialization;
   });
 
@@ -76,15 +76,15 @@ export default function PractitionersPage({
             <Input
               placeholder="Search practitioners..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Select
               placeholder="All Specializations"
               value={selectedSpecialization}
-              onChange={(e) => setSelectedSpecialization(e.target.value)}
+              onChange={e => setSelectedSpecialization(e.target.value)}
               maxW="200px"
             >
-              {specializations.map((spec) => (
+              {specializations.map(spec => (
                 <option key={spec} value={spec}>
                   {spec}
                 </option>
@@ -100,16 +100,8 @@ export default function PractitionersPage({
             onBookService={handleBookService}
           />
         ) : (
-          <Box
-            textAlign="center"
-            py={10}
-            px={6}
-            bg="gray.50"
-            borderRadius="lg"
-          >
-            <Text color="gray.600">
-              No practitioners found matching your criteria
-            </Text>
+          <Box textAlign="center" py={10} px={6} bg="gray.50" borderRadius="lg">
+            <Text color="gray.600">No practitioners found matching your criteria</Text>
             <Button
               mt={4}
               colorScheme="blue"
@@ -138,14 +130,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
     // Extract unique specializations from all practitioners
     const specializations = Array.from(
-      new Set(
-        practitioners.flatMap((practitioner) => practitioner.specialization)
-      )
+      new Set(practitioners.flatMap(practitioner => practitioner.specialization))
     ).sort();
 
     return {
       props: {
-        practitioners: practitioners.map((p) => ({
+        practitioners: practitioners.map(p => ({
           ...p,
           servicesCount: p.services.length,
         })),
@@ -161,4 +151,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       },
     };
   }
-}; 
+};

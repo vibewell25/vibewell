@@ -1,12 +1,12 @@
-import { 
-  randomBytes, 
-  createCipheriv, 
+import {
+  randomBytes,
+  createCipheriv,
   createDecipheriv,
   scrypt as scryptCallback,
   timingSafeEqual,
   Cipher,
   Decipher,
-  BinaryLike
+  BinaryLike,
 } from 'crypto';
 import { promisify } from 'util';
 import { Redis } from 'ioredis';
@@ -144,11 +144,7 @@ export class EncryptionService {
     const currentKey = await this.getCurrentKey();
     const iv = randomBytes(this.ivLength);
 
-    const cipher = createCipheriv(
-      this.algorithm,
-      currentKey.key,
-      iv
-    );
+    const cipher = createCipheriv(this.algorithm, currentKey.key, iv);
 
     let encryptedData = cipher.update(data, 'utf8', 'base64');
     encryptedData += cipher.final('base64');
@@ -159,7 +155,7 @@ export class EncryptionService {
     // Combine the encrypted data and auth tag
     const finalEncryptedData = Buffer.concat([
       Buffer.from(encryptedData, 'base64'),
-      authTag
+      authTag,
     ]).toString('base64');
 
     return {
@@ -168,8 +164,8 @@ export class EncryptionService {
         iv: iv.toString('base64'),
         keyId: currentKey.id,
         algorithm: this.algorithm,
-        encryptedKey: currentKey.encryptedKey.toString('base64')
-      }
+        encryptedKey: currentKey.encryptedKey.toString('base64'),
+      },
     };
   }
 
@@ -181,11 +177,7 @@ export class EncryptionService {
     const encryptedKeyBuffer = Buffer.from(metadata.encryptedKey, 'base64');
     const key = await this.hsmService.decryptDataKey(encryptedKeyBuffer);
 
-    const decipher = createDecipheriv(
-      metadata.algorithm,
-      key,
-      Buffer.from(metadata.iv, 'base64')
-    );
+    const decipher = createDecipheriv(metadata.algorithm, key, Buffer.from(metadata.iv, 'base64'));
 
     // Split the auth tag from the encrypted data
     const encryptedBuffer = Buffer.from(encryptedData, 'base64');
@@ -259,11 +251,7 @@ export class EncryptionService {
   }
 
   // Helper method to rotate encryption keys
-  async reencryptData(
-    data: string,
-    oldKey: Buffer,
-    newKey: Buffer
-  ): Promise<EncryptedData> {
+  async reencryptData(data: string, oldKey: Buffer, newKey: Buffer): Promise<EncryptedData> {
     const tempService = new EncryptionService();
     const newService = new EncryptionService();
 
@@ -273,7 +261,7 @@ export class EncryptionService {
       key: oldKey,
       encryptedKey: await this.hsmService.reencryptDataKey(oldKey),
       createdAt: new Date(),
-      expiresAt: new Date(Date.now() + this.keyRotationInterval)
+      expiresAt: new Date(Date.now() + this.keyRotationInterval),
     };
 
     const newKeyData: EncryptionKey = {
@@ -281,7 +269,7 @@ export class EncryptionService {
       key: newKey,
       encryptedKey: await this.hsmService.reencryptDataKey(newKey),
       createdAt: new Date(),
-      expiresAt: new Date(Date.now() + this.keyRotationInterval)
+      expiresAt: new Date(Date.now() + this.keyRotationInterval),
     };
 
     // Store temporary keys
@@ -293,7 +281,7 @@ export class EncryptionService {
       iv: data,
       algorithm: this.algorithm,
       keyId: oldKeyData.id,
-      encryptedKey: oldKeyData.encryptedKey.toString('base64')
+      encryptedKey: oldKeyData.encryptedKey.toString('base64'),
     });
 
     // Re-encrypt with new key
@@ -302,4 +290,4 @@ export class EncryptionService {
 }
 
 // Export singleton instance
-export const encryptionService = new EncryptionService(); 
+export const encryptionService = new EncryptionService();

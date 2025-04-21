@@ -56,7 +56,7 @@ describe('ErrorBoundary', () => {
 
   test('renders custom fallback when provided', () => {
     const customFallback = <div>Custom error UI</div>;
-    
+
     render(
       <ErrorBoundary fallback={customFallback}>
         <BuggyComponent />
@@ -68,7 +68,7 @@ describe('ErrorBoundary', () => {
 
   test('calls onError when an error occurs', () => {
     const handleError = jest.fn();
-    
+
     render(
       <ErrorBoundary onError={handleError}>
         <BuggyComponent />
@@ -83,7 +83,7 @@ describe('ErrorBoundary', () => {
     const onReset = jest.fn(() => {
       shouldThrow = false;
     });
-    
+
     const { rerender } = render(
       <ErrorBoundary onReset={onReset}>
         <BuggyComponent shouldThrow={shouldThrow} />
@@ -92,20 +92,20 @@ describe('ErrorBoundary', () => {
 
     // Check that the error UI is shown
     expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
-    
+
     // Click the reset button
     fireEvent.click(screen.getByText(/try again/i));
-    
+
     // Check that onReset was called
     expect(onReset).toHaveBeenCalled();
-    
+
     // Rerender the component with the updated shouldThrow value
     rerender(
       <ErrorBoundary onReset={onReset}>
         <BuggyComponent shouldThrow={shouldThrow} />
       </ErrorBoundary>
     );
-    
+
     // Now the component should render successfully
     expect(screen.getByText('Component rendered successfully')).toBeInTheDocument();
   });
@@ -114,18 +114,18 @@ describe('ErrorBoundary', () => {
 describe('withErrorBoundary HOC', () => {
   test('wraps component with error boundary', () => {
     const WrappedBuggyComponent = withErrorBoundary(BuggyComponent);
-    
+
     render(<WrappedBuggyComponent />);
-    
+
     // Check that the fallback UI is rendered
     expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
   });
 
   test('passes props to wrapped component', () => {
     const WrappedBuggyComponent = withErrorBoundary(BuggyComponent);
-    
+
     render(<WrappedBuggyComponent shouldThrow={false} />);
-    
+
     // Check that the component rendered successfully
     expect(screen.getByText('Component rendered successfully')).toBeInTheDocument();
   });
@@ -133,10 +133,10 @@ describe('withErrorBoundary HOC', () => {
   test('passes error boundary props correctly', () => {
     const customFallback = <div>Custom error fallback</div>;
     const WrappedBuggyComponent = withErrorBoundary(BuggyComponent, { fallback: customFallback });
-    
+
     render(<WrappedBuggyComponent />);
-    
+
     // Check that the custom fallback is rendered
     expect(screen.getByText('Custom error fallback')).toBeInTheDocument();
   });
-}); 
+});

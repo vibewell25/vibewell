@@ -29,12 +29,12 @@ export const VirtualizedAppointmentList: React.FC<VirtualizedAppointmentListProp
     onSelectAppointment(appointment);
   };
 
-  const AppointmentRow = ({ index, style }: { index: number, style: React.CSSProperties }) => {
+  const AppointmentRow = ({ index, style }: { index: number; style: React.CSSProperties }) => {
     const appointment = appointments[index];
     const isSelected = selectedId === appointment.id;
-    
+
     return (
-      <div 
+      <div
         style={style}
         className={`p-4 border-b ${isSelected ? 'bg-blue-50' : 'hover:bg-gray-50'} transition-colors`}
         onClick={() => handleSelectAppointment(appointment)}
@@ -49,14 +49,16 @@ export const VirtualizedAppointmentList: React.FC<VirtualizedAppointmentListProp
             <p className="text-sm text-gray-500">{appointment.serviceName}</p>
           </div>
           <div className="text-right">
-            <p className="text-sm">{appointment.date} at {appointment.time}</p>
-            <span 
+            <p className="text-sm">
+              {appointment.date} at {appointment.time}
+            </p>
+            <span
               className={`inline-block px-2 py-1 text-xs rounded-full ${
-                appointment.status === 'confirmed' 
-                  ? 'bg-green-100 text-green-800' 
+                appointment.status === 'confirmed'
+                  ? 'bg-green-100 text-green-800'
                   : appointment.status === 'pending'
-                  ? 'bg-yellow-100 text-yellow-800'
-                  : 'bg-red-100 text-red-800'
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : 'bg-red-100 text-red-800'
               }`}
             >
               {appointment.status}

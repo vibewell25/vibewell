@@ -48,9 +48,9 @@ export const BADGES: Badge[] = [
     image: '/badges/first-try-on.svg',
     criteria: {
       type: 'sessions',
-      count: 1
+      count: 1,
     },
-    points: 10
+    points: 10,
   },
   {
     id: 'try-on-expert',
@@ -59,9 +59,9 @@ export const BADGES: Badge[] = [
     image: '/badges/try-on-expert.svg',
     criteria: {
       type: 'sessions',
-      count: 10
+      count: 10,
     },
-    points: 50
+    points: 50,
   },
   {
     id: 'makeup-enthusiast',
@@ -71,9 +71,9 @@ export const BADGES: Badge[] = [
     criteria: {
       type: 'sessions',
       count: 5,
-      filter: { type: 'makeup' }
+      filter: { type: 'makeup' },
     },
-    points: 30
+    points: 30,
   },
   {
     id: 'hairstyle-explorer',
@@ -83,9 +83,9 @@ export const BADGES: Badge[] = [
     criteria: {
       type: 'sessions',
       count: 5,
-      filter: { type: 'hairstyle' }
+      filter: { type: 'hairstyle' },
     },
-    points: 30
+    points: 30,
   },
   {
     id: 'accessory-collector',
@@ -95,9 +95,9 @@ export const BADGES: Badge[] = [
     criteria: {
       type: 'sessions',
       count: 5,
-      filter: { type: 'accessory' }
+      filter: { type: 'accessory' },
     },
-    points: 30
+    points: 30,
   },
   {
     id: 'social-butterfly',
@@ -106,9 +106,9 @@ export const BADGES: Badge[] = [
     image: '/badges/social-butterfly.svg',
     criteria: {
       type: 'shares',
-      count: 3
+      count: 3,
     },
-    points: 25
+    points: 25,
   },
   {
     id: 'consistency-king',
@@ -117,10 +117,10 @@ export const BADGES: Badge[] = [
     image: '/badges/consistency-king.svg',
     criteria: {
       type: 'streak',
-      count: 3
+      count: 3,
     },
-    points: 40
-  }
+    points: 40,
+  },
 ];
 
 // Calculate level based on points
@@ -128,27 +128,27 @@ function calculateLevel(points: number): number {
   // Each level requires 20% more points than the previous
   // Level 1: 0-100, Level 2: 101-220, Level 3: 221-364, etc.
   if (points < 100) return 1;
-  
+
   let level = 1;
   let threshold = 100;
   let nextThreshold = threshold;
-  
+
   while (points >= nextThreshold) {
     level++;
     threshold = nextThreshold;
     nextThreshold += Math.floor(threshold * 0.2);
   }
-  
+
   return level;
 }
 
 export class EngagementService {
   private analyticsService: AnalyticsService;
-  
+
   constructor() {
     this.analyticsService = new AnalyticsService();
   }
-  
+
   /**
    * Get all badges for a user
    * @param userId The user's ID
@@ -157,23 +157,23 @@ export class EngagementService {
   async getUserBadges(userId: string): Promise<UserBadge[]> {
     try {
       const userBadges = await prisma.userBadge.findMany({
-        where: { userId }
+        where: { userId },
       });
-      
+
       // Enrich with badge details
       return userBadges.map((userBadge: any) => ({
         id: userBadge.id,
         userId: userBadge.userId,
         badgeId: userBadge.badgeId,
         awardedAt: userBadge.awardedAt.toISOString(),
-        badge: BADGES.find(badge => badge.id === userBadge.badgeId)
+        badge: BADGES.find(badge => badge.id === userBadge.badgeId),
       }));
     } catch (error) {
       console.error('Error getting user badges:', error);
       return [];
     }
   }
-  
+
   /**
    * Get user points and level
    * @param userId The user's ID
@@ -182,31 +182,31 @@ export class EngagementService {
   async getUserPoints(userId: string): Promise<UserPoints | null> {
     try {
       const userPoints = await prisma.userPoints.findUnique({
-        where: { userId }
+        where: { userId },
       });
-      
+
       if (!userPoints) {
         // No record found, create a new one
         return {
           userId,
           points: 0,
           level: 1,
-          lastUpdated: new Date().toISOString()
+          lastUpdated: new Date().toISOString(),
         };
       }
-      
+
       return {
         userId: userPoints.userId,
         points: userPoints.points,
         level: userPoints.level,
-        lastUpdated: userPoints.lastUpdated.toISOString()
+        lastUpdated: userPoints.lastUpdated.toISOString(),
       };
     } catch (error) {
       console.error('Error getting user points:', error);
       return null;
     }
   }
-  
+
   /**
    * Award points to a user
    * @param userId The user's ID
@@ -217,34 +217,34 @@ export class EngagementService {
       const currentPoints = await this.getUserPoints(userId);
       const newPoints = (currentPoints?.points || 0) + points;
       const newLevel = calculateLevel(newPoints);
-      
+
       const updatedUserPoints = await prisma.userPoints.upsert({
         where: { userId },
         update: {
           points: newPoints,
           level: newLevel,
-          lastUpdated: new Date()
+          lastUpdated: new Date(),
         },
         create: {
           userId,
           points: newPoints,
           level: newLevel,
-          lastUpdated: new Date()
-        }
+          lastUpdated: new Date(),
+        },
       });
-      
+
       return {
         userId: updatedUserPoints.userId,
         points: updatedUserPoints.points,
         level: updatedUserPoints.level,
-        lastUpdated: updatedUserPoints.lastUpdated.toISOString()
+        lastUpdated: updatedUserPoints.lastUpdated.toISOString(),
       };
     } catch (error) {
       console.error('Error awarding points:', error);
       return null;
     }
   }
-  
+
   /**
    * Award a badge to a user
    * @param userId The user's ID
@@ -256,48 +256,48 @@ export class EngagementService {
       const existingBadge = await prisma.userBadge.findFirst({
         where: {
           userId,
-          badgeId
-        }
+          badgeId,
+        },
       });
-      
+
       if (existingBadge) {
         return {
           id: existingBadge.id,
           userId: existingBadge.userId,
           badgeId: existingBadge.badgeId,
           awardedAt: existingBadge.awardedAt.toISOString(),
-          badge: BADGES.find(badge => badge.id === badgeId)
+          badge: BADGES.find(badge => badge.id === badgeId),
         };
       }
-      
+
       // Award new badge
       const userBadge = await prisma.userBadge.create({
         data: {
           userId,
           badgeId,
-          awardedAt: new Date()
-        }
+          awardedAt: new Date(),
+        },
       });
-      
+
       // Award points for the badge
       const badge = BADGES.find(b => b.id === badgeId);
       if (badge) {
         await this.awardPoints(userId, badge.points);
       }
-      
+
       return {
         id: userBadge.id,
         userId: userBadge.userId,
         badgeId: userBadge.badgeId,
         awardedAt: userBadge.awardedAt.toISOString(),
-        badge: badge
+        badge: badge,
       };
     } catch (error) {
       console.error('Error awarding badge:', error);
       return null;
     }
   }
-  
+
   /**
    * Check if a user is eligible for any badges they don't have yet
    * @param userId The user's ID
@@ -308,48 +308,47 @@ export class EngagementService {
       // Get user's current badges
       const userBadges = await this.getUserBadges(userId);
       const earnedBadgeIds = userBadges.map(badge => badge.badgeId);
-      
+
       // Get user's achievements for badge criteria
       const achievements = await prisma.achievement.findMany({
-        where: { userId }
+        where: { userId },
       });
-      
+
       // Map achievements by type for easy access
       const achievementsByType: Record<string, number> = {};
       achievements.forEach((achievement: any) => {
         achievementsByType[achievement.type] = achievement.count;
       });
-      
+
       // Check each badge's criteria
-      const eligibleBadgeIds = BADGES
-        .filter(badge => !earnedBadgeIds.includes(badge.id))
+      const eligibleBadgeIds = BADGES.filter(badge => !earnedBadgeIds.includes(badge.id))
         .filter(badge => {
           const { type, count, filter } = badge.criteria;
-          
+
           if (type === 'streak') {
             // Special handling for streak badges
             // This would need to be implemented based on your streak tracking logic
             return false;
           }
-          
+
           if (filter) {
             // Check filtered criteria
             const achievementTypeWithFilter = `${type}:${Object.keys(filter)[0]}:${Object.values(filter)[0]}`;
             return (achievementsByType[achievementTypeWithFilter] || 0) >= count;
           }
-          
+
           // Check simple criteria
           return (achievementsByType[type] || 0) >= count;
         })
         .map(badge => badge.id);
-      
+
       return eligibleBadgeIds;
     } catch (error) {
       console.error('Error checking badge eligibility:', error);
       return [];
     }
   }
-  
+
   /**
    * Track an achievement for a user
    * @param userId The user's ID
@@ -362,18 +361,18 @@ export class EngagementService {
       const existingAchievement = await prisma.achievement.findFirst({
         where: {
           userId,
-          type
-        }
+          type,
+        },
       });
-      
+
       if (existingAchievement) {
         // Update existing achievement
         await prisma.achievement.update({
           where: { id: existingAchievement.id },
           data: {
             count: existingAchievement.count + count,
-            updatedAt: new Date()
-          }
+            updatedAt: new Date(),
+          },
         });
       } else {
         // Create new achievement
@@ -383,18 +382,18 @@ export class EngagementService {
             type,
             count,
             createdAt: new Date(),
-            updatedAt: new Date()
-          }
+            updatedAt: new Date(),
+          },
         });
       }
-      
+
       // Track analytics
       this.analyticsService.trackEvent('achievement_earned', {
         user_id: userId,
         achievement_type: type,
-        count
+        count,
       });
-      
+
       // Check for new badges
       const eligibleBadgeIds = await this.checkBadgeEligibility(userId);
       for (const badgeId of eligibleBadgeIds) {
@@ -404,7 +403,7 @@ export class EngagementService {
       console.error('Error tracking achievement:', error);
     }
   }
-  
+
   /**
    * Get personalized product recommendations for a user
    * @param userId The user's ID
@@ -417,37 +416,37 @@ export class EngagementService {
       const userSessions = await prisma.tryOnSession.findMany({
         where: { userId },
         orderBy: { createdAt: 'desc' },
-        take: 20
+        take: 20,
       });
-      
+
       // Get top products the user has tried
       const topProducts = await prisma.tryOnSession.groupBy({
         by: ['productId'],
-        where: { 
+        where: {
           userId,
-          productId: { not: null }
+          productId: { not: null },
         },
         _count: { id: true },
         orderBy: {
           _count: {
-            id: 'desc'
-          }
+            id: 'desc',
+          },
         },
-        take: 5
+        take: 5,
       });
-      
+
       const productIds = topProducts
         .filter((item: any) => item.productId !== null)
         .map((item: any) => item.productId as string);
-      
+
       if (productIds.length === 0) {
         // If user has no history, return trending products
         return prisma.product.findMany({
           where: { trending: true },
-          take: limit
+          take: limit,
         });
       }
-      
+
       // Get recommendations based on similar products
       const recommendations = await prisma.product.findMany({
         where: {
@@ -455,52 +454,56 @@ export class EngagementService {
             // Similar categories
             {
               category: {
-                in: await prisma.product.findMany({
-                  where: { id: { in: productIds } },
-                  select: { category: true }
-                }).then((products: any[]) => products.map((p: any) => p.category))
-              }
+                in: await prisma.product
+                  .findMany({
+                    where: { id: { in: productIds } },
+                    select: { category: true },
+                  })
+                  .then((products: any[]) => products.map((p: any) => p.category)),
+              },
             },
             // Same brand
             {
               brand: {
-                in: await prisma.product.findMany({
-                  where: { id: { in: productIds } },
-                  select: { brand: true }
-                }).then((products: any[]) => products.map((p: any) => p.brand))
-              }
-            }
+                in: await prisma.product
+                  .findMany({
+                    where: { id: { in: productIds } },
+                    select: { brand: true },
+                  })
+                  .then((products: any[]) => products.map((p: any) => p.brand)),
+              },
+            },
           ],
           id: { notIn: productIds }, // Exclude already tried products
         },
         take: limit,
         orderBy: {
-          rating: 'desc'
-        }
+          rating: 'desc',
+        },
       });
-      
+
       // If not enough recommendations, add some other popular products
       if (recommendations.length < limit) {
         const otherProducts = await prisma.product.findMany({
           where: {
             id: {
-              notIn: [...productIds, ...recommendations.map((p: any) => p.id)]
+              notIn: [...productIds, ...recommendations.map((p: any) => p.id)],
             },
-            trending: true
+            trending: true,
           },
           take: limit - recommendations.length,
           orderBy: {
-            rating: 'desc'
-          }
+            rating: 'desc',
+          },
         });
-        
+
         return [...recommendations, ...otherProducts];
       }
-      
+
       return recommendations;
     } catch (error) {
       console.error('Error getting recommendations:', error);
       return [];
     }
   }
-} 
+}

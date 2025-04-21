@@ -79,14 +79,14 @@ export class DevSecOpsService {
         description: adv.overview,
         severity: adv.severity,
         cwe: adv.cwe,
-        fix: adv.recommendation
+        fix: adv.recommendation,
       }));
 
       return {
         tool: 'npm_audit',
         severity: this.calculateOverallSeverity(findings),
         findings,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
     } catch (error) {
       logger.error('npm audit failed', 'devsecops', { error });
@@ -105,7 +105,7 @@ export class DevSecOpsService {
       // Get results from SonarQube API
       const sonarUrl = process.env.SONAR_URL;
       const projectKey = process.env.SONAR_PROJECT_KEY;
-      
+
       if (!sonarUrl || !projectKey) {
         throw new Error('SonarQube configuration missing');
       }
@@ -120,14 +120,14 @@ export class DevSecOpsService {
         description: issue.message,
         location: `${issue.component}:${issue.line}`,
         severity: issue.severity.toLowerCase(),
-        fix: issue.debt
+        fix: issue.debt,
       }));
 
       return {
         tool: 'sonarqube',
         severity: this.calculateOverallSeverity(findings),
         findings,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
     } catch (error) {
       logger.error('SonarQube scan failed', 'devsecops', { error });
@@ -169,14 +169,14 @@ export class DevSecOpsService {
         location: alert.url,
         severity: alert.risk.toLowerCase(),
         cwe: alert.cweid,
-        fix: alert.solution
+        fix: alert.solution,
       }));
 
       return {
         tool: 'owasp_zap',
         severity: this.calculateOverallSeverity(findings),
         findings,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
     } catch (error) {
       logger.error('ZAP scan failed', 'devsecops', { error });
@@ -236,8 +236,8 @@ export class DevSecOpsService {
           details: {
             tool: result.tool,
             findings: criticalFindings,
-            totalFindings: result.findings.length
-          }
+            totalFindings: result.findings.length,
+          },
         });
       }
     }
@@ -250,18 +250,17 @@ export class DevSecOpsService {
     blocked: boolean;
     reason?: string;
   }> {
-    const criticalIssues = results.some(r => 
-      r.severity === 'critical' || 
-      (r.severity === 'high' && r.findings.length > 5)
+    const criticalIssues = results.some(
+      r => r.severity === 'critical' || (r.severity === 'high' && r.findings.length > 5)
     );
 
     if (criticalIssues) {
       return {
         blocked: true,
-        reason: 'Critical security issues detected'
+        reason: 'Critical security issues detected',
       };
     }
 
     return { blocked: false };
   }
-} 
+}

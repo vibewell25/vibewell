@@ -11,7 +11,12 @@ import { PremiumContentLock } from '@/components/premium-content-lock';
 import Link from 'next/link';
 import { Layout } from '@/components/layout';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
-import { addBookmark, removeBookmark, isBookmarked as checkIsBookmarked, trackRecentView } from '@/lib/bookmarks';
+import {
+  addBookmark,
+  removeBookmark,
+  isBookmarked as checkIsBookmarked,
+  trackRecentView,
+} from '@/lib/bookmarks';
 import { getUserRating, saveRating, getAverageRating } from '@/lib/ratings';
 import { StarRating } from '@/components/star-rating';
 import { ResourceReview } from '@/components/resource-review';
@@ -49,11 +54,11 @@ const trackResourceView = (resourceId: string, resourceName: string) => {
     const now = new Date().toISOString();
     try {
       const viewData = JSON.parse(localStorage.getItem('resource_view_log') || '{}');
-      viewData[resourceId] = { 
+      viewData[resourceId] = {
         id: resourceId,
-        name: resourceName, 
+        name: resourceName,
         lastViewed: now,
-        views: (viewData[resourceId]?.views || 0) + 1
+        views: (viewData[resourceId]?.views || 0) + 1,
       };
       localStorage.setItem('resource_view_log', JSON.stringify(viewData));
     } catch (e) {
@@ -69,7 +74,7 @@ export function ResourceDetailTemplate({
   relatedResources,
   navigationComponent,
   fetchRelatedResource,
-  onDownload
+  onDownload,
 }: ResourceDetailTemplateProps) {
   const router = useRouter();
   const [userRating, setUserRating] = useState<number | null>(null);
@@ -89,7 +94,7 @@ export function ResourceDetailTemplate({
         title: resource.title,
         description: `${resource.category} - ${resource.author}`,
         category: resource.category,
-        url: window.location.pathname
+        url: window.location.pathname,
       });
       // Check if bookmarked
       setIsBookmarked(checkIsBookmarked(resource.id, resourceType));
@@ -113,7 +118,7 @@ export function ResourceDetailTemplate({
         title: resource.title,
         description: `${resource.category} - ${resource.author}`,
         url: window.location.pathname,
-        category: resource.category
+        category: resource.category,
       });
       setIsBookmarked(true);
     }
@@ -141,18 +146,19 @@ export function ResourceDetailTemplate({
     return null;
   }
   // Get related resources if available
-  const related = resource.relatedResources && Array.isArray(resource.relatedResources)
-    ? resource.relatedResources
-      .map(id => {
-        if (fetchRelatedResource) {
-          return fetchRelatedResource(id);
-        } else if (relatedResources) {
-          return relatedResources.find(r => r.id === id);
-        }
-        return undefined;
-      })
-      .filter(Boolean) as BaseResource[]
-    : [];
+  const related =
+    resource.relatedResources && Array.isArray(resource.relatedResources)
+      ? (resource.relatedResources
+          .map(id => {
+            if (fetchRelatedResource) {
+              return fetchRelatedResource(id);
+            } else if (relatedResources) {
+              return relatedResources.find(r => r.id === id);
+            }
+            return undefined;
+          })
+          .filter(Boolean) as BaseResource[])
+      : [];
   // Render the resource detail page
   return (
     <Layout>
@@ -175,8 +181,8 @@ export function ResourceDetailTemplate({
               <span className="mx-2">/</span>
               <span className="text-gray-700">{resource.title}</span>
             </div>
-            <button 
-              onClick={() => router.back()} 
+            <button
+              onClick={() => router.back()}
               className="inline-flex items-center text-sm text-gray-600 hover:text-blue-600"
             >
               <Icons.ArrowLeftIcon className="h-4 w-4 mr-1" /> Back
@@ -184,9 +190,7 @@ export function ResourceDetailTemplate({
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Sidebar Navigation */}
-            <div className="lg:col-span-1">
-              {navigationComponent || <BusinessHubNavigation />}
-            </div>
+            <div className="lg:col-span-1">{navigationComponent || <BusinessHubNavigation />}</div>
             {/* Main Content */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -219,7 +223,9 @@ export function ResourceDetailTemplate({
                           <Icons.UserIcon className="h-4 w-4 mr-1" />
                           <span className="mr-4">{resource.author}</span>
                           <Icons.CalendarIcon className="h-4 w-4 mr-1" />
-                          <span className="mr-4">{new Date(resource.date).toLocaleDateString()}</span>
+                          <span className="mr-4">
+                            {new Date(resource.date).toLocaleDateString()}
+                          </span>
                           <Icons.ClockIcon className="h-4 w-4 mr-1" />
                           <span>{resource.readTime}</span>
                         </div>
@@ -253,7 +259,8 @@ export function ResourceDetailTemplate({
                           )}
                         </div>
                         <span className="text-sm text-gray-600">
-                          {averageRating.average.toFixed(1)} ({averageRating.count} {averageRating.count === 1 ? 'rating' : 'ratings'})
+                          {averageRating.average.toFixed(1)} ({averageRating.count}{' '}
+                          {averageRating.count === 1 ? 'rating' : 'ratings'})
                         </span>
                       </div>
                     </div>
@@ -261,8 +268,8 @@ export function ResourceDetailTemplate({
                     {resource.tags && resource.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-6">
                         {resource.tags.map(tag => (
-                          <span 
-                            key={tag} 
+                          <span
+                            key={tag}
                             className="inline-block bg-gray-100 rounded-full px-3 py-1 text-xs text-gray-700"
                           >
                             {tag}
@@ -276,13 +283,13 @@ export function ResourceDetailTemplate({
                 <div className="p-6 border-t border-gray-100">
                   {resource.premium ? (
                     <PremiumContentLock>
-                      <div 
+                      <div
                         className="prose max-w-none"
                         dangerouslySetInnerHTML={{ __html: resource.content }}
                       />
                     </PremiumContentLock>
                   ) : (
-                    <div 
+                    <div
                       className="prose max-w-none"
                       dangerouslySetInnerHTML={{ __html: resource.content }}
                     />
@@ -290,10 +297,7 @@ export function ResourceDetailTemplate({
                 </div>
                 {/* Reviews Section */}
                 <div className="p-6 border-t border-gray-100">
-                  <ResourceReview
-                    resourceId={resource.id}
-                    resourceType={resourceType}
-                  />
+                  <ResourceReview resourceId={resource.id} resourceType={resourceType} />
                 </div>
               </div>
               {/* Related Resources */}
@@ -301,8 +305,8 @@ export function ResourceDetailTemplate({
                 <div className="mt-8">
                   <h2 className="text-xl font-semibold mb-4">Related Resources</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {related.map((relatedResource) => (
-                      <Link 
+                    {related.map(relatedResource => (
+                      <Link
                         href={`${sectionPath}/resources/${relatedResource.id}`}
                         key={relatedResource.id}
                         className="bg-white rounded-lg shadow hover:shadow-md transition-shadow p-4 flex flex-col"
@@ -325,4 +329,4 @@ export function ResourceDetailTemplate({
       </div>
     </Layout>
   );
-} 
+}

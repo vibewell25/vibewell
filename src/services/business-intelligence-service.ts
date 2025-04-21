@@ -45,7 +45,7 @@ export class BusinessIntelligenceService {
 
   constructor() {
     this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY || ''
+      apiKey: process.env.OPENAI_API_KEY || '',
     });
   }
 
@@ -53,16 +53,16 @@ export class BusinessIntelligenceService {
     try {
       // Calculate metrics
       const metrics = await this.calculateMetrics(businessId, period, date);
-      
+
       // Analyze trends
       const trends = await this.analyzeTrends(businessId, metrics);
-      
+
       // Get competitor analysis
       const competitors = await this.analyzeCompetitors(businessId);
-      
+
       // Get customer segments
       const segments = await this.analyzeCustomerSegments(businessId);
-      
+
       // Generate AI recommendations
       const recommendations = await this.generateRecommendations(
         businessId,
@@ -82,8 +82,8 @@ export class BusinessIntelligenceService {
           trends,
           competitors,
           segments,
-          recommendations
-        }
+          recommendations,
+        },
       });
 
       logger.info('Generated business analytics', 'BusinessIntelligence', { businessId, period });
@@ -100,20 +100,13 @@ export class BusinessIntelligenceService {
   ): Promise<AnalyticsMetrics> {
     const [startDate, endDate] = this.getDateRange(period, date);
 
-    const [
-      revenue,
-      bookings,
-      customers,
-      avgTicket,
-      retention,
-      utilization
-    ] = await Promise.all([
+    const [revenue, bookings, customers, avgTicket, retention, utilization] = await Promise.all([
       this.calculateRevenue(businessId, startDate, endDate),
       this.calculateBookings(businessId, startDate, endDate),
       this.calculateUniqueCustomers(businessId, startDate, endDate),
       this.calculateAverageTicket(businessId, startDate, endDate),
       this.calculateRetention(businessId, startDate, endDate),
-      this.calculateUtilization(businessId, startDate, endDate)
+      this.calculateUtilization(businessId, startDate, endDate),
     ]);
 
     return {
@@ -122,14 +115,11 @@ export class BusinessIntelligenceService {
       customers,
       avgTicketValue: avgTicket,
       customerRetention: retention,
-      serviceUtilization: utilization
+      serviceUtilization: utilization,
     };
   }
 
-  private async analyzeTrends(
-    businessId: string,
-    metrics: AnalyticsMetrics
-  ): Promise<TrendData[]> {
+  private async analyzeTrends(businessId: string, metrics: AnalyticsMetrics): Promise<TrendData[]> {
     try {
       // Get market trends from external sources
       const marketTrends = await this.getMarketTrends();
@@ -144,8 +134,8 @@ export class BusinessIntelligenceService {
           prisma.marketTrend.create({
             data: {
               businessId,
-              ...trend
-            }
+              ...trend,
+            },
           })
         )
       );
@@ -161,7 +151,7 @@ export class BusinessIntelligenceService {
     try {
       // Get business location
       const business = await prisma.business.findUnique({
-        where: { id: businessId }
+        where: { id: businessId },
       });
 
       if (!business) throw new Error('Business not found');
@@ -174,13 +164,13 @@ export class BusinessIntelligenceService {
         competitors.map(async competitor => {
           const services = await this.getCompetitorServices(competitor.id);
           const ratings = await this.getCompetitorRatings(competitor.id);
-          
+
           return {
             name: competitor.name,
             services,
             ratings: ratings.average,
             reviews: ratings.count,
-            location: competitor.address
+            location: competitor.address,
           };
         })
       );
@@ -199,21 +189,21 @@ export class BusinessIntelligenceService {
         where: {
           bookings: {
             some: {
-              businessId
-            }
-          }
+              businessId,
+            },
+          },
         },
         include: {
           bookings: {
             where: { businessId },
-            include: { payment: true }
+            include: { payment: true },
           },
           reviews: {
-            where: { businessId }
+            where: { businessId },
           },
           stylePreferences: true,
-          userPreferences: true
-        }
+          userPreferences: true,
+        },
       });
 
       // Segment customers based on behavior and preferences
@@ -229,8 +219,8 @@ export class BusinessIntelligenceService {
               description: `${segment.name} segment with ${segment.size} customers`,
               criteria: segment.characteristics,
               size: segment.size,
-              value: segment.value
-            }
+              value: segment.value,
+            },
           })
         )
       );
@@ -272,19 +262,19 @@ export class BusinessIntelligenceService {
         5. Competitive positioning`;
 
       const response = await this.openai.chat.completions.create({
-        model: "gpt-4",
+        model: 'gpt-4',
         messages: [
           {
-            role: "system",
-            content: "You are a business intelligence analyst providing strategic recommendations."
+            role: 'system',
+            content: 'You are a business intelligence analyst providing strategic recommendations.',
           },
           {
-            role: "user",
-            content: prompt
-          }
+            role: 'user',
+            content: prompt,
+          },
         ],
         temperature: 0.7,
-        max_tokens: 1000
+        max_tokens: 1000,
       });
 
       return JSON.parse(response.choices[0].message.content || '{}');
@@ -295,91 +285,115 @@ export class BusinessIntelligenceService {
   }
 
   // Helper methods for metrics calculation
-  private async calculateRevenue(businessId: string, startDate: Date, endDate: Date): Promise<number> {
+  private async calculateRevenue(
+    businessId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<number> {
     const result = await prisma.payment.aggregate({
       where: {
         businessId,
         status: 'COMPLETED',
         createdAt: {
           gte: startDate,
-          lt: endDate
-        }
+          lt: endDate,
+        },
       },
       _sum: {
-        amount: true
-      }
+        amount: true,
+      },
     });
 
     return result._sum.amount || 0;
   }
 
-  private async calculateBookings(businessId: string, startDate: Date, endDate: Date): Promise<number> {
+  private async calculateBookings(
+    businessId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<number> {
     return prisma.booking.count({
       where: {
         businessId,
         status: 'COMPLETED',
         startTime: {
           gte: startDate,
-          lt: endDate
-        }
-      }
+          lt: endDate,
+        },
+      },
     });
   }
 
-  private async calculateUniqueCustomers(businessId: string, startDate: Date, endDate: Date): Promise<number> {
+  private async calculateUniqueCustomers(
+    businessId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<number> {
     const result = await prisma.booking.groupBy({
       by: ['userId'],
       where: {
         businessId,
         startTime: {
           gte: startDate,
-          lt: endDate
-        }
-      }
+          lt: endDate,
+        },
+      },
     });
 
     return result.length;
   }
 
-  private async calculateAverageTicket(businessId: string, startDate: Date, endDate: Date): Promise<number> {
+  private async calculateAverageTicket(
+    businessId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<number> {
     const revenue = await this.calculateRevenue(businessId, startDate, endDate);
     const bookings = await this.calculateBookings(businessId, startDate, endDate);
     return bookings > 0 ? revenue / bookings : 0;
   }
 
-  private async calculateRetention(businessId: string, startDate: Date, endDate: Date): Promise<number> {
+  private async calculateRetention(
+    businessId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<number> {
     // Calculate retention rate based on repeat customers
     const totalCustomers = await this.calculateUniqueCustomers(businessId, startDate, endDate);
-    
+
     const repeatCustomers = await prisma.booking.groupBy({
       by: ['userId'],
       where: {
         businessId,
         startTime: {
           gte: startDate,
-          lt: endDate
+          lt: endDate,
         },
         user: {
           bookings: {
             some: {
               businessId,
               startTime: {
-                lt: startDate
-              }
-            }
-          }
-        }
-      }
+                lt: startDate,
+              },
+            },
+          },
+        },
+      },
     });
 
     return totalCustomers > 0 ? (repeatCustomers.length / totalCustomers) * 100 : 0;
   }
 
-  private async calculateUtilization(businessId: string, startDate: Date, endDate: Date): Promise<number> {
+  private async calculateUtilization(
+    businessId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<number> {
     // Calculate service utilization rate
     const totalSlots = await this.calculateTotalTimeSlots(businessId, startDate, endDate);
     const bookedSlots = await this.calculateBookedTimeSlots(businessId, startDate, endDate);
-    
+
     return totalSlots > 0 ? (bookedSlots / totalSlots) * 100 : 0;
   }
 
@@ -413,7 +427,10 @@ export class BusinessIntelligenceService {
     return [];
   }
 
-  private async analyzeInternalTrends(businessId: string, metrics: AnalyticsMetrics): Promise<TrendData[]> {
+  private async analyzeInternalTrends(
+    businessId: string,
+    metrics: AnalyticsMetrics
+  ): Promise<TrendData[]> {
     // Analyze internal data for trends
     // Placeholder implementation
     return [];
@@ -431,7 +448,9 @@ export class BusinessIntelligenceService {
     return [];
   }
 
-  private async getCompetitorRatings(competitorId: string): Promise<{ average: number; count: number }> {
+  private async getCompetitorRatings(
+    competitorId: string
+  ): Promise<{ average: number; count: number }> {
     // This would fetch competitor ratings from review platforms
     // Placeholder implementation
     return { average: 0, count: 0 };
@@ -443,15 +462,23 @@ export class BusinessIntelligenceService {
     return [];
   }
 
-  private async calculateTotalTimeSlots(businessId: string, startDate: Date, endDate: Date): Promise<number> {
+  private async calculateTotalTimeSlots(
+    businessId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<number> {
     // Calculate total available time slots based on business hours
     // Placeholder implementation
     return 0;
   }
 
-  private async calculateBookedTimeSlots(businessId: string, startDate: Date, endDate: Date): Promise<number> {
+  private async calculateBookedTimeSlots(
+    businessId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<number> {
     // Calculate number of booked time slots
     // Placeholder implementation
     return 0;
   }
-} 
+}

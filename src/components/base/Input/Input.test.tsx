@@ -36,7 +36,7 @@ describe('Input Component', () => {
     const handleChange = jest.fn();
     render(<Input onChange={handleChange} />);
     const input = screen.getByRole('textbox');
-    
+
     fireEvent.change(input, { target: { value: 'test' } });
     expect(handleChange).toHaveBeenCalledTimes(1);
     expect(input).toHaveValue('test');
@@ -46,7 +46,7 @@ describe('Input Component', () => {
     const handleChange = jest.fn();
     render(<Input disabled onChange={handleChange} />);
     const input = screen.getByRole('textbox');
-    
+
     expect(input).toBeDisabled();
     fireEvent.change(input, { target: { value: 'test' } });
     expect(handleChange).not.toHaveBeenCalled();
@@ -55,7 +55,7 @@ describe('Input Component', () => {
   it('forwards ref correctly', () => {
     const ref = React.createRef<HTMLInputElement>();
     render(<Input ref={ref} defaultValue="Test Value" />);
-    
+
     expect(ref.current).toBeInstanceOf(HTMLInputElement);
     expect(ref.current?.value).toBe('Test Value');
   });
@@ -84,4 +84,4 @@ describe('Input Component', () => {
     expect(screen.getByText('Error message')).toBeInTheDocument();
     expect(screen.queryByText('Success message')).not.toBeInTheDocument();
   });
-}); 
+});

@@ -2,13 +2,7 @@
 
 import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
-import { 
-  Goal,
-  GoalType, 
-  GoalFrequency, 
-  GoalUnit, 
-  GoalStatus 
-} from '@/types/progress';
+import { Goal, GoalType, GoalFrequency, GoalUnit, GoalStatus } from '@/types/progress';
 // Color options for goals
 const colorOptions = [
   '#6366F1', // Indigo
@@ -26,11 +20,11 @@ interface GoalCreationModalProps {
   onSave: (goal: Omit<Goal, 'id' | 'current' | 'status'>) => void;
   editingGoal?: Goal;
 }
-export function GoalCreationModal({ 
-  isOpen, 
-  onClose, 
+export function GoalCreationModal({
+  isOpen,
+  onClose,
   onSave,
-  editingGoal
+  editingGoal,
 }: GoalCreationModalProps) {
   const [formData, setFormData] = useState({
     title: '',
@@ -79,11 +73,13 @@ export function GoalCreationModal({
     }
   }, [editingGoal, isOpen]);
   // Handle input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
   // Handle checkbox changes
@@ -91,14 +87,14 @@ export function GoalCreationModal({
     const { name, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: checked
+      [name]: checked,
     }));
   };
   // Handle color selection
   const handleColorSelect = (color: string) => {
     setFormData(prev => ({
       ...prev,
-      color
+      color,
     }));
   };
   // Handle type selection and update unit accordingly
@@ -146,13 +142,13 @@ export function GoalCreationModal({
         ...prev,
         type: newType,
         unit: newUnit,
-        target: newTarget
+        target: newTarget,
       }));
     } else {
       // Just update the type if we're editing and keeping the original unit and target
       setFormData(prev => ({
         ...prev,
-        type: newType
+        type: newType,
       }));
     }
   };
@@ -200,9 +196,7 @@ export function GoalCreationModal({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-card rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">
-            {editingGoal ? 'Edit Goal' : 'Create New Goal'}
-          </h2>
+          <h2 className="text-xl font-bold">{editingGoal ? 'Edit Goal' : 'Create New Goal'}</h2>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <Icons.XMarkIcon className="h-6 w-6" />
           </button>
@@ -264,16 +258,21 @@ export function GoalCreationModal({
             <div className="mt-2 flex items-center gap-2">
               <span className="text-xl">{getGoalIcon(formData.type)}</span>
               <span className="text-sm text-muted-foreground">
-                {
-                  formData.type === 'meditation' ? 'Track meditation minutes' : 
-                  formData.type === 'workout' ? 'Track workout duration' :
-                  formData.type === 'water' ? 'Track water consumption' :
-                  formData.type === 'sleep' ? 'Track sleep hours' :
-                  formData.type === 'nutrition' ? 'Track calorie intake' :
-                  formData.type === 'steps' ? 'Track daily steps' :
-                  formData.type === 'weight' ? 'Track body weight' :
-                  'Custom goal tracking'
-                }
+                {formData.type === 'meditation'
+                  ? 'Track meditation minutes'
+                  : formData.type === 'workout'
+                    ? 'Track workout duration'
+                    : formData.type === 'water'
+                      ? 'Track water consumption'
+                      : formData.type === 'sleep'
+                        ? 'Track sleep hours'
+                        : formData.type === 'nutrition'
+                          ? 'Track calorie intake'
+                          : formData.type === 'steps'
+                            ? 'Track daily steps'
+                            : formData.type === 'weight'
+                              ? 'Track body weight'
+                              : 'Custom goal tracking'}
               </span>
             </div>
           </div>
@@ -377,9 +376,7 @@ export function GoalCreationModal({
                   key={color}
                   type="button"
                   className={`w-8 h-8 rounded-full border-2 ${
-                    formData.color === color 
-                      ? 'border-primary' 
-                      : 'border-transparent'
+                    formData.color === color ? 'border-primary' : 'border-transparent'
                   }`}
                   style={{ backgroundColor: color }}
                   onClick={() => handleColorSelect(color)}
@@ -419,17 +416,10 @@ export function GoalCreationModal({
             )}
           </div>
           <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={onClose}
-            >
+            <button type="button" className="btn-secondary" onClick={onClose}>
               Cancel
             </button>
-            <button
-              type="submit"
-              className="btn-primary"
-            >
+            <button type="submit" className="btn-primary">
               {editingGoal ? 'Save Changes' : 'Create Goal'}
             </button>
           </div>
@@ -437,4 +427,4 @@ export function GoalCreationModal({
       </div>
     </div>
   );
-} 
+}

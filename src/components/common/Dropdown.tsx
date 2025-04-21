@@ -23,26 +23,23 @@ export const Dropdown: React.FC<DropdownProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
-    
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-  
+
   const handleItemClick = (onClick: () => void) => {
     onClick();
     setIsOpen(false);
   };
-  
+
   return (
     <div className={`relative inline-block text-left ${className}`} ref={dropdownRef}>
       <div>
@@ -55,9 +52,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         >
           {trigger}
           <ChevronDown
-            className={`-mr-1 ml-2 h-5 w-5 transition-transform ${
-              isOpen ? 'rotate-180' : ''
-            }`}
+            className={`-mr-1 ml-2 h-5 w-5 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           />
         </button>
       </div>
@@ -72,7 +67,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
           tabIndex={-1}
         >
           <div className="py-1" role="none">
-            {items.map((item) => (
+            {items.map(item => (
               <button
                 key={item.id}
                 className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
@@ -89,4 +84,4 @@ export const Dropdown: React.FC<DropdownProps> = ({
       )}
     </div>
   );
-}; 
+};

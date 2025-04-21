@@ -5,9 +5,9 @@ export { NotificationBell } from './components/NotificationBell';
 export { NotificationProvider, useNotifications } from './context/NotificationContext';
 
 // Re-export types
-export type { 
+export type {
   Notification,
   NotificationType,
   NotificationState,
-  NotificationAction
-} from './types'; 
+  NotificationAction,
+} from './types';

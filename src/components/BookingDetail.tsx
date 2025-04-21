@@ -13,10 +13,7 @@ interface BookingDetailProps {
  * Component to display detailed information about a single booking
  * with proper type-safe API handling
  */
-export const BookingDetail: React.FC<BookingDetailProps> = ({ 
-  bookingId,
-  onBack
-}) => {
+export const BookingDetail: React.FC<BookingDetailProps> = ({ bookingId, onBack }) => {
   const [booking, setBooking] = useState<Booking | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { captureError, showErrorToUser, createError } = useErrorHandler();
@@ -24,7 +21,7 @@ export const BookingDetail: React.FC<BookingDetailProps> = ({
   useEffect(() => {
     const fetchBookingDetail = async () => {
       if (!bookingId) return;
-      
+
       setIsLoading(true);
       try {
         const response = await typeSafeBookingService.getBooking(bookingId);
@@ -36,7 +33,7 @@ export const BookingDetail: React.FC<BookingDetailProps> = ({
             severity: ErrorSeverity.ERROR,
             source: ErrorSource.API,
             category: ErrorCategory.API,
-            metadata: { bookingId }
+            metadata: { bookingId },
           });
           showErrorToUser(error);
         }
@@ -44,13 +41,13 @@ export const BookingDetail: React.FC<BookingDetailProps> = ({
         captureError(error instanceof Error ? error : String(error), {
           category: ErrorCategory.API,
           source: ErrorSource.API,
-          metadata: { bookingId }
+          metadata: { bookingId },
         });
-        
+
         const appError = createError('Unable to load booking details. Please try again later.', {
           severity: ErrorSeverity.ERROR,
           source: ErrorSource.API,
-          category: ErrorCategory.API
+          category: ErrorCategory.API,
         });
         showErrorToUser(appError);
       } finally {
@@ -154,4 +151,4 @@ export const BookingDetail: React.FC<BookingDetailProps> = ({
       </div>
     </div>
   );
-}; 
+};

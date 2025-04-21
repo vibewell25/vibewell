@@ -29,9 +29,9 @@ describe('Audit System Tests', () => {
     test('should report and retrieve issues', async () => {
       // Report a test issue
       const issue = await auditService.reportIssue(
-        AuditCategory.SECURITY, 
-        AuditSeverity.HIGH, 
-        'Test Security Issue', 
+        AuditCategory.SECURITY,
+        AuditSeverity.HIGH,
+        'Test Security Issue',
         'This is a test security issue'
       );
 
@@ -50,18 +50,14 @@ describe('Audit System Tests', () => {
     test('should update issue status', async () => {
       // Report a test issue
       const issue = await auditService.reportIssue(
-        AuditCategory.PERFORMANCE, 
-        AuditSeverity.MEDIUM, 
-        'Test Performance Issue', 
+        AuditCategory.PERFORMANCE,
+        AuditSeverity.MEDIUM,
+        'Test Performance Issue',
         'This is a test performance issue'
       );
 
       // Update the issue status
-      const updated = auditService.updateIssueStatus(
-        issue.id, 
-        'in_progress', 
-        'Working on a fix'
-      );
+      const updated = auditService.updateIssueStatus(issue.id, 'in_progress', 'Working on a fix');
 
       // Get the updated issue
       const issues = auditService.getIssues(AuditCategory.PERFORMANCE);
@@ -75,23 +71,23 @@ describe('Audit System Tests', () => {
     test('should generate category-specific reports', async () => {
       // Report issues for different categories
       await auditService.reportIssue(
-        AuditCategory.SECURITY, 
-        AuditSeverity.CRITICAL, 
-        'Critical Security Issue', 
+        AuditCategory.SECURITY,
+        AuditSeverity.CRITICAL,
+        'Critical Security Issue',
         'This is a critical security issue'
       );
 
       await auditService.reportIssue(
-        AuditCategory.SECURITY, 
-        AuditSeverity.HIGH, 
-        'High Security Issue', 
+        AuditCategory.SECURITY,
+        AuditSeverity.HIGH,
+        'High Security Issue',
         'This is a high security issue'
       );
 
       await auditService.reportIssue(
-        AuditCategory.PERFORMANCE, 
-        AuditSeverity.MEDIUM, 
-        'Performance Issue', 
+        AuditCategory.PERFORMANCE,
+        AuditSeverity.MEDIUM,
+        'Performance Issue',
         'This is a performance issue'
       );
 
@@ -111,23 +107,23 @@ describe('Audit System Tests', () => {
     test('should generate a comprehensive report', async () => {
       // Report some test issues
       await auditService.reportIssue(
-        AuditCategory.SECURITY, 
-        AuditSeverity.HIGH, 
-        'Security Issue', 
+        AuditCategory.SECURITY,
+        AuditSeverity.HIGH,
+        'Security Issue',
         'Security vulnerability found'
       );
 
       await auditService.reportIssue(
-        AuditCategory.PERFORMANCE, 
-        AuditSeverity.MEDIUM, 
-        'Performance Issue', 
+        AuditCategory.PERFORMANCE,
+        AuditSeverity.MEDIUM,
+        'Performance Issue',
         'Slow response time detected'
       );
 
       await auditService.reportIssue(
-        AuditCategory.UX, 
-        AuditSeverity.LOW, 
-        'UX Issue', 
+        AuditCategory.UX,
+        AuditSeverity.LOW,
+        'UX Issue',
         'Minor UI inconsistency'
       );
 
@@ -141,7 +137,7 @@ describe('Audit System Tests', () => {
           severity: 'high',
           component: 'API',
           recommendation: 'Use prepared statements',
-        }
+        },
       ]);
 
       // Add some test data to booking audit service
@@ -155,8 +151,8 @@ describe('Audit System Tests', () => {
             type: 'double_booking',
             description: 'Double booking detected',
             bookingIds: ['booking-1', 'booking-2'],
-          }
-        ]
+          },
+        ],
       });
 
       // Generate a comprehensive report
@@ -188,7 +184,7 @@ describe('Audit System Tests', () => {
           vulnerable_versions: '<1.0.0',
           patched_versions: '>=1.0.0',
           recommendation: 'Update to version 1.0.0 or higher',
-        }
+        },
       ]);
 
       // Verify the issue was reported
@@ -244,7 +240,7 @@ describe('Audit System Tests', () => {
               unit: '%',
               timestamp: Date.now(),
             },
-          }
+          },
         ],
       });
 
@@ -277,7 +273,7 @@ describe('Audit System Tests', () => {
             description: 'Two bookings for the same time slot',
             bookingIds: ['booking-123', 'booking-456'],
             resourceId: 'provider-789',
-          }
+          },
         ],
       });
 
@@ -293,4 +289,4 @@ describe('Audit System Tests', () => {
       expect(report.integrity.successRate).toBe(0);
     });
   });
-}); 
+});

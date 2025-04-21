@@ -39,7 +39,7 @@ const clientAcquisitionResources: BaseResource[] = [
     `,
     relatedResources: ['2', '3'],
     type: 'resource',
-    tags: ['retention', 'client management', 'loyalty programs']
+    tags: ['retention', 'client management', 'loyalty programs'],
   },
   {
     id: '2',
@@ -75,7 +75,7 @@ const clientAcquisitionResources: BaseResource[] = [
     relatedResources: ['1', '3'],
     type: 'resource',
     tags: ['referrals', 'marketing', 'client acquisition'],
-    downloadUrl: '/downloads/referral-program-template.pdf'
+    downloadUrl: '/downloads/referral-program-template.pdf',
   },
   {
     id: '3',
@@ -111,8 +111,8 @@ const clientAcquisitionResources: BaseResource[] = [
     relatedResources: ['1', '2'],
     type: 'resource',
     tags: ['conversion', 'client experience', 'onboarding'],
-    premium: true
-  }
+    premium: true,
+  },
 ];
 
 // Fetch resource by ID
@@ -160,7 +160,7 @@ export default function ClientAcquisitionResourceDetailPage() {
   };
 
   return (
-    <ResourceDetailTemplate 
+    <ResourceDetailTemplate
       resource={resource}
       resourceType={resource.type}
       sectionName="Client Acquisition"
@@ -171,4 +171,4 @@ export default function ClientAcquisitionResourceDetailPage() {
       onDownload={handleDownload}
     />
   );
-} 
+}

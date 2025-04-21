@@ -39,7 +39,7 @@ const marketingResources: BaseResource[] = [
     `,
     relatedResources: ['2', '3'],
     type: 'resource',
-    tags: ['social media', 'digital marketing', 'content strategy']
+    tags: ['social media', 'digital marketing', 'content strategy'],
   },
   {
     id: '2',
@@ -74,7 +74,7 @@ const marketingResources: BaseResource[] = [
     relatedResources: ['1', '3'],
     type: 'resource',
     tags: ['email marketing', 'automation', 'client nurturing'],
-    premium: true
+    premium: true,
   },
   {
     id: '3',
@@ -113,8 +113,8 @@ const marketingResources: BaseResource[] = [
     relatedResources: ['1', '2'],
     type: 'resource',
     tags: ['content marketing', 'SEO', 'blogging'],
-    downloadUrl: '/downloads/content-strategy-template.pdf'
-  }
+    downloadUrl: '/downloads/content-strategy-template.pdf',
+  },
 ];
 
 // Fetch resource by ID
@@ -162,7 +162,7 @@ export default function MarketingResourceDetailPage() {
   };
 
   return (
-    <ResourceDetailTemplate 
+    <ResourceDetailTemplate
       resource={resource}
       resourceType={resource.type}
       sectionName="Marketing"
@@ -173,4 +173,4 @@ export default function MarketingResourceDetailPage() {
       onDownload={handleDownload}
     />
   );
-} 
+}

@@ -35,7 +35,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // You can log the error to an error reporting service
     console.error('Error caught by ErrorBoundary:', error, errorInfo);
-    
+
     // Call onError prop if provided
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
@@ -45,7 +45,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   resetErrorBoundary = (): void => {
     // Reset the error boundary state
     this.setState({ hasError: false, error: null });
-    
+
     // Call onReset prop if provided
     if (this.props.onReset) {
       this.props.onReset();
@@ -69,14 +69,14 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               {this.state.error?.message || 'An unexpected error occurred'}
             </AlertDescription>
           </Alert>
-          
+
           <div className="mt-4 text-gray-600 text-sm">
             <p>
-              We apologize for the inconvenience. You can try to recover by
-              clicking the button below, or navigate to another page.
+              We apologize for the inconvenience. You can try to recover by clicking the button
+              below, or navigate to another page.
             </p>
           </div>
-          
+
           <div className="mt-6 flex justify-center">
             <Button onClick={this.resetErrorBoundary} className="flex items-center">
               <RefreshCcw className="mr-2 h-4 w-4" />
@@ -99,7 +99,7 @@ export function withErrorBoundary<P extends object>(
   errorBoundaryProps: Omit<ErrorBoundaryProps, 'children'> = {}
 ): React.ComponentType<P> {
   const displayName = Component.displayName || Component.name || 'Component';
-  
+
   const ComponentWithErrorBoundary = (props: P) => {
     return (
       <ErrorBoundary {...errorBoundaryProps}>
@@ -107,8 +107,8 @@ export function withErrorBoundary<P extends object>(
       </ErrorBoundary>
     );
   };
-  
+
   ComponentWithErrorBoundary.displayName = `withErrorBoundary(${displayName})`;
-  
+
   return ComponentWithErrorBoundary;
-} 
+}

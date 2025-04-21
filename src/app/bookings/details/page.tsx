@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-;
 import Link from 'next/link';
 import Image from 'next/image';
 import { Icons } from '@/components/icons';
@@ -26,7 +25,15 @@ const availableDates = [
   { day: 28, weekday: 'We', isSelected: false, isAvailable: true },
 ];
 // Mock data for available time slots
-const timeSlots = ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM'];
+const timeSlots = [
+  '09:00 AM',
+  '10:00 AM',
+  '11:00 AM',
+  '12:00 PM',
+  '01:00 PM',
+  '02:00 PM',
+  '03:00 PM',
+];
 export default function BookingDetailsPage() {
   const [selectedDate, setSelectedDate] = useState(availableDates[0]);
   const [selectedTime, setSelectedTime] = useState('');
@@ -44,7 +51,7 @@ export default function BookingDetailsPage() {
         <div className="px-5 py-4 border-b border-gray-200">
           <h2 className="font-medium text-lg mb-3">Availability</h2>
           <div className="flex justify-between mb-4">
-            {availableDates.map((date) => (
+            {availableDates.map(date => (
               <button
                 key={date.day}
                 onClick={() => setSelectedDate(date)}
@@ -52,8 +59,8 @@ export default function BookingDetailsPage() {
                   date.isSelected
                     ? 'bg-primary text-white'
                     : date.isAvailable
-                    ? 'bg-gray-100 text-gray-700'
-                    : 'bg-gray-100 text-gray-400'
+                      ? 'bg-gray-100 text-gray-700'
+                      : 'bg-gray-100 text-gray-400'
                 }`}
                 disabled={!date.isAvailable}
               >
@@ -68,12 +75,7 @@ export default function BookingDetailsPage() {
           <h2 className="font-medium text-lg mb-3">Availability</h2>
           <div className="flex items-center">
             <div className="relative w-12 h-12 rounded-full overflow-hidden mr-3">
-              <Image
-                src={provider.image}
-                alt={provider.name}
-                fill
-                className="object-cover"
-              />
+              <Image src={provider.image} alt={provider.name} fill className="object-cover" />
             </div>
             <div>
               <h3 className="font-medium">{provider.name}</h3>
@@ -94,10 +96,20 @@ export default function BookingDetailsPage() {
           <h2 className="font-medium text-lg mb-3">Payment</h2>
           <div className="flex items-center justify-between mb-4">
             <div className="flex space-x-3">
-              <Button variant="outline" size="sm" className={selectedTime === 'Back' ? 'bg-primary/10' : ''} onClick={() => setSelectedTime('Back')}>
+              <Button
+                variant="outline"
+                size="sm"
+                className={selectedTime === 'Back' ? 'bg-primary/10' : ''}
+                onClick={() => setSelectedTime('Back')}
+              >
                 Back
               </Button>
-              <Button variant="outline" size="sm" className={selectedTime === 'Selso Plan' ? 'bg-primary/10' : ''} onClick={() => setSelectedTime('Selso Plan')}>
+              <Button
+                variant="outline"
+                size="sm"
+                className={selectedTime === 'Selso Plan' ? 'bg-primary/10' : ''}
+                onClick={() => setSelectedTime('Selso Plan')}
+              >
                 Selso Plan
               </Button>
             </div>
@@ -109,11 +121,9 @@ export default function BookingDetailsPage() {
         </div>
         {/* Fixed Bottom Button */}
         <div className="fixed bottom-16 left-0 right-0 p-4 bg-white border-t border-gray-200">
-          <Button className="w-full h-12 rounded-md">
-            Confirm Booking
-          </Button>
+          <Button className="w-full h-12 rounded-md">Confirm Booking</Button>
         </div>
       </div>
     </MobileLayout>
   );
-} 
+}

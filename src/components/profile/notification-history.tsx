@@ -1,15 +1,21 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bell, Mail, Smartphone, MessageSquare, CheckCircle2, XCircle } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Bell, Mail, Smartphone, MessageSquare, CheckCircle2, XCircle } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useState } from 'react';
 
 interface Notification {
   id: string;
-  type: "email" | "push" | "sms" | "system";
+  type: 'email' | 'push' | 'sms' | 'system';
   title: string;
   message: string;
   timestamp: string;
@@ -20,59 +26,57 @@ interface Notification {
 export function NotificationHistory() {
   const [notifications, setNotifications] = useState<Notification[]>([
     {
-      id: "1",
-      type: "email",
-      title: "Welcome to Vibewell",
+      id: '1',
+      type: 'email',
+      title: 'Welcome to Vibewell',
       message: "Thank you for joining Vibewell! We're excited to have you on board.",
-      timestamp: "2024-03-20T10:00:00Z",
+      timestamp: '2024-03-20T10:00:00Z',
       read: true,
       icon: <Mail className="h-5 w-5" />,
     },
     {
-      id: "2",
-      type: "push",
-      title: "New Message",
-      message: "You have a new message from John Doe",
-      timestamp: "2024-03-19T15:30:00Z",
+      id: '2',
+      type: 'push',
+      title: 'New Message',
+      message: 'You have a new message from John Doe',
+      timestamp: '2024-03-19T15:30:00Z',
       read: false,
       icon: <Bell className="h-5 w-5" />,
     },
     {
-      id: "3",
-      type: "sms",
-      title: "Security Alert",
-      message: "A new device has logged into your account",
-      timestamp: "2024-03-18T09:15:00Z",
+      id: '3',
+      type: 'sms',
+      title: 'Security Alert',
+      message: 'A new device has logged into your account',
+      timestamp: '2024-03-18T09:15:00Z',
       read: true,
       icon: <Smartphone className="h-5 w-5" />,
     },
     {
-      id: "4",
-      type: "system",
-      title: "System Update",
-      message: "New features are available in your account",
-      timestamp: "2024-03-17T22:45:00Z",
+      id: '4',
+      type: 'system',
+      title: 'System Update',
+      message: 'New features are available in your account',
+      timestamp: '2024-03-17T22:45:00Z',
       read: false,
       icon: <MessageSquare className="h-5 w-5" />,
     },
   ]);
 
-  const [filter, setFilter] = useState<string>("all");
-  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<string>('all');
+  const [search, setSearch] = useState('');
 
-  const filteredNotifications = notifications.filter((notification) => {
-    const matchesFilter =
-      filter === "all" || notification.type === filter;
-    const matchesSearch = notification.title
-      .toLowerCase()
-      .includes(search.toLowerCase()) ||
+  const filteredNotifications = notifications.filter(notification => {
+    const matchesFilter = filter === 'all' || notification.type === filter;
+    const matchesSearch =
+      notification.title.toLowerCase().includes(search.toLowerCase()) ||
       notification.message.toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
   const handleMarkAsRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((notification) => {
+    setNotifications(prev =>
+      prev.map(notification => {
         if (notification.id === id) {
           return { ...notification, read: true };
         }
@@ -82,9 +86,7 @@ export function NotificationHistory() {
   };
 
   const handleDelete = (id: string) => {
-    setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id)
-    );
+    setNotifications(prev => prev.filter(notification => notification.id !== id));
   };
 
   return (
@@ -99,7 +101,7 @@ export function NotificationHistory() {
             <Input
               id="search"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={e => setSearch(e.target.value)}
               placeholder="Search notifications..."
             />
           </div>
@@ -121,11 +123,11 @@ export function NotificationHistory() {
         </div>
 
         <div className="space-y-4">
-          {filteredNotifications.map((notification) => (
+          {filteredNotifications.map(notification => (
             <div
               key={notification.id}
               className={`flex items-start space-x-4 rounded-lg border p-4 ${
-                !notification.read ? "bg-muted" : ""
+                !notification.read ? 'bg-muted' : ''
               }`}
             >
               <div className="mt-1">{notification.icon}</div>
@@ -138,9 +140,7 @@ export function NotificationHistory() {
                     })}
                   </p>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  {notification.message}
-                </p>
+                <p className="text-sm text-muted-foreground">{notification.message}</p>
               </div>
               <div className="flex space-x-2">
                 {!notification.read && (
@@ -152,11 +152,7 @@ export function NotificationHistory() {
                     <CheckCircle2 className="h-4 w-4" />
                   </Button>
                 )}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleDelete(notification.id)}
-                >
+                <Button variant="outline" size="sm" onClick={() => handleDelete(notification.id)}>
                   <XCircle className="h-4 w-4" />
                 </Button>
               </div>
@@ -166,4 +162,4 @@ export function NotificationHistory() {
       </CardContent>
     </Card>
   );
-} 
+}

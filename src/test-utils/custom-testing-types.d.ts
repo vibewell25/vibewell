@@ -35,4 +35,4 @@ declare namespace jest {
 declare module 'jest-axe' {
   export const axe: any;
   export const toHaveNoViolations: () => void;
-} 
+}

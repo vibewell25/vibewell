@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { 
-  AccessibleDialog, 
-  AccessibleIcon, 
-  FormErrorMessage, 
-  LiveAnnouncer, 
-  ScreenReaderOnly, 
-  SkipLink, 
-  VisuallyHidden 
+import {
+  AccessibleDialog,
+  AccessibleIcon,
+  FormErrorMessage,
+  LiveAnnouncer,
+  ScreenReaderOnly,
+  SkipLink,
+  VisuallyHidden,
 } from '../accessibility';
 import { Bell, Info, HelpCircle } from 'lucide-react';
 import { Button } from '../button';
@@ -20,24 +20,24 @@ export function AccessibilityExample() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!name.trim()) {
       setNameError('Name is required');
       return;
     }
-    
+
     // Clear error and announce success to screen readers
     setNameError('');
-    
+
     // Use the global announcer to inform screen readers
     if (window.announcer) {
       window.announcer.announce(`Form submitted successfully for ${name}`);
     }
   };
-  
+
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
@@ -46,7 +46,7 @@ export function AccessibilityExample() {
           Examples of all accessibility components provided by the UI library
         </CardDescription>
       </CardHeader>
-      
+
       <CardContent className="space-y-6">
         {/* SkipLink example - Only visible when tabbing */}
         <div className="border p-4 rounded-md relative">
@@ -56,11 +56,15 @@ export function AccessibilityExample() {
           </p>
           <SkipLink targetId="main-content" />
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm">Tab to me first</Button>
-            <Button variant="outline" size="sm">Then to me</Button>
+            <Button variant="outline" size="sm">
+              Tab to me first
+            </Button>
+            <Button variant="outline" size="sm">
+              Then to me
+            </Button>
           </div>
         </div>
-        
+
         {/* ScreenReaderOnly example */}
         <div className="border p-4 rounded-md">
           <h3 className="font-medium mb-2">ScreenReaderOnly</h3>
@@ -74,7 +78,7 @@ export function AccessibilityExample() {
             </ScreenReaderOnly>
           </div>
         </div>
-        
+
         {/* VisuallyHidden example */}
         <div className="border p-4 rounded-md">
           <h3 className="font-medium mb-2">VisuallyHidden</h3>
@@ -88,7 +92,7 @@ export function AccessibilityExample() {
             </VisuallyHidden>
           </div>
         </div>
-        
+
         {/* AccessibleIcon example */}
         <div className="border p-4 rounded-md">
           <h3 className="font-medium mb-2">AccessibleIcon</h3>
@@ -96,25 +100,22 @@ export function AccessibilityExample() {
             Makes icons accessible to screen readers.
           </p>
           <div className="flex items-center gap-4">
-            <AccessibleIcon 
-              icon={<Bell className="h-5 w-5" />}
-              label="Notifications"
-            />
-            
-            <AccessibleIcon 
+            <AccessibleIcon icon={<Bell className="h-5 w-5" />} label="Notifications" />
+
+            <AccessibleIcon
               icon={<Info className="h-5 w-5" />}
               label="Information"
               labelPosition="after"
             />
-            
-            <AccessibleIcon 
+
+            <AccessibleIcon
               icon={<HelpCircle className="h-5 w-5" />}
               label="Help"
               labelPosition="before"
             />
           </div>
         </div>
-        
+
         {/* FormErrorMessage example */}
         <div className="border p-4 rounded-md">
           <h3 className="font-medium mb-2">FormErrorMessage</h3>
@@ -124,23 +125,19 @@ export function AccessibilityExample() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="name">Name</Label>
-              <Input 
+              <Input
                 id="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                aria-describedby={nameError ? "name-error" : undefined}
+                onChange={e => setName(e.target.value)}
+                aria-describedby={nameError ? 'name-error' : undefined}
                 aria-invalid={Boolean(nameError)}
               />
-              {nameError && (
-                <FormErrorMessage id="name-error">
-                  {nameError}
-                </FormErrorMessage>
-              )}
+              {nameError && <FormErrorMessage id="name-error">{nameError}</FormErrorMessage>}
             </div>
             <Button type="submit">Submit</Button>
           </form>
         </div>
-        
+
         {/* AccessibleDialog example */}
         <div className="border p-4 rounded-md">
           <h3 className="font-medium mb-2">AccessibleDialog & LiveAnnouncer</h3>
@@ -148,19 +145,15 @@ export function AccessibilityExample() {
             Dialog with proper focus management and announcements.
           </p>
           <Button onClick={() => setIsDialogOpen(true)}>Open Dialog</Button>
-          
+
           <AccessibleDialog
             title="Accessible Dialog Example"
             description="This dialog traps focus and returns it when closed"
             isOpen={isDialogOpen}
             onClose={() => setIsDialogOpen(false)}
-            footer={
-              <Button onClick={() => setIsDialogOpen(false)}>Close</Button>
-            }
+            footer={<Button onClick={() => setIsDialogOpen(false)}>Close</Button>}
           >
-            <p>
-              This dialog follows accessibility best practices:
-            </p>
+            <p>This dialog follows accessibility best practices:</p>
             <ul className="list-disc pl-6 mt-2 space-y-1">
               <li>Focus is trapped inside the dialog</li>
               <li>Focus returns to the trigger when closed</li>
@@ -170,12 +163,13 @@ export function AccessibilityExample() {
           </AccessibleDialog>
         </div>
       </CardContent>
-      
+
       <CardFooter className="border-t px-6 py-4">
         <p className="text-sm text-muted-foreground">
-          Note: The LiveAnnouncer component doesn't have a visual representation, but it's used by the form submission.
+          Note: The LiveAnnouncer component doesn't have a visual representation, but it's used by
+          the form submission.
         </p>
       </CardFooter>
     </Card>
   );
-} 
+}

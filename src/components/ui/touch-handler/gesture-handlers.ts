@@ -10,10 +10,10 @@ export const handleTapGesture = (
 ) => {
   if (onTap) {
     onTap(touchEnd);
-    
+
     if (onGesture) {
       onGesture({
-        type: 'tap'
+        type: 'tap',
       });
     }
   }
@@ -30,14 +30,14 @@ export const handleSwipeGesture = (
   onGesture?: (gesture: TouchGesture) => void
 ) => {
   const direction = getSwipeDirection(startPos, endPos);
-  
+
   if (onSwipe) {
     onSwipe(direction, distance);
-    
+
     if (onGesture) {
       onGesture({
         type: 'swipe',
-        direction
+        direction,
       });
     }
   }
@@ -53,26 +53,26 @@ export const handlePinchGesture = (
   onGesture?: (gesture: TouchGesture) => void
 ) => {
   if (currentTouches.length < 2 || initialTouches.length < 2) return;
-  
+
   const initialDistance = getDistance(
     { x: initialTouches[0].clientX, y: initialTouches[0].clientY },
     { x: initialTouches[1].clientX, y: initialTouches[1].clientY }
   );
-  
+
   const currentDistance = getDistance(
     { x: currentTouches[0].clientX, y: currentTouches[0].clientY },
     { x: currentTouches[1].clientX, y: currentTouches[1].clientY }
   );
-  
+
   const scale = currentDistance / initialDistance;
-  
+
   if (onPinch && Math.abs(scale - 1) > 0.1) {
     onPinch(scale);
-    
+
     if (onGesture) {
       onGesture({
         type: 'pinch',
-        scale
+        scale,
       });
     }
   }
@@ -88,26 +88,26 @@ export const handleRotateGesture = (
   onGesture?: (gesture: TouchGesture) => void
 ) => {
   if (currentTouches.length < 2 || initialTouches.length < 2) return;
-  
+
   const initialAngle = getAngle(
     { x: initialTouches[0].clientX, y: initialTouches[0].clientY },
     { x: initialTouches[1].clientX, y: initialTouches[1].clientY }
   );
-  
+
   const currentAngle = getAngle(
     { x: currentTouches[0].clientX, y: currentTouches[0].clientY },
     { x: currentTouches[1].clientX, y: currentTouches[1].clientY }
   );
-  
+
   const rotation = currentAngle - initialAngle;
-  
+
   if (onRotate && Math.abs(rotation) > 10) {
     onRotate(rotation);
-    
+
     if (onGesture) {
       onGesture({
         type: 'rotate',
-        rotation
+        rotation,
       });
     }
   }
@@ -124,12 +124,12 @@ export const handleLongPressGesture = (
 ) => {
   if (onLongPress) {
     onLongPress(position);
-    
+
     if (onGesture) {
       onGesture({
         type: 'longpress',
-        duration: longPressThreshold
+        duration: longPressThreshold,
       });
     }
   }
-}; 
+};

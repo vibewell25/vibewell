@@ -6,10 +6,10 @@ import { ModelInfo } from '@/types/ar-types';
 const ARViewComponent: React.FC = () => {
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { initializeAR, loadModel, applyFilter, captureImage } = useARService();
   const { models, isLoading: modelsLoading, error } = useARModels();
-  
+
   useEffect(() => {
     const initialize = async () => {
       try {
@@ -18,14 +18,14 @@ const ARViewComponent: React.FC = () => {
         console.error('Failed to initialize AR:', error);
       }
     };
-    
+
     initialize();
   }, [initializeAR]);
-  
+
   const handleModelSelect = async (modelId: string) => {
     setIsLoading(true);
     setSelectedModel(modelId);
-    
+
     try {
       const result = await loadModel(modelId);
       if (result.success) {
@@ -38,7 +38,7 @@ const ARViewComponent: React.FC = () => {
       setIsLoading(false);
     }
   };
-  
+
   const handleCapture = async () => {
     try {
       const imageData = await captureImage();
@@ -48,25 +48,22 @@ const ARViewComponent: React.FC = () => {
       console.error('Failed to capture image:', error);
     }
   };
-  
+
   return (
     <div data-testid="ar-container" className="ar-container">
       <h2>AR Experience</h2>
-      
+
       {error && <div className="error-message">{error}</div>}
-      
+
       <div className="ar-viewport">
         {/* AR view would be rendered here */}
         {isLoading && (
-          <div 
-            data-testid="model-loading-indicator" 
-            className="loading-indicator loading"
-          >
+          <div data-testid="model-loading-indicator" className="loading-indicator loading">
             Loading model...
           </div>
         )}
       </div>
-      
+
       <div className="model-selection">
         <h3>Select a Model</h3>
         <div className="models-grid">
@@ -81,9 +78,9 @@ const ARViewComponent: React.FC = () => {
           ))}
         </div>
       </div>
-      
+
       <div className="ar-controls">
-        <button 
+        <button
           className="capture-btn"
           onClick={handleCapture}
           disabled={!selectedModel || isLoading}
@@ -95,4 +92,4 @@ const ARViewComponent: React.FC = () => {
   );
 };
 
-export default ARViewComponent; 
+export default ARViewComponent;

@@ -15,7 +15,7 @@ export class BackupMonitor {
   private alertThresholds = {
     failedBackups: 3,
     storageUsage: 0.9, // 90%
-    retentionViolations: 1
+    retentionViolations: 1,
   };
 
   constructor(config: typeof backupConfig) {
@@ -51,7 +51,10 @@ export class BackupMonitor {
 
       return alerts;
     } catch (error: unknown) {
-      logger.error('Error checking backup health:', error instanceof Error ? error.message : String(error));
+      logger.error(
+        'Error checking backup health:',
+        error instanceof Error ? error.message : String(error)
+      );
       throw error;
     }
   }
@@ -72,7 +75,7 @@ export class BackupMonitor {
       alerts.push({
         type: 'error',
         message: `Critical: ${failedBackups.length} failed backups in the last 7 days`,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     }
 
@@ -83,9 +86,7 @@ export class BackupMonitor {
     const alerts: BackupAlert[] = [];
 
     try {
-      const { data: storageStats, error } = await this.supabase.storage
-        .from('backups')
-        .list();
+      const { data: storageStats, error } = await this.supabase.storage.from('backups').list();
 
       if (error) throw error;
 
@@ -98,11 +99,14 @@ export class BackupMonitor {
         alerts.push({
           type: 'warning',
           message: `Warning: Backup storage usage at ${(usagePercentage * 100).toFixed(2)}%`,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         });
       }
     } catch (error: unknown) {
-      logger.error('Error checking storage usage:', error instanceof Error ? error.message : String(error));
+      logger.error(
+        'Error checking storage usage:',
+        error instanceof Error ? error.message : String(error)
+      );
     }
 
     return alerts;
@@ -123,7 +127,7 @@ export class BackupMonitor {
       alerts.push({
         type: 'warning',
         message: `Warning: ${oldBackups.length} backups older than retention period`,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     }
 
@@ -133,14 +137,12 @@ export class BackupMonitor {
   public async sendAlert(alert: BackupAlert): Promise<void> {
     try {
       // Store alert in database
-      const { error } = await this.supabase
-        .from('backup_alerts')
-        .insert({
-          type: alert.type,
-          message: alert.message,
-          timestamp: alert.timestamp,
-          backup_id: alert.backupId
-        });
+      const { error } = await this.supabase.from('backup_alerts').insert({
+        type: alert.type,
+        message: alert.message,
+        timestamp: alert.timestamp,
+        backup_id: alert.backupId,
+      });
 
       if (error) throw error;
 
@@ -157,13 +159,13 @@ export class BackupMonitor {
       // Dynamically import to avoid circular dependencies
       const { NotificationService } = await import('@/services/notification-service');
       const notificationService = new NotificationService();
-      
+
       // Get system admins to notify (in a real implementation, this would come from a database)
       const adminUserIds = process.env.ADMIN_USER_IDS?.split(',') || [];
-      
+
       // Format the message based on alert type
       const subject = `Backup ${alert.type.toUpperCase()}: ${this.getAlertTitle(alert.type)}`;
-      
+
       // Send notifications to all admin users
       for (const userId of adminUserIds) {
         await notificationService.notifyUser(userId, {
@@ -174,18 +176,18 @@ export class BackupMonitor {
             alertType: alert.type,
             timestamp: alert.timestamp,
             backupId: alert.backupId,
-            source: 'backup-system'
-          }
+            source: 'backup-system',
+          },
         });
       }
-      
+
       // Also log the notification
       logger.info(`Backup ${alert.type} notification sent: ${alert.message}`);
-      
+
       // For critical alerts, also send direct emails to ensure delivery
       if (alert.type === 'error') {
         const emergencyEmails = process.env.EMERGENCY_ADMIN_EMAILS?.split(',') || [];
-        
+
         for (const email of emergencyEmails) {
           await notificationService.sendEmailNotification({
             type: 'system',
@@ -199,17 +201,20 @@ export class BackupMonitor {
               timestamp: alert.timestamp,
               backupId: alert.backupId,
               source: 'backup-system',
-              priority: 'high'
-            }
+              priority: 'high',
+            },
           });
         }
       }
     } catch (error) {
       // Don't throw here - just log the error to avoid breaking the main flow
-      logger.error('Failed to send backup notification:', error instanceof Error ? error.message : String(error));
+      logger.error(
+        'Failed to send backup notification:',
+        error instanceof Error ? error.message : String(error)
+      );
     }
   }
-  
+
   // Helper to get a standardized title based on alert type
   private getAlertTitle(alertType: BackupAlert['type']): string {
     switch (alertType) {
@@ -222,4 +227,4 @@ export class BackupMonitor {
         return 'Backup Information';
     }
   }
-} 
+}

@@ -61,7 +61,10 @@ export function FinancialNav() {
   }, []);
   // Check if path is active
   const isActive = (path: string) => {
-    if (path === '/business-hub/financial-management' && pathname === '/business-hub/financial-management') {
+    if (
+      path === '/business-hub/financial-management' &&
+      pathname === '/business-hub/financial-management'
+    ) {
       return true;
     }
     if (path !== '/business-hub/financial-management' && pathname.startsWith(path)) {
@@ -82,7 +85,7 @@ export function FinancialNav() {
       {/* Mobile View */}
       {isMobile && (
         <>
-          <button 
+          <button
             className="w-full flex items-center justify-between p-4 text-left"
             onClick={toggleDropdown}
             aria-expanded={isOpen}
@@ -98,14 +101,14 @@ export function FinancialNav() {
                 <span className="font-medium">Financial Management</span>
               )}
             </div>
-            <Icons.ChevronDownIcon 
-              className={`h-5 w-5 transition-transform ${isOpen ? 'transform rotate-180' : ''}`} 
+            <Icons.ChevronDownIcon
+              className={`h-5 w-5 transition-transform ${isOpen ? 'transform rotate-180' : ''}`}
             />
           </button>
           {/* Dropdown menu */}
           {isOpen && (
             <div id="financial-nav-dropdown" className="border-t border-gray-200 py-2">
-              {navItems.map((item) => (
+              {navItems.map(item => (
                 <Link
                   key={item.name}
                   href={item.href}
@@ -127,7 +130,7 @@ export function FinancialNav() {
       {/* Desktop View */}
       {!isMobile && (
         <nav className="flex flex-wrap gap-1 p-1">
-          {navItems.map((item) => (
+          {navItems.map(item => (
             <Link
               key={item.name}
               href={item.href}
@@ -145,4 +148,4 @@ export function FinancialNav() {
       )}
     </div>
   );
-} 
+}

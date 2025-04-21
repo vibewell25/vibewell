@@ -194,4 +194,4 @@ export class OAuthService {
         throw new Error(`Unsupported OAuth provider: ${provider}`);
     }
   }
-} 
+}

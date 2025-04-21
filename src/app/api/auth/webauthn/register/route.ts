@@ -9,10 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await req.json();
@@ -30,10 +27,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -41,23 +35,14 @@ export async function PUT(request: NextRequest) {
   try {
     const session = await getServerSession();
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await request.json();
-    const verified = await webAuthnService.verifyRegistration(
-      session.user.id,
-      body
-    );
+    const verified = await webAuthnService.verifyRegistration(session.user.id, body);
 
     if (!verified) {
-      return NextResponse.json(
-        { error: 'Registration verification failed' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Registration verification failed' }, { status: 400 });
     }
 
     return NextResponse.json({ verified: true });
@@ -68,4 +53,4 @@ export async function PUT(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

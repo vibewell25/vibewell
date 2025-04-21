@@ -22,20 +22,19 @@ export const rateLimitConfig: RateLimitConfig = {
 
 /**
  * Check if a request should be rate limited
- * 
+ *
  * @param req - Next.js request
  * @returns NextResponse with 429 status if rate limited, null otherwise
  */
 export function checkRateLimit(req: NextRequest): NextResponse | null {
-  const ip = req.headers.get('x-forwarded-for') || 
-             req.headers.get('x-real-ip') || 
-             'unknown';
-             
+  const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
+
   const now = Date.now();
   const windowStart = now - rateLimitConfig.windowMs;
-  
+
   // Clean old entries
-  if (rateLimitStore.size > 10000) { // Prevent memory leak
+  if (rateLimitStore.size > 10000) {
+    // Prevent memory leak
     // Convert to array first to avoid iteration issues
     Array.from(rateLimitStore.entries()).forEach(([key, data]) => {
       if (data.timestamp < windowStart) {
@@ -43,34 +42,34 @@ export function checkRateLimit(req: NextRequest): NextResponse | null {
       }
     });
   }
-  
+
   // Get or create record
   const record = rateLimitStore.get(ip) || { count: 0, timestamp: now };
-  
+
   // Reset if window expired
   if (record.timestamp < windowStart) {
     record.count = 0;
     record.timestamp = now;
   }
-  
+
   // Increment count
   record.count += 1;
   rateLimitStore.set(ip, record);
-  
+
   // Check if over limit
   if (record.count > rateLimitConfig.max) {
     return new NextResponse(
       JSON.stringify({ error: 'Too many requests', message: rateLimitConfig.message }),
-      { 
+      {
         status: 429,
         headers: {
           'Content-Type': 'application/json',
           'Retry-After': `${Math.ceil(rateLimitConfig.windowMs / 1000)}`,
-        }
+        },
       }
     );
   }
-  
+
   return null;
 }
 
@@ -89,15 +88,15 @@ export async function securityMiddleware(request: NextRequest) {
   if (rateLimitResponse) {
     return rateLimitResponse;
   }
-  
+
   // Apply CSRF middleware next
   const csrfResponse = csrfMiddleware(request);
-  
+
   // If CSRF validation failed, return the error response
   if (csrfResponse.status !== 200) {
     return csrfResponse;
   }
-  
+
   const response = NextResponse.next();
 
   // Security headers
@@ -109,14 +108,19 @@ export async function securityMiddleware(request: NextRequest) {
   response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
 
   // Content Security Policy
-  response.headers.set('Content-Security-Policy', `
+  response.headers.set(
+    'Content-Security-Policy',
+    `
     default-src 'self';
     script-src 'self' 'unsafe-inline' 'unsafe-eval';
     style-src 'self' 'unsafe-inline';
     img-src 'self' data: https:;
     font-src 'self';
     connect-src 'self' ${process.env.API_URL || ''};
-  `.replace(/\s+/g, ' ').trim());
+  `
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
 
   return response;
 }
@@ -141,16 +145,14 @@ export const fieldEncryption = {
     let decrypted = decipher.update(encrypted);
     decrypted = Buffer.concat([decrypted, decipher.final()]);
     return decrypted.toString();
-  }
+  },
 };
 
 // Export CSRF utilities
 export { generateCsrfToken, verifyCsrfToken, getCsrfToken };
 
 // Named exports
-export {
-  csrfMiddleware
-};
+export { csrfMiddleware };
 
 // Default export
 export default {
@@ -162,5 +164,5 @@ export default {
   generateCsrfToken,
   verifyCsrfToken,
   getCsrfToken,
-  csrfMiddleware
-}; 
+  csrfMiddleware,
+};

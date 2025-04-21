@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Sidebar } from '@/components/admin/sidebar';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -43,9 +43,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <Alert variant="destructive">
           <AlertTriangle className="h-4 w-4" />
           <AlertTitle>Access Denied</AlertTitle>
-          <AlertDescription>
-            You do not have permission to access this area.
-          </AlertDescription>
+          <AlertDescription>You do not have permission to access this area.</AlertDescription>
         </Alert>
       </div>
     );
@@ -54,9 +52,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <div className="flex h-screen">
       <Sidebar />
-      <div className="flex-1 overflow-auto">
-        {children}
-      </div>
+      <div className="flex-1 overflow-auto">{children}</div>
     </div>
   );
-} 
+}

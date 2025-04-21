@@ -1,10 +1,17 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Facebook, Instagram, Twitter, Linkedin, Github, Globe } from "lucide-react";
-import { useState } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Facebook, Instagram, Twitter, Linkedin, Github, Globe } from 'lucide-react';
+import { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface SocialAccount {
   id: string;
@@ -17,48 +24,48 @@ interface SocialAccount {
 export function SocialAccounts() {
   const [showDialog, setShowDialog] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState('');
 
   const socialAccounts: SocialAccount[] = [
     {
-      id: "facebook",
-      platform: "Facebook",
-      username: "johndoe",
+      id: 'facebook',
+      platform: 'Facebook',
+      username: 'johndoe',
       connected: false,
       icon: <Facebook className="h-5 w-5" />,
     },
     {
-      id: "instagram",
-      platform: "Instagram",
-      username: "johndoe",
+      id: 'instagram',
+      platform: 'Instagram',
+      username: 'johndoe',
       connected: true,
       icon: <Instagram className="h-5 w-5" />,
     },
     {
-      id: "twitter",
-      platform: "Twitter",
-      username: "johndoe",
+      id: 'twitter',
+      platform: 'Twitter',
+      username: 'johndoe',
       connected: false,
       icon: <Twitter className="h-5 w-5" />,
     },
     {
-      id: "linkedin",
-      platform: "LinkedIn",
-      username: "johndoe",
+      id: 'linkedin',
+      platform: 'LinkedIn',
+      username: 'johndoe',
       connected: false,
       icon: <Linkedin className="h-5 w-5" />,
     },
     {
-      id: "github",
-      platform: "GitHub",
-      username: "johndoe",
+      id: 'github',
+      platform: 'GitHub',
+      username: 'johndoe',
       connected: false,
       icon: <Github className="h-5 w-5" />,
     },
     {
-      id: "website",
-      platform: "Website",
-      username: "johndoe.com",
+      id: 'website',
+      platform: 'Website',
+      username: 'johndoe.com',
       connected: true,
       icon: <Globe className="h-5 w-5" />,
     },
@@ -78,7 +85,7 @@ export function SocialAccounts() {
     // Implement connection logic
     console.log(`Connecting ${selectedPlatform} with username ${username}`);
     setShowDialog(false);
-    setUsername("");
+    setUsername('');
     setSelectedPlatform(null);
   };
 
@@ -88,7 +95,7 @@ export function SocialAccounts() {
         <CardTitle>Social Accounts</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {socialAccounts.map((account) => (
+        {socialAccounts.map(account => (
           <div key={account.id} className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               {account.icon}
@@ -106,11 +113,7 @@ export function SocialAccounts() {
                 </Button>
               </div>
             ) : (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleConnect(account.platform)}
-              >
+              <Button variant="outline" size="sm" onClick={() => handleConnect(account.platform)}>
                 Connect
               </Button>
             )}
@@ -132,7 +135,7 @@ export function SocialAccounts() {
               <Input
                 id="username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={e => setUsername(e.target.value)}
                 placeholder={`Enter your ${selectedPlatform} username`}
               />
             </div>
@@ -147,4 +150,4 @@ export function SocialAccounts() {
       </Dialog>
     </Card>
   );
-} 
+}

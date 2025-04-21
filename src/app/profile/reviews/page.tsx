@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-;
 import ReviewCard from '@/components/ReviewCard';
 import ReviewForm from '@/components/ReviewForm';
 import { Icons } from '@/components/icons';
@@ -52,9 +51,9 @@ export default function MyReviewsPage() {
           provider: {
             id: 'p1',
             name: 'Sarah Johnson',
-            avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330'
+            avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
           },
-          booking_id: 'b1'
+          booking_id: 'b1',
         },
         {
           id: '2',
@@ -66,10 +65,10 @@ export default function MyReviewsPage() {
           provider: {
             id: 'p2',
             name: 'Michael Chen',
-            avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d'
+            avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
           },
-          booking_id: 'b2'
-        }
+          booking_id: 'b2',
+        },
       ];
       const mockPendingReviews: Service[] = [
         {
@@ -79,9 +78,9 @@ export default function MyReviewsPage() {
           provider: {
             id: 'p3',
             name: 'Emily Rodriguez',
-            avatar_url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956'
+            avatar_url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956',
           },
-          price: 85
+          price: 85,
         },
         {
           id: 's2',
@@ -90,10 +89,10 @@ export default function MyReviewsPage() {
           provider: {
             id: 'p4',
             name: 'Lisa Park',
-            avatar_url: 'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56'
+            avatar_url: 'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56',
           },
-          price: 45
-        }
+          price: 45,
+        },
       ];
       setUserReviews(mockReviews);
       setPendingReviews(mockPendingReviews);
@@ -115,10 +114,8 @@ export default function MyReviewsPage() {
   const handleUpdateReview = async (data: { title: string; text: string; rating: number }) => {
     if (editingReview) {
       // In a real app, we would call an API here
-      const updatedReviews = userReviews.map(review => 
-        review.id === editingReview.id 
-          ? { ...review, ...data }
-          : review
+      const updatedReviews = userReviews.map(review =>
+        review.id === editingReview.id ? { ...review, ...data } : review
       );
       setUserReviews(updatedReviews);
       setEditingReview(null);
@@ -137,7 +134,7 @@ export default function MyReviewsPage() {
       created_at: new Date().toISOString(),
       provider_id: providerId,
       provider: pendingReviews.find(service => service.provider.id === providerId)?.provider!,
-      booking_id: serviceId
+      booking_id: serviceId,
     };
     setUserReviews(prev => [newReview, ...prev]);
     setPendingReviews(prev => prev.filter(service => service.id !== serviceId));
@@ -171,10 +168,10 @@ export default function MyReviewsPage() {
             ) : userReviews.length === 0 ? (
               <div className="bg-white rounded-lg shadow p-8 text-center">
                 <p className="text-gray-500 mb-2">You haven't submitted any reviews yet</p>
-                <p className="text-gray-400 text-sm mb-4">Your reviews will appear here once you've reviewed a service</p>
-                <Button onClick={() => setActiveTab('pending')}>
-                  View Pending Reviews
-                </Button>
+                <p className="text-gray-400 text-sm mb-4">
+                  Your reviews will appear here once you've reviewed a service
+                </p>
+                <Button onClick={() => setActiveTab('pending')}>View Pending Reviews</Button>
               </div>
             ) : (
               <div className="space-y-6">
@@ -186,7 +183,7 @@ export default function MyReviewsPage() {
                       initialData={{
                         title: editingReview.title,
                         text: editingReview.text,
-                        rating: editingReview.rating
+                        rating: editingReview.rating,
                       }}
                       isEdit={true}
                       onSubmit={handleUpdateReview}
@@ -206,7 +203,7 @@ export default function MyReviewsPage() {
                         customer={{
                           id: 'self',
                           name: 'You', // In a real app, we would use the user's name
-                          avatar_url: undefined
+                          avatar_url: undefined,
                         }}
                       />
                       <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100">
@@ -255,7 +252,9 @@ export default function MyReviewsPage() {
             ) : pendingReviews.length === 0 ? (
               <div className="bg-white rounded-lg shadow p-8 text-center">
                 <p className="text-gray-500 mb-2">No pending reviews</p>
-                <p className="text-gray-400 text-sm">You don't have any completed services to review at this time</p>
+                <p className="text-gray-400 text-sm">
+                  You don't have any completed services to review at this time
+                </p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -271,8 +270,8 @@ export default function MyReviewsPage() {
                       <div className="flex items-center">
                         <div className="relative h-10 w-10 rounded-full overflow-hidden mr-2">
                           {service.provider.avatar_url ? (
-                            <img 
-                              src={service.provider.avatar_url} 
+                            <img
+                              src={service.provider.avatar_url}
                               alt={service.provider.name}
                               className="object-cover w-full h-full"
                             />
@@ -294,13 +293,9 @@ export default function MyReviewsPage() {
                         const dummyReview = {
                           title: 'Great service!',
                           text: 'I really enjoyed my experience.',
-                          rating: 5
+                          rating: 5,
                         };
-                        handleSubmitReview(
-                          dummyReview,
-                          service.provider.id,
-                          service.id
-                        );
+                        handleSubmitReview(dummyReview, service.provider.id, service.id);
                       }}
                     >
                       Leave a Review
@@ -314,4 +309,4 @@ export default function MyReviewsPage() {
       </div>
     </Layout>
   );
-} 
+}

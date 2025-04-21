@@ -2,6 +2,18 @@
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const TerserPlugin = require('terser-webpack-plugin');
 const crypto = require('crypto');
+const { withSentryConfig } = require('@sentry/nextjs');
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development',
+  register: true,
+  skipWaiting: true,
+});
+const CompressionPlugin = require('compression-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 const nextConfig = {
   reactStrictMode: true,
@@ -18,7 +30,23 @@ const nextConfig = {
       'platform-lookaside.fbsbx.com', // For Facebook profile pictures
       process.env.AWS_S3_BUCKET ? `${process.env.AWS_S3_BUCKET}.s3.amazonaws.com` : 'vibewell-uploads.s3.amazonaws.com', // For AWS S3 images
       'res.cloudinary.com',
+      'via.placeholder.com',
+      'source.unsplash.com',
+      'cdn.shopify.com',
+      'i.pravatar.cc',
+      'vibewell-assets.s3.amazonaws.com',
     ],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60 * 60 * 24 * 7, // 1 week
+    // Enhanced image optimization
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    loader: 'default',
+    path: '/_next/image',
+    disableStaticImages: false,
+    unoptimized: false,
   },
   // Optimize file watching
   onDemandEntries: {
@@ -33,6 +61,8 @@ const nextConfig = {
   compiler: {
     // Remove console.logs in production
     removeConsole: process.env.NODE_ENV === 'production',
+    reactRemoveProperties: process.env.NODE_ENV === 'production',
+    styledComponents: true,
   },
   // Handle TypeScript paths
   experimental: {
@@ -47,7 +77,44 @@ const nextConfig = {
       '@radix-ui/react-icons',
       'date-fns',
       'lodash',
+      'framer-motion',
+      '@tanstack/react-query',
+      'react-hook-form',
+      'zustand',
+      'zod',
     ],
+    serverActions: true,
+    serverComponents: true,
+    scrollRestoration: true,
+    browsersListForSwc: true,
+    legacyBrowsers: false,
+    // Enable app directory partial ISR/SSG
+    isrMemoryCacheSize: 0,
+    // Enhanced streaming features
+    largePageDataBytes: 128 * 1000, // 128KB
+    // Improved React optimization
+    turbo: {
+      loaders: {
+        '.svg': ['@svgr/webpack'],
+      },
+    },
+    // Enable Modularize Imports
+    modularizeImports: {
+      'lodash/': {
+        transform: 'lodash/{{member}}',
+        preventFullImport: true,
+      },
+      '@mui/material/': {
+        transform: '@mui/material/{{member}}',
+        preventFullImport: true,
+      },
+      '@mui/icons-material/': {
+        transform: '@mui/icons-material/{{member}}',
+        preventFullImport: true,
+      },
+    },
+    serverComponentsExternalPackages: ['sharp'],
+    optimisticClientCache: true,
   },
   // Security headers
   async headers() {
@@ -86,7 +153,53 @@ const nextConfig = {
               : ""
           }
         ]
-      }
+      },
+      {
+        source: '/api/:path*',
+        headers: [
+          { key: 'Access-Control-Allow-Credentials', value: 'true' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          { key: 'Access-Control-Allow-Methods', value: 'GET,DELETE,PATCH,POST,PUT' },
+          { key: 'Access-Control-Allow-Headers', value: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization' },
+        ],
+      },
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, stale-while-revalidate=604800',
+          },
+        ],
+      },
+      {
+        source: '/fonts/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Add cache control for static assets
+      {
+        source: '/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
     ]
   },
   // Configure webpack and file watching
@@ -97,6 +210,7 @@ const nextConfig = {
         aggregateTimeout: 300,
         ignored: ['**/node_modules', '**/.git', '**/.next'],
       };
+      config.devtool = 'eval-source-map';
     }
 
     // Improve module resolution
@@ -147,89 +261,129 @@ const nextConfig = {
             compress: {
               drop_console: process.env.NODE_ENV === 'production',
               drop_debugger: process.env.NODE_ENV === 'production',
+              pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log', 'console.info', 'console.debug'] : [],
             },
             format: {
               comments: false,
             },
+            mangle: true,
+          },
+          extractComments: false,
+        }),
+        new CssMinimizerPlugin({
+          minimizerOptions: {
+            preset: [
+              'default',
+              {
+                discardComments: { removeAll: true },
+                minifyFontValues: { removeQuotes: false },
+              },
+            ],
           },
         }),
       ],
       splitChunks: {
         chunks: 'all',
+        maxInitialRequests: 25,
         minSize: 20000,
-        maxSize: 244000,
-        minChunks: 1,
-        maxAsyncRequests: 30,
-        maxInitialRequests: 30,
         cacheGroups: {
-          default: false,
-          vendors: false,
-          framework: {
-            chunks: 'all',
-            name: 'framework',
-            test: /[\\/]node_modules[\\/](react|react-dom|next)[\\/]/,
-            priority: 40,
-            enforce: true,
+          three: {
+            test: /[\\/]node_modules[\\/](three|@react-three)[\\/]/,
+            name: 'three-vendors',
+            priority: 10,
+            reuseExistingChunk: true,
           },
-          lib: {
-            test(module) {
-              return (
-                module.size() > 160000 &&
-                /node_modules[/\\]/.test(module.identifier())
-              );
-            },
-            name(module) {
-              const hash = crypto.createHash('sha1');
-              hash.update(module.identifier());
-              return hash.digest('hex').substring(0, 8);
-            },
-            priority: 30,
-            minChunks: 1,
+          recharts: {
+            test: /[\\/]node_modules[\\/](recharts)[\\/]/,
+            name: 'recharts-vendors',
+            priority: 10,
+            reuseExistingChunk: true,
+          },
+          maps: {
+            test: /[\\/]node_modules[\\/](leaflet|mapbox-gl|react-map-gl)[\\/]/,
+            name: 'map-vendors',
+            priority: 10,
+            reuseExistingChunk: true,
+          },
+          chart: {
+            test: /[\\/]node_modules[\\/](chart\.js|react-chartjs-2)[\\/]/,
+            name: 'chart-vendors',
+            priority: 10,
+            reuseExistingChunk: true,
+          },
+          ui: {
+            test: /[\\/]node_modules[\\/](@radix-ui|@headlessui)[\\/]/,
+            name: 'ui-vendors',
+            priority: 10,
             reuseExistingChunk: true,
           },
           commons: {
+            test: /[\\/]node_modules[\\/](react|react-dom|framer-motion)[\\/]/,
             name: 'commons',
-            minChunks: 2,
+            chunks: 'all',
             priority: 20,
           },
-          shared: {
-            name(module, chunks) {
-              return crypto
-                .createHash('sha1')
-                .update(
-                  chunks.reduce((acc, chunk) => acc + chunk.name, '')
-                )
-                .digest('hex');
-            },
+          forms: {
+            test: /[\\/]node_modules[\\/](react-hook-form|formik|yup|zod)[\\/]/,
+            name: 'forms-vendors',
             priority: 10,
-            minChunks: 2,
             reuseExistingChunk: true,
           },
-        },
+          routes: {
+            test: /[\\/]src[\\/]app[\\/](.+)[\\/]page\.(js|ts)x?$/,
+            name: (module) => {
+              const routePath = module.resource.match(/[\\/]src[\\/]app[\\/](.+)[\\/]page\.(js|ts)x?$/)[1];
+              return `route-${routePath.replace(/[\\/]/g, '-')}`;
+            },
+            priority: 30,
+          },
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true,
+          },
+        }
       },
     };
 
-    // Add bundle analyzer in production
+    // Add compression plugins for production
+    if (!dev && !isServer) {
+      config.plugins.push(
+        new CompressionPlugin({
+          algorithm: 'gzip',
+          test: /\.(js|css|html|svg)$/,
+          threshold: 10240,
+          minRatio: 0.8,
+        })
+      );
+    }
+
+    // Add bundle analyzer in analyze mode
     if (process.env.ANALYZE === 'true') {
       config.plugins.push(
         new BundleAnalyzerPlugin({
           analyzerMode: 'server',
-          analyzerPort: isServer ? 8888 : 8889,
+          analyzerPort: 8888,
           openAnalyzer: true,
-          generateStatsFile: true,
-          statsFilename: isServer 
-            ? './analyze/server-stats.json' 
-            : './analyze/client-stats.json',
-          reportFilename: isServer
-            ? './analyze/server.html'
-            : './analyze/client.html',
-          statsOptions: {
-            context: './src',
-            excludeModules: /[\\/]node_modules[\\/]/,
-          },
         })
       );
     }
+
+    // Dynamic imports are better chunked
+    config.module.rules.push({
+      test: /\.(js|jsx|ts|tsx)$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: require.resolve('babel-loader'),
+          options: {
+            plugins: [
+              require.resolve('babel-plugin-transform-dynamic-import-vars')
+            ],
+          },
+        },
+      ],
+    });
 
     return config;
   },
@@ -275,6 +429,54 @@ const nextConfig = {
       },
     ];
   },
+  // Add redirect for better SEO
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/settings',
+        destination: '/profile/settings',
+        permanent: false,
+      },
+    ];
+  },
 };
 
-module.exports = nextConfig;
+// Merge with existing Sentry config if present
+const sentryWebpackPluginOptions = {
+  silent: true, // Suppresses all logs
+  // For all available options, see:
+  // https://github.com/getsentry/sentry-webpack-plugin#options
+};
+
+// Export the config with Sentry support
+const configWithSentry = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+
+// Wrap with PWA and Sentry configurations
+const configWithPWA = withPWA(configWithSentry);
+const configWithBundleAnalyzer = withBundleAnalyzer(configWithPWA);
+
+// Apply Sentry config only in production
+const config = process.env.NODE_ENV === 'production'
+  ? withSentryConfig(
+      configWithBundleAnalyzer,
+      {
+        silent: true,
+        org: process.env.SENTRY_ORG,
+        project: process.env.SENTRY_PROJECT,
+      },
+      {
+        // Upload source maps in production
+        widenClientFileUpload: true,
+        transpileClientSDK: true,
+        hideSourceMaps: false,
+        disableLogger: true,
+      }
+    )
+  : configWithBundleAnalyzer;
+
+module.exports = config;

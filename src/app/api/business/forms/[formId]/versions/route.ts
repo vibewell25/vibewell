@@ -4,10 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
 // Get all versions of a form
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { formId: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { formId: string } }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
@@ -26,18 +23,12 @@ export async function GET(
     return NextResponse.json(formVersions);
   } catch (error) {
     console.error('Error fetching form versions:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch form versions' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch form versions' }, { status: 500 });
   }
 }
 
 // Create a new version of a form
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { formId: string } }
-) {
+export async function POST(request: NextRequest, { params }: { params: { formId: string } }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
@@ -84,18 +75,12 @@ export async function POST(
     return NextResponse.json(formVersion);
   } catch (error) {
     console.error('Error creating form version:', error);
-    return NextResponse.json(
-      { error: 'Failed to create form version' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to create form version' }, { status: 500 });
   }
 }
 
 // Update a specific version of a form
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { formId: string } }
-) {
+export async function PUT(request: NextRequest, { params }: { params: { formId: string } }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
@@ -118,9 +103,6 @@ export async function PUT(
     return NextResponse.json(formVersion);
   } catch (error) {
     console.error('Error updating form version:', error);
-    return NextResponse.json(
-      { error: 'Failed to update form version' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to update form version' }, { status: 500 });
   }
-} 
+}

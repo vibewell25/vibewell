@@ -90,27 +90,20 @@ export function ServiceBookingModal({
           </div>
           <div className="space-y-2">
             <Label>Time</Label>
-            <Input
-              type="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              required
-            />
+            <Input type="time" value={time} onChange={e => setTime(e.target.value)} required />
           </div>
           <div className="space-y-2">
             <Label>Notes (Optional)</Label>
             <Input
               value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              onChange={e => setNotes(e.target.value)}
               placeholder="Any special requests or notes"
             />
           </div>
           <div className="flex justify-between items-center">
             <div>
               <span className="text-lg font-semibold">${service.price}</span>
-              <span className="text-muted-foreground ml-2">
-                ({service.duration} min)
-              </span>
+              <span className="text-muted-foreground ml-2">({service.duration} min)</span>
             </div>
             <Button type="submit" disabled={loading}>
               {loading ? 'Booking...' : 'Confirm Booking'}
@@ -120,4 +113,4 @@ export function ServiceBookingModal({
       </DialogContent>
     </Dialog>
   );
-} 
+}

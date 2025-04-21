@@ -19,7 +19,8 @@ const passwordResetSchema = z.object({
 
 // Schema for validating password update
 const passwordUpdateSchema = z.object({
-  password: z.string()
+  password: z
+    .string()
     .min(8, 'Password must be at least 8 characters')
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
@@ -40,16 +41,16 @@ export async function POST(req: NextRequest) {
     // Parse and validate request body
     const body = await req.json();
     const result = passwordResetSchema.safeParse(body);
-    
+
     if (!result.success) {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
         { status: 400 }
       );
     }
-    
+
     const { email } = result.data;
-    
+
     // Send password reset email via Auth0
     try {
       await auth0Management.requestChangePasswordEmail({
@@ -61,7 +62,7 @@ export async function POST(req: NextRequest) {
       console.error('Auth0 password reset error:', auth0Error);
       // Don't reveal if the email exists or not for security reasons
     }
-    
+
     // Return success response
     return NextResponse.json({
       success: true,
@@ -69,10 +70,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error('Error in password reset API:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -88,25 +86,28 @@ export async function PUT(req: NextRequest) {
     // Parse and validate request body
     const body = await req.json();
     const result = passwordUpdateSchema.safeParse(body);
-    
+
     if (!result.success) {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
         { status: 400 }
       );
     }
-    
+
     const { password, token } = result.data;
-    
+
     try {
       // Auth0 password change with token
-      await auth0Management.changePassword({
-        email: '', // The token contains the user identity
-        password,
-        connection: 'Username-Password-Authentication',
-        client_id: process.env.AUTH0_CLIENT_ID,
-      }, token);
-      
+      await auth0Management.changePassword(
+        {
+          email: '', // The token contains the user identity
+          password,
+          connection: 'Username-Password-Authentication',
+          client_id: process.env.AUTH0_CLIENT_ID,
+        },
+        token
+      );
+
       // Return success response
       return NextResponse.json({
         success: true,
@@ -121,9 +122,6 @@ export async function PUT(req: NextRequest) {
     }
   } catch (error) {
     console.error('Error in password update API:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-} 
+}

@@ -6,15 +6,18 @@ import { Skeleton } from '@/components/ui/skeleton';
 // This significantly reduces the initial bundle size
 const AdaptiveARViewer = dynamic(
   () => import('@/components/ar/AdaptiveARViewer').then(mod => ({ default: mod.AdaptiveARViewer })),
-  { 
+  {
     ssr: false,
-    loading: () => <ARViewerSkeleton />
+    loading: () => <ARViewerSkeleton />,
   }
 );
 
 // Optional components that may be needed depending on use case
 const OptimizedModelLoader = dynamic(
-  () => import('@/components/ar/OptimizedModelLoader').then(mod => ({ default: mod.OptimizedModelLoader })),
+  () =>
+    import('@/components/ar/OptimizedModelLoader').then(mod => ({
+      default: mod.OptimizedModelLoader,
+    })),
   { ssr: false }
 );
 
@@ -45,7 +48,8 @@ function ARErrorFallback({ error, resetErrorBoundary }: ARErrorFallbackProps) {
       <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
         <div className="text-red-500 text-lg font-medium mb-2">Something went wrong</div>
         <div className="text-sm text-gray-600 mb-4 text-center">
-          {error.message || "Failed to load AR experience. Your device may not support AR features."}
+          {error.message ||
+            'Failed to load AR experience. Your device may not support AR features.'}
         </div>
         <button
           onClick={resetErrorBoundary}
@@ -60,7 +64,8 @@ function ARErrorFallback({ error, resetErrorBoundary }: ARErrorFallbackProps) {
 
 // Performance monitoring for AR components - loaded only when AR is active
 const ARPerformanceMonitor = dynamic(
-  () => import('@/components/ar/ARResourceMonitor').then(mod => ({ default: mod.ARResourceMonitor })),
+  () =>
+    import('@/components/ar/ARResourceMonitor').then(mod => ({ default: mod.ARResourceMonitor })),
   { ssr: false }
 );
 
@@ -89,14 +94,14 @@ export interface DynamicARViewerProps {
 
 /**
  * DynamicARViewer - A dynamically loaded AR viewer component
- * 
+ *
  * This component uses code splitting to only load AR-related code when needed,
  * significantly reducing the initial bundle size for users who don't use AR features.
- * 
+ *
  * @example
  * ```tsx
- * <DynamicARViewer 
- *   modelId="lipstick-red" 
+ * <DynamicARViewer
+ *   modelId="lipstick-red"
  *   prioritizeBattery={true}
  * />
  * ```
@@ -157,4 +162,4 @@ class ErrorBoundary extends React.Component<
 
     return this.props.children;
   }
-} 
+}

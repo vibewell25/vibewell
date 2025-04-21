@@ -122,47 +122,53 @@ export interface ClientBehavior extends Document {
 
 const clientPreferencesSchema = new Schema<ClientPreferences>({
   clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
-  servicePreferences: [{
-    serviceId: { type: Schema.Types.ObjectId, ref: 'Service', required: true },
-    rating: { type: Number, min: 1, max: 5 },
-    frequency: { 
-      type: String, 
-      enum: ['weekly', 'monthly', 'quarterly', 'annually']
+  servicePreferences: [
+    {
+      serviceId: { type: Schema.Types.ObjectId, ref: 'Service', required: true },
+      rating: { type: Number, min: 1, max: 5 },
+      frequency: {
+        type: String,
+        enum: ['weekly', 'monthly', 'quarterly', 'annually'],
+      },
+      preferredDuration: Number,
+      notes: String,
+      lastUpdated: { type: Date, default: Date.now },
     },
-    preferredDuration: Number,
-    notes: String,
-    lastUpdated: { type: Date, default: Date.now }
-  }],
-  practitionerPreferences: [{
-    practitionerId: { type: Schema.Types.ObjectId, ref: 'Practitioner', required: true },
-    rating: { type: Number, min: 1, max: 5 },
-    preferredCommunication: { 
-      type: String, 
-      enum: ['email', 'sms', 'app', 'phone']
+  ],
+  practitionerPreferences: [
+    {
+      practitionerId: { type: Schema.Types.ObjectId, ref: 'Practitioner', required: true },
+      rating: { type: Number, min: 1, max: 5 },
+      preferredCommunication: {
+        type: String,
+        enum: ['email', 'sms', 'app', 'phone'],
+      },
+      notes: String,
+      lastUpdated: { type: Date, default: Date.now },
     },
-    notes: String,
-    lastUpdated: { type: Date, default: Date.now }
-  }],
+  ],
   schedulingPreferences: {
     preferredDays: [String],
-    preferredTimeSlots: [{
-      start: String,
-      end: String
-    }],
-    flexibility: { 
-      type: String, 
+    preferredTimeSlots: [
+      {
+        start: String,
+        end: String,
+      },
+    ],
+    flexibility: {
+      type: String,
       enum: ['strict', 'moderate', 'flexible'],
-      default: 'moderate'
+      default: 'moderate',
     },
     advanceBooking: { type: Number, default: 7 },
     reminderPreference: {
       timing: { type: Number, default: 24 },
-      method: { 
-        type: String, 
+      method: {
+        type: String,
         enum: ['email', 'sms', 'app', 'all'],
-        default: 'all'
-      }
-    }
+        default: 'all',
+      },
+    },
   },
   communicationPreferences: {
     marketingEmails: { type: Boolean, default: true },
@@ -173,84 +179,92 @@ const clientPreferencesSchema = new Schema<ClientPreferences>({
     preferredLanguage: { type: String, default: 'en' },
     preferredCommunicationTime: {
       start: String,
-      end: String
-    }
+      end: String,
+    },
   },
   specialRequirements: [String],
   allergies: [String],
   healthConditions: [String],
-  goals: [{
-    type: String,
-    description: String,
-    targetDate: Date,
-    status: { 
-      type: String, 
-      enum: ['active', 'achieved', 'abandoned'],
-      default: 'active'
-    }
-  }],
+  goals: [
+    {
+      type: String,
+      description: String,
+      targetDate: Date,
+      status: {
+        type: String,
+        enum: ['active', 'achieved', 'abandoned'],
+        default: 'active',
+      },
+    },
+  ],
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
 const clientBehaviorSchema = new Schema<ClientBehavior>({
   clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
   bookingPatterns: {
     averageBookingFrequency: Number,
-    preferredBookingChannel: { 
-      type: String, 
-      enum: ['web', 'mobile', 'phone']
+    preferredBookingChannel: {
+      type: String,
+      enum: ['web', 'mobile', 'phone'],
     },
     cancellationRate: Number,
     rescheduleRate: Number,
     noShowCount: { type: Number, default: 0 },
-    lastMinuteBookingCount: { type: Number, default: 0 }
+    lastMinuteBookingCount: { type: Number, default: 0 },
   },
-  serviceHistory: [{
-    serviceId: { type: Schema.Types.ObjectId, ref: 'Service' },
-    bookingCount: { type: Number, default: 0 },
-    lastBooked: Date,
-    averageRating: Number,
-    totalSpent: { type: Number, default: 0 },
-    notes: String
-  }],
-  practitionerHistory: [{
-    practitionerId: { type: Schema.Types.ObjectId, ref: 'Practitioner' },
-    bookingCount: { type: Number, default: 0 },
-    lastBooked: Date,
-    averageRating: Number,
-    notes: String
-  }],
+  serviceHistory: [
+    {
+      serviceId: { type: Schema.Types.ObjectId, ref: 'Service' },
+      bookingCount: { type: Number, default: 0 },
+      lastBooked: Date,
+      averageRating: Number,
+      totalSpent: { type: Number, default: 0 },
+      notes: String,
+    },
+  ],
+  practitionerHistory: [
+    {
+      practitionerId: { type: Schema.Types.ObjectId, ref: 'Practitioner' },
+      bookingCount: { type: Number, default: 0 },
+      lastBooked: Date,
+      averageRating: Number,
+      notes: String,
+    },
+  ],
   spendingPatterns: {
     averageSpendPerVisit: Number,
     totalSpendYTD: { type: Number, default: 0 },
     preferredPaymentMethod: String,
-    productPurchaseHistory: [{
-      productId: { type: Schema.Types.ObjectId, ref: 'Product' },
-      purchaseCount: { type: Number, default: 0 },
-      lastPurchased: Date
-    }]
+    productPurchaseHistory: [
+      {
+        productId: { type: Schema.Types.ObjectId, ref: 'Product' },
+        purchaseCount: { type: Number, default: 0 },
+        lastPurchased: Date,
+      },
+    ],
   },
   feedback: {
     lastFeedbackDate: Date,
     averageRating: Number,
     commonThemes: [String],
     improvements: [String],
-    compliments: [String]
+    compliments: [String],
   },
   engagement: {
     appUsage: {
       lastLogin: Date,
       loginFrequency: Number,
-      featureUsage: Schema.Types.Mixed
+      featureUsage: Schema.Types.Mixed,
     },
     marketingResponses: {
       emailOpenRate: Number,
       smsResponseRate: Number,
-      promotionRedemptions: { type: Number, default: 0 }
-    }
+      promotionRedemptions: { type: Number, default: 0 },
+    },
   },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
 // Add indexes for better query performance
@@ -263,15 +277,18 @@ clientBehaviorSchema.index({ 'serviceHistory.serviceId': 1 });
 clientBehaviorSchema.index({ 'practitionerHistory.practitionerId': 1 });
 
 // Add pre-save middleware to update timestamps
-clientPreferencesSchema.pre('save', function(next) {
+clientPreferencesSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
 });
 
-clientBehaviorSchema.pre('save', function(next) {
+clientBehaviorSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
 });
 
-export const ClientPreferencesModel = model<ClientPreferences>('ClientPreferences', clientPreferencesSchema);
-export const ClientBehaviorModel = model<ClientBehavior>('ClientBehavior', clientBehaviorSchema); 
+export const ClientPreferencesModel = model<ClientPreferences>(
+  'ClientPreferences',
+  clientPreferencesSchema
+);
+export const ClientBehaviorModel = model<ClientBehavior>('ClientBehavior', clientBehaviorSchema);

@@ -8,9 +8,10 @@ const bucket = storage.bucket(process.env.GOOGLE_CLOUD_STORAGE_BUCKET || '');
 
 export async function uploadImage(image: Buffer | string): Promise<string> {
   // If image is a base64 string, convert to buffer
-  const imageBuffer = typeof image === 'string' 
-    ? Buffer.from(image.replace(/^data:image\/\w+;base64,/, ''), 'base64')
-    : image;
+  const imageBuffer =
+    typeof image === 'string'
+      ? Buffer.from(image.replace(/^data:image\/\w+;base64,/, ''), 'base64')
+      : image;
 
   // Process image with sharp
   const processedImage = await sharp(imageBuffer)
@@ -31,7 +32,7 @@ export async function uploadImage(image: Buffer | string): Promise<string> {
 }
 
 export async function processImage(
-  imageUrl: string, 
+  imageUrl: string,
   service?: BeautyService | null
 ): Promise<string> {
   // Download the image
@@ -66,8 +67,8 @@ async function applyVirtualTryOn(
       width: 800,
       height: 800,
       channels: 4,
-      background: { r: 255, g: 0, b: 0, alpha: 0.2 }
-    }
+      background: { r: 255, g: 0, b: 0, alpha: 0.2 },
+    },
   }).toBuffer();
 
   return sharp(imageBuffer)
@@ -75,4 +76,4 @@ async function applyVirtualTryOn(
     .composite([{ input: overlay, blend: 'overlay' }])
     .jpeg({ quality: 80 })
     .toBuffer();
-} 
+}

@@ -52,7 +52,7 @@ const VirtualWellnessRoom: React.FC<RoomProps> = ({
   });
 
   const handleCustomization = (updates: Partial<typeof roomState>) => {
-    setRoomState((prev) => {
+    setRoomState(prev => {
       const newState = { ...prev, ...updates };
       onCustomize?.(newState);
       return newState;
@@ -61,24 +61,19 @@ const VirtualWellnessRoom: React.FC<RoomProps> = ({
 
   return (
     <div className="relative w-full h-[600px] rounded-lg overflow-hidden">
-      <Canvas
-        camera={{ position: [0, 2, 5], fov: 75 }}
-        shadows
-        gl={{ antialias: true }}
-      >
+      <Canvas camera={{ position: [0, 2, 5], fov: 75 }} shadows gl={{ antialias: true }}>
         <Environment preset="sunset" />
-        <ambientLight intensity={roomState.lightingIntensity} color={THEME_SETTINGS[theme].ambientLight} />
-        <directionalLight
-          position={[5, 5, 5]}
-          intensity={0.5}
-          castShadow
+        <ambientLight
+          intensity={roomState.lightingIntensity}
+          color={THEME_SETTINGS[theme].ambientLight}
         />
-        
+        <directionalLight position={[5, 5, 5]} intensity={0.5} castShadow />
+
         {/* Room Model */}
         <RoomModel theme={theme} />
-        
+
         {/* Custom Objects */}
-        {roomState.objects.map((obj) => (
+        {roomState.objects.map(obj => (
           <CustomObject key={obj.id} {...obj} />
         ))}
 
@@ -95,14 +90,14 @@ const VirtualWellnessRoom: React.FC<RoomProps> = ({
         <div className="flex items-center justify-between gap-4">
           <ThemeSelector
             currentTheme={roomState.theme}
-            onChange={(newTheme) => handleCustomization({ theme: newTheme })}
+            onChange={newTheme => handleCustomization({ theme: newTheme })}
           />
           <LightingControls
             intensity={roomState.lightingIntensity}
-            onChange={(intensity) => handleCustomization({ lightingIntensity: intensity })}
+            onChange={intensity => handleCustomization({ lightingIntensity: intensity })}
           />
           <ObjectPlacer
-            onAddObject={(object) =>
+            onAddObject={object =>
               handleCustomization({
                 objects: [...roomState.objects, object],
               })
@@ -117,7 +112,7 @@ const VirtualWellnessRoom: React.FC<RoomProps> = ({
 // Sub-components
 const RoomModel: React.FC<{ theme: string }> = ({ theme }) => {
   const { scene } = useGLTF('/models/wellness-room.glb');
-  
+
   useEffect(() => {
     // Apply theme-specific materials
     scene.traverse((child: any) => {
@@ -132,13 +127,7 @@ const RoomModel: React.FC<{ theme: string }> = ({ theme }) => {
 
 const CustomObject: React.FC<any> = ({ type, position, rotation }) => {
   const { scene } = useGLTF(`/models/${type}.glb`);
-  return (
-    <primitive
-      object={scene}
-      position={position}
-      rotation={rotation}
-    />
-  );
+  return <primitive object={scene} position={position} rotation={rotation} />;
 };
 
 const ThemeSelector: React.FC<{
@@ -147,13 +136,11 @@ const ThemeSelector: React.FC<{
 }> = ({ currentTheme, onChange }) => {
   return (
     <div className="flex items-center gap-2">
-      {Object.keys(THEME_SETTINGS).map((theme) => (
+      {Object.keys(THEME_SETTINGS).map(theme => (
         <button
           key={theme}
           className={`px-3 py-1 rounded ${
-            currentTheme === theme
-              ? 'bg-primary text-white'
-              : 'bg-gray-100 hover:bg-gray-200'
+            currentTheme === theme ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-gray-200'
           }`}
           onClick={() => onChange(theme as 'zen' | 'energetic' | 'calming' | 'focus')}
         >
@@ -177,7 +164,7 @@ const LightingControls: React.FC<{
         max="2"
         step="0.1"
         value={intensity}
-        onChange={(e) => onChange(parseFloat(e.target.value))}
+        onChange={e => onChange(parseFloat(e.target.value))}
         className="w-32"
       />
     </div>
@@ -214,4 +201,4 @@ const ObjectPlacer: React.FC<{
   );
 };
 
-export default VirtualWellnessRoom; 
+export default VirtualWellnessRoom;

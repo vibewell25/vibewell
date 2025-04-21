@@ -6,7 +6,6 @@ import { authOptions } from '@/lib/auth';
 import { LoyaltyPoints } from '@/components/rewards/LoyaltyPoints';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-;
 import { Icons } from '@/components/icons';
 export default function RewardsPage() {
   const router = useRouter();
@@ -61,4 +60,4 @@ export default function RewardsPage() {
       </div>
     </div>
   );
-} 
+}

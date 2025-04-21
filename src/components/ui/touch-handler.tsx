@@ -29,7 +29,7 @@ interface TouchHandlerProps {
 
 /**
  * TouchHandler - A component that provides enhanced touch interaction support
- * 
+ *
  * This component captures and processes touch events to provide high-level
  * gesture support like swipes, pinches, rotates, and long presses.
  */
@@ -54,7 +54,11 @@ export function TouchHandler({
 
   // Don't add handlers if not a touch device or component is disabled
   if (!isTouch || !enabled) {
-    return <div ref={containerRef} className={className}>{children}</div>;
+    return (
+      <div ref={containerRef} className={className}>
+        {children}
+      </div>
+    );
   }
 
   // Calculate distance between two points
@@ -64,7 +68,7 @@ export function TouchHandler({
 
   // Calculate angle between two points (in degrees)
   const getAngle = (p1: TouchPosition, p2: TouchPosition): number => {
-    return Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
+    return (Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180) / Math.PI;
   };
 
   // Handle touch start event
@@ -79,11 +83,11 @@ export function TouchHandler({
         touchTimeoutRef.current = setTimeout(() => {
           if (touchStartRef.current) {
             onLongPress(touchStartRef.current);
-            
+
             if (onGesture) {
               onGesture({
                 type: 'longpress',
-                duration: longPressThreshold
+                duration: longPressThreshold,
               });
             }
           }
@@ -108,51 +112,51 @@ export function TouchHandler({
       const touch2 = e.touches[1];
       const initialTouch1 = initialTouchesRef.current[0];
       const initialTouch2 = initialTouchesRef.current[1];
-      
+
       // Calculate pinch scale
       const initialDistance = getDistance(
         { x: initialTouch1.clientX, y: initialTouch1.clientY },
         { x: initialTouch2.clientX, y: initialTouch2.clientY }
       );
-      
+
       const currentDistance = getDistance(
         { x: touch1.clientX, y: touch1.clientY },
         { x: touch2.clientX, y: touch2.clientY }
       );
-      
+
       const scale = currentDistance / initialDistance;
-      
+
       if (onPinch && Math.abs(scale - 1) > 0.1) {
         onPinch(scale);
-        
+
         if (onGesture) {
           onGesture({
             type: 'pinch',
-            scale
+            scale,
           });
         }
       }
-      
+
       // Calculate rotation angle
       const initialAngle = getAngle(
         { x: initialTouch1.clientX, y: initialTouch1.clientY },
         { x: initialTouch2.clientX, y: initialTouch2.clientY }
       );
-      
+
       const currentAngle = getAngle(
         { x: touch1.clientX, y: touch1.clientY },
         { x: touch2.clientX, y: touch2.clientY }
       );
-      
+
       let rotation = currentAngle - initialAngle;
-      
+
       if (onRotate && Math.abs(rotation) > 10) {
         onRotate(rotation);
-        
+
         if (onGesture) {
           onGesture({
             type: 'rotate',
-            rotation
+            rotation,
           });
         }
       }
@@ -169,22 +173,22 @@ export function TouchHandler({
 
     if (touchStartRef.current) {
       const touchDuration = Date.now() - startTimestampRef.current;
-      
+
       // Process as tap or swipe
       if (e.changedTouches.length === 1) {
         const touch = e.changedTouches[0];
         const touchEnd = { x: touch.clientX, y: touch.clientY };
         const distance = getDistance(touchStartRef.current, touchEnd);
-        
+
         // Determine if this is a tap (small movement) or swipe
         if (distance < 10 && touchDuration < 300) {
           // It's a tap
           if (onTap) {
             onTap(touchEnd);
-            
+
             if (onGesture) {
               onGesture({
-                type: 'tap'
+                type: 'tap',
               });
             }
           }
@@ -193,28 +197,28 @@ export function TouchHandler({
           const dx = touchEnd.x - touchStartRef.current.x;
           const dy = touchEnd.y - touchStartRef.current.y;
           let direction: 'left' | 'right' | 'up' | 'down';
-          
+
           // Determine primary direction based on which axis has greater movement
           if (Math.abs(dx) > Math.abs(dy)) {
             direction = dx > 0 ? 'right' : 'left';
           } else {
             direction = dy > 0 ? 'down' : 'up';
           }
-          
+
           if (onSwipe) {
             onSwipe(direction, distance);
-            
+
             if (onGesture) {
               onGesture({
                 type: 'swipe',
-                direction
+                direction,
               });
             }
           }
         }
       }
     }
-    
+
     // Reset
     touchStartRef.current = null;
     initialTouchesRef.current = [];
@@ -232,4 +236,4 @@ export function TouchHandler({
       {children}
     </div>
   );
-} 
+}

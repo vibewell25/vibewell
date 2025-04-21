@@ -1,75 +1,102 @@
-import '@testing-library/jest-dom';
-import { configure } from '@testing-library/react';
+import { vi } from 'vitest';
+import '@testing-library/jest-dom/vitest';
 
-// Configure Testing Library
-configure({
-  testIdAttribute: 'data-testid',
+// Mock ResizeObserver
+class ResizeObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+
+  constructor() {
+    this.observe = vi.fn();
+    this.unobserve = vi.fn();
+    this.disconnect = vi.fn();
+  }
+}
+
+global.ResizeObserver = ResizeObserver;
+
+// Mock window.matchMedia
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});
+
+// Mock localStorage
+const localStorageMock = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
+  length: 0,
+  key: vi.fn(),
+};
+
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
+
+// Mock sessionStorage
+const sessionStorageMock = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
+  length: 0,
+  key: vi.fn(),
+};
+
+Object.defineProperty(window, 'sessionStorage', {
+  value: sessionStorageMock,
 });
 
 // Mock IntersectionObserver
 class IntersectionObserver {
-  observe = jest.fn();
-  unobserve = jest.fn();
-  disconnect = jest.fn();
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
   root = null;
   rootMargin = '';
   thresholds = [];
 
   constructor() {
-    this.observe = jest.fn();
-    this.unobserve = jest.fn();
-    this.disconnect = jest.fn();
+    this.observe = vi.fn();
+    this.unobserve = vi.fn();
+    this.disconnect = vi.fn();
   }
 }
 
-Object.defineProperty(window, 'IntersectionObserver', {
-  writable: true,
-  configurable: true,
-  value: IntersectionObserver,
-});
+global.IntersectionObserver = IntersectionObserver;
 
-Object.defineProperty(global, 'IntersectionObserver', {
-  writable: true,
-  configurable: true,
-  value: IntersectionObserver,
-});
-
-// Mock ResizeObserver
-class ResizeObserver {
-  observe = jest.fn();
-  unobserve = jest.fn();
-  disconnect = jest.fn();
-
-  constructor() {
-    this.observe = jest.fn();
-    this.unobserve = jest.fn();
-    this.disconnect = jest.fn();
+// Mock TextDecoder/TextEncoder
+class TextDecoderMock {
+  decode(input?: BufferSource): string {
+    return typeof input === 'undefined' ? '' : String(input);
   }
 }
 
-Object.defineProperty(window, 'ResizeObserver', {
-  writable: true,
-  configurable: true,
-  value: ResizeObserver,
-});
+class TextEncoderMock {
+  encode(input?: string): Uint8Array {
+    return new Uint8Array(Buffer.from(input || ''));
+  }
+}
 
-Object.defineProperty(global, 'ResizeObserver', {
-  writable: true,
-  configurable: true,
-  value: ResizeObserver,
-});
+global.TextDecoder = TextDecoderMock as any;
+global.TextEncoder = TextEncoderMock as any;
 
-// Mock matchMedia
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: jest.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  })),
-}); 
+// Mock next/router
+vi.mock('next/router', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    query: {},
+  }),
+}));

@@ -33,4 +33,4 @@ export const TranslationErrorBoundary: React.FC<{ children: React.ReactNode }> =
       {children}
     </ErrorBoundary>
   );
-}; 
+};

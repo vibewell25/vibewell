@@ -23,4 +23,4 @@ export default function BusinessHubLayout({ children }: BusinessHubLayoutProps) 
       </div>
     </Layout>
   );
-} 
+}

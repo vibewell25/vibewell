@@ -32,7 +32,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
     return (
       <div className="py-4 px-6 bg-red-50 border border-red-200 rounded-md">
         <p className="text-red-600 text-sm">{error}</p>
-        <button 
+        <button
           className="mt-2 text-xs text-red-800 underline"
           onClick={() => window.location.reload()}
         >
@@ -57,7 +57,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
 
   return (
     <div className="divide-y divide-gray-200 border border-gray-200 rounded-md overflow-hidden">
-      {notifications.map((notification) => (
+      {notifications.map(notification => (
         <NotificationItem
           key={notification.id}
           notification={notification}
@@ -67,4 +67,4 @@ export const NotificationList: React.FC<NotificationListProps> = ({
       ))}
     </div>
   );
-}; 
+};

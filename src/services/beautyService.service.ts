@@ -30,9 +30,11 @@ export class BeautyServiceService {
         requirements: data.requirements,
         contraindications: data.contraindications,
         aftercare: data.aftercare,
-        practitioners: data.practitionerIds ? {
-          connect: data.practitionerIds.map(id => ({ id })),
-        } : undefined,
+        practitioners: data.practitionerIds
+          ? {
+              connect: data.practitionerIds.map(id => ({ id })),
+            }
+          : undefined,
       },
       include: {
         category: true,
@@ -131,9 +133,11 @@ export class BeautyServiceService {
         requirements: data.requirements,
         contraindications: data.contraindications,
         aftercare: data.aftercare,
-        practitioners: data.practitionerIds ? {
-          set: data.practitionerIds.map(id => ({ id })),
-        } : undefined,
+        practitioners: data.practitionerIds
+          ? {
+              set: data.practitionerIds.map(id => ({ id })),
+            }
+          : undefined,
       },
       include: {
         category: true,
@@ -170,4 +174,4 @@ export class BeautyServiceService {
       },
     });
   }
-} 
+}

@@ -1,13 +1,17 @@
 /**
  * Custom type declarations for third-party packages
- * 
+ *
  * This file includes type declarations for packages that don't have their own
  * TypeScript definitions or where the existing definitions need to be augmented.
  */
 
 // MSW declarations
 declare module 'msw' {
-  export function http(method: string, path: string, handler: (req: any, res: any, ctx: any) => any): any;
+  export function http(
+    method: string,
+    path: string,
+    handler: (req: any, res: any, ctx: any) => any
+  ): any;
   export const HttpResponse: {
     json: (body: any, init?: any) => any;
     text: (body: string, init?: any) => any;
@@ -62,7 +66,10 @@ declare module '@testing-library/react' {
     keyDown: (element: HTMLElement, options: { key: string }) => void;
     keyUp: (element: HTMLElement, options: { key: string }) => void;
   };
-  export function waitFor<T>(callback: () => T | Promise<T>, options?: { timeout?: number }): Promise<T>;
+  export function waitFor<T>(
+    callback: () => T | Promise<T>,
+    options?: { timeout?: number }
+  ): Promise<T>;
 }
 
 // Extend Jest matchers with custom matchers
@@ -117,4 +124,4 @@ declare const UserEvent: () => {
 };
 
 // Export empty object to make this a module
-export {}; 
+export {};

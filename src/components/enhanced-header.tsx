@@ -2,7 +2,7 @@ import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { NotificationBadge } from './notification-badge';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { useResponsive } from '@/hooks/useResponsive';
@@ -65,9 +65,9 @@ export function EnhancedHeader() {
         const userMenuElement = document.getElementById('user-menu');
         const userMenuButton = document.getElementById('user-menu-button');
         if (
-          userMenuElement && 
-          !userMenuElement.contains(event.target as Node) && 
-          userMenuButton && 
+          userMenuElement &&
+          !userMenuElement.contains(event.target as Node) &&
+          userMenuButton &&
           !userMenuButton.contains(event.target as Node)
         ) {
           setIsUserMenuOpen(false);
@@ -82,9 +82,7 @@ export function EnhancedHeader() {
   // Determine header classes based on scroll state
   const headerClasses = cn(
     'fixed w-full top-0 z-50 transition-all duration-200',
-    isScrolled 
-      ? 'bg-background/90 backdrop-blur-md shadow-sm' 
-      : 'bg-background',
+    isScrolled ? 'bg-background/90 backdrop-blur-md shadow-sm' : 'bg-background',
     'border-b border-border'
   );
   return (
@@ -99,7 +97,7 @@ export function EnhancedHeader() {
             </div>
             {/* Desktop navigation */}
             <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-              {navItems.map((item) => (
+              {navItems.map(item => (
                 <Link
                   key={item.name}
                   href={item.href}
@@ -120,7 +118,10 @@ export function EnhancedHeader() {
                         <Link href="/messages" className="p-2 rounded-full hover:bg-muted">
                           <Icons.ChatBubbleLeftIcon className="h-5 w-5 text-muted-foreground" />
                         </Link>
-                        <Link href="/notifications" className="p-2 rounded-full hover:bg-muted relative">
+                        <Link
+                          href="/notifications"
+                          className="p-2 rounded-full hover:bg-muted relative"
+                        >
                           <Icons.BellIcon className="h-5 w-5 text-muted-foreground" />
                           {unreadCount > 0 && (
                             <span className="absolute top-0 right-0 h-4 w-4 rounded-full bg-secondary flex items-center justify-center text-[10px] text-white font-bold">
@@ -142,13 +143,17 @@ export function EnhancedHeader() {
                             <Icons.UserCircleIcon className="h-8 w-8 text-muted-foreground hover:text-foreground" />
                           </button>
                           {isUserMenuOpen && (
-                            <div 
+                            <div
                               id="user-menu"
                               className="absolute right-0 mt-2 w-48 bg-card rounded-md shadow-lg border border-border py-1 z-10"
                             >
                               <div className="px-4 py-2 border-b border-border">
-                                <p className="text-sm font-medium">{user.user_metadata?.full_name}</p>
-                                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                                <p className="text-sm font-medium">
+                                  {user.user_metadata?.full_name}
+                                </p>
+                                <p className="text-xs text-muted-foreground truncate">
+                                  {user.email}
+                                </p>
                               </div>
                               <Link
                                 href="/profile"
@@ -222,7 +227,7 @@ export function EnhancedHeader() {
               <button
                 className="md:hidden p-2 rounded-md text-muted-foreground hover:text-foreground"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                aria-label={isMenuOpen ? "Close main menu" : "Open main menu"}
+                aria-label={isMenuOpen ? 'Close main menu' : 'Open main menu'}
                 aria-expanded={isMenuOpen}
               >
                 {isMenuOpen ? (
@@ -234,16 +239,16 @@ export function EnhancedHeader() {
             </div>
           </div>
           {/* Mobile navigation with enhanced animation */}
-          <div 
+          <div
             className={cn(
-              "fixed inset-0 bg-background z-40 transform transition-transform ease-in-out duration-300 md:hidden",
-              isMenuOpen ? "translate-x-0" : "translate-x-full"
+              'fixed inset-0 bg-background z-40 transform transition-transform ease-in-out duration-300 md:hidden',
+              isMenuOpen ? 'translate-x-0' : 'translate-x-full'
             )}
-            style={{ top: '64px' }}  // Adjust based on header height
+            style={{ top: '64px' }} // Adjust based on header height
           >
             <div className="flex flex-col h-full overflow-y-auto pb-20">
               <div className="flex flex-col space-y-1 p-4">
-                {navItems.map((item) => (
+                {navItems.map(item => (
                   <Link
                     key={item.name}
                     href={item.href}
@@ -303,7 +308,7 @@ export function EnhancedHeader() {
                         </button>
                       </>
                     ) : (
-                      <Link 
+                      <Link
                         href={ROUTES.AUTH.LOGIN}
                         className="mt-4 btn-primary text-center"
                         onClick={() => setIsMenuOpen(false)}
@@ -322,4 +327,4 @@ export function EnhancedHeader() {
       <div className="h-16 md:h-[72px]"></div>
     </TouchHandler>
   );
-} 
+}

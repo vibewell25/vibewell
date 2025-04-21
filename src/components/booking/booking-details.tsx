@@ -107,7 +107,10 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
     try {
       const bookingService = new BookingService();
       await bookingService.cancelBooking(bookingId);
-      setBooking({ ...booking, status: role === 'customer' ? 'cancelled_by_customer' : 'cancelled_by_provider' });
+      setBooking({
+        ...booking,
+        status: role === 'customer' ? 'cancelled_by_customer' : 'cancelled_by_provider',
+      });
       setShowCancelDialog(false);
       toast({
         title: 'Success',
@@ -123,7 +126,10 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
   };
 
   const getStatusBadge = (status: string) => {
-    const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+    const statusMap: Record<
+      string,
+      { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }
+    > = {
       pending: { label: 'Pending', variant: 'secondary' },
       confirmed: { label: 'Confirmed', variant: 'default' },
       completed: { label: 'Completed', variant: 'outline' },
@@ -178,12 +184,11 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
                   {format(new Date(booking.end_time), 'p')}
                 </p>
                 <p>
-                  <span className="text-gray-500">Duration:</span>{' '}
-                  {booking.service.duration} minutes
+                  <span className="text-gray-500">Duration:</span> {booking.service.duration}{' '}
+                  minutes
                 </p>
                 <p>
-                  <span className="text-gray-500">Price:</span> $
-                  {booking.service.price}
+                  <span className="text-gray-500">Price:</span> ${booking.service.price}
                 </p>
               </div>
             </div>
@@ -203,14 +208,12 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
                 </p>
                 {role === 'customer' && booking.provider.phone && (
                   <p>
-                    <span className="text-gray-500">Phone:</span>{' '}
-                    {booking.provider.phone}
+                    <span className="text-gray-500">Phone:</span> {booking.provider.phone}
                   </p>
                 )}
                 {role === 'provider' && booking.customer.phone && (
                   <p>
-                    <span className="text-gray-500">Phone:</span>{' '}
-                    {booking.customer.phone}
+                    <span className="text-gray-500">Phone:</span> {booking.customer.phone}
                   </p>
                 )}
               </div>
@@ -226,20 +229,13 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
 
           <div className="flex gap-4">
             {booking.status === 'pending' && role === 'provider' && (
-              <Button onClick={() => setShowConfirmDialog(true)}>
-                Confirm Booking
-              </Button>
+              <Button onClick={() => setShowConfirmDialog(true)}>Confirm Booking</Button>
             )}
             {booking.status === 'confirmed' && role === 'provider' && (
-              <Button onClick={() => setShowCompleteDialog(true)}>
-                Mark as Completed
-              </Button>
+              <Button onClick={() => setShowCompleteDialog(true)}>Mark as Completed</Button>
             )}
             {['pending', 'confirmed'].includes(booking.status) && (
-              <Button
-                variant="destructive"
-                onClick={() => setShowCancelDialog(true)}
-              >
+              <Button variant="destructive" onClick={() => setShowCancelDialog(true)}>
                 Cancel Booking
               </Button>
             )}
@@ -252,8 +248,7 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
           <DialogHeader>
             <DialogTitle>Cancel Booking</DialogTitle>
             <DialogDescription>
-              Are you sure you want to cancel this booking? This action cannot be
-              undone.
+              Are you sure you want to cancel this booking? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -271,21 +266,18 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirm Booking</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to confirm this booking?
-            </DialogDescription>
+            <DialogDescription>Are you sure you want to confirm this booking?</DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setShowConfirmDialog(false)}
-            >
+            <Button variant="outline" onClick={() => setShowConfirmDialog(false)}>
               Cancel
             </Button>
-            <Button onClick={() => {
-              handleStatusUpdate('confirmed');
-              setShowConfirmDialog(false);
-            }}>
+            <Button
+              onClick={() => {
+                handleStatusUpdate('confirmed');
+                setShowConfirmDialog(false);
+              }}
+            >
               Confirm
             </Button>
           </DialogFooter>
@@ -301,16 +293,15 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setShowCompleteDialog(false)}
-            >
+            <Button variant="outline" onClick={() => setShowCompleteDialog(false)}>
               Cancel
             </Button>
-            <Button onClick={() => {
-              handleStatusUpdate('completed');
-              setShowCompleteDialog(false);
-            }}>
+            <Button
+              onClick={() => {
+                handleStatusUpdate('completed');
+                setShowCompleteDialog(false);
+              }}
+            >
               Mark as Completed
             </Button>
           </DialogFooter>
@@ -318,4 +309,4 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
       </Dialog>
     </div>
   );
-} 
+}

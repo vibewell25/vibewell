@@ -1,6 +1,6 @@
 /**
  * WebSocket Rate Limiter Implementation
- * 
+ *
  * This module provides rate limiting for WebSocket connections and messages,
  * implementing various strategies to prevent abuse.
  */
@@ -11,7 +11,7 @@ import { checkRateLimit, shouldUseRedis } from './core';
 
 /**
  * WebSocket Rate Limiter class
- * 
+ *
  * Provides specialized rate limiting for WebSocket connections including:
  * - Connection rate limiting per IP
  * - Message rate limiting
@@ -21,7 +21,7 @@ import { checkRateLimit, shouldUseRedis } from './core';
 export class WebSocketRateLimiter {
   private options: WebSocketRateLimitOptions;
   private ipToConnections: Map<string, Set<string>>;
-  
+
   /**
    * Create a new WebSocket rate limiter
    */
@@ -30,16 +30,16 @@ export class WebSocketRateLimiter {
       ...DEFAULT_WEBSOCKET_OPTIONS,
       ...options,
     };
-    
+
     this.ipToConnections = new Map();
-    
+
     logger.info('WebSocket rate limiter initialized', 'websocket', {
       maxConnectionsPerIP: this.options.maxConnectionsPerIP,
       maxMessagesPerMinute: this.options.maxMessagesPerMinute,
       maxMessageSizeBytes: this.options.maxMessageSizeBytes,
     });
   }
-  
+
   /**
    * Check if a new connection should be allowed
    */
@@ -53,13 +53,14 @@ export class WebSocketRateLimiter {
         });
         return false;
       }
-      
+
       // In-memory connection counting
       const connections = this.ipToConnections.get(ip);
       const connectionCount = connections ? connections.size : 0;
-      
-      const maxConnections = this.options.maxConnectionsPerIP || DEFAULT_WEBSOCKET_OPTIONS.maxConnectionsPerIP!;
-      
+
+      const maxConnections =
+        this.options.maxConnectionsPerIP || DEFAULT_WEBSOCKET_OPTIONS.maxConnectionsPerIP!;
+
       // If too many connections from this IP, reject
       if (connectionCount >= maxConnections) {
         logger.warn(`Too many WebSocket connections from IP: ${ip}`, 'websocket', {
@@ -69,27 +70,30 @@ export class WebSocketRateLimiter {
         });
         return false;
       }
-      
+
       // Use the core rate limiter with connection-specific settings
       const connectionOptions = {
         windowMs: this.options.connectionWindowMs || DEFAULT_WEBSOCKET_OPTIONS.connectionWindowMs!,
         max: maxConnections,
         keyPrefix: 'websocket:connection:',
       };
-      
+
       const result = await checkRateLimit(
-        `websocket:connection:${ip}`, 
-        connectionOptions, 
+        `websocket:connection:${ip}`,
+        connectionOptions,
         shouldUseRedis()
       );
-      
+
       return result.success;
     } catch (error) {
-      logger.error(`Error checking WebSocket connection limit: ${error}`, 'websocket', { error, ip });
+      logger.error(`Error checking WebSocket connection limit: ${error}`, 'websocket', {
+        error,
+        ip,
+      });
       return true; // Allow on error, to prevent service disruption
     }
   }
-  
+
   /**
    * Register a new WebSocket connection
    */
@@ -97,16 +101,16 @@ export class WebSocketRateLimiter {
     if (!this.ipToConnections.has(ip)) {
       this.ipToConnections.set(ip, new Set());
     }
-    
+
     this.ipToConnections.get(ip)!.add(connectionId);
-    
+
     logger.debug(`WebSocket connection registered: ${connectionId}`, 'websocket', {
       ip,
       connectionId,
       totalConnections: this.ipToConnections.get(ip)!.size,
     });
   }
-  
+
   /**
    * Unregister a WebSocket connection when it closes
    */
@@ -114,12 +118,12 @@ export class WebSocketRateLimiter {
     const connections = this.ipToConnections.get(ip);
     if (connections) {
       connections.delete(connectionId);
-      
+
       // Clean up empty sets
       if (connections.size === 0) {
         this.ipToConnections.delete(ip);
       }
-      
+
       logger.debug(`WebSocket connection unregistered: ${connectionId}`, 'websocket', {
         ip,
         connectionId,
@@ -127,7 +131,7 @@ export class WebSocketRateLimiter {
       });
     }
   }
-  
+
   /**
    * Check if a message can be sent (rate limiting for messages)
    */
@@ -138,9 +142,10 @@ export class WebSocketRateLimiter {
       if (isBlocked) {
         return false;
       }
-      
+
       // Check message size
-      const maxSize = this.options.maxMessageSizeBytes || DEFAULT_WEBSOCKET_OPTIONS.maxMessageSizeBytes!;
+      const maxSize =
+        this.options.maxMessageSizeBytes || DEFAULT_WEBSOCKET_OPTIONS.maxMessageSizeBytes!;
       if (messageSize > maxSize) {
         logger.warn(`WebSocket message too large: ${messageSize} bytes`, 'websocket', {
           ip,
@@ -150,36 +155,37 @@ export class WebSocketRateLimiter {
         });
         return false;
       }
-      
+
       // Rate limit messages per minute
       const messageOptions = {
         windowMs: 60 * 1000, // 1 minute
         max: this.options.maxMessagesPerMinute || DEFAULT_WEBSOCKET_OPTIONS.maxMessagesPerMinute!,
         keyPrefix: 'websocket:message:',
       };
-      
+
       const result = await checkRateLimit(
-        `websocket:message:${ip}:${connectionId}`, 
-        messageOptions, 
+        `websocket:message:${ip}:${connectionId}`,
+        messageOptions,
         shouldUseRedis()
       );
-      
+
       // Check for message bursts
       if (result.success && result.remaining < 5) {
         // If nearly at the limit, check for bursts
         const burstOptions = {
           windowMs: this.options.burstDurationMs || DEFAULT_WEBSOCKET_OPTIONS.burstDurationMs!,
-          max: (this.options.maxMessagesPerMinute || DEFAULT_WEBSOCKET_OPTIONS.maxMessagesPerMinute!) / 
-               (this.options.burstFactor || DEFAULT_WEBSOCKET_OPTIONS.burstFactor!),
+          max:
+            (this.options.maxMessagesPerMinute || DEFAULT_WEBSOCKET_OPTIONS.maxMessagesPerMinute!) /
+            (this.options.burstFactor || DEFAULT_WEBSOCKET_OPTIONS.burstFactor!),
           keyPrefix: 'websocket:burst:',
         };
-        
+
         const burstResult = await checkRateLimit(
-          `websocket:burst:${ip}:${connectionId}`, 
-          burstOptions, 
+          `websocket:burst:${ip}:${connectionId}`,
+          burstOptions,
           shouldUseRedis()
         );
-        
+
         if (!burstResult.success) {
           logger.warn(`WebSocket message burst detected from IP: ${ip}`, 'websocket', {
             ip,
@@ -189,18 +195,18 @@ export class WebSocketRateLimiter {
           return false;
         }
       }
-      
+
       return result.success;
     } catch (error) {
-      logger.error(`Error checking WebSocket message limit: ${error}`, 'websocket', { 
-        error, 
-        ip, 
-        connectionId 
+      logger.error(`Error checking WebSocket message limit: ${error}`, 'websocket', {
+        error,
+        ip,
+        connectionId,
       });
       return true; // Allow on error to prevent service disruption
     }
   }
-  
+
   /**
    * Check if an IP is blocked
    */
@@ -216,4 +222,4 @@ export class WebSocketRateLimiter {
 /**
  * Singleton instance of the WebSocket rate limiter
  */
-export const webSocketRateLimiter = new WebSocketRateLimiter(); 
+export const webSocketRateLimiter = new WebSocketRateLimiter();

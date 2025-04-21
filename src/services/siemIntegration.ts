@@ -33,14 +33,14 @@ export class SIEMIntegrationService {
   async sendEvent(event: SIEMEvent): Promise<void> {
     try {
       const formattedEvent = this.formatEventForSIEM(event);
-      
+
       const response = await fetch(this.config.endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.config.apiKey}`
+          Authorization: `Bearer ${this.config.apiKey}`,
         },
-        body: JSON.stringify(formattedEvent)
+        body: JSON.stringify(formattedEvent),
       });
 
       if (!response.ok) {
@@ -70,8 +70,8 @@ export class SIEMIntegrationService {
             severity: event.severity,
             category: event.category,
             message: event.message,
-            ...event.metadata
-          }
+            ...event.metadata,
+          },
         };
 
       case 'elastic':
@@ -79,14 +79,14 @@ export class SIEMIntegrationService {
           '@timestamp': event.timestamp.toISOString(),
           log: {
             level: event.severity,
-            logger: event.source
+            logger: event.source,
           },
           message: event.message,
           event: {
             category: event.category,
-            type: 'security'
+            type: 'security',
           },
-          metadata: event.metadata
+          metadata: event.metadata,
         };
 
       case 'sumologic':
@@ -96,7 +96,7 @@ export class SIEMIntegrationService {
           category: event.category,
           message: event.message,
           source: event.source,
-          metadata: event.metadata
+          metadata: event.metadata,
         };
 
       default:
@@ -110,19 +110,19 @@ export class SIEMIntegrationService {
   async setupEventForwarding(): Promise<void> {
     try {
       // Subscribe to security events
-      this.securityMonitoring.on('securityEvent', async (event) => {
+      this.securityMonitoring.on('securityEvent', async event => {
         await this.sendEvent({
           timestamp: new Date(),
           severity: event.severity,
           category: event.type,
           message: event.details?.message || 'Security event detected',
           source: 'vibewell',
-          metadata: event.details
+          metadata: event.details,
         });
       });
 
       logger.info('SIEM event forwarding configured', 'siem', {
-        provider: this.config.provider
+        provider: this.config.provider,
       });
     } catch (error) {
       logger.error('Failed to set up SIEM event forwarding', 'siem', { error });
@@ -138,13 +138,13 @@ export class SIEMIntegrationService {
       const queryParams = new URLSearchParams({
         query,
         start_time: timeRange.start.toISOString(),
-        end_time: timeRange.end.toISOString()
+        end_time: timeRange.end.toISOString(),
       });
 
       const response = await fetch(`${this.config.endpoint}/search?${queryParams}`, {
         headers: {
-          'Authorization': `Bearer ${this.config.apiKey}`
-        }
+          Authorization: `Bearer ${this.config.apiKey}`,
+        },
       });
 
       if (!response.ok) {
@@ -171,7 +171,7 @@ export class SIEMIntegrationService {
           category: result.event.category,
           message: result.event.message,
           source: result.host,
-          metadata: result.event
+          metadata: result.event,
         }));
 
       case 'elastic':
@@ -181,11 +181,11 @@ export class SIEMIntegrationService {
           category: hit._source.event.category,
           message: hit._source.message,
           source: hit._source.log.logger,
-          metadata: hit._source.metadata
+          metadata: hit._source.metadata,
         }));
 
       default:
         return [];
     }
   }
-} 
+}

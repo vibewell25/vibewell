@@ -2,7 +2,13 @@ import { useState, useRef } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
 
 interface AvatarEditorProps {
   image: File;
@@ -18,11 +24,15 @@ export function AvatarEditorDialog({ image, onSave, onCancel, isOpen }: AvatarEd
   const handleSave = () => {
     if (editorRef.current) {
       const canvas = editorRef.current.getImageScaledToCanvas();
-      canvas.toBlob((blob: Blob | null) => {
-        if (blob) {
-          onSave(blob);
-        }
-      }, 'image/jpeg', 0.95);
+      canvas.toBlob(
+        (blob: Blob | null) => {
+          if (blob) {
+            onSave(blob);
+          }
+        },
+        'image/jpeg',
+        0.95
+      );
     }
   };
 
@@ -67,4 +77,4 @@ export function AvatarEditorDialog({ image, onSave, onCancel, isOpen }: AvatarEd
       </DialogContent>
     </Dialog>
   );
-} 
+}

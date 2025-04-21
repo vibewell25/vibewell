@@ -2,6 +2,15 @@
 
 A comprehensive wellness and fitness platform that connects practitioners with clients, featuring AR-enhanced experiences, social features, and advanced booking capabilities.
 
+## 📊 Project Status
+
+The project is currently in active development. Check [PROJECT-STATUS.md](PROJECT-STATUS.md) for the current status, outstanding tasks, and implementation plan.
+
+**Key metrics:**
+- Test coverage: 4.24%
+- Outstanding tasks: Code consolidation, service implementation, testing improvements
+- Immediate focus: Resolving duplicate code patterns and standardizing core components
+
 ## 🌟 Features
 
 ### Core Features
@@ -66,6 +75,7 @@ Visit `http://localhost:3000` to see the application.
 
 ## 📚 Documentation
 
+- [Project Status](PROJECT-STATUS.md) (current development status and roadmap)
 - [API Documentation](docs/API.md)
 - [Integration Guide](docs/INTEGRATION-GUIDE.md)
 - [Testing Guide](docs/TESTING.md)

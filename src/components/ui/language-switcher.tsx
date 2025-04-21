@@ -1,127 +1,206 @@
 'use client';
 
-import { Icons } from '@/components/icons';
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
-interface Language {
+
+// Language configurations
+export interface Language {
   code: string;
   name: string;
+  nativeName: string;
   flag: string;
+  dir: 'ltr' | 'rtl';
 }
-const LANGUAGES: Language[] = [
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
+
+export const languages: Language[] = [
+  {
+    code: 'en',
+    name: 'English',
+    nativeName: 'English',
+    flag: '🇺🇸',
+    dir: 'ltr',
+  },
+  {
+    code: 'es',
+    name: 'Spanish',
+    nativeName: 'Español',
+    flag: '🇪🇸',
+    dir: 'ltr',
+  },
+  {
+    code: 'fr',
+    name: 'French',
+    nativeName: 'Français',
+    flag: '🇫🇷',
+    dir: 'ltr',
+  },
+  {
+    code: 'ar',
+    name: 'Arabic',
+    nativeName: 'العربية',
+    flag: '🇸🇦',
+    dir: 'rtl',
+  },
+  {
+    code: 'zh',
+    name: 'Chinese',
+    nativeName: '中文',
+    flag: '🇨🇳',
+    dir: 'ltr',
+  },
+  {
+    code: 'hi',
+    name: 'Hindi',
+    nativeName: 'हिन्दी',
+    flag: '🇮🇳',
+    dir: 'ltr',
+  },
 ];
+
 interface LanguageSwitcherProps {
   className?: string;
-  dropdownPosition?: 'top' | 'bottom';
   showFlags?: boolean;
-  showLabel?: boolean;
+  showNativeNames?: boolean;
+  position?: 'dropdown' | 'sidebar';
+  onLanguageChange?: (language: Language) => void;
 }
+
+/**
+ * LanguageSwitcher - A component for switching between different languages
+ * 
+ * This component handles language switching, updates the document direction for RTL languages,
+ * and provides a consistent interface for language selection throughout the application.
+ * 
+ * Features:
+ * - Switches between supported languages while preserving current route
+ * - Automatically updates the document direction for RTL languages
+ * - Displays language options with flags and/or native names
+ * - Maintains language selection in localStorage for persistence
+ * - Full keyboard accessibility
+ */
 export function LanguageSwitcher({
   className,
-  dropdownPosition = 'bottom',
   showFlags = true,
-  showLabel = true,
+  showNativeNames = true,
+  position = 'dropdown',
+  onLanguageChange,
 }: LanguageSwitcherProps) {
+  const router = useRouter();
   const { i18n } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState<Language | null>(null);
-  // Set initial language
-  useEffect(() => {
-    const currentLanguage = LANGUAGES.find(lang => lang.code === i18n.language);
-    setSelectedLanguage(currentLanguage || LANGUAGES[0]);
-  }, [i18n.language]);
-  // Handle language change
-  const changeLanguage = (language: Language) => {
-    i18n.changeLanguage(language.code);
-    setSelectedLanguage(language);
-    setIsOpen(false);
-    // Store language preference
-    try {
-      localStorage.setItem('vibewell-language', language.code);
-    } catch (error) {
-      console.error('Error saving language preference:', error);
-    }
-  };
-  // Toggle dropdown
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = () => {
-      setIsOpen(false);
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-  // Don't render until we have a selected language
-  if (!selectedLanguage) return null;
-  return (
-    <div 
-      className={cn(
-        "relative font-medium",
-        className
-      )}
-      onClick={e => e.stopPropagation()}
-    >
-      <button
-        type="button"
-        className="flex items-center space-x-1 px-3 py-2 rounded-md border border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800 transition-colors"
-        onClick={toggleDropdown}
-        aria-expanded={isOpen}
-        aria-haspopup="listbox"
-        aria-label="Select language"
-      >
-        {showFlags && (
-          <span className="text-lg" aria-hidden="true">
-            {selectedLanguage.flag}
-          </span>
-        )}
-        {showLabel && (
-          <span className="text-sm">{selectedLanguage.name}</span>
-        )}
-        <Icons.ChevronDownIcon className="w-4 h-4 text-gray-500" />
-      </button>
-      {isOpen && (
-        <div 
-          className={cn(
-            "absolute z-10 min-w-[160px] mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg",
-            dropdownPosition === 'top' ? "bottom-full mb-1" : "top-full mt-1"
-          )}
-        >
-          <ul 
-            className="py-1" 
-            role="listbox"
-            aria-label="Language options"
-          >
-            {LANGUAGES.map(language => (
-              <li 
-                key={language.code}
-                role="option"
-                aria-selected={language.code === selectedLanguage.code}
-                className={cn(
-                  "flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700",
-                  language.code === selectedLanguage.code && "bg-gray-100 dark:bg-gray-700"
-                )}
-                onClick={() => changeLanguage(language)}
-              >
-                {showFlags && (
-                  <span className="mr-2 text-lg">{language.flag}</span>
-                )}
-                <span className="text-sm text-gray-900 dark:text-gray-100">
-                  {language.name}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(
+    languages.find((lang) => lang.code === router.locale) || languages[0]
   );
-} 
+
+  // Update language when router locale changes
+  useEffect(() => {
+    const newLang = languages.find((lang) => lang.code === router.locale) || languages[0];
+    setCurrentLanguage(newLang);
+  }, [router.locale]);
+
+  // Update document direction when language changes
+  useEffect(() => {
+    if (currentLanguage) {
+      document.documentElement.dir = currentLanguage.dir;
+      document.documentElement.lang = currentLanguage.code;
+    }
+  }, [currentLanguage]);
+
+  const handleLanguageChange = (langCode: string) => {
+    const newLang = languages.find((lang) => lang.code === langCode);
+    if (!newLang) return;
+
+    // Store language preference
+    localStorage.setItem('preferredLanguage', langCode);
+
+    // Update state
+    setCurrentLanguage(newLang);
+
+    // Call custom handler if provided
+    if (onLanguageChange) {
+      onLanguageChange(newLang);
+    }
+
+    // Update route to preserve current page but change language
+    const { pathname, asPath, query } = router;
+    router.push({ pathname, query }, asPath, { locale: langCode });
+  };
+
+  // Render based on position prop
+  if (position === 'sidebar') {
+    return (
+      <div className={cn('space-y-2', className)}>
+        <div className="flex items-center gap-2 px-2 py-1.5 text-sm font-medium text-muted-foreground">
+          <Globe size={16} />
+          <span>Language</span>
+        </div>
+        <div className="space-y-1">
+          {languages.map((lang) => (
+            <button
+              key={lang.code}
+              onClick={() => handleLanguageChange(lang.code)}
+              className={cn(
+                'flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-muted',
+                currentLanguage.code === lang.code && 'bg-muted font-medium text-foreground'
+              )}
+              aria-current={currentLanguage.code === lang.code ? 'page' : undefined}
+            >
+              {showFlags && <span className="mr-1">{lang.flag}</span>}
+              <span>{showNativeNames ? lang.nativeName : lang.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Default dropdown style
+  return (
+    <Select
+      value={currentLanguage.code}
+      onValueChange={handleLanguageChange}
+      aria-label="Select language"
+    >
+      <SelectTrigger
+        className={cn(
+          'h-8 gap-1 border-none bg-transparent hover:bg-muted focus:ring-primary',
+          className
+        )}
+      >
+        <Globe size={16} className="mr-1" aria-hidden="true" />
+        <SelectValue
+          aria-label={`Current language: ${showNativeNames ? currentLanguage.nativeName : currentLanguage.name}`}
+        >
+          {showFlags && <span className="mr-1">{currentLanguage.flag}</span>}
+          {showNativeNames ? currentLanguage.nativeName : currentLanguage.name}
+        </SelectValue>
+      </SelectTrigger>
+      <SelectContent align="end" className="min-w-[180px]">
+        {languages.map((lang) => (
+          <SelectItem
+            key={lang.code}
+            value={lang.code}
+            className={cn(
+              'flex items-center gap-2',
+              lang.dir === 'rtl' && 'text-right'
+            )}
+          >
+            {showFlags && <span className="mr-1">{lang.flag}</span>}
+            <span>{showNativeNames ? lang.nativeName : lang.name}</span>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
+
+export default LanguageSwitcher;

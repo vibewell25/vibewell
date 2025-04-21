@@ -4,21 +4,21 @@ import { useState } from 'react';
 import { PoliciesFormProps } from '@/components/business/business-profile-wizard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Form, 
-  FormControl, 
-  FormDescription, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
@@ -28,29 +28,29 @@ import { FileText, Clock, AlertCircle, InfoIcon } from 'lucide-react';
 
 // Cancellation policies
 const CANCELLATION_POLICIES = [
-  { 
-    id: 'flexible', 
+  {
+    id: 'flexible',
     name: 'Flexible',
     description: 'Full refund up to 24 hours before the appointment',
-    penalty: 'No refund for cancellations within 24 hours'
+    penalty: 'No refund for cancellations within 24 hours',
   },
-  { 
-    id: 'moderate', 
+  {
+    id: 'moderate',
     name: 'Moderate',
     description: 'Full refund up to 48 hours before the appointment',
-    penalty: '50% refund for cancellations 24-48 hours before, no refund within 24 hours'
+    penalty: '50% refund for cancellations 24-48 hours before, no refund within 24 hours',
   },
-  { 
-    id: 'strict', 
+  {
+    id: 'strict',
     name: 'Strict',
     description: 'Full refund up to 7 days before the appointment',
-    penalty: '50% refund for cancellations 2-7 days before, no refund within 48 hours'
+    penalty: '50% refund for cancellations 2-7 days before, no refund within 48 hours',
   },
-  { 
-    id: 'custom', 
+  {
+    id: 'custom',
     name: 'Custom Policy',
     description: 'Define your own cancellation policy',
-    penalty: ''
+    penalty: '',
   },
 ];
 
@@ -61,47 +61,49 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
   const [hasLatePolicy, setHasLatePolicy] = useState<boolean>(
     form.getValues('hasLateArrivalPolicy') || false
   );
-  
+
   // Handle cancellation policy selection
   const handleCancellationPolicyChange = (value: string) => {
     setCancellationPolicy(value);
-    
+
     if (value !== 'custom') {
       const selectedPolicy = CANCELLATION_POLICIES.find(policy => policy.id === value);
-      
+
       if (selectedPolicy) {
-        form.setValue('cancellationPolicy', selectedPolicy.description + '. ' + selectedPolicy.penalty, { 
-          shouldValidate: true,
-          shouldDirty: true 
-        });
+        form.setValue(
+          'cancellationPolicy',
+          selectedPolicy.description + '. ' + selectedPolicy.penalty,
+          {
+            shouldValidate: true,
+            shouldDirty: true,
+          }
+        );
       }
     }
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 mb-6">
         <FileText className="h-5 w-5 text-muted-foreground" />
         <h2 className="text-xl font-semibold">Business Policies</h2>
       </div>
-      
+
       {/* Cancellation Policy */}
       <Card>
         <CardHeader>
           <CardTitle>Cancellation Policy</CardTitle>
-          <CardDescription>
-            Set your cancellation and refund policy for bookings
-          </CardDescription>
+          <CardDescription>Set your cancellation and refund policy for bookings</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-4">
             <FormLabel>Select a Cancellation Policy</FormLabel>
-            <RadioGroup 
+            <RadioGroup
               value={cancellationPolicy}
               onValueChange={handleCancellationPolicyChange}
               className="space-y-4"
             >
-              {CANCELLATION_POLICIES.map((policy) => (
+              {CANCELLATION_POLICIES.map(policy => (
                 <div key={policy.id} className="flex items-start space-x-2">
                   <RadioGroupItem value={policy.id} id={`policy-${policy.id}`} className="mt-1" />
                   <div className="grid gap-1.5">
@@ -112,14 +114,15 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
                       {policy.name}
                     </label>
                     <p className="text-xs text-muted-foreground">
-                      {policy.description}{policy.penalty ? `. ${policy.penalty}.` : ''}
+                      {policy.description}
+                      {policy.penalty ? `. ${policy.penalty}.` : ''}
                     </p>
                   </div>
                 </div>
               ))}
             </RadioGroup>
           </div>
-          
+
           {cancellationPolicy === 'custom' && (
             <FormField
               control={form.control}
@@ -135,9 +138,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
                       rows={5}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Be clear about refund conditions and deadlines
-                  </FormDescription>
+                  <FormDescription>Be clear about refund conditions and deadlines</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -145,7 +146,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
           )}
         </CardContent>
       </Card>
-      
+
       {/* Late Arrival Policy */}
       <Card>
         <CardHeader>
@@ -156,12 +157,12 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
                 Define your policy for clients who arrive late to appointments
               </CardDescription>
             </div>
-            <Switch 
+            <Switch
               checked={hasLatePolicy}
-              onCheckedChange={(checked) => {
+              onCheckedChange={checked => {
                 setHasLatePolicy(checked);
                 form.setValue('hasLateArrivalPolicy', checked, { shouldValidate: true });
-                
+
                 if (!checked) {
                   form.setValue('lateArrivalPolicy', '', { shouldValidate: true });
                   form.setValue('lateArrivalGracePeriod', 0, { shouldValidate: true });
@@ -170,7 +171,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
             />
           </div>
         </CardHeader>
-        
+
         {hasLatePolicy && (
           <CardContent className="space-y-6">
             <FormField
@@ -184,7 +185,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
                       <Input
                         type="number"
                         {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value || '0', 10))}
+                        onChange={e => field.onChange(parseInt(e.target.value || '0', 10))}
                         min={0}
                         max={60}
                         className="w-20"
@@ -199,7 +200,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="lateArrivalPolicy"
@@ -215,7 +216,8 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
                     />
                   </FormControl>
                   <FormDescription>
-                    Examples: "Services will be shortened to fit the remaining time" or "Appointment may be rescheduled at our discretion"
+                    Examples: "Services will be shortened to fit the remaining time" or "Appointment
+                    may be rescheduled at our discretion"
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -224,14 +226,12 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
           </CardContent>
         )}
       </Card>
-      
+
       {/* Additional Policies */}
       <Card>
         <CardHeader>
           <CardTitle>Additional Policies</CardTitle>
-          <CardDescription>
-            Add any other policies or rules for your business
-          </CardDescription>
+          <CardDescription>Add any other policies or rules for your business</CardDescription>
         </CardHeader>
         <CardContent>
           <FormField
@@ -248,7 +248,8 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
                   />
                 </FormControl>
                 <FormDescription>
-                  Examples: child policies, health requirements, dress code, COVID-19 precautions, etc.
+                  Examples: child policies, health requirements, dress code, COVID-19 precautions,
+                  etc.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -256,7 +257,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
           />
         </CardContent>
       </Card>
-      
+
       {/* Policy Display Settings */}
       <Card>
         <CardHeader>
@@ -273,31 +274,33 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
                 Customers must check a box to confirm they've read your policies
               </p>
             </div>
-            <Switch 
+            <Switch
               checked={form.watch('requirePolicyConfirmation') || false}
-              onCheckedChange={(checked) => {
+              onCheckedChange={checked => {
                 form.setValue('requirePolicyConfirmation', checked, { shouldValidate: true });
               }}
             />
           </div>
-          
+
           <div className="flex items-center justify-between">
             <div>
-              <FormLabel className="text-sm font-medium">Include Policies in Booking Confirmations</FormLabel>
+              <FormLabel className="text-sm font-medium">
+                Include Policies in Booking Confirmations
+              </FormLabel>
               <p className="text-xs text-muted-foreground">
                 Your policies will be included in booking confirmation emails
               </p>
             </div>
-            <Switch 
+            <Switch
               checked={form.watch('includePoliciesInEmails') || false}
-              onCheckedChange={(checked) => {
+              onCheckedChange={checked => {
                 form.setValue('includePoliciesInEmails', checked, { shouldValidate: true });
               }}
             />
           </div>
         </CardContent>
       </Card>
-      
+
       {/* Help Text */}
       <div className="bg-blue-50 border border-blue-200 rounded-md p-4 text-blue-700">
         <div className="flex space-x-3">
@@ -305,12 +308,13 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
           <div>
             <h4 className="text-sm font-medium text-blue-800 mb-1">Why policies matter</h4>
             <p className="text-sm">
-              Clear policies help set expectations with your clients, reduce no-shows, and protect your business. 
-              Well-defined policies show professionalism and can reduce misunderstandings.
+              Clear policies help set expectations with your clients, reduce no-shows, and protect
+              your business. Well-defined policies show professionalism and can reduce
+              misunderstandings.
             </p>
           </div>
         </div>
       </div>
     </div>
   );
-} 
+}

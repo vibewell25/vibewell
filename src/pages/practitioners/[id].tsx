@@ -84,4 +84,4 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       notFound: true,
     };
   }
-}; 
+};

@@ -49,14 +49,14 @@ export const AccessibleTooltip: React.FC<AccessibleTooltipProps> = ({
     top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
     right: 'left-full top-1/2 -translate-y-1/2 ml-2',
     bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
-    left: 'right-full top-1/2 -translate-y-1/2 mr-2'
+    left: 'right-full top-1/2 -translate-y-1/2 mr-2',
   };
 
   const arrowStyles = {
     top: 'bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rotate-45',
     right: 'left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 rotate-45',
     bottom: 'top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-45',
-    left: 'right-0 top-1/2 translate-x-1/2 -translate-y-1/2 rotate-45'
+    left: 'right-0 top-1/2 translate-x-1/2 -translate-y-1/2 rotate-45',
   };
 
   return (
@@ -75,7 +75,7 @@ export const AccessibleTooltip: React.FC<AccessibleTooltipProps> = ({
       }}
     >
       {children}
-      
+
       {(isVisible || isFocused) && (
         <div
           ref={tooltipRef}
@@ -99,4 +99,4 @@ export const AccessibleTooltip: React.FC<AccessibleTooltipProps> = ({
   );
 };
 
-export default AccessibleTooltip; 
+export default AccessibleTooltip;

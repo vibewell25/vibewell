@@ -20,11 +20,11 @@ interface PieChartProps {
   colors?: string[];
 }
 
-export default function PieChart({ 
-  data, 
-  dataKey, 
+export default function PieChart({
+  data,
+  dataKey,
   nameKey,
-  colors = ['#8884d8', '#82ca9d', '#ffc658'] 
+  colors = ['#8884d8', '#82ca9d', '#ffc658'],
 }: PieChartProps) {
   if (!data || data.length === 0) {
     return (
@@ -34,14 +34,14 @@ export default function PieChart({
     );
   }
 
-  const renderCustomizedLabel = ({ 
-    cx, 
-    cy, 
-    midAngle, 
-    innerRadius, 
-    outerRadius, 
-    percent, 
-    name 
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    name,
   }: any) => {
     const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius) * 0.6;
@@ -84,16 +84,16 @@ export default function PieChart({
             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
           ))}
         </Pie>
-        <Tooltip 
-          formatter={(value) => [`${value}`, 'Value']}
-          contentStyle={{ 
-            borderRadius: '8px', 
+        <Tooltip
+          formatter={value => [`${value}`, 'Value']}
+          contentStyle={{
+            borderRadius: '8px',
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-            border: 'none'
+            border: 'none',
           }}
         />
         <Legend layout="horizontal" verticalAlign="bottom" align="center" />
       </RechartsPieChart>
     </ResponsiveContainer>
   );
-} 
+}

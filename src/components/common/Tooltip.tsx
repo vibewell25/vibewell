@@ -40,14 +40,14 @@ export const Tooltip: React.FC<TooltipProps> = ({
               position === 'top'
                 ? 'bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2'
                 : position === 'right'
-                ? 'left-0 top-1/2 -translate-x-1/2 -translate-y-1/2'
-                : position === 'bottom'
-                ? 'top-0 left-1/2 -translate-x-1/2 -translate-y-1/2'
-                : 'right-0 top-1/2 translate-x-1/2 -translate-y-1/2'
+                  ? 'left-0 top-1/2 -translate-x-1/2 -translate-y-1/2'
+                  : position === 'bottom'
+                    ? 'top-0 left-1/2 -translate-x-1/2 -translate-y-1/2'
+                    : 'right-0 top-1/2 translate-x-1/2 -translate-y-1/2'
             }`}
           />
         </div>
       )}
     </div>
   );
-}; 
+};

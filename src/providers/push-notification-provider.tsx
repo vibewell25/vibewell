@@ -57,20 +57,17 @@ export const PushNotificationProvider: React.FC<{ children: React.ReactNode }> =
         messaging = getMessaging(firebaseApp);
 
         // Handle incoming messages when app is in foreground
-        onMessage(messaging, (payload) => {
+        onMessage(messaging, payload => {
           console.log('Message received in foreground:', payload);
           setLastNotification(payload);
-          
+
           // Show notification even when app is in foreground
           if (payload.notification) {
-            showNotification(
-              payload.notification.title || 'New notification',
-              {
-                body: payload.notification.body,
-                icon: '/images/notification-icon.png',
-                data: payload.data,
-              }
-            );
+            showNotification(payload.notification.title || 'New notification', {
+              body: payload.notification.body,
+              icon: '/images/notification-icon.png',
+              data: payload.data,
+            });
           }
         });
 
@@ -92,11 +89,11 @@ export const PushNotificationProvider: React.FC<{ children: React.ReactNode }> =
   const getTokenAndUpdate = async () => {
     try {
       if (!messaging) return;
-      
+
       const token = await getToken(messaging, {
         vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
       });
-      
+
       if (token) {
         setNotificationPermission(prev => ({ ...prev, token }));
         // Store the token in your database to send notifications later
@@ -130,8 +127,11 @@ export const PushNotificationProvider: React.FC<{ children: React.ReactNode }> =
     if (typeof window !== 'undefined' && 'Notification' in window) {
       try {
         const permission = await Notification.requestPermission();
-        setNotificationPermission(prev => ({ ...prev, permission: permission as 'default' | 'granted' | 'denied' }));
-        
+        setNotificationPermission(prev => ({
+          ...prev,
+          permission: permission as 'default' | 'granted' | 'denied',
+        }));
+
         if (permission === 'granted') {
           await getTokenAndUpdate();
         }
@@ -143,13 +143,17 @@ export const PushNotificationProvider: React.FC<{ children: React.ReactNode }> =
 
   // Show a notification
   const showNotification = (title: string, options: NotificationOptions = {}) => {
-    if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+    if (
+      typeof window !== 'undefined' &&
+      'Notification' in window &&
+      Notification.permission === 'granted'
+    ) {
       try {
         const notification = new Notification(title, {
           icon: '/images/notification-icon.png',
           ...options,
         });
-        
+
         notification.onclick = () => {
           window.focus();
           notification.close();
@@ -164,15 +168,15 @@ export const PushNotificationProvider: React.FC<{ children: React.ReactNode }> =
   const subscribeToTopic = async (topic: string) => {
     try {
       if (!notificationPermission.token) return;
-      
+
       await fetch('/api/notifications/subscribe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           token: notificationPermission.token,
-          topic 
+          topic,
         }),
       });
     } catch (error) {
@@ -184,15 +188,15 @@ export const PushNotificationProvider: React.FC<{ children: React.ReactNode }> =
   const unsubscribeFromTopic = async (topic: string) => {
     try {
       if (!notificationPermission.token) return;
-      
+
       await fetch('/api/notifications/unsubscribe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           token: notificationPermission.token,
-          topic 
+          topic,
         }),
       });
     } catch (error) {
@@ -201,14 +205,14 @@ export const PushNotificationProvider: React.FC<{ children: React.ReactNode }> =
   };
 
   return (
-    <NotificationContext.Provider 
-      value={{ 
-        notificationPermission, 
-        requestPermission, 
+    <NotificationContext.Provider
+      value={{
+        notificationPermission,
+        requestPermission,
         showNotification,
         subscribeToTopic,
         unsubscribeFromTopic,
-        lastNotification
+        lastNotification,
       }}
     >
       {children}
@@ -216,4 +220,4 @@ export const PushNotificationProvider: React.FC<{ children: React.ReactNode }> =
   );
 };
 
-export const usePushNotifications = () => useContext(NotificationContext); 
+export const usePushNotifications = () => useContext(NotificationContext);

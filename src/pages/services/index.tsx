@@ -15,8 +15,6 @@ import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { ServiceCard } from '../../components/BeautyServices/ServiceCard';
 import { BeautyServiceService } from '../../services/beautyService.service';
-;
-
 interface Category {
   id: string;
   name: string;
@@ -59,8 +57,9 @@ export default function ServicesPage({ services: initialServices, categories }: 
   const toast = useToast();
   const { isSignedIn } = useUser();
 
-  const filteredServices = services.filter((service) => {
-    const matchesSearch = service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  const filteredServices = services.filter(service => {
+    const matchesSearch =
+      service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       service.description?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = !selectedCategory || service.category.id === selectedCategory;
     return matchesSearch && matchesCategory;
@@ -97,15 +96,15 @@ export default function ServicesPage({ services: initialServices, categories }: 
           <Input
             placeholder="Search services..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
           />
           <Select
             placeholder="All Categories"
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={e => setSelectedCategory(e.target.value)}
             maxW="200px"
           >
-            {categories.map((category) => (
+            {categories.map(category => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>
@@ -116,25 +115,13 @@ export default function ServicesPage({ services: initialServices, categories }: 
 
       {filteredServices.length > 0 ? (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-          {filteredServices.map((service) => (
-            <ServiceCard
-              key={service.id}
-              {...service}
-              onBookNow={handleBookNow}
-            />
+          {filteredServices.map(service => (
+            <ServiceCard key={service.id} {...service} onBookNow={handleBookNow} />
           ))}
         </SimpleGrid>
       ) : (
-        <Box
-          textAlign="center"
-          py={10}
-          px={6}
-          bg="gray.50"
-          borderRadius="lg"
-        >
-          <Text color="gray.600">
-            No services found matching your criteria
-          </Text>
+        <Box textAlign="center" py={10} px={6} bg="gray.50" borderRadius="lg">
+          <Text color="gray.600">No services found matching your criteria</Text>
           <Button
             mt={4}
             colorScheme="blue"
@@ -176,4 +163,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       },
     };
   }
-}; 
+};

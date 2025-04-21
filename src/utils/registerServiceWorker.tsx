@@ -8,7 +8,7 @@ export enum ServiceWorkerStatus {
   REGISTERED = 'registered',
   UPDATED = 'updated',
   ERROR = 'error',
-  UNSUPPORTED = 'unsupported'
+  UNSUPPORTED = 'unsupported',
 }
 
 // Event types for service worker status changes
@@ -17,7 +17,7 @@ export enum ServiceWorkerEvent {
   UPDATE_FOUND = 'update_found',
   UPDATE_READY = 'update_ready',
   OFFLINE_READY = 'offline_ready',
-  ERROR = 'error'
+  ERROR = 'error',
 }
 
 // Interface for registration options
@@ -88,9 +88,7 @@ class ServiceWorkerRegistrationTracker {
    * Dispatch an event
    */
   private dispatchEvent(event: ServiceWorkerEvent, detail?: any): void {
-    this.eventTarget.dispatchEvent(
-      new CustomEvent(event, { detail })
-    );
+    this.eventTarget.dispatchEvent(new CustomEvent(event, { detail }));
   }
 
   /**
@@ -110,13 +108,13 @@ class ServiceWorkerRegistrationTracker {
       const error = new Error('Service workers are not supported in this browser');
       this.registrationStatus = {
         status: ServiceWorkerStatus.UNSUPPORTED,
-        error
+        error,
       };
-      
+
       if (options.onError) {
         options.onError(error);
       }
-      
+
       return Promise.reject(error);
     }
 
@@ -132,7 +130,7 @@ class ServiceWorkerRegistrationTracker {
           this.registrationStatus = {
             status: ServiceWorkerStatus.REGISTERED,
             registration,
-            updateAvailable: false
+            updateAvailable: false,
           };
 
           // Set up update handling
@@ -154,7 +152,7 @@ class ServiceWorkerRegistrationTracker {
           // Log the successful registration
           logEvent('service_worker_registered', {
             timestamp: Date.now(),
-            scope: registration.scope
+            scope: registration.scope,
           });
 
           resolve(registration);
@@ -163,7 +161,7 @@ class ServiceWorkerRegistrationTracker {
           // Update status
           this.registrationStatus = {
             status: ServiceWorkerStatus.ERROR,
-            error
+            error,
           };
 
           // Reset registration promise
@@ -180,7 +178,7 @@ class ServiceWorkerRegistrationTracker {
           // Log the error
           logEvent('service_worker_error', {
             timestamp: Date.now(),
-            error: error.message
+            error: error.message,
           });
 
           reject(error);
@@ -201,28 +199,28 @@ class ServiceWorkerRegistrationTracker {
     registration.addEventListener('updatefound', () => {
       // Get the installing service worker
       const installingWorker = registration.installing;
-      
+
       if (installingWorker) {
         installingWorker.addEventListener('statechange', () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
               // New update available
               this.registrationStatus.updateAvailable = true;
-              
+
               // Call update ready callback
               if (options.onUpdateReady) {
                 options.onUpdateReady(registration);
               }
-              
+
               // Dispatch event
               this.dispatchEvent(ServiceWorkerEvent.UPDATE_READY, { registration });
-              
+
               // Log the update
               logEvent('service_worker_update_ready', {
                 timestamp: Date.now(),
-                scope: registration.scope
+                scope: registration.scope,
               });
-              
+
               // Prompt for update if configured
               if (options.immediatelyPromptForUpdate) {
                 this.promptForUpdate();
@@ -232,32 +230,32 @@ class ServiceWorkerRegistrationTracker {
               if (options.onOfflineReady) {
                 options.onOfflineReady();
               }
-              
+
               // Dispatch event
               this.dispatchEvent(ServiceWorkerEvent.OFFLINE_READY);
-              
+
               // Log the installation
               logEvent('service_worker_offline_ready', {
                 timestamp: Date.now(),
-                scope: registration.scope
+                scope: registration.scope,
               });
             }
           }
         });
       }
-      
+
       // Call update found callback
       if (options.onUpdateFound) {
         options.onUpdateFound(registration);
       }
-      
+
       // Dispatch event
       this.dispatchEvent(ServiceWorkerEvent.UPDATE_FOUND, { registration });
-      
+
       // Log the update found
       logEvent('service_worker_update_found', {
         timestamp: Date.now(),
-        scope: registration.scope
+        scope: registration.scope,
       });
     });
   }
@@ -273,11 +271,11 @@ class ServiceWorkerRegistrationTracker {
     registration.update().catch(error => {
       console.error('Error checking for service worker updates:', error);
     });
-    
+
     // Log active service worker
     logEvent('service_worker_already_active', {
       timestamp: Date.now(),
-      scope: registration.scope
+      scope: registration.scope,
     });
   }
 
@@ -286,7 +284,7 @@ class ServiceWorkerRegistrationTracker {
    */
   public promptForUpdate(): void {
     const registration = this.registrationStatus.registration;
-    
+
     if (registration && this.registrationStatus.updateAvailable) {
       // Ask the user if they would like to reload to update
       if (window.confirm('A new version of this application is available. Reload to update?')) {
@@ -295,7 +293,7 @@ class ServiceWorkerRegistrationTracker {
           // Send message to service worker to skip waiting
           registration.waiting.postMessage({ type: 'SKIP_WAITING' });
         }
-        
+
         // Reload the page
         window.location.reload();
       }
@@ -307,12 +305,13 @@ class ServiceWorkerRegistrationTracker {
    */
   public checkForUpdates(): Promise<boolean> {
     const registration = this.registrationStatus.registration;
-    
+
     if (!registration) {
       return Promise.resolve(false);
     }
-    
-    return registration.update()
+
+    return registration
+      .update()
       .then(() => this.registrationStatus.updateAvailable || false)
       .catch(error => {
         console.error('Error checking for updates:', error);
@@ -324,10 +323,12 @@ class ServiceWorkerRegistrationTracker {
    * Unregister all service workers
    */
   public unregisterAll(): Promise<boolean> {
-    return navigator.serviceWorker.getRegistrations()
+    return navigator.serviceWorker
+      .getRegistrations()
       .then(registrations => {
-        return Promise.all(registrations.map(registration => registration.unregister()))
-          .then(results => results.every(Boolean));
+        return Promise.all(registrations.map(registration => registration.unregister())).then(
+          results => results.every(Boolean)
+        );
       })
       .catch(error => {
         console.error('Error unregistering service workers:', error);
@@ -412,7 +413,7 @@ export default {
   addEventListener: addServiceWorkerEventListener,
   removeEventListener: removeServiceWorkerEventListener,
   ServiceWorkerStatus,
-  ServiceWorkerEvent
+  ServiceWorkerEvent,
 };
 
 // This is to be used in _app.js or similar entry point
@@ -427,4 +428,4 @@ declare global {
   interface Window {
     workbox: any;
   }
-} 
+}

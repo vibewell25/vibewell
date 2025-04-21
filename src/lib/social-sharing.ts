@@ -110,14 +110,14 @@ export class SocialSharingService {
         this.shareToFacebook(options),
         this.shareToTwitter(options),
         this.shareToLinkedIn(options),
-        this.shareToWhatsApp(options)
+        this.shareToWhatsApp(options),
       ]);
 
       return {
         facebook,
         twitter,
         linkedin,
-        whatsapp
+        whatsapp,
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -129,12 +129,12 @@ export class SocialSharingService {
 
 export const socialSharingService = new SocialSharingService({
   facebook: {
-    appId: process.env.FACEBOOK_APP_ID || ''
+    appId: process.env.FACEBOOK_APP_ID || '',
   },
   twitter: {
-    handle: process.env.TWITTER_HANDLE || ''
+    handle: process.env.TWITTER_HANDLE || '',
   },
   instagram: {
-    username: process.env.INSTAGRAM_USERNAME || ''
-  }
-}); 
+    username: process.env.INSTAGRAM_USERNAME || '',
+  },
+});

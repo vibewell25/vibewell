@@ -1,6 +1,6 @@
 /**
  * WebXR Compatibility Utility
- * 
+ *
  * This module provides functions for detecting WebXR support and fallbacks
  * for browsers that don't support AR features.
  */
@@ -9,7 +9,7 @@
 export enum XRMode {
   AR = 'ar',
   VR = 'vr',
-  FALLBACK = 'fallback' // For non-XR browsing
+  FALLBACK = 'fallback', // For non-XR browsing
 }
 
 // Different fallback experiences
@@ -17,7 +17,7 @@ export enum XRFallbackType {
   IMAGE_ONLY = 'image-only', // Show static images instead
   VIDEO = 'video', // Show video/360 experience
   MODEL_VIEWER = '3d-model-viewer', // Use <model-viewer> element
-  SCENE_VIEWER = 'scene-viewer' // Use Google Scene Viewer
+  SCENE_VIEWER = 'scene-viewer', // Use Google Scene Viewer
 }
 
 // Browser compatibility information
@@ -47,30 +47,30 @@ export interface WebXRFeatures {
 export async function detectXRSupport(): Promise<XRCompatibilityInfo> {
   const navigator = window.navigator;
   const userAgent = navigator.userAgent.toLowerCase();
-  
+
   // Check device type
   const isMobile = /mobile|android|iphone|ipad|ipod/i.test(userAgent);
   const isIOS = /iphone|ipad|ipod/i.test(userAgent);
   const isAndroid = /android/i.test(userAgent);
-  
+
   // Detect browser
   const isChrome = /chrome|chromium|crios/i.test(userAgent) && !/edg|edge/i.test(userAgent);
   const isFirefox = /firefox|fxios/i.test(userAgent);
   const isSafari = /safari/i.test(userAgent) && !/chrome|chromium|crios/i.test(userAgent);
   const isEdge = /edg|edge/i.test(userAgent);
-  
+
   let browser = 'unknown';
   if (isChrome) browser = 'chrome';
   else if (isFirefox) browser = 'firefox';
   else if (isSafari) browser = 'safari';
   else if (isEdge) browser = 'edge';
-  
+
   // Check for WebXR API
   const hasWebXR = 'xr' in navigator;
-  
+
   // Check for gyroscope (important for orientation in AR/VR)
   const hasGyroscope = await checkGyroscopeSupport();
-  
+
   // Initialize default compatibility info
   const compatibilityInfo: XRCompatibilityInfo = {
     arSupported: false,
@@ -81,18 +81,18 @@ export async function detectXRSupport(): Promise<XRCompatibilityInfo> {
     isMobile,
     isIOS,
     isAndroid,
-    hasGyroscope
+    hasGyroscope,
   };
-  
+
   // Test for AR and VR session support
   if (hasWebXR) {
     try {
       // Check AR support
       compatibilityInfo.arSupported = await checkARSupport();
-      
+
       // Check VR support
       compatibilityInfo.vrSupported = await checkVRSupport();
-      
+
       // Determine recommended mode
       if (compatibilityInfo.arSupported) {
         compatibilityInfo.recommendedMode = XRMode.AR;
@@ -103,12 +103,14 @@ export async function detectXRSupport(): Promise<XRCompatibilityInfo> {
       console.error('Error checking XR support:', error);
     }
   }
-  
+
   // Determine best fallback type if needed
   if (compatibilityInfo.recommendedMode === XRMode.FALLBACK) {
     // On iOS, prefer Scene Viewer
     if (isIOS) {
-      compatibilityInfo.fallbackType = hasGyroscope ? XRFallbackType.MODEL_VIEWER : XRFallbackType.IMAGE_ONLY;
+      compatibilityInfo.fallbackType = hasGyroscope
+        ? XRFallbackType.MODEL_VIEWER
+        : XRFallbackType.IMAGE_ONLY;
     }
     // On Android, prefer Scene Viewer
     else if (isAndroid) {
@@ -123,7 +125,7 @@ export async function detectXRSupport(): Promise<XRCompatibilityInfo> {
       compatibilityInfo.fallbackType = XRFallbackType.VIDEO;
     }
   }
-  
+
   return compatibilityInfo;
 }
 
@@ -134,7 +136,7 @@ async function checkARSupport(): Promise<boolean> {
   if (!('xr' in navigator)) {
     return false;
   }
-  
+
   try {
     // @ts-expect-error - Some browsers may not have isSessionSupported method
     return await navigator.xr.isSessionSupported('immersive-ar');
@@ -151,7 +153,7 @@ async function checkVRSupport(): Promise<boolean> {
   if (!('xr' in navigator)) {
     return false;
   }
-  
+
   try {
     // @ts-expect-error - Some browsers may not have isSessionSupported method
     return await navigator.xr.isSessionSupported('immersive-vr');
@@ -168,10 +170,10 @@ async function checkGyroscopeSupport(): Promise<boolean> {
   if (!window.DeviceMotionEvent) {
     return false;
   }
-  
+
   // Try to request device motion permission on iOS
   if (
-    typeof DeviceMotionEvent !== 'undefined' && 
+    typeof DeviceMotionEvent !== 'undefined' &&
     typeof (DeviceMotionEvent as any).requestPermission === 'function'
   ) {
     try {
@@ -183,7 +185,7 @@ async function checkGyroscopeSupport(): Promise<boolean> {
       return false;
     }
   }
-  
+
   // For other browsers, assume gyroscope exists
   // Better detection would require actual device motion events
   return true;
@@ -203,7 +205,7 @@ export function getCompatible3DModelUrl(
     // Use synchronous check for immediate result (less accurate)
     const isMobile = /mobile|android|iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase());
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase());
-    
+
     // Basic compatibility info
     info = {
       arSupported: false,
@@ -214,10 +216,10 @@ export function getCompatible3DModelUrl(
       isMobile,
       isIOS,
       isAndroid: /android/i.test(navigator.userAgent.toLowerCase()),
-      hasGyroscope: false
+      hasGyroscope: false,
     };
   }
-  
+
   // Return appropriate URL based on platform
   if (info.isIOS) {
     return usdzUrl || glbUrl;
@@ -244,7 +246,7 @@ export function createARLaunchLink(
     const userAgent = navigator.userAgent.toLowerCase();
     const isIOS = /iphone|ipad|ipod/i.test(userAgent);
     const isAndroid = /android/i.test(userAgent);
-    
+
     // Basic compatibility info
     info = {
       arSupported: false,
@@ -255,26 +257,26 @@ export function createARLaunchLink(
       isMobile: isIOS || isAndroid,
       isIOS,
       isAndroid,
-      hasGyroscope: false
+      hasGyroscope: false,
     };
   }
-  
+
   // For iOS devices, use AR Quick Look
   if (info.isIOS) {
     return usdzUrl;
   }
-  
+
   // For Android devices, use Scene Viewer
   if (info.isAndroid) {
     // Create Scene Viewer URL with fallback
     return `intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent(glbUrl)}&mode=ar_preferred#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(fallbackUrl)};end;`;
   }
-  
+
   // For WebXR supported browsers, return the GLB URL
   if (info.arSupported) {
     return glbUrl;
   }
-  
+
   // Fallback for unsupported platforms
   return fallbackUrl;
 }
@@ -293,7 +295,7 @@ export function getARCompatibleComponent(
     const userAgent = navigator.userAgent.toLowerCase();
     const isIOS = /iphone|ipad|ipod/i.test(userAgent);
     const isAndroid = /android/i.test(userAgent);
-    
+
     // Basic compatibility info
     info = {
       arSupported: 'xr' in navigator,
@@ -304,18 +306,18 @@ export function getARCompatibleComponent(
       isMobile: isIOS || isAndroid,
       isIOS,
       isAndroid,
-      hasGyroscope: false
+      hasGyroscope: false,
     };
   }
-  
+
   // Return appropriate component based on compatibility
   if (info.arSupported) {
     return {
       component: 'WebXRViewer',
       props: {
         modelUrl,
-        fallbackImageUrl
-      }
+        fallbackImageUrl,
+      },
     };
   } else if (info.fallbackType === XRFallbackType.MODEL_VIEWER) {
     return {
@@ -324,16 +326,16 @@ export function getARCompatibleComponent(
         src: modelUrl,
         fallbackImageUrl,
         ar: false,
-        autoRotate: true
-      }
+        autoRotate: true,
+      },
     };
   } else {
     return {
       component: 'FallbackImage',
       props: {
         src: fallbackImageUrl,
-        alt: '3D model fallback image'
-      }
+        alt: '3D model fallback image',
+      },
     };
   }
 }
@@ -345,7 +347,7 @@ export async function checkWebXRFeatures(): Promise<WebXRFeatures> {
       hasARSupport: false,
       hasVRSupport: false,
       hasHandTracking: false,
-      hasDepthSensing: false
+      hasDepthSensing: false,
     };
   }
 
@@ -354,7 +356,7 @@ export async function checkWebXRFeatures(): Promise<WebXRFeatures> {
     hasARSupport: false,
     hasVRSupport: false,
     hasHandTracking: false,
-    hasDepthSensing: false
+    hasDepthSensing: false,
   };
 
   try {
@@ -387,7 +389,7 @@ export async function checkWebXRFeatures(): Promise<WebXRFeatures> {
   if (features.hasARSupport) {
     try {
       const session = await navigator.xr.requestSession('immersive-ar', {
-        optionalFeatures: ['depth-sensing']
+        optionalFeatures: ['depth-sensing'],
       });
       features.hasDepthSensing = true;
       await session.end();
@@ -403,20 +405,21 @@ export function getFallbackExperience(features: WebXRFeatures) {
   if (!features.isSupported) {
     return {
       type: '2d',
-      message: 'Your browser does not support WebXR. Please try a compatible browser for the full experience.'
+      message:
+        'Your browser does not support WebXR. Please try a compatible browser for the full experience.',
     };
   }
 
   if (!features.hasARSupport && !features.hasVRSupport) {
     return {
       type: '2d',
-      message: 'Your device does not support AR or VR. Using fallback 2D experience.'
+      message: 'Your device does not support AR or VR. Using fallback 2D experience.',
     };
   }
 
   return {
     type: features.hasARSupport ? 'ar' : 'vr',
-    message: null
+    message: null,
   };
 }
 
@@ -426,7 +429,7 @@ export function useWebXR() {
     hasARSupport: false,
     hasVRSupport: false,
     hasHandTracking: false,
-    hasDepthSensing: false
+    hasDepthSensing: false,
   });
 
   const [isChecking, setIsChecking] = React.useState(true);
@@ -441,7 +444,7 @@ export function useWebXR() {
   return {
     features,
     isChecking,
-    fallback: getFallbackExperience(features)
+    fallback: getFallbackExperience(features),
   };
 }
 
@@ -451,5 +454,5 @@ export default {
   createARLaunchLink,
   getARCompatibleComponent,
   XRMode,
-  XRFallbackType
-}; 
+  XRFallbackType,
+};

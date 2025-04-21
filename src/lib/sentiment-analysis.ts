@@ -29,30 +29,32 @@ export class SentimentAnalysisService {
   async analyzeSentiment(text: string): Promise<SentimentResult> {
     try {
       const response = await this.openai.createCompletion({
-        model: "gpt-3.5-turbo-instruct",
+        model: 'gpt-3.5-turbo-instruct',
         prompt: `Analyze the sentiment of the following review. Consider the overall sentiment and specific aspects mentioned. Format the response as JSON with sentiment (positive/negative/neutral), score (-1 to 1), and aspects mentioned:\n\n${text}`,
         max_tokens: 150,
         temperature: 0.3,
       });
 
       const analysis = JSON.parse(response.data.choices[0].text || '{}');
-      
-      logger.info('Sentiment analysis completed', 'SentimentAnalysis', { text: text.substring(0, 50) + '...' });
-      
+
+      logger.info('Sentiment analysis completed', 'SentimentAnalysis', {
+        text: text.substring(0, 50) + '...',
+      });
+
       return {
         sentiment: analysis.sentiment || 'neutral',
         score: analysis.score || 0,
-        aspects: analysis.aspects || {}
+        aspects: analysis.aspects || {},
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       logger.error('Error analyzing sentiment', 'SentimentAnalysis', { error: errorMessage });
-      
+
       // Return neutral sentiment as fallback
       return {
         sentiment: 'neutral',
         score: 0,
-        aspects: {}
+        aspects: {},
       };
     }
   }
@@ -61,13 +63,11 @@ export class SentimentAnalysisService {
    * Analyze sentiment from multiple reviews and aggregate results
    */
   async analyzeMultipleReviews(reviews: string[]): Promise<{
-    overallSentiment: SentimentResult,
-    commonAspects: { [key: string]: number }
+    overallSentiment: SentimentResult;
+    commonAspects: { [key: string]: number };
   }> {
     try {
-      const results = await Promise.all(
-        reviews.map(review => this.analyzeSentiment(review))
-      );
+      const results = await Promise.all(reviews.map(review => this.analyzeSentiment(review)));
 
       // Calculate overall sentiment score
       const totalScore = results.reduce((sum, result) => sum + result.score, 0);
@@ -85,13 +85,15 @@ export class SentimentAnalysisService {
         overallSentiment: {
           sentiment: this.scoreToSentiment(averageScore),
           score: averageScore,
-          aspects: this.aggregateAspects(results)
+          aspects: this.aggregateAspects(results),
         },
-        commonAspects: aspectCounts
+        commonAspects: aspectCounts,
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      logger.error('Error analyzing multiple reviews', 'SentimentAnalysis', { error: errorMessage });
+      logger.error('Error analyzing multiple reviews', 'SentimentAnalysis', {
+        error: errorMessage,
+      });
       throw error;
     }
   }
@@ -111,7 +113,7 @@ export class SentimentAnalysisService {
           aspects[aspect] = {
             sentiment: 'neutral',
             score: 0,
-            keywords: []
+            keywords: [],
           };
         }
 
@@ -128,4 +130,4 @@ export class SentimentAnalysisService {
 
     return aspects;
   }
-} 
+}

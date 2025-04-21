@@ -19,10 +19,7 @@ export const Notification: React.FC<NotificationProps> = ({
     info: 'bg-blue-50 text-blue-800 border-blue-200',
   };
   return (
-    <div
-      className={`rounded-md p-4 border ${typeClasses[type]} ${className}`}
-      role="alert"
-    >
+    <div className={`rounded-md p-4 border ${typeClasses[type]} ${className}`} role="alert">
       <div className="flex items-center">
         <div className="flex-1">
           <p className="text-sm font-medium">{message}</p>
@@ -40,4 +37,4 @@ export const Notification: React.FC<NotificationProps> = ({
       </div>
     </div>
   );
-}; 
+};

@@ -11,10 +11,10 @@ export class SessionManager {
   private lastActivity: number;
   private refreshTimeout: NodeJS.Timeout | null = null;
   private inactivityTimeout: NodeJS.Timeout | null = null;
-  
+
   private config: SessionConfig = {
     maxInactivityTime: 30 * 60 * 1000, // 30 minutes
-    refreshThreshold: 5 * 60 * 1000,   // 5 minutes before expiry
+    refreshThreshold: 5 * 60 * 1000, // 5 minutes before expiry
   };
 
   private constructor() {
@@ -42,7 +42,11 @@ export class SessionManager {
     this.lastActivity = Date.now();
   }
 
-  startSessionMonitoring(session: Session | null, onTimeout: () => void, onRefreshNeeded: () => Promise<void>) {
+  startSessionMonitoring(
+    session: Session | null,
+    onTimeout: () => void,
+    onRefreshNeeded: () => Promise<void>
+  ) {
     if (!session) return;
 
     // Clear any existing timeouts
@@ -71,7 +75,7 @@ export class SessionManager {
       }, timeUntilRefresh);
     } else {
       // If the session is already close to expiring, refresh immediately
-      onRefreshNeeded().catch((error) => {
+      onRefreshNeeded().catch(error => {
         logger.error('Failed to refresh session', session.user?.id, { error });
         onTimeout();
       });
@@ -92,7 +96,7 @@ export class SessionManager {
   updateConfig(newConfig: Partial<SessionConfig>) {
     this.config = {
       ...this.config,
-      ...newConfig
+      ...newConfig,
     };
   }
 
@@ -101,4 +105,4 @@ export class SessionManager {
   }
 }
 
-export const sessionManager = SessionManager.getInstance(); 
+export const sessionManager = SessionManager.getInstance();

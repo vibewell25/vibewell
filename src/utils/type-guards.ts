@@ -1,10 +1,10 @@
 /**
  * Type Guard Utilities
- * 
+ *
  * This file provides type guard functions to handle type narrowing for nullable and
  * undefined values throughout the application. These functions help TypeScript
  * correctly infer types in conditional blocks and avoid common type errors.
- * 
+ *
  * NOTE: This file uses TypeScript generics without JSX content, so it has a .ts extension.
  * When writing TypeScript files with generics:
  * 1. If the file contains JSX/React elements, use the .tsx extension and be careful with generic syntax
@@ -73,7 +73,10 @@ export function isError(value: unknown): value is Error {
  * @param key - The key of the property to access
  * @returns The value of the property if it exists, otherwise undefined
  */
-export function safeAccess<T, K extends keyof T>(obj: T | null | undefined, key: K): T[K] | undefined {
+export function safeAccess<T, K extends keyof T>(
+  obj: T | null | undefined,
+  key: K
+): T[K] | undefined {
   return exists(obj) ? obj[key] : undefined;
 }
 
@@ -137,4 +140,4 @@ export function safeNumber(value: unknown, defaultValue = 0): number {
   if (value === null || value === undefined) return defaultValue;
   const num = Number(value);
   return isNaN(num) ? defaultValue : num;
-} 
+}

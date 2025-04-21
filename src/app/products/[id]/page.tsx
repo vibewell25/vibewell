@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Star, ShoppingCart, Share2, ArrowLeft, HeartIcon, Clock } from 'lucide-react';
 import { ProductService, Product } from '@/services/product-service';
 import { RecommendationService } from '@/services/recommendation-service';
@@ -23,27 +23,27 @@ export default function ProductDetailPage() {
   const [activeTab, setActiveTab] = useState<string>('details');
   const [inCart, setInCart] = useState(false);
   const [wishlisted, setWishlisted] = useState(false);
-  
+
   const productId = Array.isArray(id) ? id[0] : id;
   const productService = new ProductService();
   const recommendationService = new RecommendationService();
-  
+
   // Fetch product details
   useEffect(() => {
     const fetchProduct = async () => {
       if (!productId) return;
-      
+
       try {
         setLoading(true);
         const fetchedProduct = await productService.getProduct(productId);
-        
+
         if (!fetchedProduct) {
           setError('Product not found');
           return;
         }
-        
+
         setProduct(fetchedProduct);
-        
+
         // Track product view for logged in users
         if (user?.id) {
           try {
@@ -59,44 +59,44 @@ export default function ProductDetailPage() {
         setLoading(false);
       }
     };
-    
+
     fetchProduct();
   }, [productId, user?.id]);
-  
+
   // Add to cart handler
   const handleAddToCart = async () => {
     if (!product) return;
-    
+
     try {
       // Implement cart functionality here
       // await cartService.addItem(product.id, 1);
       setInCart(true);
-      
+
       // Show a toast notification or feedback
     } catch (err) {
       console.error('Error adding to cart:', err);
     }
   };
-  
+
   // Toggle wishlist handler
   const handleToggleWishlist = async () => {
     if (!product || !user?.id) return;
-    
+
     try {
       // Implement wishlist functionality here
       // await wishlistService.toggleItem(user.id, product.id);
       setWishlisted(!wishlisted);
-      
+
       // Show a toast notification or feedback
     } catch (err) {
       console.error('Error updating wishlist:', err);
     }
   };
-  
+
   // Share product handler
   const handleShare = async () => {
     if (!product) return;
-    
+
     try {
       if (navigator.share) {
         await navigator.share({
@@ -113,7 +113,7 @@ export default function ProductDetailPage() {
       console.error('Error sharing product:', err);
     }
   };
-  
+
   // Format price with currency symbol
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -121,7 +121,7 @@ export default function ProductDetailPage() {
       currency: 'USD',
     }).format(price);
   };
-  
+
   // Loading state
   if (loading) {
     return (
@@ -145,15 +145,13 @@ export default function ProductDetailPage() {
       </div>
     );
   }
-  
+
   // Error state
   if (error || !product) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
-          <h2 className="text-2xl font-semibold mb-2">
-            {error || 'Product not found'}
-          </h2>
+          <h2 className="text-2xl font-semibold mb-2">{error || 'Product not found'}</h2>
           <p className="mb-6 text-muted-foreground">
             Sorry, we couldn't find the product you're looking for.
           </p>
@@ -167,7 +165,7 @@ export default function ProductDetailPage() {
       </div>
     );
   }
-  
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Back button */}
@@ -179,7 +177,7 @@ export default function ProductDetailPage() {
           </Button>
         </Link>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Image */}
         <div className="relative">
@@ -198,7 +196,7 @@ export default function ProductDetailPage() {
               </div>
             )}
           </div>
-          
+
           {/* Product badges */}
           <div className="absolute top-3 left-3 flex flex-col gap-2">
             {product.trending && (
@@ -218,7 +216,7 @@ export default function ProductDetailPage() {
             )}
           </div>
         </div>
-        
+
         {/* Product Info */}
         <div className="space-y-6">
           <div>
@@ -226,7 +224,7 @@ export default function ProductDetailPage() {
               <h1 className="text-3xl font-bold">{product.name}</h1>
             </div>
             <p className="text-xl font-semibold mt-2">{formatPrice(product.price)}</p>
-            
+
             {/* Rating */}
             <div className="flex items-center mt-2">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -243,20 +241,20 @@ export default function ProductDetailPage() {
                 ({product.review_count} reviews)
               </span>
             </div>
-            
+
             {/* Availability */}
             <div className="flex items-center mt-2">
               <Badge
                 variant={product.availability === 'in_stock' ? 'default' : 'secondary'}
                 className={product.availability === 'in_stock' ? 'bg-green-600' : ''}
               >
-                {product.availability === 'in_stock' 
+                {product.availability === 'in_stock'
                   ? 'In Stock'
-                  : product.availability === 'low_stock' 
-                    ? 'Limited Stock' 
+                  : product.availability === 'low_stock'
+                    ? 'Limited Stock'
                     : 'Out of Stock'}
               </Badge>
-              
+
               {product.availability === 'in_stock' && (
                 <span className="ml-2 flex items-center text-sm text-muted-foreground">
                   <Clock className="h-4 w-4 mr-1" />
@@ -265,7 +263,7 @@ export default function ProductDetailPage() {
               )}
             </div>
           </div>
-          
+
           {/* Quick details */}
           <div className="grid grid-cols-2 gap-3 mt-4">
             <div className="text-sm">
@@ -285,7 +283,7 @@ export default function ProductDetailPage() {
               <span className="font-medium">{product.type}</span>
             </div>
           </div>
-          
+
           {/* Product tags */}
           {product.tags && product.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
@@ -296,7 +294,7 @@ export default function ProductDetailPage() {
               ))}
             </div>
           )}
-          
+
           {/* Action buttons */}
           <div className="flex items-center gap-3 mt-6">
             <Button
@@ -308,20 +306,13 @@ export default function ProductDetailPage() {
               <ShoppingCart className="mr-2 h-4 w-4" />
               {inCart ? 'Added to Cart' : 'Add to Cart'}
             </Button>
-            
+
             {product.ar_compatible && (
-              <Button
-                size="lg"
-                variant="secondary"
-                className="flex-1"
-                asChild
-              >
-                <Link href={`/try-on/${product.id}`}>
-                  Try On
-                </Link>
+              <Button size="lg" variant="secondary" className="flex-1" asChild>
+                <Link href={`/try-on/${product.id}`}>Try On</Link>
               </Button>
             )}
-            
+
             <Button
               size="icon"
               variant="outline"
@@ -330,14 +321,14 @@ export default function ProductDetailPage() {
             >
               <HeartIcon className={`h-5 w-5 ${wishlisted ? 'fill-current' : ''}`} />
             </Button>
-            
+
             <Button size="icon" variant="outline" onClick={handleShare}>
               <Share2 className="h-5 w-5" />
             </Button>
           </div>
         </div>
       </div>
-      
+
       {/* Product Tabs */}
       <div className="mt-12">
         <Tabs defaultValue="details" value={activeTab} onValueChange={setActiveTab}>
@@ -349,7 +340,7 @@ export default function ProductDetailPage() {
           <TabsContent value="details" className="mt-6">
             <div className="prose max-w-none">
               <p>{product.description}</p>
-              
+
               {/* Additional details could be added here */}
               <h3 className="text-xl font-semibold mt-6">Features</h3>
               <ul>
@@ -368,7 +359,7 @@ export default function ProductDetailPage() {
               </ul>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="specs" className="mt-6">
             <div className="bg-muted rounded-lg p-6">
               <h3 className="text-xl font-semibold mb-4">Technical Specifications</h3>
@@ -401,14 +392,14 @@ export default function ProductDetailPage() {
               </div>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="reviews" className="mt-6">
             <div>
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold">Customer Reviews</h3>
                 <Button>Write a Review</Button>
               </div>
-              
+
               {/* Reviews would be fetched and displayed here */}
               <div className="space-y-6">
                 <div className="border-b pb-6">
@@ -431,9 +422,12 @@ export default function ProductDetailPage() {
                       ))}
                     </div>
                   </div>
-                  <p>This product exceeded my expectations. The quality is outstanding and it looks great!</p>
+                  <p>
+                    This product exceeded my expectations. The quality is outstanding and it looks
+                    great!
+                  </p>
                 </div>
-                
+
                 <div className="border-b pb-6">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center">
@@ -454,17 +448,20 @@ export default function ProductDetailPage() {
                       ))}
                     </div>
                   </div>
-                  <p>Amazing product! Fast delivery and exactly as described. Would definitely recommend.</p>
+                  <p>
+                    Amazing product! Fast delivery and exactly as described. Would definitely
+                    recommend.
+                  </p>
                 </div>
               </div>
             </div>
           </TabsContent>
         </Tabs>
       </div>
-      
+
       {/* Product Recommendations */}
       <div className="mt-16">
-        <ProductRecommendations 
+        <ProductRecommendations
           productId={product.id}
           title="You May Also Like"
           showTabs={true}
@@ -473,4 +470,4 @@ export default function ProductDetailPage() {
       </div>
     </div>
   );
-} 
+}

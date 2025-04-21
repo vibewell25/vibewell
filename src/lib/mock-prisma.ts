@@ -18,4 +18,4 @@ const prisma = prismaBase as ExtendedPrismaClient;
 
 // Export the client
 export { prisma };
-export default prisma; 
+export default prisma;

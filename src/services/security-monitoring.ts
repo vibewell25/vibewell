@@ -12,7 +12,7 @@ interface SecurityEvent {
   userAgent: string;
 }
 
-type SecurityEventType = 
+type SecurityEventType =
   | 'failed_login'
   | 'successful_login'
   | 'password_reset'
@@ -69,7 +69,7 @@ export class SecurityMonitoringService {
           severity: event.severity,
           sourceIp: event.sourceIp,
           userAgent: event.userAgent,
-        }
+        },
       });
 
       // Store recent events in Redis for real-time analysis
@@ -145,10 +145,14 @@ export class SecurityMonitoringService {
     const currentSessions = Object.keys(sessions).length;
 
     // Store current session
-    await this.redis.hset(key, event.sourceIp, JSON.stringify({
-      timestamp: event.timestamp,
-      userAgent: event.userAgent,
-    }));
+    await this.redis.hset(
+      key,
+      event.sourceIp,
+      JSON.stringify({
+        timestamp: event.timestamp,
+        userAgent: event.userAgent,
+      })
+    );
 
     if (currentSessions >= this.config.maxConcurrentSessions) {
       await this.handleThreat({
@@ -216,10 +220,10 @@ export class SecurityMonitoringService {
     // Implement more sophisticated anomaly detection here
     // This could include machine learning models for behavior analysis
     // For now, we'll use a simple pattern matching approach
-    
+
     const key = `security:activity:${event.userId || event.sourceIp}:${event.eventType}`;
     const recentActivity = await this.redis.lrange(key, 0, 9);
-    
+
     if (recentActivity.length >= 10) {
       const patterns = this.analyzeActivityPatterns(recentActivity);
       if (patterns.suspicious) {
@@ -245,32 +249,34 @@ export class SecurityMonitoringService {
     details: Record<string, any>;
   } {
     // Parse JSON activities
-    const parsedActivities = activities.map(activity => {
-      try {
-        return JSON.parse(activity);
-      } catch (e) {
-        return null;
-      }
-    }).filter(Boolean);
-    
+    const parsedActivities = activities
+      .map(activity => {
+        try {
+          return JSON.parse(activity);
+        } catch (e) {
+          return null;
+        }
+      })
+      .filter(Boolean);
+
     // Simple pattern detection for demonstration
     const timeGaps: number[] = [];
     const ips = new Set<string>();
     const userAgents = new Set<string>();
-    
+
     for (let i = 1; i < parsedActivities.length; i++) {
       const current = new Date(parsedActivities[i].timestamp).getTime();
-      const previous = new Date(parsedActivities[i-1].timestamp).getTime();
+      const previous = new Date(parsedActivities[i - 1].timestamp).getTime();
       timeGaps.push(current - previous);
       ips.add(parsedActivities[i].sourceIp);
       userAgents.add(parsedActivities[i].userAgent);
     }
-    
+
     // Detect suspicious patterns
     const rapidActivities = timeGaps.filter(gap => gap < 1000).length;
     const multipleIps = ips.size > 3;
     const multipleUserAgents = userAgents.size > 3;
-    
+
     return {
       suspicious: rapidActivities > 5 || multipleIps || multipleUserAgents,
       details: {
@@ -302,17 +308,17 @@ export class SecurityMonitoringService {
           metadata: threat.metadata,
           timestamp: new Date(),
           status: 'detected',
-        }
+        },
       });
-      
+
       // Take defensive action based on threat severity
       await this.takeDefensiveAction(threat);
-      
+
       // Notify security team for high and critical threats
       if (threat.severity === 'high' || threat.severity === 'critical') {
         await this.notifySecurityTeam(threat);
       }
-      
+
       // Log threat detection
       logger.warn(`Security threat detected: ${threat.type}`, 'security', {
         threat,
@@ -338,21 +344,21 @@ export class SecurityMonitoringService {
         case 'critical':
           // Block IP immediately
           await this.redis.set(`security:blocked:ip:${threat.sourceIp}`, '1', 'EX', 86400); // 24 hours
-          
+
           // Lock user account if applicable
           if (threat.userId) {
             await prisma.user.update({
               where: { id: threat.userId },
-              data: { locked: true }
+              data: { locked: true },
             });
           }
           break;
-          
+
         case 'high':
           // Temporary IP block
           await this.redis.set(`security:blocked:ip:${threat.sourceIp}`, '1', 'EX', 3600); // 1 hour
           break;
-          
+
         case 'medium':
           // Add to watch list
           await this.redis.sadd('security:watchlist:ips', threat.sourceIp);
@@ -360,7 +366,7 @@ export class SecurityMonitoringService {
             await this.redis.sadd('security:watchlist:users', threat.userId);
           }
           break;
-          
+
         default:
           // Just monitor
           break;
@@ -387,14 +393,17 @@ export class SecurityMonitoringService {
         message: `Security alert: ${threat.severity.toUpperCase()} severity ${threat.type} detected`,
         threat,
       });
-      
+
       // Queue notification in Redis for the notification service to pick up
-      await this.redis.lpush('security:notifications', JSON.stringify({
-        channel: 'security_team',
-        message: `Security alert: ${threat.severity.toUpperCase()} severity ${threat.type} detected`,
-        data: threat,
-        timestamp: new Date().toISOString(),
-      }));
+      await this.redis.lpush(
+        'security:notifications',
+        JSON.stringify({
+          channel: 'security_team',
+          message: `Security alert: ${threat.severity.toUpperCase()} severity ${threat.type} detected`,
+          data: threat,
+          timestamp: new Date().toISOString(),
+        })
+      );
     } catch (error) {
       logger.error('Failed to notify security team', 'security', { error, threat });
     }
@@ -402,4 +411,4 @@ export class SecurityMonitoringService {
 }
 
 // Export singleton instance
-export const securityMonitoring = new SecurityMonitoringService(); 
+export const securityMonitoring = new SecurityMonitoringService();

@@ -2,15 +2,15 @@
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { ReactionType } from '@/components/post-reaction';
 import { Post, PostComment } from '@/components/post';
 import { UserAvatar } from '@/components/user-avatar';
 import { RecommendedConnections } from '@/components/recommended-connections';
 import { useRouter } from 'next/navigation';
-import { 
-  getPosts, 
-  createPost as apiCreatePost, 
+import {
+  getPosts,
+  createPost as apiCreatePost,
   addComment as apiAddComment,
   addReaction as apiAddReaction,
   removeReaction as apiRemoveReaction,
@@ -18,7 +18,7 @@ import {
   unsavePost as apiUnsavePost,
   getSavedPosts,
   getUserReactions,
-  Post as PostType
+  Post as PostType,
 } from '@/lib/api/social';
 import { getUpcomingEvents, registerForEvent, cancelEventRegistration } from '@/lib/api/events';
 import { Event } from '@/types/events';
@@ -42,7 +42,8 @@ const initialPosts: PostType[] = [
       name: 'Emma Thompson',
       avatar: '/avatar1.png',
     },
-    content: 'Just finished a 30-day meditation challenge! Feeling more centered and focused than ever. Anyone else tried this?',
+    content:
+      'Just finished a 30-day meditation challenge! Feeling more centered and focused than ever. Anyone else tried this?',
     image: null,
     createdAt: '2023-07-15T14:30:00.000Z',
     reactions: {
@@ -51,7 +52,7 @@ const initialPosts: PostType[] = [
       '😂': 0,
       '😮': 4,
       '😢': 0,
-      '😡': 0
+      '😡': 0,
     },
     comments: [
       {
@@ -61,7 +62,8 @@ const initialPosts: PostType[] = [
           name: 'David Chen',
           avatar: '/avatar2.png',
         },
-        content: 'That\'s amazing! I\'ve been meditating for about 2 weeks now. Any tips for beginners?',
+        content:
+          "That's amazing! I've been meditating for about 2 weeks now. Any tips for beginners?",
         createdAt: '2023-07-15T15:45:00.000Z',
       },
       {
@@ -82,12 +84,12 @@ export default function SocialPage() {
   const { user, loading } = useAuth();
   const [posts, setPosts] = useState<PostType[]>([]);
   const [newPost, setNewPost] = useState('');
-  const [userReactions, setUserReactions] = useState<{[key: number]: ReactionType | null}>({});
+  const [userReactions, setUserReactions] = useState<{ [key: number]: ReactionType | null }>({});
   const [savedPosts, setSavedPosts] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
-  const [sharedEvents, setSharedEvents] = useState<{[key: string]: boolean}>({});
+  const [sharedEvents, setSharedEvents] = useState<{ [key: string]: boolean }>({});
   const router = useRouter();
   // Fetch posts, user reactions, and saved posts on load
   useEffect(() => {
@@ -149,7 +151,7 @@ export default function SocialPage() {
           '😂': 0,
           '😮': 0,
           '😢': 0,
-          '😡': 0
+          '😡': 0,
         },
         comments: [],
       };
@@ -163,15 +165,17 @@ export default function SocialPage() {
       const newComment = await apiAddComment(user.id, postId, comment);
       if (newComment) {
         // Update posts with the new comment
-        setPosts(posts.map(post => {
-          if (post.id === postId) {
-            return {
-              ...post,
-              comments: [...post.comments, newComment],
-            };
-          }
-          return post;
-        }));
+        setPosts(
+          posts.map(post => {
+            if (post.id === postId) {
+              return {
+                ...post,
+                comments: [...post.comments, newComment],
+              };
+            }
+            return post;
+          })
+        );
       } else {
         throw new Error('Failed to add comment');
       }
@@ -188,15 +192,17 @@ export default function SocialPage() {
         content: comment,
         createdAt: new Date().toISOString(),
       };
-      setPosts(posts.map(post => {
-        if (post.id === postId) {
-          return {
-            ...post,
-            comments: [...post.comments, optimisticComment],
-          };
-        }
-        return post;
-      }));
+      setPosts(
+        posts.map(post => {
+          if (post.id === postId) {
+            return {
+              ...post,
+              comments: [...post.comments, optimisticComment],
+            };
+          }
+          return post;
+        })
+      );
     }
   };
   const handleReactionChange = async (postId: number, reactionType: ReactionType | null) => {
@@ -207,27 +213,29 @@ export default function SocialPage() {
     // Update user reactions state
     setUserReactions(prev => ({
       ...prev,
-      [postId]: reactionType
+      [postId]: reactionType,
     }));
     // Update posts with new reaction counts
-    setPosts(posts.map(post => {
-      if (post.id === postId) {
-        const updatedReactions = { ...post.reactions };
-        // If there was a previous reaction, decrement it
-        if (prevReaction) {
-          updatedReactions[prevReaction] = Math.max(0, (updatedReactions[prevReaction] || 0) - 1);
+    setPosts(
+      posts.map(post => {
+        if (post.id === postId) {
+          const updatedReactions = { ...post.reactions };
+          // If there was a previous reaction, decrement it
+          if (prevReaction) {
+            updatedReactions[prevReaction] = Math.max(0, (updatedReactions[prevReaction] || 0) - 1);
+          }
+          // If there's a new reaction, increment it
+          if (reactionType) {
+            updatedReactions[reactionType] = (updatedReactions[reactionType] || 0) + 1;
+          }
+          return {
+            ...post,
+            reactions: updatedReactions,
+          };
         }
-        // If there's a new reaction, increment it
-        if (reactionType) {
-          updatedReactions[reactionType] = (updatedReactions[reactionType] || 0) + 1;
-        }
-        return {
-          ...post,
-          reactions: updatedReactions
-        };
-      }
-      return post;
-    }));
+        return post;
+      })
+    );
     // Send to API
     try {
       let success;
@@ -244,15 +252,17 @@ export default function SocialPage() {
       // Revert changes on failure
       setUserReactions(prev => ({
         ...prev,
-        [postId]: prevReaction
+        [postId]: prevReaction,
       }));
       // Revert post reaction counts
-      setPosts(posts.map(post => {
-        if (post.id === postId) {
-          return post; // Revert to original post
-        }
-        return post;
-      }));
+      setPosts(
+        posts.map(post => {
+          if (post.id === postId) {
+            return post; // Revert to original post
+          }
+          return post;
+        })
+      );
     }
   };
   const toggleSave = async (postId: number) => {
@@ -292,12 +302,12 @@ export default function SocialPage() {
   };
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   };
   const handleEventShare = async (eventId: string) => {
@@ -322,7 +332,12 @@ export default function SocialPage() {
       if (isAttending) {
         await cancelEventRegistration(eventId, user.id);
       } else {
-        await registerForEvent(eventId, user.id, user.user_metadata?.full_name || 'Anonymous', user.user_metadata?.avatar_url);
+        await registerForEvent(
+          eventId,
+          user.id,
+          user.user_metadata?.full_name || 'Anonymous',
+          user.user_metadata?.avatar_url
+        );
       }
       setSharedEvents(prev => ({ ...prev, [eventId]: !isAttending }));
       // Refresh upcoming events
@@ -344,22 +359,22 @@ export default function SocialPage() {
               {user ? (
                 <div className="card mb-6">
                   <div className="p-4 flex gap-3">
-                    <UserAvatar 
-                      src={user.user_metadata?.avatar_url} 
-                      alt={user.user_metadata?.full_name || 'User'} 
-                      size="md" 
+                    <UserAvatar
+                      src={user.user_metadata?.avatar_url}
+                      alt={user.user_metadata?.full_name || 'User'}
+                      size="md"
                     />
                     <form className="flex-1" onSubmit={handlePostSubmit}>
-                      <textarea 
+                      <textarea
                         className="form-textarea w-full mb-3"
                         value={newPost}
-                        onChange={(e) => setNewPost(e.target.value)}
+                        onChange={e => setNewPost(e.target.value)}
                         placeholder="Share something with the community..."
                         rows={3}
                       />
                       <div className="flex justify-end">
-                        <button 
-                          type="submit" 
+                        <button
+                          type="submit"
                           className="btn-primary flex items-center gap-1"
                           disabled={!newPost.trim()}
                         >
@@ -380,7 +395,7 @@ export default function SocialPage() {
               )}
               {isLoading ? (
                 <div className="space-y-4">
-                  {[1, 2, 3].map((n) => (
+                  {[1, 2, 3].map(n => (
                     <div key={n} className="card p-4 animate-pulse">
                       <div className="flex items-center gap-3 mb-4">
                         <div className="h-10 w-10 bg-muted rounded-full"></div>
@@ -404,28 +419,26 @@ export default function SocialPage() {
               ) : error ? (
                 <div className="card p-4 text-center text-red-500">
                   <p>{error}</p>
-                  <button 
-                    className="btn-secondary mt-2"
-                    onClick={() => location.reload()}
-                  >
+                  <button className="btn-secondary mt-2" onClick={() => location.reload()}>
                     Retry
                   </button>
                 </div>
               ) : (
                 <div className="space-y-6">
-                  {posts.map((post) => (
+                  {posts.map(post => (
                     <Post
-                      key={post.id} 
+                      key={post.id}
                       post={post}
                       isSaved={savedPosts.includes(post.id)}
                       currentUserReaction={userReactions[post.id] || null}
-                      onReactionChange={(reaction) => handleReactionChange(post.id, reaction)}
+                      onReactionChange={reaction => handleReactionChange(post.id, reaction)}
                       onToggleSave={() => toggleSave(post.id)}
-                      onCommentSubmit={(comment) => handleCommentSubmit(post.id, comment)}
+                      onCommentSubmit={comment => handleCommentSubmit(post.id, comment)}
                       isAuthenticated={!!user}
                       formatDate={formatDate}
                       customActions={
-                        user && user.id !== post.user.id && (
+                        user &&
+                        user.id !== post.user.id && (
                           <button
                             onClick={() => initiateMessage(post.user.id, post.user.name)}
                             className="flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
@@ -441,7 +454,9 @@ export default function SocialPage() {
                   ))}
                   {posts.length === 0 && (
                     <div className="card p-6 text-center">
-                      <p className="text-muted-foreground">No posts to show. Be the first to share something!</p>
+                      <p className="text-muted-foreground">
+                        No posts to show. Be the first to share something!
+                      </p>
                     </div>
                   )}
                 </div>
@@ -455,7 +470,10 @@ export default function SocialPage() {
               <h2 className="text-lg font-semibold mb-4">Community</h2>
               <RecommendedConnections />
               <div className="mt-4">
-                <Link href="/messages" className="btn-secondary w-full justify-center flex items-center gap-2">
+                <Link
+                  href="/messages"
+                  className="btn-secondary w-full justify-center flex items-center gap-2"
+                >
                   <Send className="h-4 w-4" />
                   Messages
                 </Link>
@@ -510,4 +528,4 @@ export default function SocialPage() {
       </div>
     </Layout>
   );
-} 
+}

@@ -11,11 +11,11 @@ import Provider from '../models/Provider';
 export const getReviews = asyncHandler(async (req, res, next) => {
   if (req.params.providerId) {
     const reviews = await Review.find({ provider: req.params.providerId });
-    
+
     return res.status(200).json({
       success: true,
       count: reviews.length,
-      data: reviews
+      data: reviews,
     });
   } else {
     res.status(200).json(res.advancedResults);
@@ -28,7 +28,7 @@ export const getReviews = asyncHandler(async (req, res, next) => {
 export const getReview = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id).populate({
     path: 'provider',
-    select: 'name description'
+    select: 'name description',
   });
 
   if (!review) {
@@ -37,7 +37,7 @@ export const getReview = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: review
+    data: review,
   });
 });
 
@@ -60,7 +60,7 @@ export const addReview = asyncHandler(async (req, res, next) => {
     if (!booking) {
       return next(new ErrorResponse(`No booking with the id of ${req.body.booking}`, 404));
     }
-    
+
     // Verify that booking belongs to user submitting the review
     if (booking.customer.toString() !== req.user.id && req.user.role !== 'admin') {
       return next(new ErrorResponse(`Not authorized to add a review to this booking`, 401));
@@ -71,7 +71,7 @@ export const addReview = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({
     success: true,
-    data: review
+    data: review,
   });
 });
 
@@ -92,7 +92,7 @@ export const updateReview = asyncHandler(async (req, res, next) => {
 
   review = await Review.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
 
   // Trigger the static method to recalculate average rating
@@ -100,7 +100,7 @@ export const updateReview = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: review
+    data: review,
   });
 });
 
@@ -120,13 +120,13 @@ export const deleteReview = asyncHandler(async (req, res, next) => {
   }
 
   await review.remove();
-  
+
   // Trigger the static method to recalculate average rating
   await Review.getAvgRatingAndSave(review.provider);
 
   res.status(200).json({
     success: true,
-    data: {}
+    data: {},
   });
 });
 
@@ -149,14 +149,14 @@ export const addProviderResponse = asyncHandler(async (req, res, next) => {
   review.providerResponse = {
     text: req.body.text,
     createdAt: Date.now(),
-    updatedAt: Date.now()
+    updatedAt: Date.now(),
   };
 
   await review.save();
 
   res.status(200).json({
     success: true,
-    data: review
+    data: review,
   });
 });
 
@@ -172,12 +172,10 @@ export const markHelpful = asyncHandler(async (req, res, next) => {
 
   // Check if user already marked as helpful
   const alreadyMarked = review.helpful.users.includes(req.user.id);
-  
+
   if (alreadyMarked) {
     // Remove user from helpful list
-    review.helpful.users = review.helpful.users.filter(
-      userId => userId.toString() !== req.user.id
-    );
+    review.helpful.users = review.helpful.users.filter(userId => userId.toString() !== req.user.id);
     review.helpful.count = Math.max(0, review.helpful.count - 1);
   } else {
     // Add user to helpful list
@@ -191,8 +189,8 @@ export const markHelpful = asyncHandler(async (req, res, next) => {
     success: true,
     data: {
       count: review.helpful.count,
-      isMarked: !alreadyMarked
-    }
+      isMarked: !alreadyMarked,
+    },
   });
 });
 
@@ -211,7 +209,7 @@ export const reportReview = asyncHandler(async (req, res, next) => {
     isReported: true,
     reason: req.body.reason,
     reportedBy: req.user.id,
-    reportedAt: Date.now()
+    reportedAt: Date.now(),
   };
 
   // Change status to flagged for admin review
@@ -222,8 +220,8 @@ export const reportReview = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: {
-      message: 'Review has been reported and will be reviewed by our team'
-    }
+      message: 'Review has been reported and will be reviewed by our team',
+    },
   });
 });
 
@@ -251,7 +249,7 @@ export const moderateReview = asyncHandler(async (req, res, next) => {
     review.adminResponse = {
       text: req.body.adminResponse,
       createdAt: Date.now(),
-      updatedAt: Date.now()
+      updatedAt: Date.now(),
     };
   }
 
@@ -259,6 +257,6 @@ export const moderateReview = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: review
+    data: review,
   });
-}); 
+});

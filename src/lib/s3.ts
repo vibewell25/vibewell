@@ -81,17 +81,13 @@ export const deleteFile = async (key: string, bucket = defaultBucket) => {
 /**
  * Generate a unique key for S3 storage
  */
-export const generateS3Key = (
-  folder: string,
-  filename: string,
-  userId?: string
-) => {
+export const generateS3Key = (folder: string, filename: string, userId?: string) => {
   const timestamp = Date.now();
   const sanitizedFilename = filename.replace(/[^a-zA-Z0-9-.]/g, '_');
   const userPrefix = userId ? `${userId}/` : '';
-  
+
   return `${folder}/${userPrefix}${timestamp}-${sanitizedFilename}`;
 };
 
 // Export the S3 client for direct use
-export default s3Client; 
+export default s3Client;

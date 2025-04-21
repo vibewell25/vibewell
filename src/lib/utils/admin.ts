@@ -1,7 +1,5 @@
 import { prisma } from '@/lib/database/client';
 
-
-
 /**
  * Set a user's role in the profiles table
  * @param userId The user's UUID
@@ -15,17 +13,15 @@ export async function setUserRole(userId: string, role: 'user' | 'admin') {
       .select('id')
       .eq('id', userId)
       .single();
-    
+
     if (profileError || !profile) {
       // Profile doesn't exist, create one
-      const { error: insertError } = await supabase
-        .from('profiles')
-        .insert({
-          id: userId,
-          role,
-          updated_at: new Date().toISOString(),
-        });
-      
+      const { error: insertError } = await supabase.from('profiles').insert({
+        id: userId,
+        role,
+        updated_at: new Date().toISOString(),
+      });
+
       if (insertError) throw insertError;
     } else {
       // Profile exists, update it
@@ -36,10 +32,10 @@ export async function setUserRole(userId: string, role: 'user' | 'admin') {
           updated_at: new Date().toISOString(),
         })
         .eq('id', userId);
-      
+
       if (updateError) throw updateError;
     }
-    
+
     return { success: true };
   } catch (error) {
     console.error('Error setting user role:', error);
@@ -59,7 +55,7 @@ export async function getUserRole(userId: string): Promise<'user' | 'admin' | nu
       .select('role')
       .eq('id', userId)
       .single();
-    
+
     if (error || !data) return null;
     return data.role as 'user' | 'admin';
   } catch (error) {
@@ -91,18 +87,18 @@ export async function createFirstAdmin(userId: string) {
       .select('id')
       .eq('role', 'admin')
       .limit(1);
-    
+
     if (error) throw error;
-    
+
     // If no admins exist, make this user an admin
     if (!data || data.length === 0) {
       const result = await setUserRole(userId, 'admin');
       return { ...result, firstAdmin: true };
     }
-    
+
     return { success: false, message: 'Admins already exist' };
   } catch (error) {
     console.error('Error creating first admin:', error);
     return { success: false, error };
   }
-} 
+}

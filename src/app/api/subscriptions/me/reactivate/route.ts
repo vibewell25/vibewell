@@ -18,14 +18,11 @@ export async function POST() {
     // Get user with stripe customer ID
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { stripeCustomerId: true }
+      select: { stripeCustomerId: true },
     });
 
     if (!user?.stripeCustomerId) {
-      return NextResponse.json(
-        { error: 'No subscription found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'No subscription found' }, { status: 404 });
     }
 
     // Get subscriptions that are set to cancel
@@ -35,10 +32,7 @@ export async function POST() {
     });
 
     if (!subscriptions.data.length) {
-      return NextResponse.json(
-        { error: 'No subscription found to reactivate' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'No subscription found to reactivate' }, { status: 404 });
     }
 
     const subscription = subscriptions.data[0];
@@ -51,10 +45,9 @@ export async function POST() {
     }
 
     // Remove the cancellation schedule
-    const updatedSubscription = await stripe.subscriptions.update(
-      subscription.id,
-      { cancel_at_period_end: false }
-    );
+    const updatedSubscription = await stripe.subscriptions.update(subscription.id, {
+      cancel_at_period_end: false,
+    });
 
     const price = await stripe.prices.retrieve(subscription.items.data[0].price.id);
 
@@ -72,9 +65,6 @@ export async function POST() {
     });
   } catch (error) {
     console.error('Error reactivating subscription:', error);
-    return NextResponse.json(
-      { error: 'Failed to reactivate subscription' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to reactivate subscription' }, { status: 500 });
   }
-} 
+}

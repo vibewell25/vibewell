@@ -30,7 +30,7 @@ export class ARAssetOptimizer {
     // Initialize DRACO loader
     this.dracoLoader = new DRACOLoader();
     this.dracoLoader.setDecoderPath(this.DRACO_PATH);
-    
+
     // Initialize GLTF loader
     this.loader = new GLTFLoader();
     this.loader.setDRACOLoader(this.dracoLoader);
@@ -39,7 +39,7 @@ export class ARAssetOptimizer {
 
   static async optimizeAsset(url: string): Promise<OptimizationMetrics> {
     const startTime = performance.now();
-    
+
     try {
       // Check cache first
       const cached = await this.getCachedAsset(url);
@@ -52,7 +52,7 @@ export class ARAssetOptimizer {
       const originalSize = await this.getAssetSize(url);
 
       // Optimize geometries
-      gltf.scene.traverse((node) => {
+      gltf.scene.traverse(node => {
         if (node instanceof Mesh) {
           const geometry = node.geometry as BufferGeometry;
           const material = node.material as MeshStandardMaterial;
@@ -78,12 +78,12 @@ export class ARAssetOptimizer {
 
       // Measure optimized size
       const optimizedSize = this.calculateOptimizedSize(gltf);
-      
+
       const metrics: OptimizationMetrics = {
         originalSize,
         optimizedSize,
         compressionRatio: originalSize / optimizedSize,
-        loadTime: performance.now() - startTime
+        loadTime: performance.now() - startTime,
       };
 
       // Cache the optimized asset
@@ -100,9 +100,9 @@ export class ARAssetOptimizer {
     return new Promise((resolve, reject) => {
       this.loader.load(
         url,
-        (gltf) => resolve(gltf),
+        gltf => resolve(gltf),
         undefined,
-        (error) => reject(error)
+        error => reject(error)
       );
     });
   }
@@ -149,7 +149,7 @@ export class ARAssetOptimizer {
       url,
       lastOptimized: Date.now(),
       metrics,
-      hash: await this.generateAssetHash(url)
+      hash: await this.generateAssetHash(url),
     };
 
     await redisClient.set(
@@ -177,9 +177,9 @@ export class ARAssetOptimizer {
   }> {
     const keys = await redisClient.keys(`${this.CACHE_PREFIX}*`);
     const assets = await Promise.all(
-      keys.map(async (key) => {
+      keys.map(async key => {
         const data = await redisClient.get(key);
-        return data ? JSON.parse(data) as AssetMetadata : null;
+        return data ? (JSON.parse(data) as AssetMetadata) : null;
       })
     );
 
@@ -188,23 +188,20 @@ export class ARAssetOptimizer {
       (acc, asset) => acc + (asset.metrics.originalSize - asset.metrics.optimizedSize),
       0
     );
-    const avgCompression = validAssets.reduce(
-      (acc, asset) => acc + asset.metrics.compressionRatio,
-      0
-    ) / validAssets.length;
-    const avgLoadTime = validAssets.reduce(
-      (acc, asset) => acc + asset.metrics.loadTime,
-      0
-    ) / validAssets.length;
+    const avgCompression =
+      validAssets.reduce((acc, asset) => acc + asset.metrics.compressionRatio, 0) /
+      validAssets.length;
+    const avgLoadTime =
+      validAssets.reduce((acc, asset) => acc + asset.metrics.loadTime, 0) / validAssets.length;
 
     return {
       totalAssets: validAssets.length,
       totalSaved,
       averageCompressionRatio: avgCompression,
-      averageLoadTime: avgLoadTime
+      averageLoadTime: avgLoadTime,
     };
   }
 }
 
 // Initialize the optimizer
-ARAssetOptimizer.initialize(); 
+ARAssetOptimizer.initialize();

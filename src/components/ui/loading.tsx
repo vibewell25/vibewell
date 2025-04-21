@@ -21,4 +21,4 @@ export function Loading({ error, isLoading, pastDelay }: DynamicOptionsLoadingPr
   );
 }
 
-export default Loading; 
+export default Loading;

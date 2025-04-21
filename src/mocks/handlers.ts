@@ -1,59 +1,84 @@
-import { http, HttpResponse } from 'msw';
+import { rest } from 'msw';
 
 export const handlers = [
   // Auth endpoints
-  http.post('/api/auth/login', async ({ request }) => {
-    const body = await request.json();
-    if (body.email === 'user@example.com' && body.password === 'password') {
-      return HttpResponse.json({
-        success: true,
+  rest.post('/api/auth/login', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        token: 'mock-jwt-token',
         user: {
-          id: 'user-123',
-          email: 'user@example.com',
-          name: 'Test User'
-        }
-      });
-    }
-    return HttpResponse.json(
-      { error: 'Invalid credentials' },
-      { status: 401 }
+          id: '1',
+          email: 'test@example.com',
+          name: 'Test User',
+        },
+      })
     );
   }),
 
   // User endpoints
-  http.get('/api/users/:id', ({ params }) => {
-    return HttpResponse.json({
-      id: params.id,
-      name: 'Test User',
-      email: 'user@example.com'
-    });
+  rest.get('/api/users/me', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: '1',
+        email: 'test@example.com',
+        name: 'Test User',
+        preferences: {
+          theme: 'light',
+          language: 'en',
+          notifications: true,
+        },
+      })
+    );
   }),
 
-  // Appointments endpoints
-  http.get('/api/appointments', () => {
-    return HttpResponse.json([
-      {
-        id: 'apt-1',
-        date: '2024-03-20',
-        service: 'Haircut',
-        status: 'confirmed'
-      }
-    ]);
+  // Booking endpoints
+  rest.post('/api/bookings', (req, res, ctx) => {
+    return res(
+      ctx.status(201),
+      ctx.json({
+        id: '1',
+        userId: '1',
+        serviceId: '1',
+        date: '2024-03-20T10:00:00Z',
+        status: 'confirmed',
+      })
+    );
   }),
 
-  // Performance metrics endpoint
-  http.post('/api/metrics', async () => {
-    return HttpResponse.json({ success: true });
+  // Payment endpoints
+  rest.post('/api/payments', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: 'payment_123',
+        amount: 1000,
+        currency: 'USD',
+        status: 'succeeded',
+      })
+    );
   }),
 
-  // Fallback handler
-  http.get('*', ({ request }) => {
-    console.warn(`Unhandled GET request to ${request.url}`);
-    return HttpResponse.json({ error: 'Not Found' }, { status: 404 });
+  // Notification endpoints
+  rest.post('/api/notifications/register', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        success: true,
+        deviceId: 'device_123',
+      })
+    );
   }),
 
-  http.post('*', ({ request }) => {
-    console.warn(`Unhandled POST request to ${request.url}`);
-    return HttpResponse.json({ error: 'Not Found' }, { status: 404 });
-  })
-]; 
+  // Error handling example
+  rest.get('/api/error-test', (req, res, ctx) => {
+    return res(
+      ctx.status(500),
+      ctx.json({
+        error: 'Internal Server Error',
+        message: 'Something went wrong',
+      })
+    );
+  }),
+];

@@ -66,7 +66,7 @@ describe('EmailVerificationService', () => {
         data: { email_verified: true },
         error: null,
       });
-      
+
       (supabase.from as jest.Mock)().select().eq().single = singleMock;
 
       const result = await EmailVerificationService.isEmailVerified('user-123');
@@ -81,7 +81,7 @@ describe('EmailVerificationService', () => {
         data: { email_verified: false },
         error: null,
       });
-      
+
       (supabase.from as jest.Mock)().select().eq().single = singleMock;
 
       const result = await EmailVerificationService.isEmailVerified('user-123');
@@ -95,7 +95,7 @@ describe('EmailVerificationService', () => {
         data: null,
         error: { message: 'Test error' },
       });
-      
+
       (supabase.from as jest.Mock)().select().eq().single = singleMock;
 
       const result = await EmailVerificationService.isEmailVerified('user-123');
@@ -130,4 +130,4 @@ describe('EmailVerificationService', () => {
       expect(result).toEqual({ success: false });
     });
   });
-}); 
+});

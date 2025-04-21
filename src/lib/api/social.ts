@@ -44,7 +44,7 @@ function transformPost(post: any): Post {
       '😂': 0,
       '😮': 0,
       '😢': 0,
-      '😡': 0
+      '😡': 0,
     },
     comments: (post.comments || []).map((comment: any) => ({
       id: comment.id,
@@ -63,14 +63,16 @@ export async function getPosts(): Promise<Post[]> {
   try {
     const { data, error } = await supabase
       .from('posts')
-      .select(`
+      .select(
+        `
         *,
         user:profiles(*),
         comments:post_comments(
           *,
           user:profiles(*)
         )
-      `)
+      `
+      )
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -85,7 +87,11 @@ export async function getPosts(): Promise<Post[]> {
   }
 }
 
-export async function createPost(userId: string, content: string, imageUrl?: string): Promise<Post | null> {
+export async function createPost(
+  userId: string,
+  content: string,
+  imageUrl?: string
+): Promise<Post | null> {
   try {
     const { data, error } = await supabase
       .from('posts')
@@ -99,18 +105,20 @@ export async function createPost(userId: string, content: string, imageUrl?: str
           '😂': 0,
           '😮': 0,
           '😢': 0,
-          '😡': 0
+          '😡': 0,
         },
         created_at: new Date().toISOString(),
       })
-      .select(`
+      .select(
+        `
         *,
         user:profiles(*),
         comments:post_comments(
           *,
           user:profiles(*)
         )
-      `)
+      `
+      )
       .single();
 
     if (error) {
@@ -125,7 +133,11 @@ export async function createPost(userId: string, content: string, imageUrl?: str
   }
 }
 
-export async function addComment(userId: string, postId: number, content: string): Promise<PostComment | null> {
+export async function addComment(
+  userId: string,
+  postId: number,
+  content: string
+): Promise<PostComment | null> {
   try {
     const { data, error } = await supabase
       .from('post_comments')
@@ -135,10 +147,12 @@ export async function addComment(userId: string, postId: number, content: string
         content,
         created_at: new Date().toISOString(),
       })
-      .select(`
+      .select(
+        `
         *,
         user:profiles(*)
-      `)
+      `
+      )
       .single();
 
     if (error) {
@@ -162,7 +176,11 @@ export async function addComment(userId: string, postId: number, content: string
   }
 }
 
-export async function addReaction(userId: string, postId: number, reactionType: ReactionType): Promise<boolean> {
+export async function addReaction(
+  userId: string,
+  postId: number,
+  reactionType: ReactionType
+): Promise<boolean> {
   try {
     // First, get the current post to update its reactions
     const { data: post, error: postError } = await supabase
@@ -182,15 +200,15 @@ export async function addReaction(userId: string, postId: number, reactionType: 
 
     // Update reactions count
     const updatedReactions = { ...post.reactions };
-    
+
     // If user had a previous reaction, decrement it
     if (previousReaction) {
       updatedReactions[previousReaction] = Math.max(0, updatedReactions[previousReaction] - 1);
     }
-    
+
     // Increment the new reaction
     updatedReactions[reactionType] = (updatedReactions[reactionType] || 0) + 1;
-    
+
     // Update user reactions mapping
     const updatedUserReactions = { ...userReactions, [userId]: reactionType };
 
@@ -199,7 +217,7 @@ export async function addReaction(userId: string, postId: number, reactionType: 
       .from('posts')
       .update({
         reactions: updatedReactions,
-        user_reactions: updatedUserReactions
+        user_reactions: updatedUserReactions,
       })
       .eq('id', postId);
 
@@ -240,7 +258,7 @@ export async function removeReaction(userId: string, postId: number): Promise<bo
     // Update reactions count
     const updatedReactions = { ...post.reactions };
     updatedReactions[previousReaction] = Math.max(0, updatedReactions[previousReaction] - 1);
-    
+
     // Remove user from reactions mapping
     const updatedUserReactions = { ...userReactions };
     delete updatedUserReactions[userId];
@@ -250,7 +268,7 @@ export async function removeReaction(userId: string, postId: number): Promise<bo
       .from('posts')
       .update({
         reactions: updatedReactions,
-        user_reactions: updatedUserReactions
+        user_reactions: updatedUserReactions,
       })
       .eq('id', postId);
 
@@ -268,13 +286,11 @@ export async function removeReaction(userId: string, postId: number): Promise<bo
 
 export async function savePost(userId: string, postId: number): Promise<boolean> {
   try {
-    const { error } = await supabase
-      .from('saved_posts')
-      .insert({
-        user_id: userId,
-        post_id: postId,
-        saved_at: new Date().toISOString(),
-      });
+    const { error } = await supabase.from('saved_posts').insert({
+      user_id: userId,
+      post_id: postId,
+      saved_at: new Date().toISOString(),
+    });
 
     if (error) {
       console.error('Error saving post:', error);
@@ -340,7 +356,7 @@ export async function getUserReactions(userId: string): Promise<{ [key: number]:
     }
 
     const userReactions: { [key: number]: ReactionType } = {};
-    
+
     data.forEach(post => {
       if (post.user_reactions && post.user_reactions[userId]) {
         userReactions[post.id] = post.user_reactions[userId];
@@ -352,4 +368,4 @@ export async function getUserReactions(userId: string): Promise<{ [key: number]:
     console.error('Error in getUserReactions:', error);
     return {};
   }
-} 
+}

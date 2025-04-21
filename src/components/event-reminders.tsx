@@ -7,7 +7,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 interface EventRemindersProps {
   event: Event;
   onReminderChange?: (enabled: boolean, reminderTime: number) => void;
@@ -15,7 +21,8 @@ interface EventRemindersProps {
 export function EventReminders({ event, onReminderChange }: EventRemindersProps) {
   const [reminderEnabled, setReminderEnabled] = useState(false);
   const [reminderTime, setReminderTime] = useState(24); // Default to 24 hours before
-  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default');
+  const [notificationPermission, setNotificationPermission] =
+    useState<NotificationPermission>('default');
   useEffect(() => {
     // Check notification permission status
     if ('Notification' in window) {
@@ -57,10 +64,7 @@ export function EventReminders({ event, onReminderChange }: EventRemindersProps)
           <Icons.BellIcon className="h-5 w-5 text-primary" />
           <h3 className="text-lg font-semibold">Event Reminders</h3>
         </div>
-        <Switch
-          checked={reminderEnabled}
-          onCheckedChange={handleReminderToggle}
-        />
+        <Switch checked={reminderEnabled} onCheckedChange={handleReminderToggle} />
       </CardHeader>
       <CardContent>
         {reminderEnabled ? (
@@ -70,7 +74,7 @@ export function EventReminders({ event, onReminderChange }: EventRemindersProps)
               <Label htmlFor="reminder-time">Remind me</Label>
               <Select
                 value={reminderTime.toString()}
-                onValueChange={(value) => {
+                onValueChange={value => {
                   const time = parseInt(value);
                   setReminderTime(time);
                   onReminderChange?.(true, time);
@@ -100,4 +104,4 @@ export function EventReminders({ event, onReminderChange }: EventRemindersProps)
       </CardContent>
     </Card>
   );
-} 
+}

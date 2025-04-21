@@ -29,13 +29,11 @@ export class TrustedDeviceService {
       ua.device.model,
       info.ip,
       // Add any additional identifying data
-      ...Object.values(info.additionalData || {})
+      ...Object.values(info.additionalData || {}),
     ].filter(Boolean);
 
     // Create a hash of the combined factors
-    return createHash('sha256')
-      .update(factors.join('|'))
-      .digest('hex');
+    return createHash('sha256').update(factors.join('|')).digest('hex');
   }
 
   /**
@@ -47,12 +45,10 @@ export class TrustedDeviceService {
       const parser = new UAParser(deviceInfo.userAgent);
       const ua = parser.getResult();
 
-      const deviceName = [
-        ua.browser.name,
-        ua.os.name,
-        ua.device.vendor,
-        ua.device.model
-      ].filter(Boolean).join(' - ') || 'Unknown Device';
+      const deviceName =
+        [ua.browser.name, ua.os.name, ua.device.vendor, ua.device.model]
+          .filter(Boolean)
+          .join(' - ') || 'Unknown Device';
 
       const expiresAt = new Date(Date.now() + this.DEVICE_TRUST_DURATION);
 
@@ -65,27 +61,27 @@ export class TrustedDeviceService {
           browserInfo: `${ua.browser.name} ${ua.browser.version}`,
           osInfo: `${ua.os.name} ${ua.os.version}`,
           ipAddress: deviceInfo.ip,
-          expiresAt
+          expiresAt,
         },
         update: {
           lastUsed: new Date(),
           expiresAt,
           isRevoked: false,
-          revokedAt: null
-        }
+          revokedAt: null,
+        },
       });
 
       logger.info('Registered trusted device', 'security', {
         userId,
         deviceId,
-        deviceName
+        deviceName,
       });
 
       return deviceId;
     } catch (error) {
       logger.error('Failed to register trusted device', 'security', {
         error,
-        userId
+        userId,
       });
       throw new Error('Failed to register trusted device');
     }
@@ -99,7 +95,7 @@ export class TrustedDeviceService {
       const deviceId = this.generateDeviceId(deviceInfo);
 
       const device = await prisma.trustedDevice.findUnique({
-        where: { deviceId }
+        where: { deviceId },
       });
 
       if (!device) return false;
@@ -119,14 +115,14 @@ export class TrustedDeviceService {
       // Update last used timestamp
       await prisma.trustedDevice.update({
         where: { deviceId },
-        data: { lastUsed: new Date() }
+        data: { lastUsed: new Date() },
       });
 
       return true;
     } catch (error) {
       logger.error('Failed to verify trusted device', 'security', {
         error,
-        userId
+        userId,
       });
       return false;
     }
@@ -141,15 +137,15 @@ export class TrustedDeviceService {
         where: { deviceId },
         data: {
           isRevoked: true,
-          revokedAt: new Date()
-        }
+          revokedAt: new Date(),
+        },
       });
 
       logger.info('Revoked trusted device', 'security', { deviceId });
     } catch (error) {
       logger.error('Failed to revoke trusted device', 'security', {
         error,
-        deviceId
+        deviceId,
       });
       throw new Error('Failed to revoke trusted device');
     }
@@ -165,12 +161,12 @@ export class TrustedDeviceService {
           userId,
           isRevoked: false,
           expiresAt: {
-            gt: new Date()
-          }
+            gt: new Date(),
+          },
         },
         orderBy: {
-          lastUsed: 'desc'
-        }
+          lastUsed: 'desc',
+        },
       });
 
       return devices.map(device => ({
@@ -179,12 +175,12 @@ export class TrustedDeviceService {
         browser: device.browserInfo,
         os: device.osInfo,
         lastUsed: device.lastUsed,
-        createdAt: device.createdAt
+        createdAt: device.createdAt,
       }));
     } catch (error) {
       logger.error('Failed to get user devices', 'security', {
         error,
-        userId
+        userId,
       });
       throw new Error('Failed to get user devices');
     }
@@ -202,13 +198,10 @@ export class TrustedDeviceService {
           OR: [
             { expiresAt: { lt: new Date() } },
             {
-              AND: [
-                { isRevoked: true },
-                { revokedAt: { lt: thirtyDaysAgo } }
-              ]
-            }
-          ]
-        }
+              AND: [{ isRevoked: true }, { revokedAt: { lt: thirtyDaysAgo } }],
+            },
+          ],
+        },
       });
 
       logger.info('Cleaned up expired and revoked devices', 'security');
@@ -217,4 +210,4 @@ export class TrustedDeviceService {
       throw new Error('Failed to cleanup devices');
     }
   }
-} 
+}

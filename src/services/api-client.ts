@@ -9,7 +9,7 @@ export enum HttpMethod {
   POST = 'POST',
   PUT = 'PUT',
   DELETE = 'DELETE',
-  PATCH = 'PATCH'
+  PATCH = 'PATCH',
 }
 
 // Default error message for failed requests
@@ -53,13 +53,13 @@ export const apiClient = {
    * Make a GET request
    */
   async get<TResponse>(
-    path: string, 
+    path: string,
     config: ApiClientConfig = {}
   ): Promise<ApiResponse<TResponse>> {
     return makeRequest<never, TResponse>({
       method: HttpMethod.GET,
       path,
-      config
+      config,
     });
   },
 
@@ -67,15 +67,15 @@ export const apiClient = {
    * Make a POST request
    */
   async post<TData, TResponse>(
-    path: string, 
-    data?: TData, 
+    path: string,
+    data?: TData,
     config: ApiClientConfig = {}
   ): Promise<ApiResponse<TResponse>> {
     return makeRequest<TData, TResponse>({
       method: HttpMethod.POST,
       path,
       data,
-      config
+      config,
     });
   },
 
@@ -83,15 +83,15 @@ export const apiClient = {
    * Make a PUT request
    */
   async put<TData, TResponse>(
-    path: string, 
-    data?: TData, 
+    path: string,
+    data?: TData,
     config: ApiClientConfig = {}
   ): Promise<ApiResponse<TResponse>> {
     return makeRequest<TData, TResponse>({
       method: HttpMethod.PUT,
       path,
       data,
-      config
+      config,
     });
   },
 
@@ -99,13 +99,13 @@ export const apiClient = {
    * Make a DELETE request
    */
   async delete<TResponse>(
-    path: string, 
+    path: string,
     config: ApiClientConfig = {}
   ): Promise<ApiResponse<TResponse>> {
     return makeRequest<never, TResponse>({
       method: HttpMethod.DELETE,
       path,
-      config
+      config,
     });
   },
 
@@ -113,17 +113,17 @@ export const apiClient = {
    * Make a PATCH request
    */
   async patch<TData, TResponse>(
-    path: string, 
-    data?: TData, 
+    path: string,
+    data?: TData,
     config: ApiClientConfig = {}
   ): Promise<ApiResponse<TResponse>> {
     return makeRequest<TData, TResponse>({
       method: HttpMethod.PATCH,
       path,
       data,
-      config
+      config,
     });
-  }
+  },
 };
 
 /**
@@ -133,25 +133,23 @@ async function makeRequest<TData, TResponse>({
   method,
   path,
   data,
-  config = {}
+  config = {},
 }: RequestOptions<TData>): Promise<ApiResponse<TResponse>> {
   const { baseUrl = '', headers = {} } = config;
   const url = `${baseUrl}${path}`;
 
   try {
     const controller = new AbortController();
-    const timeoutId = config.timeout 
-      ? setTimeout(() => controller.abort(), config.timeout)
-      : null;
+    const timeoutId = config.timeout ? setTimeout(() => controller.abort(), config.timeout) : null;
 
     const response = await fetch(url, {
       method,
       headers: {
         'Content-Type': 'application/json',
-        ...headers
+        ...headers,
       },
       body: data ? JSON.stringify(data) : undefined,
-      signal: config.timeout ? controller.signal : undefined
+      signal: config.timeout ? controller.signal : undefined,
     });
 
     if (timeoutId) {
@@ -163,13 +161,17 @@ async function makeRequest<TData, TResponse>({
     let errorMessage: string | undefined;
 
     try {
-      if (response.status !== 204) { // No content
-        responseData = await response.json() as TResponse;
+      if (response.status !== 204) {
+        // No content
+        responseData = (await response.json()) as TResponse;
       }
     } catch (error) {
       // If response is not JSON, handle accordingly
       errorMessage = 'Invalid response format';
-      console.error('Response parsing error:', error instanceof Error ? error.message : 'Unknown error');
+      console.error(
+        'Response parsing error:',
+        error instanceof Error ? error.message : 'Unknown error'
+      );
     }
 
     // Return a standardized response
@@ -177,20 +179,20 @@ async function makeRequest<TData, TResponse>({
       data: responseData,
       status: response.status,
       success: response.ok,
-      error: !response.ok ? errorMessage || response.statusText : undefined
+      error: !response.ok ? errorMessage || response.statusText : undefined,
     };
   } catch (error) {
     // Handle network errors, timeouts, and other exceptions
     const isAbortError = error instanceof Error && error.name === 'AbortError';
-    
+
     return {
       status: 0,
       success: false,
-      error: isAbortError 
-        ? 'Request timeout' 
-        : error instanceof Error 
-          ? error.message 
-          : DEFAULT_ERROR_MESSAGE
+      error: isAbortError
+        ? 'Request timeout'
+        : error instanceof Error
+          ? error.message
+          : DEFAULT_ERROR_MESSAGE,
     };
   }
-} 
+}

@@ -16,7 +16,7 @@ const MFA_EXEMPT_PATHS = [
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-  
+
   // Check if user is authenticated with Auth0
   const session = await getSession(req, res);
 
@@ -49,4 +49,4 @@ export async function middleware(req: NextRequest) {
   }
 
   return res;
-} 
+}

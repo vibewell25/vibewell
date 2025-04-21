@@ -30,8 +30,10 @@ export function BookingFlow({ services, practitionerId, practitionerName }: Book
   const router = useRouter();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState<BookingStep>('service');
-  const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
-  const [selectedDateTime, setSelectedDateTime] = useState<{ date: Date; time: string } | null>(null);
+  const [selectedService, setSelectedService] = useState<(typeof services)[0] | null>(null);
+  const [selectedDateTime, setSelectedDateTime] = useState<{ date: Date; time: string } | null>(
+    null
+  );
   const [bookingDetails, setBookingDetails] = useState<{
     notes?: string;
     contactPreference?: string;
@@ -48,7 +50,7 @@ export function BookingFlow({ services, practitionerId, practitionerName }: Book
     { id: 'confirmation', title: 'Confirmation' },
   ];
 
-  const handleServiceSelect = (service: typeof services[0]) => {
+  const handleServiceSelect = (service: (typeof services)[0]) => {
     setSelectedService(service);
     setCurrentStep('datetime');
   };
@@ -60,7 +62,7 @@ export function BookingFlow({ services, practitionerId, practitionerName }: Book
 
   const handleDetailsSubmit = async (details: typeof bookingDetails) => {
     setBookingDetails(details);
-    
+
     try {
       // Create initial booking
       const bookingResponse = await fetch('/api/bookings', {
@@ -202,12 +204,12 @@ export function BookingFlow({ services, practitionerId, practitionerName }: Book
         <div className="text-center">
           <h2 className="text-2xl font-semibold mb-4">Booking Confirmed!</h2>
           <p className="mb-6">
-            Your appointment has been scheduled for{' '}
-            {selectedDateTime?.date.toLocaleDateString()} at {selectedDateTime?.time}
+            Your appointment has been scheduled for {selectedDateTime?.date.toLocaleDateString()} at{' '}
+            {selectedDateTime?.time}
           </p>
           <Button onClick={() => router.push('/bookings')}>View My Bookings</Button>
         </div>
       )}
     </div>
   );
-} 
+}

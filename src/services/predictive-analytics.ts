@@ -30,16 +30,11 @@ export class PredictiveAnalyticsService {
   async predictChurnRisk(userId: string): Promise<ChurnPrediction> {
     try {
       // Gather client data
-      const [
-        bookings,
-        reviews,
-        engagement,
-        loyalty
-      ] = await Promise.all([
+      const [bookings, reviews, engagement, loyalty] = await Promise.all([
         this.getClientBookings(userId),
         this.getClientReviews(userId),
         this.getClientEngagement(userId),
-        this.getClientLoyalty(userId)
+        this.getClientLoyalty(userId),
       ]);
 
       // Calculate behavior metrics
@@ -47,7 +42,7 @@ export class PredictiveAnalyticsService {
         bookings,
         reviews,
         engagement,
-        loyalty
+        loyalty,
       });
 
       // Generate prediction using OpenAI
@@ -73,16 +68,16 @@ export class PredictiveAnalyticsService {
 
       for (const months of timeframes) {
         const startDate = subMonths(new Date(), months);
-        
+
         // Get historical data
         const data = await this.getClientHistoricalData(userId, startDate);
-        
+
         // Analyze patterns
         patterns[`${months}m`] = {
           bookingPattern: this.analyzeBookingPattern(data.bookings),
           spendingPattern: this.analyzeSpendingPattern(data.transactions),
           servicePreferences: this.analyzeServicePreferences(data.bookings),
-          seasonality: this.analyzeSeasonality(data.bookings)
+          seasonality: this.analyzeSeasonality(data.bookings),
         };
       }
 
@@ -99,31 +94,27 @@ export class PredictiveAnalyticsService {
   async generateRetentionStrategy(userId: string): Promise<string[]> {
     try {
       // Get client data and predictions
-      const [
-        clientData,
-        churnPrediction,
-        patterns
-      ] = await Promise.all([
+      const [clientData, churnPrediction, patterns] = await Promise.all([
         this.getClientProfile(userId),
         this.predictChurnRisk(userId),
-        this.analyzeClientPatterns(userId)
+        this.analyzeClientPatterns(userId),
       ]);
 
       // Generate strategy using OpenAI
       const prompt = this.buildRetentionPrompt(clientData, churnPrediction, patterns);
       const completion = await openai.chat.completions.create({
-        model: "gpt-4",
+        model: 'gpt-4',
         messages: [
           {
-            role: "system",
-            content: "You are an expert in customer retention and personalization strategies."
+            role: 'system',
+            content: 'You are an expert in customer retention and personalization strategies.',
           },
           {
-            role: "user",
-            content: prompt
-          }
+            role: 'user',
+            content: prompt,
+          },
         ],
-        temperature: 0.7
+        temperature: 0.7,
       });
 
       const strategies = this.parseRetentionStrategies(completion.choices[0].message.content);
@@ -143,14 +134,14 @@ export class PredictiveAnalyticsService {
       where: { userId },
       include: {
         service: true,
-        payment: true
-      }
+        payment: true,
+      },
     });
   }
 
   private async getClientReviews(userId: string) {
     return prisma.serviceReview.findMany({
-      where: { userId }
+      where: { userId },
     });
   }
 
@@ -164,8 +155,8 @@ export class PredictiveAnalyticsService {
       where: { userId },
       include: {
         transactions: true,
-        redemptions: true
-      }
+        redemptions: true,
+      },
     });
   }
 
@@ -176,7 +167,7 @@ export class PredictiveAnalyticsService {
       lastVisitDays: this.calculateDaysSinceLastVisit(data.bookings),
       serviceLoyalty: this.calculateServiceLoyalty(data.bookings),
       feedbackScore: this.calculateFeedbackScore(data.reviews),
-      engagementScore: this.calculateEngagementScore(data.engagement)
+      engagementScore: this.calculateEngagementScore(data.engagement),
     };
 
     return behavior;
@@ -189,7 +180,7 @@ export class PredictiveAnalyticsService {
       churnProbability: 0,
       riskFactors: [],
       recommendedActions: [],
-      timeframe: 30
+      timeframe: 30,
     };
   }
 
@@ -197,7 +188,7 @@ export class PredictiveAnalyticsService {
     // Implementation for storing prediction
     logger.info('Storing churn prediction', 'PredictiveAnalytics', {
       userId,
-      prediction
+      prediction,
     });
   }
 
@@ -206,21 +197,21 @@ export class PredictiveAnalyticsService {
       bookings: await prisma.booking.findMany({
         where: {
           userId,
-          createdAt: { gte: startDate }
+          createdAt: { gte: startDate },
         },
         include: {
           service: true,
-          payment: true
-        }
+          payment: true,
+        },
       }),
       transactions: await prisma.payment.findMany({
         where: {
           booking: {
             userId,
-            createdAt: { gte: startDate }
-          }
-        }
-      })
+            createdAt: { gte: startDate },
+          },
+        },
+      }),
     };
   }
 
@@ -250,8 +241,8 @@ export class PredictiveAnalyticsService {
       include: {
         bookings: true,
         reviews: true,
-        loyaltyMemberships: true
-      }
+        loyaltyMemberships: true,
+      },
     });
   }
 
@@ -282,7 +273,7 @@ export class PredictiveAnalyticsService {
     // Implementation for storing strategies
     logger.info('Storing retention strategies', 'PredictiveAnalytics', {
       userId,
-      strategyCount: strategies.length
+      strategyCount: strategies.length,
     });
   }
 
@@ -297,9 +288,7 @@ export class PredictiveAnalyticsService {
 
   private calculateAverageSpending(bookings: any[]): number {
     if (bookings.length === 0) return 0;
-    const totalSpent = bookings.reduce((sum, booking) => 
-      sum + (booking.payment?.amount || 0), 0
-    );
+    const totalSpent = bookings.reduce((sum, booking) => sum + (booking.payment?.amount || 0), 0);
     return totalSpent / bookings.length;
   }
 
@@ -325,4 +314,4 @@ export class PredictiveAnalyticsService {
     // Implementation for calculating engagement score
     return 0;
   }
-} 
+}

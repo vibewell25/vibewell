@@ -27,20 +27,19 @@ const PractitionersPage = () => {
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
   const [sortBy, setSortBy] = useState('rating');
   const [error, setError] = useState<string | null>(null);
-  
+
   const router = useRouter();
   const toast = useToast();
 
   const filteredPractitioners = useMemo(() => {
-    return mockPractitioners.filter((practitioner) => {
+    return mockPractitioners.filter(practitioner => {
       const nameMatch = practitioner.user.name.toLowerCase().includes(searchQuery.toLowerCase());
       const specializationMatch = practitioner.specialization.some((specialization: string) =>
         specialization.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      
+
       const specializationFilterMatch =
-        !selectedSpecialization ||
-        practitioner.specialization.includes(selectedSpecialization);
+        !selectedSpecialization || practitioner.specialization.includes(selectedSpecialization);
 
       return (nameMatch || specializationMatch) && specializationFilterMatch;
     });
@@ -107,11 +106,7 @@ const PractitionersPage = () => {
       <VStack align="stretch" gap={6}>
         <Box>
           <Heading mb={4}>Practitioner Components Test</Heading>
-          <Button
-            onClick={() => setShowList(!showList)}
-            colorScheme="blue"
-            mb={6}
-          >
+          <Button onClick={() => setShowList(!showList)} colorScheme="blue" mb={6}>
             {showList ? 'View Selected Profile' : 'Back to List'}
           </Button>
         </Box>
@@ -131,19 +126,25 @@ const PractitionersPage = () => {
                 <Input
                   placeholder="Search by name or specialization..."
                   value={searchQuery}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setSearchQuery(e.target.value)
+                  }
                 />
                 <Select
                   value={selectedSpecialization}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedSpecialization(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                    setSelectedSpecialization(e.target.value)
+                  }
                 >
                   <option value="">All Specializations</option>
                   {mockSpecializations.map(spec => (
-                    <option key={spec} value={spec}>{spec}</option>
+                    <option key={spec} value={spec}>
+                      {spec}
+                    </option>
                   ))}
                 </Select>
-                <Select 
-                  value={sortBy} 
+                <Select
+                  value={sortBy}
                   onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortBy(e.target.value)}
                 >
                   <option value="rating">Sort by Rating</option>
@@ -165,10 +166,7 @@ const PractitionersPage = () => {
           </Box>
         ) : (
           <Box bg="white" p={6} borderRadius="lg" shadow="md">
-            <PractitionerProfile
-              {...selectedPractitioner}
-              onBookService={handleBookService}
-            />
+            <PractitionerProfile {...selectedPractitioner} onBookService={handleBookService} />
           </Box>
         )}
       </VStack>
@@ -176,4 +174,4 @@ const PractitionersPage = () => {
   );
 };
 
-export default PractitionersPage; 
+export default PractitionersPage;

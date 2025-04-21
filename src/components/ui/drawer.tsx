@@ -1,22 +1,24 @@
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
+import * as React from 'react';
+import { cn } from '@/lib/utils';
+import { cva, type VariantProps } from 'class-variance-authority';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { X } from 'lucide-react';
 
 const drawerVariants = cva(
-  "fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
+  'fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500',
   {
     variants: {
       side: {
-        top: "inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top",
-        bottom: "inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
-        left: "inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm",
-        right: "inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm",
+        top: 'inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top',
+        bottom:
+          'inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
+        left: 'inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm',
+        right:
+          'inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm',
       },
     },
     defaultVariants: {
-      side: "right",
+      side: 'right',
     },
   }
 );
@@ -31,17 +33,17 @@ const Drawer = ({ children, ...props }: DrawerProps) => (
     </DialogPrimitive.Portal>
   </DialogPrimitive.Root>
 );
-Drawer.displayName = "Drawer";
+Drawer.displayName = 'Drawer';
 
 interface DrawerTriggerProps extends DialogPrimitive.DialogTriggerProps {}
 
 const DrawerTrigger = DialogPrimitive.Trigger;
-DrawerTrigger.displayName = "DrawerTrigger";
+DrawerTrigger.displayName = 'DrawerTrigger';
 
 interface DrawerCloseProps extends DialogPrimitive.DialogCloseProps {}
 
 const DrawerClose = DialogPrimitive.Close;
-DrawerClose.displayName = "DrawerClose";
+DrawerClose.displayName = 'DrawerClose';
 
 interface DrawerContentProps
   extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
@@ -50,12 +52,8 @@ interface DrawerContentProps
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   DrawerContentProps
->(({ side = "right", className, children, ...props }, ref) => (
-  <DialogPrimitive.Content
-    ref={ref}
-    className={cn(drawerVariants({ side }), className)}
-    {...props}
-  >
+>(({ side = 'right', className, children, ...props }, ref) => (
+  <DialogPrimitive.Content ref={ref} className={cn(drawerVariants({ side }), className)} {...props}>
     {children}
     <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
       <X className="h-4 w-4" />
@@ -63,23 +61,14 @@ const DrawerContent = React.forwardRef<
     </DialogPrimitive.Close>
   </DialogPrimitive.Content>
 ));
-DrawerContent.displayName = "DrawerContent";
+DrawerContent.displayName = 'DrawerContent';
 
 interface DrawerHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const DrawerHeader = ({
-  className,
-  ...props
-}: DrawerHeaderProps) => (
-  <div
-    className={cn(
-      "flex flex-col space-y-2 text-center sm:text-left",
-      className
-    )}
-    {...props}
-  />
+const DrawerHeader = ({ className, ...props }: DrawerHeaderProps) => (
+  <div className={cn('flex flex-col space-y-2 text-center sm:text-left', className)} {...props} />
 );
-DrawerHeader.displayName = "DrawerHeader";
+DrawerHeader.displayName = 'DrawerHeader';
 
 interface DrawerTitleProps extends DialogPrimitive.DialogTitleProps {}
 
@@ -89,14 +78,11 @@ const DrawerTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn(
-      "text-lg font-semibold text-foreground",
-      className
-    )}
+    className={cn('text-lg font-semibold text-foreground', className)}
     {...props}
   />
 ));
-DrawerTitle.displayName = "DrawerTitle";
+DrawerTitle.displayName = 'DrawerTitle';
 
 interface DrawerDescriptionProps extends DialogPrimitive.DialogDescriptionProps {}
 
@@ -106,27 +92,21 @@ const DrawerDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn('text-sm text-muted-foreground', className)}
     {...props}
   />
 ));
-DrawerDescription.displayName = "DrawerDescription";
+DrawerDescription.displayName = 'DrawerDescription';
 
 interface DrawerFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const DrawerFooter = ({
-  className,
-  ...props
-}: DrawerFooterProps) => (
+const DrawerFooter = ({ className, ...props }: DrawerFooterProps) => (
   <div
-    className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      className
-    )}
+    className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)}
     {...props}
   />
 );
-DrawerFooter.displayName = "DrawerFooter";
+DrawerFooter.displayName = 'DrawerFooter';
 
 export {
   Drawer,
@@ -137,4 +117,4 @@ export {
   DrawerTitle,
   DrawerDescription,
   DrawerFooter,
-}; 
+};

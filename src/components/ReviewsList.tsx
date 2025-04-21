@@ -20,13 +20,13 @@ interface ReviewsListProps {
   compact?: boolean;
 }
 
-export default function ReviewsList({ 
-  reviews, 
+export default function ReviewsList({
+  reviews,
   isLoading = false,
-  compact = false
+  compact = false,
 }: ReviewsListProps) {
   const [sortBy, setSortBy] = useState<'newest' | 'highest' | 'lowest'>('newest');
-  
+
   // Sort reviews based on the selected option
   const sortedReviews = [...reviews].sort((a, b) => {
     if (sortBy === 'newest') {
@@ -37,7 +37,7 @@ export default function ReviewsList({
       return a.rating - b.rating;
     }
   });
-  
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -57,7 +57,7 @@ export default function ReviewsList({
       </div>
     );
   }
-  
+
   if (reviews.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow p-8 text-center">
@@ -66,18 +66,20 @@ export default function ReviewsList({
       </div>
     );
   }
-  
+
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-medium text-gray-900">Customer Reviews ({reviews.length})</h3>
         <div>
-          <label htmlFor="sort-by" className="sr-only">Sort by</label>
+          <label htmlFor="sort-by" className="sr-only">
+            Sort by
+          </label>
           <select
             id="sort-by"
             className="border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500"
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as 'newest' | 'highest' | 'lowest')}
+            onChange={e => setSortBy(e.target.value as 'newest' | 'highest' | 'lowest')}
           >
             <option value="newest">Newest First</option>
             <option value="highest">Highest Rated</option>
@@ -85,7 +87,7 @@ export default function ReviewsList({
           </select>
         </div>
       </div>
-      
+
       <div className="space-y-4">
         {sortedReviews.map(review => (
           <ReviewCard
@@ -102,4 +104,4 @@ export default function ReviewsList({
       </div>
     </div>
   );
-} 
+}

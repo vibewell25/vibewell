@@ -91,16 +91,15 @@ export function useKeyboardInteraction(
 /**
  * Component to provide ARIA live region for dynamic content
  */
-export function LiveRegion({ children, politeness = 'polite' }: {
+export function LiveRegion({
+  children,
+  politeness = 'polite',
+}: {
   children: React.ReactNode;
   politeness?: 'polite' | 'assertive';
 }) {
   return (
-    <div
-      aria-live={politeness}
-      aria-atomic="true"
-      className="sr-only"
-    >
+    <div aria-live={politeness} aria-atomic="true" className="sr-only">
       {children}
     </div>
   );
@@ -109,18 +108,11 @@ export function LiveRegion({ children, politeness = 'polite' }: {
 /**
  * Component to provide accessible error messages
  */
-export function ErrorMessage({ id, error }: {
-  id: string;
-  error?: string;
-}) {
+export function ErrorMessage({ id, error }: { id: string; error?: string }) {
   if (!error) return null;
 
   return (
-    <div
-      id={`${id}-error`}
-      className="text-sm text-red-500 mt-1"
-      role="alert"
-    >
+    <div id={`${id}-error`} className="text-sm text-red-500 mt-1" role="alert">
       {error}
     </div>
   );
@@ -129,20 +121,16 @@ export function ErrorMessage({ id, error }: {
 /**
  * Component to provide accessible loading states
  */
-export function LoadingState({ isLoading, children }: {
+export function LoadingState({
+  isLoading,
+  children,
+}: {
   isLoading: boolean;
   children: React.ReactNode;
 }) {
   return (
-    <div
-      aria-busy={isLoading}
-      aria-live="polite"
-    >
-      {isLoading ? (
-        <div className="sr-only">Loading...</div>
-      ) : (
-        children
-      )}
+    <div aria-busy={isLoading} aria-live="polite">
+      {isLoading ? <div className="sr-only">Loading...</div> : children}
     </div>
   );
 }
@@ -150,10 +138,7 @@ export function LoadingState({ isLoading, children }: {
 /**
  * Component to provide accessible tooltips
  */
-export function Tooltip({ children, content }: {
-  children: React.ReactNode;
-  content: string;
-}) {
+export function Tooltip({ children, content }: { children: React.ReactNode; content: string }) {
   return (
     <div className="group relative inline-block">
       {children}
@@ -165,4 +150,4 @@ export function Tooltip({ children, content }: {
       </div>
     </div>
   );
-} 
+}

@@ -48,19 +48,15 @@ export function BeautyService({ service, className = '' }: BeautyServiceProps) {
             <CardTitle className="text-xl font-semibold">{service.name}</CardTitle>
             <p className="text-sm text-gray-500">{service.category}</p>
           </div>
-          <Badge variant="secondary">
-            {service.duration} min
-          </Badge>
+          <Badge variant="secondary">{service.duration} min</Badge>
         </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           <p className="text-gray-600">{service.description}</p>
-          
+
           <div className="flex items-center justify-between">
-            <div className="text-lg font-semibold">
-              ${service.price}
-            </div>
+            <div className="text-lg font-semibold">${service.price}</div>
             {service.availability && (
               <div className="text-sm text-gray-500">
                 <Icons.Calendar className="inline-block w-4 h-4 mr-1" />
@@ -71,9 +67,7 @@ export function BeautyService({ service, className = '' }: BeautyServiceProps) {
 
           <div className="flex items-center justify-between">
             {service.availability?.slots && (
-              <p className="text-sm text-gray-500">
-                {service.availability.slots} slots available
-              </p>
+              <p className="text-sm text-gray-500">{service.availability.slots} slots available</p>
             )}
             <Button onClick={handleBookService} className="w-full sm:w-auto">
               Book Now
@@ -83,4 +77,4 @@ export function BeautyService({ service, className = '' }: BeautyServiceProps) {
       </CardContent>
     </Card>
   );
-} 
+}

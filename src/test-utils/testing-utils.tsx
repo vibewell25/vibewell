@@ -1,7 +1,8 @@
 /**
  * Common testing utilities for the Vibewell project
  */
-import { render, RenderOptions } from '@testing-library/react';
+import { vi } from 'vitest';
+import { render as rtlRender, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ReactElement } from 'react';
 import { axe } from 'jest-axe';
@@ -9,14 +10,8 @@ import { axe } from 'jest-axe';
 /**
  * Custom render function that includes common providers
  */
-const customRender = (
-  ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>
-) => {
-  return {
-    ...render(ui, options),
-    user: userEvent()
-  };
+const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) => {
+  return rtlRender(ui, options);
 };
 
 /**
@@ -36,15 +31,15 @@ const testAccessibility = async (element: Element) => {
 const mockMatchMedia = () => {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: jest.fn().mockImplementation(query => ({
+    value: vi.fn().mockImplementation(query => ({
       matches: false,
       media: query,
       onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     })),
   });
 };
@@ -60,25 +55,19 @@ const waitFor = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const mockFunctions = {
   mockFetch: () => {
     const originalFetch = global.fetch;
-    global.fetch = jest.fn().mockImplementation(() =>
+    global.fetch = vi.fn().mockImplementation(() =>
       Promise.resolve({
         ok: true,
         json: () => Promise.resolve({ data: 'mocked data' }),
         text: () => Promise.resolve('mocked text'),
         blob: () => Promise.resolve(new Blob(['mocked blob'])),
       })
-    ) as jest.Mock;
-    
+    );
+
     return () => {
       global.fetch = originalFetch;
     };
-  }
+  },
 };
 
-export {
-  customRender as render,
-  testAccessibility,
-  mockMatchMedia,
-  waitFor,
-  mockFunctions
-}; 
+export { customRender as render, testAccessibility, mockMatchMedia, waitFor, mockFunctions };

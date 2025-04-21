@@ -44,4 +44,4 @@ describe('Button component - Accessibility', () => {
     const results = await axe(container);
     expect(results.violations.length).toBe(0);
   });
-}); 
+});

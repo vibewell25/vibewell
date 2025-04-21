@@ -6,7 +6,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Check, ChevronsRight, Building, MapPin, Scissors, Camera, CreditCard, FileText } from 'lucide-react';
+import {
+  Check,
+  ChevronsRight,
+  Building,
+  MapPin,
+  Scissors,
+  Camera,
+  CreditCard,
+  FileText,
+} from 'lucide-react';
 import { LocationForm } from './forms/location-form';
 import { ServiceForm } from './forms/service-form';
 import { PhotoUploadForm } from './forms/photo-upload-form';
@@ -19,42 +28,50 @@ import { useToast } from '@/components/ui/use-toast';
 // Define the schema for business profile form
 const businessProfileSchema = z.object({
   // Location details
-  address: z.string().min(1, "Address is required"),
+  address: z.string().min(1, 'Address is required'),
   addressLine1: z.string().optional(), // For backward compatibility with form
   addressLine2: z.string().optional(), // For backward compatibility with form
-  city: z.string().min(1, "City is required"),
-  state: z.string().min(1, "State is required"),
-  zipCode: z.string().min(1, "ZIP code is required"),
-  country: z.string().default("United States"),
+  city: z.string().min(1, 'City is required'),
+  state: z.string().min(1, 'State is required'),
+  zipCode: z.string().min(1, 'ZIP code is required'),
+  country: z.string().default('United States'),
   latitude: z.string().optional(), // For location detection
   longitude: z.string().optional(), // For location detection
   serviceRadius: z.number().optional(),
-  businessHours: z.array(z.object({
-    day: z.string(),
-    open: z.boolean(),
-    openTime: z.string().optional(),
-    closeTime: z.string().optional()
-  })).default([
-    { day: 'Monday', open: true, openTime: '09:00', closeTime: '17:00' },
-    { day: 'Tuesday', open: true, openTime: '09:00', closeTime: '17:00' },
-    { day: 'Wednesday', open: true, openTime: '09:00', closeTime: '17:00' },
-    { day: 'Thursday', open: true, openTime: '09:00', closeTime: '17:00' },
-    { day: 'Friday', open: true, openTime: '09:00', closeTime: '17:00' },
-    { day: 'Saturday', open: false },
-    { day: 'Sunday', open: false },
-  ]),
+  businessHours: z
+    .array(
+      z.object({
+        day: z.string(),
+        open: z.boolean(),
+        openTime: z.string().optional(),
+        closeTime: z.string().optional(),
+      })
+    )
+    .default([
+      { day: 'Monday', open: true, openTime: '09:00', closeTime: '17:00' },
+      { day: 'Tuesday', open: true, openTime: '09:00', closeTime: '17:00' },
+      { day: 'Wednesday', open: true, openTime: '09:00', closeTime: '17:00' },
+      { day: 'Thursday', open: true, openTime: '09:00', closeTime: '17:00' },
+      { day: 'Friday', open: true, openTime: '09:00', closeTime: '17:00' },
+      { day: 'Saturday', open: false },
+      { day: 'Sunday', open: false },
+    ]),
   offersVirtualServices: z.boolean().default(false),
   virtualServicesDescription: z.string().optional(),
-  
+
   // Services & Pricing
-  services: z.array(z.object({
-    name: z.string().min(1, "Service name is required"),
-    duration: z.number().min(1, "Duration is required"),
-    price: z.number().min(0, "Price is required"),
-    description: z.string().optional(),
-    category: z.string().optional(),
-    id: z.string().optional(),
-  })).default([]),
+  services: z
+    .array(
+      z.object({
+        name: z.string().min(1, 'Service name is required'),
+        duration: z.number().min(1, 'Duration is required'),
+        price: z.number().min(0, 'Price is required'),
+        description: z.string().optional(),
+        category: z.string().optional(),
+        id: z.string().optional(),
+      })
+    )
+    .default([]),
   offersPackages: z.boolean().default(false),
   offersSpecialDiscounts: z.boolean().default(false),
   offersGiftCards: z.boolean().default(false),
@@ -62,14 +79,14 @@ const businessProfileSchema = z.object({
 
   // Photo Upload
   businessPhotos: z.array(z.string()).default([]),
-  
+
   // Payment Settings
   paymentMethods: z.array(z.string()).default([]),
   depositType: z.string().optional(),
   depositAmount: z.number().optional(),
   depositPercentage: z.number().optional(),
   depositNotes: z.string().optional(),
-  
+
   // Business Policies
   cancellationPolicy: z.string().optional(),
   hasLateArrivalPolicy: z.boolean().default(false),
@@ -77,7 +94,7 @@ const businessProfileSchema = z.object({
   lateArrivalPolicy: z.string().optional(),
   additionalPolicies: z.string().optional(),
   requirePolicyConfirmation: z.boolean().default(false),
-  includePoliciesInEmails: z.boolean().default(false)
+  includePoliciesInEmails: z.boolean().default(false),
 });
 
 export type BusinessProfileFormValues = z.infer<typeof businessProfileSchema>;
@@ -113,11 +130,11 @@ export function BusinessProfileWizard() {
   const form = useForm<BusinessProfileFormValues>({
     resolver: zodResolver(businessProfileSchema) as any,
     defaultValues: {
-      address: "",
-      city: "",
-      state: "",
-      zipCode: "",
-      country: "United States",
+      address: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      country: 'United States',
       offersVirtualServices: false,
       offersPackages: false,
       offersSpecialDiscounts: false,
@@ -140,9 +157,9 @@ export function BusinessProfileWizard() {
     try {
       // Validate current step
       const currentStepData = STEPS[currentStep].id;
-      
+
       let fieldsToValidate: (keyof BusinessProfileFormValues)[] = [];
-      
+
       // Determine which fields to validate based on the current step
       switch (currentStepData) {
         case 'location':
@@ -180,10 +197,10 @@ export function BusinessProfileWizard() {
           }
           break;
       }
-      
+
       // Validate specified fields
       const result = await form.trigger(fieldsToValidate);
-      
+
       if (result) {
         // If this is the last step, submit the form
         if (currentStep === STEPS.length - 1) {
@@ -194,7 +211,7 @@ export function BusinessProfileWizard() {
         }
       }
     } catch (error) {
-      console.error("Validation error:", error);
+      console.error('Validation error:', error);
     }
   };
 
@@ -206,21 +223,24 @@ export function BusinessProfileWizard() {
   // Submit the form
   const handleSubmit = async () => {
     setIsSubmitting(true);
-    
+
     try {
       // Get current user
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
-      
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
       if (userError) {
         throw userError;
       }
-      
+
       if (!user) {
         throw new Error('You must be logged in to create a business profile');
       }
-      
+
       const values = form.getValues();
-      
+
       // Format data for database
       const businessProfileData = {
         provider_id: user.id,
@@ -259,16 +279,16 @@ export function BusinessProfileWizard() {
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
-      
+
       // Check if business profile already exists for this user
       const { data: existingProfile, error: checkError } = await supabase
         .from('business_profiles')
         .select('id')
         .eq('provider_id', user.id)
         .maybeSingle();
-      
+
       let result;
-      
+
       if (existingProfile?.id) {
         // Update existing profile
         result = await supabase
@@ -277,31 +297,29 @@ export function BusinessProfileWizard() {
           .eq('id', existingProfile.id);
       } else {
         // Insert new profile
-        result = await supabase
-          .from('business_profiles')
-          .insert(businessProfileData);
+        result = await supabase.from('business_profiles').insert(businessProfileData);
       }
-      
+
       if (result.error) {
         throw result.error;
       }
-      
+
       // Show success message
       toast({
-        title: "Success",
-        description: "Business profile created successfully",
+        title: 'Success',
+        description: 'Business profile created successfully',
       });
-      
+
       // Redirect to business dashboard
       setTimeout(() => {
         router.push('/business-hub');
       }, 1000);
     } catch (error) {
-      console.error("Submission error:", error);
+      console.error('Submission error:', error);
       toast({
-        title: "Error",
-        description: "Failed to save business profile. Please try again.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to save business profile. Please try again.',
+        variant: 'destructive',
       });
     } finally {
       setIsSubmitting(false);
@@ -311,7 +329,7 @@ export function BusinessProfileWizard() {
   // Render the current step content
   const renderStepContent = () => {
     const currentStepId = STEPS[currentStep].id;
-    
+
     switch (currentStepId) {
       case 'location':
         return <LocationForm form={form} />;
@@ -334,37 +352,43 @@ export function BusinessProfileWizard() {
         <Building className="h-6 w-6 text-primary" />
         <h1 className="text-2xl font-bold">Business Profile Setup</h1>
       </div>
-      
+
       {/* Progress Indicator */}
       <div className="mb-8">
         <div className="flex justify-between relative">
           {/* Progress Bar */}
-          <div 
+          <div
             className="absolute h-1 bg-primary top-5 z-0 transition-all duration-300"
-            style={{ 
+            style={{
               width: `${(currentStep / (STEPS.length - 1)) * 100}%`,
-              left: 0 
+              left: 0,
             }}
           />
-          
+
           {STEPS.map((step, index) => {
             const StepIcon = step.icon;
             const isActive = index === currentStep;
             const isCompleted = index < currentStep;
-            
+
             return (
               <div key={step.id} className="flex flex-col items-center z-10">
-                <div 
+                <div
                   className={`
                     w-10 h-10 rounded-full flex items-center justify-center mb-2
-                    ${isActive ? 'bg-primary text-primary-foreground border-2 border-primary' : 
-                      isCompleted ? 'bg-primary text-primary-foreground' : 
-                      'bg-muted text-muted-foreground'}
+                    ${
+                      isActive
+                        ? 'bg-primary text-primary-foreground border-2 border-primary'
+                        : isCompleted
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted text-muted-foreground'
+                    }
                   `}
                 >
                   {isCompleted ? <Check className="h-5 w-5" /> : <StepIcon className="h-5 w-5" />}
                 </div>
-                <span className={`text-sm ${isActive ? 'font-medium text-primary' : isCompleted ? 'font-medium' : 'text-muted-foreground'}`}>
+                <span
+                  className={`text-sm ${isActive ? 'font-medium text-primary' : isCompleted ? 'font-medium' : 'text-muted-foreground'}`}
+                >
                   {step.label}
                 </span>
               </div>
@@ -372,33 +396,25 @@ export function BusinessProfileWizard() {
           })}
         </div>
       </div>
-      
+
       {/* Step Progress */}
       <div className="flex justify-between items-center mb-6">
         <p className="text-sm text-muted-foreground">
           Step {currentStep + 1} of {STEPS.length}
         </p>
-        <p className="text-sm font-medium">
-          {STEPS[currentStep].label}
-        </p>
+        <p className="text-sm font-medium">{STEPS[currentStep].label}</p>
       </div>
-      
+
       {/* Main Content */}
       <Card className="border shadow-sm">
-        <div className="p-6">
-          {renderStepContent()}
-        </div>
-        
+        <div className="p-6">{renderStepContent()}</div>
+
         {/* Navigation Buttons */}
         <div className="p-6 border-t bg-muted/50 flex justify-between">
-          <Button
-            variant="outline"
-            onClick={handlePreviousStep}
-            disabled={currentStep === 0}
-          >
+          <Button variant="outline" onClick={handlePreviousStep} disabled={currentStep === 0}>
             Back
           </Button>
-          
+
           <div className="flex gap-2">
             {currentStep < STEPS.length - 1 && (
               <Button
@@ -411,13 +427,14 @@ export function BusinessProfileWizard() {
                 Skip for now
               </Button>
             )}
-            
-            <Button
-              onClick={handleNextStep}
-              disabled={isSubmitting}
-            >
+
+            <Button onClick={handleNextStep} disabled={isSubmitting}>
               {currentStep === STEPS.length - 1 ? (
-                isSubmitting ? 'Saving...' : 'Save Profile'
+                isSubmitting ? (
+                  'Saving...'
+                ) : (
+                  'Save Profile'
+                )
               ) : (
                 <>
                   Next Step <ChevronsRight className="ml-2 h-4 w-4" />
@@ -427,7 +444,7 @@ export function BusinessProfileWizard() {
           </div>
         </div>
       </Card>
-      
+
       {/* Form Completion Info */}
       {currentStep < STEPS.length - 1 && (
         <div className="mt-4 text-center">
@@ -438,4 +455,4 @@ export function BusinessProfileWizard() {
       )}
     </div>
   );
-} 
+}

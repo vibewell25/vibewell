@@ -1,11 +1,6 @@
 import { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import {
-  Elements,
-  PaymentElement,
-  useStripe,
-  useElements,
-} from '@stripe/react-stripe-js';
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 // Initialize Stripe
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
@@ -35,9 +30,9 @@ export function PaymentFormWrapper({
 
   return (
     <Elements stripe={stripePromise} options={options}>
-      <PaymentFormContent 
-        amount={amount} 
-        currency={currency} 
+      <PaymentFormContent
+        amount={amount}
+        currency={currency}
         onPaymentSuccess={onPaymentSuccess}
         onPaymentError={onPaymentError}
       />
@@ -62,7 +57,9 @@ function PaymentFormContent({
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'succeeded' | 'failed'>('idle');
+  const [paymentStatus, setPaymentStatus] = useState<
+    'idle' | 'processing' | 'succeeded' | 'failed'
+  >('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,16 +106,14 @@ function PaymentFormContent({
   return (
     <form onSubmit={handleSubmit} className="payment-form">
       <div className="mb-6">
-        <div className="text-xl font-semibold mb-2">
-          Payment Details
-        </div>
+        <div className="text-xl font-semibold mb-2">Payment Details</div>
         <div className="text-sm text-gray-500 mb-4">
           Amount: {new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount)}
         </div>
       </div>
 
       <PaymentElement className="mb-6" />
-      
+
       {errorMessage && (
         <div className="text-red-600 mb-4 p-2 bg-red-50 rounded border border-red-200">
           {errorMessage}
@@ -135,9 +130,10 @@ function PaymentFormContent({
         type="submit"
         disabled={!stripe || isProcessing}
         className={`w-full py-3 px-4 text-white font-medium rounded transition-colors
-          ${!stripe || isProcessing 
-            ? 'bg-gray-400 cursor-not-allowed' 
-            : 'bg-indigo-600 hover:bg-indigo-700'
+          ${
+            !stripe || isProcessing
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-indigo-600 hover:bg-indigo-700'
           }`}
       >
         {isProcessing ? (
@@ -171,4 +167,4 @@ function PaymentFormContent({
   );
 }
 
-export default PaymentFormWrapper; 
+export default PaymentFormWrapper;

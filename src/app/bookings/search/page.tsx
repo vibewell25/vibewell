@@ -4,7 +4,6 @@ import { MobileLayout } from '@/components/layout/MobileLayout';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-;
 import Image from 'next/image';
 import Link from 'next/link';
 import { Icons } from '@/components/icons';
@@ -15,22 +14,22 @@ const serviceCategories = [
     name: 'Hair Styling',
     image: 'https://placehold.co/200x200?text=Hair',
     provider: 'Sndhardong',
-    href: '/bookings/hair'
+    href: '/bookings/hair',
   },
   {
     id: 'skincare',
     name: 'Skincare',
     image: 'https://placehold.co/200x200?text=Skin',
     provider: 'Cat Tral Ope',
-    href: '/bookings/skincare'
+    href: '/bookings/skincare',
   },
   {
     id: 'makeup',
     name: 'Makeup',
     image: 'https://placehold.co/200x200?text=Makeup',
     provider: 'Sondaice',
-    href: '/bookings/makeup'
-  }
+    href: '/bookings/makeup',
+  },
 ];
 export default function SearchServicesPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -47,7 +46,7 @@ export default function SearchServicesPage() {
             placeholder="Search"
             className="pl-10 h-12 rounded-lg"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
           />
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
             <Button variant="ghost" size="sm">
@@ -107,4 +106,4 @@ export default function SearchServicesPage() {
       </div>
     </MobileLayout>
   );
-} 
+}

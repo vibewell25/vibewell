@@ -1,6 +1,6 @@
 /**
  * API Cache System (Legacy Import)
- * 
+ *
  * @deprecated Use the consolidated cache implementation from '@/lib/cache' instead
  */
 
@@ -11,4 +11,4 @@ import { APICache as ImportedAPICache } from '@/lib/cache';
 // Re-export with unique import names to avoid conflicts
 export const apiCache = importedApiCache;
 export const cachedFetch = importedCachedFetch;
-export type APICache = ImportedAPICache; 
+export type APICache = ImportedAPICache;

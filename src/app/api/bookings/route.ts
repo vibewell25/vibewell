@@ -26,7 +26,7 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const filters: Prisma.ServiceBookingWhereInput = {
-      userId: session.user.id
+      userId: session.user.id,
     };
 
     // Apply optional filters
@@ -35,12 +35,12 @@ export async function GET(request: Request) {
     }
     if (searchParams.has('fromDate')) {
       filters.startTime = {
-        gte: new Date(searchParams.get('fromDate')!)
+        gte: new Date(searchParams.get('fromDate')!),
       };
     }
     if (searchParams.has('toDate')) {
       filters.endTime = {
-        lte: new Date(searchParams.get('toDate')!)
+        lte: new Date(searchParams.get('toDate')!),
       };
     }
 
@@ -50,14 +50,14 @@ export async function GET(request: Request) {
         service: true,
         practitioner: {
           include: {
-            user: true
-          }
+            user: true,
+          },
         },
-        payment: true
+        payment: true,
       },
       orderBy: {
-        startTime: 'desc'
-      }
+        startTime: 'desc',
+      },
     });
 
     return NextResponse.json(bookings);
@@ -79,13 +79,13 @@ export async function POST(request: Request) {
 
     // Check if service exists and is active
     const service = await prisma.beautyService.findUnique({
-      where: { 
+      where: {
         id: validatedData.serviceId,
-        isActive: true
+        isActive: true,
       },
       include: {
-        business: true
-      }
+        business: true,
+      },
     });
 
     if (!service) {
@@ -98,14 +98,17 @@ export async function POST(request: Request) {
         id: validatedData.practitionerId,
         services: {
           some: {
-            id: validatedData.serviceId
-          }
-        }
-      }
+            id: validatedData.serviceId,
+          },
+        },
+      },
     });
 
     if (!practitioner) {
-      return NextResponse.json({ error: 'Practitioner not found or not associated with this service' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Practitioner not found or not associated with this service' },
+        { status: 404 }
+      );
     }
 
     // Parse date and time
@@ -117,23 +120,17 @@ export async function POST(request: Request) {
       where: {
         practitionerId: validatedData.practitionerId,
         status: {
-          notIn: [BookingStatus.CANCELLED, BookingStatus.NO_SHOW]
+          notIn: [BookingStatus.CANCELLED, BookingStatus.NO_SHOW],
         },
         OR: [
           {
-            AND: [
-              { startTime: { lte: bookingDateTime } },
-              { endTime: { gt: bookingDateTime } }
-            ]
+            AND: [{ startTime: { lte: bookingDateTime } }, { endTime: { gt: bookingDateTime } }],
           },
           {
-            AND: [
-              { startTime: { lt: endDateTime } },
-              { endTime: { gte: endDateTime } }
-            ]
-          }
-        ]
-      }
+            AND: [{ startTime: { lt: endDateTime } }, { endTime: { gte: endDateTime } }],
+          },
+        ],
+      },
     });
 
     if (existingBooking) {
@@ -150,17 +147,17 @@ export async function POST(request: Request) {
         startTime: bookingDateTime,
         endTime: endDateTime,
         status: BookingStatus.PENDING,
-        notes: validatedData.notes
+        notes: validatedData.notes,
       },
       include: {
         service: true,
         practitioner: {
           include: {
-            user: true
-          }
+            user: true,
+          },
         },
-        user: true
-      }
+        user: true,
+      },
     });
 
     // Create initial payment record
@@ -173,15 +170,18 @@ export async function POST(request: Request) {
         status: 'PENDING',
         paymentMethod: 'CARD',
         isDeposit: false,
-        isRefundable: true
-      }
+        isRefundable: true,
+      },
     });
 
     return NextResponse.json(booking);
   } catch (error) {
     console.error('Error creating booking:', error);
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Invalid booking data', details: error.errors }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid booking data', details: error.errors },
+        { status: 400 }
+      );
     }
     return NextResponse.json({ error: 'Failed to create booking' }, { status: 500 });
   }
@@ -205,8 +205,8 @@ export async function PUT(request: Request) {
     const existingBooking = await prisma.serviceBooking.findFirst({
       where: {
         id: bookingId,
-        userId: session.user.id
-      }
+        userId: session.user.id,
+      },
     });
 
     if (!existingBooking) {
@@ -216,20 +216,20 @@ export async function PUT(request: Request) {
     // Update booking
     const booking = await prisma.serviceBooking.update({
       where: {
-        id: bookingId
+        id: bookingId,
       },
       data: {
         status: status as BookingStatus,
-        notes: notes || existingBooking.notes
+        notes: notes || existingBooking.notes,
       },
       include: {
         service: true,
         practitioner: {
           include: {
-            user: true
-          }
-        }
-      }
+            user: true,
+          },
+        },
+      },
     });
 
     return NextResponse.json(booking);
@@ -243,4 +243,4 @@ export async function PUT(request: Request) {
 function timeToMinutes(timeStr: string): number {
   const [hours, minutes] = timeStr.split(':').map(Number);
   return hours * 60 + minutes;
-} 
+}

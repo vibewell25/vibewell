@@ -29,13 +29,17 @@ interface EventMaterialsAgendaProps {
     };
   }) => void;
 }
-export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: EventMaterialsAgendaProps) {
+export function EventMaterialsAgenda({
+  event,
+  onMaterialAdd,
+  onAgendaAdd,
+}: EventMaterialsAgendaProps) {
   const [activeTab, setActiveTab] = useState('materials');
   const [newMaterial, setNewMaterial] = useState({
     title: '',
     type: 'document' as const,
     url: '',
-    description: ''
+    description: '',
   });
   const [newAgendaItem, setNewAgendaItem] = useState({
     title: '',
@@ -45,8 +49,8 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
     speaker: {
       name: '',
       title: '',
-      avatar: ''
-    }
+      avatar: '',
+    },
   });
   const handleMaterialSubmit = () => {
     if (newMaterial.title && newMaterial.url) {
@@ -55,7 +59,7 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
         title: '',
         type: 'document',
         url: '',
-        description: ''
+        description: '',
       });
     }
   };
@@ -70,8 +74,8 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
         speaker: {
           name: '',
           title: '',
-          avatar: ''
-        }
+          avatar: '',
+        },
       });
     }
   };
@@ -116,7 +120,7 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                     <Label>Title</Label>
                     <Input
                       value={newMaterial.title}
-                      onChange={(e) => setNewMaterial({ ...newMaterial, title: e.target.value })}
+                      onChange={e => setNewMaterial({ ...newMaterial, title: e.target.value })}
                       placeholder="Material title"
                     />
                   </div>
@@ -125,7 +129,9 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                     <select
                       className="w-full rounded-md border border-input bg-background px-3 py-2"
                       value={newMaterial.type}
-                      onChange={(e) => setNewMaterial({ ...newMaterial, type: e.target.value as any })}
+                      onChange={e =>
+                        setNewMaterial({ ...newMaterial, type: e.target.value as any })
+                      }
                     >
                       <option value="document">Document</option>
                       <option value="video">Video</option>
@@ -138,7 +144,7 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                   <Label>URL</Label>
                   <Input
                     value={newMaterial.url}
-                    onChange={(e) => setNewMaterial({ ...newMaterial, url: e.target.value })}
+                    onChange={e => setNewMaterial({ ...newMaterial, url: e.target.value })}
                     placeholder="Material URL"
                   />
                 </div>
@@ -146,21 +152,19 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                   <Label>Description (Optional)</Label>
                   <Textarea
                     value={newMaterial.description}
-                    onChange={(e) => setNewMaterial({ ...newMaterial, description: e.target.value })}
+                    onChange={e => setNewMaterial({ ...newMaterial, description: e.target.value })}
                     placeholder="Material description"
                     rows={2}
                   />
                 </div>
-                <Button onClick={handleMaterialSubmit}>
-                  Add Material
-                </Button>
+                <Button onClick={handleMaterialSubmit}>Add Material</Button>
               </div>
             </div>
             {event.materials && event.materials.length > 0 && (
               <div className="space-y-2">
                 <Label>Event Materials</Label>
                 <div className="space-y-2">
-                  {event.materials.map((material) => (
+                  {event.materials.map(material => (
                     <div
                       key={material.id}
                       className="flex items-center justify-between p-2 border rounded-md"
@@ -170,9 +174,7 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                         <div>
                           <p className="font-medium">{material.title}</p>
                           {material.description && (
-                            <p className="text-sm text-muted-foreground">
-                              {material.description}
-                            </p>
+                            <p className="text-sm text-muted-foreground">{material.description}</p>
                           )}
                         </div>
                       </div>
@@ -199,7 +201,7 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                   <Label>Title</Label>
                   <Input
                     value={newAgendaItem.title}
-                    onChange={(e) => setNewAgendaItem({ ...newAgendaItem, title: e.target.value })}
+                    onChange={e => setNewAgendaItem({ ...newAgendaItem, title: e.target.value })}
                     placeholder="Agenda item title"
                   />
                 </div>
@@ -207,7 +209,9 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                   <Label>Description (Optional)</Label>
                   <Textarea
                     value={newAgendaItem.description}
-                    onChange={(e) => setNewAgendaItem({ ...newAgendaItem, description: e.target.value })}
+                    onChange={e =>
+                      setNewAgendaItem({ ...newAgendaItem, description: e.target.value })
+                    }
                     placeholder="Agenda item description"
                     rows={2}
                   />
@@ -218,7 +222,9 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                     <Input
                       type="time"
                       value={newAgendaItem.startTime}
-                      onChange={(e) => setNewAgendaItem({ ...newAgendaItem, startTime: e.target.value })}
+                      onChange={e =>
+                        setNewAgendaItem({ ...newAgendaItem, startTime: e.target.value })
+                      }
                     />
                   </div>
                   <div className="space-y-2">
@@ -226,7 +232,9 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                     <Input
                       type="time"
                       value={newAgendaItem.endTime}
-                      onChange={(e) => setNewAgendaItem({ ...newAgendaItem, endTime: e.target.value })}
+                      onChange={e =>
+                        setNewAgendaItem({ ...newAgendaItem, endTime: e.target.value })
+                      }
                     />
                   </div>
                 </div>
@@ -235,43 +243,40 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
                   <div className="grid grid-cols-2 gap-4">
                     <Input
                       value={newAgendaItem.speaker.name}
-                      onChange={(e) => setNewAgendaItem({
-                        ...newAgendaItem,
-                        speaker: { ...newAgendaItem.speaker, name: e.target.value }
-                      })}
+                      onChange={e =>
+                        setNewAgendaItem({
+                          ...newAgendaItem,
+                          speaker: { ...newAgendaItem.speaker, name: e.target.value },
+                        })
+                      }
                       placeholder="Speaker name"
                     />
                     <Input
                       value={newAgendaItem.speaker.title}
-                      onChange={(e) => setNewAgendaItem({
-                        ...newAgendaItem,
-                        speaker: { ...newAgendaItem.speaker, title: e.target.value }
-                      })}
+                      onChange={e =>
+                        setNewAgendaItem({
+                          ...newAgendaItem,
+                          speaker: { ...newAgendaItem.speaker, title: e.target.value },
+                        })
+                      }
                       placeholder="Speaker title"
                     />
                   </div>
                 </div>
-                <Button onClick={handleAgendaSubmit}>
-                  Add Agenda Item
-                </Button>
+                <Button onClick={handleAgendaSubmit}>Add Agenda Item</Button>
               </div>
             </div>
             {event.agenda && event.agenda.length > 0 && (
               <div className="space-y-2">
                 <Label>Event Agenda</Label>
                 <div className="space-y-2">
-                  {event.agenda.map((item) => (
-                    <div
-                      key={item.id}
-                      className="p-4 border rounded-md"
-                    >
+                  {event.agenda.map(item => (
+                    <div key={item.id} className="p-4 border rounded-md">
                       <div className="flex justify-between items-start">
                         <div>
                           <h4 className="font-medium">{item.title}</h4>
                           {item.description && (
-                            <p className="text-sm text-muted-foreground mt-1">
-                              {item.description}
-                            </p>
+                            <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
                           )}
                         </div>
                         <Badge variant="outline">
@@ -297,4 +302,4 @@ export function EventMaterialsAgenda({ event, onMaterialAdd, onAgendaAdd }: Even
       </CardContent>
     </Card>
   );
-} 
+}

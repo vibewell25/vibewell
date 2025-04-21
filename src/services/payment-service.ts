@@ -5,7 +5,7 @@ import { logger } from '@/lib/logger';
 
 const prisma = new PrismaClient();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16'
+  apiVersion: '2023-10-16',
 });
 
 interface CreatePaymentIntentDTO {
@@ -134,10 +134,10 @@ export class PaymentService {
           booking: {
             include: {
               user: true,
-              service: true
-            }
-          }
-        }
+              service: true,
+            },
+          },
+        },
       });
 
       if (!payment) {
@@ -148,19 +148,18 @@ export class PaymentService {
       const updatedPayment = await prisma.payment.update({
         where: { id: payment.id },
         data: {
-          status: paymentIntent.status === 'succeeded' 
-            ? PaymentStatus.COMPLETED 
-            : PaymentStatus.FAILED,
-          updatedAt: new Date()
+          status:
+            paymentIntent.status === 'succeeded' ? PaymentStatus.COMPLETED : PaymentStatus.FAILED,
+          updatedAt: new Date(),
         },
         include: {
           booking: {
             include: {
               user: true,
-              service: true
-            }
-          }
-        }
+              service: true,
+            },
+          },
+        },
       });
 
       // Send notifications
@@ -168,13 +167,13 @@ export class PaymentService {
         await this.notificationService.notifyUser(payment.booking.userId, {
           type: 'PAYMENT',
           title: 'Payment Successful',
-          message: `Payment for ${payment.booking.service.name} has been processed successfully`
+          message: `Payment for ${payment.booking.service.name} has been processed successfully`,
         });
       } else {
         await this.notificationService.notifyUser(payment.booking.userId, {
           type: 'PAYMENT',
           title: 'Payment Failed',
-          message: `Payment for ${payment.booking.service.name} has failed. Please try again.`
+          message: `Payment for ${payment.booking.service.name} has failed. Please try again.`,
         });
       }
 
@@ -250,19 +249,19 @@ export class PaymentService {
       return await prisma.payment.findMany({
         where: {
           booking: {
-            userId
-          }
+            userId,
+          },
         },
         include: {
           booking: {
             include: {
-              service: true
-            }
-          }
+              service: true,
+            },
+          },
         },
         orderBy: {
-          createdAt: 'desc'
-        }
+          createdAt: 'desc',
+        },
       });
     } catch (error) {
       logger.error('Error getting payment history', error);
@@ -278,13 +277,13 @@ export class PaymentService {
       const payments = await prisma.payment.findMany({
         where: {
           booking: {
-            userId
+            userId,
           },
           createdAt: {
             gte: startDate,
-            lte: endDate
-          }
-        }
+            lte: endDate,
+          },
+        },
       });
 
       const totalSpent = payments.reduce((sum, payment) => sum + payment.amount, 0);
@@ -296,7 +295,7 @@ export class PaymentService {
         completedPayments,
         failedPayments,
         totalPayments: payments.length,
-        averagePayment: payments.length > 0 ? totalSpent / payments.length : 0
+        averagePayment: payments.length > 0 ? totalSpent / payments.length : 0,
       };
     } catch (error) {
       logger.error('Error getting payment statistics', error);
@@ -314,8 +313,8 @@ export class PaymentService {
         where: { id: data.bookingId },
         include: {
           user: true,
-          service: true
-        }
+          service: true,
+        },
       });
 
       if (!booking) {
@@ -332,9 +331,9 @@ export class PaymentService {
           serviceId: booking.serviceId,
           userId: booking.userId,
           isDeposit: 'true',
-          isRefundable: data.isRefundable.toString()
+          isRefundable: data.isRefundable.toString(),
         },
-        capture_method: 'manual' // This allows us to authorize now and capture later
+        capture_method: 'manual', // This allows us to authorize now and capture later
       });
 
       // Create deposit record
@@ -348,21 +347,21 @@ export class PaymentService {
           isDeposit: true,
           isRefundable: data.isRefundable,
           validUntil: data.validUntil || new Date(Date.now() + 24 * 60 * 60 * 1000), // Default 24 hours
-          businessId: booking.businessId
-        }
+          businessId: booking.businessId,
+        },
       });
 
       // Send notification
       await this.notificationService.notifyUser(booking.userId, {
         type: 'PAYMENT',
         title: 'Deposit Required',
-        message: `Please complete the deposit payment of ${data.amount} ${data.currency} to secure your booking for ${booking.service.name}`
+        message: `Please complete the deposit payment of ${data.amount} ${data.currency} to secure your booking for ${booking.service.name}`,
       });
 
       return {
         depositId: deposit.id,
         clientSecret: paymentIntent.client_secret,
-        validUntil: deposit.validUntil
+        validUntil: deposit.validUntil,
       };
     } catch (error) {
       logger.error('Error processing deposit', error);
@@ -378,8 +377,8 @@ export class PaymentService {
       const deposit = await prisma.payment.findUnique({
         where: { id: depositId },
         include: {
-          booking: true
-        }
+          booking: true,
+        },
       });
 
       if (!deposit || !deposit.isDeposit) {
@@ -387,7 +386,7 @@ export class PaymentService {
       }
 
       const finalPayment = await prisma.payment.findUnique({
-        where: { id: finalPaymentId }
+        where: { id: finalPaymentId },
       });
 
       if (!finalPayment) {
@@ -399,8 +398,8 @@ export class PaymentService {
         where: { id: finalPaymentId },
         data: {
           amount: finalPayment.amount - deposit.amount,
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       });
 
       // Mark deposit as applied
@@ -408,20 +407,20 @@ export class PaymentService {
         where: { id: depositId },
         data: {
           status: PaymentStatus.COMPLETED,
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       });
 
       // Send notification
       await this.notificationService.notifyUser(deposit.booking.userId, {
         type: 'PAYMENT',
         title: 'Deposit Applied',
-        message: `Your deposit of ${deposit.amount} ${deposit.currency} has been applied to your final payment`
+        message: `Your deposit of ${deposit.amount} ${deposit.currency} has been applied to your final payment`,
       });
 
       return {
         depositAmount: deposit.amount,
-        remainingAmount: finalPayment.amount - deposit.amount
+        remainingAmount: finalPayment.amount - deposit.amount,
       };
     } catch (error) {
       logger.error('Error applying deposit to payment', error);
@@ -440,10 +439,10 @@ export class PaymentService {
           booking: {
             include: {
               user: true,
-              service: true
-            }
-          }
-        }
+              service: true,
+            },
+          },
+        },
       });
 
       if (!deposit || !deposit.isDeposit) {
@@ -461,7 +460,7 @@ export class PaymentService {
       // Process refund through Stripe
       const refund = await stripe.refunds.create({
         payment_intent: deposit.stripeId,
-        amount: Math.round(deposit.amount * 100) // Convert to cents
+        amount: Math.round(deposit.amount * 100), // Convert to cents
       });
 
       // Update deposit status
@@ -469,20 +468,20 @@ export class PaymentService {
         where: { id: depositId },
         data: {
           status: PaymentStatus.REFUNDED,
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       });
 
       // Send notification
       await this.notificationService.notifyUser(deposit.booking.userId, {
         type: 'PAYMENT',
         title: 'Deposit Refunded',
-        message: `Your deposit of ${deposit.amount} ${deposit.currency} for ${deposit.booking.service.name} has been refunded. ${reason ? `Reason: ${reason}` : ''}`
+        message: `Your deposit of ${deposit.amount} ${deposit.currency} for ${deposit.booking.service.name} has been refunded. ${reason ? `Reason: ${reason}` : ''}`,
       });
 
       return {
         deposit: updatedDeposit,
-        refund
+        refund,
       };
     } catch (error) {
       logger.error('Error refunding deposit', error);
@@ -522,17 +521,11 @@ export class PaymentService {
         return sum;
       }, 0);
 
-      const successfulPayments = payments.filter(
-        (p) => p.status === PaymentStatus.COMPLETED
-      ).length;
+      const successfulPayments = payments.filter(p => p.status === PaymentStatus.COMPLETED).length;
 
-      const failedPayments = payments.filter(
-        (p) => p.status === PaymentStatus.FAILED
-      ).length;
+      const failedPayments = payments.filter(p => p.status === PaymentStatus.FAILED).length;
 
-      const refundedPayments = payments.filter(
-        (p) => p.status === PaymentStatus.REFUNDED
-      ).length;
+      const refundedPayments = payments.filter(p => p.status === PaymentStatus.REFUNDED).length;
 
       const revenueByService = await prisma.bookingService.groupBy({
         by: ['serviceId'],
@@ -592,4 +585,4 @@ export class PaymentService {
   }
 }
 
-export const paymentService = new PaymentService(); 
+export const paymentService = new PaymentService();

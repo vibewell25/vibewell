@@ -28,7 +28,7 @@ export default function SecuritySettingsPage() {
   const handleSuccess = () => {
     setMessage({
       type: 'success',
-      text: 'Device registered successfully!'
+      text: 'Device registered successfully!',
     });
     setTimeout(() => setMessage(null), 5000);
   };
@@ -36,7 +36,7 @@ export default function SecuritySettingsPage() {
   const handleError = (error: Error) => {
     setMessage({
       type: 'error',
-      text: error.message
+      text: error.message,
     });
     setTimeout(() => setMessage(null), 5000);
   };
@@ -44,7 +44,7 @@ export default function SecuritySettingsPage() {
   const handleDelete = async (authenticatorId: string) => {
     try {
       const response = await fetch(`/api/auth/webauthn/authenticators?id=${authenticatorId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
 
       if (!response.ok) {
@@ -58,7 +58,7 @@ export default function SecuritySettingsPage() {
 
       setMessage({
         type: 'success',
-        text: 'Device removed successfully!'
+        text: 'Device removed successfully!',
       });
       setTimeout(() => setMessage(null), 5000);
     } catch (err) {
@@ -73,9 +73,9 @@ export default function SecuritySettingsPage() {
       const response = await fetch('/api/auth/webauthn/authenticators', {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: authenticatorId, name })
+        body: JSON.stringify({ id: authenticatorId, name }),
       });
 
       if (!response.ok) {
@@ -89,7 +89,7 @@ export default function SecuritySettingsPage() {
 
       setMessage({
         type: 'success',
-        text: 'Device renamed successfully!'
+        text: 'Device renamed successfully!',
       });
       setTimeout(() => setMessage(null), 5000);
     } catch (err) {
@@ -120,7 +120,7 @@ export default function SecuritySettingsPage() {
         </p>
       </div>
       <Separator />
-      
+
       <div className="grid gap-8">
         <Card>
           <CardHeader>
@@ -134,18 +134,17 @@ export default function SecuritySettingsPage() {
               <div className="rounded-md bg-muted p-4">
                 <h4 className="text-sm font-medium mb-2">Registered Authenticators</h4>
                 <ul className="text-sm space-y-2">
-                  {authenticators.map((auth) => (
+                  {authenticators.map(auth => (
                     <li key={auth.id} className="flex justify-between items-center">
                       <span>
-                        Authenticator registered on{' '}
-                        {new Date(auth.createdAt).toLocaleDateString()}
+                        Authenticator registered on {new Date(auth.createdAt).toLocaleDateString()}
                       </span>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-            
+
             <WebAuthnButton
               mode="register"
               requireBiometrics={true}
@@ -170,7 +169,9 @@ export default function SecuritySettingsPage() {
       <section className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-xl font-semibold mb-2">Security Keys and Biometric Authentication</h2>
+            <h2 className="text-xl font-semibold mb-2">
+              Security Keys and Biometric Authentication
+            </h2>
             <p className="text-gray-600">
               Add or manage security keys and biometric authentication methods for your account.
             </p>
@@ -186,10 +187,7 @@ export default function SecuritySettingsPage() {
 
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h3 className="text-lg font-medium mb-4">Registered Devices</h3>
-          <AuthenticatorList
-            onDelete={handleDelete}
-            onRename={handleRename}
-          />
+          <AuthenticatorList onDelete={handleDelete} onRename={handleRename} />
         </div>
       </section>
 
@@ -214,20 +212,50 @@ export default function SecuritySettingsPage() {
           <h3 className="text-base font-medium mb-4">Why use biometric authentication?</h3>
           <ul className="space-y-3 text-gray-600">
             <li className="flex items-start">
-              <svg className="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                className="h-6 w-6 text-green-500 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
               Enhanced security with physical verification
             </li>
             <li className="flex items-start">
-              <svg className="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                className="h-6 w-6 text-green-500 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
               Quick and convenient login process
             </li>
             <li className="flex items-start">
-              <svg className="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                className="h-6 w-6 text-green-500 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
               Protection against phishing and password theft
             </li>
@@ -236,4 +264,4 @@ export default function SecuritySettingsPage() {
       </section>
     </div>
   );
-} 
+}

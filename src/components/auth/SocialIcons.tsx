@@ -49,4 +49,4 @@ export const SocialIcon: React.FC<SocialIconProps> = ({ provider, className = 'h
     default:
       return null;
   }
-}; 
+};

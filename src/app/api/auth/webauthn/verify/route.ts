@@ -10,20 +10,14 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await req.json();
     const { response, options = {} } = body;
 
     if (!response) {
-      return NextResponse.json(
-        { error: 'Missing registration response' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing registration response' }, { status: 400 });
     }
 
     const verification = await webAuthnService.verifyRegistration(
@@ -40,9 +34,6 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-} 
+}

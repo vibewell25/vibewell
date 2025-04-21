@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import type { Conversation } from '@/lib/api/messages';
 
 interface MessageContextType {
@@ -13,7 +13,11 @@ interface MessageContextType {
   markConversationAsRead: (conversationId: string) => Promise<void>;
   deleteConversation: (conversationId: string) => Promise<void>;
   sendMessage: (conversationId: string, content: string) => Promise<void>;
-  startNewConversation: (recipientId: string, recipientName: string, content: string) => Promise<string | null>;
+  startNewConversation: (
+    recipientId: string,
+    recipientName: string,
+    content: string
+  ) => Promise<string | null>;
 }
 
 const MessageContext = createContext<MessageContextType | undefined>(undefined);
@@ -40,12 +44,12 @@ export function MessageProvider({ children }: { children: ReactNode }) {
     try {
       setError(null);
       setLoading(true);
-      
+
       const response = await fetch('/api/messages');
       if (!response.ok) {
         throw new Error('Failed to fetch conversations');
       }
-      
+
       const data = await response.json();
       setConversations(data.conversations || []);
       setUnreadCount(calculateUnreadCount(data.conversations || []));
@@ -62,32 +66,33 @@ export function MessageProvider({ children }: { children: ReactNode }) {
 
     try {
       // Update optimistically
-      setConversations(prev => 
+      setConversations(prev =>
         prev.map(conv => {
           if (conv.id === conversationId) {
             const updatedConv = {
               ...conv,
               messages: conv.messages.map(msg => ({ ...msg, read: true })),
-              unreadCount: 0
+              unreadCount: 0,
             };
             return updatedConv;
           }
           return conv;
         })
       );
-      
+
       // Update unread count
-      setUnreadCount(prev => prev - (conversations.find(c => c.id === conversationId)?.unreadCount || 0));
-      
+      setUnreadCount(
+        prev => prev - (conversations.find(c => c.id === conversationId)?.unreadCount || 0)
+      );
+
       // Call API to update
       const response = await fetch(`/api/messages/${conversationId}`, {
-        method: 'PATCH'
+        method: 'PATCH',
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to mark conversation as read');
       }
-      
     } catch (err) {
       console.error('Error marking conversation as read:', err);
       // Revert optimistic update on error by refetching
@@ -97,20 +102,21 @@ export function MessageProvider({ children }: { children: ReactNode }) {
 
   const deleteConversation = async (conversationId: string) => {
     if (!user) return;
-    
+
     try {
       // Get the unread count to update total
-      const conversationUnreadCount = conversations.find(c => c.id === conversationId)?.unreadCount || 0;
-      
+      const conversationUnreadCount =
+        conversations.find(c => c.id === conversationId)?.unreadCount || 0;
+
       // Update optimistically
       setConversations(prev => prev.filter(c => c.id !== conversationId));
       setUnreadCount(prev => prev - conversationUnreadCount);
-      
+
       // Call API to delete
       const response = await fetch(`/api/messages/${conversationId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to delete conversation');
       }
@@ -128,11 +134,11 @@ export function MessageProvider({ children }: { children: ReactNode }) {
       // Get the conversation
       const conversation = conversations.find(c => c.id === conversationId);
       if (!conversation) return;
-      
+
       // Get the recipient
       const recipient = conversation.participants.find(p => p.id !== user.id);
       if (!recipient) return;
-      
+
       // Add optimistic update
       const optimisticMsg = {
         id: `temp-${Date.now()}`,
@@ -141,39 +147,38 @@ export function MessageProvider({ children }: { children: ReactNode }) {
         timestamp: new Date().toISOString(),
         read: false,
       };
-      
-      setConversations(prev => 
+
+      setConversations(prev =>
         prev.map(conv => {
           if (conv.id === conversationId) {
             return {
               ...conv,
-              messages: [...conv.messages, optimisticMsg]
+              messages: [...conv.messages, optimisticMsg],
             };
           }
           return conv;
         })
       );
-      
+
       // Send to API
       const response = await fetch('/api/messages', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           recipientId: recipient.id,
           recipientName: recipient.name,
-          content
-        })
+          content,
+        }),
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to send message');
       }
-      
+
       // Refresh conversations to get the latest state
       await fetchConversations();
-      
     } catch (err) {
       console.error('Error sending message:', err);
       // Revert optimistic update on error
@@ -181,31 +186,35 @@ export function MessageProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const startNewConversation = async (recipientId: string, recipientName: string, content: string) => {
+  const startNewConversation = async (
+    recipientId: string,
+    recipientName: string,
+    content: string
+  ) => {
     if (!user || !content.trim()) return null;
 
     try {
       const response = await fetch('/api/messages', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           recipientId,
           recipientName,
-          content
-        })
+          content,
+        }),
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to start conversation');
       }
-      
+
       const data = await response.json();
-      
+
       // Refresh conversations
       await fetchConversations();
-      
+
       // Return the new conversation ID
       return data.conversation?.id || null;
     } catch (err) {
@@ -218,10 +227,10 @@ export function MessageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (user) {
       fetchConversations();
-      
+
       // Poll for new messages every 30 seconds
       const intervalId = setInterval(fetchConversations, 30000);
-      
+
       return () => clearInterval(intervalId);
     } else {
       setConversations([]);
@@ -239,14 +248,10 @@ export function MessageProvider({ children }: { children: ReactNode }) {
     markConversationAsRead,
     deleteConversation,
     sendMessage,
-    startNewConversation
+    startNewConversation,
   };
 
-  return (
-    <MessageContext.Provider value={value}>
-      {children}
-    </MessageContext.Provider>
-  );
+  return <MessageContext.Provider value={value}>{children}</MessageContext.Provider>;
 }
 
 export function useMessages() {
@@ -255,4 +260,4 @@ export function useMessages() {
     throw new Error('useMessages must be used within a MessageProvider');
   }
   return context;
-} 
+}

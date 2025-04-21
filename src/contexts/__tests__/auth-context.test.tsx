@@ -13,7 +13,7 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('@auth0/nextjs-auth0/client', () => ({
   useUser: vi.fn(),
-  UserProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
+  UserProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
 // Mock fetch for API calls
@@ -26,34 +26,22 @@ function TestComponent() {
     <div>
       <div data-testid="loading">{auth.loading.toString()}</div>
       <div data-testid="user">{JSON.stringify(auth.user)}</div>
-      <button 
-        data-testid="signin-btn" 
-        onClick={() => auth.signIn('test@example.com', 'password')}
-      >
+      <button data-testid="signin-btn" onClick={() => auth.signIn('test@example.com', 'password')}>
         Sign In
       </button>
-      <button 
-        data-testid="signout-btn" 
-        onClick={() => auth.signOut()}
-      >
+      <button data-testid="signout-btn" onClick={() => auth.signOut()}>
         Sign Out
       </button>
-      <button 
-        data-testid="signup-btn" 
+      <button
+        data-testid="signup-btn"
         onClick={() => auth.signUp('test@example.com', 'password', 'Test User')}
       >
         Sign Up
       </button>
-      <button 
-        data-testid="reset-btn" 
-        onClick={() => auth.resetPassword('test@example.com')}
-      >
+      <button data-testid="reset-btn" onClick={() => auth.resetPassword('test@example.com')}>
         Reset Password
       </button>
-      <button 
-        data-testid="update-password-btn" 
-        onClick={() => auth.updatePassword('newpassword')}
-      >
+      <button data-testid="update-password-btn" onClick={() => auth.updatePassword('newpassword')}>
         Update Password
       </button>
     </div>
@@ -61,22 +49,22 @@ function TestComponent() {
 }
 
 describe('AuthContext', () => {
-  const mockRouter = { 
-    push: vi.fn(), 
-    replace: vi.fn() 
+  const mockRouter = {
+    push: vi.fn(),
+    replace: vi.fn(),
   };
-  
+
   beforeEach(() => {
     vi.clearAllMocks();
     (useRouter as any).mockReturnValue(mockRouter);
-    
+
     // Setup default behavior for Auth0 mock
     (useUser as any).mockReturnValue({
       user: null,
       error: null,
-      isLoading: false
+      isLoading: false,
     });
-    
+
     // Setup fetch mock
     (global.fetch as any).mockResolvedValue({
       ok: true,
@@ -89,9 +77,9 @@ describe('AuthContext', () => {
     (useUser as any).mockReturnValue({
       user: null,
       error: null,
-      isLoading: true
+      isLoading: true,
     });
-    
+
     render(
       <AuthProvider>
         <TestComponent />
@@ -99,14 +87,14 @@ describe('AuthContext', () => {
     );
 
     expect(screen.getByTestId('loading').textContent).toBe('true');
-    
+
     // Update mock to finished loading
     (useUser as any).mockReturnValue({
       user: null,
       error: null,
-      isLoading: false
+      isLoading: false,
     });
-    
+
     // Loading should become false after auth initialization
     await waitFor(() => {
       expect(screen.getByTestId('loading').textContent).toBe('false');
@@ -225,4 +213,4 @@ describe('AuthContext', () => {
 
     expect(global.fetch).toHaveBeenCalledWith('/api/auth/password-reset', expect.any(Object));
   });
-}); 
+});

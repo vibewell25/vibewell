@@ -32,7 +32,7 @@ export const getDistance = (p1: TouchPosition, p2: TouchPosition): number => {
  * Calculate the angle between two points (in degrees)
  */
 export const getAngle = (p1: TouchPosition, p2: TouchPosition): number => {
-  return Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
+  return (Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180) / Math.PI;
 };
 
 /**
@@ -44,11 +44,11 @@ export const getSwipeDirection = (
 ): 'left' | 'right' | 'up' | 'down' => {
   const dx = endPos.x - startPos.x;
   const dy = endPos.y - startPos.y;
-  
+
   // Determine primary direction based on which axis has greater movement
   if (Math.abs(dx) > Math.abs(dy)) {
     return dx > 0 ? 'right' : 'left';
   } else {
     return dy > 0 ? 'down' : 'up';
   }
-}; 
+};

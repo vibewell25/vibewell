@@ -34,24 +34,15 @@ export async function POST(req: Request) {
     }
 
     if (!ALLOWED_TYPES.includes(contentType)) {
-      return NextResponse.json(
-        { error: 'File type not allowed' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'File type not allowed' }, { status: 400 });
     }
 
-    const uploadUrl = await fileUploadService.getPresignedUploadUrl(
-      filename,
-      contentType
-    );
+    const uploadUrl = await fileUploadService.getPresignedUploadUrl(filename, contentType);
 
     return NextResponse.json({ uploadUrl });
   } catch (error) {
     console.error('Error generating upload URL:', error);
-    return NextResponse.json(
-      { error: 'Error generating upload URL' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Error generating upload URL' }, { status: 500 });
   }
 }
 
@@ -66,20 +57,14 @@ export async function GET(req: Request) {
     const key = searchParams.get('key');
 
     if (!key) {
-      return NextResponse.json(
-        { error: 'File key is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'File key is required' }, { status: 400 });
     }
 
     const url = fileUploadService.getPublicUrl(key);
     return NextResponse.json({ url });
   } catch (error) {
     console.error('Error getting file URL:', error);
-    return NextResponse.json(
-      { error: 'Error getting file URL' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Error getting file URL' }, { status: 500 });
   }
 }
 
@@ -89,10 +74,7 @@ export async function DELETE(req: NextRequest) {
       const { key } = await req.json();
 
       if (!key) {
-        return NextResponse.json(
-          { error: 'Missing file key' },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: 'Missing file key' }, { status: 400 });
       }
 
       // Check if the user has permission to delete this file
@@ -111,10 +93,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ success: true });
     } catch (error) {
       console.error('Error deleting file:', error);
-      return NextResponse.json(
-        { error: 'Failed to delete file' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: 'Failed to delete file' }, { status: 500 });
     }
   });
-} 
+}

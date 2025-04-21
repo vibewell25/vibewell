@@ -30,9 +30,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       <div className="flex items-center justify-between">
         {showLabel && (
           <div className="flex items-center">
-            <span className="text-sm font-medium text-gray-700">
-              {percentage.toFixed(0)}%
-            </span>
+            <span className="text-sm font-medium text-gray-700">{percentage.toFixed(0)}%</span>
           </div>
         )}
       </div>
@@ -48,4 +46,4 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       </div>
     </div>
   );
-}; 
+};

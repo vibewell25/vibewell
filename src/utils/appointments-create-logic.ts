@@ -1,5 +1,5 @@
 // Implementation for appointment creation logic
-export const createAppointment = async (appointmentData) => {
+export const createAppointment = async appointmentData => {
   try {
     const response = await fetch('/api/beauty/appointments/create', {
       method: 'POST',
@@ -8,12 +8,12 @@ export const createAppointment = async (appointmentData) => {
       },
       body: JSON.stringify(appointmentData),
     });
-    
+
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message || 'Failed to create appointment');
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error('Error creating appointment:', error);
@@ -31,12 +31,12 @@ export const updateAppointmentStatus = async (appointmentId, status) => {
       },
       body: JSON.stringify({ status }),
     });
-    
+
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message || 'Failed to update appointment status');
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error('Error updating appointment status:', error);

@@ -33,28 +33,30 @@ export default function MobilePage() {
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/60"></div>
           </div>
-          
+
           <div className="absolute top-16 left-0 right-0 p-6 z-10">
             <div className="text-white">
-              <h1 className="text-4xl font-bold mb-2">Beauty<br />and wellness<br />services</h1>
+              <h1 className="text-4xl font-bold mb-2">
+                Beauty
+                <br />
+                and wellness
+                <br />
+                services
+              </h1>
               <p className="text-2xl font-medium mt-2">on demand</p>
             </div>
           </div>
         </div>
 
         <div className="bg-white flex-1 px-6 py-10 -mt-10 rounded-t-3xl flex flex-col space-y-4 z-10">
-          <Button 
+          <Button
             className="h-14 rounded-full font-medium bg-gradient-to-r from-rose-400 to-rose-500 hover:from-rose-500 hover:to-rose-600"
             asChild
           >
             <Link href="/login">Sign Up</Link>
           </Button>
-          
-          <Button 
-            variant="outline" 
-            className="h-14 rounded-full font-medium border-2"
-            asChild
-          >
+
+          <Button variant="outline" className="h-14 rounded-full font-medium border-2" asChild>
             <Link href="/login">Log in</Link>
           </Button>
 
@@ -85,4 +87,4 @@ export default function MobilePage() {
       </div>
     </MobileLayout>
   );
-} 
+}

@@ -1,6 +1,6 @@
 /**
  * Authentication Type Guards
- * 
+ *
  * This file provides type guard functions for validating user authentication
  * and role authorization. These guards help ensure proper type checking and
  * avoid undefined/null errors when working with user data.
@@ -37,7 +37,7 @@ export function hasRole(user: User | null | undefined, role: string | string[]):
   if (!isAuthenticated(user) || !exists(user.roles)) {
     return false;
   }
-  
+
   const roles = Array.isArray(role) ? role : [role];
   return roles.some(r => user.roles!.includes(r));
 }
@@ -52,7 +52,7 @@ export function hasAllRoles(user: User | null | undefined, roles: string[]): boo
   if (!isAuthenticated(user) || !exists(user.roles)) {
     return false;
   }
-  
+
   return roles.every(role => user.roles!.includes(role));
 }
 
@@ -81,14 +81,14 @@ export function hasPermission(
   if (!isAuthenticated(user) || !exists(user.permissions)) {
     return false;
   }
-  
+
   // Simple implementation - can be extended based on your permission structure
   const userPermissions = user.permissions as string[];
-  
+
   if (exists(resource)) {
     return userPermissions.includes(`${permission}:${resource}`);
   }
-  
+
   return userPermissions.includes(permission);
 }
 
@@ -101,7 +101,7 @@ export function getUserRoles(user: User | null | undefined): string[] {
   if (!isAuthenticated(user) || !exists(user.roles)) {
     return [];
   }
-  
+
   return user.roles;
 }
 
@@ -113,13 +113,13 @@ export function getUserRoles(user: User | null | undefined): string[] {
  * @returns The property value or default value
  */
 export function getUserProperty<T>(
-  user: User | null | undefined, 
+  user: User | null | undefined,
   property: string,
   defaultValue: T
 ): T {
   if (!isAuthenticated(user)) {
     return defaultValue;
   }
-  
+
   return (property in user ? user[property] : defaultValue) as T;
-} 
+}

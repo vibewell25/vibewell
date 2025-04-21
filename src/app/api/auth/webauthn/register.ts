@@ -47,9 +47,6 @@ export async function POST() {
     return NextResponse.json(options);
   } catch (error) {
     console.error('WebAuthn registration error:', error);
-    return NextResponse.json(
-      { error: 'Failed to generate registration options' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to generate registration options' }, { status: 500 });
   }
-} 
+}

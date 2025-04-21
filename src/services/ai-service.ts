@@ -45,7 +45,7 @@ export class AIService {
   async getPersonalizedRecommendations(userId: string) {
     try {
       const recommendations = await this.recommendationService.generateRecommendations(userId);
-      
+
       // Get service details for the recommendations
       const servicesWithDetails = await Promise.all(
         recommendations.map(async rec => {
@@ -66,7 +66,9 @@ export class AIService {
       return servicesWithDetails;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      logger.error('Error getting personalized recommendations', 'AIService', { error: errorMessage });
+      logger.error('Error getting personalized recommendations', 'AIService', {
+        error: errorMessage,
+      });
       throw error;
     }
   }
@@ -107,10 +109,7 @@ export class AIService {
       );
 
       // Calculate resource allocation
-      const allocation = await this.predictiveBooking.calculateResourceAllocation(
-        businessId,
-        date
-      );
+      const allocation = await this.predictiveBooking.calculateResourceAllocation(businessId, date);
 
       return {
         forecasts,
@@ -190,4 +189,4 @@ export class AIService {
       throw error;
     }
   }
-} 
+}

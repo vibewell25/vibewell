@@ -26,21 +26,21 @@ const REACTION_LABELS: Record<ReactionType, string> = {
   '😂': 'Haha',
   '😮': 'Wow',
   '😢': 'Sad',
-  '😡': 'Angry'
+  '😡': 'Angry',
 };
 
 export function PostReaction({
   postId,
   initialReactions = {},
   userReaction = null,
-  onReactionChange
+  onReactionChange,
 }: PostReactionProps) {
   // Initialize reactions with defaults
   const [reactions, setReactions] = useState<Reaction[]>(
     REACTION_TYPES.map(type => ({
       type,
       count: initialReactions[type] || 0,
-      reacted: type === userReaction
+      reacted: type === userReaction,
     }))
   );
   const [showReactionPicker, setShowReactionPicker] = useState(false);
@@ -52,7 +52,7 @@ export function PostReaction({
   // Handle reaction selection
   const handleReactionClick = (type: ReactionType) => {
     const newReactions = [...reactions];
-    
+
     // If the same reaction is clicked again, remove it
     if (selectedReaction === type) {
       // Find the reaction and decrement its count
@@ -62,7 +62,7 @@ export function PostReaction({
         newReactions[index].reacted = false;
       }
       setSelectedReaction(null);
-      
+
       // Call the callback if provided
       if (onReactionChange) {
         onReactionChange(postId, null);
@@ -76,7 +76,7 @@ export function PostReaction({
           newReactions[previousIndex].reacted = false;
         }
       }
-      
+
       // Add the new reaction
       const index = newReactions.findIndex(r => r.type === type);
       if (index !== -1) {
@@ -84,13 +84,13 @@ export function PostReaction({
         newReactions[index].reacted = true;
       }
       setSelectedReaction(type);
-      
+
       // Call the callback if provided
       if (onReactionChange) {
         onReactionChange(postId, type);
       }
     }
-    
+
     setReactions(newReactions);
     setShowReactionPicker(false);
   };
@@ -116,11 +116,12 @@ export function PostReaction({
   return (
     <div className="relative">
       {/* Main reaction button */}
-      <button 
+      <button
         className={`flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm 
-          ${selectedReaction 
-            ? 'bg-primary/10 text-primary' 
-            : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+          ${
+            selectedReaction
+              ? 'bg-primary/10 text-primary'
+              : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
           } transition-colors`}
         onClick={() => setShowReactionPicker(!showReactionPicker)}
       >
@@ -147,4 +148,4 @@ export function PostReaction({
       )}
     </div>
   );
-} 
+}

@@ -86,4 +86,4 @@ export const createCustomer = async ({
 };
 
 // Export Stripe instance for direct use
-export default stripe; 
+export default stripe;

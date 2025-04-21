@@ -1,4 +1,4 @@
-export type WebAuthnErrorCode = 
+export type WebAuthnErrorCode =
   | 'USER_NOT_FOUND'
   | 'CHALLENGE_INVALID'
   | 'VERIFICATION_FAILED'
@@ -7,8 +7,11 @@ export type WebAuthnErrorCode =
   | 'NO_AUTHENTICATORS';
 
 export class WebAuthnError extends Error {
-  constructor(message: string, public code: WebAuthnErrorCode) {
+  constructor(
+    message: string,
+    public code: WebAuthnErrorCode
+  ) {
     super(message);
     this.name = 'WebAuthnError';
   }
-} 
+}

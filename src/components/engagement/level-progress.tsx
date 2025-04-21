@@ -11,25 +11,25 @@ interface LevelProgressProps {
 }
 
 // Calculate thresholds for level up
-function calculateLevelThresholds(currentLevel: number): { current: number, next: number } {
+function calculateLevelThresholds(currentLevel: number): { current: number; next: number } {
   // Level 1: 0-100, Level 2: 101-220, Level 3: 221-364, etc.
   if (currentLevel === 1) {
     return { current: 0, next: 100 };
   }
-  
+
   let threshold = 100;
   for (let i = 2; i < currentLevel; i++) {
     threshold += Math.floor(threshold * 0.2);
   }
-  
+
   const nextThreshold = threshold + Math.floor(threshold * 0.2);
-  
+
   return { current: threshold, next: nextThreshold };
 }
 
 export function LevelProgress({ showDetails = true, className = '' }: LevelProgressProps) {
   const { points, badges, isLoading } = useEngagement();
-  
+
   if (isLoading) {
     return (
       <div className={`space-y-2 ${className}`}>
@@ -45,15 +45,16 @@ export function LevelProgress({ showDetails = true, className = '' }: LevelProgr
       </div>
     );
   }
-  
+
   if (!points) {
     return null;
   }
-  
+
   const { current: currentThreshold, next: nextThreshold } = calculateLevelThresholds(points.level);
   const pointsToNextLevel = nextThreshold - points.points;
-  const progressPercentage = ((points.points - currentThreshold) / (nextThreshold - currentThreshold)) * 100;
-  
+  const progressPercentage =
+    ((points.points - currentThreshold) / (nextThreshold - currentThreshold)) * 100;
+
   return (
     <div className={`space-y-2 ${className}`}>
       <div className="flex items-center justify-between">
@@ -63,15 +64,19 @@ export function LevelProgress({ showDetails = true, className = '' }: LevelProgr
         </div>
         <span className="text-sm text-muted-foreground">{points.points} points</span>
       </div>
-      
+
       <div className="space-y-1">
         <Progress value={progressPercentage} className="h-2" />
         <div className="flex justify-between text-xs text-muted-foreground">
-          <span>{points.points - currentThreshold} / {nextThreshold - currentThreshold}</span>
-          <span>{pointsToNextLevel} points to level {points.level + 1}</span>
+          <span>
+            {points.points - currentThreshold} / {nextThreshold - currentThreshold}
+          </span>
+          <span>
+            {pointsToNextLevel} points to level {points.level + 1}
+          </span>
         </div>
       </div>
-      
+
       {showDetails && (
         <div className="grid grid-cols-3 gap-4 mt-4">
           <div className="flex flex-col items-center justify-center p-3 bg-muted/30 rounded-lg">
@@ -81,7 +86,7 @@ export function LevelProgress({ showDetails = true, className = '' }: LevelProgr
             <span className="text-xl font-bold">{badges.length}</span>
             <span className="text-xs text-muted-foreground">Badges</span>
           </div>
-          
+
           <div className="flex flex-col items-center justify-center p-3 bg-muted/30 rounded-lg">
             <div className="flex items-center gap-1 text-primary mb-1">
               <Star className="h-4 w-4" />
@@ -89,7 +94,7 @@ export function LevelProgress({ showDetails = true, className = '' }: LevelProgr
             <span className="text-xl font-bold">{points.points}</span>
             <span className="text-xs text-muted-foreground">Points</span>
           </div>
-          
+
           <div className="flex flex-col items-center justify-center p-3 bg-muted/30 rounded-lg">
             <div className="flex items-center gap-1 text-primary mb-1">
               <TrendingUp className="h-4 w-4" />
@@ -101,4 +106,4 @@ export function LevelProgress({ showDetails = true, className = '' }: LevelProgr
       )}
     </div>
   );
-} 
+}

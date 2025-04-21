@@ -13,7 +13,7 @@ export default function MeditationPage() {
             soundscape="rain"
             lightingIntensity={1}
             particleEffects={true}
-            onStateChange={(state) => {
+            onStateChange={state => {
               console.log('Environment state changed:', state);
             }}
           />
@@ -21,4 +21,4 @@ export default function MeditationPage() {
       </div>
     </div>
   );
-} 
+}

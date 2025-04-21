@@ -15,7 +15,7 @@ interface BookingAppProps {
  */
 export const BookingApp: React.FC<BookingAppProps> = ({
   providerId,
-  initialStatus = 'confirmed'
+  initialStatus = 'confirmed',
 }) => {
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [currentStatus, setCurrentStatus] = useState<BookingStatus>(initialStatus);
@@ -42,28 +42,28 @@ export const BookingApp: React.FC<BookingAppProps> = ({
       <div className="booking-app">
         <header className="booking-app-header">
           <h1>Booking Management</h1>
-          
+
           {!selectedBooking && (
             <div className="booking-status-filters">
-              <button 
+              <button
                 className={`status-filter ${currentStatus === 'pending' ? 'active' : ''}`}
                 onClick={() => handleStatusChange('pending')}
               >
                 Pending
               </button>
-              <button 
+              <button
                 className={`status-filter ${currentStatus === 'confirmed' ? 'active' : ''}`}
                 onClick={() => handleStatusChange('confirmed')}
               >
                 Confirmed
               </button>
-              <button 
+              <button
                 className={`status-filter ${currentStatus === 'completed' ? 'active' : ''}`}
                 onClick={() => handleStatusChange('completed')}
               >
                 Completed
               </button>
-              <button 
+              <button
                 className={`status-filter ${currentStatus === 'cancelled' ? 'active' : ''}`}
                 onClick={() => handleStatusChange('cancelled')}
               >
@@ -75,12 +75,9 @@ export const BookingApp: React.FC<BookingAppProps> = ({
 
         <main className="booking-app-content">
           {selectedBooking ? (
-            <BookingDetail 
-              bookingId={selectedBooking.id} 
-              onBack={handleBackToList} 
-            />
+            <BookingDetail bookingId={selectedBooking.id} onBack={handleBackToList} />
           ) : (
-            <BookingList 
+            <BookingList
               status={currentStatus}
               providerId={providerId}
               onBookingSelect={handleBookingSelect}
@@ -90,4 +87,4 @@ export const BookingApp: React.FC<BookingAppProps> = ({
       </div>
     </ErrorHandlerProvider>
   );
-}; 
+};

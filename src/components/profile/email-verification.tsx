@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from '@/components/ui/card';
 import { Mail, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { prisma } from '@/lib/database/client';
 import { toast } from '@/components/ui/use-toast';
@@ -19,20 +26,20 @@ export function EmailVerification({ email, onSuccess }: EmailVerificationProps) 
     try {
       setSending(true);
       setError(null);
-      
+
       // Send verification email via Supabase Auth
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/verify-email`,
       });
-      
+
       if (error) throw error;
-      
+
       setSent(true);
       toast({
         title: 'Verification Email Sent',
         description: 'Please check your inbox for the verification link',
       });
-      
+
       if (onSuccess) {
         onSuccess();
       }
@@ -56,9 +63,7 @@ export function EmailVerification({ email, onSuccess }: EmailVerificationProps) 
           <Mail className="h-5 w-5" />
           Email Verification
         </CardTitle>
-        <CardDescription>
-          Verify your email address to ensure account security
-        </CardDescription>
+        <CardDescription>Verify your email address to ensure account security</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center space-y-4 py-4">
         {sent ? (
@@ -86,7 +91,8 @@ export function EmailVerification({ email, onSuccess }: EmailVerificationProps) 
             <div>
               <h3 className="text-lg font-medium">Verify Your Email</h3>
               <p className="text-muted-foreground mt-1">
-                Click the button below to send a verification email to <span className="font-medium">{email}</span>
+                Click the button below to send a verification email to{' '}
+                <span className="font-medium">{email}</span>
               </p>
             </div>
           </div>
@@ -94,11 +100,7 @@ export function EmailVerification({ email, onSuccess }: EmailVerificationProps) 
       </CardContent>
       <CardFooter className="flex justify-center">
         {!sent ? (
-          <Button
-            onClick={handleSendVerification}
-            disabled={sending}
-            className="w-full sm:w-auto"
-          >
+          <Button onClick={handleSendVerification} disabled={sending} className="w-full sm:w-auto">
             {sending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -112,15 +114,11 @@ export function EmailVerification({ email, onSuccess }: EmailVerificationProps) 
             )}
           </Button>
         ) : (
-          <Button
-            variant="outline"
-            onClick={handleSendVerification}
-            className="w-full sm:w-auto"
-          >
+          <Button variant="outline" onClick={handleSendVerification} className="w-full sm:w-auto">
             Resend Verification Email
           </Button>
         )}
       </CardFooter>
     </Card>
   );
-} 
+}

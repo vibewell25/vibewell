@@ -8,7 +8,6 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-;
 import Calendar, { CalendarProps, TileArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Value } from 'react-calendar';
@@ -45,13 +44,13 @@ const dummyAppointments: Appointment[] = [
       name: 'Sarah Johnson',
       avatar: '/users/sarah.jpg',
       email: 'sarah@example.com',
-      phone: '+1 (555) 123-4567'
+      phone: '+1 (555) 123-4567',
     },
     service: {
       id: '1',
       name: 'Haircut & Highlights',
       duration: 120,
-      price: 180
+      price: 180,
     },
     date: '2024-03-20',
     time: '14:00',
@@ -60,9 +59,9 @@ const dummyAppointments: Appointment[] = [
     payment: {
       status: 'pending',
       amount: 180,
-      method: 'Credit Card'
-    }
-  }
+      method: 'Credit Card',
+    },
+  },
 ];
 // Add new interface for calendar events
 interface CalendarEvent {
@@ -87,8 +86,8 @@ export default function AppointmentsPage() {
   const [view, setView] = useState<'list' | 'calendar'>('list');
   const [calendarDate, setCalendarDate] = useState<Date>(new Date());
   const handleStatusChange = (appointmentId: string, newStatus: Appointment['status']) => {
-    import { updateAppointmentStatus } from "../../../../implementation-files/appointments-create-logic";
-import { Icons } from '@/components/icons';
+    import { updateAppointmentStatus } from '../../../../implementation-files/appointments-create-logic';
+    import { Icons } from '@/components/icons';
     console.log(`Changing status for appointment ${appointmentId} to ${newStatus}`);
   };
   // Add function to convert appointments to calendar events
@@ -97,15 +96,18 @@ import { Icons } from '@/components/icons';
       id: appointment.id,
       title: `${appointment.client.name} - ${appointment.service.name}`,
       start: new Date(`${appointment.date}T${appointment.time}`),
-      end: new Date(new Date(`${appointment.date}T${appointment.time}`).getTime() + appointment.service.duration * 60000),
+      end: new Date(
+        new Date(`${appointment.date}T${appointment.time}`).getTime() +
+          appointment.service.duration * 60000
+      ),
       client: {
         name: appointment.client.name,
-        avatar: appointment.client.avatar
+        avatar: appointment.client.avatar,
       },
       service: {
-        name: appointment.service.name
+        name: appointment.service.name,
       },
-      status: appointment.status
+      status: appointment.status,
     }));
   };
   // Add calendar view component
@@ -118,14 +120,14 @@ import { Icons } from '@/components/icons';
           value={calendarDate}
           className="w-full border rounded-lg"
           tileClassName={({ date }: TileArgs) => {
-            const hasAppointments = events.some(event => 
-              date.toDateString() === event.start.toDateString()
+            const hasAppointments = events.some(
+              event => date.toDateString() === event.start.toDateString()
             );
             return hasAppointments ? 'bg-primary/10' : '';
           }}
           tileContent={({ date }: TileArgs) => {
-            const dayAppointments = events.filter(event => 
-              date.toDateString() === event.start.toDateString()
+            const dayAppointments = events.filter(
+              event => date.toDateString() === event.start.toDateString()
             );
             return dayAppointments.length > 0 ? (
               <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2">
@@ -146,7 +148,9 @@ import { Icons } from '@/components/icons';
                   <div
                     key={event.id}
                     className="p-4 border rounded-lg cursor-pointer hover:bg-muted"
-                    onClick={() => setSelectedAppointment(dummyAppointments.find(a => a.id === event.id) || null)}
+                    onClick={() =>
+                      setSelectedAppointment(dummyAppointments.find(a => a.id === event.id) || null)
+                    }
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
@@ -157,7 +161,15 @@ import { Icons } from '@/components/icons';
                         <div>
                           <h3 className="font-medium">{event.client.name}</h3>
                           <p className="text-sm text-muted-foreground">
-                            {event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            {event.start.toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}{' '}
+                            -{' '}
+                            {event.end.toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
                           </p>
                         </div>
                       </div>
@@ -166,10 +178,10 @@ import { Icons } from '@/components/icons';
                           event.status === 'completed'
                             ? 'success'
                             : event.status === 'cancelled'
-                            ? 'destructive'
-                            : event.status === 'no-show'
-                            ? 'warning'
-                            : 'outline'
+                              ? 'destructive'
+                              : event.status === 'no-show'
+                                ? 'warning'
+                                : 'outline'
                         }
                       >
                         {event.status}
@@ -189,9 +201,7 @@ import { Icons } from '@/components/icons';
       <div className="container-app py-12">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">Appointment Management</h1>
-          <p className="text-xl text-muted-foreground">
-            Manage and track your appointments
-          </p>
+          <p className="text-xl text-muted-foreground">Manage and track your appointments</p>
         </div>
         <div className="grid gap-6">
           {/* View Toggle */}
@@ -221,7 +231,7 @@ import { Icons } from '@/components/icons';
                       placeholder="Search appointments..."
                       className="pl-10"
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={e => setSearchQuery(e.target.value)}
                     />
                   </div>
                   <Button variant="outline">
@@ -247,13 +257,11 @@ import { Icons } from '@/components/icons';
                   <Card>
                     <CardHeader>
                       <CardTitle>Today's Appointments</CardTitle>
-                      <CardDescription>
-                        {dummyAppointments.length} appointments
-                      </CardDescription>
+                      <CardDescription>{dummyAppointments.length} appointments</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        {dummyAppointments.map((appointment) => (
+                        {dummyAppointments.map(appointment => (
                           <div
                             key={appointment.id}
                             className={`p-4 rounded-lg cursor-pointer transition-colors ${
@@ -292,7 +300,9 @@ import { Icons } from '@/components/icons';
                             <div className="flex items-center gap-4">
                               <Avatar className="h-16 w-16">
                                 <AvatarImage src={selectedAppointment.client.avatar} />
-                                <AvatarFallback>{selectedAppointment.client.name[0]}</AvatarFallback>
+                                <AvatarFallback>
+                                  {selectedAppointment.client.name[0]}
+                                </AvatarFallback>
                               </Avatar>
                               <div>
                                 <CardTitle>{selectedAppointment.client.name}</CardTitle>
@@ -328,10 +338,10 @@ import { Icons } from '@/components/icons';
                                   selectedAppointment.status === 'completed'
                                     ? 'success'
                                     : selectedAppointment.status === 'cancelled'
-                                    ? 'destructive'
-                                    : selectedAppointment.status === 'no-show'
-                                    ? 'warning'
-                                    : 'outline'
+                                      ? 'destructive'
+                                      : selectedAppointment.status === 'no-show'
+                                        ? 'warning'
+                                        : 'outline'
                                 }
                               >
                                 {selectedAppointment.status}
@@ -345,8 +355,8 @@ import { Icons } from '@/components/icons';
                                     selectedAppointment.payment.status === 'paid'
                                       ? 'success'
                                       : selectedAppointment.payment.status === 'refunded'
-                                      ? 'destructive'
-                                      : 'warning'
+                                        ? 'destructive'
+                                        : 'warning'
                                   }
                                 >
                                   {selectedAppointment.payment.status}
@@ -439,4 +449,4 @@ import { Icons } from '@/components/icons';
       </div>
     </Layout>
   );
-} 
+}

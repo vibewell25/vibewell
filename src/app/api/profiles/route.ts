@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -14,14 +14,11 @@ export async function GET(request: Request) {
     // Check if the user has admin role to access all profiles
     const currentUser = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { role: true }
+      select: { role: true },
     });
 
     if (!currentUser || currentUser.role !== 'ADMIN') {
-      return NextResponse.json(
-        { error: 'Forbidden: Admin access required' },
-        { status: 403 }
-      );
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
     }
 
     const { searchParams } = new URL(request.url);
@@ -31,7 +28,7 @@ export async function GET(request: Request) {
 
     // Prepare where conditions
     const whereConditions: any = {};
-    
+
     // Add role filter if provided
     if (role) {
       whereConditions.role = role;
@@ -71,9 +68,6 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error('Error fetching profiles:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch profiles' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch profiles' }, { status: 500 });
   }
-} 
+}

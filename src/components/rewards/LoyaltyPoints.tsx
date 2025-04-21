@@ -89,7 +89,9 @@ export function LoyaltyPoints() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span>{data.points} points</span>
-                <span>{data.nextLevel} ({data.pointsToNextLevel} points needed)</span>
+                <span>
+                  {data.nextLevel} ({data.pointsToNextLevel} points needed)
+                </span>
               </div>
               <Progress value={data.progress} className="h-2" />
             </div>
@@ -121,7 +123,7 @@ export function LoyaltyPoints() {
             Recent Transactions
           </h3>
           <div className="space-y-4">
-            {data.transactions.map((transaction) => (
+            {data.transactions.map(transaction => (
               <div key={transaction.id} className="flex justify-between items-center">
                 <div>
                   <p className="font-medium">{transaction.description}</p>
@@ -133,7 +135,8 @@ export function LoyaltyPoints() {
                   variant={transaction.points > 0 ? 'default' : 'destructive'}
                   className="text-sm"
                 >
-                  {transaction.points > 0 ? '+' : ''}{transaction.points} points
+                  {transaction.points > 0 ? '+' : ''}
+                  {transaction.points} points
                 </Badge>
               </div>
             ))}
@@ -142,4 +145,4 @@ export function LoyaltyPoints() {
       </Card>
     </div>
   );
-} 
+}

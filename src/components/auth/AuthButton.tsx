@@ -35,7 +35,14 @@ export default function AuthButton({
         disabled
       >
         <svg className="w-4 h-4 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
           <path
             className="opacity-75"
             fill="currentColor"
@@ -49,7 +56,7 @@ export default function AuthButton({
 
   if (user) {
     return (
-      <Link 
+      <Link
         href={`/api/auth/logout?returnTo=${encodeURIComponent(logoutRedirectUrl)}`}
         onClick={handleAuthClick}
         className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md ${className}`}
@@ -61,7 +68,7 @@ export default function AuthButton({
   }
 
   return (
-    <Link 
+    <Link
       href={`/api/auth/login?returnTo=${encodeURIComponent(loginRedirectUrl)}`}
       onClick={handleAuthClick}
       className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md ${className}`}
@@ -70,4 +77,4 @@ export default function AuthButton({
       {loginButtonText}
     </Link>
   );
-} 
+}

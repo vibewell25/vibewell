@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { FeedbackService, FeedbackStats } from '@/services/feedback-service';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   PieChart,
   Pie,
-  Cell
+  Cell,
 } from 'recharts';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -44,7 +44,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
         (data || []).forEach((product: any) => {
           names[product.id] = product.name;
         });
-        
+
         setProductNames(names);
       } catch (err) {
         console.error('Error fetching product names:', err);
@@ -61,16 +61,16 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
     const fetchFeedbackData = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
         const feedbackService = new FeedbackService();
-        
+
         if (productId) {
           // Fetch stats for a specific product
           const { data, error } = await feedbackService.getProductFeedbackStats(productId);
-          
+
           if (error) throw new Error(String(error));
-          
+
           if (data) {
             setStats({ [productId]: data });
             setSelectedProductId(productId);
@@ -78,9 +78,9 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
         } else {
           // Fetch stats for all products
           const { data, error } = await feedbackService.getAllFeedbackStats();
-          
+
           if (error) throw new Error(String(error));
-          
+
           if (data) {
             setStats(data);
             // Set the first product as selected if none is selected
@@ -89,7 +89,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
             }
           }
         }
-        
+
         await fetchProductNames();
       } catch (err) {
         console.error('Error fetching feedback stats:', err);
@@ -145,19 +145,19 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
   }
 
   const selectedStats = selectedProductId ? stats[selectedProductId] : null;
-  
+
   // Prepare data for charts
   const ratingDistributionData = selectedStats
     ? Object.entries(selectedStats.ratingDistribution).map(([rating, count]) => ({
         rating: `${rating} Star${Number(rating) !== 1 ? 's' : ''}`,
-        count
+        count,
       }))
     : [];
-  
+
   const wouldTryData = selectedStats
     ? [
         { name: 'Would Try', value: selectedStats.percentWouldTryInRealLife },
-        { name: 'Would Not Try', value: 100 - selectedStats.percentWouldTryInRealLife }
+        { name: 'Would Not Try', value: 100 - selectedStats.percentWouldTryInRealLife },
       ]
     : [];
 
@@ -167,14 +167,14 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
     name: productNames[id] || `Product ${id.substring(0, 6)}`,
     rating: productStats.averageRating,
     count: productStats.totalRatings,
-    wouldTry: productStats.percentWouldTryInRealLife
+    wouldTry: productStats.percentWouldTryInRealLife,
   }));
 
   return (
     <div className="w-full space-y-4">
       {!productId && Object.keys(stats).length > 1 && (
         <div className="flex flex-wrap gap-2 mb-4">
-          {Object.keys(stats).map((id) => (
+          {Object.keys(stats).map(id => (
             <button
               key={id}
               onClick={() => setSelectedProductId(id)}
@@ -197,7 +197,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
             <TabsTrigger value="ratings">Ratings</TabsTrigger>
             <TabsTrigger value="comments">Comments</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <Card>
@@ -218,7 +218,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                   </p>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium">Would Try In Real Life</CardTitle>
@@ -229,33 +229,34 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium">Most Common Rating</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {Object.entries(selectedStats.ratingDistribution).reduce(
-                      (max, [rating, count]) => (count > max.count ? { rating, count } : max),
-                      { rating: '0', count: 0 }
-                    ).rating} Stars
+                    {
+                      Object.entries(selectedStats.ratingDistribution).reduce(
+                        (max, [rating, count]) => (count > max.count ? { rating, count } : max),
+                        { rating: '0', count: 0 }
+                      ).rating
+                    }{' '}
+                    Stars
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium">Comments</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">
-                    {selectedStats.recentComments.length}
-                  </div>
+                  <div className="text-2xl font-bold">{selectedStats.recentComments.length}</div>
                 </CardContent>
               </Card>
             </div>
-            
+
             <div className="grid gap-4 md:grid-cols-2">
               <Card>
                 <CardHeader>
@@ -279,7 +280,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
                   <CardTitle>Would Try In Real Life</CardTitle>
@@ -310,7 +311,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
               </Card>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="ratings" className="space-y-4">
             <Card>
               <CardHeader>
@@ -327,26 +328,17 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                       margin={{ top: 20, right: 30, left: 20, bottom: 70 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis 
-                        dataKey="name" 
-                        angle={-45} 
-                        textAnchor="end"
-                        height={70}
-                      />
+                      <XAxis dataKey="name" angle={-45} textAnchor="end" height={70} />
                       <YAxis domain={[0, 5]} />
                       <Tooltip />
-                      <Bar 
-                        dataKey="rating" 
-                        fill="#8884d8"
-                        isAnimationActive={true}
-                      />
+                      <Bar dataKey="rating" fill="#8884d8" isAnimationActive={true} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="comments" className="space-y-4">
             <Card>
               <CardHeader>
@@ -380,4 +372,4 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
       )}
     </div>
   );
-} 
+}

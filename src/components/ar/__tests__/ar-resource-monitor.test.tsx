@@ -67,7 +67,7 @@ describe('ARResourceMonitor', () => {
 
   it('applies optimizations when performance is poor', () => {
     const onPerformanceWarning = jest.fn();
-    
+
     render(
       <ARResourceMonitor
         enableAdaptiveQuality={true}
@@ -103,12 +103,9 @@ describe('ARResourceMonitor', () => {
 
   it('tracks performance metrics over time', () => {
     const mockLoggingInterval = 1000;
-    
+
     render(
-      <ARResourceMonitor
-        enablePerformanceLogging={true}
-        loggingInterval={mockLoggingInterval}
-      />
+      <ARResourceMonitor enablePerformanceLogging={true} loggingInterval={mockLoggingInterval} />
     );
 
     // Simulate time passing
@@ -129,14 +126,13 @@ describe('ARResourceMonitor', () => {
     // Mock battery API
     (global.navigator as any).getBattery = jest.fn().mockResolvedValue(mockBattery);
 
-    render(
-      <ARResourceMonitor
-        enableAdaptiveQuality={true}
-      />
-    );
+    render(<ARResourceMonitor enableAdaptiveQuality={true} />);
 
     // Wait for battery info to be processed
     expect(mockBattery.addEventListener).toHaveBeenCalledWith('levelchange', expect.any(Function));
-    expect(mockBattery.addEventListener).toHaveBeenCalledWith('chargingchange', expect.any(Function));
+    expect(mockBattery.addEventListener).toHaveBeenCalledWith(
+      'chargingchange',
+      expect.any(Function)
+    );
   });
-}); 
+});

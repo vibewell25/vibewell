@@ -20,30 +20,24 @@ interface WellnessContentModalProps {
   onSave: (content: WellnessContent) => void;
   content?: WellnessContent;
 }
-export function WellnessContentModal({ 
-  isOpen, 
-  onClose, 
+export function WellnessContentModal({
+  isOpen,
+  onClose,
   onSave,
-  content 
+  content,
 }: WellnessContentModalProps) {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-card rounded-lg shadow-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">
-            {content ? 'Edit Content' : 'Create New Content'}
-          </h2>
+          <h2 className="text-xl font-bold">{content ? 'Edit Content' : 'Create New Content'}</h2>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <Icons.XMarkIcon className="h-6 w-6" />
           </button>
         </div>
-        <WellnessContentEditor
-          content={content}
-          onSave={onSave}
-          onCancel={onClose}
-        />
+        <WellnessContentEditor content={content} onSave={onSave} onCancel={onClose} />
       </div>
     </div>
   );
-} 
+}

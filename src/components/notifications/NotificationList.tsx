@@ -23,7 +23,7 @@ export const NotificationList = () => {
     total: 0,
     page: 1,
     limit: 10,
-    totalPages: 0
+    totalPages: 0,
   });
   const [loading, setLoading] = useState(true);
   const [selectedNotifications, setSelectedNotifications] = useState<string[]>([]);
@@ -62,9 +62,7 @@ export const NotificationList = () => {
       // Update local state
       setNotifications(prev =>
         prev.map(notification =>
-          notificationIds.includes(notification.id)
-            ? { ...notification, read: true }
-            : notification
+          notificationIds.includes(notification.id) ? { ...notification, read: true } : notification
         )
       );
       setSelectedNotifications([]);
@@ -107,9 +105,7 @@ export const NotificationList = () => {
     <div className="bg-white shadow rounded-lg">
       <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-medium leading-6 text-gray-900">
-            Notifications
-          </h3>
+          <h3 className="text-lg font-medium leading-6 text-gray-900">Notifications</h3>
           {selectedNotifications.length > 0 && (
             <button
               onClick={() => handleMarkAsRead(selectedNotifications)}
@@ -126,17 +122,13 @@ export const NotificationList = () => {
           <div className="text-center py-12">
             <Icons.BellIcon className="mx-auto h-12 w-12 text-gray-400" />
             <h3 className="mt-2 text-sm font-medium text-gray-900">No notifications</h3>
-            <p className="mt-1 text-sm text-gray-500">
-              You're all caught up!
-            </p>
+            <p className="mt-1 text-sm text-gray-500">You're all caught up!</p>
           </div>
         ) : (
-          notifications.map((notification) => (
+          notifications.map(notification => (
             <div
               key={notification.id}
-              className={`p-4 hover:bg-gray-50 ${
-                !notification.read ? 'bg-blue-50' : ''
-              }`}
+              className={`p-4 hover:bg-gray-50 ${!notification.read ? 'bg-blue-50' : ''}`}
             >
               <div className="flex items-start">
                 <div className="flex-shrink-0">
@@ -149,18 +141,18 @@ export const NotificationList = () => {
                 </div>
                 <div className="ml-3 flex-1">
                   <div className="flex items-center justify-between">
-                    <p className={`text-sm font-medium ${
-                      !notification.read ? 'text-gray-900' : 'text-gray-500'
-                    }`}>
+                    <p
+                      className={`text-sm font-medium ${
+                        !notification.read ? 'text-gray-900' : 'text-gray-500'
+                      }`}
+                    >
                       {notification.title}
                     </p>
                     <span className="text-xs text-gray-500">
                       {format(new Date(notification.createdAt), 'MMM d, yyyy HH:mm')}
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-gray-500">
-                    {notification.message}
-                  </p>
+                  <p className="mt-1 text-sm text-gray-500">{notification.message}</p>
                   {notification.link && (
                     <a
                       href={notification.link}
@@ -201,8 +193,11 @@ export const NotificationList = () => {
               </p>
             </div>
             <div>
-              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((page) => (
+              <nav
+                className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                aria-label="Pagination"
+              >
+                {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(page => (
                   <button
                     key={page}
                     onClick={() => handlePageChange(page)}
@@ -222,4 +217,4 @@ export const NotificationList = () => {
       )}
     </div>
   );
-}; 
+};

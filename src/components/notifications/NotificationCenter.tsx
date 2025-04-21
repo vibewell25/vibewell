@@ -46,9 +46,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
       }
       setNotifications(prev =>
         prev.map(notification =>
-          notification.id === notificationId
-            ? { ...notification, read: true }
-            : notification
+          notification.id === notificationId ? { ...notification, read: true } : notification
         )
       );
     } catch (error) {
@@ -64,9 +62,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
       if (!response.ok) {
         throw new Error('Failed to mark all notifications as read');
       }
-      setNotifications(prev =>
-        prev.map(notification => ({ ...notification, read: true }))
-      );
+      setNotifications(prev => prev.map(notification => ({ ...notification, read: true })));
     } catch (error) {
       console.error('Error marking all notifications as read:', error);
       toast.error('Failed to mark all notifications as read');
@@ -88,7 +84,10 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
   };
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
-      <div className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+        onClick={onClose}
+      />
       <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex">
         <div className="w-screen max-w-md">
           <div className="h-full flex flex-col bg-white shadow-xl">
@@ -117,9 +116,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
                   <div className="text-center py-12">
                     <Icons.BellIcon className="mx-auto h-12 w-12 text-gray-400" />
                     <h3 className="mt-2 text-sm font-medium text-gray-900">No notifications</h3>
-                    <p className="mt-1 text-sm text-gray-500">
-                      You're all caught up!
-                    </p>
+                    <p className="mt-1 text-sm text-gray-500">You're all caught up!</p>
                   </div>
                 ) : (
                   <>
@@ -133,7 +130,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
                     </div>
                     <div className="flow-root">
                       <ul className="-my-5 divide-y divide-gray-200">
-                        {notifications.map((notification) => (
+                        {notifications.map(notification => (
                           <li key={notification.id} className="py-5">
                             <div className="relative focus-within:ring-2 focus-within:ring-indigo-500">
                               <div className="flex items-center">
@@ -141,14 +138,14 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
                                   {getNotificationIcon(notification.type)}
                                 </span>
                                 <div className="flex-1 min-w-0">
-                                  <p className={`text-sm font-medium ${
-                                    notification.read ? 'text-gray-500' : 'text-gray-900'
-                                  }`}>
+                                  <p
+                                    className={`text-sm font-medium ${
+                                      notification.read ? 'text-gray-500' : 'text-gray-900'
+                                    }`}
+                                  >
                                     {notification.title}
                                   </p>
-                                  <p className="text-sm text-gray-500">
-                                    {notification.message}
-                                  </p>
+                                  <p className="text-sm text-gray-500">{notification.message}</p>
                                   <p className="mt-1 text-xs text-gray-400">
                                     {format(new Date(notification.date), 'MMM d, yyyy HH:mm')}
                                   </p>
@@ -182,4 +179,4 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose 
       </div>
     </div>
   );
-}; 
+};

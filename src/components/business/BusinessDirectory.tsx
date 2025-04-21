@@ -15,7 +15,8 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
   const categories = ['all', 'spa', 'salon', 'wellness', 'fitness'];
   const filteredBusinesses = businesses
     .filter(business => {
-      const matchesSearch = business.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      const matchesSearch =
+        business.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         business.description.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = selectedCategory === 'all' || business.category === selectedCategory;
       return matchesSearch && matchesCategory;
@@ -26,7 +27,7 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
       }
       return a.name.localeCompare(b.name);
     });
-    
+
   // Add keyboard navigation for business cards
   const handleBusinessKeyDown = (e: React.KeyboardEvent, business: Business) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -34,17 +35,20 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
       onBusinessSelect(business);
     }
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
-          <Icons.MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" aria-hidden="true" />
+          <Icons.MagnifyingGlassIcon
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400"
+            aria-hidden="true"
+          />
           <input
             type="text"
             placeholder="Search businesses..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             aria-label="Search businesses"
           />
@@ -52,7 +56,7 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
         <div className="flex gap-2">
           <select
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={e => setSelectedCategory(e.target.value)}
             className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             aria-label="Filter by category"
           >
@@ -64,7 +68,7 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
           </select>
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as 'rating' | 'name')}
+            onChange={e => setSortBy(e.target.value as 'rating' | 'name')}
             className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             aria-label="Sort businesses"
           >
@@ -73,12 +77,16 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
           </select>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Business listings">
-        {filteredBusinesses.map((business) => (
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        role="list"
+        aria-label="Business listings"
+      >
+        {filteredBusinesses.map(business => (
           <div
             key={business.id}
             onClick={() => onBusinessSelect(business)}
-            onKeyDown={(e) => handleBusinessKeyDown(e, business)}
+            onKeyDown={e => handleBusinessKeyDown(e, business)}
             className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-indigo-500"
             tabIndex={0}
             role="listitem"
@@ -90,7 +98,10 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
                 alt={`${business.name} business`}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute top-2 right-2 bg-white/90 px-2 py-1 rounded-full flex items-center" aria-hidden="true">
+              <div
+                className="absolute top-2 right-2 bg-white/90 px-2 py-1 rounded-full flex items-center"
+                aria-hidden="true"
+              >
                 <Icons.StarIcon className="h-4 w-4 text-yellow-500 mr-1" />
                 <span className="text-sm font-medium">{business.rating.toFixed(1)}</span>
               </div>
@@ -100,7 +111,9 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
               <p className="text-gray-600 text-sm mb-2">{business.description}</p>
               <div className="flex items-center text-sm text-gray-500">
                 <span>{business.location}</span>
-                <span className="mx-2" aria-hidden="true">•</span>
+                <span className="mx-2" aria-hidden="true">
+                  •
+                </span>
                 <span>{business.category}</span>
               </div>
             </div>
@@ -114,4 +127,4 @@ export const BusinessDirectory: React.FC<BusinessDirectoryProps> = ({
       )}
     </div>
   );
-}; 
+};

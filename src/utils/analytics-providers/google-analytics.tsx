@@ -42,7 +42,7 @@ export class GoogleAnalyticsProvider implements AnalyticsProvider {
 
     try {
       const { eventName, eventType, properties } = event;
-      
+
       // Map to GA event format
       this.ReactGA.event({
         category: eventType,
@@ -67,21 +67,21 @@ export class GoogleAnalyticsProvider implements AnalyticsProvider {
     try {
       // Set user ID
       this.ReactGA.set({ userId });
-      
+
       // Set custom dimensions for user properties if provided
       if (userProperties) {
         const dimensions: Record<string, any> = {};
-        
+
         // Map user properties to custom dimensions
         Object.entries(userProperties).forEach(([key, value], index) => {
           // Format: dimension1, dimension2, etc.
           dimensions[`dimension${index + 1}`] = value;
         });
-        
+
         this.ReactGA.set(dimensions);
       }
     } catch (error) {
       console.error('Google Analytics set user error:', error);
     }
   }
-} 
+}

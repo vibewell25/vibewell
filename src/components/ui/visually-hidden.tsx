@@ -11,13 +11,9 @@ interface VisuallyHiddenProps {
  * VisuallyHidden - Hides content visually but keeps it accessible to screen readers
  * This is a more semantic way to hide content than using sr-only utility classes
  */
-export function VisuallyHidden({
-  children,
-  className,
-  asChild = false,
-}: VisuallyHiddenProps) {
+export function VisuallyHidden({ children, className, asChild = false }: VisuallyHiddenProps) {
   const Comp = asChild ? React.Fragment : 'span';
-  
+
   return (
     <Comp
       className={cn(
@@ -30,4 +26,4 @@ export function VisuallyHidden({
       {children}
     </Comp>
   );
-} 
+}

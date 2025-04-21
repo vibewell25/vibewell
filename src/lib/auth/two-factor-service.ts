@@ -8,7 +8,7 @@ export class TwoFactorService {
   // Generate a new 2FA secret for a user
   async generateSecret(userId: string): Promise<string> {
     const secret = authenticator.generateSecret();
-    
+
     await prisma.twoFactorAuth.create({
       data: {
         userId,
@@ -108,4 +108,4 @@ export class TwoFactorService {
     }
     return codes;
   }
-} 
+}

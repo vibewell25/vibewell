@@ -2,7 +2,7 @@ import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import { Event } from '@/types/events';
 import { getEvents } from '@/lib/api/events';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { EventShareCard } from './event-share-card';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
@@ -79,9 +79,7 @@ export function EventRecommendations({ onShare, onAttend }: EventRecommendations
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8 text-gray-500">
-            {error}
-          </div>
+          <div className="text-center py-8 text-gray-500">{error}</div>
         </CardContent>
       </Card>
     );
@@ -125,4 +123,4 @@ export function EventRecommendations({ onShare, onAttend }: EventRecommendations
       </CardContent>
     </Card>
   );
-} 
+}

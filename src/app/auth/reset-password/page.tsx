@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-unified-auth';
 import { Icons } from '@/components/icons';
 
 /**
@@ -90,15 +90,11 @@ export default function ResetPasswordPage() {
       <div className="flex flex-col items-center mb-8">
         <Icons.logo className="h-12 w-12 mb-4 text-primary" />
         <h1 className="text-2xl font-bold mb-2">Reset your password</h1>
-        <p className="text-muted-foreground text-center">
-          Enter your new password below.
-        </p>
+        <p className="text-muted-foreground text-center">Enter your new password below.</p>
       </div>
 
       {error && (
-        <div className="bg-destructive/20 text-destructive p-3 rounded-md mb-4">
-          {error}
-        </div>
+        <div className="bg-destructive/20 text-destructive p-3 rounded-md mb-4">{error}</div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -111,7 +107,7 @@ export default function ResetPasswordPage() {
             type="password"
             placeholder="••••••••"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             required
             minLength={8}
             className="w-full p-2 border rounded-md"
@@ -131,7 +127,7 @@ export default function ResetPasswordPage() {
             type="password"
             placeholder="••••••••"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={e => setConfirmPassword(e.target.value)}
             required
             className="w-full p-2 border rounded-md"
             disabled={isLoading}
@@ -155,4 +151,4 @@ export default function ResetPasswordPage() {
       </p>
     </div>
   );
-} 
+}

@@ -25,7 +25,7 @@ interface ResponsiveImageProps {
 
 /**
  * ResponsiveImage - An image component that adapts to different screen sizes
- * 
+ *
  * This component automatically selects the appropriate image source based on
  * device type, and applies appropriate sizing and optimization techniques.
  */
@@ -61,7 +61,7 @@ export function ResponsiveImage({
     }
 
     let appropriateSrc = src;
-    
+
     // Use device-specific images if provided
     if (deviceType === 'mobile' && mobileSrc) {
       appropriateSrc = mobileSrc;
@@ -70,7 +70,7 @@ export function ResponsiveImage({
     } else if (deviceType === 'desktop' && desktopSrc) {
       appropriateSrc = desktopSrc;
     }
-    
+
     setImgSrc(appropriateSrc);
   }, [deviceType, src, mobileSrc, tabletSrc, desktopSrc, imgError, fallbackSrc]);
 
@@ -79,11 +79,11 @@ export function ResponsiveImage({
     if (width && height) {
       return { width, height };
     }
-    
+
     if (fill) {
       return {};
     }
-    
+
     // Default dimensions by device type
     switch (deviceType) {
       case 'mobile':
@@ -96,15 +96,15 @@ export function ResponsiveImage({
         return { width: 800, height: 600 };
     }
   };
-  
+
   const dimensions = getDimensions();
-  
+
   // Compute sizes based on device type if not explicitly provided
   const getSizes = () => {
     if (sizes !== '100vw') {
       return sizes;
     }
-    
+
     switch (deviceType) {
       case 'mobile':
         return '100vw';
@@ -116,7 +116,7 @@ export function ResponsiveImage({
         return '100vw';
     }
   };
-  
+
   // Handle image load event
   const handleImageLoad = () => {
     setIsLoading(false);
@@ -124,7 +124,7 @@ export function ResponsiveImage({
       onLoad();
     }
   };
-  
+
   // Handle image error
   const handleImageError = () => {
     if (fallbackSrc && !imgError) {
@@ -132,14 +132,14 @@ export function ResponsiveImage({
       setImgSrc(fallbackSrc);
     }
   };
-  
+
   // Set image styles
   const imageStyles = cn(
     'transition-opacity duration-300',
     isLoading ? 'opacity-0' : 'opacity-100',
     className
   );
-  
+
   // Return appropriate loading placeholder while image is loading
   if (isLoading && loadingPlaceholder) {
     return (
@@ -154,9 +154,9 @@ export function ResponsiveImage({
             priority={priority}
             quality={quality}
             className={imageStyles}
-            style={{ 
-              objectFit, 
-              objectPosition 
+            style={{
+              objectFit,
+              objectPosition,
             }}
             onLoad={handleImageLoad}
             onError={handleImageError}
@@ -165,7 +165,7 @@ export function ResponsiveImage({
       </div>
     );
   }
-  
+
   // Return the image
   return (
     <Image
@@ -176,12 +176,12 @@ export function ResponsiveImage({
       priority={priority}
       quality={quality}
       className={imageStyles}
-      style={{ 
-        objectFit, 
-        objectPosition 
+      style={{
+        objectFit,
+        objectPosition,
       }}
       onLoad={handleImageLoad}
       onError={handleImageError}
     />
   );
-} 
+}

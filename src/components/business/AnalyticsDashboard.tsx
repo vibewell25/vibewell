@@ -32,9 +32,7 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, icon, iconBgColor, ic
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex items-center">
-        <div className={`p-3 rounded-full ${iconBgColor}`}>
-          {icon}
-        </div>
+        <div className={`p-3 rounded-full ${iconBgColor}`}>{icon}</div>
         <div className="ml-4">
           <p className="text-sm font-medium text-gray-600">{title}</p>
           <p className="text-2xl font-semibold text-gray-900">{value}</p>
@@ -56,12 +54,12 @@ interface BarChartProps {
 
 const BarChart: React.FC<BarChartProps> = ({ title, data, valueFormatter, barColor }) => {
   const maxValue = Math.max(...data.map(item => item.value));
-  
+
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h3 className="text-lg font-medium text-gray-900 mb-4">{title}</h3>
       <div className="space-y-4">
-        {data.map((item) => (
+        {data.map(item => (
           <div key={item.label} className="flex items-center">
             <div className="flex-1">
               <p className="text-sm font-medium text-gray-900">{item.label}</p>
@@ -87,14 +85,14 @@ const BarChart: React.FC<BarChartProps> = ({ title, data, valueFormatter, barCol
 export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ data }) => {
   const bookingsChartData = data.bookingsByService.map(item => ({
     label: item.service,
-    value: item.count
+    value: item.count,
   }));
-  
+
   const revenueChartData = data.revenueByMonth.map(item => ({
     label: item.month,
-    value: item.amount
+    value: item.amount,
   }));
-  
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -105,7 +103,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ data }) 
           iconBgColor="bg-indigo-100"
           iconColor="text-indigo-600"
         />
-        
+
         <StatCard
           title="Total Revenue"
           value={`$${data.totalRevenue.toLocaleString()}`}
@@ -113,7 +111,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ data }) 
           iconBgColor="bg-green-100"
           iconColor="text-green-600"
         />
-        
+
         <StatCard
           title="Average Rating"
           value={data.averageRating.toFixed(1)}
@@ -121,7 +119,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ data }) 
           iconBgColor="bg-yellow-100"
           iconColor="text-yellow-600"
         />
-        
+
         <StatCard
           title="Total Customers"
           value={data.customerCount}
@@ -130,22 +128,22 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ data }) 
           iconColor="text-blue-600"
         />
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <BarChart
           title="Bookings by Service"
           data={bookingsChartData}
-          valueFormatter={(value) => value.toString()}
+          valueFormatter={value => value.toString()}
           barColor="bg-indigo-600"
         />
-        
+
         <BarChart
           title="Revenue by Month"
           data={revenueChartData}
-          valueFormatter={(value) => `$${value.toLocaleString()}`}
+          valueFormatter={value => `$${value.toLocaleString()}`}
           barColor="bg-green-600"
         />
       </div>
     </div>
   );
-}; 
+};

@@ -11,10 +11,10 @@ const THREE = {
     geometry: {
       attributes: {
         position: {
-          needsUpdate: false
-        }
-      }
-    }
+          needsUpdate: false,
+        },
+      },
+    },
   })),
   BufferGeometry: jest.fn(),
   Float32BufferAttribute: jest.fn(),
@@ -34,4 +34,4 @@ const THREE = {
   })),
 };
 
-module.exports = THREE; 
+module.exports = THREE;

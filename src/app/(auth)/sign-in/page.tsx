@@ -3,7 +3,14 @@ import Link from 'next/link';
 import { UserAuthForm } from '@/components/auth/user-auth-form';
 import { WebAuthnAuth } from '@/components/WebAuthnAuth';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export const metadata: Metadata = {
@@ -35,13 +42,13 @@ export default function SignInPage() {
             <TabsContent value="biometric">
               <CardContent>
                 <div className="grid gap-4">
-                  <WebAuthnAuth 
+                  <WebAuthnAuth
                     userId="current-user-id" // This will be replaced with actual user ID from the email input
                     onSuccess={() => {
                       // Handle successful authentication
                       console.log('WebAuthn authentication successful');
                     }}
-                    onError={(error) => {
+                    onError={error => {
                       console.error('WebAuthn authentication failed:', error);
                     }}
                   />
@@ -61,4 +68,4 @@ export default function SignInPage() {
       </div>
     </div>
   );
-} 
+}

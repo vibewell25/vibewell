@@ -52,15 +52,18 @@ export default function LazyImage({
   useEffect(() => {
     if (!imageRef.current || priority) return;
 
-    observerRef.current = new IntersectionObserver((entries) => {
-      const [entry] = entries;
-      if (entry.isIntersecting) {
-        setShouldLoad(true);
-        observerRef.current?.disconnect();
+    observerRef.current = new IntersectionObserver(
+      entries => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observerRef.current?.disconnect();
+        }
+      },
+      {
+        rootMargin: '200px', // Start loading before the image comes into view
       }
-    }, {
-      rootMargin: '200px', // Start loading before the image comes into view
-    });
+    );
 
     observerRef.current.observe(imageRef.current);
 
@@ -79,10 +82,10 @@ export default function LazyImage({
     : {};
 
   return (
-    <div 
+    <div
       ref={imageRef}
       className={cn(
-        "relative overflow-hidden bg-gray-100 dark:bg-gray-800",
+        'relative overflow-hidden bg-gray-100 dark:bg-gray-800',
         containerClassName,
         aspectRatioClass
       )}
@@ -102,21 +105,21 @@ export default function LazyImage({
             src={hasError ? fallbackSrc : src}
             alt={alt}
             className={cn(
-              "transition-opacity duration-300",
-              isLoaded ? "opacity-100" : "opacity-0",
+              'transition-opacity duration-300',
+              isLoaded ? 'opacity-100' : 'opacity-0',
               className
             )}
             fill={!(width && height)}
             width={width}
             height={height}
-            loading={priority ? "eager" : "lazy"}
+            loading={priority ? 'eager' : 'lazy'}
             onLoadingComplete={handleImageLoad}
             onError={handleImageError}
-            placeholder={blurDataUrl ? "blur" : "empty"}
+            placeholder={blurDataUrl ? 'blur' : 'empty'}
             blurDataURL={blurDataUrl}
           />
         </>
       )}
     </div>
   );
-} 
+}

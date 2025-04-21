@@ -3,7 +3,6 @@ import { Layout } from '@/components/layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BreadcrumbExample } from '@/components/examples/BreadcrumbExample';
 import { Button } from '@/components/ui/button';
-;
 import { useState, Suspense } from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@/components/ui/breadcrumb';
 import { useSearchParams } from 'next/navigation';
@@ -71,11 +70,17 @@ export function MyBreadcrumb() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold mb-2">Breadcrumb</h1>
-            <p className="text-muted-foreground">A navigation component that helps users understand the hierarchy of a website.</p>
+            <p className="text-muted-foreground">
+              A navigation component that helps users understand the hierarchy of a website.
+            </p>
           </div>
           <div className="mt-4 md:mt-0">
             <Button variant="outline" asChild>
-              <a href="https://github.com/vibewell/components/blob/main/src/components/ui/breadcrumb.tsx" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://github.com/vibewell/components/blob/main/src/components/ui/breadcrumb.tsx"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Icons.CodeBracketIcon className="h-4 w-4 mr-2" />
                 View Source
               </a>
@@ -100,8 +105,9 @@ export function MyBreadcrumb() {
                 <h2 className="text-xl font-semibold mb-2">About</h2>
                 <p className="text-muted-foreground">
                   Breadcrumbs are navigation aids that help users understand their current location
-                  within a website's hierarchy. They provide a trail of links that show the path from
-                  the homepage to the current page, helping users navigate back to previous levels.
+                  within a website's hierarchy. They provide a trail of links that show the path
+                  from the homepage to the current page, helping users navigate back to previous
+                  levels.
                 </p>
               </div>
               <div>
@@ -117,9 +123,15 @@ export function MyBreadcrumb() {
               <div>
                 <h2 className="text-xl font-semibold mb-2">Accessibility</h2>
                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                  <li>Uses proper <code>nav</code> and <code>ol</code> elements for semantic structure</li>
-                  <li>Includes <code>aria-label="Breadcrumb"</code> for screen readers</li>
-                  <li>Uses <code>aria-current="page"</code> to indicate the current page</li>
+                  <li>
+                    Uses proper <code>nav</code> and <code>ol</code> elements for semantic structure
+                  </li>
+                  <li>
+                    Includes <code>aria-label="Breadcrumb"</code> for screen readers
+                  </li>
+                  <li>
+                    Uses <code>aria-current="page"</code> to indicate the current page
+                  </li>
                   <li>Visible separators between breadcrumb items</li>
                 </ul>
               </div>
@@ -132,9 +144,9 @@ export function MyBreadcrumb() {
                 <div className="bg-card border rounded-lg mb-4">
                   <div className="flex justify-between items-center p-4 border-b">
                     <h3 className="text-sm font-medium">Example</h3>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => copyToClipboard(basicUsageCode)}
                       className="h-8 gap-1"
                     >
@@ -169,9 +181,10 @@ export function MyBreadcrumb() {
                   </div>
                 </div>
                 <p className="text-muted-foreground">
-                  The example above shows a basic breadcrumb navigation with three levels. The <code>isFirstItem</code> prop 
-                  is used to indicate the first item, which prevents the chevron separator from appearing before it. 
-                  The <code>isCurrentPage</code> prop is used to indicate the current page.
+                  The example above shows a basic breadcrumb navigation with three levels. The{' '}
+                  <code>isFirstItem</code> prop is used to indicate the first item, which prevents
+                  the chevron separator from appearing before it. The <code>isCurrentPage</code>{' '}
+                  prop is used to indicate the current page.
                 </p>
               </div>
               <div>
@@ -179,9 +192,9 @@ export function MyBreadcrumb() {
                 <div className="bg-card border rounded-lg mb-4">
                   <div className="flex justify-between items-center p-4 border-b">
                     <h3 className="text-sm font-medium">Example</h3>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => copyToClipboard(customStylingCode)}
                       className="h-8 gap-1"
                     >
@@ -204,8 +217,8 @@ export function MyBreadcrumb() {
                   <div className="p-4 bg-background">
                     <Breadcrumb className="bg-muted p-2 rounded-md">
                       <BreadcrumbItem isFirstItem>
-                        <BreadcrumbLink 
-                          href="/" 
+                        <BreadcrumbLink
+                          href="/"
                           className="text-primary hover:text-primary/80 flex items-center"
                         >
                           <Icons.HomeIcon className="h-4 w-4 mr-1" />
@@ -222,8 +235,9 @@ export function MyBreadcrumb() {
                   </div>
                 </div>
                 <p className="text-muted-foreground">
-                  You can customize the appearance of breadcrumbs by adding className props. The example above 
-                  shows a breadcrumb with a background, custom text color, and an icon for the home link.
+                  You can customize the appearance of breadcrumbs by adding className props. The
+                  example above shows a breadcrumb with a background, custom text color, and an icon
+                  for the home link.
                 </p>
               </div>
             </div>
@@ -246,10 +260,18 @@ export function MyBreadcrumb() {
                       <table className="min-w-full divide-y">
                         <thead className="bg-muted">
                           <tr>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">Prop</th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">Type</th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">Default</th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">Description</th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                              Prop
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                              Type
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                              Default
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                              Description
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y">
@@ -279,10 +301,18 @@ export function MyBreadcrumb() {
                       <table className="min-w-full divide-y">
                         <thead className="bg-muted">
                           <tr>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">Prop</th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">Type</th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">Default</th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">Description</th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                              Prop
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                              Type
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                              Default
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                              Description
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y">
@@ -302,13 +332,17 @@ export function MyBreadcrumb() {
                             <td className="px-4 py-2 text-sm">isCurrentPage</td>
                             <td className="px-4 py-2 text-sm">boolean</td>
                             <td className="px-4 py-2 text-sm">false</td>
-                            <td className="px-4 py-2 text-sm">Indicates if this item represents the current page</td>
+                            <td className="px-4 py-2 text-sm">
+                              Indicates if this item represents the current page
+                            </td>
                           </tr>
                           <tr>
                             <td className="px-4 py-2 text-sm">isFirstItem</td>
                             <td className="px-4 py-2 text-sm">boolean</td>
                             <td className="px-4 py-2 text-sm">false</td>
-                            <td className="px-4 py-2 text-sm">Indicates if this is the first item in the breadcrumb</td>
+                            <td className="px-4 py-2 text-sm">
+                              Indicates if this is the first item in the breadcrumb
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -324,10 +358,18 @@ export function MyBreadcrumb() {
                       <table className="min-w-full divide-y">
                         <thead className="bg-muted">
                           <tr>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">Prop</th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">Type</th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">Default</th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">Description</th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                              Prop
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                              Type
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                              Default
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                              Description
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y">
@@ -370,8 +412,10 @@ export function MyBreadcrumb() {
 }
 export default function BreadcrumbDocumentation() {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+    <Suspense
+      fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}
+    >
       <BreadcrumbDocumentationContent />
     </Suspense>
   );
-} 
+}

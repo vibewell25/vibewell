@@ -1,10 +1,10 @@
-import { 
-  ClientPreferencesModel, 
+import {
+  ClientPreferencesModel,
   ClientBehaviorModel,
   ClientPreferences,
   ClientBehavior,
   ServicePreference,
-  PractitionerPreference
+  PractitionerPreference,
 } from '../models/ClientPreferences';
 import { NotificationService } from './notification-service';
 import { AnalyticsService } from './analytics-service';
@@ -13,10 +13,7 @@ export class ClientPreferencesService {
   private notificationService: NotificationService;
   private analyticsService: AnalyticsService;
 
-  constructor(
-    notificationService: NotificationService,
-    analyticsService: AnalyticsService
-  ) {
+  constructor(notificationService: NotificationService, analyticsService: AnalyticsService) {
     this.notificationService = notificationService;
     this.analyticsService = analyticsService;
   }
@@ -37,7 +34,7 @@ export class ClientPreferencesService {
 
     const newPreferences = new ClientPreferencesModel({
       clientId,
-      ...preferences
+      ...preferences,
     });
     return await newPreferences.save();
   }
@@ -64,13 +61,13 @@ export class ClientPreferencesService {
       preferences.servicePreferences[existingIndex] = {
         ...preferences.servicePreferences[existingIndex],
         ...preference,
-        lastUpdated: new Date()
+        lastUpdated: new Date(),
       };
     } else {
       preferences.servicePreferences.push({
         serviceId: serviceId as any,
-        ...preference as any,
-        lastUpdated: new Date()
+        ...(preference as any),
+        lastUpdated: new Date(),
       });
     }
 
@@ -99,13 +96,13 @@ export class ClientPreferencesService {
       preferences.practitionerPreferences[existingIndex] = {
         ...preferences.practitionerPreferences[existingIndex],
         ...preference,
-        lastUpdated: new Date()
+        lastUpdated: new Date(),
       };
     } else {
       preferences.practitionerPreferences.push({
         practitionerId: practitionerId as any,
-        ...preference as any,
-        lastUpdated: new Date()
+        ...(preference as any),
+        lastUpdated: new Date(),
       });
     }
 
@@ -128,7 +125,7 @@ export class ClientPreferencesService {
 
     const newBehavior = new ClientBehaviorModel({
       clientId,
-      ...behavior
+      ...behavior,
     });
     return await newBehavior.save();
   }
@@ -184,7 +181,7 @@ export class ClientPreferencesService {
         lastBooked: interaction.type === 'booking' ? new Date() : undefined,
         averageRating: interaction.rating,
         totalSpent: interaction.amount || 0,
-        notes: ''
+        notes: '',
       });
     }
 
@@ -195,7 +192,7 @@ export class ClientPreferencesService {
       serviceId,
       interactionType: interaction.type,
       rating: interaction.rating,
-      amount: interaction.amount
+      amount: interaction.amount,
     });
   }
 
@@ -209,7 +206,7 @@ export class ClientPreferencesService {
         .populate('practitionerPreferences.practitionerId'),
       ClientBehaviorModel.findOne({ clientId })
         .populate('serviceHistory.serviceId')
-        .populate('practitionerHistory.practitionerId')
+        .populate('practitionerHistory.practitionerId'),
     ]);
 
     if (!preferences || !behavior) {
@@ -227,9 +224,7 @@ export class ClientPreferencesService {
       .map(p => p.practitionerId);
 
     // Get services based on goals
-    const activeGoals = preferences.goals
-      .filter(g => g.status === 'active')
-      .map(g => g.type);
+    const activeGoals = preferences.goals.filter(g => g.status === 'active').map(g => g.type);
 
     return {
       recommendedServices: favoriteServices,
@@ -237,8 +232,8 @@ export class ClientPreferencesService {
       goalBasedRecommendations: activeGoals,
       schedulingRecommendations: {
         preferredDays: preferences.schedulingPreferences.preferredDays,
-        preferredTimes: preferences.schedulingPreferences.preferredTimeSlots
-      }
+        preferredTimes: preferences.schedulingPreferences.preferredTimeSlots,
+      },
     };
   }
 
@@ -248,7 +243,7 @@ export class ClientPreferencesService {
   async getClientInsights(clientId: string) {
     const [preferences, behavior] = await Promise.all([
       ClientPreferencesModel.findOne({ clientId }),
-      ClientBehaviorModel.findOne({ clientId })
+      ClientBehaviorModel.findOne({ clientId }),
     ]);
 
     if (!preferences || !behavior) {
@@ -261,28 +256,28 @@ export class ClientPreferencesService {
         preferredChannel: behavior.bookingPatterns.preferredBookingChannel,
         reliability: {
           cancellationRate: behavior.bookingPatterns.cancellationRate,
-          noShowCount: behavior.bookingPatterns.noShowCount
-        }
+          noShowCount: behavior.bookingPatterns.noShowCount,
+        },
       },
       preferences: {
         services: preferences.servicePreferences.map(p => ({
           serviceId: p.serviceId,
           rating: p.rating,
-          frequency: p.frequency
+          frequency: p.frequency,
         })),
         scheduling: preferences.schedulingPreferences,
-        communication: preferences.communicationPreferences
+        communication: preferences.communicationPreferences,
       },
       spendingPatterns: {
         averageSpend: behavior.spendingPatterns.averageSpendPerVisit,
         totalSpendYTD: behavior.spendingPatterns.totalSpendYTD,
-        preferredPayment: behavior.spendingPatterns.preferredPaymentMethod
+        preferredPayment: behavior.spendingPatterns.preferredPaymentMethod,
       },
       engagement: {
         appUsage: behavior.engagement.appUsage,
-        marketingResponses: behavior.engagement.marketingResponses
+        marketingResponses: behavior.engagement.marketingResponses,
       },
-      goals: preferences.goals
+      goals: preferences.goals,
     };
   }
 
@@ -304,8 +299,8 @@ export class ClientPreferencesService {
       compliments: behavior.feedback.compliments,
       serviceRatings: behavior.serviceHistory.map(s => ({
         serviceId: s.serviceId,
-        rating: s.averageRating
-      }))
+        rating: s.averageRating,
+      })),
     };
   }
-} 
+}

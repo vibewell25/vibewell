@@ -14,38 +14,39 @@ const WAF_RULES: WAFRule[] = [
   {
     id: 'SQL-01',
     name: 'SQL Injection',
-    pattern: /(\b(union|select|insert|update|delete|drop|alter)\b.*\b(from|into|table)\b)|(-{2,}|\/\*|\*\/)/i,
+    pattern:
+      /(\b(union|select|insert|update|delete|drop|alter)\b.*\b(from|into|table)\b)|(-{2,}|\/\*|\*\/)/i,
     severity: 'critical',
-    description: 'Potential SQL injection attempt'
+    description: 'Potential SQL injection attempt',
   },
   {
     id: 'XSS-01',
     name: 'Cross-Site Scripting',
     pattern: /(<script|javascript:|data:text\/html|vbscript:|onload=|onerror=)/i,
     severity: 'high',
-    description: 'Potential XSS attack'
+    description: 'Potential XSS attack',
   },
   {
     id: 'PATH-01',
     name: 'Path Traversal',
     pattern: /(\.\.\/|\.\.\\|~\/|\.\.|\/etc\/passwd|\/etc\/shadow)/i,
     severity: 'high',
-    description: 'Path traversal attempt'
+    description: 'Path traversal attempt',
   },
   {
     id: 'CMD-01',
     name: 'Command Injection',
     pattern: /(\b(exec|system|passthru|eval|shell_exec|phpinfo)\b|\$_GET|\$_POST|\$_REQUEST)/i,
     severity: 'critical',
-    description: 'Command injection attempt'
+    description: 'Command injection attempt',
   },
   {
     id: 'AUTH-01',
     name: 'Authentication Bypass',
     pattern: /(\b(admin|root|administrator)\b.*\b(\'|--| or |;))/i,
     severity: 'critical',
-    description: 'Authentication bypass attempt'
-  }
+    description: 'Authentication bypass attempt',
+  },
 ];
 
 interface BlockedIP {
@@ -62,7 +63,7 @@ export class WAF {
 
   static async processRequest(req: NextRequest): Promise<NextResponse | null> {
     const ip = req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for') || 'unknown';
-    
+
     // Check if IP is blocked
     const isBlocked = await this.isIPBlocked(ip);
     if (isBlocked) {
@@ -74,7 +75,7 @@ export class WAF {
     const method = req.method;
     const headers = Object.fromEntries(req.headers);
     let body = '';
-    
+
     if (method === 'POST' || method === 'PUT' || method === 'PATCH') {
       try {
         const clonedReq = req.clone();
@@ -94,11 +95,7 @@ export class WAF {
     }
 
     // Combine all request data for checking
-    const dataToCheck = [
-      url,
-      body,
-      ...Object.values(headers)
-    ].join(' ');
+    const dataToCheck = [url, body, ...Object.values(headers)].join(' ');
 
     // Check against WAF rules
     const violations = WAF_RULES.filter(rule => rule.pattern.test(dataToCheck));
@@ -115,16 +112,19 @@ export class WAF {
             ip,
             ruleId: violation.id,
             description: violation.description,
-            url
+            url,
           },
-          timestamp: Date.now()
+          timestamp: Date.now(),
         });
       }
 
       // Check if we should block the IP
       const recentViolations = await this.getRecentViolations(ip);
       if (recentViolations >= this.MAX_VIOLATIONS) {
-        await this.blockIP(ip, `Exceeded maximum WAF violations (${recentViolations} in last hour)`);
+        await this.blockIP(
+          ip,
+          `Exceeded maximum WAF violations (${recentViolations} in last hour)`
+        );
         return new NextResponse('Access Denied', { status: 403 });
       }
 
@@ -160,15 +160,10 @@ export class WAF {
       ip,
       reason,
       timestamp: Date.now(),
-      expiresAt: Date.now() + (this.BLOCK_DURATION * 1000)
+      expiresAt: Date.now() + this.BLOCK_DURATION * 1000,
     };
 
-    await redisClient.set(
-      `waf:blocked:${ip}`,
-      JSON.stringify(blocked),
-      'EX',
-      this.BLOCK_DURATION
-    );
+    await redisClient.set(`waf:blocked:${ip}`, JSON.stringify(blocked), 'EX', this.BLOCK_DURATION);
   }
 
   private static async isIPBlocked(ip: string): Promise<boolean> {
@@ -194,4 +189,4 @@ export class WAF {
   }
 }
 
-export default WAF; 
+export default WAF;

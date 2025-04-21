@@ -55,9 +55,7 @@ export class HoneypotService {
    * Check if a request path is a honeypot
    */
   isHoneypotPath(path: string, method: string): boolean {
-    return this.config.paths.some(
-      (p) => p.path === path && p.method === method
-    );
+    return this.config.paths.some(p => p.path === path && p.method === method);
   }
 
   /**
@@ -82,15 +80,13 @@ export class HoneypotService {
         path,
         method,
         payload: requestData.payload,
-        headers: this.filterHeaders(requestData.headers)
+        headers: this.filterHeaders(requestData.headers),
       };
 
       await this.recordEvent(event);
 
       // Get configured response
-      const honeypotConfig = this.config.paths.find(
-        (p) => p.path === path && p.method === method
-      );
+      const honeypotConfig = this.config.paths.find(p => p.path === path && p.method === method);
 
       if (!honeypotConfig) {
         throw new Error('Invalid honeypot path');
@@ -98,7 +94,7 @@ export class HoneypotService {
 
       // Optional delay to make the honeypot more convincing
       if (this.config.delayResponse) {
-        await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
+        await new Promise(resolve => setTimeout(resolve, Math.random() * 1000));
       }
 
       return honeypotConfig.response;
@@ -116,7 +112,7 @@ export class HoneypotService {
       // Store event in Redis
       const key = `${this.keyPrefix}:events:${event.ip}`;
       await this.redis.lpush(key, JSON.stringify(event));
-      
+
       // Keep only last 100 events per IP
       await this.redis.ltrim(key, 0, 99);
 
@@ -132,8 +128,8 @@ export class HoneypotService {
         details: {
           path: event.path,
           method: event.method,
-          payload: event.payload
-        }
+          payload: event.payload,
+        },
       });
     } catch (error) {
       logger.error('Failed to record honeypot event', 'honeypot', { error });
@@ -152,7 +148,7 @@ export class HoneypotService {
 
       // Check frequency
       const recentEvents = parsedEvents.filter(
-        (e) => new Date().getTime() - new Date(e.timestamp).getTime() < 3600000
+        e => new Date().getTime() - new Date(e.timestamp).getTime() < 3600000
       );
 
       if (recentEvents.length > 10) {
@@ -162,13 +158,13 @@ export class HoneypotService {
           ip,
           details: {
             eventCount: recentEvents.length,
-            timeWindow: '1 hour'
-          }
+            timeWindow: '1 hour',
+          },
         });
       }
 
       // Check for pattern matching (e.g., hitting multiple honeypots)
-      const uniquePaths = new Set(recentEvents.map((e) => e.path));
+      const uniquePaths = new Set(recentEvents.map(e => e.path));
       if (uniquePaths.size > 3) {
         await this.securityMonitoring.logEvent({
           type: 'honeypot_pattern',
@@ -176,8 +172,8 @@ export class HoneypotService {
           ip,
           details: {
             uniquePaths: Array.from(uniquePaths),
-            timeWindow: '1 hour'
-          }
+            timeWindow: '1 hour',
+          },
         });
       }
     } catch (error) {
@@ -208,8 +204,14 @@ export class HoneypotService {
     }
 
     const event = data as Partial<HoneypotEvent>;
-    const requiredFields: Array<keyof HoneypotEvent> = ['timestamp', 'ip', 'path', 'method', 'userAgent'];
-    
+    const requiredFields: Array<keyof HoneypotEvent> = [
+      'timestamp',
+      'ip',
+      'path',
+      'method',
+      'userAgent',
+    ];
+
     for (const field of requiredFields) {
       if (!event[field]) {
         throw new HoneypotError(`Missing required field: ${field}`, 'VALIDATION_ERROR');
@@ -228,7 +230,7 @@ export class HoneypotService {
       method: event.method as string,
       userAgent: event.userAgent as string,
       headers: event.headers || {},
-      payload: event.payload
+      payload: event.payload,
     };
   }
 
@@ -240,17 +242,19 @@ export class HoneypotService {
     try {
       const key = `${this.keyPrefix}:events:${ip}`;
       const events = await this.redis.lrange(key, 0, -1);
-      return await Promise.all(events.map(async (e) => {
-        try {
-          const parsed = JSON.parse(e);
-          return this.validateEvent(parsed);
-        } catch (parseError) {
-          throw new HoneypotError(
-            `Failed to parse event data: ${(parseError as Error).message}`,
-            'PARSE_ERROR'
-          );
-        }
-      }));
+      return await Promise.all(
+        events.map(async e => {
+          try {
+            const parsed = JSON.parse(e);
+            return this.validateEvent(parsed);
+          } catch (parseError) {
+            throw new HoneypotError(
+              `Failed to parse event data: ${(parseError as Error).message}`,
+              'PARSE_ERROR'
+            );
+          }
+        })
+      );
     } catch (error) {
       if (error instanceof HoneypotError) {
         throw error;
@@ -259,4 +263,4 @@ export class HoneypotService {
       return [];
     }
   }
-} 
+}

@@ -16,7 +16,7 @@ export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
   onClose,
   title,
   children,
-  className = ''
+  className = '',
 }) => {
   const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -24,18 +24,18 @@ export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
     if (isOpen) {
       // Focus the dialog when it opens
       dialogRef.current?.focus();
-      
+
       // Trap focus within the dialog
       const handleTabKey = (e: KeyboardEvent) => {
         if (e.key === 'Tab') {
           const focusableElements = dialogRef.current?.querySelectorAll(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
           );
-          
+
           if (focusableElements) {
             const firstElement = focusableElements[0] as HTMLElement;
             const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
-            
+
             if (e.shiftKey && document.activeElement === firstElement) {
               lastElement.focus();
               e.preventDefault();
@@ -83,4 +83,4 @@ export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
   );
 };
 
-export default AccessibleDialog; 
+export default AccessibleDialog;

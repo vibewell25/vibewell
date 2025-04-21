@@ -18,4 +18,4 @@ export interface ContentProgress {
   userId: string;
   progress: number;
   lastAccessed: string;
-} 
+}

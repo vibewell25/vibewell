@@ -13,21 +13,26 @@ interface GoalProgressCardProps {
   onDelete?: (goalId: string) => void;
 }
 
-export function GoalProgressCard({ 
-  goal, 
-  streak = 0, 
+export function GoalProgressCard({
+  goal,
+  streak = 0,
   improvement = 0,
   onLogProgress,
   onEdit,
-  onDelete
+  onDelete,
 }: GoalProgressCardProps) {
   const [showLogForm, setShowLogForm] = useState(false);
   const [showActions, setShowActions] = useState(false);
   const [logValue, setLogValue] = useState<number>(
-    goal.type === 'water' ? 1 : 
-    goal.type === 'workout' ? 30 : 
-    goal.type === 'meditation' ? 10 : 
-    goal.type === 'sleep' ? 8 : 0
+    goal.type === 'water'
+      ? 1
+      : goal.type === 'workout'
+        ? 30
+        : goal.type === 'meditation'
+          ? 10
+          : goal.type === 'sleep'
+            ? 8
+            : 0
   );
   // Calculate progress percentage
   const progressPercentage = Math.min((goal.current / goal.target) * 100, 100);
@@ -77,10 +82,7 @@ export function GoalProgressCard({
   }
   return (
     <div className="card overflow-hidden relative">
-      <div 
-        className="h-2 mb-4" 
-        style={{ backgroundColor: goal.color || '#6366F1' }}
-      />
+      <div className="h-2 mb-4" style={{ backgroundColor: goal.color || '#6366F1' }} />
       <div className="flex justify-between items-start mb-4">
         <div>
           <div className="flex items-center gap-2">
@@ -91,9 +93,9 @@ export function GoalProgressCard({
         </div>
         <div className="flex gap-2">
           {/* More Actions Button */}
-          <button 
+          <button
             className="text-muted-foreground hover:text-foreground"
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
               setShowActions(!showActions);
             }}
@@ -101,7 +103,7 @@ export function GoalProgressCard({
             <Icons.EllipsisHorizontalIcon className="h-5 w-5" />
           </button>
           {/* Log Progress Button */}
-          <button 
+          <button
             className="btn-primary-outline text-sm py-1 px-3 flex items-center gap-1"
             onClick={() => setShowLogForm(!showLogForm)}
           >
@@ -114,9 +116,9 @@ export function GoalProgressCard({
       {showActions && (
         <div className="absolute right-0 top-12 bg-card shadow-lg rounded-md border border-border overflow-hidden z-10">
           {onEdit && (
-            <button 
+            <button
               className="flex items-center gap-2 w-full px-4 py-2 text-sm text-left hover:bg-muted"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 setShowActions(false);
                 onEdit(goal);
@@ -127,9 +129,9 @@ export function GoalProgressCard({
             </button>
           )}
           {onDelete && (
-            <button 
+            <button
               className="flex items-center gap-2 w-full px-4 py-2 text-sm text-left hover:bg-muted text-red-500"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 setShowActions(false);
                 onDelete(goal.id);
@@ -150,11 +152,11 @@ export function GoalProgressCard({
           <span className="text-sm font-medium">{Math.round(progressPercentage)}%</span>
         </div>
         <div className="h-2 bg-muted rounded-full overflow-hidden">
-          <div 
+          <div
             className="h-full transition-all duration-500 ease-in-out"
             style={{
               width: `${progressPercentage}%`,
-              backgroundColor: goal.color || '#6366F1'
+              backgroundColor: goal.color || '#6366F1',
             }}
           />
         </div>
@@ -168,7 +170,9 @@ export function GoalProgressCard({
           </div>
         )}
         {improvement !== 0 && (
-          <div className={`flex items-center gap-1 ${improvement > 0 ? 'text-green-500' : 'text-red-500'}`}>
+          <div
+            className={`flex items-center gap-1 ${improvement > 0 ? 'text-green-500' : 'text-red-500'}`}
+          >
             {improvement > 0 ? (
               <Icons.ArrowUpIcon className="h-4 w-4" />
             ) : (
@@ -196,14 +200,12 @@ export function GoalProgressCard({
                 id="logValue"
                 className="form-input w-full"
                 value={logValue}
-                onChange={(e) => setLogValue(Number(e.target.value))}
+                onChange={e => setLogValue(Number(e.target.value))}
                 min={0}
                 step={goal.type === 'sleep' ? 0.5 : 1}
                 required
               />
-              <span className="flex items-center text-sm text-muted-foreground">
-                {goal.unit}
-              </span>
+              <span className="flex items-center text-sm text-muted-foreground">{goal.unit}</span>
             </div>
           </div>
           <div className="flex justify-end gap-2">
@@ -214,10 +216,7 @@ export function GoalProgressCard({
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="btn-primary text-sm py-1 flex items-center gap-1"
-            >
+            <button type="submit" className="btn-primary text-sm py-1 flex items-center gap-1">
               <Icons.CheckIcon className="h-4 w-4" />
               Save
             </button>
@@ -226,4 +225,4 @@ export function GoalProgressCard({
       )}
     </div>
   );
-} 
+}

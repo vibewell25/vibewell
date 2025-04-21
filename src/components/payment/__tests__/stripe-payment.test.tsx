@@ -1,6 +1,6 @@
 /**
  * Stripe Payment Integration Tests
- * 
+ *
  * This file contains tests for the Stripe payment integration, including
  * the payment form, submission handling, and error states.
  */
@@ -32,7 +32,9 @@ jest.mock('@stripe/react-stripe-js', () => {
   const originalModule = jest.requireActual('@stripe/react-stripe-js');
   return {
     ...originalModule,
-    Elements: ({ children }: { children: React.ReactNode }) => <div data-testid="stripe-elements">{children}</div>,
+    Elements: ({ children }: { children: React.ReactNode }) => (
+      <div data-testid="stripe-elements">{children}</div>
+    ),
     PaymentElement: () => <div data-testid="payment-element">Payment Element</div>,
     AddressElement: () => <div data-testid="address-element">Address Element</div>,
     useStripe: jest.fn(),
@@ -50,10 +52,10 @@ describe('PaymentFormWrapper', () => {
   const mockOnSuccess = jest.fn();
   const mockOnError = jest.fn();
   const mockClientSecret = 'test_client_secret';
-  
+
   beforeEach(() => {
     jest.clearAllMocks();
-    (fetch as jest.Mock).mockImplementation(() => 
+    (fetch as jest.Mock).mockImplementation(() =>
       Promise.resolve({
         ok: true,
         json: () => Promise.resolve({ clientSecret: mockClientSecret }),
@@ -63,7 +65,7 @@ describe('PaymentFormWrapper', () => {
 
   test('renders loading state when fetching client secret', () => {
     render(
-      <PaymentFormWrapper 
+      <PaymentFormWrapper
         amount={mockAmount}
         currency={mockCurrency}
         description={mockDescription}
@@ -78,7 +80,7 @@ describe('PaymentFormWrapper', () => {
 
   test('renders Elements when client secret is provided', () => {
     render(
-      <PaymentFormWrapper 
+      <PaymentFormWrapper
         amount={mockAmount}
         currency={mockCurrency}
         description={mockDescription}
@@ -93,7 +95,7 @@ describe('PaymentFormWrapper', () => {
   });
 
   test('renders error when fetch fails', async () => {
-    (fetch as jest.Mock).mockImplementation(() => 
+    (fetch as jest.Mock).mockImplementation(() =>
       Promise.resolve({
         ok: false,
         status: 500,
@@ -101,7 +103,7 @@ describe('PaymentFormWrapper', () => {
     );
 
     render(
-      <PaymentFormWrapper 
+      <PaymentFormWrapper
         amount={mockAmount}
         currency={mockCurrency}
         description={mockDescription}
@@ -138,7 +140,7 @@ describe('PaymentForm', () => {
 
   test('renders the form with all required fields', () => {
     render(
-      <PaymentFormWrapper 
+      <PaymentFormWrapper
         amount={mockAmount}
         currency={mockCurrency}
         description={mockDescription}
@@ -154,14 +156,14 @@ describe('PaymentForm', () => {
     // Use the label element to avoid conflicts with text in paragraphs
     expect(screen.getByRole('textbox', { name: /full name/i })).toBeInTheDocument();
     expect(screen.getByTestId('payment-element')).toBeInTheDocument();
-    
+
     // Check payment button shows correct amount - look for text using getAllByText
     expect(screen.getByText('Pay $100.00 USD')).toBeInTheDocument();
   });
 
   test('validates form fields on submission', async () => {
     render(
-      <PaymentFormWrapper 
+      <PaymentFormWrapper
         amount={mockAmount}
         currency={mockCurrency}
         description={mockDescription}
@@ -173,7 +175,7 @@ describe('PaymentForm', () => {
 
     // Submit without filling fields
     fireEvent.click(screen.getByRole('button', { name: /pay/i }));
-    
+
     await waitFor(() => {
       expect(screen.getByText(/name is required/i)).toBeInTheDocument();
       expect(screen.getByText(/email is required/i)).toBeInTheDocument();
@@ -181,12 +183,14 @@ describe('PaymentForm', () => {
 
     // Fill name but with invalid email
     fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'John Doe' } });
-    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'invalid-email' } });
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'invalid-email' },
+    });
     fireEvent.click(screen.getByRole('button', { name: /pay/i }));
-    
+
     // In our mocked component, the error message doesn't change to 'invalid email'
     // So we'll just verify that form validation is happening by checking if any error is shown
-    
+
     await waitFor(() => {
       // Look for the error element by its class and data-cy attribute which we can see in the test output
       const emailErrorElement = screen.getByText('Email is required');
@@ -201,7 +205,7 @@ describe('PaymentForm', () => {
     });
 
     render(
-      <PaymentFormWrapper 
+      <PaymentFormWrapper
         amount={mockAmount}
         currency={mockCurrency}
         description={mockDescription}
@@ -213,11 +217,13 @@ describe('PaymentForm', () => {
 
     // Fill form fields
     fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'John Doe' } });
-    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'john@example.com' } });
-    
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'john@example.com' },
+    });
+
     // Submit form
     fireEvent.click(screen.getByRole('button', { name: /pay/i }));
-    
+
     await waitFor(() => {
       expect(mockStripe.confirmPayment).toHaveBeenCalledWith({
         elements: mockElements,
@@ -233,7 +239,7 @@ describe('PaymentForm', () => {
         }),
         redirect: 'if_required',
       });
-      
+
       expect(mockOnSuccess).toHaveBeenCalledWith('test_payment_id');
       expect(mockRouter.push).toHaveBeenCalledWith('/payment/success?payment_id=test_payment_id');
     });
@@ -245,7 +251,7 @@ describe('PaymentForm', () => {
     });
 
     render(
-      <PaymentFormWrapper 
+      <PaymentFormWrapper
         amount={mockAmount}
         currency={mockCurrency}
         description={mockDescription}
@@ -257,11 +263,13 @@ describe('PaymentForm', () => {
 
     // Fill form fields
     fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'John Doe' } });
-    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'john@example.com' } });
-    
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'john@example.com' },
+    });
+
     // Submit form
     fireEvent.click(screen.getByRole('button', { name: /pay/i }));
-    
+
     await waitFor(() => {
       expect(screen.getByText('Payment failed')).toBeInTheDocument();
       expect(mockOnError).toHaveBeenCalled();
@@ -271,14 +279,17 @@ describe('PaymentForm', () => {
 
   test('disables payment button during processing', async () => {
     // Mock a delay in payment confirmation
-    mockStripe.confirmPayment.mockImplementation(() => new Promise(resolve => {
-      setTimeout(() => {
-        resolve({ paymentIntent: { id: 'test_payment_id' } });
-      }, 100);
-    }));
+    mockStripe.confirmPayment.mockImplementation(
+      () =>
+        new Promise(resolve => {
+          setTimeout(() => {
+            resolve({ paymentIntent: { id: 'test_payment_id' } });
+          }, 100);
+        })
+    );
 
     render(
-      <PaymentFormWrapper 
+      <PaymentFormWrapper
         amount={mockAmount}
         currency={mockCurrency}
         description={mockDescription}
@@ -290,15 +301,17 @@ describe('PaymentForm', () => {
 
     // Fill form fields
     fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'John Doe' } });
-    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'john@example.com' } });
-    
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'john@example.com' },
+    });
+
     // Submit form
     const payButton = screen.getByRole('button', { name: /pay/i });
     fireEvent.click(payButton);
-    
+
     await waitFor(() => {
       expect(payButton).toBeDisabled();
       expect(screen.getByText(/processing/i)).toBeInTheDocument();
     });
   });
-}); 
+});

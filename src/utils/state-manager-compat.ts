@@ -6,4 +6,4 @@
 
 // Note: Do not rename this file as it would break existing imports
 export * from './state-manager-bridge';
-export { default } from './state-manager-bridge'; 
+export { default } from './state-manager-bridge';

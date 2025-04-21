@@ -19,7 +19,7 @@ export default function ResponsiveTestPage() {
   const handleGesture = (type: string, details?: string) => {
     const gesture = `${type}${details ? `: ${details}` : ''}`;
     setLastGesture(gesture);
-    
+
     setTouchEvents(prev => {
       const updated = [gesture, ...prev];
       // Keep only the last 5 events
@@ -30,7 +30,7 @@ export default function ResponsiveTestPage() {
   return (
     <>
       <EnhancedHeader />
-      
+
       <ResponsiveContainer maxWidth="xl" className="py-8">
         <div className="space-y-8">
           <div>
@@ -47,18 +47,24 @@ export default function ResponsiveTestPage() {
                 <h3 className="font-medium mb-2">Device Type</h3>
                 <div className="text-xl font-bold">{deviceType}</div>
               </div>
-              
+
               <div className="p-4 bg-muted rounded-lg">
                 <h3 className="font-medium mb-2">Screen Category</h3>
                 <div>
-                  <span className={`text-xl font-bold ${isMobile ? 'text-primary' : ''}`}>Mobile</span>
+                  <span className={`text-xl font-bold ${isMobile ? 'text-primary' : ''}`}>
+                    Mobile
+                  </span>
                   <span className="mx-2">|</span>
-                  <span className={`text-xl font-bold ${isTablet ? 'text-primary' : ''}`}>Tablet</span>
+                  <span className={`text-xl font-bold ${isTablet ? 'text-primary' : ''}`}>
+                    Tablet
+                  </span>
                   <span className="mx-2">|</span>
-                  <span className={`text-xl font-bold ${isDesktop ? 'text-primary' : ''}`}>Desktop</span>
+                  <span className={`text-xl font-bold ${isDesktop ? 'text-primary' : ''}`}>
+                    Desktop
+                  </span>
                 </div>
               </div>
-              
+
               <div className="p-4 bg-muted rounded-lg">
                 <h3 className="font-medium mb-2">Layout Adaptation</h3>
                 <div className="text-xl font-bold">
@@ -71,9 +77,9 @@ export default function ResponsiveTestPage() {
           <Card className="p-6 space-y-4">
             <h2 className="text-2xl font-bold">Touch Interaction Test</h2>
             <p>Try using touch gestures in the area below (tap, swipe, pinch, rotate):</p>
-            
+
             <TouchHandler
-              onGesture={(gesture) => {
+              onGesture={gesture => {
                 if (gesture.type === 'swipe' && gesture.direction) {
                   handleGesture('Swipe', gesture.direction);
                 } else if (gesture.type === 'pinch' && gesture.scale) {
@@ -93,7 +99,7 @@ export default function ResponsiveTestPage() {
                 <p className="text-muted-foreground text-sm">Last gesture: {lastGesture}</p>
               </div>
             </TouchHandler>
-            
+
             <div>
               <h3 className="font-medium mb-2">Recent Touch Events:</h3>
               {touchEvents.length > 0 ? (
@@ -111,7 +117,7 @@ export default function ResponsiveTestPage() {
           <Card className="p-6 space-y-4">
             <h2 className="text-2xl font-bold">Responsive Image Test</h2>
             <p>This image will adapt based on your device:</p>
-            
+
             <div className="rounded-lg overflow-hidden">
               <ResponsiveImage
                 src="https://images.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=1200"
@@ -123,7 +129,7 @@ export default function ResponsiveTestPage() {
                 className="w-full rounded-lg"
               />
             </div>
-            
+
             <div className="text-sm text-muted-foreground">
               This image uses different resolutions based on device type:
               <ul className="list-disc pl-5 mt-2">
@@ -136,9 +142,9 @@ export default function ResponsiveTestPage() {
 
           <Card className="p-6 space-y-4">
             <h2 className="text-2xl font-bold">Layout Adaptation Test</h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map((item) => (
+              {[1, 2, 3, 4].map(item => (
                 <div key={item} className="bg-muted p-4 rounded-lg">
                   <h3 className="font-medium mb-2">Item {item}</h3>
                   <p className="text-muted-foreground">
@@ -147,12 +153,13 @@ export default function ResponsiveTestPage() {
                 </div>
               ))}
             </div>
-            
+
             <div className="mt-6 flex flex-col sm:flex-row gap-4">
               <div className="sm:w-1/2">
                 <h3 className="font-medium mb-2">Column 1</h3>
                 <p className="text-muted-foreground">
-                  On small screens, these sections will stack vertically. On larger screens, they will appear side by side.
+                  On small screens, these sections will stack vertically. On larger screens, they
+                  will appear side by side.
                 </p>
               </div>
               <div className="sm:w-1/2">
@@ -165,15 +172,13 @@ export default function ResponsiveTestPage() {
           </Card>
 
           <div className="text-center mt-8">
-            <Button size="lg">
-              Take Action
-            </Button>
+            <Button size="lg">Take Action</Button>
           </div>
         </div>
       </ResponsiveContainer>
-      
+
       {/* Responsive Tester Tool */}
       <ResponsiveTester position="bottom-right" />
     </>
   );
-} 
+}

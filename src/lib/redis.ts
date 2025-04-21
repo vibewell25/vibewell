@@ -11,9 +11,9 @@ if (typeof window === 'undefined') {
     tls: process.env.REDIS_TLS === 'true' ? {} : undefined,
   });
 
-  redis.on('error', (err) => {
+  redis.on('error', err => {
     console.error('Redis Client Error:', err);
   });
 }
 
-export default redis; 
+export default redis;

@@ -362,7 +362,7 @@ export class BookingService {
     frequency: RecurringFrequency
   ): Date[] {
     const dates: Date[] = [];
-    let currentDate = new Date(startDate);
+    const currentDate = new Date(startDate);
 
     while (currentDate <= endDate) {
       dates.push(new Date(currentDate));

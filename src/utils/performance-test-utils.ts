@@ -178,7 +178,7 @@ export async function measureFPS(duration: number): Promise<number> {
 export const measureFrameRate = (duration: number = 5000): Promise<number> => {
   return new Promise(resolve => {
     let frames = 0;
-    let lastTime = performance.now();
+    const lastTime = performance.now();
 
     const countFrame = () => {
       frames++;

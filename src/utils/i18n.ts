@@ -1,22 +1,23 @@
-import React, { useEffect, useContext, useState, useCallback } from 'react';
+import React, { useEffect, useContext, useState, useCallback, ReactNode } from 'react';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
 
-export interface Language {
+interface Language {
   code: string;
   name: string;
   dir: 'ltr' | 'rtl';
   country: string;
+  flag: string;
 }
 
 export const SUPPORTED_LANGUAGES: Language[] = [
-  { code: 'en', name: 'English', dir: 'ltr', country: 'US' },
-  { code: 'es', name: 'Español', dir: 'ltr', country: 'ES' },
-  { code: 'fr', name: 'Français', dir: 'ltr', country: 'FR' },
-  { code: 'ar', name: 'العربية', dir: 'rtl', country: 'SA' },
-  { code: 'he', name: 'עברית', dir: 'rtl', country: 'IL' },
+  { code: 'en', name: 'English', dir: 'ltr', country: 'US', flag: '🇺🇸' },
+  { code: 'es', name: 'Español', dir: 'ltr', country: 'ES', flag: '🇪🇸' },
+  { code: 'fr', name: 'Français', dir: 'ltr', country: 'FR', flag: '🇫🇷' },
+  { code: 'ar', name: 'العربية', dir: 'rtl', country: 'SA', flag: '🇸🇦' },
+  { code: 'he', name: 'עברית', dir: 'rtl', country: 'IL', flag: '🇮🇱' },
 ];
 
 export const DEFAULT_LANGUAGE = SUPPORTED_LANGUAGES[0];
@@ -74,27 +75,30 @@ export function useDocumentDirection(languageCode: string) {
   }, [languageCode]);
 }
 
-// Language context and provider
-export const LanguageContext = React.createContext<{
+interface LanguageContextType {
   currentLanguage: Language;
-  setLanguage: (code: string) => Promise<void>;
-}>({
-  currentLanguage: DEFAULT_LANGUAGE,
-  setLanguage: async () => {},
+  setLanguage: (code: string) => void;
+}
+
+const LanguageContext = React.createContext<LanguageContextType>({
+  currentLanguage: SUPPORTED_LANGUAGES[0],
+  setLanguage: () => {},
 });
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(
-    SUPPORTED_LANGUAGES.find(lang => lang.code === i18next.language) || DEFAULT_LANGUAGE
-  );
+interface LanguageProviderProps {
+  children: ReactNode;
+}
 
-  const setLanguage = useCallback(async (code: string) => {
-    const language = SUPPORTED_LANGUAGES.find(lang => lang.code === code);
+export function LanguageProvider({ children }: LanguageProviderProps) {
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(SUPPORTED_LANGUAGES[0]);
+
+  const setLanguage = (code: string) => {
+    const language = SUPPORTED_LANGUAGES.find((lang) => lang.code === code);
     if (language) {
-      await i18next.changeLanguage(code);
       setCurrentLanguage(language);
+      i18next.changeLanguage(code);
     }
-  }, []);
+  };
 
   useDocumentDirection(currentLanguage.code);
 
@@ -105,9 +109,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Hook to use language context
 export function useLanguage() {
-  return useContext(LanguageContext);
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
 }
 
 // RTL style management
@@ -153,7 +160,7 @@ export function createRTLStyles(styles: Record<string, any>): Record<string, any
 }
 
 // Language selector component
-export const LanguageSelector = React.memo(() => {
+export function LanguageSelector() {
   const { currentLanguage, setLanguage } = useLanguage();
 
   return (
@@ -161,6 +168,7 @@ export const LanguageSelector = React.memo(() => {
       value={currentLanguage.code}
       onChange={(e) => setLanguage(e.target.value)}
       aria-label="Select language"
+      className="select select-bordered w-full max-w-xs"
     >
       {SUPPORTED_LANGUAGES.map((language) => (
         <option key={language.code} value={language.code}>
@@ -169,4 +177,33 @@ export const LanguageSelector = React.memo(() => {
       ))}
     </select>
   );
-}); 
+}
+
+i18next
+  .use(initReactI18next)
+  .init({
+    resources: {
+      en: {
+        translation: {
+          // English translations
+        }
+      },
+      es: {
+        translation: {
+          // Spanish translations
+        }
+      },
+      fr: {
+        translation: {
+          // French translations
+        }
+      }
+    },
+    lng: SUPPORTED_LANGUAGES[0].code,
+    fallbackLng: SUPPORTED_LANGUAGES[0].code,
+    interpolation: {
+      escapeValue: false
+    }
+  });
+
+export default i18next; 

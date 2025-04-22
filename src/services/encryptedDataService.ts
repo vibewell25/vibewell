@@ -1,5 +1,9 @@
 import { prisma } from '@/lib/database/client';
 import { EncryptionService } from './encryption';
+import crypto from 'crypto';
+import { PrismaClient } from '@prisma/client';
+import { KeyManagementService } from './keyManagementService';
+import logger from '@/lib/logger';
 
 export interface EncryptedDataEntry {
   id: string;
@@ -19,61 +23,127 @@ interface EncryptionKeyUsage {
   lastUsed: Date;
 }
 
+interface EncryptedData {
+  id: string;
+  userId: string;
+  dataType: string;
+  encryptedValue: string;
+  iv: string;
+  tag: string;
+  encryptionMetadata: EncryptionMetadata;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface EncryptionMetadata {
+  algorithm: string;
+  keyId: string;
+  version: string;
+  purpose: string;
+  [key: string]: string;
+}
+
+interface EncryptionResult {
+  encryptedValue: string;
+  iv: string;
+  tag: string;
+}
+
+interface DecryptionResult<T> {
+  value: T;
+  metadata: EncryptionMetadata;
+}
+
 export class EncryptedDataService {
-  private encryptionService: EncryptionService;
+  private readonly algorithm = 'aes-256-gcm';
+  private readonly keyLength = 32;
+  private readonly ivLength = 12;
+  private readonly tagLength = 16;
 
-  constructor() {
-    this.encryptionService = new EncryptionService();
-  }
+  constructor(
+    private readonly keyManagementService: KeyManagementService,
+    private readonly prisma: PrismaClient
+  ) {}
 
-  async storeEncryptedData(userId: string, dataType: string, data: any): Promise<string> {
-    // Encrypt the data
-    const { encryptedData, metadata } = await this.encryptionService.encrypt(JSON.stringify(data));
+  async storeEncryptedData<T>(
+    userId: string,
+    dataType: string,
+    data: T,
+    metadata?: Partial<EncryptionMetadata>
+  ): Promise<string> {
+    try {
+      const key = await this.keyManagementService.getCurrentKey();
+      const iv = crypto.randomBytes(this.ivLength);
+      const cipher = crypto.createCipheriv(this.algorithm, key, iv, {
+        authTagLength: this.tagLength
+      });
 
-    // Store in database using Prisma
-    const result = await prisma.$executeRaw`
-      SELECT store_encrypted_data(
-        ${userId}::uuid,
-        ${dataType}::text,
-        ${encryptedData}::text,
-        ${JSON.stringify(metadata)}::jsonb
-      )
-    `;
+      const encryptedValue = Buffer.concat([
+        cipher.update(JSON.stringify(data), 'utf8'),
+        cipher.final()
+      ]);
 
-    if (!result) {
+      const tag = cipher.getAuthTag();
+
+      const encryptionMetadata: EncryptionMetadata = {
+        algorithm: this.algorithm,
+        keyId: await this.keyManagementService.getCurrentKeyId(),
+        version: '1.0',
+        purpose: dataType,
+        ...metadata
+      };
+
+      const encryptedData = await this.prisma.encryptedData.create({
+        data: {
+          userId,
+          dataType,
+          encryptedValue: encryptedValue.toString('base64'),
+          iv: iv.toString('base64'),
+          tag: tag.toString('base64'),
+          encryptionMetadata
+        }
+      });
+
+      return encryptedData.id;
+    } catch (error) {
+      logger.error('Failed to store encrypted data', { error, userId, dataType });
       throw new Error('Failed to store encrypted data');
     }
-
-    return result as string;
   }
 
-  async retrieveEncryptedData<T>(userId: string, dataType: string): Promise<T | null> {
-    // Retrieve from database using Prisma
-    const result = await prisma.$queryRaw<
-      Array<{
-        encrypted_data: string;
-        encryption_metadata: Record<string, any>;
-      }>
-    >`
-      SELECT encrypted_data, encryption_metadata
-      FROM encrypted_data
-      WHERE user_id = ${userId}::uuid
-      AND data_type = ${dataType}::text
-      ORDER BY created_at DESC
-      LIMIT 1
-    `;
+  async retrieveEncryptedData<T>(id: string): Promise<DecryptionResult<T>> {
+    try {
+      const encryptedData = await this.prisma.encryptedData.findUnique({
+        where: { id }
+      });
 
-    if (!result || result.length === 0) {
-      return null;
+      if (!encryptedData) {
+        throw new Error('Encrypted data not found');
+      }
+
+      const key = await this.keyManagementService.getKey(encryptedData.encryptionMetadata.keyId);
+      const iv = Buffer.from(encryptedData.iv, 'base64');
+      const tag = Buffer.from(encryptedData.tag, 'base64');
+      const encryptedValue = Buffer.from(encryptedData.encryptedValue, 'base64');
+
+      const decipher = crypto.createDecipheriv(this.algorithm, key, iv, {
+        authTagLength: this.tagLength
+      });
+      decipher.setAuthTag(tag);
+
+      const decrypted = Buffer.concat([
+        decipher.update(encryptedValue),
+        decipher.final()
+      ]);
+
+      return {
+        value: JSON.parse(decrypted.toString('utf8')),
+        metadata: encryptedData.encryptionMetadata
+      };
+    } catch (error) {
+      logger.error('Failed to retrieve encrypted data', { error, id });
+      throw new Error('Failed to retrieve encrypted data');
     }
-
-    // Decrypt the data
-    const decryptedData = await this.encryptionService.decrypt(
-      result[0].encrypted_data,
-      result[0].encryption_metadata
-    );
-
-    return JSON.parse(decryptedData) as T;
   }
 
   async updateEncryptedUserField(

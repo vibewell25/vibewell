@@ -97,7 +97,7 @@ export class RecommendationService {
       // Calculate recommendation scores
       const recommendations: RecommendationScore[] = services.map(service => {
         let score = 0.5; // Base score
-        let reasons: string[] = [];
+        const reasons: string[] = [];
 
         // Factor in category preferences
         const categoryPref = preferences.find(p => p.category === service.category.name);

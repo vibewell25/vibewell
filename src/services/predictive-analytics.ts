@@ -17,10 +17,55 @@ interface ChurnPrediction {
 interface ClientBehavior {
   visitFrequency: number;
   averageSpending: number;
-  lastVisitDays: number;
+  daysSinceLastVisit: number;
   serviceLoyalty: number;
   feedbackScore: number;
   engagementScore: number;
+}
+
+interface Booking {
+  id: string;
+  serviceId: string;
+  date: Date;
+  amount: number;
+  status: string;
+}
+
+interface Review {
+  id: string;
+  rating: number;
+  comment?: string;
+  date: Date;
+}
+
+interface ClientEngagement {
+  emailOpenRate: number;
+  clickThroughRate: number;
+  socialMediaInteractions: number;
+  appUsage: number;
+}
+
+interface ClientPatternAnalysis {
+  bookingPatterns: {
+    preferredDays: string[];
+    preferredTimes: string[];
+    seasonalTrends: Record<string, number>;
+  };
+  spendingPatterns: {
+    averagePerVisit: number;
+    monthlyTrend: number[];
+    seasonalSpending: Record<string, number>;
+  };
+  servicePreferences: {
+    mostBooked: string[];
+    categoryPreferences: Record<string, number>;
+    crossSellOpportunities: string[];
+  };
+  seasonality: {
+    peakMonths: string[];
+    lowSeasons: string[];
+    yearOverYearGrowth: number;
+  };
 }
 
 export class PredictiveAnalyticsService {
@@ -42,7 +87,6 @@ export class PredictiveAnalyticsService {
         bookings,
         reviews,
         engagement,
-        loyalty,
       });
 
       // Generate prediction using OpenAI
@@ -61,7 +105,7 @@ export class PredictiveAnalyticsService {
   /**
    * Analyzes patterns in client behavior
    */
-  async analyzeClientPatterns(userId: string): Promise<Record<string, any>> {
+  async analyzeClientPatterns(userId: string): Promise<ClientPatternAnalysis> {
     try {
       const timeframes = [3, 6, 12]; // months
       const patterns = {};
@@ -160,11 +204,15 @@ export class PredictiveAnalyticsService {
     });
   }
 
-  private analyzeClientBehavior(data: any): ClientBehavior {
+  private analyzeClientBehavior(data: {
+    bookings: Booking[];
+    reviews: Review[];
+    engagement: ClientEngagement;
+  }): ClientBehavior {
     const behavior: ClientBehavior = {
       visitFrequency: this.calculateVisitFrequency(data.bookings),
       averageSpending: this.calculateAverageSpending(data.bookings),
-      lastVisitDays: this.calculateDaysSinceLastVisit(data.bookings),
+      daysSinceLastVisit: this.calculateDaysSinceLastVisit(data.bookings),
       serviceLoyalty: this.calculateServiceLoyalty(data.bookings),
       feedbackScore: this.calculateFeedbackScore(data.reviews),
       engagementScore: this.calculateEngagementScore(data.engagement),
@@ -277,7 +325,7 @@ export class PredictiveAnalyticsService {
     });
   }
 
-  private calculateVisitFrequency(bookings: any[]): number {
+  private calculateVisitFrequency(bookings: Booking[]): number {
     if (bookings.length < 2) return 0;
     const daysBetweenFirst = differenceInDays(
       new Date(bookings[bookings.length - 1].createdAt),
@@ -286,31 +334,31 @@ export class PredictiveAnalyticsService {
     return bookings.length / (daysBetweenFirst / 30); // visits per month
   }
 
-  private calculateAverageSpending(bookings: any[]): number {
+  private calculateAverageSpending(bookings: Booking[]): number {
     if (bookings.length === 0) return 0;
     const totalSpent = bookings.reduce((sum, booking) => sum + (booking.payment?.amount || 0), 0);
     return totalSpent / bookings.length;
   }
 
-  private calculateDaysSinceLastVisit(bookings: any[]): number {
+  private calculateDaysSinceLastVisit(bookings: Booking[]): number {
     if (bookings.length === 0) return 365; // Default to a year if no visits
     const lastVisit = new Date(Math.max(...bookings.map(b => new Date(b.createdAt).getTime())));
     return differenceInDays(new Date(), lastVisit);
   }
 
-  private calculateServiceLoyalty(bookings: any[]): number {
+  private calculateServiceLoyalty(bookings: Booking[]): number {
     if (bookings.length === 0) return 0;
     const serviceIds = bookings.map(b => b.service.id);
     const uniqueServices = new Set(serviceIds).size;
     return uniqueServices > 0 ? bookings.length / uniqueServices : 0;
   }
 
-  private calculateFeedbackScore(reviews: any[]): number {
+  private calculateFeedbackScore(reviews: Review[]): number {
     if (reviews.length === 0) return 0;
     return reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
   }
 
-  private calculateEngagementScore(engagement: any): number {
+  private calculateEngagementScore(engagement: ClientEngagement): number {
     // Implementation for calculating engagement score
     return 0;
   }

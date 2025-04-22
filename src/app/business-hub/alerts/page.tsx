@@ -181,8 +181,8 @@ export default function AlertsPage() {
   };
 
   const getThresholdDisplay = (alert: Alert) => {
-    let metric = getMetricDisplayName(alert.threshold.metricType);
-    let condition = alert.threshold.condition === 'above' ? 'above' : 'below';
+    const metric = getMetricDisplayName(alert.threshold.metricType);
+    const condition = alert.threshold.condition === 'above' ? 'above' : 'below';
     let value = alert.threshold.value;
 
     // Add % for conversion rate

@@ -1,21 +1,51 @@
 import { Redis } from 'ioredis';
 import { logger } from '@/lib/logger';
+import { PrismaClient } from '@prisma/client';
 
-export interface AuditLog {
+const prisma = new PrismaClient();
+
+interface AuditLog {
   id: string;
+  userId: string;
+  action: AuditAction;
+  resourceType: string;
+  resourceId: string;
   timestamp: Date;
-  action: string;
-  userId?: string;
-  resourceType?: string;
-  resourceId?: string;
-  changes?: Record<string, { old: any; new: any }>;
-  metadata: {
-    ip?: string;
-    userAgent?: string;
-    sessionId?: string;
-    [key: string]: any;
-  };
+  changes?: Record<string, AuditChange>;
+  metadata: AuditMetadata;
 }
+
+interface AuditChange {
+  old: unknown;
+  new: unknown;
+}
+
+interface AuditMetadata {
+  ipAddress?: string;
+  userAgent?: string;
+  location?: {
+    country: string;
+    city: string;
+    coordinates: [number, number];
+  };
+  sessionId?: string;
+  requestId?: string;
+  [key: string]: unknown;
+}
+
+type AuditAction = 
+  | 'create'
+  | 'read'
+  | 'update'
+  | 'delete'
+  | 'login'
+  | 'logout'
+  | 'export'
+  | 'import'
+  | 'share'
+  | 'archive'
+  | 'restore'
+  | 'custom';
 
 export class AuditLoggingService {
   private redis: Redis;
@@ -211,5 +241,87 @@ export class AuditLoggingService {
     }
 
     return logs;
+  }
+
+  async logAuditEvent(
+    userId: string,
+    action: AuditAction,
+    resourceType: string,
+    resourceId: string,
+    changes?: Record<string, AuditChange>,
+    metadata?: AuditMetadata
+  ): Promise<void> {
+    try {
+      const auditLog: AuditLog = {
+        id: crypto.randomUUID(),
+        userId,
+        action,
+        resourceType,
+        resourceId,
+        timestamp: new Date(),
+        changes,
+        metadata: metadata || {},
+      };
+
+      await prisma.auditLog.create({
+        data: auditLog,
+      });
+
+      // Store in Redis for real-time analysis
+      const key = `audit:${resourceType}:${resourceId}`;
+      await this.redis.lpush(key, JSON.stringify(auditLog));
+      await this.redis.ltrim(key, 0, 99); // Keep last 100 events
+      await this.redis.expire(key, 86400 * 30); // Expire after 30 days
+    } catch (error) {
+      logger.error('Failed to log audit event', { error, userId, action, resourceType, resourceId });
+      throw error;
+    }
+  }
+
+  async getAuditLogs(
+    filters: {
+      userId?: string;
+      action?: AuditAction;
+      resourceType?: string;
+      resourceId?: string;
+      startDate?: Date;
+      endDate?: Date;
+    },
+    pagination: {
+      page: number;
+      limit: number;
+    }
+  ): Promise<{
+    logs: AuditLog[];
+    total: number;
+  }> {
+    try {
+      const where: Record<string, unknown> = {};
+      
+      if (filters.userId) where.userId = filters.userId;
+      if (filters.action) where.action = filters.action;
+      if (filters.resourceType) where.resourceType = filters.resourceType;
+      if (filters.resourceId) where.resourceId = filters.resourceId;
+      if (filters.startDate || filters.endDate) {
+        where.timestamp = {};
+        if (filters.startDate) where.timestamp.gte = filters.startDate;
+        if (filters.endDate) where.timestamp.lte = filters.endDate;
+      }
+
+      const [logs, total] = await Promise.all([
+        prisma.auditLog.findMany({
+          where,
+          skip: (pagination.page - 1) * pagination.limit,
+          take: pagination.limit,
+          orderBy: { timestamp: 'desc' },
+        }),
+        prisma.auditLog.count({ where }),
+      ]);
+
+      return { logs, total };
+    } catch (error) {
+      logger.error('Failed to get audit logs', { error, filters });
+      throw error;
+    }
   }
 }

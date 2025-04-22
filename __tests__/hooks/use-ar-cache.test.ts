@@ -88,7 +88,7 @@ describe('useARCache', () => {
     // Use the hook to get a model
     const mockUrl = 'https://example.com/model.glb';
     const mockType = 'makeup';
-    let progressUpdates = [];
+    const progressUpdates = [];
     
     await act(async () => {
       result.current.getModel(mockUrl, mockType, (progress) => {

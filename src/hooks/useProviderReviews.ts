@@ -113,7 +113,7 @@ export default function useProviderReviews(providerId?: string) {
     });
 
     // Calculate category averages if available
-    let categoryTotals = {
+    const categoryTotals = {
       cleanliness: 0,
       value: 0,
       service: 0,

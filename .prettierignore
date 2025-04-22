@@ -4,36 +4,78 @@ out/
 build/
 dist/
 coverage/
+storybook-static/
 
 # Dependencies
 node_modules/
 .pnp/
 .pnp.js
+.yarn/
+.yarnrc.yml
 
-# Misc
-.DS_Store
-*.pem
+# Environment and config
 .env*
 !.env.example
+!.env.local.example
 !.env.production.example
+.npmrc
+.nvmrc
 
-# Debug
+# Cache and logs
+.cache/
+.eslintcache
+.stylelintcache
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.vercel
+.swc/
 
-# Storybook
-storybook-static/
-
-# Test reports
+# Test and coverage
+coverage/
 test-results/
 reports/
+playwright-report/
+playwright/.cache/
+cypress/videos/
+cypress/screenshots/
 
 # Generated files
 tsconfig.tsbuildinfo
-*.log
-jest.smoke.config.js
+*.tsbuildinfo
+.next
+next-env.d.ts
+public/sw.js
+public/workbox-*.js
+public/worker-*.js
+public/sw.js.map
+public/workbox-*.js.map
+public/worker-*.js.map
 
-# Lock files
+# IDE and editor
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+*.pem
+Thumbs.db
+
+# Package manager files
 package-lock.json
-yarn.lock 
+yarn.lock
+pnpm-lock.yaml
+
+# Project specific
+.vercel
+.turbo
+.contentlayer
+.env*.local
+.husky/_
+.github/
+.storybook/
+.changeset/
+__snapshots__/
+*.min.js
+*.min.css 

@@ -84,7 +84,7 @@ interface TimePickerDemoProps {
 export function TimePickerDemo({ date, setDate, className }: TimePickerDemoProps) {
   // Helper functions for time manipulations
   function getHours(date: Date) {
-    let hours = date.getHours();
+    const hours = date.getHours();
     if (hours === 0) {
       return 12;
     }

@@ -192,7 +192,7 @@ export class NotificationService {
       const emailService = new EmailService();
 
       // Prepare email content based on notification type
-      let subject = payload.title;
+      const subject = payload.title;
       let template = '';
 
       switch (payload.type) {

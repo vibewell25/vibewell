@@ -10,10 +10,10 @@ const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('/draco-gltf/');
 
 // Use a cache for loaded models
-let modelCache = new Map<string, THREE.Object3D>();
+const modelCache = new Map<string, THREE.Object3D>();
 
 // Reference for textures to ensure proper cleanup
-let globalTexturesRef: THREE.Texture[] = [];
+const globalTexturesRef: THREE.Texture[] = [];
 
 // Enhanced settings for WebGL optimization
 const optimizationConfig = {

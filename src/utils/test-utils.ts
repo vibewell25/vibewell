@@ -2,17 +2,21 @@ import { render, RenderOptions } from '@testing-library/react';
 import { ReactElement } from 'react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from '@/components/theme-provider';
-import { AuthProvider } from '@/contexts/auth-context';
+import { AuthProvider } from '@/components/auth-provider';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '@/i18n';
+import i18n from '@/lib/i18n';
 import axios from 'axios';
 import type { AxiosInstance } from 'axios';
 import { performance } from 'perf_hooks';
 
+interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
+  [key: string]: unknown;
+}
+
 // Custom render function that includes providers
 function customRender(
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>,
+  options?: CustomRenderOptions
 ) {
   return render(ui, {
     wrapper: ({ children }) => (

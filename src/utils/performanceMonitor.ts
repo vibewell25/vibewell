@@ -1,8 +1,8 @@
-import { ComponentType } from 'react';
+import { ComponentType, useEffect } from 'react';
 import { PerformanceMonitor, AlertConfig } from '@/types/monitoring';
 import os from 'os';
 import { EventEmitter } from 'events';
-import { performance } from 'perf_hooks';
+import { performance, PerformanceObserver } from 'perf_hooks';
 import React from 'react';
 
 export interface LoadMetrics {
@@ -14,12 +14,54 @@ export interface LoadMetrics {
 }
 
 export interface PerformanceMetrics {
-  metrics: Map<string, LoadMetrics[]>;
-  getAllMetrics(): Map<string, LoadMetrics[]>;
-  startLoadMetric(componentName: string): void;
-  endLoadMetric(componentName: string): void;
-  getAverageLoadTime(componentName: string): number;
-  clearMetrics(): void;
+  componentName: string;
+  renderTime: number;
+  memoryUsage: {
+    heapUsed: number;
+    heapTotal: number;
+  };
+  timestamp: number;
+}
+
+interface WithPerformanceMonitoringProps {
+  componentName?: string;
+}
+
+function withPerformanceMonitoring<P extends object>(
+  WrappedComponent: ComponentType<P>,
+  options: WithPerformanceMonitoringProps = {}
+) {
+  const componentName = options.componentName || WrappedComponent.displayName || WrappedComponent.name;
+
+  function MonitoredComponent(props: P) {
+    useEffect(() => {
+      const startTime = performance.now();
+      const memoryStart = process.memoryUsage();
+
+      return () => {
+        const endTime = performance.now();
+        const memoryEnd = process.memoryUsage();
+
+        const metrics: PerformanceMetrics = {
+          componentName,
+          renderTime: endTime - startTime,
+          memoryUsage: {
+            heapUsed: memoryEnd.heapUsed - memoryStart.heapUsed,
+            heapTotal: memoryEnd.heapTotal
+          },
+          timestamp: Date.now()
+        };
+
+        // Log metrics or send to monitoring service
+        console.log('Component Performance Metrics:', metrics);
+      };
+    }, []);
+
+    return <WrappedComponent {...props} />;
+  }
+
+  MonitoredComponent.displayName = `withPerformanceMonitoring(${componentName})`;
+  return MonitoredComponent;
 }
 
 class PerformanceMonitor implements PerformanceMetrics {
@@ -231,23 +273,5 @@ class PerformanceMonitor implements PerformanceMetrics {
   }
 }
 
-export const withPerformanceTracking = <P extends object>(
-  WrappedComponent: ComponentType<P>,
-  componentName: string
-): ComponentType<P> => {
-  return function PerformanceTrackedComponent(props: P) {
-    const monitor = PerformanceMonitor.getInstance();
-
-    React.useEffect(() => {
-      monitor.startLoadMetric(componentName);
-      return () => {
-        monitor.endLoadMetric(componentName);
-      };
-    }, []);
-
-    return <WrappedComponent {...props} />;
-  };
-};
-
-export { PerformanceMonitor };
+export { withPerformanceMonitoring, type PerformanceMetrics };
 export default PerformanceMonitor.getInstance(); 

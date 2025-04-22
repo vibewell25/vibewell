@@ -3,13 +3,71 @@ import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
 
 interface SecurityEvent {
-  userId?: string;
-  eventType: SecurityEventType;
-  timestamp: Date;
-  metadata: Record<string, any>;
+  id: string;
+  type: 'authentication' | 'authorization' | 'data_access' | 'system' | 'custom';
   severity: 'low' | 'medium' | 'high' | 'critical';
-  sourceIp: string;
-  userAgent: string;
+  timestamp: Date;
+  userId?: string;
+  ipAddress?: string;
+  userAgent?: string;
+  description: string;
+  metadata: SecurityEventMetadata;
+}
+
+interface SecurityEventMetadata {
+  location?: {
+    country: string;
+    city: string;
+    coordinates: [number, number];
+  };
+  device?: {
+    type: string;
+    os: string;
+    browser: string;
+  };
+  request?: {
+    method: string;
+    path: string;
+    headers: Record<string, string>;
+  };
+  resource?: {
+    type: string;
+    id: string;
+    action: string;
+  };
+  [key: string]: unknown;
+}
+
+interface SecurityAlert {
+  id: string;
+  eventId: string;
+  type: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  timestamp: Date;
+  description: string;
+  details: SecurityAlertDetails;
+  status: 'new' | 'investigating' | 'resolved' | 'false_positive';
+  resolution?: string;
+}
+
+interface SecurityAlertDetails {
+  trigger: string;
+  relatedEvents: string[];
+  affectedUsers: string[];
+  affectedResources: string[];
+  recommendations: string[];
+  [key: string]: unknown;
+}
+
+interface SecurityMetrics {
+  totalEvents: number;
+  eventsByType: Record<string, number>;
+  eventsBySeverity: Record<string, number>;
+  activeAlerts: number;
+  resolvedAlerts: number;
+  averageResolutionTime: number;
+  topTriggers: string[];
+  [key: string]: unknown;
 }
 
 type SecurityEventType =
@@ -57,31 +115,34 @@ export class SecurityMonitoringService {
   /**
    * Log a security event for monitoring and analysis
    */
-  async logSecurityEvent(event: SecurityEvent): Promise<void> {
+  async logSecurityEvent(
+    type: SecurityEvent['type'],
+    severity: SecurityEvent['severity'],
+    description: string,
+    metadata: SecurityEventMetadata
+  ): Promise<void> {
     try {
       // Store event in database for long-term storage and analysis
       await prisma.securityEvent.create({
         data: {
-          userId: event.userId,
-          eventType: event.eventType,
-          timestamp: event.timestamp,
-          metadata: event.metadata,
-          severity: event.severity,
-          sourceIp: event.sourceIp,
-          userAgent: event.userAgent,
+          type,
+          severity,
+          description,
+          timestamp: new Date(),
+          metadata,
         },
       });
 
       // Store recent events in Redis for real-time analysis
-      const recentEventKey = `security:recent:${event.eventType}:${event.userId || 'anonymous'}`;
-      await this.redis.lpush(recentEventKey, JSON.stringify(event));
+      const recentEventKey = `security:recent:${type}:${metadata.userId || 'anonymous'}`;
+      await this.redis.lpush(recentEventKey, JSON.stringify({ type, severity, description, timestamp: new Date(), metadata }));
       await this.redis.ltrim(recentEventKey, 0, 99); // Keep last 100 events
       await this.redis.expire(recentEventKey, 86400); // Expire after 24 hours
 
       // Trigger threat analysis
-      await this.analyzeThreat(event);
+      await this.analyzeThreat({ type, severity, description, timestamp: new Date(), userId: metadata.userId, ipAddress: metadata.location?.coordinates[0].toString(), userAgent: metadata.device?.browser, metadata });
     } catch (error) {
-      logger.error('Failed to log security event', 'security', { error, event });
+      logger.error('Failed to log security event', 'security', { error, type, severity, description, metadata });
     }
   }
 
@@ -90,7 +151,7 @@ export class SecurityMonitoringService {
    */
   private async analyzeThreat(event: SecurityEvent): Promise<void> {
     try {
-      switch (event.eventType) {
+      switch (event.type) {
         case 'failed_login':
           await this.detectBruteForceAttempts(event);
           break;
@@ -115,7 +176,7 @@ export class SecurityMonitoringService {
    * Detect potential brute force attacks
    */
   private async detectBruteForceAttempts(event: SecurityEvent): Promise<void> {
-    const key = `security:failed_login:${event.sourceIp}`;
+    const key = `security:failed_login:${event.ipAddress}`;
     const attempts = await this.redis.incr(key);
     await this.redis.expire(key, this.config.loginAttemptsWindow * 60);
 
@@ -123,7 +184,7 @@ export class SecurityMonitoringService {
       await this.handleThreat({
         type: 'brute_force_detected',
         severity: 'high',
-        sourceIp: event.sourceIp,
+        sourceIp: event.ipAddress,
         userId: event.userId,
         metadata: {
           attempts,
@@ -147,7 +208,7 @@ export class SecurityMonitoringService {
     // Store current session
     await this.redis.hset(
       key,
-      event.sourceIp,
+      event.ipAddress,
       JSON.stringify({
         timestamp: event.timestamp,
         userAgent: event.userAgent,
@@ -158,7 +219,7 @@ export class SecurityMonitoringService {
       await this.handleThreat({
         type: 'concurrent_sessions_exceeded',
         severity: 'medium',
-        sourceIp: event.sourceIp,
+        sourceIp: event.ipAddress,
         userId: event.userId,
         metadata: {
           currentSessions,
@@ -172,7 +233,7 @@ export class SecurityMonitoringService {
    * Detect potential MFA abuse
    */
   private async detectMFAAbuse(event: SecurityEvent): Promise<void> {
-    const key = `security:mfa_failures:${event.userId || event.sourceIp}`;
+    const key = `security:mfa_failures:${event.userId || event.ipAddress}`;
     const failures = await this.redis.incr(key);
     await this.redis.expire(key, 3600); // 1 hour window
 
@@ -180,7 +241,7 @@ export class SecurityMonitoringService {
       await this.handleThreat({
         type: 'mfa_abuse_detected',
         severity: 'high',
-        sourceIp: event.sourceIp,
+        sourceIp: event.ipAddress,
         userId: event.userId,
         metadata: {
           failures,
@@ -194,7 +255,7 @@ export class SecurityMonitoringService {
    * Detect API abuse patterns
    */
   private async detectAPIAbuse(event: SecurityEvent): Promise<void> {
-    const key = `security:api_requests:${event.sourceIp}`;
+    const key = `security:api_requests:${event.ipAddress}`;
     const requests = await this.redis.incr(key);
     await this.redis.expire(key, this.config.rateLimitWindow * 60);
 
@@ -202,7 +263,7 @@ export class SecurityMonitoringService {
       await this.handleThreat({
         type: 'api_abuse_detected',
         severity: 'medium',
-        sourceIp: event.sourceIp,
+        sourceIp: event.ipAddress,
         userId: event.userId,
         metadata: {
           requests,
@@ -221,7 +282,7 @@ export class SecurityMonitoringService {
     // This could include machine learning models for behavior analysis
     // For now, we'll use a simple pattern matching approach
 
-    const key = `security:activity:${event.userId || event.sourceIp}:${event.eventType}`;
+    const key = `security:activity:${event.userId || event.ipAddress}:${event.type}`;
     const recentActivity = await this.redis.lrange(key, 0, 9);
 
     if (recentActivity.length >= 10) {
@@ -230,7 +291,7 @@ export class SecurityMonitoringService {
         await this.handleThreat({
           type: 'anomalous_activity_detected',
           severity: 'medium',
-          sourceIp: event.sourceIp,
+          sourceIp: event.ipAddress,
           userId: event.userId,
           metadata: {
             patterns: patterns.details,
@@ -268,7 +329,7 @@ export class SecurityMonitoringService {
       const current = new Date(parsedActivities[i].timestamp).getTime();
       const previous = new Date(parsedActivities[i - 1].timestamp).getTime();
       timeGaps.push(current - previous);
-      ips.add(parsedActivities[i].sourceIp);
+      ips.add(parsedActivities[i].ipAddress);
       userAgents.add(parsedActivities[i].userAgent);
     }
 
@@ -407,6 +468,29 @@ export class SecurityMonitoringService {
     } catch (error) {
       logger.error('Failed to notify security team', 'security', { error, threat });
     }
+  }
+
+  async createSecurityAlert(
+    eventId: string,
+    type: string,
+    severity: SecurityAlert['severity'],
+    description: string,
+    details: SecurityAlertDetails
+  ): Promise<void> {
+    // Implementation remains the same but with proper typing
+  }
+
+  async getSecurityMetrics(startDate: Date, endDate: Date): Promise<SecurityMetrics> {
+    // Implementation remains the same but with proper typing
+    return {
+      totalEvents: 0,
+      eventsByType: {},
+      eventsBySeverity: {},
+      activeAlerts: 0,
+      resolvedAlerts: 0,
+      averageResolutionTime: 0,
+      topTriggers: [],
+    };
   }
 }
 

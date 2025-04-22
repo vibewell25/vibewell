@@ -11,7 +11,11 @@
     "react-hooks",
     "boundaries",
     "jest",
-    "prettier"
+    "prettier",
+    "import",
+    "jsx-a11y",
+    "promise",
+    "unicorn"
   ],
   "extends": [
     "eslint:recommended",
@@ -22,6 +26,9 @@
     "plugin:sonarjs/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:promise/recommended",
+    "plugin:unicorn/recommended",
     "next/core-web-vitals",
     "prettier"
   ],
@@ -37,43 +44,50 @@
     "react": {
       "version": "detect"
     },
+    "import/resolver": {
+      "typescript": {},
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    },
     "boundaries/elements": [
       {
         "type": "components",
-        "pattern": "src/components"
+        "pattern": "components"
       },
       {
         "type": "pages",
-        "pattern": "src/pages"
+        "pattern": "app"
       },
       {
         "type": "api",
-        "pattern": "src/api"
+        "pattern": "app/api"
       },
       {
         "type": "services",
-        "pattern": "src/services"
+        "pattern": "services"
       },
       {
         "type": "hooks",
-        "pattern": "src/hooks"
+        "pattern": "hooks"
       },
       {
         "type": "utils/client",
-        "pattern": "src/utils/client"
+        "pattern": "utils/client"
       },
       {
         "type": "utils/server",
-        "pattern": "src/utils/server"
+        "pattern": "utils/server"
       },
       {
         "type": "types",
-        "pattern": "src/types"
+        "pattern": "types"
       }
     ]
   },
   "rules": {
     "prettier/prettier": "error",
+    
     // Security
     "security/detect-object-injection": "error",
     "security/detect-non-literal-regexp": "error",
@@ -88,38 +102,41 @@
     "no-secrets/no-secrets": ["error", { "ignoreContent": ["^[a-z]+$"] }],
 
     // TypeScript
-    "@typescript-eslint/explicit-function-return-type": "error",
+    "@typescript-eslint/explicit-function-return-type": ["error", {
+      "allowExpressions": true,
+      "allowTypedFunctionExpressions": true,
+      "allowHigherOrderFunctions": true
+    }],
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-unsafe-assignment": "error",
     "@typescript-eslint/no-unsafe-call": "error",
     "@typescript-eslint/no-unsafe-member-access": "error",
     "@typescript-eslint/no-unsafe-return": "error",
-    "@typescript-eslint/restrict-template-expressions": "error",
+    "@typescript-eslint/restrict-template-expressions": ["error", {
+      "allowNumber": true,
+      "allowBoolean": true,
+      "allowNullish": true
+    }],
     "@typescript-eslint/strict-boolean-expressions": "error",
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_"
-      }
-    ],
-    "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/explicit-function-return-type": [
-      "warn",
-      {
-        "allowExpressions": true,
-        "allowTypedFunctionExpressions": true
-      }
-    ],
-    "@typescript-eslint/no-unsafe-assignment": "error",
-    "@typescript-eslint/no-unsafe-call": "error",
-    "@typescript-eslint/no-unsafe-member-access": "error",
-    "@typescript-eslint/no-unsafe-return": "error",
-    "@typescript-eslint/restrict-template-expressions": "error",
-    "@typescript-eslint/strict-boolean-expressions": "error",
+    "@typescript-eslint/no-unused-vars": ["error", {
+      "argsIgnorePattern": "^_",
+      "varsIgnorePattern": "^_",
+      "ignoreRestSiblings": true
+    }],
+    "@typescript-eslint/consistent-type-imports": ["error", {
+      "prefer": "type-imports",
+      "disallowTypeAnnotations": true
+    }],
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+    "@typescript-eslint/method-signature-style": ["error", "property"],
+    "@typescript-eslint/prefer-nullish-coalescing": "error",
+    "@typescript-eslint/prefer-optional-chain": "error",
 
     // React
-    "react/jsx-no-target-blank": "error",
+    "react/jsx-no-target-blank": ["error", {
+      "allowReferrer": false,
+      "enforceDynamicLinks": "always"
+    }],
     "react/jsx-no-script-url": "error",
     "react/no-danger": "error",
     "react/no-find-dom-node": "error",
@@ -127,16 +144,25 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
     "react/no-unused-prop-types": "error",
-    "react/jsx-no-useless-fragment": "error",
-    "react/jsx-sort-props": [
-      "warn",
-      {
-        "callbacksLast": true,
-        "shorthandFirst": true,
-        "ignoreCase": true,
-        "reservedFirst": true
-      }
-    ],
+    "react/jsx-no-useless-fragment": ["error", {
+      "allowExpressions": true
+    }],
+    "react/jsx-sort-props": ["warn", {
+      "callbacksLast": true,
+      "shorthandFirst": true,
+      "ignoreCase": true,
+      "reservedFirst": true
+    }],
+    "react/function-component-definition": ["error", {
+      "namedComponents": "arrow-function",
+      "unnamedComponents": "arrow-function"
+    }],
+    "react/jsx-boolean-value": ["error", "never"],
+    "react/jsx-handler-names": ["error", {
+      "eventHandlerPrefix": "handle",
+      "eventHandlerPropPrefix": "on",
+      "checkLocalVariables": true
+    }],
 
     // Best Practices
     "sonarjs/no-all-duplicated-branches": "error",
@@ -159,45 +185,129 @@
     "security-node/detect-sql-injection": "error",
     "security-node/detect-xpath-injection": "error",
 
-    // Boundaries
-    "boundaries/element-types": [
-      2,
-      {
-        "default": "allow",
-        "rules": [
-          {
-            "from": "components",
-            "disallow": ["api", "services", "utils/server"],
-            "message": "Components cannot import from server-side modules"
-          },
-          {
-            "from": "pages",
-            "allow": ["components", "hooks", "utils/client", "types", "api"],
-            "message": "Pages should only import from allowed client-side modules"
-          },
-          {
-            "from": "api",
-            "allow": ["services", "utils/server", "types"],
-            "message": "API routes should only import from server-side modules"
-          },
-          {
-            "from": "services",
-            "disallow": ["components", "pages", "hooks"],
-            "message": "Services cannot import from client-side modules"
-          }
-        ]
-      }
-    ],
+    // Import
     "import/no-cycle": "error",
     "import/no-self-import": "error",
-    "import/no-relative-parent-imports": "error"
+    "import/no-relative-parent-imports": "error",
+    "import/order": ["error", {
+      "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"],
+      "pathGroups": [
+        {
+          "pattern": "react",
+          "group": "builtin",
+          "position": "before"
+        }
+      ],
+      "pathGroupsExcludeImportType": ["react"],
+      "newlines-between": "always",
+      "alphabetize": {
+        "order": "asc",
+        "caseInsensitive": true
+      }
+    }],
+
+    // Promise
+    "promise/always-return": "error",
+    "promise/no-return-wrap": "error",
+    "promise/param-names": "error",
+    "promise/catch-or-return": "error",
+    "promise/no-native": "off",
+    "promise/no-callback-in-promise": "warn",
+    "promise/no-promise-in-callback": "warn",
+    "promise/no-nesting": "warn",
+
+    // Unicorn
+    "unicorn/better-regex": "error",
+    "unicorn/catch-error-name": "error",
+    "unicorn/consistent-destructuring": "error",
+    "unicorn/custom-error-definition": "error",
+    "unicorn/error-message": "error",
+    "unicorn/no-array-callback-reference": "error",
+    "unicorn/no-array-method-this-argument": "error",
+    "unicorn/no-array-push-push": "error",
+    "unicorn/no-empty-file": "error",
+    "unicorn/no-hex-escape": "error",
+    "unicorn/no-instanceof-array": "error",
+    "unicorn/no-invalid-remove-event-listener": "error",
+    "unicorn/no-lonely-if": "error",
+    "unicorn/no-nested-ternary": "error",
+    "unicorn/no-new-array": "error",
+    "unicorn/no-new-buffer": "error",
+    "unicorn/no-static-only-class": "error",
+    "unicorn/no-unnecessary-await": "error",
+    "unicorn/no-unreadable-array-destructuring": "error",
+    "unicorn/no-unused-properties": "error",
+    "unicorn/no-useless-fallback-in-spread": "error",
+    "unicorn/no-useless-length-check": "error",
+    "unicorn/no-useless-promise-resolve-reject": "error",
+    "unicorn/no-useless-spread": "error",
+    "unicorn/no-zero-fractions": "error",
+    "unicorn/prefer-add-event-listener": "error",
+    "unicorn/prefer-array-find": "error",
+    "unicorn/prefer-array-flat": "error",
+    "unicorn/prefer-array-flat-map": "error",
+    "unicorn/prefer-array-index-of": "error",
+    "unicorn/prefer-array-some": "error",
+    "unicorn/prefer-date-now": "error",
+    "unicorn/prefer-default-parameters": "error",
+    "unicorn/prefer-includes": "error",
+    "unicorn/prefer-modern-dom-apis": "error",
+    "unicorn/prefer-modern-math-apis": "error",
+    "unicorn/prefer-negative-index": "error",
+    "unicorn/prefer-number-properties": "error",
+    "unicorn/prefer-optional-catch-binding": "error",
+    "unicorn/prefer-prototype-methods": "error",
+    "unicorn/prefer-reflect-apply": "error",
+    "unicorn/prefer-regexp-test": "error",
+    "unicorn/prefer-string-replace-all": "error",
+    "unicorn/prefer-string-slice": "error",
+    "unicorn/prefer-string-starts-ends-with": "error",
+    "unicorn/prefer-string-trim-start-end": "error",
+    "unicorn/prefer-type-error": "error",
+    "unicorn/throw-new-error": "error",
+
+    // Boundaries
+    "boundaries/element-types": [2, {
+      "default": "allow",
+      "rules": [
+        {
+          "from": "components",
+          "disallow": ["api", "services", "utils/server"],
+          "message": "Components cannot import from server-side modules"
+        },
+        {
+          "from": "pages",
+          "allow": ["components", "hooks", "utils/client", "types", "api"],
+          "message": "Pages should only import from allowed client-side modules"
+        },
+        {
+          "from": "api",
+          "allow": ["services", "utils/server", "types"],
+          "message": "API routes should only import from server-side modules"
+        },
+        {
+          "from": "services",
+          "disallow": ["components", "pages", "hooks"],
+          "message": "Services cannot import from client-side modules"
+        }
+      ]
+    }]
   },
   "overrides": [
     {
-      "files": ["**/*.test.ts", "**/*.test.tsx"],
+      "files": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"],
       "rules": {
         "@typescript-eslint/no-explicit-any": "off",
-        "security/detect-object-injection": "off"
+        "security/detect-object-injection": "off",
+        "unicorn/no-null": "off",
+        "unicorn/consistent-function-scoping": "off"
+      }
+    },
+    {
+      "files": ["**/*.stories.tsx"],
+      "rules": {
+        "react-hooks/rules-of-hooks": "off",
+        "unicorn/filename-case": "off"
       }
     }
   ],
@@ -209,6 +319,7 @@
     "out/",
     "coverage/",
     "*.config.js",
-    "*.config.ts"
+    "*.config.ts",
+    "*.d.ts"
   ]
 } 

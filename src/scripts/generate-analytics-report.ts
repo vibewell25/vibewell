@@ -59,7 +59,7 @@ export async function generateAnalyticsReport(
 
     // Read HTML template
     const templatePath = path.join(process.cwd(), 'reports', 'analytics', 'report-template.html');
-    let template = fs.readFileSync(templatePath, 'utf8');
+    const template = fs.readFileSync(templatePath, 'utf8');
 
     // Populate template with data
     const populatedTemplate = populateTemplate(template, reportData);

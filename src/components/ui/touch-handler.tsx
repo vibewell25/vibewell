@@ -148,7 +148,7 @@ export function TouchHandler({
         { x: touch2.clientX, y: touch2.clientY }
       );
 
-      let rotation = currentAngle - initialAngle;
+      const rotation = currentAngle - initialAngle;
 
       if (onRotate && Math.abs(rotation) > 10) {
         onRotate(rotation);

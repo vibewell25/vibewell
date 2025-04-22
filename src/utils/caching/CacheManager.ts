@@ -3,6 +3,7 @@ import { LRUCache } from 'lru-cache';
 import { hash } from 'ohash';
 import { MonitoringService } from '../../types/monitoring';
 import { performance } from 'perf_hooks';
+import { logger } from '@/lib/logger';
 
 interface CacheConfig {
   redis: {
@@ -21,6 +22,9 @@ interface CacheConfig {
       staleWhileRevalidate?: boolean;
     };
   };
+  ttl: number;
+  maxSize: number;
+  cleanupInterval: number;
 }
 
 interface CacheEntry<T> {
@@ -33,10 +37,11 @@ interface CacheStats {
   hits: number;
   misses: number;
   size: number;
-  lastCleanup: number;
+  lastCleanup: Date;
 }
 
 export class CacheManager {
+  private static instance: CacheManager;
   private redis: Redis;
   private memoryCache: LRUCache<string, CacheEntry<any>>;
   private monitoringService: MonitoringService;
@@ -44,37 +49,45 @@ export class CacheManager {
   private stats: CacheStats;
   private readonly PREFIX = 'vibewell:cache:';
 
-  constructor(config: CacheConfig, monitoringService: MonitoringService) {
-    this.config = config;
-    this.monitoringService = monitoringService;
-
-    // Initialize Redis
+  private constructor(config: Partial<CacheConfig> = {}) {
     this.redis = new Redis({
-      host: config.redis.host,
-      port: config.redis.port,
-      ...(config.redis.password ? { password: config.redis.password } : {}),
+      host: config.redis?.host || process.env.REDIS_URL,
+      port: config.redis?.port || 6379,
+      ...(config.redis?.password ? { password: config.redis.password } : {}),
       retryStrategy: (times) => Math.min(times * 50, 2000)
     });
 
-    // Initialize memory cache
     this.memoryCache = new LRUCache({
-      max: config.memory.maxSize,
-      ttl: config.memory.ttl,
+      max: config.memory?.maxSize || 1000,
+      ttl: config.memory?.ttl || 3600,
       updateAgeOnGet: true
     });
+
+    this.config = {
+      ttl: config.ttl || 3600,
+      maxSize: config.maxSize || 1000,
+      cleanupInterval: config.cleanupInterval || 300,
+    };
 
     this.stats = {
       hits: 0,
       misses: 0,
       size: 0,
-      lastCleanup: Date.now()
+      lastCleanup: new Date(),
     };
 
     this.setupMonitoring();
+    this.startCleanupInterval();
+  }
+
+  static getInstance(config?: Partial<CacheConfig>): CacheManager {
+    if (!CacheManager.instance) {
+      CacheManager.instance = new CacheManager(config);
+    }
+    return CacheManager.instance;
   }
 
   private setupMonitoring(): void {
-    // Monitor cache hit rates
     setInterval(() => {
       const memoryStats = this.memoryCache.stats();
       const hitRate = memoryStats.hits / (memoryStats.hits + memoryStats.misses);
@@ -92,7 +105,7 @@ export class CacheManager {
       if (!value) return null;
       return JSON.parse(value);
     } catch (error) {
-      console.error('Redis get error:', error);
+      logger.error('Redis get error:', error);
       return null;
     }
   }
@@ -104,7 +117,7 @@ export class CacheManager {
       const duration = performance.now() - start;
       this.monitoringService.recordMetric('redis_set_duration', duration);
     } catch (error) {
-      console.error('Redis set error:', error);
+      logger.error('Redis set error:', error);
     }
   }
 
@@ -143,17 +156,14 @@ export class CacheManager {
     const cacheKey = `cache:${strategy}:${hash(key)}`;
     let value: T | null = null;
 
-    // Try memory cache first for hybrid strategy
     if (cacheStrategy.type === 'memory' || cacheStrategy.type === 'hybrid') {
       value = this.getFromMemory<T>(cacheKey);
       if (value) return value;
     }
 
-    // Try Redis for redis or hybrid strategy
     if (cacheStrategy.type === 'redis' || cacheStrategy.type === 'hybrid') {
       value = await this.getFromRedis<T>(cacheKey);
       if (value) {
-        // Store in memory cache for hybrid strategy
         if (cacheStrategy.type === 'hybrid') {
           this.setInMemory(cacheKey, value, cacheStrategy.ttl);
         }
@@ -161,7 +171,6 @@ export class CacheManager {
       }
     }
 
-    // Handle cache miss
     if (fetchFn) {
       try {
         value = await fetchFn();
@@ -169,7 +178,7 @@ export class CacheManager {
           await this.set(key, value, strategy);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        logger.error('Error fetching data:', error);
         throw error;
       }
     }
@@ -186,12 +195,10 @@ export class CacheManager {
     const cacheKey = `cache:${strategy}:${hash(key)}`;
     const { ttl } = cacheStrategy;
 
-    // Set in memory cache
     if (cacheStrategy.type === 'memory' || cacheStrategy.type === 'hybrid') {
       this.setInMemory(cacheKey, value, ttl);
     }
 
-    // Set in Redis
     if (cacheStrategy.type === 'redis' || cacheStrategy.type === 'hybrid') {
       await this.setInRedis(cacheKey, value, ttl);
     }
@@ -205,12 +212,10 @@ export class CacheManager {
 
     const cacheKey = `cache:${strategy}:${hash(key)}`;
 
-    // Invalidate memory cache
     if (cacheStrategy.type === 'memory' || cacheStrategy.type === 'hybrid') {
       this.memoryCache.delete(cacheKey);
     }
 
-    // Invalidate Redis cache
     if (cacheStrategy.type === 'redis' || cacheStrategy.type === 'hybrid') {
       await this.redis.del(cacheKey);
     }
@@ -223,7 +228,6 @@ export class CacheManager {
         throw new Error(`Unknown cache strategy: ${strategy}`);
       }
 
-      // Clear specific strategy
       if (cacheStrategy.type === 'memory' || cacheStrategy.type === 'hybrid') {
         this.memoryCache.clear();
       }
@@ -231,7 +235,6 @@ export class CacheManager {
         await this.redis.del(`cache:${strategy}:*`);
       }
     } else {
-      // Clear all caches
       this.memoryCache.clear();
       await this.redis.flushall();
     }
@@ -240,13 +243,12 @@ export class CacheManager {
   private shouldCleanup(): boolean {
     const now = Date.now();
     return this.stats.size > this.config.memory.maxSize ||
-           now - this.stats.lastCleanup > this.config.memory.ttl * 1000;
+           now - this.stats.lastCleanup.getTime() > this.config.memory.ttl * 1000;
   }
 
   private async cleanup(): Promise<void> {
     const start = performance.now();
     try {
-      // Get least recently used keys
       const lruKeys = await this.redis.zrange(
         this.PREFIX + 'access',
         0,
@@ -254,7 +256,6 @@ export class CacheManager {
         'WITHSCORES'
       );
 
-      // Remove old entries
       const keysToRemove = lruKeys.filter((_, i) => i % 2 === 0);
       if (keysToRemove.length > 0) {
         await Promise.all([
@@ -264,9 +265,9 @@ export class CacheManager {
         this.stats.size = Math.max(0, this.stats.size - keysToRemove.length);
       }
 
-      this.stats.lastCleanup = Date.now();
+      this.stats.lastCleanup = new Date();
     } catch (error) {
-      console.error('Cache cleanup error:', error);
+      logger.error('Cache cleanup error:', error);
     } finally {
       const duration = performance.now() - start;
       await this.redis.zadd(this.PREFIX + 'metrics:cleanup', Date.now(), duration.toString());
@@ -293,11 +294,29 @@ export class CacheManager {
         })
       );
     } catch (error) {
-      console.error('Cache warmup error:', error);
+      logger.error('Cache warmup error:', error);
     } finally {
       const duration = performance.now() - start;
       await this.redis.zadd(this.PREFIX + 'metrics:warmup', Date.now(), duration.toString());
     }
   }
-} 
+
+  private startCleanupInterval(): void {
+    setInterval(async () => {
+      try {
+        const keys = await this.redis.keys('*');
+        const now = Date.now();
+        for (const key of keys) {
+          const ttl = await this.redis.ttl(key);
+          if (ttl <= 0) {
+            await this.invalidate(key, 'default');
+          }
+        }
+        this.stats.lastCleanup = new Date();
+        this.stats.size = keys.length;
+      } catch (error) {
+        logger.error('Cache cleanup error:', error);
+      }
+    }, this.config.cleanupInterval * 1000);
+  }
 } 

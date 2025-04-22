@@ -7,17 +7,33 @@ const config: Config.InitialOptions = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    '^@components/(.*)$': '<rootDir>/components/$1',
+    '^@lib/(.*)$': '<rootDir>/lib/$1',
+    '^@services/(.*)$': '<rootDir>/services/$1',
+    '^@utils/(.*)$': '<rootDir>/utils/$1',
+    '^@hooks/(.*)$': '<rootDir>/hooks/$1',
+    '^@contexts/(.*)$': '<rootDir>/contexts/$1',
+    '^@types/(.*)$': '<rootDir>/types/$1',
   },
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
+      tsconfig: 'tsconfig.json',
+    }],
+    '^.+\\.jsx?$': ['babel-jest', { presets: ['next/babel'] }],
   },
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/*.stories.{js,jsx,ts,tsx}',
-    '!src/**/*.test.{js,jsx,ts,tsx}',
-    '!src/mocks/**',
-    '!src/test-utils/**',
+    'components/**/*.{js,jsx,ts,tsx}',
+    'lib/**/*.{js,jsx,ts,tsx}',
+    'services/**/*.{js,jsx,ts,tsx}',
+    '!**/*.d.ts',
+    '!**/*.stories.{js,jsx,ts,tsx}',
+    '!**/*.test.{js,jsx,ts,tsx}',
+    '!**/node_modules/**',
+    '!**/mocks/**',
+    '!**/test-utils/**',
+    '!**/.next/**',
+    '!**/coverage/**',
   ],
   coverageThresholds: {
     global: {
@@ -27,15 +43,29 @@ const config: Config.InitialOptions = {
       statements: 80,
     },
   },
-  coverageReporters: ['json', 'lcov', 'text', 'clover'],
+  coverageReporters: ['json', 'lcov', 'text', 'clover', 'html'],
   testMatch: [
-    '<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
-    '<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}',
+    '<rootDir>/**/__tests__/**/*.{js,jsx,ts,tsx}',
+    '<rootDir>/**/*.{spec,test}.{js,jsx,ts,tsx}',
   ],
   watchPlugins: [
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname',
   ],
+  testPathIgnorePatterns: [
+    '<rootDir>/node_modules/',
+    '<rootDir>/.next/',
+    '<rootDir>/coverage/',
+  ],
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.json',
+      diagnostics: true,
+    },
+  },
+  resolver: '<rootDir>/jest.resolver.js',
+  maxWorkers: '50%',
+  testTimeout: 10000,
 };
 
 export default config; 

@@ -1,12 +1,33 @@
-import dynamic from 'next/dynamic';
+import { FC, lazy, Suspense } from 'react';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { ComponentType } from 'react';
 import type { FC } from 'react';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { withPerformanceTracking } from './performanceMonitor';
 import ComponentPreloader from './componentPreloader';
 
 // Common loading component for all dynamic imports
 const loadingComponent: FC = () => <LoadingSpinner />;
+
+interface DynamicImportOptions {
+  loading?: FC;
+  ssr?: boolean;
+}
+
+export function dynamicImport<T>(
+  importFn: () => Promise<{ default: T }>,
+  options: DynamicImportOptions = {}
+) {
+  const LazyComponent = lazy(importFn);
+  const LoadingComponent = options.loading || loadingComponent;
+
+  return function DynamicComponent(props: any) {
+    return (
+      <Suspense fallback={<LoadingComponent />}>
+        <LazyComponent {...props} />
+      </Suspense>
+    );
+  };
+}
 
 // Helper function to create dynamic imports with consistent configuration
 const createDynamicComponent = <T extends ComponentType<any>>(
@@ -31,8 +52,7 @@ const createDynamicComponent = <T extends ComponentType<any>>(
     });
   }
 
-  const DynamicComponent = dynamic(importFunc, {
-    loading: loadingComponent,
+  const DynamicComponent = dynamicImport(importFunc, {
     ssr: options.ssr !== false,
   });
 

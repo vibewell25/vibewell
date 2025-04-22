@@ -8,8 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
 import { Icons } from '@/components/icons';
+import {
   UserIcon,
   CalendarIcon,
   StarIcon,
@@ -18,8 +18,11 @@ import { Icons } from '@/components/icons';
   FunnelIcon,
   PlusIcon,
   PencilIcon,
-  TrashIcon
+  TrashIcon,
+  EnvelopeIcon,
+  PhoneIcon
 } from '@heroicons/react/24/outline';
+
 interface Client {
   id: string;
   name: string;
@@ -36,7 +39,9 @@ interface Client {
     allergies: string[];
     concerns: string[];
   };
+  status: 'active' | 'inactive';
 }
+
 interface Appointment {
   id: string;
   date: string;
@@ -46,16 +51,17 @@ interface Appointment {
   amount: number;
   notes?: string;
 }
-const dummyClients: Client[] = [
+
+const mockClients: Client[] = [
   {
     id: '1',
-    name: 'Sarah Johnson',
-    email: 'sarah@example.com',
+    name: 'Emily Johnson',
+    email: 'emily@example.com',
     phone: '+1 (555) 123-4567',
-    avatar: '/users/sarah.jpg',
+    avatar: '/users/emily.jpg',
     lastVisit: '2024-03-15',
     totalVisits: 12,
-    totalSpent: 1200,
+    totalSpent: 850,
     favoriteServices: ['Haircut', 'Highlights', 'Blowout'],
     notes: [
       'Prefers natural-looking highlights',
@@ -66,10 +72,13 @@ const dummyClients: Client[] = [
       communication: ['Email', 'SMS'],
       allergies: ['Certain hair dyes'],
       concerns: ['Dry scalp']
-    }
-  }
+    },
+    status: 'active'
+  },
+  // Add more mock clients here
 ];
-const dummyAppointments: Appointment[] = [
+
+const mockAppointments: Appointment[] = [
   {
     id: '1',
     date: '2024-03-15',
@@ -80,10 +89,19 @@ const dummyAppointments: Appointment[] = [
     notes: 'Client requested natural-looking highlights'
   }
 ];
+
 export default function ClientsPage() {
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [clients, setClients] = useState<Client[]>(mockClients);
+
+  const filteredClients = clients.filter((client) =>
+    client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    client.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    client.phone.includes(searchQuery)
+  );
+
   return (
     <Layout>
       <div className="container-app py-12">
@@ -126,12 +144,12 @@ export default function ClientsPage() {
                 <CardHeader>
                   <CardTitle>Clients</CardTitle>
                   <CardDescription>
-                    {dummyClients.length} total clients
+                    {clients.length} total clients
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {dummyClients.map((client) => (
+                    {filteredClients.map((client) => (
                       <div
                         key={client.id}
                         className={`p-4 rounded-lg cursor-pointer transition-colors ${
@@ -234,7 +252,7 @@ export default function ClientsPage() {
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-4">
-                            {dummyAppointments.map((appointment) => (
+                            {mockAppointments.map((appointment) => (
                               <div
                                 key={appointment.id}
                                 className="flex items-center justify-between p-4 border rounded-lg"

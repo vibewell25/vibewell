@@ -264,7 +264,7 @@ export function initializePerformanceMonitoring(config: PerformanceMonitoringCon
     // Cumulative Layout Shift
     try {
       let clsValue = 0;
-      let clsEntries = [];
+      const clsEntries = [];
       
       new PerformanceObserver((entryList) => {
         const entries = entryList.getEntries();
@@ -296,7 +296,7 @@ export function initializePerformanceMonitoring(config: PerformanceMonitoringCon
     // Interaction to Next Paint (experimental)
     if ('interactionCount' in PerformanceEventTiming.prototype) {
       try {
-        let interactions = [];
+        const interactions = [];
         
         new PerformanceObserver((entryList) => {
           interactions.push(...entryList.getEntries());

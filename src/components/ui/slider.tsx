@@ -70,7 +70,7 @@ export function Slider({
     const trackWidth = trackRect.width;
 
     // Handle thumb movement for each thumb
-    let newValues = [...currentValues];
+    const newValues = [...currentValues];
 
     for (let i = 0; i < 2; i++) {
       if (isDragging.current[i]) {

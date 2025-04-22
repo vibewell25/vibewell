@@ -20,7 +20,7 @@ interface HandTrackingMetrics {
   gestures: HandGesture[];
 }
 
-let metrics: HandTrackingMetrics = {
+const metrics: HandTrackingMetrics = {
   fps: 0,
   latency: 0,
   confidence: 0,

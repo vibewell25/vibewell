@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/database/client';
+import { Prisma } from '@prisma/client';
+import { logger } from '@/lib/logger';
 
 export interface Product {
   id: string;
@@ -17,17 +19,139 @@ export interface Product {
   updated_at: string;
 }
 
-export interface ProductFilters {
-  type?: 'makeup' | 'hairstyle' | 'accessory';
+interface ProductFilters {
   category?: string;
-  brand?: string;
   minPrice?: number;
   maxPrice?: number;
+  brand?: string;
   inStock?: boolean;
-  search?: string;
+  tags?: string[];
+  sortBy?: 'price' | 'name' | 'popularity' | 'rating';
+  sortOrder?: 'asc' | 'desc';
+}
+
+interface ProductSearchResult {
+  products: Product[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+interface ProductUpdateData {
+  name?: string;
+  description?: string;
+  price?: number;
+  category?: string;
+  brand?: string;
+  stock?: number;
+  tags?: string[];
+  images?: string[];
+  specifications?: Record<string, string>;
+  status?: 'active' | 'inactive' | 'discontinued';
 }
 
 export class ProductCatalogService {
+  constructor(private readonly prisma: Prisma) {}
+
+  async searchProducts(
+    query: string,
+    filters: ProductFilters,
+    page: number = 1,
+    limit: number = 20
+  ): Promise<ProductSearchResult> {
+    try {
+      const where: Prisma.ProductWhereInput = {};
+
+      if (query) {
+        where.OR = [
+          { name: { contains: query, mode: 'insensitive' } },
+          { description: { contains: query, mode: 'insensitive' } },
+          { tags: { hasSome: [query] } }
+        ];
+      }
+
+      if (filters.category) where.category = filters.category;
+      if (filters.brand) where.brand = filters.brand;
+      if (filters.minPrice) where.price = { gte: filters.minPrice };
+      if (filters.maxPrice) where.price = { ...where.price, lte: filters.maxPrice };
+      if (filters.inStock !== undefined) where.stock = filters.inStock ? { gt: 0 } : { equals: 0 };
+      if (filters.tags?.length) where.tags = { hasEvery: filters.tags };
+
+      const [products, total] = await Promise.all([
+        this.prisma.product.findMany({
+          where,
+          skip: (page - 1) * limit,
+          take: limit,
+          orderBy: filters.sortBy ? {
+            [filters.sortBy]: filters.sortOrder || 'asc'
+          } : undefined
+        }),
+        this.prisma.product.count({ where })
+      ]);
+
+      return {
+        products,
+        total,
+        page,
+        limit
+      };
+    } catch (error) {
+      logger.error('Failed to search products', { error, query, filters });
+      throw new Error('Failed to search products');
+    }
+  }
+
+  async getProduct(id: string): Promise<Product> {
+    try {
+      const product = await this.prisma.product.findUnique({
+        where: { id }
+      });
+
+      if (!product) {
+        throw new Error('Product not found');
+      }
+
+      return product;
+    } catch (error) {
+      logger.error('Failed to get product', { error, id });
+      throw new Error('Failed to get product');
+    }
+  }
+
+  async createProduct(data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
+    try {
+      return await this.prisma.product.create({
+        data
+      });
+    } catch (error) {
+      logger.error('Failed to create product', { error, data });
+      throw new Error('Failed to create product');
+    }
+  }
+
+  async updateProduct(id: string, data: ProductUpdateData): Promise<Product> {
+    try {
+      return await this.prisma.product.update({
+        where: { id },
+        data
+      });
+    } catch (error) {
+      logger.error('Failed to update product', { error, id, data });
+      throw new Error('Failed to update product');
+    }
+  }
+
+  async deleteProduct(id: string): Promise<void> {
+    try {
+      await this.prisma.product.delete({
+        where: { id }
+      });
+    } catch (error) {
+      logger.error('Failed to delete product', { error, id });
+      throw new Error('Failed to delete product');
+    }
+  }
+
   static async getProducts(filters: ProductFilters = {}): Promise<Product[]> {
     const where: any = {};
 

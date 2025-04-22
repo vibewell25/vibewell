@@ -3,32 +3,28 @@ import { performance } from 'perf_hooks';
 import { MonitoringService } from '../../types/monitoring';
 import { v4 as uuidv4 } from 'uuid';
 
-interface JobData {
+interface Job<T> {
   id: string;
   type: string;
-  payload: any;
-  priority: number;
-  attempts: number;
-  maxAttempts: number;
-  delay?: number;
-  createdAt: number;
-  processedAt?: number;
-  completedAt?: number;
+  payload: T;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  createdAt: Date;
+  updatedAt: Date;
   error?: string;
 }
 
 interface JobOptions {
   priority?: number;
-  maxAttempts?: number;
   delay?: number;
+  retries?: number;
 }
 
-type JobHandler = (payload: any) => Promise<void>;
+type JobHandler<T> = (payload: T) => Promise<void>;
 
 export class JobQueue {
   private redis: Redis;
   private monitoring: MonitoringService;
-  private handlers: Map<string, JobHandler>;
+  private handlers: Map<string, JobHandler<unknown>> = new Map();
   private isProcessing: boolean;
   private readonly QUEUE_KEY = 'vibewell:jobs';
   private readonly PROCESSING_KEY = 'vibewell:jobs:processing';
@@ -39,31 +35,28 @@ export class JobQueue {
   constructor(monitoring: MonitoringService, redisUrl?: string) {
     this.redis = new Redis(redisUrl || process.env['REDIS_URL'] || 'redis://localhost:6379');
     this.monitoring = monitoring;
-    this.handlers = new Map();
     this.isProcessing = false;
   }
 
-  registerHandler(jobType: string, handler: JobHandler): void {
-    this.handlers.set(jobType, handler);
+  registerHandler<T>(type: string, handler: JobHandler<T>): void {
+    this.handlers.set(type, handler as JobHandler<unknown>);
   }
 
-  async enqueue(type: string, payload: any, options: JobOptions = {}): Promise<string> {
+  async enqueue<T>(type: string, payload: T, options: JobOptions = {}): Promise<string> {
     if (!this.handlers.has(type)) {
       throw new Error(`No handler registered for job type: ${type}`);
     }
 
-    const job: JobData = {
+    const job: Job<T> = {
       id: uuidv4(),
       type,
       payload,
-      priority: options.priority || 0,
-      attempts: 0,
-      maxAttempts: options.maxAttempts || 3,
-      delay: options.delay,
-      createdAt: Date.now()
+      status: 'pending',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
-    const score = job.priority * -1; // Higher priority = lower score
+    const score = options.priority || 0 * -1; // Higher priority = lower score
     await this.redis.zadd(this.QUEUE_KEY, score, JSON.stringify(job));
     await this.monitoring.recordMetric(`${this.METRICS_PREFIX}enqueued`, 1);
 
@@ -93,27 +86,27 @@ export class JobQueue {
     this.isProcessing = false;
   }
 
-  private async getNextJob(): Promise<JobData | null> {
+  private async getNextJob(): Promise<Job<unknown> | null> {
     const now = Date.now();
     const jobs = await this.redis.zrange(this.QUEUE_KEY, 0, 0, 'WITHSCORES');
     
     if (jobs.length === 0) return null;
 
-    const jobData: JobData = JSON.parse(jobs[0]);
-    if (jobData.delay && now < jobData.createdAt + jobData.delay) {
+    const jobData: Job<unknown> = JSON.parse(jobs[0]);
+    if (jobData.delay && now < jobData.createdAt.getTime() + jobData.delay) {
       return null;
     }
 
     await this.redis.zrem(this.QUEUE_KEY, jobs[0]);
     await this.redis.zadd(this.PROCESSING_KEY, now, JSON.stringify({
       ...jobData,
-      processedAt: now
+      updatedAt: new Date()
     }));
 
     return jobData;
   }
 
-  private async processJob(job: JobData): Promise<void> {
+  private async processJob(job: Job<unknown>): Promise<void> {
     const start = performance.now();
     const handler = this.handlers.get(job.type)!;
 
@@ -123,7 +116,8 @@ export class JobQueue {
 
       const completedJob = {
         ...job,
-        completedAt: Date.now()
+        status: 'completed',
+        updatedAt: new Date()
       };
 
       await Promise.all([
@@ -133,27 +127,15 @@ export class JobQueue {
         this.monitoring.recordMetric(`${this.METRICS_PREFIX}duration`, duration)
       ]);
     } catch (error) {
-      job.attempts++;
+      job.status = 'failed';
       job.error = error instanceof Error ? error.message : 'Unknown error';
+      job.updatedAt = new Date();
 
-      if (job.attempts < job.maxAttempts) {
-        // Exponential backoff
-        const delay = Math.pow(2, job.attempts) * 1000;
-        job.delay = delay;
-        job.createdAt = Date.now();
-
-        await Promise.all([
-          this.redis.zrem(this.PROCESSING_KEY, JSON.stringify(job)),
-          this.redis.zadd(this.QUEUE_KEY, job.priority * -1, JSON.stringify(job)),
-          this.monitoring.recordMetric(`${this.METRICS_PREFIX}retries`, 1)
-        ]);
-      } else {
-        await Promise.all([
-          this.redis.zrem(this.PROCESSING_KEY, JSON.stringify(job)),
-          this.redis.zadd(this.FAILED_KEY, Date.now(), JSON.stringify(job)),
-          this.monitoring.recordMetric(`${this.METRICS_PREFIX}failed`, 1)
-        ]);
-      }
+      await Promise.all([
+        this.redis.zrem(this.PROCESSING_KEY, JSON.stringify(job)),
+        this.redis.zadd(this.FAILED_KEY, Date.now(), JSON.stringify(job)),
+        this.monitoring.recordMetric(`${this.METRICS_PREFIX}failed`, 1)
+      ]);
     }
   }
 
@@ -194,10 +176,10 @@ export class JobQueue {
     let retriedCount = 0;
 
     for (const jobStr of failedJobs) {
-      const job: JobData = JSON.parse(jobStr);
-      job.attempts = 0;
+      const job: Job<unknown> = JSON.parse(jobStr);
+      job.status = 'pending';
       job.error = undefined;
-      job.createdAt = Date.now();
+      job.updatedAt = new Date();
 
       await Promise.all([
         this.redis.zrem(this.FAILED_KEY, jobStr),

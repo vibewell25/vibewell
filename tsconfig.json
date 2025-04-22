@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "ES2022",
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
+      "ES2022",
+      "WebWorker"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -20,14 +22,36 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@components/*": ["./components/*"],
+      "@lib/*": ["./lib/*"],
+      "@utils/*": ["./utils/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@contexts/*": ["./contexts/*"],
+      "@services/*": ["./services/*"],
+      "@types/*": ["./types/*"],
+      "@styles/*": ["./styles/*"],
+      "@constants/*": ["./constants/*"],
+      "@config/*": ["./config/*"],
+      "@assets/*": ["./assets/*"]
     },
-    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types",
+      "./types"
+    ],
     "types": [
       "jest",
       "jest-axe",
       "@testing-library/jest-dom",
-      "node"
+      "node",
+      "webgl2",
+      "offscreencanvas",
+      "dom-webcodecs",
+      "web-bluetooth",
+      "web-serial",
+      "web-share",
+      "webxr"
     ],
     "plugins": [
       {
@@ -46,17 +70,39 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "allowUnreachableCode": false,
-    "exactOptionalPropertyTypes": false,
+    "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
-    "allowUnusedLabels": false
+    "allowUnusedLabels": false,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "useDefineForClassFields": true,
+    "useUnknownInCatchVariables": true
   },
   "include": [
     "src/**/*",
-    "prisma/**/*"
+    "prisma/**/*",
+    "components/**/*",
+    "lib/**/*",
+    "utils/**/*",
+    "hooks/**/*",
+    "contexts/**/*",
+    "services/**/*",
+    "types/**/*",
+    "app/**/*",
+    "styles/**/*",
+    "constants/**/*",
+    "config/**/*",
+    "assets/**/*",
+    "*.d.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next",
+    "out",
+    "build",
+    "dist",
+    "coverage"
   ]
 }

@@ -14,7 +14,7 @@ interface DepthProcessingOptions {
   maxDepth: number;
 }
 
-let metrics: DepthSensingMetrics = {
+const metrics: DepthSensingMetrics = {
   fps: 0,
   latency: 0,
   accuracy: 0,

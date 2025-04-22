@@ -81,7 +81,7 @@ export const AccessibleDatePicker: React.FC<AccessibleDatePickerProps> = ({
     if (!isOpen) return;
 
     const currentDate = focusedDate || new Date();
-    let newDate = new Date(currentDate);
+    const newDate = new Date(currentDate);
 
     switch (e.key) {
       case 'ArrowLeft':

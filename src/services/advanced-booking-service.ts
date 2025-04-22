@@ -234,7 +234,7 @@ export class AdvancedBookingService {
   // Private helper methods
   private generateRecurringDates(startDate: Date, options: RecurringBookingOptions): Date[] {
     const dates: Date[] = [];
-    let currentDate = new Date(startDate);
+    const currentDate = new Date(startDate);
 
     while (currentDate <= options.endDate) {
       if (

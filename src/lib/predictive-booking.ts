@@ -51,7 +51,7 @@ export class PredictiveBookingService {
       `;
 
       const forecasts: DemandForecast[] = [];
-      let currentDate = new Date(startDate);
+      const currentDate = new Date(startDate);
 
       while (currentDate <= endDate) {
         // Calculate historical demand for this day of week

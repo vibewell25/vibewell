@@ -192,7 +192,10 @@
     "word-wrap": "^1.2.5",
     "workbox-window": "^7.3.0",
     "ws": "^8.18.1",
-    "zod": "^3.24.3"
+    "zod": "^3.24.3",
+    "cookiejar": "^2.1.4",
+    "cookie-signature": "^1.2.1",
+    "cookie-parser": "^1.4.6"
   },
   "devDependencies": {
     "@babel/plugin-transform-class-properties": "^7.25.9",

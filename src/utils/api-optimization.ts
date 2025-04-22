@@ -4,15 +4,18 @@ import { gzip } from 'zlib';
 import { promisify } from 'util';
 import { createHash } from 'crypto';
 import { MonitoringService } from '../types/monitoring';
+import { performanceMonitor } from './performanceMonitor';
+import { OptimizationOptions, CacheConfig, PrefetchConfig, RateLimitConfig } from '../types/optimization';
 
 const gzipAsync = promisify(gzip);
 
 // Initialize Redis client
 const redis = new Redis(process.env['REDIS_URL'] || 'redis://localhost:6379');
 
-interface CacheConfig {
-  duration: number; // Duration in seconds
-  key: string;
+interface BatchRequestConfig {
+  enabled: boolean;
+  maxBatchSize: number;
+  batchDelay: number;
 }
 
 interface CompressionConfig {
@@ -20,32 +23,48 @@ interface CompressionConfig {
   level: number; // Compression level (1-9)
 }
 
-interface OptimizationOptions {
-  cache?: CacheConfig;
-  compression?: CompressionConfig;
-  etag?: boolean;
-  cors?: boolean;
-  rateLimit?: {
-    max: number;
-    windowMs: number;
-  };
+interface CacheOptions {
+  duration?: number;
+  maxSize?: number;
+}
+
+interface RetryOptions {
+  attempts: number;
+  delay: number;
+  conditions?: ((error: Error) => boolean)[];
+  backoff?: (attempt: number, delay: number) => number;
+}
+
+interface RateLimitOptions {
+  maxRequests: number;
+  windowMs: number;
+}
+
+interface NetworkInformation {
+  effectiveType: string;
+  saveData: boolean;
+}
+
+interface NavigatorWithConnection extends Navigator {
+  connection?: NetworkInformation;
 }
 
 const DEFAULT_OPTIONS: OptimizationOptions = {
   cache: {
-    duration: 300, // 5 minutes
-    key: '',
+    enabled: true,
+    ttl: 3600000, // 1 hour
+    maxSize: 1000,
+    invalidateOnMutation: true
   },
-  compression: {
-    threshold: 1024, // 1KB
-    level: 6,
+  prefetch: {
+    enabled: true,
+    interval: 300000 // 5 minutes
   },
-  etag: true,
-  cors: true,
   rateLimit: {
-    max: 100,
+    enabled: true,
     windowMs: 60000, // 1 minute
-  },
+    max: 100
+  }
 };
 
 // Rate limiting implementation
@@ -59,7 +78,7 @@ function checkRateLimit(ip: string, options: OptimizationOptions): boolean {
   if (now > store.resetTime) {
     store.count = 1;
     store.resetTime = now + limit.windowMs;
-  } else if (store.count >= limit.max) {
+  } else if (store.count >= limit.maxRequests) {
     return false;
   } else {
     store.count++;
@@ -81,97 +100,284 @@ function generateETag(data: any): string {
   return `"${hash.toString(36)}"`;
 }
 
-// Optimize API response
-export async function optimizeResponse(
-  data: any,
-  options: OptimizationOptions = DEFAULT_OPTIONS,
-  request: Request
-): Promise<NextResponse> {
-  const mergedOptions = { ...DEFAULT_OPTIONS, ...options };
-  const headers = new Headers();
+// Memory cache implementation
+class MemoryCache {
+  private cache: Map<string, { value: any; expires: number }> = new Map();
 
-  // Check rate limit
-  if (mergedOptions.rateLimit) {
-    const clientIp = request.headers.get('x-forwarded-for') || 'unknown';
-    if (!checkRateLimit(clientIp, mergedOptions)) {
-      return new NextResponse(
-        JSON.stringify({ error: 'Too many requests' }),
-        { status: 429, headers }
-      );
-    }
+  set(key: string, value: any, duration: number): void {
+    const expires = Date.now() + duration * 1000;
+    this.cache.set(key, { value, expires });
   }
 
-  // Try cache first
-  if (mergedOptions.cache?.key) {
-    const cached = await redis.get(mergedOptions.cache.key);
-    if (cached) {
-      const parsedCache = JSON.parse(cached);
-      headers.set('X-Cache', 'HIT');
-      return new NextResponse(
-        parsedCache.data,
-        { 
-          headers: new Headers({
-            ...parsedCache.headers,
-            'X-Cache': 'HIT',
-          })
+  get(key: string): any {
+    const item = this.cache.get(key);
+    if (!item) return null;
+    if (Date.now() > item.expires) {
+      this.cache.delete(key);
+      return null;
+    }
+    return item.value;
+  }
+
+  invalidate(pattern?: RegExp): void {
+    if (pattern) {
+      Array.from(this.cache.keys()).forEach(key => {
+        if (pattern.test(key)) {
+          this.cache.delete(key);
         }
-      );
+      });
+    } else {
+      this.cache.clear();
     }
   }
-
-  // Prepare response
-  let responseBody = JSON.stringify(data);
-  
-  // Compress if needed
-  if (
-    mergedOptions.compression &&
-    responseBody.length > mergedOptions.compression.threshold &&
-    request.headers.get('accept-encoding')?.includes('gzip')
-  ) {
-    const compressed = await gzipAsync(Buffer.from(responseBody));
-    responseBody = compressed.toString('base64');
-    headers.set('Content-Encoding', 'gzip');
-  }
-
-  // Set CORS headers
-  if (mergedOptions.cors) {
-    headers.set('Access-Control-Allow-Origin', '*');
-    headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  }
-
-  // Set ETag
-  if (mergedOptions.etag) {
-    const etag = generateETag(data);
-    headers.set('ETag', etag);
-    
-    // Check if-none-match
-    const ifNoneMatch = request.headers.get('if-none-match');
-    if (ifNoneMatch === etag) {
-      return new NextResponse(null, { status: 304, headers });
-    }
-  }
-
-  // Cache response if needed
-  if (mergedOptions.cache?.key) {
-    await redis.set(
-      mergedOptions.cache.key,
-      JSON.stringify({
-        data: responseBody,
-        headers: Object.fromEntries(headers.entries()),
-      }),
-      'EX',
-      mergedOptions.cache.duration
-    );
-    headers.set('X-Cache', 'MISS');
-  }
-
-  // Set standard headers
-  headers.set('Content-Type', 'application/json');
-  headers.set('X-Response-Time', Date.now().toString());
-
-  return new NextResponse(responseBody, { headers });
 }
+
+// Request batching implementation
+class RequestBatcher {
+  private batch: Map<string, { 
+    promise: Promise<any>;
+    resolve: (value: any) => void;
+    reject: (reason: any) => void;
+  }> = new Map();
+  private timeout: NodeJS.Timeout | null = null;
+  private options: OptimizationOptions;
+
+  constructor(options: OptimizationOptions) {
+    this.options = options;
+  }
+
+  add(key: string, request: () => Promise<any>): Promise<any> {
+    if (!this.options.batchRequests?.enabled) {
+      return request();
+    }
+
+    return new Promise((resolve, reject) => {
+      this.batch.set(key, { promise: request(), resolve, reject });
+
+      if (!this.timeout) {
+        this.timeout = setTimeout(() => {
+          this.executeBatch();
+        }, this.options.batchRequests?.batchDelay || 50);
+      }
+    });
+  }
+
+  private async executeBatch(): Promise<void> {
+    const currentBatch = new Map(this.batch);
+    this.batch.clear();
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+
+    try {
+      const batchEntries = Array.from(currentBatch.entries());
+      const results = await Promise.allSettled(
+        batchEntries.map(([_, item]) => item.promise)
+      );
+
+      batchEntries.forEach((entry, index) => {
+        if (!entry) return;
+        const [_, item] = entry;
+        const result = results[index];
+
+        if (result && result.status === 'fulfilled') {
+          item.resolve(result.value);
+        } else if (result && result.status === 'rejected') {
+          item.reject(result.reason);
+        }
+      });
+    } catch (error) {
+      Array.from(currentBatch.values()).forEach(({ reject }) => {
+        reject(error);
+      });
+    }
+  }
+}
+
+class Cache {
+  private store: Map<string, { value: any; expiry: number }>;
+  private maxSize: number;
+  private duration: number;
+
+  constructor(options: CacheOptions = {}) {
+    this.store = new Map();
+    this.maxSize = options.maxSize || 1000;
+    this.duration = options.duration || 300;
+  }
+
+  set(key: string, value: any): void {
+    if (this.store.size >= this.maxSize) {
+      const oldestKey = Array.from(this.store.keys())[0];
+      this.store.delete(oldestKey);
+    }
+
+    const expiry = Date.now() + (this.duration * 1000);
+    this.store.set(key, { value, expiry });
+  }
+
+  get(key: string): any | null {
+    const item = this.store.get(key);
+    if (!item) return null;
+
+    if (Date.now() > item.expiry) {
+      this.store.delete(key);
+      return null;
+    }
+
+    return item.value;
+  }
+
+  invalidate(pattern?: RegExp): void {
+    if (!pattern) {
+      this.store.clear();
+      return;
+    }
+
+    for (const key of this.store.keys()) {
+      if (pattern.test(key)) {
+        this.store.delete(key);
+      }
+    }
+  }
+}
+
+export class ApiOptimization {
+  private cache: Map<string, { data: any; timestamp: number }>;
+  private prefetchIntervals: Map<string, NodeJS.Timeout>;
+  private rateLimitMap: Map<string, { count: number; resetTime: number }>;
+  private options: OptimizationOptions;
+
+  constructor(options?: Partial<OptimizationOptions>) {
+    const defaultOptions: OptimizationOptions = {
+      cache: {
+        enabled: true,
+        ttl: 300000, // 5 minutes
+        maxSize: 1000,
+        invalidateOnMutation: true,
+        key: 'default',
+        duration: 300000
+      },
+      prefetch: {
+        enabled: false,
+        interval: 60000 // 1 minute
+      },
+      rateLimit: {
+        enabled: true,
+        windowMs: 60000, // 1 minute
+        max: 100,
+        maxRequests: 100
+      },
+      batchRequests: {
+        enabled: false,
+        maxBatchSize: 10,
+        batchDelay: 50
+      }
+    };
+
+    this.options = { ...defaultOptions, ...options };
+    this.cache = new Map();
+    this.prefetchIntervals = new Map();
+    this.rateLimitMap = new Map();
+  }
+
+  private getCacheKey(url: string): string {
+    const cacheKey = this.options.cache.key;
+    return `${cacheKey || 'default'}-${url}`;
+  }
+
+  async get(url: string): Promise<any> {
+    if (!url) throw new Error('URL is required');
+    
+    const cacheKey = this.getCacheKey(url);
+    if (this.options.cache.enabled) {
+      const cached = this.cache.get(cacheKey);
+      if (cached && Date.now() - cached.timestamp < this.options.cache.ttl) {
+        return cached.data;
+      }
+    }
+
+    if (this.options.rateLimit.enabled && !this.checkRateLimit(url)) {
+      throw new Error('Rate limit exceeded');
+    }
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      
+      if (this.options.cache.enabled) {
+        this.cache.set(cacheKey, { data, timestamp: Date.now() });
+        this.maintainCacheSize();
+      }
+
+      return data;
+    } catch (error) {
+      throw new Error(`Failed to fetch data: ${error}`);
+    }
+  }
+
+  private maintainCacheSize(): void {
+    if (this.cache.size > this.options.cache.maxSize) {
+      const entries = Array.from(this.cache.entries());
+      entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
+      
+      const deleteCount = this.cache.size - this.options.cache.maxSize;
+      entries.slice(0, deleteCount).forEach(([key]) => this.cache.delete(key));
+    }
+  }
+
+  private checkRateLimit(url: string): boolean {
+    const now = Date.now();
+    const key = `${url}-${now - (now % this.options.rateLimit.windowMs)}`;
+    const limit = this.rateLimitMap.get(key) || { count: 0, resetTime: now + this.options.rateLimit.windowMs };
+
+    const maxRequests = this.options.rateLimit.maxRequests ?? this.options.rateLimit.max;
+    if (limit.count >= maxRequests) {
+      if (now > limit.resetTime) {
+        this.rateLimitMap.set(key, { count: 1, resetTime: now + this.options.rateLimit.windowMs });
+        return true;
+      }
+      return false;
+    }
+
+    this.rateLimitMap.set(key, { count: limit.count + 1, resetTime: limit.resetTime });
+    return true;
+  }
+
+  setupPrefetch(url: string, callback: (data: any) => void): void {
+    if (!this.options.prefetch.enabled) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const data = await this.get(url);
+        callback(data);
+      } catch (error) {
+        console.error('Prefetch failed:', error);
+      }
+    }, this.options.prefetch.interval);
+
+    this.prefetchIntervals.set(url, interval);
+  }
+
+  invalidateCache(url?: string): void {
+    if (typeof url === 'string') {
+      const cacheKey = this.getCacheKey(url);
+      this.cache.delete(cacheKey);
+    } else {
+      this.cache.clear();
+    }
+  }
+
+  cleanup(): void {
+    Array.from(this.prefetchIntervals.values()).forEach(interval => clearInterval(interval));
+    this.prefetchIntervals.clear();
+    this.cache.clear();
+    this.rateLimitMap.clear();
+  }
+}
+
+export const apiOptimizer = new ApiOptimization();
+export default apiOptimizer;
 
 // Cache warming utility
 export async function warmCache(
@@ -186,7 +392,7 @@ export async function warmCache(
           await redis.set(
             options.cache.key,
             JSON.stringify({ data, headers: {} }),
-            'EX',
+            'KEEPTTL',
             options.cache.duration
           );
         }

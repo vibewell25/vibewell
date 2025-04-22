@@ -52,10 +52,11 @@ export class ProductService {
    */
   async getProduct(id: string): Promise<Product | null> {
     try {
-      const products = await prisma.product.findMany({ where: { id: id } }).single();
+      const product = await prisma.product.findUnique({
+        where: { id }
+      });
 
-      if (error) throw error;
-      return data as Product;
+      return product as Product;
     } catch (error) {
       console.error('Error getting product:', error);
       return null;
@@ -70,21 +71,17 @@ export class ProductService {
     limit: number = 20
   ): Promise<{ products: Product[]; total: number }> {
     try {
-      // Get total count first
-      const { count, error: countError } = await supabase
-        .from('products')
-        .select('*', { count: 'exact', head: true });
+      // Get total count
+      const total = await prisma.product.count();
 
-      if (countError) throw countError;
+      // Get paginated results
+      const products = await prisma.product.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { createdAt: 'desc' }
+      });
 
-      // Then get paginated results
-      const products = await prisma.product
-        .findMany()
-        .range((page - 1) * limit, page * limit - 1)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      return { products: data as Product[], total: count || 0 };
+      return { products: products as Product[], total };
     } catch (error) {
       console.error('Error getting products:', error);
       return { products: [], total: 0 };
@@ -96,13 +93,13 @@ export class ProductService {
    */
   async getFeaturedProducts(limit: number = 6): Promise<Product[]> {
     try {
-      const products = await prisma.product
-        .findMany({ where: { featured: true } })
-        .order('rating', { ascending: false })
-        .limit(limit);
+      const products = await prisma.product.findMany({
+        where: { featured: true },
+        orderBy: { rating: 'desc' },
+        take: limit
+      });
 
-      if (error) throw error;
-      return data as Product[];
+      return products as Product[];
     } catch (error) {
       console.error('Error getting featured products:', error);
       return [];
@@ -114,13 +111,13 @@ export class ProductService {
    */
   async getTrendingProducts(limit: number = 6): Promise<Product[]> {
     try {
-      const products = await prisma.product
-        .findMany({ where: { trending: true } })
-        .order('rating', { ascending: false })
-        .limit(limit);
+      const products = await prisma.product.findMany({
+        where: { trending: true },
+        orderBy: { rating: 'desc' },
+        take: limit
+      });
 
-      if (error) throw error;
-      return data as Product[];
+      return products as Product[];
     } catch (error) {
       console.error('Error getting trending products:', error);
       return [];
@@ -132,13 +129,13 @@ export class ProductService {
    */
   async getProductsByType(type: string, limit: number = 20): Promise<Product[]> {
     try {
-      const products = await prisma.product
-        .findMany({ where: { type: type } })
-        .order('rating', { ascending: false })
-        .limit(limit);
+      const products = await prisma.product.findMany({
+        where: { type },
+        orderBy: { rating: 'desc' },
+        take: limit
+      });
 
-      if (error) throw error;
-      return data as Product[];
+      return products as Product[];
     } catch (error) {
       console.error(`Error getting ${type} products:`, error);
       return [];
@@ -153,18 +150,24 @@ export class ProductService {
     subcategories: Record<string, string[]>;
   }> {
     try {
-      const products = await prisma.product.findMany().not('category', 'is', null);
-
-      if (error) throw error;
+      const products = await prisma.product.findMany({
+        where: {
+          category: { not: null }
+        },
+        select: {
+          category: true,
+          subcategory: true
+        }
+      });
 
       // Extract unique categories
-      const categories = Array.from(new Set(data.map(item => item.category))).sort();
+      const categories = Array.from(new Set(products.map(item => item.category))).sort();
 
       // Group subcategories by category
       const subcategories: Record<string, string[]> = {};
 
       categories.forEach(category => {
-        const categorySubcategories = data
+        const categorySubcategories = products
           .filter(item => item.category === category)
           .map(item => item.subcategory);
 
@@ -183,10 +186,16 @@ export class ProductService {
    */
   async getProductBrands(): Promise<string[]> {
     try {
-      const products = await prisma.product.findMany().not('brand', 'is', null);
+      const products = await prisma.product.findMany({
+        where: {
+          brand: { not: null }
+        },
+        select: {
+          brand: true
+        }
+      });
 
-      if (error) throw error;
-      return Array.from(new Set(data.map(item => item.brand))).sort();
+      return Array.from(new Set(products.map(item => item.brand))).sort();
     } catch (error) {
       console.error('Error getting product brands:', error);
       return [];
@@ -198,12 +207,14 @@ export class ProductService {
    */
   async getProductTags(): Promise<string[]> {
     try {
-      const products = await prisma.product.findMany();
-
-      if (error) throw error;
+      const products = await prisma.product.findMany({
+        select: {
+          tags: true
+        }
+      });
 
       // Flatten and get unique tags
-      const allTags = data.flatMap(item => item.tags || []);
+      const allTags = products.flatMap(item => item.tags || []);
       return Array.from(new Set(allTags)).sort();
     } catch (error) {
       console.error('Error getting product tags:', error);
@@ -221,85 +232,80 @@ export class ProductService {
     limit: number = 20
   ): Promise<{ products: Product[]; total: number }> {
     try {
-      let query = supabase.from('products').select('*', { count: 'exact' });
+      // Build where clause
+      const where: any = {};
 
-      // Apply filters
       if (filter.types && filter.types.length > 0) {
-        query = query.in('type', filter.types);
+        where.type = { in: filter.types };
       }
 
       if (filter.categories && filter.categories.length > 0) {
-        query = query.in('category', filter.categories);
+        where.category = { in: filter.categories };
       }
 
       if (filter.subcategories && filter.subcategories.length > 0) {
-        query = query.in('subcategory', filter.subcategories);
+        where.subcategory = { in: filter.subcategories };
       }
 
       if (filter.brands && filter.brands.length > 0) {
-        query = query.in('brand', filter.brands);
+        where.brand = { in: filter.brands };
       }
 
       if (filter.minPrice !== undefined) {
-        query = query.gte('price', filter.minPrice);
+        where.price = { ...where.price, gte: filter.minPrice };
       }
 
       if (filter.maxPrice !== undefined) {
-        query = query.lte('price', filter.maxPrice);
+        where.price = { ...where.price, lte: filter.maxPrice };
       }
 
       if (filter.minRating !== undefined) {
-        query = query.gte('rating', filter.minRating);
+        where.rating = { gte: filter.minRating };
       }
 
       if (filter.featured !== undefined) {
-        query = query.eq('featured', filter.featured);
+        where.featured = filter.featured;
       }
 
       if (filter.trending !== undefined) {
-        query = query.eq('trending', filter.trending);
+        where.trending = filter.trending;
       }
 
       if (filter.arCompatible !== undefined) {
-        query = query.eq('ar_compatible', filter.arCompatible);
+        where.arCompatible = filter.arCompatible;
       }
 
       if (filter.availability && filter.availability.length > 0) {
-        query = query.in('availability', filter.availability);
+        where.availability = { in: filter.availability };
       }
-
-      // For tag filtering, we'll do this after initial results are returned
-      // since Supabase's handling of array operations can be tricky
 
       // Text search in name and description
       if (filter.searchTerm) {
         const term = filter.searchTerm.trim();
         if (term) {
-          // Using ilike for basic search in name or description
-          query = query.or(`name.ilike.%${term}%,description.ilike.%${term}%`);
+          where.OR = [
+            { name: { contains: term, mode: 'insensitive' } },
+            { description: { contains: term, mode: 'insensitive' } }
+          ];
         }
       }
 
-      // Apply sorting
-      query = query.order(sort.field, { ascending: sort.direction === 'asc' });
-
       // Get total count
-      const { count } = await query.select('id', { count: 'exact', head: true });
+      const total = await prisma.product.count({ where });
 
-      // Apply pagination
-      query = query.range((page - 1) * limit, page * limit - 1);
-
-      // Execute query
-      const { data, error } = await query;
-
-      if (error) throw error;
+      // Get paginated results
+      const products = await prisma.product.findMany({
+        where,
+        orderBy: { [sort.field]: sort.direction },
+        skip: (page - 1) * limit,
+        take: limit
+      });
 
       // Post-process for tag filtering if needed
-      let filteredData = data;
-      if (filter.tags && filter.tags.length > 0 && filteredData) {
-        filteredData = filteredData.filter(product => {
+      let filteredProducts = products;
+      if (filter.tags && filter.tags.length > 0 && filteredProducts) {
+        filteredProducts = filteredProducts.filter(product => {
           if (!product.tags) return false;
-          // Check if product has all requested tags
           return filter.tags!.every(tag =>
             product.tags.some(productTag => productTag.toLowerCase().includes(tag.toLowerCase()))
           );
@@ -307,8 +313,8 @@ export class ProductService {
       }
 
       return {
-        products: (filteredData as Product[]) || [],
-        total: filter.tags?.length ? filteredData.length : count || 0,
+        products: filteredProducts as Product[],
+        total: filter.tags?.length ? filteredProducts.length : total
       };
     } catch (error) {
       console.error('Error searching products:', error);
@@ -322,35 +328,44 @@ export class ProductService {
   async getRelatedProducts(productId: string, limit: number = 4): Promise<Product[]> {
     try {
       // First get the original product
-      const product = await prisma.product.findMany({ where: { id: productId } }).single();
+      const product = await prisma.product.findUnique({
+        where: { id: productId }
+      });
 
-      if (productError) throw productError;
-
-      // Then get related products of the same type and category
-      const products = await prisma.product
-        .findMany({ where: { type: product.type } })
-        .eq('category', product.category)
-        .neq('id', productId)
-        .order('rating', { ascending: false })
-        .limit(limit);
-
-      if (error) throw error;
-
-      // If not enough products found, get more based on type only
-      if (data.length < limit) {
-        const remaining = limit - data.length;
-        const moreData = await prisma.product
-          .findMany({ where: { type: product.type } })
-          .neq('id', productId)
-          .not('id', 'in', `(${data.map(p => p.id).join(',')})`)
-          .order('rating', { ascending: false })
-          .limit(remaining);
-
-        if (moreError) throw moreError;
-        data.push(...moreData);
+      if (!product) {
+        throw new Error('Product not found');
       }
 
-      return data as Product[];
+      // Get related products of the same type and category
+      const relatedProducts = await prisma.product.findMany({
+        where: {
+          type: product.type,
+          category: product.category,
+          id: { not: productId }
+        },
+        orderBy: { rating: 'desc' },
+        take: limit
+      });
+
+      // If not enough products found, get more based on type only
+      if (relatedProducts.length < limit) {
+        const remaining = limit - relatedProducts.length;
+        const moreProducts = await prisma.product.findMany({
+          where: {
+            type: product.type,
+            id: {
+              not: productId,
+              notIn: relatedProducts.map(p => p.id)
+            }
+          },
+          orderBy: { rating: 'desc' },
+          take: remaining
+        });
+
+        relatedProducts.push(...moreProducts);
+      }
+
+      return relatedProducts as Product[];
     } catch (error) {
       console.error('Error getting related products:', error);
       return [];

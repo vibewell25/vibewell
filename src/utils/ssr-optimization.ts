@@ -1,6 +1,11 @@
 import { renderToString, renderToNodeStream } from 'react-dom/server';
 import { cacheManager } from './caching';
 import { performanceMonitor } from './performance-monitoring';
+import { GetServerSidePropsContext } from 'next';
+import { ParsedUrlQuery } from 'querystring';
+import { cache } from 'react';
+import { Redis } from 'ioredis';
+import { logger } from './logger';
 
 interface SSRConfig {
   streaming: boolean;
@@ -17,6 +22,25 @@ interface RenderOptions {
   headers?: Record<string, string>;
 }
 
+interface SSRCacheConfig {
+  redis: Redis;
+  ttl: number;
+  prefix: string;
+}
+
+interface SSRCacheOptions {
+  key?: string | ((ctx: GetServerSidePropsContext) => string);
+  ttl?: number;
+  tags?: string[];
+}
+
+interface SSRMetrics {
+  cacheHits: number;
+  cacheMisses: number;
+  averageRenderTime: number;
+  totalRequests: number;
+}
+
 class SSROptimizer {
   private static instance: SSROptimizer;
   private config: SSRConfig = {
@@ -27,8 +51,21 @@ class SSROptimizer {
     cacheTTL: 3600, // 1 hour
     revalidate: 60, // 1 minute
   };
+  private redis: Redis;
+  private defaultTTL: number;
+  private cachePrefix: string;
+  private metrics: SSRMetrics;
 
-  private constructor() {
+  private constructor(config: SSRCacheConfig) {
+    this.redis = config.redis;
+    this.defaultTTL = config.ttl;
+    this.cachePrefix = config.prefix;
+    this.metrics = {
+      cacheHits: 0,
+      cacheMisses: 0,
+      averageRenderTime: 0,
+      totalRequests: 0,
+    };
     this.setupMetrics();
   }
 
@@ -44,9 +81,9 @@ class SSROptimizer {
     }
   }
 
-  public static getInstance(): SSROptimizer {
+  public static getInstance(config: SSRCacheConfig): SSROptimizer {
     if (!SSROptimizer.instance) {
-      SSROptimizer.instance = new SSROptimizer();
+      SSROptimizer.instance = new SSROptimizer(config);
     }
     return SSROptimizer.instance;
   }
@@ -210,6 +247,158 @@ class SSROptimizer {
   public setRevalidationInterval(seconds: number): void {
     this.config.revalidate = seconds;
   }
+
+  private generateCacheKey(ctx: GetServerSidePropsContext, options?: SSRCacheOptions): string {
+    if (options?.key) {
+      const key = typeof options.key === 'function' ? options.key(ctx) : options.key;
+      return `${this.cachePrefix}:${key}`;
+    }
+
+    const { query, resolvedUrl } = ctx;
+    const queryString = Object.entries(query)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&');
+
+    return `${this.cachePrefix}:${resolvedUrl}${queryString ? `?${queryString}` : ''}`;
+  }
+
+  public withCache = cache(async <T extends object>(
+    ctx: GetServerSidePropsContext,
+    dataFetcher: () => Promise<T>,
+    options?: SSRCacheOptions
+  ): Promise<T> => {
+    const startTime = Date.now();
+    const cacheKey = this.generateCacheKey(ctx, options);
+    
+    try {
+      // Try to get from cache
+      const cached = await this.redis.get(cacheKey);
+      if (cached) {
+        this.metrics.cacheHits++;
+        this.metrics.totalRequests++;
+        return JSON.parse(cached);
+      }
+
+      // Cache miss, fetch data
+      this.metrics.cacheMisses++;
+      this.metrics.totalRequests++;
+      const data = await dataFetcher();
+
+      // Store in cache
+      const ttl = options?.ttl || this.defaultTTL;
+      await this.redis.setex(cacheKey, ttl, JSON.stringify(data));
+
+      // Store cache tags if provided
+      if (options?.tags?.length) {
+        await this.redis.sadd(`${cacheKey}:tags`, ...options.tags);
+      }
+
+      // Update metrics
+      const renderTime = Date.now() - startTime;
+      this.updateMetrics(renderTime);
+
+      return data;
+    } catch (error) {
+      logger.error('SSR Cache error:', error);
+      return await dataFetcher();
+    }
+  });
+
+  private updateMetrics(renderTime: number): void {
+    const { totalRequests, averageRenderTime } = this.metrics;
+    this.metrics.averageRenderTime = (
+      (averageRenderTime * totalRequests + renderTime) /
+      (totalRequests + 1)
+    );
+  }
+
+  public async invalidateByTag(tag: string): Promise<void> {
+    try {
+      const keys = await this.redis.smembers(`${this.cachePrefix}:tags:${tag}`);
+      if (keys.length) {
+        await Promise.all([
+          this.redis.del(...keys),
+          this.redis.del(`${this.cachePrefix}:tags:${tag}`)
+        ]);
+      }
+    } catch (error) {
+      logger.error('Cache invalidation error:', error);
+    }
+  }
+
+  public async invalidateByPattern(pattern: string): Promise<void> {
+    try {
+      const keys = await this.redis.keys(`${this.cachePrefix}:${pattern}`);
+      if (keys.length) {
+        await this.redis.del(...keys);
+      }
+    } catch (error) {
+      logger.error('Cache invalidation error:', error);
+    }
+  }
+
+  public getMetrics(): SSRMetrics {
+    return { ...this.metrics };
+  }
+
+  public async warmCache<T extends object>(
+    paths: string[],
+    dataFetcher: (path: string) => Promise<T>,
+    options?: SSRCacheOptions
+  ): Promise<void> {
+    try {
+      await Promise.all(
+        paths.map(async (path) => {
+          const ctx = this.createMockContext(path);
+          await this.withCache(ctx, () => dataFetcher(path), options);
+        })
+      );
+    } catch (error) {
+      logger.error('Cache warming error:', error);
+    }
+  }
+
+  private createMockContext(path: string): GetServerSidePropsContext {
+    const [pathname, search] = path.split('?');
+    const query: ParsedUrlQuery = {};
+    
+    if (search) {
+      search.split('&').forEach(param => {
+        const [key, value] = param.split('=');
+        query[key] = value;
+      });
+    }
+
+    return {
+      req: {} as any,
+      res: {} as any,
+      query,
+      resolvedUrl: path,
+      params: {},
+    };
+  }
+
+  public async clearCache(): Promise<void> {
+    try {
+      const keys = await this.redis.keys(`${this.cachePrefix}:*`);
+      if (keys.length) {
+        await this.redis.del(...keys);
+      }
+      this.resetMetrics();
+    } catch (error) {
+      logger.error('Cache clearing error:', error);
+    }
+  }
+
+  private resetMetrics(): void {
+    this.metrics = {
+      cacheHits: 0,
+      cacheMisses: 0,
+      averageRenderTime: 0,
+      totalRequests: 0,
+    };
+  }
 }
 
-export const ssrOptimizer = SSROptimizer.getInstance(); 
+export default SSROptimizer; 

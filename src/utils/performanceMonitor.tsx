@@ -14,9 +14,18 @@ interface PerformanceThresholds {
 
 interface PerformanceMetric {
   name: string;
-  duration: number;
+  value: number;
   timestamp: number;
   metadata?: Record<string, any>;
+}
+
+interface ResourceTiming {
+  name: string;
+  initiatorType: string;
+  duration: number;
+  transferSize: number;
+  decodedBodySize: number;
+  encodedBodySize: number;
 }
 
 interface PerformanceMeasure {
@@ -55,6 +64,7 @@ function isNumber(value: number | undefined): value is number {
 }
 
 class PerformanceMonitor extends EventEmitter {
+  private static instance: PerformanceMonitor;
   private metrics: Map<string, PerformanceMetric[]> = new Map();
   private thresholds: Map<string, number> = new Map();
   private notificationService: NotificationService | null = null;
@@ -63,14 +73,20 @@ class PerformanceMonitor extends EventEmitter {
   private readonly alertCooldownPeriod = 5 * 60 * 1000; // 5 minutes
   private readonly maxRetainedMetrics = 1000; // Maximum metrics to retain per type
   private measures: Map<string, PerformanceMeasure> = new Map();
+  private isMonitoring: boolean = false;
 
-  constructor() {
+  private constructor() {
     super();
     this.setupEventListeners();
     this.initNotificationService();
+    this.initializeThresholds();
+  }
 
-    // Set default thresholds
-    this.setDefaultThresholds();
+  public static getInstance(): PerformanceMonitor {
+    if (!PerformanceMonitor.instance) {
+      PerformanceMonitor.instance = new PerformanceMonitor();
+    }
+    return PerformanceMonitor.instance;
   }
 
   /**
@@ -95,16 +111,21 @@ class PerformanceMonitor extends EventEmitter {
   /**
    * Set default thresholds for different metric types
    */
-  private setDefaultThresholds(): void {
-    const defaultThresholds: Partial<Record<string, number>> = {
-      [MetricType.API]: 500, // 500ms for API calls
-      [MetricType.RENDER]: 100, // 100ms for rendering
-      [MetricType.DATABASE]: 200, // 200ms for database operations
-      [MetricType.COMPUTATION]: 300, // 300ms for heavy computations
-      [MetricType.NETWORK]: 1000, // 1000ms for network operations
-    };
+  private initializeThresholds(): void {
+    // Core Web Vitals thresholds
+    this.thresholds.set('FCP', 1800); // First Contentful Paint (ms)
+    this.thresholds.set('LCP', 2500); // Largest Contentful Paint (ms)
+    this.thresholds.set('FID', 100);  // First Input Delay (ms)
+    this.thresholds.set('CLS', 0.1);  // Cumulative Layout Shift
+    this.thresholds.set('TTFB', 600); // Time to First Byte (ms)
+    this.thresholds.set('TTI', 3800); // Time to Interactive (ms)
 
-    this.setThresholds(defaultThresholds);
+    // Custom performance thresholds
+    this.thresholds.set('imageLoad', 1000);    // Image loading time (ms)
+    this.thresholds.set('apiResponse', 1000);   // API response time (ms)
+    this.thresholds.set('renderTime', 16);      // Frame render time (ms)
+    this.thresholds.set('memoryUsage', 90);     // Memory usage percentage
+    this.thresholds.set('cacheHitRate', 80);    // Cache hit rate percentage
   }
 
   /**
@@ -212,7 +233,7 @@ class PerformanceMonitor extends EventEmitter {
     const type = measure.type || 'default';
     const metric: PerformanceMetric = {
       name: measure.name,
-      duration: measure.duration,
+      value: measure.duration,
       timestamp: Date.now(),
       metadata: measure.metadata,
     };
@@ -403,7 +424,7 @@ class PerformanceMonitor extends EventEmitter {
     Array.from(this.metrics.entries()).forEach(([type, metrics]) => {
       if (metrics.length === 0) return;
 
-      const durations = metrics.map((m: PerformanceMetric) => m.duration);
+      const durations = metrics.map((m: PerformanceMetric) => m.value);
       const total = durations.reduce((sum: number, val: number) => sum + val, 0);
       const average = total / durations.length;
       const sorted = [...durations].sort((a: number, b: number) => a - b);
@@ -437,10 +458,212 @@ class PerformanceMonitor extends EventEmitter {
 
     return result;
   }
+
+  public startMonitoring(): void {
+    if (this.isMonitoring) return;
+    this.isMonitoring = true;
+
+    // Monitor Core Web Vitals
+    this.monitorWebVitals();
+
+    // Monitor Resource Loading
+    this.monitorResourceLoading();
+
+    // Monitor Memory Usage
+    this.monitorMemoryUsage();
+
+    // Monitor Cache Performance
+    this.monitorCachePerformance();
+
+    // Monitor Frame Rate
+    this.monitorFrameRate();
+
+    // Report metrics periodically
+    setInterval(() => this.reportMetrics(), 60000); // Report every minute
+  }
+
+  private monitorWebVitals(): void {
+    if (typeof window === 'undefined') return;
+
+    // First Contentful Paint
+    const paintEntries = performance.getEntriesByType('paint');
+    const fcp = paintEntries.find(entry => entry.name === 'first-contentful-paint');
+    if (fcp) {
+      this.recordMetric('FCP', fcp.startTime);
+    }
+
+    // Largest Contentful Paint
+    new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      const lastEntry = entries[entries.length - 1];
+      this.recordMetric('LCP', lastEntry.startTime);
+    }).observe({ entryTypes: ['largest-contentful-paint'] });
+
+    // First Input Delay
+    new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      entries.forEach(entry => {
+        this.recordMetric('FID', entry.duration);
+      });
+    }).observe({ entryTypes: ['first-input'] });
+
+    // Cumulative Layout Shift
+    new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      entries.forEach(entry => {
+        if (entry instanceof LayoutShift) {
+          this.recordMetric('CLS', entry.value);
+        }
+      });
+    }).observe({ entryTypes: ['layout-shift'] });
+  }
+
+  private monitorResourceLoading(): void {
+    new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries() as PerformanceResourceTiming[];
+      entries.forEach(entry => {
+        const timing: ResourceTiming = {
+          name: entry.name,
+          initiatorType: entry.initiatorType,
+          duration: entry.duration,
+          transferSize: entry.transferSize,
+          decodedBodySize: entry.decodedBodySize,
+          encodedBodySize: entry.encodedBodySize
+        };
+
+        this.recordMetric(`resource_${entry.initiatorType}`, entry.duration, timing);
+
+        // Track compression ratio
+        if (entry.encodedBodySize && entry.decodedBodySize) {
+          const compressionRatio = 1 - (entry.encodedBodySize / entry.decodedBodySize);
+          this.recordMetric('compressionRatio', compressionRatio * 100, {
+            resource: entry.name,
+            type: entry.initiatorType
+          });
+        }
+      });
+    }).observe({ entryTypes: ['resource'] });
+  }
+
+  private monitorMemoryUsage(): void {
+    if ('memory' in performance) {
+      setInterval(() => {
+        const memory = (performance as any).memory;
+        const usageRatio = (memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100;
+        this.recordMetric('memoryUsage', usageRatio, {
+          total: memory.jsHeapSizeLimit,
+          used: memory.usedJSHeapSize
+        });
+      }, 10000); // Check every 10 seconds
+    }
+  }
+
+  private monitorCachePerformance(): void {
+    if ('caches' in window) {
+      setInterval(async () => {
+        try {
+          const cache = await caches.open('vibewell:image:v1');
+          const keys = await cache.keys();
+          const totalRequests = performance.getEntriesByType('resource').length;
+          const cacheHitRate = (keys.length / totalRequests) * 100;
+
+          this.recordMetric('cacheHitRate', cacheHitRate, {
+            totalRequests,
+            cachedRequests: keys.length
+          });
+        } catch (error) {
+          console.error('Error monitoring cache:', error);
+        }
+      }, 30000); // Check every 30 seconds
+    }
+  }
+
+  private monitorFrameRate(): void {
+    let lastTime = performance.now();
+    let frames = 0;
+
+    const measureFrameRate = () => {
+      frames++;
+      const currentTime = performance.now();
+      const elapsed = currentTime - lastTime;
+
+      if (elapsed >= 1000) { // Measure every second
+        const fps = Math.round((frames * 1000) / elapsed);
+        this.recordMetric('frameRate', fps);
+        frames = 0;
+        lastTime = currentTime;
+      }
+
+      requestAnimationFrame(measureFrameRate);
+    };
+
+    requestAnimationFrame(measureFrameRate);
+  }
+
+  public recordMetric(name: string, value: number, metadata?: Record<string, any>): void {
+    const metric: PerformanceMetric = {
+      name,
+      value,
+      timestamp: Date.now(),
+      metadata
+    };
+
+    if (!this.metrics.has(name)) {
+      this.metrics.set(name, []);
+    }
+
+    this.metrics.get(name)!.push(metric);
+
+    // Check if metric exceeds threshold
+    const threshold = this.thresholds.get(name);
+    if (threshold !== undefined && value > threshold) {
+      this.emit('threshold-exceeded', {
+        metric: name,
+        value,
+        threshold,
+        timestamp: Date.now(),
+        metadata
+      });
+    }
+  }
+
+  public getMetrics(name?: string): PerformanceMetric[] {
+    if (name) {
+      return this.metrics.get(name) || [];
+    }
+
+    return Array.from(this.metrics.values()).flat();
+  }
+
+  private reportMetrics(): void {
+    const report = {
+      timestamp: Date.now(),
+      metrics: Object.fromEntries(
+        Array.from(this.metrics.entries()).map(([name, metrics]) => [
+          name,
+          {
+            current: metrics[metrics.length - 1]?.value,
+            average: metrics.reduce((sum, m) => sum + m.value, 0) / metrics.length,
+            min: Math.min(...metrics.map(m => m.value)),
+            max: Math.max(...metrics.map(m => m.value))
+          }
+        ])
+      )
+    };
+
+    // Emit report event
+    this.emit('report', report);
+
+    // Clear old metrics (keep last hour)
+    const hourAgo = Date.now() - 3600000;
+    for (const [name, metrics] of this.metrics.entries()) {
+      this.metrics.set(name, metrics.filter(m => m.timestamp > hourAgo));
+    }
+  }
 }
 
 // Create and export singleton instance
-export const performanceMonitor = new PerformanceMonitor();
+export const performanceMonitor = PerformanceMonitor.getInstance();
 
 // Example usage:
 // performanceMonitor.setThresholds({

@@ -2,6 +2,8 @@ import { Analytics } from '@vercel/analytics/react';
 import * as Sentry from '@sentry/nextjs';
 import posthog from 'posthog-js';
 import React from 'react';
+import type { AnalyticsConfig } from '../types/third-party';
+import { ThirdPartyManager } from '../services/third-party-manager';
 
 // Initialize PostHog
 if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
@@ -23,11 +25,19 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 }
 
 // Analytics event types
-export type AnalyticsEvent = {
+export interface AnalyticsEvent {
   name: string;
   properties?: Record<string, any>;
-  category?: 'user' | 'content' | 'engagement' | 'error' | 'performance';
-};
+  timestamp?: number;
+  userId?: string;
+}
+
+export interface PageView {
+  path: string;
+  title?: string;
+  referrer?: string;
+  userId?: string;
+}
 
 // Analytics provider interface
 export interface AnalyticsProvider {
@@ -122,4 +132,149 @@ export const analytics = new AnalyticsService();
 //       {children}
 //     </>
 //   );
-// } 
+// }
+
+export class AnalyticsUtils {
+  private static manager = ThirdPartyManager.getInstance();
+
+  static async trackEvent(event: AnalyticsEvent): Promise<void> {
+    const analytics = this.manager.getService('analytics');
+    if (!analytics) return;
+
+    const config = this.manager.getServiceConfig('analytics') as AnalyticsConfig;
+    
+    try {
+      switch (config.service) {
+        case 'google-analytics':
+          await analytics.event({
+            eventCategory: event.name,
+            eventAction: 'trigger',
+            eventLabel: JSON.stringify(event.properties),
+            userId: event.userId
+          });
+          break;
+          
+        case 'mixpanel':
+          await analytics.track(
+            event.name,
+            {
+              ...event.properties,
+              distinct_id: event.userId,
+              time: event.timestamp || Date.now()
+            }
+          );
+          break;
+          
+        case 'segment':
+          await analytics.track({
+            event: event.name,
+            properties: event.properties,
+            userId: event.userId,
+            timestamp: event.timestamp
+          });
+          break;
+      }
+    } catch (error) {
+      console.error('Failed to track analytics event:', error);
+    }
+  }
+
+  static async trackPageView(pageView: PageView): Promise<void> {
+    const analytics = this.manager.getService('analytics');
+    if (!analytics) return;
+
+    const config = this.manager.getServiceConfig('analytics') as AnalyticsConfig;
+    
+    try {
+      switch (config.service) {
+        case 'google-analytics':
+          await analytics.pageview({
+            dp: pageView.path,
+            dt: pageView.title,
+            dr: pageView.referrer,
+            uid: pageView.userId
+          });
+          break;
+          
+        case 'mixpanel':
+          await analytics.track(
+            'Page View',
+            {
+              path: pageView.path,
+              title: pageView.title,
+              referrer: pageView.referrer,
+              distinct_id: pageView.userId
+            }
+          );
+          break;
+          
+        case 'segment':
+          await analytics.page({
+            name: pageView.title,
+            path: pageView.path,
+            referrer: pageView.referrer,
+            userId: pageView.userId
+          });
+          break;
+      }
+    } catch (error) {
+      console.error('Failed to track page view:', error);
+    }
+  }
+
+  static async identifyUser(userId: string, traits?: Record<string, any>): Promise<void> {
+    const analytics = this.manager.getService('analytics');
+    if (!analytics) return;
+
+    const config = this.manager.getServiceConfig('analytics') as AnalyticsConfig;
+    
+    try {
+      switch (config.service) {
+        case 'google-analytics':
+          await analytics.set({ userId, ...traits });
+          break;
+          
+        case 'mixpanel':
+          await analytics.people.set(userId, traits);
+          break;
+          
+        case 'segment':
+          await analytics.identify({
+            userId,
+            traits
+          });
+          break;
+      }
+    } catch (error) {
+      console.error('Failed to identify user:', error);
+    }
+  }
+
+  static async groupUser(userId: string, groupId: string, traits?: Record<string, any>): Promise<void> {
+    const analytics = this.manager.getService('analytics');
+    if (!analytics) return;
+
+    const config = this.manager.getServiceConfig('analytics') as AnalyticsConfig;
+    
+    try {
+      switch (config.service) {
+        case 'mixpanel':
+          await analytics.set_group(groupId, userId);
+          if (traits) {
+            await analytics.group.set(groupId, traits);
+          }
+          break;
+          
+        case 'segment':
+          await analytics.group({
+            userId,
+            groupId,
+            traits
+          });
+          break;
+      }
+    } catch (error) {
+      console.error('Failed to group user:', error);
+    }
+  }
+} 

@@ -155,15 +155,20 @@ interface LoggerOptions {
 }
 
 class Logger {
-  private level: string;
+  private static instance: Logger;
+  private logLevel: LogLevel = 'info';
   private logger: winston.Logger;
 
-  constructor(options: LoggerOptions = {}) {
-    this.level = options.level || 'info';
+  private constructor() {
+    // Set log level from environment variable
+    const envLogLevel = process.env.LOG_LEVEL?.toLowerCase() as LogLevel;
+    if (envLogLevel && ['debug', 'info', 'warn', 'error'].includes(envLogLevel)) {
+      this.logLevel = envLogLevel;
+    }
 
     // Initialize Winston logger
     this.logger = winston.createLogger({
-      level: this.level,
+      level: this.logLevel,
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.json(),
@@ -175,10 +180,10 @@ class Logger {
       ),
       transports: [
         new winston.transports.Console({
-          format: winston.format.colorize({ all: this.level === 'debug' }),
+          format: winston.format.colorize({ all: this.logLevel === 'debug' }),
         }),
         // Add file transport in production
-        ...(this.level === 'info'
+        ...(this.logLevel === 'info'
           ? [
               new winston.transports.File({ filename: 'error.log', level: 'error' }),
               new winston.transports.File({ filename: 'combined.log' }),
@@ -188,40 +193,115 @@ class Logger {
     });
   }
 
-  // Log a message at the specified level
-  log(level: LogLevel, message: string, module?: string, metadata?: Record<string, any>): void {
-    const logEvent: LogEvent = {
-      message,
-      module,
-      metadata: this.sanitizeMetadata(metadata),
-      timestamp: new Date(),
+  public static getInstance(): Logger {
+    if (!Logger.instance) {
+      Logger.instance = new Logger();
+    }
+    return Logger.instance;
+  }
+
+  private shouldLog(level: LogLevel): boolean {
+    const levels: Record<LogLevel, number> = {
+      debug: 0,
+      info: 1,
+      warn: 2,
+      error: 3
     };
-
-    this.logger.log(level, message, {
-      module,
-      metadata: logEvent.metadata,
-      timestamp: logEvent.timestamp,
-    });
+    return levels[level] >= levels[this.logLevel];
   }
 
-  // Debug level log
-  debug(message: string, module?: string, metadata?: Record<string, any>): void {
-    this.log('debug', message, module, metadata);
+  private formatMessage(entry: LogEntry): string {
+    const base = `[${entry.timestamp}] ${entry.level.toUpperCase()}: ${entry.message}`;
+    const context = entry.context ? ` [${entry.context}]` : '';
+    const data = entry.data ? `\n${JSON.stringify(entry.data, null, 2)}` : '';
+    const error = entry.error ? `\n${entry.error.stack}` : '';
+    return `${base}${context}${data}${error}`;
   }
 
-  // Info level log
-  info(message: string, module?: string, metadata?: Record<string, any>): void {
-    this.log('info', message, module, metadata);
+  private createLogEntry(
+    level: LogLevel,
+    message: string,
+    context?: string,
+    data?: any,
+    error?: Error
+  ): LogEntry {
+    return {
+      timestamp: new Date().toISOString(),
+      level,
+      message,
+      context,
+      data,
+      error
+    };
   }
 
-  // Warning level log
-  warn(message: string, module?: string, metadata?: Record<string, any>): void {
-    this.log('warn', message, module, metadata);
+  private log(entry: LogEntry): void {
+    if (!this.shouldLog(entry.level)) return;
+
+    const formattedMessage = this.formatMessage(entry);
+
+    switch (entry.level) {
+      case 'debug':
+        console.debug(formattedMessage);
+        break;
+      case 'info':
+        console.info(formattedMessage);
+        break;
+      case 'warn':
+        console.warn(formattedMessage);
+        break;
+      case 'error':
+        console.error(formattedMessage);
+        break;
+    }
+
+    // In production, you might want to send logs to a logging service
+    if (process.env.NODE_ENV === 'production') {
+      this.sendToLoggingService(entry);
+    }
   }
 
-  // Error level log
-  error(message: string, module?: string, metadata?: Record<string, any>): void {
-    this.log('error', message, module, metadata);
+  private async sendToLoggingService(entry: LogEntry): Promise<void> {
+    // Implementation would depend on your logging service (e.g., Sentry, LogRocket, etc.)
+    try {
+      if (process.env.SENTRY_DSN && entry.level === 'error') {
+        // Example: Send to Sentry
+        const Sentry = await import('@sentry/node');
+        Sentry.captureException(entry.error || entry.message, {
+          level: entry.level,
+          extra: {
+            context: entry.context,
+            data: entry.data
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Failed to send log to logging service:', error);
+    }
+  }
+
+  public debug(message: string, context?: string, data?: any): void {
+    this.log(this.createLogEntry('debug', message, context, data));
+  }
+
+  public info(message: string, context?: string, data?: any): void {
+    this.log(this.createLogEntry('info', message, context, data));
+  }
+
+  public warn(message: string, context?: string, data?: any): void {
+    this.log(this.createLogEntry('warn', message, context, data));
+  }
+
+  public error(message: string, context?: string, data?: any, error?: Error): void {
+    this.log(this.createLogEntry('error', message, context, data, error));
+  }
+
+  public setLogLevel(level: LogLevel): void {
+    this.logLevel = level;
+  }
+
+  public getLogLevel(): LogLevel {
+    return this.logLevel;
   }
 
   // Log a rate limit event and check for suspicious patterns
@@ -323,20 +403,6 @@ class Logger {
     return createHash('sha256').update(data).digest('hex');
   }
 
-  // Sanitize metadata
-  private sanitizeMetadata(metadata?: Record<string, any>): Record<string, any> | undefined {
-    if (!metadata) return undefined;
-    const sanitizedMetadata: Record<string, any> = {};
-    for (const key in metadata) {
-      if (typeof metadata[key] === 'string') {
-        sanitizedMetadata[key] = metadata[key].replace(/[^a-zA-Z0-9]/g, '');
-      } else {
-        sanitizedMetadata[key] = metadata[key];
-      }
-    }
-    return sanitizedMetadata;
-  }
-
   // Alert suspicious activity
   private alertSuspiciousActivity(event: {
     reason: string;
@@ -355,6 +421,5 @@ class Logger {
   }
 }
 
-export const logger = new Logger({
-  level: process.env.LOG_LEVEL || 'info',
-});
+// Export a singleton instance
+export const logger = Logger.getInstance();

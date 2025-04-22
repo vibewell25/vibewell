@@ -138,4 +138,94 @@ If you have questions about the Vibewell platform that aren't answered in this d
 
 ---
 
-© 2023 Vibewell. All rights reserved. 
+© 2023 Vibewell. All rights reserved.
+
+# VibeWell API Documentation
+
+## Overview
+
+This directory contains the comprehensive API documentation for the VibeWell platform. The documentation is provided in multiple formats to suit different needs:
+
+1. OpenAPI/Swagger Specification (`openapi.yaml`)
+2. Markdown Documentation (`API.md`)
+3. API Reference Guide (`api/README.md`)
+
+## Using the Documentation
+
+### OpenAPI/Swagger Specification
+
+The `openapi.yaml` file contains our complete API specification in OpenAPI 3.0 format. This specification can be:
+
+1. Imported into API development tools like Postman or Insomnia
+2. Used with Swagger UI for interactive documentation
+3. Used to generate client libraries in various programming languages
+
+To view the documentation interactively:
+
+1. Visit [Swagger Editor](https://editor.swagger.io/)
+2. Copy the contents of `openapi.yaml` into the editor
+3. Explore the API documentation with interactive examples
+
+### Authentication
+
+All API endpoints require authentication using JWT tokens. Include the token in the Authorization header:
+
+```http
+Authorization: Bearer <your_jwt_token>
+```
+
+### Rate Limiting
+
+- 1000 requests per hour for authenticated users
+- 60 requests per hour for unauthenticated users
+- Rate limit headers are included in responses
+
+### Error Handling
+
+All error responses follow a consistent format:
+
+```json
+{
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Human readable message",
+    "details": {
+      "field": "Specific field with error",
+      "issue": "Description of the issue"
+    }
+  }
+}
+```
+
+## Development
+
+### Local Setup
+
+1. Clone the repository
+2. Navigate to the API documentation directory
+3. Use a markdown viewer or OpenAPI tool to browse the documentation
+
+### Contributing
+
+When adding or modifying API endpoints:
+
+1. Update the OpenAPI specification (`openapi.yaml`)
+2. Update the corresponding markdown documentation
+3. Follow the existing format and standards
+4. Include examples for new endpoints
+5. Test the OpenAPI specification for validity
+
+### Generating Documentation
+
+You can generate various documentation formats from the OpenAPI specification using tools like:
+
+- [Redoc](https://github.com/Redocly/redoc)
+- [Swagger UI](https://swagger.io/tools/swagger-ui/)
+- [Slate](https://github.com/slatedocs/slate)
+
+## Support
+
+For API support and questions:
+- Email: api-support@vibewell.com
+- Developer Portal: https://developers.vibewell.com
+- Issue Tracker: https://github.com/vibewell/api/issues 

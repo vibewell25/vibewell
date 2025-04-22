@@ -1,458 +1,241 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
-  Check,
-  ChevronsRight,
-  Building,
-  MapPin,
-  Scissors,
-  Camera,
-  CreditCard,
-  FileText,
-} from 'lucide-react';
-import { LocationForm } from './forms/location-form';
-import { ServiceForm } from './forms/service-form';
-import { PhotoUploadForm } from './forms/photo-upload-form';
-import { PaymentSettingsForm } from './forms/payment-settings-form';
-import { PoliciesForm } from './forms/policies-form';
-import { prisma } from '@/lib/database/client';
-import { useRouter } from 'next/navigation';
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
+import { Loader2 } from 'lucide-react';
 
-// Define the schema for business profile form
 const businessProfileSchema = z.object({
-  // Location details
-  address: z.string().min(1, 'Address is required'),
-  addressLine1: z.string().optional(), // For backward compatibility with form
-  addressLine2: z.string().optional(), // For backward compatibility with form
-  city: z.string().min(1, 'City is required'),
-  state: z.string().min(1, 'State is required'),
-  zipCode: z.string().min(1, 'ZIP code is required'),
-  country: z.string().default('United States'),
-  latitude: z.string().optional(), // For location detection
-  longitude: z.string().optional(), // For location detection
-  serviceRadius: z.number().optional(),
-  businessHours: z
-    .array(
-      z.object({
-        day: z.string(),
-        open: z.boolean(),
-        openTime: z.string().optional(),
-        closeTime: z.string().optional(),
-      })
-    )
-    .default([
-      { day: 'Monday', open: true, openTime: '09:00', closeTime: '17:00' },
-      { day: 'Tuesday', open: true, openTime: '09:00', closeTime: '17:00' },
-      { day: 'Wednesday', open: true, openTime: '09:00', closeTime: '17:00' },
-      { day: 'Thursday', open: true, openTime: '09:00', closeTime: '17:00' },
-      { day: 'Friday', open: true, openTime: '09:00', closeTime: '17:00' },
-      { day: 'Saturday', open: false },
-      { day: 'Sunday', open: false },
-    ]),
-  offersVirtualServices: z.boolean().default(false),
-  virtualServicesDescription: z.string().optional(),
-
-  // Services & Pricing
-  services: z
-    .array(
-      z.object({
-        name: z.string().min(1, 'Service name is required'),
-        duration: z.number().min(1, 'Duration is required'),
-        price: z.number().min(0, 'Price is required'),
-        description: z.string().optional(),
-        category: z.string().optional(),
-        id: z.string().optional(),
-      })
-    )
-    .default([]),
-  offersPackages: z.boolean().default(false),
-  offersSpecialDiscounts: z.boolean().default(false),
-  offersGiftCards: z.boolean().default(false),
-  specialOffersDescription: z.string().optional(),
-
-  // Photo Upload
-  businessPhotos: z.array(z.string()).default([]),
-
-  // Payment Settings
-  paymentMethods: z.array(z.string()).default([]),
-  depositType: z.string().optional(),
-  depositAmount: z.number().optional(),
-  depositPercentage: z.number().optional(),
-  depositNotes: z.string().optional(),
-
-  // Business Policies
-  cancellationPolicy: z.string().optional(),
-  hasLateArrivalPolicy: z.boolean().default(false),
-  lateArrivalGracePeriod: z.number().optional(),
-  lateArrivalPolicy: z.string().optional(),
-  additionalPolicies: z.string().optional(),
-  requirePolicyConfirmation: z.boolean().default(false),
-  includePoliciesInEmails: z.boolean().default(false),
+  name: z.string().min(2, 'Business name must be at least 2 characters'),
+  description: z.string().min(10, 'Description must be at least 10 characters'),
+  address: z.string().min(5, 'Address must be at least 5 characters'),
+  phone: z.string().min(10, 'Phone number must be at least 10 characters'),
+  email: z.string().email('Invalid email address'),
+  website: z.string().url('Invalid website URL').optional().or(z.literal('')),
+  socialMedia: z.object({
+    facebook: z.string().url('Invalid Facebook URL').optional().or(z.literal('')),
+    instagram: z.string().url('Invalid Instagram URL').optional().or(z.literal('')),
+    twitter: z.string().url('Invalid Twitter URL').optional().or(z.literal('')),
+  }),
 });
 
-export type BusinessProfileFormValues = z.infer<typeof businessProfileSchema>;
+type BusinessProfileData = z.infer<typeof businessProfileSchema>;
 
-// Wizard steps
-const STEPS = [
-  { id: 'location', label: 'Location', icon: MapPin },
-  { id: 'services', label: 'Services', icon: Scissors },
-  { id: 'photos', label: 'Photos', icon: Camera },
-  { id: 'payment', label: 'Payment', icon: CreditCard },
-  { id: 'policies', label: 'Policies', icon: FileText },
-];
-
-// Define proper props interfaces for form components
-interface FormComponentProps {
-  form: UseFormReturn<BusinessProfileFormValues>;
+interface BusinessProfileWizardProps {
+  initialData?: Partial<BusinessProfileData>;
 }
 
-// Export the interface for use in other components
-export interface LocationFormProps extends FormComponentProps {}
-export interface ServiceFormProps extends FormComponentProps {}
-export interface PhotoFormProps extends FormComponentProps {}
-export interface PaymentFormProps extends FormComponentProps {}
-export interface PoliciesFormProps extends FormComponentProps {}
-
-export function BusinessProfileWizard() {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
 
-  // Initialize form with default values
-  const form = useForm<BusinessProfileFormValues>({
-    resolver: zodResolver(businessProfileSchema) as any,
+  const form = useForm<BusinessProfileData>({
+    resolver: zodResolver(businessProfileSchema),
     defaultValues: {
-      address: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      country: 'United States',
-      offersVirtualServices: false,
-      offersPackages: false,
-      offersSpecialDiscounts: false,
-      offersGiftCards: false,
-      services: [],
-      businessHours: [
-        { day: 'Monday', open: true, openTime: '09:00', closeTime: '17:00' },
-        { day: 'Tuesday', open: true, openTime: '09:00', closeTime: '17:00' },
-        { day: 'Wednesday', open: true, openTime: '09:00', closeTime: '17:00' },
-        { day: 'Thursday', open: true, openTime: '09:00', closeTime: '17:00' },
-        { day: 'Friday', open: true, openTime: '09:00', closeTime: '17:00' },
-        { day: 'Saturday', open: false },
-        { day: 'Sunday', open: false },
-      ],
+      name: initialData?.name || '',
+      description: initialData?.description || '',
+      address: initialData?.address || '',
+      phone: initialData?.phone || '',
+      email: initialData?.email || '',
+      website: initialData?.website || '',
+      socialMedia: {
+        facebook: initialData?.socialMedia?.facebook || '',
+        instagram: initialData?.socialMedia?.instagram || '',
+        twitter: initialData?.socialMedia?.twitter || '',
+      },
     },
   });
 
-  // Move to the next step
-  const handleNextStep = async () => {
+  async function onSubmit(data: BusinessProfileData) {
+    setIsLoading(true);
     try {
-      // Validate current step
-      const currentStepData = STEPS[currentStep].id;
-
-      let fieldsToValidate: (keyof BusinessProfileFormValues)[] = [];
-
-      // Determine which fields to validate based on the current step
-      switch (currentStepData) {
-        case 'location':
-          fieldsToValidate = ['address', 'city', 'state', 'zipCode'];
-          break;
-        case 'services':
-          // Services array can be empty, but we validate if a service has been added
-          if (form.getValues('services').length > 0) {
-            fieldsToValidate = ['services'];
-          }
-          break;
-        case 'photos':
-          // Photos are optional
-          break;
-        case 'payment':
-          // Validate payment methods if any are selected
-          if (form.getValues('paymentMethods').length > 0) {
-            fieldsToValidate = ['paymentMethods'];
-          }
-          // Validate deposit fields if a deposit type is selected
-          if (form.getValues('depositType') === 'fixed') {
-            fieldsToValidate.push('depositAmount');
-          } else if (form.getValues('depositType') === 'percentage') {
-            fieldsToValidate.push('depositPercentage');
-          }
-          break;
-        case 'policies':
-          // Validate cancellation policy if it's custom
-          if (form.getValues('cancellationPolicy') === 'custom') {
-            fieldsToValidate = ['cancellationPolicy'];
-          }
-          // Validate late arrival policy if enabled
-          if (form.getValues('hasLateArrivalPolicy')) {
-            fieldsToValidate.push('lateArrivalPolicy', 'lateArrivalGracePeriod');
-          }
-          break;
-      }
-
-      // Validate specified fields
-      const result = await form.trigger(fieldsToValidate);
-
-      if (result) {
-        // If this is the last step, submit the form
-        if (currentStep === STEPS.length - 1) {
-          handleSubmit();
-        } else {
-          // Otherwise, go to the next step
-          setCurrentStep(prev => prev + 1);
-        }
-      }
-    } catch (error) {
-      console.error('Validation error:', error);
-    }
-  };
-
-  // Go back to the previous step
-  const handlePreviousStep = () => {
-    setCurrentStep(prev => Math.max(0, prev - 1));
-  };
-
-  // Submit the form
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
-
-    try {
-      // Get current user
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-
-      if (userError) {
-        throw userError;
-      }
-
-      if (!user) {
-        throw new Error('You must be logged in to create a business profile');
-      }
-
-      const values = form.getValues();
-
-      // Format data for database
-      const businessProfileData = {
-        provider_id: user.id,
-        address: values.address,
-        address_line1: values.addressLine1,
-        address_line2: values.addressLine2,
-        city: values.city,
-        state: values.state,
-        zip_code: values.zipCode,
-        country: values.country,
-        latitude: values.latitude ? parseFloat(values.latitude) : null,
-        longitude: values.longitude ? parseFloat(values.longitude) : null,
-        service_radius: values.serviceRadius,
-        business_hours: values.businessHours,
-        offers_virtual_services: values.offersVirtualServices,
-        virtual_services_description: values.virtualServicesDescription,
-        services: values.services,
-        offers_packages: values.offersPackages,
-        offers_special_discounts: values.offersSpecialDiscounts,
-        offers_gift_cards: values.offersGiftCards,
-        special_offers_description: values.specialOffersDescription,
-        business_photos: values.businessPhotos,
-        payment_methods: values.paymentMethods,
-        deposit_type: values.depositType,
-        deposit_amount: values.depositAmount,
-        deposit_percentage: values.depositPercentage,
-        deposit_notes: values.depositNotes,
-        cancellation_policy: values.cancellationPolicy,
-        has_late_arrival_policy: values.hasLateArrivalPolicy,
-        late_arrival_grace_period: values.lateArrivalGracePeriod,
-        late_arrival_policy: values.lateArrivalPolicy,
-        additional_policies: values.additionalPolicies,
-        require_policy_confirmation: values.requirePolicyConfirmation,
-        include_policies_in_emails: values.includePoliciesInEmails,
-        completed_setup: true,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-
-      // Check if business profile already exists for this user
-      const { data: existingProfile, error: checkError } = await supabase
-        .from('business_profiles')
-        .select('id')
-        .eq('provider_id', user.id)
-        .maybeSingle();
-
-      let result;
-
-      if (existingProfile?.id) {
-        // Update existing profile
-        result = await supabase
-          .from('business_profiles')
-          .update(businessProfileData)
-          .eq('id', existingProfile.id);
-      } else {
-        // Insert new profile
-        result = await supabase.from('business_profiles').insert(businessProfileData);
-      }
-
-      if (result.error) {
-        throw result.error;
-      }
-
-      // Show success message
-      toast({
-        title: 'Success',
-        description: 'Business profile created successfully',
+      const response = await fetch('/api/business/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
 
-      // Redirect to business dashboard
-      setTimeout(() => {
-        router.push('/business-hub');
-      }, 1000);
+      if (!response.ok) {
+        throw new Error('Failed to create business profile');
+      }
+
+      toast({
+        title: 'Success',
+        description: 'Your business profile has been created.',
+      });
+
+      router.push('/business/dashboard');
     } catch (error) {
-      console.error('Submission error:', error);
+      console.error('Error creating business profile:', error);
       toast({
         title: 'Error',
-        description: 'Failed to save business profile. Please try again.',
+        description: 'Failed to create business profile. Please try again.',
         variant: 'destructive',
       });
     } finally {
-      setIsSubmitting(false);
+      setIsLoading(false);
     }
-  };
-
-  // Render the current step content
-  const renderStepContent = () => {
-    const currentStepId = STEPS[currentStep].id;
-
-    switch (currentStepId) {
-      case 'location':
-        return <LocationForm form={form} />;
-      case 'services':
-        return <ServiceForm form={form} />;
-      case 'photos':
-        return <PhotoUploadForm form={form} />;
-      case 'payment':
-        return <PaymentSettingsForm form={form} />;
-      case 'policies':
-        return <PoliciesForm form={form} />;
-      default:
-        return null;
-    }
-  };
+  }
 
   return (
-    <div className="container max-w-5xl mx-auto py-10">
-      <div className="flex items-center gap-2 mb-8">
-        <Building className="h-6 w-6 text-primary" />
-        <h1 className="text-2xl font-bold">Business Profile Setup</h1>
-      </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Business Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your business name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      {/* Progress Indicator */}
-      <div className="mb-8">
-        <div className="flex justify-between relative">
-          {/* Progress Bar */}
-          <div
-            className="absolute h-1 bg-primary top-5 z-0 transition-all duration-300"
-            style={{
-              width: `${(currentStep / (STEPS.length - 1)) * 100}%`,
-              left: 0,
-            }}
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Describe your business"
+                  className="min-h-[100px]"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Address</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your business address" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your business phone number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your business email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="website"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Website</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your business website URL" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Social Media</h3>
+
+          <FormField
+            control={form.control}
+            name="socialMedia.facebook"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Facebook</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter your Facebook page URL" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
 
-          {STEPS.map((step, index) => {
-            const StepIcon = step.icon;
-            const isActive = index === currentStep;
-            const isCompleted = index < currentStep;
-
-            return (
-              <div key={step.id} className="flex flex-col items-center z-10">
-                <div
-                  className={`
-                    w-10 h-10 rounded-full flex items-center justify-center mb-2
-                    ${
-                      isActive
-                        ? 'bg-primary text-primary-foreground border-2 border-primary'
-                        : isCompleted
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-muted text-muted-foreground'
-                    }
-                  `}
-                >
-                  {isCompleted ? <Check className="h-5 w-5" /> : <StepIcon className="h-5 w-5" />}
-                </div>
-                <span
-                  className={`text-sm ${isActive ? 'font-medium text-primary' : isCompleted ? 'font-medium' : 'text-muted-foreground'}`}
-                >
-                  {step.label}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Step Progress */}
-      <div className="flex justify-between items-center mb-6">
-        <p className="text-sm text-muted-foreground">
-          Step {currentStep + 1} of {STEPS.length}
-        </p>
-        <p className="text-sm font-medium">{STEPS[currentStep].label}</p>
-      </div>
-
-      {/* Main Content */}
-      <Card className="border shadow-sm">
-        <div className="p-6">{renderStepContent()}</div>
-
-        {/* Navigation Buttons */}
-        <div className="p-6 border-t bg-muted/50 flex justify-between">
-          <Button variant="outline" onClick={handlePreviousStep} disabled={currentStep === 0}>
-            Back
-          </Button>
-
-          <div className="flex gap-2">
-            {currentStep < STEPS.length - 1 && (
-              <Button
-                variant="outline"
-                onClick={() => {
-                  // Save progress but move to next step without validation
-                  setCurrentStep(prev => prev + 1);
-                }}
-              >
-                Skip for now
-              </Button>
+          <FormField
+            control={form.control}
+            name="socialMedia.instagram"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Instagram</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter your Instagram profile URL" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
+          />
 
-            <Button onClick={handleNextStep} disabled={isSubmitting}>
-              {currentStep === STEPS.length - 1 ? (
-                isSubmitting ? (
-                  'Saving...'
-                ) : (
-                  'Save Profile'
-                )
-              ) : (
-                <>
-                  Next Step <ChevronsRight className="ml-2 h-4 w-4" />
-                </>
-              )}
-            </Button>
-          </div>
+          <FormField
+            control={form.control}
+            name="socialMedia.twitter"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Twitter</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter your Twitter profile URL" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-      </Card>
 
-      {/* Form Completion Info */}
-      {currentStep < STEPS.length - 1 && (
-        <div className="mt-4 text-center">
-          <p className="text-sm text-muted-foreground">
-            You can complete the remaining steps later. Your progress will be saved.
-          </p>
-        </div>
-      )}
-    </div>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Create Business Profile
+        </Button>
+      </form>
+    </Form>
   );
 }

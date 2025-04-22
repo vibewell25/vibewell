@@ -10,6 +10,11 @@ import React, {
   PropsWithoutRef,
   RefAttributes,
 } from 'react';
+import fs from 'fs';
+import path from 'path';
+import { parse as parseTypescript } from '@typescript-eslint/parser';
+import { ESLintUtils } from '@typescript-eslint/utils';
+import { auditComponent } from './component-audit';
 
 // Component categories for organization
 export enum ComponentCategory {
@@ -79,6 +84,14 @@ export interface ComponentStandard {
   // Documentation
   hasDocumentation: boolean;
   documentationUrl?: string;
+
+  hasProps: boolean;
+  hasPropTypes: boolean;
+  hasI18n: boolean;
+  hasStorybook: boolean;
+  hasStyles: boolean;
+  hasErrorBoundary: boolean;
+  hasMemoization: boolean;
 }
 
 // Improved prop types for standardization
@@ -98,7 +111,7 @@ export type ComponentAuditResult = {
   severity: 'error' | 'warning' | 'info';
 };
 
-export const COMPONENT_AUDIT_RESULTS = {
+export const COMPONENT_AUDIT_RESULTS: Record<string, ComponentAuditResult> = {
   MISSING_DISPLAY_NAME: {
     passed: false,
     message: 'Component is missing displayName property',
@@ -118,9 +131,7 @@ export function checkComponentStandards(
   componentProps: string[],
   componentImplementation: string
 ): Partial<ComponentStandard> {
-  // This would be a real implementation that analyzes the component
-  // For now, we return mock data based on the component name
-  const auditResult = COMPONENT_AUDIT_RESULTS[componentName] || {
+  const defaultAudit = {
     name: componentName,
     hasA11yIssues: true,
     hasPotentialPerformanceIssues: true,
@@ -129,7 +140,9 @@ export function checkComponentStandards(
     complexityScore: 5,
   };
 
-  return auditResult;
+  return COMPONENT_AUDIT_RESULTS[componentName] 
+    ? { ...defaultAudit, ...COMPONENT_AUDIT_RESULTS[componentName] }
+    : defaultAudit;
 }
 
 // Guidelines for standardization
@@ -332,7 +345,212 @@ export function withStandardization<P extends StandardProps>(
 export function auditComponentDirectory(
   directoryPath: string
 ): Record<string, Partial<ComponentStandard>> {
-  throw new Error('Not implemented');
+  const results: Record<string, Partial<ComponentStandard>> = {};
+  
+  try {
+    const files = fs.readdirSync(directoryPath);
+    
+    for (const file of files) {
+      if (file.match(/\.(tsx|jsx)$/)) {
+        const filePath = path.join(directoryPath, file);
+        const content = fs.readFileSync(filePath, 'utf-8');
+        results[file] = auditComponent(content, filePath);
+      }
+    }
+    
+    return results;
+  } catch (error) {
+    console.error(`Error auditing directory ${directoryPath}:`, error);
+    return {};
+  }
+}
+
+function determineComponentCategory(content: string): ComponentCategory {
+  if (content.includes('layout') || content.includes('Layout')) return ComponentCategory.Layout;
+  if (content.includes('form') || content.includes('Form')) return ComponentCategory.Form;
+  if (content.includes('nav') || content.includes('Nav')) return ComponentCategory.Navigation;
+  if (content.includes('display') || content.includes('Display')) return ComponentCategory.Display;
+  if (content.includes('feedback') || content.includes('Feedback')) return ComponentCategory.Feedback;
+  if (content.includes('ar') || content.includes('AR')) return ComponentCategory.AR;
+  if (content.includes('media') || content.includes('Media')) return ComponentCategory.Media;
+  if (content.includes('chart') || content.includes('Chart')) return ComponentCategory.Chart;
+  return ComponentCategory.Utility;
+}
+
+function calculateComplexity(content: string): ComponentComplexity {
+  const lines = content.split('\n').length;
+  const hooks = (content.match(/use[A-Z]/g) || []).length;
+  const jsx = (content.match(/<[A-Z][^>]*>/g) || []).length;
+  
+  if (lines > 300 || hooks > 5 || jsx > 20) return ComponentComplexity.Complex;
+  if (lines > 150 || hooks > 3 || jsx > 10) return ComponentComplexity.Compound;
+  if (content.includes('Page') || content.includes('Screen')) return ComponentComplexity.Page;
+  return ComponentComplexity.Simple;
+}
+
+function extractComponentDescription(content: string): string {
+  const match = content.match(/\/\*\*\s*\n([^*]|\*[^/])*\*\//);
+  return match ? match[0].replace(/[/*]/g, '').trim() : '';
+}
+
+function extractExpectedProps(content: string): string[] {
+  const propsMatch = content.match(/interface\s+\w+Props\s*{([^}]*)}/);
+  if (!propsMatch) return [];
+  return propsMatch[1]
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .map(line => line.split(':')[0]);
+}
+
+function extractRequiredProps(content: string): string[] {
+  const propsMatch = content.match(/interface\s+\w+Props\s*{([^}]*)}/);
+  if (!propsMatch) return [];
+  return propsMatch[1]
+    .split('\n')
+    .filter(line => !line.includes('?:'))
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .map(line => line.split(':')[0]);
+}
+
+function checkChildrenUsage(content: string): boolean {
+  return content.includes('children') || content.includes('ReactNode');
+}
+
+function checkRenderPropsUsage(content: string): boolean {
+  return content.includes('render:') || content.includes('children: (');
+}
+
+function checkHooksUsage(content: string): boolean {
+  return content.includes('useState') || content.includes('useEffect');
+}
+
+function checkContextUsage(content: string): boolean {
+  return content.includes('useContext') || content.includes('createContext');
+}
+
+function extractDisplayName(content: string): string {
+  const match = content.match(/displayName\s*=\s*['"]([^'"]*)['"]/);
+  return match ? match[1] : '';
+}
+
+function extractDefaultProps(content: string): Record<string, unknown> {
+  const match = content.match(/defaultProps\s*=\s*({[^}]*})/);
+  if (!match) return {};
+  try {
+    return JSON.parse(match[1].replace(/'/g, '"'));
+  } catch {
+    return {};
+  }
+}
+
+function checkComponentSize(content: string): boolean {
+  const lines = content.split('\n').length;
+  return lines > 200;
+}
+
+function checkMemoizationNeeded(content: string): boolean {
+  const reRenderRisk = content.includes('map(') || content.includes('filter(');
+  const hasProps = content.includes('Props');
+  return reRenderRisk && hasProps;
+}
+
+function checkPerformanceIssues(content: string): boolean {
+  return (
+    content.includes('useState') &&
+    content.includes('useEffect') &&
+    !content.includes('useMemo') &&
+    !content.includes('useCallback')
+  );
+}
+
+function checkAccessibilityIssues(content: string): boolean {
+  return (
+    !content.includes('aria-') &&
+    !content.includes('role=') &&
+    content.includes('onClick')
+  );
+}
+
+function checkDesignSystemCompliance(content: string): boolean {
+  // This would need to be customized based on your design system
+  return content.includes('theme') || content.includes('styled');
+}
+
+function checkTestCoverage(filePath: string): boolean {
+  const testPath = filePath.replace(/\.(tsx|jsx)$/, '.test.$1');
+  return fs.existsSync(testPath);
+}
+
+function calculateTestCoverage(filePath: string): number {
+  // This would need integration with your test coverage tool
+  return 0;
+}
+
+function calculateComplexityScore(content: string): number {
+  let score = 0;
+  score += (content.match(/if\s*\(/g) || []).length;
+  score += (content.match(/\?\s*/g) || []).length;
+  score += (content.match(/&&\s*/g) || []).length;
+  score += (content.match(/\|\|\s*/g) || []).length;
+  score += (content.match(/switch\s*\(/g) || []).length * 2;
+  score += (content.match(/for\s*\(/g) || []).length * 2;
+  return score;
+}
+
+function checkDocumentation(content: string): boolean {
+  return content.includes('/**') && content.includes('*/');
+}
+
+function checkI18nImplementation(content: string): boolean {
+  return content.includes('useTranslation') || content.includes('t(');
+}
+
+function checkStorybookExists(filePath: string): boolean {
+  const storyPath = filePath.replace(/\.(tsx|jsx)$/, '.stories.$1');
+  return fs.existsSync(storyPath);
+}
+
+function checkStyleImplementation(content: string): boolean {
+  return (
+    content.includes('styled') ||
+    content.includes('makeStyles') ||
+    content.includes('.module.css') ||
+    content.includes('.module.scss')
+  );
+}
+
+function checkErrorBoundaryImplementation(content: string): boolean {
+  return (
+    content.includes('componentDidCatch') ||
+    content.includes('ErrorBoundary')
+  );
+}
+
+function checkMemoizationImplementation(content: string): boolean {
+  return (
+    content.includes('React.memo') ||
+    content.includes('useMemo') ||
+    content.includes('useCallback')
+  );
+}
+
+export function generateAuditReport(results: Record<string, Partial<ComponentStandard>>): string {
+  let report = '# Component Standards Audit Report\n\n';
+  
+  for (const [file, standard] of Object.entries(results)) {
+    report += `## ${file}\n\n`;
+    
+    for (const [key, value] of Object.entries(standard)) {
+      const status = value ? '✅' : '❌';
+      report += `- ${status} ${key}\n`;
+    }
+    
+    report += '\n';
+  }
+  
+  return report;
 }
 
 // Priority recommendations for standardization

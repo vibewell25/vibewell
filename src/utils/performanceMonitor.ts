@@ -1,10 +1,31 @@
+import { ComponentType } from 'react';
 import { PerformanceMonitor, AlertConfig } from '@/types/monitoring';
 import os from 'os';
 import { EventEmitter } from 'events';
 import { performance } from 'perf_hooks';
+import React from 'react';
 
-class PerformanceMonitorImpl extends EventEmitter implements PerformanceMonitor {
-  private metrics: Map<string, number> = new Map();
+export interface LoadMetrics {
+  componentName: string;
+  loadStartTime: number;
+  loadEndTime: number;
+  loadDuration: number;
+  chunkSize?: number;
+}
+
+export interface PerformanceMetrics {
+  metrics: Map<string, LoadMetrics[]>;
+  getAllMetrics(): Map<string, LoadMetrics[]>;
+  startLoadMetric(componentName: string): void;
+  endLoadMetric(componentName: string): void;
+  getAverageLoadTime(componentName: string): number;
+  clearMetrics(): void;
+}
+
+class PerformanceMonitor implements PerformanceMetrics {
+  private static instance: PerformanceMonitor;
+  public metrics: Map<string, LoadMetrics[]>;
+  private readonly METRICS_STORAGE_KEY = 'vibewell_load_metrics';
   private alerts: AlertConfig[] = [];
   private readonly alertThresholds: Map<string, number> = new Map([
     ['responseTime', 1000], // ms
@@ -17,9 +38,42 @@ class PerformanceMonitorImpl extends EventEmitter implements PerformanceMonitor 
     ['CLS', 0.1], // score
   ]);
 
-  constructor() {
-    super();
+  private constructor() {
+    this.metrics = new Map();
+    this.loadStoredMetrics();
     this.setupMetricsCollection();
+  }
+
+  public static getInstance(): PerformanceMonitor {
+    if (!PerformanceMonitor.instance) {
+      PerformanceMonitor.instance = new PerformanceMonitor();
+    }
+    return PerformanceMonitor.instance;
+  }
+
+  private loadStoredMetrics(): void {
+    if (typeof window !== 'undefined') {
+      try {
+        const storedMetrics = localStorage.getItem(this.METRICS_STORAGE_KEY);
+        if (storedMetrics) {
+          const parsed = JSON.parse(storedMetrics);
+          this.metrics = new Map(Object.entries(parsed));
+        }
+      } catch (error) {
+        console.error('Failed to load stored metrics:', error);
+      }
+    }
+  }
+
+  private saveMetrics(): void {
+    if (typeof window !== 'undefined') {
+      try {
+        const metricsObj = Object.fromEntries(this.metrics);
+        localStorage.setItem(this.METRICS_STORAGE_KEY, JSON.stringify(metricsObj));
+      } catch (error) {
+        console.error('Failed to save metrics:', error);
+      }
+    }
   }
 
   private setupMetricsCollection() {
@@ -62,7 +116,15 @@ class PerformanceMonitorImpl extends EventEmitter implements PerformanceMonitor 
   }
 
   public recordMetric(name: string, value: number): void {
-    this.metrics.set(name, value);
+    const componentMetrics = this.metrics.get(name) || [];
+    const metric: LoadMetrics = {
+      componentName: name,
+      loadStartTime: performance.now(),
+      loadEndTime: 0,
+      loadDuration: 0,
+    };
+    componentMetrics.push(metric);
+    this.metrics.set(name, componentMetrics);
     this.checkThresholds();
   }
 
@@ -78,6 +140,9 @@ class PerformanceMonitorImpl extends EventEmitter implements PerformanceMonitor 
 
   public clearMetrics(): void {
     this.metrics.clear();
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(this.METRICS_STORAGE_KEY);
+    }
   }
 
   public getActiveAlerts(): AlertConfig[] {
@@ -129,7 +194,60 @@ class PerformanceMonitorImpl extends EventEmitter implements PerformanceMonitor 
       return 0; // Return 0 if network check fails
     }
   }
+
+  public startLoadMetric(componentName: string): void {
+    const metric: LoadMetrics = {
+      componentName,
+      loadStartTime: performance.now(),
+      loadEndTime: 0,
+      loadDuration: 0,
+    };
+
+    const componentMetrics = this.metrics.get(componentName) || [];
+    componentMetrics.push(metric);
+    this.metrics.set(componentName, componentMetrics);
+  }
+
+  public endLoadMetric(componentName: string): void {
+    const componentMetrics = this.metrics.get(componentName);
+    if (componentMetrics && componentMetrics.length > 0) {
+      const currentMetric = componentMetrics[componentMetrics.length - 1];
+      currentMetric.loadEndTime = performance.now();
+      currentMetric.loadDuration = currentMetric.loadEndTime - currentMetric.loadStartTime;
+      this.saveMetrics();
+    }
+  }
+
+  public getAverageLoadTime(componentName: string): number {
+    const componentMetrics = this.metrics.get(componentName);
+    if (!componentMetrics || componentMetrics.length === 0) return 0;
+
+    const loadTimes = componentMetrics.map(m => m.loadDuration);
+    return loadTimes.reduce((sum, time) => sum + time, 0) / loadTimes.length;
+  }
+
+  public getAllMetrics(): Map<string, LoadMetrics[]> {
+    return new Map(this.metrics);
+  }
 }
 
-// Export a singleton instance
-export const performanceMonitor = new PerformanceMonitorImpl(); 
+export const withPerformanceTracking = <P extends object>(
+  WrappedComponent: ComponentType<P>,
+  componentName: string
+): ComponentType<P> => {
+  return function PerformanceTrackedComponent(props: P) {
+    const monitor = PerformanceMonitor.getInstance();
+
+    React.useEffect(() => {
+      monitor.startLoadMetric(componentName);
+      return () => {
+        monitor.endLoadMetric(componentName);
+      };
+    }, []);
+
+    return <WrappedComponent {...props} />;
+  };
+};
+
+export { PerformanceMonitor };
+export default PerformanceMonitor.getInstance(); 

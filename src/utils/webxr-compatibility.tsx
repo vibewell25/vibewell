@@ -5,6 +5,8 @@
  * for browsers that don't support AR features.
  */
 
+import React from 'react';
+
 // Different types of XR experiences
 export enum XRMode {
   AR = 'ar',
@@ -33,13 +35,67 @@ interface XRCompatibilityInfo {
   hasGyroscope: boolean;
 }
 
+// Types for WebXR features
+type XRHandedness = 'left' | 'right' | 'none';
+type XRHandJoint = 'wrist' | 'thumb-metacarpal' | 'thumb-phalanx-proximal' | 'thumb-phalanx-distal' | 'thumb-tip' |
+  'index-finger-metacarpal' | 'index-finger-phalanx-proximal' | 'index-finger-phalanx-intermediate' | 'index-finger-phalanx-distal' | 'index-finger-tip';
+
+interface XRDepthUsage {
+  cpu: 'cpu';
+  gpu: 'gpu';
+}
+
+interface XRDepthDataFormat {
+  luminance: 'luminance-alpha';
+  float32: 'float32';
+}
+
+interface XRDepthData {
+  data: Float32Array;
+  width: number;
+  height: number;
+}
+
+interface XRHand {
+  joints: Map<string, { trackingConfidence: number }>;
+}
+
+interface XRHandTrackingEvent extends Event {
+  hands: Map<XRHandedness, XRHand>;
+}
+
+interface XRDepthSensingEvent extends Event {
+  depthData: XRDepthData;
+}
+
 export interface WebXRFeatures {
   isSupported: boolean;
   hasARSupport: boolean;
   hasVRSupport: boolean;
   hasHandTracking: boolean;
   hasDepthSensing: boolean;
+  handTrackingQuality?: 'low' | 'medium' | 'high';
+  depthSensingCapabilities?: {
+    usagePreference: keyof XRDepthUsage;
+    dataFormatPreference: keyof XRDepthDataFormat;
+  };
 }
+
+export interface HandTrackingState {
+  hands: Map<XRHandedness, XRHand>;
+  confidence: number;
+  lastUpdated: number;
+}
+
+export interface DepthSensingState {
+  depthMap: Float32Array;
+  width: number;
+  height: number;
+  lastUpdated: number;
+}
+
+let handTrackingState: HandTrackingState | null = null;
+let depthSensingState: DepthSensingState | null = null;
 
 /**
  * Detects if WebXR is supported in the current browser
@@ -133,15 +189,10 @@ export async function detectXRSupport(): Promise<XRCompatibilityInfo> {
  * Check if AR is supported
  */
 async function checkARSupport(): Promise<boolean> {
-  if (!('xr' in navigator)) {
-    return false;
-  }
-
   try {
-    // @ts-expect-error - Some browsers may not have isSessionSupported method
-    return await navigator.xr.isSessionSupported('immersive-ar');
+    return navigator.xr ? await navigator.xr.isSessionSupported('immersive-ar') : false;
   } catch (error) {
-    console.warn('Error checking AR support:', error);
+    console.warn('AR session check failed:', error);
     return false;
   }
 }
@@ -150,15 +201,10 @@ async function checkARSupport(): Promise<boolean> {
  * Check if VR is supported
  */
 async function checkVRSupport(): Promise<boolean> {
-  if (!('xr' in navigator)) {
-    return false;
-  }
-
   try {
-    // @ts-expect-error - Some browsers may not have isSessionSupported method
-    return await navigator.xr.isSessionSupported('immersive-vr');
+    return navigator.xr ? await navigator.xr.isSessionSupported('immersive-vr') : false;
   } catch (error) {
-    console.warn('Error checking VR support:', error);
+    console.warn('VR session check failed:', error);
     return false;
   }
 }
@@ -342,13 +388,7 @@ export function getARCompatibleComponent(
 
 export async function checkWebXRFeatures(): Promise<WebXRFeatures> {
   if (typeof navigator === 'undefined' || !navigator.xr) {
-    return {
-      isSupported: false,
-      hasARSupport: false,
-      hasVRSupport: false,
-      hasHandTracking: false,
-      hasDepthSensing: false,
-    };
+    return createUnsupportedFeatures();
   }
 
   const features: WebXRFeatures = {
@@ -360,45 +400,188 @@ export async function checkWebXRFeatures(): Promise<WebXRFeatures> {
   };
 
   try {
-    features.hasARSupport = await navigator.xr.isSessionSupported('immersive-ar');
-  } catch (e) {
-    console.warn('AR session check failed:', e);
-  }
-
-  try {
-    features.hasVRSupport = await navigator.xr.isSessionSupported('immersive-vr');
-  } catch (e) {
-    console.warn('VR session check failed:', e);
-  }
-
-  // Check for hand tracking
-  if (features.hasARSupport || features.hasVRSupport) {
-    try {
-      const session = await navigator.xr.requestSession(
-        features.hasARSupport ? 'immersive-ar' : 'immersive-vr',
-        { optionalFeatures: ['hand-tracking'] }
-      );
-      features.hasHandTracking = true;
-      await session.end();
-    } catch (e) {
-      console.warn('Hand tracking check failed:', e);
+    features.hasARSupport = await checkARSupport();
+    features.hasVRSupport = await checkVRSupport();
+    
+    if (features.hasARSupport || features.hasVRSupport) {
+      const handTrackingResult = await checkHandTracking(features.hasARSupport ? 'immersive-ar' : 'immersive-vr');
+      features.hasHandTracking = handTrackingResult.supported;
+      features.handTrackingQuality = handTrackingResult.quality;
     }
-  }
 
-  // Check for depth sensing
-  if (features.hasARSupport) {
-    try {
-      const session = await navigator.xr.requestSession('immersive-ar', {
-        optionalFeatures: ['depth-sensing'],
-      });
-      features.hasDepthSensing = true;
-      await session.end();
-    } catch (e) {
-      console.warn('Depth sensing check failed:', e);
+    if (features.hasARSupport) {
+      const depthResult = await checkDepthSensing();
+      features.hasDepthSensing = depthResult.supported;
+      if (depthResult.capabilities) {
+        features.depthSensingCapabilities = depthResult.capabilities;
+      }
     }
+  } catch (error) {
+    console.error('Error checking WebXR features:', error);
+    handleWebXRError(error);
   }
 
   return features;
+}
+
+function createUnsupportedFeatures(): WebXRFeatures {
+  return {
+    isSupported: false,
+    hasARSupport: false,
+    hasVRSupport: false,
+    hasHandTracking: false,
+    hasDepthSensing: false,
+  };
+}
+
+async function checkHandTracking(mode: 'immersive-ar' | 'immersive-vr'): Promise<{ supported: boolean; quality: 'low' | 'medium' | 'high' }> {
+  if (!navigator.xr) {
+    return { supported: false, quality: 'low' };
+  }
+
+  try {
+    const session = await navigator.xr.requestSession(mode, {
+      requiredFeatures: ['hand-tracking'],
+      optionalFeatures: ['high-precision-hand-tracking'],
+    });
+
+    // Check if hand tracking is supported through feature detection
+    const hasHighPrecision = (session as any).supportedFeatures?.has('high-precision-hand-tracking');
+    const quality = hasHighPrecision ? 'high' : 'medium';
+    
+    await session.end();
+    return { supported: true, quality };
+  } catch (error) {
+    console.warn('Hand tracking check failed:', error);
+    return { supported: false, quality: 'low' };
+  }
+}
+
+async function checkDepthSensing(): Promise<{ 
+  supported: boolean; 
+  capabilities?: { 
+    usagePreference: keyof XRDepthUsage; 
+    dataFormatPreference: keyof XRDepthDataFormat; 
+  } 
+}> {
+  if (!navigator.xr) {
+    return { supported: false };
+  }
+
+  try {
+    const session = await navigator.xr.requestSession('immersive-ar', {
+      requiredFeatures: ['depth-sensing'],
+    });
+
+    // Use type assertion since depth-sensing API is experimental
+    const depthSensing = (session as any).getDepthSensing?.();
+    if (!depthSensing) {
+      await session.end();
+      return { supported: false };
+    }
+
+    const capabilities = {
+      usagePreference: depthSensing.usagePreference as keyof XRDepthUsage,
+      dataFormatPreference: depthSensing.dataFormatPreference as keyof XRDepthDataFormat,
+    };
+
+    await session.end();
+    return { supported: true, capabilities };
+  } catch (error) {
+    console.warn('Depth sensing check failed:', error);
+    return { supported: false };
+  }
+}
+
+export async function initializeHandTracking(session: XRSession): Promise<void> {
+  try {
+    const hands = new Map<XRHandedness, XRHand>();
+    
+    session.addEventListener('handtrackingchange', ((event: XRHandTrackingEvent) => {
+      updateHandTrackingState(event.hands);
+    }) as EventListener);
+
+    handTrackingState = {
+      hands,
+      confidence: 0,
+      lastUpdated: Date.now(),
+    };
+  } catch (error) {
+    console.error('Error initializing hand tracking:', error);
+    throw new Error('Hand tracking initialization failed');
+  }
+}
+
+export async function initializeDepthSensing(session: XRSession): Promise<void> {
+  try {
+    // Use type assertion for experimental depth sensing API
+    const depthSensing = (session as any).getDepthSensing?.();
+    if (!depthSensing) {
+      throw new Error('Depth sensing not supported');
+    }
+    
+    session.addEventListener('depthsensing', ((event: XRDepthSensingEvent) => {
+      updateDepthSensingState(event.depthData);
+    }) as EventListener);
+
+    depthSensingState = {
+      depthMap: new Float32Array(),
+      width: 0,
+      height: 0,
+      lastUpdated: Date.now(),
+    };
+  } catch (error) {
+    console.error('Error initializing depth sensing:', error);
+    throw new Error('Depth sensing initialization failed');
+  }
+}
+
+function updateHandTrackingState(hands: Map<XRHandedness, XRHand>): void {
+  if (handTrackingState) {
+    handTrackingState.hands = hands;
+    handTrackingState.lastUpdated = Date.now();
+    handTrackingState.confidence = calculateHandTrackingConfidence(hands);
+  }
+}
+
+function updateDepthSensingState(depthData: XRDepthData): void {
+  if (depthSensingState) {
+    depthSensingState.depthMap = depthData.data;
+    depthSensingState.width = depthData.width;
+    depthSensingState.height = depthData.height;
+    depthSensingState.lastUpdated = Date.now();
+  }
+}
+
+function calculateHandTrackingConfidence(hands: Map<XRHandedness, XRHand>): number {
+  let totalConfidence = 0;
+  let jointCount = 0;
+
+  hands.forEach(hand => {
+    hand.joints.forEach(joint => {
+      totalConfidence += joint.trackingConfidence;
+      jointCount++;
+    });
+  });
+
+  return jointCount > 0 ? totalConfidence / jointCount : 0;
+}
+
+function handleWebXRError(error: any): void {
+  if (error instanceof DOMException) {
+    switch (error.name) {
+      case 'NotAllowedError':
+        throw new Error('WebXR access denied. Please grant necessary permissions.');
+      case 'NotSupportedError':
+        throw new Error('WebXR or required features not supported on this device.');
+      case 'SecurityError':
+        throw new Error('WebXR access blocked due to security restrictions.');
+      default:
+        throw new Error(`WebXR error: ${error.message}`);
+    }
+  } else {
+    throw error;
+  }
 }
 
 export function getFallbackExperience(features: WebXRFeatures) {

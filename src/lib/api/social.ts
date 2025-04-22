@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/database/client';
 import { ReactionType } from '@/components/post-reaction';
+import { Prisma } from '@prisma/client';
 
 export type PostUser = {
   id: string;
@@ -26,18 +27,18 @@ export type Post = {
   comments: PostComment[];
 };
 
-// Transform data from Supabase to our frontend model
+// Transform data from Prisma to our frontend model
 function transformPost(post: any): Post {
   return {
     id: post.id,
     user: {
-      id: post.user_id,
-      name: post.user?.full_name || 'Anonymous',
-      avatar: post.user?.avatar_url || '/avatar-placeholder.png',
+      id: post.user.id,
+      name: post.user.fullName || 'Anonymous',
+      avatar: post.user.avatarUrl || '/avatar-placeholder.png',
     },
     content: post.content,
-    image: post.image_url,
-    createdAt: post.created_at,
+    image: post.imageUrl,
+    createdAt: post.createdAt.toISOString(),
     reactions: post.reactions || {
       '❤️': 0,
       '👍': 0,
@@ -46,41 +47,39 @@ function transformPost(post: any): Post {
       '😢': 0,
       '😡': 0,
     },
-    comments: (post.comments || []).map((comment: any) => ({
+    comments: post.comments.map((comment: any) => ({
       id: comment.id,
       user: {
-        id: comment.user_id,
-        name: comment.user?.full_name || 'Anonymous',
-        avatar: comment.user?.avatar_url || '/avatar-placeholder.png',
+        id: comment.user.id,
+        name: comment.user.fullName || 'Anonymous',
+        avatar: comment.user.avatarUrl || '/avatar-placeholder.png',
       },
       content: comment.content,
-      createdAt: comment.created_at,
+      createdAt: comment.createdAt.toISOString(),
     })),
   };
 }
 
 export async function getPosts(): Promise<Post[]> {
   try {
-    const { data, error } = await supabase
-      .from('posts')
-      .select(
-        `
-        *,
-        user:profiles(*),
-        comments:post_comments(
-          *,
-          user:profiles(*)
-        )
-      `
-      )
-      .order('created_at', { ascending: false });
+    const posts = await prisma.post.findMany({
+      include: {
+        user: true,
+        comments: {
+          include: {
+            user: true,
+          },
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
 
-    if (error) {
-      console.error('Error fetching posts:', error);
-      return [];
-    }
-
-    return (data || []).map(transformPost);
+    return posts.map(transformPost);
   } catch (error) {
     console.error('Error in getPosts:', error);
     return [];
@@ -93,12 +92,11 @@ export async function createPost(
   imageUrl?: string
 ): Promise<Post | null> {
   try {
-    const { data, error } = await supabase
-      .from('posts')
-      .insert({
-        user_id: userId,
+    const post = await prisma.post.create({
+      data: {
+        userId,
         content,
-        image_url: imageUrl || null,
+        imageUrl: imageUrl || null,
         reactions: {
           '❤️': 0,
           '👍': 0,
@@ -107,26 +105,18 @@ export async function createPost(
           '😢': 0,
           '😡': 0,
         },
-        created_at: new Date().toISOString(),
-      })
-      .select(
-        `
-        *,
-        user:profiles(*),
-        comments:post_comments(
-          *,
-          user:profiles(*)
-        )
-      `
-      )
-      .single();
+      },
+      include: {
+        user: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
 
-    if (error) {
-      console.error('Error creating post:', error);
-      return null;
-    }
-
-    return transformPost(data);
+    return transformPost(post);
   } catch (error) {
     console.error('Error in createPost:', error);
     return null;
@@ -139,36 +129,26 @@ export async function addComment(
   content: string
 ): Promise<PostComment | null> {
   try {
-    const { data, error } = await supabase
-      .from('post_comments')
-      .insert({
-        user_id: userId,
-        post_id: postId,
+    const comment = await prisma.postComment.create({
+      data: {
+        userId,
+        postId,
         content,
-        created_at: new Date().toISOString(),
-      })
-      .select(
-        `
-        *,
-        user:profiles(*)
-      `
-      )
-      .single();
-
-    if (error) {
-      console.error('Error adding comment:', error);
-      return null;
-    }
+      },
+      include: {
+        user: true,
+      },
+    });
 
     return {
-      id: data.id,
+      id: comment.id,
       user: {
-        id: data.user_id,
-        name: data.user?.full_name || 'Anonymous',
-        avatar: data.user?.avatar_url || '/avatar-placeholder.png',
+        id: comment.user.id,
+        name: comment.user.fullName || 'Anonymous',
+        avatar: comment.user.avatarUrl || '/avatar-placeholder.png',
       },
-      content: data.content,
-      createdAt: data.created_at,
+      content: comment.content,
+      createdAt: comment.createdAt.toISOString(),
     };
   } catch (error) {
     console.error('Error in addComment:', error);
@@ -182,49 +162,31 @@ export async function addReaction(
   reactionType: ReactionType
 ): Promise<boolean> {
   try {
-    // First, get the current post to update its reactions
-    const { data: post, error: postError } = await supabase
-      .from('posts')
-      .select('reactions, user_reactions')
-      .eq('id', postId)
-      .single();
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      select: { reactions: true, userReactions: true },
+    });
 
-    if (postError) {
-      console.error('Error fetching post for reaction:', postError);
-      return false;
-    }
+    if (!post) return false;
 
-    // Check if user has already reacted
-    const userReactions = post.user_reactions || {};
+    const userReactions = post.userReactions as Record<string, ReactionType> || {};
     const previousReaction = userReactions[userId];
+    const updatedReactions = { ...post.reactions as Record<ReactionType, number> };
 
-    // Update reactions count
-    const updatedReactions = { ...post.reactions };
-
-    // If user had a previous reaction, decrement it
     if (previousReaction) {
       updatedReactions[previousReaction] = Math.max(0, updatedReactions[previousReaction] - 1);
     }
 
-    // Increment the new reaction
     updatedReactions[reactionType] = (updatedReactions[reactionType] || 0) + 1;
-
-    // Update user reactions mapping
     const updatedUserReactions = { ...userReactions, [userId]: reactionType };
 
-    // Update the post
-    const { error: updateError } = await supabase
-      .from('posts')
-      .update({
+    await prisma.post.update({
+      where: { id: postId },
+      data: {
         reactions: updatedReactions,
-        user_reactions: updatedUserReactions,
-      })
-      .eq('id', postId);
-
-    if (updateError) {
-      console.error('Error updating post reactions:', updateError);
-      return false;
-    }
+        userReactions: updatedUserReactions,
+      },
+    });
 
     return true;
   } catch (error) {
@@ -235,47 +197,30 @@ export async function addReaction(
 
 export async function removeReaction(userId: string, postId: number): Promise<boolean> {
   try {
-    // First, get the current post to update its reactions
-    const { data: post, error: postError } = await supabase
-      .from('posts')
-      .select('reactions, user_reactions')
-      .eq('id', postId)
-      .single();
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      select: { reactions: true, userReactions: true },
+    });
 
-    if (postError) {
-      console.error('Error fetching post for reaction removal:', postError);
-      return false;
-    }
+    if (!post) return false;
 
-    // Check if user has a reaction
-    const userReactions = post.user_reactions || {};
+    const userReactions = post.userReactions as Record<string, ReactionType> || {};
     const previousReaction = userReactions[userId];
 
-    if (!previousReaction) {
-      return true; // Nothing to remove
-    }
+    if (!previousReaction) return true;
 
-    // Update reactions count
-    const updatedReactions = { ...post.reactions };
+    const updatedReactions = { ...post.reactions as Record<ReactionType, number> };
     updatedReactions[previousReaction] = Math.max(0, updatedReactions[previousReaction] - 1);
 
-    // Remove user from reactions mapping
-    const updatedUserReactions = { ...userReactions };
-    delete updatedUserReactions[userId];
+    const { [userId]: _, ...updatedUserReactions } = userReactions;
 
-    // Update the post
-    const { error: updateError } = await supabase
-      .from('posts')
-      .update({
+    await prisma.post.update({
+      where: { id: postId },
+      data: {
         reactions: updatedReactions,
-        user_reactions: updatedUserReactions,
-      })
-      .eq('id', postId);
-
-    if (updateError) {
-      console.error('Error removing post reaction:', updateError);
-      return false;
-    }
+        userReactions: updatedUserReactions,
+      },
+    });
 
     return true;
   } catch (error) {
@@ -286,17 +231,12 @@ export async function removeReaction(userId: string, postId: number): Promise<bo
 
 export async function savePost(userId: string, postId: number): Promise<boolean> {
   try {
-    const { error } = await supabase.from('saved_posts').insert({
-      user_id: userId,
-      post_id: postId,
-      saved_at: new Date().toISOString(),
+    await prisma.savedPost.create({
+      data: {
+        userId,
+        postId,
+      },
     });
-
-    if (error) {
-      console.error('Error saving post:', error);
-      return false;
-    }
-
     return true;
   } catch (error) {
     console.error('Error in savePost:', error);
@@ -306,17 +246,14 @@ export async function savePost(userId: string, postId: number): Promise<boolean>
 
 export async function unsavePost(userId: string, postId: number): Promise<boolean> {
   try {
-    const { error } = await supabase
-      .from('saved_posts')
-      .delete()
-      .eq('user_id', userId)
-      .eq('post_id', postId);
-
-    if (error) {
-      console.error('Error unsaving post:', error);
-      return false;
-    }
-
+    await prisma.savedPost.delete({
+      where: {
+        userId_postId: {
+          userId,
+          postId,
+        },
+      },
+    });
     return true;
   } catch (error) {
     console.error('Error in unsavePost:', error);
@@ -326,17 +263,11 @@ export async function unsavePost(userId: string, postId: number): Promise<boolea
 
 export async function getSavedPosts(userId: string): Promise<number[]> {
   try {
-    const { data, error } = await supabase
-      .from('saved_posts')
-      .select('post_id')
-      .eq('user_id', userId);
-
-    if (error) {
-      console.error('Error fetching saved posts:', error);
-      return [];
-    }
-
-    return data.map(item => item.post_id);
+    const savedPosts = await prisma.savedPost.findMany({
+      where: { userId },
+      select: { postId: true },
+    });
+    return savedPosts.map(sp => sp.postId);
   } catch (error) {
     console.error('Error in getSavedPosts:', error);
     return [];
@@ -345,25 +276,26 @@ export async function getSavedPosts(userId: string): Promise<number[]> {
 
 export async function getUserReactions(userId: string): Promise<{ [key: number]: ReactionType }> {
   try {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('id, user_reactions')
-      .not('user_reactions', 'is', null);
-
-    if (error) {
-      console.error('Error fetching user reactions:', error);
-      return {};
-    }
-
-    const userReactions: { [key: number]: ReactionType } = {};
-
-    data.forEach(post => {
-      if (post.user_reactions && post.user_reactions[userId]) {
-        userReactions[post.id] = post.user_reactions[userId];
-      }
+    const posts = await prisma.post.findMany({
+      where: {
+        userReactions: {
+          path: [userId],
+          not: undefined,
+        },
+      },
+      select: {
+        id: true,
+        userReactions: true,
+      },
     });
 
-    return userReactions;
+    return posts.reduce((acc, post) => {
+      const userReactions = post.userReactions as Record<string, ReactionType>;
+      if (userReactions && userReactions[userId]) {
+        acc[post.id] = userReactions[userId];
+      }
+      return acc;
+    }, {} as { [key: number]: ReactionType });
   } catch (error) {
     console.error('Error in getUserReactions:', error);
     return {};

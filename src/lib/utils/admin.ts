@@ -5,38 +5,14 @@ import { prisma } from '@/lib/database/client';
  * @param userId The user's UUID
  * @param role The role to set ('user' or 'admin')
  */
-export async function setUserRole(userId: string, role: 'user' | 'admin') {
+export async function setUserRole(userId: string, role: string) {
   try {
-    // First check if a profile exists
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('id', userId)
-      .single();
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { role: role.toUpperCase() },
+    });
 
-    if (profileError || !profile) {
-      // Profile doesn't exist, create one
-      const { error: insertError } = await supabase.from('profiles').insert({
-        id: userId,
-        role,
-        updated_at: new Date().toISOString(),
-      });
-
-      if (insertError) throw insertError;
-    } else {
-      // Profile exists, update it
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({
-          role,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', userId);
-
-      if (updateError) throw updateError;
-    }
-
-    return { success: true };
+    return { success: true, user };
   } catch (error) {
     console.error('Error setting user role:', error);
     return { success: false, error };
@@ -50,14 +26,14 @@ export async function setUserRole(userId: string, role: 'user' | 'admin') {
  */
 export async function getUserRole(userId: string): Promise<'user' | 'admin' | null> {
   try {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', userId)
-      .single();
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true },
+    });
 
-    if (error || !data) return null;
-    return data.role as 'user' | 'admin';
+    if (user?.role === 'ADMIN') return 'admin';
+    if (user?.role === 'USER') return 'user';
+    return null;
   } catch (error) {
     console.error('Error getting user role:', error);
     return null;
@@ -70,8 +46,17 @@ export async function getUserRole(userId: string): Promise<'user' | 'admin' | nu
  * @returns Boolean indicating if user is an admin
  */
 export async function isAdmin(userId: string): Promise<boolean> {
-  const role = await getUserRole(userId);
-  return role === 'admin';
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true },
+    });
+
+    return user?.role === 'ADMIN';
+  } catch (error) {
+    console.error('Error checking admin status:', error);
+    return false;
+  }
 }
 
 /**
@@ -81,24 +66,45 @@ export async function isAdmin(userId: string): Promise<boolean> {
  */
 export async function createFirstAdmin(userId: string) {
   try {
-    // Check if any admins exist
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('role', 'admin')
-      .limit(1);
+    // Check if any admin exists
+    const existingAdmin = await prisma.user.findFirst({
+      where: { role: 'ADMIN' },
+    });
 
-    if (error) throw error;
-
-    // If no admins exist, make this user an admin
-    if (!data || data.length === 0) {
-      const result = await setUserRole(userId, 'admin');
-      return { ...result, firstAdmin: true };
+    if (existingAdmin) {
+      return { success: true, message: 'Admin already exists' };
     }
 
-    return { success: false, message: 'Admins already exist' };
+    // Set the user as admin
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { role: 'ADMIN' },
+    });
+
+    // Mark initial setup as completed
+    await prisma.systemConfig.upsert({
+      where: { key: 'initial_setup_completed' },
+      update: { value: 'true' },
+      create: {
+        key: 'initial_setup_completed',
+        value: 'true',
+      },
+    });
+
+    return { success: true, firstAdmin: true, user };
   } catch (error) {
     console.error('Error creating first admin:', error);
     return { success: false, error };
+  }
+}
+
+export async function getAdminCount(): Promise<number> {
+  try {
+    return await prisma.user.count({
+      where: { role: 'ADMIN' },
+    });
+  } catch (error) {
+    console.error('Error getting admin count:', error);
+    return 0;
   }
 }

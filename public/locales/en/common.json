@@ -1,19 +1,39 @@
 {
   "welcome": "Welcome to Vibewell",
   "app": {
-    "name": "Vibewell",
-    "description": "Connect with wellness and beauty service providers"
+    "name": "VibeWell",
+    "description": "Your wellness journey starts here"
   },
   "navigation": {
     "home": "Home",
-    "beauty": "Beauty & Wellness",
+    "dashboard": "Dashboard",
     "profile": "Profile",
-    "settings": "Settings"
+    "settings": "Settings",
+    "logout": "Logout"
   },
   "actions": {
-    "login": "Log In",
-    "signup": "Sign Up",
-    "logout": "Log Out"
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next"
+  },
+  "messages": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success!",
+    "confirmDelete": "Are you sure you want to delete this?",
+    "required": "This field is required",
+    "invalid": "Invalid input"
+  },
+  "accessibility": {
+    "skipToMain": "Skip to main content",
+    "menuButton": "Toggle menu",
+    "closeButton": "Close",
+    "searchInput": "Search",
+    "languageSelector": "Select language"
   },
   "meditation": {
     "start": "Begin Meditation",

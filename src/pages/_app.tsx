@@ -1,14 +1,23 @@
 import type { AppProps } from 'next/app';
-import { AppProviders } from '../providers/app-providers';
-import '../styles/globals.css';
-import '../styles/accessibility.css';
-import '../styles/rtl-support.css';
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 
-function MyApp({ Component, pageProps }: AppProps) {
+// Route-based code splitting
+const AccessibilityPage = dynamic(() => import('./AccessibilityPage'), {
+  loading: () => <LoadingSpinner />
+});
+
+const BookingPage = dynamic(() => import('./booking'), {
+  loading: () => <LoadingSpinner />
+});
+
+function MyApp({ Component, pageProps, router }: AppProps) {
+  // Wrap the component with Suspense for smooth loading transitions
   return (
-    <AppProviders>
+    <Suspense fallback={<LoadingSpinner />}>
       <Component {...pageProps} />
-    </AppProviders>
+    </Suspense>
   );
 }
 

@@ -18,5 +18,110 @@
     "back": "Atrás",
     "next": "Siguiente",
     "search": "Buscar"
+  },
+  "app": {
+    "name": "VibeWell",
+    "description": "Tu viaje de bienestar comienza aquí",
+    "tagline": "Transforma tu vida, un paso a la vez"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "dashboard": "Panel de Control",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "workouts": "Entrenamientos",
+    "nutrition": "Nutrición",
+    "meditation": "Meditación",
+    "progress": "Progreso",
+    "community": "Comunidad"
+  },
+  "actions": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "confirm": "Confirmar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "start": "Comenzar",
+    "finish": "Finalizar",
+    "continue": "Continuar",
+    "skip": "Omitir",
+    "search": "Buscar"
+  },
+  "messages": {
+    "loading": "Cargando...",
+    "error": "Ha ocurrido un error",
+    "success": "¡Operación exitosa!",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar esto?",
+    "noResults": "No se encontraron resultados",
+    "welcome": "¡Bienvenido a VibeWell!",
+    "sessionExpired": "Tu sesión ha expirado",
+    "pleaseLogin": "Por favor, inicia sesión",
+    "saveChanges": "¿Deseas guardar los cambios?"
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión",
+    "register": "Registrarse",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "resetPassword": "Restablecer Contraseña",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "username": "Nombre de Usuario"
+  },
+  "profile": {
+    "personalInfo": "Información Personal",
+    "preferences": "Preferencias",
+    "goals": "Objetivos",
+    "achievements": "Logros",
+    "stats": "Estadísticas",
+    "history": "Historial"
+  },
+  "settings": {
+    "general": "General",
+    "notifications": "Notificaciones",
+    "privacy": "Privacidad",
+    "language": "Idioma",
+    "theme": "Tema",
+    "sound": "Sonido",
+    "units": "Unidades"
+  },
+  "accessibility": {
+    "skipToMain": "Saltar al contenido principal",
+    "menuButton": "Botón de menú",
+    "closeButton": "Botón de cerrar",
+    "searchInput": "Campo de búsqueda",
+    "languageSelector": "Selector de idioma",
+    "darkMode": "Modo oscuro",
+    "lightMode": "Modo claro"
+  },
+  "errors": {
+    "required": "Este campo es obligatorio",
+    "invalidEmail": "Correo electrónico inválido",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "networkError": "Error de conexión",
+    "unauthorized": "No autorizado",
+    "notFound": "No encontrado",
+    "serverError": "Error del servidor"
+  },
+  "time": {
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "tomorrow": "Mañana",
+    "days": "días",
+    "weeks": "semanas",
+    "months": "meses",
+    "years": "años"
+  },
+  "metrics": {
+    "weight": "Peso",
+    "height": "Altura",
+    "distance": "Distancia",
+    "duration": "Duración",
+    "calories": "Calorías",
+    "steps": "Pasos",
+    "heartRate": "Ritmo Cardíaco"
   }
 } 

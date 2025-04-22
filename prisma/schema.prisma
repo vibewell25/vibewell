@@ -351,7 +351,6 @@ model ServiceReview {
   @@index([userId])
   @@index([serviceId])
   @@index([bookingId])
-  @@map("service_reviews")
 }
 
 model ReviewSentiment {
@@ -1088,7 +1087,7 @@ model LoyaltyTransaction {
 
   // Relations
   member    LoyaltyMember  @relation(fields: [memberId], references: [id])
-  booking   Booking?      @relation("BookingLoyaltyTransactions", fields: [bookingId], references: [id])
+  booking   Booking?       @relation("BookingLoyaltyTransactions", fields: [bookingId], references: [id])
 
   @@index([memberId])
   @@index([bookingId])
@@ -1791,18 +1790,43 @@ model PerformanceMetric {
 }
 
 model StaffGoal {
-  id          String    @id @default(cuid())
-  staffId     String
-  type        String
-  target      Float
-  current     Float     @default(0)
-  deadline    DateTime
-  status      String
-  description String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id              String   @id @default(cuid())
+  staffId         String
+  title           String
+  description     String?
+  category        GoalCategory
+  targetDate      DateTime
+  progress        Float    @default(0) // 0-100
+  status          GoalStatus @default(IN_PROGRESS)
+  metrics         Json?    // Measurable metrics for the goal
+  feedback        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  staff       Staff     @relation(fields: [staffId], references: [id])
+  // Relations
+  staff           ProviderStaff @relation(fields: [staffId], references: [id])
+
+  @@index([staffId])
+}
+
+model SkillAssessment {
+  id              String   @id @default(cuid())
+  staffId         String
+  skill           String
+  proficiency     Float    // 1-5 scale
+  assessedBy      String
+  assessmentDate  DateTime
+  evidence        String?
+  notes           String?
+  nextReviewDate  DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  staff           ProviderStaff @relation(fields: [staffId], references: [id])
+
+  @@index([staffId])
+  @@index([skill])
 }
 
 model Schedule {
@@ -1890,69 +1914,845 @@ model Notification {
   staff       Staff     @relation(fields: [staffId], references: [id])
 }
 
-model Certification {
-  id          String    @id @default(cuid())
-  staffId     String
-  name        String
-  issuer      String
-  issuedDate  DateTime
-  expiryDate  DateTime?
-  status      String
-  createdAt   DateTime  @default(now())
+model ProviderProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  businessName      String
+  businessType      String
+  description       String   @db.Text
+  logo              String?
+  coverPhoto        String?
+  gallery           String[]
+  contactEmail      String?
+  contactPhone      String?
+  website           String?
+  socialMedia       Json     // Stores social media links
+  expertise         String[]
+  yearsExperience   Int
+  languages         String[]
+  subscriptionPlan  String   @default("free")
+  subscriptionExpiry DateTime?
+  rating            Float    @default(0)
+  reviewCount       Int      @default(0)
+  instantBooking    Boolean  @default(false)
+  preBooking        Boolean  @default(true)
+  requirePaymentUpfront Boolean @default(false)
+  cancellationPolicy String  @default("moderate")
+  cancellationPolicyDescription String?
+  isVerified        Boolean  @default(false)
+  isActive          Boolean  @default(true)
+  isApproved        Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
-  staff       Staff     @relation(fields: [staffId], references: [id])
-}
+  // Relations
+  user              User     @relation(fields: [userId], references: [id])
+  services          Service[]
+  reviews           Review[]
+  bookings          Booking[]
+  inventory         ProviderInventory[]
 
-model StaffAvailability {
-  id          String    @id @default(cuid())
-  staffId     String
-  dayOfWeek   Int
-  startTime   String
-  endTime     String
-  isPreferred Boolean
-  notes       String?
-  createdAt   DateTime  @default(now())
-
-  staff       Staff     @relation(fields: [staffId], references: [id])
-}
-
-model TeamMetrics {
-  id                  String    @id @default(cuid())
-  teamId             String
-  overallEfficiency  Float
-  clientSatisfaction Float
-  teamCollaboration  Float
-  goalCompletion     Float
-  periodStart        DateTime
-  periodEnd          DateTime
-  createdAt          DateTime  @default(now())
-
-  team               Team      @relation(fields: [teamId], references: [id])
-}
-
-model ScheduledNotification {
-  id        String   @id @default(cuid())
-  userId    String
-  title     String
-  message   String
-  scheduledFor DateTime
-  sent      Boolean  @default(false)
-  sentAt    DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
+  // Additional Relations
+  paymentPolicy     ProviderPaymentPolicy?
+  schedulingPolicy  ProviderSchedulingPolicy?
+  analytics         ProviderAnalytics[]
+  reports          ProviderReport[]
+  marketingSettings ProviderMarketingSettings?
+  promotions        ProviderPromotion[]
+  integrations      ProviderIntegration[]
+  marketingExpenses MarketingExpense[]
+  marketingLeads    MarketingLead[]
+  staff            ProviderStaff[]
+  teams            ProviderTeam[]
 
   @@index([userId])
 }
 
-model Subscription {
+model ProviderPaymentPolicy {
+  id                    String   @id @default(cuid())
+  providerId           String   @unique
+  depositRequired      Boolean  @default(false)
+  depositAmount        Float?   // Fixed amount or percentage
+  depositType          DepositType @default(FIXED)
+  refundPolicy        String   @db.Text
+  refundTimeLimit     Int?     // Hours before appointment for refund
+  refundPercentage    Float?   // Percentage of refund if applicable
+  acceptedPayments    String[] // Array of accepted payment methods
+  taxRate             Float    @default(0)
+  customFees          Json?    // Additional fees structure
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  provider            ProviderProfile @relation(fields: [providerId], references: [id])
+}
+
+enum DepositType {
+  FIXED
+  PERCENTAGE
+}
+
+model ProviderSchedulingPolicy {
+  id                      String   @id @default(cuid())
+  providerId             String   @unique
+  minAdvanceTime         Int      // Minimum hours required for advance booking
+  maxAdvanceTime         Int      // Maximum days allowed for advance booking
+  minCancellationTime    Int      // Minimum hours required for cancellation
+  cancellationFee        Float?   // Fee for late cancellation
+  bufferBetweenBookings  Int      // Minutes of buffer time between bookings
+  defaultDuration        Int      // Default duration for services in minutes
+  allowWaitlist          Boolean  @default(true)
+  maxWaitlistSize        Int      @default(10)
+  autoConfirm            Boolean  @default(false)
+  overbookingLimit       Int      @default(0)
+  breakTime              Int      @default(15) // Default break time in minutes
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  provider              ProviderProfile @relation(fields: [providerId], references: [id])
+}
+
+model ProviderInventory {
   id               String   @id @default(cuid())
-  userId           String   @unique
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  status           String   // active, canceled, past_due
-  plan             String   // basic, premium, professional
-  currentPeriodEnd DateTime
-  cancelAtPeriodEnd Boolean @default(false)
+  providerId       String
+  name             String
+  sku              String?
+  category         String
+  description      String?
+  quantity         Int
+  minThreshold     Int      @default(5)
+  maxThreshold     Int?
+  unit             String   @default("piece")
+  cost             Float
+  retailPrice      Float?
+  supplier         String?
+  location         String?
+  expiryDate       DateTime?
+  lastRestocked    DateTime?
+  isActive         Boolean  @default(true)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  provider         ProviderProfile @relation(fields: [providerId], references: [id])
+  transactions     InventoryTransaction[]
+
+  @@index([providerId])
+  @@index([category])
+}
+
+model InventoryTransaction {
+  id               String   @id @default(cuid())
+  inventoryId      String
+  type             TransactionType
+  quantity         Int
+  reason           String?
+  reference        String?  // Order/Service ID reference
+  cost             Float?
+  date             DateTime @default(now())
+  performedBy      String   // Staff ID
+  notes            String?
+
+  inventory        ProviderInventory @relation(fields: [inventoryId], references: [id])
+
+  @@index([inventoryId])
+}
+
+enum TransactionType {
+  PURCHASE
+  SALE
+  ADJUSTMENT
+  DAMAGED
+  EXPIRED
+  RETURNED
+}
+
+model ProviderStaff {
+  id               String   @id @default(cuid())
+  providerId       String
+  userId           String   @unique
+  teamId           String?
+  role             StaffRole
+  specialties      String[]
+  schedule         Json?    // Weekly schedule
+  commission       Float?   // Commission percentage
+  isActive         Boolean  @default(true)
+  startDate        DateTime
+  endDate          DateTime?
+  emergencyContact String?
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  provider         ProviderProfile @relation(fields: [providerId], references: [id])
+  team             ProviderTeam?   @relation(fields: [teamId], references: [id])
+  performance      StaffPerformance[]
+  services         StaffService[]
+  availability     StaffAvailability[]
+  certifications   StaffCertification[]
+  schedules        StaffSchedule[]
+  timeOffRequests  TimeOffRequest[]
+  shifts           StaffShift[]
+  performanceReviews PerformanceReview[]
+  trainingRecords   TrainingRecord[]
+  goals            StaffGoal[]
+  skillAssessments SkillAssessment[]
+  payrollRecords   PayrollRecord[]
+  communications   StaffCommunication[]
+  attendance       AttendanceRecord[]
+  equipmentAssignments EquipmentAssignment[]
+  benefits         StaffBenefit[]
+  trainingPlans    TrainingPlan[]
+
+  @@index([providerId])
+  @@index([teamId])
+}
+
+model ProviderTeam {
+  id          String    @id @default(cuid())
+  providerId  String
+  name        String
+  description String?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  provider    ProviderProfile @relation(fields: [providerId], references: [id])
+  members     ProviderStaff[]
+  metrics     TeamMetrics[]
+
+  @@index([providerId])
+}
+
+model StaffAvailability {
+  id          String   @id @default(cuid())
+  staffId     String
+  dayOfWeek   DayOfWeek
+  startTime   String   // Format: "HH:mm"
+  endTime     String   // Format: "HH:mm"
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  staff       ProviderStaff @relation(fields: [staffId], references: [id])
+
+  @@unique([staffId, dayOfWeek])
+  @@index([staffId])
+}
+
+model StaffCertification {
+  id          String   @id @default(cuid())
+  staffId     String
+  name        String
+  issuer      String
+  issueDate   DateTime
+  expiryDate  DateTime?
+  fileUrl     String?
+  isVerified  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  staff       ProviderStaff @relation(fields: [staffId], references: [id])
+
+  @@index([staffId])
+}
+
+model TeamMetrics {
+  id          String   @id @default(cuid())
+  teamId      String
+  period      DateTime
+  performance Json     // Team performance metrics
+  goals       Json     // Team goals and progress
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  team        ProviderTeam @relation(fields: [teamId], references: [id])
+
+  @@index([teamId])
+  @@index([period])
+}
+
+enum StaffRole {
+  MANAGER
+  SPECIALIST
+  ASSISTANT
+  TRAINEE
+  RECEPTIONIST
+}
+
+model StaffSchedule {
+  id          String   @id @default(cuid())
+  staffId     String
+  startDate   DateTime
+  endDate     DateTime
+  isTemplate  Boolean  @default(false)
+  repeatPattern Json?  // Weekly/monthly schedule pattern
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  staff       ProviderStaff @relation(fields: [staffId], references: [id])
+  shifts      StaffShift[]
+
+  @@index([staffId])
+}
+
+model StaffShift {
+  id          String   @id @default(cuid())
+  scheduleId  String
+  staffId     String
+  startTime   DateTime
+  endTime     DateTime
+  status      ShiftStatus @default(SCHEDULED)
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  schedule    StaffSchedule @relation(fields: [scheduleId], references: [id])
+  staff       ProviderStaff @relation(fields: [staffId], references: [id])
+  breaks      ShiftBreak[]
+  swapRequests ShiftSwapRequest[]
+
+  @@index([scheduleId])
+  @@index([staffId])
+}
+
+model ShiftBreak {
+  id          String   @id @default(cuid())
+  shiftId     String
+  startTime   DateTime
+  endTime     DateTime
+  type        BreakType @default(LUNCH)
+  isPaid      Boolean  @default(false)
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  shift       StaffShift @relation(fields: [shiftId], references: [id])
+
+  @@index([shiftId])
+}
+
+model TimeOffRequest {
+  id          String   @id @default(cuid())
+  staffId     String
+  startDate   DateTime
+  endDate     DateTime
+  type        TimeOffType
+  status      RequestStatus @default(PENDING)
+  reason      String?
+  notes       String?
+  approvedBy  String?
+  approvedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  staff       ProviderStaff @relation(fields: [staffId], references: [id])
+
+  @@index([staffId])
+}
+
+model ShiftSwapRequest {
+  id          String   @id @default(cuid())
+  shiftId     String
+  requesterId String
+  recipientId String?
+  status      RequestStatus @default(PENDING)
+  reason      String?
+  notes       String?
+  approvedBy  String?
+  approvedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  shift       StaffShift @relation(fields: [shiftId], references: [id])
+
+  @@index([shiftId])
+  @@index([requesterId])
+  @@index([recipientId])
+}
+
+enum ShiftStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum BreakType {
+  LUNCH
+  REST
+  PERSONAL
+  MEETING
+}
+
+enum TimeOffType {
+  VACATION
+  SICK
+  PERSONAL
+  TRAINING
+  UNPAID
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+model PerformanceReview {
+  id              String   @id @default(cuid())
+  staffId         String
+  reviewerId      String
+  reviewPeriod    String   // e.g., "2024-Q1"
+  reviewDate      DateTime
+  overallRating   Float    // 1-5 scale
+  categories      Json     // Different performance categories and ratings
+  strengths       String[]
+  improvements    String[]
+  goals           String[]
+  feedback        String?
+  acknowledgement Boolean  @default(false)
+  acknowledgedAt  DateTime?
+  status          ReviewStatus @default(DRAFT)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  staff           ProviderStaff @relation(fields: [staffId], references: [id])
+
+  @@index([staffId])
+  @@index([reviewPeriod])
+}
+
+model TrainingRecord {
+  id              String   @id @default(cuid())
+  staffId         String
+  name            String
+  type            TrainingType
+  provider        String?
+  startDate       DateTime
+  completionDate  DateTime?
+  expiryDate      DateTime?
+  status          TrainingStatus @default(IN_PROGRESS)
+  score           Float?
+  certificate     String?  // URL to certificate
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  staff           ProviderStaff @relation(fields: [staffId], references: [id])
+
+  @@index([staffId])
+}
+
+enum ReviewStatus {
+  DRAFT
+  PENDING_REVIEW
+  REVIEWED
+  ACKNOWLEDGED
+  ARCHIVED
+}
+
+enum TrainingType {
+  ONBOARDING
+  SKILL_DEVELOPMENT
+  COMPLIANCE
+  CERTIFICATION
+  SAFETY
+}
+
+enum TrainingStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  EXPIRED
+  FAILED
+}
+
+enum GoalCategory {
+  PERFORMANCE
+  SKILL_DEVELOPMENT
+  CUSTOMER_SERVICE
+  SALES
+  EFFICIENCY
+  LEADERSHIP
+}
+
+enum GoalStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  OVERDUE
+}
+
+model PayrollRecord {
+  id              String   @id @default(cuid())
+  staffId         String
+  period          String   // e.g., "2024-03"
+  baseSalary      Float
+  commission      Float    @default(0)
+  bonus           Float    @default(0)
+  deductions      Float    @default(0)
+  taxes           Float    @default(0)
+  netPay          Float
+  status          PayrollStatus @default(PENDING)
+  paymentDate     DateTime?
+  paymentMethod   String?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  staff           ProviderStaff @relation(fields: [staffId], references: [id])
+  details         PayrollDetail[]
+
+  @@index([staffId])
+  @@index([period])
+}
+
+model PayrollDetail {
+  id              String   @id @default(cuid())
+  payrollId       String
+  type            String   // COMMISSION, BONUS, DEDUCTION, TAX
+  description     String
+  amount          Float
+  calculationBase Json?    // Details of how the amount was calculated
+  createdAt       DateTime @default(now())
+
+  // Relations
+  payroll         PayrollRecord @relation(fields: [payrollId], references: [id])
+
+  @@index([payrollId])
+}
+
+enum PayrollStatus {
+  PENDING
+  PROCESSING
+  PAID
+  CANCELLED
+  ERROR
+}
+
+model StaffCommunication {
+  id              String   @id @default(cuid())
+  staffId         String
+  type            CommunicationType
+  subject         String
+  content         String   @db.Text
+  priority        Priority @default(NORMAL)
+  status          CommunicationStatus @default(UNREAD)
+  readAt          DateTime?
+  attachments     Json?    // URLs to attached files
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  staff           ProviderStaff @relation(fields: [staffId], references: [id])
+
+  @@index([staffId])
+  @@index([type])
+  @@index([status])
+}
+
+model AttendanceRecord {
+  id              String   @id @default(cuid())
+  staffId         String
+  date            DateTime
+  clockIn         DateTime
+  clockOut        DateTime?
+  breakStart      DateTime?
+  breakEnd        DateTime?
+  status          AttendanceStatus @default(PRESENT)
+  notes           String?
+  location        String?  // Clock in/out location
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  staff           ProviderStaff @relation(fields: [staffId], references: [id])
+
+  @@index([staffId])
+  @@index([date])
+}
+
+enum CommunicationType {
+  ANNOUNCEMENT
+  TASK
+  FEEDBACK
+  SCHEDULE_CHANGE
+  POLICY_UPDATE
+  GENERAL
+}
+
+enum Priority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum CommunicationStatus {
+  UNREAD
+  READ
+  ARCHIVED
+  DELETED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  HALF_DAY
+  ON_LEAVE
+}
+
+model EquipmentAssignment {
+  id              String   @id @default(cuid())
+  staffId         String
+  equipmentId     String
+  assignedDate    DateTime
+  returnDate      DateTime?
+  condition       String?
+  notes           String?
+  status          EquipmentStatus @default(ASSIGNED)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  staff           ProviderStaff @relation(fields: [staffId], references: [id])
+  equipment       Equipment @relation(fields: [equipmentId], references: [id])
+
+  @@index([staffId])
+  @@index([equipmentId])
+}
+
+model Equipment {
+  id              String   @id @default(cuid())
+  providerId      String
+  name            String
+  type            String
+  serialNumber    String?
+  purchaseDate    DateTime
+  warrantyExpiry  DateTime?
+  maintenanceSchedule Json?
+  status          EquipmentStatus @default(AVAILABLE)
+  lastMaintenance DateTime?
+  nextMaintenance DateTime?
+  cost            Float
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  assignments     EquipmentAssignment[]
+  maintenanceLogs EquipmentMaintenance[]
+
+  @@index([type])
+  @@index([status])
+}
+
+model EquipmentMaintenance {
+  id              String   @id @default(cuid())
+  equipmentId     String
+  maintenanceDate DateTime
+  type            MaintenanceType
+  cost            Float?
+  performedBy     String
+  notes           String?
+  nextDueDate     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  equipment       Equipment @relation(fields: [equipmentId], references: [id])
+
+  @@index([equipmentId])
+}
+
+model StaffBenefit {
+  id              String   @id @default(cuid())
+  staffId         String
+  type            BenefitType
+  startDate       DateTime
+  endDate         DateTime?
+  amount          Float?
+  details         Json?    // Specific benefit details
+  status          BenefitStatus @default(ACTIVE)
+  renewalDate     DateTime?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  staff           ProviderStaff @relation(fields: [staffId], references: [id])
+  claims          BenefitClaim[]
+
+  @@index([staffId])
+  @@index([type])
+}
+
+model BenefitClaim {
+  id              String   @id @default(cuid())
+  benefitId       String
+  amount          Float
+  claimDate       DateTime
+  description     String
+  receipts        Json?    // URLs to receipt images
+  status          ClaimStatus @default(PENDING)
+  processedDate   DateTime?
+  processedBy     String?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  benefit         StaffBenefit @relation(fields: [benefitId], references: [id])
+
+  @@index([benefitId])
+}
+
+model TrainingPlan {
+  id              String   @id @default(cuid())
+  staffId         String
+  title           String
+  description     String?
+  startDate       DateTime
+  endDate         DateTime
+  objectives      Json     // Array of training objectives
+  status          TrainingPlanStatus @default(DRAFT)
+  progress        Float    @default(0)
+  budget          Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  staff           ProviderStaff @relation(fields: [staffId], references: [id])
+  modules         TrainingPlanModule[]
+
+  @@index([staffId])
+}
+
+model TrainingPlanModule {
+  id              String      @id @default(cuid())
+  planId          String
+  name            String
+  description     String?
+  type            TrainingModuleType
+  duration        Int         // in minutes
+  order           Int         // Module order in the plan
+  required        Boolean     @default(true)
+  content         Json?       // Module content and materials
+  status          ModuleStatus @default(NOT_STARTED)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  plan            TrainingPlan      @relation(fields: [planId], references: [id])
+  progress        ModuleProgress[]
+
+  @@index([planId])
+}
+
+enum EquipmentStatus {
+  AVAILABLE
+  ASSIGNED
+  MAINTENANCE
+  RETIRED
+  LOST
+}
+
+enum MaintenanceType {
+  ROUTINE
+  REPAIR
+  INSPECTION
+  CALIBRATION
+  REPLACEMENT
+}
+
+enum BenefitType {
+  HEALTH_INSURANCE
+  DENTAL
+  VISION
+  RETIREMENT
+  EDUCATION
+  WELLNESS
+  TRANSPORTATION
+  MEAL
+}
+
+enum BenefitStatus {
+  ACTIVE
+  INACTIVE
+  PENDING
+  EXPIRED
+}
+
+enum ClaimStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum TrainingPlanStatus {
+  DRAFT
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  ON_HOLD
+}
+
+enum TrainingModuleType {
+  VIDEO
+  DOCUMENT
+  QUIZ
+  WORKSHOP
+  PRACTICAL
+  ASSESSMENT
+}
+
+enum ModuleStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  UNDER_REVIEW
+}
+
+model ModuleProgress {
+  id          String      @id @default(cuid())
+  moduleId    String      // References TrainingPlanModule
+  staffId     String      // References ProviderStaff
+  status      ModuleStatus
+  startedAt   DateTime?
+  completedAt DateTime?
+  score       Float?      // Assessment score if applicable
+  attempts    Int         @default(0)  // Number of attempts made
+  feedback    String?     // Feedback from trainers/assessors
+  notes       String?     // Additional notes or comments
+  evidence    Json?       // URLs to completed work or evidence
+  timeSpent   Int?       // Time spent in minutes
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Relations
+  module      TrainingPlanModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  staff       ProviderStaff     @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@unique([moduleId, staffId])  // Each staff can have only one progress record per module
+  @@index([moduleId])
+  @@index([staffId])
+  @@index([status])
 }

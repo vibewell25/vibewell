@@ -8,12 +8,49 @@ const withPWA = require('next-pwa')({
   disable: process.env.NODE_ENV === 'development',
   register: true,
   skipWaiting: true,
+  runtimeCaching: [
+    {
+      urlPattern: /^https:\/\/fonts\.(?:gstatic|googleapis)\.com/,
+      handler: 'CacheFirst',
+      options: {
+        cacheName: 'google-fonts',
+        expiration: {
+          maxEntries: 10,
+          maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+        }
+      }
+    },
+    {
+      urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|avif)$/,
+      handler: 'CacheFirst',
+      options: {
+        cacheName: 'images',
+        expiration: {
+          maxEntries: 50,
+          maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
+        }
+      }
+    },
+    {
+      urlPattern: /\.(?:js|css)$/,
+      handler: 'StaleWhileRevalidate',
+      options: {
+        cacheName: 'static-resources',
+        expiration: {
+          maxEntries: 32,
+          maxAgeSeconds: 60 * 60 * 24 * 7 // 1 week
+        }
+      }
+    }
+  ]
 });
 const CompressionPlugin = require('compression-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
+const { splitChunksConfig, optimizationConfig } = require('./src/config/bundling');
+const path = require('path');
 
 const nextConfig = {
   reactStrictMode: true,
@@ -21,6 +58,9 @@ const nextConfig = {
     NEXT_PUBLIC_AUTH0_NAMESPACE: process.env.AUTH0_NAMESPACE || 'https://vibewell.com',
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
     NEXT_PUBLIC_FILE_BASE_URL: process.env.NEXT_PUBLIC_FILE_BASE_URL,
+    ENABLE_SSR_STREAMING: process.env.ENABLE_SSR_STREAMING,
+    ENABLE_SSR_SUSPENSE: process.env.ENABLE_SSR_SUSPENSE,
+    ENABLE_SSR_PREFETCH: process.env.ENABLE_SSR_PREFETCH,
   },
   images: {
     domains: [
@@ -35,6 +75,10 @@ const nextConfig = {
       'cdn.shopify.com',
       'i.pravatar.cc',
       'vibewell-assets.s3.amazonaws.com',
+      'vibewell.com',
+      'cdn.vibewell.com',
+      'storage.googleapis.com',
+      'firebasestorage.googleapis.com',
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -47,6 +91,12 @@ const nextConfig = {
     path: '/_next/image',
     disableStaticImages: false,
     unoptimized: false,
+    // Enhanced image quality settings
+    quality: 75,
+    // Improved image loading
+    loading: 'lazy',
+    placeholder: 'blur',
+    blurDataURL: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQtJSEkMjU1LS0yMi4qLjgyPy0/ODMuNj5EREVFSElIUjY+S2JLUkREUf/2wBDAR',
   },
   // Optimize file watching
   onDemandEntries: {
@@ -115,6 +165,63 @@ const nextConfig = {
     },
     serverComponentsExternalPackages: ['sharp'],
     optimisticClientCache: true,
+    concurrentFeatures: true,
+    optimizeServerReact: true,
+    optimizeImages: true,
+    swcTraceProfiling: true,
+    forceSwcTransforms: true,
+    fullySpecified: true,
+    optimizeCss: true,
+    optimizePackageImports: [
+      '@headlessui/react',
+      '@heroicons/react',
+      '@radix-ui/react-icons',
+      'date-fns',
+      'lodash',
+      'framer-motion',
+      '@tanstack/react-query',
+      'react-hook-form',
+      'zustand',
+      'zod',
+      '@mui/material',
+      '@emotion/react',
+      '@emotion/styled',
+      '@chakra-ui/react',
+      'react-icons',
+      'recharts',
+      '@visx/scale',
+      'd3-scale',
+      'three',
+      '@react-three/fiber',
+      '@react-three/drei',
+    ],
+    // Enable modern optimizations
+    turbotrace: {
+      logLevel: 'error',
+      contextDirectory: __dirname,
+      processCwd: __dirname,
+      memoryLimit: 4096, // 4GB memory limit for turbotrace
+    },
+    outputFileTracingRoot: __dirname,
+    outputFileTracingExcludes: {
+      '*': [
+        'node_modules/@swc/core-linux-x64-gnu',
+        'node_modules/@swc/core-linux-x64-musl',
+        'node_modules/@esbuild/linux-x64',
+        '.git/**/*',
+        '**/*.map',
+        '**/tests/**/*',
+        '**/stories/**/*',
+        '**/cypress/**/*',
+        '**/coverage/**/*',
+      ],
+    },
+    // Enhanced streaming and suspense
+    serverActions: {
+      bodySizeLimit: '2mb',
+      allowedOrigins: ['localhost:3000', 'vibewell.com'],
+    },
+    serverComponentsExternalPackages: ['sharp', 'ioredis', 'redis'],
   },
   // Security headers
   async headers() {
@@ -151,7 +258,23 @@ const nextConfig = {
             value: process.env.NODE_ENV === 'production' 
               ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://*;"
               : ""
-          }
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
+          },
+          {
+            key: 'Cross-Origin-Embedder-Policy',
+            value: 'require-corp',
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'same-origin',
+          },
         ]
       },
       {
@@ -169,6 +292,10 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
           },
         ],
       },
@@ -231,8 +358,15 @@ const nextConfig = {
     // Handle path aliases
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': './src',
-      '~': './src',
+      '@': path.join(__dirname, './src'),
+      '@components': path.join(__dirname, './src/components'),
+      '@hooks': path.join(__dirname, './src/hooks'),
+      '@utils': path.join(__dirname, './src/utils'),
+      '@styles': path.join(__dirname, './src/styles'),
+      '@types': path.join(__dirname, './src/types'),
+      '@context': path.join(__dirname, './src/context'),
+      '@services': path.join(__dirname, './src/services'),
+      '@constants': path.join(__dirname, './src/constants'),
     };
 
     // Important to transpile modern JavaScript for older browsers
@@ -253,6 +387,9 @@ const nextConfig = {
     config.optimization = {
       ...config.optimization,
       usedExports: true,
+      providedExports: true,
+      sideEffects: true,
+      concatenateModules: true,
       minimize: !dev,
       minimizer: [
         ...config.optimization.minimizer || [],
@@ -261,102 +398,98 @@ const nextConfig = {
             compress: {
               drop_console: process.env.NODE_ENV === 'production',
               drop_debugger: process.env.NODE_ENV === 'production',
-              pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log', 'console.info', 'console.debug'] : [],
+              pure_funcs: process.env.NODE_ENV === 'production' ? 
+                ['console.log', 'console.info', 'console.debug', 'console.time', 'console.timeEnd'] : [],
+              passes: 3,
+              unsafe_math: true,
+              unsafe_methods: true,
+              unsafe_proto: true,
+              unsafe_regexp: true,
+              unsafe_undefined: true,
             },
             format: {
               comments: false,
+              preserve_annotations: true,
             },
-            mangle: true,
+            mangle: {
+              safari10: true,
+              keep_classnames: false,
+              keep_fnames: false,
+              toplevel: true,
+            },
+            sourceMap: false,
           },
           extractComments: false,
-        }),
-        new CssMinimizerPlugin({
-          minimizerOptions: {
-            preset: [
-              'default',
-              {
-                discardComments: { removeAll: true },
-                minifyFontValues: { removeQuotes: false },
-              },
-            ],
-          },
+          parallel: true,
         }),
       ],
-      splitChunks: {
-        chunks: 'all',
-        maxInitialRequests: 25,
-        minSize: 20000,
-        cacheGroups: {
-          three: {
-            test: /[\\/]node_modules[\\/](three|@react-three)[\\/]/,
-            name: 'three-vendors',
-            priority: 10,
-            reuseExistingChunk: true,
-          },
-          recharts: {
-            test: /[\\/]node_modules[\\/](recharts)[\\/]/,
-            name: 'recharts-vendors',
-            priority: 10,
-            reuseExistingChunk: true,
-          },
-          maps: {
-            test: /[\\/]node_modules[\\/](leaflet|mapbox-gl|react-map-gl)[\\/]/,
-            name: 'map-vendors',
-            priority: 10,
-            reuseExistingChunk: true,
-          },
-          chart: {
-            test: /[\\/]node_modules[\\/](chart\.js|react-chartjs-2)[\\/]/,
-            name: 'chart-vendors',
-            priority: 10,
-            reuseExistingChunk: true,
-          },
-          ui: {
-            test: /[\\/]node_modules[\\/](@radix-ui|@headlessui)[\\/]/,
-            name: 'ui-vendors',
-            priority: 10,
-            reuseExistingChunk: true,
-          },
-          commons: {
-            test: /[\\/]node_modules[\\/](react|react-dom|framer-motion)[\\/]/,
-            name: 'commons',
-            chunks: 'all',
-            priority: 20,
-          },
-          forms: {
-            test: /[\\/]node_modules[\\/](react-hook-form|formik|yup|zod)[\\/]/,
-            name: 'forms-vendors',
-            priority: 10,
-            reuseExistingChunk: true,
-          },
-          routes: {
-            test: /[\\/]src[\\/]app[\\/](.+)[\\/]page\.(js|ts)x?$/,
-            name: (module) => {
-              const routePath = module.resource.match(/[\\/]src[\\/]app[\\/](.+)[\\/]page\.(js|ts)x?$/)[1];
-              return `route-${routePath.replace(/[\\/]/g, '-')}`;
-            },
-            priority: 30,
-          },
-          default: {
-            minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-        }
-      },
+      splitChunks: splitChunksConfig,
     };
 
-    // Add compression plugins for production
-    if (!dev && !isServer) {
+    // Apply optimizations only in production
+    if (!dev) {
+      // Enable compression
       config.plugins.push(
         new CompressionPlugin({
           algorithm: 'gzip',
           test: /\.(js|css|html|svg)$/,
           threshold: 10240,
           minRatio: 0.8,
+        }),
+        new CompressionPlugin({
+          filename: '[path][base].br',
+          algorithm: 'brotliCompress',
+          test: /\.(js|css|html|svg)$/,
+          compressionOptions: { level: 11 },
+          threshold: 10240,
+          minRatio: 0.8,
         })
       );
+
+      // Optimize CSS
+      config.optimization.minimizer.push(
+        new CssMinimizerPlugin({
+          minimizerOptions: {
+            preset: [
+              'advanced',
+              {
+                discardComments: { removeAll: true },
+                normalizeWhitespace: false,
+              },
+            ],
+          },
+        })
+      );
+
+      // Apply custom chunk splitting
+      config.optimization = {
+        ...config.optimization,
+        ...optimizationConfig,
+      };
     }
+
+    // Add performance hints
+    config.performance = {
+      maxEntrypointSize: 512000, // 500KB
+      maxAssetSize: 512000, // 500KB
+      hints: dev ? false : 'warning',
+    };
+
+    // Add custom babel configuration
+    config.module.rules.push({
+      test: /\.(js|jsx|ts|tsx)$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['next/babel'],
+          plugins: [
+            ['@babel/plugin-transform-runtime'],
+            ['babel-plugin-transform-remove-console', { exclude: ['error', 'warn'] }],
+          ],
+        },
+      },
+    });
 
     // Add bundle analyzer in analyze mode
     if (process.env.ANALYZE === 'true') {
@@ -369,21 +502,28 @@ const nextConfig = {
       );
     }
 
-    // Dynamic imports are better chunked
-    config.module.rules.push({
-      test: /\.(js|jsx|ts|tsx)$/,
-      exclude: /node_modules/,
-      use: [
-        {
-          loader: require.resolve('babel-loader'),
-          options: {
-            plugins: [
-              require.resolve('babel-plugin-transform-dynamic-import-vars')
-            ],
+    // Add module federation for micro-frontends
+    if (!isServer) {
+      config.plugins.push(
+        new config.webpack.container.ModuleFederationPlugin({
+          name: 'vibewell',
+          filename: 'static/chunks/remoteEntry.js',
+          exposes: {
+            './components': './src/components/index.ts',
           },
-        },
-      ],
-    });
+          shared: {
+            react: {
+              singleton: true,
+              requiredVersion: false,
+            },
+            'react-dom': {
+              singleton: true,
+              requiredVersion: false,
+            },
+          },
+        })
+      );
+    }
 
     return config;
   },
@@ -410,24 +550,22 @@ const nextConfig = {
   poweredByHeader: false,
   // Add any necessary rewrites for API routes
   async rewrites() {
-    return [
-      {
-        source: '/api/auth/:path*',
-        destination: '/api/auth/:path*',
-      },
-      {
-        source: '/api/webhooks/:path*',
-        destination: '/api/webhooks/:path*',
-      },
-      {
-        source: '/api/upload',
-        destination: '/api/upload',
-      },
-      {
-        source: '/api/payments/:path*',
-        destination: '/api/payments/:path*',
-      },
-    ];
+    return {
+      beforeFiles: [
+        // Proxy API requests
+        {
+          source: '/api/:path*',
+          destination: process.env.API_URL + '/:path*',
+        },
+      ],
+      afterFiles: [
+        // Handle dynamic routes
+        {
+          source: '/p/:path*',
+          destination: '/pages/:path*',
+        },
+      ],
+    };
   },
   // Add redirect for better SEO
   async redirects() {
@@ -444,6 +582,31 @@ const nextConfig = {
       },
     ];
   },
+  // Configure build output
+  output: 'standalone',
+  
+  // Configure compression
+  compress: true,
+
+  // Configure build indicators
+  devIndicators: {
+    buildActivity: true,
+    buildActivityPosition: 'bottom-right',
+  },
+
+  // Configure runtime configuration
+  serverRuntimeConfig: {
+    // Will only be available on the server side
+    mySecret: process.env.MY_SECRET,
+  },
+  publicRuntimeConfig: {
+    // Will be available on both server and client
+    staticFolder: '/static',
+  },
+
+  // Configure build optimization
+  optimizeFonts: true,
+  productionBrowserSourceMaps: false,
 };
 
 // Merge with existing Sentry config if present

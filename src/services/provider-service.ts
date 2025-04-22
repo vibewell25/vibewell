@@ -62,14 +62,18 @@ export class ProviderService {
    * Fetch all providers with caching
    */
   async getAllProviders(limit = 20, offset = 0): Promise<Provider[]> {
-    const { data, error } = await supabase
-      .from('providers')
-      .select('*')
-      .range(offset, offset + limit - 1)
-      .order('name');
+    try {
+      const providers = await prisma.provider.findMany({
+        skip: offset,
+        take: limit,
+        orderBy: { name: 'asc' }
+      });
 
-    if (error) throw error;
-    return data || [];
+      return providers as Provider[];
+    } catch (error) {
+      console.error('Error fetching providers:', error);
+      return [];
+    }
   }
 
   /**

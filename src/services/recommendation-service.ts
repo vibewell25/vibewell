@@ -120,33 +120,36 @@ export class RecommendationService {
   private async getUserInteractions(userId: string): Promise<UserInteraction[]> {
     try {
       // Fetch product views
-      const { data: viewData, error: viewError } = await supabase
-        .from('product_views')
-        .select('product_id, count, last_viewed')
-        .eq('user_id', userId);
-
-      if (viewError) throw viewError;
+      const viewData = await prisma.productView.findMany({
+        where: { userId },
+        select: {
+          productId: true,
+          count: true,
+          lastViewed: true
+        }
+      });
 
       // Fetch product purchases
-      const { data: purchaseData, error: purchaseError } = await supabase
-        .from('orders')
-        .select('products')
-        .eq('user_id', userId);
-
-      if (purchaseError) throw purchaseError;
+      const purchaseData = await prisma.order.findMany({
+        where: { userId },
+        select: {
+          products: true,
+          createdAt: true
+        }
+      });
 
       // Process views into interactions
-      const viewInteractions = (viewData || []).map(view => ({
-        productId: view.product_id,
+      const viewInteractions = viewData.map(view => ({
+        productId: view.productId,
         type: 'view' as const,
         count: view.count,
-        lastInteracted: view.last_viewed,
+        lastInteracted: view.lastViewed.toISOString(),
       }));
 
       // Process purchases into interactions
       const purchaseInteractions: UserInteraction[] = [];
-      (purchaseData || []).forEach((order: { products: any[]; created_at?: string }) => {
-        if (order && order.products && Array.isArray(order.products)) {
+      purchaseData.forEach(order => {
+        if (order.products && Array.isArray(order.products)) {
           order.products.forEach((product: any) => {
             const existingInteraction = purchaseInteractions.find(
               interaction => interaction.productId === product.id
@@ -159,7 +162,7 @@ export class RecommendationService {
                 productId: product.id,
                 type: 'purchase' as const,
                 count: 1,
-                lastInteracted: order.created_at || new Date().toISOString(),
+                lastInteracted: order.createdAt.toISOString(),
               });
             }
           });
@@ -167,12 +170,15 @@ export class RecommendationService {
       });
 
       // Fetch try-on sessions with feedback
-      const { data: tryOnData, error: tryOnError } = await supabase
-        .from('try_on_sessions')
-        .select('product_id, created_at, feedback, completed')
-        .eq('user_id', userId);
-
-      if (tryOnError) throw tryOnError;
+      const tryOnData = await prisma.tryOnSession.findMany({
+        where: { userId },
+        select: {
+          productId: true,
+          createdAt: true,
+          feedback: true,
+          completed: true
+        }
+      });
 
       // Process try-ons into interactions
       const tryOnMap = new Map<
@@ -185,38 +191,38 @@ export class RecommendationService {
         }
       >();
 
-      (tryOnData || []).forEach(session => {
-        if (!session.product_id) return;
+      tryOnData.forEach(session => {
+        if (!session.productId) return;
 
-        const existing = tryOnMap.get(session.product_id);
+        const existing = tryOnMap.get(session.productId);
 
         // Extract feedback data if available
         let feedbackRating: number | undefined = undefined;
         let wouldTryInRealLife: boolean | undefined = undefined;
 
         if (session.feedback && typeof session.feedback === 'object') {
-          feedbackRating = session.feedback.rating;
-          wouldTryInRealLife = session.feedback.would_try_in_real_life;
+          feedbackRating = (session.feedback as any).rating;
+          wouldTryInRealLife = (session.feedback as any).would_try_in_real_life;
         }
 
         if (existing) {
           existing.count += 1;
-          existing.lastInteracted = session.created_at;
+          existing.lastInteracted = session.createdAt.toISOString();
 
           // Update feedback data if this session has feedback and previous one doesn't
           // or if this feedback is more recent
           if (
             feedbackRating !== undefined &&
             (existing.feedbackRating === undefined ||
-              new Date(session.created_at) > new Date(existing.lastInteracted))
+              new Date(session.createdAt) > new Date(existing.lastInteracted))
           ) {
             existing.feedbackRating = feedbackRating;
             existing.wouldTryInRealLife = wouldTryInRealLife;
           }
         } else {
-          tryOnMap.set(session.product_id, {
+          tryOnMap.set(session.productId, {
             count: 1,
-            lastInteracted: session.created_at,
+            lastInteracted: session.createdAt.toISOString(),
             feedbackRating,
             wouldTryInRealLife,
           });
@@ -439,47 +445,41 @@ export class RecommendationService {
   async trackProductView(userId: string, productId: string): Promise<void> {
     try {
       // Check if a record already exists
-      const { data: existingRecord, error: selectError } = await supabase
-        .from('product_views')
-        .select('view_count')
-        .eq('user_id', userId)
-        .eq('product_id', productId)
-        .single();
+      const existingRecord = await prisma.productView.findUnique({
+        where: {
+          userId_productId: {
+            userId,
+            productId
+          }
+        }
+      });
 
-      if (selectError && selectError.code !== 'PGRST116') {
-        // PGRST116 = no rows returned
-        console.error('Error checking existing product view:', selectError);
-        return;
-      }
-
-      const now = new Date().toISOString();
+      const now = new Date();
 
       if (existingRecord) {
         // Update existing record
-        const { error: updateError } = await supabase
-          .from('product_views')
-          .update({
-            view_count: existingRecord.view_count + 1,
-            last_viewed_at: now,
-          })
-          .eq('user_id', userId)
-          .eq('product_id', productId);
-
-        if (updateError) {
-          console.error('Error updating product view:', updateError);
-        }
+        await prisma.productView.update({
+          where: {
+            userId_productId: {
+              userId,
+              productId
+            }
+          },
+          data: {
+            count: existingRecord.count + 1,
+            lastViewed: now
+          }
+        });
       } else {
         // Insert new record
-        const { error: insertError } = await supabase.from('product_views').insert({
-          user_id: userId,
-          product_id: productId,
-          view_count: 1,
-          last_viewed_at: now,
+        await prisma.productView.create({
+          data: {
+            userId,
+            productId,
+            count: 1,
+            lastViewed: now
+          }
         });
-
-        if (insertError) {
-          console.error('Error inserting product view:', insertError);
-        }
       }
     } catch (err) {
       console.error('Failed to track product view:', err);
@@ -493,26 +493,32 @@ export class RecommendationService {
   async getFeedbackBasedRecommendations(userId: string, limit: number = 4): Promise<Product[]> {
     try {
       // Fetch try-on sessions with positive feedback (rating >= 4 or would try in real life)
-      const { data: positiveFeedbackSessions, error: feedbackError } = await supabase
-        .from('try_on_sessions')
-        .select('product_id, feedback')
-        .eq('user_id', userId)
-        .not('feedback', 'is', null);
-
-      if (feedbackError) throw feedbackError;
+      const positiveFeedbackSessions = await prisma.tryOnSession.findMany({
+        where: {
+          userId,
+          feedback: {
+            not: null
+          }
+        },
+        select: {
+          productId: true,
+          feedback: true
+        }
+      });
 
       // Filter sessions with positive feedback
-      const productsWithPositiveFeedback = (positiveFeedbackSessions || [])
+      const productsWithPositiveFeedback = positiveFeedbackSessions
         .filter(session => {
           if (!session.feedback) return false;
 
           // Consider positive if rating is 4+ or would try in real life
+          const feedback = session.feedback as any;
           return (
-            (session.feedback.rating && session.feedback.rating >= 4) ||
-            session.feedback.would_try_in_real_life === true
+            (feedback.rating && feedback.rating >= 4) ||
+            feedback.would_try_in_real_life === true
           );
         })
-        .map(session => session.product_id);
+        .map(session => session.productId);
 
       if (productsWithPositiveFeedback.length === 0) {
         // If no positive feedback, fall back to regular recommendations

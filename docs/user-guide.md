@@ -200,93 +200,76 @@ Easily rebook services you love:
 
 ## Virtual Try-On
 
-### Accessing the Virtual Try-On Feature
+### Getting Started with Virtual Try-On
 
-Try hairstyles, makeup, and accessories virtually:
+Experience beauty looks before booking:
 
-1. From the home screen, tap "Virtual Try-On"
-2. Select a category (hairstyles, makeup, accessories)
-3. Allow camera access when prompted
+1. Access Virtual Try-On from the main menu or service pages
+2. Allow camera access when prompted
+3. Choose from available try-on categories:
+   - Hairstyles
+   - Makeup looks
+   - Hair colors
+   - Facial treatments
 
-### Using the AR Camera
+### Using Virtual Try-On
 
-Get the best results with these tips:
+Make the most of the AR experience:
 
-1. Use in well-lit areas with even lighting
-2. Keep your face centered in the frame
-3. Remove glasses and pull back hair for face-tracking features
-4. Hold your device steady
+1. Position your face within the guide frame
+2. Browse through available styles
+3. Tap to apply different looks
+4. Adjust features:
+   - Color intensity
+   - Style variations
+   - Lighting conditions
+4. Save screenshots to your gallery
+5. Share directly to social media
+6. Book the service for your chosen look
 
-### Trying Different Styles
+### Tips for Best Results
 
-Explore your options:
+Get the most accurate preview:
 
-1. Browse through available styles in each category
-2. Tap any style to apply it to your image
-3. Adjust features like color intensity, size, and positioning
-4. Switch between front and rear camera for different angles
-5. Take screenshots to save and compare looks
-
-### Sharing Your Virtual Look
-
-Share your virtual makeover:
-
-1. After creating a look, tap the "Share" button
-2. Choose to:
-   - Save to your device
-   - Share via social media
-   - Send to a friend via email or message
-   - Share directly with a service provider
-
-### Booking from Virtual Try-On
-
-Turn virtual styles into reality:
-
-1. When you find a look you love, tap "Book This Look"
-2. You'll see providers who offer the selected service
-3. Choose a provider and proceed with booking
+1. Ensure good lighting
+2. Keep your face centered
+3. Remove glasses or accessories
+4. Keep your hair pulled back for facial treatments
+5. Use a plain background
 
 ## Wellness Content
 
-### Accessing Wellness Library
+### Accessing Content
 
-Explore content for mind and body wellness:
+Find and enjoy wellness resources:
 
-1. Tap "Wellness" in the main navigation
-2. Browse content by category:
-   - Meditation
-   - Yoga
-   - Nutrition
-   - Mental health
-   - Beauty tips
-   - Fitness
+1. Navigate to "Wellness Hub" from the main menu
+2. Browse content categories:
+   - Beauty tutorials
+   - Wellness articles
+   - Expert interviews
+   - Product reviews
+   - Lifestyle tips
 
-### Content Types
+### Personalized Content
 
-Enjoy diverse wellness content:
+Get content tailored to your interests:
 
-1. **Videos**: Guided sessions and tutorials
-2. **Articles**: Expert advice and information
-3. **Audio**: Meditation guides and relaxation sounds
-4. **Interactive**: Quizzes and self-assessment tools
+1. Set your preferences in "Content Settings"
+2. Rate articles you read
+3. Save favorites for later
+4. Follow specific topics or experts
+5. Receive personalized recommendations
 
-### Tracking Progress
+### Interactive Features
 
-Monitor your wellness journey:
+Engage with the community:
 
-1. Go to "Wellness" → "My Progress"
-2. View completed content
-3. See streaks and achievements
-4. Set wellness goals and track progress
-
-### Saving and Favorites
-
-Organize content you love:
-
-1. Tap the bookmark icon on any content piece to save it
-2. Access saved content in "Wellness" → "Saved"
-3. Create custom collections for different categories
-4. Share collections with friends
+1. Comment on articles
+2. Share tips and experiences
+3. Join discussion groups
+4. Participate in challenges
+5. Track your wellness journey
 
 ## Payments and Billing
 
@@ -294,47 +277,33 @@ Organize content you love:
 
 Manage your payment options:
 
-1. Go to "Profile" → "Payment Methods"
-2. Add payment methods:
+1. Add payment methods:
    - Credit/debit cards
-   - PayPal
-   - Apple Pay/Google Pay (in app)
-   - Gift cards
-3. Set a default payment method
-4. Update or remove payment methods as needed
+   - Digital wallets
+   - Bank transfers
+2. Set default payment method
+3. Enable auto-pay for subscriptions
+4. View payment history
 
-### Viewing Transaction History
+### Digital Wallet
 
-Access your payment records:
+Use Vibewell Wallet for convenience:
 
-1. Go to "Profile" → "Transaction History"
-2. View all past transactions
-3. Filter by:
-   - Date range
-   - Service type
-   - Provider
-4. Download receipts for any transaction
+1. Add funds to your wallet
+2. Earn cashback rewards
+3. Pay for services instantly
+4. Transfer rewards points
+5. View transaction history
 
-### Managing Subscriptions
+### Subscriptions
 
-If you have a Vibewell Premium subscription:
+Manage your wellness subscriptions:
 
-1. Go to "Profile" → "Subscriptions"
-2. View subscription details:
-   - Plan type
-   - Billing date
-   - Price
-3. Upgrade or downgrade your plan
-4. Cancel subscription
-
-### Tipping Providers
-
-Show appreciation for great service:
-
-1. After an appointment, you'll receive a notification to rate and tip
-2. Select a preset tip amount or enter a custom amount
-3. Tips are processed using your default payment method
-4. All tips go directly to your service provider
+1. View active subscriptions
+2. Change subscription plans
+3. Pause or cancel subscriptions
+4. Set up auto-renewals
+5. Get subscription perks
 
 ## Reviews and Ratings
 
@@ -435,88 +404,117 @@ Monitor your rewards progress:
 
 ### Offline Access
 
-Use Vibewell without internet:
+Stay connected without internet:
 
-1. Downloaded content is available offline
-2. Appointment details are cached for offline viewing
-3. Virtual Try-On works with limited functionality offline
+1. Download content for offline viewing
+2. Access your appointments
+3. View saved articles
+4. Use pre-downloaded AR filters
+5. Sync when back online
 
 ### Push Notifications
 
 Stay updated on the go:
 
-1. Enable push notifications during setup
-2. Customize notification types in "Profile" → "Notification Settings"
-3. Receive alerts for:
-   - Appointment reminders
-   - Booking confirmations
-   - Messages from providers
-   - Special offers
+1. Appointment reminders
+2. Special offers
+3. New content alerts
+4. Booking confirmations
+5. Provider messages
 
-### Location-Based Features
+### Location Services
 
 Find services near you:
 
-1. Enable location services when prompted
-2. Discover nearby providers on the map view
-3. Get directions to appointments
-4. Receive notifications about services in your area
+1. Enable location access
+2. View providers on map
+3. Get directions
+4. Find current deals nearby
+5. Check wait times
 
-### App Settings
+## Payments and Billing
 
-Customize your app experience:
+### Payment Methods
 
-1. Go to "Profile" → "App Settings"
-2. Adjust:
-   - Theme (light/dark mode)
-   - Language preferences
-   - Default view options
-   - Data usage settings
-   - Biometric login options
+Manage your payment options:
 
-## Troubleshooting
+1. Add payment methods:
+   - Credit/debit cards
+   - Digital wallets
+   - Bank transfers
+2. Set default payment method
+3. Enable auto-pay for subscriptions
+4. View payment history
 
-### Common Issues
+### Digital Wallet
 
-Solutions for frequent problems:
+Use Vibewell Wallet for convenience:
 
-1. **App Crashing**
-   - Update to the latest version
-   - Restart your device
-   - Clear app cache (Settings → Apps → Vibewell → Storage → Clear Cache)
+1. Add funds to your wallet
+2. Earn cashback rewards
+3. Pay for services instantly
+4. Transfer rewards points
+5. View transaction history
 
-2. **Payment Failures**
-   - Verify your payment method is valid and not expired
-   - Check your internet connection
-   - Contact your payment provider to ensure no blocks on transactions
+### Subscriptions
 
-3. **Booking Errors**
-   - Refresh the page/app
-   - Try booking at a different time
-   - Clear browser cookies or app cache
+Manage your wellness subscriptions:
 
-4. **Virtual Try-On Issues**
-   - Ensure good lighting
-   - Grant camera permissions
-   - Update to the latest app version
+1. View active subscriptions
+2. Change subscription plans
+3. Pause or cancel subscriptions
+4. Set up auto-renewals
+5. Get subscription perks
 
-### Contacting Support
+## Security and Privacy
 
-Get help when you need it:
+### Account Security
 
-1. In-app help:
-   - Tap "Profile" → "Help & Support"
-   - Browse FAQs or search for your issue
-   - Use the in-app chat support
+Keep your account safe:
 
-2. Email support:
-   - Send detailed questions to support@vibewell.com
-   - Include screenshots if applicable
-   - Response typically within 24 hours
+1. Enable two-factor authentication
+2. Set up biometric login
+3. Review login history
+4. Manage connected devices
+5. Set up security questions
 
-3. Phone support:
-   - Available Monday-Friday, 9am-6pm EST
-   - Call [Support Phone Number]
+### Data Privacy
+
+Control your data:
+
+1. Review privacy settings
+2. Manage data sharing
+3. Download your data
+4. Delete account data
+5. Review third-party access
+
+## Support and Help
+
+### Getting Help
+
+Multiple ways to get assistance:
+
+1. In-app chat support
+2. Email support
+3. Phone support
+4. Help center articles
+5. Community forums
+
+### Feedback and Suggestions
+
+Help us improve:
+
+1. Submit feedback
+2. Report issues
+3. Suggest features
+4. Participate in surveys
+5. Join beta testing
+
+## Updates and Changes
+
+This guide is regularly updated to reflect new features and changes. Last updated: March 2024.
+
+For the latest information, visit our [Help Center](https://help.vibewell.com).
 
 ## Contact Support
 

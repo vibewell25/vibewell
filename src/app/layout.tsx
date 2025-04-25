@@ -1,6 +1,6 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
-import { Metadata, Viewport } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/theme-provider';
 import { LayoutProviders } from '@/components/providers/layout-providers';
@@ -10,6 +10,7 @@ import { Providers } from './providers';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { headers } from 'next/headers';
+import BottomNav from '@/components/common/BottomNav';
 
 // Import the Inter font with subset optimization
 const inter = Inter({
@@ -20,7 +21,7 @@ const inter = Inter({
 });
 
 // Static metadata
-export const metadata = {
+export const metadata: Metadata = {
   title: {
     default: 'VibeWell - Your Wellness Journey',
     template: '%s | VibeWell'
@@ -45,7 +46,7 @@ export const metadata = {
 };
 
 // Static viewport
-export const viewport = {
+export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
     { media: '(prefers-color-scheme: dark)', color: '#000000' }
@@ -55,7 +56,7 @@ export const viewport = {
 };
 
 async function getInitialState() {
-  const headersList = headers();
+  const headersList = await headers();
   const userAgent = headersList.get('user-agent') || '';
   const isMobile = /mobile/i.test(userAgent);
   
@@ -88,6 +89,7 @@ export default async function RootLayout({
               <SpeedInsights />
             </>
           )}
+          <BottomNav />
         </Providers>
       </body>
     </html>

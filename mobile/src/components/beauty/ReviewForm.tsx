@@ -42,8 +42,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
   }, [isVisible]);
 
   // Handle star rating selection
-  const renderStars = () => {
-    const stars = [];
+  const renderStars = (): JSX.Element[] => {
+    const stars: JSX.Element[] = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(
         <TouchableOpacity

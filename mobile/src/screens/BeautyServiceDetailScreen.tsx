@@ -193,7 +193,7 @@ const BeautyServiceDetailScreen: React.FC = () => {
       >
         {/* Main Image */}
         <Image 
-          source={{ uri: service.images[activeImageIndex] }}
+          source={{ uri: service.imageUrls[activeImageIndex] }}
           style={styles.mainImage}
           resizeMode="cover"
         />
@@ -223,7 +223,7 @@ const BeautyServiceDetailScreen: React.FC = () => {
                   { color: isDarkMode ? '#BBBBBB' : '#666666' }
                 ]}
               >
-                by {service.provider.name}
+                Provider ID: {service.providerId}
               </Text>
               <View style={styles.ratingContainer}>
                 <Feather name="star" size={14} color="#FFD700" />
@@ -233,7 +233,7 @@ const BeautyServiceDetailScreen: React.FC = () => {
                     { color: isDarkMode ? '#FFFFFF' : '#000000' }
                   ]}
                 >
-                  {service.provider.rating} ({service.provider.reviewCount})
+                  {service.rating?.toFixed(1)} ({service.reviews.length})
                 </Text>
               </View>
             </View>
@@ -273,7 +273,7 @@ const BeautyServiceDetailScreen: React.FC = () => {
                   { color: isDarkMode ? '#FFFFFF' : '#000000' }
                 ]}
               >
-                {service.category}
+                {service.categoryId}
               </Text>
             </View>
           </View>

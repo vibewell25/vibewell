@@ -8,7 +8,7 @@ import {
   AuthContextType as UnifiedAuthContextType,
   AuthProvider as UnifiedAuthProvider,
   useAuth as useUnifiedAuth
-} from '../../src/contexts/unified-auth-context';
+} from './unified-auth-context';
 
 // Re-export the unified auth context type
 export type AuthContextType = UnifiedAuthContextType;

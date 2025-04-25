@@ -12,6 +12,8 @@ import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useStripe } from '@stripe/stripe-react-native';
+import { serverBaseUrl } from '../config';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface PaymentMethod {
@@ -27,6 +29,7 @@ interface PaymentMethod {
 const PaymentMethodsScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -123,6 +126,34 @@ const PaymentMethodsScreen: React.FC = () => {
     }
   };
 
+  const handleAddPaymentMethod = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${serverBaseUrl}/api/stripe/setup-intent`, { method: 'POST' });
+      const { clientSecret } = await res.json();
+      const { error: initError } = await initPaymentSheet({
+        setupIntentClientSecret: clientSecret,
+        merchantDisplayName: 'VibeWell',
+      });
+      if (initError) {
+        Alert.alert('Error', initError.message);
+        return;
+      }
+      const { error: presentError } = await presentPaymentSheet();
+      if (presentError) {
+        Alert.alert('Error', presentError.message);
+        return;
+      }
+      Alert.alert('Success', 'Payment method added');
+      loadPaymentMethods();
+    } catch (error) {
+      console.error('Error adding payment method:', error);
+      Alert.alert('Error', 'Failed to add payment method');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
       <View style={styles.header}>
@@ -197,13 +228,9 @@ const PaymentMethodsScreen: React.FC = () => {
             styles.addButton,
             { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }
           ]}
-          onPress={() => {/* Navigate to add payment method */}}
+          onPress={handleAddPaymentMethod}
         >
-          <Feather
-            name="plus-circle"
-            size={24}
-            color={isDarkMode ? '#FFFFFF' : '#000000'}
-          />
+          <Feather name="plus" size={24} color={isDarkMode ? '#FFF' : '#000'} />
           <Text style={[
             styles.addButtonText,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }

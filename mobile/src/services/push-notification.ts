@@ -2,10 +2,10 @@ import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { serverBaseUrl } from '../config';
+import { serverBaseUrl, storageKeys } from '../config';
 
 // Constants
-const STORAGE_KEYS = {
+export const STORAGE_KEYS = {
   PUSH_TOKEN: '@vibewell/push_token',
   NOTIFICATION_SETTINGS: '@vibewell/notification_settings',
 };
@@ -29,7 +29,7 @@ export interface RegisterForPushNotificationsResult {
 }
 
 // Default notification settings
-const DEFAULT_NOTIFICATION_SETTINGS: NotificationSettings = {
+export const DEFAULT_NOTIFICATION_SETTINGS: NotificationSettings = {
   appointments: true,
   reminders: true,
   marketing: false,
@@ -204,100 +204,17 @@ export async function registerForPushNotifications(): Promise<RegisterForPushNot
 }
 
 /**
- * Register push token with server
+ * Send push token to backend for registration
  */
-async function registerTokenWithServer(token: string): Promise<boolean> {
+export async function registerTokenWithServer(token: string): Promise<void> {
   try {
-    // Get user ID from storage or auth context
-    const userId = await AsyncStorage.getItem('@vibewell/user_id');
-    if (!userId) {
-      console.warn('Cannot register push token: No user ID found');
-      return false;
-    }
-
-    // Send to server
-    const response = await fetch(`${serverBaseUrl}/api/users/${userId}/push-token`, {
+    await fetch(`${serverBaseUrl}/api/notifications/register`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${await AsyncStorage.getItem('@vibewell/auth_token')}`,
-      },
-      body: JSON.stringify({
-        token,
-        platform: Platform.OS,
-        deviceName: Device.deviceName,
-        deviceModel: Device.modelName,
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
     });
-
-    if (!response.ok) {
-      throw new Error(`Server returned ${response.status}`);
-    }
-
-    return true;
-  } catch (error) {
-    console.error('Error registering token with server:', error);
-    
-    // Store failed registration to retry later
-    await storeFailedTokenRegistration(token);
-    return false;
-  }
-}
-
-/**
- * Store failed token registration to retry later
- */
-async function storeFailedTokenRegistration(token: string): Promise<void> {
-  try {
-    const pendingRegistrations = JSON.parse(
-      await AsyncStorage.getItem('@vibewell/pending_token_registrations') || '[]'
-    );
-    
-    pendingRegistrations.push({
-      token,
-      timestamp: new Date().toISOString(),
-    });
-    
-    await AsyncStorage.setItem(
-      '@vibewell/pending_token_registrations',
-      JSON.stringify(pendingRegistrations)
-    );
-  } catch (error) {
-    console.error('Error storing failed token registration:', error);
-  }
-}
-
-/**
- * Retry failed token registrations
- */
-export async function retryFailedTokenRegistrations(): Promise<void> {
-  try {
-    const pendingRegistrationsStr = await AsyncStorage.getItem('@vibewell/pending_token_registrations');
-    if (!pendingRegistrationsStr) return;
-    
-    const pendingRegistrations = JSON.parse(pendingRegistrationsStr);
-    if (!pendingRegistrations.length) return;
-    
-    const successful = [];
-    
-    for (const registration of pendingRegistrations) {
-      const success = await registerTokenWithServer(registration.token);
-      if (success) {
-        successful.push(registration);
-      }
-    }
-    
-    // Remove successful registrations
-    const remaining = pendingRegistrations.filter(
-      reg => !successful.some(s => s.token === reg.token)
-    );
-    
-    await AsyncStorage.setItem(
-      '@vibewell/pending_token_registrations',
-      JSON.stringify(remaining)
-    );
-  } catch (error) {
-    console.error('Error retrying token registrations:', error);
+  } catch (err) {
+    console.error('Error registering push token with server:', err);
   }
 }
 
@@ -305,13 +222,8 @@ export async function retryFailedTokenRegistrations(): Promise<void> {
  * Get current notification settings
  */
 export async function getNotificationSettings(): Promise<NotificationSettings> {
-  try {
-    const settings = await AsyncStorage.getItem(STORAGE_KEYS.NOTIFICATION_SETTINGS);
-    return settings ? JSON.parse(settings) : DEFAULT_NOTIFICATION_SETTINGS;
-  } catch (error) {
-    console.error('Error getting notification settings:', error);
-    return DEFAULT_NOTIFICATION_SETTINGS;
-  }
+  const settings = await AsyncStorage.getItem(STORAGE_KEYS.NOTIFICATION_SETTINGS);
+  return settings ? JSON.parse(settings) : DEFAULT_NOTIFICATION_SETTINGS;
 }
 
 /**
@@ -344,14 +256,17 @@ export async function updateNotificationSettings(
  */
 async function updateSettingsOnServer(settings: NotificationSettings): Promise<boolean> {
   try {
-    const userId = await AsyncStorage.getItem('@vibewell/user_id');
-    if (!userId) return false;
-    
+    const userDataRaw = await AsyncStorage.getItem(storageKeys.USER_DATA);
+    const userDataStr = userDataRaw ?? JSON.stringify({ id: '' });
+    const { id: userId } = JSON.parse(userDataStr);
+    const authTokenRaw = await AsyncStorage.getItem(storageKeys.AUTH_TOKEN);
+    const authToken = authTokenRaw ?? '';
+
     const response = await fetch(`${serverBaseUrl}/api/users/${userId}/notification-preferences`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${await AsyncStorage.getItem('@vibewell/auth_token')}`,
+        'Authorization': `Bearer ${authToken}`,
       },
       body: JSON.stringify(settings),
     });
@@ -450,6 +365,33 @@ export async function setBadgeCount(count: number): Promise<void> {
   await Notifications.setBadgeCountAsync(count);
 }
 
+/**
+ * Send a push notification via server
+ */
+export async function sendPushNotification(
+  title: string,
+  body: string,
+  data?: Record<string, any>
+): Promise<boolean> {
+  const userDataRaw = await AsyncStorage.getItem(storageKeys.USER_DATA);
+  if (!userDataRaw) return false;
+  const { id: userId } = JSON.parse(userDataRaw);
+  const authToken = (await AsyncStorage.getItem(storageKeys.AUTH_TOKEN)) ?? '';
+
+  const response = await fetch(
+    `${serverBaseUrl}/api/users/${userId}/notify`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({ title, body, data }),
+    }
+  );
+  return response.ok;
+}
+
 export default {
   configureNotifications,
   registerForPushNotifications,
@@ -464,5 +406,6 @@ export default {
   addNotificationReceivedListener,
   removeNotificationListener,
   setBadgeCount,
-  retryFailedTokenRegistrations,
-}; 
+  registerTokenWithServer,
+  sendPushNotification,
+};

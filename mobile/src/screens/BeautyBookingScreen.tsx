@@ -19,7 +19,7 @@ import {
   BeautyBookingRouteProp,
   BeautyServiceDetails
 } from '../types/navigation';
-import { createBooking } from '../services/beautyService';
+import { createBooking, BookingRequest } from '../services/beautyService';
 
 // Get current date and format it to YYYY-MM-DD
 const getCurrentDate = (): string => {
@@ -27,9 +27,20 @@ const getCurrentDate = (): string => {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 };
 
+// Available date type
+type AvailableDate = {
+  id: string;
+  date: Date;
+  formattedDate: string;
+  day: string;
+  dateNum: number;
+  month: string;
+  fullDate: string;
+};
+
 // Available dates (next 7 days)
-const getAvailableDates = () => {
-  const dates = [];
+const getAvailableDates = (): AvailableDate[] => {
+  const dates: AvailableDate[] = [];
   const today = new Date();
   
   for (let i = 0; i < 7; i++) {
@@ -106,24 +117,32 @@ const BeautyBookingScreen: React.FC = () => {
         return;
       }
       
-      // Create booking
-      const bookingResult = await createBooking(
-        service.id,
-        selectedDateObj.formattedDate,
-        timeSlot.time,
-        !isLoggedIn ? { name, email, phone } : undefined,
-        specialRequests
-      );
-      
-      if (bookingResult.success) {
-        // Navigate to confirmation screen
-        navigation.navigate('BookingConfirmation', {
-          bookingId: bookingResult.bookingId,
-          serviceTitle: service.title
-        });
-      } else {
-        Alert.alert('Error', 'Failed to create booking. Please try again.');
-      }
+      // Build booking request
+      const bookingRequest: BookingRequest = {
+        serviceId: service.id,
+        date: selectedDateObj.formattedDate,
+        timeSlot: { id: timeSlot.id, time: timeSlot.time },
+        userInfo: isLoggedIn
+          ? { name: user?.name || '', email: user?.email || '', phone }
+          : { name, email, phone },
+        specialRequests,
+      };
+      // Execute booking
+      const bookingResponse = await createBooking(bookingRequest);
+      // Navigate to confirmation
+      navigation.navigate('BookingConfirmation', {
+        bookingId: bookingResponse.bookingId,
+        serviceId: bookingResponse.serviceId,
+        serviceTitle: service.title,
+        date: bookingRequest.date,
+        time: bookingRequest.timeSlot.time,
+        status: bookingResponse.status,
+        amount: bookingResponse.price,
+        duration: bookingResponse.duration,
+        location: bookingResponse.location,
+        providerName: bookingResponse.providerName,
+        userInfo: bookingRequest.userInfo,
+      });
     } catch (error) {
       console.error('Error creating booking:', error);
       Alert.alert('Error', 'Something went wrong. Please try again.');
@@ -133,8 +152,9 @@ const BeautyBookingScreen: React.FC = () => {
   };
   
   // Get formatted price
-  const getFormattedPrice = (price: string) => {
-    return price.includes('+') ? `From ${price}` : price;
+  const getFormattedPrice = (price: number) => {
+    const strPrice = price.toString();
+    return strPrice.includes('+') ? `From ${strPrice}` : strPrice;
   };
   
   return (
@@ -193,7 +213,7 @@ const BeautyBookingScreen: React.FC = () => {
             styles.serviceProvider,
             { color: isDarkMode ? '#BBBBBB' : '#666666' }
           ]}>
-            at {service.provider.name}
+            Provider ID: {service.providerId}
           </Text>
           <View style={styles.ratingContainer}>
             <Feather name="star" size={12} color="#FFD700" />
@@ -201,7 +221,7 @@ const BeautyBookingScreen: React.FC = () => {
               styles.ratingText,
               { color: isDarkMode ? '#FFFFFF' : '#000000' }
             ]}>
-              {service.provider.rating} ({service.provider.reviewCount})
+              {service.rating?.toFixed(1)} ({service.reviews.length})
             </Text>
           </View>
         </View>

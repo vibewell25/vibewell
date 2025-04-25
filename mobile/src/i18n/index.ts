@@ -2,18 +2,27 @@ import { I18n } from 'i18n-js';
 import * as Localization from 'expo-localization';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { I18nManager } from 'react-native';
-import { format } from 'date-fns';
-import { enUS, es, fr, de, it, ja, zhCN, ar } from 'date-fns/locale';
+import { format, Locale } from 'date-fns';
+import {
+  enUS as localeEnUS,
+  es as localeEs,
+  fr as localeFr,
+  de as localeDe,
+  it as localeIt,
+  ja as localeJa,
+  zhCN as localeZhCN,
+  ar as localeAr,
+} from 'date-fns/locale';
 
 // Import translations
-import en from './translations/en';
-import es from './translations/es';
-import fr from './translations/fr';
-import de from './translations/de';
-import it from './translations/it';
-import ja from './translations/ja';
-import zhCN from './translations/zh-CN';
-import ar from './translations/ar';
+import enTranslations from './translations/en';
+import esTranslations from './translations/es';
+import frTranslations from './translations/fr';
+import deTranslations from './translations/de';
+import itTranslations from './translations/it';
+import jaTranslations from './translations/ja';
+import zhCNTranslations from './translations/zh-CN';
+import arTranslations from './translations/ar';
 
 // Storage keys for language preferences
 const STORAGE_KEYS = {
@@ -44,26 +53,26 @@ export const LANGUAGES: LanguageOption[] = [
 
 // Date-fns locale mapping for consistent date formatting
 const DATE_FNS_LOCALES: { [key: string]: Locale } = {
-  en: enUS,
-  es,
-  fr,
-  de,
-  it,
-  ja,
-  'zh-CN': zhCN,
-  ar,
+  en: localeEnUS,
+  es: localeEs,
+  fr: localeFr,
+  de: localeDe,
+  it: localeIt,
+  ja: localeJa,
+  'zh-CN': localeZhCN,
+  ar: localeAr,
 };
 
 // Create i18n instance
 const i18n = new I18n({
-  en,
-  es,
-  fr,
-  de,
-  it,
-  ja,
-  'zh-CN': zhCN,
-  ar,
+  en: enTranslations,
+  es: esTranslations,
+  fr: frTranslations,
+  de: deTranslations,
+  it: itTranslations,
+  ja: jaTranslations,
+  'zh-CN': zhCNTranslations,
+  ar: arTranslations,
 });
 
 // Default to device locale or fall back to en

@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { addServiceReview, ReviewInput } from '../../services/beautyService';
-import { validateForm } from '../../../utils/form-validation';
+import { validateForm } from '../../utils/form-validation';
 
 interface BeautyReviewFormProps {
   serviceId: string;
@@ -90,8 +90,8 @@ const BeautyReviewForm: React.FC<BeautyReviewFormProps> = ({
     }
   };
 
-  const renderStars = () => {
-    const stars = [];
+  const renderStars = (): JSX.Element[] => {
+    const stars: JSX.Element[] = [];
     
     for (let i = 1; i <= 5; i++) {
       stars.push(

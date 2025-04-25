@@ -1,4 +1,14 @@
 {
-  "compilerOptions": {},
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-native",
+    "types": ["jest", "node"],
+    "noImplicitAny": false
+  },
+  "include": ["src", "global.d.ts"],
+  "exclude": ["node_modules"]
 }

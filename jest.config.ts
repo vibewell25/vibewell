@@ -1,8 +1,10 @@
 import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
-  preset: 'ts-jest',
   testEnvironment: 'jsdom',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node', 'mjs'],
+  modulePathIgnorePatterns: ['<rootDir>/backups/', '<rootDir>/mobile/'],
+  transformIgnorePatterns: ['<rootDir>/node_modules/(?!(msw|@mswjs|@sentry/nextjs|@sentry/node)/)'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -16,10 +18,7 @@ const config: Config.InitialOptions = {
     '^@types/(.*)$': '<rootDir>/types/$1',
   },
   transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: 'tsconfig.json',
-    }],
-    '^.+\\.jsx?$': ['babel-jest', { presets: ['next/babel'] }],
+    '^.+\\.(js|jsx|ts|tsx|mjs)$': ['babel-jest', { presets: ['next/babel'] }],
   },
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
@@ -35,7 +34,7 @@ const config: Config.InitialOptions = {
     '!**/.next/**',
     '!**/coverage/**',
   ],
-  coverageThresholds: {
+  coverageThreshold: {
     global: {
       branches: 80,
       functions: 80,
@@ -53,19 +52,16 @@ const config: Config.InitialOptions = {
     'jest-watch-typeahead/testname',
   ],
   testPathIgnorePatterns: [
+    '<rootDir>/backups/',
+    '<rootDir>/mobile/',
     '<rootDir>/node_modules/',
     '<rootDir>/.next/',
     '<rootDir>/coverage/',
   ],
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json',
-      diagnostics: true,
-    },
-  },
   resolver: '<rootDir>/jest.resolver.js',
   maxWorkers: '50%',
   testTimeout: 10000,
 };
 
-export default config; 
+// @ts-ignore: suppress TS1286 ESM-in-CJS error
+export default config;

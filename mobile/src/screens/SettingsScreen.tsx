@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,6 +19,8 @@ const SettingsScreen: React.FC = () => {
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
   // State for biometric login
   const [biometricLoginEnabled, setBiometricLoginEnabled] = React.useState(false);
+  // State for language selector visibility
+  const [isLanguageSelectorVisible, setIsLanguageSelectorVisible] = React.useState(false);
 
   // Toggle dark mode
   const toggleDarkMode = async (value: boolean) => {
@@ -45,6 +47,11 @@ const SettingsScreen: React.FC = () => {
   const handleLanguageChange = (locale: string) => {
     // Reload the component or update the UI as needed
     console.log(`Language changed to: ${locale}`);
+  };
+
+  // Handle language selector close
+  const handleLanguageSelectorClose = () => {
+    setIsLanguageSelectorVisible(false);
   };
 
   // Render a settings section header
@@ -105,7 +112,14 @@ const SettingsScreen: React.FC = () => {
         {/* Language Settings */}
         {renderSectionHeader(i18n.t('settings.language'))}
         <View style={styles.languageContainer}>
-          <LanguageSelector onLanguageChange={handleLanguageChange} />
+          <TouchableOpacity onPress={() => setIsLanguageSelectorVisible(true)}>
+            <Text style={styles.itemText}>{i18n.t('settings.language')}</Text>
+          </TouchableOpacity>
+          <LanguageSelector 
+            isVisible={isLanguageSelectorVisible} 
+            onClose={handleLanguageSelectorClose} 
+            onLanguageChange={handleLanguageChange} 
+          />
         </View>
 
         {/* Notification Settings */}

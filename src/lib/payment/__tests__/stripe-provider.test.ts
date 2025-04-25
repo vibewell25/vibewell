@@ -1,19 +1,20 @@
-import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { StripePaymentProvider } from '../stripe-provider';
 import Stripe from 'stripe';
 
+// jest globals (describe, it, expect, beforeEach) are automatically available
+
 // Mock the Stripe module
-vi.mock('stripe', () => {
+jest.mock('stripe', () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
+    default: jest.fn().mockImplementation(() => ({
       customers: {
-        create: vi.fn().mockResolvedValue({
+        create: jest.fn().mockResolvedValue({
           id: 'cus_mock123',
           email: 'test@example.com',
           name: 'Test User',
           metadata: { userId: 'user123' },
         }),
-        retrieve: vi.fn().mockResolvedValue({
+        retrieve: jest.fn().mockResolvedValue({
           id: 'cus_mock123',
           email: 'test@example.com',
           name: 'Test User',
@@ -21,13 +22,13 @@ vi.mock('stripe', () => {
           deleted: false,
           invoice_settings: { default_payment_method: 'pm_default' },
         }),
-        update: vi.fn().mockResolvedValue({
+        update: jest.fn().mockResolvedValue({
           id: 'cus_mock123',
           invoice_settings: { default_payment_method: 'pm_123' },
         }),
       },
       paymentMethods: {
-        attach: vi.fn().mockResolvedValue({
+        attach: jest.fn().mockResolvedValue({
           id: 'pm_123',
           type: 'card',
           card: {
@@ -37,7 +38,7 @@ vi.mock('stripe', () => {
             exp_year: 2025,
           },
         }),
-        list: vi.fn().mockResolvedValue({
+        list: jest.fn().mockResolvedValue({
           data: [
             {
               id: 'pm_123',
@@ -53,7 +54,7 @@ vi.mock('stripe', () => {
         }),
       },
       paymentIntents: {
-        create: vi.fn().mockResolvedValue({
+        create: jest.fn().mockResolvedValue({
           id: 'pi_123',
           amount: 1000,
           currency: 'usd',
@@ -62,7 +63,7 @@ vi.mock('stripe', () => {
           created: Date.now() / 1000,
           metadata: { order_id: '12345' },
         }),
-        confirm: vi.fn().mockResolvedValue({
+        confirm: jest.fn().mockResolvedValue({
           id: 'pi_123',
           amount: 1000,
           currency: 'usd',
@@ -71,7 +72,7 @@ vi.mock('stripe', () => {
           created: Date.now() / 1000,
           metadata: { order_id: '12345' },
         }),
-        retrieve: vi.fn().mockResolvedValue({
+        retrieve: jest.fn().mockResolvedValue({
           id: 'pi_123',
           amount: 1000,
           currency: 'usd',
@@ -80,7 +81,7 @@ vi.mock('stripe', () => {
           created: Date.now() / 1000,
           metadata: { order_id: '12345' },
         }),
-        cancel: vi.fn().mockResolvedValue({
+        cancel: jest.fn().mockResolvedValue({
           id: 'pi_123',
           amount: 1000,
           currency: 'usd',
@@ -91,7 +92,7 @@ vi.mock('stripe', () => {
         }),
       },
       refunds: {
-        create: vi.fn().mockResolvedValue({
+        create: jest.fn().mockResolvedValue({
           id: 're_123',
           payment_intent: 'pi_123',
           amount: 1000,

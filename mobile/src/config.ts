@@ -36,6 +36,9 @@ export const featureFlags = {
   enableDarkMode: true,
 };
 
+// Stripe Configuration
+export const stripePublishableKey = '<YOUR_STRIPE_PUBLISHABLE_KEY>';
+
 // Default user preferences
 export const defaultPreferences = {
   theme: 'light',

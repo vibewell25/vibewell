@@ -158,7 +158,7 @@ export function cacheWarmer(urls: string[], options: CacheOptions = {}) {
         await new Promise<void>((resolve) => {
           middleware(
             mockReq as Request,
-            mockRes as Response,
+            mockRes as unknown as Response,
             () => resolve()
           );
         });

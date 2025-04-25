@@ -432,7 +432,7 @@ function createActionsForCategory(category: string, data: any) {
 /**
  * Map our category to Android system categories
  */
-function mapToAndroidCategory(category: string): AndroidCategory | undefined {
+function mapToAndroidCategory(category: string) {
   switch (category) {
     case NotificationCategory.MESSAGE:
       return AndroidCategory.MESSAGE;

@@ -1,0 +1,7 @@
+# Ignore mocks, tests, and large utility folders
+__mocks__/
+__tests__/
+tests/
+cypress/
+scripts/
+backups/

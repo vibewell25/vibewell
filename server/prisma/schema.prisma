@@ -1,0 +1,157 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  PROVIDER
+  ADMIN
+}
+
+model User {
+  id                String   @id @default(uuid())
+  auth0Id           String?  @unique
+  email             String   @unique
+  name              String?
+  avatar            String?
+  role              Role     @default(USER)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  pushTokens        Json     @default("[]")
+  notificationSettings Json @default("{}")
+  transactions      LoyaltyTransaction[]
+  subscriptions      Subscription[]
+  referralCode      String   @unique @default(uuid())
+  referredById      String?
+  referredBy        User?    @relation("Referrals", fields: [referredById], references: [id])
+  referrals         User[]   @relation("Referrals")
+  analyticsEvents   AnalyticsEvent[]
+  paymentTransactions PaymentTransaction[]
+}
+
+model Provider {
+  id           String   @id @default(uuid())
+  name         String
+  description  String?
+  businessName String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  services     Service[] @relation("ProviderServices")
+  businesses   Business[]
+}
+
+model Service {
+  id          String    @id @default(uuid())
+  provider    Provider  @relation("ProviderServices", fields: [providerId], references: [id])
+  providerId  String
+  name        String
+  price       Float
+  duration    Int       // in minutes
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  paymentTransactions PaymentTransaction[]
+}
+
+model Business {
+  id          String         @id @default(uuid())
+  providerId  String         @unique
+  provider    Provider       @relation(fields: [providerId], references: [id])
+  name        String
+  address     String?
+  description String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  hours       BusinessHour[]
+  staff       Staff[]
+}
+
+model BusinessHour {
+  id         String    @id @default(uuid())
+  business   Business  @relation(fields: [businessId], references: [id])
+  businessId String
+  dayOfWeek  Int       // 0 = Sunday ... 6 = Saturday
+  openTime   String
+  closeTime  String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Staff {
+  id         String    @id @default(uuid())
+  business   Business  @relation(fields: [businessId], references: [id])
+  businessId String
+  name       String
+  role       String
+  email      String?
+  phone      String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+// Loyalty: tiers and transactions
+model LoyaltyTier {
+  id             String   @id @default(uuid())
+  name           String
+  requiredPoints Int
+  discount       Float    // percentage discount
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  transactions   LoyaltyTransaction[]
+}
+
+model LoyaltyTransaction {
+  id        String           @id @default(uuid())
+  user      User             @relation(fields: [userId], references: [id])
+  userId    String
+  tier      LoyaltyTier?     @relation(fields: [tierId], references: [id])
+  tierId    String?
+  points    Int
+  type      TransactionType
+  createdAt DateTime         @default(now())
+}
+
+enum TransactionType {
+  EARN
+  REDEEM
+}
+
+// Subscription model
+model Subscription {
+  id                   String   @id @default(uuid())
+  user                 User     @relation(fields: [userId], references: [id])
+  userId               String
+  stripeSubscriptionId String   @unique
+  priceId              String
+  status               String
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model AnalyticsEvent {
+  id          String   @id @default(uuid())
+  user        User?    @relation(fields: [userId], references: [id])
+  userId      String?
+  event       String
+  properties  Json?
+  createdAt   DateTime @default(now())
+}
+
+// Record individual payment and subscription revenue
+model PaymentTransaction {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  amount    Int
+  currency  String
+  mode      String   // 'payment' or 'subscription'
+  createdAt DateTime @default(now())
+  service   Service? @relation(fields: [serviceId], references: [id])
+  serviceId String?
+}

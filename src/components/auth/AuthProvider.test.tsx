@@ -1,32 +1,29 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { AuthProvider, useAuth } from './AuthProvider';
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+import React from 'react';
+import '@testing-library/jest-dom';
 import { act } from 'react-dom/test-utils';
 
 // Mock functions and dependencies
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: vi.fn(),
-    replace: vi.fn(),
-    refresh: vi.fn(),
-  }),
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ push: jest.fn(), replace: jest.fn(), refresh: jest.fn() }),
 }));
 
 // Mock fetch for API calls
-global.fetch = vi.fn();
+global.fetch = jest.fn();
 
 // Mock localStorage
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
   return {
-    getItem: vi.fn((key: string) => store[key] || null),
-    setItem: vi.fn((key: string, value: string) => {
+    getItem: jest.fn((key: string) => store[key] || null),
+    setItem: jest.fn((key: string, value: string) => {
       store[key] = value;
     }),
-    removeItem: vi.fn((key: string) => {
+    removeItem: jest.fn((key: string) => {
       delete store[key];
     }),
-    clear: vi.fn(() => {
+    clear: jest.fn(() => {
       store = {};
     }),
   };
@@ -57,12 +54,12 @@ function TestComponent() {
 
 describe('AuthProvider', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     localStorageMock.clear();
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    jest.restoreAllMocks();
   });
 
   it('provides initial authentication state', () => {

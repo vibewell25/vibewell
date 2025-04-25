@@ -171,3 +171,43 @@ export const BaseCard = React.forwardRef<HTMLDivElement, BaseCardProps>(
 );
 
 BaseCard.displayName = 'BaseCard';
+
+export interface BaseCardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+export const BaseCardHeader = React.forwardRef<HTMLDivElement, BaseCardHeaderProps>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('px-4 py-3 border-b', className)} {...props} />
+  )
+);
+BaseCardHeader.displayName = 'BaseCardHeader';
+
+export interface BaseCardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
+export const BaseCardTitle = React.forwardRef<HTMLHeadingElement, BaseCardTitleProps>(
+  ({ className, ...props }, ref) => (
+    <h3 ref={ref} className={cn('text-lg font-medium', className)} {...props} />
+  )
+);
+BaseCardTitle.displayName = 'BaseCardTitle';
+
+export interface BaseCardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+export const BaseCardDescription = React.forwardRef<HTMLParagraphElement, BaseCardDescriptionProps>(
+  ({ className, ...props }, ref) => (
+    <p ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />
+  )
+);
+BaseCardDescription.displayName = 'BaseCardDescription';
+
+export interface BaseCardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+export const BaseCardContent = React.forwardRef<HTMLDivElement, BaseCardContentProps>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('p-4', className)} {...props} />
+  )
+);
+BaseCardContent.displayName = 'BaseCardContent';
+
+export interface BaseCardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export const BaseCardFooter = React.forwardRef<HTMLDivElement, BaseCardFooterProps>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('px-4 py-3 border-t', className)} {...props} />
+  )
+);
+BaseCardFooter.displayName = 'BaseCardFooter';

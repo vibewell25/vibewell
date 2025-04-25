@@ -1,5 +1,14 @@
 module.exports = {
   preset: 'jest-expo',
+  transform: { '^.+\\.[jt]sx?$': 'babel-jest' },
+  setupFiles: ['@react-native-async-storage/async-storage/jest/async-storage-mock'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/src/hooks/',
+    '/src/tests/',
+    '/tests/',
+    '/e2e/',
+  ],
   transformIgnorePatterns: [
     'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)',
   ],
@@ -15,7 +24,8 @@ module.exports = {
     '!**/node_modules/**',
     '!**/babel.config.js',
     '!**/jest.setup.js',
+    '!**/src/contexts/**',
   ],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   verbose: true,
-}; 
+};

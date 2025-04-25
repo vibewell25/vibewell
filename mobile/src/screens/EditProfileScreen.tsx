@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const validationSchema = Yup.object().shape({
@@ -29,6 +30,22 @@ const EditProfileScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
   const [saving, setSaving] = useState(false);
+  const [initialValues, setInitialValues] = useState({ name: '', email: '', phone: '', bio: '' });
+  const [loadingProfile, setLoadingProfile] = useState(true);
+
+  useEffect(() => {
+    AsyncStorage.getItem('@vibewell/user_profile').then(item => {
+      const current = item ? JSON.parse(item) : {};
+      setInitialValues({ name: current.name || '', email: current.email || '', phone: current.phone || '', bio: current.bio || '' });
+      setLoadingProfile(false);
+    });
+  }, []);
+
+  if (loadingProfile) return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ActivityIndicator size="large" />
+    </View>
+  );
 
   const handleSave = async (values: any) => {
     setSaving(true);
@@ -78,12 +95,8 @@ const EditProfileScreen: React.FC = () => {
           </View>
 
           <Formik
-            initialValues={{
-              name: '',
-              email: '',
-              phone: '',
-              bio: ''
-            }}
+            initialValues={initialValues}
+            enableReinitialize
             validationSchema={validationSchema}
             onSubmit={handleSave}
           >
@@ -269,4 +282,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditProfileScreen; 
+export default EditProfileScreen;

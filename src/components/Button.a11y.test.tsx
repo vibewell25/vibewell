@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import 'jest-axe/extend-expect';
 import { Button } from './Button';

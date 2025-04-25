@@ -12,7 +12,7 @@ import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
 // Import the optimized loading spinner
-const LoadingSpinner = dynamic(() => import('@/components/ui/LoadingSpinner'), {
+const LoadingSpinner = dynamic(() => import('@/components/common/LoadingSpinner'), {
   ssr: true,
 });
 

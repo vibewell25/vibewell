@@ -49,10 +49,13 @@ const Router = {
   asPath: '/',
 };
 
+// Use CommonJS require for React
+const React = require('react');
+
 // Mock withRouter HOC
 const withRouter = jest.fn().mockImplementation(Component => {
   const WithRouterComponent = props => {
-    return <Component {...props} router={useRouter()} />;
+    return React.createElement(Component, { ...props, router: useRouter() });
   };
   
   WithRouterComponent.displayName = `withRouter(${Component.displayName || Component.name || 'Component'})`;

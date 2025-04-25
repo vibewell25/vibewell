@@ -6,12 +6,12 @@ import { EventEmitter } from 'events';
 jest.mock('ioredis');
 jest.mock('../utils/logger');
 
-const MockRedis = Redis as jest.MockedClass<typeof Redis>;
+const MockRedis = Redis as jest.Mocked<typeof Redis>;
 
 describe('RedisPubSub', () => {
   let pubsub: RedisPubSub;
-  let publisher: jest.Mocked<Redis>;
-  let subscriber: jest.Mocked<Redis>;
+  let publisher: jest.Mocked<typeof Redis>;
+  let subscriber: jest.Mocked<typeof Redis>;
 
   const pubsubConfig = {
     channelPrefix: 'test',
@@ -25,8 +25,8 @@ describe('RedisPubSub', () => {
   };
 
   beforeEach(() => {
-    publisher = new MockRedis() as jest.Mocked<Redis>;
-    subscriber = new MockRedis() as jest.Mocked<Redis>;
+    publisher = new MockRedis() as jest.Mocked<typeof Redis>;
+    subscriber = new MockRedis() as jest.Mocked<typeof Redis>;
     
     // Setup subscriber as EventEmitter for testing
     Object.setPrototypeOf(subscriber, EventEmitter.prototype);

@@ -20,7 +20,7 @@ import {
   BookingConfirmationRouteProp
 } from '../types/navigation';
 import { sendBookingConfirmation } from '../services/notificationService';
-import { addBookingToCalendar } from '../services/calendarService';
+import { addBookingToCalendar, getCalendarPermissions, requestCalendarPermissions } from '../services/calendarService';
 import { BookingResponse } from '../types/beauty';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -39,7 +39,7 @@ const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
   route
 }) => {
   const { isDarkMode } = useTheme();
-  const { bookingId, serviceTitle, amount, date, time, status, serviceId, userInfo } = route.params;
+  const { bookingId, serviceTitle, amount, date, time, status, serviceId, userInfo, duration, location, providerName } = route.params;
   
   const [isAddingToCalendar, setIsAddingToCalendar] = useState<boolean>(false);
   const [calendarAdded, setCalendarAdded] = useState<boolean>(false);
@@ -102,37 +102,54 @@ const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
   const addToCalendar = async () => {
     setIsAddingToCalendar(true);
     try {
-      // Convert the booking params to the expected BookingResponse format
+      // Verify calendar permissions
+      const hasPermission = await getCalendarPermissions();
+      if (!hasPermission) {
+        const granted = await requestCalendarPermissions();
+        if (!granted) {
+          setIsAddingToCalendar(false);
+          Alert.alert(
+            'Permission Required',
+            'Calendar access is needed to add events. Please enable it in your device settings.',
+            [
+              { text: 'Cancel', style: 'cancel' },
+              { text: 'Open Settings', onPress: () => Linking.openSettings() },
+            ]
+          );
+          return;
+        }
+      }
+
+      // Build booking event details
+      const appointmentDateISO = new Date(`${date}T${time.replace(/\s/g, '')}`).toISOString();
       const bookingData: BookingResponse = {
         bookingId,
-        serviceId: serviceId || '',
-        userId: userInfo?.email || 'user',
+        userId: userInfo.email,
+        serviceId,
         serviceTitle,
-        appointmentDate: `${date}T${time.replace(/\s/g, '')}`,
-        duration: 60, // Default duration if not provided
-        status: 'confirmed',
+        appointmentDate: appointmentDateISO,
+        duration,
+        status,
         price: amount,
-        location: 'VibeWell Beauty Salon, 123 Main St',
-        providerName: 'VibeWell Professional Staff',
-        // For backward compatibility
+        location: location || '',
+        providerName: providerName || '',
         date,
         time,
         amount,
         userInfo,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       };
 
-      // Call the calendar service
+      // Create calendar event
       const eventId = await addBookingToCalendar(bookingData);
-      
       if (eventId) {
         setCalendarAdded(true);
         Alert.alert('Success', 'Your booking has been added to your calendar');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding to calendar:', error);
-      Alert.alert('Error', 'Unable to add booking to calendar. Please check your calendar permissions.');
+      Alert.alert('Error', error.message || 'Failed to add booking to calendar.');
     } finally {
       setIsAddingToCalendar(false);
     }
@@ -303,7 +320,7 @@ const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
               { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
             ]}
             onPress={addToCalendar}
-            disabled={isAddingToCalendar}
+            disabled={isAddingToCalendar || calendarAdded}
           >
             {isAddingToCalendar ? (
               <ActivityIndicator size="small" color="#4F46E5" />

@@ -181,6 +181,30 @@ const BeautyScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
       
+      {/* Categories */}
+      <View style={styles.categoriesContainer}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16 }}>
+          <TouchableOpacity
+            key="all"
+            style={[styles.categoryButton, { backgroundColor: selectedCategoryId === '' ? '#4F46E5' : isDarkMode ? '#2A2A2A' : '#FFFFFF' }]}
+            onPress={() => setSelectedCategoryId('')}
+          >
+            <Text style={[styles.categoryText, { color: selectedCategoryId === '' ? '#FFFFFF' : isDarkMode ? '#BBBBBB' : '#000000' }]}>All</Text>
+          </TouchableOpacity>
+          {categories.map(category => (
+            <TouchableOpacity
+              key={category.id}
+              style={[styles.categoryButton, { backgroundColor: selectedCategoryId === category.id ? '#4F46E5' : isDarkMode ? '#2A2A2A' : '#FFFFFF' }]}
+              onPress={() => setSelectedCategoryId(selectedCategoryId === category.id ? '' : category.id)}
+            >
+              <Text style={[styles.categoryText, { color: selectedCategoryId === category.id ? '#FFFFFF' : isDarkMode ? '#BBBBBB' : '#000000' }]}>
+                {category.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+      
       {/* Active Filters */}
       {Object.keys(filters).length > 0 && (
         <View style={styles.activeFiltersContainer}>
@@ -241,78 +265,6 @@ const BeautyScreen: React.FC = () => {
           </ScrollView>
         </View>
       )}
-      
-      {/* Categories */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.categoriesContainer}
-      >
-        <TouchableOpacity
-          style={[
-            styles.categoryButton,
-            {
-              backgroundColor: selectedCategoryId === ''
-                ? '#4F46E5'
-                : isDarkMode ? '#1E1E1E' : '#FFFFFF'
-            }
-          ]}
-          onPress={() => setSelectedCategoryId('')}
-        >
-          <MaterialIcons
-            name="grid-view"
-            size={20}
-            color={selectedCategoryId === '' ? '#FFFFFF' : isDarkMode ? '#FFFFFF' : '#000000'}
-            style={styles.categoryIcon}
-          />
-          <Text
-            style={[
-              styles.categoryText,
-              {
-                color: selectedCategoryId === '' 
-                  ? '#FFFFFF' 
-                  : isDarkMode ? '#FFFFFF' : '#000000'
-              }
-            ]}
-          >
-            All
-          </Text>
-        </TouchableOpacity>
-        
-        {categories.map((category) => (
-          <TouchableOpacity
-            key={category.id}
-            style={[
-              styles.categoryButton,
-              {
-                backgroundColor: selectedCategoryId === category.id
-                  ? '#4F46E5'
-                  : isDarkMode ? '#1E1E1E' : '#FFFFFF'
-              }
-            ]}
-            onPress={() => setSelectedCategoryId(category.id)}
-          >
-            <MaterialIcons
-              name={category.icon as any}
-              size={20}
-              color={selectedCategoryId === category.id ? '#FFFFFF' : isDarkMode ? '#FFFFFF' : '#000000'}
-              style={styles.categoryIcon}
-            />
-            <Text
-              style={[
-                styles.categoryText,
-                {
-                  color: selectedCategoryId === category.id 
-                    ? '#FFFFFF' 
-                    : isDarkMode ? '#FFFFFF' : '#000000'
-                }
-              ]}
-            >
-              {category.name}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
       
       {/* Main Content */}
       <ScrollView showsVerticalScrollIndicator={false} style={styles.mainContent}>
@@ -439,9 +391,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 20,
     marginRight: 10,
-  },
-  categoryIcon: {
-    marginRight: 6,
   },
   categoryText: {
     fontSize: 14,

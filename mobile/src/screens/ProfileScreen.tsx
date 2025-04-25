@@ -95,11 +95,11 @@ const ProfileScreen: React.FC = () => {
         quality: 0.8,
       });
 
-      if (!result.canceled && result.assets[0]) {
+      if (!result.canceled && result.assets[0] && profile) {
         setUploadingImage(true);
         try {
           // In a real app, upload image to server
-          const updatedProfile = { ...profile, avatar: result.assets[0].uri };
+          const updatedProfile: UserProfile = { ...profile, avatar: result.assets[0].uri };
           setProfile(updatedProfile);
           await AsyncStorage.setItem('@vibewell/user_profile', JSON.stringify(updatedProfile));
         } catch (error) {

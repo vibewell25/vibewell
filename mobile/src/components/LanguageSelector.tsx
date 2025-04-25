@@ -18,6 +18,7 @@ interface LanguageSelectorProps {
   onClose: () => void;
   showFlags?: boolean;
   showLocalNames?: boolean;
+  onLanguageChange?: (locale: string) => void;
 }
 
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({
@@ -25,6 +26,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   onClose,
   showFlags = true,
   showLocalNames = true,
+  onLanguageChange,
 }) => {
   const [languages, setLanguages] = useState<LanguageOption[]>([]);
   const [selectedLanguage, setSelectedLanguage] = useState<string>(i18n.getCurrentLocale());
@@ -45,6 +47,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       const success = await setLanguage(languageCode);
       if (success) {
         setSelectedLanguage(languageCode);
+        onLanguageChange?.(languageCode);
         // Wait a moment to show the loading indicator before closing
         setTimeout(() => {
           setIsLoading(false);
@@ -228,4 +231,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LanguageSelector; 
+export default LanguageSelector;

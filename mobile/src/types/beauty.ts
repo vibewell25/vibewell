@@ -27,6 +27,8 @@ export interface BeautyFilter {
   maxDuration?: number;
   minRating?: number;
   featured?: boolean;
+  // Allow dynamic iteration over filter keys
+  [key: string]: string | number | boolean | undefined;
 }
 
 export interface BookingResponse {
@@ -50,4 +52,4 @@ export interface BookingResponse {
   };
   createdAt: string;
   updatedAt: string;
-} 
+}

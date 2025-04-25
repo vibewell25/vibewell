@@ -150,7 +150,7 @@ class OfflineStorage {
   public async getAllKeys(): Promise<string[]> {
     try {
       const keys = await AsyncStorage.getAllKeys();
-      return keys;
+      return [...keys];
     } catch (error) {
       console.error('Error getting all keys:', error);
       return [];

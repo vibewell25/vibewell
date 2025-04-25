@@ -1,5 +1,5 @@
 import { BeautyService, BeautyFilter, BeautyCategory } from '../types/beauty';
-import { BeautyServiceDetails } from '../types/navigation';
+import { BeautyServiceDetails, Review } from '../types/navigation';
 
 // Mock data for beauty services
 const beautyServices: BeautyService[] = [
@@ -313,6 +313,7 @@ export interface BookingRequest {
     email: string;
     phone: string;
   };
+  specialRequests?: string;
 }
 
 export interface BookingResponse {
@@ -400,9 +401,20 @@ export interface ReviewInput {
 
 export const addServiceReview = async (reviewData: ReviewInput): Promise<boolean> => {
   await delay(800);
-  
-  // In a real app, this would call an API to add the review
-  // For mock purposes, we'll just return true
+  const { serviceId, rating, comment, userName } = reviewData;
+  const service = serviceDetails[serviceId];
+  if (!service) {
+    console.error(`Service ${serviceId} not found for review`);
+    return false;
+  }
+  const newReview: Review = {
+    id: `${Date.now()}`,
+    userName,
+    rating,
+    comment,
+    date: new Date().toISOString()
+  };
+  service.reviews = service.reviews ? [...service.reviews, newReview] : [newReview];
   return true;
 };
 

@@ -22,8 +22,8 @@ const BeautyReviewCard: React.FC<BeautyReviewCardProps> = ({
   const formattedDate = formatDistanceToNow(new Date(review.date), { addSuffix: true });
 
   // Generate star rating display
-  const renderStars = () => {
-    const stars = [];
+  const renderStars = (): JSX.Element[] => {
+    const stars: JSX.Element[] = [];
     const rating = review.rating;
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;

@@ -1,6 +1,6 @@
 # Error Handling Guide
 
-This guide explains the error handling approach used in the Vibewell application, including error boundaries, fallback UI components, and best practices.
+This guide explains the error handling approach used in the Vibewell application, including error boundaries, fallback UI components, best practices, and the error handling system.
 
 ## Error Boundaries
 
@@ -84,6 +84,40 @@ function LoadingState() {
   );
 }
 ```
+
+## Error Handling System
+
+The Vibewell error handling system provides a standardized way to manage errors throughout the application. It offers:
+- **Standardized Error Structure**: A consistent format for all errors
+- **Centralized Error Logging**: A unified approach to capturing and recording errors
+- **Contextual Error Display**: Appropriate error messages for users based on error severity
+- **Error Analytics**: Tracking and analysis of error patterns
+- **Error Recovery**: Mechanisms for retry and recovery when possible
+
+### ErrorHandlerProvider
+```tsx
+import { ErrorHandlerProvider } from '@/utils/error-handler';
+// In your app's root component
+<ErrorHandlerProvider>
+  {/* Your application components */}
+</ErrorHandlerProvider>
+```
+
+### useErrorHandler Hook
+```tsx
+import { useErrorHandler } from '@/utils/error-handler';
+
+function MyComponent() {
+  const { captureError, showErrorToUser } = useErrorHandler();
+  // Use these functions in your component
+}
+```
+
+### Error Severity Levels
+- **Low**: Non-critical issues (e.g., UI glitches)
+- **Medium**: Recoverable errors (e.g., network failures)
+- **High**: Critical errors requiring immediate attention
+- **Fatal**: Unrecoverable errors (e.g., data corruption)
 
 ## Best Practices
 
@@ -171,4 +205,4 @@ A robust error handling strategy improves user experience by:
 3. Offering clear recovery paths
 4. Ensuring issues are properly logged and tracked
 
-By using error boundaries and fallback UI components consistently throughout the application, we create a more resilient and user-friendly experience. 
+By using error boundaries, fallback UI components, and the error handling system consistently throughout the application, we create a more resilient and user-friendly experience.

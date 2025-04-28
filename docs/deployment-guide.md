@@ -141,6 +141,118 @@ If you need to manually deploy to production:
    vercel --prod
    ```
 
+## Services Setup
+
+### Auth0
+Prerequisites:
+- Auth0 account
+- Access to the VibeWell production environment
+- Node.js and npm
+
+1. Log in to Auth0 Dashboard and create a Regular Web Application named “VibeWell”.
+2. Configure Application Settings:
+   - Allowed Callback URLs: `https://your-domain.com/api/auth/callback`
+   - Allowed Logout URLs: `https://your-domain.com`
+   - Allowed Web Origins: `https://your-domain.com`
+3. Create Auth0 API:
+   - Name: “VibeWell API”
+   - Identifier: `https://api.vibewell.com`
+   - Signing Algorithm: RS256
+4. Update production environment variables:
+   ```
+   AUTH0_BASE_URL=https://your-domain.com
+   AUTH0_ISSUER_BASE_URL=https://your-tenant.auth0.com
+   AUTH0_CLIENT_ID=your-client-id
+   AUTH0_CLIENT_SECRET=your-client-secret
+   AUTH0_SECRET=your-generated-secret
+   ```
+
+### Stripe
+Prerequisites:
+- Stripe account
+- Access to the VibeWell production environment
+- Node.js and npm
+
+1. Create and verify a Stripe account; switch to Live mode.
+2. Obtain API Keys (Publishable & Secret) from Developers > API Keys.
+3. Update production environment variables:
+   ```
+   STRIPE_PUBLISHABLE_KEY=your_publishable_key
+   STRIPE_SECRET_KEY=your_secret_key
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_publishable_key
+   ```
+
+### AWS S3
+Prerequisites:
+- AWS account with administrative access
+- Access to the VibeWell production environment
+- Node.js and npm
+
+1. In AWS Console > IAM, create an access key with S3 permissions.
+2. Update production environment variables:
+   ```
+   AWS_ACCESS_KEY_ID=your-access-key-id
+   AWS_SECRET_ACCESS_KEY=your-secret-access-key
+   AWS_REGION=your-preferred-region
+   AWS_S3_BUCKET_NAME=vibewell-uploads
+   ```
+3. Run the setup script:
+   ```bash
+   npm run setup:s3
+   ```
+   This creates the S3 bucket, configures CORS, and IAM user.
+
+### Redis
+Overview: Used for rate limiting, distributed state, and metrics.
+
+**Development**:
+```bash
+docker-compose up -d redis redis-exporter prometheus grafana
+```
+
+**Production**: AWS ElastiCache, Azure Cache, Redis Enterprise Cloud, Google Memorystore.
+
+Configuration:
+- Enable password authentication and persistence.
+- Secure with SSL/TLS.
+- Monitor via Redis Exporter + Prometheus.
+- Follow backup and scaling best practices.
+
+## Advanced Infrastructure
+Overview: Production infrastructure including:
+- Kubernetes cluster
+- Redis instance
+- PostgreSQL database
+- Object storage & CDN
+- SSL certificates & domain config
+
+Software Requirements:
+- Docker, kubectl, Helm, Terraform, Git, Node.js, npm
+
+Configuration Files:
+- `.env.production`
+- `kustomization.yaml`
+- `values.yaml`
+- `terraform.tfvars`
+- `docker-compose.prod.yml`
+
+Environment Variables example:
+```bash
+# Database
+DATABASE_URL=postgresql://user:password@host:5432/dbname
+
+# Redis
+REDIS_URL=redis://:yourpassword@host:6379
+
+# JWT
+JWT_SECRET=your-secret-key
+JWT_EXPIRES_IN=1h
+
+# Storage
+STORAGE_BUCKET=your-bucket-name
+STORAGE_REGION=your-region
+```
+
 ## Database Migrations
 
 ### Running Migrations in Production
@@ -156,40 +268,6 @@ If you need to manually deploy to production:
    ```
 
 Always back up your production database before running migrations!
-
-## AWS S3 Configuration
-
-Ensure your S3 bucket is configured correctly:
-
-1. Create an S3 bucket with the proper name.
-2. Configure CORS to allow uploads from your domains:
-   ```json
-   [
-     {
-       "AllowedHeaders": ["*"],
-       "AllowedMethods": ["GET", "PUT", "POST", "DELETE"],
-       "AllowedOrigins": ["https://yourappurl.com"],
-       "ExposeHeaders": ["ETag"]
-     }
-   ]
-   ```
-3. Set appropriate bucket policies and IAM permissions.
-
-## Stripe Webhook Configuration
-
-1. In the Stripe dashboard, navigate to Developers > Webhooks.
-2. Add an endpoint with the URL: `https://yourappurl.com/api/webhooks/stripe`.
-3. Select events to listen for (e.g., `checkout.session.completed`, `invoice.paid`).
-4. Get the webhook secret and add it to your environment variables.
-
-## Auth0 Configuration
-
-1. Create a new application in Auth0 dashboard.
-2. Configure the callback URLs:
-   - Allowed Callback URLs: `https://yourappurl.com/api/auth/callback/auth0`
-   - Allowed Logout URLs: `https://yourappurl.com`
-   - Allowed Web Origins: `https://yourappurl.com`
-3. Get your Client ID and Client Secret and add them to your environment variables.
 
 ## SSL Configuration
 
@@ -251,4 +329,4 @@ After deployment, consider running:
 
 ---
 
-This deployment guide should be updated regularly as the deployment process evolves. For any questions or issues, contact the DevOps team or system administrator. 
+This deployment guide should be updated regularly as the deployment process evolves. For any questions or issues, contact the DevOps team or system administrator.

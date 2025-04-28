@@ -33,7 +33,7 @@ test.describe('Business Profile Wizard', () => {
     await page.click('input[name="offersVirtualServices"]');
     await page.fill(
       'textarea[name="virtualServicesDescription"]',
-      'We offer virtual consultations for all services.'
+      'We offer virtual consultations for all services.',
     );
 
     // Move to next step
@@ -100,13 +100,13 @@ test.describe('Business Profile Wizard', () => {
     await page.fill('input[name="lateArrivalGracePeriod"]', '15');
     await page.fill(
       'textarea[name="lateArrivalPolicy"]',
-      'Services will be shortened to fit within the remaining time.'
+      'Services will be shortened to fit within the remaining time.',
     );
 
     // Add additional policies
     await page.fill(
       'textarea[name="additionalPolicies"]',
-      'We require 24-hour notice for all appointment changes or cancellations.'
+      'We require 24-hour notice for all appointment changes or cancellations.',
     );
 
     // Submit the form

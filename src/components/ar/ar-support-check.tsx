@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 import { useToast } from '@/components/ui/use-toast';
 
 interface ARSupportCheckProps {
@@ -59,8 +59,8 @@ export function ARSupportCheck({ children, onARUnsupported }: ARSupportCheckProp
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      <div className="flex h-64 items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900"></div>
       </div>
     );
   }
@@ -76,7 +76,7 @@ export function ARSupportCheck({ children, onARUnsupported }: ARSupportCheckProp
           </p>
           <div className="space-y-2">
             <p className="text-sm text-gray-500">To use AR features, you need:</p>
-            <ul className="list-disc list-inside text-sm text-gray-500">
+            <ul className="list-inside list-disc text-sm text-gray-500">
               <li>A device with AR capabilities (iOS 12+ or Android 8+)</li>
               <li>A compatible browser (Safari on iOS or Chrome on Android)</li>
               <li>Camera permissions enabled</li>

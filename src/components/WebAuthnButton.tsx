@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/use-unified-auth';
 

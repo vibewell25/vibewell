@@ -37,7 +37,7 @@ export function formatDate(
     year: 'numeric',
     month: 'long',
     day: 'numeric',
-  }
+  },
 ): string {
   const dateObj = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
 
@@ -84,7 +84,7 @@ export function generateSlug(text: string): string {
  */
 export function debounce<T extends (...args: any[]) => any>(
   func: T,
-  wait: number
+  wait: number,
 ): (...args: Parameters<T>) => void {
   let timeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -105,7 +105,7 @@ export function debounce<T extends (...args: any[]) => any>(
 export function getInitials(name: string): string {
   return name
     .split(' ')
-    .map(n => n[0])
+    .map((n) => n[0])
     .join('')
     .toUpperCase();
 }
@@ -186,7 +186,7 @@ export function getRandomColor(): string {
 export function getNestedValue<T = any>(
   obj: Record<string, any> | null | undefined,
   path: string,
-  defaultValue?: T
+  defaultValue?: T,
 ): T | undefined {
   // Early return if object is null or undefined
   if (obj === null || obj === undefined) {
@@ -247,4 +247,4 @@ export function truncateHash(hash: string, chars: number = 4): string {
 }
 
 // For backward compatibility
-export const truncateAddress = truncateHash;
+export {};

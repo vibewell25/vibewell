@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { startRegistration, startAuthentication } from '@simplewebauthn/browser';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { toast } from 'sonner';
 
 interface WebAuthnAuthProps {
@@ -116,7 +116,7 @@ export function WebAuthnAuth({ userId, onSuccess, onError }: WebAuthnAuthProps) 
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="mx-auto w-full max-w-md">
       <CardHeader>
         <CardTitle>Biometric Authentication</CardTitle>
         <CardDescription>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useToast } from '@/components/ui/use-toast';
 import { FormPreview } from './FormPreview';
 
@@ -98,8 +98,8 @@ export function FormTemplates({ businessId }: FormTemplatesProps) {
         <CardTitle>Form Templates</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {templates.map(template => (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {templates.map((template) => (
             <Card key={template.id} className="p-4">
               <div className="space-y-4">
                 <div>
@@ -119,8 +119,8 @@ export function FormTemplates({ businessId }: FormTemplatesProps) {
         </div>
 
         {selectedTemplate && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-            <Card className="w-full max-w-4xl mx-4 h-[80vh] overflow-auto">
+          <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+            <Card className="mx-4 h-[80vh] w-full max-w-4xl overflow-auto">
               <CardHeader>
                 <CardTitle>{selectedTemplate.name}</CardTitle>
               </CardHeader>
@@ -130,7 +130,7 @@ export function FormTemplates({ businessId }: FormTemplatesProps) {
                   description={selectedTemplate.description}
                   fields={selectedTemplate.fields}
                 />
-                <div className="flex justify-end space-x-2 mt-6">
+                <div className="mt-6 flex justify-end space-x-2">
                   <Button variant="outline" onClick={() => setSelectedTemplate(null)}>
                     Close
                   </Button>

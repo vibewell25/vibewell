@@ -1,5 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
-import { createServer } from 'http';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { app } from '@/app';
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcryptjs';

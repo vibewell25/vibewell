@@ -1,6 +1,5 @@
-import React from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { BellIcon } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -15,7 +14,7 @@ export function NotificationBadge({ onClick }: NotificationBadgeProps) {
     queryKey: ['notifications-unread-count'],
     queryFn: async () => {
       const response = await axios.get<{ success: boolean; data: { unread: number } }>(
-        '/api/notifications/count'
+        '/api/notifications/count',
       );
       return response.data.data.unread;
     },
@@ -26,20 +25,14 @@ export function NotificationBadge({ onClick }: NotificationBadgeProps) {
   const unreadCount = data || 0;
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className="relative"
-      onClick={onClick}
-      disabled={isLoading}
-    >
+    <Button variant="ghost" size="icon" className="relative" onClick={onClick} disabled={isLoading}>
       <BellIcon className="h-5 w-5" />
       {unreadCount > 0 && (
-        <Badge 
-          variant="destructive" 
-          className="absolute -top-1 -right-1 h-5 min-w-5 flex items-center justify-center px-1 text-xs"
+        <Badge
+          variant="destructive"
+          className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center px-1 text-xs"
         >
-          {unreadCount > 99 ? "99+" : unreadCount}
+          {unreadCount > 99 ? '99+' : unreadCount}
         </Badge>
       )}
       <span className="sr-only">Notifications</span>
@@ -47,4 +40,4 @@ export function NotificationBadge({ onClick }: NotificationBadgeProps) {
   );
 }
 
-export default NotificationBadge; 
+export default NotificationBadge;

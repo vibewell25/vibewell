@@ -75,4 +75,4 @@ const loyaltyMemberSchema = new Schema<LoyaltyMember>({
   ],
 });
 
-export const LoyaltyMemberModel = model<LoyaltyMember>('LoyaltyMember', loyaltyMemberSchema);
+export {};

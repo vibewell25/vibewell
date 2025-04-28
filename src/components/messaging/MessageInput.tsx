@@ -15,20 +15,20 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   disabled = false,
 }) => {
   return (
-    <form onSubmit={onSubmit} className="p-4 border-t">
+    <form onSubmit={onSubmit} className="border-t p-4">
       <div className="flex space-x-2">
         <input
           type="text"
           placeholder="Type a message..."
-          className="flex-grow p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          className="focus:ring-primary flex-grow rounded-md border p-2 focus:outline-none focus:ring-2"
           value={newMessage}
-          onChange={e => onMessageChange(e.target.value)}
+          onChange={(e) => onMessageChange(e.target.value)}
           disabled={disabled}
           aria-label="Message input"
         />
         <button
           type="submit"
-          className="bg-primary text-white p-2 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-primary hover:bg-primary/90 focus:ring-primary rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={!newMessage.trim() || disabled}
           aria-label="Send message"
         >

@@ -1,4 +1,4 @@
-import { createZustandStateManager, StateManagerType, createState } from './state-manager';
+import { StateManagerType, createState } from './state-manager';
 
 /**
  * Types for beauty products and features
@@ -83,7 +83,7 @@ export interface BeautyCatalogState {
   fetchProducts: () => Promise<void>;
   setFilter: <K extends keyof BeautyCatalogState['filters']>(
     key: K,
-    value: BeautyCatalogState['filters'][K]
+    value: BeautyCatalogState['filters'][K],
   ) => void;
   resetFilters: () => void;
   setSearchQuery: (query: string) => void;
@@ -147,7 +147,7 @@ export const createBeautyCatalogState = () => {
 
     setFilter: <K extends keyof BeautyCatalogState['filters']>(
       key: K,
-      value: BeautyCatalogState['filters'][K]
+      value: BeautyCatalogState['filters'][K],
     ): void => {
       const currentState = catalogState.getState();
       catalogState.setState({
@@ -172,8 +172,8 @@ export const createBeautyCatalogState = () => {
     toggleFavorite: (productId: string): void => {
       const currentState = catalogState.getState();
       catalogState.setState({
-        products: currentState.products.map(product =>
-          product.id === productId ? { ...product, isFavorite: !product.isFavorite } : product
+        products: currentState.products.map((product) =>
+          product.id === productId ? { ...product, isFavorite: !product.isFavorite } : product,
         ),
       });
     },
@@ -274,9 +274,10 @@ export const createVirtualTryOnState = () => {
       }
     },
 
-    selectProduct: productId => {
-      const product = tryOnState.getState().availableProducts.find(p => p.id === productId) || null;
-      const firstAvailableColor = product?.colors.find(c => c.isAvailable) || null;
+    selectProduct: (productId) => {
+      const product =
+        tryOnState.getState().availableProducts.find((p) => p.id === productId) || null;
+      const firstAvailableColor = product?.colors.find((c) => c.isAvailable) || null;
 
       tryOnState.setState({
         selectedProduct: product,
@@ -285,17 +286,17 @@ export const createVirtualTryOnState = () => {
         recentlyTriedProducts: product
           ? [
               product,
-              ...tryOnState.getState().recentlyTriedProducts.filter(p => p.id !== productId),
+              ...tryOnState.getState().recentlyTriedProducts.filter((p) => p.id !== productId),
             ].slice(0, 5) // Keep only 5 most recent
           : tryOnState.getState().recentlyTriedProducts,
       });
     },
 
-    selectColor: colorId => {
+    selectColor: (colorId) => {
       const product = tryOnState.getState().selectedProduct;
       if (!product) return;
 
-      const color = product.colors.find(c => c.id === colorId) || null;
+      const color = product.colors.find((c) => c.id === colorId) || null;
       tryOnState.setState({ selectedColor: color });
     },
 
@@ -324,7 +325,7 @@ export const createVirtualTryOnState = () => {
       try {
         // In a real implementation, this would initialize WebXR
         // For simulation purposes, we'll just return success after a delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         tryOnState.setState({ arActive: true, isLoading: false });
         return true;
       } catch (error) {
@@ -359,7 +360,7 @@ export const createVirtualTryOnState = () => {
       console.log(`Saved product ${productId} with color ${colorId} to favorites`);
     },
 
-    shareImage: async imageData => {
+    shareImage: async (imageData) => {
       try {
         // In a real implementation, this would use the Web Share API
         if (navigator.share) {
@@ -480,7 +481,7 @@ const initialBookingState: BeautyBookingState = {
 export const createBeautyBookingState = () => {
   const bookingState = createState<BeautyBookingState>(
     initialBookingState,
-    StateManagerType.REDUX // Explicitly keep Redux for complex booking flow with middleware
+    StateManagerType.REDUX, // Explicitly keep Redux for complex booking flow with middleware
   );
 
   // Implement all the methods
@@ -503,7 +504,7 @@ export const createBeautyBookingState = () => {
       }
     },
 
-    fetchProviders: async serviceId => {
+    fetchProviders: async (serviceId) => {
       bookingState.setState({ isLoading: true, error: null });
       try {
         // In a real implementation, this would be an API call
@@ -526,7 +527,7 @@ export const createBeautyBookingState = () => {
       try {
         // In a real implementation, this would be an API call
         const response = await fetch(
-          `/api/beauty/availability?providerId=${providerId}&serviceId=${serviceId}`
+          `/api/beauty/availability?providerId=${providerId}&serviceId=${serviceId}`,
         );
         if (!response.ok) {
           throw new Error('Failed to fetch availability');
@@ -536,8 +537,8 @@ export const createBeautyBookingState = () => {
         const availability = await response.json();
         const currentState = bookingState.getState();
 
-        const updatedProviders = currentState.providers.map(provider =>
-          provider.id === providerId ? { ...provider, availability } : provider
+        const updatedProviders = currentState.providers.map((provider) =>
+          provider.id === providerId ? { ...provider, availability } : provider,
         );
 
         bookingState.setState({ providers: updatedProviders, isLoading: false });
@@ -549,8 +550,8 @@ export const createBeautyBookingState = () => {
       }
     },
 
-    selectService: serviceId => {
-      const service = bookingState.getState().services.find(s => s.id === serviceId) || null;
+    selectService: (serviceId) => {
+      const service = bookingState.getState().services.find((s) => s.id === serviceId) || null;
       bookingState.setState({
         selectedService: service,
         selectedProvider: null,
@@ -564,8 +565,8 @@ export const createBeautyBookingState = () => {
       }
     },
 
-    selectProvider: providerId => {
-      const provider = bookingState.getState().providers.find(p => p.id === providerId) || null;
+    selectProvider: (providerId) => {
+      const provider = bookingState.getState().providers.find((p) => p.id === providerId) || null;
       bookingState.setState({
         selectedProvider: provider,
         selectedDate: null,
@@ -579,18 +580,18 @@ export const createBeautyBookingState = () => {
       }
     },
 
-    selectDate: date => {
+    selectDate: (date) => {
       bookingState.setState({
         selectedDate: date,
         selectedTime: null,
       });
     },
 
-    selectTime: time => {
+    selectTime: (time) => {
       bookingState.setState({ selectedTime: time });
     },
 
-    setCustomerNotes: notes => {
+    setCustomerNotes: (notes) => {
       bookingState.setState({ customerNotes: notes });
     },
 
@@ -606,7 +607,7 @@ export const createBeautyBookingState = () => {
       }
     },
 
-    goToStep: step => {
+    goToStep: (step) => {
       bookingState.setState({ currentStep: step });
     },
 
@@ -669,9 +670,9 @@ export const createBeautyBookingState = () => {
 };
 
 // Export singleton instances for global usage
-export const beautyCatalogState = createBeautyCatalogState();
-export const virtualTryOnState = createVirtualTryOnState();
-export const beautyBookingState = createBeautyBookingState();
+export {};
+export {};
+export {};
 
 /**
  * Type definitions for the beauty and virtual try-on functionality
@@ -722,143 +723,7 @@ export interface CapturedImage {
 }
 
 // Mock beauty categories
-export const beautyCategories = [
-  'Lipstick',
-  'Eyeshadow',
-  'Foundation',
-  'Blush',
-  'Mascara',
-  'Eyeliner',
-  'Concealer',
-  'Bronzer',
-  'Highlighter',
-  'Powder',
-  'Nail Polish',
-  'Hair Color',
-];
+export {};
 
 // Example product data structure (for development/testing)
-export const mockProducts: TryOnProduct[] = [
-  {
-    id: 'lipstick-001',
-    name: 'Velvet Matte Lipstick',
-    brand: 'VibeGlow',
-    category: 'Lipstick',
-    description: 'Long-lasting matte lipstick with a velvety finish',
-    price: '$18.99',
-    colors: [
-      {
-        id: 'lip-red-01',
-        name: 'Ruby Red',
-        hexValue: '#D92D3C',
-        arOverlayUrl: '/beauty/overlays/lip-red-01.png',
-        thumbnailUrl: '/beauty/thumbnails/lip-red-01.png',
-      },
-      {
-        id: 'lip-pink-01',
-        name: 'Rose Pink',
-        hexValue: '#EB9898',
-        arOverlayUrl: '/beauty/overlays/lip-pink-01.png',
-        thumbnailUrl: '/beauty/thumbnails/lip-pink-01.png',
-      },
-      {
-        id: 'lip-berry-01',
-        name: 'Berry Crush',
-        hexValue: '#9D2933',
-        arOverlayUrl: '/beauty/overlays/lip-berry-01.png',
-        thumbnailUrl: '/beauty/thumbnails/lip-berry-01.png',
-      },
-    ],
-    images: [
-      {
-        id: 'lip-img-01',
-        url: '/beauty/products/lipstick-01.jpg',
-        alt: 'Velvet Matte Lipstick',
-      },
-    ],
-    isNew: true,
-    rating: 4.7,
-    reviewCount: 124,
-  },
-  {
-    id: 'eyeshadow-001',
-    name: 'Shimmer Eyeshadow Palette',
-    brand: 'VibeGlow',
-    category: 'Eyeshadow',
-    description: 'Highly pigmented shimmer eyeshadow in versatile colors',
-    price: '$32.99',
-    colors: [
-      {
-        id: 'eye-neutral-01',
-        name: 'Neutral Glow',
-        hexValue: '#D9B99B',
-        arOverlayUrl: '/beauty/overlays/eye-neutral-01.png',
-        thumbnailUrl: '/beauty/thumbnails/eye-neutral-01.png',
-      },
-      {
-        id: 'eye-smoky-01',
-        name: 'Smoky Night',
-        hexValue: '#5C5C5C',
-        arOverlayUrl: '/beauty/overlays/eye-smoky-01.png',
-        thumbnailUrl: '/beauty/thumbnails/eye-smoky-01.png',
-      },
-      {
-        id: 'eye-blue-01',
-        name: 'Ocean Blue',
-        hexValue: '#4A7B9D',
-        arOverlayUrl: '/beauty/overlays/eye-blue-01.png',
-        thumbnailUrl: '/beauty/thumbnails/eye-blue-01.png',
-      },
-    ],
-    images: [
-      {
-        id: 'eye-img-01',
-        url: '/beauty/products/eyeshadow-01.jpg',
-        alt: 'Shimmer Eyeshadow Palette',
-      },
-    ],
-    isBestseller: true,
-    rating: 4.5,
-    reviewCount: 89,
-  },
-  {
-    id: 'foundation-001',
-    name: 'Hydrating Foundation',
-    brand: 'VibeGlow',
-    category: 'Foundation',
-    description: 'Lightweight hydrating foundation with medium coverage',
-    price: '$24.99',
-    colors: [
-      {
-        id: 'foundation-light-01',
-        name: 'Light',
-        hexValue: '#F5DCBE',
-        arOverlayUrl: '/beauty/overlays/foundation-light-01.png',
-        thumbnailUrl: '/beauty/thumbnails/foundation-light-01.png',
-      },
-      {
-        id: 'foundation-medium-01',
-        name: 'Medium',
-        hexValue: '#E0B492',
-        arOverlayUrl: '/beauty/overlays/foundation-medium-01.png',
-        thumbnailUrl: '/beauty/thumbnails/foundation-medium-01.png',
-      },
-      {
-        id: 'foundation-tan-01',
-        name: 'Tan',
-        hexValue: '#C68E6A',
-        arOverlayUrl: '/beauty/overlays/foundation-tan-01.png',
-        thumbnailUrl: '/beauty/thumbnails/foundation-tan-01.png',
-      },
-    ],
-    images: [
-      {
-        id: 'foundation-img-01',
-        url: '/beauty/products/foundation-01.jpg',
-        alt: 'Hydrating Foundation',
-      },
-    ],
-    rating: 4.3,
-    reviewCount: 67,
-  },
-];
+export {};

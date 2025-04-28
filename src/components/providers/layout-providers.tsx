@@ -11,9 +11,7 @@ interface LayoutProvidersProps {
 export function LayoutProviders({ children }: LayoutProvidersProps) {
   return (
     <AccessibilityProvider>
-      <AccessibilityStyleProvider>
-        {children}
-      </AccessibilityStyleProvider>
+      <AccessibilityStyleProvider>{children}</AccessibilityStyleProvider>
     </AccessibilityProvider>
   );
-} 
+}

@@ -52,7 +52,7 @@ export class ARAssetOptimizer {
       const originalSize = await this.getAssetSize(url);
 
       // Optimize geometries
-      gltf.scene.traverse(node => {
+      gltf.scene.traverse((node) => {
         if (node instanceof Mesh) {
           const geometry = node.geometry as BufferGeometry;
           const material = node.material as MeshStandardMaterial;
@@ -100,9 +100,9 @@ export class ARAssetOptimizer {
     return new Promise((resolve, reject) => {
       this.loader.load(
         url,
-        gltf => resolve(gltf),
+        (gltf) => resolve(gltf),
         undefined,
-        error => reject(error)
+        (error) => reject(error),
       );
     });
   }
@@ -156,7 +156,7 @@ export class ARAssetOptimizer {
       `${this.CACHE_PREFIX}${url}`,
       JSON.stringify(metadata),
       'EX',
-      this.CACHE_DURATION
+      this.CACHE_DURATION,
     );
   }
 
@@ -165,7 +165,7 @@ export class ARAssetOptimizer {
     const buffer = await response.arrayBuffer();
     const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
     return Array.from(new Uint8Array(hashBuffer))
-      .map(b => b.toString(16).padStart(2, '0'))
+      .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
   }
 
@@ -177,16 +177,16 @@ export class ARAssetOptimizer {
   }> {
     const keys = await redisClient.keys(`${this.CACHE_PREFIX}*`);
     const assets = await Promise.all(
-      keys.map(async key => {
+      keys.map(async (key) => {
         const data = await redisClient.get(key);
         return data ? (JSON.parse(data) as AssetMetadata) : null;
-      })
+      }),
     );
 
     const validAssets = assets.filter((a): a is AssetMetadata => a !== null);
     const totalSaved = validAssets.reduce(
       (acc, asset) => acc + (asset.metrics.originalSize - asset.metrics.optimizedSize),
-      0
+      0,
     );
     const avgCompression =
       validAssets.reduce((acc, asset) => acc + asset.metrics.compressionRatio, 0) /

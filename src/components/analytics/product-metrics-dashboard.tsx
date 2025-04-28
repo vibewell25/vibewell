@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnalyticsService, ProductMetrics } from '@/services/analytics-service';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   Select,
   SelectContent,
@@ -20,9 +20,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
   LineChart,
   Line,
   Legend,
@@ -31,7 +28,7 @@ import {
 } from 'recharts';
 import { ArrowUp, ArrowDown, Download, Search } from 'lucide-react';
 import { ProductService } from '@/services/product-service';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 
 // Add utility function for CSV export
 const exportToCSV = (data: any[], filename: string) => {
@@ -39,15 +36,15 @@ const exportToCSV = (data: any[], filename: string) => {
   let csvContent = '';
 
   // Get all possible keys from all objects
-  const allKeys = Array.from(new Set(data.flatMap(item => Object.keys(item))));
+  const allKeys = Array.from(new Set(data.flatMap((item) => Object.keys(item))));
 
   // Create header row
   csvContent += allKeys.join(',') + '\n';
 
   // Add each data row
-  data.forEach(item => {
+  data.forEach((item) => {
     const row = allKeys
-      .map(key => {
+      .map((key) => {
         const value = item[key] === undefined ? '' : item[key];
         // Escape commas and quotes in values
         const escapedValue = typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value;
@@ -126,7 +123,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
 
         if (error) throw error;
 
-        const productList = data.map(product => ({
+        const productList = data.map((product) => ({
           id: product.id,
           name: product.name,
           category: product.category,
@@ -201,10 +198,10 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
 
   // Filter products based on search term
   const filteredProducts = products.filter(
-    product =>
+    (product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.brand.toLowerCase().includes(searchTerm.toLowerCase())
+      product.brand.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   // Handle product selection
@@ -215,12 +212,12 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   if (loading && Object.keys(metrics).length === 0) {
     return (
       <div className="w-full space-y-4">
-        <div className="flex justify-between items-center mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <Skeleton className="h-10 w-48" />
           <Skeleton className="h-10 w-32" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {Array.from({ length: 3 }).map((_, i) => (
             <Card key={i}>
               <CardHeader className="pb-2">
@@ -263,7 +260,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   }
 
   const selectedMetrics = selectedProductId ? metrics[selectedProductId] : null;
-  const selectedProduct = products.find(p => p.id === selectedProductId);
+  const selectedProduct = products.find((p) => p.id === selectedProductId);
 
   if (!selectedMetrics || !selectedProduct) {
     return (
@@ -281,7 +278,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   // Prepare comparison data for views, unique views and try-ons
   const viewsComparisonData = Object.entries(metrics)
     .map(([id, productMetrics]) => {
-      const product = products.find(p => p.id === id);
+      const product = products.find((p) => p.id === id);
       return {
         id,
         name: product?.name || `Product ${id.substring(0, 6)}`,
@@ -296,7 +293,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   // Prepare conversion and CTR data
   const conversionData = Object.entries(metrics)
     .map(([id, productMetrics]) => {
-      const product = products.find(p => p.id === id);
+      const product = products.find((p) => p.id === id);
       return {
         id,
         name: product?.name || `Product ${id.substring(0, 6)}`,
@@ -367,7 +364,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
 
     exportToCSV(
       exportData,
-      `product-metrics-${selectedProduct.name}-${startDate}-to-${endDate}.csv`
+      `product-metrics-${selectedProduct.name}-${startDate}-to-${endDate}.csv`,
     );
   };
 
@@ -395,31 +392,31 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
 
       exportToCSV(
         timeSeriesData,
-        `product-${selectedProduct?.name}-time-series-${startDate}-to-${endDate}.csv`
+        `product-${selectedProduct?.name}-time-series-${startDate}-to-${endDate}.csv`,
       );
     }
   };
 
   return (
     <div className="w-full space-y-6">
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex-1">
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
               placeholder="Search products..."
-              className="pl-8 w-full md:w-64"
+              className="w-full pl-8 md:w-64"
               value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className="flex flex-wrap gap-2 mt-4 max-h-32 overflow-y-auto">
-            {filteredProducts.map(product => (
+          <div className="mt-4 flex max-h-32 flex-wrap gap-2 overflow-y-auto">
+            {filteredProducts.map((product) => (
               <button
                 key={product.id}
                 onClick={() => handleProductSelect(product.id)}
-                className={`px-3 py-1 text-sm rounded-md ${
+                className={`rounded-md px-3 py-1 text-sm ${
                   selectedProductId === product.id
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted hover:bg-muted/80'
@@ -432,7 +429,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
         </div>
 
         <div className="flex gap-2">
-          <Select value={timeRange} onValueChange={value => setTimeRange(value as any)}>
+          <Select value={timeRange} onValueChange={(value) => setTimeRange(value as any)}>
             <SelectTrigger className="w-32">
               <SelectValue placeholder="Time Range" />
             </SelectTrigger>
@@ -454,7 +451,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Total Views</CardTitle>
@@ -511,7 +508,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-4">
+        <TabsList className="grid w-full grid-cols-4 md:inline-grid md:w-auto">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="trends">Trends</TabsTrigger>
           <TabsTrigger value="comparison">Comparison</TabsTrigger>
@@ -580,7 +577,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle>Conversion Metrics</CardTitle>
@@ -589,30 +586,30 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="mb-2 flex items-center justify-between">
                       <div className="text-sm font-medium">Click-Through Rate</div>
                       <div className="text-sm font-medium">
                         {selectedMetrics.clickThroughRate.toFixed(1)}%
                       </div>
                     </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-2 overflow-hidden rounded-full bg-muted">
                       <div
-                        className="h-full bg-blue-500 rounded-full"
+                        className="h-full rounded-full bg-blue-500"
                         style={{ width: `${Math.min(selectedMetrics.clickThroughRate, 100)}%` }}
                       />
                     </div>
                   </div>
 
                   <div>
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="mb-2 flex items-center justify-between">
                       <div className="text-sm font-medium">Try-On Conversion</div>
                       <div className="text-sm font-medium">
                         {selectedMetrics.conversionRate.toFixed(1)}%
                       </div>
                     </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-2 overflow-hidden rounded-full bg-muted">
                       <div
-                        className="h-full bg-indigo-500 rounded-full"
+                        className="h-full rounded-full bg-indigo-500"
                         style={{ width: `${Math.min(selectedMetrics.conversionRate, 100)}%` }}
                       />
                     </div>

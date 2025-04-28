@@ -15,9 +15,9 @@ type DynamicImportModule<T> = Promise<{
 
 export function dynamicImport<T>(
   importFn: () => DynamicImportModule<T>,
-  options: DynamicImportOptions = {}
+  options: DynamicImportOptions = {},
 ) {
-  return dynamic(() => importFn().then(mod => mod.default || Object.values(mod)[0]), {
+  return dynamic(() => importFn().then((mod) => mod.default || Object.values(mod)[0]), {
     loading: options.loading ?? Loading,
     ssr: options.ssr ?? true,
   });

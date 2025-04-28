@@ -1,4 +1,4 @@
-import { render, setupGlobalMocks, cleanupGlobalMocks } from '../utils/test-utils';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { render, setupGlobalMocks, cleanupGlobalMocks } from '../utils/test-utils';
 import { axe } from 'jest-axe';
 import AudioControls from '../../components/AudioControls';
 

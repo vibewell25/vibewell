@@ -8,12 +8,12 @@ import { startComponentRender, endComponentRender } from '../../utils/performanc
  */
 export function withPerformanceMonitoring<P extends object>(
   Component: React.ComponentType<P>,
-  componentName: string
+  componentName: string,
 ): React.FC<P> {
   const displayName = Component.displayName || Component.name || componentName;
 
   // Create a monitored component
-  const MonitoredComponent: React.FC<P> = props => {
+  const MonitoredComponent: React.FC<P> = (props) => {
     // Start measuring component render time
     const startMark = startComponentRender(componentName);
 
@@ -57,25 +57,4 @@ export function withPerformanceMonitoring<P extends object>(
  * Component to measure performance between mount and unmount
  * Useful for measuring page or section performance
  */
-export const PerformanceMeasure: React.FC<{
-  id: string;
-  children: React.ReactNode;
-}> = ({ id, children }) => {
-  // Start measuring on mount - explicitly type as string | null
-  const startMark = React.useRef<string | null>(startComponentRender(id));
-
-  // End measuring on unmount
-  React.useEffect(() => {
-    return () => {
-      if (startMark.current) {
-        // Pass the string, not null
-        endComponentRender(id, startMark.current);
-      } else {
-        // If we don't have a mark, just use the id
-        endComponentRender(id);
-      }
-    };
-  }, [id]);
-
-  return <>{children}</>;
-};
+export {};

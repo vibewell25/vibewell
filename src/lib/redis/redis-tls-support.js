@@ -27,7 +27,7 @@ function createRedisTLSClient(options = {}) {
   const client = redis.createClient(tlsOptions);
 
   // Add error handler
-  client.on('error', err => {
+  client.on('error', (err) => {
     console.error('Redis Client Error:', err);
   });
 
@@ -83,15 +83,15 @@ async function runRedisBenchmarkWithTLS(options = {}) {
     let output = '';
     let error = '';
 
-    benchmark.stdout.on('data', data => {
+    benchmark.stdout.on('data', (data) => {
       output += data.toString();
     });
 
-    benchmark.stderr.on('data', data => {
+    benchmark.stderr.on('data', (data) => {
       error += data.toString();
     });
 
-    benchmark.on('close', code => {
+    benchmark.on('close', (code) => {
       if (code !== 0) {
         reject(new Error(`Redis benchmark failed with code ${code}: ${error}`));
       } else {
@@ -143,15 +143,15 @@ function enhancedRedisCLI(options = {}) {
     let output = '';
     let error = '';
 
-    cli.stdout.on('data', data => {
+    cli.stdout.on('data', (data) => {
       output += data.toString();
     });
 
-    cli.stderr.on('data', data => {
+    cli.stderr.on('data', (data) => {
       error += data.toString();
     });
 
-    cli.on('close', code => {
+    cli.on('close', (code) => {
       if (code !== 0) {
         reject(new Error(`Redis CLI failed with code ${code}: ${error}`));
       } else {

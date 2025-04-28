@@ -44,7 +44,7 @@ class ComponentPreloader {
     if (typeof window !== 'undefined') {
       localStorage.setItem(
         this.PRELOAD_HISTORY_KEY,
-        JSON.stringify(Array.from(this.preloadedComponents))
+        JSON.stringify(Array.from(this.preloadedComponents)),
       );
     }
   }
@@ -68,7 +68,10 @@ class ComponentPreloader {
     }
   }
 
-  public shouldPreload(name: string, currentConditions: Partial<PreloadConfig['conditions']>): boolean {
+  public shouldPreload(
+    name: string,
+    currentConditions: Partial<PreloadConfig['conditions']>,
+  ): boolean {
     const config = this.preloadConfigs.get(name);
     if (!config || this.preloadedComponents.has(name)) return false;
 
@@ -83,35 +86,6 @@ class ComponentPreloader {
   }
 }
 
-export const useComponentPreloader = (
-  componentName: string,
-  conditions: Partial<PreloadConfig['conditions']>
-): void => {
-  const preloader = ComponentPreloader.getInstance();
+export {};
 
-  const checkConditions = useCallback(() => {
-    if (preloader.shouldPreload(componentName, conditions)) {
-      preloader.preloadComponent(componentName);
-    }
-  }, [componentName, conditions]);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(checkConditions, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [checkConditions]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const handleScroll = () => {
-        const scrollDepth = 
-          (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100;
-        checkConditions();
-      };
-
-      window.addEventListener('scroll', handleScroll);
-      return () => window.removeEventListener('scroll', handleScroll);
-    }
-  }, [checkConditions]);
-};
-
-export default ComponentPreloader; 
+export default ComponentPreloader;

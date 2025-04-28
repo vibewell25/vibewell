@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events';
 import { logEvent } from '../utils/analytics';
 import { hashData } from '../utils/encryption';
-import { MetricType } from './performance-remediation';
 import NotificationService from './notification-service';
 
 /**
@@ -167,7 +166,7 @@ class AuditService extends EventEmitter {
       component?: string;
       remediation?: string;
       metadata?: Record<string, any>;
-    }
+    },
   ): Promise<AuditIssue> {
     const timestamp = Date.now();
     const hashInput = `${category}:${title}:${description}:${options?.component || ''}`;
@@ -237,7 +236,7 @@ class AuditService extends EventEmitter {
   public updateIssueStatus(
     id: string,
     status: 'open' | 'in_progress' | 'resolved' | 'wontfix',
-    remediation?: string
+    remediation?: string,
   ): boolean {
     const issue = this.issues.get(id);
     if (!issue) return false;
@@ -267,11 +266,11 @@ class AuditService extends EventEmitter {
    */
   public getIssues(
     category?: AuditCategory,
-    status?: 'open' | 'in_progress' | 'resolved' | 'wontfix'
+    status?: 'open' | 'in_progress' | 'resolved' | 'wontfix',
   ): AuditIssue[] {
     const issues = Array.from(this.issues.values());
 
-    return issues.filter(issue => {
+    return issues.filter((issue) => {
       if (category && issue.category !== category) return false;
       if (status && issue.status !== status) return false;
       return true;
@@ -289,11 +288,11 @@ class AuditService extends EventEmitter {
 
     // Calculate summary
     const summary = {
-      critical: issues.filter(i => i.severity === AuditSeverity.CRITICAL).length,
-      high: issues.filter(i => i.severity === AuditSeverity.HIGH).length,
-      medium: issues.filter(i => i.severity === AuditSeverity.MEDIUM).length,
-      low: issues.filter(i => i.severity === AuditSeverity.LOW).length,
-      info: issues.filter(i => i.severity === AuditSeverity.INFO).length,
+      critical: issues.filter((i) => i.severity === AuditSeverity.CRITICAL).length,
+      high: issues.filter((i) => i.severity === AuditSeverity.HIGH).length,
+      medium: issues.filter((i) => i.severity === AuditSeverity.MEDIUM).length,
+      low: issues.filter((i) => i.severity === AuditSeverity.LOW).length,
+      info: issues.filter((i) => i.severity === AuditSeverity.INFO).length,
       total: issues.length,
     };
 
@@ -341,9 +340,11 @@ class AuditService extends EventEmitter {
   public checkSecurityThresholds(): boolean {
     const securityIssues = this.getIssues(AuditCategory.SECURITY, 'open');
 
-    const criticalCount = securityIssues.filter(i => i.severity === AuditSeverity.CRITICAL).length;
+    const criticalCount = securityIssues.filter(
+      (i) => i.severity === AuditSeverity.CRITICAL,
+    ).length;
 
-    const highCount = securityIssues.filter(i => i.severity === AuditSeverity.HIGH).length;
+    const highCount = securityIssues.filter((i) => i.severity === AuditSeverity.HIGH).length;
 
     return (
       criticalCount <= this.thresholds.security.maxCriticalIssues &&

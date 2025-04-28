@@ -6,7 +6,6 @@ import { AnalyticsService, EventName } from '@/services/analytics-service';
 
 export function useAnalytics() {
   const analyticsService = useRef<AnalyticsService | null>(null);
-  const router = useRouter();
   const lastPath = useRef<string | null>(null);
 
   // Initialize analytics service
@@ -78,7 +77,7 @@ export function useAnalytics() {
         ...productDetails,
       });
     },
-    [trackEvent]
+    [trackEvent],
   );
 
   // Function to track product try-ons
@@ -87,7 +86,7 @@ export function useAnalytics() {
       productId: string,
       productName: string,
       action: 'start' | 'complete' | 'cancel',
-      details: Record<string, any> = {}
+      details: Record<string, any> = {},
     ) => {
       trackEvent('product_try_on', {
         product_id: productId,
@@ -96,7 +95,7 @@ export function useAnalytics() {
         ...details,
       });
     },
-    [trackEvent]
+    [trackEvent],
   );
 
   // Function to track search
@@ -108,7 +107,7 @@ export function useAnalytics() {
         filters,
       });
     },
-    [trackEvent]
+    [trackEvent],
   );
 
   // Function to track filter usage
@@ -119,7 +118,7 @@ export function useAnalytics() {
         results_count: results,
       });
     },
-    [trackEvent]
+    [trackEvent],
   );
 
   // Function to track recommendation clicks
@@ -132,7 +131,7 @@ export function useAnalytics() {
         source,
       });
     },
-    [trackEvent]
+    [trackEvent],
   );
 
   // Function to track product shares
@@ -144,7 +143,7 @@ export function useAnalytics() {
         share_method: shareMethod,
       });
     },
-    [trackEvent]
+    [trackEvent],
   );
 
   // Function to track feedback submission
@@ -154,7 +153,7 @@ export function useAnalytics() {
       productName: string,
       rating: number,
       wouldTryInRealLife: boolean,
-      hasComment: boolean
+      hasComment: boolean,
     ) => {
       trackEvent('product_feedback_submit', {
         product_id: productId,
@@ -164,7 +163,7 @@ export function useAnalytics() {
         has_comment: hasComment,
       });
     },
-    [trackEvent]
+    [trackEvent],
   );
 
   // Function to track cart actions
@@ -174,7 +173,7 @@ export function useAnalytics() {
       productId: string,
       productName: string,
       quantity: number,
-      price: number
+      price: number,
     ) => {
       trackEvent(action === 'add' ? 'cart_add' : 'cart_remove', {
         product_id: productId,
@@ -184,7 +183,7 @@ export function useAnalytics() {
         value: price * quantity,
       });
     },
-    [trackEvent]
+    [trackEvent],
   );
 
   return {

@@ -1,10 +1,10 @@
-import { PrismaClient, TryOnType, VirtualTryOn } from '@prisma/client';
+import { PrismaClient, TryOnType } from '@prisma/client';
 import { OpenAI } from 'openai';
 import { logger } from '@/lib/logger';
 import * as tf from '@tensorflow/tfjs';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { ColorSpaces, ColorUtils } from '@/utils/color-utils';
+import { ColorUtils } from '@/utils/color-utils';
 import { MediaPipeService } from './mediapipe-service';
 import { FaceApiService } from './face-api-service';
 
@@ -82,7 +82,7 @@ export class VirtualTryOnService {
         75,
         window.innerWidth / window.innerHeight,
         0.1,
-        1000
+        1000,
       );
 
       const session: ARSession = {
@@ -170,7 +170,7 @@ export class VirtualTryOnService {
   private async applyMakeupFilter(
     ctx: CanvasRenderingContext2D,
     landmarks: { x: number; y: number; z: number }[],
-    settings: Record<string, any>
+    settings: Record<string, any>,
   ) {
     const features = await this.mediaPipeService.getFacialFeatures(landmarks);
 
@@ -190,7 +190,7 @@ export class VirtualTryOnService {
 
     // Apply eye makeup
     if (settings.eyeMakeup) {
-      features.eyes.forEach(eye => {
+      features.eyes.forEach((eye) => {
         ctx.strokeStyle = settings.eyeMakeup.color;
         ctx.lineWidth = settings.eyeMakeup.width || 2;
         ctx.beginPath();
@@ -210,7 +210,7 @@ export class VirtualTryOnService {
     ctx: CanvasRenderingContext2D,
     landmarks: { x: number; y: number; z: number }[],
     settings: Record<string, any>,
-    state: ARState
+    state: ARState,
   ) {
     if (!state.scene || !state.camera) return;
 
@@ -222,7 +222,7 @@ export class VirtualTryOnService {
       hairModel.position.set(
         headPose.translation.x,
         headPose.translation.y,
-        headPose.translation.z
+        headPose.translation.z,
       );
       hairModel.rotation.set(headPose.rotation.x, headPose.rotation.y, headPose.rotation.z);
     }
@@ -239,7 +239,7 @@ export class VirtualTryOnService {
   private async applySkinFilter(
     ctx: CanvasRenderingContext2D,
     landmarks: { x: number; y: number; z: number }[],
-    settings: Record<string, any>
+    settings: Record<string, any>,
   ) {
     // Apply skin smoothing
     if (settings.smoothing) {
@@ -284,7 +284,7 @@ export class VirtualTryOnService {
 
   private adjustSkinTone(
     imageData: ImageData,
-    adjustment: { hue: number; saturation: number; brightness: number }
+    adjustment: { hue: number; saturation: number; brightness: number },
   ): ImageData {
     const data = new Uint8ClampedArray(imageData.data);
 
@@ -462,12 +462,12 @@ export class VirtualTryOnService {
 
       // Position hair model based on head pose
       const headPose = await this.mediaPipeService.estimateHeadPose(
-        faceMeshResults.multiFaceLandmarks![0]
+        faceMeshResults.multiFaceLandmarks![0],
       );
       hairModel.position.set(
         headPose.translation.x,
         headPose.translation.y,
-        headPose.translation.z
+        headPose.translation.z,
       );
       hairModel.rotation.set(headPose.rotation.x, headPose.rotation.y, headPose.rotation.z);
 
@@ -568,7 +568,7 @@ export class VirtualTryOnService {
           type,
           confidence: confidences[i],
         })),
-        concerns: concerns.map(concern => ({
+        concerns: concerns.map((concern) => ({
           type: concern,
           confidence: predArray[1].dataSync()[concerns.indexOf(concern)],
         })),
@@ -637,13 +637,13 @@ export class VirtualTryOnService {
     return new Promise((resolve, reject) => {
       this.gltfLoader.load(
         `/models/hairstyles/${hairstyleId}.glb`,
-        gltf => {
+        (gltf) => {
           const model = gltf.scene;
           model.name = 'hairModel';
           resolve(model);
         },
         undefined,
-        reject
+        reject,
       );
     });
   }

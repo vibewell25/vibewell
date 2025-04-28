@@ -1,14 +1,5 @@
 import { prisma } from '@/lib/database/client';
-import {
-  Goal,
-  GoalType,
-  GoalFrequency,
-  GoalUnit,
-  GoalStatus,
-  HabitLog,
-  WellnessDay,
-  ProgressSummary,
-} from '@/types/progress';
+import { GoalUnit, GoalStatus, HabitLog, WellnessDay, ProgressSummary } from '@/types/progress';
 import { Prisma } from '@prisma/client';
 
 export type WellnessGoal = {
@@ -75,7 +66,7 @@ export async function getGoals(userId: string): Promise<WellnessGoal[]> {
 // Create a new goal
 export async function createGoal(
   userId: string,
-  data: Omit<WellnessGoal, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
+  data: Omit<WellnessGoal, 'id' | 'userId' | 'createdAt' | 'updatedAt'>,
 ): Promise<WellnessGoal | null> {
   try {
     const goal = await prisma.wellnessGoal.create({
@@ -100,7 +91,7 @@ export async function createGoal(
 // Update an existing goal
 export async function updateGoal(
   goalId: string,
-  data: Partial<Omit<WellnessGoal, 'id' | 'userId' | 'createdAt' | 'updatedAt'>>
+  data: Partial<Omit<WellnessGoal, 'id' | 'userId' | 'createdAt' | 'updatedAt'>>,
 ): Promise<WellnessGoal | null> {
   try {
     const goal = await prisma.wellnessGoal.update({
@@ -138,7 +129,7 @@ export async function logHabit(
   goalId: string,
   value: number,
   date = new Date().toISOString().split('T')[0],
-  notes?: string
+  notes?: string,
 ): Promise<HabitLog | null> {
   try {
     // Check if there's already a log for this date
@@ -193,11 +184,11 @@ export async function getHabitLogs(
   userId: string,
   goalId?: string,
   startDate?: string,
-  endDate?: string
+  endDate?: string,
 ): Promise<HabitLog[]> {
   try {
     const where: Prisma.HabitLogWhereInput = { userId };
-    
+
     if (goalId) where.goalId = goalId;
     if (startDate) where.date = { gte: startDate };
     if (endDate) where.date = { ...where.date, lte: endDate };
@@ -207,7 +198,7 @@ export async function getHabitLogs(
       orderBy: { date: 'desc' },
     });
 
-    return logs.map(log => ({
+    return logs.map((log) => ({
       id: log.id,
       goalId: log.goalId,
       date: log.date,
@@ -224,11 +215,11 @@ export async function getHabitLogs(
 export async function getWellnessDays(
   userId: string,
   startDate?: string,
-  endDate?: string
+  endDate?: string,
 ): Promise<WellnessDay[]> {
   try {
     const where: Prisma.HabitLogWhereInput = { userId };
-    
+
     if (startDate) where.date = { gte: startDate };
     if (endDate) where.date = { ...where.date, lte: endDate };
 
@@ -242,7 +233,7 @@ export async function getWellnessDays(
 
     const dayMap = new Map<string, WellnessDay>();
 
-    logs.forEach(log => {
+    logs.forEach((log) => {
       const day = dayMap.get(log.date) || {
         date: log.date,
         goals: [],
@@ -266,7 +257,7 @@ export async function getWellnessDays(
       dayMap.set(log.date, day);
     });
 
-    return Array.from(dayMap.values()).map(day => ({
+    return Array.from(dayMap.values()).map((day) => ({
       ...day,
       totalProgress: day.goals.length > 0 ? day.totalProgress / day.goals.length : 0,
     }));
@@ -293,7 +284,6 @@ async function updateGoalProgress(goalId: string): Promise<void> {
 
     const currentValue = goal.logs[0]?.value || 0;
     await updateGoalStatus(goalId, currentValue);
-
   } catch (error) {
     console.error('Error in updateGoalProgress:', error);
   }
@@ -363,8 +353,8 @@ export async function getProgressSummary(userId: string): Promise<ProgressSummar
     ]);
 
     const totalGoals = currentGoals.length;
-    const completedGoals = currentGoals.filter(g => g.status === 'completed').length;
-    const inProgressGoals = currentGoals.filter(g => g.status === 'in_progress').length;
+    const completedGoals = currentGoals.filter((g) => g.status === 'completed').length;
+    const inProgressGoals = currentGoals.filter((g) => g.status === 'in_progress').length;
 
     const weeklyProgress = weeklyLogs.reduce((sum, log) => sum + log.value, 0);
     const lastWeekProgress = lastWeekLogs.reduce((sum, log) => sum + log.value, 0);

@@ -32,7 +32,7 @@ const AudioControls: React.FC<AudioControlsProps> = ({ soundscapes }) => {
   };
 
   const handleSoundscapeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedSoundscape = soundscapes.find(s => s.url === event.target.value);
+    const selectedSoundscape = soundscapes.find((s) => s.url === event.target.value);
     if (selectedSoundscape) {
       playAudio(selectedSoundscape.url);
     }
@@ -59,7 +59,7 @@ const AudioControls: React.FC<AudioControlsProps> = ({ soundscapes }) => {
         aria-label="Select soundscape"
       >
         <option value="">Select a soundscape</option>
-        {soundscapes.map(soundscape => (
+        {soundscapes.map((soundscape) => (
           <option key={soundscape.url} value={soundscape.url}>
             {soundscape.name}
           </option>

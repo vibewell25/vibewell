@@ -1,369 +1,453 @@
-# Vibewell Troubleshooting Guide
+# VibeWell Troubleshooting Guide
 
-This guide is designed to help you resolve common issues you might encounter while using the Vibewell platform. If you need additional assistance after trying these solutions, please contact our support team.
+This guide provides solutions for common issues you might encounter while setting up, developing, or deploying the VibeWell platform.
 
-## Table of Contents
-- [Account Issues](#account-issues)
-- [Booking and Appointment Problems](#booking-and-appointment-problems)
-- [Payment and Billing Issues](#payment-and-billing-issues)
-- [Virtual Try-On Feature Issues](#virtual-try-on-feature-issues)
-- [App/Website Performance](#appwebsite-performance)
-- [Notification Problems](#notification-problems)
-- [Provider-Related Issues](#provider-related-issues)
-- [Review System Issues](#review-system-issues)
+## Authentication Issues
 
-## Account Issues
-
-### Cannot Log In
+### Unable to Log In with Auth0
 
 **Symptoms:**
-- "Invalid username or password" error
-- Cannot access your account despite entering correct credentials
-- Forgotten password
+- Login redirects back to the login page without error
+- Auth0 errors in the console
+- "Unauthorized" errors after login attempt
 
 **Solutions:**
-1. **Double-check your credentials**: Ensure caps lock is off and check for typos in your email address.
-2. **Reset your password**:
-   - Click on "Forgot Password" on the login screen
-   - Follow the instructions sent to your email
-   - If you don't receive the email, check your spam folder
-3. **Clear your browser cache and cookies**: Sometimes stored data can interfere with the login process.
-4. **Try a different browser or device**: This can help determine if the issue is browser-specific.
-5. **Check account status**: Your account may be temporarily suspended. Contact support if you believe this is in error.
+1. Check Auth0 credentials in your `.env.local` file
+2. Verify allowed callback URLs in Auth0 dashboard match your application URLs
+3. Ensure the Auth0 tenant is correctly configured
+4. Check network requests for detailed error messages
+5. Verify your Auth0 application is enabled
 
-### Email Verification Issues
+### Role-Based Access Control Not Working
 
 **Symptoms:**
-- Verification email not received
-- Verification link not working
-- "Email already in use" message
+- Users can access pages they shouldn't have permission for
+- Admin or provider features not showing for appropriate users
 
 **Solutions:**
-1. **Check spam/junk folders**: Verification emails sometimes get filtered out.
-2. **Request a new verification email**: Go to Account Settings > Profile > Resend Verification.
-3. **Use a different email provider**: If you consistently have issues with one email provider, try registering with another.
-4. **Contact support**: If you receive an "Email already in use" message but don't have an account, contact our support team.
+1. Check that Auth0 rules for role assignment are properly configured
+2. Verify JWT token contains the expected roles
+3. Ensure the application is correctly parsing and validating roles
+4. Check role-based middleware or guards are properly implemented
 
-### Account Recovery
+## Database Issues
+
+### Prisma Migration Errors
 
 **Symptoms:**
-- Cannot access recovery email
-- Two-factor authentication device lost
-- Account appears to be compromised
+- Errors when running `prisma migrate dev`
+- Failed deployments due to migration issues
+- Database schema out of sync errors
 
 **Solutions:**
-1. **Use alternative recovery methods**: If you've added a recovery phone number, use the SMS recovery option.
-2. **Provide account verification details**: Be prepared to verify your identity with:
-   - Date of last login
-   - Information about recent bookings
-   - Payment methods on file
-3. **Report compromised accounts immediately**: Use the "Report Compromised Account" form on our Help Center.
+1. Check your database connection string in `.env.local`
+2. Ensure the database exists and is accessible
+3. Try resetting the database: `npx prisma migrate reset` (warning: this deletes all data)
+4. Check for conflicts in migration files
+5. Verify PostgreSQL version compatibility
 
-## Booking and Appointment Problems
-
-### Cannot Book Appointment
+### Database Connection Issues
 
 **Symptoms:**
-- Calendar shows no available slots
-- Error message when selecting a time slot
-- Booking process freezes or times out
+- "Could not connect to database" errors
+- Timeouts when accessing database
+- Prisma client initialization failures
 
 **Solutions:**
-1. **Check provider availability**: The provider may be fully booked. Try different dates or times.
-2. **Verify your account status**: Some booking features require complete profiles or verified accounts.
-3. **Check for conflicting appointments**: You may already have an appointment at the selected time.
-4. **Try booking a different service**: Some services have limited availability or require pre-approval.
-5. **Clear browser cache and cookies**: Refresh your browser or app and try again.
+1. Verify database credentials and connection string
+2. Check if database server is running and accessible
+3. Test connection using a database client tool
+4. Check for firewall or network restrictions
+5. Ensure you're not exceeding connection limits
 
-### Appointment Not Showing in Calendar
+## AWS S3 Issues
+
+### File Upload Failures
 
 **Symptoms:**
-- Booking confirmation received but appointment not visible
-- Appointment disappears from calendar
-- Wrong appointment details displayed
+- Files fail to upload
+- Access denied errors
+- S3 bucket not found errors
 
 **Solutions:**
-1. **Refresh the app/page**: Sometimes the calendar needs to sync.
-2. **Check for cancellation emails**: The appointment may have been canceled.
-3. **Verify the appointment date**: It may be scheduled further in the future than you're currently viewing.
-4. **Check all linked accounts**: If you have multiple profiles, the appointment might be under a different account.
-5. **Contact the provider directly**: They can confirm if the appointment is in their system.
+1. Verify AWS credentials in `.env.local`
+2. Check S3 bucket permissions
+3. Ensure CORS is properly configured for the S3 bucket
+4. Verify IAM user has necessary permissions
+5. Check file size limitations
 
-### Cannot Cancel or Reschedule
+### Image Display Issues
 
 **Symptoms:**
-- Cancel/reschedule buttons not visible
-- Error message when attempting to cancel
-- Cancellation window has expired
+- Images not loading
+- Access denied when trying to view images
+- Broken image links
 
 **Solutions:**
-1. **Check the provider's cancellation policy**: Some providers don't allow cancellations less than 24-48 hours before the appointment.
-2. **Verify the appointment status**: You cannot cancel already completed appointments.
-3. **Contact the provider directly**: For last-minute changes, calling the provider directly is often the best solution.
-4. **Request exception via support**: In case of emergency, our support team may be able to help with a late cancellation.
+1. Check S3 bucket policy allows public read access (if intended)
+2. Verify file URLs are correctly formatted
+3. Check browser console for specific error messages
+4. Ensure CORS configuration allows your domain
+5. Verify image file formats are supported
 
-## Payment and Billing Issues
+## Stripe Payment Issues
 
-### Payment Method Declined
+### Payment Processing Failures
 
 **Symptoms:**
-- "Payment declined" error message
-- Cannot complete booking due to payment issues
-- Wrong amount charged
+- Payments failing to process
+- Stripe error messages
+- Webhook errors
 
 **Solutions:**
-1. **Verify card details**: Ensure the card number, expiration date, and CVV are correct.
-2. **Check card limits and available funds**: Make sure you have sufficient funds available.
-3. **Contact your bank**: Your bank may have flagged the transaction as suspicious.
-4. **Try a different payment method**: Add an alternative payment option to your account.
-5. **Clear browser cache and try again**: Sometimes stored data can interfere with payment processing.
+1. Check Stripe API keys in `.env.local`
+2. Verify Stripe account is properly configured
+3. Check webhook signing secret
+4. Use Stripe CLI to debug webhook issues
+5. Review Stripe dashboard for specific error messages
 
-### Missing Receipt or Invoice
+### Checkout Session Creation Fails
 
 **Symptoms:**
-- Cannot find payment confirmation
-- Need receipt for reimbursement or records
-- Invoice shows incorrect information
+- Unable to create checkout sessions
+- API errors when attempting to pay
+- Redirect to checkout not working
 
 **Solutions:**
-1. **Check your email**: Receipts are sent to your registered email address.
-2. **Look in "Payment History"**: All transaction records are stored in your account under Payment History.
-3. **Check spam folder**: Payment confirmations sometimes get filtered out.
-4. **Request a duplicate receipt**: Contact support with your booking reference to request a new copy.
-5. **Report incorrect information**: If any details on your receipt are wrong, report this to our billing department.
+1. Verify Stripe API key is correct
+2. Ensure price and product IDs exist in your Stripe account
+3. Check success and cancel URLs
+4. Verify webhook endpoint is properly configured
+5. Check Stripe API version compatibility
 
-### Refund Not Processed
+## Deployment Issues
+
+### Vercel Deployment Failures
 
 **Symptoms:**
-- Refund approved but not received
-- Partial refund when expecting full amount
-- Refund taking longer than expected
+- Build failures in Vercel
+- Deployment timeouts
+- Application errors after deployment
 
 **Solutions:**
-1. **Check refund timeframe**: Refunds typically take 5-10 business days to process, depending on your payment method and bank.
-2. **Verify refund policy applied**: Check which refund policy was applied to your cancellation.
-3. **Confirm refund destination**: Refunds go back to the original payment method used.
-4. **Contact your bank**: After our system processes the refund, your bank may take additional time to post it to your account.
-5. **Provide refund reference number**: When contacting support about refunds, always include the refund reference number.
+1. Check build logs for specific errors
+2. Verify all environment variables are properly set in Vercel
+3. Ensure build commands are correct
+4. Check for unsupported dependencies
+5. Verify Node.js version compatibility
 
-## Virtual Try-On Feature Issues
-
-### Camera Not Working
+### Environment Variable Issues
 
 **Symptoms:**
-- Black screen in Virtual Try-On feature
-- "Cannot access camera" error message
-- Frozen camera view
+- "Cannot read property of undefined" errors
+- Service integrations not working
+- Authentication failures in production
 
 **Solutions:**
-1. **Check camera permissions**:
-   - For browsers: Click the lock icon in the address bar and ensure camera access is allowed
-   - For mobile app: Go to device settings > Apps > Vibewell > Permissions > Camera
-2. **Test your camera in another app**: Verify your camera works properly in other applications.
-3. **Restart your device**: Close all apps and restart your device completely.
-4. **Update your browser or app**: Outdated software may have compatibility issues.
-5. **Try a different device**: If possible, test the feature on another device to determine if it's a hardware issue.
+1. Verify all required environment variables are set
+2. Check for typos in environment variable names
+3. Ensure values are properly formatted (no extra spaces)
+4. Check if environment variables are being loaded correctly
+5. Review Vercel (or hosting provider) environment configuration
 
-### AR Models Not Loading
+## Performance Issues
 
-**Symptoms:**
-- Loading spinner that never completes
-- Error message about failed resource loading
-- Blank or distorted AR overlays
-
-**Solutions:**
-1. **Check your internet connection**: AR models require a stable internet connection to download.
-2. **Clear app cache**:
-   - For browsers: Clear browser cache and reload
-   - For mobile app: Go to device settings > Apps > Vibewell > Storage > Clear Cache
-3. **Ensure adequate storage space**: AR models require temporary storage space on your device.
-4. **Reduce background processes**: Close other apps running in the background to free up resources.
-5. **Try simpler models first**: Start with less complex AR models to see if performance improves.
-
-### Performance Issues with Virtual Try-On
-
-**Symptoms:**
-- Lagging or choppy AR experience
-- Excessive battery drain
-- Device overheating
-
-**Solutions:**
-1. **Use in well-lit environments**: AR technology works best with good lighting.
-2. **Hold device steady**: Excessive movement can cause tracking issues.
-3. **Close background apps**: Other apps can compete for resources.
-4. **Reduce screen brightness**: This can help with battery drain and overheating.
-5. **Use power-saving mode**: For extended AR sessions, consider enabling your device's power-saving mode.
-6. **Update to the latest app version**: Performance improvements are regularly added.
-
-## App/Website Performance
-
-### Slow Loading Times
+### Slow Page Loading
 
 **Symptoms:**
 - Pages take a long time to load
-- Images appear gradually or not at all
-- Interactive elements unresponsive
+- High Time to First Byte (TTFB)
+- Slow API responses
 
 **Solutions:**
-1. **Check your internet connection**: Run a speed test to verify your connection is stable.
-2. **Clear cache and cookies**:
-   - For browsers: Go to Settings > Privacy > Clear browsing data
-   - For mobile app: Go to device settings > Apps > Vibewell > Storage > Clear Cache
-3. **Disable browser extensions**: Some extensions can interfere with website performance.
-4. **Try a different browser**: Some browsers perform better than others with certain websites.
-5. **Update your app or browser**: Outdated software may cause performance issues.
-6. **Reduce image quality setting**: In app settings, you can lower image quality to improve performance.
+1. Implement proper data caching
+2. Optimize image loading and sizes
+3. Use pagination for large data sets
+4. Enable serverless function caching where appropriate
+5. Review database query performance
 
-### App Crashes or Freezes
+### Memory Usage Issues
 
 **Symptoms:**
-- App closes unexpectedly
-- Screen freezes and becomes unresponsive
-- Error messages about app not responding
+- Out of memory errors
+- Serverless function timeouts
+- Application crashes
 
 **Solutions:**
-1. **Force close and restart the app**: 
-   - For iOS: Swipe up from the bottom (or double-tap home button) and swipe the app away
-   - For Android: Go to Recent Apps and swipe the app away
-2. **Restart your device**: A full device restart can resolve many temporary issues.
-3. **Update the app**: Make sure you have the latest version from the App Store or Google Play.
-4. **Reinstall the app**: Uninstall and reinstall the app to get a fresh copy.
-5. **Check device compatibility**: Older devices may not be fully compatible with the latest app version.
+1. Optimize large data operations
+2. Implement pagination for data-heavy requests
+3. Check for memory leaks in your application
+4. Consider increasing function memory limits (if possible)
+5. Break down complex operations into smaller chunks
 
-### Browser Compatibility Issues
+## Development Environment Issues
+
+### Next.js Hot Reload Not Working
 
 **Symptoms:**
-- Misaligned elements on the page
-- Features not working as expected
-- Error messages about unsupported browser
+- Changes not reflecting in development server
+- Need to manually restart server for changes to appear
 
 **Solutions:**
-1. **Use a recommended browser**: We officially support the latest versions of Chrome, Safari, Firefox, and Edge.
-2. **Update your browser**: Ensure you're using the latest version of your preferred browser.
-3. **Disable browser extensions**: Extensions can sometimes conflict with website functionality.
-4. **Try incognito/private mode**: This can help determine if browser extensions or settings are causing issues.
-5. **Use our mobile app instead**: For the best experience, download our dedicated mobile app.
+1. Check for errors in terminal or browser console
+2. Ensure you're editing the correct files
+3. Verify file watching is enabled
+4. Try clearing `.next` folder and restarting
+5. Check for conflicting build processes
 
-## Notification Problems
-
-### Not Receiving Notifications
+### TypeScript Errors
 
 **Symptoms:**
-- Missing appointment reminders
-- No notifications for messages or updates
-- Delayed notifications
+- Type errors preventing build
+- Editor showing type errors
+- Failed type checking
 
 **Solutions:**
-1. **Check notification settings in the app**: Go to Account > Settings > Notifications and ensure they're enabled.
-2. **Check device notification settings**:
-   - For iOS: Settings > Notifications > Vibewell
-   - For Android: Settings > Apps > Vibewell > Notifications
-3. **Verify Do Not Disturb is off**: Check if your device has Do Not Disturb or Focus mode enabled.
-4. **Check your email spam folder**: Email notifications may be filtered out.
-5. **Update contact information**: Ensure your email and phone number are current in your profile.
+1. Run `npm run type-check` to see all errors
+2. Update types or add appropriate type assertions
+3. Check for outdated type definitions
+4. Ensure `tsconfig.json` is properly configured
+5. Update dependencies if using outdated type libraries
 
-### Too Many Notifications
+## Database Migration Issues
+
+### Supabase to Prisma Migration
 
 **Symptoms:**
-- Overwhelming number of notifications
-- Duplicate notifications
-- Irrelevant notifications
+- Errors referencing Supabase functions or methods
+- Console warnings about deprecated Supabase imports
+- Database connection errors after deployment
+- Inconsistent behavior between local and production environments
+- TypeScript errors related to Supabase types
+- Auth errors after migrating from Supabase Auth to Auth0
 
 **Solutions:**
-1. **Customize notification preferences**: Go to Account > Settings > Notifications to select which types you want to receive.
-2. **Adjust frequency settings**: Change from immediate to daily digest notifications.
-3. **Disable promotional notifications**: You can opt out of marketing communications while keeping important updates.
-4. **Mute specific threads**: For message notifications, you can mute specific conversation threads.
-5. **Contact support if receiving duplicates**: Report duplicate notifications as this may indicate a system issue.
 
-## Provider-Related Issues
+1. **Run Migration Scripts**:
+   - We have two helper scripts to assist with migration:
+     ```bash
+     # Remove Supabase environment variables
+     node scripts/remove-supabase-env-vars.js .env.local
+     
+     # Automatically convert Supabase code to Prisma 
+     node scripts/migrate-remaining-supabase.js
+     ```
 
-### Cannot Find Specific Provider
+2. **Update Import Statements**:
+   - Replace all Supabase imports with Prisma imports:
+     ```typescript
+     // OLD - deprecated
+     import { supabase } from '@/lib/supabase/client';
+     import { createClient } from '@supabase/supabase-js';
+     
+     // NEW - use this instead
+     import { prisma } from '@/lib/database/client';
+     ```
 
-**Symptoms:**
-- Provider not appearing in search results
-- "No longer available" message
-- Cannot access previously bookmarked provider
+3. **Update Environment Variables**:
+   - Remove Supabase-specific variables from `.env.local` and `.env.production`:
+     ```
+     # Remove these variables
+     NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+     NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+     SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+     ```
+   - Ensure your DATABASE_URL is correctly set:
+     ```
+     DATABASE_URL=postgresql://user:password@host:5432/database
+     ```
 
-**Solutions:**
-1. **Expand your search area**: The provider may be outside your current search radius.
-2. **Check spelling**: Ensure you're spelling the provider's name correctly.
-3. **Use filters wisely**: Too many filters may exclude relevant providers.
-4. **Check if the provider is still active**: They may have temporarily or permanently left the platform.
-5. **Contact the provider directly**: If you have their contact information, reach out to confirm their status.
+4. **Update Database Queries**:
+   - Replace Supabase query patterns with Prisma patterns:
+   
+     ```typescript
+     // OLD Supabase pattern
+     const { data, error } = await supabase
+       .from('users')
+       .select('*')
+       .eq('id', userId);
+     
+     // NEW Prisma pattern
+     const user = await prisma.user.findUnique({
+       where: { id: userId }
+     });
+     ```
+     
+   - Replace joins and complex selects:
+     ```typescript
+     // OLD Supabase complex query
+     const { data, error } = await supabase
+       .from('providers')
+       .select(`
+         *,
+         services (*),
+         reviews (*)
+       `)
+       .eq('id', providerId);
+     
+     // NEW Prisma with relations
+     const provider = await prisma.provider.findUnique({
+       where: { id: providerId },
+       include: {
+         services: true,
+         reviews: true
+       }
+     });
+     ```
+     
+   - Replace pagination:
+     ```typescript
+     // OLD Supabase pagination
+     const { data, error } = await supabase
+       .from('products')
+       .select('*')
+       .range(0, 9);
+     
+     // NEW Prisma pagination
+     const products = await prisma.product.findMany({
+       take: 10,
+       skip: 0
+     });
+     ```
 
-### Provider Not Responding
+5. **Handle Authentication Changes**:
+   - Update auth workflows as we've migrated from Supabase Auth to Auth0:
+     ```typescript
+     // OLD Supabase auth session check
+     const { data: { session } } = await supabase.auth.getSession();
+     
+     // NEW Auth0 session check
+     import { getSession } from '@auth0/nextjs-auth0';
+     const session = await getSession();
+     
+     // OLD Supabase auth sign in
+     const { user, error } = await supabase.auth.signIn({ email, password });
+     
+     // NEW Auth0 sign in
+     import { useAuth0 } from '@auth0/auth0-react';
+     const { loginWithRedirect } = useAuth0();
+     loginWithRedirect();
+     ```
 
-**Symptoms:**
-- Messages not answered
-- Inquiries ignored
-- Last-minute cancellations without explanation
+6. **Fix Common Error Patterns**:
+   - Supabase client initialization:
+     ```typescript
+     // Remove this code
+     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+     const supabase = createClient(supabaseUrl, supabaseAnonKey);
+     ```
+   
+   - Error handling pattern change:
+     ```typescript
+     // OLD Supabase error pattern
+     const { data, error } = await supabase.from('users').select('*');
+     if (error) return { error: error.message };
+     
+     // NEW Prisma error pattern
+     try {
+       const users = await prisma.user.findMany();
+       return { data: users };
+     } catch (error) {
+       return { error: error.message };
+     }
+     ```
 
-**Solutions:**
-1. **Check provider's typical response time**: Some providers only respond during business hours.
-2. **Try alternative contact methods**: If available, try calling them directly.
-3. **Book with a different provider**: If time is of the essence, consider booking with someone else.
-4. **Report unresponsive providers**: Consistently unresponsive providers should be reported to maintain platform quality.
-5. **Request support intervention**: For urgent situations, our support team can attempt to reach the provider.
+7. **Update Dependencies**:
+   - Remove Supabase packages after migration is complete:
+     ```bash
+     npm uninstall @supabase/auth-helpers-nextjs @supabase/ssr @supabase/supabase-js
+     ```
 
-### Service Different Than Described
+8. **Run Database Migrations**:
+   - Ensure your database schema is up-to-date:
+     ```bash
+     npx prisma migrate deploy
+     ```
+   - Generate the latest Prisma client:
+     ```bash
+     npx prisma generate
+     ```
 
-**Symptoms:**
-- Significant discrepancy between service description and delivery
-- Missing elements of advertised service
-- Additional unexpected charges
+9. **Update Tests**:
+   - Update mock implementations:
+     ```typescript
+     // OLD Supabase mock
+     jest.mock('@/lib/supabase/client', () => ({
+       supabase: {
+         from: jest.fn().mockReturnValue({
+           select: jest.fn().mockReturnThis(),
+           eq: jest.fn().mockReturnThis(),
+           single: jest.fn().mockResolvedValue({ data: mockUser, error: null })
+         })
+       }
+     }));
+     
+     // NEW Prisma mock
+     jest.mock('@/lib/database/client', () => ({
+       prisma: {
+         user: {
+           findUnique: jest.fn().mockResolvedValue(mockUser)
+         }
+       }
+     }));
+     ```
 
-**Solutions:**
-1. **Communicate concerns directly**: Speak with the provider about the discrepancy immediately.
-2. **Document the differences**: Take photos or notes about how the service differed from what was advertised.
-3. **Request adjustment during service**: Many issues can be resolved during your appointment if you speak up.
-4. **Use the resolution center**: If direct communication doesn't resolve the issue, file a formal complaint.
-5. **Leave detailed feedback**: Help other users by providing specific details in your review.
+10. **Check for Files in Migration Script Output**:
+    - Review the output of `migrate-remaining-supabase.js` script 
+    - Focus on files marked with "⚠️ No changes made - may need manual attention"
 
-## Review System Issues
+**Common Migration Errors:**
 
-### Cannot Post Review
+1. **"Cannot read properties of undefined (reading 'from')"**
+   - Cause: Trying to use Supabase after switching to Prisma
+   - Solution: Update the query to use prisma client instead
 
-**Symptoms:**
-- Review submission fails
-- "Not eligible to review" message
-- Review disappears after posting
+2. **"Cannot read properties of undefined (reading 'auth')"**
+   - Cause: Using Supabase auth after switching to Auth0
+   - Solution: Replace with Auth0 authentication methods
 
-**Solutions:**
-1. **Verify appointment completion status**: You can only review after your appointment is marked as completed.
-2. **Check review timeframe**: Reviews must be submitted within 14 days of service completion.
-3. **Ensure content follows guidelines**: Reviews containing prohibited content (profanity, personal attacks) will be rejected.
-4. **Check character count**: Reviews must be between 10 and 1000 characters.
-5. **Contact support with screenshots**: If you believe your review was incorrectly rejected, provide details to support.
+3. **"Cannot find module '@supabase/supabase-js'"**
+   - Cause: Supabase dependencies removed but code still references them
+   - Solution: Update imports to use Prisma and Auth0
 
-### Review Not Showing on Provider Profile
+4. **TypeScript errors with Prisma types**
+   - Cause: Mismatch between expected types from Supabase vs Prisma
+   - Solution: Update type declarations to match Prisma schema
 
-**Symptoms:**
-- Confirmation of review submission but not visible on profile
-- Only showing on your account but not publicly
-- Star rating updated but text review missing
+**Migration Resources:**
 
-**Solutions:**
-1. **Allow processing time**: Reviews may take up to 24 hours to appear publicly.
-2. **Check for guideline violations**: Reviews flagged for moderation may take longer to appear.
-3. **Verify you're viewing the correct provider**: Ensure you're looking at the right profile.
-4. **Look for the "Filter Reviews" option**: Your review may not appear under the current filter settings.
-5. **Report missing reviews**: If your review doesn't appear after 48 hours, report the issue to support.
+For more detailed information on the migration process, refer to:
+- [Migration Plan Document](./docs/MIGRATION-PLAN.md)
+- [Detailed Migration Guide](./docs/supabase-to-prisma-migration.md)
 
-## Still Need Help?
+**When to Contact Support:**
+- If you encounter persistent database connection issues after following these steps
+- When you need help migrating complex Supabase queries to Prisma
+- If you need to restore data from a Supabase backup
 
-If you've tried the relevant troubleshooting steps and still experiencing issues, please contact our support team using one of these methods:
+## General Troubleshooting Steps
 
-- **In-app chat support**: Available 24/7 for immediate assistance
-- **Email**: support@vibewell.com (response within 24 hours)
-- **Phone**: 1-800-VIBEWELL (Monday-Friday, 9am-6pm EST)
-- **Help Center**: [help.vibewell.com](https://help.vibewell.com)
+1. **Check Logs**: Always check console logs, network requests, and server logs for specific error messages
+2. **Clear Cache**: Clear browser cache and application data
+3. **Update Dependencies**: Ensure all packages are up to date
+4. **Restart Services**: Sometimes restarting the development server or services resolves issues
+5. **Isolate the Problem**: Create a minimal reproduction to isolate the issue
+6. **Check Documentation**: Review documentation for the specific service or library causing issues
+7. **Community Support**: Check GitHub issues or community forums for similar problems
 
-When contacting support, please include:
-- Your account email address
-- Device type and operating system
-- Description of the issue
-- Screenshots if applicable
-- Steps you've already taken to resolve the issue
+If you encounter issues not covered in this guide, please open an issue on the GitHub repository or contribute to this troubleshooting guide with your solution. 
 
-This helps us assist you more efficiently. 
+# Update AWS RDS connection string in .env files to replace Supabase URL
+node scripts/remove-supabase-env-vars.js .env.local
+node scripts/remove-supabase-env-vars.js .env.example
+
+# Convert Supabase code to Prisma
+node scripts/migrate-remaining-supabase.js
+
+# Update dependencies
+node scripts/update-dependencies.js
+npm install
+
+# Generate Prisma client for AWS RDS
+npx prisma generate 

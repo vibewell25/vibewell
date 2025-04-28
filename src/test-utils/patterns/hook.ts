@@ -18,10 +18,10 @@ export function createHookTestSuite<TProps, TResult>(
   suiteName: string,
   hook: (props: TProps) => TResult,
   defaultProps: TProps,
-  testCases: HookTestCase<TProps, TResult>[]
+  testCases: HookTestCase<TProps, TResult>[],
 ): void {
   describe(suiteName, () => {
-    testCases.forEach(testCase => {
+    testCases.forEach((testCase) => {
       it(testCase.name, async () => {
         const props = { ...defaultProps, ...testCase.initialProps };
         const { result, rerender } = renderHook(() => hook(props));
@@ -44,7 +44,7 @@ export function createHookTestSuite<TProps, TResult>(
 export function createHookStateTestCase<TProps, TResult>(
   name: string,
   updateFn: (result: RenderHookResult<TResult, TProps>) => Promise<void> | void,
-  expectedValue: unknown
+  expectedValue: unknown,
 ): HookTestCase<TProps, TResult> {
   return {
     name,
@@ -61,7 +61,7 @@ export function createHookStateTestCase<TProps, TResult>(
 export function createHookErrorTestCase<TProps, TResult>(
   name: string,
   errorFn: (result: RenderHookResult<TResult, TProps>) => Promise<void> | void,
-  expectedError: Error | RegExp | string
+  expectedError: Error | RegExp | string,
 ): HookTestCase<TProps, TResult> {
   return {
     name,

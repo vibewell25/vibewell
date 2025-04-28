@@ -125,7 +125,7 @@ interface ARTestResult {
  */
 export function testARViewer(
   rendererRef: MutableRefObject<THREE.WebGLRenderer | null>,
-  options: ARTestOptions = {}
+  options: ARTestOptions = {},
 ): Promise<ARTestResult> {
   const {
     logPerformance = true,
@@ -158,7 +158,7 @@ export function testARViewer(
     errors: [],
   };
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     try {
       // Simulate network conditions
       const networkDelay = networkCondition === '4G' ? 100 : networkCondition === '3G' ? 300 : 1000;
@@ -250,7 +250,7 @@ export function testARModelCompatibility(
   options: {
     browsers?: ('Safari' | 'Chrome' | 'Firefox')[];
     devices?: ('iOS' | 'Android' | 'desktop')[];
-  } = {}
+  } = {},
 ): Promise<Record<string, Record<string, boolean>>> {
   const { browsers = ['Safari', 'Chrome', 'Firefox'], devices = ['iOS', 'Android', 'desktop'] } =
     options;
@@ -258,11 +258,11 @@ export function testARModelCompatibility(
   const results: Record<string, Record<string, boolean>> = {};
 
   // Simulate compatibility testing
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     // Initialize results structure
-    devices.forEach(device => {
+    devices.forEach((device) => {
       results[device] = {};
-      browsers.forEach(browser => {
+      browsers.forEach((browser) => {
         // Simulate compatibility based on combinations
         results[device][browser] =
           // iOS Safari is fully compatible
@@ -284,14 +284,14 @@ export function testARModelCompatibility(
  */
 export function measureARModelLoadTime(
   modelUrl: string,
-  trials: number = 5
+  trials: number = 5,
 ): Promise<{
   average: number;
   min: number;
   max: number;
   trials: number[];
 }> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const results: number[] = [];
 
     // Simulate multiple loading trials
@@ -323,7 +323,7 @@ export function createARTestEnvironment(
     height?: number;
     backgroundColor?: string;
     cameraPosition?: { x: number; y: number; z: number };
-  } = {}
+  } = {},
 ) {
   const {
     width = 800,
@@ -402,12 +402,12 @@ export function createARTestEnvironment(
     dispose: () => {
       // Clean up resources
       renderer.dispose();
-      scene.children.forEach(child => {
+      scene.children.forEach((child) => {
         if (child instanceof THREE.Mesh) {
           if (child.geometry) child.geometry.dispose();
           if (child.material) {
             if (Array.isArray(child.material)) {
-              child.material.forEach(material => material.dispose());
+              child.material.forEach((material) => material.dispose());
             } else {
               child.material.dispose();
             }
@@ -424,7 +424,7 @@ export function createARTestEnvironment(
 export function validateARModelRender(
   scene: THREE.Scene,
   camera: THREE.PerspectiveCamera,
-  renderer: THREE.WebGLRenderer
+  renderer: THREE.WebGLRenderer,
 ): {
   qualityScore: number;
   issues: string[];
@@ -446,7 +446,7 @@ export function validateARModelRender(
 
   // Check for shadows
   let hasShadows = false;
-  scene.traverse(object => {
+  scene.traverse((object) => {
     if (object instanceof THREE.Light && object.castShadow) {
       hasShadows = true;
     }
@@ -459,7 +459,7 @@ export function validateARModelRender(
 
   // Check for sufficient lighting
   let lightCount = 0;
-  scene.traverse(object => {
+  scene.traverse((object) => {
     if (object instanceof THREE.Light) {
       lightCount++;
     }
@@ -485,7 +485,7 @@ export function validateARModelRender(
 export function testModelLoading(
   url: string,
   type: string,
-  onProgress?: (progress: number) => void
+  onProgress?: (progress: number) => void,
 ): Promise<{
   success: boolean;
   model?: THREE.Group;
@@ -495,7 +495,7 @@ export function testModelLoading(
     fps: number;
   };
 }> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     // Mock performance metrics
     const startTime = Date.now();
 
@@ -538,7 +538,7 @@ export function testModelLoading(
  */
 export function testModelLighting(
   model: THREE.Group,
-  lightIntensity: number
+  lightIntensity: number,
 ): {
   success: boolean;
   performance: {
@@ -576,30 +576,4 @@ export function testModelLighting(
 /**
  * Mock response for AR model test data
  */
-export const mockARTestData = {
-  models: [
-    {
-      id: 'model1',
-      name: 'Test Model 1',
-      url: 'https://example.com/models/model1.glb',
-      type: 'makeup',
-    },
-    {
-      id: 'model2',
-      name: 'Test Model 2',
-      url: 'https://example.com/models/model2.glb',
-      type: 'hairstyle',
-    },
-    {
-      id: 'model3',
-      name: 'Test Model 3',
-      url: 'https://example.com/models/model3.glb',
-      type: 'accessory',
-    },
-  ],
-  resolutions: [
-    { width: 640, height: 480, label: 'SD' },
-    { width: 1280, height: 720, label: 'HD' },
-    { width: 1920, height: 1080, label: 'Full HD' },
-  ],
-};
+export {};

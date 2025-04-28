@@ -3,12 +3,7 @@
  * Handles API requests for booking-related functionality
  */
 import { apiClient, ApiResponse } from '@/types/api';
-import {
-  withApiErrorHandling,
-  handleResponse,
-  getResponseData,
-  hasData,
-} from '@/types/api';
+import { withApiErrorHandling, handleResponse, getResponseData, hasData } from '@/types/api';
 import {
   PrismaClient,
   BookingStatus,
@@ -98,7 +93,7 @@ export const bookingService = {
 
     if (filters.status) {
       const statuses = Array.isArray(filters.status) ? filters.status : [filters.status];
-      statuses.forEach(status => queryParams.append('status', status));
+      statuses.forEach((status) => queryParams.append('status', status));
     }
 
     if (filters.providerId) {
@@ -271,7 +266,7 @@ export class BookingService {
       const endTime = new Date(params.startTime.getTime() + totalDuration * 60000);
 
       // Start transaction
-      return await prisma.$transaction(async tx => {
+      return await prisma.$transaction(async (tx) => {
         // Create the main booking
         const booking = await tx.serviceBooking.create({
           data: {
@@ -284,7 +279,7 @@ export class BookingService {
             frequency: params.frequency,
             endDate: params.endDate,
             services: {
-              create: params.services.map(service => ({
+              create: params.services.map((service) => ({
                 serviceId: service.serviceId,
                 price: service.price,
                 duration: service.duration,
@@ -320,12 +315,12 @@ export class BookingService {
   private async createRecurringBookings(
     originalBooking: ServiceBooking,
     params: CreateBookingParams,
-    tx: PrismaClient
+    tx: PrismaClient,
   ): Promise<void> {
     const recurringDates = this.calculateRecurringDates(
       params.startTime,
       params.endDate!,
-      params.frequency!
+      params.frequency!,
     );
 
     // Create future bookings
@@ -337,7 +332,7 @@ export class BookingService {
           startTime: date,
           endTime: new Date(
             date.getTime() +
-              params.services.reduce((total, service) => total + service.duration, 0) * 60000
+              params.services.reduce((total, service) => total + service.duration, 0) * 60000,
           ),
           notes: params.notes,
           isRecurring: true,
@@ -345,7 +340,7 @@ export class BookingService {
           frequency: params.frequency,
           endDate: params.endDate,
           services: {
-            create: params.services.map(service => ({
+            create: params.services.map((service) => ({
               serviceId: service.serviceId,
               price: service.price,
               duration: service.duration,
@@ -359,7 +354,7 @@ export class BookingService {
   private calculateRecurringDates(
     startDate: Date,
     endDate: Date,
-    frequency: RecurringFrequency
+    frequency: RecurringFrequency,
   ): Date[] {
     const dates: Date[] = [];
     const currentDate = new Date(startDate);
@@ -392,7 +387,7 @@ export class BookingService {
     userId: string,
     serviceId: string,
     preferredTime?: Date,
-    notes?: string
+    notes?: string,
   ): Promise<void> {
     try {
       await prisma.waitlist.create({
@@ -437,7 +432,7 @@ export class BookingService {
         await this.notificationService.sendWaitlistNotification(
           entry.user.id,
           entry.service.id,
-          availableSlot
+          availableSlot,
         );
       }
     } catch (error) {
@@ -494,7 +489,7 @@ export class BookingService {
    */
   async getPractitionerBookings(
     practitionerId: string,
-    status?: BookingStatus
+    status?: BookingStatus,
   ): Promise<ServiceBooking[]> {
     try {
       return await prisma.serviceBooking.findMany({

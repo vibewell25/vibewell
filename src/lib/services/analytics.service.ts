@@ -41,7 +41,7 @@ export class AnalyticsService {
 
     const previousTotal = previousPeriodBookings.reduce(
       (sum, booking) => sum + (booking.service?.price || 0),
-      0
+      0,
     );
 
     const trend = previousTotal ? ((total - previousTotal) / previousTotal) * 100 : 0;
@@ -215,17 +215,12 @@ export class AnalyticsService {
 
     return providers.map((provider) => {
       const bookings = provider.providerProfile?.bookings || [];
-      const revenue = bookings.reduce(
-        (sum, booking) => sum + (booking.service?.price || 0),
-        0
-      );
+      const revenue = bookings.reduce((sum, booking) => sum + (booking.service?.price || 0), 0);
       const ratings = bookings
         .map((booking) => booking.review?.rating || 0)
         .filter((rating) => rating > 0);
       const averageRating =
-        ratings.length > 0
-          ? ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length
-          : 0;
+        ratings.length > 0 ? ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length : 0;
 
       return {
         name: `${provider.firstName} ${provider.lastName}`,
@@ -255,7 +250,7 @@ export class AnalyticsService {
         name: service.name,
         potential: Math.min(
           ((service.revenue / revenueData.total) * 100 + clientGrowthRate) * 1.2,
-          100
+          100,
         ),
       }))
       .sort((a, b) => b.potential - a.potential)
@@ -290,10 +285,7 @@ export class AnalyticsService {
       },
     });
 
-    const totalExpenses = marketingExpenses.reduce(
-      (sum, expense) => sum + expense.amount,
-      0
-    );
+    const totalExpenses = marketingExpenses.reduce((sum, expense) => sum + expense.amount, 0);
 
     const newClients = await prisma.user.count({
       where: {
@@ -325,10 +317,7 @@ export class AnalyticsService {
     });
 
     const lifetimeValues = allClients.map((client) => {
-      return client.bookings.reduce(
-        (sum, booking) => sum + (booking.service?.price || 0),
-        0
-      );
+      return client.bookings.reduce((sum, booking) => sum + (booking.service?.price || 0), 0);
     });
 
     const customerLifetimeValue =
@@ -340,7 +329,7 @@ export class AnalyticsService {
         sum +
         client.bookings.reduce(
           (bookingSum, booking) => bookingSum + (booking.service?.price || 0),
-          0
+          0,
         )
       );
     }, 0);
@@ -376,7 +365,7 @@ export class AnalyticsService {
           clients,
           conversion: leads ? (clients / leads) * 100 : 0,
         };
-      })
+      }),
     );
 
     return {
@@ -389,17 +378,20 @@ export class AnalyticsService {
 
   private groupByDate<T>(
     items: T[],
-    getValue: (item: T) => number
+    getValue: (item: T) => number,
   ): Array<{ date: string; amount: number }> {
-    const grouped = items.reduce((acc, item: any) => {
-      const date = format(new Date(item.createdAt), 'yyyy-MM');
-      acc[date] = (acc[date] || 0) + getValue(item);
-      return acc;
-    }, {} as Record<string, number>);
+    const grouped = items.reduce(
+      (acc, item: any) => {
+        const date = format(new Date(item.createdAt), 'yyyy-MM');
+        acc[date] = (acc[date] || 0) + getValue(item);
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
 
     return Object.entries(grouped).map(([date, amount]) => ({
       date,
       amount,
     }));
   }
-} 
+}

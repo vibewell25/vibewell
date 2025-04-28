@@ -1,11 +1,3 @@
-// This file provides TypeScript type definitions for testing libraries
-
-import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/extend-expect';
-
-// Add jest-axe type for accessibility testing
-import 'jest-axe';
-
 declare global {
   namespace jest {
     interface Matchers<R> {

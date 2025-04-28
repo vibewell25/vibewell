@@ -38,7 +38,7 @@ export class StorageUtils {
     if (!storage) throw new Error('Storage service not initialized');
 
     const config = this.manager.getServiceConfig('storage') as StorageConfig;
-    
+
     try {
       switch (config.service) {
         case 's3': {
@@ -48,7 +48,7 @@ export class StorageUtils {
             Body: options.content,
             ContentType: options.contentType,
             Metadata: options.metadata,
-            ACL: options.public ? 'public-read' : 'private'
+            ACL: options.public ? 'public-read' : 'private',
           };
 
           await storage.upload(params).promise();
@@ -60,16 +60,16 @@ export class StorageUtils {
         case 'gcs': {
           const bucket = storage.bucket(config.bucket!);
           const file = bucket.file(options.path);
-          
+
           const uploadOptions = {
             metadata: {
               contentType: options.contentType,
-              metadata: options.metadata
-            }
+              metadata: options.metadata,
+            },
           };
 
           await file.save(options.content, uploadOptions);
-          
+
           if (options.public) {
             await file.makePublic();
             return file.publicUrl();
@@ -80,18 +80,22 @@ export class StorageUtils {
         case 'azure-blob': {
           const containerClient = storage.getContainerClient(config.bucket!);
           const blockBlobClient = containerClient.getBlockBlobClient(options.path);
-          
-          await blockBlobClient.upload(options.content, Buffer.byteLength(options.content as string), {
-            blobHTTPHeaders: {
-              blobContentType: options.contentType
+
+          await blockBlobClient.upload(
+            options.content,
+            Buffer.byteLength(options.content as string),
+            {
+              blobHTTPHeaders: {
+                blobContentType: options.contentType,
+              },
+              metadata: options.metadata,
             },
-            metadata: options.metadata
-          });
+          );
 
           if (options.public) {
             const sasToken = await blockBlobClient.generateSasToken({
               permissions: storage.BlobSASPermissions.parse('r'),
-              expiresOn: new Date(new Date().valueOf() + 365 * 24 * 60 * 60 * 1000)
+              expiresOn: new Date(new Date().valueOf() + 365 * 24 * 60 * 60 * 1000),
             });
             return `${blockBlobClient.url}?${sasToken}`;
           }
@@ -112,23 +116,23 @@ export class StorageUtils {
     if (!storage) throw new Error('Storage service not initialized');
 
     const config = this.manager.getServiceConfig('storage') as StorageConfig;
-    
+
     try {
       switch (config.service) {
         case 's3': {
           const params = {
             Bucket: config.bucket!,
-            Key: options.path
+            Key: options.path,
           };
 
           const data = await storage.getObject(params).promise();
-          return options.encoding ? data.Body!.toString(options.encoding) : data.Body as Buffer;
+          return options.encoding ? data.Body!.toString(options.encoding) : (data.Body as Buffer);
         }
 
         case 'gcs': {
           const bucket = storage.bucket(config.bucket!);
           const file = bucket.file(options.path);
-          
+
           const [content] = await file.download();
           return options.encoding ? content.toString(options.encoding) : content;
         }
@@ -136,14 +140,14 @@ export class StorageUtils {
         case 'azure-blob': {
           const containerClient = storage.getContainerClient(config.bucket!);
           const blockBlobClient = containerClient.getBlockBlobClient(options.path);
-          
+
           const downloadResponse = await blockBlobClient.download();
           const chunks: Buffer[] = [];
-          
+
           for await (const chunk of downloadResponse.readableStreamBody!) {
             chunks.push(Buffer.from(chunk));
           }
-          
+
           const content = Buffer.concat(chunks);
           return options.encoding ? content.toString(options.encoding) : content;
         }
@@ -162,7 +166,7 @@ export class StorageUtils {
     if (!storage) throw new Error('Storage service not initialized');
 
     const config = this.manager.getServiceConfig('storage') as StorageConfig;
-    
+
     try {
       switch (config.service) {
         case 's3': {
@@ -170,16 +174,16 @@ export class StorageUtils {
             Bucket: config.bucket!,
             Prefix: options.prefix,
             MaxKeys: options.maxResults,
-            Delimiter: options.delimiter
+            Delimiter: options.delimiter,
           };
 
           const data = await storage.listObjects(params).promise();
-          return data.Contents!.map(item => ({
+          return data.Contents!.map((item) => ({
             name: item.Key!,
             size: item.Size!,
             contentType: item.ContentType || 'application/octet-stream',
             lastModified: item.LastModified!,
-            url: `https://${config.bucket}.s3.${config.region}.amazonaws.com/${item.Key}`
+            url: `https://${config.bucket}.s3.${config.region}.amazonaws.com/${item.Key}`,
           }));
         }
 
@@ -188,16 +192,16 @@ export class StorageUtils {
           const [files] = await bucket.getFiles({
             prefix: options.prefix,
             maxResults: options.maxResults,
-            delimiter: options.delimiter
+            delimiter: options.delimiter,
           });
 
-          return files.map(file => ({
+          return files.map((file) => ({
             name: file.name,
             size: parseInt(file.metadata.size),
             contentType: file.metadata.contentType,
             lastModified: new Date(file.metadata.updated),
             metadata: file.metadata,
-            url: file.publicUrl()
+            url: file.publicUrl(),
           }));
         }
 
@@ -207,18 +211,16 @@ export class StorageUtils {
 
           for await (const blob of containerClient.listBlobsFlat({
             prefix: options.prefix,
-            maxPageSize: options.maxResults
+            maxPageSize: options.maxResults,
           })) {
-            const properties = await containerClient
-              .getBlobClient(blob.name)
-              .getProperties();
+            const properties = await containerClient.getBlobClient(blob.name).getProperties();
 
             items.push({
               name: blob.name,
               size: properties.contentLength!,
               contentType: properties.contentType!,
               lastModified: properties.lastModified!,
-              metadata: properties.metadata
+              metadata: properties.metadata,
             });
           }
 
@@ -239,13 +241,13 @@ export class StorageUtils {
     if (!storage) throw new Error('Storage service not initialized');
 
     const config = this.manager.getServiceConfig('storage') as StorageConfig;
-    
+
     try {
       switch (config.service) {
         case 's3': {
           const params = {
             Bucket: config.bucket!,
-            Key: path
+            Key: path,
           };
 
           await storage.deleteObject(params).promise();
@@ -274,4 +276,4 @@ export class StorageUtils {
       throw error;
     }
   }
-} 
+}

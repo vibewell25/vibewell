@@ -1,18 +1,9 @@
-'use client';
-
+'use client';;
 import { useState } from 'react';
 import Image from 'next/image';
 import { PhotoFormProps } from '@/components/business/business-profile-wizard';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import {
   Dialog,
   DialogContent,
@@ -21,8 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/Input';
 import { Camera, Upload, X, ImagePlus, Info } from 'lucide-react';
 
 export function PhotoUploadForm({ form }: PhotoFormProps) {
@@ -38,20 +28,20 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
     if (!event.target.files || event.target.files.length === 0) return;
 
     const newFiles = Array.from(event.target.files);
-    setSelectedImages(prev => [...prev, ...newFiles]);
+    setSelectedImages((prev) => [...prev, ...newFiles]);
 
     // Create object URLs for previews
-    const newPreviews = newFiles.map(file => URL.createObjectURL(file));
-    setPreviews(prev => [...prev, ...newPreviews]);
+    const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+    setPreviews((prev) => [...prev, ...newPreviews]);
   };
 
   // Handle file removal from preview
   const handleRemoveImage = (index: number) => {
-    setSelectedImages(prev => prev.filter((_, i) => i !== index));
+    setSelectedImages((prev) => prev.filter((_, i) => i !== index));
 
     // Revoke the object URL to avoid memory leaks
     URL.revokeObjectURL(previews[index]);
-    setPreviews(prev => prev.filter((_, i) => i !== index));
+    setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   // Handle image upload
@@ -65,7 +55,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
       // and receive back URLs that you would save to the form
 
       // Simulating API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // For the demo, we'll just use the preview URLs
       const uploadedImageUrls = [...previews];
@@ -102,7 +92,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="mb-6 flex items-center gap-2">
         <Camera className="h-5 w-5 text-muted-foreground" />
         <h2 className="text-xl font-semibold">Business Photos</h2>
       </div>
@@ -116,13 +106,13 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="bg-muted p-4 rounded-lg border border-dashed border-muted-foreground/50">
+          <div className="rounded-lg border border-dashed border-muted-foreground/50 bg-muted p-4">
             <div className="flex flex-col items-center justify-center py-4">
-              <Upload className="h-10 w-10 text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground mb-2">
+              <Upload className="mb-2 h-10 w-10 text-muted-foreground" />
+              <p className="mb-2 text-sm text-muted-foreground">
                 Drag and drop your photos here, or click to browse
               </p>
-              <p className="text-xs text-muted-foreground mb-4">
+              <p className="mb-4 text-xs text-muted-foreground">
                 Supported formats: JPEG, PNG, WebP. Max size: 5MB per image.
               </p>
               <Input
@@ -136,12 +126,12 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
           </div>
 
           {/* Photo Guidelines */}
-          <div className="bg-muted/50 p-4 rounded-lg">
+          <div className="rounded-lg bg-muted/50 p-4">
             <div className="flex items-start gap-2">
-              <Info className="h-5 w-5 text-muted-foreground mt-0.5" />
+              <Info className="mt-0.5 h-5 w-5 text-muted-foreground" />
               <div>
-                <h4 className="text-sm font-medium mb-1">Photo Guidelines</h4>
-                <ul className="text-xs text-muted-foreground list-disc pl-4 space-y-1">
+                <h4 className="mb-1 text-sm font-medium">Photo Guidelines</h4>
+                <ul className="list-disc space-y-1 pl-4 text-xs text-muted-foreground">
                   <li>Include high-quality photos of your business space</li>
                   <li>Showcase your best work samples</li>
                   <li>Add images that highlight your unique services or offerings</li>
@@ -156,10 +146,10 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
           {previews.length > 0 && (
             <div className="space-y-4">
               <h4 className="text-sm font-medium">Selected Photos ({previews.length})</h4>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
                 {previews.map((preview, index) => (
-                  <div key={index} className="relative group">
-                    <div className="aspect-square relative rounded-md overflow-hidden border">
+                  <div key={index} className="group relative">
+                    <div className="relative aspect-square overflow-hidden rounded-md border">
                       <Image
                         src={preview}
                         alt={`Selected image ${index + 1}`}
@@ -169,7 +159,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
                     </div>
                     <button
                       onClick={() => handleRemoveImage(index)}
-                      className="absolute top-2 right-2 bg-black/70 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute right-2 top-2 rounded-full bg-black/70 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
                       type="button"
                       aria-label="Remove image"
                     >
@@ -190,14 +180,14 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
 
           {/* Saved Business Photos */}
           {businessPhotos.length > 0 && (
-            <div className="space-y-4 mt-8">
+            <div className="mt-8 space-y-4">
               <h4 className="text-sm font-medium">
                 Saved Business Photos ({businessPhotos.length})
               </h4>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
                 {businessPhotos.map((photo, index) => (
-                  <div key={index} className="relative group">
-                    <div className="aspect-square relative rounded-md overflow-hidden border">
+                  <div key={index} className="group relative">
+                    <div className="relative aspect-square overflow-hidden rounded-md border">
                       <Image
                         src={photo}
                         alt={`Business photo ${index + 1}`}
@@ -208,7 +198,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
                     <Dialog>
                       <DialogTrigger asChild>
                         <button
-                          className="absolute bottom-2 left-2 bg-black/70 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute bottom-2 left-2 rounded-full bg-black/70 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
                           type="button"
                           aria-label="View image"
                         >
@@ -222,7 +212,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
                             Uploaded photo for your business profile
                           </DialogDescription>
                         </DialogHeader>
-                        <div className="relative w-full h-[50vh]">
+                        <div className="relative h-[50vh] w-full">
                           <Image
                             src={photo}
                             alt={`Business photo ${index + 1}`}
@@ -234,7 +224,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
                     </Dialog>
                     <button
                       onClick={() => handleDeleteSavedImage(index)}
-                      className="absolute top-2 right-2 bg-black/70 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute right-2 top-2 rounded-full bg-black/70 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
                       type="button"
                       aria-label="Delete image"
                     >

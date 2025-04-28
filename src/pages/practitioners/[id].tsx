@@ -55,33 +55,4 @@ export default function PractitionerPage({ practitioner }: PractitionerPageProps
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  if (!params?.id || typeof params.id !== 'string') {
-    return {
-      notFound: true,
-    };
-  }
-
-  const practitionerService = new PractitionerService();
-
-  try {
-    const practitioner = await practitionerService.getPractitionerById(params.id);
-
-    if (!practitioner) {
-      return {
-        notFound: true,
-      };
-    }
-
-    return {
-      props: {
-        practitioner,
-      },
-    };
-  } catch (error) {
-    console.error('Error fetching practitioner:', error);
-    return {
-      notFound: true,
-    };
-  }
-};
+export {};

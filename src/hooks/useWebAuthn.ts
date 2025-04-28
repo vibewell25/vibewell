@@ -29,7 +29,7 @@ export function useWebAuthn() {
         throw new WebAuthnError(
           error.error || 'Failed to get registration options',
           error.code || 'UNKNOWN_ERROR',
-          error.details
+          error.details,
         );
       }
 
@@ -53,7 +53,7 @@ export function useWebAuthn() {
         throw new WebAuthnError(
           error.error || 'Registration verification failed',
           error.code || 'UNKNOWN_ERROR',
-          error.details
+          error.details,
         );
       }
 
@@ -81,7 +81,7 @@ export function useWebAuthn() {
 
       const optionsResponse = await fetch(
         `/api/auth/webauthn/authenticate?${searchParams.toString()}`,
-        { method: 'GET' }
+        { method: 'GET' },
       );
 
       if (!optionsResponse.ok) {
@@ -89,7 +89,7 @@ export function useWebAuthn() {
         throw new WebAuthnError(
           error.error || 'Failed to get authentication options',
           error.code || 'UNKNOWN_ERROR',
-          error.details
+          error.details,
         );
       }
 
@@ -113,7 +113,7 @@ export function useWebAuthn() {
         throw new WebAuthnError(
           error.error || 'Authentication verification failed',
           error.code || 'UNKNOWN_ERROR',
-          error.details
+          error.details,
         );
       }
 

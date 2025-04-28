@@ -1,9 +1,6 @@
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { init as SentryInit, captureException, setUser, setTag } from '@sentry/nextjs';
 import posthog from 'posthog-js';
 import type { NextWebVitalsMetric } from 'next/app';
-import React from 'react';
 
 // Initialize monitoring services
 export function initMonitoring(): void {
@@ -13,9 +10,7 @@ export function initMonitoring(): void {
       dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
       environment: process.env.NODE_ENV,
       tracesSampleRate: 1.0,
-      integrations: [
-        new posthog.SentryIntegration(posthog),
-      ],
+      integrations: [new posthog.SentryIntegration(posthog)],
       beforeSend(event: any) {
         // Don't send events in development
         if (process.env.NODE_ENV === 'development') {
@@ -52,7 +47,7 @@ export function initMonitoring(): void {
 // }
 
 // Custom analytics events with type safety
-type EventName = 
+type EventName =
   | 'page_view'
   | 'button_click'
   | 'form_submit'
@@ -77,7 +72,7 @@ interface EventProperties {
 
 export const trackEvent = <T extends EventName>(
   eventName: T,
-  properties: EventProperties[T]
+  properties: EventProperties[T],
 ): void => {
   if (process.env.NODE_ENV === 'production') {
     posthog.capture(eventName, properties);
@@ -85,16 +80,7 @@ export const trackEvent = <T extends EventName>(
 };
 
 // Performance monitoring
-export const trackWebVitals = ({ id, name, label, value }: NextWebVitalsMetric): void => {
-  if (process.env.NODE_ENV === 'production') {
-    posthog.capture('web_vitals', {
-      metric_id: id,
-      name,
-      label,
-      value,
-    });
-  }
-};
+export {};
 
 // User session tracking with type safety
 interface UserData {
@@ -104,39 +90,7 @@ interface UserData {
   role?: string;
 }
 
-export const trackUserSession = (userData: UserData): void => {
-  if (process.env.NODE_ENV === 'production') {
-    // Set user in PostHog
-    posthog.identify(userData.id, {
-      email: userData.email,
-      name: userData.name,
-      role: userData.role,
-    });
-
-    // Set user in Sentry
-    setUser({
-      id: userData.id,
-      email: userData.email,
-      username: userData.name,
-    });
-
-    // Set role tag in Sentry
-    if (userData.role) {
-      setTag('role', userData.role);
-    }
-  }
-};
+export {};
 
 // Error tracking with context
-export const trackError = (error: Error, context?: Record<string, unknown>): void => {
-  if (process.env.NODE_ENV === 'production') {
-    captureException(error, { extra: context });
-    
-    // Also track in PostHog
-    trackEvent('error', {
-      message: error.message,
-      code: error.name,
-      ...context,
-    } as EventProperties['error']);
-  }
-}; 
+export {};

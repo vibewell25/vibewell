@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button } from '../ui/button';
+import { Button } from '../ui/Button';
 import { SupportedOAuthProvider } from '../../services/auth/oauth-service';
-import { Apple, Facebook, Twitter, Mail, Loader2 } from 'lucide-react';
+import { Apple, Facebook, Twitter, Loader2 } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
 
 interface OAuthButtonProps {
@@ -34,41 +34,4 @@ const providerConfig = {
   },
 };
 
-export const OAuthButton: React.FC<OAuthButtonProps> = ({
-  provider,
-  onLogin,
-  className = '',
-  disabled = false,
-}) => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const config = providerConfig[provider];
-
-  const handleClick = async () => {
-    try {
-      setIsLoading(true);
-      await onLogin(provider);
-    } catch (error) {
-      console.error(`${provider} login error:`, error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const Icon = config.icon;
-
-  return (
-    <Button
-      variant="outline"
-      className={`relative w-full ${config.className} ${className}`}
-      onClick={handleClick}
-      disabled={disabled || isLoading}
-    >
-      {isLoading ? (
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-      ) : (
-        <Icon className="mr-2 h-4 w-4" />
-      )}
-      {config.label}
-    </Button>
-  );
-};
+export {};

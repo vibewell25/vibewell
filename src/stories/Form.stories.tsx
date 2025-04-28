@@ -11,8 +11,8 @@ import {
   FormDescription,
   FormMessage,
 } from '../components/ui/form';
-import { Input } from '../components/ui/input';
-import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -122,7 +122,7 @@ import {
   FormDescription,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 
 const formSchema = z.object({
   username: z.string().min(2),

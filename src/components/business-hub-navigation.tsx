@@ -88,7 +88,7 @@ export function BusinessHubNavigation() {
     return false;
   };
   // Find the currently active item
-  const activeItem = navigationItems.find(item => isActive(item.href));
+  const activeItem = navigationItems.find((item) => isActive(item.href));
   // Mobile menu toggle
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -96,7 +96,7 @@ export function BusinessHubNavigation() {
   // Determine if we should show mobile or desktop navigation
   const isMobile = windowWidth < 768; // 768px is typical md breakpoint
   return (
-    <nav className="bg-white shadow rounded-lg mb-8 overflow-hidden">
+    <nav className="mb-8 overflow-hidden rounded-lg bg-white shadow">
       {/* Mobile Navigation */}
       {isMobile && (
         <div>
@@ -111,7 +111,7 @@ export function BusinessHubNavigation() {
             </div>
             <button
               onClick={toggleMobileMenu}
-              className="p-2 rounded-md hover:bg-gray-100"
+              className="rounded-md p-2 hover:bg-gray-100"
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {isMobileMenuOpen ? (
@@ -123,14 +123,14 @@ export function BusinessHubNavigation() {
           </div>
           {/* Mobile Dropdown Menu */}
           {isMobileMenuOpen && (
-            <div className="border-t border-gray-200 py-2 px-4 space-y-1">
-              {navigationItems.map(item => {
+            <div className="space-y-1 border-t border-gray-200 px-4 py-2">
+              {navigationItems.map((item) => {
                 const active = isActive(item.href);
                 return (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`flex items-center py-3 px-3 rounded-md ${
+                    className={`flex items-center rounded-md px-3 py-3 ${
                       active
                         ? 'bg-primary text-white'
                         : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
@@ -149,13 +149,13 @@ export function BusinessHubNavigation() {
       {/* Desktop Navigation */}
       {!isMobile && (
         <div className="flex flex-wrap items-center gap-1 p-1">
-          {navigationItems.map(item => {
+          {navigationItems.map((item) => {
             const active = isActive(item.href);
             return (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                className={`flex items-center rounded-md px-3 py-2 text-sm font-medium ${
                   active
                     ? 'bg-primary text-white'
                     : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'

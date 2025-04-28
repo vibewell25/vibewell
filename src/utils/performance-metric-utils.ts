@@ -53,7 +53,9 @@ export function createMetricsFromStatus(status: {
 }): Partial<PerformanceMetrics> {
   return {
     serviceWorkerRegistration: status.isRegistered ? MetricStatus.SUCCESS : MetricStatus.FAILURE,
-    serviceWorkerError: status.registrationError ? ErrorCodes.REGISTRATION_FAILED : ErrorCodes.NO_ERROR,
+    serviceWorkerError: status.registrationError
+      ? ErrorCodes.REGISTRATION_FAILED
+      : ErrorCodes.NO_ERROR,
     offlineReady: status.isOffline ? MetricStatus.SUCCESS : MetricStatus.FAILURE,
     syncQueueSize: status.queueSize ?? 0,
     fetchStrategyTime: status.fetchTime ?? 0,
@@ -68,7 +70,9 @@ export function getMetricsSummary(metrics: Partial<PerformanceMetrics>): string 
   const summary: string[] = [];
 
   if (metrics.serviceWorkerRegistration !== undefined) {
-    summary.push(`Service Worker: ${isSuccess(metrics.serviceWorkerRegistration) ? 'Registered' : 'Not Registered'}`);
+    summary.push(
+      `Service Worker: ${isSuccess(metrics.serviceWorkerRegistration) ? 'Registered' : 'Not Registered'}`,
+    );
   }
 
   if (metrics.serviceWorkerError !== undefined && isError(metrics.serviceWorkerError)) {
@@ -104,4 +108,4 @@ export function getMetricsSummary(metrics: Partial<PerformanceMetrics>): string 
   }
 
   return summary.join('\n');
-} 
+}

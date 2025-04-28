@@ -27,7 +27,7 @@ export class MarketingService {
   async generateCampaign(
     targetSegment: string,
     objective: string,
-    preferences: Record<string, any>
+    preferences: Record<string, any>,
   ): Promise<CampaignVariant[]> {
     try {
       // Get segment data
@@ -86,7 +86,7 @@ export class MarketingService {
   async runABTest(
     campaignId: string,
     duration: number, // days
-    targetSize: number
+    targetSize: number,
   ): Promise<ABTestResult[]> {
     try {
       const variants = await this.getCampaignVariants(campaignId);
@@ -164,7 +164,7 @@ export class MarketingService {
   private buildCampaignPrompt(
     segmentData: any,
     objective: string,
-    preferences: Record<string, any>
+    preferences: Record<string, any>,
   ): string {
     return `Create a marketing campaign for a beauty/wellness business with these parameters:
       - Target Segment: ${JSON.stringify(segmentData)}
@@ -180,7 +180,7 @@ export class MarketingService {
 
   private async storeCampaignVariants(
     variants: CampaignVariant[],
-    segmentId: string
+    segmentId: string,
   ): Promise<void> {
     // Implementation for storing variants
     logger.info('Storing campaign variants', 'MarketingService', {
@@ -209,7 +209,7 @@ export class MarketingService {
 
   private async monitorVariantPerformance(
     variantId: string,
-    duration: number
+    duration: number,
   ): Promise<ABTestResult> {
     // Implementation for monitoring performance
     return {

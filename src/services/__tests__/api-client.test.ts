@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { apiClient } from '../api-client';
 
 // Mock fetch

@@ -1,16 +1,9 @@
-'use client';
-
+'use client';;
 import { useState, Suspense } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useSearchParams } from 'next/navigation';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   ChevronRightIcon,
@@ -307,41 +300,40 @@ const endpoints = [
 function ApiDocumentationContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEndpoint, setSelectedEndpoint] = useState<string | null>(null);
-  const searchParams = useSearchParams();
 
   // Filter endpoints based on search query
   const filteredEndpoints =
     searchQuery.length > 0
       ? endpoints
-          .map(category => ({
+          .map((category) => ({
             ...category,
             endpoints: category.endpoints.filter(
-              endpoint =>
+              (endpoint) =>
                 endpoint.path.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                endpoint.description.toLowerCase().includes(searchQuery.toLowerCase())
+                endpoint.description.toLowerCase().includes(searchQuery.toLowerCase()),
             ),
           }))
-          .filter(category => category.endpoints.length > 0)
+          .filter((category) => category.endpoints.length > 0)
       : endpoints;
 
   return (
     <Layout>
       <div className="container-app py-8">
-        <div className="flex items-center mb-2">
+        <div className="mb-2 flex items-center">
           <Link
             href="/developer"
-            className="text-muted-foreground hover:text-foreground transition-colors"
+            className="text-muted-foreground transition-colors hover:text-foreground"
           >
             Developer Portal
           </Link>
-          <ChevronRightIcon className="h-4 w-4 mx-2 text-muted-foreground" />
+          <ChevronRightIcon className="mx-2 h-4 w-4 text-muted-foreground" />
           <span>API Documentation</span>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+        <div className="mb-6 flex flex-col items-start justify-between md:flex-row md:items-center">
           <h1 className="text-3xl font-bold">API Documentation</h1>
 
-          <div className="mt-4 md:mt-0 flex gap-3">
+          <div className="mt-4 flex gap-3 md:mt-0">
             <Button variant="outline" asChild>
               <Link href="/developer/docs/getting-started">Getting Started Guide</Link>
             </Button>
@@ -351,24 +343,24 @@ function ApiDocumentationContent() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Sidebar */}
           <div className="md:col-span-1">
             <div className="sticky top-20">
               <div className="relative mb-4">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-muted-foreground" />
                 <input
                   type="text"
                   placeholder="Search endpoints..."
-                  className="w-full pl-10 pr-4 py-2 border rounded-md"
+                  className="w-full rounded-md border py-2 pl-10 pr-4"
                   value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
 
               <div className="space-y-1">
-                <div className="font-medium mb-2">Base URLs</div>
-                <div className="text-sm p-2 bg-muted rounded-md mb-4">
+                <div className="mb-2 font-medium">Base URLs</div>
+                <div className="mb-4 rounded-md bg-muted p-2 text-sm">
                   <div>
                     <span className="text-muted-foreground">Production:</span>
                     <br />
@@ -381,20 +373,20 @@ function ApiDocumentationContent() {
                   </div>
                 </div>
 
-                <div className="font-medium mb-2">API Endpoints</div>
-                <nav className="space-y-1 mb-4">
-                  {filteredEndpoints.map(category => (
+                <div className="mb-2 font-medium">API Endpoints</div>
+                <nav className="mb-4 space-y-1">
+                  {filteredEndpoints.map((category) => (
                     <div key={category.id} className="mb-2">
-                      <div className="flex items-center text-sm font-medium mb-1">
+                      <div className="mb-1 flex items-center text-sm font-medium">
                         {category.icon}
                         <span className="ml-2">{category.name}</span>
                       </div>
 
-                      <ul className="pl-7 space-y-1">
+                      <ul className="space-y-1 pl-7">
                         {category.endpoints.map((endpoint, index) => (
                           <li key={`${category.id}-${index}`}>
                             <button
-                              className={`text-sm py-1 hover:text-primary flex items-center w-full text-left ${
+                              className={`hover:text-primary flex w-full items-center py-1 text-left text-sm ${
                                 selectedEndpoint === `${category.id}-${index}`
                                   ? 'text-primary font-medium'
                                   : 'text-muted-foreground'
@@ -425,34 +417,34 @@ function ApiDocumentationContent() {
                   ))}
                 </nav>
 
-                <div className="font-medium mb-2">Resources</div>
+                <div className="mb-2 font-medium">Resources</div>
                 <nav className="space-y-1">
                   <Link
                     href="/developer/docs/authentication"
-                    className="flex items-center text-sm text-muted-foreground py-1 hover:text-foreground"
+                    className="flex items-center py-1 text-sm text-muted-foreground hover:text-foreground"
                   >
-                    <ShieldCheckIcon className="h-4 w-4 mr-2" />
+                    <ShieldCheckIcon className="mr-2 h-4 w-4" />
                     Authentication
                   </Link>
                   <Link
                     href="/developer/docs/rate-limits"
-                    className="flex items-center text-sm text-muted-foreground py-1 hover:text-foreground"
+                    className="flex items-center py-1 text-sm text-muted-foreground hover:text-foreground"
                   >
-                    <ClockIcon className="h-4 w-4 mr-2" />
+                    <ClockIcon className="mr-2 h-4 w-4" />
                     Rate Limiting
                   </Link>
                   <Link
                     href="/developer/docs/webhooks"
-                    className="flex items-center text-sm text-muted-foreground py-1 hover:text-foreground"
+                    className="flex items-center py-1 text-sm text-muted-foreground hover:text-foreground"
                   >
-                    <ServerIcon className="h-4 w-4 mr-2" />
+                    <ServerIcon className="mr-2 h-4 w-4" />
                     Webhooks
                   </Link>
                   <Link
                     href="/developer/docs/errors"
-                    className="flex items-center text-sm text-muted-foreground py-1 hover:text-foreground"
+                    className="flex items-center py-1 text-sm text-muted-foreground hover:text-foreground"
                   >
-                    <CodeBracketIcon className="h-4 w-4 mr-2" />
+                    <CodeBracketIcon className="mr-2 h-4 w-4" />
                     Error Handling
                   </Link>
                 </nav>
@@ -462,35 +454,35 @@ function ApiDocumentationContent() {
 
           {/* Main content */}
           <div className="md:col-span-3">
-            <div className="bg-card border rounded-md p-6 mb-8">
-              <h2 className="text-2xl font-bold mb-4">Overview</h2>
+            <div className="mb-8 rounded-md border bg-card p-6">
+              <h2 className="mb-4 text-2xl font-bold">Overview</h2>
               <p className="mb-4">
                 This documentation provides detailed information about the Vibewell RESTful API
                 endpoints, authentication requirements, request/response formats, and usage
                 examples.
               </p>
 
-              <h3 className="text-lg font-semibold mt-6 mb-3">Authentication</h3>
+              <h3 className="mb-3 mt-6 text-lg font-semibold">Authentication</h3>
               <p className="mb-4">
                 Most API endpoints require authentication using JWT tokens. Include the token in the
                 Authorization header:
               </p>
-              <pre className="bg-muted p-3 rounded-md font-mono text-sm mb-4">
+              <pre className="mb-4 rounded-md bg-muted p-3 font-mono text-sm">
                 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
               </pre>
 
-              <h3 className="text-lg font-semibold mt-6 mb-3">Rate Limiting</h3>
+              <h3 className="mb-3 mt-6 text-lg font-semibold">Rate Limiting</h3>
               <p className="mb-4">
                 To ensure fair usage and protect our systems, all API endpoints are subject to rate
                 limiting. Rate limit information is returned in the following HTTP headers:
               </p>
-              <pre className="bg-muted p-3 rounded-md font-mono text-sm mb-4">
+              <pre className="mb-4 rounded-md bg-muted p-3 font-mono text-sm">
                 X-RateLimit-Limit: 100 X-RateLimit-Remaining: 99 X-RateLimit-Reset: 1628537268
               </pre>
 
-              <h3 className="text-lg font-semibold mt-6 mb-3">Error Handling</h3>
+              <h3 className="mb-3 mt-6 text-lg font-semibold">Error Handling</h3>
               <p className="mb-4">All API errors follow this format:</p>
-              <pre className="bg-muted p-3 rounded-md font-mono text-sm mb-4">
+              <pre className="mb-4 rounded-md bg-muted p-3 font-mono text-sm">
                 {`{
   "error": {
     "code": "ERROR_CODE",
@@ -500,10 +492,10 @@ function ApiDocumentationContent() {
 }`}
               </pre>
 
-              <div className="grid grid-cols-2 gap-4 mt-6">
-                <div className="border rounded-md p-4">
-                  <h4 className="font-semibold flex items-center mb-2">
-                    <ShieldCheckIcon className="h-5 w-5 mr-2 text-primary" />
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                <div className="rounded-md border p-4">
+                  <h4 className="mb-2 flex items-center font-semibold">
+                    <ShieldCheckIcon className="text-primary mr-2 h-5 w-5" />
                     Authentication Required
                   </h4>
                   <p className="text-sm text-muted-foreground">
@@ -511,9 +503,9 @@ function ApiDocumentationContent() {
                   </p>
                 </div>
 
-                <div className="border rounded-md p-4">
-                  <h4 className="font-semibold flex items-center mb-2">
-                    <ServerIcon className="h-5 w-5 mr-2 text-primary" />
+                <div className="rounded-md border p-4">
+                  <h4 className="mb-2 flex items-center font-semibold">
+                    <ServerIcon className="text-primary mr-2 h-5 w-5" />
                     RESTful Interface
                   </h4>
                   <p className="text-sm text-muted-foreground">
@@ -523,14 +515,14 @@ function ApiDocumentationContent() {
               </div>
 
               <div className="mt-6">
-                <h3 className="text-lg font-semibold mb-3">UI Components</h3>
-                <p className="text-sm text-muted-foreground mb-3">
+                <h3 className="mb-3 text-lg font-semibold">UI Components</h3>
+                <p className="mb-3 text-sm text-muted-foreground">
                   Vibewell provides a collection of reusable UI components to help you build
                   consistent interfaces.
                 </p>
                 <Button asChild variant="outline">
                   <Link href="/developer/docs/components">
-                    <CodeBracketIcon className="h-4 w-4 mr-2" />
+                    <CodeBracketIcon className="mr-2 h-4 w-4" />
                     Browse UI Components
                   </Link>
                 </Button>
@@ -539,9 +531,9 @@ function ApiDocumentationContent() {
 
             {/* Endpoint list and details */}
             <div className="space-y-8">
-              {filteredEndpoints.map(category => (
+              {filteredEndpoints.map((category) => (
                 <div key={category.id} className="mb-8">
-                  <h2 className="text-xl font-bold mb-4 flex items-center">
+                  <h2 className="mb-4 flex items-center text-xl font-bold">
                     {category.icon}
                     <span className="ml-2">{category.name} API</span>
                   </h2>
@@ -550,16 +542,16 @@ function ApiDocumentationContent() {
                     <div
                       key={`${category.id}-${index}`}
                       id={`${category.id}-${index}`}
-                      className={`border rounded-md mb-4 ${
+                      className={`mb-4 rounded-md border ${
                         selectedEndpoint === `${category.id}-${index}`
-                          ? 'border-primary ring-1 ring-primary'
+                          ? 'border-primary ring-primary ring-1'
                           : ''
                       }`}
                     >
                       <div className="p-4">
-                        <div className="flex items-center mb-2">
+                        <div className="mb-2 flex items-center">
                           <span
-                            className={`inline-block px-2 py-1 rounded-md text-xs font-medium ${
+                            className={`inline-block rounded-md px-2 py-1 text-xs font-medium ${
                               endpoint.method === 'GET'
                                 ? 'bg-green-100 text-green-800'
                                 : endpoint.method === 'POST'
@@ -581,7 +573,7 @@ function ApiDocumentationContent() {
 
                       <div className="border-t">
                         <Tabs defaultValue="details">
-                          <TabsList className="w-full border-b rounded-none px-4">
+                          <TabsList className="w-full rounded-none border-b px-4">
                             <TabsTrigger value="details">Details</TabsTrigger>
                             {endpoint.requestBody && (
                               <TabsTrigger value="request">Request</TabsTrigger>
@@ -594,11 +586,11 @@ function ApiDocumentationContent() {
                           <TabsContent value="details" className="p-4">
                             {endpoint.queryParams && endpoint.queryParams.length > 0 && (
                               <div className="mb-4">
-                                <h4 className="font-medium mb-2">Query Parameters</h4>
+                                <h4 className="mb-2 font-medium">Query Parameters</h4>
                                 <ul className="space-y-2">
                                   {endpoint.queryParams.map((param, i) => (
                                     <li key={i} className="flex">
-                                      <span className="font-mono text-sm min-w-[100px]">
+                                      <span className="min-w-[100px] font-mono text-sm">
                                         {param.name}
                                       </span>
                                       <span className="text-sm text-muted-foreground">
@@ -611,15 +603,15 @@ function ApiDocumentationContent() {
                             )}
 
                             {endpoint.notes && (
-                              <div className="p-3 bg-muted rounded-md text-sm">
+                              <div className="rounded-md bg-muted p-3 text-sm">
                                 <strong>Note:</strong> {endpoint.notes}
                               </div>
                             )}
 
                             <div className="mt-4">
-                              <h4 className="font-medium mb-2">Try it</h4>
+                              <h4 className="mb-2 font-medium">Try it</h4>
                               <Button variant="outline">
-                                <CodeBracketIcon className="h-4 w-4 mr-2" />
+                                <CodeBracketIcon className="mr-2 h-4 w-4" />
                                 Open in API Explorer
                               </Button>
                             </div>
@@ -627,14 +619,14 @@ function ApiDocumentationContent() {
 
                           {endpoint.requestBody && (
                             <TabsContent value="request" className="p-4">
-                              <h4 className="font-medium mb-2">Request Body</h4>
-                              <div className="bg-muted p-3 rounded-md font-mono text-sm overflow-x-auto">
+                              <h4 className="mb-2 font-medium">Request Body</h4>
+                              <div className="overflow-x-auto rounded-md bg-muted p-3 font-mono text-sm">
                                 <pre>{endpoint.requestBody}</pre>
                               </div>
 
-                              <div className="flex mt-4">
+                              <div className="mt-4 flex">
                                 <Button variant="outline" size="sm" className="text-xs">
-                                  <DocumentTextIcon className="h-3 w-3 mr-1" />
+                                  <DocumentTextIcon className="mr-1 h-3 w-3" />
                                   Copy
                                 </Button>
                               </div>
@@ -643,14 +635,14 @@ function ApiDocumentationContent() {
 
                           {endpoint.responseExample && (
                             <TabsContent value="response" className="p-4">
-                              <h4 className="font-medium mb-2">Response Example</h4>
-                              <div className="bg-muted p-3 rounded-md font-mono text-sm overflow-x-auto">
+                              <h4 className="mb-2 font-medium">Response Example</h4>
+                              <div className="overflow-x-auto rounded-md bg-muted p-3 font-mono text-sm">
                                 <pre>{endpoint.responseExample}</pre>
                               </div>
 
-                              <div className="flex mt-4">
+                              <div className="mt-4 flex">
                                 <Button variant="outline" size="sm" className="text-xs">
-                                  <DocumentTextIcon className="h-3 w-3 mr-1" />
+                                  <DocumentTextIcon className="mr-1 h-3 w-3" />
                                   Copy
                                 </Button>
                               </div>
@@ -665,19 +657,19 @@ function ApiDocumentationContent() {
             </div>
 
             {/* Additional sections */}
-            <div className="bg-card border rounded-md p-6 mb-8">
-              <h2 className="text-2xl font-bold mb-4">Webhooks</h2>
+            <div className="mb-8 rounded-md border bg-card p-6">
+              <h2 className="mb-4 text-2xl font-bold">Webhooks</h2>
               <p className="mb-4">
                 Vibewell provides webhook notifications for key events. To receive webhooks:
               </p>
-              <ol className="list-decimal ml-5 mb-4 space-y-2">
+              <ol className="mb-4 ml-5 list-decimal space-y-2">
                 <li>Register a webhook URL in the developer dashboard</li>
                 <li>Select which events you want to receive</li>
                 <li>Implement an endpoint to receive the webhook POST requests</li>
               </ol>
 
-              <h3 className="text-lg font-semibold mt-4 mb-2">Example webhook payload:</h3>
-              <pre className="bg-muted p-3 rounded-md font-mono text-sm mb-4">
+              <h3 className="mb-2 mt-4 text-lg font-semibold">Example webhook payload:</h3>
+              <pre className="mb-4 rounded-md bg-muted p-3 font-mono text-sm">
                 {`{
   "event": "booking.created",
   "timestamp": "2023-03-25T14:20:00Z",
@@ -692,39 +684,39 @@ function ApiDocumentationContent() {
 }`}
               </pre>
 
-              <h3 className="text-lg font-semibold mt-4 mb-2">Available webhook events:</h3>
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
+              <h3 className="mb-2 mt-4 text-lg font-semibold">Available webhook events:</h3>
+              <ul className="mb-4 grid grid-cols-1 gap-2 md:grid-cols-2">
                 <li className="flex items-center">
-                  <CheckIcon className="h-4 w-4 text-green-500 mr-2" />
-                  <code className="text-sm font-mono">booking.created</code>
+                  <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+                  <code className="font-mono text-sm">booking.created</code>
                 </li>
                 <li className="flex items-center">
-                  <CheckIcon className="h-4 w-4 text-green-500 mr-2" />
-                  <code className="text-sm font-mono">booking.confirmed</code>
+                  <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+                  <code className="font-mono text-sm">booking.confirmed</code>
                 </li>
                 <li className="flex items-center">
-                  <CheckIcon className="h-4 w-4 text-green-500 mr-2" />
-                  <code className="text-sm font-mono">booking.cancelled</code>
+                  <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+                  <code className="font-mono text-sm">booking.cancelled</code>
                 </li>
                 <li className="flex items-center">
-                  <CheckIcon className="h-4 w-4 text-green-500 mr-2" />
-                  <code className="text-sm font-mono">booking.completed</code>
+                  <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+                  <code className="font-mono text-sm">booking.completed</code>
                 </li>
                 <li className="flex items-center">
-                  <CheckIcon className="h-4 w-4 text-green-500 mr-2" />
-                  <code className="text-sm font-mono">review.created</code>
+                  <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+                  <code className="font-mono text-sm">review.created</code>
                 </li>
                 <li className="flex items-center">
-                  <CheckIcon className="h-4 w-4 text-green-500 mr-2" />
-                  <code className="text-sm font-mono">user.registered</code>
+                  <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+                  <code className="font-mono text-sm">user.registered</code>
                 </li>
                 <li className="flex items-center">
-                  <CheckIcon className="h-4 w-4 text-green-500 mr-2" />
-                  <code className="text-sm font-mono">payment.succeeded</code>
+                  <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+                  <code className="font-mono text-sm">payment.succeeded</code>
                 </li>
                 <li className="flex items-center">
-                  <CheckIcon className="h-4 w-4 text-green-500 mr-2" />
-                  <code className="text-sm font-mono">payment.failed</code>
+                  <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+                  <code className="font-mono text-sm">payment.failed</code>
                 </li>
               </ul>
 
@@ -733,15 +725,15 @@ function ApiDocumentationContent() {
               </Link>
             </div>
 
-            <div className="bg-card border rounded-md p-6">
-              <h2 className="text-2xl font-bold mb-4">API Versioning</h2>
+            <div className="rounded-md border bg-card p-6">
+              <h2 className="mb-4 text-2xl font-bold">API Versioning</h2>
               <p className="mb-4">
                 The API uses URL versioning (e.g., <code className="font-mono">/v1/users</code>).
                 When breaking changes are introduced, a new API version will be released.
               </p>
 
-              <h3 className="text-lg font-semibold mt-4 mb-2">Deprecation process:</h3>
-              <ol className="list-decimal ml-5 mb-4 space-y-2">
+              <h3 className="mb-2 mt-4 text-lg font-semibold">Deprecation process:</h3>
+              <ol className="mb-4 ml-5 list-decimal space-y-2">
                 <li>Announcement of upcoming changes (at least 3 months in advance)</li>
                 <li>Introduction of new version alongside the old one</li>
                 <li>Deprecation warning headers in responses from the old version</li>
@@ -772,11 +764,11 @@ function ApiDocumentationSkeleton() {
   return (
     <div className="container-app py-8">
       <div className="animate-pulse">
-        <div className="h-8 w-64 bg-gray-200 rounded mb-4"></div>
-        <div className="h-4 w-full max-w-2xl bg-gray-200 rounded mb-8"></div>
+        <div className="mb-4 h-8 w-64 rounded bg-gray-200"></div>
+        <div className="mb-8 h-4 w-full max-w-2xl rounded bg-gray-200"></div>
         <div className="grid gap-4">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="h-32 bg-gray-200 rounded"></div>
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-32 rounded bg-gray-200"></div>
           ))}
         </div>
       </div>

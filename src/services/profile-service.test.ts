@@ -1,4 +1,4 @@
-/**
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping *//**
  * Tests for the profile service
  */
 import { http, HttpResponse } from 'msw';
@@ -60,7 +60,7 @@ describe('Profile Service', () => {
       server.use(
         http.get('/api/profile', () => {
           return HttpResponse.json(mockCurrentProfile);
-        })
+        }),
       );
 
       // Execute the service call
@@ -78,7 +78,7 @@ describe('Profile Service', () => {
       server.use(
         http.get('/api/profile', () => {
           return new HttpResponse(JSON.stringify({ message: 'Unauthorized' }), { status: 401 });
-        })
+        }),
       );
 
       // Execute the service call
@@ -96,7 +96,7 @@ describe('Profile Service', () => {
       server.use(
         http.get('/api/profiles/123', () => {
           return HttpResponse.json(mockCurrentProfile);
-        })
+        }),
       );
 
       // Execute the service call
@@ -114,7 +114,7 @@ describe('Profile Service', () => {
           return new HttpResponse(JSON.stringify({ message: 'Profile not found' }), {
             status: 404,
           });
-        })
+        }),
       );
 
       // Execute the service call
@@ -135,15 +135,6 @@ describe('Profile Service', () => {
         location: 'Los Angeles, CA',
       };
 
-      // Expected updated profile
-      const updatedProfile = {
-        ...mockCurrentProfile,
-        name: updateData.name,
-        bio: updateData.bio,
-        location: updateData.location,
-        updatedAt: new Date().toISOString(),
-      };
-
       // Setup mock response
       server.use(
         http.put('/api/profile', async ({ request }) => {
@@ -155,7 +146,7 @@ describe('Profile Service', () => {
             ...reqBody,
             updatedAt: new Date().toISOString(),
           });
-        })
+        }),
       );
 
       // Execute the service call
@@ -180,7 +171,7 @@ describe('Profile Service', () => {
           return HttpResponse.json({
             avatarUrl: 'https://example.com/avatars/new-avatar.jpg',
           });
-        })
+        }),
       );
 
       // Execute the service call
@@ -202,9 +193,9 @@ describe('Profile Service', () => {
             JSON.stringify({
               message: 'Invalid file type. Only image files are allowed.',
             }),
-            { status: 400 }
+            { status: 400 },
           );
-        })
+        }),
       );
 
       // Execute the service call
@@ -222,7 +213,7 @@ describe('Profile Service', () => {
       server.use(
         http.delete('/api/profile/avatar', () => {
           return new HttpResponse(null, { status: 204 });
-        })
+        }),
       );
 
       // Execute the service call
@@ -248,7 +239,7 @@ describe('Profile Service', () => {
           }
 
           return HttpResponse.json([]);
-        })
+        }),
       );
 
       // Execute the service call
@@ -266,7 +257,7 @@ describe('Profile Service', () => {
       server.use(
         http.get('/api/profiles/search', () => {
           return HttpResponse.json([]);
-        })
+        }),
       );
 
       // Execute the service call

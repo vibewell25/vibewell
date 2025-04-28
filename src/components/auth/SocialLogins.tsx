@@ -35,50 +35,48 @@ const SocialLogins: React.FC<SocialLoginsProps> = ({
 
   return (
     <div className="w-full space-y-3">
-      <p className="text-center text-sm text-gray-600 mb-4">
-        Or continue with
-      </p>
+      <p className="mb-4 text-center text-sm text-gray-600">Or continue with</p>
 
       <div className="grid grid-cols-2 gap-3">
         {/* Google Login */}
         <button
           onClick={() => handleSocialLogin('google')}
-          className="flex items-center justify-center w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           aria-label="Sign in with Google"
         >
-          <FaGoogle className="h-5 w-5 text-red-500 mr-2" />
+          <FaGoogle className="mr-2 h-5 w-5 text-red-500" />
           <span>Google</span>
         </button>
 
         {/* Facebook Login */}
         <button
           onClick={() => handleSocialLogin('facebook')}
-          className="flex items-center justify-center w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           aria-label="Sign in with Facebook"
         >
-          <FaFacebook className="h-5 w-5 text-blue-600 mr-2" />
+          <FaFacebook className="mr-2 h-5 w-5 text-blue-600" />
           <span>Facebook</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mt-3">
+      <div className="mt-3 grid grid-cols-2 gap-3">
         {/* Apple Login */}
         <button
           onClick={() => handleSocialLogin('apple')}
-          className="flex items-center justify-center w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           aria-label="Sign in with Apple"
         >
-          <FaApple className="h-5 w-5 text-black mr-2" />
+          <FaApple className="mr-2 h-5 w-5 text-black" />
           <span>Apple</span>
         </button>
 
         {/* Twitter Login */}
         <button
           onClick={() => handleSocialLogin('twitter')}
-          className="flex items-center justify-center w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           aria-label="Sign in with Twitter"
         >
-          <FaTwitter className="h-5 w-5 text-blue-400 mr-2" />
+          <FaTwitter className="mr-2 h-5 w-5 text-blue-400" />
           <span>Twitter</span>
         </button>
       </div>
@@ -97,4 +95,4 @@ const SocialLogins: React.FC<SocialLoginsProps> = ({
   );
 };
 
-export default SocialLogins; 
+export default SocialLogins;

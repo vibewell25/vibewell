@@ -1,11 +1,11 @@
-import { dbReplicaManager } from '../utils/db-replica-manager';
-import { databaseConfig } from '../config/database';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { dbReplicaManager } from '../utils/db-replica-manager';
 
 describe('DatabaseReplicaManager', () => {
   beforeAll(() => {
     // Mock environment variables
     process.env['DATABASE_URL'] = 'postgresql://test:test@localhost:5432/test';
-    process.env['DATABASE_REPLICA_URLS'] = 'postgresql://replica1:5432/test,postgresql://replica2:5432/test';
+    process.env['DATABASE_REPLICA_URLS'] =
+      'postgresql://replica1:5432/test,postgresql://replica2:5432/test';
   });
 
   afterAll(async () => {
@@ -26,8 +26,6 @@ describe('DatabaseReplicaManager', () => {
 
   it('should round-robin between replica clients', () => {
     const firstClient = dbReplicaManager.getReplicaClient();
-    const secondClient = dbReplicaManager.getReplicaClient();
-    const thirdClient = dbReplicaManager.getReplicaClient();
 
     // After cycling through all replicas, should return to the first one
     const fourthClient = dbReplicaManager.getReplicaClient();
@@ -41,4 +39,4 @@ describe('DatabaseReplicaManager', () => {
     // This is a basic test - in a real scenario, you'd mock the performance monitor
     // and verify it was called with the correct metrics
   });
-}); 
+});

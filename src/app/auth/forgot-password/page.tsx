@@ -36,7 +36,7 @@ export default function ForgotPasswordPage() {
       setError(
         err instanceof Error
           ? err.message
-          : 'Failed to send password reset email. Please try again.'
+          : 'Failed to send password reset email. Please try again.',
       );
     } finally {
       setIsLoading(false);
@@ -45,18 +45,18 @@ export default function ForgotPasswordPage() {
 
   if (isSuccessful) {
     return (
-      <div className="container max-w-md mx-auto py-8 px-4">
-        <div className="flex flex-col items-center mb-8">
-          <Icons.logo className="h-12 w-12 mb-4 text-primary" />
-          <h1 className="text-2xl font-bold mb-2">Check your email</h1>
-          <p className="text-muted-foreground text-center">
+      <div className="container mx-auto max-w-md px-4 py-8">
+        <div className="mb-8 flex flex-col items-center">
+          <Icons.logo className="text-primary mb-4 h-12 w-12" />
+          <h1 className="mb-2 text-2xl font-bold">Check your email</h1>
+          <p className="text-center text-muted-foreground">
             We've sent a password reset link to <strong>{email}</strong>. Please check your email
             and click the link to reset your password.
           </p>
         </div>
         <Link
           href={ROUTES.AUTH.LOGIN}
-          className="block text-center mt-6 text-primary hover:underline"
+          className="text-primary mt-6 block text-center hover:underline"
         >
           Back to login
         </Link>
@@ -65,17 +65,17 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="container max-w-md mx-auto py-8 px-4">
-      <div className="flex flex-col items-center mb-8">
-        <Icons.logo className="h-12 w-12 mb-4 text-primary" />
-        <h1 className="text-2xl font-bold mb-2">Forgot your password?</h1>
-        <p className="text-muted-foreground text-center">
+    <div className="container mx-auto max-w-md px-4 py-8">
+      <div className="mb-8 flex flex-col items-center">
+        <Icons.logo className="text-primary mb-4 h-12 w-12" />
+        <h1 className="mb-2 text-2xl font-bold">Forgot your password?</h1>
+        <p className="text-center text-muted-foreground">
           Enter your email address and we'll send you a link to reset your password.
         </p>
       </div>
 
       {error && (
-        <div className="bg-destructive/20 text-destructive p-3 rounded-md mb-4">{error}</div>
+        <div className="mb-4 rounded-md bg-destructive/20 p-3 text-destructive">{error}</div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -88,23 +88,23 @@ export default function ForgotPasswordPage() {
             type="email"
             placeholder="name@example.com"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full p-2 border rounded-md"
+            className="w-full rounded-md border p-2"
             disabled={isLoading}
           />
         </div>
 
         <button
           type="submit"
-          className="w-full bg-primary text-primary-foreground py-2 rounded-md font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 w-full rounded-md py-2 font-medium transition-colors disabled:opacity-50"
           disabled={isLoading}
         >
           {isLoading ? 'Sending...' : 'Send reset link'}
         </button>
       </form>
 
-      <p className="text-center mt-6 text-sm text-muted-foreground">
+      <p className="mt-6 text-center text-sm text-muted-foreground">
         Remember your password?{' '}
         <Link href={ROUTES.AUTH.LOGIN} className="text-primary hover:underline">
           Back to login

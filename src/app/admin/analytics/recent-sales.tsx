@@ -1,8 +1,6 @@
-'use client';
-
-import React from 'react';
+'use client';;
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 
 interface SaleTransaction {
   id: string;
@@ -89,7 +87,7 @@ export function RecentSales() {
       </CardHeader>
       <CardContent>
         <div className="space-y-8">
-          {recentSales.map(sale => (
+          {recentSales.map((sale) => (
             <div key={sale.id} className="flex items-center">
               <Avatar className="h-9 w-9">
                 <AvatarImage src={sale.customer.avatarUrl} alt={sale.customer.name} />

@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Bell, BellOff, Mail, Smartphone, Globe, AlertTriangle } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Bell, Mail, Smartphone, Globe, AlertTriangle } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
@@ -73,23 +73,23 @@ export function ActivityAlerts() {
   ]);
 
   const handleToggleSetting = (id: string) => {
-    setSettings(prev =>
-      prev.map(setting => {
+    setSettings((prev) =>
+      prev.map((setting) => {
         if (setting.id === id) {
           return { ...setting, enabled: !setting.enabled };
         }
         return setting;
-      })
+      }),
     );
   };
 
   const handleToggleChannel = (settingId: string, channelId: string) => {
-    setSettings(prev =>
-      prev.map(setting => {
+    setSettings((prev) =>
+      prev.map((setting) => {
         if (setting.id === settingId) {
           return {
             ...setting,
-            channels: setting.channels.map(channel => {
+            channels: setting.channels.map((channel) => {
               if (channel.id === channelId) {
                 return { ...channel, enabled: !channel.enabled };
               }
@@ -98,14 +98,14 @@ export function ActivityAlerts() {
           };
         }
         return setting;
-      })
+      }),
     );
   };
 
   const handleSave = async () => {
     try {
       // Simulate save process
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       toast({
         title: 'Settings Updated',
@@ -129,7 +129,7 @@ export function ActivityAlerts() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {settings.map(setting => (
+        {settings.map((setting) => (
           <div key={setting.id} className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
@@ -147,7 +147,7 @@ export function ActivityAlerts() {
 
             {setting.enabled && (
               <div className="ml-8 space-y-4">
-                {setting.channels.map(channel => (
+                {setting.channels.map((channel) => (
                   <div key={channel.id} className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       {channel.icon}

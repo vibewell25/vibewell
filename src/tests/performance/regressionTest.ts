@@ -77,7 +77,7 @@ export class RegressionTestSuite {
 
   public async establishBaseline(): Promise<void> {
     console.log('Establishing performance baseline...');
-    
+
     // Run multiple test iterations to establish baseline
     const results = [];
     for (let i = 0; i < config.testing.performance.baselineRuns; i++) {
@@ -94,14 +94,14 @@ export class RegressionTestSuite {
         metrics[key] = {
           mean: stats.mean,
           p95: stats.p95,
-          threshold: stats.mean * (1 + this.regressionThreshold)
+          threshold: stats.mean * (1 + this.regressionThreshold),
         };
       }
     }
 
     const baseline: PerformanceBaseline = {
       timestamp: new Date().toISOString(),
-      metrics
+      metrics,
     };
 
     this.saveBaseline(baseline);
@@ -145,7 +145,7 @@ export class RegressionTestSuite {
           metric,
           baseline: baselineMetric.mean,
           current: stats.mean,
-          regression: regression * 100 // Convert to percentage
+          regression: regression * 100, // Convert to percentage
         });
       }
     }
@@ -154,7 +154,9 @@ export class RegressionTestSuite {
     if (regressions.length > 0) {
       console.log('Performance regressions detected:');
       regressions.forEach(({ metric, baseline, current, regression }) => {
-        console.log(`${metric}: ${regression.toFixed(2)}% regression (${baseline.toFixed(2)} -> ${current.toFixed(2)})`);
+        console.log(
+          `${metric}: ${regression.toFixed(2)}% regression (${baseline.toFixed(2)} -> ${current.toFixed(2)})`,
+        );
       });
     } else {
       console.log('No performance regressions detected');
@@ -162,7 +164,7 @@ export class RegressionTestSuite {
 
     return {
       passed: regressions.length === 0,
-      regressions
+      regressions,
     };
   }
 
@@ -200,4 +202,4 @@ Metric: ${metric}
 
     return report;
   }
-} 
+}

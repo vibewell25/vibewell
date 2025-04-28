@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     const verification = await webAuthnService.verifyRegistration(
       session.user.id,
       response as RegistrationResponseJSON,
-      options
+      options,
     );
 
     return NextResponse.json({ verified: verification.verified });
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     if (error instanceof WebAuthnError) {
       return NextResponse.json(
         { error: error.message, code: error.code, details: error.details },
-        { status: 400 }
+        { status: 400 },
       );
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

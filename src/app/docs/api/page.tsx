@@ -1,13 +1,8 @@
 import { Metadata } from 'next';
-import { allDocs } from 'contentlayer/generated';
 import { DocSearch } from '@/components/docs/DocSearch';
 import { DocSidebar } from '@/components/docs/DocSidebar';
-import { MDXContent } from '@/components/docs/MDXContent';
 
-export const metadata: Metadata = {
-  title: 'API Documentation | Vibewell',
-  description: 'Complete API documentation for the Vibewell platform',
-};
+export {};
 
 interface Endpoint {
   method: string;
@@ -101,12 +96,12 @@ const endpoints: Endpoint[] = [
 export default function ApiDocumentation() {
   return (
     <div className="flex min-h-screen">
-      <DocSidebar className="w-64 hidden lg:block" />
+      <DocSidebar className="hidden w-64 lg:block" />
 
       <main className="flex-1 px-6 py-8 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-4">API Documentation</h1>
+            <h1 className="mb-4 text-4xl font-bold">API Documentation</h1>
             <p className="text-lg text-gray-600">
               Complete documentation for the Vibewell API endpoints.
             </p>
@@ -116,11 +111,10 @@ export default function ApiDocumentation() {
 
           <div className="space-y-12">
             {endpoints.map((endpoint, index) => (
-              <div key={index} className="border rounded-lg p-6">
-                <div className="flex items-center gap-4 mb-4">
+              <div key={index} className="rounded-lg border p-6">
+                <div className="mb-4 flex items-center gap-4">
                   <span
-                    className={`px-3 py-1 rounded text-sm font-medium
-                    ${
+                    className={`rounded px-3 py-1 text-sm font-medium ${
                       endpoint.method === 'GET'
                         ? 'bg-blue-100 text-blue-800'
                         : endpoint.method === 'POST'
@@ -147,8 +141,8 @@ export default function ApiDocumentation() {
 
                 {endpoint.parameters && endpoint.parameters.length > 0 && (
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-2">Parameters</h3>
-                    <div className="border rounded-md overflow-hidden">
+                    <h3 className="mb-2 text-lg font-semibold">Parameters</h3>
+                    <div className="overflow-hidden rounded-md border">
                       <table className="min-w-full divide-y">
                         <thead className="bg-gray-50">
                           <tr>
@@ -169,7 +163,7 @@ export default function ApiDocumentation() {
                         <tbody className="divide-y">
                           {endpoint.parameters.map((param, paramIndex) => (
                             <tr key={paramIndex}>
-                              <td className="px-4 py-2 text-sm font-mono">{param.name}</td>
+                              <td className="px-4 py-2 font-mono text-sm">{param.name}</td>
                               <td className="px-4 py-2 text-sm">{param.type}</td>
                               <td className="px-4 py-2 text-sm">{param.required ? 'Yes' : 'No'}</td>
                               <td className="px-4 py-2 text-sm">{param.description}</td>
@@ -182,14 +176,13 @@ export default function ApiDocumentation() {
                 )}
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Responses</h3>
+                  <h3 className="mb-2 text-lg font-semibold">Responses</h3>
                   <div className="space-y-4">
                     {endpoint.responses.map((response, responseIndex) => (
-                      <div key={responseIndex} className="border rounded-md p-4">
-                        <div className="flex items-center gap-2 mb-2">
+                      <div key={responseIndex} className="rounded-md border p-4">
+                        <div className="mb-2 flex items-center gap-2">
                           <span
-                            className={`px-2 py-1 rounded text-sm
-                            ${
+                            className={`rounded px-2 py-1 text-sm ${
                               response.code >= 200 && response.code < 300
                                 ? 'bg-green-100 text-green-800'
                                 : response.code >= 400
@@ -202,7 +195,7 @@ export default function ApiDocumentation() {
                           <span className="text-sm text-gray-600">{response.description}</span>
                         </div>
                         {response.example && (
-                          <pre className="mt-2 p-4 bg-gray-50 rounded-md overflow-auto">
+                          <pre className="mt-2 overflow-auto rounded-md bg-gray-50 p-4">
                             <code>{JSON.stringify(response.example, null, 2)}</code>
                           </pre>
                         )}

@@ -18,7 +18,7 @@ export const SafeUserMenu = withErrorBoundary(UserMenu, {
       <Icons.UserCircleIcon className="h-8 w-8 text-muted-foreground opacity-50" />
     </button>
   ),
-  onError: error => {
+  onError: (error) => {
     // You could send this error to your monitoring service
     console.error('UserMenu component error:', error);
   },

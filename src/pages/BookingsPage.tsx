@@ -1,6 +1,5 @@
 import React from 'react';
 import { BookingApp } from '../components/BookingApp';
-import '../styles/booking.css';
 
 /**
  * Example page that uses the BookingApp component

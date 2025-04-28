@@ -20,7 +20,7 @@ const inputVariants = cva(
       variant: 'default',
       size: 'default',
     },
-  }
+  },
 );
 
 export interface InputProps
@@ -53,10 +53,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {error}
           </p>
         )}
-        {!error && success && <p className="mt-1 text-sm text-success">{success}</p>}
+        {!error && success && <p className="text-success mt-1 text-sm">{success}</p>}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = 'Input';

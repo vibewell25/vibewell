@@ -171,7 +171,6 @@ export default function ContentDetailPage() {
     return 0;
   };
   const handleEditContent = (updatedContent: any) => {
-    import { updateWellnessContent } from '../../../../implementation-files/wellness-content-update';
     import { Icons } from '@/components/icons';
     console.log('Updating content:', updatedContent);
     setIsEditModalOpen(false);
@@ -180,7 +179,7 @@ export default function ContentDetailPage() {
     return (
       <Layout>
         <div className="container-app py-12">
-          <div className="flex justify-center items-center h-[60vh]">
+          <div className="flex h-[60vh] items-center justify-center">
             <p className="text-muted-foreground">Loading content...</p>
           </div>
         </div>
@@ -191,9 +190,9 @@ export default function ContentDetailPage() {
     return (
       <Layout>
         <div className="container-app py-12">
-          <div className="flex flex-col justify-center items-center h-[60vh]">
-            <h1 className="text-2xl font-bold mb-4">Content Not Found</h1>
-            <p className="text-muted-foreground mb-6">
+          <div className="flex h-[60vh] flex-col items-center justify-center">
+            <h1 className="mb-4 text-2xl font-bold">Content Not Found</h1>
+            <p className="mb-6 text-muted-foreground">
               The content you're looking for does not exist or has been removed.
             </p>
             <Link href="/wellness" className="btn-primary">
@@ -211,29 +210,29 @@ export default function ContentDetailPage() {
         <div className="mb-8">
           <button
             onClick={() => router.back()}
-            className="flex items-center text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center text-muted-foreground transition-colors hover:text-foreground"
           >
-            <Icons.ArrowLeftIcon className="h-4 w-4 mr-2" />
+            <Icons.ArrowLeftIcon className="mr-2 h-4 w-4" />
             Back to {category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}
           </button>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Main content */}
           <div className="lg:col-span-2">
             <div className="card">
               {/* Content header */}
               <div className="mb-6">
-                <h1 className="text-3xl font-bold mb-2">{content.title}</h1>
+                <h1 className="mb-2 text-3xl font-bold">{content.title}</h1>
                 <p className="text-muted-foreground">{content.description}</p>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  <span className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="bg-primary/10 text-primary rounded-full px-2 py-1 text-xs">
                     {content.category.charAt(0).toUpperCase() + content.category.slice(1)}
                   </span>
-                  <span className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded-full">
+                  <span className="rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground">
                     {content.level.charAt(0).toUpperCase() + content.level.slice(1)}
                   </span>
-                  <span className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded-full flex items-center">
-                    <Icons.ClockIcon className="h-3 w-3 mr-1" />
+                  <span className="flex items-center rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground">
+                    <Icons.ClockIcon className="mr-1 h-3 w-3" />
                     {content.duration}
                   </span>
                 </div>
@@ -247,13 +246,13 @@ export default function ContentDetailPage() {
                 </div>
               </div>
               {/* Content media */}
-              <div className="aspect-video bg-muted rounded-lg mb-6 relative">
+              <div className="relative mb-6 aspect-video rounded-lg bg-muted">
                 {/* This would be replaced with an actual video/audio player in a real app */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <p className="text-muted-foreground mb-4">Content Preview</p>
+                  <p className="mb-4 text-muted-foreground">Content Preview</p>
                   {/* Play/Pause Button */}
                   <button
-                    className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center"
+                    className="bg-primary flex h-16 w-16 items-center justify-center rounded-full text-white"
                     onClick={togglePlayback}
                   >
                     {isPlaying ? (
@@ -267,17 +266,17 @@ export default function ContentDetailPage() {
                 {progress && (
                   <div className="absolute bottom-0 left-0 right-0 h-1 bg-muted">
                     <div
-                      className="h-full bg-primary"
+                      className="bg-primary h-full"
                       style={{ width: `${getProgressPercentage()}%` }}
                     />
                   </div>
                 )}
               </div>
               {/* Action buttons */}
-              <div className="flex justify-between mb-6">
+              <div className="mb-6 flex justify-between">
                 <div className="flex gap-4">
                   <button
-                    className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
                     onClick={toggleLike}
                   >
                     {isLiked ? (
@@ -288,17 +287,17 @@ export default function ContentDetailPage() {
                     <span>{isLiked ? 'Liked' : 'Like'}</span>
                   </button>
                   <button
-                    className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
                     onClick={toggleSave}
                   >
                     {isBookmarked ? (
-                      <Icons.BookmarkIconSolid className="h-5 w-5 text-primary" />
+                      <Icons.BookmarkIconSolid className="text-primary h-5 w-5" />
                     ) : (
                       <Icons.BookmarkIcon className="h-5 w-5" />
                     )}
                     <span>{isBookmarked ? 'Saved' : 'Save'}</span>
                   </button>
-                  <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <button className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground">
                     <Icons.ShareIcon className="h-5 w-5" />
                     <span>Share</span>
                   </button>
@@ -306,7 +305,7 @@ export default function ContentDetailPage() {
                 {/* Complete button */}
                 {progress && !progress.completed && (
                   <button
-                    className="btn-primary text-sm flex items-center gap-1"
+                    className="btn-primary flex items-center gap-1 text-sm"
                     onClick={markAsCompleted}
                   >
                     <Icons.CheckIcon className="h-4 w-4" />
@@ -316,7 +315,7 @@ export default function ContentDetailPage() {
                 {/* Completed badge */}
                 {progress && progress.completed && (
                   <div className="flex items-center text-sm text-green-500">
-                    <Icons.CheckIcon className="h-5 w-5 mr-1" />
+                    <Icons.CheckIcon className="mr-1 h-5 w-5" />
                     Completed
                   </div>
                 )}
@@ -328,14 +327,14 @@ export default function ContentDetailPage() {
               />
               {/* Tags */}
               {content.tags && content.tags.length > 0 && (
-                <div className="mt-8 pt-6 border-t border-border">
-                  <h3 className="text-sm font-medium mb-2">Tags</h3>
+                <div className="mt-8 border-t border-border pt-6">
+                  <h3 className="mb-2 text-sm font-medium">Tags</h3>
                   <div className="flex flex-wrap gap-2">
                     {content.tags.map((tag: string) => (
                       <Link
                         key={tag}
                         href={`/wellness?tag=${tag}`}
-                        className="bg-muted hover:bg-muted-foreground/20 text-xs px-2 py-1 rounded-full transition-colors"
+                        className="rounded-full bg-muted px-2 py-1 text-xs transition-colors hover:bg-muted-foreground/20"
                       >
                         #{tag}
                       </Link>
@@ -344,10 +343,10 @@ export default function ContentDetailPage() {
                 </div>
               )}
               {/* Creator info */}
-              <div className="mt-8 pt-6 border-t border-border">
-                <h3 className="text-sm font-medium mb-2">Created by</h3>
+              <div className="mt-8 border-t border-border pt-6">
+                <h3 className="mb-2 text-sm font-medium">Created by</h3>
                 <div className="flex items-center">
-                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center mr-3">
+                  <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-muted">
                     <span className="text-xs text-muted-foreground">Avatar</span>
                   </div>
                   <div>
@@ -364,10 +363,10 @@ export default function ContentDetailPage() {
           <div className="space-y-6">
             {/* Progress Card */}
             <div className="card">
-              <h2 className="text-xl font-bold mb-4">Your Progress</h2>
+              <h2 className="mb-4 text-xl font-bold">Your Progress</h2>
               {!user ? (
-                <div className="text-center py-4">
-                  <p className="text-sm text-muted-foreground mb-3">
+                <div className="py-4 text-center">
+                  <p className="mb-3 text-sm text-muted-foreground">
                     Sign in to track your progress
                   </p>
                   <Link href="/auth/signin" className="btn-primary">
@@ -375,31 +374,31 @@ export default function ContentDetailPage() {
                   </Link>
                 </div>
               ) : !progress ? (
-                <div className="text-center py-4">
+                <div className="py-4 text-center">
                   <p className="text-sm text-muted-foreground">No progress data available</p>
                 </div>
               ) : (
                 <div>
                   {/* Progress visualization */}
                   <div className="mb-4">
-                    <div className="flex justify-between mb-1">
+                    <div className="mb-1 flex justify-between">
                       <span className="text-sm">Progress</span>
                       <span className="text-sm font-medium">
                         {Math.round(getProgressPercentage())}%
                       </span>
                     </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-2 overflow-hidden rounded-full bg-muted">
                       <div
-                        className="h-full bg-primary transition-all duration-500"
+                        className="bg-primary h-full transition-all duration-500"
                         style={{ width: `${getProgressPercentage()}%` }}
                       />
                     </div>
                   </div>
                   {/* Status */}
-                  <div className="py-2 px-3 bg-muted rounded-md text-sm mb-4">
+                  <div className="mb-4 rounded-md bg-muted px-3 py-2 text-sm">
                     {progress.completed ? (
                       <div className="flex items-center text-green-500">
-                        <Icons.CheckIcon className="h-5 w-5 mr-2" />
+                        <Icons.CheckIcon className="mr-2 h-5 w-5" />
                         <div>
                           <p>Completed</p>
                           {progress.completedDate && (
@@ -411,7 +410,7 @@ export default function ContentDetailPage() {
                       </div>
                     ) : progress.lastPosition ? (
                       <div className="flex items-center">
-                        <Icons.ChartBarIcon className="h-5 w-5 mr-2 text-primary" />
+                        <Icons.ChartBarIcon className="text-primary mr-2 h-5 w-5" />
                         <div>
                           <p>In Progress</p>
                           <p className="text-xs text-muted-foreground">
@@ -422,7 +421,7 @@ export default function ContentDetailPage() {
                       </div>
                     ) : (
                       <div className="flex items-center">
-                        <Icons.PlayIcon className="h-5 w-5 mr-2 text-primary" />
+                        <Icons.PlayIcon className="text-primary mr-2 h-5 w-5" />
                         <p>Not started yet</p>
                       </div>
                     )}
@@ -431,7 +430,7 @@ export default function ContentDetailPage() {
                   <div className="space-y-2">
                     {!progress.completed && (
                       <button
-                        className="btn-primary w-full flex items-center justify-center gap-1"
+                        className="btn-primary flex w-full items-center justify-center gap-1"
                         onClick={markAsCompleted}
                       >
                         <Icons.CheckIcon className="h-4 w-4" />
@@ -440,7 +439,7 @@ export default function ContentDetailPage() {
                     )}
                     <Link
                       href="/wellness/progress"
-                      className="btn-secondary w-full flex items-center justify-center gap-1"
+                      className="btn-secondary flex w-full items-center justify-center gap-1"
                     >
                       <Icons.ChartBarIcon className="h-4 w-4" />
                       View All Progress
@@ -451,12 +450,12 @@ export default function ContentDetailPage() {
             </div>
             {/* Related Content */}
             <div className="card">
-              <h2 className="text-xl font-bold mb-4">Related Content</h2>
+              <h2 className="mb-4 text-xl font-bold">Related Content</h2>
               <div className="space-y-4">
                 <div className="flex gap-3">
-                  <div className="w-16 h-12 bg-muted rounded flex-shrink-0" />
+                  <div className="h-12 w-16 flex-shrink-0 rounded bg-muted" />
                   <div>
-                    <h3 className="text-sm font-medium hover:text-primary">
+                    <h3 className="hover:text-primary text-sm font-medium">
                       <Link href={`/wellness/${content.category}/3`}>
                         Advanced Meditation Techniques
                       </Link>
@@ -465,9 +464,9 @@ export default function ContentDetailPage() {
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <div className="w-16 h-12 bg-muted rounded flex-shrink-0" />
+                  <div className="h-12 w-16 flex-shrink-0 rounded bg-muted" />
                   <div>
-                    <h3 className="text-sm font-medium hover:text-primary">
+                    <h3 className="hover:text-primary text-sm font-medium">
                       <Link href={`/wellness/${content.category}/4`}>
                         Breathing Exercises for Focus
                       </Link>
@@ -476,9 +475,9 @@ export default function ContentDetailPage() {
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <div className="w-16 h-12 bg-muted rounded flex-shrink-0" />
+                  <div className="h-12 w-16 flex-shrink-0 rounded bg-muted" />
                   <div>
-                    <h3 className="text-sm font-medium hover:text-primary">
+                    <h3 className="hover:text-primary text-sm font-medium">
                       <Link href={`/wellness/${content.category}/5`}>
                         Mindfulness for Stress Relief
                       </Link>
@@ -489,7 +488,7 @@ export default function ContentDetailPage() {
               </div>
               <Link
                 href="/wellness"
-                className="text-primary hover:text-primary-dark transition-colors mt-4 inline-block text-sm"
+                className="text-primary hover:text-primary-dark mt-4 inline-block text-sm transition-colors"
               >
                 Explore more content
               </Link>

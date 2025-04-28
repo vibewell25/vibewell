@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { BookingService } from '@/services/booking-service';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/components/ui/use-toast';
 import {
@@ -142,13 +142,13 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
   };
 
   if (loading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>;
+    return <div className="flex h-64 items-center justify-center">Loading...</div>;
   }
 
   if (error || !booking) {
     return (
-      <div className="flex flex-col items-center justify-center h-64">
-        <p className="text-red-500 mb-4">{error || 'Booking not found'}</p>
+      <div className="flex h-64 flex-col items-center justify-center">
+        <p className="mb-4 text-red-500">{error || 'Booking not found'}</p>
         <Button onClick={loadBooking}>Retry</Button>
       </div>
     );
@@ -156,7 +156,7 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <Button variant="outline" onClick={() => router.back()}>
           Back
         </Button>
@@ -166,13 +166,13 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
       <Card className="p-6">
         <div className="grid gap-6">
           <div>
-            <h2 className="text-2xl font-bold mb-2">{booking.service.name}</h2>
+            <h2 className="mb-2 text-2xl font-bold">{booking.service.name}</h2>
             <p className="text-gray-500">{booking.service.description}</p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <h3 className="font-semibold mb-2">Booking Details</h3>
+              <h3 className="mb-2 font-semibold">Booking Details</h3>
               <div className="space-y-2">
                 <p>
                   <span className="text-gray-500">Date:</span>{' '}
@@ -194,7 +194,7 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
             </div>
 
             <div>
-              <h3 className="font-semibold mb-2">
+              <h3 className="mb-2 font-semibold">
                 {role === 'customer' ? 'Provider Details' : 'Customer Details'}
               </h3>
               <div className="space-y-2">
@@ -222,7 +222,7 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
 
           {booking.notes && (
             <div>
-              <h3 className="font-semibold mb-2">Notes</h3>
+              <h3 className="mb-2 font-semibold">Notes</h3>
               <p className="text-gray-500">{booking.notes}</p>
             </div>
           )}

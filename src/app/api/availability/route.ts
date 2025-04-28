@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { availability, providers, services } from '@/lib/db/schema';
+import { availability, services } from '@/lib/db/schema';
 import { and, eq, gte, lte } from 'drizzle-orm';
 import { addMinutes, format, parse } from 'date-fns';
 
@@ -27,8 +27,8 @@ export async function GET(request: Request) {
         and(
           eq(availability.providerId, parseInt(providerId)),
           gte(availability.date, startOfDay),
-          lte(availability.date, endOfDay)
-        )
+          lte(availability.date, endOfDay),
+        ),
       );
 
     // Get provider's services
@@ -80,8 +80,8 @@ export async function POST(request: Request) {
           eq(availability.providerId, providerId),
           gte(availability.startTime, startTime),
           lte(availability.endTime, endTime),
-          eq(availability.isAvailable, false)
-        )
+          eq(availability.isAvailable, false),
+        ),
       );
 
     if (existingSlots.length > 0) {
@@ -109,8 +109,8 @@ export async function POST(request: Request) {
         and(
           eq(availability.providerId, providerId),
           gte(availability.startTime, startTime),
-          lte(availability.endTime, endTime)
-        )
+          lte(availability.endTime, endTime),
+        ),
       );
 
     return NextResponse.json({ success: true, appointment });
@@ -129,7 +129,7 @@ function generateTimeSlots(date: Date, availability: any[]) {
   while (currentTime <= endTime) {
     const slotTime = format(currentTime, 'HH:mm');
     const isAvailable = !availability.some(
-      slot => format(slot.startTime, 'HH:mm') === slotTime && !slot.isAvailable
+      (slot) => format(slot.startTime, 'HH:mm') === slotTime && !slot.isAvailable,
     );
 
     slots.push({

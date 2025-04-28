@@ -58,7 +58,7 @@ export async function GET() {
   } catch (error) {
     logger.error(
       'Error initializing backup scheduler:',
-      error instanceof Error ? error.message : String(error)
+      error instanceof Error ? error.message : String(error),
     );
 
     return NextResponse.json(
@@ -67,7 +67,7 @@ export async function GET() {
         message: 'Failed to initialize backup scheduler',
         error: error instanceof Error ? error.message : String(error),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

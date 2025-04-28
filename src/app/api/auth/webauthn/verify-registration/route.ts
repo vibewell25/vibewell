@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
     const verification = await WebAuthnService.verifyRegistration(
       session.user.id,
-      attestationResponse
+      attestationResponse,
     );
 
     return NextResponse.json({ verified: verification });

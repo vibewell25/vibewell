@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
           : 7 * 24 * 60 * 60 * 1000;
 
     filteredEvents = filteredEvents.filter(
-      (e: RateLimitEvent) => now - (e.timestamp || 0) <= timeRangeMs
+      (e: RateLimitEvent) => now - (e.timestamp || 0) <= timeRangeMs,
     );
 
     // Filter by limiter type
@@ -64,14 +64,14 @@ export async function GET(req: NextRequest) {
         filteredEvents = filteredEvents.filter((e: RateLimitEvent) => e.suspicious);
       } else {
         filteredEvents = filteredEvents.filter((e: RateLimitEvent) =>
-          e.limiterType.toLowerCase().includes(filter.toLowerCase())
+          e.limiterType.toLowerCase().includes(filter.toLowerCase()),
         );
       }
     }
 
     // Sort by timestamp, most recent first
     filteredEvents.sort(
-      (a: RateLimitEvent, b: RateLimitEvent) => (b.timestamp || 0) - (a.timestamp || 0)
+      (a: RateLimitEvent, b: RateLimitEvent) => (b.timestamp || 0) - (a.timestamp || 0),
     );
 
     // Generate summary statistics
@@ -100,7 +100,7 @@ export async function GET(req: NextRequest) {
 
         return acc;
       },
-      {} as Record<string, { total: number; exceeded: number; allowed: number }>
+      {} as Record<string, { total: number; exceeded: number; allowed: number }>,
     );
 
     // Log the analytics request
@@ -113,7 +113,7 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     logger.error(
-      `Error retrieving rate limit events: ${error instanceof Error ? error.message : String(error)}`
+      `Error retrieving rate limit events: ${error instanceof Error ? error.message : String(error)}`,
     );
 
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -167,12 +167,12 @@ export async function POST(req: NextRequest) {
     } else {
       return NextResponse.json(
         { error: 'Invalid action. Use "block" or "unblock"' },
-        { status: 400 }
+        { status: 400 },
       );
     }
   } catch (error) {
     logger.error(
-      `Error managing blocked IPs: ${error instanceof Error ? error.message : String(error)}`
+      `Error managing blocked IPs: ${error instanceof Error ? error.message : String(error)}`,
     );
 
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

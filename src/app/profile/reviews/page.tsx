@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ReviewCard from '@/components/ReviewCard';
 import ReviewForm from '@/components/ReviewForm';
@@ -103,7 +103,7 @@ export default function MyReviewsPage() {
   const handleDeleteReview = (reviewId: string) => {
     if (window.confirm('Are you sure you want to delete this review?')) {
       // In a real app, we would call an API here
-      setUserReviews(prevReviews => prevReviews.filter(review => review.id !== reviewId));
+      setUserReviews((prevReviews) => prevReviews.filter((review) => review.id !== reviewId));
     }
   };
   // Handle review edit
@@ -114,8 +114,8 @@ export default function MyReviewsPage() {
   const handleUpdateReview = async (data: { title: string; text: string; rating: number }) => {
     if (editingReview) {
       // In a real app, we would call an API here
-      const updatedReviews = userReviews.map(review =>
-        review.id === editingReview.id ? { ...review, ...data } : review
+      const updatedReviews = userReviews.map((review) =>
+        review.id === editingReview.id ? { ...review, ...data } : review,
       );
       setUserReviews(updatedReviews);
       setEditingReview(null);
@@ -125,7 +125,7 @@ export default function MyReviewsPage() {
   const handleSubmitReview = async (
     data: { title: string; text: string; rating: number },
     providerId: string,
-    serviceId: string
+    serviceId: string,
   ) => {
     // In a real app, we would call an API here
     const newReview: Review = {
@@ -133,16 +133,16 @@ export default function MyReviewsPage() {
       ...data,
       created_at: new Date().toISOString(),
       provider_id: providerId,
-      provider: pendingReviews.find(service => service.provider.id === providerId)?.provider!,
+      provider: pendingReviews.find((service) => service.provider.id === providerId)?.provider!,
       booking_id: serviceId,
     };
-    setUserReviews(prev => [newReview, ...prev]);
-    setPendingReviews(prev => prev.filter(service => service.id !== serviceId));
+    setUserReviews((prev) => [newReview, ...prev]);
+    setPendingReviews((prev) => prev.filter((service) => service.id !== serviceId));
   };
   return (
     <Layout>
       <div className="container mx-auto max-w-5xl px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">My Reviews</h1>
+        <h1 className="mb-6 text-3xl font-bold">My Reviews</h1>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-8">
             <TabsTrigger value="my-reviews">My Reviews</TabsTrigger>
@@ -151,24 +151,24 @@ export default function MyReviewsPage() {
           <TabsContent value="my-reviews">
             {isLoading ? (
               <div className="space-y-4">
-                {[1, 2].map(index => (
-                  <div key={index} className="animate-pulse bg-white rounded-lg shadow p-4">
+                {[1, 2].map((index) => (
+                  <div key={index} className="animate-pulse rounded-lg bg-white p-4 shadow">
                     <div className="flex items-start">
-                      <div className="h-12 w-12 bg-gray-200 rounded-full mr-4"></div>
+                      <div className="mr-4 h-12 w-12 rounded-full bg-gray-200"></div>
                       <div className="flex-1">
-                        <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-                        <div className="h-4 bg-gray-200 rounded w-1/3 mb-4"></div>
-                        <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-                        <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                        <div className="mb-2 h-4 w-1/4 rounded bg-gray-200"></div>
+                        <div className="mb-4 h-4 w-1/3 rounded bg-gray-200"></div>
+                        <div className="mb-2 h-4 w-full rounded bg-gray-200"></div>
+                        <div className="h-4 w-5/6 rounded bg-gray-200"></div>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
             ) : userReviews.length === 0 ? (
-              <div className="bg-white rounded-lg shadow p-8 text-center">
-                <p className="text-gray-500 mb-2">You haven't submitted any reviews yet</p>
-                <p className="text-gray-400 text-sm mb-4">
+              <div className="rounded-lg bg-white p-8 text-center shadow">
+                <p className="mb-2 text-gray-500">You haven't submitted any reviews yet</p>
+                <p className="mb-4 text-sm text-gray-400">
                   Your reviews will appear here once you've reviewed a service
                 </p>
                 <Button onClick={() => setActiveTab('pending')}>View Pending Reviews</Button>
@@ -176,8 +176,8 @@ export default function MyReviewsPage() {
             ) : (
               <div className="space-y-6">
                 {editingReview && (
-                  <div className="bg-white rounded-lg shadow p-6 mb-6">
-                    <h2 className="text-xl font-semibold mb-4">Edit Your Review</h2>
+                  <div className="mb-6 rounded-lg bg-white p-6 shadow">
+                    <h2 className="mb-4 text-xl font-semibold">Edit Your Review</h2>
                     <ReviewForm
                       providerId={editingReview.provider_id}
                       initialData={{
@@ -192,8 +192,8 @@ export default function MyReviewsPage() {
                   </div>
                 )}
                 <div className="space-y-4">
-                  {userReviews.map(review => (
-                    <div key={review.id} className="bg-white rounded-lg shadow">
+                  {userReviews.map((review) => (
+                    <div key={review.id} className="rounded-lg bg-white shadow">
                       <ReviewCard
                         id={review.id}
                         title={review.title}
@@ -206,7 +206,7 @@ export default function MyReviewsPage() {
                           avatar_url: undefined,
                         }}
                       />
-                      <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100">
+                      <div className="flex items-center justify-between border-t border-gray-100 px-4 py-3">
                         <div className="text-sm text-gray-500">
                           For: <span className="font-medium">{review.provider.name}</span>
                         </div>
@@ -217,16 +217,16 @@ export default function MyReviewsPage() {
                             onClick={() => handleEditReview(review)}
                             className="flex items-center"
                           >
-                            <Icons.PencilIcon className="h-4 w-4 mr-1" />
+                            <Icons.PencilIcon className="mr-1 h-4 w-4" />
                             Edit
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => handleDeleteReview(review.id)}
-                            className="flex items-center text-red-600 hover:text-red-700 hover:bg-red-50"
+                            className="flex items-center text-red-600 hover:bg-red-50 hover:text-red-700"
                           >
-                            <Icons.TrashIcon className="h-4 w-4 mr-1" />
+                            <Icons.TrashIcon className="mr-1 h-4 w-4" />
                             Delete
                           </Button>
                         </div>
@@ -240,27 +240,27 @@ export default function MyReviewsPage() {
           <TabsContent value="pending">
             {isLoading ? (
               <div className="space-y-4">
-                {[1, 2].map(index => (
-                  <div key={index} className="animate-pulse bg-white rounded-lg shadow p-4">
-                    <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
-                    <div className="h-10 bg-gray-200 rounded w-1/4"></div>
+                {[1, 2].map((index) => (
+                  <div key={index} className="animate-pulse rounded-lg bg-white p-4 shadow">
+                    <div className="mb-4 h-6 w-1/3 rounded bg-gray-200"></div>
+                    <div className="mb-2 h-4 w-1/2 rounded bg-gray-200"></div>
+                    <div className="mb-4 h-4 w-1/4 rounded bg-gray-200"></div>
+                    <div className="h-10 w-1/4 rounded bg-gray-200"></div>
                   </div>
                 ))}
               </div>
             ) : pendingReviews.length === 0 ? (
-              <div className="bg-white rounded-lg shadow p-8 text-center">
-                <p className="text-gray-500 mb-2">No pending reviews</p>
-                <p className="text-gray-400 text-sm">
+              <div className="rounded-lg bg-white p-8 text-center shadow">
+                <p className="mb-2 text-gray-500">No pending reviews</p>
+                <p className="text-sm text-gray-400">
                   You don't have any completed services to review at this time
                 </p>
               </div>
             ) : (
               <div className="space-y-4">
-                {pendingReviews.map(service => (
-                  <div key={service.id} className="bg-white rounded-lg shadow p-6">
-                    <div className="flex items-center justify-between mb-4">
+                {pendingReviews.map((service) => (
+                  <div key={service.id} className="rounded-lg bg-white p-6 shadow">
+                    <div className="mb-4 flex items-center justify-between">
                       <div>
                         <h3 className="text-lg font-medium">{service.name}</h3>
                         <p className="text-gray-500">
@@ -268,16 +268,16 @@ export default function MyReviewsPage() {
                         </p>
                       </div>
                       <div className="flex items-center">
-                        <div className="relative h-10 w-10 rounded-full overflow-hidden mr-2">
+                        <div className="relative mr-2 h-10 w-10 overflow-hidden rounded-full">
                           {service.provider.avatar_url ? (
                             <img
                               src={service.provider.avatar_url}
                               alt={service.provider.name}
-                              className="object-cover w-full h-full"
+                              className="h-full w-full object-cover"
                             />
                           ) : (
-                            <div className="bg-indigo-100 h-full w-full flex items-center justify-center">
-                              <span className="text-indigo-700 font-medium">
+                            <div className="flex h-full w-full items-center justify-center bg-indigo-100">
+                              <span className="font-medium text-indigo-700">
                                 {service.provider.name.charAt(0)}
                               </span>
                             </div>

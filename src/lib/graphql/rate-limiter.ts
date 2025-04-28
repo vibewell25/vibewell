@@ -24,8 +24,8 @@ import type { GraphQLContext } from '@/lib/rate-limiter/types';
 export type { GraphQLContext };
 
 // For backward compatibility
-export const createRateLimitMiddleware = createGraphQLRateLimitMiddleware;
-export const graphQLRateLimitMiddleware = createGraphQLRateLimitMiddleware();
+export {};
+export {};
 
 // Re-export complexity calculation function
 // Note: calculateComplexity is imported from the graphql module in the main rate-limiter
@@ -39,10 +39,10 @@ export function calculateComplexity(operation: any): number {
 // Legacy withRateLimit function that redirects to the withGraphQLRateLimit implementation
 export function withRateLimit<T, Args extends unknown[]>(
   fn: (...args: Args) => Promise<T>,
-  key: string | { limit?: number; window?: number; key?: string } = 'default'
+  key: string | { limit?: number; window?: number; key?: string } = 'default',
 ): (...args: Args) => Promise<T> {
   console.warn(
-    'Using deprecated withRateLimit from @/lib/graphql/rate-limiter. Use withGraphQLRateLimit instead.'
+    'Using deprecated withRateLimit from @/lib/graphql/rate-limiter. Use withGraphQLRateLimit instead.',
   );
 
   // If key is a string, it's the field name

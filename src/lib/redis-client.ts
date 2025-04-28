@@ -53,11 +53,6 @@ interface IPCountInfo {
   count: number;
 }
 
-// Next.js compatibility check
-const isServer = typeof window === 'undefined';
-const isEdgeRuntime =
-  typeof process.env.NEXT_RUNTIME === 'string' && process.env.NEXT_RUNTIME === 'edge';
-
 /**
  * Mock Redis client for Edge Runtime and development
  */
@@ -174,7 +169,7 @@ class MockRedisClient implements RedisClientInterface {
     const now = Date.now();
     const originalLength = this.rateLimitEvents.length;
     this.rateLimitEvents = this.rateLimitEvents.filter(
-      event => now - event.timestamp < olderThanMs
+      (event) => now - event.timestamp < olderThanMs,
     );
     return originalLength - this.rateLimitEvents.length;
   }
@@ -412,7 +407,7 @@ function createRedisClient(): RedisClientInterface {
   if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
     return new UpstashRedisClient(
       process.env.UPSTASH_REDIS_REST_URL,
-      process.env.UPSTASH_REDIS_REST_TOKEN
+      process.env.UPSTASH_REDIS_REST_TOKEN,
     );
   }
 

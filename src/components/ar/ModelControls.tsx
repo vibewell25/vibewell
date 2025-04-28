@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { TransformControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useAnalytics } from '@/hooks/use-analytics';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 /**
  * ModelControls component for handling 3D model transformations
@@ -78,11 +78,11 @@ export function ModelControls({
       setMode(mode);
       trackEvent('model_control_change', { mode, type });
     },
-    [trackEvent, type]
+    [trackEvent, type],
   );
 
   const toggleControls = useCallback(() => {
-    setShowControls(prev => !prev);
+    setShowControls((prev) => !prev);
   }, []);
 
   // Apply transformations in a more efficient way
@@ -93,22 +93,22 @@ export function ModelControls({
     modelRef.current.position.set(
       transformParams.position[0],
       transformParams.position[1],
-      transformParams.position[2]
+      transformParams.position[2],
     );
 
     // Apply scale
     modelRef.current.scale.set(
       transformParams.scale[0],
       transformParams.scale[1],
-      transformParams.scale[2]
+      transformParams.scale[2],
     );
 
     // Apply material properties - only update when needed
     if (type === 'makeup') {
-      modelRef.current.traverse(child => {
+      modelRef.current.traverse((child) => {
         if (child instanceof THREE.Mesh && child.material) {
           if (Array.isArray(child.material)) {
-            child.material.forEach(mat => {
+            child.material.forEach((mat) => {
               if (
                 mat.opacity !== undefined &&
                 Math.abs(mat.opacity - transformParams.opacity) > 0.01
@@ -129,7 +129,7 @@ export function ModelControls({
 
   return (
     <>
-      <div className="absolute top-4 right-4 flex gap-2">
+      <div className="absolute right-4 top-4 flex gap-2">
         <Button variant="outline" size="sm" onClick={toggleControls}>
           {showControls ? 'Hide Controls' : 'Show Controls'}
         </Button>
@@ -172,7 +172,7 @@ export function ModelControls({
                   position: modelRef.current.position.toArray(),
                   rotation: modelRef.current.rotation.toArray(),
                   scale: modelRef.current.scale.toArray(),
-                })
+                }),
               );
             }
           }}

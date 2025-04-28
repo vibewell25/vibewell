@@ -1,8 +1,6 @@
-import { PrismaClient, BusinessVerificationStatus } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { NotificationService } from './notification-service';
 import { logger } from '@/lib/logger';
-import { uploadDocument } from '@/lib/storage';
-import { verifyDocument } from '@/lib/verification';
 
 const prisma = new PrismaClient();
 
@@ -178,7 +176,7 @@ export class BusinessService {
   async getBusinessAnalytics(
     businessId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<BusinessAnalytics> {
     try {
       const [bookings, reviews, revenue] = await Promise.all([
@@ -234,12 +232,12 @@ export class BusinessService {
       // Calculate service popularity
       const servicePopularity = bookings.reduce(
         (acc, booking) => {
-          booking.services.forEach(service => {
+          booking.services.forEach((service) => {
             acc[service.serviceId] = (acc[service.serviceId] || 0) + 1;
           });
           return acc;
         },
-        {} as Record<string, number>
+        {} as Record<string, number>,
       );
 
       return {
@@ -320,7 +318,7 @@ export class BusinessService {
     });
 
     const hourCounts = new Array(24).fill(0);
-    bookings.forEach(booking => {
+    bookings.forEach((booking) => {
       const hour = new Date(booking.startTime).getHours();
       hourCounts[hour]++;
     });
@@ -352,7 +350,7 @@ export class BusinessService {
       loyal: 0, // 3 or more bookings
     };
 
-    customers.forEach(customer => {
+    customers.forEach((customer) => {
       if (customer._count === 1) retention.oneTime++;
       else if (customer._count === 2) retention.repeat++;
       else retention.loyal++;
@@ -467,7 +465,7 @@ export class BusinessService {
 
   async updatePricingRules(businessId: string, rules: PricingRule[]): Promise<void> {
     try {
-      await prisma.$transaction(async tx => {
+      await prisma.$transaction(async (tx) => {
         // Delete existing pricing rules
         await tx.pricingRule.deleteMany({
           where: { businessId },
@@ -512,7 +510,9 @@ export class BusinessService {
         throw new Error('Service not found');
       }
 
-      const pricingRule = service.business.pricingRules.find(rule => rule.serviceId === serviceId);
+      const pricingRule = service.business.pricingRules.find(
+        (rule) => rule.serviceId === serviceId,
+      );
 
       if (!pricingRule) {
         return service.price * quantity;
@@ -567,7 +567,7 @@ export class BusinessService {
   async submitVerification(data: BusinessVerificationDTO) {
     try {
       const documents = await Promise.all(
-        data.documents.map(doc =>
+        data.documents.map((doc) =>
           prisma.businessDocument.create({
             data: {
               businessId: data.businessId,
@@ -575,8 +575,8 @@ export class BusinessService {
               documentUrl: doc.documentUrl,
               status: 'PENDING',
             },
-          })
-        )
+          }),
+        ),
       );
 
       await this.notificationService.notifyAdmins({
@@ -679,7 +679,7 @@ export class BusinessService {
         acc[date] = (acc[date] || 0) + 1;
         return acc;
       },
-      {} as Record<string, number>
+      {} as Record<string, number>,
     );
 
     return Object.entries(dailyBookings)
@@ -695,7 +695,7 @@ export class BusinessService {
         acc[date] = (acc[date] || 0) + payment.amount;
         return acc;
       },
-      {} as Record<string, number>
+      {} as Record<string, number>,
     );
 
     return Object.entries(dailyRevenue)
@@ -704,4 +704,4 @@ export class BusinessService {
   }
 }
 
-export const businessService = new BusinessService();
+export {};

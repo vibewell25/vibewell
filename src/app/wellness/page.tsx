@@ -8,8 +8,8 @@ import { Goal } from '@/types/progress';
 import { WellnessContentModal } from '@/components/wellness/WellnessContentModal';
 import { ContentType } from '@/components/wellness/ContentTypeSelector';
 import { toast } from 'react-hot-toast';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -179,7 +179,6 @@ export default function WellnessPage() {
       if (!response.ok) {
         throw new Error('Failed to create content');
       }
-      const newContent = await response.json();
       setIsCreateModalOpen(false);
       toast.success('Content created successfully');
     } catch (error) {
@@ -200,7 +199,7 @@ export default function WellnessPage() {
     toast.success('Content shared');
   };
   // Filter content by category and search query
-  const filteredContent = wellnessContent.filter(item => {
+  const filteredContent = wellnessContent.filter((item) => {
     const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
     const matchesSearch =
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -210,9 +209,9 @@ export default function WellnessPage() {
   return (
     <Layout>
       <div className="container-app py-12 md:py-24">
-        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Wellness Library</h1>
+            <h1 className="mb-2 text-3xl font-bold">Wellness Library</h1>
             <p className="text-muted-foreground">
               Discover personalized content to support your wellness journey
             </p>
@@ -242,9 +241,9 @@ export default function WellnessPage() {
           <TabsContent value="discover" className="space-y-6">
             {/* Search and Filter */}
             <div className="mb-8">
-              <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex flex-col gap-4 md:flex-row">
                 <div className="relative flex-grow">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                     <Icons.MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <input
@@ -252,15 +251,15 @@ export default function WellnessPage() {
                     placeholder="Search wellness content..."
                     className="form-input pl-10"
                     value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
                 <Button
                   variant="outline"
-                  className="md:hidden flex items-center justify-center"
+                  className="flex items-center justify-center md:hidden"
                   onClick={() => setShowFilters(!showFilters)}
                 >
-                  <Icons.AdjustmentsHorizontalIcon className="h-5 w-5 mr-2" />
+                  <Icons.AdjustmentsHorizontalIcon className="mr-2 h-5 w-5" />
                   Filters
                 </Button>
               </div>
@@ -268,7 +267,7 @@ export default function WellnessPage() {
             {/* Category Filters */}
             <div className={`mb-8 ${showFilters ? 'block' : 'hidden md:block'}`}>
               <div className="flex flex-wrap gap-2">
-                {categories.map(category => {
+                {categories.map((category) => {
                   const Icon = category.icon;
                   return (
                     <Button
@@ -286,12 +285,12 @@ export default function WellnessPage() {
             </div>
             {/* Wellness Content Grid */}
             {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {[...Array(6)].map((_, i) => (
                   <Card key={i}>
                     <CardContent className="p-0">
                       <Skeleton className="h-48 w-full rounded-t-lg" />
-                      <div className="p-6 space-y-4">
+                      <div className="space-y-4 p-6">
                         <Skeleton className="h-4 w-3/4" />
                         <Skeleton className="h-4 w-full" />
                         <Skeleton className="h-4 w-1/2" />
@@ -301,21 +300,21 @@ export default function WellnessPage() {
                 ))}
               </div>
             ) : filteredContent.length === 0 ? (
-              <div className="text-center py-12">
+              <div className="py-12 text-center">
                 <p className="text-muted-foreground">
                   No wellness content found. Try adjusting your filters.
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredContent.map(item => (
-                  <Card key={item.id} className="group hover:shadow-lg transition-all">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {filteredContent.map((item) => (
+                  <Card key={item.id} className="group transition-all hover:shadow-lg">
                     <CardContent className="p-0">
                       <div className="relative">
-                        <div className="h-48 bg-muted rounded-t-lg flex items-center justify-center">
+                        <div className="flex h-48 items-center justify-center rounded-t-lg bg-muted">
                           <p className="text-muted-foreground">Content Image</p>
                         </div>
-                        <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute right-4 top-4 flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
                           <Tooltip content="Bookmark">
                             <Button
                               variant="ghost"
@@ -342,12 +341,12 @@ export default function WellnessPage() {
                         </div>
                       </div>
                       <div className="p-6">
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="mb-2 flex items-center gap-2">
                           <Badge variant="outline">{item.level}</Badge>
                           <Badge variant="outline">{item.duration}</Badge>
                         </div>
-                        <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                        <p className="text-muted-foreground mb-4">{item.description}</p>
+                        <h3 className="mb-2 text-lg font-semibold">{item.title}</h3>
+                        <p className="mb-4 text-muted-foreground">{item.description}</p>
                         <div className="flex items-center justify-between">
                           {item.author && (
                             <div className="flex items-center gap-2">
@@ -371,7 +370,7 @@ export default function WellnessPage() {
                         </div>
                         {item.progress > 0 && (
                           <div className="mt-4">
-                            <div className="flex justify-between text-sm mb-1">
+                            <div className="mb-1 flex justify-between text-sm">
                               <span>Progress</span>
                               <span>{item.progress}%</span>
                             </div>
@@ -386,7 +385,7 @@ export default function WellnessPage() {
             )}
           </TabsContent>
           <TabsContent value="progress" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               <Card>
                 <CardHeader>
                   <CardTitle>Completed</CardTitle>
@@ -429,20 +428,20 @@ export default function WellnessPage() {
             </div>
           </TabsContent>
           <TabsContent value="bookmarks" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredContent
-                .filter(item => item.isBookmarked)
-                .map(item => (
+                .filter((item) => item.isBookmarked)
+                .map((item) => (
                   <Card key={item.id}>{/* Same card content as in discover tab */}</Card>
                 ))}
             </div>
           </TabsContent>
           <TabsContent value="recommended" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredContent
                 .sort((a, b) => b.rating - a.rating)
                 .slice(0, 6)
-                .map(item => (
+                .map((item) => (
                   <Card key={item.id}>{/* Same card content as in discover tab */}</Card>
                 ))}
             </div>

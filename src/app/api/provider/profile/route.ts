@@ -96,4 +96,4 @@ export async function DELETE(req: Request) {
     console.error('Error deleting provider profile:', error);
     return new NextResponse('Internal Server Error', { status: 500 });
   }
-} 
+}

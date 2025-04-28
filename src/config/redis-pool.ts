@@ -36,7 +36,9 @@ class RedisConnectionPool {
         const connection = await this.createConnection();
         this.pool.push(connection);
       }
-      logger.info(`Redis connection pool initialized with ${this.config.minConnections} connections`);
+      logger.info(
+        `Redis connection pool initialized with ${this.config.minConnections} connections`,
+      );
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       logger.error('Error initializing Redis connection pool:', errorMessage);
@@ -46,7 +48,7 @@ class RedisConnectionPool {
 
   private async createConnection(): Promise<Redis> {
     const connection = new Redis(this.config.redisOptions);
-    
+
     connection.on('error', (error: Error) => {
       logger.error('Redis connection error:', error.message);
       this.handleConnectionError(connection);
@@ -62,11 +64,11 @@ class RedisConnectionPool {
   private handleConnectionError(connection: Redis): void {
     this.removeConnection(connection);
     this.createConnection()
-      .then(newConnection => {
+      .then((newConnection) => {
         this.pool.push(newConnection);
         logger.info('Replaced failed Redis connection with a new one');
       })
-      .catch(error => {
+      .catch((error) => {
         logger.error('Failed to replace Redis connection:', error.message);
       });
   }
@@ -100,7 +102,7 @@ class RedisConnectionPool {
       const request = {
         resolve,
         reject,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       this.pendingRequests.push(request);
@@ -134,7 +136,7 @@ class RedisConnectionPool {
       available: this.pool.length,
       busy: this.busyConnections.size,
       pending: this.pendingRequests.length,
-      total: this.getTotalConnections()
+      total: this.getTotalConnections(),
     };
   }
 
@@ -144,10 +146,10 @@ class RedisConnectionPool {
 
   public async disconnect(): Promise<void> {
     const allConnections = [...this.pool, ...this.busyConnections];
-    await Promise.all(allConnections.map(connection => connection.quit()));
+    await Promise.all(allConnections.map((connection) => connection.quit()));
     this.pool = [];
     this.busyConnections.clear();
-    this.pendingRequests.forEach(request => {
+    this.pendingRequests.forEach((request) => {
       request.reject(new Error('Pool is shutting down'));
     });
     this.pendingRequests = [];
@@ -155,4 +157,4 @@ class RedisConnectionPool {
   }
 }
 
-export default RedisConnectionPool; 
+export default RedisConnectionPool;

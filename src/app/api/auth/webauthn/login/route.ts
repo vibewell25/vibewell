@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
     console.error('WebAuthn authentication options error:', error);
     return NextResponse.json(
       { error: 'Failed to generate authentication options' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
           provider: 'webauthn',
         },
         JWT_SECRET,
-        { expiresIn: '7d' }
+        { expiresIn: '7d' },
       );
 
       // Set session cookie

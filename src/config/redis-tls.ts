@@ -40,7 +40,7 @@ class RedisTLSConfig {
 
   getTLSConfig(port: number): Partial<RedisOptions> {
     const portConfig = this.ports.get(port);
-    
+
     if (!portConfig || !portConfig.tls) {
       return {};
     }
@@ -150,4 +150,4 @@ redisTLSConfig.addPort({
 });
 
 export { RedisTLSConfig, defaultPorts };
-export default redisTLSConfig; 
+export default redisTLSConfig;

@@ -1,14 +1,13 @@
-import React from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@/components/ui/breadcrumb';
 
 export function BreadcrumbExample() {
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Breadcrumb Navigation Example</h2>
+      <h2 className="mb-4 text-xl font-bold">Breadcrumb Navigation Example</h2>
 
       <div className="space-y-6">
         <div>
-          <h3 className="text-md font-semibold mb-2">Basic Breadcrumb</h3>
+          <h3 className="text-md mb-2 font-semibold">Basic Breadcrumb</h3>
           <Breadcrumb>
             <BreadcrumbItem isFirstItem>
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -23,7 +22,7 @@ export function BreadcrumbExample() {
         </div>
 
         <div>
-          <h3 className="text-md font-semibold mb-2">Account Settings Breadcrumb</h3>
+          <h3 className="text-md mb-2 font-semibold">Account Settings Breadcrumb</h3>
           <Breadcrumb>
             <BreadcrumbItem isFirstItem>
               <BreadcrumbLink href="/">Home</BreadcrumbLink>

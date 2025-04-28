@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { errorTrackingService, ErrorCategory } from '@/lib/error-tracking';
 
@@ -181,7 +181,7 @@ export function ARResourceMonitor({
 
         if (mesh.material) {
           const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-          materials.forEach(material => {
+          materials.forEach((material) => {
             if ((material as any).map) textureCount++;
             if ((material as any).normalMap) textureCount++;
             if ((material as any).roughnessMap) textureCount++;
@@ -193,7 +193,7 @@ export function ARResourceMonitor({
         lightCount++;
       }
 
-      node.children.forEach(child => traverseNode(child, depth + 1));
+      node.children.forEach((child) => traverseNode(child, depth + 1));
     };
 
     traverseNode(scene);
@@ -213,7 +213,7 @@ export function ARResourceMonitor({
           lightScore * 0.2 +
           depthScore * 0.1 +
           textureScore * 0.1) *
-          10
+          10,
       ) / 10
     );
   };
@@ -271,7 +271,7 @@ export function ARResourceMonitor({
   const updateBatteryInfo = () => {
     if (!batteryRef.current) return;
 
-    setMetrics(prev => ({
+    setMetrics((prev) => ({
       ...prev,
       batteryLevel: batteryRef.current.level * 100,
       batteryCharging: batteryRef.current.charging,
@@ -280,9 +280,8 @@ export function ARResourceMonitor({
 
   // Apply optimizations based on device capabilities
   const applyInitialOptimizations = () => {
-    const gpuInfo = getGPUInfo();
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
+      navigator.userAgent,
     );
 
     // Set initial render quality based on device type
@@ -291,12 +290,12 @@ export function ARResourceMonitor({
 
       // Apply mobile-specific optimizations
       if (optimizations.reduceTextureQuality) {
-        scene.traverse(node => {
+        scene.traverse((node) => {
           if (node.type === 'Mesh') {
             const mesh = node as THREE.Mesh;
             if (mesh.material) {
               const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-              materials.forEach(material => {
+              materials.forEach((material) => {
                 // Lower texture quality
                 if ((material as any).map) {
                   (material as any).map.minFilter = THREE.LinearFilter;
@@ -333,7 +332,7 @@ export function ARResourceMonitor({
     if (optimizations.reduceDrawDistance) {
       const camera = scene.getObjectByProperty(
         'type',
-        'PerspectiveCamera'
+        'PerspectiveCamera',
       ) as THREE.PerspectiveCamera;
       if (camera) {
         camera.far = Math.min(camera.far, 500);
@@ -343,7 +342,7 @@ export function ARResourceMonitor({
 
     // Enable frustum culling
     if (optimizations.enableFrustumCulling) {
-      scene.traverse(node => {
+      scene.traverse((node) => {
         if (node.type === 'Mesh') {
           node.frustumCulled = true;
         }
@@ -353,7 +352,7 @@ export function ARResourceMonitor({
     // Simplify lighting
     if (optimizations.reduceLightCount) {
       let lightCount = 0;
-      scene.traverse(node => {
+      scene.traverse((node) => {
         if (node.type.includes('Light') && lightCount > 1) {
           node.visible = false;
           lightCount++;
@@ -396,7 +395,7 @@ export function ARResourceMonitor({
   };
 
   // Update metrics each frame
-  useFrame(state => {
+  useFrame((state) => {
     frameCount.current += 1;
     const now = Date.now();
     const delta = now - lastUpdate.current;
@@ -506,7 +505,7 @@ export function ARResourceMonitor({
   }
 
   return (
-    <div className="absolute top-0 left-0 bg-black bg-opacity-50 text-white text-xs p-1 rounded">
+    <div className="absolute left-0 top-0 rounded bg-black bg-opacity-50 p-1 text-xs text-white">
       <div className="flex items-center">
         <div>FPS: {metrics.fps}</div>
         {metrics.isPerformanceIssue && <div className="ml-1 text-yellow-300">⚠️</div>}
@@ -523,11 +522,7 @@ export function ARResourceMonitor({
       )}
       {metrics.temperatureLevel && (
         <div
-          className={`
-          ${metrics.temperatureLevel === 'cool' && 'text-blue-300'}
-          ${metrics.temperatureLevel === 'warm' && 'text-yellow-300'}
-          ${metrics.temperatureLevel === 'hot' && 'text-red-400'}
-        `}
+          className={` ${metrics.temperatureLevel === 'cool' && 'text-blue-300'} ${metrics.temperatureLevel === 'warm' && 'text-yellow-300'} ${metrics.temperatureLevel === 'hot' && 'text-red-400'} `}
         >
           Temp: {metrics.temperatureLevel}
         </div>

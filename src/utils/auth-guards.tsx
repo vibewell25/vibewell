@@ -39,7 +39,7 @@ export function hasRole(user: User | null | undefined, role: string | string[]):
   }
 
   const roles = Array.isArray(role) ? role : [role];
-  return roles.some(r => user.roles!.includes(r));
+  return roles.some((r) => user.roles!.includes(r));
 }
 
 /**
@@ -53,7 +53,7 @@ export function hasAllRoles(user: User | null | undefined, roles: string[]): boo
     return false;
   }
 
-  return roles.every(role => user.roles!.includes(role));
+  return roles.every((role) => user.roles!.includes(role));
 }
 
 /**
@@ -76,7 +76,7 @@ export function hasAnyRole(user: User | null | undefined, roles: string[]): bool
 export function hasPermission(
   user: User | null | undefined,
   permission: string,
-  resource?: string
+  resource?: string,
 ): boolean {
   if (!isAuthenticated(user) || !exists(user.permissions)) {
     return false;
@@ -115,7 +115,7 @@ export function getUserRoles(user: User | null | undefined): string[] {
 export function getUserProperty<T>(
   user: User | null | undefined,
   property: string,
-  defaultValue: T
+  defaultValue: T,
 ): T {
   if (!isAuthenticated(user)) {
     return defaultValue;

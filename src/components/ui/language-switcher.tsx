@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import {
@@ -77,10 +77,10 @@ interface LanguageSwitcherProps {
 
 /**
  * LanguageSwitcher - A component for switching between different languages
- * 
+ *
  * This component handles language switching, updates the document direction for RTL languages,
  * and provides a consistent interface for language selection throughout the application.
- * 
+ *
  * Features:
  * - Switches between supported languages while preserving current route
  * - Automatically updates the document direction for RTL languages
@@ -98,7 +98,7 @@ export function LanguageSwitcher({
   const router = useRouter();
   const { i18n } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState<Language>(
-    languages.find((lang) => lang.code === router.locale) || languages[0]
+    languages.find((lang) => lang.code === router.locale) || languages[0],
   );
 
   // Update language when router locale changes
@@ -150,7 +150,7 @@ export function LanguageSwitcher({
               onClick={() => handleLanguageChange(lang.code)}
               className={cn(
                 'flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-muted',
-                currentLanguage.code === lang.code && 'bg-muted font-medium text-foreground'
+                currentLanguage.code === lang.code && 'bg-muted font-medium text-foreground',
               )}
               aria-current={currentLanguage.code === lang.code ? 'page' : undefined}
             >
@@ -172,8 +172,8 @@ export function LanguageSwitcher({
     >
       <SelectTrigger
         className={cn(
-          'h-8 gap-1 border-none bg-transparent hover:bg-muted focus:ring-primary',
-          className
+          'focus:ring-primary h-8 gap-1 border-none bg-transparent hover:bg-muted',
+          className,
         )}
       >
         <Globe size={16} className="mr-1" aria-hidden="true" />
@@ -189,10 +189,7 @@ export function LanguageSwitcher({
           <SelectItem
             key={lang.code}
             value={lang.code}
-            className={cn(
-              'flex items-center gap-2',
-              lang.dir === 'rtl' && 'text-right'
-            )}
+            className={cn('flex items-center gap-2', lang.dir === 'rtl' && 'text-right')}
           >
             {showFlags && <span className="mr-1">{lang.flag}</span>}
             <span>{showNativeNames ? lang.nativeName : lang.name}</span>

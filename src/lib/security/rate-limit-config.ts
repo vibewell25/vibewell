@@ -55,13 +55,13 @@ Object.entries(rateLimits).forEach(([key, config]) => {
       points: config.points,
       duration: config.duration,
       blockDuration: config.blockDuration,
-    })
+    }),
   );
 });
 
 export async function checkRateLimit(
   key: string,
-  identifier: string
+  identifier: string,
 ): Promise<{ success: boolean; remainingPoints?: number; msBeforeNext?: number }> {
   const limiter = rateLimiters.get(key);
   if (!limiter) {

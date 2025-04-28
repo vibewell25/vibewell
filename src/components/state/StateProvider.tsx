@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useMemo } from 'react';
+import React, { useReducer, useMemo } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import type { Store } from '@reduxjs/toolkit';
 
@@ -31,7 +31,7 @@ export function ContextProvider<T>({
 
       return newState;
     },
-    initialState
+    initialState,
   );
 
   // Memoize context value

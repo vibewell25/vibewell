@@ -33,7 +33,7 @@ export async function uploadImage(image: Buffer | string): Promise<string> {
 
 export async function processImage(
   imageUrl: string,
-  service?: BeautyService | null
+  service?: BeautyService | null,
 ): Promise<string> {
   // Download the image
   const response = await fetch(imageUrl);
@@ -58,7 +58,7 @@ export async function processImage(
 
 async function applyVirtualTryOn(
   imageBuffer: Buffer,
-  service?: BeautyService | null
+  service?: BeautyService | null,
 ): Promise<Buffer> {
   // This is where you would integrate with your AI/ML service
   // For now, we'll just add a simple overlay as a placeholder

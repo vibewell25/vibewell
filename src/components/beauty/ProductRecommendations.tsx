@@ -1,15 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, Button, Select, Badge } from '@/components/ui';
 import { getProductRecommendations, getSkinConditionLogs } from '@/lib/api/beauty';
-import { ProductRecommendation, SkinConcern, SkinType } from '@/lib/api/beauty';
+import { SkinConcern } from '@/lib/api/beauty';
 
-const skinTypes = [
-  'oily',
-  'dry',
-  'combination',
-  'normal',
-  'sensitive',
-] as const;
+const skinTypes = ['oily', 'dry', 'combination', 'normal', 'sensitive'] as const;
 
 const skinConcerns: SkinConcern[] = [
   'acne',
@@ -26,7 +20,7 @@ export default function ProductRecommendations() {
   const [recommendations, setRecommendations] = useState<ProductRecommendation[]>([]);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
-    skinType: 'normal' as typeof skinTypes[number],
+    skinType: 'normal' as (typeof skinTypes)[number],
     concerns: [] as SkinConcern[],
     priceRange: 'all' as 'budget' | 'mid' | 'luxury' | 'all',
   });
@@ -54,7 +48,7 @@ export default function ProductRecommendations() {
       if (logs.length > 0) {
         // Get the most recent log's concerns
         const recentConcerns = logs[logs.length - 1].concerns;
-        setFilters(prev => ({
+        setFilters((prev) => ({
           ...prev,
           concerns: recentConcerns,
         }));
@@ -65,10 +59,10 @@ export default function ProductRecommendations() {
   };
 
   const handleConcernToggle = (concern: SkinConcern) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
       concerns: prev.concerns.includes(concern)
-        ? prev.concerns.filter(c => c !== concern)
+        ? prev.concerns.filter((c) => c !== concern)
         : [...prev.concerns, concern],
     }));
   };
@@ -88,17 +82,22 @@ export default function ProductRecommendations() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Product Recommendations</h2>
       </div>
 
       <Card className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <Select
             label="Skin Type"
             value={filters.skinType}
-            onChange={e => setFilters(prev => ({ ...prev, skinType: e.target.value as typeof skinTypes[number] }))}
-            options={skinTypes.map(type => ({
+            onChange={(e) =>
+              setFilters((prev) => ({
+                ...prev,
+                skinType: e.target.value as (typeof skinTypes)[number],
+              }))
+            }
+            options={skinTypes.map((type) => ({
               value: type,
               label: type.charAt(0).toUpperCase() + type.slice(1),
             }))}
@@ -107,7 +106,12 @@ export default function ProductRecommendations() {
           <Select
             label="Price Range"
             value={filters.priceRange}
-            onChange={e => setFilters(prev => ({ ...prev, priceRange: e.target.value as typeof filters.priceRange }))}
+            onChange={(e) =>
+              setFilters((prev) => ({
+                ...prev,
+                priceRange: e.target.value as typeof filters.priceRange,
+              }))
+            }
             options={[
               { value: 'all', label: 'All Prices' },
               { value: 'budget', label: '$ Budget-Friendly' },
@@ -118,9 +122,9 @@ export default function ProductRecommendations() {
         </div>
 
         <div className="mt-4">
-          <label className="block text-sm font-medium mb-2">Skin Concerns</label>
+          <label className="mb-2 block text-sm font-medium">Skin Concerns</label>
           <div className="flex flex-wrap gap-2">
-            {skinConcerns.map(concern => (
+            {skinConcerns.map((concern) => (
               <Button
                 key={concern}
                 variant={filters.concerns.includes(concern) ? 'default' : 'outline'}
@@ -134,25 +138,25 @@ export default function ProductRecommendations() {
       </Card>
 
       {loading ? (
-        <div className="text-center py-8">
+        <div className="py-8 text-center">
           <p>Loading recommendations...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {recommendations.map(product => (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {recommendations.map((product) => (
             <Card key={product.id} className="p-6">
               {product.image && (
                 <div className="mb-4">
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-48 object-cover rounded"
+                    className="h-48 w-full rounded object-cover"
                   />
                 </div>
               )}
-              
+
               <div className="space-y-3">
-                <div className="flex justify-between items-start">
+                <div className="flex items-start justify-between">
                   <div>
                     <h3 className="text-lg font-semibold">{product.name}</h3>
                     <p className="text-sm text-gray-600">{product.brand}</p>
@@ -164,13 +168,10 @@ export default function ProductRecommendations() {
 
                 {product.keyIngredients && (
                   <div>
-                    <h4 className="text-sm font-medium mb-1">Key Ingredients</h4>
+                    <h4 className="mb-1 text-sm font-medium">Key Ingredients</h4>
                     <div className="flex flex-wrap gap-1">
                       {product.keyIngredients.map((ingredient, index) => (
-                        <span
-                          key={index}
-                          className="text-xs px-2 py-1 bg-gray-100 rounded-full"
-                        >
+                        <span key={index} className="rounded-full bg-gray-100 px-2 py-1 text-xs">
                           {ingredient}
                         </span>
                       ))}
@@ -180,13 +181,10 @@ export default function ProductRecommendations() {
 
                 {product.suitableFor && (
                   <div>
-                    <h4 className="text-sm font-medium mb-1">Best For</h4>
+                    <h4 className="mb-1 text-sm font-medium">Best For</h4>
                     <div className="flex flex-wrap gap-1">
                       {product.suitableFor.map((concern, index) => (
-                        <span
-                          key={index}
-                          className="text-xs px-2 py-1 bg-gray-100 rounded-full"
-                        >
+                        <span key={index} className="rounded-full bg-gray-100 px-2 py-1 text-xs">
                           {concern.replace('_', ' ')}
                         </span>
                       ))}
@@ -199,7 +197,7 @@ export default function ProductRecommendations() {
                     href={product.purchaseLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block mt-4"
+                    className="mt-4 block"
                   >
                     <Button className="w-full">View Product</Button>
                   </a>
@@ -211,4 +209,4 @@ export default function ProductRecommendations() {
       )}
     </div>
   );
-} 
+}

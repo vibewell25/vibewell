@@ -1,15 +1,15 @@
 'use client';
 
 import * as React from 'react';
-import { CalendarIcon, Clock } from 'lucide-react';
+import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import { TimePickerDemo } from '../ui/time-picker';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import {
   Select,
   SelectContent,
@@ -45,7 +45,7 @@ export function DateTimePicker({ date, setDate, disabled }: DateTimePickerProps)
           className={cn(
             'w-full justify-start text-left font-normal',
             !selectedDate && 'text-muted-foreground',
-            disabled && 'opacity-50 cursor-not-allowed'
+            disabled && 'cursor-not-allowed opacity-50',
           )}
           disabled={disabled}
         >
@@ -56,7 +56,7 @@ export function DateTimePicker({ date, setDate, disabled }: DateTimePickerProps)
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar mode="single" selected={selectedDate} onSelect={setSelectedDate} initialFocus />
         {selectedDate && (
-          <div className="p-3 border-t border-border">
+          <div className="border-t border-border p-3">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium">Time</span>
             </div>
@@ -143,7 +143,7 @@ export function TimePickerDemo({ date, setDate, className }: TimePickerDemoProps
   }
 
   return (
-    <div className={cn('flex justify-between items-end gap-2 pt-2', className)}>
+    <div className={cn('flex items-end justify-between gap-2 pt-2', className)}>
       <div className="grid gap-1">
         <Label htmlFor="hours" className="text-xs">
           Hours

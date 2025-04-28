@@ -111,7 +111,7 @@ export const RATE_LIMIT_PRESETS = {
  */
 export function createPresetRateLimiter(
   presetName: keyof typeof RATE_LIMIT_PRESETS,
-  customOptions: Partial<RateLimitOptions> = {}
+  customOptions: Partial<RateLimitOptions> = {},
 ) {
   if (!RATE_LIMIT_PRESETS[presetName]) {
     throw new Error(`Unknown rate limit preset: ${presetName}`);
@@ -128,7 +128,7 @@ export function createPresetRateLimiter(
  */
 export function createPresetGraphQLRateLimiter(
   presetName: keyof typeof RATE_LIMIT_PRESETS,
-  customOptions: Partial<RateLimitOptions> = {}
+  customOptions: Partial<RateLimitOptions> = {},
 ) {
   if (!RATE_LIMIT_PRESETS[presetName]) {
     throw new Error(`Unknown rate limit preset: ${presetName}`);

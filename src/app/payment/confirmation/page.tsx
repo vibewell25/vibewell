@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import { CheckCircle, AlertCircle } from 'lucide-react';
 
 export default function PaymentConfirmationPage() {
@@ -16,7 +16,7 @@ export default function PaymentConfirmationPage() {
   useEffect(() => {
     const checkPaymentStatus = async () => {
       setIsLoading(true);
-      
+
       // Check for payment_intent and payment_intent_client_secret in URL
       const paymentIntentId = searchParams.get('payment_intent');
       const redirectStatus = searchParams.get('redirect_status');
@@ -45,7 +45,7 @@ export default function PaymentConfirmationPage() {
         // const response = await fetch(`/api/payments/${paymentIntentId}`);
         // const data = await response.json();
         // setPaymentDetails(data);
-        
+
         // For demo purposes:
         setPaymentDetails({
           amount: 49.99,
@@ -67,17 +67,17 @@ export default function PaymentConfirmationPage() {
 
   return (
     <div className="container mx-auto py-12">
-      <Card className="max-w-md mx-auto">
+      <Card className="mx-auto max-w-md">
         <CardHeader>
           <CardTitle className="text-center">
             {isLoading ? 'Checking Payment Status...' : 'Payment Confirmation'}
           </CardTitle>
         </CardHeader>
-        
+
         <CardContent>
           {isLoading ? (
-            <div className="flex justify-center items-center py-8">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+            <div className="flex items-center justify-center py-8">
+              <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
             </div>
           ) : (
             <div className="text-center">
@@ -90,18 +90,18 @@ export default function PaymentConfirmationPage() {
                   <p className="text-gray-600">
                     Thank you for your payment. Your transaction has been completed successfully.
                   </p>
-                  
+
                   {paymentDetails && (
-                    <div className="mt-6 border rounded-md p-4 text-left">
-                      <h4 className="font-medium mb-2">Receipt</h4>
+                    <div className="mt-6 rounded-md border p-4 text-left">
+                      <h4 className="mb-2 font-medium">Receipt</h4>
                       <div className="grid grid-cols-2 gap-2 text-sm">
                         <span className="text-gray-600">Payment ID:</span>
                         <span>{paymentDetails.id}</span>
                         <span className="text-gray-600">Amount:</span>
                         <span>
-                          {new Intl.NumberFormat('en-US', { 
-                            style: 'currency', 
-                            currency: paymentDetails.currency 
+                          {new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: paymentDetails.currency,
                           }).format(paymentDetails.amount)}
                         </span>
                         <span className="text-gray-600">Date:</span>
@@ -111,11 +111,11 @@ export default function PaymentConfirmationPage() {
                   )}
                 </div>
               )}
-              
+
               {status === 'processing' && (
                 <div className="space-y-4">
                   <div className="flex justify-center">
-                    <div className="h-16 w-16 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+                    <div className="border-primary h-16 w-16 animate-spin rounded-full border-4 border-t-transparent" />
                   </div>
                   <h3 className="text-xl font-medium">Payment Processing</h3>
                   <p className="text-gray-600">
@@ -123,7 +123,7 @@ export default function PaymentConfirmationPage() {
                   </p>
                 </div>
               )}
-              
+
               {(status === 'error' || status === 'unknown') && (
                 <div className="space-y-4">
                   <div className="flex justify-center">
@@ -138,23 +138,19 @@ export default function PaymentConfirmationPage() {
             </div>
           )}
         </CardContent>
-        
+
         <CardFooter className="flex justify-center space-x-2">
           <Button variant="outline" asChild>
-            <Link href="/">
-              Return to Home
-            </Link>
+            <Link href="/">Return to Home</Link>
           </Button>
-          
+
           {status === 'error' && (
             <Button asChild>
-              <Link href="/payment/checkout">
-                Try Again
-              </Link>
+              <Link href="/payment/checkout">Try Again</Link>
             </Button>
           )}
         </CardFooter>
       </Card>
     </div>
   );
-} 
+}

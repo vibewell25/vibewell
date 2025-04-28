@@ -49,7 +49,7 @@ export default function TrainingDashboard({ staffId }: TrainingDashboardProps) {
   return (
     <div className="space-y-6">
       {/* Analytics Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="p-4">
           <div className="flex items-center space-x-3">
             <AcademicCapIcon className="h-8 w-8 text-blue-500" />
@@ -84,7 +84,7 @@ export default function TrainingDashboard({ staffId }: TrainingDashboardProps) {
 
       {/* Module Progress List */}
       <Card className="overflow-hidden">
-        <div className="p-4 border-b">
+        <div className="border-b p-4">
           <h2 className="text-xl font-semibold">Training Modules</h2>
         </div>
         <div className="divide-y">
@@ -100,24 +100,15 @@ export default function TrainingDashboard({ staffId }: TrainingDashboardProps) {
                     {item.status.replace('_', ' ')}
                   </Badge>
                   {item.score && (
-                    <span className="text-sm font-medium">
-                      Score: {item.score.toFixed(1)}%
-                    </span>
+                    <span className="text-sm font-medium">Score: {item.score.toFixed(1)}%</span>
                   )}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    href={`/training/module/${item.module.id}`}
-                  >
+                  <Button variant="outline" size="sm" href={`/training/module/${item.module.id}`}>
                     {item.status === 'NOT_STARTED' ? 'Start' : 'Continue'}
                   </Button>
                 </div>
               </div>
               {item.status === 'IN_PROGRESS' && (
-                <Progress
-                  value={item.timeSpent / item.module.duration * 100}
-                  className="mt-2"
-                />
+                <Progress value={(item.timeSpent / item.module.duration) * 100} className="mt-2" />
               )}
             </div>
           ))}
@@ -125,4 +116,4 @@ export default function TrainingDashboard({ staffId }: TrainingDashboardProps) {
       </Card>
     </div>
   );
-} 
+}

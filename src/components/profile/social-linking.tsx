@@ -1,7 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import {
@@ -84,14 +83,14 @@ export function SocialLinking() {
   const handleConnect = async (accountId: string) => {
     try {
       // Simulate API call to connect account
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      setAccounts(prev =>
-        prev.map(account =>
+      setAccounts((prev) =>
+        prev.map((account) =>
           account.id === accountId
             ? { ...account, connected: true, username: newUsername, url: newUrl }
-            : account
-        )
+            : account,
+        ),
       );
 
       setEditingAccount(null);
@@ -107,14 +106,14 @@ export function SocialLinking() {
   const handleDisconnect = async (accountId: string) => {
     try {
       // Simulate API call to disconnect account
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      setAccounts(prev =>
-        prev.map(account =>
+      setAccounts((prev) =>
+        prev.map((account) =>
           account.id === accountId
             ? { ...account, connected: false, username: '', url: '' }
-            : account
-        )
+            : account,
+        ),
       );
 
       toast.success('Account disconnected successfully');
@@ -134,7 +133,7 @@ export function SocialLinking() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          {accounts.map(account => (
+          {accounts.map((account) => (
             <div
               key={account.id}
               className="flex items-center justify-between rounded-lg border p-4"
@@ -164,13 +163,13 @@ export function SocialLinking() {
                     <Input
                       placeholder="Username"
                       value={newUsername}
-                      onChange={e => setNewUsername(e.target.value)}
+                      onChange={(e) => setNewUsername(e.target.value)}
                       className="h-8"
                     />
                     <Input
                       placeholder="URL"
                       value={newUrl}
-                      onChange={e => setNewUrl(e.target.value)}
+                      onChange={(e) => setNewUrl(e.target.value)}
                       className="h-8"
                     />
                   </div>

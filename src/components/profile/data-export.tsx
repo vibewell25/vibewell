@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Download, FileText, Database, User, Mail, Calendar } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Download, Database, User, Mail, Calendar } from 'lucide-react';
 import { useState } from 'react';
 import { Progress } from '@/components/ui/progress';
 import { toast } from '@/components/ui/use-toast';
@@ -55,15 +55,15 @@ export function DataExport() {
 
       // Simulate export progress
       for (let i = 0; i <= 100; i += 10) {
-        await new Promise(resolve => setTimeout(resolve, 200));
+        await new Promise((resolve) => setTimeout(resolve, 200));
         setProgress(i);
       }
 
       // Generate and download the export file
-      const selectedOptions = exportOptions.filter(option => option.selected);
+      const selectedOptions = exportOptions.filter((option) => option.selected);
       const exportData = {
         timestamp: new Date().toISOString(),
-        options: selectedOptions.map(option => option.id),
+        options: selectedOptions.map((option) => option.id),
         // Add actual data export logic here
       };
 
@@ -105,7 +105,7 @@ export function DataExport() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          {exportOptions.map(option => (
+          {exportOptions.map((option) => (
             <div key={option.id} className="flex items-start space-x-4 rounded-lg border p-4">
               <div className="mt-1">{option.icon}</div>
               <div className="flex-1 space-y-1">

@@ -4,7 +4,7 @@
  * This file provides utilities for mocking various parts of the application
  * including API responses, services, localStorage, and more.
  */
-import { vi, type Mock, type SpyInstance } from 'vitest';
+import { vi, type Mock } from 'vitest';
 import type { Procedure } from '@trpc/server';
 
 /**
@@ -32,7 +32,7 @@ export function mockApiResponse<T>(data: T): Mock {
  * @returns Mocked fetch function
  */
 export function mockFetch<T = any>(
-  response: MockApiResponse<T> | (() => MockApiResponse<T>)
+  response: MockApiResponse<T> | (() => MockApiResponse<T>),
 ): vi.Mock {
   return vi.fn().mockResolvedValue(typeof response === 'function' ? response() : response);
 }
@@ -64,7 +64,7 @@ export function createMockStorage(): MockStorage {
       store[key] = undefined;
     }),
     clear: vi.fn(() => {
-      Object.keys(store).forEach(key => {
+      Object.keys(store).forEach((key) => {
         store[key] = undefined;
       });
     }),
@@ -136,7 +136,7 @@ export interface MockIntersectionObserver {
 export function setupIntersectionObserverMock(): Mock {
   const mockIntersectionObserver = vi.fn().mockImplementation(function (
     callback: IntersectionObserverCallback,
-    options?: IntersectionObserverInit
+    options?: IntersectionObserverInit,
   ) {
     return {
       root: options?.root || null,
@@ -226,7 +226,7 @@ export function createMockService<T extends Record<string, any>>(methods: Partia
         acc[key] = vi.fn(methods[key]);
         return acc;
       },
-      {} as Record<string, vi.Mock>
+      {} as Record<string, vi.Mock>,
     ),
   } as T;
 }
@@ -265,11 +265,11 @@ export function mockWindowLocation(properties = {}) {
  * Mock console methods
  */
 export function mockConsole(
-  methods: (keyof Console)[] = ['log', 'error', 'warn', 'info', 'debug']
+  methods: (keyof Console)[] = ['log', 'error', 'warn', 'info', 'debug'],
 ): () => void {
   const originalMethods: Partial<Record<keyof Console, any>> = {};
 
-  methods.forEach(method => {
+  methods.forEach((method) => {
     if (console[method]) {
       originalMethods[method] = console[method];
       (console[method] as any) = vi.fn();
@@ -277,7 +277,7 @@ export function mockConsole(
   });
 
   return () => {
-    methods.forEach(method => {
+    methods.forEach((method) => {
       if (originalMethods[method]) {
         console[method] = originalMethods[method];
       }

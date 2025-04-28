@@ -127,14 +127,4 @@ export class SocialSharingService {
   }
 }
 
-export const socialSharingService = new SocialSharingService({
-  facebook: {
-    appId: process.env.FACEBOOK_APP_ID || '',
-  },
-  twitter: {
-    handle: process.env.TWITTER_HANDLE || '',
-  },
-  instagram: {
-    username: process.env.INSTAGRAM_USERNAME || '',
-  },
-});
+export {};

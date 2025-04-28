@@ -11,7 +11,7 @@ interface StepsProps {
 
 export function Steps({ steps, currentStep, className }: StepsProps) {
   return (
-    <div className={cn('flex items-center justify-center w-full', className)}>
+    <div className={cn('flex w-full items-center justify-center', className)}>
       {steps.map((step, index) => (
         <div
           key={step.id}
@@ -19,10 +19,10 @@ export function Steps({ steps, currentStep, className }: StepsProps) {
         >
           <div
             className={cn(
-              'flex items-center justify-center w-8 h-8 rounded-full border-2',
+              'flex h-8 w-8 items-center justify-center rounded-full border-2',
               index <= currentStep
                 ? 'bg-primary border-primary text-primary-foreground'
-                : 'border-muted-foreground text-muted-foreground'
+                : 'border-muted-foreground text-muted-foreground',
             )}
           >
             {index + 1}
@@ -31,8 +31,8 @@ export function Steps({ steps, currentStep, className }: StepsProps) {
           {index < steps.length - 1 && (
             <div
               className={cn(
-                'flex-1 h-0.5 mx-2',
-                index < currentStep ? 'bg-primary' : 'bg-muted-foreground'
+                'mx-2 h-0.5 flex-1',
+                index < currentStep ? 'bg-primary' : 'bg-muted-foreground',
               )}
             />
           )}
@@ -40,7 +40,7 @@ export function Steps({ steps, currentStep, className }: StepsProps) {
           <div
             className={cn(
               'absolute mt-10 text-sm',
-              index <= currentStep ? 'text-foreground' : 'text-muted-foreground'
+              index <= currentStep ? 'text-foreground' : 'text-muted-foreground',
             )}
           >
             {step.title}

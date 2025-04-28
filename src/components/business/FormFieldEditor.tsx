@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Card } from '@/components/ui/card';
+import { Card } from '@/components/ui/Card';
 import { Trash2, GripVertical } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
@@ -77,12 +77,12 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
 
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="fields">
-          {provided => (
+          {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {fields.map((field, index) => (
                 <Draggable key={field.id} draggableId={field.id} index={index}>
-                  {provided => (
-                    <Card className="p-4 mb-4" ref={provided.innerRef} {...provided.draggableProps}>
+                  {(provided) => (
+                    <Card className="mb-4 p-4" ref={provided.innerRef} {...provided.draggableProps}>
                       <div className="flex items-start space-x-4">
                         <div {...provided.dragHandleProps} className="mt-2 cursor-move">
                           <GripVertical size={20} />
@@ -93,7 +93,7 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
                               <Label>Field Label</Label>
                               <Input
                                 value={field.label}
-                                onChange={e => updateField(index, { label: e.target.value })}
+                                onChange={(e) => updateField(index, { label: e.target.value })}
                                 placeholder="Enter field label"
                               />
                             </div>
@@ -110,10 +110,10 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
                                 <option value="file">File Upload</option>
                               </Select>
                             </div>
-                            <div className="flex items-center space-x-2 mt-6">
+                            <div className="mt-6 flex items-center space-x-2">
                               <Switch
                                 checked={field.required}
-                                onCheckedChange={checked =>
+                                onCheckedChange={(checked) =>
                                   updateField(index, { required: checked })
                                 }
                               />
@@ -135,7 +135,7 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
                               <div className="flex space-x-2">
                                 <Input
                                   value={newOption}
-                                  onChange={e => setNewOption(e.target.value)}
+                                  onChange={(e) => setNewOption(e.target.value)}
                                   placeholder="Add new option"
                                 />
                                 <Button type="button" onClick={() => addOption(index)}>

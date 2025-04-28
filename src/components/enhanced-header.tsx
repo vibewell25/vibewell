@@ -81,9 +81,9 @@ export function EnhancedHeader() {
   }, [isUserMenuOpen]);
   // Determine header classes based on scroll state
   const headerClasses = cn(
-    'fixed w-full top-0 z-50 transition-all duration-200',
-    isScrolled ? 'bg-background/90 backdrop-blur-md shadow-sm' : 'bg-background',
-    'border-b border-border'
+    'fixed top-0 z-50 w-full transition-all duration-200',
+    isScrolled ? 'bg-background/90 shadow-sm backdrop-blur-md' : 'bg-background',
+    'border-b border-border',
   );
   return (
     <TouchHandler onSwipe={handleSwipe}>
@@ -92,16 +92,16 @@ export function EnhancedHeader() {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
-                <span className="text-xl md:text-2xl font-bold text-primary">Vibewell</span>
+                <span className="text-primary text-xl font-bold md:text-2xl">Vibewell</span>
               </Link>
             </div>
             {/* Desktop navigation */}
-            <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-              {navItems.map(item => (
+            <nav className="hidden items-center space-x-4 md:flex lg:space-x-8">
+              {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-foreground hover:text-primary transition-colors text-sm lg:text-base"
+                  className="hover:text-primary text-sm text-foreground transition-colors lg:text-base"
                 >
                   {item.name}
                 </Link>
@@ -114,24 +114,24 @@ export function EnhancedHeader() {
                   {user ? (
                     <>
                       {/* Mobile action buttons */}
-                      <div className="flex md:hidden space-x-2">
-                        <Link href="/messages" className="p-2 rounded-full hover:bg-muted">
+                      <div className="flex space-x-2 md:hidden">
+                        <Link href="/messages" className="rounded-full p-2 hover:bg-muted">
                           <Icons.ChatBubbleLeftIcon className="h-5 w-5 text-muted-foreground" />
                         </Link>
                         <Link
                           href="/notifications"
-                          className="p-2 rounded-full hover:bg-muted relative"
+                          className="relative rounded-full p-2 hover:bg-muted"
                         >
                           <Icons.BellIcon className="h-5 w-5 text-muted-foreground" />
                           {unreadCount > 0 && (
-                            <span className="absolute top-0 right-0 h-4 w-4 rounded-full bg-secondary flex items-center justify-center text-[10px] text-white font-bold">
+                            <span className="bg-secondary absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold text-white">
                               {unreadCount > 9 ? '9+' : unreadCount}
                             </span>
                           )}
                         </Link>
                       </div>
                       {/* Desktop full user menu */}
-                      <div className="hidden md:flex items-center space-x-4">
+                      <div className="hidden items-center space-x-4 md:flex">
                         <NotificationBadge />
                         <div className="relative">
                           <button
@@ -145,13 +145,13 @@ export function EnhancedHeader() {
                           {isUserMenuOpen && (
                             <div
                               id="user-menu"
-                              className="absolute right-0 mt-2 w-48 bg-card rounded-md shadow-lg border border-border py-1 z-10"
+                              className="absolute right-0 z-10 mt-2 w-48 rounded-md border border-border bg-card py-1 shadow-lg"
                             >
-                              <div className="px-4 py-2 border-b border-border">
+                              <div className="border-b border-border px-4 py-2">
                                 <p className="text-sm font-medium">
                                   {user.user_metadata?.full_name}
                                 </p>
-                                <p className="text-xs text-muted-foreground truncate">
+                                <p className="truncate text-xs text-muted-foreground">
                                   {user.email}
                                 </p>
                               </div>
@@ -190,7 +190,7 @@ export function EnhancedHeader() {
                               >
                                 Notifications
                                 {unreadCount > 0 && (
-                                  <span className="ml-2 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold text-white bg-secondary rounded-full">
+                                  <span className="bg-secondary ml-2 inline-flex items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-bold text-white">
                                     {unreadCount}
                                   </span>
                                 )}
@@ -203,7 +203,7 @@ export function EnhancedHeader() {
                                 Messages
                               </Link>
                               <button
-                                className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-muted"
+                                className="block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-muted"
                                 onClick={() => {
                                   setIsUserMenuOpen(false);
                                   signOut();
@@ -217,7 +217,7 @@ export function EnhancedHeader() {
                       </div>
                     </>
                   ) : (
-                    <Link href={ROUTES.AUTH.LOGIN} className="hidden md:block btn-primary">
+                    <Link href={ROUTES.AUTH.LOGIN} className="btn-primary hidden md:block">
                       Sign In
                     </Link>
                   )}
@@ -225,7 +225,7 @@ export function EnhancedHeader() {
               )}
               {/* Mobile menu button */}
               <button
-                className="md:hidden p-2 rounded-md text-muted-foreground hover:text-foreground"
+                className="rounded-md p-2 text-muted-foreground hover:text-foreground md:hidden"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label={isMenuOpen ? 'Close main menu' : 'Open main menu'}
                 aria-expanded={isMenuOpen}
@@ -241,18 +241,18 @@ export function EnhancedHeader() {
           {/* Mobile navigation with enhanced animation */}
           <div
             className={cn(
-              'fixed inset-0 bg-background z-40 transform transition-transform ease-in-out duration-300 md:hidden',
-              isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+              'fixed inset-0 z-40 transform bg-background transition-transform duration-300 ease-in-out md:hidden',
+              isMenuOpen ? 'translate-x-0' : 'translate-x-full',
             )}
             style={{ top: '64px' }} // Adjust based on header height
           >
-            <div className="flex flex-col h-full overflow-y-auto pb-20">
+            <div className="flex h-full flex-col overflow-y-auto pb-20">
               <div className="flex flex-col space-y-1 p-4">
-                {navItems.map(item => (
+                {navItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="py-3 px-4 rounded-md text-foreground hover:bg-muted hover:text-primary transition-colors"
+                    className="hover:text-primary rounded-md px-4 py-3 text-foreground transition-colors hover:bg-muted"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}
@@ -262,43 +262,43 @@ export function EnhancedHeader() {
                   <>
                     {user ? (
                       <>
-                        <div className="h-px bg-border my-2"></div>
+                        <div className="my-2 h-px bg-border"></div>
                         <Link
                           href="/profile"
-                          className="py-3 px-4 rounded-md text-foreground hover:bg-muted hover:text-primary transition-colors"
+                          className="hover:text-primary rounded-md px-4 py-3 text-foreground transition-colors hover:bg-muted"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           Your Profile
                         </Link>
                         <Link
                           href="/profile/engagement"
-                          className="py-3 px-4 rounded-md text-foreground hover:bg-muted hover:text-primary transition-colors"
+                          className="hover:text-primary rounded-md px-4 py-3 text-foreground transition-colors hover:bg-muted"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           Engagement Profile
                         </Link>
                         <Link
                           href="/notifications"
-                          className="py-3 px-4 rounded-md text-foreground hover:bg-muted hover:text-primary transition-colors flex items-center justify-between"
+                          className="hover:text-primary flex items-center justify-between rounded-md px-4 py-3 text-foreground transition-colors hover:bg-muted"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           <span>Notifications</span>
                           {unreadCount > 0 && (
-                            <span className="inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold text-white bg-secondary rounded-full">
+                            <span className="bg-secondary inline-flex items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-bold text-white">
                               {unreadCount}
                             </span>
                           )}
                         </Link>
                         <Link
                           href="/messages"
-                          className="py-3 px-4 rounded-md text-foreground hover:bg-muted hover:text-primary transition-colors"
+                          className="hover:text-primary rounded-md px-4 py-3 text-foreground transition-colors hover:bg-muted"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           Messages
                         </Link>
-                        <div className="h-px bg-border my-2"></div>
+                        <div className="my-2 h-px bg-border"></div>
                         <button
-                          className="py-3 px-4 rounded-md text-left text-red-600 hover:bg-muted transition-colors"
+                          className="rounded-md px-4 py-3 text-left text-red-600 transition-colors hover:bg-muted"
                           onClick={() => {
                             setIsMenuOpen(false);
                             signOut();
@@ -310,7 +310,7 @@ export function EnhancedHeader() {
                     ) : (
                       <Link
                         href={ROUTES.AUTH.LOGIN}
-                        className="mt-4 btn-primary text-center"
+                        className="btn-primary mt-4 text-center"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Sign In

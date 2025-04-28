@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAnalyticsContext } from '@/providers/analytics-provider';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { StarIcon } from 'lucide-react';
 
@@ -64,7 +64,7 @@ export function TrackedProductCard({
         product.id,
         product.name,
         recommendationPosition,
-        recommendationSource
+        recommendationSource,
       );
     }
   }, [product, fromRecommendation, recommendationPosition, recommendationSource, analytics]);
@@ -87,27 +87,27 @@ export function TrackedProductCard({
   // Get appropriate badge for product
   const getBadge = () => {
     if (product.trending) {
-      return <Badge className="absolute top-2 right-2 bg-orange-500">Trending</Badge>;
+      return <Badge className="absolute right-2 top-2 bg-orange-500">Trending</Badge>;
     }
     if (product.featured) {
-      return <Badge className="absolute top-2 right-2 bg-purple-500">Featured</Badge>;
+      return <Badge className="absolute right-2 top-2 bg-purple-500">Featured</Badge>;
     }
     if (product.availability === 'low_stock') {
-      return <Badge className="absolute top-2 right-2 bg-yellow-500">Low Stock</Badge>;
+      return <Badge className="absolute right-2 top-2 bg-yellow-500">Low Stock</Badge>;
     }
     if (product.availability === 'out_of_stock') {
-      return <Badge className="absolute top-2 right-2 bg-red-500">Out of Stock</Badge>;
+      return <Badge className="absolute right-2 top-2 bg-red-500">Out of Stock</Badge>;
     }
     return null;
   };
 
   return (
-    <div className="group relative rounded-lg border overflow-hidden transition-all hover:shadow-md">
+    <div className="group relative overflow-hidden rounded-lg border transition-all hover:shadow-md">
       {/* Product badge */}
       {getBadge()}
 
       {/* Product image */}
-      <Link href={`/products/${product.id}`} className="block relative h-48 overflow-hidden">
+      <Link href={`/products/${product.id}`} className="relative block h-48 overflow-hidden">
         <Image
           src={product.image}
           alt={product.name}
@@ -120,21 +120,21 @@ export function TrackedProductCard({
       {/* Product info */}
       <div className="p-4">
         <Link href={`/products/${product.id}`} className="hover:underline">
-          <h3 className="font-medium text-lg truncate">{product.name}</h3>
+          <h3 className="truncate text-lg font-medium">{product.name}</h3>
         </Link>
 
-        <div className="flex justify-between items-center mt-1">
-          <p className="font-bold text-lg">{formatPrice(product.price)}</p>
+        <div className="mt-1 flex items-center justify-between">
+          <p className="text-lg font-bold">{formatPrice(product.price)}</p>
 
           <div className="flex items-center">
-            <StarIcon className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
+            <StarIcon className="mr-1 h-4 w-4 fill-yellow-400 text-yellow-400" />
             <span className="text-sm">{product.rating.toFixed(1)}</span>
           </div>
         </div>
 
-        <p className="text-muted-foreground text-sm mt-1 line-clamp-2">{product.description}</p>
+        <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{product.description}</p>
 
-        <div className="flex space-x-2 mt-3">
+        <div className="mt-3 flex space-x-2">
           <Button variant="default" size="sm" className="flex-1" onClick={handleTryOnClick}>
             Try On
           </Button>

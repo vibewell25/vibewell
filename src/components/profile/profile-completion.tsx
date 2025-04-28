@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Progress } from '@/components/ui/progress';
-import { Button } from '@/components/ui/button';
-import { Check, AlertCircle, User, Mail, Phone, MapPin, Calendar } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Check, AlertCircle, User, Mail, MapPin, Calendar } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -59,19 +59,21 @@ export function ProfileCompletion() {
   ]);
 
   const totalSections = sections.length;
-  const completedSections = sections.filter(section => section.completed).length;
+  const completedSections = sections.filter((section) => section.completed).length;
   const completionPercentage = (completedSections / totalSections) * 100;
   const requiredCompleted = sections
-    .filter(section => section.required)
-    .every(section => section.completed);
+    .filter((section) => section.required)
+    .every((section) => section.completed);
 
   const handleCompleteSection = async (sectionId: string) => {
     try {
       // Simulate API call to update section completion
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      setSections(prev =>
-        prev.map(section => (section.id === sectionId ? { ...section, completed: true } : section))
+      setSections((prev) =>
+        prev.map((section) =>
+          section.id === sectionId ? { ...section, completed: true } : section,
+        ),
       );
 
       toast.success('Section completed successfully');
@@ -103,7 +105,7 @@ export function ProfileCompletion() {
         </div>
 
         <div className="space-y-4">
-          {sections.map(section => (
+          {sections.map((section) => (
             <div key={section.id} className="flex items-start space-x-4 rounded-lg border p-4">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
                 {section.icon}

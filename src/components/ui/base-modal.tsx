@@ -22,7 +22,7 @@ const modalVariants = cva('fixed inset-0 z-50 flex items-center justify-center',
 
 // Modal content variants
 const modalContentVariants = cva(
-  'bg-background rounded-lg border shadow-lg relative max-h-[85vh] overflow-auto',
+  'relative max-h-[85vh] overflow-auto rounded-lg border bg-background shadow-lg',
   {
     variants: {
       size: {
@@ -31,7 +31,7 @@ const modalContentVariants = cva(
         lg: 'w-full max-w-lg',
         xl: 'w-full max-w-xl',
         '2xl': 'w-full max-w-2xl',
-        full: 'w-[95vw] h-[90vh]',
+        full: 'h-[90vh] w-[95vw]',
       },
       animation: {
         none: '',
@@ -44,7 +44,7 @@ const modalContentVariants = cva(
       size: 'md',
       animation: 'fade',
     },
-  }
+  },
 );
 
 export interface BaseModalProps
@@ -114,7 +114,7 @@ export const BaseModal = React.forwardRef<HTMLDivElement, BaseModalProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const combinedRef = useRef<HTMLDivElement>(null);
@@ -206,7 +206,7 @@ export const BaseModal = React.forwardRef<HTMLDivElement, BaseModalProps>(
               onClick={onClose}
               className={cn(
                 'absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-                closeButtonClassName
+                closeButtonClassName,
               )}
               aria-label="Close"
             >
@@ -234,7 +234,7 @@ export const BaseModal = React.forwardRef<HTMLDivElement, BaseModalProps>(
                 <h2
                   className={cn(
                     'text-lg font-semibold leading-none tracking-tight',
-                    titleClassName
+                    titleClassName,
                   )}
                 >
                   {title}
@@ -256,7 +256,7 @@ export const BaseModal = React.forwardRef<HTMLDivElement, BaseModalProps>(
             <div
               className={cn(
                 'flex items-center justify-end space-x-2 border-t p-4',
-                footerClassName
+                footerClassName,
               )}
             >
               {footer}
@@ -265,7 +265,7 @@ export const BaseModal = React.forwardRef<HTMLDivElement, BaseModalProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 BaseModal.displayName = 'BaseModal';

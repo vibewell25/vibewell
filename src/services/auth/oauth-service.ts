@@ -1,5 +1,3 @@
-import { OAuthProvider } from 'next-auth/providers';
-
 export type SupportedOAuthProvider = 'google' | 'facebook' | 'apple' | 'twitter';
 
 interface OAuthConfig {
@@ -63,7 +61,7 @@ export class OAuthService {
 
   static async handleCallback(
     provider: SupportedOAuthProvider,
-    code: string
+    code: string,
   ): Promise<OAuthResponse> {
     const config = this.configs[provider];
     if (!config) {
@@ -104,7 +102,7 @@ export class OAuthService {
 
   private static getAuthorizationUrl(
     provider: SupportedOAuthProvider,
-    params: URLSearchParams
+    params: URLSearchParams,
   ): string {
     switch (provider) {
       case 'google':
@@ -123,7 +121,7 @@ export class OAuthService {
   private static async exchangeCodeForToken(
     provider: SupportedOAuthProvider,
     code: string,
-    config: OAuthConfig
+    config: OAuthConfig,
   ): Promise<any> {
     const tokenEndpoint = this.getTokenEndpoint(provider);
     const response = await fetch(tokenEndpoint, {
@@ -164,7 +162,7 @@ export class OAuthService {
 
   private static async fetchUserInfo(
     provider: SupportedOAuthProvider,
-    accessToken: string
+    accessToken: string,
   ): Promise<any> {
     const userInfoEndpoint = this.getUserInfoEndpoint(provider);
     const response = await fetch(userInfoEndpoint, {

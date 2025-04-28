@@ -5,9 +5,7 @@ import {
   Certification,
   PractitionerCertification,
   CertificationProgress,
-  CertificationRequirement,
 } from '../models/Certification';
-import { v4 as uuidv4 } from 'uuid';
 
 export class CertificationService {
   private notificationService: NotificationService;
@@ -29,7 +27,7 @@ export class CertificationService {
    */
   async enrollPractitioner(
     practitionerId: string,
-    certificationId: string
+    certificationId: string,
   ): Promise<PractitionerCertification> {
     const certification = await CertificationModel.findById(certificationId);
 
@@ -38,7 +36,7 @@ export class CertificationService {
     }
 
     // Create progress entries for each requirement
-    const progress: CertificationProgress[] = certification.requirements.map(req => ({
+    const progress: CertificationProgress[] = certification.requirements.map((req) => ({
       requirementId: req.id,
       status: 'not_started',
     }));
@@ -60,7 +58,7 @@ export class CertificationService {
     practitionerId: string,
     certificationId: string,
     requirementId: string,
-    update: Partial<CertificationProgress>
+    update: Partial<CertificationProgress>,
   ): Promise<PractitionerCertification> {
     const enrollment = await PractitionerCertificationModel.findOne({
       practitionerId,
@@ -71,7 +69,9 @@ export class CertificationService {
       throw new Error('Certification enrollment not found');
     }
 
-    const requirementIndex = enrollment.progress.findIndex(p => p.requirementId === requirementId);
+    const requirementIndex = enrollment.progress.findIndex(
+      (p) => p.requirementId === requirementId,
+    );
 
     if (requirementIndex === -1) {
       throw new Error('Requirement not found in progress');
@@ -84,7 +84,7 @@ export class CertificationService {
     };
 
     // Check if all requirements are completed
-    const allCompleted = enrollment.progress.every(p => p.status === 'completed');
+    const allCompleted = enrollment.progress.every((p) => p.status === 'completed');
 
     if (allCompleted && enrollment.status !== 'completed') {
       enrollment.status = 'completed';
@@ -93,7 +93,7 @@ export class CertificationService {
       // Set expiry date if certification has validity period
       const certification = await CertificationModel.findById(certificationId);
       const validityPeriod = certification?.requirements.find(
-        r => r.validityPeriod
+        (r) => r.validityPeriod,
       )?.validityPeriod;
 
       if (validityPeriod) {
@@ -105,7 +105,7 @@ export class CertificationService {
       // Generate certificate number
       enrollment.certificateNumber = this.generateCertificateNumber(
         certification?.name || '',
-        enrollment._id.toString()
+        enrollment._id.toString(),
       );
 
       // Notify practitioner
@@ -172,10 +172,10 @@ export class CertificationService {
    */
   async getPractitionerCertifications(practitionerId: string) {
     const enrollments = await PractitionerCertificationModel.find({ practitionerId }).populate(
-      'certificationId'
+      'certificationId',
     );
 
-    return enrollments.map(enrollment => ({
+    return enrollments.map((enrollment) => ({
       certification: enrollment.certificationId,
       status: enrollment.status,
       progress: this.calculateProgressPercentage(enrollment.progress),
@@ -189,7 +189,7 @@ export class CertificationService {
    * Calculate progress percentage
    */
   private calculateProgressPercentage(progress: CertificationProgress[]): number {
-    const completed = progress.filter(p => p.status === 'completed').length;
+    const completed = progress.filter((p) => p.status === 'completed').length;
     return Math.round((completed / progress.length) * 100);
   }
 

@@ -1,7 +1,5 @@
-import { Analytics } from '@vercel/analytics/react';
 import * as Sentry from '@sentry/nextjs';
 import posthog from 'posthog-js';
-import React from 'react';
 import type { AnalyticsConfig } from '../types/third-party';
 import { ThirdPartyManager } from '../services/third-party-manager';
 
@@ -142,7 +140,7 @@ export class AnalyticsUtils {
     if (!analytics) return;
 
     const config = this.manager.getServiceConfig('analytics') as AnalyticsConfig;
-    
+
     try {
       switch (config.service) {
         case 'google-analytics':
@@ -150,27 +148,24 @@ export class AnalyticsUtils {
             eventCategory: event.name,
             eventAction: 'trigger',
             eventLabel: JSON.stringify(event.properties),
-            userId: event.userId
+            userId: event.userId,
           });
           break;
-          
+
         case 'mixpanel':
-          await analytics.track(
-            event.name,
-            {
-              ...event.properties,
-              distinct_id: event.userId,
-              time: event.timestamp || Date.now()
-            }
-          );
+          await analytics.track(event.name, {
+            ...event.properties,
+            distinct_id: event.userId,
+            time: event.timestamp || Date.now(),
+          });
           break;
-          
+
         case 'segment':
           await analytics.track({
             event: event.name,
             properties: event.properties,
             userId: event.userId,
-            timestamp: event.timestamp
+            timestamp: event.timestamp,
           });
           break;
       }
@@ -184,7 +179,7 @@ export class AnalyticsUtils {
     if (!analytics) return;
 
     const config = this.manager.getServiceConfig('analytics') as AnalyticsConfig;
-    
+
     try {
       switch (config.service) {
         case 'google-analytics':
@@ -192,28 +187,25 @@ export class AnalyticsUtils {
             dp: pageView.path,
             dt: pageView.title,
             dr: pageView.referrer,
-            uid: pageView.userId
+            uid: pageView.userId,
           });
           break;
-          
+
         case 'mixpanel':
-          await analytics.track(
-            'Page View',
-            {
-              path: pageView.path,
-              title: pageView.title,
-              referrer: pageView.referrer,
-              distinct_id: pageView.userId
-            }
-          );
+          await analytics.track('Page View', {
+            path: pageView.path,
+            title: pageView.title,
+            referrer: pageView.referrer,
+            distinct_id: pageView.userId,
+          });
           break;
-          
+
         case 'segment':
           await analytics.page({
             name: pageView.title,
             path: pageView.path,
             referrer: pageView.referrer,
-            userId: pageView.userId
+            userId: pageView.userId,
           });
           break;
       }
@@ -227,21 +219,21 @@ export class AnalyticsUtils {
     if (!analytics) return;
 
     const config = this.manager.getServiceConfig('analytics') as AnalyticsConfig;
-    
+
     try {
       switch (config.service) {
         case 'google-analytics':
           await analytics.set({ userId, ...traits });
           break;
-          
+
         case 'mixpanel':
           await analytics.people.set(userId, traits);
           break;
-          
+
         case 'segment':
           await analytics.identify({
             userId,
-            traits
+            traits,
           });
           break;
       }
@@ -250,12 +242,16 @@ export class AnalyticsUtils {
     }
   }
 
-  static async groupUser(userId: string, groupId: string, traits?: Record<string, any>): Promise<void> {
+  static async groupUser(
+    userId: string,
+    groupId: string,
+    traits?: Record<string, any>,
+  ): Promise<void> {
     const analytics = this.manager.getService('analytics');
     if (!analytics) return;
 
     const config = this.manager.getServiceConfig('analytics') as AnalyticsConfig;
-    
+
     try {
       switch (config.service) {
         case 'mixpanel':
@@ -264,12 +260,12 @@ export class AnalyticsUtils {
             await analytics.group.set(groupId, traits);
           }
           break;
-          
+
         case 'segment':
           await analytics.group({
             userId,
             groupId,
-            traits
+            traits,
           });
           break;
       }
@@ -277,4 +273,4 @@ export class AnalyticsUtils {
       console.error('Failed to group user:', error);
     }
   }
-} 
+}

@@ -5,7 +5,7 @@ import { ARSupportCheck } from './ar-support-check';
 import { ModelErrorBoundary } from './model-error-boundary';
 import { ThreeARViewer } from './three-ar-viewer';
 import { ShareDialog } from './share-dialog';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/components/ui/use-toast';
 import { useARCache } from '@/hooks/use-ar-cache';
@@ -48,10 +48,9 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
     getModel,
     prefetchModels,
     cancelLoading,
-    isLoading: isCacheLoading,
     loadingProgress: cacheLoadingProgress,
     error: cacheError,
-    stats,
+    stats
   } = useARCache({
     autoAdjustCacheSize: true,
     prefetchEnabled: true,
@@ -97,8 +96,8 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
       const loadModel = async () => {
         try {
           // Get model data from cache with progress tracking
-          const data = await getModel(selectedModel.url, selectedModel.type, progress =>
-            setLoadingProgress(progress)
+          const data = await getModel(selectedModel.url, selectedModel.type, (progress) =>
+            setLoadingProgress(progress),
           );
 
           setModelData(data);
@@ -233,7 +232,7 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
     <div className="flex flex-col space-y-4">
       <ARSupportCheck onARUnsupported={handleARUnsupported}>
         <ModelErrorBoundary onError={onModelError}>
-          <div className="flex justify-center space-x-4 mb-4">
+          <div className="mb-4 flex justify-center space-x-4">
             {models.map((model, index) => (
               <Button
                 key={model.id}
@@ -248,7 +247,7 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
 
           {/* Intensity slider */}
           <div className="mb-4">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <label className="text-sm font-medium">Intensity</label>
               <span className="text-sm text-gray-500">{intensity}</span>
             </div>
@@ -258,18 +257,18 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
               max="10"
               step="1"
               value={intensity}
-              onChange={e => handleIntensityChange(parseInt(e.target.value))}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              onChange={(e) => handleIntensityChange(parseInt(e.target.value))}
+              className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200"
             />
           </div>
 
           <div
             ref={viewerRef}
-            className="relative w-full h-[500px] bg-gray-100 rounded-lg overflow-hidden"
+            className="relative h-[500px] w-full overflow-hidden rounded-lg bg-gray-100"
           >
             {loading && (
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <Progress value={loadingProgress} className="w-[60%] mb-4" />
+                <Progress value={loadingProgress} className="mb-4 w-[60%]" />
                 <p className="text-sm text-gray-500">
                   Loading model... {Math.round(loadingProgress)}%
                 </p>
@@ -277,7 +276,7 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
             )}
             {error && (
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <p className="text-red-500 mb-4">Failed to load model: {error.message}</p>
+                <p className="mb-4 text-red-500">Failed to load model: {error.message}</p>
                 <Button
                   onClick={() => {
                     setLoading(true);
@@ -301,8 +300,8 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
 
           {/* Cache stats display for debugging */}
           {process.env.NODE_ENV === 'development' && stats && (
-            <div className="mt-4 p-4 bg-gray-100 rounded-lg text-xs">
-              <h4 className="font-semibold mb-2">Cache Statistics</h4>
+            <div className="mt-4 rounded-lg bg-gray-100 p-4 text-xs">
+              <h4 className="mb-2 font-semibold">Cache Statistics</h4>
               <div className="grid grid-cols-2 gap-2">
                 <div>Models: {stats.modelCount}</div>
                 <div>Size: {(stats.totalSize / (1024 * 1024)).toFixed(2)} MB</div>

@@ -1,6 +1,6 @@
 /**
  * Server Performance Optimization Utilities
- * 
+ *
  * This file contains utilities to optimize server-side rendering performance
  * for Next.js applications.
  */
@@ -10,12 +10,12 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 // Cache control header options
 export interface CacheControlOptions {
-  maxAge?: number;           // Seconds browser should cache response
+  maxAge?: number; // Seconds browser should cache response
   staleWhileRevalidate?: number; // Seconds to serve stale content while fetching new
-  public?: boolean;          // Can be cached by intermediate caches
-  immutable?: boolean;       // Content will never change
-  noStore?: boolean;         // Don't cache at all
-  mustRevalidate?: boolean;  // Must revalidate when stale
+  public?: boolean; // Can be cached by intermediate caches
+  immutable?: boolean; // Content will never change
+  noStore?: boolean; // Don't cache at all
+  mustRevalidate?: boolean; // Must revalidate when stale
 }
 
 /**
@@ -24,7 +24,7 @@ export interface CacheControlOptions {
  */
 export function setCacheControl(
   res: NextApiResponse | GetServerSidePropsContext['res'],
-  options: CacheControlOptions = {}
+  options: CacheControlOptions = {},
 ): void {
   const {
     maxAge = 0,
@@ -62,7 +62,7 @@ export function setCacheControl(
 export function setStaticCache(
   res: NextApiResponse | GetServerSidePropsContext['res'],
   maxAgeSeconds: number = 60 * 60, // 1 hour default
-  staleWhileRevalidateSeconds: number = 60 * 60 * 24 // 1 day default
+  staleWhileRevalidateSeconds: number = 60 * 60 * 24, // 1 day default
 ): void {
   setCacheControl(res, {
     maxAge: maxAgeSeconds,
@@ -78,7 +78,7 @@ export function setStaticCache(
 export function setDynamicCache(
   res: NextApiResponse | GetServerSidePropsContext['res'],
   maxAgeSeconds: number = 10, // 10 seconds default
-  staleWhileRevalidateSeconds: number = 60 // 1 minute default
+  staleWhileRevalidateSeconds: number = 60, // 1 minute default
 ): void {
   setCacheControl(res, {
     maxAge: maxAgeSeconds,
@@ -91,27 +91,27 @@ export function setDynamicCache(
  * Apply no-cache control for user-specific or rapidly changing content
  * Useful for personalized or real-time content
  */
-export function setNoCache(
-  res: NextApiResponse | GetServerSidePropsContext['res']
-): void {
+export function setNoCache(res: NextApiResponse | GetServerSidePropsContext['res']): void {
   setCacheControl(res, { noStore: true });
 }
 
 /**
  * HOC for getServerSideProps to apply cache control optimizations
- * 
+ *
  * @param getServerSideProps - Original getServerSideProps function
  * @param cacheOptions - Cache control options
  * @returns Enhanced getServerSideProps function with caching
  */
 export function withCaching(
-  getServerSideProps: (context: GetServerSidePropsContext) => Promise<GetServerSidePropsResult<any>>,
-  cacheOptions: CacheControlOptions
+  getServerSideProps: (
+    context: GetServerSidePropsContext,
+  ) => Promise<GetServerSidePropsResult<any>>,
+  cacheOptions: CacheControlOptions,
 ) {
   return async (context: GetServerSidePropsContext) => {
     // Apply cache control headers
     setCacheControl(context.res, cacheOptions);
-    
+
     // Call the original getServerSideProps
     return await getServerSideProps(context);
   };
@@ -119,19 +119,19 @@ export function withCaching(
 
 /**
  * HOC for API routes to apply cache control optimizations
- * 
+ *
  * @param handler - Original API route handler
  * @param cacheOptions - Cache control options
  * @returns Enhanced API handler with caching
  */
 export function withApiCaching(
   handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>,
-  cacheOptions: CacheControlOptions
+  cacheOptions: CacheControlOptions,
 ) {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     // Apply cache control headers
     setCacheControl(res, cacheOptions);
-    
+
     // Call the original handler
     return await handler(req, res);
   };
@@ -143,20 +143,23 @@ export function withApiCaching(
  */
 export function setCoreWebVitalsHeaders(
   res: NextApiResponse | GetServerSidePropsContext['res'],
-  criticalAssets: { href: string; as: string; crossOrigin?: string }[] = []
+  criticalAssets: { href: string; as: string; crossOrigin?: string }[] = [],
 ): void {
   // Set preload headers for critical assets
   criticalAssets.forEach(({ href, as, crossOrigin }) => {
-    res.setHeader('Link', `<${href}>; rel=preload; as=${as}${crossOrigin ? `; crossorigin=${crossOrigin}` : ''}`);
+    res.setHeader(
+      'Link',
+      `<${href}>; rel=preload; as=${as}${crossOrigin ? `; crossorigin=${crossOrigin}` : ''}`,
+    );
   });
-  
+
   // Enable server push for HTTP/2 (if supported)
   res.setHeader('X-HTTP2-Push', criticalAssets.map(({ href }) => href).join(', '));
 }
 
 /**
  * Example usage:
- * 
+ *
  * // In getServerSideProps:
  * export const getServerSideProps = withCaching(
  *   async (context) => {
@@ -165,7 +168,7 @@ export function setCoreWebVitalsHeaders(
  *   },
  *   { maxAge: 60, staleWhileRevalidate: 600, public: true }
  * );
- * 
+ *
  * // In API route:
  * export default withApiCaching(
  *   async (req, res) => {
@@ -174,4 +177,4 @@ export function setCoreWebVitalsHeaders(
  *   },
  *   { maxAge: 30, staleWhileRevalidate: 300, public: true }
  * );
- */ 
+ */

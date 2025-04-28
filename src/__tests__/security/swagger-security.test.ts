@@ -1,5 +1,3 @@
-import '@testing-library/jest-dom';
-import { createMocks } from 'node-mocks-http';
 import { NextRequest } from 'next/server';
 import { securityMiddleware } from '@/middleware/security';
 
@@ -36,7 +34,7 @@ describe('Swagger UI Security Tests', () => {
     it('should block excessive requests', async () => {
       const req = mockSwaggerRequest();
       const responses = await Promise.all(Array(35).map(() => securityMiddleware(req)));
-      const blockedResponses = responses.filter(r => r.status === 429);
+      const blockedResponses = responses.filter((r) => r.status === 429);
       expect(blockedResponses.length).toBeGreaterThan(0);
     });
   });

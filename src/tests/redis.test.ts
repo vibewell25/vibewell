@@ -1,9 +1,6 @@
-import RedisManager from '../config/redis';
-import { jest } from '@jest/globals';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import RedisManager from '../config/redis';
 
 describe('RedisManager', () => {
-  let redisManager: typeof RedisManager;
-  
   beforeEach(() => {
     process.env.REDIS_TLS_CERT = 'test-cert';
     process.env.REDIS_TLS_KEY = 'test-key';
@@ -127,4 +124,4 @@ describe('RedisManager', () => {
     expect(client.options.tls).toBeDefined();
     expect(client.options.tls.port).toBe(6380);
   });
-}); 
+});

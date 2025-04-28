@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { format } from 'date-fns';
 import { Clock } from 'lucide-react';
 import { useState } from 'react';
@@ -28,7 +28,7 @@ export function TimeSlotList({ providerId, date, timeSlots }: TimeSlotListProps)
 
     try {
       const availabilityService = AvailabilityService.getInstance();
-      const slot = timeSlots.find(s => s.id === slotId);
+      const slot = timeSlots.find((s) => s.id === slotId);
 
       if (!slot) {
         throw new Error('Selected slot not found');
@@ -60,7 +60,7 @@ export function TimeSlotList({ providerId, date, timeSlots }: TimeSlotListProps)
 
   return (
     <div className="grid gap-2">
-      {timeSlots.map(slot => (
+      {timeSlots.map((slot) => (
         <Button
           key={slot.id}
           variant={selectedSlot === slot.id ? 'default' : 'outline'}

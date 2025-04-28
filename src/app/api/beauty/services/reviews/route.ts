@@ -31,14 +31,14 @@ export async function POST(request: Request) {
     if (booking.status !== BookingStatus.COMPLETED) {
       return NextResponse.json(
         { error: 'Cannot review a booking that is not completed' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (booking.review) {
       return NextResponse.json(
         { error: 'Review already exists for this booking' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

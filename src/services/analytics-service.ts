@@ -188,7 +188,7 @@ export class AnalyticsService {
       const buffer = new Uint8Array(16);
       window.crypto.getRandomValues(buffer);
       return Array.from(buffer)
-        .map(b => b.toString(16).padStart(2, '0'))
+        .map((b) => b.toString(16).padStart(2, '0'))
         .join('');
     } else {
       // Node.js environment: use crypto module
@@ -303,52 +303,52 @@ export class AnalyticsService {
 
       // Calculate metrics
       const uniqueUserIds = new Set(
-        sessions.filter(session => session.userId).map(session => session.userId)
+        sessions.filter((session) => session.userId).map((session) => session.userId),
       );
 
-      const uniqueSessionIds = new Set(sessions.map(session => session.sessionId));
+      const uniqueSessionIds = new Set(sessions.map((session) => session.sessionId));
 
       // Calculate try-on session counts
-      const tryOnSessions = sessions.filter(session => session.event === 'product_try_on');
+      const tryOnSessions = sessions.filter((session) => session.event === 'product_try_on');
 
-      const makeupSessions = tryOnSessions.filter(session => {
+      const makeupSessions = tryOnSessions.filter((session) => {
         const props = JSON.parse(session.properties as string);
         return props.product_type === 'makeup';
       }).length;
 
-      const hairstyleSessions = tryOnSessions.filter(session => {
+      const hairstyleSessions = tryOnSessions.filter((session) => {
         const props = JSON.parse(session.properties as string);
         return props.product_type === 'hairstyle';
       }).length;
 
-      const accessorySessions = tryOnSessions.filter(session => {
+      const accessorySessions = tryOnSessions.filter((session) => {
         const props = JSON.parse(session.properties as string);
         return props.product_type === 'accessory';
       }).length;
 
       // Calculate shares
-      const shareSessions = sessions.filter(session => session.event === 'product_share');
+      const shareSessions = sessions.filter((session) => session.event === 'product_share');
 
-      const socialShares = shareSessions.filter(session => {
+      const socialShares = shareSessions.filter((session) => {
         const props = JSON.parse(session.properties as string);
         return props.share_method === 'social';
       }).length;
 
-      const emailShares = shareSessions.filter(session => {
+      const emailShares = shareSessions.filter((session) => {
         const props = JSON.parse(session.properties as string);
         return props.share_method === 'email';
       }).length;
 
-      const downloadShares = shareSessions.filter(session => {
+      const downloadShares = shareSessions.filter((session) => {
         const props = JSON.parse(session.properties as string);
         return props.share_method === 'download';
       }).length;
 
       // Calculate top viewed products
-      const productViews = sessions.filter(session => session.event === 'product_view');
+      const productViews = sessions.filter((session) => session.event === 'product_view');
 
       const productViewsCount: Record<string, { count: number; name: string }> = {};
-      productViews.forEach(view => {
+      productViews.forEach((view) => {
         const props = JSON.parse(view.properties as string);
         const productId = props.product_id;
         const productName = props.product_name || 'Unknown Product';
@@ -366,7 +366,7 @@ export class AnalyticsService {
 
       // Calculate product category breakdown
       const productCategoryBreakdown: Record<string, number> = {};
-      productViews.forEach(view => {
+      productViews.forEach((view) => {
         const props = JSON.parse(view.properties as string);
         const category = props.product_category || 'Unknown';
 
@@ -380,7 +380,7 @@ export class AnalyticsService {
       let totalDuration = 0;
       let successCount = 0;
 
-      tryOnSessions.forEach(session => {
+      tryOnSessions.forEach((session) => {
         const props = JSON.parse(session.properties as string);
 
         if (props.duration) {
@@ -443,7 +443,7 @@ export class AnalyticsService {
   // Get metrics for a specific product
   public async getProductMetrics(
     productId: string,
-    options: { start: string; end: string }
+    options: { start: string; end: string },
   ): Promise<ProductMetrics> {
     try {
       // Query for product events in the time range
@@ -481,19 +481,19 @@ export class AnalyticsService {
       }
 
       // Calculate product metrics
-      const viewEvents = productEvents.filter(event => event.event === 'product_view');
+      const viewEvents = productEvents.filter((event) => event.event === 'product_view');
 
-      const tryOnEvents = productEvents.filter(event => event.event === 'product_try_on');
+      const tryOnEvents = productEvents.filter((event) => event.event === 'product_try_on');
 
       const uniqueViewerIds = new Set(
         viewEvents
-          .filter(event => event.user_id || event.session_id)
-          .map(event => event.user_id || event.session_id)
+          .filter((event) => event.user_id || event.session_id)
+          .map((event) => event.user_id || event.session_id),
       );
 
       // Calculate click-through rate (views / recommendation clicks)
       const recommendationClicks = productEvents.filter(
-        event => event.event === 'product_recommendation_click'
+        (event) => event.event === 'product_recommendation_click',
       ).length;
 
       const clickThroughRate =
@@ -549,7 +549,7 @@ export class AnalyticsService {
 
       // Calculate recommendation metrics
       const recommendationClicks = events.filter(
-        event => event.event === 'product_recommendation_click'
+        (event) => event.event === 'product_recommendation_click',
       );
 
       // Track which products were recommended and clicked
@@ -564,7 +564,7 @@ export class AnalyticsService {
         }
       > = {};
 
-      recommendationClicks.forEach(event => {
+      recommendationClicks.forEach((event) => {
         const productId = event.properties.product_id;
         const productName = event.properties.product_name || 'Unknown Product';
 
@@ -584,8 +584,8 @@ export class AnalyticsService {
 
       // Count views for recommended products
       events
-        .filter(event => event.event === 'product_view')
-        .forEach(event => {
+        .filter((event) => event.event === 'product_view')
+        .forEach((event) => {
           const productId = event.properties.product_id;
 
           if (productId && recommendedProducts[productId]) {
@@ -595,8 +595,8 @@ export class AnalyticsService {
 
       // Count conversions (added to cart) for recommended products
       events
-        .filter(event => event.event === 'cart_add')
-        .forEach(event => {
+        .filter((event) => event.event === 'cart_add')
+        .forEach((event) => {
           const productId = event.properties.product_id;
 
           if (productId && recommendedProducts[productId]) {
@@ -607,17 +607,17 @@ export class AnalyticsService {
       // Calculate overall metrics
       const totalRecommendations = Object.values(recommendedProducts).reduce(
         (sum, product) => sum + product.recommendations,
-        0
+        0,
       );
 
       const totalClicks = Object.values(recommendedProducts).reduce(
         (sum, product) => sum + product.clicks,
-        0
+        0,
       );
 
       const totalConversions = Object.values(recommendedProducts).reduce(
         (sum, product) => sum + product.conversions,
-        0
+        0,
       );
 
       const clickThroughRate =
@@ -687,7 +687,7 @@ export class AnalyticsService {
   async getAnalytics(
     timeframe: AnalyticsData['timeframe'],
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<AnalyticsData> {
     try {
       const [userMetrics, bookingMetrics, topServices, retentionData] = await Promise.all([
@@ -702,7 +702,7 @@ export class AnalyticsService {
       const previousPeriodStart = new Date(previousPeriodEnd);
       previousPeriodStart.setDate(
         previousPeriodStart.getDate() -
-          (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+          (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
       );
 
       const [previousUserMetrics, previousBookingMetrics] = await Promise.all([
@@ -714,11 +714,11 @@ export class AnalyticsService {
         userGrowth: this.calculateGrowth(previousUserMetrics.totalUsers, userMetrics.totalUsers),
         revenueGrowth: this.calculateGrowth(
           previousBookingMetrics.totalRevenue,
-          bookingMetrics.totalRevenue
+          bookingMetrics.totalRevenue,
         ),
         bookingGrowth: this.calculateGrowth(
           previousBookingMetrics.totalBookings,
-          bookingMetrics.totalBookings
+          bookingMetrics.totalBookings,
         ),
       };
 
@@ -746,7 +746,7 @@ export class AnalyticsService {
   async getServicePerformance(
     serviceId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<ServicePerformance> {
     try {
       const service = await prismaClient.service.findUnique({
@@ -813,7 +813,7 @@ export class AnalyticsService {
     try {
       const { startDate, endDate, metrics, groupBy, filters } = options;
 
-      const reportData = await prismaClient.$transaction(async prisma => {
+      const reportData = await prismaClient.$transaction(async (prisma) => {
         const data: Record<string, any> = {};
 
         for (const metric of metrics) {
@@ -876,7 +876,7 @@ export class AnalyticsService {
     return {
       totalUsers: users.length,
       activeUsers,
-      newUsers: users.filter(user => user.createdAt >= startDate).length,
+      newUsers: users.filter((user) => user.createdAt >= startDate).length,
     };
   }
 
@@ -915,7 +915,7 @@ export class AnalyticsService {
     });
 
     return services
-      .map(service => ({
+      .map((service) => ({
         id: service.id,
         name: service.name,
         bookings: service.bookings.length,
@@ -939,9 +939,9 @@ export class AnalyticsService {
       },
     });
 
-    const newUsers = users.filter(user => user.createdAt >= startDate).length;
+    const newUsers = users.filter((user) => user.createdAt >= startDate).length;
     const returningUsers = users.filter(
-      user => user.createdAt < startDate && user.bookings.length > 0
+      (user) => user.createdAt < startDate && user.bookings.length > 0,
     ).length;
 
     const previousUsers = await prismaClient.user.count({
@@ -969,7 +969,7 @@ export class AnalyticsService {
   private async calculateUtilization(
     service: any,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<number> {
     const totalSlots = await this.getTotalAvailableSlots(service, startDate, endDate);
     if (totalSlots === 0) return 0;
@@ -979,12 +979,12 @@ export class AnalyticsService {
   private async getTotalAvailableSlots(
     service: any,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<number> {
     // Implementation depends on your business logic
     // This is a simplified version
     const daysDifference = Math.ceil(
-      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
     );
     const slotsPerDay = 8; // Assuming 8 slots per day
     return daysDifference * slotsPerDay;
@@ -1010,7 +1010,7 @@ export class AnalyticsService {
     data: Record<string, any>,
     groupBy: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ) {
     // Implementation depends on your grouping requirements
     // This is a placeholder

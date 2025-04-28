@@ -1,7 +1,7 @@
 'use client';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@/components/ui/breadcrumb';
 import { Icons } from '@/components/icons';
 export default function AccountManagementHelp() {
@@ -124,41 +124,41 @@ export default function AccountManagementHelp() {
           </BreadcrumbItem>
         </Breadcrumb>
         {/* Header section */}
-        <div className="flex items-center gap-3 mb-8">
+        <div className="mb-8 flex items-center gap-3">
           <Link href="/help" className="text-muted-foreground hover:text-foreground">
             <Icons.ArrowLeftIcon className="h-5 w-5" />
           </Link>
           <h1 className="text-3xl font-bold">Account Management</h1>
         </div>
-        <p className="text-lg text-muted-foreground mb-10 max-w-3xl">
+        <p className="mb-10 max-w-3xl text-lg text-muted-foreground">
           Learn how to manage your Vibewell account settings, including password changes,
           subscription management, security features, and profile customization.
         </p>
         {/* Main content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          {accountArticles.map(category => (
+        <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+          {accountArticles.map((category) => (
             <div
               key={category.id}
-              className="border rounded-lg p-6 bg-card hover:shadow-md transition-all"
+              className="rounded-lg border bg-card p-6 transition-all hover:shadow-md"
             >
-              <div className="flex items-start mb-5">
-                <div className="p-2 bg-primary/10 rounded-md text-primary mr-4">
+              <div className="mb-5 flex items-start">
+                <div className="bg-primary/10 text-primary mr-4 rounded-md p-2">
                   {category.icon}
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">{category.title}</h3>
+                  <h3 className="mb-2 text-xl font-bold">{category.title}</h3>
                   <p className="text-muted-foreground">{category.description}</p>
                 </div>
               </div>
-              <h4 className="text-sm uppercase text-muted-foreground font-medium mb-3">
+              <h4 className="mb-3 text-sm font-medium uppercase text-muted-foreground">
                 Popular Topics
               </h4>
-              <ul className="space-y-2 mb-4 pl-4 border-l-2 border-muted">
+              <ul className="mb-4 space-y-2 border-l-2 border-muted pl-4">
                 {category.popularTopics.map((topic, index) => (
                   <li key={index}>
                     <Link
                       href={topic.path}
-                      className="text-primary hover:underline flex items-center"
+                      className="text-primary flex items-center hover:underline"
                     >
                       <span className="mr-2">•</span>
                       {topic.title}
@@ -174,19 +174,19 @@ export default function AccountManagementHelp() {
         </div>
         {/* FAQs section */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <h2 className="mb-6 text-2xl font-bold">Frequently Asked Questions</h2>
           <div className="space-y-4">
             {accountFaqs.map((faq, index) => (
-              <div key={index} className="border rounded-lg p-5 bg-card">
-                <h3 className="text-lg font-semibold mb-2">{faq.question}</h3>
-                <p className="text-muted-foreground mb-3">{faq.answer}</p>
+              <div key={index} className="rounded-lg border bg-card p-5">
+                <h3 className="mb-2 text-lg font-semibold">{faq.question}</h3>
+                <p className="mb-3 text-muted-foreground">{faq.answer}</p>
                 <Link
                   href={faq.path}
-                  className="text-primary hover:underline text-sm inline-flex items-center"
+                  className="text-primary inline-flex items-center text-sm hover:underline"
                 >
                   Read more
                   <svg
-                    className="w-3 h-3 ml-1"
+                    className="ml-1 h-3 w-3"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -205,13 +205,13 @@ export default function AccountManagementHelp() {
           </div>
         </div>
         {/* Contact support section */}
-        <div className="bg-muted rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">Still Have Questions About Your Account?</h2>
-          <p className="text-lg mb-6 max-w-2xl mx-auto">
+        <div className="rounded-xl bg-muted p-8 text-center">
+          <h2 className="mb-4 text-2xl font-bold">Still Have Questions About Your Account?</h2>
+          <p className="mx-auto mb-6 max-w-2xl text-lg">
             Our support team is available to help with any account-related issues you may be
             experiencing.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Button asChild>
               <Link href="/help/contact">Contact Support</Link>
             </Button>

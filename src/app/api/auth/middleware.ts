@@ -7,7 +7,7 @@ import { getSession } from '@auth0/nextjs-auth0';
  */
 export async function withAuth(
   req: NextRequest,
-  handler: (req: NextRequest, user: any) => Promise<NextResponse>
+  handler: (req: NextRequest, user: any) => Promise<NextResponse>,
 ): Promise<NextResponse> {
   try {
     const session = await getSession(req);
@@ -29,14 +29,14 @@ export async function withAuth(
 export async function withRole(
   req: NextRequest,
   handler: (req: NextRequest, user: any) => Promise<NextResponse>,
-  allowedRoles: string[] = []
+  allowedRoles: string[] = [],
 ): Promise<NextResponse> {
   return withAuth(req, async (req, user) => {
     // Extract roles from Auth0 user
     // Note: This is implementation specific, adjust according to your Auth0 configuration
     const userRoles = user[`${process.env.AUTH0_NAMESPACE}/roles`] || [];
 
-    const hasRole = allowedRoles.some(role => userRoles.includes(role));
+    const hasRole = allowedRoles.some((role) => userRoles.includes(role));
 
     if (!hasRole) {
       return NextResponse.json({ error: 'Forbidden. Insufficient permissions.' }, { status: 403 });
@@ -51,7 +51,7 @@ export async function withRole(
  */
 export async function withAdmin(
   req: NextRequest,
-  handler: (req: NextRequest, user: any) => Promise<NextResponse>
+  handler: (req: NextRequest, user: any) => Promise<NextResponse>,
 ): Promise<NextResponse> {
   return withRole(req, handler, ['admin']);
 }
@@ -61,7 +61,7 @@ export async function withAdmin(
  */
 export async function withProvider(
   req: NextRequest,
-  handler: (req: NextRequest, user: any) => Promise<NextResponse>
+  handler: (req: NextRequest, user: any) => Promise<NextResponse>,
 ): Promise<NextResponse> {
   return withRole(req, handler, ['provider', 'admin']);
 }

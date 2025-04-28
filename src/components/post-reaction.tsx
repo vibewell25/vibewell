@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Tooltip } from '@/components/ui/tooltip';
 
 export type ReactionType = '❤️' | '👍' | '😂' | '😮' | '😢' | '😡';
@@ -37,11 +37,11 @@ export function PostReaction({
 }: PostReactionProps) {
   // Initialize reactions with defaults
   const [reactions, setReactions] = useState<Reaction[]>(
-    REACTION_TYPES.map(type => ({
+    REACTION_TYPES.map((type) => ({
       type,
       count: initialReactions[type] || 0,
       reacted: type === userReaction,
-    }))
+    })),
   );
   const [showReactionPicker, setShowReactionPicker] = useState(false);
   const [selectedReaction, setSelectedReaction] = useState<ReactionType | null>(userReaction);
@@ -56,7 +56,7 @@ export function PostReaction({
     // If the same reaction is clicked again, remove it
     if (selectedReaction === type) {
       // Find the reaction and decrement its count
-      const index = newReactions.findIndex(r => r.type === type);
+      const index = newReactions.findIndex((r) => r.type === type);
       if (index !== -1 && newReactions[index].count > 0) {
         newReactions[index].count -= 1;
         newReactions[index].reacted = false;
@@ -70,7 +70,7 @@ export function PostReaction({
     } else {
       // If user had previously reacted, remove that reaction first
       if (selectedReaction) {
-        const previousIndex = newReactions.findIndex(r => r.type === selectedReaction);
+        const previousIndex = newReactions.findIndex((r) => r.type === selectedReaction);
         if (previousIndex !== -1 && newReactions[previousIndex].count > 0) {
           newReactions[previousIndex].count -= 1;
           newReactions[previousIndex].reacted = false;
@@ -78,7 +78,7 @@ export function PostReaction({
       }
 
       // Add the new reaction
-      const index = newReactions.findIndex(r => r.type === type);
+      const index = newReactions.findIndex((r) => r.type === type);
       if (index !== -1) {
         newReactions[index].count += 1;
         newReactions[index].reacted = true;
@@ -117,12 +117,11 @@ export function PostReaction({
     <div className="relative">
       {/* Main reaction button */}
       <button
-        className={`flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm 
-          ${
-            selectedReaction
-              ? 'bg-primary/10 text-primary'
-              : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-          } transition-colors`}
+        className={`flex items-center space-x-1 rounded-md px-3 py-1.5 text-sm ${
+          selectedReaction
+            ? 'bg-primary/10 text-primary'
+            : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+        } transition-colors`}
         onClick={() => setShowReactionPicker(!showReactionPicker)}
       >
         {getMainButtonDisplay()}
@@ -131,11 +130,11 @@ export function PostReaction({
 
       {/* Reaction picker */}
       {showReactionPicker && (
-        <div className="absolute bottom-full mb-2 left-0 bg-card rounded-lg shadow-lg border border-border p-2 flex space-x-1 z-10">
-          {REACTION_TYPES.map(type => (
+        <div className="absolute bottom-full left-0 z-10 mb-2 flex space-x-1 rounded-lg border border-border bg-card p-2 shadow-lg">
+          {REACTION_TYPES.map((type) => (
             <Tooltip key={type} content={REACTION_LABELS[type]}>
               <button
-                className={`text-xl p-1.5 rounded-full transition-transform hover:scale-125 ${
+                className={`rounded-full p-1.5 text-xl transition-transform hover:scale-125 ${
                   selectedReaction === type ? 'bg-primary/10' : 'hover:bg-muted'
                 }`}
                 onClick={() => handleReactionClick(type)}

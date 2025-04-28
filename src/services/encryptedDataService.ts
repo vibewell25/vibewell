@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/database/client';
-import { EncryptionService } from './encryption';
 import crypto from 'crypto';
 import { PrismaClient } from '@prisma/client';
 import { KeyManagementService } from './keyManagementService';
@@ -62,25 +61,25 @@ export class EncryptedDataService {
 
   constructor(
     private readonly keyManagementService: KeyManagementService,
-    private readonly prisma: PrismaClient
+    private readonly prisma: PrismaClient,
   ) {}
 
   async storeEncryptedData<T>(
     userId: string,
     dataType: string,
     data: T,
-    metadata?: Partial<EncryptionMetadata>
+    metadata?: Partial<EncryptionMetadata>,
   ): Promise<string> {
     try {
       const key = await this.keyManagementService.getCurrentKey();
       const iv = crypto.randomBytes(this.ivLength);
       const cipher = crypto.createCipheriv(this.algorithm, key, iv, {
-        authTagLength: this.tagLength
+        authTagLength: this.tagLength,
       });
 
       const encryptedValue = Buffer.concat([
         cipher.update(JSON.stringify(data), 'utf8'),
-        cipher.final()
+        cipher.final(),
       ]);
 
       const tag = cipher.getAuthTag();
@@ -90,7 +89,7 @@ export class EncryptedDataService {
         keyId: await this.keyManagementService.getCurrentKeyId(),
         version: '1.0',
         purpose: dataType,
-        ...metadata
+        ...metadata,
       };
 
       const encryptedData = await this.prisma.encryptedData.create({
@@ -100,8 +99,8 @@ export class EncryptedDataService {
           encryptedValue: encryptedValue.toString('base64'),
           iv: iv.toString('base64'),
           tag: tag.toString('base64'),
-          encryptionMetadata
-        }
+          encryptionMetadata,
+        },
       });
 
       return encryptedData.id;
@@ -114,7 +113,7 @@ export class EncryptedDataService {
   async retrieveEncryptedData<T>(id: string): Promise<DecryptionResult<T>> {
     try {
       const encryptedData = await this.prisma.encryptedData.findUnique({
-        where: { id }
+        where: { id },
       });
 
       if (!encryptedData) {
@@ -127,18 +126,15 @@ export class EncryptedDataService {
       const encryptedValue = Buffer.from(encryptedData.encryptedValue, 'base64');
 
       const decipher = crypto.createDecipheriv(this.algorithm, key, iv, {
-        authTagLength: this.tagLength
+        authTagLength: this.tagLength,
       });
       decipher.setAuthTag(tag);
 
-      const decrypted = Buffer.concat([
-        decipher.update(encryptedValue),
-        decipher.final()
-      ]);
+      const decrypted = Buffer.concat([decipher.update(encryptedValue), decipher.final()]);
 
       return {
         value: JSON.parse(decrypted.toString('utf8')),
-        metadata: encryptedData.encryptionMetadata
+        metadata: encryptedData.encryptionMetadata,
       };
     } catch (error) {
       logger.error('Failed to retrieve encrypted data', { error, id });
@@ -149,7 +145,7 @@ export class EncryptedDataService {
   async updateEncryptedUserField(
     userId: string,
     field: 'recovery_email' | 'phone' | 'backup_codes',
-    value: any
+    value: any,
   ): Promise<void> {
     // Encrypt the value
     const { encryptedData } = await this.encryptionService.encrypt(JSON.stringify(value));
@@ -172,7 +168,7 @@ export class EncryptedDataService {
         usageCount: row.usageCount,
         firstUsed: row.firstUsed,
         lastUsed: row.lastUsed,
-      })
+      }),
     );
   }
 }

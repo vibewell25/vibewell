@@ -50,9 +50,9 @@ const calculateAngle = (pose: poseDetection.Pose, joint: string): number => {
 
   const [p1Name, p2Name, p3Name] = jointConnections[joint];
 
-  const p1 = keypoints.find(kp => kp.name === p1Name);
-  const p2 = keypoints.find(kp => kp.name === p2Name);
-  const p3 = keypoints.find(kp => kp.name === p3Name);
+  const p1 = keypoints.find((kp) => kp.name === p1Name);
+  const p2 = keypoints.find((kp) => kp.name === p2Name);
+  const p3 = keypoints.find((kp) => kp.name === p3Name);
 
   if (!p1?.x || !p1?.y || !p2?.x || !p2?.y || !p3?.x || !p3?.y) {
     return 0;
@@ -65,7 +65,7 @@ const calculateAngle = (pose: poseDetection.Pose, joint: string): number => {
   // Calculate angle in radians
   const angle = Math.atan2(
     vector1.x * vector2.y - vector1.y * vector2.x,
-    vector1.x * vector2.x + vector1.y * vector2.y
+    vector1.x * vector2.x + vector1.y * vector2.y,
   );
 
   // Convert to degrees
@@ -174,24 +174,24 @@ const WorkoutFormCorrection: React.FC<WorkoutFormCorrectionProps> = ({
   };
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto">
+    <div className="relative mx-auto w-full max-w-2xl">
       <div className="relative aspect-video">
-        <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" playsInline />
+        <video ref={videoRef} className="absolute inset-0 h-full w-full object-cover" playsInline />
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 h-full w-full"
           width={640}
           height={480}
         />
       </div>
 
-      <div className="mt-4 p-4 bg-white rounded-lg shadow">
-        <h3 className="text-lg font-semibold mb-2">
+      <div className="mt-4 rounded-lg bg-white p-4 shadow">
+        <h3 className="mb-2 text-lg font-semibold">
           {exerciseType.charAt(0).toUpperCase() + exerciseType.slice(1)} Form Analysis
         </h3>
         <div className="flex items-center gap-4">
           <button
-            className={`px-4 py-2 rounded ${isAnalyzing ? 'bg-red-500' : 'bg-primary'} text-white`}
+            className={`rounded px-4 py-2 ${isAnalyzing ? 'bg-red-500' : 'bg-primary'} text-white`}
             onClick={() => setIsAnalyzing(!isAnalyzing)}
           >
             {isAnalyzing ? 'Stop Analysis' : 'Start Analysis'}
@@ -200,7 +200,7 @@ const WorkoutFormCorrection: React.FC<WorkoutFormCorrectionProps> = ({
             <input
               type="checkbox"
               checked={showGuideLines}
-              onChange={e => (showGuideLines = e.target.checked)}
+              onChange={(e) => (showGuideLines = e.target.checked)}
               className="form-checkbox"
             />
             Show Guide Lines

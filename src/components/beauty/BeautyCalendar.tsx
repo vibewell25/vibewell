@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, Button, Input, Select, Badge } from '@/components/ui';
 import { getBeautyEvents, createBeautyEvent, updateBeautyEvent } from '@/lib/api/beauty';
-import { BeautyEvent, EventType } from '@/lib/api/beauty';
+import { EventType } from '@/lib/api/beauty';
 
 const eventTypes: EventType[] = [
   'facial',
@@ -80,7 +80,7 @@ export default function BeautyCalendar() {
   };
 
   const getEventsByDate = (date: Date) => {
-    return events.filter(event => {
+    return events.filter((event) => {
       const eventDate = new Date(event.date);
       return (
         eventDate.getDate() === date.getDate() &&
@@ -94,17 +94,17 @@ export default function BeautyCalendar() {
     const days = [];
     const firstDay = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
     const lastDay = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
-    
+
     // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDay.getDay(); i++) {
       days.push(null);
     }
-    
+
     // Add days of the month
     for (let i = 1; i <= lastDay.getDate(); i++) {
       days.push(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), i));
     }
-    
+
     return days;
   };
 
@@ -120,7 +120,7 @@ export default function BeautyCalendar() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Beauty Calendar</h2>
         <Button onClick={() => setShowNewEvent(!showNewEvent)}>
           {showNewEvent ? 'Cancel' : 'New Event'}
@@ -128,18 +128,20 @@ export default function BeautyCalendar() {
       </div>
 
       {showNewEvent && (
-        <Card className="p-6 space-y-4">
+        <Card className="space-y-4 p-6">
           <Input
             label="Event Title"
             value={newEvent.title}
-            onChange={e => setNewEvent(prev => ({ ...prev, title: e.target.value }))}
+            onChange={(e) => setNewEvent((prev) => ({ ...prev, title: e.target.value }))}
           />
 
           <Select
             label="Event Type"
             value={newEvent.type}
-            onChange={e => setNewEvent(prev => ({ ...prev, type: e.target.value as EventType }))}
-            options={eventTypes.map(type => ({
+            onChange={(e) =>
+              setNewEvent((prev) => ({ ...prev, type: e.target.value as EventType }))
+            }
+            options={eventTypes.map((type) => ({
               value: type,
               label: type.charAt(0).toUpperCase() + type.slice(1),
             }))}
@@ -150,34 +152,38 @@ export default function BeautyCalendar() {
               type="datetime-local"
               label="Date & Time"
               value={new Date(newEvent.date).toISOString().slice(0, 16)}
-              onChange={e => setNewEvent(prev => ({ ...prev, date: new Date(e.target.value).toISOString() }))}
+              onChange={(e) =>
+                setNewEvent((prev) => ({ ...prev, date: new Date(e.target.value).toISOString() }))
+              }
             />
             <Input
               type="number"
               label="Duration (minutes)"
               value={newEvent.duration}
-              onChange={e => setNewEvent(prev => ({ ...prev, duration: parseInt(e.target.value) || 30 }))}
+              onChange={(e) =>
+                setNewEvent((prev) => ({ ...prev, duration: parseInt(e.target.value) || 30 }))
+              }
             />
           </div>
 
           <Select
             label="Repeat"
             value={newEvent.repeat}
-            onChange={e => setNewEvent(prev => ({ ...prev, repeat: e.target.value }))}
+            onChange={(e) => setNewEvent((prev) => ({ ...prev, repeat: e.target.value }))}
             options={repeatOptions}
           />
 
           <Input
             label="Notes"
             value={newEvent.notes}
-            onChange={e => setNewEvent(prev => ({ ...prev, notes: e.target.value }))}
+            onChange={(e) => setNewEvent((prev) => ({ ...prev, notes: e.target.value }))}
           />
 
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
               checked={newEvent.notification}
-              onChange={e => setNewEvent(prev => ({ ...prev, notification: e.target.checked }))}
+              onChange={(e) => setNewEvent((prev) => ({ ...prev, notification: e.target.checked }))}
             />
             <label className="text-sm">Enable notifications</label>
           </div>
@@ -187,7 +193,7 @@ export default function BeautyCalendar() {
       )}
 
       <Card className="p-6">
-        <div className="flex justify-between items-center mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <Button variant="outline" onClick={() => navigateMonth('prev')}>
             Previous
           </Button>
@@ -200,28 +206,26 @@ export default function BeautyCalendar() {
         </div>
 
         <div className="grid grid-cols-7 gap-1">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-            <div key={day} className="text-center font-medium p-2">
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+            <div key={day} className="p-2 text-center font-medium">
               {day}
             </div>
           ))}
           {generateCalendarDays().map((date, index) => (
             <div
               key={index}
-              className={`min-h-[100px] border rounded p-2 ${
+              className={`min-h-[100px] rounded border p-2 ${
                 date ? 'hover:bg-gray-50' : 'bg-gray-100'
               }`}
             >
               {date && (
                 <>
-                  <div className="text-right text-sm text-gray-600">
-                    {date.getDate()}
-                  </div>
-                  <div className="space-y-1 mt-1">
-                    {getEventsByDate(date).map(event => (
+                  <div className="text-right text-sm text-gray-600">{date.getDate()}</div>
+                  <div className="mt-1 space-y-1">
+                    {getEventsByDate(date).map((event) => (
                       <div
                         key={event.id}
-                        className={`text-xs p-1 rounded ${
+                        className={`rounded p-1 text-xs ${
                           event.completed
                             ? 'bg-green-100 text-green-800'
                             : 'bg-blue-100 text-blue-800'
@@ -239,16 +243,16 @@ export default function BeautyCalendar() {
       </Card>
 
       <Card className="p-6">
-        <h3 className="text-xl font-semibold mb-4">Upcoming Events</h3>
+        <h3 className="mb-4 text-xl font-semibold">Upcoming Events</h3>
         <div className="space-y-4">
           {events
-            .filter(event => new Date(event.date) >= new Date())
+            .filter((event) => new Date(event.date) >= new Date())
             .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
             .slice(0, 5)
-            .map(event => (
+            .map((event) => (
               <div
                 key={event.id}
-                className="flex items-start justify-between p-3 bg-gray-50 rounded-lg"
+                className="flex items-start justify-between rounded-lg bg-gray-50 p-3"
               >
                 <div className="flex items-start gap-3">
                   <input
@@ -262,9 +266,7 @@ export default function BeautyCalendar() {
                     <p className="text-sm text-gray-600">
                       {new Date(event.date).toLocaleString()} • {event.duration} mins
                     </p>
-                    {event.notes && (
-                      <p className="text-sm text-gray-500 mt-1">{event.notes}</p>
-                    )}
+                    {event.notes && <p className="mt-1 text-sm text-gray-500">{event.notes}</p>}
                   </div>
                 </div>
                 <Badge>{event.type}</Badge>
@@ -274,4 +276,4 @@ export default function BeautyCalendar() {
       </Card>
     </div>
   );
-} 
+}

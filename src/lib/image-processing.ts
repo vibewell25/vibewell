@@ -16,7 +16,7 @@ export class ImageProcessor {
       height?: number;
       format?: string;
       quality?: number;
-    } = {}
+    } = {},
   ): Promise<ImageProcessingResult> {
     try {
       const image = sharp(imageUrl);
@@ -53,7 +53,7 @@ export class ImageProcessor {
 
   async applyVirtualTryOn(
     imageUrl: string,
-    settings: Record<string, any>
+    settings: Record<string, any>,
   ): Promise<ImageProcessingResult> {
     try {
       // This is a placeholder for virtual try-on implementation
@@ -74,4 +74,4 @@ export class ImageProcessor {
   }
 }
 
-export const imageProcessor = new ImageProcessor();
+export {};

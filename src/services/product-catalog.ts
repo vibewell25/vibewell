@@ -57,7 +57,7 @@ export class ProductCatalogService {
     query: string,
     filters: ProductFilters,
     page: number = 1,
-    limit: number = 20
+    limit: number = 20,
   ): Promise<ProductSearchResult> {
     try {
       const where: Prisma.ProductWhereInput = {};
@@ -66,7 +66,7 @@ export class ProductCatalogService {
         where.OR = [
           { name: { contains: query, mode: 'insensitive' } },
           { description: { contains: query, mode: 'insensitive' } },
-          { tags: { hasSome: [query] } }
+          { tags: { hasSome: [query] } },
         ];
       }
 
@@ -82,18 +82,20 @@ export class ProductCatalogService {
           where,
           skip: (page - 1) * limit,
           take: limit,
-          orderBy: filters.sortBy ? {
-            [filters.sortBy]: filters.sortOrder || 'asc'
-          } : undefined
+          orderBy: filters.sortBy
+            ? {
+                [filters.sortBy]: filters.sortOrder || 'asc',
+              }
+            : undefined,
         }),
-        this.prisma.product.count({ where })
+        this.prisma.product.count({ where }),
       ]);
 
       return {
         products,
         total,
         page,
-        limit
+        limit,
       };
     } catch (error) {
       logger.error('Failed to search products', { error, query, filters });
@@ -104,7 +106,7 @@ export class ProductCatalogService {
   async getProduct(id: string): Promise<Product> {
     try {
       const product = await this.prisma.product.findUnique({
-        where: { id }
+        where: { id },
       });
 
       if (!product) {
@@ -121,7 +123,7 @@ export class ProductCatalogService {
   async createProduct(data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
     try {
       return await this.prisma.product.create({
-        data
+        data,
       });
     } catch (error) {
       logger.error('Failed to create product', { error, data });
@@ -133,7 +135,7 @@ export class ProductCatalogService {
     try {
       return await this.prisma.product.update({
         where: { id },
-        data
+        data,
       });
     } catch (error) {
       logger.error('Failed to update product', { error, id, data });
@@ -144,7 +146,7 @@ export class ProductCatalogService {
   async deleteProduct(id: string): Promise<void> {
     try {
       await this.prisma.product.delete({
-        where: { id }
+        where: { id },
       });
     } catch (error) {
       logger.error('Failed to delete product', { error, id });

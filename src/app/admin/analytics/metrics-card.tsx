@@ -1,7 +1,5 @@
-'use client';
-
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+'use client';;
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -38,13 +36,13 @@ export function MetricsCard({
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
         {description && (
-          <div className="flex items-center justify-between mt-2">
+          <div className="mt-2 flex items-center justify-between">
             <p className="text-xs text-muted-foreground">{description}</p>
             {trend && (
               <div
                 className={cn(
-                  'text-xs font-medium flex items-center',
-                  trend.isPositive ? 'text-green-500' : 'text-red-500'
+                  'flex items-center text-xs font-medium',
+                  trend.isPositive ? 'text-green-500' : 'text-red-500',
                 )}
               >
                 {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%

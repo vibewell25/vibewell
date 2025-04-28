@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { axe } from 'jest-axe';
@@ -39,7 +38,7 @@ describe('Profile Components', () => {
       expect(screen.getByText(mockUser.bio)).toBeInTheDocument();
       expect(screen.getByText(mockUser.location)).toBeInTheDocument();
       expect(screen.getByText(mockUser.role)).toBeInTheDocument();
-      mockUser.specialties.forEach(specialty => {
+      mockUser.specialties.forEach((specialty) => {
         expect(screen.getByText(specialty)).toBeInTheDocument();
       });
     });
@@ -96,7 +95,7 @@ describe('Profile Components', () => {
         expect.objectContaining({
           name: 'New Name',
           bio: 'New Bio',
-        })
+        }),
       );
     });
 
@@ -167,7 +166,7 @@ describe('Profile Components', () => {
           notifications: false,
           theme: 'dark',
           language: 'es',
-        })
+        }),
       );
     });
 
@@ -210,7 +209,7 @@ describe('Profile Components', () => {
 
     it('ProfileEditor meets accessibility standards', async () => {
       const { container } = render(
-        <ProfileEditor user={mockUser} onSave={() => {}} onCancel={() => {}} />
+        <ProfileEditor user={mockUser} onSave={() => {}} onCancel={() => {}} />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -227,7 +226,7 @@ describe('Profile Components', () => {
             timezone: 'UTC',
           }}
           onSave={() => {}}
-        />
+        />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();

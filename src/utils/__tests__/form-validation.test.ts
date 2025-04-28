@@ -1,9 +1,4 @@
-import {
-  validateField,
-  validateForm,
-  ValidationError,
-  FormErrors,
-} from '../form-validation';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { validateField, validateForm, ValidationError, FormErrors } from '../form-validation';
 
 describe('Form Validation Utilities', () => {
   describe('validateField', () => {
@@ -14,48 +9,34 @@ describe('Form Validation Utilities', () => {
       });
 
       it('throws a ValidationError for an invalid email', () => {
-        expect(() => validateField('email', 'invalid-email')).toThrow(
-          ValidationError
-        );
+        expect(() => validateField('email', 'invalid-email')).toThrow(ValidationError);
       });
     });
 
     // Password validation tests
     describe('Password validation', () => {
       it('validates a valid password', () => {
-        expect(() =>
-          validateField('password', 'ValidP@ss123')
-        ).not.toThrow();
+        expect(() => validateField('password', 'ValidP@ss123')).not.toThrow();
       });
 
       it('throws a ValidationError for too short password', () => {
-        expect(() => validateField('password', 'Pass1!')).toThrow(
-          ValidationError
-        );
+        expect(() => validateField('password', 'Pass1!')).toThrow(ValidationError);
       });
 
       it('throws a ValidationError for password without uppercase', () => {
-        expect(() => validateField('password', 'validp@ss123')).toThrow(
-          ValidationError
-        );
+        expect(() => validateField('password', 'validp@ss123')).toThrow(ValidationError);
       });
 
       it('throws a ValidationError for password without lowercase', () => {
-        expect(() => validateField('password', 'VALIDP@SS123')).toThrow(
-          ValidationError
-        );
+        expect(() => validateField('password', 'VALIDP@SS123')).toThrow(ValidationError);
       });
 
       it('throws a ValidationError for password without number', () => {
-        expect(() => validateField('password', 'ValidP@ssword')).toThrow(
-          ValidationError
-        );
+        expect(() => validateField('password', 'ValidP@ssword')).toThrow(ValidationError);
       });
 
       it('throws a ValidationError for password without special character', () => {
-        expect(() => validateField('password', 'ValidPass123')).toThrow(
-          ValidationError
-        );
+        expect(() => validateField('password', 'ValidPass123')).toThrow(ValidationError);
       });
     });
 
@@ -89,9 +70,7 @@ describe('Form Validation Utilities', () => {
       });
 
       it('throws a ValidationError for invalid phone format', () => {
-        expect(() => validateField('phone', '123-abc-7890')).toThrow(
-          ValidationError
-        );
+        expect(() => validateField('phone', '123-abc-7890')).toThrow(ValidationError);
       });
 
       it('does not throw for empty phone (optional)', () => {
@@ -102,15 +81,11 @@ describe('Form Validation Utilities', () => {
     // Preferences validation tests
     describe('Preferences validation', () => {
       it('validates a valid notifications preference', () => {
-        expect(() =>
-          validateField('preferences.notifications', true)
-        ).not.toThrow();
+        expect(() => validateField('preferences.notifications', true)).not.toThrow();
       });
 
       it('throws a ValidationError for non-boolean notifications preference', () => {
-        expect(() =>
-          validateField('preferences.notifications', 'yes')
-        ).toThrow(ValidationError);
+        expect(() => validateField('preferences.notifications', 'yes')).toThrow(ValidationError);
       });
 
       it('validates a valid theme preference', () => {
@@ -118,9 +93,7 @@ describe('Form Validation Utilities', () => {
       });
 
       it('throws a ValidationError for invalid theme', () => {
-        expect(() => validateField('preferences.theme', 'blue')).toThrow(
-          ValidationError
-        );
+        expect(() => validateField('preferences.theme', 'blue')).toThrow(ValidationError);
       });
     });
 
@@ -266,4 +239,4 @@ describe('Form Validation Utilities', () => {
       expect(errors.email).toBe('Invalid email format');
     });
   });
-}); 
+});

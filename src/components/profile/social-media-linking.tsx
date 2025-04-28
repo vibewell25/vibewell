@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -69,12 +69,12 @@ export function SocialMediaLinking() {
   const handleConnect = async (accountId: string) => {
     try {
       // Simulate API call to connect account
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      setAccounts(prev =>
-        prev.map(account =>
-          account.id === accountId ? { ...account, connected: true, username: 'user123' } : account
-        )
+      setAccounts((prev) =>
+        prev.map((account) =>
+          account.id === accountId ? { ...account, connected: true, username: 'user123' } : account,
+        ),
       );
 
       toast.success('Account connected successfully!');
@@ -87,12 +87,12 @@ export function SocialMediaLinking() {
   const handleDisconnect = async (accountId: string) => {
     try {
       // Simulate API call to disconnect account
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      setAccounts(prev =>
-        prev.map(account =>
-          account.id === accountId ? { ...account, connected: false, username: '' } : account
-        )
+      setAccounts((prev) =>
+        prev.map((account) =>
+          account.id === accountId ? { ...account, connected: false, username: '' } : account,
+        ),
       );
 
       toast.success('Account disconnected successfully!');
@@ -109,7 +109,7 @@ export function SocialMediaLinking() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {accounts.map(account => (
+          {accounts.map((account) => (
             <div
               key={account.id}
               className="flex items-center justify-between rounded-lg border p-4"

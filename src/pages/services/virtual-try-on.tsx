@@ -35,7 +35,7 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
 
   const handleTryOnComplete = (resultUrl: string) => {
     // Update history with new try-on
-    setTryOnHistory(prev => [
+    setTryOnHistory((prev) => [
       {
         id: Date.now().toString(),
         imageUrl: '',
@@ -71,7 +71,7 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
                   Your Try-On History
                 </Heading>
                 <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-                  {tryOnHistory.map(item => (
+                  {tryOnHistory.map((item) => (
                     <Card key={item.id}>
                       <CardBody>
                         <Image src={item.resultUrl} alt="Try-on result" borderRadius="lg" mb={4} />
@@ -86,7 +86,7 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
                           mt={2}
                           onClick={() => {
                             // Implement delete functionality
-                            setTryOnHistory(prev => prev.filter(h => h.id !== item.id));
+                            setTryOnHistory((prev) => prev.filter((h) => h.id !== item.id));
                           }}
                         >
                           Delete
@@ -109,34 +109,4 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async context => {
-  // Get user's try-on history
-  const history = await prisma.virtualTryOn.findMany({
-    where: {
-      userId: context.req.headers['x-user-id'] as string,
-    },
-    select: {
-      id: true,
-      imageUrl: true,
-      resultUrl: true,
-      createdAt: true,
-      service: {
-        select: {
-          name: true,
-        },
-      },
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
-
-  return {
-    props: {
-      history: history.map(item => ({
-        ...item,
-        createdAt: item.createdAt.toISOString(),
-      })),
-    },
-  };
-};
+export {};

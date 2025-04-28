@@ -121,6 +121,7 @@ const AnalyticsDashboardScreen: React.FC = () => {
         <Button title="Export Clients CSV" onPress={() => exportCsv('clients')} />
         <Button title="Export Services CSV" onPress={() => exportCsv('services')} />
         <Button title="Export Churn CSV" onPress={() => exportCsv('subscription-churn')} />
+        <Button title="Export Breakdown CSV" onPress={() => exportCsv('revenue-breakdown')} />
       </View>
     </ScrollView>
   );

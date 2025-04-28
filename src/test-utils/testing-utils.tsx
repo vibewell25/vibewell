@@ -2,8 +2,7 @@
  * Common testing utilities for the Vibewell project
  */
 import { vi } from 'vitest';
-import { render as rtlRender, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render as rtlRender, waitFor } from '@testing-library/react';
 import { ReactElement } from 'react';
 import { axe } from 'jest-axe';
 
@@ -31,7 +30,7 @@ const testAccessibility = async (element: Element) => {
 const mockMatchMedia = () => {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: vi.fn().mockImplementation(query => ({
+    value: vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
@@ -47,7 +46,7 @@ const mockMatchMedia = () => {
 /**
  * Wait for a specific amount of time
  */
-const waitFor = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const waitFor = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
  * Mock functions for testing
@@ -61,7 +60,7 @@ const mockFunctions = {
         json: () => Promise.resolve({ data: 'mocked data' }),
         text: () => Promise.resolve('mocked text'),
         blob: () => Promise.resolve(new Blob(['mocked blob'])),
-      })
+      }),
     );
 
     return () => {

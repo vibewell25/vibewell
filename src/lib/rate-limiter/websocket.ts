@@ -81,7 +81,7 @@ export class WebSocketRateLimiter {
       const result = await checkRateLimit(
         `websocket:connection:${ip}`,
         connectionOptions,
-        shouldUseRedis()
+        shouldUseRedis(),
       );
 
       return result.success;
@@ -166,7 +166,7 @@ export class WebSocketRateLimiter {
       const result = await checkRateLimit(
         `websocket:message:${ip}:${connectionId}`,
         messageOptions,
-        shouldUseRedis()
+        shouldUseRedis(),
       );
 
       // Check for message bursts
@@ -183,7 +183,7 @@ export class WebSocketRateLimiter {
         const burstResult = await checkRateLimit(
           `websocket:burst:${ip}:${connectionId}`,
           burstOptions,
-          shouldUseRedis()
+          shouldUseRedis(),
         );
 
         if (!burstResult.success) {
@@ -222,4 +222,4 @@ export class WebSocketRateLimiter {
 /**
  * Singleton instance of the WebSocket rate limiter
  */
-export const webSocketRateLimiter = new WebSocketRateLimiter();
+export {};

@@ -20,8 +20,8 @@ export default function NotificationsPage() {
   if (loading) {
     return (
       <Layout>
-        <div className="flex items-center justify-center h-[60vh]">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+        <div className="flex h-[60vh] items-center justify-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900"></div>
         </div>
       </Layout>
     );
@@ -36,7 +36,7 @@ export default function NotificationsPage() {
       <div className="container-app py-12">
         <Toaster position="top-right" />
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Notifications</h1>
+          <h1 className="mb-2 text-3xl font-bold">Notifications</h1>
           <p className="text-muted-foreground">Stay updated with your wellness journey</p>
         </div>
         <NotificationList />

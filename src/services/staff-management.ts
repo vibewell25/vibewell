@@ -1,16 +1,7 @@
-import {
-  PrismaClient,
-  Prisma,
-  Staff,
-  StaffPerformance,
-  Schedule,
-  ShiftSwapRequest,
-  Notification,
-  PractitionerReview,
-} from '@prisma/client';
+import { PrismaClient, Prisma, StaffPerformance, ShiftSwapRequest } from '@prisma/client';
 import { OpenAI } from 'openai';
 import { logger } from '@/lib/logger';
-import { differenceInDays, addDays, isWithinInterval, parseISO, subDays } from 'date-fns';
+import { differenceInDays, addDays, subDays } from 'date-fns';
 
 const prisma = new PrismaClient();
 const openai = new OpenAI();
@@ -144,7 +135,7 @@ export class StaffManagementService {
   async optimizeSchedule(
     startDate: Date,
     endDate: Date,
-    staffIds: string[]
+    staffIds: string[],
   ): Promise<ScheduleOptimizationResult> {
     try {
       // Gather historical booking data
@@ -174,7 +165,7 @@ export class StaffManagementService {
         historicalBookings,
         staffPerformanceData,
         startDate,
-        endDate
+        endDate,
       );
 
       // Get AI suggestions
@@ -297,7 +288,7 @@ export class StaffManagementService {
 
       // Check for expiring certifications
       const expiringCertifications = certifications.filter(
-        (cert: any) => cert.expiry_date && differenceInDays(cert.expiry_date, new Date()) <= 30
+        (cert: any) => cert.expiry_date && differenceInDays(cert.expiry_date, new Date()) <= 30,
       );
 
       if (expiringCertifications.length > 0) {
@@ -324,7 +315,7 @@ export class StaffManagementService {
       });
 
       await prisma.staffAvailability.createMany({
-        data: preferences.map(pref => ({
+        data: preferences.map((pref) => ({
           staffId,
           dayOfWeek: pref.dayOfWeek,
           startTime: pref.startTime,
@@ -370,7 +361,7 @@ export class StaffManagementService {
    * Manages shift swap requests
    */
   async requestShiftSwap(
-    request: Omit<ShiftSwapRequest, 'id' | 'status' | 'createdAt' | 'updatedAt'>
+    request: Omit<ShiftSwapRequest, 'id' | 'status' | 'createdAt' | 'updatedAt'>,
   ): Promise<void> {
     try {
       // First verify the schedule exists
@@ -412,7 +403,7 @@ export class StaffManagementService {
   async respondToShiftSwap(
     swapRequestId: string,
     recipientId: string,
-    accept: boolean
+    accept: boolean,
   ): Promise<ShiftSwapRequest> {
     try {
       const swapRequest = await prisma.shiftSwapRequest.findFirst({
@@ -482,7 +473,7 @@ export class StaffManagementService {
       type: string;
       message: string;
       data?: Record<string, any>;
-    }
+    },
   ): Promise<void> {
     try {
       await prisma.notification.create({
@@ -545,7 +536,7 @@ export class StaffManagementService {
 
   private calculateEfficiency(bookings: any[]): number {
     // Calculate ratio of completed bookings to allocated time
-    const completed = bookings.filter(b => b.status === 'COMPLETED').length;
+    const completed = bookings.filter((b) => b.status === 'COMPLETED').length;
     return bookings.length > 0 ? completed / bookings.length : 0;
   }
 
@@ -558,7 +549,7 @@ export class StaffManagementService {
 
   private calculateAttendanceScore(attendance: any[]): number {
     const total = attendance.length;
-    const present = attendance.filter(a => a.isAvailable).length;
+    const present = attendance.filter((a) => a.isAvailable).length;
     return total > 0 ? present / total : 0;
   }
 
@@ -570,7 +561,7 @@ export class StaffManagementService {
 
   private calculateClientRetention(bookings: any[]): number {
     // Calculate percentage of repeat clients
-    const uniqueClients = new Set(bookings.map(b => b.userId)).size;
+    const uniqueClients = new Set(bookings.map((b) => b.userId)).size;
     const repeatClients = bookings.length - uniqueClients;
     return uniqueClients > 0 ? repeatClients / uniqueClients : 0;
   }
@@ -593,7 +584,7 @@ export class StaffManagementService {
 
   private async updatePerformanceMetrics(
     staffId: string,
-    analytics: StaffAnalytics
+    analytics: StaffAnalytics,
   ): Promise<void> {
     await prisma.staffPerformance.upsert({
       where: { staffId },
@@ -615,12 +606,12 @@ export class StaffManagementService {
 
   private async notifyExpiringCertifications(
     staffId: string,
-    certifications: any[]
+    certifications: any[],
   ): Promise<void> {
     // Implement notification logic
     logger.info('Notifying about expiring certifications', 'StaffManagement', {
       staffId,
-      certifications: certifications.map(c => c.name),
+      certifications: certifications.map((c) => c.name),
     });
   }
 
@@ -641,7 +632,7 @@ export class StaffManagementService {
     historicalBookings: any[],
     staffPerformance: any[],
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): string {
     return `Optimize staff schedule based on:
       - Historical bookings: ${JSON.stringify(historicalBookings)}
@@ -674,7 +665,7 @@ export class StaffManagementService {
       value: number;
       timestamp: Date;
       metadata?: Record<string, any>;
-    }
+    },
   ): Promise<void> {
     try {
       // Store performance metric
@@ -710,7 +701,7 @@ export class StaffManagementService {
    */
   async calculateTeamMetrics(
     teamId: string,
-    period: { start: Date; end: Date }
+    period: { start: Date; end: Date },
   ): Promise<TeamMetrics> {
     try {
       // Get team members
@@ -720,7 +711,7 @@ export class StaffManagementService {
 
       // Calculate individual metrics for each team member
       const memberMetrics = await Promise.all(
-        teamMembers.map(member => this.analyzePerformance(member.id))
+        teamMembers.map((member) => this.analyzePerformance(member.id)),
       );
 
       // Calculate team-wide metrics
@@ -757,7 +748,7 @@ export class StaffManagementService {
    */
   async manageStaffGoal(
     staffId: string,
-    goal: Omit<StaffGoal, 'id' | 'current' | 'status'>
+    goal: Omit<StaffGoal, 'id' | 'current' | 'status'>,
   ): Promise<StaffGoal> {
     try {
       // Create new goal
@@ -819,7 +810,7 @@ export class StaffManagementService {
 
   private async checkGoalProgress(
     staffId: string,
-    metrics: { type: string; value: number }
+    metrics: { type: string; value: number },
   ): Promise<void> {
     try {
       const activeGoals = await prisma.staffGoal.findMany({
@@ -858,15 +849,15 @@ export class StaffManagementService {
 
   private calculateAverageMetric(
     metrics: StaffAnalytics[],
-    key: keyof StaffAnalytics['performance']
+    key: keyof StaffAnalytics['performance'],
   ): number {
-    const values = metrics.map(m => m.performance[key]);
+    const values = metrics.map((m) => m.performance[key]);
     return values.reduce((sum: number, val: number) => sum + val, 0) / values.length;
   }
 
   private async calculateTeamCollaboration(
     teamId: string,
-    period: { start: Date; end: Date }
+    period: { start: Date; end: Date },
   ): Promise<number> {
     try {
       const [messages, handovers] = await Promise.all([
@@ -907,7 +898,7 @@ export class StaffManagementService {
 
   private async calculateTeamGoalCompletion(
     teamId: string,
-    period: { start: Date; end: Date }
+    period: { start: Date; end: Date },
   ): Promise<number> {
     try {
       const goals = await prisma.staffGoal.findMany({
@@ -924,7 +915,7 @@ export class StaffManagementService {
 
       if (goals.length === 0) return 0;
 
-      const completedGoals = goals.filter(g => g.status === 'COMPLETED').length;
+      const completedGoals = goals.filter((g) => g.status === 'COMPLETED').length;
       return completedGoals / goals.length;
     } catch (error) {
       logger.error('Failed to calculate team goal completion', 'StaffManagement', { error });
@@ -954,7 +945,7 @@ export class StaffManagementService {
       teamId?: string;
       type: 'DIRECT' | 'TEAM' | 'ANNOUNCEMENT';
       attachments?: string[];
-    }
+    },
   ): Promise<Message> {
     try {
       if (!message.recipientId && !message.teamId) {
@@ -988,14 +979,14 @@ export class StaffManagementService {
 
         await Promise.all(
           teamMembers
-            .filter(member => member.id !== senderId)
-            .map(member =>
+            .filter((member) => member.id !== senderId)
+            .map((member) =>
               this.notifyStaffMember(member.id, {
                 type: 'NEW_TEAM_MESSAGE',
                 message: `New team message from ${senderId}`,
                 data: { messageId: newMessage.id },
-              })
-            )
+              }),
+            ),
         );
       }
 
@@ -1026,7 +1017,7 @@ export class StaffManagementService {
         pending: string[];
       };
       incidents?: string[];
-    }
+    },
   ): Promise<ShiftHandover> {
     try {
       const newHandover = await prisma.shiftHandover.create({
@@ -1084,7 +1075,7 @@ export class StaffManagementService {
       deadline?: Date;
       priority: 'LOW' | 'MEDIUM' | 'HIGH';
       tags: string[];
-    }
+    },
   ): Promise<Task> {
     try {
       const newTask = await prisma.task.create({
@@ -1098,13 +1089,13 @@ export class StaffManagementService {
 
       // Notify assigned staff
       await Promise.all(
-        task.assignedTo.map(staffId =>
+        task.assignedTo.map((staffId) =>
           this.notifyStaffMember(staffId, {
             type: 'TASK_ASSIGNED',
             message: `You have been assigned a new task: ${task.title}`,
             data: { taskId: newTask.id },
-          })
-        )
+          }),
+        ),
       );
 
       logger.info('Created task', 'StaffManagement', {
@@ -1126,7 +1117,7 @@ export class StaffManagementService {
   async updateTaskStatus(
     taskId: string,
     staffId: string,
-    status: 'TODO' | 'IN_PROGRESS' | 'COMPLETED'
+    status: 'TODO' | 'IN_PROGRESS' | 'COMPLETED',
   ): Promise<Task> {
     try {
       const task = await prisma.task.findUnique({
@@ -1140,7 +1131,7 @@ export class StaffManagementService {
         throw new Error('Task not found');
       }
 
-      if (!task.assignedTo.some(assigned => assigned.id === staffId)) {
+      if (!task.assignedTo.some((assigned) => assigned.id === staffId)) {
         throw new Error('Staff member not assigned to this task');
       }
 
@@ -1184,7 +1175,7 @@ export class StaffManagementService {
       priority?: Task['priority'];
       tags?: string[];
       deadline?: Date;
-    }
+    },
   ): Promise<Task[]> {
     try {
       const tasks = await prisma.task.findMany({
@@ -1218,7 +1209,7 @@ export class StaffManagementService {
    */
   private async getServiceBookings(
     staffId: string,
-    period: { start: Date; end: Date }
+    period: { start: Date; end: Date },
   ): Promise<any[]> {
     return prisma.serviceBooking.findMany({
       where: {
@@ -1245,7 +1236,7 @@ export class StaffManagementService {
    */
   private async getProductSales(
     staffId: string,
-    period: { start: Date; end: Date }
+    period: { start: Date; end: Date },
   ): Promise<any[]> {
     return prisma.productSale.findMany({
       where: {
@@ -1294,7 +1285,7 @@ export class StaffManagementService {
    */
   private async calculateBonusCommission(
     staffId: string,
-    period: { start: Date; end: Date }
+    period: { start: Date; end: Date },
   ): Promise<number> {
     const performance = await this.analyzePerformance(staffId);
     const bonusThreshold = 0.8; // 80% performance threshold
@@ -1309,7 +1300,7 @@ export class StaffManagementService {
   private async createCommissionRecord(
     staffId: string,
     type: 'SERVICE' | 'PRODUCT_SALE' | 'BONUS',
-    amount: number
+    amount: number,
   ): Promise<void> {
     await prisma.commission.create({
       data: {

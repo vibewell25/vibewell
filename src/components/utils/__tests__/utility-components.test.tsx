@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
@@ -73,7 +72,7 @@ describe('Utility Components', () => {
 
     it('respects system preference', () => {
       const matchMediaSpy = vi.spyOn(window, 'matchMedia');
-      matchMediaSpy.mockImplementation(query => ({
+      matchMediaSpy.mockImplementation((query) => ({
         matches: query === '(prefers-color-scheme: dark)',
         media: query,
         onchange: null,
@@ -167,7 +166,7 @@ describe('Utility Components', () => {
       render(
         <CopyToClipboard text="Test text">
           <button>Copy</button>
-        </CopyToClipboard>
+        </CopyToClipboard>,
       );
 
       await user.click(screen.getByText('Copy'));
@@ -178,7 +177,7 @@ describe('Utility Components', () => {
       render(
         <CopyToClipboard text="Test text" showFeedback>
           <button>Copy</button>
-        </CopyToClipboard>
+        </CopyToClipboard>,
       );
 
       await user.click(screen.getByText('Copy'));
@@ -192,7 +191,7 @@ describe('Utility Components', () => {
       render(
         <CopyToClipboard text="Test text" showFeedback>
           <button>Copy</button>
-        </CopyToClipboard>
+        </CopyToClipboard>,
       );
 
       await user.click(screen.getByText('Copy'));
@@ -263,7 +262,7 @@ describe('Utility Components', () => {
       const { container } = render(
         <CopyToClipboard text="Test text">
           <button>Copy</button>
-        </CopyToClipboard>
+        </CopyToClipboard>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -271,7 +270,7 @@ describe('Utility Components', () => {
 
     it('ImageOptimizer meets accessibility standards', async () => {
       const { container } = render(
-        <ImageOptimizer src="/test-image.jpg" alt="Test image" width={800} height={600} />
+        <ImageOptimizer src="/test-image.jpg" alt="Test image" width={800} height={600} />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();

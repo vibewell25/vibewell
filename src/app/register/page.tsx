@@ -17,7 +17,7 @@ function RegisterContent() {
 export default function RegisterPage() {
   return (
     <Suspense
-      fallback={<div className="flex justify-center items-center min-h-screen">Redirecting...</div>}
+      fallback={<div className="flex min-h-screen items-center justify-center">Redirecting...</div>}
     >
       <RegisterContent />
     </Suspense>

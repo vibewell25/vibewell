@@ -1,5 +1,3 @@
-import cors from 'cors';
-import helmet from 'helmet';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { csrfMiddleware, generateCsrfToken, verifyCsrfToken, getCsrfToken } from './csrf';
@@ -66,7 +64,7 @@ export function checkRateLimit(req: NextRequest): NextResponse | null {
           'Content-Type': 'application/json',
           'Retry-After': `${Math.ceil(rateLimitConfig.windowMs / 1000)}`,
         },
-      }
+      },
     );
   }
 
@@ -119,7 +117,7 @@ export async function securityMiddleware(request: NextRequest) {
     connect-src 'self' ${process.env.API_URL || ''};
   `
       .replace(/\s+/g, ' ')
-      .trim()
+      .trim(),
   );
 
   return response;

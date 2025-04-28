@@ -34,12 +34,12 @@ export async function POST(req: NextRequest) {
         // Check rate limit for generation
         const limited = await rateLimiter.isRateLimited(
           `recovery:generate:${session.user.id}`,
-          RATE_LIMIT.GENERATE
+          RATE_LIMIT.GENERATE,
         );
         if (limited) {
           return NextResponse.json(
             { error: 'Too many recovery code generations' },
-            { status: 429 }
+            { status: 429 },
           );
         }
 
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
         // Check rate limit for verification
         const limited = await rateLimiter.isRateLimited(
           `recovery:verify:${session.user.id}`,
-          RATE_LIMIT.VERIFY
+          RATE_LIMIT.VERIFY,
         );
         if (limited) {
           return NextResponse.json({ error: 'Too many verification attempts' }, { status: 429 });

@@ -187,7 +187,7 @@ export class AlertService {
       });
 
       // Convert Prisma models back to the interface format
-      return data.map(item => ({
+      return data.map((item) => ({
         id: item.id,
         name: item.name,
         description: item.description || undefined,
@@ -217,7 +217,7 @@ export class AlertService {
       });
 
       // Convert Prisma models back to the interface format
-      return data.map(item => ({
+      return data.map((item) => ({
         id: item.id,
         name: item.name,
         description: item.description || undefined,
@@ -314,7 +314,7 @@ export class AlertService {
       });
 
       if (error) throw error;
-      return data.map(item => ({
+      return data.map((item) => ({
         id: item.id,
         alert_id: item.alert_id,
         product_id: item.product_id,
@@ -340,7 +340,7 @@ export class AlertService {
       });
 
       if (error) throw error;
-      return data.map(item => ({
+      return data.map((item) => ({
         id: item.id,
         alert_id: item.alert_id,
         product_id: item.product_id,
@@ -375,12 +375,12 @@ export class AlertService {
    */
   async checkMetricsAgainstAlerts(
     productId: string,
-    metrics: Record<string, number>
+    metrics: Record<string, number>,
   ): Promise<void> {
     try {
       // Get active alerts for this product
       const alerts = await this.getAlertsByProduct(productId);
-      const activeAlerts = alerts.filter(alert => alert.is_active);
+      const activeAlerts = alerts.filter((alert) => alert.is_active);
 
       // Check each alert
       for (const alert of activeAlerts) {

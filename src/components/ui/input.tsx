@@ -1,7 +1,5 @@
-'use client';
-
+'use client';;
 import * as React from 'react';
-import { cn } from '@/lib/utils';
 import { BaseInput, BaseInputProps } from './base-input';
 
 export interface InputProps extends Omit<BaseInputProps, 'wrapperClassName'> {}
@@ -24,7 +22,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {...props}
       />
     );
-  }
+  },
 );
 Input.displayName = 'Input';
 

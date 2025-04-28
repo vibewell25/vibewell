@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import webpush from 'web-push';
 
 // In a real app, you'd store subscriptions in a database
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     webpush.setVapidDetails(
       'mailto:support@vibewell.com',
       process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
-      process.env.WEB_PUSH_PRIVATE_KEY
+      process.env.WEB_PUSH_PRIVATE_KEY,
     );
 
     // Save subscription to database (simulated)
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
         success: false,
         message: 'Failed to process subscription',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

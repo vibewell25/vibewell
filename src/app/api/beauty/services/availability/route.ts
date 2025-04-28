@@ -46,7 +46,7 @@ export async function GET(request: Request) {
         const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
 
         // Now we can safely check the time property since it's part of our schema
-        const isBooked = bookings.some(booking => booking.time === time);
+        const isBooked = bookings.some((booking) => booking.time === time);
 
         if (!isBooked) {
           availableSlots.push(time);

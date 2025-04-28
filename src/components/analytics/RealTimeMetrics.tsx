@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import {
   LineChart,
   Line,
@@ -11,8 +11,8 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { Download, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Download } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface MetricsData {
@@ -47,9 +47,9 @@ export function RealTimeMetrics() {
         setTimeout(connectWebSocket, 5000);
       };
 
-      ws.onmessage = event => {
+      ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        setMetricsHistory(prev => {
+        setMetricsHistory((prev) => {
           const newHistory = [
             ...prev,
             {
@@ -75,7 +75,7 @@ export function RealTimeMetrics() {
   const exportData = () => {
     const csv = [
       ['Timestamp', 'Views', 'Interactions', 'Conversions', 'Errors', 'Conversion Rate'],
-      ...metricsHistory.map(data => [
+      ...metricsHistory.map((data) => [
         data.timestamp,
         data.views,
         data.interactions,
@@ -84,7 +84,7 @@ export function RealTimeMetrics() {
         `${data.conversionRate.toFixed(2)}%`,
       ]),
     ]
-      .map(row => row.join(','))
+      .map((row) => row.join(','))
       .join('\n');
 
     const blob = new Blob([csv], { type: 'text/csv' });
@@ -125,7 +125,7 @@ export function RealTimeMetrics() {
           </TabsList>
 
           <TabsContent value="overview">
-            <div className="h-[400px] mt-4">
+            <div className="mt-4 h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={metricsHistory}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -147,7 +147,7 @@ export function RealTimeMetrics() {
           </TabsContent>
 
           <TabsContent value="interactions">
-            <div className="h-[400px] mt-4">
+            <div className="mt-4 h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={metricsHistory}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -167,7 +167,7 @@ export function RealTimeMetrics() {
           </TabsContent>
 
           <TabsContent value="conversions">
-            <div className="h-[400px] mt-4">
+            <div className="mt-4 h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={metricsHistory}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -188,7 +188,7 @@ export function RealTimeMetrics() {
           </TabsContent>
 
           <TabsContent value="errors">
-            <div className="h-[400px] mt-4">
+            <div className="mt-4 h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={metricsHistory}>
                   <CartesianGrid strokeDasharray="3 3" />

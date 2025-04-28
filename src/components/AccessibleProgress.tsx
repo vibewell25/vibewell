@@ -31,7 +31,7 @@ export const AccessibleProgress: React.FC<AccessibleProgressProps> = ({
   return (
     <div className={className}>
       {label && (
-        <div className="flex justify-between items-center mb-1">
+        <div className="mb-1 flex items-center justify-between">
           <label htmlFor={progressId} className="text-sm font-medium text-gray-700">
             {label}
           </label>
@@ -45,16 +45,10 @@ export const AccessibleProgress: React.FC<AccessibleProgressProps> = ({
         aria-valuemin={min}
         aria-valuemax={max}
         aria-labelledby={label ? progressId : undefined}
-        className={`
-          w-full bg-gray-200 rounded-full overflow-hidden
-          ${sizeStyles[size]}
-        `}
+        className={`w-full overflow-hidden rounded-full bg-gray-200 ${sizeStyles[size]} `}
       >
         <div
-          className={`
-            bg-primary transition-all duration-300 ease-in-out
-            ${sizeStyles[size]}
-          `}
+          className={`bg-primary transition-all duration-300 ease-in-out ${sizeStyles[size]} `}
           style={{ width: `${percentage}%` }}
         />
       </div>

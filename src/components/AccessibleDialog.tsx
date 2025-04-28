@@ -29,7 +29,7 @@ export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
       const handleTabKey = (e: KeyboardEvent) => {
         if (e.key === 'Tab') {
           const focusableElements = dialogRef.current?.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
           );
 
           if (focusableElements) {
@@ -63,23 +63,23 @@ export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
     >
       <div
         ref={dialogRef}
-        className={`bg-white rounded-lg shadow-xl p-6 max-w-md w-full ${className}`}
+        className={`w-full max-w-md rounded-lg bg-white p-6 shadow-xl ${className}`}
         tabIndex={-1}
       >
-        <h2 id="dialog-title" className="text-xl font-semibold mb-4">
+        <h2 id="dialog-title" className="mb-4 text-xl font-semibold">
           {title}
         </h2>
         {children}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
           aria-label="Close dialog"
         >
           ×
         </button>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 };
 

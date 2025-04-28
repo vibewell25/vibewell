@@ -24,7 +24,7 @@ class ImageCache {
 
   /**
    * Get an image from cache
-   * @param {string} url 
+   * @param {string} url
    * @returns {Promise<string|null>}
    */
   async get(url) {
@@ -54,8 +54,8 @@ class ImageCache {
 
   /**
    * Store an image in cache
-   * @param {string} url 
-   * @param {string} imageUrl 
+   * @param {string} url
+   * @param {string} imageUrl
    * @returns {Promise<boolean>}
    */
   async set(url, imageUrl) {
@@ -69,7 +69,7 @@ class ImageCache {
       // Create a response with cache metadata
       const headers = new Headers({
         'x-cached-date': new Date().toISOString(),
-        'x-cache-version': CACHE_VERSION
+        'x-cache-version': CACHE_VERSION,
       });
 
       const response = new Response(await fetch(imageUrl), { headers });
@@ -84,7 +84,7 @@ class ImageCache {
 
   /**
    * Delete an image from cache
-   * @param {string} url 
+   * @param {string} url
    * @returns {Promise<boolean>}
    */
   async delete(url) {
@@ -139,7 +139,7 @@ class ImageCache {
       // If cache is too large, remove oldest items
       if (totalSize > MAX_CACHE_SIZE) {
         const itemsToRemove = keys.slice(0, Math.ceil(keys.length * 0.2)); // Remove 20% of items
-        await Promise.all(itemsToRemove.map(key => cache.delete(key)));
+        await Promise.all(itemsToRemove.map((key) => cache.delete(key)));
       }
     } catch (error) {
       console.error('Error maintaining cache size:', error);
@@ -156,5 +156,5 @@ export const createImageCache = () => {
 };
 
 export default {
-  createImageCache
-}; 
+  createImageCache,
+};

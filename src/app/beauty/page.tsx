@@ -1,8 +1,7 @@
-'use client';
-
-import React, { Suspense, useEffect, useState } from 'react';
+'use client';;
+import { useEffect, useState } from 'react';
 import { Layout } from '@/components/layout';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   Card,
   CardContent,
@@ -10,10 +9,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+} from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PageHeader } from '@/components/page-header';
 import Link from 'next/link';
 
@@ -90,15 +88,15 @@ export default function BeautyPage() {
     let filtered = beautyServices;
 
     if (selectedCategory !== 'all') {
-      filtered = filtered.filter(service => service.category === selectedCategory);
+      filtered = filtered.filter((service) => service.category === selectedCategory);
     }
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
-        service =>
+        (service) =>
           service.title.toLowerCase().includes(query) ||
-          service.description.toLowerCase().includes(query)
+          service.description.toLowerCase().includes(query),
       );
     }
 
@@ -113,11 +111,11 @@ export default function BeautyPage() {
           description="Browse and book our premium beauty services"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {beautyCategories.map(category => (
+        <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {beautyCategories.map((category) => (
             <Card
               key={category.id}
-              className={`cursor-pointer border-2 hover:border-primary transition-colors ${
+              className={`hover:border-primary cursor-pointer border-2 transition-colors ${
                 selectedCategory === category.id ? 'border-primary' : 'border-border'
               }`}
               onClick={() => setSelectedCategory(category.id)}
@@ -132,30 +130,30 @@ export default function BeautyPage() {
           ))}
         </div>
 
-        <div className="flex items-center space-x-2 mb-8">
+        <div className="mb-8 flex items-center space-x-2">
           <Input
             type="search"
             placeholder="Search beauty services..."
             className="max-w-sm"
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map(i => (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
               <Card key={i} className="animate-pulse">
-                <div className="h-48 bg-muted rounded-t-lg"></div>
+                <div className="h-48 rounded-t-lg bg-muted"></div>
                 <CardHeader>
-                  <div className="h-5 bg-muted rounded w-3/4"></div>
+                  <div className="h-5 w-3/4 rounded bg-muted"></div>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-4 bg-muted rounded mb-2"></div>
-                  <div className="h-4 bg-muted rounded w-5/6"></div>
+                  <div className="mb-2 h-4 rounded bg-muted"></div>
+                  <div className="h-4 w-5/6 rounded bg-muted"></div>
                 </CardContent>
                 <CardFooter>
-                  <div className="h-9 bg-muted rounded w-full"></div>
+                  <div className="h-9 w-full rounded bg-muted"></div>
                 </CardFooter>
               </Card>
             ))}
@@ -163,9 +161,9 @@ export default function BeautyPage() {
         ) : (
           <>
             {filteredServices.length === 0 ? (
-              <div className="text-center py-12">
-                <h3 className="text-xl font-medium mb-2">No services found</h3>
-                <p className="text-muted-foreground mb-4">
+              <div className="py-12 text-center">
+                <h3 className="mb-2 text-xl font-medium">No services found</h3>
+                <p className="mb-4 text-muted-foreground">
                   Try adjusting your search or category selection
                 </p>
                 <Button
@@ -178,8 +176,8 @@ export default function BeautyPage() {
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredServices.map(service => (
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {filteredServices.map((service) => (
                   <Card key={service.id} className="overflow-hidden">
                     <div
                       className="h-48 bg-cover bg-center"
@@ -187,13 +185,13 @@ export default function BeautyPage() {
                     />
                     <CardHeader className="pb-2">
                       {service.featured && (
-                        <Badge className="w-fit mb-2" variant="secondary">
+                        <Badge className="mb-2 w-fit" variant="secondary">
                           Featured
                         </Badge>
                       )}
                       <CardTitle>{service.title}</CardTitle>
                       <div className="flex items-center text-sm text-muted-foreground">
-                        <span className="flex items-center mr-4">
+                        <span className="mr-4 flex items-center">
                           <span className="mr-1">⭐</span>
                           {service.rating}
                         </span>
@@ -201,15 +199,15 @@ export default function BeautyPage() {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-muted-foreground mb-4">{service.description}</p>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-lg">${service.price}</span>
+                      <p className="mb-4 text-muted-foreground">{service.description}</p>
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-lg font-medium">${service.price}</span>
                         <span className="text-sm text-muted-foreground">
                           {service.duration} min
                         </span>
                       </div>
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {service.availability.map(day => (
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {service.availability.map((day) => (
                           <Badge key={day} variant="outline">
                             {day}
                           </Badge>

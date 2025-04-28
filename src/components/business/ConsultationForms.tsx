@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
@@ -141,9 +141,9 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
             Add New Form
           </Button>
 
-          {forms.map(form => (
+          {forms.map((form) => (
             <Card key={form.id} className="p-4">
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-lg font-semibold">{form.name}</h3>
                   <p className="text-sm text-gray-500">{form.description}</p>
@@ -177,8 +177,8 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
         </div>
 
         {editingForm && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-            <Card className="w-full max-w-4xl mx-4 h-[80vh] overflow-auto">
+          <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+            <Card className="mx-4 h-[80vh] w-full max-w-4xl overflow-auto">
               <CardHeader>
                 <CardTitle>{editingForm.id ? 'Edit Form' : 'New Form'}</CardTitle>
               </CardHeader>
@@ -194,7 +194,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                       <Label>Name</Label>
                       <Input
                         value={editingForm.name}
-                        onChange={e => setEditingForm({ ...editingForm, name: e.target.value })}
+                        onChange={(e) => setEditingForm({ ...editingForm, name: e.target.value })}
                         required
                       />
                     </div>
@@ -203,7 +203,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                       <Label>Description</Label>
                       <Textarea
                         value={editingForm.description || ''}
-                        onChange={e =>
+                        onChange={(e) =>
                           setEditingForm({
                             ...editingForm,
                             description: e.target.value,
@@ -215,7 +215,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                     <div className="flex items-center space-x-2">
                       <Switch
                         checked={editingForm.isRequired}
-                        onCheckedChange={checked => handleSwitchChange(checked, 'isRequired')}
+                        onCheckedChange={(checked) => handleSwitchChange(checked, 'isRequired')}
                       />
                       <Label>Required</Label>
                     </div>
@@ -223,7 +223,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                     <div className="flex items-center space-x-2">
                       <Switch
                         checked={editingForm.isActive}
-                        onCheckedChange={checked => handleSwitchChange(checked, 'isActive')}
+                        onCheckedChange={(checked) => handleSwitchChange(checked, 'isActive')}
                       />
                       <Label>Active</Label>
                     </div>
@@ -232,7 +232,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                       <Label>Form Fields</Label>
                       <FormFieldEditor
                         fields={editingForm.fields}
-                        onChange={fields => setEditingForm({ ...editingForm, fields })}
+                        onChange={(fields) => setEditingForm({ ...editingForm, fields })}
                       />
                     </div>
                   </TabsContent>
@@ -246,7 +246,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                   </TabsContent>
                 </Tabs>
 
-                <div className="flex justify-end space-x-2 mt-6">
+                <div className="mt-6 flex justify-end space-x-2">
                   <Button type="button" variant="outline" onClick={() => setEditingForm(null)}>
                     Cancel
                   </Button>

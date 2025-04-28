@@ -7,15 +7,15 @@ const DynamicSystemMonitorDashboard = dynamic(
   () => import('@/components/monitoring/SystemMonitorDashboard'),
   {
     loading: () => <Spinner size="large" />,
-    ssr: false // Disable SSR for monitoring dashboard as it requires client-side data
-  }
+    ssr: false, // Disable SSR for monitoring dashboard as it requires client-side data
+  },
 );
 
 const MonitoringPage: React.FC = () => {
   return (
     <div className="monitoring-page">
       <h1>System Monitoring</h1>
-      
+
       <Suspense fallback={<Spinner size="large" />}>
         <DynamicSystemMonitorDashboard />
       </Suspense>
@@ -36,4 +36,4 @@ const MonitoringPage: React.FC = () => {
   );
 };
 
-export default MonitoringPage; 
+export default MonitoringPage;

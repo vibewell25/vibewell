@@ -92,7 +92,7 @@ export default function ProtectedPage() {
   useEffect(() => {
     if (!loading && !user) {
       router.replace(
-        `${ROUTES.AUTH.LOGIN}?callbackUrl=${encodeURIComponent(window.location.pathname)}`
+        `${ROUTES.AUTH.LOGIN}?callbackUrl=${encodeURIComponent(window.location.pathname)}`,
       );
     }
   }, [user, loading, router]);

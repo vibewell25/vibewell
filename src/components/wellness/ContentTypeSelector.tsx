@@ -37,7 +37,7 @@ export function ContentTypeSelector({
   return (
     <div className={`space-y-2 ${className}`}>
       <Label htmlFor="contentType">{label}</Label>
-      <Select value={value} onValueChange={value => onChange(value as ContentType)}>
+      <Select value={value} onValueChange={(value) => onChange(value as ContentType)}>
         <SelectTrigger id="contentType">
           <SelectValue placeholder="Select content type" />
         </SelectTrigger>

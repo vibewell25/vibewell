@@ -1,17 +1,11 @@
-'use client';
-
+'use client';;
 import { useState, useRef } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { BusinessProfileFormValues } from '@/components/business/business-profile-wizard';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ImageIcon, Upload, X, Image as ImageLucide, Camera } from 'lucide-react';
-import {
-  hasValidAltText,
-  isKeyboardAccessible,
-  enhanceAccessibility,
-} from '@/utils/accessibility-checks';
 
 interface MediaFormProps {
   form: UseFormReturn<BusinessProfileFormValues>;
@@ -88,7 +82,7 @@ export function MediaForm({ form }: MediaFormProps) {
     const validFiles: File[] = [];
     const newPreviews: string[] = [...galleryPreviews];
 
-    Array.from(files).forEach(file => {
+    Array.from(files).forEach((file) => {
       if (!file.type.startsWith('image/')) {
         alert(`File "${file.name}" is not an image.`);
         return;
@@ -170,7 +164,7 @@ export function MediaForm({ form }: MediaFormProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="mb-6 flex items-center gap-2">
         <ImageIcon className="h-5 w-5 text-muted-foreground" />
         <h2 className="text-xl font-semibold">Media & Images</h2>
       </div>
@@ -186,20 +180,20 @@ export function MediaForm({ form }: MediaFormProps) {
         <CardContent>
           <div className="flex flex-col items-center space-y-4">
             {logoPreview ? (
-              <div className="relative w-40 h-40 rounded-full overflow-hidden border-2 border-muted">
-                <img src={logoPreview} alt="Business Logo" className="w-full h-full object-cover" />
+              <div className="relative h-40 w-40 overflow-hidden rounded-full border-2 border-muted">
+                <img src={logoPreview} alt="Business Logo" className="h-full w-full object-cover" />
                 <button
                   type="button"
                   onClick={removeLogo}
                   onKeyDown={handleRemoveLogoKeyDown}
-                  className="absolute top-1 right-1 bg-background rounded-full p-1 shadow"
+                  className="absolute right-1 top-1 rounded-full bg-background p-1 shadow"
                   aria-label="Remove logo"
                 >
                   <X className="h-4 w-4" />
                 </button>
               </div>
             ) : (
-              <div className="flex items-center justify-center w-40 h-40 rounded-full bg-muted border-2 border-dashed border-muted-foreground/25">
+              <div className="flex h-40 w-40 items-center justify-center rounded-full border-2 border-dashed border-muted-foreground/25 bg-muted">
                 <Camera className="h-10 w-10 text-muted-foreground" aria-hidden="true" />
               </div>
             )}
@@ -215,7 +209,7 @@ export function MediaForm({ form }: MediaFormProps) {
                 aria-label="Upload business logo"
               />
               <Button type="button" variant="outline" onClick={() => logoInputRef.current?.click()}>
-                <Upload className="h-4 w-4 mr-2" aria-hidden="true" />
+                <Upload className="mr-2 h-4 w-4" aria-hidden="true" />
                 {logoPreview ? 'Change Logo' : 'Upload Logo'}
               </Button>
             </div>
@@ -234,25 +228,25 @@ export function MediaForm({ form }: MediaFormProps) {
         <CardContent>
           <div className="space-y-4">
             {coverPreview ? (
-              <div className="relative rounded-lg overflow-hidden h-48 bg-muted">
+              <div className="relative h-48 overflow-hidden rounded-lg bg-muted">
                 <img
                   src={coverPreview}
                   alt="Business Cover Image"
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-cover"
                 />
                 <button
                   type="button"
                   onClick={removeCover}
                   onKeyDown={handleRemoveCoverKeyDown}
-                  className="absolute top-2 right-2 bg-background rounded-full p-1 shadow"
+                  className="absolute right-2 top-2 rounded-full bg-background p-1 shadow"
                   aria-label="Remove cover image"
                 >
                   <X className="h-4 w-4" />
                 </button>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center rounded-lg bg-muted border-2 border-dashed border-muted-foreground/25 h-48">
-                <ImageLucide className="h-10 w-10 text-muted-foreground mb-2" aria-hidden="true" />
+              <div className="flex h-48 flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted">
+                <ImageLucide className="mb-2 h-10 w-10 text-muted-foreground" aria-hidden="true" />
                 <p className="text-sm text-muted-foreground">No cover image uploaded</p>
               </div>
             )}
@@ -272,7 +266,7 @@ export function MediaForm({ form }: MediaFormProps) {
                 variant="outline"
                 onClick={() => coverInputRef.current?.click()}
               >
-                <Upload className="h-4 w-4 mr-2" aria-hidden="true" />
+                <Upload className="mr-2 h-4 w-4" aria-hidden="true" />
                 {coverPreview ? 'Change Cover Image' : 'Upload Cover Image'}
               </Button>
             </div>
@@ -292,19 +286,19 @@ export function MediaForm({ form }: MediaFormProps) {
           <div className="space-y-4">
             {galleryPreviews.length > 0 && (
               <ScrollArea className="h-64 w-full rounded-md border">
-                <div className="p-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-4 p-4 md:grid-cols-3">
                   {galleryPreviews.map((preview, index) => (
-                    <div key={index} className="relative rounded-md overflow-hidden h-32 bg-muted">
+                    <div key={index} className="relative h-32 overflow-hidden rounded-md bg-muted">
                       <img
                         src={preview}
                         alt={`Gallery image ${index + 1}`}
-                        className="w-full h-full object-cover"
+                        className="h-full w-full object-cover"
                       />
                       <button
                         type="button"
                         onClick={() => removeGalleryImage(index)}
-                        onKeyDown={e => handleRemoveGalleryImageKeyDown(e, index)}
-                        className="absolute top-1 right-1 bg-background rounded-full p-1 shadow"
+                        onKeyDown={(e) => handleRemoveGalleryImageKeyDown(e, index)}
+                        className="absolute right-1 top-1 rounded-full bg-background p-1 shadow"
                         aria-label={`Remove gallery image ${index + 1}`}
                       >
                         <X className="h-4 w-4" />
@@ -331,7 +325,7 @@ export function MediaForm({ form }: MediaFormProps) {
                 variant="outline"
                 onClick={() => galleryInputRef.current?.click()}
               >
-                <Upload className="h-4 w-4 mr-2" aria-hidden="true" />
+                <Upload className="mr-2 h-4 w-4" aria-hidden="true" />
                 Add Gallery Images
               </Button>
             </div>

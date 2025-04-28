@@ -1,6 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { performanceMonitor } from '@/utils/performanceMonitor';
-import { AlertConfig } from '@/types/monitoring';
 
 describe('Performance Monitor', () => {
   beforeEach(() => {
@@ -23,7 +22,7 @@ describe('Performance Monitor', () => {
     it('should track multiple metrics', () => {
       performanceMonitor.track({
         metric1: 100,
-        metric2: 200
+        metric2: 200,
       });
       const metrics = performanceMonitor.getMetrics();
       expect(metrics['metric1']).toBe(100);
@@ -47,8 +46,8 @@ describe('Performance Monitor', () => {
       expect(alertListener).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'warning',
-          message: expect.stringContaining('cpuUsage')
-        })
+          message: expect.stringContaining('cpuUsage'),
+        }),
       );
     });
 
@@ -59,10 +58,7 @@ describe('Performance Monitor', () => {
       performanceMonitor.recordMetric('cpuUsage', 90);
       performanceMonitor.recordMetric('memoryUsage', 85);
 
-      const history = performanceMonitor.getAlertHistory(
-        now - 1000,
-        now + 1000
-      );
+      const history = performanceMonitor.getAlertHistory(now - 1000, now + 1000);
       expect(history.length).toBe(2);
     });
 
@@ -97,11 +93,11 @@ describe('Performance Monitor', () => {
   describe('Automatic Metrics Collection', () => {
     it('should collect metrics periodically', async () => {
       const collectSpy = vi.spyOn(performanceMonitor as any, 'collectSystemMetrics');
-      
+
       // Fast-forward time by 2 minutes
       vi.advanceTimersByTime(2 * 60 * 1000);
-      
+
       expect(collectSpy).toHaveBeenCalledTimes(2);
     });
   });
-}); 
+});

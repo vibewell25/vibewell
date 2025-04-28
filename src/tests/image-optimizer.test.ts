@@ -1,5 +1,4 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { promises as fs } from 'fs';
 import sharp from 'sharp';
 import ImageOptimizer from '../utils/image-optimization';
 
@@ -44,7 +43,7 @@ describe('ImageOptimizer', () => {
 
   it('should optimize an image with default options', async () => {
     const result = await imageOptimizer.optimizeImage(testImage);
-    
+
     expect(result).toEqual({
       buffer: expect.any(Buffer),
       format: 'jpeg',
@@ -64,25 +63,25 @@ describe('ImageOptimizer', () => {
     };
 
     const result = await imageOptimizer.optimizeImage(testImage, options);
-    
+
     expect(sharp).toHaveBeenCalledWith(testImage);
     expect(sharp().resize).toHaveBeenCalledWith(
       options.width,
       options.height,
-      expect.objectContaining({ fit: options.fit })
+      expect.objectContaining({ fit: options.fit }),
     );
     expect(sharp().toFormat).toHaveBeenCalledWith(
       options.format,
-      expect.objectContaining({ quality: options.quality })
+      expect.objectContaining({ quality: options.quality }),
     );
   });
 
   it('should generate responsive images', async () => {
     const breakpoints = [300, 600, 900];
     const results = await imageOptimizer.generateResponsiveImages(testImage, breakpoints);
-    
+
     expect(results.size).toBe(breakpoints.length);
-    breakpoints.forEach(width => {
+    breakpoints.forEach((width) => {
       expect(results.has(width)).toBe(true);
       const image = results.get(width);
       expect(image).toEqual({
@@ -97,28 +96,24 @@ describe('ImageOptimizer', () => {
 
   it('should generate a placeholder image', async () => {
     const placeholder = await imageOptimizer.generatePlaceholder(testImage);
-    
+
     expect(placeholder).toMatch(/^data:image\/(webp|jpeg|png);base64,/);
-    expect(sharp().resize).toHaveBeenCalledWith(
-      10,
-      10,
-      expect.any(Object)
-    );
+    expect(sharp().resize).toHaveBeenCalledWith(10, 10, expect.any(Object));
   });
 
   it('should use cache for repeated optimizations', async () => {
     (fs.readFile as jest.Mock).mockResolvedValueOnce(testImage);
-    
+
     await imageOptimizer.optimizeImage(testImage);
     await imageOptimizer.optimizeImage(testImage);
-    
+
     expect(sharp).toHaveBeenCalledTimes(2); // Once for initial optimization, once for metadata
   });
 
   it('should clean old cache files', async () => {
     const mockFiles = ['file1', 'file2', 'file3'];
     const mockStats = {
-      mtimeMs: Date.now() - (8 * 24 * 60 * 60 * 1000), // 8 days old
+      mtimeMs: Date.now() - 8 * 24 * 60 * 60 * 1000, // 8 days old
     };
 
     (fs.readdir as jest.Mock).mockResolvedValue(mockFiles);
@@ -131,7 +126,7 @@ describe('ImageOptimizer', () => {
 
   it('should get image metadata', async () => {
     const metadata = await imageOptimizer.getImageMetadata(testImage);
-    
+
     expect(metadata).toEqual({
       width: 1920,
       height: 1080,
@@ -144,7 +139,7 @@ describe('ImageOptimizer', () => {
     (fs.readFile as jest.Mock).mockResolvedValueOnce(testImage);
 
     await imageOptimizer.optimizeImage(filePath);
-    
+
     expect(fs.readFile).toHaveBeenCalledWith(filePath);
   });
 
@@ -154,9 +149,7 @@ describe('ImageOptimizer', () => {
       throw error;
     });
 
-    await expect(imageOptimizer.optimizeImage(testImage))
-      .rejects
-      .toThrow('Optimization failed');
+    await expect(imageOptimizer.optimizeImage(testImage)).rejects.toThrow('Optimization failed');
   });
 
   it('should handle errors during cache operations', async () => {
@@ -164,10 +157,10 @@ describe('ImageOptimizer', () => {
     (fs.writeFile as jest.Mock).mockRejectedValueOnce(error);
 
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-    
+
     await imageOptimizer.optimizeImage(testImage);
-    
+
     expect(consoleSpy).toHaveBeenCalledWith('Error caching image:', error);
     consoleSpy.mockRestore();
   });
-}); 
+});

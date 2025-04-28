@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Card } from "@/components/ui/card";
+import { Card } from "@/components/ui/Card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { cn } from "@/lib/utils";
 import { Trash2 } from "lucide-react";
 import { useAccessibilityContext } from "@/contexts/AccessibilityContext";

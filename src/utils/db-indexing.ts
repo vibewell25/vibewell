@@ -107,21 +107,27 @@ class DatabaseIndexing {
 
     try {
       // Get existing indexes
-      const existingIndexes = await this.prisma.$queryRaw<Array<{ indexname: string; indexdef: string }>>`
+      const existingIndexes = await this.prisma.$queryRaw<
+        Array<{ indexname: string; indexdef: string }>
+      >`
         SELECT indexname, indexdef
         FROM pg_indexes
         WHERE tablename = ${table.toLowerCase()};
       `;
 
       // Get index usage statistics
-      const indexUsage = await this.prisma.$queryRaw<Array<{ indexrelname: string; idx_scan: number }>>`
+      const indexUsage = await this.prisma.$queryRaw<
+        Array<{ indexrelname: string; idx_scan: number }>
+      >`
         SELECT indexrelname, idx_scan
         FROM pg_stat_user_indexes
         WHERE schemaname = 'public' AND relname = ${table.toLowerCase()};
       `;
 
       // Get index fragmentation
-      const fragmentation = await this.prisma.$queryRaw<Array<{ indexrelname: string; fragmentation: number }>>`
+      const fragmentation = await this.prisma.$queryRaw<
+        Array<{ indexrelname: string; fragmentation: number }>
+      >`
         SELECT i.indexrelname,
                (100 * (n_dead_tuple::float / nullif(n_live_tuple + n_dead_tuple, 0)))::numeric(10,2) as fragmentation
         FROM pg_stat_user_indexes i
@@ -130,22 +136,23 @@ class DatabaseIndexing {
       `;
 
       // Analyze missing indexes
-      const configuredIndexes = this.indexConfigs.filter(c => c.table === table);
-      const missingIndexes = configuredIndexes.filter(config => 
-        !existingIndexes.some(existing => 
-          existing.indexdef.includes(config.columns.join(', '))
-        )
+      const configuredIndexes = this.indexConfigs.filter((c) => c.table === table);
+      const missingIndexes = configuredIndexes.filter(
+        (config) =>
+          !existingIndexes.some((existing) =>
+            existing.indexdef.includes(config.columns.join(', ')),
+          ),
       );
 
       // Find unused indexes
       const unusedIndexes = indexUsage
-        .filter(usage => usage.idx_scan === 0)
-        .map(usage => usage.indexrelname);
+        .filter((usage) => usage.idx_scan === 0)
+        .map((usage) => usage.indexrelname);
 
       // Get fragmented indexes
       const fragmentedIndexes = fragmentation
-        .filter(f => f.fragmentation > 30)
-        .map(f => ({
+        .filter((f) => f.fragmentation > 30)
+        .map((f) => ({
           name: f.indexrelname,
           fragmentation: f.fragmentation,
         }));
@@ -180,7 +187,8 @@ class DatabaseIndexing {
     const startTime = performance.now();
 
     try {
-      const indexName = config.name || `idx_${config.table.toLowerCase()}_${config.columns.join('_')}`;
+      const indexName =
+        config.name || `idx_${config.table.toLowerCase()}_${config.columns.join('_')}`;
       const columnsStr = config.columns.join(', ');
       const uniqueStr = config.unique ? 'UNIQUE' : '';
       const whereStr = config.partial ? `WHERE ${config.partial}` : '';
@@ -271,9 +279,12 @@ class DatabaseIndexing {
 
   public removeIndexConfig(table: string, columns: string[]): void {
     this.indexConfigs = this.indexConfigs.filter(
-      config => !(config.table === table && 
-        config.columns.length === columns.length && 
-        config.columns.every((col, i) => col === columns[i]))
+      (config) =>
+        !(
+          config.table === table &&
+          config.columns.length === columns.length &&
+          config.columns.every((col, i) => col === columns[i])
+        ),
     );
   }
 
@@ -282,4 +293,4 @@ class DatabaseIndexing {
   }
 }
 
-export const dbIndexing = DatabaseIndexing.getInstance(); 
+export {};

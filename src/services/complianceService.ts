@@ -45,7 +45,7 @@ export class ComplianceService {
   async recordConsent(
     userId: string,
     purposes: string[],
-    dataCategories: string[]
+    dataCategories: string[],
   ): Promise<DataProcessingAgreement> {
     try {
       const agreement: DataProcessingAgreement = {
@@ -82,7 +82,7 @@ export class ComplianceService {
    * Handle data subject request (GDPR Article 15-20)
    */
   async handleDataSubjectRequest(
-    request: Omit<DataSubjectRequest, 'id' | 'createdAt' | 'status'>
+    request: Omit<DataSubjectRequest, 'id' | 'createdAt' | 'status'>,
   ): Promise<DataSubjectRequest> {
     try {
       const id = `dsr:${Date.now()}:${Math.random().toString(36).slice(2)}`;
@@ -198,7 +198,7 @@ export class ComplianceService {
    */
   private async updateRequestStatus(
     requestId: string,
-    status: DataSubjectRequest['status']
+    status: DataSubjectRequest['status'],
   ): Promise<void> {
     const key = `compliance:dsr:${requestId}`;
     const data = await this.redis.hget(key, 'request');
@@ -234,7 +234,7 @@ export class ComplianceService {
     if (!policy) return false;
 
     const retentionEnd = new Date(
-      createdAt.getTime() + policy.retentionPeriod * 24 * 60 * 60 * 1000
+      createdAt.getTime() + policy.retentionPeriod * 24 * 60 * 60 * 1000,
     );
     return new Date() > retentionEnd;
   }

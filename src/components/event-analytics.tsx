@@ -1,7 +1,7 @@
 import { Icons } from '@/components/icons';
 import { Event } from '@/types/events';
 import { format, parseISO } from 'date-fns';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { Progress } from '@/components/ui/progress';
 interface EventAnalyticsProps {
   event: Event;
@@ -14,14 +14,14 @@ export function EventAnalytics({ event }: EventAnalyticsProps) {
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Icons.ChartBarIcon className="h-5 w-5 text-primary" />
+          <Icons.ChartBarIcon className="text-primary h-5 w-5" />
           <h3 className="text-lg font-semibold">Event Analytics</h3>
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Attendance */}
         <div>
-          <div className="flex justify-between items-center mb-2">
+          <div className="mb-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Icons.UserGroupIcon className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-medium">Attendance</span>

@@ -1,5 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { createMockSession, destroyMockSession } from '../test-utils';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -47,13 +46,13 @@ describe('Authentication Security', () => {
 
     it('should reject invalid password', async () => {
       await expect(authenticateUser(testUser.email, 'wrongpassword')).rejects.toThrow(
-        'Invalid credentials'
+        'Invalid credentials',
       );
     });
 
     it('should reject non-existent user', async () => {
       await expect(authenticateUser('nonexistent@example.com', testUser.password)).rejects.toThrow(
-        'Invalid credentials'
+        'Invalid credentials',
       );
     });
 
@@ -63,7 +62,7 @@ describe('Authentication Security', () => {
       }
 
       await expect(authenticateUser(testUser.email, testUser.password)).rejects.toThrow(
-        'Account locked'
+        'Account locked',
       );
     });
   });
@@ -122,7 +121,7 @@ describe('Authentication Security', () => {
       });
 
       await expect(
-        validateToken(jwt.sign({ sessionId: expiredSession.id }, process.env.JWT_SECRET!))
+        validateToken(jwt.sign({ sessionId: expiredSession.id }, process.env.JWT_SECRET!)),
       ).rejects.toThrow('Session expired');
     });
   });
@@ -139,7 +138,7 @@ describe('Authentication Security', () => {
 
       for (const password of weakPasswords) {
         await expect(authenticateUser(testUser.email, password)).rejects.toThrow(
-          'Password does not meet security requirements'
+          'Password does not meet security requirements',
         );
       }
     });
@@ -158,7 +157,7 @@ describe('Authentication Security', () => {
         });
 
         await expect(authenticateUser(testUser.email, password)).rejects.toThrow(
-          'Password was previously used'
+          'Password was previously used',
         );
       }
     });

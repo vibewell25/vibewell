@@ -128,7 +128,7 @@ export function useAdaptiveQuality(options: AdaptiveQualityOptions = {}): Adapti
     preferBattery &&
       capabilities.batteryStatus &&
       capabilities.batteryStatus.charging === false &&
-      capabilities.batteryStatus.level < batteryThreshold
+      capabilities.batteryStatus.level < batteryThreshold,
   );
 
   // Determine final quality level

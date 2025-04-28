@@ -57,7 +57,7 @@ export default function ServicesPage({ services: initialServices, categories }: 
   const toast = useToast();
   const { isSignedIn } = useUser();
 
-  const filteredServices = services.filter(service => {
+  const filteredServices = services.filter((service) => {
     const matchesSearch =
       service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       service.description?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -96,15 +96,15 @@ export default function ServicesPage({ services: initialServices, categories }: 
           <Input
             placeholder="Search services..."
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Select
             placeholder="All Categories"
             value={selectedCategory}
-            onChange={e => setSelectedCategory(e.target.value)}
+            onChange={(e) => setSelectedCategory(e.target.value)}
             maxW="200px"
           >
-            {categories.map(category => (
+            {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>
@@ -115,7 +115,7 @@ export default function ServicesPage({ services: initialServices, categories }: 
 
       {filteredServices.length > 0 ? (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-          {filteredServices.map(service => (
+          {filteredServices.map((service) => (
             <ServiceCard key={service.id} {...service} onBookNow={handleBookNow} />
           ))}
         </SimpleGrid>
@@ -139,28 +139,4 @@ export default function ServicesPage({ services: initialServices, categories }: 
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const beautyServiceService = new BeautyServiceService();
-
-  try {
-    const [services, categories] = await Promise.all([
-      beautyServiceService.getServicesByBusiness(process.env.BUSINESS_ID as string),
-      beautyServiceService.getServiceCategories(),
-    ]);
-
-    return {
-      props: {
-        services,
-        categories: categories.map(({ id, name }) => ({ id, name })),
-      },
-    };
-  } catch (error) {
-    console.error('Error fetching services:', error);
-    return {
-      props: {
-        services: [],
-        categories: [],
-      },
-    };
-  }
-};
+export {};

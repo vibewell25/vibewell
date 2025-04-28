@@ -2,7 +2,7 @@
  * Utilities for testing React hooks
  */
 import React from 'react';
-import { render, renderHook, act } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 
 type Provider = React.ComponentType<{ children: React.ReactNode }>;
 
@@ -27,7 +27,10 @@ export function createWrapperWithProviders(providers: Provider[] = []) {
  */
 export function renderHookWithProviders<TProps, TResult>(
   hook: (props: TProps) => TResult,
-  { providers = [], ...options }: { providers?: Provider[] } & Parameters<typeof renderHook>[1] = {}
+  {
+    providers = [],
+    ...options
+  }: { providers?: Provider[] } & Parameters<typeof renderHook>[1] = {},
 ) {
   const wrapper = createWrapperWithProviders(providers);
   return renderHook(hook, { wrapper, ...options });
@@ -40,7 +43,7 @@ export function renderHookWithProviders<TProps, TResult>(
  */
 export async function waitForAsyncEvents(callback?: () => void): Promise<void> {
   await act(async () => {
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     if (callback) callback();
   });
 }
@@ -60,7 +63,7 @@ interface HookAction<TResult> {
 export async function testHookUpdates<TProps, TResult>(
   hook: (props: TProps) => TResult,
   actions: HookAction<TResult>[],
-  options: Parameters<typeof renderHookWithProviders>[1] = {}
+  options: Parameters<typeof renderHookWithProviders>[1] = {},
 ) {
   const result = renderHookWithProviders(hook, options);
 
@@ -68,7 +71,7 @@ export async function testHookUpdates<TProps, TResult>(
     if (actFn) {
       await act(async () => {
         actFn(result);
-        await new Promise(resolve => setTimeout(resolve, 0));
+        await new Promise((resolve) => setTimeout(resolve, 0));
       });
     }
 

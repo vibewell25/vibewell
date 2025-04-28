@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
 import { useRouter } from 'next/navigation';
 import { useDebounce } from '@/hooks/useDebounce';
 import { Search, X, Clock } from 'lucide-react';
@@ -125,7 +125,7 @@ export function HubSearch({
     if (!query && !allowEmptySearch) return;
     // Add to recent searches
     if (query.trim() !== '') {
-      const updatedSearches = [query, ...recentSearches.filter(s => s !== query)].slice(0, 5);
+      const updatedSearches = [query, ...recentSearches.filter((s) => s !== query)].slice(0, 5);
       setRecentSearches(updatedSearches);
       try {
         localStorage.setItem('vibewell_recent_searches', JSON.stringify(updatedSearches));
@@ -155,7 +155,7 @@ export function HubSearch({
     // Add to recent searches
     const updatedSearches = [
       suggestion.title.split(': ')[1] || suggestion.title,
-      ...recentSearches.filter(s => s !== suggestion.title),
+      ...recentSearches.filter((s) => s !== suggestion.title),
     ].slice(0, 5);
     setRecentSearches(updatedSearches);
     try {
@@ -171,12 +171,12 @@ export function HubSearch({
   return (
     <div className={`relative ${className}`}>
       <div className="relative flex items-center">
-        <Search className="absolute left-3 text-gray-400 h-5 w-5" />
+        <Search className="absolute left-3 h-5 w-5 text-gray-400" />
         <Input
           ref={inputRef}
           type="text"
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
           className="pl-10 pr-10"
           onFocus={() => setShowSuggestions(query.length >= 2)}
@@ -184,7 +184,7 @@ export function HubSearch({
             // Delay hiding suggestions to allow for clicks
             setTimeout(() => setShowSuggestions(false), 200);
           }}
-          onKeyDown={e => {
+          onKeyDown={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault();
               handleSearch();
@@ -205,33 +205,35 @@ export function HubSearch({
         </Button>
       </div>
       {/* Category selector */}
-      <div className="flex mt-2 space-x-2 text-sm">
+      <div className="mt-2 flex space-x-2 text-sm">
         <span className="text-gray-500">Search in:</span>
-        {(['all', 'resources', 'tools', 'marketing', 'financial'] as SearchCategory[]).map(cat => (
-          <button
-            key={cat}
-            type="button"
-            className={`${
-              category === cat ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'
-            }`}
-            onClick={() => setCategory(cat)}
-          >
-            {cat.charAt(0).toUpperCase() + cat.slice(1)}
-          </button>
-        ))}
+        {(['all', 'resources', 'tools', 'marketing', 'financial'] as SearchCategory[]).map(
+          (cat) => (
+            <button
+              key={cat}
+              type="button"
+              className={`${
+                category === cat ? 'font-medium text-blue-600' : 'text-gray-600 hover:text-gray-900'
+              }`}
+              onClick={() => setCategory(cat)}
+            >
+              {cat.charAt(0).toUpperCase() + cat.slice(1)}
+            </button>
+          ),
+        )}
       </div>
       {/* Suggestions dropdown */}
       {showSuggestions && (
-        <div className="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg border border-gray-200">
+        <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
           {isLoading ? (
             <div className="p-4 text-center text-sm text-gray-500">Loading suggestions...</div>
           ) : suggestions.length > 0 ? (
             <ul>
-              {suggestions.map(suggestion => (
+              {suggestions.map((suggestion) => (
                 <li key={suggestion.id}>
                   <button
                     type="button"
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors"
+                    className="w-full px-4 py-2 text-left transition-colors hover:bg-gray-100"
                     onClick={() => handleSuggestionClick(suggestion)}
                   >
                     <div className="font-medium">{suggestion.title}</div>
@@ -242,11 +244,11 @@ export function HubSearch({
               <li className="border-t border-gray-100">
                 <button
                   type="button"
-                  className="w-full text-left px-4 py-2 text-blue-600 hover:bg-gray-100 transition-colors"
+                  className="w-full px-4 py-2 text-left text-blue-600 transition-colors hover:bg-gray-100"
                   onClick={handleSearch}
                 >
-                  <div className="font-medium flex items-center">
-                    <Search className="h-4 w-4 mr-2" />
+                  <div className="flex items-center font-medium">
+                    <Search className="mr-2 h-4 w-4" />
                     Search for "{query}"
                   </div>
                 </button>
@@ -258,7 +260,7 @@ export function HubSearch({
             </div>
           ) : recentSearches.length > 0 ? (
             <div>
-              <div className="px-4 py-2 text-xs font-medium text-gray-500 border-b border-gray-100">
+              <div className="border-b border-gray-100 px-4 py-2 text-xs font-medium text-gray-500">
                 Recent Searches
               </div>
               <ul>
@@ -266,13 +268,13 @@ export function HubSearch({
                   <li key={index}>
                     <button
                       type="button"
-                      className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors flex items-center"
+                      className="flex w-full items-center px-4 py-2 text-left transition-colors hover:bg-gray-100"
                       onClick={() => {
                         setQuery(search);
                         setTimeout(() => handleSearch(), 0);
                       }}
                     >
-                      <Clock className="h-4 w-4 mr-2 text-gray-400" />
+                      <Clock className="mr-2 h-4 w-4 text-gray-400" />
                       <span>{search}</span>
                     </button>
                   </li>

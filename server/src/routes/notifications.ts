@@ -17,4 +17,25 @@ router.post('/register', checkJwt, async (req: Request, res: Response) => {
   res.json({ success: true });
 });
 
+// Fetch user notifications
+router.get('/', checkJwt, async (req: Request, res: Response) => {
+  const auth = req.auth as any;
+  const userId = auth.sub as string;
+  const items = await prisma.notification.findMany({
+    where: { userId },
+    orderBy: { createdAt: 'desc' },
+  });
+  res.json({ notifications: items });
+});
+
+// Mark notification as read
+router.post('/read/:id', checkJwt, async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const notification = await prisma.notification.update({
+    where: { id },
+    data: { read: true },
+  });
+  res.json(notification);
+});
+
 export default router;

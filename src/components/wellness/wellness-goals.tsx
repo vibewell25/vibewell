@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Progress } from '@/components/ui/progress';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -105,7 +105,7 @@ export function WellnessGoals() {
         throw new Error('Failed to delete goal');
       }
 
-      setGoals(goals.filter(goal => goal.id !== goalId));
+      setGoals(goals.filter((goal) => goal.id !== goalId));
       toast.success('Goal deleted successfully!');
     } catch (error) {
       console.error('Error deleting goal:', error);
@@ -116,7 +116,7 @@ export function WellnessGoals() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
       </div>
     );
   }
@@ -134,14 +134,14 @@ export function WellnessGoals() {
               <Input
                 id="title"
                 value={newGoal.title}
-                onChange={e => setNewGoal({ ...newGoal, title: e.target.value })}
+                onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               <Select
                 value={newGoal.category}
-                onValueChange={value => setNewGoal({ ...newGoal, category: value })}
+                onValueChange={(value) => setNewGoal({ ...newGoal, category: value })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select category" />
@@ -160,7 +160,7 @@ export function WellnessGoals() {
                 id="target"
                 type="number"
                 value={newGoal.target}
-                onChange={e => setNewGoal({ ...newGoal, target: Number(e.target.value) })}
+                onChange={(e) => setNewGoal({ ...newGoal, target: Number(e.target.value) })}
               />
             </div>
             <div className="space-y-2">
@@ -168,7 +168,7 @@ export function WellnessGoals() {
               <Input
                 id="unit"
                 value={newGoal.unit}
-                onChange={e => setNewGoal({ ...newGoal, unit: e.target.value })}
+                onChange={(e) => setNewGoal({ ...newGoal, unit: e.target.value })}
               />
             </div>
             <div className="space-y-2">
@@ -177,7 +177,7 @@ export function WellnessGoals() {
                 id="deadline"
                 type="date"
                 value={newGoal.deadline}
-                onChange={e => setNewGoal({ ...newGoal, deadline: e.target.value })}
+                onChange={(e) => setNewGoal({ ...newGoal, deadline: e.target.value })}
               />
             </div>
             <div className="space-y-2">
@@ -185,7 +185,7 @@ export function WellnessGoals() {
               <Input
                 id="description"
                 value={newGoal.description}
-                onChange={e => setNewGoal({ ...newGoal, description: e.target.value })}
+                onChange={(e) => setNewGoal({ ...newGoal, description: e.target.value })}
               />
             </div>
           </div>
@@ -197,7 +197,7 @@ export function WellnessGoals() {
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {goals.map(goal => (
+        {goals.map((goal) => (
           <Card key={goal.id}>
             <CardHeader>
               <div className="flex items-center justify-between">

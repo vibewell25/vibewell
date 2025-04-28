@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { DayOfWeek } from '@prisma/client';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Switch } from '@/components/ui/switch';
 import { TimeInput } from '@/components/ui/time-input';
 import { toast } from '@/components/ui/toast';
@@ -79,8 +79,8 @@ export function BusinessHours({ businessId }: BusinessHoursProps) {
   };
 
   const handleHourChange = (day: DayOfWeek, field: keyof BusinessHour, value: any) => {
-    setHours(prev =>
-      prev.map(hour => (hour.dayOfWeek === day ? { ...hour, [field]: value } : hour))
+    setHours((prev) =>
+      prev.map((hour) => (hour.dayOfWeek === day ? { ...hour, [field]: value } : hour)),
     );
   };
 
@@ -95,23 +95,23 @@ export function BusinessHours({ businessId }: BusinessHoursProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {DAYS_OF_WEEK.map(day => (
+          {DAYS_OF_WEEK.map((day) => (
             <div key={day} className="flex items-center space-x-4">
               <div className="w-32">{day}</div>
               <Switch
-                checked={!hours.find(h => h.dayOfWeek === day)?.isClosed}
-                onCheckedChange={checked => handleHourChange(day, 'isClosed', !checked)}
+                checked={!hours.find((h) => h.dayOfWeek === day)?.isClosed}
+                onCheckedChange={(checked) => handleHourChange(day, 'isClosed', !checked)}
               />
-              {!hours.find(h => h.dayOfWeek === day)?.isClosed && (
+              {!hours.find((h) => h.dayOfWeek === day)?.isClosed && (
                 <>
                   <TimeInput
-                    value={hours.find(h => h.dayOfWeek === day)?.openTime || '09:00'}
-                    onChange={value => handleHourChange(day, 'openTime', value)}
+                    value={hours.find((h) => h.dayOfWeek === day)?.openTime || '09:00'}
+                    onChange={(value) => handleHourChange(day, 'openTime', value)}
                   />
                   <span>to</span>
                   <TimeInput
-                    value={hours.find(h => h.dayOfWeek === day)?.closeTime || '17:00'}
-                    onChange={value => handleHourChange(day, 'closeTime', value)}
+                    value={hours.find((h) => h.dayOfWeek === day)?.closeTime || '17:00'}
+                    onChange={(value) => handleHourChange(day, 'closeTime', value)}
                   />
                 </>
               )}

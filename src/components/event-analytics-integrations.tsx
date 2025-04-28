@@ -1,10 +1,8 @@
 import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { Event } from '@/types/events';
-import { format, parseISO } from 'date-fns';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
@@ -31,11 +29,11 @@ export function EventAnalyticsIntegrations({
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="analytics">
-              <Icons.ChartBarIcon className="h-4 w-4 mr-2" />
+              <Icons.ChartBarIcon className="mr-2 h-4 w-4" />
               Analytics
             </TabsTrigger>
             <TabsTrigger value="integrations">
-              <Icons.ShareIcon className="h-4 w-4 mr-2" />
+              <Icons.ShareIcon className="mr-2 h-4 w-4" />
               Integrations
             </TabsTrigger>
           </TabsList>
@@ -49,14 +47,14 @@ export function EventAnalyticsIntegrations({
                 <div className="space-y-2">
                   <Label>Event Performance</Label>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 border rounded-md">
+                    <div className="rounded-md border p-4">
                       <p className="text-sm text-muted-foreground">Views</p>
                       <p className="text-2xl font-semibold">{event.analytics.views}</p>
                       <p className="text-xs text-muted-foreground">
                         {event.analytics.uniqueViews} unique views
                       </p>
                     </div>
-                    <div className="p-4 border rounded-md">
+                    <div className="rounded-md border p-4">
                       <p className="text-sm text-muted-foreground">Shares</p>
                       <p className="text-2xl font-semibold">{event.analytics.shares}</p>
                     </div>
@@ -82,7 +80,7 @@ export function EventAnalyticsIntegrations({
                 {event.analytics.revenue && (
                   <div className="space-y-2">
                     <Label>Revenue</Label>
-                    <div className="p-4 border rounded-md">
+                    <div className="rounded-md border p-4">
                       <p className="text-2xl font-semibold">
                         ${event.analytics.revenue.toFixed(2)}
                       </p>
@@ -92,7 +90,7 @@ export function EventAnalyticsIntegrations({
                 {event.analytics.averageRating && (
                   <div className="space-y-2">
                     <Label>Feedback</Label>
-                    <div className="p-4 border rounded-md">
+                    <div className="rounded-md border p-4">
                       <div className="flex items-center gap-2">
                         <span className="text-2xl font-semibold">
                           {event.analytics.averageRating.toFixed(1)}
@@ -118,7 +116,7 @@ export function EventAnalyticsIntegrations({
                   onClick={() => onCalendarSync('google')}
                   disabled={!!event.integrations?.calendar?.googleCalendarId}
                 >
-                  <Icons.CalendarIcon className="h-4 w-4 mr-2" />
+                  <Icons.CalendarIcon className="mr-2 h-4 w-4" />
                   Google
                 </Button>
                 <Button
@@ -126,7 +124,7 @@ export function EventAnalyticsIntegrations({
                   onClick={() => onCalendarSync('outlook')}
                   disabled={!!event.integrations?.calendar?.outlookCalendarId}
                 >
-                  <Icons.CalendarIcon className="h-4 w-4 mr-2" />
+                  <Icons.CalendarIcon className="mr-2 h-4 w-4" />
                   Outlook
                 </Button>
                 <Button
@@ -134,7 +132,7 @@ export function EventAnalyticsIntegrations({
                   onClick={() => onCalendarSync('apple')}
                   disabled={!!event.integrations?.calendar?.appleCalendarId}
                 >
-                  <Icons.CalendarIcon className="h-4 w-4 mr-2" />
+                  <Icons.CalendarIcon className="mr-2 h-4 w-4" />
                   Apple
                 </Button>
               </div>
@@ -148,7 +146,7 @@ export function EventAnalyticsIntegrations({
                     onClick={() => onVideoSetup('zoom')}
                     disabled={!!event.integrations?.video?.meetingId}
                   >
-                    <Icons.VideoCameraIcon className="h-4 w-4 mr-2" />
+                    <Icons.VideoCameraIcon className="mr-2 h-4 w-4" />
                     Zoom
                   </Button>
                   <Button
@@ -156,7 +154,7 @@ export function EventAnalyticsIntegrations({
                     onClick={() => onVideoSetup('teams')}
                     disabled={!!event.integrations?.video?.meetingId}
                   >
-                    <Icons.VideoCameraIcon className="h-4 w-4 mr-2" />
+                    <Icons.VideoCameraIcon className="mr-2 h-4 w-4" />
                     Teams
                   </Button>
                   <Button
@@ -164,7 +162,7 @@ export function EventAnalyticsIntegrations({
                     onClick={() => onVideoSetup('google-meet')}
                     disabled={!!event.integrations?.video?.meetingId}
                   >
-                    <Icons.VideoCameraIcon className="h-4 w-4 mr-2" />
+                    <Icons.VideoCameraIcon className="mr-2 h-4 w-4" />
                     Meet
                   </Button>
                 </div>
@@ -178,7 +176,7 @@ export function EventAnalyticsIntegrations({
                   onClick={() => onPaymentSetup('stripe')}
                   disabled={!!event.integrations?.payment?.productId}
                 >
-                  <Icons.CreditCardIcon className="h-4 w-4 mr-2" />
+                  <Icons.CreditCardIcon className="mr-2 h-4 w-4" />
                   Stripe
                 </Button>
                 <Button
@@ -186,7 +184,7 @@ export function EventAnalyticsIntegrations({
                   onClick={() => onPaymentSetup('paypal')}
                   disabled={!!event.integrations?.payment?.productId}
                 >
-                  <Icons.CreditCardIcon className="h-4 w-4 mr-2" />
+                  <Icons.CreditCardIcon className="mr-2 h-4 w-4" />
                   PayPal
                 </Button>
               </div>
@@ -199,7 +197,7 @@ export function EventAnalyticsIntegrations({
                 onClick={onEmailSetup}
                 disabled={!!event.integrations?.email?.templateId}
               >
-                <Icons.EnvelopeIcon className="h-4 w-4 mr-2" />
+                <Icons.EnvelopeIcon className="mr-2 h-4 w-4" />
                 Set Up Email Campaign
               </Button>
             </div>
@@ -211,7 +209,7 @@ export function EventAnalyticsIntegrations({
                   onClick={() => onSocialShare('facebook')}
                   disabled={!!event.integrations?.social?.facebookEventId}
                 >
-                  <Icons.ShareIcon className="h-4 w-4 mr-2" />
+                  <Icons.ShareIcon className="mr-2 h-4 w-4" />
                   Facebook
                 </Button>
                 <Button
@@ -219,7 +217,7 @@ export function EventAnalyticsIntegrations({
                   onClick={() => onSocialShare('linkedin')}
                   disabled={!!event.integrations?.social?.linkedinEventId}
                 >
-                  <Icons.ShareIcon className="h-4 w-4 mr-2" />
+                  <Icons.ShareIcon className="mr-2 h-4 w-4" />
                   LinkedIn
                 </Button>
                 <Button
@@ -227,7 +225,7 @@ export function EventAnalyticsIntegrations({
                   onClick={() => onSocialShare('twitter')}
                   disabled={!!event.integrations?.social?.twitterEventId}
                 >
-                  <Icons.ShareIcon className="h-4 w-4 mr-2" />
+                  <Icons.ShareIcon className="mr-2 h-4 w-4" />
                   Twitter
                 </Button>
               </div>

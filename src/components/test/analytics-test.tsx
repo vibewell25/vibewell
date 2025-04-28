@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { AnalyticsService } from '@/services/analytics-service';
 import { useToast } from '@/components/ui/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -70,7 +70,7 @@ export function AnalyticsTest() {
 
   const testShareAnalytics = async (
     method: 'social' | 'email' | 'download',
-    platform: string = 'facebook'
+    platform: string = 'facebook',
   ) => {
     try {
       setLoading(true);
@@ -168,7 +168,7 @@ export function AnalyticsTest() {
         </TabsContent>
       </Tabs>
 
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg text-sm">
+      <div className="mt-6 rounded-lg bg-gray-50 p-4 text-sm">
         <p>
           Use these test buttons to generate analytics data that can be viewed in the admin
           dashboard.

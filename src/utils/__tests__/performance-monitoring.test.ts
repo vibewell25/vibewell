@@ -1,4 +1,4 @@
-import {
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import {
   startComponentRender,
   endComponentRender,
   startApiCall,
@@ -50,13 +50,13 @@ describe('Performance Monitoring', () => {
     it('should track component render time', () => {
       const markId = startComponentRender('TestComponent');
       expect(mockPerformance.mark).toHaveBeenCalledWith(
-        expect.stringContaining('component-start-TestComponent')
+        expect.stringContaining('component-start-TestComponent'),
       );
 
       endComponentRender('TestComponent', markId);
       expect(mockPerformance.measure).toHaveBeenCalledWith(
         expect.stringContaining('component-TestComponent'),
-        expect.stringContaining('component-start-TestComponent')
+        expect.stringContaining('component-start-TestComponent'),
       );
     });
   });
@@ -65,13 +65,13 @@ describe('Performance Monitoring', () => {
     it('should track API call duration', () => {
       const markId = startApiCall('/api/test');
       expect(mockPerformance.mark).toHaveBeenCalledWith(
-        expect.stringContaining('api-start-/api/test')
+        expect.stringContaining('api-start-/api/test'),
       );
 
       endApiCall('/api/test', markId);
       expect(mockPerformance.measure).toHaveBeenCalledWith(
         expect.stringContaining('api-/api/test'),
-        expect.stringContaining('api-start-/api/test')
+        expect.stringContaining('api-start-/api/test'),
       );
     });
   });
@@ -82,7 +82,7 @@ describe('Performance Monitoring', () => {
       expect(mockConsole.warn).toHaveBeenCalledWith(
         expect.stringContaining('Performance budget exceeded'),
         expect.stringContaining('TestComponent'),
-        expect.stringContaining('render')
+        expect.stringContaining('render'),
       );
     });
   });

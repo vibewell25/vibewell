@@ -1,8 +1,3 @@
-// Import necessary testing libraries
-import '@testing-library/jest-dom';
-// Import jest-axe and use the appropriate method
-import 'jest-axe';
-
 // Instead of using toHaveNoViolations directly, we'll import it correctly via the module
 // Type definitions are now in src/types/additional-types.d.ts
 
@@ -51,7 +46,7 @@ class IntersectionObserverMock {
 
   constructor(
     private callback: IntersectionObserverCallback,
-    private options?: IntersectionObserverInit
+    private options?: IntersectionObserverInit,
   ) {}
 
   disconnect = jest.fn();
@@ -84,7 +79,7 @@ Object.defineProperty(window, 'PerformanceObserver', {
 // Add missing window properties for tests
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: jest.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,

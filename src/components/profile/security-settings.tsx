@@ -1,11 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { Shield, Key, Lock, Bell, Smartphone, Mail, AlertTriangle } from 'lucide-react';
+import { Shield, Key, Lock, Bell, Smartphone, Mail } from 'lucide-react';
 
 interface SecuritySetting {
   id: string;
@@ -29,7 +27,7 @@ export function SecuritySettings() {
       action: async () => {
         try {
           // Simulate API call to enable/disable 2FA
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
           toast.success('Two-factor authentication updated successfully!');
         } catch (error) {
           console.error('Error updating 2FA:', error);
@@ -46,7 +44,7 @@ export function SecuritySettings() {
       action: async () => {
         try {
           // Simulate API call to change password
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
           toast.success('Password changed successfully!');
         } catch (error) {
           console.error('Error changing password:', error);
@@ -64,7 +62,7 @@ export function SecuritySettings() {
       action: async () => {
         try {
           // Simulate API call to update login alerts
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
           toast.success('Login alerts updated successfully!');
         } catch (error) {
           console.error('Error updating login alerts:', error);
@@ -81,7 +79,7 @@ export function SecuritySettings() {
       action: async () => {
         try {
           // Simulate API call to manage devices
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
           toast.success('Device management updated successfully!');
         } catch (error) {
           console.error('Error managing devices:', error);
@@ -98,7 +96,7 @@ export function SecuritySettings() {
       action: async () => {
         try {
           // Simulate API call to set up security questions
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
           toast.success('Security questions updated successfully!');
         } catch (error) {
           console.error('Error setting up security questions:', error);
@@ -115,7 +113,7 @@ export function SecuritySettings() {
       action: async () => {
         try {
           // Simulate API call to verify email
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
           toast.success('Verification email sent!');
         } catch (error) {
           console.error('Error sending verification email:', error);
@@ -127,11 +125,11 @@ export function SecuritySettings() {
 
   const handleSettingChange = async (id: string, newValue?: boolean | string) => {
     try {
-      const setting = settings.find(s => s.id === id);
+      const setting = settings.find((s) => s.id === id);
       if (setting?.action) {
         await setting.action();
         if (newValue !== undefined) {
-          setSettings(prev => prev.map(s => (s.id === id ? { ...s, value: newValue } : s)));
+          setSettings((prev) => prev.map((s) => (s.id === id ? { ...s, value: newValue } : s)));
         }
       }
     } catch (error) {
@@ -147,13 +145,13 @@ export function SecuritySettings() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          {settings.map(setting => (
+          {settings.map((setting) => (
             <div
               key={setting.id}
               className="flex items-start justify-between rounded-lg border p-4"
             >
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-full">
                   {setting.icon}
                 </div>
                 <div className="space-y-1">

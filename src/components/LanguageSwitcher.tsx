@@ -2,14 +2,14 @@
 
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { supportedLanguages, isRtl, changeLanguage } from '@/i18n';
+import { supportedLanguages, changeLanguage } from '@/i18n';
 
 const languages = [
   { code: 'en', name: 'English' },
   { code: 'es', name: 'Español' },
   { code: 'fr', name: 'Français' },
   { code: 'ar', name: 'العربية' },
-].filter(lang => supportedLanguages.includes(lang.code));
+].filter((lang) => supportedLanguages.includes(lang.code));
 
 export default function LanguageSwitcher() {
   const router = useRouter();
@@ -26,10 +26,10 @@ export default function LanguageSwitcher() {
     <div className="relative inline-block text-left">
       <select
         value={i18n.language}
-        onChange={e => handleLanguageChange(e.target.value)}
-        className="block w-full px-4 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+        onChange={(e) => handleLanguageChange(e.target.value)}
+        className="block w-full rounded-md border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
       >
-        {languages.map(language => (
+        {languages.map((language) => (
           <option key={language.code} value={language.code}>
             {language.name}
           </option>

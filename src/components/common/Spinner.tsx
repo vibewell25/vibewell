@@ -9,12 +9,12 @@ interface SpinnerProps {
 export const Spinner: React.FC<SpinnerProps> = ({
   size = 'medium',
   color = 'var(--primary)',
-  className = ''
+  className = '',
 }) => {
   const sizeMap = {
     small: 16,
     medium: 24,
-    large: 32
+    large: 32,
   };
 
   const spinnerSize = sizeMap[size];
@@ -27,14 +27,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <circle
-          className="spinner-circle"
-          cx="12"
-          cy="12"
-          r="10"
-          fill="none"
-          strokeWidth="3"
-        />
+        <circle className="spinner-circle" cx="12" cy="12" r="10" fill="none" strokeWidth="3" />
       </svg>
 
       <style jsx>{`
@@ -79,4 +72,4 @@ export const Spinner: React.FC<SpinnerProps> = ({
   );
 };
 
-export default Spinner; 
+export default Spinner;

@@ -41,7 +41,7 @@ export function AccessibleDialog({
   return (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose} role="presentation" />
+      <div className="fixed inset-0 z-50 bg-black/50" onClick={onClose} role="presentation" />
 
       {/* Dialog */}
       <div
@@ -50,16 +50,16 @@ export function AccessibleDialog({
         aria-modal="true"
         aria-labelledby="dialog-title"
         aria-describedby={description ? 'dialog-description' : undefined}
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl z-50 p-6 w-full max-w-md"
+        className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-white p-6 shadow-xl"
       >
         {/* Title */}
-        <h2 id="dialog-title" ref={titleRef} className="text-xl font-semibold mb-2">
+        <h2 id="dialog-title" ref={titleRef} className="mb-2 text-xl font-semibold">
           {title}
         </h2>
 
         {/* Description */}
         {description && (
-          <p id="dialog-description" className="text-gray-600 mb-4">
+          <p id="dialog-description" className="mb-4 text-gray-600">
             {description}
           </p>
         )}
@@ -70,7 +70,7 @@ export function AccessibleDialog({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
           aria-label="Close dialog"
         >
           <svg

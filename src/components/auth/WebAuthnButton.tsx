@@ -47,17 +47,11 @@ export function WebAuthnButton({
     <button
       onClick={handleClick}
       disabled={isLoading || status === 'loading'}
-      className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors
-        ${status === 'success' ? 'bg-green-500 text-white' : ''}
-        ${status === 'error' ? 'bg-red-500 text-white' : ''}
-        ${status === 'loading' || isLoading ? 'bg-gray-300 cursor-not-allowed' : ''}
-        ${status === 'idle' ? 'bg-blue-500 text-white hover:bg-blue-600' : ''}
-        ${className}
-      `}
+      className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2 font-medium transition-colors ${status === 'success' ? 'bg-green-500 text-white' : ''} ${status === 'error' ? 'bg-red-500 text-white' : ''} ${status === 'loading' || isLoading ? 'cursor-not-allowed bg-gray-300' : ''} ${status === 'idle' ? 'bg-blue-500 text-white hover:bg-blue-600' : ''} ${className} `}
     >
       {status === 'loading' || isLoading ? (
         <>
-          <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+          <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24">
             <circle
               className="opacity-25"
               cx="12"

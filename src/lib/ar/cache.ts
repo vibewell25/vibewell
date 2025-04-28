@@ -86,13 +86,13 @@ async function getCacheMetadata(db: IDBPDatabase): Promise<CacheMetadata> {
  */
 async function updateCacheMetadata(
   db: IDBPDatabase,
-  updater: (metadata: CacheMetadata) => CacheMetadata
+  updater: (metadata: CacheMetadata) => CacheMetadata,
 ): Promise<void> {
   const tx = db.transaction(METADATA_STORE, 'readwrite');
   const metadata = (await tx.store.get('cache-metadata')) as CacheMetadata;
   await tx.store.put(
     updater(metadata || { totalSize: 0, lastCleaned: Date.now(), modelCount: 0 }),
-    'cache-metadata'
+    'cache-metadata',
   );
   await tx.done;
 }
@@ -198,7 +198,7 @@ export class ARModelCache {
       await db.put(MODELS_STORE, model);
 
       // Update cache metadata
-      await updateCacheMetadata(db, metadata => ({
+      await updateCacheMetadata(db, (metadata) => ({
         ...metadata,
         totalSize: metadata.totalSize + size,
         modelCount: metadata.modelCount + 1,
@@ -223,7 +223,7 @@ export class ARModelCache {
       await db.delete(MODELS_STORE, url);
 
       // Update cache metadata
-      await updateCacheMetadata(db, metadata => ({
+      await updateCacheMetadata(db, (metadata) => ({
         ...metadata,
         totalSize: metadata.totalSize - cachedModel.size,
         modelCount: metadata.modelCount - 1,
@@ -272,7 +272,7 @@ export class ARModelCache {
         freedSpace += model.size;
 
         // Update metadata
-        await updateCacheMetadata(db, metadata => ({
+        await updateCacheMetadata(db, (metadata) => ({
           ...metadata,
           totalSize: metadata.totalSize - model.size,
           modelCount: metadata.modelCount - 1,
@@ -323,7 +323,7 @@ export class ARModelCache {
       await tx.done;
 
       // Update metadata
-      await updateCacheMetadata(db, metadata => ({
+      await updateCacheMetadata(db, (metadata) => ({
         ...metadata,
         totalSize: metadata.totalSize - totalFreed,
         lastCleaned: now,
@@ -392,7 +392,7 @@ export class ARModelCache {
         };
       }
 
-      const timestamps = models.map(m => m.timestamp);
+      const timestamps = models.map((m) => m.timestamp);
       const oldestTimestamp = Math.min(...timestamps);
       const newestTimestamp = Math.max(...timestamps);
 
@@ -446,7 +446,7 @@ export const arModelCache = new ARModelCache();
  */
 export async function getModelFromCache(
   url: string,
-  forceRefresh = false
+  forceRefresh = false,
 ): Promise<Uint8Array | null> {
   if (forceRefresh) {
     // If force refresh, fetch the model directly
@@ -494,7 +494,7 @@ export async function cacheModel(
   url: string,
   data: Uint8Array,
   type?: string,
-  hash?: string
+  hash?: string,
 ): Promise<void> {
   const modelType = type || getModelTypeFromUrl(url);
   return arModelCache.storeModel(url, data, modelType, hash);

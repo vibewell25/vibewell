@@ -1,15 +1,11 @@
-'use client';
-
+'use client';;
 import { useEffect, useState } from 'react';
-import { Profile } from '@/types';
 import { ProviderProfileForm } from '@/components/provider/profile-form';
 import { BusinessProfileWizard } from '@/components/business/business-profile-wizard';
 import { BusinessProfileEdit } from '@/components/business/business-profile-edit';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { prisma } from '@/lib/database/client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useRouter } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
 import { Building, User } from 'lucide-react';
 
 export default function ProviderProfilePage() {
@@ -71,8 +67,8 @@ export default function ProviderProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="border-primary h-12 w-12 animate-spin rounded-full border-b-2"></div>
       </div>
     );
   }
@@ -83,10 +79,10 @@ export default function ProviderProfilePage() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">Provider Profile</h1>
+      <h1 className="mb-6 text-3xl font-bold">Provider Profile</h1>
 
       <Tabs defaultValue={activeTab} onValueChange={handleTabChange} className="mb-8">
-        <TabsList className="grid grid-cols-2 w-[400px]">
+        <TabsList className="grid w-[400px] grid-cols-2">
           <TabsTrigger value="personal" className="flex items-center gap-2">
             <User className="h-4 w-4" />
             Personal Profile

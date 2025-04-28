@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, act } from '@testing-library/react';
 import { ARResourceMonitor } from '../ARResourceMonitor';
 import { useThree } from '@react-three/fiber';
@@ -62,7 +61,7 @@ describe('ARResourceMonitor', () => {
   it('monitors performance metrics', () => {
     const onPerformanceWarning = vi.fn();
     render(
-      <ARResourceMonitor performanceThreshold={30} onPerformanceWarning={onPerformanceWarning} />
+      <ARResourceMonitor performanceThreshold={30} onPerformanceWarning={onPerformanceWarning} />,
     );
 
     // Simulate low FPS
@@ -78,7 +77,7 @@ describe('ARResourceMonitor', () => {
         fps: expect.any(Number),
         triangles: 1000,
         drawCalls: 50,
-      })
+      }),
     );
   });
 
@@ -96,7 +95,7 @@ describe('ARResourceMonitor', () => {
           enableFrustumCulling: true,
           reduceLightCount: true,
         }}
-      />
+      />,
     );
 
     // Simulate very low FPS
@@ -120,7 +119,7 @@ describe('ARResourceMonitor', () => {
         map: new THREE.Texture(),
         normalMap: new THREE.Texture(),
         roughnessMap: new THREE.Texture(),
-      })
+      }),
     );
     mockScene.add(complexMesh);
 
@@ -152,7 +151,7 @@ describe('ARResourceMonitor', () => {
     expect(mockBattery.addEventListener).toHaveBeenCalledWith('levelchange', expect.any(Function));
     expect(mockBattery.addEventListener).toHaveBeenCalledWith(
       'chargingchange',
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 
@@ -168,7 +167,7 @@ describe('ARResourceMonitor', () => {
 
     expect(consoleSpy).toHaveBeenCalledWith(
       expect.stringContaining('AR Performance Metrics:'),
-      expect.any(Object)
+      expect.any(Object),
     );
 
     consoleSpy.mockRestore();
@@ -181,7 +180,7 @@ describe('ARResourceMonitor', () => {
         performanceThreshold={30}
         enableAdaptiveQuality={true}
         onPerformanceRecovery={onPerformanceRecovery}
-      />
+      />,
     );
 
     // Simulate poor performance

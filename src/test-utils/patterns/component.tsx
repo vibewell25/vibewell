@@ -8,7 +8,6 @@ import * as React from 'react';
 import { render, screen, fireEvent, waitFor } from '../testing-lib-adapter';
 import { userEvent as createUserEvent } from '@testing-library/user-event';
 import { axe } from 'jest-axe';
-import type { Screen } from '@testing-library/react';
 
 /**
  * Component Test Patterns
@@ -51,7 +50,7 @@ export interface ComponentTestCase<P extends Record<string, unknown>> {
       defaultProps: P;
       fireEvent: FireEventType;
       userEvent: UserEventType;
-    }
+    },
   ) => Promise<void> | void;
 }
 
@@ -64,7 +63,7 @@ export async function handleInteraction(interaction: ComponentInteraction): Prom
       fireEvent.click(
         typeof interaction.target === 'string'
           ? screen.getByText(interaction.target)
-          : interaction.target
+          : interaction.target,
       );
       break;
     case 'change':
@@ -72,7 +71,7 @@ export async function handleInteraction(interaction: ComponentInteraction): Prom
         typeof interaction.target === 'string'
           ? screen.getByLabelText(interaction.target)
           : interaction.target,
-        { target: { value: interaction.value } }
+        { target: { value: interaction.value } },
       );
       break;
     case 'userEvent':
@@ -101,7 +100,7 @@ export function createComponentTestSuite<P extends Record<string, unknown>>(
   name: string,
   ComponentToTest: React.ComponentType<P>,
   defaultProps: P,
-  testCases: ComponentTestCase<P>[]
+  testCases: ComponentTestCase<P>[],
 ): void {
   describe(`${name} Component`, () => {
     // Rendering test
@@ -117,7 +116,7 @@ export function createComponentTestSuite<P extends Record<string, unknown>>(
     });
 
     // Run all test cases
-    testCases.forEach(testCase => {
+    testCases.forEach((testCase) => {
       it(testCase.name, async () => {
         const renderProps = { ...defaultProps, ...testCase.props } as P;
         const { rerender } = render(React.createElement(ComponentToTest, renderProps));

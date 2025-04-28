@@ -17,10 +17,10 @@ export function VisuallyHidden({ children, className, asChild = false }: Visuall
   return (
     <Comp
       className={cn(
-        'absolute w-[1px] h-[1px] p-0 -m-[1px] overflow-hidden',
+        'absolute -m-[1px] h-[1px] w-[1px] overflow-hidden p-0',
         'clip-rect-0 border-0',
         'whitespace-nowrap',
-        className
+        className,
       )}
     >
       {children}

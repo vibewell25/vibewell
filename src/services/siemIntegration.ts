@@ -110,7 +110,7 @@ export class SIEMIntegrationService {
   async setupEventForwarding(): Promise<void> {
     try {
       // Subscribe to security events
-      this.securityMonitoring.on('securityEvent', async event => {
+      this.securityMonitoring.on('securityEvent', async (event) => {
         await this.sendEvent({
           timestamp: new Date(),
           severity: event.severity,

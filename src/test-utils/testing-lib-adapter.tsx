@@ -23,7 +23,7 @@ export const cleanup = ReactTestingLibrary.cleanup;
 export const act = ReactTestingLibrary.act;
 
 // Export userEvent for user interaction testing
-export const userEvent = userEventLib.default || userEventLib;
+export {};
 
 // Define proper types for users of this adapter
 export type RenderResult = ReturnType<typeof ReactTestingLibrary.render>;

@@ -65,7 +65,7 @@ class BundleOptimizer {
     window.addEventListener('load', () => {
       const loadTime = performance.now() - loadStart;
       this.metrics.loadTime = loadTime;
-      
+
       performanceMonitor.trackMetrics({
         bundleLoadTime: loadTime,
         initialBundleSize: this.metrics.initialSize,
@@ -118,7 +118,7 @@ class BundleOptimizer {
       .then((content) => {
         const size = new Blob([content]).size;
         const chunkId = src.split('/').pop()?.split('.')[0] || '';
-        
+
         this.chunks.set(chunkId, {
           id: chunkId,
           name: src,
@@ -142,11 +142,11 @@ class BundleOptimizer {
     const importRegex = /import\s+.*\s+from\s+['"]([^'"]+)['"]/g;
     const imports: string[] = [];
     let match;
-    
+
     while ((match = importRegex.exec(content)) !== null) {
       imports.push(match[1]);
     }
-    
+
     return imports;
   }
 
@@ -154,11 +154,11 @@ class BundleOptimizer {
     const exportRegex = /export\s+(?:default\s+)?(?:const|let|var|function|class)\s+(\w+)/g;
     const exports: string[] = [];
     let match;
-    
+
     while ((match = exportRegex.exec(content)) !== null) {
       exports.push(match[1]);
     }
-    
+
     return exports;
   }
 
@@ -166,11 +166,11 @@ class BundleOptimizer {
     const moduleRegex = /\/\*\* @module ([^\s]+) \*\//g;
     const modules: string[] = [];
     let match;
-    
+
     while ((match = moduleRegex.exec(content)) !== null) {
       modules.push(match[1]);
     }
-    
+
     return modules;
   }
 
@@ -181,27 +181,24 @@ class BundleOptimizer {
     return BundleOptimizer.instance;
   }
 
-  public async optimizeImport(
-    importFn: () => Promise<any>,
-    chunkName?: string
-  ): Promise<any> {
+  public async optimizeImport(importFn: () => Promise<any>, chunkName?: string): Promise<any> {
     const startTime = performance.now();
-    
+
     try {
       const module = await importFn();
-      
+
       performanceMonitor.trackMetrics({
         dynamicImportTime: performance.now() - startTime,
         dynamicImportSuccess: 1,
       });
-      
+
       return module;
     } catch (error) {
       performanceMonitor.trackMetrics({
         dynamicImportTime: performance.now() - startTime,
         dynamicImportError: 1,
       });
-      
+
       throw error;
     }
   }
@@ -240,4 +237,4 @@ class BundleOptimizer {
   }
 }
 
-export const bundleOptimizer = BundleOptimizer.getInstance(); 
+export {};

@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     const options = await webAuthnService.generateRegistrationOptions(
       session.user.id,
       session.user.email,
-      body.options || {}
+      body.options || {},
     );
 
     return NextResponse.json(options);
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     if (error instanceof WebAuthnError) {
       return NextResponse.json(
         { error: error.message, code: error.code, details: error.details },
-        { status: 400 }
+        { status: 400 },
       );
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -50,7 +50,7 @@ export async function PUT(request: NextRequest) {
     console.error('WebAuthn registration verification error:', error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Verification failed' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

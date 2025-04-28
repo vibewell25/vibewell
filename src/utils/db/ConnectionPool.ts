@@ -25,12 +25,12 @@ export class ConnectionPool {
       max: config?.max || 20,
       idleTimeoutMillis: config?.idleTimeoutMillis || 60000,
       connectionTimeoutMillis: config?.connectionTimeoutMillis || 10000,
-      ...config
+      ...config,
     });
 
     // Initialize min connections
     for (let i = 0; i < (config?.max || 20) / 4; i++) {
-      this.pool.connect().then(client => client.release());
+      this.pool.connect().then((client) => client.release());
     }
 
     this.stats = {
@@ -39,7 +39,7 @@ export class ConnectionPool {
       waiting: 0,
       total: 0,
       queryCount: 0,
-      avgQueryTime: 0
+      avgQueryTime: 0,
     };
 
     this.setupPoolEvents();
@@ -89,14 +89,14 @@ export class ConnectionPool {
       this.monitoring.recordMetric(`${this.METRICS_PREFIX}waiting`, this.stats.waiting),
       this.monitoring.recordMetric(`${this.METRICS_PREFIX}total`, this.stats.total),
       this.monitoring.recordMetric(`${this.METRICS_PREFIX}query_count`, this.stats.queryCount),
-      this.monitoring.recordMetric(`${this.METRICS_PREFIX}avg_query_time`, this.stats.avgQueryTime)
+      this.monitoring.recordMetric(`${this.METRICS_PREFIX}avg_query_time`, this.stats.avgQueryTime),
     ]);
   }
 
   private cleanupQueryTimes(): void {
     // Keep only the last hour of query times
     const hourAgo = Date.now() - 3600000;
-    this.queryTimes = this.queryTimes.filter(time => time > hourAgo);
+    this.queryTimes = this.queryTimes.filter((time) => time > hourAgo);
   }
 
   async getClient(): Promise<PoolClient> {
@@ -118,14 +118,14 @@ export class ConnectionPool {
     try {
       client = await this.getClient();
       const result = await client.query(sql, params);
-      
+
       const duration = performance.now() - start;
       this.queryTimes.push(duration);
       this.stats.queryCount++;
       this.stats.avgQueryTime = this.queryTimes.reduce((a, b) => a + b, 0) / this.queryTimes.length;
-      
+
       await this.monitoring.recordMetric(`${this.METRICS_PREFIX}query_time`, duration);
-      
+
       return result.rows as T;
     } catch (error) {
       await this.monitoring.recordMetric(`${this.METRICS_PREFIX}query_errors`, 1);
@@ -163,11 +163,11 @@ export class ConnectionPool {
     const fiveMinAgo = Date.now() - 300000;
     return {
       ...this.stats,
-      queryTimesLast5Min: this.queryTimes.filter(time => time > fiveMinAgo)
+      queryTimesLast5Min: this.queryTimes.filter((time) => time > fiveMinAgo),
     };
   }
 
   async end(): Promise<void> {
     await this.pool.end();
   }
-} 
+}

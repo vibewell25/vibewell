@@ -34,7 +34,7 @@ export type SkinConditionLogWithConcerns = {
 
 export async function createSkinConditionLog(
   userId: string,
-  data: SkinConditionLogInput
+  data: SkinConditionLogInput,
 ): Promise<SkinConditionLogWithConcerns | null> {
   try {
     const log = await prisma.skinConditionLog.create({
@@ -47,7 +47,7 @@ export async function createSkinConditionLog(
         hydration: data.hydration,
         notes: data.notes,
         concerns: {
-          create: data.concerns.map(concern => ({
+          create: data.concerns.map((concern) => ({
             name: concern.name,
             severity: concern.severity,
           })),
@@ -68,7 +68,7 @@ export async function createSkinConditionLog(
 export async function getSkinConditionLogs(
   userId: string,
   startDate?: Date,
-  endDate?: Date
+  endDate?: Date,
 ): Promise<SkinConditionLogWithConcerns[]> {
   try {
     const where = {
@@ -97,7 +97,7 @@ export async function getSkinConditionLogs(
 export async function updateSkinConditionLog(
   userId: string,
   logId: string,
-  data: Partial<SkinConditionLogInput>
+  data: Partial<SkinConditionLogInput>,
 ): Promise<SkinConditionLogWithConcerns | null> {
   try {
     // First verify the log belongs to the user
@@ -125,7 +125,7 @@ export async function updateSkinConditionLog(
         ...(data.concerns && {
           concerns: {
             deleteMany: {},
-            create: data.concerns.map(concern => ({
+            create: data.concerns.map((concern) => ({
               name: concern.name,
               severity: concern.severity,
             })),
@@ -144,10 +144,7 @@ export async function updateSkinConditionLog(
   }
 }
 
-export async function deleteSkinConditionLog(
-  userId: string,
-  logId: string
-): Promise<boolean> {
+export async function deleteSkinConditionLog(userId: string, logId: string): Promise<boolean> {
   try {
     // First verify the log belongs to the user
     const existingLog = await prisma.skinConditionLog.findFirst({
@@ -175,7 +172,7 @@ export async function deleteSkinConditionLog(
 
 export async function getSkinConditionAnalytics(
   userId: string,
-  days: number = 30
+  days: number = 30,
 ): Promise<{
   averageMood: number;
   averageStress: number;
@@ -217,13 +214,13 @@ export async function getSkinConditionAnalytics(
         sleep: acc.sleep + log.sleepHours,
         hydration: acc.hydration + log.hydration,
       }),
-      { mood: 0, stress: 0, sleep: 0, hydration: 0 }
+      { mood: 0, stress: 0, sleep: 0, hydration: 0 },
     );
 
     // Analyze concerns
     const concernStats: Record<string, { count: number; totalSeverity: number }> = {};
-    logs.forEach(log => {
-      log.concerns.forEach(concern => {
+    logs.forEach((log) => {
+      log.concerns.forEach((concern) => {
         if (!concernStats[concern.name]) {
           concernStats[concern.name] = { count: 0, totalSeverity: 0 };
         }
@@ -257,4 +254,4 @@ export async function getSkinConditionAnalytics(
       commonConcerns: [],
     };
   }
-} 
+}

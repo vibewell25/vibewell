@@ -4,7 +4,7 @@ import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/use-unified-auth';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/use-toast';
 
 function VerifyEmailContent() {
@@ -44,7 +44,7 @@ function VerifyEmailContent() {
         });
         router.push('/dashboard');
       })
-      .catch(error => {
+      .catch((error) => {
         toast({
           title: 'Error',
           description: 'Failed to verify email. Please try again.',
@@ -83,7 +83,7 @@ function VerifyEmailContent() {
 export default function VerifyEmailPage() {
   return (
     <Suspense
-      fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}
+      fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}
     >
       <VerifyEmailContent />
     </Suspense>

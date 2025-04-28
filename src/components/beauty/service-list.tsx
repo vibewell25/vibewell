@@ -1,5 +1,5 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Clock, DollarSign } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
@@ -44,7 +44,7 @@ export function ServiceList({ providerId }: ServiceListProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
       </div>
     );
   }
@@ -59,7 +59,7 @@ export function ServiceList({ providerId }: ServiceListProps) {
 
   return (
     <div className="grid gap-4">
-      {services.map(service => (
+      {services.map((service) => (
         <Card key={service.id}>
           <CardContent className="pt-6">
             <div className="flex items-start justify-between">

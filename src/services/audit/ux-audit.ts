@@ -135,12 +135,12 @@ class UXAuditService {
     // Improve user flows with low completion rates
     if (result.completionRate < this.config.minTaskCompletionRate) {
       console.log(
-        `Improving user flow "${result.flowName}" with completion rate ${result.completionRate}%`
+        `Improving user flow "${result.flowName}" with completion rate ${result.completionRate}%`,
       );
 
       // Find the main drop-off points
       const mainDropOffPoints = result.dropOffPoints.sort(
-        (a, b) => b.dropOffCount - a.dropOffCount
+        (a, b) => b.dropOffCount - a.dropOffCount,
       );
 
       if (mainDropOffPoints.length > 0) {
@@ -151,7 +151,7 @@ class UXAuditService {
         result.completionRate = improvement;
 
         // Reduce drop-off counts
-        result.dropOffPoints = result.dropOffPoints.map(point => ({
+        result.dropOffPoints = result.dropOffPoints.map((point) => ({
           ...point,
           dropOffCount: Math.floor(point.dropOffCount * 0.2), // 80% reduction
           dropOffPercentage: point.dropOffPercentage * 0.2, // 80% reduction
@@ -181,31 +181,31 @@ class UXAuditService {
               flowName: result.flowName,
               completionRate: result.completionRate,
               threshold: this.config.minTaskCompletionRate,
-              improvedDropOffPoints: mainDropOffPoints.map(p => p.stepName),
+              improvedDropOffPoints: mainDropOffPoints.map((p) => p.stepName),
               timestamp: result.timestamp,
             },
             remediation: 'Simplified user flow steps and improved UI clarity to reduce drop-offs.',
-          }
+          },
         );
       }
     }
 
     // Check for failed steps and fix them
-    const failedSteps = result.steps.filter(step => !step.success);
+    const failedSteps = result.steps.filter((step) => !step.success);
     if (failedSteps.length > 0) {
       console.log(`Fixing ${failedSteps.length} failed steps in user flow "${result.flowName}"`);
 
       // Fix the failed steps
       const fixedResult = {
         ...result,
-        steps: result.steps.map(step =>
+        steps: result.steps.map((step) =>
           step.success
             ? step
             : {
                 ...step,
                 success: true,
                 errorMessage: undefined,
-              }
+              },
         ),
       };
 
@@ -221,12 +221,12 @@ class UXAuditService {
           component: 'User Flow',
           metadata: {
             flowName: result.flowName,
-            fixedSteps: failedSteps.map(s => s.stepName),
+            fixedSteps: failedSteps.map((s) => s.stepName),
             timestamp: result.timestamp,
           },
           remediation:
             'Fixed validation errors and improved error handling to prevent step failures.',
-        }
+        },
       );
     }
 
@@ -251,9 +251,8 @@ class UXAuditService {
       console.log(`Fixing ${result.violations.length} accessibility issues on ${result.url}`);
 
       // Group violations by impact
-      const criticalViolations = result.violations.filter(v => v.impact === 'critical');
-      const seriousViolations = result.violations.filter(v => v.impact === 'serious');
-      const moderateViolations = result.violations.filter(v => v.impact === 'moderate');
+      const criticalViolations = result.violations.filter((v) => v.impact === 'critical');
+      const seriousViolations = result.violations.filter((v) => v.impact === 'serious');
 
       // Fix critical accessibility issues
       if (criticalViolations.length > 0) {
@@ -261,7 +260,7 @@ class UXAuditService {
         this.applyAccessibilityFixes(result.url, criticalViolations);
 
         // Remove the critical violations from the result
-        result.violations = result.violations.filter(v => v.impact !== 'critical');
+        result.violations = result.violations.filter((v) => v.impact !== 'critical');
 
         // Update the result with our fixes
         this.accessibilityResults.set(result.url, result);
@@ -280,7 +279,7 @@ class UXAuditService {
               timestamp: result.timestamp,
             },
             remediation: 'Implemented automated accessibility fixes for critical issues.',
-          }
+          },
         );
       }
 
@@ -290,7 +289,7 @@ class UXAuditService {
         this.applyAccessibilityFixes(result.url, seriousViolations);
 
         // Remove the serious violations from the result
-        result.violations = result.violations.filter(v => v.impact !== 'serious');
+        result.violations = result.violations.filter((v) => v.impact !== 'serious');
 
         // Update the result with our fixes
         this.accessibilityResults.set(result.url, result);
@@ -309,7 +308,7 @@ class UXAuditService {
               timestamp: result.timestamp,
             },
             remediation: 'Implemented automated accessibility fixes for serious issues.',
-          }
+          },
         );
       }
     }
@@ -320,7 +319,7 @@ class UXAuditService {
    */
   private applyAccessibilityFixes(
     url: string,
-    violations: AccessibilityResult['violations']
+    violations: AccessibilityResult['violations'],
   ): void {
     console.log(`Applying accessibility fixes to ${url} for ${violations.length} violations...`);
 
@@ -328,7 +327,7 @@ class UXAuditService {
     // Here we're just simulating the fixes
 
     // For each violation type, we'd apply the appropriate fix
-    violations.forEach(violation => {
+    violations.forEach((violation) => {
       switch (violation.id) {
         case 'color-contrast':
           console.log('Fixing color contrast issue: increasing contrast ratio to 4.5:1 minimum');
@@ -386,7 +385,7 @@ class UXAuditService {
             timestamp: result.timestamp,
           },
           remediation: result.recommendations.join('\n'),
-        }
+        },
       );
     }
 
@@ -407,7 +406,7 @@ class UXAuditService {
             timestamp: result.timestamp,
           },
           remediation: result.recommendations.join('\n'),
-        }
+        },
       );
     }
 
@@ -429,10 +428,10 @@ class UXAuditService {
 
     // Count issues by device type and severity
     for (const device of result.deviceTypes) {
-      const layoutIssues = device.issues.filter(i => i.type === 'layout');
-      const overflowIssues = device.issues.filter(i => i.type === 'overflow');
-      const readabilityIssues = device.issues.filter(i => i.type === 'readability');
-      const touchTargetIssues = device.issues.filter(i => i.type === 'touch-target');
+      const layoutIssues = device.issues.filter((i) => i.type === 'layout');
+      const overflowIssues = device.issues.filter((i) => i.type === 'overflow');
+      const readabilityIssues = device.issues.filter((i) => i.type === 'readability');
+      const touchTargetIssues = device.issues.filter((i) => i.type === 'touch-target');
 
       // Determine if we should report these issues
       const totalIssues = device.issues.length;
@@ -463,12 +462,12 @@ class UXAuditService {
                 overflow: overflowIssues.length,
                 readability: readabilityIssues.length,
                 touchTarget: touchTargetIssues.length,
-                other: device.issues.filter(i => i.type === 'other').length,
+                other: device.issues.filter((i) => i.type === 'other').length,
               },
               issues: device.issues,
               timestamp: result.timestamp,
             },
-          }
+          },
         );
       }
     }
@@ -525,8 +524,8 @@ class UXAuditService {
         : 0;
 
     const problematicFlows = userFlows
-      .filter(flow => flow.completionRate < this.config.minTaskCompletionRate)
-      .map(flow => ({
+      .filter((flow) => flow.completionRate < this.config.minTaskCompletionRate)
+      .map((flow) => ({
         flowName: flow.flowName,
         completionRate: flow.completionRate,
         mainDropOffPoint: flow.dropOffPoints[0]?.stepName || 'Unknown',
@@ -543,16 +542,16 @@ class UXAuditService {
     };
 
     // Count violations by impact
-    accessibilityResults.forEach(result => {
-      result.violations.forEach(violation => {
+    accessibilityResults.forEach((result) => {
+      result.violations.forEach((violation) => {
         violationsByImpact[violation.impact] = (violationsByImpact[violation.impact] || 0) + 1;
       });
     });
 
     // Find most common violations
     const violationCounts = new Map<string, { id: string; description: string; count: number }>();
-    accessibilityResults.forEach(result => {
-      result.violations.forEach(violation => {
+    accessibilityResults.forEach((result) => {
+      result.violations.forEach((violation) => {
         const current = violationCounts.get(violation.id) || {
           id: violation.id,
           description: violation.description,
@@ -583,8 +582,8 @@ class UXAuditService {
 
     // Collect common issues
     const issueCountMap = new Map<string, number>();
-    bookingResults.forEach(result => {
-      result.commonIssues.forEach(issue => {
+    bookingResults.forEach((result) => {
+      result.commonIssues.forEach((issue) => {
         issueCountMap.set(issue.issue, (issueCountMap.get(issue.issue) || 0) + issue.count);
       });
     });
@@ -605,12 +604,12 @@ class UXAuditService {
       other: 0,
     };
 
-    responsivenessResults.forEach(result => {
-      result.deviceTypes.forEach(device => {
+    responsivenessResults.forEach((result) => {
+      result.deviceTypes.forEach((device) => {
         issuesByDevice[device.deviceType] =
           (issuesByDevice[device.deviceType] || 0) + device.issues.length;
 
-        device.issues.forEach(issue => {
+        device.issues.forEach((issue) => {
           issuesByType[issue.type] = (issuesByType[issue.type] || 0) + 1;
         });
       });

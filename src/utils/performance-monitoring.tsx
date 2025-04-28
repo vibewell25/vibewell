@@ -1,9 +1,3 @@
-/**
- * Performance monitoring utilities for the Vibewell application
- * Implements real user monitoring and performance budgets
- */
-import { isDefined } from './type-guards';
-
 // Add these type declarations at the top of the file
 interface PerformanceEntryExtended extends PerformanceEntry {
   processingStart?: number;
@@ -115,13 +109,13 @@ const RETRY_DELAY = 1000;
 
 async function retryMeasurement<T>(
   measureFn: () => Promise<T>,
-  retries = MAX_RETRIES
+  retries = MAX_RETRIES,
 ): Promise<T | null> {
   try {
     return await measureFn();
   } catch (error) {
     if (retries > 0) {
-      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
       return retryMeasurement(measureFn, retries - 1);
     }
     console.error('[Performance] Measurement failed after retries:', error);
@@ -186,9 +180,9 @@ function setupPerformanceObservers(): void {
 
     const observeEntries = (type: string) => {
       try {
-        const observer = new PerformanceObserver(list => {
+        const observer = new PerformanceObserver((list) => {
           const entries = list.getEntries();
-          entries.forEach(entry => {
+          entries.forEach((entry) => {
             switch (type) {
               case 'largest-contentful-paint':
                 handleLCPEntry(entry as LCPEntry);
@@ -212,7 +206,7 @@ function setupPerformanceObservers(): void {
         throw new PerformanceMonitoringError(
           `Failed to setup observer for ${type}`,
           'OBSERVER_SETUP_FAILED',
-          { type, error }
+          { type, error },
         );
       }
     };
@@ -238,7 +232,7 @@ function capturePageLoadMetrics() {
     window.requestAnimationFrame(() => {
       try {
         const navigation = performance.getEntriesByType(
-          'navigation'
+          'navigation',
         )[0] as PerformanceNavigationTiming;
 
         if (navigation) {
@@ -260,7 +254,7 @@ function capturePageLoadMetrics() {
 
         // First Contentful Paint
         const paintMetrics = performance.getEntriesByType('paint');
-        const fcpEntry = paintMetrics.find(entry => entry.name === 'first-contentful-paint');
+        const fcpEntry = paintMetrics.find((entry) => entry.name === 'first-contentful-paint');
 
         if (fcpEntry) {
           sessionStorage.setItem('fcp', fcpEntry.startTime.toString());
@@ -449,7 +443,7 @@ function checkApiAgainstBudget(endpoint: string, duration: number) {
  */
 export function reportPerformanceViolation(metricName: string, value: number, budget: number) {
   console.warn(
-    `[Performance] Budget exceeded for ${metricName}: ${value.toFixed(2)}ms (budget: ${budget}ms)`
+    `[Performance] Budget exceeded for ${metricName}: ${value.toFixed(2)}ms (budget: ${budget}ms)`,
   );
 
   // Store violations for analysis
@@ -473,12 +467,12 @@ export function reportPerformanceViolation(metricName: string, value: number, bu
  * Send performance metrics to analytics
  */
 function sendPerformanceMetricsToAnalytics(
-  metrics: Partial<PerformanceMetrics> | Partial<PerformanceMetrics>[]
+  metrics: Partial<PerformanceMetrics> | Partial<PerformanceMetrics>[],
 ): void {
   // Handle both single metrics and arrays
   const metricsArray = Array.isArray(metrics) ? metrics : [metrics];
 
-  metricsArray.forEach(metric => {
+  metricsArray.forEach((metric) => {
     // Your analytics implementation here
     console.debug('[Performance] Sending metrics to analytics:', metric);
   });
@@ -603,7 +597,7 @@ export function cleanupPerformanceMonitoring(): void {
   if (typeof window === 'undefined') return;
 
   // Disconnect all observers
-  observers.forEach(observer => {
+  observers.forEach((observer) => {
     try {
       observer.disconnect();
     } catch (error) {

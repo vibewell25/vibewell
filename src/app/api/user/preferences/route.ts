@@ -43,19 +43,13 @@ export async function GET(request: NextRequest) {
   try {
     // Check if the user is authenticated
     if (!(await isAuthenticated())) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user ID from auth state
     const { user } = await getAuthState();
     if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Fetch user preferences from database
@@ -70,7 +64,7 @@ export async function GET(request: NextRequest) {
 
     // Transform the array of preferences into a structured object
     const preferences: Record<string, any> = {};
-    
+
     // Transform database preferences into the expected format
     // Each UserPreference has category and weight fields
     userPreferences.forEach((pref: { category: string; weight: number }) => {
@@ -81,14 +75,12 @@ export async function GET(request: NextRequest) {
     // Return the preferences
     return NextResponse.json({ preferences });
   } catch (error) {
-    logger.error('Error fetching user preferences', 
-      error instanceof Error ? error.message : String(error)
+    logger.error(
+      'Error fetching user preferences',
+      error instanceof Error ? error.message : String(error),
     );
 
-    return NextResponse.json(
-      { error: 'Failed to fetch user preferences' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch user preferences' }, { status: 500 });
   }
 }
 
@@ -100,19 +92,13 @@ export async function PUT(request: NextRequest) {
   try {
     // Check if the user is authenticated
     if (!(await isAuthenticated())) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user ID from auth state
     const { user } = await getAuthState();
     if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Parse and validate the request body
@@ -121,35 +107,42 @@ export async function PUT(request: NextRequest) {
 
     if (!validationResult.success) {
       return NextResponse.json(
-        { 
+        {
           error: 'Invalid preferences data',
-          details: validationResult.error.format() 
+          details: validationResult.error.format(),
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Get the preferences data
     const { preferences } = validationResult.data;
-    
+
     // First, delete existing preferences to avoid conflicts
     await prisma.userPreference.deleteMany({
-      where: { userId: user.id }
+      where: { userId: user.id },
     });
-    
+
     // Convert preferences object to individual UserPreference records
     const preferencesData = Object.entries(preferences).map(([category, value]) => ({
       userId: user.id,
       category,
-      weight: typeof value === 'boolean' ? (value ? 1.0 : 0.0) : 
-              typeof value === 'number' ? value : 
-              typeof value === 'string' ? 1.0 : 0.5,
+      weight:
+        typeof value === 'boolean'
+          ? value
+            ? 1.0
+            : 0.0
+          : typeof value === 'number'
+            ? value
+            : typeof value === 'string'
+              ? 1.0
+              : 0.5,
     }));
-    
+
     // Create new preferences
     if (preferencesData.length > 0) {
       await prisma.userPreference.createMany({
-        data: preferencesData
+        data: preferencesData,
       });
     }
 
@@ -157,18 +150,16 @@ export async function PUT(request: NextRequest) {
     logger.info(`User preferences updated: ${user.id}`);
 
     // Return success response
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
-      message: 'Preferences updated successfully'
+      message: 'Preferences updated successfully',
     });
   } catch (error) {
-    logger.error('Error updating user preferences', 
-      error instanceof Error ? error.message : String(error)
+    logger.error(
+      'Error updating user preferences',
+      error instanceof Error ? error.message : String(error),
     );
 
-    return NextResponse.json(
-      { error: 'Failed to update user preferences' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to update user preferences' }, { status: 500 });
   }
-} 
+}

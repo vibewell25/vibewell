@@ -91,7 +91,7 @@ export class WebSocketService {
             type: 'providerUpdate',
             providerId,
             data,
-          })
+          }),
         );
       }
     });

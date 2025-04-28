@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Event } from '@/types/events';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -51,11 +51,11 @@ export function EventCheckinFeedback({
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="checkin">
-              <Icons.CheckCircleIcon className="h-4 w-4 mr-2" />
+              <Icons.CheckCircleIcon className="mr-2 h-4 w-4" />
               Check-in
             </TabsTrigger>
             <TabsTrigger value="feedback">
-              <Icons.StarIcon className="h-4 w-4 mr-2" />
+              <Icons.StarIcon className="mr-2 h-4 w-4" />
               Feedback
             </TabsTrigger>
           </TabsList>
@@ -71,10 +71,10 @@ export function EventCheckinFeedback({
                   type="text"
                   placeholder="Enter check-in code"
                   value={checkInCode}
-                  onChange={e => setCheckInCode(e.target.value)}
+                  onChange={(e) => setCheckInCode(e.target.value)}
                 />
                 <Button onClick={handleCheckIn}>
-                  <Icons.CheckCircleIcon className="h-4 w-4 mr-2" />
+                  <Icons.CheckCircleIcon className="mr-2 h-4 w-4" />
                   Check In
                 </Button>
               </div>
@@ -82,7 +82,7 @@ export function EventCheckinFeedback({
             {event.checkInCode && (
               <div className="space-y-2">
                 <Label>Event Check-in Code</Label>
-                <div className="flex items-center gap-2 p-2 border rounded-md">
+                <div className="flex items-center gap-2 rounded-md border p-2">
                   <Icons.ClipboardIcon className="h-4 w-4 text-muted-foreground" />
                   <span className="font-mono">{event.checkInCode}</span>
                   <Button
@@ -99,10 +99,10 @@ export function EventCheckinFeedback({
               <div className="space-y-2">
                 <Label>Checked-in Participants</Label>
                 <div className="space-y-2">
-                  {event.checkedInParticipants.map(participant => (
+                  {event.checkedInParticipants.map((participant) => (
                     <div
                       key={participant.userId}
-                      className="flex items-center justify-between p-2 border rounded-md"
+                      className="flex items-center justify-between rounded-md border p-2"
                     >
                       <div className="flex items-center gap-2">
                         <div className="relative h-8 w-8">
@@ -140,7 +140,7 @@ export function EventCheckinFeedback({
               <Textarea
                 placeholder="Share your experience..."
                 value={feedback}
-                onChange={e => setFeedback(e.target.value)}
+                onChange={(e) => setFeedback(e.target.value)}
                 rows={4}
               />
             </div>

@@ -91,23 +91,20 @@ class SSROptimizer {
   private getCacheKey(options: RenderOptions): string {
     const { path, query, headers } = options;
     const key = `ssr:${path}`;
-    
+
     if (query) {
       return `${key}:${JSON.stringify(query)}`;
     }
-    
+
     if (headers?.['accept-language']) {
       return `${key}:${headers['accept-language']}`;
     }
-    
+
     return key;
   }
 
   private shouldCache(html: string): boolean {
-    return (
-      this.config.caching &&
-      html.length > this.config.compressionThreshold
-    );
+    return this.config.caching && html.length > this.config.compressionThreshold;
   }
 
   private async cacheRender(key: string, html: string): Promise<void> {
@@ -118,7 +115,7 @@ class SSROptimizer {
 
   public async render(
     component: React.ComponentType,
-    options: RenderOptions
+    options: RenderOptions,
   ): Promise<string | NodeJS.ReadableStream> {
     const startTime = performance.now();
     const cacheKey = this.getCacheKey(options);
@@ -151,10 +148,10 @@ class SSROptimizer {
 
   private async renderStreaming(
     component: React.ComponentType,
-    options: RenderOptions
+    options: RenderOptions,
   ): Promise<NodeJS.ReadableStream> {
     const stream = renderToNodeStream(React.createElement(component));
-    
+
     // Track streaming metrics
     let bytesSent = 0;
     stream.on('data', (chunk) => {
@@ -173,7 +170,7 @@ class SSROptimizer {
 
   private async renderStatic(
     component: React.ComponentType,
-    options: RenderOptions
+    options: RenderOptions,
   ): Promise<string> {
     const startTime = performance.now();
     const html = renderToString(React.createElement(component));
@@ -263,54 +260,54 @@ class SSROptimizer {
     return `${this.cachePrefix}:${resolvedUrl}${queryString ? `?${queryString}` : ''}`;
   }
 
-  public withCache = cache(async <T extends object>(
-    ctx: GetServerSidePropsContext,
-    dataFetcher: () => Promise<T>,
-    options?: SSRCacheOptions
-  ): Promise<T> => {
-    const startTime = Date.now();
-    const cacheKey = this.generateCacheKey(ctx, options);
-    
-    try {
-      // Try to get from cache
-      const cached = await this.redis.get(cacheKey);
-      if (cached) {
-        this.metrics.cacheHits++;
+  public withCache = cache(
+    async <T extends object>(
+      ctx: GetServerSidePropsContext,
+      dataFetcher: () => Promise<T>,
+      options?: SSRCacheOptions,
+    ): Promise<T> => {
+      const startTime = Date.now();
+      const cacheKey = this.generateCacheKey(ctx, options);
+
+      try {
+        // Try to get from cache
+        const cached = await this.redis.get(cacheKey);
+        if (cached) {
+          this.metrics.cacheHits++;
+          this.metrics.totalRequests++;
+          return JSON.parse(cached);
+        }
+
+        // Cache miss, fetch data
+        this.metrics.cacheMisses++;
         this.metrics.totalRequests++;
-        return JSON.parse(cached);
+        const data = await dataFetcher();
+
+        // Store in cache
+        const ttl = options?.ttl || this.defaultTTL;
+        await this.redis.setex(cacheKey, ttl, JSON.stringify(data));
+
+        // Store cache tags if provided
+        if (options?.tags?.length) {
+          await this.redis.sadd(`${cacheKey}:tags`, ...options.tags);
+        }
+
+        // Update metrics
+        const renderTime = Date.now() - startTime;
+        this.updateMetrics(renderTime);
+
+        return data;
+      } catch (error) {
+        logger.error('SSR Cache error:', error);
+        return await dataFetcher();
       }
-
-      // Cache miss, fetch data
-      this.metrics.cacheMisses++;
-      this.metrics.totalRequests++;
-      const data = await dataFetcher();
-
-      // Store in cache
-      const ttl = options?.ttl || this.defaultTTL;
-      await this.redis.setex(cacheKey, ttl, JSON.stringify(data));
-
-      // Store cache tags if provided
-      if (options?.tags?.length) {
-        await this.redis.sadd(`${cacheKey}:tags`, ...options.tags);
-      }
-
-      // Update metrics
-      const renderTime = Date.now() - startTime;
-      this.updateMetrics(renderTime);
-
-      return data;
-    } catch (error) {
-      logger.error('SSR Cache error:', error);
-      return await dataFetcher();
-    }
-  });
+    },
+  );
 
   private updateMetrics(renderTime: number): void {
     const { totalRequests, averageRenderTime } = this.metrics;
-    this.metrics.averageRenderTime = (
-      (averageRenderTime * totalRequests + renderTime) /
-      (totalRequests + 1)
-    );
+    this.metrics.averageRenderTime =
+      (averageRenderTime * totalRequests + renderTime) / (totalRequests + 1);
   }
 
   public async invalidateByTag(tag: string): Promise<void> {
@@ -319,7 +316,7 @@ class SSROptimizer {
       if (keys.length) {
         await Promise.all([
           this.redis.del(...keys),
-          this.redis.del(`${this.cachePrefix}:tags:${tag}`)
+          this.redis.del(`${this.cachePrefix}:tags:${tag}`),
         ]);
       }
     } catch (error) {
@@ -345,14 +342,14 @@ class SSROptimizer {
   public async warmCache<T extends object>(
     paths: string[],
     dataFetcher: (path: string) => Promise<T>,
-    options?: SSRCacheOptions
+    options?: SSRCacheOptions,
   ): Promise<void> {
     try {
       await Promise.all(
         paths.map(async (path) => {
           const ctx = this.createMockContext(path);
           await this.withCache(ctx, () => dataFetcher(path), options);
-        })
+        }),
       );
     } catch (error) {
       logger.error('Cache warming error:', error);
@@ -362,9 +359,9 @@ class SSROptimizer {
   private createMockContext(path: string): GetServerSidePropsContext {
     const [pathname, search] = path.split('?');
     const query: ParsedUrlQuery = {};
-    
+
     if (search) {
-      search.split('&').forEach(param => {
+      search.split('&').forEach((param) => {
         const [key, value] = param.split('=');
         query[key] = value;
       });
@@ -401,4 +398,4 @@ class SSROptimizer {
   }
 }
 
-export default SSROptimizer; 
+export default SSROptimizer;

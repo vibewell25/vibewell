@@ -1,10 +1,8 @@
-'use client';
-
+'use client';;
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { prisma } from '@/lib/database/client';
 import { ProfileForm } from '@/components/profile/profile-form';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Shield } from 'lucide-react';
@@ -20,8 +18,7 @@ export default function EditProfilePage() {
       try {
         setLoading(true);
         const {
-          data: { session },
-          error: sessionError,
+          error: sessionError
         } = await supabase.auth.getSession();
 
         if (sessionError) {
@@ -52,7 +49,7 @@ export default function EditProfilePage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto py-10 px-4">
+      <div className="container mx-auto px-4 py-10">
         <Card>
           <CardHeader>
             <Skeleton className="h-8 w-3/4" />
@@ -79,7 +76,7 @@ export default function EditProfilePage() {
 
   if (error || !userId) {
     return (
-      <div className="container mx-auto py-10 px-4">
+      <div className="container mx-auto px-4 py-10">
         <Alert variant="destructive">
           <AlertTitle>Authentication Error</AlertTitle>
           <AlertDescription>
@@ -91,7 +88,7 @@ export default function EditProfilePage() {
   }
 
   return (
-    <div className="container mx-auto py-10 px-4">
+    <div className="container mx-auto px-4 py-10">
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
@@ -100,8 +97,8 @@ export default function EditProfilePage() {
               Update your personal information and preferences
             </p>
           </div>
-          <div className="flex items-center text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-            <Shield className="h-4 w-4 mr-1" />
+          <div className="flex items-center rounded-full bg-blue-50 px-3 py-1 text-sm text-blue-600">
+            <Shield className="mr-1 h-4 w-4" />
             Secure Page
           </div>
         </div>

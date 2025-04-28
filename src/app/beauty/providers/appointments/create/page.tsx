@@ -1,9 +1,9 @@
 'use client';
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -79,17 +79,16 @@ export default function CreateAppointmentPage() {
   const totalDuration = selectedServices.reduce((sum, service) => sum + service.duration, 0);
   const totalPrice = selectedServices.reduce((sum, service) => sum + service.price, 0);
   const handleServiceSelect = (serviceId: string) => {
-    const service = dummyServices.find(s => s.id === serviceId);
-    if (service && !selectedServices.find(s => s.id === serviceId)) {
+    const service = dummyServices.find((s) => s.id === serviceId);
+    if (service && !selectedServices.find((s) => s.id === serviceId)) {
       setSelectedServices([...selectedServices, service]);
     }
   };
   const handleServiceRemove = (serviceId: string) => {
-    setSelectedServices(selectedServices.filter(s => s.id !== serviceId));
+    setSelectedServices(selectedServices.filter((s) => s.id !== serviceId));
   };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    import { createAppointment } from '../../../../../implementation-files/appointments-create-logic';
     import { Icons } from '@/components/icons';
     console.log({
       client: selectedClient,
@@ -105,7 +104,7 @@ export default function CreateAppointmentPage() {
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Create New Appointment</h1>
+          <h1 className="mb-2 text-4xl font-bold">Create New Appointment</h1>
           <p className="text-xl text-muted-foreground">
             Schedule a new appointment for your client
           </p>
@@ -154,8 +153,8 @@ export default function CreateAppointmentPage() {
                   ) : (
                     <Select
                       value={selectedClient?.id || ''}
-                      onValueChange={value => {
-                        const client = dummyClients.find(c => c.id === value);
+                      onValueChange={(value) => {
+                        const client = dummyClients.find((c) => c.id === value);
                         setSelectedClient(client || null);
                       }}
                     >
@@ -163,7 +162,7 @@ export default function CreateAppointmentPage() {
                         <SelectValue placeholder="Select a client" />
                       </SelectTrigger>
                       <SelectContent>
-                        {dummyClients.map(client => (
+                        {dummyClients.map((client) => (
                           <SelectItem key={client.id} value={client.id}>
                             {client.name}
                           </SelectItem>
@@ -190,7 +189,7 @@ export default function CreateAppointmentPage() {
                       <SelectValue placeholder="Select a service" />
                     </SelectTrigger>
                     <SelectContent>
-                      {dummyServices.map(service => (
+                      {dummyServices.map((service) => (
                         <SelectItem key={service.id} value={service.id}>
                           {service.name} (${service.price})
                         </SelectItem>
@@ -198,10 +197,10 @@ export default function CreateAppointmentPage() {
                     </SelectContent>
                   </Select>
                   <div className="space-y-2">
-                    {selectedServices.map(service => (
+                    {selectedServices.map((service) => (
                       <div
                         key={service.id}
-                        className="flex items-center justify-between p-3 border rounded-lg"
+                        className="flex items-center justify-between rounded-lg border p-3"
                       >
                         <div>
                           <h3 className="font-medium">{service.name}</h3>
@@ -221,7 +220,7 @@ export default function CreateAppointmentPage() {
                     ))}
                   </div>
                   {selectedServices.length > 0 && (
-                    <div className="pt-4 border-t">
+                    <div className="border-t pt-4">
                       <div className="flex justify-between">
                         <span>Total Duration:</span>
                         <span>{totalDuration} minutes</span>
@@ -262,7 +261,7 @@ export default function CreateAppointmentPage() {
                   </div>
                   <div>
                     <Label>Time</Label>
-                    <Input type="time" value={time} onChange={e => setTime(e.target.value)} />
+                    <Input type="time" value={time} onChange={(e) => setTime(e.target.value)} />
                   </div>
                 </div>
               </CardContent>
@@ -277,7 +276,7 @@ export default function CreateAppointmentPage() {
                 <Textarea
                   placeholder="Add notes about the appointment..."
                   value={notes}
-                  onChange={e => setNotes(e.target.value)}
+                  onChange={(e) => setNotes(e.target.value)}
                 />
               </CardContent>
             </Card>

@@ -33,7 +33,7 @@ interface AuditMetadata {
   [key: string]: unknown;
 }
 
-type AuditAction = 
+type AuditAction =
   | 'create'
   | 'read'
   | 'update'
@@ -81,7 +81,7 @@ export class AuditLoggingService {
         await this.redis.zadd(
           `audit:resource:${log.resourceType}:${log.resourceId}`,
           log.timestamp.getTime(),
-          id
+          id,
         );
       }
 
@@ -108,7 +108,7 @@ export class AuditLoggingService {
       offset?: number;
       startTime?: Date;
       endTime?: Date;
-    } = {}
+    } = {},
   ): Promise<AuditLog[]> {
     try {
       const { limit = 100, offset = 0, startTime, endTime } = options;
@@ -120,7 +120,7 @@ export class AuditLoggingService {
         startTime?.getTime() || '-inf',
         'LIMIT',
         offset,
-        limit
+        limit,
       );
 
       // Get log details
@@ -142,7 +142,7 @@ export class AuditLoggingService {
       offset?: number;
       startTime?: Date;
       endTime?: Date;
-    } = {}
+    } = {},
   ): Promise<AuditLog[]> {
     try {
       const { limit = 100, offset = 0, startTime, endTime } = options;
@@ -154,7 +154,7 @@ export class AuditLoggingService {
         startTime?.getTime() || '-inf',
         'LIMIT',
         offset,
-        limit
+        limit,
       );
 
       // Get log details
@@ -184,7 +184,7 @@ export class AuditLoggingService {
     options: {
       limit?: number;
       offset?: number;
-    } = {}
+    } = {},
   ): Promise<AuditLog[]> {
     try {
       const { limit = 100, offset = 0 } = options;
@@ -195,19 +195,19 @@ export class AuditLoggingService {
         logIds = await this.redis.zrevrangebyscore(
           `audit:user:${query.userId}`,
           query.endTime?.getTime() || '+inf',
-          query.startTime?.getTime() || '-inf'
+          query.startTime?.getTime() || '-inf',
         );
       } else if (query.resourceType && query.resourceId) {
         logIds = await this.redis.zrevrangebyscore(
           `audit:resource:${query.resourceType}:${query.resourceId}`,
           query.endTime?.getTime() || '+inf',
-          query.startTime?.getTime() || '-inf'
+          query.startTime?.getTime() || '-inf',
         );
       }
 
       // Get log details and filter
       const logs = await this.getLogDetails(logIds);
-      const filtered = logs.filter(log => {
+      const filtered = logs.filter((log) => {
         if (query.action && log.action !== query.action) return false;
         if (query.userId && log.userId !== query.userId) return false;
         if (query.resourceType && log.resourceType !== query.resourceType) return false;
@@ -249,7 +249,7 @@ export class AuditLoggingService {
     resourceType: string,
     resourceId: string,
     changes?: Record<string, AuditChange>,
-    metadata?: AuditMetadata
+    metadata?: AuditMetadata,
   ): Promise<void> {
     try {
       const auditLog: AuditLog = {
@@ -273,7 +273,13 @@ export class AuditLoggingService {
       await this.redis.ltrim(key, 0, 99); // Keep last 100 events
       await this.redis.expire(key, 86400 * 30); // Expire after 30 days
     } catch (error) {
-      logger.error('Failed to log audit event', { error, userId, action, resourceType, resourceId });
+      logger.error('Failed to log audit event', {
+        error,
+        userId,
+        action,
+        resourceType,
+        resourceId,
+      });
       throw error;
     }
   }
@@ -290,14 +296,14 @@ export class AuditLoggingService {
     pagination: {
       page: number;
       limit: number;
-    }
+    },
   ): Promise<{
     logs: AuditLog[];
     total: number;
   }> {
     try {
       const where: Record<string, unknown> = {};
-      
+
       if (filters.userId) where.userId = filters.userId;
       if (filters.action) where.action = filters.action;
       if (filters.resourceType) where.resourceType = filters.resourceType;

@@ -1,24 +1,9 @@
-'use client';
-
+'use client';;
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { BookingService } from '@/services/booking-service';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
@@ -95,19 +80,19 @@ export function BookingList({ userId, role }: BookingListProps) {
     return <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>;
   };
 
-  const filteredBookings = bookings.filter(booking => {
+  const filteredBookings = bookings.filter((booking) => {
     if (filter === 'all') return true;
     return booking.status === filter;
   });
 
   if (loading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>;
+    return <div className="flex h-64 items-center justify-center">Loading...</div>;
   }
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-64">
-        <p className="text-red-500 mb-4">{error}</p>
+      <div className="flex h-64 flex-col items-center justify-center">
+        <p className="mb-4 text-red-500">{error}</p>
         <Button onClick={loadBookings}>Retry</Button>
       </div>
     );
@@ -115,8 +100,8 @@ export function BookingList({ userId, role }: BookingListProps) {
 
   if (filteredBookings.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-64">
-        <p className="text-gray-500 mb-4">No bookings found</p>
+      <div className="flex h-64 flex-col items-center justify-center">
+        <p className="mb-4 text-gray-500">No bookings found</p>
         {filter !== 'all' && (
           <Button variant="outline" onClick={() => setFilter('all')}>
             Show All Bookings
@@ -128,7 +113,7 @@ export function BookingList({ userId, role }: BookingListProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-2 mb-4">
+      <div className="mb-4 flex gap-2">
         <Button variant={filter === 'all' ? 'default' : 'outline'} onClick={() => setFilter('all')}>
           All
         </Button>
@@ -153,13 +138,13 @@ export function BookingList({ userId, role }: BookingListProps) {
       </div>
 
       <div className="grid gap-4">
-        {filteredBookings.map(booking => (
+        {filteredBookings.map((booking) => (
           <Card
             key={booking.id}
-            className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+            className="cursor-pointer p-4 transition-colors hover:bg-gray-50"
             onClick={() => router.push(`/bookings?id=${booking.id}`)}
           >
-            <div className="flex justify-between items-start">
+            <div className="flex items-start justify-between">
               <div>
                 <h3 className="text-lg font-semibold">{booking.service.name}</h3>
                 <p className="text-sm text-gray-500">
@@ -180,7 +165,7 @@ export function BookingList({ userId, role }: BookingListProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={e => {
+                  onClick={(e) => {
                     e.stopPropagation();
                     router.push(`/bookings?id=${booking.id}`);
                   }}

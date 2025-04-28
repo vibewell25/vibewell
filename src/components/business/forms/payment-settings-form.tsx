@@ -2,18 +2,10 @@
 
 import { useState } from 'react';
 import { PaymentFormProps } from '@/components/business/business-profile-wizard';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/Input';
 import { Switch } from '@/components/ui/switch';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/components/ui/textarea';
@@ -62,7 +54,7 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
   const handlePaymentMethodChange = (methodId: string, checked: boolean) => {
     const updatedMethods = checked
       ? [...paymentMethods, methodId]
-      : paymentMethods.filter(id => id !== methodId);
+      : paymentMethods.filter((id) => id !== methodId);
 
     form.setValue('paymentMethods', updatedMethods, {
       shouldValidate: true,
@@ -83,7 +75,7 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="mb-6 flex items-center gap-2">
         <CreditCard className="h-5 w-5 text-muted-foreground" />
         <h2 className="text-xl font-semibold">Payment Settings</h2>
       </div>
@@ -95,19 +87,19 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
           <CardDescription>Select the payment methods you accept from customers</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {PAYMENT_METHODS.map(method => (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+            {PAYMENT_METHODS.map((method) => (
               <div key={method.id} className="flex items-start space-x-2">
                 <Checkbox
                   id={`payment-method-${method.id}`}
                   checked={paymentMethods.includes(method.id)}
-                  onCheckedChange={checked =>
+                  onCheckedChange={(checked) =>
                     handlePaymentMethodChange(method.id, checked as boolean)
                   }
                 />
                 <label
                   htmlFor={`payment-method-${method.id}`}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                  className="cursor-pointer text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   {method.label}
                 </label>
@@ -116,11 +108,11 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
           </div>
 
           {paymentMethods.length === 0 && (
-            <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-md flex items-start space-x-3">
-              <AlertCircle className="h-5 w-5 text-amber-500 mt-0.5" />
+            <div className="flex items-start space-x-3 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-amber-800">
+              <AlertCircle className="mt-0.5 h-5 w-5 text-amber-500" />
               <div>
                 <p className="text-sm font-medium">Please select at least one payment method</p>
-                <p className="text-xs mt-1">
+                <p className="mt-1 text-xs">
                   Customers need to know which payment options are available.
                 </p>
               </div>
@@ -147,7 +139,7 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
           </div>
 
           {acceptsDeposits && (
-            <div className="space-y-4 mt-4 border-t pt-4">
+            <div className="mt-4 space-y-4 border-t pt-4">
               <FormField
                 control={form.control}
                 name="depositType"
@@ -156,7 +148,7 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
                     <FormLabel>Deposit Type</FormLabel>
                     <Select
                       value={depositType}
-                      onValueChange={value => {
+                      onValueChange={(value) => {
                         setDepositType(value);
                         field.onChange(value);
                       }}
@@ -167,7 +159,7 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {DEPOSIT_OPTIONS.map(option => (
+                        {DEPOSIT_OPTIONS.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>
@@ -277,27 +269,27 @@ export function PaymentSettingsForm({ form }: PaymentFormProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="border rounded-lg p-4 flex flex-col items-center justify-center space-y-2 opacity-60">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+            <div className="flex flex-col items-center justify-center space-y-2 rounded-lg border p-4 opacity-60">
               <CreditCardIcon className="h-8 w-8 text-muted-foreground" />
               <p className="text-sm font-medium">Stripe</p>
-              <p className="text-xs text-muted-foreground text-center">
+              <p className="text-center text-xs text-muted-foreground">
                 Accept credit cards directly on your booking page
               </p>
             </div>
-            <div className="border rounded-lg p-4 flex flex-col items-center justify-center space-y-2 opacity-60">
+            <div className="flex flex-col items-center justify-center space-y-2 rounded-lg border p-4 opacity-60">
               <Bank className="h-8 w-8 text-muted-foreground" />
               <p className="text-sm font-medium">Bank Payments</p>
-              <p className="text-xs text-muted-foreground text-center">
+              <p className="text-center text-xs text-muted-foreground">
                 Accept direct bank transfers securely
               </p>
             </div>
-            <div className="border rounded-lg p-4 flex flex-col items-center justify-center space-y-2 opacity-60">
-              <div className="h-8 w-8 flex items-center justify-center rounded-full bg-muted-foreground/10">
-                <span className="text-muted-foreground font-bold">+</span>
+            <div className="flex flex-col items-center justify-center space-y-2 rounded-lg border p-4 opacity-60">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted-foreground/10">
+                <span className="font-bold text-muted-foreground">+</span>
               </div>
               <p className="text-sm font-medium">More Options</p>
-              <p className="text-xs text-muted-foreground text-center">
+              <p className="text-center text-xs text-muted-foreground">
                 Additional payment processors coming soon
               </p>
             </div>

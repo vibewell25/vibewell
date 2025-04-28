@@ -64,14 +64,14 @@ export function UserMenu() {
         <div
           ref={menuRef}
           id="user-menu"
-          className="absolute right-0 mt-2 w-48 bg-card rounded-md shadow-lg border border-border py-1 z-10"
+          className="absolute right-0 z-10 mt-2 w-48 rounded-md border border-border bg-card py-1 shadow-lg"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="user-menu-button"
         >
-          <div className="px-4 py-2 border-b border-border">
+          <div className="border-b border-border px-4 py-2">
             <p className="text-sm font-medium">{user.user_metadata?.full_name || user.email}</p>
-            <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+            <p className="truncate text-xs text-muted-foreground">{user.email}</p>
           </div>
           <Link
             href="/profile"
@@ -113,7 +113,7 @@ export function UserMenu() {
           >
             Notifications
             {unreadCount > 0 && (
-              <span className="ml-2 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold text-white bg-secondary rounded-full">
+              <span className="bg-secondary ml-2 inline-flex items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-bold text-white">
                 {unreadCount}
               </span>
             )}
@@ -135,7 +135,7 @@ export function UserMenu() {
             Edit Profile
           </Link>
           <button
-            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-muted"
+            className="block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-muted"
             onClick={() => {
               setIsOpen(false);
               signOut();

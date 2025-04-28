@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/hooks/use-unified-auth';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/use-toast';
 import { Icons } from '@/components/ui/icons';
 

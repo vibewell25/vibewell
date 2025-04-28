@@ -6,7 +6,7 @@ import { AdminSetupForm } from '@/components/admin/setup-form';
 
 export default async function AdminSetupPage() {
   const session = await getServerSession(authOptions);
-  
+
   if (!session?.user) {
     redirect('/login');
   }

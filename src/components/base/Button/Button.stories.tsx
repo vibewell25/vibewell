@@ -146,7 +146,7 @@ export const Loading: Story = {
   args: {
     children: (
       <>
-        <span className="animate-spin mr-2">⌛</span>
+        <span className="mr-2 animate-spin">⌛</span>
         Loading...
       </>
     ),

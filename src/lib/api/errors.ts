@@ -80,7 +80,7 @@ export function parseApiError(error: any): ApiError {
 export function createApiError(
   code: string,
   message: string,
-  details?: Record<string, any>
+  details?: Record<string, any>,
 ): ApiError {
   return {
     code,
@@ -106,32 +106,9 @@ export function isApiError(error: any): error is ApiError {
 /**
  * Error codes mapping
  */
-export const API_ERROR_CODES = {
-  UNAUTHORIZED: 'UNAUTHORIZED',
-  FORBIDDEN: 'FORBIDDEN',
-  NOT_FOUND: 'NOT_FOUND',
-  VALIDATION_ERROR: 'VALIDATION_ERROR',
-  RATE_LIMIT_EXCEEDED: 'RATE_LIMIT_EXCEEDED',
-  INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
-  SERVICE_UNAVAILABLE: 'SERVICE_UNAVAILABLE',
-  NETWORK_ERROR: 'NETWORK_ERROR',
-  TIMEOUT_ERROR: 'TIMEOUT_ERROR',
-} as const;
+export {};
 
 /**
  * HTTP status codes mapping
  */
-export const HTTP_STATUS = {
-  OK: 200,
-  CREATED: 201,
-  NO_CONTENT: 204,
-  BAD_REQUEST: 400,
-  UNAUTHORIZED: 401,
-  FORBIDDEN: 403,
-  NOT_FOUND: 404,
-  CONFLICT: 409,
-  UNPROCESSABLE_ENTITY: 422,
-  TOO_MANY_REQUESTS: 429,
-  INTERNAL_SERVER_ERROR: 500,
-  SERVICE_UNAVAILABLE: 503,
-} as const;
+export {};

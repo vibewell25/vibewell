@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { FeedbackService, FeedbackStats } from '@/services/feedback-service';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useEffect, useState } from 'react';
+import { FeedbackService } from '@/services/feedback-service';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   BarChart,
@@ -35,7 +35,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
         // In a real app, this would be a call to your product service
         // For now, we'll use placeholder names
         const { data, error } = await fetch('/api/products')
-          .then(res => res.json())
+          .then((res) => res.json())
           .catch(() => ({ data: null, error: 'Failed to fetch products' }));
 
         if (error) throw new Error(error);
@@ -51,7 +51,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
         // Fallback to generic product names
         const productIds = Object.keys(stats);
         const fallbackNames: Record<string, string> = {};
-        productIds.forEach(id => {
+        productIds.forEach((id) => {
           fallbackNames[id] = `Product ${id.substring(0, 6)}`;
         });
         setProductNames(fallbackNames);
@@ -173,12 +173,12 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
   return (
     <div className="w-full space-y-4">
       {!productId && Object.keys(stats).length > 1 && (
-        <div className="flex flex-wrap gap-2 mb-4">
-          {Object.keys(stats).map(id => (
+        <div className="mb-4 flex flex-wrap gap-2">
+          {Object.keys(stats).map((id) => (
             <button
               key={id}
               onClick={() => setSelectedProductId(id)}
-              className={`px-3 py-1 text-sm rounded-md ${
+              className={`rounded-md px-3 py-1 text-sm ${
                 selectedProductId === id
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-muted hover:bg-muted/80'
@@ -192,7 +192,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
 
       {selectedStats && (
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-3">
+          <TabsList className="grid w-full grid-cols-3 md:inline-grid md:w-auto">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="ratings">Ratings</TabsTrigger>
             <TabsTrigger value="comments">Comments</TabsTrigger>
@@ -239,7 +239,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                     {
                       Object.entries(selectedStats.ratingDistribution).reduce(
                         (max, [rating, count]) => (count > max.count ? { rating, count } : max),
-                        { rating: '0', count: 0 }
+                        { rating: '0', count: 0 },
                       ).rating
                     }{' '}
                     Stars
@@ -349,7 +349,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                   <div className="space-y-4">
                     {selectedStats.recentComments.map((comment, index) => (
                       <div key={index} className="border-b pb-4 last:border-0">
-                        <div className="flex justify-between items-center mb-2">
+                        <div className="mb-2 flex items-center justify-between">
                           <div className="text-yellow-500">
                             {'★'.repeat(comment.rating)}
                             {'☆'.repeat(5 - comment.rating)}

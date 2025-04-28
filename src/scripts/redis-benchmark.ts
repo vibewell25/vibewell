@@ -37,7 +37,7 @@ class RedisBenchmark {
       requests = 100000,
       keyspaceSize = 1000000,
       dataSize = 100,
-      tests = ['SET', 'GET', 'LPUSH', 'RPOP', 'SADD', 'SPOP', 'ZADD', 'ZRANGE']
+      tests = ['SET', 'GET', 'LPUSH', 'RPOP', 'SADD', 'SPOP', 'ZADD', 'ZRANGE'],
     } = options;
 
     const results: BenchmarkResult[] = [];
@@ -46,21 +46,21 @@ class RedisBenchmark {
       // Run redis-benchmark command for each test
       for (const test of tests) {
         const command = `redis-benchmark -t ${test} -n ${requests} -c ${clients} -r ${keyspaceSize} -d ${dataSize} --csv`;
-        
+
         const { stdout } = await execAsync(command);
         const lines = stdout.split('\n');
-        
+
         // Parse CSV output
         for (const line of lines) {
           if (line.includes(test)) {
             const [, rps, avgLatency] = line.split(',');
-            
+
             results.push({
               test,
               rps: parseFloat(rps),
               avgLatency: parseFloat(avgLatency),
               p95Latency: 0, // Will be calculated from raw data
-              p99Latency: 0  // Will be calculated from raw data
+              p99Latency: 0, // Will be calculated from raw data
             });
           }
         }
@@ -68,7 +68,7 @@ class RedisBenchmark {
 
       // Save results
       this.saveResults(results);
-      
+
       return results;
     } catch (error) {
       console.error('Benchmark failed:', error);
@@ -100,7 +100,7 @@ class RedisBenchmark {
       rps,
       avgLatency,
       p95Latency: p95,
-      p99Latency: p99
+      p99Latency: p99,
     };
 
     this.saveResults([result]);
@@ -142,4 +142,4 @@ return 1
 await benchmark.runCustomBenchmark(luaScript, 1000);
 
 await benchmark.cleanup();
-*/ 
+*/

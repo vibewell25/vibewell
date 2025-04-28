@@ -156,7 +156,7 @@ const BookingSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Update the updatedAt field on save

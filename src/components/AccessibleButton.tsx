@@ -38,13 +38,7 @@ export const AccessibleButton: React.FC<AccessibleButtonProps> = ({
 
   return (
     <button
-      className={`
-        ${baseStyles}
-        ${variantStyles[variant]}
-        ${sizeStyles[size]}
-        ${isLoading || disabled ? 'opacity-50 cursor-not-allowed' : ''}
-        ${className}
-      `}
+      className={` ${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${isLoading || disabled ? 'cursor-not-allowed opacity-50' : ''} ${className} `}
       disabled={isLoading || disabled}
       aria-busy={isLoading}
       {...props}

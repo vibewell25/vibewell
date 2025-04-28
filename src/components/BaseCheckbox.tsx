@@ -35,13 +35,7 @@ export const BaseCheckbox: React.FC<BaseCheckboxProps> = ({
     <input
       id={checkboxId}
       type="checkbox"
-      className={`
-        h-4 w-4 rounded
-        ${error ? 'border-red-300' : 'border-gray-300'}
-        text-primary focus:ring-primary
-        ${checkboxClassName}
-        ${className}
-      `}
+      className={`h-4 w-4 rounded ${error ? 'border-red-300' : 'border-gray-300'} text-primary focus:ring-primary ${checkboxClassName} ${className} `}
       aria-invalid={error ? 'true' : 'false'}
       aria-describedby={`${errorId || ''} ${helperId || ''}`}
       required={required}
@@ -52,7 +46,7 @@ export const BaseCheckbox: React.FC<BaseCheckboxProps> = ({
   const labelElement = label && (
     <label htmlFor={checkboxId} className={labelClassName}>
       {label}
-      {required && <span className="text-red-500 ml-1">*</span>}
+      {required && <span className="ml-1 text-red-500">*</span>}
     </label>
   );
 
@@ -61,7 +55,7 @@ export const BaseCheckbox: React.FC<BaseCheckboxProps> = ({
       <div className="flex items-start">
         {labelPosition === 'left' && labelElement && <div className="mr-3">{labelElement}</div>}
 
-        <div className="flex items-center h-5">{checkboxElement}</div>
+        <div className="flex h-5 items-center">{checkboxElement}</div>
 
         {labelPosition === 'right' && labelElement && <div className="ml-3">{labelElement}</div>}
       </div>

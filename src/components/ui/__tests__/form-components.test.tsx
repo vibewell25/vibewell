@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { axe } from 'jest-axe';
@@ -56,7 +55,7 @@ describe('Form Components', () => {
     it('renders correctly with options', () => {
       render(<FormSelect {...defaultProps} />);
       expect(screen.getByLabelText('Test Select')).toBeInTheDocument();
-      options.forEach(option => {
+      options.forEach((option) => {
         expect(screen.getByText(option.label)).toBeInTheDocument();
       });
     });
@@ -120,7 +119,7 @@ describe('Form Components', () => {
 
     it('renders radio group correctly', () => {
       render(<FormRadio {...defaultProps} />);
-      options.forEach(option => {
+      options.forEach((option) => {
         expect(screen.getByLabelText(option.label)).toBeInTheDocument();
       });
     });
@@ -185,7 +184,7 @@ describe('Form Components', () => {
   describe('Accessibility', () => {
     it('FormInput meets accessibility standards', async () => {
       const { container } = render(
-        <FormInput label="Test Input" name="test" onChange={() => {}} />
+        <FormInput label="Test Input" name="test" onChange={() => {}} />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -198,7 +197,7 @@ describe('Form Components', () => {
           name="test"
           options={[{ value: '1', label: 'Option 1' }]}
           onChange={() => {}}
-        />
+        />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -206,7 +205,7 @@ describe('Form Components', () => {
 
     it('FormCheckbox meets accessibility standards', async () => {
       const { container } = render(
-        <FormCheckbox label="Test Checkbox" name="test" onChange={() => {}} />
+        <FormCheckbox label="Test Checkbox" name="test" onChange={() => {}} />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -219,7 +218,7 @@ describe('Form Components', () => {
           name="test"
           options={[{ value: '1', label: 'Radio 1' }]}
           onChange={() => {}}
-        />
+        />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -227,7 +226,7 @@ describe('Form Components', () => {
 
     it('FormTextarea meets accessibility standards', async () => {
       const { container } = render(
-        <FormTextarea label="Test Textarea" name="test" onChange={() => {}} />
+        <FormTextarea label="Test Textarea" name="test" onChange={() => {}} />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();

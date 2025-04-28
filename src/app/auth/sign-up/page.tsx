@@ -17,7 +17,7 @@ export default function SignUpRedirect() {
   }, [router, searchParams]);
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex h-screen items-center justify-center">
       <p className="text-gray-500">Redirecting...</p>
     </div>
   );

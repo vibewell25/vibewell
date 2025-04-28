@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Box, Sphere, Cylinder } from '@react-three/drei';
-import * as THREE from 'three';
 
 export function Mountain() {
   const groupRef = useRef<THREE.Group>(null);

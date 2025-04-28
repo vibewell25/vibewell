@@ -1,6 +1,4 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import {
   Card,
   CardHeader,
@@ -8,7 +6,7 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 
 describe('Card Component', () => {
   test('renders basic Card', () => {
@@ -31,7 +29,7 @@ describe('Card Component', () => {
         </CardHeader>
         <CardContent data-testid="card-content">Card Content</CardContent>
         <CardFooter data-testid="card-footer">Card Footer</CardFooter>
-      </Card>
+      </Card>,
     );
 
     // Test Card
@@ -87,7 +85,7 @@ describe('Card Component', () => {
         <CardFooter className="test-footer" data-testid="card-footer">
           Footer
         </CardFooter>
-      </Card>
+      </Card>,
     );
 
     // Verify custom classes are applied correctly
@@ -105,7 +103,7 @@ describe('Card Component', () => {
         <CardHeader data-testid="card-header" aria-label="card header">
           Header
         </CardHeader>
-      </Card>
+      </Card>,
     );
 
     expect(screen.getByTestId('card')).toHaveAttribute('aria-label', 'card component');

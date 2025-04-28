@@ -45,7 +45,7 @@ function sanitizeLogData<T extends object>(data: T): T {
 
     for (const key of Object.keys(obj)) {
       // Check if this is a sensitive key
-      if (sensitiveFields.some(field => key.toLowerCase().includes(field))) {
+      if (sensitiveFields.some((field) => key.toLowerCase().includes(field))) {
         if (typeof obj[key] === 'string') {
           obj[key] = '***REDACTED***';
         }

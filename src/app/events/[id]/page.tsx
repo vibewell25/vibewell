@@ -1,10 +1,9 @@
-'use client';
+'use client';;
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter, notFound } from 'next/navigation';
 import Image from 'next/image';
 import { format, parseISO, isPast } from 'date-fns';
 import { Layout } from '@/components/layout';
-import { Event, EventComment } from '@/types/events';
 import {
   getEventById,
   registerForEvent,
@@ -14,19 +13,18 @@ import {
 } from '@/lib/api/events';
 import { useAuth } from '@/hooks/use-unified-auth';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Icons } from '@/components/icons';
 import { EventCheckinFeedback } from '@/components/event-checkin-feedback';
 import { useToast } from '@/components/ui/toast';
 import { PaymentMethodSelector } from '@/components/payment/payment-method-selector';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { getEventPaymentStatus } from '@/lib/api/events';
 import { EventOrganizerDashboard } from '@/components/event-organizer-dashboard';
 
-// Add this type declaration to handle user_metadata 
+// Add this type declaration to handle user_metadata
 interface UserWithMetadata {
   id: string;
   user_metadata?: {
@@ -51,14 +49,14 @@ export default function EventDetailPage() {
   const [checkingIn, setCheckingIn] = useState(false);
   const [checkInError, setCheckInError] = useState<string | null>(null);
   const [submittingFeedback, setSubmittingFeedback] = useState(false);
-  const [paymentStatus, setPaymentStatus] = useState<{ 
-    status: 'none' | 'pending' | 'paid' | 'refunded' | 'failed'; 
-    amount?: number; 
+  const [paymentStatus, setPaymentStatus] = useState<{
+    status: 'none' | 'pending' | 'paid' | 'refunded' | 'failed';
+    amount?: number;
     paymentDate?: string;
   } | null>(null);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const { toast } = useToast();
-  
+
   // Fetch event data
   useEffect(() => {
     const fetchEvent = async () => {
@@ -88,20 +86,20 @@ export default function EventDetailPage() {
     };
     fetchEvent();
   }, [eventId, typedUser?.id]);
-  
+
   // Handle event registration
   const handleRegistration = async () => {
     if (!typedUser) {
       router.push('/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`));
       return;
     }
-    
+
     // For paid events that require payment
     if (event?.isPaid && !isRegistered && paymentStatus?.status !== 'paid') {
       setShowPaymentForm(true);
       return;
     }
-    
+
     try {
       setRegistering(true);
       setError(null);
@@ -115,7 +113,7 @@ export default function EventDetailPage() {
           if (updatedEvent) {
             setEvent(updatedEvent);
           }
-          
+
           toast({
             title: 'Registration cancelled',
             description: 'You have successfully cancelled your registration.',
@@ -131,8 +129,8 @@ export default function EventDetailPage() {
         const success = await registerForEvent(
           eventId,
           typedUser.id,
-          userData?.full_name as string || 'Anonymous',
-          userData?.avatar_url as string
+          (userData?.full_name as string) || 'Anonymous',
+          userData?.avatar_url as string,
         );
         if (success) {
           setIsRegistered(true);
@@ -141,7 +139,7 @@ export default function EventDetailPage() {
           if (updatedEvent) {
             setEvent(updatedEvent);
           }
-          
+
           toast({
             title: 'Registration successful',
             description: 'You have successfully registered for this event.',
@@ -155,7 +153,7 @@ export default function EventDetailPage() {
     } catch (err) {
       console.error('Error handling registration:', err);
       setError('Failed to process your registration. Please try again.');
-      
+
       toast({
         title: 'Registration failed',
         description: 'There was an error processing your registration. Please try again.',
@@ -166,35 +164,35 @@ export default function EventDetailPage() {
       setRegistering(false);
     }
   };
-  
+
   // Handle payment completion
   const handlePaymentSuccess = async (paymentId: string, method: string) => {
     try {
       // After successful payment, register the user
       if (!typedUser) return;
-      
+
       const userData = typedUser.user_metadata || {};
       const success = await registerForEvent(
         eventId,
         typedUser.id,
-        userData?.full_name as string || 'Anonymous',
-        userData?.avatar_url as string
+        (userData?.full_name as string) || 'Anonymous',
+        userData?.avatar_url as string,
       );
-      
+
       if (success) {
         setIsRegistered(true);
         // Update payment status
         const status = await getEventPaymentStatus(eventId, typedUser.id);
         setPaymentStatus(status);
-        
+
         // Update the event data with the updated participant count
         const updatedEvent = await getEventById(eventId);
         if (updatedEvent) {
           setEvent(updatedEvent);
         }
-        
+
         setShowPaymentForm(false);
-        
+
         toast({
           title: 'Registration complete',
           description: 'Payment processed successfully. You are now registered for this event.',
@@ -212,7 +210,7 @@ export default function EventDetailPage() {
       });
     }
   };
-  
+
   // Handle payment error
   const handlePaymentError = (error: Error) => {
     console.error('Payment error:', error);
@@ -223,7 +221,7 @@ export default function EventDetailPage() {
       duration: 5000,
     });
   };
-  
+
   // Handle comment submission
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -234,9 +232,9 @@ export default function EventDetailPage() {
       const comment = await addEventComment(
         eventId,
         typedUser.id,
-        userData?.full_name as string || 'Anonymous',
+        (userData?.full_name as string) || 'Anonymous',
         newComment,
-        userData?.avatar_url as string
+        userData?.avatar_url as string,
       );
       if (comment) {
         setNewComment('');
@@ -265,17 +263,17 @@ export default function EventDetailPage() {
     try {
       setCheckingIn(true);
       setCheckInError(null);
-      
+
       // Import the checkInToEvent function when needed to avoid circular dependencies
       const { checkInToEvent } = await import('@/lib/api/events');
-      
+
       const userData = typedUser.user_metadata || {};
       const success = await checkInToEvent(
         eventId,
         typedUser.id,
-        userData?.full_name as string || 'Anonymous',
+        (userData?.full_name as string) || 'Anonymous',
         code,
-        userData?.avatar_url as string
+        userData?.avatar_url as string,
       );
 
       if (success) {
@@ -284,7 +282,7 @@ export default function EventDetailPage() {
         if (updatedEvent) {
           setEvent(updatedEvent);
         }
-        
+
         // Show success toast
         toast({
           title: 'Check-in successful!',
@@ -297,9 +295,10 @@ export default function EventDetailPage() {
       }
     } catch (err) {
       console.error('Error handling check-in:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to check in. Please try again.';
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to check in. Please try again.';
       setCheckInError(errorMessage);
-      
+
       // Show error toast
       toast({
         title: 'Check-in failed',
@@ -321,16 +320,11 @@ export default function EventDetailPage() {
 
     try {
       setSubmittingFeedback(true);
-      
+
       // Import the submitEventFeedback function when needed to avoid circular dependencies
       const { submitEventFeedback } = await import('@/lib/api/events');
-      
-      const success = await submitEventFeedback(
-        eventId,
-        typedUser.id,
-        rating,
-        comment
-      );
+
+      const success = await submitEventFeedback(eventId, typedUser.id, rating, comment);
 
       if (success) {
         // Update the event data with the updated feedback
@@ -338,7 +332,7 @@ export default function EventDetailPage() {
         if (updatedEvent) {
           setEvent(updatedEvent);
         }
-        
+
         // Show success toast
         toast({
           title: 'Feedback submitted!',
@@ -346,15 +340,16 @@ export default function EventDetailPage() {
           type: 'success',
           duration: 5000,
         });
-        
+
         return true;
       } else {
         throw new Error('Failed to submit feedback.');
       }
     } catch (err) {
       console.error('Error submitting feedback:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to submit feedback. Please try again.';
-      
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to submit feedback. Please try again.';
+
       // Show error toast
       toast({
         title: 'Feedback submission failed',
@@ -362,7 +357,7 @@ export default function EventDetailPage() {
         type: 'error',
         duration: 5000,
       });
-      
+
       return false;
     } finally {
       setSubmittingFeedback(false);
@@ -377,7 +372,7 @@ export default function EventDetailPage() {
           text: event?.shortDescription || 'Check out this event!',
           url: window.location.href,
         })
-        .catch(error => console.log('Error sharing', error));
+        .catch((error) => console.log('Error sharing', error));
     } else {
       // Fallback for browsers that don't support the Web Share API
       alert(`Share this event: ${window.location.href}`);
@@ -387,8 +382,8 @@ export default function EventDetailPage() {
     return (
       <Layout>
         <div className="container-app py-8">
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <div className="flex items-center justify-center py-20">
+            <div className="border-primary h-12 w-12 animate-spin rounded-full border-b-2"></div>
           </div>
         </div>
       </Layout>
@@ -398,9 +393,9 @@ export default function EventDetailPage() {
     return (
       <Layout>
         <div className="container-app py-8">
-          <div className="text-center py-12 bg-white rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold mb-2">Error Loading Event</h2>
-            <p className="text-gray-600 mb-4">{error || 'Unable to load event details'}</p>
+          <div className="rounded-lg bg-white py-12 text-center shadow-sm">
+            <h2 className="mb-2 text-xl font-semibold">Error Loading Event</h2>
+            <p className="mb-4 text-gray-600">{error || 'Unable to load event details'}</p>
             <Button onClick={() => router.push('/events')}>Return to Events</Button>
           </div>
         </div>
@@ -414,7 +409,7 @@ export default function EventDetailPage() {
   const formattedStartDate = format(startDate, 'EEEE, MMMM d, yyyy');
   const formattedStartTime = format(startDate, 'h:mm a');
   const formattedEndTime = format(endDate, 'h:mm a');
-  
+
   // Format price display
   const formatPrice = (price: number, currency: string = 'USD') => {
     return new Intl.NumberFormat('en-US', {
@@ -422,50 +417,50 @@ export default function EventDetailPage() {
       currency: currency,
     }).format(price);
   };
-  
+
   // Determine current price (standard or early bird)
   const getCurrentPrice = () => {
     if (!event.isPaid) return 0;
-    
+
     if (event.earlyBirdPrice && event.earlyBirdEndDate) {
       const earlyBirdEnd = new Date(event.earlyBirdEndDate);
       if (new Date() < earlyBirdEnd) {
         return event.earlyBirdPrice;
       }
     }
-    
+
     return event.price || 0;
   };
-  
+
   const currentPrice = getCurrentPrice();
-  
+
   return (
     <Layout>
       <div className="container-app py-8">
         {/* Back button */}
         <button
           onClick={() => router.push('/events')}
-          className="flex items-center text-gray-600 hover:text-gray-900 mb-6"
+          className="mb-6 flex items-center text-gray-600 hover:text-gray-900"
         >
-          <Icons.arrowLeft className="h-4 w-4 mr-1" />
+          <Icons.arrowLeft className="mr-1 h-4 w-4" />
           Back to Events
         </button>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Main Content */}
           <div className="lg:col-span-2">
             {/* Event Header */}
-            <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+            <div className="mb-6 overflow-hidden rounded-lg bg-white shadow-sm">
               {event.imageUrl ? (
                 <div className="relative h-64 w-full">
                   <Image src={event.imageUrl} alt={event.title} fill className="object-cover" />
                 </div>
               ) : (
-                <div className="h-64 bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center text-white">
+                <div className="flex h-64 items-center justify-center bg-gradient-to-r from-blue-400 to-indigo-500 text-white">
                   <Icons.calendar className="h-16 w-16" />
                 </div>
               )}
               <div className="p-6">
-                <div className="flex flex-wrap gap-2 mb-3">
+                <div className="mb-3 flex flex-wrap gap-2">
                   <Badge
                     className={
                       eventPassed ? 'bg-gray-100 text-gray-700' : 'bg-green-100 text-green-800'
@@ -477,35 +472,37 @@ export default function EventDetailPage() {
                   {eventPassed && <Badge className="bg-red-100 text-red-800">Past Event</Badge>}
                   {event.isPaid && (
                     <Badge className="bg-yellow-100 text-yellow-800">
-                      {formatPrice(currentPrice, event.currency)} 
-                      {event.earlyBirdPrice && event.earlyBirdEndDate && new Date() < new Date(event.earlyBirdEndDate) && 
-                       " • Early Bird"}
+                      {formatPrice(currentPrice, event.currency)}
+                      {event.earlyBirdPrice &&
+                        event.earlyBirdEndDate &&
+                        new Date() < new Date(event.earlyBirdEndDate) &&
+                        ' • Early Bird'}
                     </Badge>
                   )}
                 </div>
-                <h1 className="text-2xl font-bold mb-2">{event.title}</h1>
-                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 text-gray-600 mb-4">
+                <h1 className="mb-2 text-2xl font-bold">{event.title}</h1>
+                <div className="mb-4 flex flex-col gap-2 text-gray-600 md:flex-row md:items-center md:gap-6">
                   <div className="flex items-center">
-                    <Icons.calendar className="h-5 w-5 mr-2" />
+                    <Icons.calendar className="mr-2 h-5 w-5" />
                     <span>{formattedStartDate}</span>
                   </div>
                   <div className="flex items-center">
-                    <Icons.clock className="h-5 w-5 mr-2" />
+                    <Icons.clock className="mr-2 h-5 w-5" />
                     <span>
                       {formattedStartTime} - {formattedEndTime}
                     </span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 mb-4">
+                <div className="mb-4 flex items-center gap-2">
                   <div className="flex items-center">
                     {isVirtual ? (
                       <>
-                        <Icons.videoCamera className="h-5 w-5 mr-2 text-blue-600" />
+                        <Icons.videoCamera className="mr-2 h-5 w-5 text-blue-600" />
                         <span>Online Event</span>
                       </>
                     ) : (
                       <>
-                        <Icons.mapPin className="h-5 w-5 mr-2 text-red-600" />
+                        <Icons.mapPin className="mr-2 h-5 w-5 text-red-600" />
                         <span>
                           {event.location.address ? (
                             <>
@@ -520,8 +517,8 @@ export default function EventDetailPage() {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center mb-4">
-                  <Icons.users className="h-5 w-5 mr-2 text-gray-600" />
+                <div className="mb-4 flex items-center">
+                  <Icons.users className="mr-2 h-5 w-5 text-gray-600" />
                   <span>
                     {event.participantsCount} {event.participantsCount === 1 ? 'person' : 'people'}{' '}
                     participating
@@ -532,7 +529,7 @@ export default function EventDetailPage() {
                 </div>
                 <div className="flex items-center">
                   <div className="flex items-center">
-                    <Avatar className="h-8 w-8 mr-2">
+                    <Avatar className="mr-2 h-8 w-8">
                       <AvatarImage
                         src={event.organizer.avatar || '/images/avatar-placeholder.png'}
                         alt={event.organizer.name}
@@ -548,25 +545,27 @@ export default function EventDetailPage() {
               </div>
             </div>
             {/* Event Description */}
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">About this event</h2>
+            <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
+              <h2 className="mb-4 text-xl font-semibold">About this event</h2>
               <div
                 className="prose max-w-none"
                 dangerouslySetInnerHTML={{ __html: event.description }}
               />
-              
+
               {/* Add pricing information for paid events */}
               {event.isPaid && (
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <h3 className="text-lg font-semibold mb-2">Pricing Information</h3>
+                <div className="mt-6 border-t border-gray-200 pt-6">
+                  <h3 className="mb-2 text-lg font-semibold">Pricing Information</h3>
                   <div className="space-y-2">
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center justify-between">
                       <span>Registration Fee</span>
-                      <span className="font-semibold">{formatPrice(event.price || 0, event.currency)}</span>
+                      <span className="font-semibold">
+                        {formatPrice(event.price || 0, event.currency)}
+                      </span>
                     </div>
-                    
+
                     {event.earlyBirdPrice && event.earlyBirdEndDate && (
-                      <div className="flex justify-between items-center">
+                      <div className="flex items-center justify-between">
                         <div>
                           <span>Early Bird Price</span>
                           {new Date() < new Date(event.earlyBirdEndDate) && (
@@ -575,22 +574,22 @@ export default function EventDetailPage() {
                         </div>
                         <span className="font-semibold">
                           {formatPrice(event.earlyBirdPrice, event.currency)}
-                          <span className="text-sm font-normal text-gray-500 ml-2">
+                          <span className="ml-2 text-sm font-normal text-gray-500">
                             until {format(parseISO(event.earlyBirdEndDate), 'MMM d, yyyy')}
                           </span>
                         </span>
                       </div>
                     )}
-                    
+
                     {event.refundPolicy && (
-                      <div className="mt-4 p-4 bg-gray-50 rounded-md">
-                        <h4 className="font-medium mb-1">Refund Policy</h4>
+                      <div className="mt-4 rounded-md bg-gray-50 p-4">
+                        <h4 className="mb-1 font-medium">Refund Policy</h4>
                         <p className="text-sm text-gray-600">
-                          {event.refundPolicy.description || 
-                            `${event.refundPolicy.percentageToRefund}% refund available until ${
-                              format(parseISO(event.refundPolicy.allowedUntil), 'MMM d, yyyy')
-                            }`
-                          }
+                          {event.refundPolicy.description ||
+                            `${event.refundPolicy.percentageToRefund}% refund available until ${format(
+                              parseISO(event.refundPolicy.allowedUntil),
+                              'MMM d, yyyy',
+                            )}`}
                         </p>
                       </div>
                     )}
@@ -599,25 +598,27 @@ export default function EventDetailPage() {
               )}
             </div>
             {/* Comments Section */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-xl font-semibold mb-4">Discussion</h2>
+            <div className="rounded-lg bg-white p-6 shadow-sm">
+              <h2 className="mb-4 text-xl font-semibold">Discussion</h2>
               {user ? (
                 <form onSubmit={handleCommentSubmit} className="mb-6">
                   <div className="flex gap-3">
                     <Avatar className="h-8 w-8">
                       <AvatarImage
-                        src={(typedUser?.user_metadata?.avatar_url) || '/images/avatar-placeholder.png'}
-                        alt={(typedUser?.user_metadata?.full_name) || 'User'}
+                        src={
+                          typedUser?.user_metadata?.avatar_url || '/images/avatar-placeholder.png'
+                        }
+                        alt={typedUser?.user_metadata?.full_name || 'User'}
                       />
                       <AvatarFallback>
-                        {((typedUser?.user_metadata?.full_name) || 'User').charAt(0)}
+                        {(typedUser?.user_metadata?.full_name || 'User').charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
                       <Textarea
                         placeholder="Ask a question or share something about this event..."
                         value={newComment}
-                        onChange={e => setNewComment(e.target.value)}
+                        onChange={(e) => setNewComment(e.target.value)}
                         className="mb-2"
                         required
                       />
@@ -630,12 +631,12 @@ export default function EventDetailPage() {
                   </div>
                 </form>
               ) : (
-                <div className="bg-gray-50 p-4 rounded-lg mb-6 text-center">
+                <div className="mb-6 rounded-lg bg-gray-50 p-4 text-center">
                   <p className="mb-2">Sign in to join the discussion</p>
                   <Button
                     onClick={() =>
                       router.push(
-                        '/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`)
+                        '/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`),
                       )
                     }
                   >
@@ -645,7 +646,7 @@ export default function EventDetailPage() {
               )}
               {event.comments && event.comments.length > 0 ? (
                 <div className="space-y-4">
-                  {event.comments.map(comment => (
+                  {event.comments.map((comment) => (
                     <div key={comment.id} className="flex gap-3">
                       <Avatar className="h-8 w-8">
                         <AvatarImage
@@ -661,13 +662,13 @@ export default function EventDetailPage() {
                             {format(parseISO(comment.createdAt), 'MMM d, yyyy • h:mm a')}
                           </p>
                         </div>
-                        <p className="text-gray-700 mt-1">{comment.content}</p>
+                        <p className="mt-1 text-gray-700">{comment.content}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-4">
+                <p className="py-4 text-center text-gray-500">
                   No comments yet. Be the first to start the discussion!
                 </p>
               )}
@@ -676,7 +677,7 @@ export default function EventDetailPage() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Registration Card */}
-            <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
               <div className="mb-4">
                 <h3 className="text-lg font-semibold">Registration</h3>
                 <p className="text-gray-600">
@@ -686,18 +687,21 @@ export default function EventDetailPage() {
                       ? "You're registered for this event!"
                       : 'Join this event to connect with the community.'}
                 </p>
-                
+
                 {/* Show payment status if applicable */}
                 {event.isPaid && paymentStatus && paymentStatus.status !== 'none' && (
-                  <div className={`mt-2 p-2 rounded text-sm ${
-                    paymentStatus.status === 'paid' 
-                      ? 'bg-green-50 text-green-700' 
-                      : paymentStatus.status === 'refunded'
-                        ? 'bg-blue-50 text-blue-700'
-                        : 'bg-yellow-50 text-yellow-700'
-                  }`}>
+                  <div
+                    className={`mt-2 rounded p-2 text-sm ${
+                      paymentStatus.status === 'paid'
+                        ? 'bg-green-50 text-green-700'
+                        : paymentStatus.status === 'refunded'
+                          ? 'bg-blue-50 text-blue-700'
+                          : 'bg-yellow-50 text-yellow-700'
+                    }`}
+                  >
                     <div className="font-medium">
-                      Payment status: {paymentStatus.status.charAt(0).toUpperCase() + paymentStatus.status.slice(1)}
+                      Payment status:{' '}
+                      {paymentStatus.status.charAt(0).toUpperCase() + paymentStatus.status.slice(1)}
                     </div>
                     {paymentStatus.amount && (
                       <div>Amount: {formatPrice(paymentStatus.amount, event.currency)}</div>
@@ -708,7 +712,7 @@ export default function EventDetailPage() {
                   </div>
                 )}
               </div>
-              
+
               {/* Payment form or Register button */}
               {!eventPassed && (
                 <>
@@ -719,7 +723,7 @@ export default function EventDetailPage() {
                           <CardTitle className="text-lg">Complete Registration</CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <PaymentMethodSelector 
+                          <PaymentMethodSelector
                             eventId={eventId}
                             userId={typedUser.id}
                             amount={currentPrice}
@@ -729,9 +733,9 @@ export default function EventDetailPage() {
                             onSuccess={handlePaymentSuccess}
                             onError={handlePaymentError}
                           />
-                          <Button 
-                            variant="outline" 
-                            className="w-full mt-4" 
+                          <Button
+                            variant="outline"
+                            className="mt-4 w-full"
                             onClick={() => setShowPaymentForm(false)}
                           >
                             Cancel
@@ -749,24 +753,24 @@ export default function EventDetailPage() {
                         ? 'Processing...'
                         : isRegistered
                           ? 'Cancel Registration'
-                          : event.isPaid && !isRegistered 
+                          : event.isPaid && !isRegistered
                             ? `Pay & Register (${formatPrice(currentPrice, event.currency)})`
                             : 'Register Now'}
                     </Button>
                   )}
                 </>
               )}
-              
-              {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
-              
+
+              {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+
               {isRegistered && isVirtual && event.location.meetingUrl && (
-                <div className="mt-4 p-3 bg-blue-50 rounded-md">
+                <div className="mt-4 rounded-md bg-blue-50 p-3">
                   <h4 className="font-medium text-blue-800">Meeting Link</h4>
                   <a
                     href={event.location.meetingUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline break-words"
+                    className="break-words text-blue-600 hover:underline"
                   >
                     {event.location.meetingUrl}
                   </a>
@@ -774,23 +778,23 @@ export default function EventDetailPage() {
               )}
             </div>
             {/* Share Card */}
-            <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-              <h3 className="text-lg font-semibold mb-4">Share Event</h3>
+            <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+              <h3 className="mb-4 text-lg font-semibold">Share Event</h3>
               <Button
                 variant="outline"
-                className="w-full flex items-center justify-center"
+                className="flex w-full items-center justify-center"
                 onClick={handleShare}
               >
-                <Icons.share className="h-5 w-5 mr-2" />
+                <Icons.share className="mr-2 h-5 w-5" />
                 Share this Event
               </Button>
             </div>
             {/* Tags */}
             {event.tags && event.tags.length > 0 && (
-              <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-                <h3 className="text-lg font-semibold mb-4">Tags</h3>
+              <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 className="mb-4 text-lg font-semibold">Tags</h3>
                 <div className="flex flex-wrap gap-2">
-                  {event.tags.map(tag => (
+                  {event.tags.map((tag) => (
                     <Badge key={tag} variant="outline">
                       {tag}
                     </Badge>
@@ -801,15 +805,15 @@ export default function EventDetailPage() {
 
             {/* Check-in and Feedback Card - Only visible for registered users */}
             {isRegistered && (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-                <EventCheckinFeedback 
-                  event={event} 
-                  onCheckIn={handleCheckIn} 
-                  onFeedbackSubmit={handleFeedbackSubmit} 
+              <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
+                <EventCheckinFeedback
+                  event={event}
+                  onCheckIn={handleCheckIn}
+                  onFeedbackSubmit={handleFeedbackSubmit}
                 />
                 {checkInError && (
-                  <div className="px-6 pb-4 -mt-2">
-                    <p className="text-red-600 text-sm">{checkInError}</p>
+                  <div className="-mt-2 px-6 pb-4">
+                    <p className="text-sm text-red-600">{checkInError}</p>
                   </div>
                 )}
               </div>
@@ -817,7 +821,7 @@ export default function EventDetailPage() {
           </div>
         </div>
       </div>
-      
+
       {/* Event Organizer Dashboard - Only visible for event organizers */}
       {user && event?.organizer?.id === typedUser?.id && (
         <div className="container mx-auto px-4 py-8">

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui';
 import { getSkinConditionLogs } from '@/lib/api/beauty';
-import { SkinConditionLog, SkinConcern } from '@/lib/api/beauty';
+import { SkinConcern } from '@/lib/api/beauty';
 import {
   LineChart,
   Line,
@@ -35,7 +35,7 @@ export default function BeautyProgress() {
   const getFilteredLogs = () => {
     const now = new Date();
     const cutoffDate = new Date();
-    
+
     switch (timeframe) {
       case 'week':
         cutoffDate.setDate(now.getDate() - 7);
@@ -48,7 +48,7 @@ export default function BeautyProgress() {
         break;
     }
 
-    return logs.filter(log => new Date(log.date) >= cutoffDate);
+    return logs.filter((log) => new Date(log.date) >= cutoffDate);
   };
 
   const getConcernFrequency = () => {
@@ -63,8 +63,8 @@ export default function BeautyProgress() {
       other: 0,
     };
 
-    getFilteredLogs().forEach(log => {
-      log.concerns.forEach(concern => {
+    getFilteredLogs().forEach((log) => {
+      log.concerns.forEach((concern) => {
         concerns[concern]++;
       });
     });
@@ -80,11 +80,11 @@ export default function BeautyProgress() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Beauty Progress</h2>
         <div className="flex gap-2">
           <button
-            className={`px-4 py-2 rounded ${
+            className={`rounded px-4 py-2 ${
               timeframe === 'week' ? 'bg-primary text-white' : 'bg-gray-100'
             }`}
             onClick={() => setTimeframe('week')}
@@ -92,7 +92,7 @@ export default function BeautyProgress() {
             Week
           </button>
           <button
-            className={`px-4 py-2 rounded ${
+            className={`rounded px-4 py-2 ${
               timeframe === 'month' ? 'bg-primary text-white' : 'bg-gray-100'
             }`}
             onClick={() => setTimeframe('month')}
@@ -100,7 +100,7 @@ export default function BeautyProgress() {
             Month
           </button>
           <button
-            className={`px-4 py-2 rounded ${
+            className={`rounded px-4 py-2 ${
               timeframe === 'year' ? 'bg-primary text-white' : 'bg-gray-100'
             }`}
             onClick={() => setTimeframe('year')}
@@ -110,53 +110,31 @@ export default function BeautyProgress() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card className="p-6">
-          <h3 className="text-xl font-semibold mb-4">Wellness Metrics Over Time</h3>
+          <h3 className="mb-4 text-xl font-semibold">Wellness Metrics Over Time</h3>
           <div className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={filteredLogs}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="date"
-                  tickFormatter={date => new Date(date).toLocaleDateString()}
+                  tickFormatter={(date) => new Date(date).toLocaleDateString()}
                 />
                 <YAxis domain={[0, 5]} />
-                <Tooltip
-                  labelFormatter={date => new Date(date).toLocaleDateString()}
-                />
+                <Tooltip labelFormatter={(date) => new Date(date).toLocaleDateString()} />
                 <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="mood"
-                  stroke="#8884d8"
-                  name="Mood"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="stress"
-                  stroke="#82ca9d"
-                  name="Stress"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="sleep"
-                  stroke="#ffc658"
-                  name="Sleep"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="hydration"
-                  stroke="#ff7300"
-                  name="Hydration"
-                />
+                <Line type="monotone" dataKey="mood" stroke="#8884d8" name="Mood" />
+                <Line type="monotone" dataKey="stress" stroke="#82ca9d" name="Stress" />
+                <Line type="monotone" dataKey="sleep" stroke="#ffc658" name="Sleep" />
+                <Line type="monotone" dataKey="hydration" stroke="#ff7300" name="Hydration" />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </Card>
 
         <Card className="p-6">
-          <h3 className="text-xl font-semibold mb-4">Skin Concerns Frequency</h3>
+          <h3 className="mb-4 text-xl font-semibold">Skin Concerns Frequency</h3>
           <div className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={concernFrequency}>
@@ -171,14 +149,13 @@ export default function BeautyProgress() {
         </Card>
 
         <Card className="p-6 lg:col-span-2">
-          <h3 className="text-xl font-semibold mb-4">Summary</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <h3 className="mb-4 text-xl font-semibold">Summary</h3>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             <div>
               <p className="text-sm text-gray-600">Average Mood</p>
               <p className="text-2xl font-semibold">
                 {(
-                  filteredLogs.reduce((sum, log) => sum + log.mood, 0) /
-                  filteredLogs.length
+                  filteredLogs.reduce((sum, log) => sum + log.mood, 0) / filteredLogs.length
                 ).toFixed(1)}
               </p>
             </div>
@@ -186,8 +163,7 @@ export default function BeautyProgress() {
               <p className="text-sm text-gray-600">Average Stress</p>
               <p className="text-2xl font-semibold">
                 {(
-                  filteredLogs.reduce((sum, log) => sum + log.stress, 0) /
-                  filteredLogs.length
+                  filteredLogs.reduce((sum, log) => sum + log.stress, 0) / filteredLogs.length
                 ).toFixed(1)}
               </p>
             </div>
@@ -195,8 +171,7 @@ export default function BeautyProgress() {
               <p className="text-sm text-gray-600">Average Sleep</p>
               <p className="text-2xl font-semibold">
                 {(
-                  filteredLogs.reduce((sum, log) => sum + log.sleep, 0) /
-                  filteredLogs.length
+                  filteredLogs.reduce((sum, log) => sum + log.sleep, 0) / filteredLogs.length
                 ).toFixed(1)}
               </p>
             </div>
@@ -204,8 +179,7 @@ export default function BeautyProgress() {
               <p className="text-sm text-gray-600">Average Hydration</p>
               <p className="text-2xl font-semibold">
                 {(
-                  filteredLogs.reduce((sum, log) => sum + log.hydration, 0) /
-                  filteredLogs.length
+                  filteredLogs.reduce((sum, log) => sum + log.hydration, 0) / filteredLogs.length
                 ).toFixed(1)}
               </p>
             </div>
@@ -214,4 +188,4 @@ export default function BeautyProgress() {
       </div>
     </div>
   );
-} 
+}

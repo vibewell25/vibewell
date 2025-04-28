@@ -1,21 +1,7 @@
-import React, { Suspense, lazy, useState, useEffect, useRef } from 'react';
-import {
-  Camera,
-  CameraOff,
-  RefreshCcw,
-  Download,
-  Share2,
-  Heart,
-  ZoomIn,
-  ZoomOut,
-  Maximize2,
-  ChevronRight,
-  ChevronLeft,
-  Info,
-  X,
-} from 'lucide-react';
+import { Suspense, lazy, useState, useEffect, useRef } from 'react';
+import { Camera, CameraOff, RefreshCcw, Download, Share2, Heart, ZoomIn, ZoomOut, X } from 'lucide-react';
 import Image from 'next/image';
-import { virtualTryOnState, TryOnProduct, ProductColor } from '../../../utils/beauty-state';
+import { virtualTryOnState } from '../../../utils/beauty-state';
 import { AccessibilityAnnouncer } from '../../accessibility/AccessibilityAnnouncer';
 
 // Lazy-loaded components for better performance
@@ -121,28 +107,9 @@ export function VirtualTryOn() {
     setAnnouncement(`${selectedProduct.name} in ${selectedColor.name} saved to favorites.`);
   };
 
-  // Toggle fullscreen
-  const toggleFullscreen = () => {
-    if (!containerRef.current) return;
-
-    if (!isFullscreen) {
-      if (containerRef.current.requestFullscreen) {
-        containerRef.current.requestFullscreen();
-      }
-      setIsFullscreen(true);
-      setAnnouncement('Fullscreen mode activated. Press Escape to exit.');
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
-      setIsFullscreen(false);
-      setAnnouncement('Fullscreen mode deactivated.');
-    }
-  };
-
   // Adjust zoom level
   const adjustZoom = (increase: boolean) => {
-    setZoomLevel(prevZoom => {
+    setZoomLevel((prevZoom) => {
       const newZoom = increase ? Math.min(prevZoom + 0.25, 3) : Math.max(prevZoom - 0.25, 0.5);
 
       setAnnouncement(`Zoom level set to ${Math.round(newZoom * 100)}%.`);
@@ -151,19 +118,18 @@ export function VirtualTryOn() {
   };
 
   return (
-    <div className="virtual-try-on relative" ref={containerRef}>
+    (<div className="virtual-try-on relative" ref={containerRef}>
       {/* Accessibility announcer for screen reader users */}
       <AccessibilityAnnouncer message={announcement} />
-
       {/* Info modal */}
       {isInfoOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg overflow-hidden max-w-lg w-full">
-            <div className="p-4 border-b flex justify-between items-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-lg overflow-hidden rounded-lg bg-white">
+            <div className="flex items-center justify-between border-b p-4">
               <h2 className="text-xl font-semibold">How to Use Virtual Try-On</h2>
               <button
                 onClick={() => setIsInfoOpen(false)}
-                className="p-2 rounded-full hover:bg-gray-100"
+                className="rounded-full p-2 hover:bg-gray-100"
                 aria-label="Close help"
               >
                 <X size={20} />
@@ -171,53 +137,53 @@ export function VirtualTryOn() {
             </div>
 
             <div className="p-6">
-              <ol className="space-y-4 list-decimal list-inside">
+              <ol className="list-inside list-decimal space-y-4">
                 <li className="text-gray-800">
                   <span className="font-medium">Select a Product</span>
-                  <p className="text-gray-600 ml-6 mt-1">
+                  <p className="ml-6 mt-1 text-gray-600">
                     Browse through our collection of products and click on one to select it
                   </p>
                 </li>
                 <li className="text-gray-800">
                   <span className="font-medium">Choose a Color</span>
-                  <p className="text-gray-600 ml-6 mt-1">
+                  <p className="ml-6 mt-1 text-gray-600">
                     Select from the available colors for your chosen product
                   </p>
                 </li>
                 <li className="text-gray-800">
                   <span className="font-medium">Activate Camera</span>
-                  <p className="text-gray-600 ml-6 mt-1">
+                  <p className="ml-6 mt-1 text-gray-600">
                     Click the "Activate Camera" button to turn on your device's camera
                   </p>
                 </li>
                 <li className="text-gray-800">
                   <span className="font-medium">Start AR Experience</span>
-                  <p className="text-gray-600 ml-6 mt-1">
+                  <p className="ml-6 mt-1 text-gray-600">
                     Once your face is detected, click the camera button again to start the AR try-on
                   </p>
                 </li>
                 <li className="text-gray-800">
                   <span className="font-medium">Adjust and Capture</span>
-                  <p className="text-gray-600 ml-6 mt-1">
+                  <p className="ml-6 mt-1 text-gray-600">
                     Use the zoom controls to adjust your view, then capture your look with the
                     center button
                   </p>
                 </li>
               </ol>
 
-              <div className="mt-6 bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-blue-800 font-medium">Privacy Note</h3>
-                <p className="text-blue-700 text-sm mt-1">
+              <div className="mt-6 rounded-lg bg-blue-50 p-4">
+                <h3 className="font-medium text-blue-800">Privacy Note</h3>
+                <p className="mt-1 text-sm text-blue-700">
                   Your camera feed is processed locally on your device. No images are sent to our
                   servers unless you explicitly choose to share them.
                 </p>
               </div>
             </div>
 
-            <div className="p-4 bg-gray-50 border-t">
+            <div className="border-t bg-gray-50 p-4">
               <button
                 onClick={() => setIsInfoOpen(false)}
-                className="w-full py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition-colors"
+                className="w-full rounded-md bg-pink-500 py-2 text-white transition-colors hover:bg-pink-600"
                 aria-label="Close help"
               >
                 Got it
@@ -226,29 +192,28 @@ export function VirtualTryOn() {
           </div>
         </div>
       )}
-
       {/* Main content */}
       <div
-        className={`grid grid-cols-1 md:grid-cols-3 gap-6 ${isFullscreen ? 'h-screen fixed inset-0 z-40 bg-white p-4' : ''}`}
+        className={`grid grid-cols-1 gap-6 md:grid-cols-3 ${isFullscreen ? 'fixed inset-0 z-40 h-screen bg-white p-4' : ''}`}
       >
         {/* Product selection panel */}
-        <div className="md:col-span-1 bg-white rounded-lg shadow p-4">
-          <h2 className="text-xl font-semibold mb-4" id="product-selection">
+        <div className="rounded-lg bg-white p-4 shadow md:col-span-1">
+          <h2 className="mb-4 text-xl font-semibold" id="product-selection">
             Select a Product
           </h2>
 
           {/* Product grid with virtualization */}
           <Suspense
             fallback={
-              <div className="flex items-center justify-center w-full h-40">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+              <div className="flex h-40 w-full items-center justify-center">
+                <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-pink-500"></div>
               </div>
             }
           >
             <VirtualizedProductGrid
               products={availableProducts}
               isLoading={isLoading}
-              onSelectProduct={product => {
+              onSelectProduct={(product) => {
                 selectProduct(product.id);
                 setAnnouncement(`Selected ${product.name}`);
               }}
@@ -259,21 +224,21 @@ export function VirtualTryOn() {
 
           {/* Product details section */}
           {selectedProduct && (
-            <Suspense fallback={<div className="animate-pulse h-40 bg-gray-200 rounded-lg"></div>}>
+            <Suspense fallback={<div className="h-40 animate-pulse rounded-lg bg-gray-200"></div>}>
               <ProductDetails product={selectedProduct} className="mb-6" />
             </Suspense>
           )}
 
           {/* Color selector section */}
           {selectedProduct && selectedProduct.colors.length > 0 && (
-            <Suspense fallback={<div className="animate-pulse h-20 bg-gray-200 rounded-lg"></div>}>
+            <Suspense fallback={<div className="h-20 animate-pulse rounded-lg bg-gray-200"></div>}>
               <ColorSelector
                 colors={selectedProduct.colors}
                 selectedColorId={selectedColor?.id}
-                onSelectColor={colorId => {
+                onSelectColor={(colorId) => {
                   selectColor(colorId);
                   const colorName =
-                    selectedProduct.colors.find(c => c.id === colorId)?.name || 'new color';
+                    selectedProduct.colors.find((c) => c.id === colorId)?.name || 'new color';
                   setAnnouncement(`Selected ${colorName}`);
                 }}
                 className="mb-6"
@@ -283,12 +248,12 @@ export function VirtualTryOn() {
 
           {/* Recently tried products */}
           {recentlyTriedProducts.length > 0 && (
-            <Suspense fallback={<div className="animate-pulse h-20 bg-gray-200 rounded-lg"></div>}>
+            <Suspense fallback={<div className="h-20 animate-pulse rounded-lg bg-gray-200"></div>}>
               <RecentlyTried
                 products={recentlyTriedProducts}
-                onSelectProduct={productId => {
+                onSelectProduct={(productId) => {
                   selectProduct(productId);
-                  const product = recentlyTriedProducts.find(p => p.id === productId);
+                  const product = recentlyTriedProducts.find((p) => p.id === productId);
                   if (product) {
                     setAnnouncement(`Selected ${product.name} from recently tried`);
                   }
@@ -300,13 +265,13 @@ export function VirtualTryOn() {
         </div>
 
         {/* AR Experience container */}
-        <div className="md:col-span-2 bg-white rounded-lg shadow overflow-hidden">
+        <div className="overflow-hidden rounded-lg bg-white shadow md:col-span-2">
           <div className="relative aspect-video bg-gray-100">
             {/* Loading state */}
             {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-10">
+              <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80">
                 <div className="flex flex-col items-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-4 border-pink-500 border-t-transparent"></div>
+                  <div className="h-12 w-12 animate-spin rounded-full border-4 border-pink-500 border-t-transparent"></div>
                   <p className="mt-4 text-gray-600">Loading your AR experience...</p>
                 </div>
               </div>
@@ -315,17 +280,17 @@ export function VirtualTryOn() {
             {/* Camera inactive state */}
             {!cameraActive ? (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center p-6 max-w-md">
-                  <div className="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="max-w-md p-6 text-center">
+                  <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-pink-100">
                     <Camera size={32} className="text-pink-500" />
                   </div>
-                  <h2 className="text-xl font-semibold mb-2">Try On Beauty Products</h2>
-                  <p className="text-gray-600 mb-6">
+                  <h2 className="mb-2 text-xl font-semibold">Try On Beauty Products</h2>
+                  <p className="mb-6 text-gray-600">
                     Activate your camera to virtually try on makeup, hair colors, and more
                   </p>
                   <button
                     onClick={handleARToggle}
-                    className="bg-pink-500 text-white px-6 py-3 rounded-full font-medium hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 transition-colors"
+                    className="rounded-full bg-pink-500 px-6 py-3 font-medium text-white transition-colors hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
                     aria-label="Activate camera for virtual try-on"
                   >
                     Activate Camera
@@ -334,10 +299,10 @@ export function VirtualTryOn() {
               </div>
             ) : (
               /* Active AR experience */
-              <Suspense
+              (<Suspense
                 fallback={
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-pink-500 border-t-transparent"></div>
+                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-pink-500 border-t-transparent"></div>
                   </div>
                 }
               >
@@ -348,23 +313,23 @@ export function VirtualTryOn() {
                   faceDetected={faceDetected}
                   zoomLevel={zoomLevel}
                 />
-              </Suspense>
+              </Suspense>)
             )}
 
             {/* AR controls */}
             {cameraActive && (
               <div className="absolute bottom-4 left-0 right-0 flex justify-center">
-                <div className="bg-white/90 backdrop-blur-sm py-2 px-4 rounded-full shadow-lg flex items-center space-x-3">
+                <div className="flex items-center space-x-3 rounded-full bg-white/90 px-4 py-2 shadow-lg backdrop-blur-sm">
                   {/* AR toggle button */}
                   <button
                     onClick={handleARToggle}
                     disabled={!faceDetected && !arActive}
-                    className={`p-3 rounded-full ${
+                    className={`rounded-full p-3 ${
                       arActive
                         ? 'bg-red-500 text-white'
                         : faceDetected
                           ? 'bg-pink-500 text-white'
-                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                          : 'cursor-not-allowed bg-gray-200 text-gray-400'
                     }`}
                     aria-label={arActive ? 'Stop AR experience' : 'Start AR experience'}
                   >
@@ -376,9 +341,9 @@ export function VirtualTryOn() {
                     <button
                       onClick={() => adjustZoom(false)}
                       disabled={zoomLevel <= 0.5 || !arActive}
-                      className={`p-2 rounded-full ${
+                      className={`rounded-full p-2 ${
                         !arActive || zoomLevel <= 0.5
-                          ? 'text-gray-300 cursor-not-allowed'
+                          ? 'cursor-not-allowed text-gray-300'
                           : 'hover:bg-gray-200'
                       }`}
                       aria-label="Zoom out"
@@ -389,9 +354,9 @@ export function VirtualTryOn() {
                     <button
                       onClick={() => adjustZoom(true)}
                       disabled={zoomLevel >= 3 || !arActive}
-                      className={`p-2 rounded-full ${
+                      className={`rounded-full p-2 ${
                         !arActive || zoomLevel >= 3
-                          ? 'text-gray-300 cursor-not-allowed'
+                          ? 'cursor-not-allowed text-gray-300'
                           : 'hover:bg-gray-200'
                       }`}
                       aria-label="Zoom in"
@@ -404,10 +369,10 @@ export function VirtualTryOn() {
                   <button
                     onClick={handleCapture}
                     disabled={!arActive}
-                    className={`p-3 rounded-full ${
+                    className={`rounded-full p-3 ${
                       arActive
                         ? 'bg-pink-500 text-white'
-                        : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                        : 'cursor-not-allowed bg-gray-200 text-gray-400'
                     }`}
                     aria-label="Capture current look"
                   >
@@ -431,10 +396,10 @@ export function VirtualTryOn() {
                   <button
                     onClick={handleSaveToFavorites}
                     disabled={!selectedProduct || !selectedColor}
-                    className={`p-2 rounded-full ${
+                    className={`rounded-full p-2 ${
                       selectedProduct && selectedColor
-                        ? 'hover:bg-gray-200 text-pink-500'
-                        : 'text-gray-300 cursor-not-allowed'
+                        ? 'text-pink-500 hover:bg-gray-200'
+                        : 'cursor-not-allowed text-gray-300'
                     }`}
                     aria-label="Save to favorites"
                   >
@@ -448,8 +413,8 @@ export function VirtualTryOn() {
                       setAnnouncement('View reset to default zoom level.');
                     }}
                     disabled={!arActive}
-                    className={`p-2 rounded-full ${
-                      arActive ? 'hover:bg-gray-200' : 'text-gray-300 cursor-not-allowed'
+                    className={`rounded-full p-2 ${
+                      arActive ? 'hover:bg-gray-200' : 'cursor-not-allowed text-gray-300'
                     }`}
                     aria-label="Reset view"
                   >
@@ -461,8 +426,8 @@ export function VirtualTryOn() {
 
             {/* Face detection message */}
             {cameraActive && !faceDetected && !arActive && (
-              <div className="absolute top-4 left-0 right-0 flex justify-center">
-                <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium animate-pulse">
+              <div className="absolute left-0 right-0 top-4 flex justify-center">
+                <div className="animate-pulse rounded-full bg-yellow-100 px-4 py-2 text-sm font-medium text-yellow-800">
                   Detecting face... Please make sure your face is visible
                 </div>
               </div>
@@ -470,8 +435,8 @@ export function VirtualTryOn() {
 
             {/* Error message */}
             {error && (
-              <div className="absolute top-4 left-0 right-0 flex justify-center">
-                <div className="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium">
+              <div className="absolute left-0 right-0 top-4 flex justify-center">
+                <div className="rounded-full bg-red-100 px-4 py-2 text-sm font-medium text-red-800">
                   {error}
                 </div>
               </div>
@@ -479,19 +444,18 @@ export function VirtualTryOn() {
           </div>
         </div>
       </div>
-
       {/* Captured image modal */}
       {capturedImage && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="relative bg-white rounded-lg overflow-hidden max-w-2xl w-full max-h-[90vh]">
-            <div className="p-4 border-b flex justify-between items-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="relative max-h-[90vh] w-full max-w-2xl overflow-hidden rounded-lg bg-white">
+            <div className="flex items-center justify-between border-b p-4">
               <h2 className="text-xl font-semibold">Your Captured Look</h2>
               <button
                 onClick={() => {
                   setCapturedImage(null);
                   setAnnouncement('Captured image dismissed.');
                 }}
-                className="p-2 rounded-full hover:bg-gray-100"
+                className="rounded-full p-2 hover:bg-gray-100"
                 aria-label="Close image view"
               >
                 <X size={20} />
@@ -499,7 +463,7 @@ export function VirtualTryOn() {
             </div>
 
             <div className="p-4">
-              <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
+              <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-100">
                 <Image
                   src={capturedImage}
                   alt="Your captured beauty look"
@@ -509,7 +473,7 @@ export function VirtualTryOn() {
               </div>
             </div>
 
-            <div className="p-4 border-t bg-gray-50 flex justify-between">
+            <div className="flex justify-between border-t bg-gray-50 p-4">
               <div className="text-sm text-gray-500">
                 {selectedProduct?.name} in {selectedColor?.name}
               </div>
@@ -544,7 +508,7 @@ export function VirtualTryOn() {
           </div>
         </div>
       )}
-    </div>
+    </div>)
   );
 }
 

@@ -87,7 +87,7 @@ class RateLimitTracker {
   private trackEntity(
     map: Map<string, { count: number; timestamps: number[] }>,
     entity: string,
-    threshold: number
+    threshold: number,
   ): boolean {
     const now = Date.now();
 
@@ -99,7 +99,9 @@ class RateLimitTracker {
     const record = map.get(entity)!;
 
     // Filter out timestamps that are outside our time window
-    record.timestamps = record.timestamps.filter(ts => now - ts < ALERT_THRESHOLDS.TIME_WINDOW_MS);
+    record.timestamps = record.timestamps.filter(
+      (ts) => now - ts < ALERT_THRESHOLDS.TIME_WINDOW_MS,
+    );
 
     // Add current timestamp
     record.timestamps.push(now);
@@ -120,7 +122,7 @@ class RateLimitTracker {
     const cleanMap = (map: Map<string, { count: number; timestamps: number[] }>) => {
       for (const [key, record] of map.entries()) {
         // Filter out timestamps outside time window
-        const newTimestamps = record.timestamps.filter(ts => now - ts < timeWindow);
+        const newTimestamps = record.timestamps.filter((ts) => now - ts < timeWindow);
 
         if (newTimestamps.length === 0) {
           map.delete(key);
@@ -146,7 +148,7 @@ setInterval(
   () => {
     rateLimitTracker.cleanup();
   },
-  5 * 60 * 1000
+  5 * 60 * 1000,
 );
 
 interface LoggerOptions {
@@ -176,7 +178,7 @@ class Logger {
           const moduleStr = info.module ? ` [${info.module}]` : '';
           const metadataStr = info.metadata ? ` ${JSON.stringify(info.metadata)}` : '';
           return `[${info.timestamp}] [${info.level.toUpperCase()}]${moduleStr}: ${info.message}${metadataStr}`;
-        })
+        }),
       ),
       transports: [
         new winston.transports.Console({
@@ -205,7 +207,7 @@ class Logger {
       debug: 0,
       info: 1,
       warn: 2,
-      error: 3
+      error: 3,
     };
     return levels[level] >= levels[this.logLevel];
   }
@@ -223,7 +225,7 @@ class Logger {
     message: string,
     context?: string,
     data?: any,
-    error?: Error
+    error?: Error,
   ): LogEntry {
     return {
       timestamp: new Date().toISOString(),
@@ -231,7 +233,7 @@ class Logger {
       message,
       context,
       data,
-      error
+      error,
     };
   }
 
@@ -271,8 +273,8 @@ class Logger {
           level: entry.level,
           extra: {
             context: entry.context,
-            data: entry.data
-          }
+            data: entry.data,
+          },
         });
       }
     } catch (error) {

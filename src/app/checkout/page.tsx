@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { PaymentFormWrapper } from '@/components/payment/payment-form';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   Card,
   CardContent,
@@ -11,7 +11,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CreditCard, PaypalIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -57,9 +57,9 @@ export default function CheckoutPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">Checkout</h1>
+      <h1 className="mb-8 text-center text-3xl font-bold">Checkout</h1>
 
-      <div className="grid md:grid-cols-3 gap-8">
+      <div className="grid gap-8 md:grid-cols-3">
         <div className="md:col-span-2">
           <Card>
             <CardHeader>
@@ -70,9 +70,9 @@ export default function CheckoutPage() {
               <Tabs
                 defaultValue="card"
                 className="w-full"
-                onValueChange={value => setPaymentMethod(value as 'card' | 'paypal')}
+                onValueChange={(value) => setPaymentMethod(value as 'card' | 'paypal')}
               >
-                <TabsList className="grid w-full grid-cols-2 mb-8">
+                <TabsList className="mb-8 grid w-full grid-cols-2">
                   <TabsTrigger
                     value="card"
                     className="flex items-center gap-2"
@@ -101,10 +101,10 @@ export default function CheckoutPage() {
                   </TabsContent>
 
                   <TabsContent value="paypal">
-                    <div className="text-center p-8 border rounded-md">
-                      <PaypalIcon className="h-16 w-16 mx-auto mb-4 text-blue-600" />
-                      <p className="text-lg font-medium mb-4">Pay with PayPal</p>
-                      <p className="text-gray-500 mb-8">
+                    <div className="rounded-md border p-8 text-center">
+                      <PaypalIcon className="mx-auto mb-4 h-16 w-16 text-blue-600" />
+                      <p className="mb-4 text-lg font-medium">Pay with PayPal</p>
+                      <p className="mb-8 text-gray-500">
                         You will be redirected to PayPal to complete your payment securely.
                       </p>
                       <Button className="w-full bg-[#0070ba] hover:bg-[#003087]">
@@ -124,7 +124,7 @@ export default function CheckoutPage() {
               <CardTitle>Order Summary</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {orderItems.map(item => (
+              {orderItems.map((item) => (
                 <div key={item.id} className="flex justify-between">
                   <div>
                     <p className="font-medium">{item.name}</p>
@@ -134,7 +134,7 @@ export default function CheckoutPage() {
                 </div>
               ))}
 
-              <div className="border-t pt-4 mt-4 space-y-2">
+              <div className="mt-4 space-y-2 border-t pt-4">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Subtotal</span>
                   <span>${orderSummary.subtotal.toFixed(2)}</span>
@@ -147,7 +147,7 @@ export default function CheckoutPage() {
                   <span className="text-gray-500">Shipping</span>
                   <span>${orderSummary.shipping.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between font-bold border-t pt-2 mt-2">
+                <div className="mt-2 flex justify-between border-t pt-2 font-bold">
                   <span>Total</span>
                   <span>${orderSummary.total.toFixed(2)}</span>
                 </div>

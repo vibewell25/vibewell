@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import AvatarEditor from 'react-avatar-editor';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Slider } from '@/components/ui/slider';
 import {
   Dialog,
@@ -31,7 +31,7 @@ export function AvatarEditorDialog({ image, onSave, onCancel, isOpen }: AvatarEd
           }
         },
         'image/jpeg',
-        0.95
+        0.95,
       );
     }
   };

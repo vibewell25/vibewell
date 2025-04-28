@@ -5,16 +5,9 @@ import { useAuth } from '@/hooks/use-unified-auth';
 import { AnalyticsAlertService } from '@/services/analytics-alert-service';
 import { Alert } from '@/services/analytics-alert-service';
 import { AlertDialog } from '@/components/alerts/alert-dialog';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Alert as AlertUI, AlertDescription } from '@/components/ui/alert';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import {
   Table,
   TableBody,
@@ -31,19 +24,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/use-toast';
-import {
-  Loader2,
-  AlertTriangle,
-  Bell,
-  BellOff,
-  MoreVertical,
-  Edit,
-  Trash2,
-  Filter,
-  Plus,
-} from 'lucide-react';
+import { Loader2, AlertTriangle, Bell, BellOff, MoreVertical, Edit, Trash2, Plus } from 'lucide-react';
 
 export default function AlertsPage() {
   const { user } = useAuth();
@@ -108,7 +91,7 @@ export default function AlertsPage() {
       }
 
       // Remove from state
-      setAlerts(alerts.filter(a => a.id !== alert.id));
+      setAlerts(alerts.filter((a) => a.id !== alert.id));
 
       toast({
         title: 'Success',
@@ -138,7 +121,7 @@ export default function AlertsPage() {
 
       if (response.data) {
         // Update in state
-        setAlerts(alerts.map(a => (a.id === alert.id ? response.data : a)));
+        setAlerts(alerts.map((a) => (a.id === alert.id ? response.data : a)));
 
         toast({
           title: 'Success',
@@ -157,11 +140,11 @@ export default function AlertsPage() {
   };
 
   const handleAlertSuccess = (alert: Alert) => {
-    const existingIndex = alerts.findIndex(a => a.id === alert.id);
+    const existingIndex = alerts.findIndex((a) => a.id === alert.id);
 
     if (existingIndex >= 0) {
       // Update existing alert
-      setAlerts(alerts.map(a => (a.id === alert.id ? alert : a)));
+      setAlerts(alerts.map((a) => (a.id === alert.id ? alert : a)));
     } else {
       // Add new alert
       setAlerts([...alerts, alert]);
@@ -210,14 +193,14 @@ export default function AlertsPage() {
   };
 
   const getNotificationMethodsDisplay = (alert: Alert) => {
-    const methods = alert.notificationMethods.filter(m => m.enabled).map(m => m.type);
+    const methods = alert.notificationMethods.filter((m) => m.enabled).map((m) => m.type);
 
     if (methods.length === 0) {
       return 'None';
     }
 
     return methods
-      .map(m => {
+      .map((m) => {
         if (m === 'email') return 'Email';
         if (m === 'sms') return 'SMS';
         if (m === 'inApp') return 'In-App';
@@ -230,8 +213,8 @@ export default function AlertsPage() {
     activeTab === 'all'
       ? alerts
       : activeTab === 'active'
-        ? alerts.filter(alert => alert.isActive)
-        : alerts.filter(alert => !alert.isActive);
+        ? alerts.filter((alert) => alert.isActive)
+        : alerts.filter((alert) => !alert.isActive);
 
   if (!user) {
     return (
@@ -245,11 +228,11 @@ export default function AlertsPage() {
   }
 
   return (
-    <div className="container py-10 max-w-screen-xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
+    <div className="container mx-auto max-w-screen-xl py-10">
+      <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Analytics Alerts</h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="mt-1 text-muted-foreground">
             Manage alerts for your products' performance metrics
           </p>
         </div>
@@ -268,7 +251,7 @@ export default function AlertsPage() {
 
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <CardTitle>Your Alerts</CardTitle>
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-[400px]">
               <TabsList className="grid w-full grid-cols-3">
@@ -280,20 +263,20 @@ export default function AlertsPage() {
           </div>
           <CardDescription>
             You have {alerts.length} alert{alerts.length !== 1 ? 's' : ''} configured.
-            {activeTab === 'active' && <> {alerts.filter(a => a.isActive).length} active.</>}
-            {activeTab === 'inactive' && <> {alerts.filter(a => !a.isActive).length} inactive.</>}
+            {activeTab === 'active' && <> {alerts.filter((a) => a.isActive).length} active.</>}
+            {activeTab === 'inactive' && <> {alerts.filter((a) => !a.isActive).length} inactive.</>}
           </CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="flex justify-center items-center py-10">
+            <div className="flex items-center justify-center py-10">
               <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
             </div>
           ) : filteredAlerts.length === 0 ? (
-            <div className="text-center py-10">
+            <div className="py-10 text-center">
               <Bell className="mx-auto h-12 w-12 text-muted-foreground/50" />
               <h3 className="mt-4 text-lg font-semibold">No alerts found</h3>
-              <p className="text-muted-foreground mt-2">
+              <p className="mt-2 text-muted-foreground">
                 {activeTab === 'all'
                   ? "You haven't created any alerts yet."
                   : activeTab === 'active'
@@ -321,7 +304,7 @@ export default function AlertsPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredAlerts.map(alert => (
+                  {filteredAlerts.map((alert) => (
                     <TableRow key={alert.id}>
                       <TableCell className="font-medium">{alert.name}</TableCell>
                       <TableCell>{getThresholdDisplay(alert)}</TableCell>
@@ -331,7 +314,7 @@ export default function AlertsPage() {
                       <TableCell>
                         <Badge
                           variant={alert.isActive ? 'default' : 'secondary'}
-                          className="flex items-center gap-1 w-fit"
+                          className="flex w-fit items-center gap-1"
                         >
                           {alert.isActive ? (
                             <>

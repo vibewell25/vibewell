@@ -74,7 +74,7 @@ const NotificationContext = createContext<NotificationContextType>({
 });
 
 // Custom hook for accessing the notification context
-export const useNotifications = () => useContext(NotificationContext);
+export {};
 
 // Provider component
 export function NotificationProvider({ children }: { children: React.ReactNode }) {
@@ -94,7 +94,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   }, [user]);
 
   // Calculate unread count
-  const unreadCount = notifications.filter(notif => !notif.read).length;
+  const unreadCount = notifications.filter((notif) => !notif.read).length;
 
   // Add a new notification
   const addNotification = (notification: Omit<Notification, 'id' | 'createdAt' | 'read'>) => {
@@ -105,26 +105,26 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       read: false,
     };
 
-    setNotifications(prev => [newNotification, ...prev]);
+    setNotifications((prev) => [newNotification, ...prev]);
   };
 
   // Mark notification as read
   const markAsRead = (id: string) => {
-    setNotifications(prev =>
-      prev.map(notification =>
-        notification.id === id ? { ...notification, read: true } : notification
-      )
+    setNotifications((prev) =>
+      prev.map((notification) =>
+        notification.id === id ? { ...notification, read: true } : notification,
+      ),
     );
   };
 
   // Mark all notifications as read
   const markAllAsRead = () => {
-    setNotifications(prev => prev.map(notification => ({ ...notification, read: true })));
+    setNotifications((prev) => prev.map((notification) => ({ ...notification, read: true })));
   };
 
   // Delete a notification
   const deleteNotification = (id: string) => {
-    setNotifications(prev => prev.filter(notification => notification.id !== id));
+    setNotifications((prev) => prev.filter((notification) => notification.id !== id));
   };
 
   // Clear all notifications

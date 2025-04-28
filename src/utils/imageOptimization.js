@@ -13,9 +13,9 @@ const detectImageSupport = () => {
   const formats = {
     webp: false,
     avif: false,
-    jpeg2000: false
+    jpeg2000: false,
   };
-  
+
   if (typeof window !== 'undefined') {
     const canvas = document.createElement('canvas');
     if (canvas.toDataURL) {
@@ -24,7 +24,7 @@ const detectImageSupport = () => {
       formats.jpeg2000 = canvas.toDataURL('image/jp2').indexOf('data:image/jp2') === 0;
     }
   }
-  
+
   return formats;
 };
 
@@ -35,23 +35,20 @@ const detectImageSupport = () => {
  * @returns {string} - Optimized image URL
  */
 export const generateOptimizedImageUrl = (url, options = {}) => {
-  const {
-    width = window.innerWidth,
-    quality = 80,
-    format = 'auto'
-  } = options;
+  const { width = window.innerWidth, quality = 80, format = 'auto' } = options;
 
   const formats = detectImageSupport();
   const connection = navigator.connection?.effectiveType || '4g';
-  
+
   // Adjust quality based on network connection
-  const networkQuality = {
-    'slow-2g': 60,
-    '2g': 70,
-    '3g': 80,
-    '4g': 85,
-    '5g': 90
-  }[connection] || quality;
+  const networkQuality =
+    {
+      'slow-2g': 60,
+      '2g': 70,
+      '3g': 80,
+      '4g': 85,
+      '5g': 90,
+    }[connection] || quality;
 
   // Choose best format based on support
   let targetFormat = format;
@@ -84,12 +81,12 @@ export const setupLazyLoading = (selector = 'img[data-src]', options = {}) => {
     rootMargin = '50px 0px',
     threshold = 0.01,
     preloadCritical = true,
-    cacheImages = true
+    cacheImages = true,
   } = options;
 
   // Preload critical images
   if (preloadCritical) {
-    document.querySelectorAll('img[data-critical="true"]').forEach(img => {
+    document.querySelectorAll('img[data-critical="true"]').forEach((img) => {
       if (img.dataset.src) {
         const preloadLink = document.createElement('link');
         preloadLink.rel = 'preload';
@@ -102,7 +99,7 @@ export const setupLazyLoading = (selector = 'img[data-src]', options = {}) => {
 
   if (!('IntersectionObserver' in window)) {
     // Fallback for browsers that don't support IntersectionObserver
-    document.querySelectorAll(selector).forEach(img => {
+    document.querySelectorAll(selector).forEach((img) => {
       if (img.dataset.src) {
         const optimizedUrl = generateOptimizedImageUrl(img.dataset.src);
         img.src = optimizedUrl;
@@ -118,7 +115,7 @@ export const setupLazyLoading = (selector = 'img[data-src]', options = {}) => {
     try {
       if (img.dataset.src) {
         const optimizedUrl = generateOptimizedImageUrl(img.dataset.src);
-        
+
         if (cacheImages) {
           const cachedImage = await imageCache.get(optimizedUrl);
           if (cachedImage) {
@@ -128,7 +125,7 @@ export const setupLazyLoading = (selector = 'img[data-src]', options = {}) => {
         }
 
         img.src = optimizedUrl;
-        
+
         if (cacheImages) {
           // Cache the image after loading
           img.onload = () => {
@@ -146,21 +143,24 @@ export const setupLazyLoading = (selector = 'img[data-src]', options = {}) => {
       if (img.dataset.src) img.src = img.dataset.src;
     }
   };
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        loadImage(img);
-        observer.unobserve(img);
-      }
-    });
-  }, {
-    rootMargin,
-    threshold
-  });
-  
-  document.querySelectorAll(selector).forEach(img => {
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          loadImage(img);
+          observer.unobserve(img);
+        }
+      });
+    },
+    {
+      rootMargin,
+      threshold,
+    },
+  );
+
+  document.querySelectorAll(selector).forEach((img) => {
     observer.observe(img);
   });
 };
@@ -174,7 +174,7 @@ export const prefetchImages = (urls = []) => {
 
   // Create a connection to check network conditions
   const connection = navigator.connection;
-  
+
   // Only prefetch on fast connections
   if (connection && (connection.saveData || connection.effectiveType === 'slow-2g')) {
     return;
@@ -190,7 +190,7 @@ export const prefetchImages = (urls = []) => {
   };
 
   if ('requestIdleCallback' in window) {
-    urls.forEach(url => {
+    urls.forEach((url) => {
       requestIdleCallback(() => prefetch(url));
     });
   } else {
@@ -202,5 +202,5 @@ export const prefetchImages = (urls = []) => {
 export default {
   setupLazyLoading,
   generateOptimizedImageUrl,
-  prefetchImages
-}; 
+  prefetchImages,
+};

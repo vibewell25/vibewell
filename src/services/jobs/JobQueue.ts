@@ -73,7 +73,7 @@ export class JobQueue {
         if (job) {
           await this.processJob(job);
         } else {
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
         }
       } catch (error) {
         console.error('Error processing job:', error);
@@ -89,7 +89,7 @@ export class JobQueue {
   private async getNextJob(): Promise<Job<unknown> | null> {
     const now = Date.now();
     const jobs = await this.redis.zrange(this.QUEUE_KEY, 0, 0, 'WITHSCORES');
-    
+
     if (jobs.length === 0) return null;
 
     const jobData: Job<unknown> = JSON.parse(jobs[0]);
@@ -98,10 +98,14 @@ export class JobQueue {
     }
 
     await this.redis.zrem(this.QUEUE_KEY, jobs[0]);
-    await this.redis.zadd(this.PROCESSING_KEY, now, JSON.stringify({
-      ...jobData,
-      updatedAt: new Date()
-    }));
+    await this.redis.zadd(
+      this.PROCESSING_KEY,
+      now,
+      JSON.stringify({
+        ...jobData,
+        updatedAt: new Date(),
+      }),
+    );
 
     return jobData;
   }
@@ -117,14 +121,14 @@ export class JobQueue {
       const completedJob = {
         ...job,
         status: 'completed',
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       await Promise.all([
         this.redis.zrem(this.PROCESSING_KEY, JSON.stringify(job)),
         this.redis.zadd(this.COMPLETED_KEY, Date.now(), JSON.stringify(completedJob)),
         this.monitoring.recordMetric(`${this.METRICS_PREFIX}completed`, 1),
-        this.monitoring.recordMetric(`${this.METRICS_PREFIX}duration`, duration)
+        this.monitoring.recordMetric(`${this.METRICS_PREFIX}duration`, duration),
       ]);
     } catch (error) {
       job.status = 'failed';
@@ -134,7 +138,7 @@ export class JobQueue {
       await Promise.all([
         this.redis.zrem(this.PROCESSING_KEY, JSON.stringify(job)),
         this.redis.zadd(this.FAILED_KEY, Date.now(), JSON.stringify(job)),
-        this.monitoring.recordMetric(`${this.METRICS_PREFIX}failed`, 1)
+        this.monitoring.recordMetric(`${this.METRICS_PREFIX}failed`, 1),
       ]);
     }
   }
@@ -150,7 +154,7 @@ export class JobQueue {
       this.redis.zcard(this.QUEUE_KEY),
       this.redis.zcard(this.PROCESSING_KEY),
       this.redis.zcard(this.COMPLETED_KEY),
-      this.redis.zcard(this.FAILED_KEY)
+      this.redis.zcard(this.FAILED_KEY),
     ]);
 
     return {
@@ -158,7 +162,7 @@ export class JobQueue {
       processing,
       completed,
       failed,
-      retries: await this.redis.get(`${this.METRICS_PREFIX}retries`).then(Number) || 0
+      retries: (await this.redis.get(`${this.METRICS_PREFIX}retries`).then(Number)) || 0,
     };
   }
 
@@ -167,7 +171,7 @@ export class JobQueue {
 
     await Promise.all([
       this.redis.zremrangebyscore(this.COMPLETED_KEY, '-inf', cutoff),
-      this.redis.zremrangebyscore(this.FAILED_KEY, '-inf', cutoff)
+      this.redis.zremrangebyscore(this.FAILED_KEY, '-inf', cutoff),
     ]);
   }
 
@@ -183,7 +187,7 @@ export class JobQueue {
 
       await Promise.all([
         this.redis.zrem(this.FAILED_KEY, jobStr),
-        this.redis.zadd(this.QUEUE_KEY, job.priority * -1, JSON.stringify(job))
+        this.redis.zadd(this.QUEUE_KEY, job.priority * -1, JSON.stringify(job)),
       ]);
 
       retriedCount++;
@@ -192,4 +196,4 @@ export class JobQueue {
     await this.monitoring.recordMetric(`${this.METRICS_PREFIX}retried_failed`, retriedCount);
     return retriedCount;
   }
-} 
+}

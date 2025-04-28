@@ -15,7 +15,10 @@ export interface AriaLiveOptions {
 }
 
 // Focus management
-export function useFocusTrap(containerRef: RefObject<HTMLElement>, options: FocusManagerOptions = {}) {
+export function useFocusTrap(
+  containerRef: RefObject<HTMLElement>,
+  options: FocusManagerOptions = {},
+) {
   const { initialFocus, returnFocus = true, lockFocus = true, preventScroll = true } = options;
   const previousFocus = useRef<HTMLElement | null>(null);
 
@@ -110,7 +113,7 @@ export function useAriaAnnounce() {
 // Keyboard navigation
 export function useKeyboardNavigation(
   containerRef: RefObject<HTMLElement>,
-  options: { orientation?: 'horizontal' | 'vertical' | 'both' } = {}
+  options: { orientation?: 'horizontal' | 'vertical' | 'both' } = {},
 ) {
   const { orientation = 'both' } = options;
 
@@ -180,14 +183,15 @@ function getFocusableElements(container: HTMLElement): HTMLElement[] {
     '[tabindex]:not([tabindex="-1"])',
   ].join(',');
 
-  return Array.from(container.querySelectorAll(selector))
-    .filter((el) => {
-      const element = el as HTMLElement;
-      return !element.hasAttribute('disabled') &&
-        !element.getAttribute('aria-hidden') &&
-        element.offsetWidth > 0 &&
-        element.offsetHeight > 0;
-    }) as HTMLElement[];
+  return Array.from(container.querySelectorAll(selector)).filter((el) => {
+    const element = el as HTMLElement;
+    return (
+      !element.hasAttribute('disabled') &&
+      !element.getAttribute('aria-hidden') &&
+      element.offsetWidth > 0 &&
+      element.offsetHeight > 0
+    );
+  }) as HTMLElement[];
 }
 
 function focusNext(elements: HTMLElement[], currentIndex: number) {
@@ -201,46 +205,10 @@ function focusPrevious(elements: HTMLElement[], currentIndex: number) {
 }
 
 // Skip link component
-export const SkipLink = React.memo(({ targetId, children }: { targetId: string; children: React.ReactNode }) => (
-  <a
-    href={`#${targetId}`}
-    className="skip-link"
-    style={{
-      position: 'absolute',
-      top: '-40px',
-      left: 0,
-      padding: '8px',
-      zIndex: 100,
-      backgroundColor: '#fff',
-      transition: 'top 0.2s',
-      ':focus': {
-        top: 0,
-      },
-    }}
-  >
-    {children}
-  </a>
-));
+export {};
 
 // ARIA description component
-export const AriaDescription = React.memo(({ id, text }: { id: string; text: string }) => (
-  <span
-    id={id}
-    style={{
-      position: 'absolute',
-      width: '1px',
-      height: '1px',
-      padding: 0,
-      margin: '-1px',
-      overflow: 'hidden',
-      clip: 'rect(0, 0, 0, 0)',
-      whiteSpace: 'nowrap',
-      border: 0,
-    }}
-  >
-    {text}
-  </span>
-));
+export {};
 
 // Focus visible utility
 export function useFocusVisible() {
@@ -272,8 +240,4 @@ export function useHeadingLevel() {
   return React.useContext(HeadingLevelContext);
 }
 
-export const HeadingLevelProvider = ({ level, children }: { level: number; children: React.ReactNode }) => (
-  <HeadingLevelContext.Provider value={Math.min(Math.max(level, 1), 6)}>
-    {children}
-  </HeadingLevelContext.Provider>
-); 
+export {};

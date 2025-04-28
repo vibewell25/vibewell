@@ -6,7 +6,7 @@ This directory contains utility functions and helpers used throughout the Vibewe
 
 ### Zod-based Form Validation (Recommended)
 
-The `form-validation-zod.ts` file contains our standardized form validation utilities based on Zod. 
+The `form-validation-zod.ts` file contains our standardized form validation utilities based on Zod.
 This is the **recommended approach** for all new form validation in the Vibewell platform.
 
 #### Key Features:
@@ -19,7 +19,11 @@ This is the **recommended approach** for all new form validation in the Vibewell
 #### Example Usage:
 
 ```typescript
-import { validateForm, createRequiredStringSchema, createEmailSchema } from 'utils/form-validation-zod';
+import {
+  validateForm,
+  createRequiredStringSchema,
+  createEmailSchema,
+} from 'utils/form-validation-zod';
 
 const loginFormSchema = z.object({
   email: createEmailSchema(),
@@ -39,8 +43,8 @@ if (result.success) {
 
 ### Legacy Form Validation
 
-The `form-validation.ts` file contains the legacy form validation utilities. This approach is 
+The `form-validation.ts` file contains the legacy form validation utilities. This approach is
 being phased out in favor of the Zod-based solution.
 
-**Note:** For consistency, all new forms should use the Zod-based validation. Existing forms 
+**Note:** For consistency, all new forms should use the Zod-based validation. Existing forms
 should be migrated to the Zod-based approach when substantial changes are being made.

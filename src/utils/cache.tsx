@@ -1,5 +1,4 @@
 import Redis from 'ioredis';
-import { promisify } from 'util';
 
 const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
@@ -72,27 +71,9 @@ export class Cache {
 
 // Cache instances for different purposes
 export const userCache = new Cache({ prefix: 'user:', ttl: 1800 }); // 30 minutes
-export const productCache = new Cache({ prefix: 'product:', ttl: 3600 }); // 1 hour
-export const sessionCache = new Cache({ prefix: 'session:', ttl: 86400 }); // 24 hours
-export const analyticsCache = new Cache({ prefix: 'analytics:', ttl: 300 }); // 5 minutes
+export {}; // 1 hour
+export {}; // 24 hours
+export {}; // 5 minutes
 
 // Cache middleware for Express/Next.js
-export const cacheMiddleware = (duration: number) => {
-  return async (req: any, res: any, next: any) => {
-    const key = `route:${req.originalUrl || req.url}`;
-    const cachedResponse = await userCache.get(key);
-
-    if (cachedResponse) {
-      return res.json(cachedResponse);
-    }
-
-    // Override res.json to cache the response
-    const originalJson = res.json;
-    res.json = function (data: any) {
-      userCache.set(key, data, duration);
-      return originalJson.call(this, data);
-    };
-
-    next();
-  };
-};
+export {};

@@ -48,7 +48,7 @@ export class AIService {
 
       // Get service details for the recommendations
       const servicesWithDetails = await Promise.all(
-        recommendations.map(async rec => {
+        recommendations.map(async (rec) => {
           const service = await prisma.$queryRaw<ServiceWithCategory[]>`
             SELECT s.*, c.id as "categoryId", c.name as "categoryName"
             FROM "Service" s
@@ -60,7 +60,7 @@ export class AIService {
             ...rec,
             service: service[0],
           };
-        })
+        }),
       );
 
       return servicesWithDetails;
@@ -98,14 +98,14 @@ export class AIService {
       `;
 
       const forecasts = await Promise.all(
-        services.map(service =>
+        services.map((service) =>
           this.predictiveBooking.generateDemandForecast(
             businessId,
             service.id,
             date,
-            new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000) // Next 7 days
-          )
-        )
+            new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000), // Next 7 days
+          ),
+        ),
       );
 
       // Calculate resource allocation
@@ -151,7 +151,7 @@ export class AIService {
       await this.recommendationService.updateUserPreferences(
         review.userId,
         review.serviceId,
-        review.rating
+        review.rating,
       );
 
       logger.info('Review processed successfully', 'AIService', { reviewId });
@@ -168,14 +168,14 @@ export class AIService {
   async trackUserInteraction(
     userId: string,
     serviceId: string,
-    interactionType: 'view' | 'book' | 'favorite'
+    interactionType: 'view' | 'book' | 'favorite',
   ) {
     try {
       // Update service preferences
       await this.recommendationService.updateUserPreferences(
         userId,
         serviceId,
-        interactionType === 'book' ? 0.8 : interactionType === 'favorite' ? 0.6 : 0.3
+        interactionType === 'book' ? 0.8 : interactionType === 'favorite' ? 0.6 : 0.3,
       );
 
       logger.info('User interaction tracked', 'AIService', {

@@ -1,4 +1,3 @@
-import React from 'react';
 import Link from 'next/link';
 
 const navItems = [
@@ -11,11 +10,14 @@ const navItems = [
 
 export default function BottomNav() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-inner z-50">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-white shadow-inner">
       <ul className="flex justify-around">
-        {navItems.map(item => (
+        {navItems.map((item) => (
           <li key={item.href}>
-            <Link href={item.href} className="flex flex-col items-center py-2 text-sm text-gray-700 hover:text-primary">
+            <Link
+              href={item.href}
+              className="hover:text-primary flex flex-col items-center py-2 text-sm text-gray-700"
+            >
               {item.label}
             </Link>
           </li>

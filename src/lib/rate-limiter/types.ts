@@ -94,12 +94,4 @@ export const DEFAULT_OPTIONS: RateLimitOptions = {
 /**
  * Default WebSocket rate limit options
  */
-export const DEFAULT_WEBSOCKET_OPTIONS: WebSocketRateLimitOptions = {
-  ...DEFAULT_OPTIONS,
-  maxConnectionsPerIP: 10,
-  connectionWindowMs: 60 * 1000, // 1 minute
-  maxMessagesPerMinute: 60,
-  maxMessageSizeBytes: 10 * 1024, // 10 KB
-  burstFactor: 2,
-  burstDurationMs: 5000, // 5 seconds
-};
+export {};

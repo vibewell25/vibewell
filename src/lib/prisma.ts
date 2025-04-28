@@ -23,11 +23,6 @@ type PrismaModels = {
   userPreference: any;
 };
 
-// Create a properly typed PrismaClient
-const PrismaClientWithModels = PrismaClient as {
-  new (options?: Prisma.PrismaClientOptions): PrismaClient & PrismaModels;
-};
-
 // Add prisma to the global type
 declare global {
   // eslint-disable-next-line no-var

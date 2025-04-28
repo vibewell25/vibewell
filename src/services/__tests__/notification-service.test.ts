@@ -1,9 +1,5 @@
-/// <reference path="../../../src/types/testing.d.ts" />
-import '@testing-library/jest-dom';
 import {
   notificationService,
-  NotificationType,
-  NotificationStatus,
   NotificationFilterParams,
   Notification,
   NotificationPreferences,
@@ -148,13 +144,13 @@ describe('NotificationService', () => {
       await notificationService.getNotifications(filters);
 
       expect(apiClient.get).toHaveBeenCalledWith(
-        '/api/notifications?status=unread&type=booking_created&fromDate=2023-01-01&toDate=2023-01-31&page=1&limit=10'
+        '/api/notifications?status=unread&type=booking_created&fromDate=2023-01-01&toDate=2023-01-31&page=1&limit=10',
       );
     });
 
     it('should handle errors correctly', async () => {
       (apiClient.get as jest.Mock).mockResolvedValue(
-        mockErrorResponse('Failed to fetch notifications')
+        mockErrorResponse('Failed to fetch notifications'),
       );
 
       const result = await notificationService.getNotifications();
@@ -205,7 +201,7 @@ describe('NotificationService', () => {
   describe('markAllAsRead', () => {
     it('should mark all notifications as read', async () => {
       (apiClient.put as jest.Mock).mockResolvedValue(
-        mockSuccessResponse({ success: true, count: 5 })
+        mockSuccessResponse({ success: true, count: 5 }),
       );
 
       const result = await notificationService.markAllAsRead();
@@ -281,7 +277,7 @@ describe('NotificationService', () => {
 
       expect(apiClient.put).toHaveBeenCalledWith(
         '/api/notifications/preferences',
-        partialPreferences
+        partialPreferences,
       );
       expect(result.data).toEqual(updatedPreferences);
       expect(result.success).toBe(true);

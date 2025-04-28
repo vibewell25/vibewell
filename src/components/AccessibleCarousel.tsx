@@ -115,17 +115,17 @@ export const AccessibleCarousel: React.FC<AccessibleCarouselProps> = ({
       </div>
 
       {showControls && (
-        <div className="absolute top-1/2 left-0 right-0 flex justify-between px-4 transform -translate-y-1/2">
+        <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between px-4">
           <button
             onClick={goToPrevious}
-            className="p-2 rounded-full bg-white bg-opacity-75 hover:bg-opacity-100 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            className="focus:ring-primary rounded-full bg-white bg-opacity-75 p-2 hover:bg-opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
             aria-label="Previous slide"
           >
             ←
           </button>
           <button
             onClick={goToNext}
-            className="p-2 rounded-full bg-white bg-opacity-75 hover:bg-opacity-100 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            className="focus:ring-primary rounded-full bg-white bg-opacity-75 p-2 hover:bg-opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
             aria-label="Next slide"
           >
             →
@@ -143,11 +143,7 @@ export const AccessibleCarousel: React.FC<AccessibleCarouselProps> = ({
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`
-                w-2 h-2 rounded-full
-                ${currentIndex === index ? 'bg-primary' : 'bg-white bg-opacity-50'}
-                focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
-              `}
+              className={`h-2 w-2 rounded-full ${currentIndex === index ? 'bg-primary' : 'bg-white bg-opacity-50'} focus:ring-primary focus:outline-none focus:ring-2 focus:ring-offset-2`}
               role="tab"
               aria-selected={currentIndex === index}
               aria-label={`Slide ${index + 1}`}
@@ -158,7 +154,7 @@ export const AccessibleCarousel: React.FC<AccessibleCarouselProps> = ({
 
       <button
         onClick={() => setIsPlaying(!isPlaying)}
-        className="absolute top-4 right-4 p-2 rounded-full bg-white bg-opacity-75 hover:bg-opacity-100 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        className="focus:ring-primary absolute right-4 top-4 rounded-full bg-white bg-opacity-75 p-2 hover:bg-opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
         aria-label={isPlaying ? 'Pause carousel' : 'Play carousel'}
       >
         {isPlaying ? '⏸' : '▶'}

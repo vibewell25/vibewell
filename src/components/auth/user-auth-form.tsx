@@ -3,8 +3,8 @@ import { useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Icons } from '@/components/icons';
@@ -21,14 +21,12 @@ type FormData = z.infer<typeof formSchema>;
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const {
     register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
+    handleSubmit
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const searchParams = useSearchParams();
 
   async function onSubmit(data: FormData) {
     setIsLoading(true);
@@ -36,7 +34,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     try {
       // Here you would typically call your authentication API
       // For now, we'll just simulate a delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       toast.success('Authentication successful!');
     } catch (error) {

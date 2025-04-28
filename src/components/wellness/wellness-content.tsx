@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -73,7 +73,7 @@ export function WellnessContent() {
         },
         body: JSON.stringify({
           ...newContent,
-          tags: newContent.tags.split(',').map(tag => tag.trim()),
+          tags: newContent.tags.split(',').map((tag) => tag.trim()),
         }),
       });
 
@@ -108,7 +108,7 @@ export function WellnessContent() {
         throw new Error('Failed to delete content');
       }
 
-      setContents(contents.filter(content => content.id !== contentId));
+      setContents(contents.filter((content) => content.id !== contentId));
       toast.success('Content deleted successfully!');
     } catch (error) {
       console.error('Error deleting content:', error);
@@ -119,7 +119,7 @@ export function WellnessContent() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
       </div>
     );
   }
@@ -137,14 +137,14 @@ export function WellnessContent() {
               <Input
                 id="title"
                 value={newContent.title}
-                onChange={e => setNewContent({ ...newContent, title: e.target.value })}
+                onChange={(e) => setNewContent({ ...newContent, title: e.target.value })}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               <Select
                 value={newContent.category}
-                onValueChange={value => setNewContent({ ...newContent, category: value })}
+                onValueChange={(value) => setNewContent({ ...newContent, category: value })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select category" />
@@ -161,7 +161,7 @@ export function WellnessContent() {
               <Label htmlFor="type">Type</Label>
               <Select
                 value={newContent.type}
-                onValueChange={value => setNewContent({ ...newContent, type: value })}
+                onValueChange={(value) => setNewContent({ ...newContent, type: value })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select type" />
@@ -179,7 +179,7 @@ export function WellnessContent() {
               <Input
                 id="tags"
                 value={newContent.tags}
-                onChange={e => setNewContent({ ...newContent, tags: e.target.value })}
+                onChange={(e) => setNewContent({ ...newContent, tags: e.target.value })}
               />
             </div>
             <div className="space-y-2 md:col-span-2">
@@ -187,7 +187,7 @@ export function WellnessContent() {
               <Textarea
                 id="description"
                 value={newContent.description}
-                onChange={e => setNewContent({ ...newContent, description: e.target.value })}
+                onChange={(e) => setNewContent({ ...newContent, description: e.target.value })}
               />
             </div>
             <div className="space-y-2 md:col-span-2">
@@ -195,7 +195,7 @@ export function WellnessContent() {
               <Textarea
                 id="content"
                 value={newContent.content}
-                onChange={e => setNewContent({ ...newContent, content: e.target.value })}
+                onChange={(e) => setNewContent({ ...newContent, content: e.target.value })}
               />
             </div>
           </div>
@@ -207,7 +207,7 @@ export function WellnessContent() {
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {contents.map(content => (
+        {contents.map((content) => (
           <Card key={content.id}>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -238,8 +238,8 @@ export function WellnessContent() {
                   <span className="text-sm text-muted-foreground">{content.type}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {content.tags.map(tag => (
-                    <span key={tag} className="rounded-full bg-secondary px-2 py-1 text-xs">
+                  {content.tags.map((tag) => (
+                    <span key={tag} className="bg-secondary rounded-full px-2 py-1 text-xs">
                       {tag}
                     </span>
                   ))}

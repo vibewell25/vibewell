@@ -46,15 +46,9 @@ export const AccessiblePagination: React.FC<AccessiblePaginationProps> = ({
     <button
       key={page}
       onClick={() => handlePageChange(page)}
-      className={`
-        px-3 py-1 rounded
-        ${
-          currentPage === page
-            ? 'bg-primary text-white'
-            : 'bg-white text-gray-700 hover:bg-gray-100'
-        }
-        focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
-      `}
+      className={`rounded px-3 py-1 ${
+        currentPage === page ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-100'
+      } focus:ring-primary focus:outline-none focus:ring-2 focus:ring-offset-2`}
       aria-current={currentPage === page ? 'page' : undefined}
       aria-label={`Page ${page}`}
     >
@@ -66,16 +60,12 @@ export const AccessiblePagination: React.FC<AccessiblePaginationProps> = ({
     label: string,
     page: number,
     disabled: boolean,
-    ariaLabel: string
+    ariaLabel: string,
   ) => (
     <button
       onClick={() => handlePageChange(page)}
       disabled={disabled}
-      className={`
-        px-3 py-1 rounded
-        ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'}
-        focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
-      `}
+      className={`rounded px-3 py-1 ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'} focus:ring-primary focus:outline-none focus:ring-2 focus:ring-offset-2`}
       aria-label={ariaLabel}
     >
       {label}
@@ -94,7 +84,7 @@ export const AccessiblePagination: React.FC<AccessiblePaginationProps> = ({
               'Previous',
               currentPage - 1,
               currentPage === 1,
-              'Go to previous page'
+              'Go to previous page',
             )}
           </li>
         )}
@@ -105,7 +95,7 @@ export const AccessiblePagination: React.FC<AccessiblePaginationProps> = ({
               'Next',
               currentPage + 1,
               currentPage === totalPages,
-              'Go to next page'
+              'Go to next page',
             )}
           </li>
         )}
@@ -115,7 +105,7 @@ export const AccessiblePagination: React.FC<AccessiblePaginationProps> = ({
               'Last',
               totalPages,
               currentPage === totalPages,
-              'Go to last page'
+              'Go to last page',
             )}
           </li>
         )}

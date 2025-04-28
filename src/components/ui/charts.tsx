@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -26,7 +26,7 @@ ChartJS.register(
   ArcElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 // Define theme colors
@@ -64,17 +64,17 @@ export function LineChart({
   index,
   categories,
   colors = ['blue'],
-  valueFormatter = value => value.toString(),
+  valueFormatter = (value) => value.toString(),
   height = 300,
 }: ChartProps) {
   const chartRef = useRef<any>(null);
 
   // Prepare data for Chart.js
   const chartData = {
-    labels: data.map(item => item[index]),
+    labels: data.map((item) => item[index]),
     datasets: categories.map((category, i) => ({
       label: category.charAt(0).toUpperCase() + category.slice(1),
-      data: data.map(item => item[category]),
+      data: data.map((item) => item[category]),
       borderColor: themeColors[colors[i % colors.length] as keyof typeof themeColors][1],
       backgroundColor: themeColors[colors[i % colors.length] as keyof typeof themeColors][0],
       tension: 0.3,
@@ -155,17 +155,17 @@ export function BarChart({
   index,
   categories,
   colors = ['blue'],
-  valueFormatter = value => value.toString(),
+  valueFormatter = (value) => value.toString(),
   height = 300,
 }: ChartProps) {
   const chartRef = useRef<any>(null);
 
   // Prepare data for Chart.js
   const chartData = {
-    labels: data.map(item => item[index]),
+    labels: data.map((item) => item[index]),
     datasets: categories.map((category, i) => ({
       label: category.charAt(0).toUpperCase() + category.slice(1),
-      data: data.map(item => item[category]),
+      data: data.map((item) => item[category]),
       backgroundColor: themeColors[colors[i % colors.length] as keyof typeof themeColors][0],
       borderColor: themeColors[colors[i % colors.length] as keyof typeof themeColors][1],
       borderWidth: 1,
@@ -253,23 +253,23 @@ export function PieChart({
   category,
   index,
   colors = ['blue', 'green', 'red', 'yellow', 'purple'],
-  valueFormatter = value => value.toString(),
+  valueFormatter = (value) => value.toString(),
   height = 300,
 }: PieChartProps) {
   const chartRef = useRef<any>(null);
 
   // Get background colors based on provided color names
-  const backgroundColors = colors.map(color => themeColors[color as keyof typeof themeColors][0]);
+  const backgroundColors = colors.map((color) => themeColors[color as keyof typeof themeColors][0]);
 
   // Get border colors based on provided color names
-  const borderColors = colors.map(color => themeColors[color as keyof typeof themeColors][1]);
+  const borderColors = colors.map((color) => themeColors[color as keyof typeof themeColors][1]);
 
   // Prepare data for Chart.js
   const chartData = {
-    labels: data.map(item => item[index]),
+    labels: data.map((item) => item[index]),
     datasets: [
       {
-        data: data.map(item => item[category]),
+        data: data.map((item) => item[category]),
         backgroundColor: backgroundColors,
         borderColor: borderColors,
         borderWidth: 1,

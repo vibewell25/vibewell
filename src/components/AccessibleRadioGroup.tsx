@@ -42,13 +42,13 @@ export const AccessibleRadioGroup: React.FC<AccessibleRadioGroupProps> = ({
         aria-invalid={error ? 'true' : 'false'}
         aria-required={required}
       >
-        <label id={`${groupId}-label`} className="block text-sm font-medium text-gray-700 mb-2">
+        <label id={`${groupId}-label`} className="mb-2 block text-sm font-medium text-gray-700">
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="ml-1 text-red-500">*</span>}
         </label>
 
         <div className="space-y-2">
-          {options.map(option => (
+          {options.map((option) => (
             <div key={option.value} className="flex items-center">
               <input
                 id={`${groupId}-${option.value}`}
@@ -56,22 +56,14 @@ export const AccessibleRadioGroup: React.FC<AccessibleRadioGroupProps> = ({
                 type="radio"
                 value={option.value}
                 checked={value === option.value}
-                onChange={e => onChange?.(e.target.value)}
+                onChange={(e) => onChange?.(e.target.value)}
                 disabled={option.disabled}
-                className={`
-                  h-4 w-4 border-gray-300
-                  ${error ? 'border-red-300' : 'border-gray-300'}
-                  text-primary focus:ring-primary
-                  ${option.disabled ? 'opacity-50 cursor-not-allowed' : ''}
-                `}
+                className={`h-4 w-4 border-gray-300 ${error ? 'border-red-300' : 'border-gray-300'} text-primary focus:ring-primary ${option.disabled ? 'cursor-not-allowed opacity-50' : ''} `}
                 aria-describedby={error ? errorId : undefined}
               />
               <label
                 htmlFor={`${groupId}-${option.value}`}
-                className={`
-                  ml-3 block text-sm font-medium
-                  ${option.disabled ? 'text-gray-400' : 'text-gray-700'}
-                `}
+                className={`ml-3 block text-sm font-medium ${option.disabled ? 'text-gray-400' : 'text-gray-700'} `}
               >
                 {option.label}
               </label>

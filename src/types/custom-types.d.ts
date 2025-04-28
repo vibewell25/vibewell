@@ -10,13 +10,9 @@ declare module 'msw' {
   export function http(
     method: string,
     path: string,
-    handler: (req: any, res: any, ctx: any) => any
+    handler: (req: any, res: any, ctx: any) => any,
   ): any;
-  export const HttpResponse: {
-    json: (body: any, init?: any) => any;
-    text: (body: string, init?: any) => any;
-    error: (status: number, body?: any) => any;
-  };
+  export {};
 }
 
 declare module 'msw/node' {
@@ -36,7 +32,7 @@ declare module '@hookform/resolvers/zod' {
 
 // Augment @testing-library/react
 declare module '@testing-library/react' {
-  export const act: (callback: () => void | Promise<void>) => Promise<void>;
+  export {};
   export function render(component: React.ReactElement): {
     container: HTMLElement;
     getByText: (text: string) => HTMLElement;
@@ -49,26 +45,11 @@ declare module '@testing-library/react' {
     findByTestId: (testId: string) => Promise<HTMLElement>;
     unmount: () => void;
   };
-  export const screen: {
-    getByText: (text: string) => HTMLElement;
-    getByTestId: (testId: string) => HTMLElement;
-    getByLabelText: (label: string) => HTMLElement;
-    getByRole: (role: string) => HTMLElement;
-    queryByText: (text: string) => HTMLElement | null;
-    queryByTestId: (testId: string) => HTMLElement | null;
-    findByText: (text: string) => Promise<HTMLElement>;
-    findByTestId: (testId: string) => Promise<HTMLElement>;
-  };
-  export const fireEvent: {
-    click: (element: HTMLElement) => void;
-    change: (element: HTMLElement, options: { target: { value: any } }) => void;
-    submit: (element: HTMLElement) => void;
-    keyDown: (element: HTMLElement, options: { key: string }) => void;
-    keyUp: (element: HTMLElement, options: { key: string }) => void;
-  };
+  export {};
+  export {};
   export function waitFor<T>(
     callback: () => T | Promise<T>,
-    options?: { timeout?: number }
+    options?: { timeout?: number },
   ): Promise<T>;
 }
 
@@ -111,17 +92,6 @@ declare global {
     getViewport: () => { x: number; y: number; width: number; height: number };
   }
 }
-
-// User event type for testing
-declare const UserEvent: () => {
-  type: (element: HTMLElement, text: string) => Promise<void>;
-  click: (element: HTMLElement) => Promise<void>;
-  tab: () => Promise<void>;
-  hover: (element: HTMLElement) => Promise<void>;
-  selectOptions: (element: HTMLElement, values: string[]) => Promise<void>;
-  clear: (element: HTMLElement) => Promise<void>;
-  upload: (element: HTMLElement, file: File) => Promise<void>;
-};
 
 // Export empty object to make this a module
 export {};

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { ModuleContent, CreateModuleContentInput, UpdateModuleContentInput } from '@/types/module';
+import { CreateModuleContentInput, UpdateModuleContentInput } from '@/types/module';
 
 export function useModuleContent(moduleId: string) {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,12 +11,12 @@ export function useModuleContent(moduleId: string) {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const response = await fetch(`/api/training/module/${moduleId}/content`);
       if (!response.ok) {
         throw new Error('Failed to fetch module content');
       }
-      
+
       const data = await response.json();
       setContent(data);
     } catch (err) {
@@ -32,7 +32,7 @@ export function useModuleContent(moduleId: string) {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const response = await fetch(`/api/training/module/${moduleId}/content`, {
         method: 'POST',
         headers: {
@@ -44,9 +44,9 @@ export function useModuleContent(moduleId: string) {
       if (!response.ok) {
         throw new Error('Failed to create module content');
       }
-      
+
       const newContent = await response.json();
-      setContent(prev => [...prev, newContent]);
+      setContent((prev) => [...prev, newContent]);
       toast.success('Module content created successfully');
       return newContent;
     } catch (err) {
@@ -63,7 +63,7 @@ export function useModuleContent(moduleId: string) {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const response = await fetch(`/api/training/module/${moduleId}/content`, {
         method: 'PUT',
         headers: {
@@ -75,11 +75,11 @@ export function useModuleContent(moduleId: string) {
       if (!response.ok) {
         throw new Error('Failed to update module content');
       }
-      
+
       const updatedContent = await response.json();
-      setContent(prev => prev.map(item => 
-        item.id === updatedContent.id ? updatedContent : item
-      ));
+      setContent((prev) =>
+        prev.map((item) => (item.id === updatedContent.id ? updatedContent : item)),
+      );
       toast.success('Module content updated successfully');
       return updatedContent;
     } catch (err) {
@@ -96,7 +96,7 @@ export function useModuleContent(moduleId: string) {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const response = await fetch(`/api/training/module/${moduleId}/content`, {
         method: 'DELETE',
       });
@@ -104,7 +104,7 @@ export function useModuleContent(moduleId: string) {
       if (!response.ok) {
         throw new Error('Failed to delete module content');
       }
-      
+
       setContent([]);
       toast.success('Module content deleted successfully');
     } catch (err) {
@@ -126,4 +126,4 @@ export function useModuleContent(moduleId: string) {
     updateContent,
     deleteContent,
   };
-} 
+}

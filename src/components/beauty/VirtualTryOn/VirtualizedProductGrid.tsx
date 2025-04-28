@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { FixedSizeGrid } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import Image from 'next/image';
-import { TryOnProduct, ProductColor } from '../../../utils/beauty-state';
+import { TryOnProduct } from '../../../utils/beauty-state';
 
 interface VirtualizedProductGridProps {
   products: TryOnProduct[];
@@ -48,15 +48,15 @@ export default function VirtualizedProductGrid({
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center w-full h-40">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+      <div className="flex h-40 w-full items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-pink-500"></div>
       </div>
     );
   }
 
   if (products.length === 0) {
     return (
-      <div className="text-center py-4">
+      <div className="py-4 text-center">
         <p className="text-gray-500">No products found</p>
       </div>
     );
@@ -77,16 +77,16 @@ export default function VirtualizedProductGrid({
     return (
       <div
         style={style}
-        className={`p-2 ${isSelected ? 'opacity-100 scale-105' : 'opacity-90 hover:opacity-100'} transition-all duration-200`}
+        className={`p-2 ${isSelected ? 'scale-105 opacity-100' : 'opacity-90 hover:opacity-100'} transition-all duration-200`}
       >
         <div
-          className={`cursor-pointer rounded-lg overflow-hidden border ${
+          className={`cursor-pointer overflow-hidden rounded-lg border ${
             isSelected
               ? 'border-pink-500 ring-2 ring-pink-300'
               : 'border-gray-200 hover:border-gray-300'
           }`}
           onClick={() => onSelectProduct(product)}
-          onKeyDown={e => {
+          onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
               onSelectProduct(product);
@@ -109,25 +109,25 @@ export default function VirtualizedProductGrid({
               blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFdwI2F3h7xgAAAABJRU5ErkJggg=="
             />
             {product.isNew && (
-              <div className="absolute top-2 right-2 bg-pink-500 text-white text-xs px-2 py-1 rounded-full">
+              <div className="absolute right-2 top-2 rounded-full bg-pink-500 px-2 py-1 text-xs text-white">
                 New
               </div>
             )}
             {product.isBestSeller && (
-              <div className="absolute top-2 left-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">
+              <div className="absolute left-2 top-2 rounded-full bg-yellow-500 px-2 py-1 text-xs text-white">
                 Best Seller
               </div>
             )}
           </div>
           <div className="p-3">
-            <h3 className="text-sm font-medium line-clamp-1">{product.name}</h3>
-            <p className="text-xs text-gray-500 line-clamp-1">{product.brand}</p>
-            <div className="flex items-center justify-between mt-2">
+            <h3 className="line-clamp-1 text-sm font-medium">{product.name}</h3>
+            <p className="line-clamp-1 text-xs text-gray-500">{product.brand}</p>
+            <div className="mt-2 flex items-center justify-between">
               <span className="text-sm font-medium">
                 ${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}
               </span>
               <div className="flex items-center">
-                <span className="text-xs text-yellow-500 mr-1">★</span>
+                <span className="mr-1 text-xs text-yellow-500">★</span>
                 <span className="text-xs text-gray-500">{product.ratingAverage}</span>
               </div>
             </div>
@@ -138,7 +138,7 @@ export default function VirtualizedProductGrid({
   };
 
   return (
-    <div ref={containerRef} className={`w-full h-96 ${gridClassName}`}>
+    <div ref={containerRef} className={`h-96 w-full ${gridClassName}`}>
       <AutoSizer>
         {({ height, width }) => (
           <FixedSizeGrid

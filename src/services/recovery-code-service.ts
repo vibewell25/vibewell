@@ -1,4 +1,4 @@
-import { createHash, randomBytes } from 'crypto';
+import { randomBytes } from 'crypto';
 import { prisma } from '@/lib/database/client';
 import { logger } from '@/lib/logger';
 import { EncryptionService } from './encryption';
@@ -21,13 +21,13 @@ export class RecoveryCodeService {
       const codes = Array.from({ length: count }, () => {
         // Generate 4 groups of 4 characters each (e.g., XXXX-XXXX-XXXX-XXXX)
         const groups = Array.from({ length: 4 }, () =>
-          randomBytes(2).toString('hex').toUpperCase()
+          randomBytes(2).toString('hex').toUpperCase(),
         );
         return groups.join('-');
       });
 
       // Hash the codes before storing
-      const hashedCodes = await Promise.all(codes.map(code => this.encryption.hash(code)));
+      const hashedCodes = await Promise.all(codes.map((code) => this.encryption.hash(code)));
 
       // Store the hashed codes in the database
       await prisma.recoveryCode.deleteMany({
@@ -35,7 +35,7 @@ export class RecoveryCodeService {
       });
 
       await prisma.recoveryCode.createMany({
-        data: hashedCodes.map(hash => ({
+        data: hashedCodes.map((hash) => ({
           userId,
           code: hash,
           used: false,

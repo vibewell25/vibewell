@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import { Camera } from '@mediapipe/camera_utils';
-import { motion } from 'framer-motion';
 
 export interface YogaPoseEstimationProps {
   pose: 'warrior' | 'tree' | 'downward-dog' | 'cobra' | 'child';
@@ -133,7 +132,7 @@ const YogaPoseEstimation: React.FC<YogaPoseEstimationProps> = ({
     let score = 0;
 
     // Analyze each key point and angle
-    config.keyPoints.forEach(point => {
+    config.keyPoints.forEach((point) => {
       const angle = calculateAngle(detectedPose, point);
       const target = config.angles[point as keyof typeof config.angles];
 
@@ -169,34 +168,34 @@ const YogaPoseEstimation: React.FC<YogaPoseEstimationProps> = ({
   };
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto">
+    <div className="relative mx-auto w-full max-w-2xl">
       <div className="relative aspect-video">
-        <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" playsInline />
+        <video ref={videoRef} className="absolute inset-0 h-full w-full object-cover" playsInline />
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 h-full w-full"
           width={640}
           height={480}
         />
 
         {/* Pose Score Indicator */}
-        <div className="absolute top-4 right-4 bg-white/90 p-2 rounded-lg backdrop-blur-sm">
+        <div className="absolute right-4 top-4 rounded-lg bg-white/90 p-2 backdrop-blur-sm">
           <div className="text-lg font-semibold">Score: {poseScore.toFixed(0)}%</div>
         </div>
       </div>
 
       {/* Controls and Feedback */}
-      <div className="mt-4 p-4 bg-white rounded-lg shadow">
-        <div className="flex items-center justify-between mb-4">
+      <div className="mt-4 rounded-lg bg-white p-4 shadow">
+        <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold">
             {pose
               .split('-')
-              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join(' ')}{' '}
             Pose
           </h3>
           <button
-            className={`px-4 py-2 rounded ${isAnalyzing ? 'bg-red-500' : 'bg-primary'} text-white`}
+            className={`rounded px-4 py-2 ${isAnalyzing ? 'bg-red-500' : 'bg-primary'} text-white`}
             onClick={() => setIsAnalyzing(!isAnalyzing)}
           >
             {isAnalyzing ? 'Stop Analysis' : 'Start Analysis'}
@@ -205,8 +204,8 @@ const YogaPoseEstimation: React.FC<YogaPoseEstimationProps> = ({
 
         {/* Instructions */}
         <div className="mb-4">
-          <h4 className="font-medium mb-2">Key Points:</h4>
-          <ul className="list-disc pl-5 space-y-1">
+          <h4 className="mb-2 font-medium">Key Points:</h4>
+          <ul className="list-disc space-y-1 pl-5">
             {POSE_CONFIGS[pose].instructions.map((instruction, index) => (
               <li key={index} className="text-sm">
                 {instruction}
@@ -217,9 +216,9 @@ const YogaPoseEstimation: React.FC<YogaPoseEstimationProps> = ({
 
         {/* Feedback */}
         {feedback.length > 0 && (
-          <div className="p-3 bg-yellow-50 rounded-lg">
-            <h4 className="font-medium mb-2">Adjustments Needed:</h4>
-            <ul className="list-disc pl-5 space-y-1">
+          <div className="rounded-lg bg-yellow-50 p-3">
+            <h4 className="mb-2 font-medium">Adjustments Needed:</h4>
+            <ul className="list-disc space-y-1 pl-5">
               {feedback.map((item, index) => (
                 <li key={index} className="text-sm text-yellow-800">
                   {item}
@@ -248,9 +247,9 @@ const calculateAngle = (pose: poseDetection.Pose, joint: string): number => {
 
   const [p1Name, p2Name, p3Name] = jointConnections[joint];
 
-  const p1 = keypoints.find(kp => kp.name === p1Name);
-  const p2 = keypoints.find(kp => kp.name === p2Name);
-  const p3 = keypoints.find(kp => kp.name === p3Name);
+  const p1 = keypoints.find((kp) => kp.name === p1Name);
+  const p2 = keypoints.find((kp) => kp.name === p2Name);
+  const p3 = keypoints.find((kp) => kp.name === p3Name);
 
   if (!p1?.x || !p1?.y || !p2?.x || !p2?.y || !p3?.x || !p3?.y) return 0;
 
@@ -260,7 +259,7 @@ const calculateAngle = (pose: poseDetection.Pose, joint: string): number => {
 };
 
 const drawKeypoints = (keypoints: poseDetection.Keypoint[], ctx: CanvasRenderingContext2D) => {
-  keypoints.forEach(keypoint => {
+  keypoints.forEach((keypoint) => {
     if (keypoint.score && keypoint.score > 0.3) {
       ctx.beginPath();
       ctx.arc(keypoint.x, keypoint.y, 4, 0, 2 * Math.PI);

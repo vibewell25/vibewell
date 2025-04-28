@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { AnalyticsService, RecommendationMetrics } from '@/services/analytics-service';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useEffect, useState } from 'react';
+import { AnalyticsService } from '@/services/analytics-service';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { format, subWeeks } from 'date-fns';
 import { Download } from 'lucide-react';
 import {
@@ -14,11 +14,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  PieChart,
-  Pie,
   Cell,
-  LineChart,
-  Line,
 } from 'recharts';
 
 export default function RecommendationDashboard() {
@@ -62,7 +58,7 @@ export default function RecommendationDashboard() {
 
   // Calculate click-through-rate by product
   const ctrByProductData =
-    metrics?.topRecommendedProducts.map(product => ({
+    metrics?.topRecommendedProducts.map((product) => ({
       name: product.name.length > 15 ? `${product.name.substring(0, 15)}...` : product.name,
       ctr: product.recommendations > 0 ? (product.clicks / product.recommendations) * 100 : 0,
     })) || [];
@@ -73,7 +69,7 @@ export default function RecommendationDashboard() {
     {
       name: 'Clicked',
       value: Math.round(
-        ((metrics?.totalRecommendations || 0) * (metrics?.clickThroughRate || 0)) / 100
+        ((metrics?.totalRecommendations || 0) * (metrics?.clickThroughRate || 0)) / 100,
       ),
     },
     {
@@ -82,7 +78,7 @@ export default function RecommendationDashboard() {
         ((metrics?.totalRecommendations || 0) *
           (metrics?.clickThroughRate || 0) *
           (metrics?.conversionRate || 0)) /
-          10000
+          10000,
       ),
     },
     {
@@ -92,7 +88,7 @@ export default function RecommendationDashboard() {
           (metrics?.clickThroughRate || 0) *
           (metrics?.conversionRate || 0) *
           0.7) /
-          10000
+          10000,
       ),
     },
   ];
@@ -100,7 +96,7 @@ export default function RecommendationDashboard() {
   if (loading) {
     return (
       <div className="w-full space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {Array.from({ length: 3 }).map((_, i) => (
             <Card key={i}>
               <CardHeader className="pb-2">
@@ -154,17 +150,17 @@ export default function RecommendationDashboard() {
 
   return (
     <div className="w-full space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
           Data from {format(new Date(metrics.timeRange.start), 'MMMM d, yyyy')} to{' '}
           {format(new Date(metrics.timeRange.end), 'MMMM d, yyyy')}
         </p>
         <Button variant="outline" size="sm">
-          <Download className="h-4 w-4 mr-2" /> Export
+          <Download className="mr-2 h-4 w-4" /> Export
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Total Recommendations</CardTitle>
@@ -195,7 +191,7 @@ export default function RecommendationDashboard() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card className="col-span-1">
           <CardHeader>
             <CardTitle>Top Recommended Products</CardTitle>
@@ -219,7 +215,7 @@ export default function RecommendationDashboard() {
                     wordWrap: 'break-word',
                   }}
                   width={150}
-                  tickFormatter={value =>
+                  tickFormatter={(value) =>
                     value.length > 20 ? `${value.substring(0, 20)}...` : value
                   }
                 />
@@ -246,7 +242,7 @@ export default function RecommendationDashboard() {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" angle={-45} textAnchor="end" height={70} />
                 <YAxis label={{ value: 'CTR (%)', angle: -90, position: 'insideLeft' }} />
-                <Tooltip formatter={value => [`${Number(value).toFixed(1)}%`, 'CTR']} />
+                <Tooltip formatter={(value) => [`${Number(value).toFixed(1)}%`, 'CTR']} />
                 <Bar dataKey="ctr" fill="#8884d8" name="Click-Through Rate">
                   {ctrByProductData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -286,9 +282,9 @@ export default function RecommendationDashboard() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="p-4 border rounded-md">
-              <h3 className="font-medium mb-2">Increase recommendation relevance</h3>
-              <p className="text-sm text-muted-foreground mb-2">
+            <div className="rounded-md border p-4">
+              <h3 className="mb-2 font-medium">Increase recommendation relevance</h3>
+              <p className="mb-2 text-sm text-muted-foreground">
                 Current click-through rate ({metrics.clickThroughRate.toFixed(1)}%) is below
                 industry average (15-20%).
               </p>
@@ -299,9 +295,9 @@ export default function RecommendationDashboard() {
               </ul>
             </div>
 
-            <div className="p-4 border rounded-md">
-              <h3 className="font-medium mb-2">Optimize conversion rate</h3>
-              <p className="text-sm text-muted-foreground mb-2">
+            <div className="rounded-md border p-4">
+              <h3 className="mb-2 font-medium">Optimize conversion rate</h3>
+              <p className="mb-2 text-sm text-muted-foreground">
                 Current conversion rate ({metrics.conversionRate.toFixed(1)}%) has room for
                 improvement.
               </p>

@@ -42,7 +42,7 @@ export class PaymentUtils {
     if (!payment) return null;
 
     const config = this.manager.getServiceConfig('payment') as PaymentConfig;
-    
+
     try {
       switch (config.service) {
         case 'stripe':
@@ -53,34 +53,36 @@ export class PaymentUtils {
             description: intent.description,
             metadata: intent.metadata,
             customer: intent.customerId,
-            confirm: true
+            confirm: true,
           });
-          
+
         case 'paypal':
           const request = new payment.orders.OrdersCreateRequest();
-          request.prefer("return=representation");
+          request.prefer('return=representation');
           request.requestBody({
             intent: 'CAPTURE',
-            purchase_units: [{
-              amount: {
-                currency_code: intent.currency,
-                value: (intent.amount / 100).toString()
+            purchase_units: [
+              {
+                amount: {
+                  currency_code: intent.currency,
+                  value: (intent.amount / 100).toString(),
+                },
+                description: intent.description,
               },
-              description: intent.description
-            }]
+            ],
           });
           return await payment.execute(request);
-          
+
         case 'square':
           return await payment.paymentsApi.createPayment({
             sourceId: intent.paymentMethod.token,
             amountMoney: {
               amount: intent.amount,
-              currency: intent.currency
+              currency: intent.currency,
             },
             idempotencyKey: Date.now().toString(),
             note: intent.description,
-            customerId: intent.customerId
+            customerId: intent.customerId,
           });
       }
     } catch (error) {
@@ -94,27 +96,29 @@ export class PaymentUtils {
     if (!payment) return null;
 
     const config = this.manager.getServiceConfig('payment') as PaymentConfig;
-    
+
     try {
       switch (config.service) {
         case 'stripe':
           return await payment.subscriptions.create({
             customer: subscription.customerId,
-            items: [{
-              price: subscription.planId,
-              quantity: subscription.quantity
-            }],
+            items: [
+              {
+                price: subscription.planId,
+                quantity: subscription.quantity,
+              },
+            ],
             metadata: subscription.metadata,
-            trial_period_days: subscription.trialDays
+            trial_period_days: subscription.trialDays,
           });
-          
+
         case 'square':
           return await payment.subscriptionsApi.createSubscription({
             locationId: config.credentials.clientId,
             planId: subscription.planId,
             customerId: subscription.customerId,
             startDate: new Date().toISOString(),
-            metadata: subscription.metadata
+            metadata: subscription.metadata,
           });
       }
     } catch (error) {
@@ -128,7 +132,7 @@ export class PaymentUtils {
     if (!payment) return null;
 
     const config = this.manager.getServiceConfig('payment') as PaymentConfig;
-    
+
     try {
       switch (config.service) {
         case 'stripe':
@@ -136,29 +140,29 @@ export class PaymentUtils {
             payment_intent: refund.paymentIntentId,
             amount: refund.amount,
             reason: refund.reason,
-            metadata: refund.metadata
+            metadata: refund.metadata,
           });
-          
+
         case 'paypal':
           const request = new payment.payments.CapturesRefundRequest(refund.paymentIntentId);
           request.requestBody({
             amount: {
               value: (refund.amount! / 100).toString(),
-              currency_code: 'USD'
+              currency_code: 'USD',
             },
-            note_to_payer: refund.reason
+            note_to_payer: refund.reason,
           });
           return await payment.execute(request);
-          
+
         case 'square':
           return await payment.refundsApi.refundPayment({
             paymentId: refund.paymentIntentId,
             amountMoney: {
               amount: refund.amount,
-              currency: 'USD'
+              currency: 'USD',
             },
             reason: refund.reason,
-            idempotencyKey: Date.now().toString()
+            idempotencyKey: Date.now().toString(),
           });
       }
     } catch (error) {
@@ -172,34 +176,34 @@ export class PaymentUtils {
     if (!payment) return [];
 
     const config = this.manager.getServiceConfig('payment') as PaymentConfig;
-    
+
     try {
       switch (config.service) {
         case 'stripe':
           const methods = await payment.paymentMethods.list({
             customer: customerId,
-            type: 'card'
+            type: 'card',
           });
-          return methods.data.map(method => ({
+          return methods.data.map((method) => ({
             type: 'card',
             token: method.id,
             last4: method.card.last4,
             expMonth: method.card.exp_month,
             expYear: method.card.exp_year,
-            brand: method.card.brand
+            brand: method.card.brand,
           }));
-          
+
         case 'square':
           const { result } = await payment.customersApi.listCards(customerId);
-          return result.cards.map(card => ({
+          return result.cards.map((card) => ({
             type: 'card',
             token: card.id,
             last4: card.last4,
             expMonth: card.expMonth,
             expYear: card.expYear,
-            brand: card.cardBrand
+            brand: card.cardBrand,
           }));
-          
+
         default:
           return [];
       }
@@ -208,4 +212,4 @@ export class PaymentUtils {
       return [];
     }
   }
-} 
+}

@@ -61,7 +61,7 @@ export function ProductRecommendations({
           if (showFeedbackTab) {
             const feedbackProducts = await recommendationService.getFeedbackBasedRecommendations(
               user.id,
-              limit
+              limit,
             );
             setFeedbackItems(feedbackProducts);
 
@@ -108,7 +108,7 @@ export function ProductRecommendations({
   const renderProductGrid = (products: Product[]) => {
     if (loading) {
       return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: limit }).map((_, i) => (
             <div key={i} className="space-y-3">
               <Skeleton className="h-40 w-full rounded-lg" />
@@ -123,7 +123,7 @@ export function ProductRecommendations({
 
     if (error) {
       return (
-        <div className="text-center py-4">
+        <div className="py-4 text-center">
           <p className="text-sm text-muted-foreground">{error}</p>
         </div>
       );
@@ -131,15 +131,15 @@ export function ProductRecommendations({
 
     if (products.length === 0) {
       return (
-        <div className="text-center py-4">
+        <div className="py-4 text-center">
           <p className="text-sm text-muted-foreground">No recommendations available.</p>
         </div>
       );
     }
 
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {products.map(product => (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {products.map((product) => (
           <div key={product.id} onClick={() => handleProductClick(product)}>
             <ProductCard product={product} />
           </div>
@@ -158,7 +158,7 @@ export function ProductRecommendations({
             ? recommendations
             : activeTab === 'related'
               ? relatedItems
-              : feedbackItems
+              : feedbackItems,
         )}
       </div>
     );
@@ -174,7 +174,7 @@ export function ProductRecommendations({
     <div className="space-y-4">
       <h2 className="text-2xl font-semibold">{title}</h2>
 
-      <Tabs value={activeTab} onValueChange={value => setActiveTab(value as any)}>
+      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
         <TabsList className="mb-4">
           {productId && <TabsTrigger value="related">Related Items</TabsTrigger>}
           {shouldShowFeedbackTab() && (

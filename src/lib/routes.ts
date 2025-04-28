@@ -21,6 +21,4 @@ export type WellnessRoutes = typeof routes.wellness;
 export type LegalRoutes = typeof routes.legal;
 
 // Helper to ensure type safety for routes
-export const createTypedLink = <T extends string>(path: T) => ({
-  href: path as Route<T>,
-});
+export {};

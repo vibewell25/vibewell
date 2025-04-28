@@ -1,6 +1,4 @@
-'use client';
-
-import React from 'react';
+'use client';;
 import { format } from 'date-fns';
 import { BookOpen, Calendar, ShoppingBag, Star } from 'lucide-react';
 
@@ -34,14 +32,14 @@ const getActivityIcon = (type: Activity['type']) => {
 export function ActivityFeed({ activities }: ActivityFeedProps) {
   if (activities.length === 0) {
     return (
-      <div className="bg-muted/20 rounded-lg p-6 text-center">
+      <div className="rounded-lg bg-muted/20 p-6 text-center">
         <p className="text-muted-foreground">No recent activities</p>
       </div>
     );
   }
   return (
     <div className="space-y-4">
-      {activities.map(activity => (
+      {activities.map((activity) => (
         <div key={activity.id} className="flex items-start gap-4 rounded-lg border p-4">
           <div className="mt-1">{getActivityIcon(activity.type)}</div>
           <div className="flex-1 space-y-1">

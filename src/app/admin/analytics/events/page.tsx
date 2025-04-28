@@ -1,13 +1,11 @@
-'use client';
-
+'use client';;
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { EventsAnalyticsDashboard } from '@/components/analytics/events-analytics-dashboard';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useRouter } from 'next/navigation';
 import { Icons } from '@/components/icons';
 import { getEvents } from '@/lib/api/events';
-import { Event } from '@/types/events';
 
 export default function EventsAnalyticsPage() {
   const router = useRouter();
@@ -33,7 +31,7 @@ export default function EventsAnalyticsPage() {
   return (
     <Layout>
       <div className="container mx-auto py-8">
-        <div className="flex justify-between items-center mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <h1 className="text-3xl font-bold">Events Analytics</h1>
           <Button variant="outline" onClick={() => router.push('/admin/analytics')}>
             <Icons.arrowLeft className="mr-2 h-4 w-4" />
@@ -42,8 +40,8 @@ export default function EventsAnalyticsPage() {
         </div>
 
         {loading ? (
-          <div className="flex justify-center items-center h-96">
-            <Icons.spinner className="h-8 w-8 animate-spin text-primary" />
+          <div className="flex h-96 items-center justify-center">
+            <Icons.spinner className="text-primary h-8 w-8 animate-spin" />
             <span className="ml-2">Loading...</span>
           </div>
         ) : (
@@ -52,4 +50,4 @@ export default function EventsAnalyticsPage() {
       </div>
     </Layout>
   );
-} 
+}

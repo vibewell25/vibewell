@@ -76,20 +76,23 @@ export interface MonitoringService {
   // Core monitoring
   startMonitoring(): Promise<void>;
   stopMonitoring(): Promise<void>;
-  
+
   // Metrics
   recordMetric(name: string, value: number): Promise<void>;
   getMetrics(): Record<string, number>;
-  getMetricHistory(name: string, duration: string): Promise<Array<{ timestamp: number; value: number }>>;
-  
+  getMetricHistory(
+    name: string,
+    duration: string,
+  ): Promise<Array<{ timestamp: number; value: number }>>;
+
   // Alerts
   configureAlerts(config: AlertConfig[]): Promise<void>;
   acknowledgeAlert(alertId: string): Promise<void>;
-  
+
   // Health checks
   checkSystemHealth(): Promise<SystemHealthStatus>;
   registerHealthCheck(name: string, check: () => Promise<boolean>): void;
-  
+
   // Dashboard data
   getDashboardData(): Promise<DashboardData>;
   getPerformanceReport(startDate: string, endDate: string): Promise<PerformanceReport>;
@@ -165,4 +168,4 @@ export interface PerformanceReport {
     impact: string;
     action: string;
   }>;
-} 
+}

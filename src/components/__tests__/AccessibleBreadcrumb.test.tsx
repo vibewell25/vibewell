@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { AccessibleBreadcrumb } from '../ui/AccessibleBreadcrumb';
 
@@ -31,7 +30,7 @@ describe('AccessibleBreadcrumb', () => {
   it('renders all breadcrumb items', () => {
     render(<AccessibleBreadcrumb items={mockItems} />);
 
-    mockItems.forEach(item => {
+    mockItems.forEach((item) => {
       expect(screen.getByText(item.label)).toBeInTheDocument();
     });
   });
@@ -76,7 +75,7 @@ describe('AccessibleBreadcrumb', () => {
   it('handles click events on breadcrumb items', () => {
     const handleClick = jest.fn();
     render(
-      <AccessibleBreadcrumb items={mockItems.map(item => ({ ...item, onClick: handleClick }))} />
+      <AccessibleBreadcrumb items={mockItems.map((item) => ({ ...item, onClick: handleClick }))} />,
     );
 
     const links = screen.getAllByRole('link');
@@ -94,7 +93,7 @@ describe('AccessibleBreadcrumb', () => {
     render(<AccessibleBreadcrumb items={maliciousItems} />);
 
     const links = screen.getAllByRole('link');
-    links.forEach(link => {
+    links.forEach((link) => {
       // Check that the href has been sanitized or set to a safe value
       const href = link.getAttribute('href');
       expect(href).not.toContain('javascript:');

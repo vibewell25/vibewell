@@ -36,7 +36,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
     if (!booking) {
       return NextResponse.json(
         { error: 'Booking not found or not eligible for tipping' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 

@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface ErrorBoundaryProps {
   fallback?: ReactNode;
@@ -40,7 +40,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       // You can render any custom fallback UI
       return (
         this.props.fallback || (
-          <div className="p-4 rounded-md bg-red-50 border border-red-100">
+          <div className="rounded-md border border-red-100 bg-red-50 p-4">
             <h2 className="text-lg font-medium text-red-800">Something went wrong</h2>
             <p className="mt-2 text-sm text-red-700">
               {this.state.error?.message || 'An unexpected error occurred'}

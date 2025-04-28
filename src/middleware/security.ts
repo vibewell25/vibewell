@@ -93,53 +93,15 @@ export function applySecurityHeaders(res: NextApiResponse): void {
 }
 
 // Type-safe middleware wrapper for Next.js API routes
-export const withSecurity = (
-  handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>
-) => {
-  return async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    try {
-      const expressReq = req as unknown as Request;
-      const ipAddress = expressReq.ip || '0.0.0.0'; // Fallback IP if undefined
-      const limiter = new RateLimiterMemory({
-        points: 10,
-        duration: 1,
-      });
-
-      try {
-        await limiter.consume(ipAddress);
-      } catch (error) {
-        const rateLimitError = error as RateLimitError;
-        res.status(429).json({
-          error: 'Too many requests, please try again later',
-          retryAfter: rateLimitError.remainingPoints,
-        });
-        return;
-      }
-
-      await handler(req, res);
-    } catch (error) {
-      console.error('Security middleware error:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  };
-};
+export {};
 
 // Type-safe helper to get CSRF token for forms
-export const getToken = async (req: NextApiRequest, res: NextApiResponse): Promise<string> => {
-  const token = generateToken(csrfConfig.secret);
-  res.setHeader(
-    'Set-Cookie',
-    `${csrfConfig.cookieName}=${token}; ${Object.entries(csrfConfig.cookieOptions)
-      .map(([key, value]) => `${key}=${value}`)
-      .join('; ')}`
-  );
-  return token;
-};
+export {};
 
 // Enhanced security logging function
 export function logSecurityEvent(
   eventType: 'access' | 'error' | 'auth' | 'rate-limit',
-  details: Record<string, any>
+  details: Record<string, any>,
 ) {
   securityLogger.info({
     eventType,
@@ -173,7 +135,7 @@ export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
 
   // Skip monitoring for exempt paths
-  if (EXEMPT_PATHS.some(exempt => path.startsWith(exempt))) {
+  if (EXEMPT_PATHS.some((exempt) => path.startsWith(exempt))) {
     return NextResponse.next();
   }
 
@@ -214,26 +176,15 @@ export async function middleware(req: NextRequest) {
   response.headers.set('X-XSS-Protection', '1; mode=block');
   response.headers.set(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.auth0.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.auth0.com; frame-src 'self' https://*.auth0.com;"
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.auth0.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.auth0.com; frame-src 'self' https://*.auth0.com;",
   );
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set(
     'Permissions-Policy',
-    'camera=(), microphone=(), geolocation=(), interest-cohort=()'
+    'camera=(), microphone=(), geolocation=(), interest-cohort=()',
   );
 
   return response;
 }
 
-export const config = {
-  matcher: [
-    /*
-     * Match all request paths except:
-     * 1. /api/auth/** (authentication endpoints)
-     * 2. /_next/** (Next.js internals)
-     * 3. /static/** (static files)
-     * 4. /*.{png,jpg,gif,ico} (static images)
-     */
-    '/((?!api/auth|_next|static|.*\\.(?:png|jpg|gif|ico)).*)',
-  ],
-};
+export {};

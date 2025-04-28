@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Bell, Mail, Smartphone, MessageSquare, CheckCircle2, XCircle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -66,7 +66,7 @@ export function NotificationHistory() {
   const [filter, setFilter] = useState<string>('all');
   const [search, setSearch] = useState('');
 
-  const filteredNotifications = notifications.filter(notification => {
+  const filteredNotifications = notifications.filter((notification) => {
     const matchesFilter = filter === 'all' || notification.type === filter;
     const matchesSearch =
       notification.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -75,18 +75,18 @@ export function NotificationHistory() {
   });
 
   const handleMarkAsRead = (id: string) => {
-    setNotifications(prev =>
-      prev.map(notification => {
+    setNotifications((prev) =>
+      prev.map((notification) => {
         if (notification.id === id) {
           return { ...notification, read: true };
         }
         return notification;
-      })
+      }),
     );
   };
 
   const handleDelete = (id: string) => {
-    setNotifications(prev => prev.filter(notification => notification.id !== id));
+    setNotifications((prev) => prev.filter((notification) => notification.id !== id));
   };
 
   return (
@@ -101,7 +101,7 @@ export function NotificationHistory() {
             <Input
               id="search"
               value={search}
-              onChange={e => setSearch(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search notifications..."
             />
           </div>
@@ -123,7 +123,7 @@ export function NotificationHistory() {
         </div>
 
         <div className="space-y-4">
-          {filteredNotifications.map(notification => (
+          {filteredNotifications.map((notification) => (
             <div
               key={notification.id}
               className={`flex items-start space-x-4 rounded-lg border p-4 ${

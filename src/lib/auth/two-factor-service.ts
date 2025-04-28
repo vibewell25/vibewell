@@ -77,7 +77,7 @@ export class TwoFactorService {
 
     if (isValid) {
       // Remove the used backup code
-      const updatedBackupCodes = backupCodes.filter(c => c !== code);
+      const updatedBackupCodes = backupCodes.filter((c) => c !== code);
       await prisma.twoFactorAuth.update({
         where: { userId },
         data: { backupCodes: updatedBackupCodes },

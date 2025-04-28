@@ -21,4 +21,4 @@ export interface AlertConfig {
 export interface MonitoringService {
   getMetrics(): Record<string, number>;
   checkSystemHealth(): Promise<SystemHealthStatus>;
-} 
+}

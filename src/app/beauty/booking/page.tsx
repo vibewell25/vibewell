@@ -1,23 +1,15 @@
 'use client';
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Calendar } from '@/components/ui/calendar';
 import { Icons } from '@/components/icons';
-import {
-  CalendarIcon,
-  ClockIcon,
-  UserIcon,
-  CreditCardIcon,
-  CheckCircleIcon,
-  ArrowLeftIcon,
-  ArrowRightIcon
-} from '@heroicons/react/24/outline';
+import { CreditCardIcon, CheckCircleIcon, ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 
 interface Service {
   id: string;
@@ -42,7 +34,7 @@ const services: Service[] = [
     category: 'hair',
     duration: 60,
     price: 75,
-    description: 'Professional haircut and styling service'
+    description: 'Professional haircut and styling service',
   },
   {
     id: 'makeup1',
@@ -50,7 +42,7 @@ const services: Service[] = [
     category: 'makeup',
     duration: 90,
     price: 120,
-    description: 'Complete makeup application for any occasion'
+    description: 'Complete makeup application for any occasion',
   },
   // Add more services...
 ];
@@ -61,7 +53,7 @@ const providers: Provider[] = [
     avatar: '/providers/sarah.jpg',
     rating: 4.8,
     specialties: ['Hair Styling', 'Color'],
-    availableSlots: ['10:00 AM', '11:30 AM', '2:00 PM', '3:30 PM']
+    availableSlots: ['10:00 AM', '11:30 AM', '2:00 PM', '3:30 PM'],
   },
   // Add more providers...
 ];
@@ -86,7 +78,7 @@ export default function BookingPage() {
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Book Your Appointment</h1>
+          <h1 className="mb-2 text-4xl font-bold">Book Your Appointment</h1>
           <p className="text-xl text-muted-foreground">
             Choose your service and schedule with our expert providers
           </p>
@@ -97,23 +89,19 @@ export default function BookingPage() {
             {[1, 2, 3, 4].map((s) => (
               <div key={s} className="flex items-center">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  className={`flex h-8 w-8 items-center justify-center rounded-full ${
                     s <= step ? 'bg-primary text-primary-foreground' : 'bg-muted'
                   }`}
                 >
                   {s}
                 </div>
                 {s < 4 && (
-                  <div
-                    className={`h-1 w-16 mx-2 ${
-                      s < step ? 'bg-primary' : 'bg-muted'
-                    }`}
-                  />
+                  <div className={`mx-2 h-1 w-16 ${s < step ? 'bg-primary' : 'bg-muted'}`} />
                 )}
               </div>
             ))}
           </div>
-          <div className="flex justify-between mt-2 text-sm text-muted-foreground">
+          <div className="mt-2 flex justify-between text-sm text-muted-foreground">
             <span>Service</span>
             <span>Provider</span>
             <span>Time</span>
@@ -127,9 +115,7 @@ export default function BookingPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Select a Service</CardTitle>
-                <CardDescription>
-                  Choose from our range of beauty services
-                </CardDescription>
+                <CardDescription>Choose from our range of beauty services</CardDescription>
               </CardHeader>
               <CardContent>
                 <Tabs defaultValue="hair">
@@ -147,14 +133,12 @@ export default function BookingPage() {
                           <Card
                             key={service.id}
                             className={`cursor-pointer transition-all ${
-                              selectedService?.id === service.id
-                                ? 'border-primary'
-                                : ''
+                              selectedService?.id === service.id ? 'border-primary' : ''
                             }`}
                             onClick={() => setSelectedService(service)}
                           >
                             <CardContent className="p-4">
-                              <div className="flex justify-between items-start">
+                              <div className="flex items-start justify-between">
                                 <div>
                                   <h3 className="font-medium">{service.name}</h3>
                                   <p className="text-sm text-muted-foreground">
@@ -162,9 +146,7 @@ export default function BookingPage() {
                                   </p>
                                 </div>
                                 <div className="text-right">
-                                  <p className="font-medium">
-                                    ${service.price}
-                                  </p>
+                                  <p className="font-medium">${service.price}</p>
                                   <p className="text-sm text-muted-foreground">
                                     {service.duration} min
                                   </p>
@@ -185,9 +167,7 @@ export default function BookingPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Choose Your Provider</CardTitle>
-                <CardDescription>
-                  Select from our expert beauty professionals
-                </CardDescription>
+                <CardDescription>Select from our expert beauty professionals</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
@@ -195,21 +175,19 @@ export default function BookingPage() {
                     <Card
                       key={provider.id}
                       className={`cursor-pointer transition-all ${
-                        selectedProvider?.id === provider.id
-                          ? 'border-primary'
-                          : ''
+                        selectedProvider?.id === provider.id ? 'border-primary' : ''
                       }`}
                       onClick={() => setSelectedProvider(provider)}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-center gap-4">
-                          <div className="w-16 h-16 rounded-full bg-muted" />
+                          <div className="h-16 w-16 rounded-full bg-muted" />
                           <div className="flex-1">
                             <h3 className="font-medium">{provider.name}</h3>
                             <p className="text-sm text-muted-foreground">
                               {provider.specialties.join(', ')}
                             </p>
-                            <div className="flex items-center gap-1 mt-1">
+                            <div className="mt-1 flex items-center gap-1">
                               <span className="text-yellow-500">★</span>
                               <span>{provider.rating}</span>
                             </div>
@@ -227,9 +205,7 @@ export default function BookingPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Select Date & Time</CardTitle>
-                <CardDescription>
-                  Choose a convenient time for your appointment
-                </CardDescription>
+                <CardDescription>Choose a convenient time for your appointment</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-6 md:grid-cols-2">
@@ -239,18 +215,16 @@ export default function BookingPage() {
                       mode="single"
                       selected={selectedDate}
                       onSelect={setSelectedDate}
-                      className="rounded-md border mt-2"
+                      className="mt-2 rounded-md border"
                     />
                   </div>
                   <div>
                     <Label>Available Times</Label>
-                    <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div className="mt-2 grid grid-cols-2 gap-2">
                       {selectedProvider?.availableSlots.map((time) => (
                         <Button
                           key={time}
-                          variant={
-                            selectedTime === time ? 'default' : 'outline'
-                          }
+                          variant={selectedTime === time ? 'default' : 'outline'}
                           onClick={() => setSelectedTime(time)}
                         >
                           {time}
@@ -267,9 +241,7 @@ export default function BookingPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Payment Information</CardTitle>
-                <CardDescription>
-                  Complete your booking with secure payment
-                </CardDescription>
+                <CardDescription>Complete your booking with secure payment</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
@@ -278,7 +250,7 @@ export default function BookingPage() {
                     <RadioGroup
                       value={paymentMethod}
                       onValueChange={setPaymentMethod}
-                      className="grid gap-4 mt-2"
+                      className="mt-2 grid gap-4"
                     >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="card" id="card" />
@@ -312,7 +284,7 @@ export default function BookingPage() {
                     </div>
                   )}
                   <div className="border-t pt-4">
-                    <div className="flex justify-between mb-2">
+                    <div className="mb-2 flex justify-between">
                       <span>Service</span>
                       <span>${selectedService?.price}</span>
                     </div>
@@ -327,12 +299,8 @@ export default function BookingPage() {
           )}
           {/* Navigation Buttons */}
           <div className="flex justify-between">
-            <Button
-              variant="outline"
-              onClick={handleBack}
-              disabled={step === 1}
-            >
-              <Icons.ArrowLeftIcon className="h-5 w-5 mr-2" />
+            <Button variant="outline" onClick={handleBack} disabled={step === 1}>
+              <Icons.ArrowLeftIcon className="mr-2 h-5 w-5" />
               Back
             </Button>
             <Button
@@ -345,13 +313,13 @@ export default function BookingPage() {
             >
               {step === 4 ? (
                 <>
-                  <Icons.CheckCircleIcon className="h-5 w-5 mr-2" />
+                  <Icons.CheckCircleIcon className="mr-2 h-5 w-5" />
                   Confirm Booking
                 </>
               ) : (
                 <>
                   Next
-                  <Icons.ArrowRightIcon className="h-5 w-5 ml-2" />
+                  <Icons.ArrowRightIcon className="ml-2 h-5 w-5" />
                 </>
               )}
             </Button>
@@ -360,4 +328,4 @@ export default function BookingPage() {
       </div>
     </Layout>
   );
-} 
+}

@@ -1,7 +1,6 @@
-'use client';
-
+'use client';;
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import { TryOnService } from '@/services/try-on-service';
 import { ProductService } from '@/services/product-service';
@@ -20,17 +19,10 @@ import {
 } from 'recharts';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { format, subDays, subWeeks, subMonths } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import { Loader, CalendarIcon, Download } from 'lucide-react';
 
@@ -158,7 +150,7 @@ export default function TryOnAnalytics() {
       setProductInfo(productsInfo);
 
       // Create data for charts
-      const breakdown = productIds.map(id => ({
+      const breakdown = productIds.map((id) => ({
         id,
         name: productsInfo[id]?.name || `Product ${id.substring(0, 8)}`,
         category: productsInfo[id]?.category || 'Unknown',
@@ -182,7 +174,7 @@ export default function TryOnAnalytics() {
 
   const processFeedbackData = (sessions: any[]) => {
     // Filter sessions with feedback
-    const sessionsWithFeedback = sessions.filter(s => s.feedback);
+    const sessionsWithFeedback = sessions.filter((s) => s.feedback);
 
     if (sessionsWithFeedback.length === 0) {
       setFeedbackStats({
@@ -202,18 +194,18 @@ export default function TryOnAnalytics() {
 
     // Count would try in real life responses
     const wouldTryRealLife = sessionsWithFeedback.filter(
-      session => session.feedback.would_try_in_real_life
+      (session) => session.feedback.would_try_in_real_life,
     ).length;
 
     // Count sessions with comments
     const withComments = sessionsWithFeedback.filter(
-      session => session.feedback.comment && session.feedback.comment.trim() !== ''
+      (session) => session.feedback.comment && session.feedback.comment.trim() !== '',
     ).length;
 
     // Calculate rating distribution
     const ratingCounts = [0, 0, 0, 0, 0]; // For ratings 1-5
 
-    sessionsWithFeedback.forEach(session => {
+    sessionsWithFeedback.forEach((session) => {
       const rating = session.feedback.rating;
       if (rating >= 1 && rating <= 5) {
         ratingCounts[rating - 1]++;
@@ -239,7 +231,7 @@ export default function TryOnAnalytics() {
 
     // Prepare CSV data
     const headers = ['Product ID', 'Product Name', 'Category', 'Try-On Sessions'];
-    const rows = productBreakdown.map(product => [
+    const rows = productBreakdown.map((product) => [
       product.id,
       product.name,
       product.category,
@@ -247,7 +239,7 @@ export default function TryOnAnalytics() {
     ]);
 
     // Create CSV content
-    const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
+    const csvContent = [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
 
     // Create download link
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -265,14 +257,14 @@ export default function TryOnAnalytics() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
+      <div className="flex h-64 items-center justify-center">
         <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
 
   if (error) {
-    return <div className="p-4 bg-destructive/10 text-destructive rounded-lg">{error}</div>;
+    return <div className="rounded-lg bg-destructive/10 p-4 text-destructive">{error}</div>;
   }
 
   // Format duration in minutes and seconds
@@ -289,13 +281,13 @@ export default function TryOnAnalytics() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <h2 className="text-3xl font-bold tracking-tight">Try-On Analytics</h2>
 
         <div className="flex flex-wrap gap-2">
           <Tabs
             value={dateRangeType}
-            onValueChange={value => setDateRangeType(value as DateRangeType)}
+            onValueChange={(value) => setDateRangeType(value as DateRangeType)}
             className="mr-2"
           >
             <TabsList>
@@ -315,7 +307,7 @@ export default function TryOnAnalytics() {
                     variant="outline"
                     className={cn(
                       'justify-start text-left font-normal',
-                      !customDateRange.from && 'text-muted-foreground'
+                      !customDateRange.from && 'text-muted-foreground',
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
@@ -342,7 +334,7 @@ export default function TryOnAnalytics() {
                       from: customDateRange.from,
                       to: customDateRange.to,
                     }}
-                    onSelect={range => {
+                    onSelect={(range) => {
                       setCustomDateRange({
                         from: range?.from,
                         to: range?.to,
@@ -370,7 +362,7 @@ export default function TryOnAnalytics() {
         Showing data from {format(start, 'PPP')} to {format(end, 'PPP')}
       </div>
 
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Total Sessions</CardTitle>
@@ -387,7 +379,7 @@ export default function TryOnAnalytics() {
           <CardContent>
             <div className="text-2xl font-bold">{completedSessions}</div>
             <Progress value={completionRate} className="mt-2 h-2" />
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="mt-1 text-xs text-muted-foreground">
               {completionRate.toFixed(1)}% completion rate
             </p>
           </CardContent>
@@ -408,7 +400,7 @@ export default function TryOnAnalytics() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{feedbackStats.feedbackCount}</div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="mt-1 text-xs text-muted-foreground">
               {feedbackStats.feedbackCount > 0
                 ? `${((feedbackStats.feedbackCount / completedSessions) * 100).toFixed(1)}% of completed sessions`
                 : 'No feedback collected yet'}
@@ -448,12 +440,12 @@ export default function TryOnAnalytics() {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={value => [`${value} sessions`, 'Count']} />
+                    <Tooltip formatter={(value) => [`${value} sessions`, 'Count']} />
                     <Legend />
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="h-full flex items-center justify-center">
+                <div className="flex h-full items-center justify-center">
                   <p className="text-muted-foreground">No product data available</p>
                 </div>
               )}
@@ -475,11 +467,11 @@ export default function TryOnAnalytics() {
                       <div className="flex items-center gap-2">
                         <Badge
                           variant="outline"
-                          className="w-6 h-6 flex items-center justify-center rounded-full"
+                          className="flex h-6 w-6 items-center justify-center rounded-full"
                         >
                           {index + 1}
                         </Badge>
-                        <span className="font-medium truncate">{product.name}</span>
+                        <span className="truncate font-medium">{product.name}</span>
                       </div>
                       <span className="font-medium">{product.value}</span>
                     </div>
@@ -490,7 +482,7 @@ export default function TryOnAnalytics() {
         </TabsContent>
 
         <TabsContent value="feedback-analysis" className="space-y-4">
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle>Average Rating</CardTitle>
@@ -499,11 +491,11 @@ export default function TryOnAnalytics() {
               <CardContent>
                 <div className="flex items-center justify-center py-6">
                   <div className="text-center">
-                    <div className="text-5xl font-bold mb-2">
+                    <div className="mb-2 text-5xl font-bold">
                       {feedbackStats.averageRating.toFixed(1)}
                     </div>
                     <div className="flex items-center justify-center gap-1">
-                      {[1, 2, 3, 4, 5].map(star => (
+                      {[1, 2, 3, 4, 5].map((star) => (
                         <svg
                           key={star}
                           xmlns="http://www.w3.org/2000/svg"
@@ -511,7 +503,7 @@ export default function TryOnAnalytics() {
                           fill={
                             star <= Math.round(feedbackStats.averageRating) ? '#FFB800' : '#E2E8F0'
                           }
-                          className="w-4 h-4"
+                          className="h-4 w-4"
                         >
                           <path
                             fillRule="evenodd"
@@ -521,7 +513,7 @@ export default function TryOnAnalytics() {
                         </svg>
                       ))}
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2">
+                    <p className="mt-2 text-sm text-muted-foreground">
                       Based on {feedbackStats.feedbackCount} ratings
                     </p>
                   </div>
@@ -537,9 +529,9 @@ export default function TryOnAnalytics() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-center h-40">
+                <div className="flex h-40 items-center justify-center">
                   <div className="text-center">
-                    <div className="text-5xl font-bold mb-2">
+                    <div className="mb-2 text-5xl font-bold">
                       {feedbackStats.wouldTryRealLifePercentage.toFixed(1)}%
                     </div>
                     <p className="text-sm text-muted-foreground">
@@ -569,7 +561,7 @@ export default function TryOnAnalytics() {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="rating" />
                       <YAxis />
-                      <Tooltip formatter={value => [`${value} ratings`, 'Count']} />
+                      <Tooltip formatter={(value) => [`${value} ratings`, 'Count']} />
                       <Legend />
                       <Bar
                         dataKey="count"
@@ -580,7 +572,7 @@ export default function TryOnAnalytics() {
                     </BarChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="h-full flex items-center justify-center">
+                  <div className="flex h-full items-center justify-center">
                     <p className="text-muted-foreground">No rating data available</p>
                   </div>
                 )}
@@ -594,7 +586,7 @@ export default function TryOnAnalytics() {
               <CardDescription>Key metrics from user feedback</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="flex flex-col">
                   <span className="text-sm font-medium">Total feedback received</span>
                   <span className="text-2xl font-bold">{feedbackStats.feedbackCount}</span>

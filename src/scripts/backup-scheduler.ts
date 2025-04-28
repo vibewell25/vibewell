@@ -9,7 +9,7 @@
  */
 
 import cron from 'node-cron';
-import { BackupService, BackupConfig, BackupJobSchedule } from '../utils/backupService';
+import { BackupService, BackupJobSchedule } from '../utils/backupService';
 import fs from 'fs';
 import path from 'path';
 
@@ -135,7 +135,7 @@ class BackupScheduler {
 
   // Schedule all backup jobs
   public scheduleAllJobs(jobs: BackupJobSchedule[]) {
-    jobs.forEach(job => {
+    jobs.forEach((job) => {
       if (job.enabled) {
         this.scheduleJob(job);
       } else {
@@ -172,7 +172,7 @@ class BackupScheduler {
 
   // Run a job immediately
   public async runJobNow(jobId: string) {
-    const job = BACKUP_JOBS.find(j => j.id === jobId);
+    const job = BACKUP_JOBS.find((j) => j.id === jobId);
     if (job) {
       return await this.executeBackupJob(job);
     } else {
@@ -186,7 +186,7 @@ const scheduler = new BackupScheduler();
 scheduler.scheduleAllJobs(BACKUP_JOBS);
 
 console.log('Backup scheduler started');
-console.log(`Scheduled ${BACKUP_JOBS.filter(job => job.enabled).length} backup jobs`);
+console.log(`Scheduled ${BACKUP_JOBS.filter((job) => job.enabled).length} backup jobs`);
 
 // Handle process shutdown
 process.on('SIGINT', () => {

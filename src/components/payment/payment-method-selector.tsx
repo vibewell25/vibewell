@@ -1,14 +1,12 @@
-'use client';
-
+'use client';;
 import { useState } from 'react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
-import { PaymentFormWrapper } from './payment-form';
+import { Card, CardContent } from '@/components/ui/Card';
 import { CreditCard, Banknote, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { useToast } from '@/components/ui/toast';
 import { processEventPayment } from '@/lib/api/events';
 
@@ -67,7 +65,7 @@ export function PaymentMethodSelector({
   ];
 
   // Filter methods based on available methods
-  const filteredMethods = PAYMENT_METHODS.filter(method => availableMethods.includes(method.id));
+  const filteredMethods = PAYMENT_METHODS.filter((method) => availableMethods.includes(method.id));
 
   // Handle direct payment without Stripe integration
   const handleDirectPayment = async (e: React.FormEvent) => {
@@ -78,7 +76,7 @@ export function PaymentMethodSelector({
     try {
       // For simulation, we create a fake payment method ID
       const fakePaymentMethodId = `pm_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
-      
+
       // Process the payment using our API
       const result = await processEventPayment(eventId, userId, {
         paymentMethodId: fakePaymentMethodId,
@@ -87,7 +85,7 @@ export function PaymentMethodSelector({
           method: selectedMethod,
           cardName: selectedMethod === 'card' ? cardName : undefined,
           lastFour: selectedMethod === 'card' ? cardNumber.slice(-4) : undefined,
-        }
+        },
       });
 
       if (result.success) {
@@ -97,7 +95,7 @@ export function PaymentMethodSelector({
           type: 'success',
           duration: 5000,
         });
-        
+
         if (onSuccess) {
           onSuccess(result.paymentIntentId || 'unknown', selectedMethod);
         }
@@ -109,7 +107,7 @@ export function PaymentMethodSelector({
           type: 'error',
           duration: 5000,
         });
-        
+
         if (onError) {
           onError(new Error(result.message));
         }
@@ -117,14 +115,14 @@ export function PaymentMethodSelector({
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
       setError(errorMessage);
-      
+
       toast({
         title: 'Payment error',
         description: errorMessage,
         type: 'error',
         duration: 5000,
       });
-      
+
       if (onError) {
         onError(err instanceof Error ? err : new Error(errorMessage));
       }
@@ -138,77 +136,70 @@ export function PaymentMethodSelector({
     switch (selectedMethod) {
       case 'card':
         return (
-          <form onSubmit={handleDirectPayment} className="space-y-4">
+          (<form onSubmit={handleDirectPayment} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="card-name">Name on Card</Label>
-              <Input 
-                id="card-name" 
-                value={cardName} 
-                onChange={(e) => setCardName(e.target.value)} 
-                placeholder="John Doe" 
-                required 
+              <Input
+                id="card-name"
+                value={cardName}
+                onChange={(e) => setCardName(e.target.value)}
+                placeholder="John Doe"
+                required
               />
             </div>
-            
             <div className="space-y-2">
               <Label htmlFor="card-number">Card Number</Label>
-              <Input 
-                id="card-number" 
-                value={cardNumber} 
-                onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').slice(0, 16))} 
-                placeholder="1234 5678 9012 3456" 
-                required 
-                pattern="\d{16}" 
-                title="Card number must be 16 digits" 
+              <Input
+                id="card-number"
+                value={cardNumber}
+                onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').slice(0, 16))}
+                placeholder="1234 5678 9012 3456"
+                required
+                pattern="\d{16}"
+                title="Card number must be 16 digits"
               />
             </div>
-            
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="card-expiry">Expiry Date</Label>
-                <Input 
-                  id="card-expiry" 
-                  value={cardExpiry} 
-                  onChange={(e) => setCardExpiry(e.target.value.replace(/\D/g, '').slice(0, 4))} 
-                  placeholder="MM/YY" 
-                  required 
-                  pattern="\d{4}" 
-                  title="Expiry date must be in MMYY format" 
+                <Input
+                  id="card-expiry"
+                  value={cardExpiry}
+                  onChange={(e) => setCardExpiry(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                  placeholder="MM/YY"
+                  required
+                  pattern="\d{4}"
+                  title="Expiry date must be in MMYY format"
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="card-cvc">CVC</Label>
-                <Input 
-                  id="card-cvc" 
-                  value={cardCvc} 
-                  onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, '').slice(0, 3))} 
-                  placeholder="123" 
-                  required 
-                  pattern="\d{3}" 
-                  title="CVC must be 3 digits" 
+                <Input
+                  id="card-cvc"
+                  value={cardCvc}
+                  onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, '').slice(0, 3))}
+                  placeholder="123"
+                  required
+                  pattern="\d{3}"
+                  title="CVC must be 3 digits"
                 />
               </div>
             </div>
-            
-            <Button 
-              type="submit" 
-              className="w-full" 
-              disabled={isProcessing}
-            >
+            <Button type="submit" className="w-full" disabled={isProcessing}>
               {isProcessing ? 'Processing...' : `Pay ${amount} ${currency}`}
             </Button>
-          </form>
+          </form>)
         );
 
       case 'bank':
         return (
-          <div className="p-6 bg-muted rounded-lg text-center">
-            <h3 className="font-medium mb-2">Bank Transfer Details</h3>
-            <p className="text-sm text-muted-foreground mb-4">
+          <div className="rounded-lg bg-muted p-6 text-center">
+            <h3 className="mb-2 font-medium">Bank Transfer Details</h3>
+            <p className="mb-4 text-sm text-muted-foreground">
               Please transfer {currency} {amount.toFixed(2)} to the following account:
             </p>
-            <div className="text-left space-y-2 bg-background p-4 rounded-md">
+            <div className="space-y-2 rounded-md bg-background p-4 text-left">
               <div className="grid grid-cols-2 gap-1">
                 <span className="text-sm font-medium">Bank Name:</span>
                 <span className="text-sm">VibeWell Financial</span>
@@ -226,12 +217,12 @@ export function PaymentMethodSelector({
                 <span className="text-sm">{orderReference || eventId}</span>
               </div>
             </div>
-            <p className="text-xs text-muted-foreground mt-4">
+            <p className="mt-4 text-xs text-muted-foreground">
               Please include the reference number in your payment details. Once payment is received,
               your registration will be confirmed.
             </p>
-            <Button 
-              className="mt-4 w-full" 
+            <Button
+              className="mt-4 w-full"
               variant="outline"
               onClick={() => {
                 toast({
@@ -240,7 +231,7 @@ export function PaymentMethodSelector({
                   type: 'info',
                   duration: 5000,
                 });
-                
+
                 if (onSuccess) {
                   onSuccess('bank_transfer_' + Date.now(), 'bank');
                 }
@@ -254,7 +245,7 @@ export function PaymentMethodSelector({
       default:
         return (
           <div className="p-6 text-center">
-            <AlertCircle className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+            <AlertCircle className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
             <p>Please select a payment method</p>
           </div>
         );
@@ -274,14 +265,14 @@ export function PaymentMethodSelector({
         <h2 className="text-xl font-semibold">Payment Method</h2>
 
         <RadioGroup value={selectedMethod} onValueChange={setSelectedMethod} className="space-y-3">
-          {filteredMethods.map(method => (
+          {filteredMethods.map((method) => (
             <div key={method.id} className="flex items-center space-x-2">
               <RadioGroupItem value={method.id} id={method.id} className="peer" />
               <Label
                 htmlFor={method.id}
-                className="flex flex-1 items-center space-x-3 rounded-md border border-transparent p-3 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 cursor-pointer"
+                className="peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 flex flex-1 cursor-pointer items-center space-x-3 rounded-md border border-transparent p-3"
               >
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
                   {method.icon}
                 </div>
                 <div className="space-y-1">

@@ -7,7 +7,7 @@ import type {
   CacheMetrics,
   ImageMetrics,
   PerformanceReport,
-  MonitoringConfig
+  MonitoringConfig,
 } from '../types/performance';
 
 export class PerformanceMonitoringService {
@@ -49,11 +49,11 @@ export class PerformanceMonitoringService {
   private initializeWebVitals(): void {
     if (typeof window !== 'undefined') {
       import('web-vitals').then(({ onLCP, onFID, onCLS, onFCP, onTTI }) => {
-        onLCP(metric => this.recordMetric('LCP', metric.value));
-        onFID(metric => this.recordMetric('FID', metric.value));
-        onCLS(metric => this.recordMetric('CLS', metric.value));
-        onFCP(metric => this.recordMetric('FCP', metric.value));
-        onTTI(metric => this.recordMetric('TTI', metric.value));
+        onLCP((metric) => this.recordMetric('LCP', metric.value));
+        onFID((metric) => this.recordMetric('FID', metric.value));
+        onCLS((metric) => this.recordMetric('CLS', metric.value));
+        onFCP((metric) => this.recordMetric('FCP', metric.value));
+        onTTI((metric) => this.recordMetric('TTI', metric.value));
       });
     }
   }
@@ -61,7 +61,7 @@ export class PerformanceMonitoringService {
   private initializeResourceTiming(): void {
     if (typeof window !== 'undefined') {
       const observer = new PerformanceObserver((list) => {
-        list.getEntries().forEach(entry => {
+        list.getEntries().forEach((entry) => {
           if (entry.entryType === 'resource') {
             this.recordResourceMetric(entry as PerformanceResourceTiming);
           }
@@ -174,7 +174,7 @@ export class PerformanceMonitoringService {
 
   private getWebVitalMetrics(): WebVitalMetrics {
     const getMetricValue = (name: string) => {
-      const metric = this.metrics.find(m => m.name === name);
+      const metric = this.metrics.find((m) => m.name === name);
       return metric?.value || 0;
     };
 
@@ -200,8 +200,8 @@ export class PerformanceMonitoringService {
 
   private getResourceMetrics(): ResourceMetrics[] {
     return this.metrics
-      .filter(m => m.name === 'RESOURCE')
-      .map(m => m.metadata as ResourceMetrics);
+      .filter((m) => m.name === 'RESOURCE')
+      .map((m) => m.metadata as ResourceMetrics);
   }
 
   private getCacheMetrics(): CacheMetrics {
@@ -216,9 +216,7 @@ export class PerformanceMonitoringService {
   }
 
   private getImageMetrics(): ImageMetrics[] {
-    return this.metrics
-      .filter(m => m.name === 'IMAGE')
-      .map(m => m.metadata as ImageMetrics);
+    return this.metrics.filter((m) => m.name === 'IMAGE').map((m) => m.metadata as ImageMetrics);
   }
 
   private getMemoryMetrics(): { usage: number; heapSize: number; cpuUsage: number } {
@@ -256,4 +254,4 @@ export class PerformanceMonitoringService {
   public clearMetrics(): void {
     this.metrics = [];
   }
-} 
+}

@@ -27,7 +27,7 @@ export const commonHandlers = [
         {
           error: 'Email and password are required',
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -46,7 +46,7 @@ export const commonHandlers = [
       {
         error: 'Invalid credentials',
       },
-      { status: 401 }
+      { status: 401 },
     );
   }),
 

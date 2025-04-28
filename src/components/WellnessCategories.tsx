@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function WellnessCategories() {
   const categories = [
     { id: 1, name: 'Fitness' },
@@ -10,10 +8,10 @@ export default function WellnessCategories() {
 
   return (
     <section className="wellness-categories py-16">
-      <h2 className="text-3xl font-bold text-center mb-6">Wellness Categories</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <h2 className="mb-6 text-center text-3xl font-bold">Wellness Categories</h2>
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {categories.map((cat) => (
-          <div key={cat.id} className="p-4 bg-white rounded-full text-center shadow-sm">
+          <div key={cat.id} className="rounded-full bg-white p-4 text-center shadow-sm">
             {cat.name}
           </div>
         ))}

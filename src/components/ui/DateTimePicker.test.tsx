@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react/pure';
 import { DateTimePicker, TimePickerDemo } from './date-time-picker';
 import { format } from 'date-fns';

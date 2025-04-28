@@ -1,5 +1,4 @@
 import posthog from 'posthog-js';
-import { Analytics } from '@vercel/analytics/react';
 import { init as sentryInit } from '@sentry/nextjs';
 
 interface AnalyticsEvent {
@@ -105,7 +104,7 @@ class AnalyticsService {
     try {
       // Get PostHog analytics data
       const posthogData = await posthog.get_session_id();
-      
+
       return {
         sessionId: posthogData,
         // Add other analytics data here
@@ -137,4 +136,4 @@ class AnalyticsService {
   }
 }
 
-export const analyticsService = AnalyticsService.getInstance(); 
+export {};

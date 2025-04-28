@@ -202,7 +202,7 @@ export const WithDisabledOptions = {
 export const CustomTrigger = {
   render: () => (
     <Select>
-      <SelectTrigger className="w-[180px] bg-primary text-primary-foreground">
+      <SelectTrigger className="bg-primary text-primary-foreground w-[180px]">
         <SelectValue placeholder="Custom style" />
       </SelectTrigger>
       <SelectContent>

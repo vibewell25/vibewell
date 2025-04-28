@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Progress } from '@/components/ui/progress';
 import { Download, Check, AlertCircle } from 'lucide-react';
 import { useState } from 'react';
@@ -49,11 +49,11 @@ export function DataBackup() {
 
       // Simulate backup process
       for (let i = 0; i < backupData.length; i++) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         setProgress(((i + 1) / backupData.length) * 100);
 
-        setBackupData(prev =>
-          prev.map((item, index) => (index === i ? { ...item, status: 'downloaded' } : item))
+        setBackupData((prev) =>
+          prev.map((item, index) => (index === i ? { ...item, status: 'downloaded' } : item)),
         );
       }
 
@@ -61,14 +61,14 @@ export function DataBackup() {
     } catch (error) {
       console.error('Error during backup:', error);
       toast.error('Failed to complete backup');
-      setBackupData(prev => prev.map(item => ({ ...item, status: 'error' })));
+      setBackupData((prev) => prev.map((item) => ({ ...item, status: 'error' })));
     } finally {
       setIsBackingUp(false);
     }
   };
 
-  const allDownloaded = backupData.every(item => item.status === 'downloaded');
-  const hasError = backupData.some(item => item.status === 'error');
+  const allDownloaded = backupData.every((item) => item.status === 'downloaded');
+  const hasError = backupData.some((item) => item.status === 'error');
 
   return (
     <Card>
@@ -86,7 +86,7 @@ export function DataBackup() {
           </p>
 
           <div className="space-y-4">
-            {backupData.map(item => (
+            {backupData.map((item) => (
               <div
                 key={item.id}
                 className="flex items-center justify-between rounded-lg border p-4"

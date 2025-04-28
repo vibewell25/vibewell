@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card, Button } from '@/components/ui';
 import SkinConditionLogComponent from './SkinConditionLog';
 import SkinCareRoutineComponent from './SkinCareRoutine';
@@ -31,8 +31,8 @@ export default function BeautyDashboard() {
   return (
     <div className="space-y-6">
       <Card className="p-6">
-        <h1 className="text-3xl font-bold mb-6">Beauty & Wellness Dashboard</h1>
-        
+        <h1 className="mb-6 text-3xl font-bold">Beauty & Wellness Dashboard</h1>
+
         <div className="flex flex-wrap gap-2">
           <Button
             variant={activeTab === 'progress' ? 'default' : 'outline'}
@@ -67,14 +67,12 @@ export default function BeautyDashboard() {
         </div>
       </Card>
 
-      <div className="mt-6">
-        {renderTabContent()}
-      </div>
+      <div className="mt-6">{renderTabContent()}</div>
 
       {activeTab === 'progress' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-2">Quick Actions</h3>
+            <h3 className="mb-2 text-lg font-semibold">Quick Actions</h3>
             <div className="space-y-2">
               <Button
                 variant="outline"
@@ -101,7 +99,7 @@ export default function BeautyDashboard() {
           </Card>
 
           <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-2">Recent Activity</h3>
+            <h3 className="mb-2 text-lg font-semibold">Recent Activity</h3>
             <div className="space-y-2">
               <div className="text-sm">
                 <p className="font-medium">Last Skin Condition Log</p>
@@ -119,7 +117,7 @@ export default function BeautyDashboard() {
           </Card>
 
           <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-2">Upcoming</h3>
+            <h3 className="mb-2 text-lg font-semibold">Upcoming</h3>
             <div className="space-y-2">
               <div className="text-sm">
                 <p className="font-medium">Goal Due: Clear Skin</p>
@@ -133,10 +131,10 @@ export default function BeautyDashboard() {
           </Card>
 
           <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-2">Tips & Reminders</h3>
+            <h3 className="mb-2 text-lg font-semibold">Tips & Reminders</h3>
             <div className="space-y-2 text-sm">
               <p>Remember to:</p>
-              <ul className="list-disc list-inside space-y-1">
+              <ul className="list-inside list-disc space-y-1">
                 <li>Stay hydrated</li>
                 <li>Use sunscreen daily</li>
                 <li>Clean makeup brushes</li>
@@ -148,4 +146,4 @@ export default function BeautyDashboard() {
       )}
     </div>
   );
-} 
+}

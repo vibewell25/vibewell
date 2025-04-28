@@ -1,5 +1,5 @@
 import { ShareData } from '@/lib/api/share';
-import { Card } from '@/components/ui/card';
+import { Card } from '@/components/ui/Card';
 import { format } from 'date-fns';
 import { SocialShareButtons } from './social-share-buttons';
 
@@ -12,16 +12,16 @@ export function ShareView({ shareData }: ShareViewProps) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Card className="max-w-2xl mx-auto p-6">
-        <h1 className="text-2xl font-bold mb-4">
+      <Card className="mx-auto max-w-2xl p-6">
+        <h1 className="mb-4 text-2xl font-bold">
           My {shareData.type} try-on look
           {shareData.productName ? ` with ${shareData.productName}` : ''}
         </h1>
-        <div className="aspect-square relative mb-4">
+        <div className="relative mb-4 aspect-square">
           <img
             src={shareData.imageData}
             alt={`Shared ${shareData.type} try-on`}
-            className="w-full h-full object-contain rounded-lg"
+            className="h-full w-full rounded-lg object-contain"
           />
         </div>
         <div className="space-y-4">
@@ -37,8 +37,8 @@ export function ShareView({ shareData }: ShareViewProps) {
             </p>
           </div>
 
-          <div className="pt-4 border-t">
-            <h2 className="text-lg font-semibold mb-2">Share this look</h2>
+          <div className="border-t pt-4">
+            <h2 className="mb-2 text-lg font-semibold">Share this look</h2>
             <SocialShareButtons
               imageData={shareData.imageData}
               type={shareData.type}

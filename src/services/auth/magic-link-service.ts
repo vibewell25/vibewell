@@ -75,7 +75,10 @@ export class MagicLinkService {
       });
       logger.info(`Magic link sent to ${email}`);
     } catch (error) {
-      logger.error(`Failed to send magic link to ${email}:`, error instanceof Error ? error.message : String(error));
+      logger.error(
+        `Failed to send magic link to ${email}:`,
+        error instanceof Error ? error.message : String(error),
+      );
       throw new Error('Failed to send magic link email');
     }
   }
@@ -159,5 +162,5 @@ setInterval(
   () => {
     MagicLinkService.cleanupExpiredTokens();
   },
-  60 * 60 * 1000
+  60 * 60 * 1000,
 ); // Run every hour

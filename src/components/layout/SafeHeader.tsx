@@ -1,7 +1,7 @@
 'use client';
 
 import { withErrorBoundary } from '@/hooks/useErrorBoundary';
-import { Header, HeaderProps } from './Header';
+import { Header } from './Header';
 
 /**
  * A version of the Header component wrapped with an error boundary
@@ -9,11 +9,11 @@ import { Header, HeaderProps } from './Header';
  */
 export const SafeHeader = withErrorBoundary<HeaderProps>(Header, {
   fallback: (
-    <header className="bg-background border-b border-border py-4">
-      <div className="container-app mx-auto px-4 flex items-center justify-between">
+    <header className="border-b border-border bg-background py-4">
+      <div className="container-app mx-auto flex items-center justify-between px-4">
         <div className="flex items-center">
           <a href="/" className="flex items-center">
-            <span className="text-2xl font-bold text-primary">Vibewell</span>
+            <span className="text-primary text-2xl font-bold">Vibewell</span>
           </a>
         </div>
         <div>
@@ -23,7 +23,7 @@ export const SafeHeader = withErrorBoundary<HeaderProps>(Header, {
       </div>
     </header>
   ),
-  onError: error => {
+  onError: (error) => {
     // You could send this error to your monitoring service (e.g. Sentry, LogRocket)
     console.error('Header component error:', error);
   },

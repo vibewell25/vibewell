@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { SafeHeader } from '../SafeHeader';
 import { Header } from '../Header';
@@ -92,7 +91,7 @@ describe('SafeHeader Component', () => {
   });
 
   it('passes props through to Header when no errors occur', () => {
-    mockHeader.mockImplementation(props => (
+    mockHeader.mockImplementation((props) => (
       <div data-testid="header" data-class-name={props.className}>
         Header Content
       </div>

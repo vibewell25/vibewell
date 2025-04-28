@@ -28,7 +28,7 @@ export const performanceMonitoring = {
   trackPageLoad: () => {
     if (typeof window !== 'undefined') {
       const navigation = performance.getEntriesByType(
-        'navigation'
+        'navigation',
       )[0] as PerformanceNavigationTiming;
       const metrics = {
         dnsLookup: navigation.domainLookupEnd - navigation.domainLookupStart,

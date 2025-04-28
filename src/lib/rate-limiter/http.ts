@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { RateLimitOptions, RateLimitResult, DEFAULT_OPTIONS } from './types';
+import { RateLimitOptions, DEFAULT_OPTIONS } from './types';
 import { checkRateLimit, logRateLimitEvent, shouldUseRedis, getIdentifier } from './core';
 
 /**
@@ -120,7 +120,7 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
  */
 export async function applyRateLimit(
   req: NextRequest,
-  limiter = apiRateLimiter
+  limiter = apiRateLimiter,
 ): Promise<NextResponse | null> {
   return limiter(req);
 }
@@ -151,44 +151,16 @@ export const apiRateLimiter = createRateLimiter();
 /**
  * Specialized HTTP rate limiters for different types of routes
  */
-export const authRateLimiter = createRateLimiter({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // 10 requests per 15 minutes
-  message: { error: 'Too many login attempts, please try again later.' },
-});
+export {};
 
-export const sensitiveApiRateLimiter = createRateLimiter({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 30, // 30 requests per hour
-  message: { error: 'Request limit exceeded for sensitive operations.' },
-});
+export {};
 
-export const passwordResetRateLimiter = createRateLimiter({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3, // 3 password reset attempts per hour
-  message: { error: 'Too many password reset attempts, please try again later.' },
-});
+export {};
 
-export const signupRateLimiter = createRateLimiter({
-  windowMs: 24 * 60 * 60 * 1000, // 24 hours
-  max: 5, // 5 account creations per 24 hours
-  message: { error: 'Account creation rate limit exceeded.' },
-});
+export {};
 
-export const tokenRateLimiter = createRateLimiter({
-  windowMs: 60 * 1000, // 1 minute
-  max: 5, // 5 token requests per minute
-  message: { error: 'Too many token requests, please try again later.' },
-});
+export {};
 
-export const financialRateLimiter = createRateLimiter({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 10, // 10 financial operations per hour
-  message: { error: 'Financial operation rate limit exceeded.' },
-});
+export {};
 
-export const adminRateLimiter = createRateLimiter({
-  windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 30, // 30 admin operations per 5 minutes
-  message: { error: 'Admin operation rate limit exceeded.' },
-});
+export {};

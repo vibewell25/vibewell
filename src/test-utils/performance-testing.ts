@@ -21,7 +21,7 @@ interface PerformanceTestOptions {
  */
 export async function testPerformance(
   ui: ReactElement,
-  options: PerformanceTestOptions = {}
+  options: PerformanceTestOptions = {},
 ): Promise<PerformanceMetrics> {
   const {
     iterations = 3,
@@ -63,28 +63,28 @@ export async function testPerformance(
 
   // Calculate averages
   const averageMetrics: PerformanceMetrics = {
-    renderTime: average(metrics.map(m => m.renderTime)),
-    reRenderTime: average(metrics.map(m => m.reRenderTime)),
-    memoryUsage: average(metrics.map(m => m.memoryUsage)),
-    domNodes: average(metrics.map(m => m.domNodes)),
+    renderTime: average(metrics.map((m) => m.renderTime)),
+    reRenderTime: average(metrics.map((m) => m.reRenderTime)),
+    memoryUsage: average(metrics.map((m) => m.memoryUsage)),
+    domNodes: average(metrics.map((m) => m.domNodes)),
   };
 
   // Assert performance expectations
   if (averageMetrics.renderTime >= renderTimeThreshold) {
     throw new Error(
-      `Average render time (${averageMetrics.renderTime}ms) exceeds threshold (${renderTimeThreshold}ms)`
+      `Average render time (${averageMetrics.renderTime}ms) exceeds threshold (${renderTimeThreshold}ms)`,
     );
   }
 
   if (averageMetrics.memoryUsage >= memoryThreshold) {
     throw new Error(
-      `Average memory usage (${formatBytes(averageMetrics.memoryUsage)}) exceeds threshold (${formatBytes(memoryThreshold)})`
+      `Average memory usage (${formatBytes(averageMetrics.memoryUsage)}) exceeds threshold (${formatBytes(memoryThreshold)})`,
     );
   }
 
   if (averageMetrics.domNodes >= domNodesThreshold) {
     throw new Error(
-      `Average DOM nodes count (${averageMetrics.domNodes}) exceeds threshold (${domNodesThreshold})`
+      `Average DOM nodes count (${averageMetrics.domNodes}) exceeds threshold (${domNodesThreshold})`,
     );
   }
 
@@ -96,13 +96,13 @@ export async function testPerformance(
  */
 export async function testApiPerformance(
   apiCall: () => Promise<any>,
-  options: { timeout?: number; maxResponseTime?: number } = {}
+  options: { timeout?: number; maxResponseTime?: number } = {},
 ): Promise<number> {
   const { timeout = 5000, maxResponseTime = 1000 } = options;
 
   const start = performance.now();
   const timeoutPromise = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error('API call timed out')), timeout)
+    setTimeout(() => reject(new Error('API call timed out')), timeout),
   );
 
   await Promise.race([apiCall(), timeoutPromise]);
@@ -110,7 +110,7 @@ export async function testApiPerformance(
 
   if (responseTime >= maxResponseTime) {
     throw new Error(
-      `API response time (${responseTime}ms) exceeds threshold (${maxResponseTime}ms)`
+      `API response time (${responseTime}ms) exceeds threshold (${maxResponseTime}ms)`,
     );
   }
 
@@ -123,7 +123,7 @@ export async function testApiPerformance(
 export async function testUpdatePerformance(
   ui: ReactElement,
   updateProps: Record<string, any>,
-  options: { maxUpdateTime?: number } = {}
+  options: { maxUpdateTime?: number } = {},
 ): Promise<number> {
   const { maxUpdateTime = 50 } = options;
   const result = render(ui) as RenderResult;
@@ -134,7 +134,7 @@ export async function testUpdatePerformance(
 
   if (updateTime >= maxUpdateTime) {
     throw new Error(
-      `Component update time (${updateTime}ms) exceeds threshold (${maxUpdateTime}ms)`
+      `Component update time (${updateTime}ms) exceeds threshold (${maxUpdateTime}ms)`,
     );
   }
 

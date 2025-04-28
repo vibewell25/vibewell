@@ -35,7 +35,7 @@ export function setServerCsrfToken(req: NextApiRequest, res: NextApiResponse): s
   // Set cookie using the response object
   res.setHeader(
     'Set-Cookie',
-    `${CSRF_TOKEN_COOKIE}=${token}; HttpOnly; Path=/; Max-Age=${TOKEN_EXPIRY / 1000}; ${process.env.NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax`
+    `${CSRF_TOKEN_COOKIE}=${token}; HttpOnly; Path=/; Max-Age=${TOKEN_EXPIRY / 1000}; ${process.env.NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax`,
   );
 
   return token;
@@ -109,7 +109,7 @@ export function getClientCsrfToken(): string | null {
       acc[key] = value;
       return acc;
     },
-    {} as Record<string, string>
+    {} as Record<string, string>,
   );
 
   return cookies[CSRF_TOKEN_COOKIE] || null;

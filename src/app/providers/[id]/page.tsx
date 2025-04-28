@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { Layout } from '@/components/layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import ReviewsList from '@/components/ReviewsList';
 import ReviewForm from '@/components/ReviewForm';
 import RatingBreakdown from '@/components/RatingBreakdown';
@@ -174,19 +174,19 @@ export default function ProviderProfilePage() {
       <Layout>
         <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse">
-            <div className="h-64 bg-gray-200 rounded-lg mb-6"></div>
-            <div className="flex flex-col md:flex-row gap-6">
+            <div className="mb-6 h-64 rounded-lg bg-gray-200"></div>
+            <div className="flex flex-col gap-6 md:flex-row">
               <div className="md:w-1/3">
-                <div className="h-80 bg-gray-200 rounded-lg mb-4"></div>
-                <div className="h-10 bg-gray-200 rounded-lg mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded-lg mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded-lg mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded-lg"></div>
+                <div className="mb-4 h-80 rounded-lg bg-gray-200"></div>
+                <div className="mb-4 h-10 rounded-lg bg-gray-200"></div>
+                <div className="mb-2 h-4 rounded-lg bg-gray-200"></div>
+                <div className="mb-2 h-4 rounded-lg bg-gray-200"></div>
+                <div className="h-4 rounded-lg bg-gray-200"></div>
               </div>
               <div className="md:w-2/3">
-                <div className="h-10 bg-gray-200 rounded-lg mb-4"></div>
-                <div className="h-40 bg-gray-200 rounded-lg mb-6"></div>
-                <div className="h-60 bg-gray-200 rounded-lg"></div>
+                <div className="mb-4 h-10 rounded-lg bg-gray-200"></div>
+                <div className="mb-6 h-40 rounded-lg bg-gray-200"></div>
+                <div className="h-60 rounded-lg bg-gray-200"></div>
               </div>
             </div>
           </div>
@@ -198,7 +198,7 @@ export default function ProviderProfilePage() {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8">
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+          <div className="rounded border border-red-200 bg-red-50 px-4 py-3 text-red-700">
             {error || 'Provider not found'}
           </div>
         </div>
@@ -212,7 +212,7 @@ export default function ProviderProfilePage() {
           src={provider.coverImage}
           alt={`${provider.name}'s cover image`}
           fill
-          className="object-cover rounded-b-lg"
+          className="rounded-b-lg object-cover"
           unoptimized
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -222,12 +222,12 @@ export default function ProviderProfilePage() {
         </div>
       </div>
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col gap-8 md:flex-row">
           {/* Left sidebar */}
           <div className="md:w-1/3">
-            <div className="bg-white rounded-lg shadow p-6 mb-6">
-              <div className="flex items-center mb-4">
-                <div className="relative h-16 w-16 rounded-full overflow-hidden mr-4">
+            <div className="mb-6 rounded-lg bg-white p-6 shadow">
+              <div className="mb-4 flex items-center">
+                <div className="relative mr-4 h-16 w-16 overflow-hidden rounded-full">
                   <Image
                     src={provider.profileImage}
                     alt={provider.name}
@@ -246,23 +246,23 @@ export default function ProviderProfilePage() {
                   </div>
                 </div>
               </div>
-              <div className="border-t border-gray-200 pt-4 mb-4">
-                <div className="flex items-start mb-3">
-                  <Icons.MapPinSolid className="h-5 w-5 text-gray-500 mr-2 mt-0.5" />
+              <div className="mb-4 border-t border-gray-200 pt-4">
+                <div className="mb-3 flex items-start">
+                  <Icons.MapPinSolid className="mr-2 mt-0.5 h-5 w-5 text-gray-500" />
                   <div>
                     <p className="font-medium">Location</p>
                     <p className="text-gray-600">{provider.address}</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Icons.ClockSolid className="h-5 w-5 text-gray-500 mr-2 mt-0.5" />
+                  <Icons.ClockSolid className="mr-2 mt-0.5 h-5 w-5 text-gray-500" />
                   <div>
                     <p className="font-medium">Availability</p>
                     <ul className="text-gray-600">
                       {provider.availability.map((item, index) => (
                         <li key={index}>
                           {item.day}:{' '}
-                          {item.slots.map(slot => `${slot.start}-${slot.end}`).join(', ')}
+                          {item.slots.map((slot) => `${slot.start}-${slot.end}`).join(', ')}
                         </li>
                       ))}
                     </ul>
@@ -271,12 +271,12 @@ export default function ProviderProfilePage() {
               </div>
               <Button className="w-full">Book an Appointment</Button>
             </div>
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold mb-4">Certifications</h3>
+            <div className="rounded-lg bg-white p-6 shadow">
+              <h3 className="mb-4 text-lg font-semibold">Certifications</h3>
               <ul className="space-y-3">
-                {provider.certifications.map(cert => (
+                {provider.certifications.map((cert) => (
                   <li key={cert.id} className="flex items-start">
-                    <Icons.CheckSolid className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
+                    <Icons.CheckSolid className="mr-2 mt-0.5 h-5 w-5 text-green-500" />
                     <div>
                       <p className="font-medium">{cert.name}</p>
                       <p className="text-sm text-gray-600">
@@ -297,29 +297,29 @@ export default function ProviderProfilePage() {
                 <TabsTrigger value="reviews">Reviews</TabsTrigger>
               </TabsList>
               <TabsContent value="about">
-                <div className="bg-white rounded-lg shadow p-6">
-                  <h2 className="text-2xl font-semibold mb-4">About {provider.name}</h2>
-                  <p className="text-gray-700 mb-4">{provider.description}</p>
+                <div className="rounded-lg bg-white p-6 shadow">
+                  <h2 className="mb-4 text-2xl font-semibold">About {provider.name}</h2>
+                  <p className="mb-4 text-gray-700">{provider.description}</p>
                 </div>
               </TabsContent>
               <TabsContent value="services">
-                <div className="bg-white rounded-lg shadow p-6">
-                  <h2 className="text-2xl font-semibold mb-4">Services Offered</h2>
+                <div className="rounded-lg bg-white p-6 shadow">
+                  <h2 className="mb-4 text-2xl font-semibold">Services Offered</h2>
                   <div className="space-y-4">
-                    {provider.services.map(service => (
-                      <div key={service.id} className="border border-gray-200 rounded-lg p-4">
-                        <div className="flex justify-between items-start">
+                    {provider.services.map((service) => (
+                      <div key={service.id} className="rounded-lg border border-gray-200 p-4">
+                        <div className="flex items-start justify-between">
                           <h3 className="text-lg font-medium">{service.name}</h3>
                           <div className="flex flex-col items-end">
-                            <span className="font-bold text-lg">${service.price}</span>
-                            <span className="text-sm text-gray-500 flex items-center">
-                              <Icons.ClockSolid className="h-4 w-4 mr-1" /> {service.duration} min
+                            <span className="text-lg font-bold">${service.price}</span>
+                            <span className="flex items-center text-sm text-gray-500">
+                              <Icons.ClockSolid className="mr-1 h-4 w-4" /> {service.duration} min
                             </span>
                           </div>
                         </div>
-                        <p className="text-gray-600 mt-2">{service.description}</p>
+                        <p className="mt-2 text-gray-600">{service.description}</p>
                         <Button variant="outline" className="mt-3">
-                          <Icons.CalendarSolid className="h-4 w-4 mr-2" /> Book Now
+                          <Icons.CalendarSolid className="mr-2 h-4 w-4" /> Book Now
                         </Button>
                       </div>
                     ))}
@@ -327,8 +327,8 @@ export default function ProviderProfilePage() {
                 </div>
               </TabsContent>
               <TabsContent value="reviews">
-                <div className="bg-white rounded-lg shadow p-6 mb-6">
-                  <div className="flex justify-between items-center mb-6">
+                <div className="mb-6 rounded-lg bg-white p-6 shadow">
+                  <div className="mb-6 flex items-center justify-between">
                     <h2 className="text-2xl font-semibold">Customer Reviews</h2>
                     <Button onClick={() => setShowReviewForm(!showReviewForm)}>
                       {showReviewForm ? 'Cancel' : 'Write a Review'}
@@ -343,7 +343,7 @@ export default function ProviderProfilePage() {
                       />
                     </div>
                   )}
-                  <div className="flex flex-col lg:flex-row gap-6">
+                  <div className="flex flex-col gap-6 lg:flex-row">
                     <div className="lg:w-1/3">
                       <RatingBreakdown
                         distribution={summary.ratingDistribution}
@@ -351,8 +351,8 @@ export default function ProviderProfilePage() {
                         averageRating={summary.averageRating}
                       />
                       {summary.categories && (
-                        <div className="bg-white rounded-lg shadow p-6 mt-6">
-                          <h3 className="text-lg font-semibold mb-4">Rating Details</h3>
+                        <div className="mt-6 rounded-lg bg-white p-6 shadow">
+                          <h3 className="mb-4 text-lg font-semibold">Rating Details</h3>
                           <div className="space-y-2">
                             <div className="flex justify-between">
                               <span>Cleanliness</span>

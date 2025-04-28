@@ -1,8 +1,8 @@
 'use client';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { useState } from 'react';
 import { Icons } from '@/components/icons';
 export default function HelpCenter() {
@@ -95,23 +95,23 @@ export default function HelpCenter() {
     <Layout>
       <div className="container-app py-8">
         {/* Hero section with search */}
-        <div className="bg-gradient-to-r from-primary/20 to-primary/5 rounded-xl p-8 mb-12">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl font-bold mb-4">How can we help you?</h1>
-            <p className="text-lg mb-8">
+        <div className="from-primary/20 to-primary/5 mb-12 rounded-xl bg-gradient-to-r p-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="mb-4 text-4xl font-bold">How can we help you?</h1>
+            <p className="mb-8 text-lg">
               Search our knowledge base or browse categories below to find answers to your
               questions.
             </p>
-            <div className="relative max-w-2xl mx-auto">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <div className="relative mx-auto max-w-2xl">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <Icons.MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
               </div>
               <Input
                 type="text"
                 placeholder="Search for help articles..."
-                className="pl-10 h-12 w-full rounded-md"
+                className="h-12 w-full rounded-md pl-10"
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
               <Button className="absolute right-0 top-0 h-12 rounded-l-none">Search</Button>
             </div>
@@ -119,28 +119,28 @@ export default function HelpCenter() {
         </div>
         {/* Categories section */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-8">Browse Help Categories</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {categories.map(category => (
+          <h2 className="mb-8 text-3xl font-bold">Browse Help Categories</h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {categories.map((category) => (
               <div
                 key={category.id}
-                className="border rounded-lg p-6 bg-card hover:shadow-md transition-all"
+                className="rounded-lg border bg-card p-6 transition-all hover:shadow-md"
               >
-                <div className="flex items-start mb-4">
-                  <div className="p-2 bg-primary/10 rounded-md text-primary mr-4">
+                <div className="mb-4 flex items-start">
+                  <div className="bg-primary/10 text-primary mr-4 rounded-md p-2">
                     {category.icon}
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold mb-2">{category.title}</h3>
+                    <h3 className="mb-2 text-xl font-bold">{category.title}</h3>
                     <p className="text-muted-foreground">{category.description}</p>
                   </div>
                 </div>
-                <ul className="space-y-2 mb-4 pl-4 border-l-2 border-muted">
+                <ul className="mb-4 space-y-2 border-l-2 border-muted pl-4">
                   {category.articles.map((article, index) => (
                     <li key={index}>
                       <Link
                         href={article.path}
-                        className="text-primary hover:underline flex items-center"
+                        className="text-primary flex items-center hover:underline"
                       >
                         <span className="mr-2">•</span>
                         {article.title}
@@ -157,23 +157,23 @@ export default function HelpCenter() {
         </div>
         {/* FAQs section */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-8">Frequently Asked Questions</h2>
+          <h2 className="mb-8 text-3xl font-bold">Frequently Asked Questions</h2>
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <div key={index} className="border rounded-lg p-6 bg-card">
-                <h3 className="text-xl font-semibold mb-2 flex items-start">
-                  <Icons.QuestionMarkCircleIcon className="h-6 w-6 text-primary mr-2 flex-shrink-0" />
+              <div key={index} className="rounded-lg border bg-card p-6">
+                <h3 className="mb-2 flex items-start text-xl font-semibold">
+                  <Icons.QuestionMarkCircleIcon className="text-primary mr-2 h-6 w-6 flex-shrink-0" />
                   <span>{faq.question}</span>
                 </h3>
-                <p className="text-muted-foreground mb-3 ml-8">{faq.answer}</p>
+                <p className="mb-3 ml-8 text-muted-foreground">{faq.answer}</p>
                 <div className="ml-8">
                   <Link
                     href={faq.path}
-                    className="text-primary hover:underline text-sm inline-flex items-center"
+                    className="text-primary inline-flex items-center text-sm hover:underline"
                   >
                     Read more
                     <svg
-                      className="w-3 h-3 ml-1"
+                      className="ml-1 h-3 w-3"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -194,38 +194,38 @@ export default function HelpCenter() {
         </div>
         {/* Additional resources */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold mb-8">Additional Resources</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="border rounded-lg p-6 bg-card hover:shadow-md transition-all">
+          <h2 className="mb-8 text-3xl font-bold">Additional Resources</h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div className="rounded-lg border bg-card p-6 transition-all hover:shadow-md">
               <div className="text-primary mb-4">
                 <Icons.AcademicCapIcon className="h-10 w-10" />
               </div>
-              <h3 className="text-xl font-bold mb-2">Video Tutorials</h3>
-              <p className="text-muted-foreground mb-4">
+              <h3 className="mb-2 text-xl font-bold">Video Tutorials</h3>
+              <p className="mb-4 text-muted-foreground">
                 Watch step-by-step guides and tutorials on how to use Vibewell.
               </p>
               <Button variant="outline" asChild className="w-full">
                 <Link href="/help/tutorials">View Tutorials</Link>
               </Button>
             </div>
-            <div className="border rounded-lg p-6 bg-card hover:shadow-md transition-all">
+            <div className="rounded-lg border bg-card p-6 transition-all hover:shadow-md">
               <div className="text-primary mb-4">
                 <Icons.DocumentTextIcon className="h-10 w-10" />
               </div>
-              <h3 className="text-xl font-bold mb-2">User Manual</h3>
-              <p className="text-muted-foreground mb-4">
+              <h3 className="mb-2 text-xl font-bold">User Manual</h3>
+              <p className="mb-4 text-muted-foreground">
                 Download our comprehensive user guide for detailed instructions.
               </p>
               <Button variant="outline" asChild className="w-full">
                 <Link href="/help/manual">View Manual</Link>
               </Button>
             </div>
-            <div className="border rounded-lg p-6 bg-card hover:shadow-md transition-all">
+            <div className="rounded-lg border bg-card p-6 transition-all hover:shadow-md">
               <div className="text-primary mb-4">
                 <Icons.ShieldExclamationIcon className="h-10 w-10" />
               </div>
-              <h3 className="text-xl font-bold mb-2">Privacy & Terms</h3>
-              <p className="text-muted-foreground mb-4">
+              <h3 className="mb-2 text-xl font-bold">Privacy & Terms</h3>
+              <p className="mb-4 text-muted-foreground">
                 Learn about our privacy policy, terms of service, and data practices.
               </p>
               <Button variant="outline" asChild className="w-full">
@@ -235,12 +235,12 @@ export default function HelpCenter() {
           </div>
         </div>
         {/* Contact support section */}
-        <div className="bg-muted rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">Still Need Help?</h2>
-          <p className="text-lg mb-6 max-w-2xl mx-auto">
+        <div className="rounded-xl bg-muted p-8 text-center">
+          <h2 className="mb-4 text-2xl font-bold">Still Need Help?</h2>
+          <p className="mx-auto mb-6 max-w-2xl text-lg">
             Our support team is ready to assist you with any questions or issues you may have.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Button asChild>
               <Link href="/help/contact">Contact Support</Link>
             </Button>

@@ -1,6 +1,4 @@
-import { cacheManager } from './cache-manager';
 import { performanceMonitor } from './performance-monitor';
-import { PerformanceMetrics } from '../types/performance-metrics';
 
 interface OfflineConfig {
   cacheName: string;
@@ -48,13 +46,13 @@ export class OfflineManager {
         const registration = await navigator.serviceWorker.register('/service-worker.js');
         this.sw = registration;
         performanceMonitor.track({
-          serviceWorkerRegistration: performance.now()
+          serviceWorkerRegistration: performance.now(),
         });
       }
     } catch (error) {
       console.error('Service worker registration failed:', error);
       performanceMonitor.track({
-        serviceWorkerError: performance.now()
+        serviceWorkerError: performance.now(),
       });
     }
   }
@@ -69,7 +67,7 @@ export class OfflineManager {
       }
 
       performanceMonitor.track({
-        offlineReady: performance.now()
+        offlineReady: performance.now(),
       });
     } catch (error) {
       console.error('Failed to initialize sync support:', error);
@@ -100,7 +98,7 @@ export class OfflineManager {
   async fetchWithStrategy(
     input: RequestInfo,
     init?: RequestInit,
-    strategy: 'cache-first' | 'network-first' | 'stale-while-revalidate' = 'cache-first'
+    strategy: 'cache-first' | 'network-first' | 'stale-while-revalidate' = 'cache-first',
   ): Promise<Response> {
     const request = new Request(input, init);
     const startTime = performance.now();
@@ -123,13 +121,13 @@ export class OfflineManager {
       }
 
       performanceMonitor.track({
-        fetchStrategyTime: performance.now() - startTime
+        fetchStrategyTime: performance.now() - startTime,
       });
 
       return response;
     } catch (error) {
       performanceMonitor.track({
-        fetchError: performance.now() - startTime
+        fetchError: performance.now() - startTime,
       });
       throw error;
     }
@@ -168,11 +166,11 @@ export class OfflineManager {
     const cached = await cache.match(request);
 
     const networkPromise = fetch(request)
-      .then(response => {
+      .then((response) => {
         this.cacheResponse(request, response.clone());
         return response;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Network request failed:', error);
         return null;
       });
@@ -185,7 +183,7 @@ export class OfflineManager {
       ...task,
       id: crypto.randomUUID(),
       timestamp: Date.now(),
-      retries: 0
+      retries: 0,
     };
 
     this.syncQueue.push(syncTask);
@@ -210,14 +208,14 @@ export class OfflineManager {
         const response = await fetch(task.url, {
           method: task.method,
           body: task.body ? JSON.stringify(task.body) : undefined,
-          headers: task.headers
+          headers: task.headers,
         });
 
         if (response.ok) {
           this.syncQueue.shift();
           await this.persistSyncQueue();
           performanceMonitor.track({
-            syncSuccess: performance.now()
+            syncSuccess: performance.now(),
           });
         } else if ((task.retries || 0) < MAX_RETRIES) {
           task.retries = (task.retries || 0) + 1;
@@ -226,7 +224,7 @@ export class OfflineManager {
           this.syncQueue.shift();
           await this.persistSyncQueue();
           performanceMonitor.track({
-            syncError: performance.now()
+            syncError: performance.now(),
           });
         }
       } catch (error) {
@@ -238,10 +236,10 @@ export class OfflineManager {
           this.syncQueue.shift();
           await this.persistSyncQueue();
           performanceMonitor.track({
-            syncError: performance.now()
+            syncError: performance.now(),
           });
         }
       }
     }
   }
-} 
+}

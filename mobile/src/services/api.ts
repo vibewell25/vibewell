@@ -154,7 +154,7 @@ export const beautyApi = {
 
 // Calendar integration API
 export const calendarApi = {
-  // Add event to calendar
+  // Add event to calendar (local/device)
   addEventToCalendar: async (bookingId: string): Promise<{ success: boolean }> => {
     try {
       const response = await apiClient.post(`/calendar/events`, { bookingId });
@@ -165,15 +165,75 @@ export const calendarApi = {
     }
   },
   
-  // Get user calendar events
+  // Initiate Google OAuth flow
+  getAuthUrl: async (): Promise<{ url: string }> => {
+    try {
+      const response = await apiClient.get('/calendar/google/auth/url');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching Google auth URL:', error);
+      throw error;
+    }
+  },
+  
+  // Exchange OAuth code to store tokens on server
+  exchangeToken: async (code: string): Promise<void> => {
+    try {
+      await apiClient.get('/calendar/google/auth/callback', { params: { code } });
+    } catch (error) {
+      console.error('Error exchanging OAuth code:', error);
+      throw error;
+    }
+  },
+  
+  // Get user Google Calendar events
   getUserEvents: async (startDate: string, endDate: string): Promise<any[]> => {
     try {
-      const response = await apiClient.get('/calendar/events', {
+      const response = await apiClient.get('/calendar/google/events', {
         params: { startDate, endDate }
       });
       return response.data;
     } catch (error) {
-      console.error('Error fetching calendar events:', error);
+      console.error('Error fetching Google calendar events:', error);
+      throw error;
+    }
+  },
+  
+  // Delete event from calendar (Google/Outlook)
+  deleteEventFromCalendar: async (bookingId: string): Promise<{ success: boolean }> => {
+    try {
+      const response = await apiClient.delete('/calendar/events', { data: { bookingId } });
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting calendar event:', error);
+      throw error;
+    }
+  },
+  
+  // Outlook OAuth flow
+  getOutlookAuthUrl: async (): Promise<{ url: string }> => {
+    try {
+      const response = await apiClient.get('/calendar/outlook/auth/url');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching Outlook auth URL:', error);
+      throw error;
+    }
+  },
+  exchangeOutlookToken: async (code: string): Promise<void> => {
+    try {
+      await apiClient.get('/calendar/outlook/auth/callback', { params: { code } });
+    } catch (error) {
+      console.error('Error exchanging Outlook OAuth code:', error);
+      throw error;
+    }
+  },
+  getOutlookEvents: async (): Promise<any[]> => {
+    try {
+      const response = await apiClient.get('/calendar/outlook/events');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching Outlook calendar events:', error);
       throw error;
     }
   }

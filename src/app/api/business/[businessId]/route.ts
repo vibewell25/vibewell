@@ -31,7 +31,7 @@ export async function GET(request: Request, { params }: { params: { businessId: 
 
     // Calculate average rating
     const reviews = business.reviews || [];
-    const practitionerReviews = business.practitioners?.flatMap(p => p.reviews) || [];
+    const practitionerReviews = business.practitioners?.flatMap((p) => p.reviews) || [];
     const allReviews = [...reviews, ...practitionerReviews];
 
     const averageRating =

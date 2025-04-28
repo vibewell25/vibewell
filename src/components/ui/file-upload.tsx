@@ -1,10 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import { useState, useRef, useCallback } from 'react';
-import { Button } from '@/components/ui/button';
+import { useState, useRef } from 'react';
+import { Button } from '@/components/ui/Button';
 import { Progress } from '@/components/ui/progress';
-import { X, Upload, File as FileIcon, Image, Film, Music, Package } from 'lucide-react';
+import { X, Upload, File as FileIcon, Image, Film, Music } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Main interface for file upload
@@ -109,9 +109,9 @@ const FileDropZone: React.FC<FileDropZoneProps> = ({
   return (
     <div
       className={cn(
-        'border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors',
-        isDragging ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50',
-        disabled && 'opacity-50 cursor-not-allowed'
+        'cursor-pointer rounded-lg border-2 border-dashed p-6 text-center transition-colors',
+        isDragging ? 'border-primary bg-primary/5' : 'hover:border-primary/50 border-border',
+        disabled && 'cursor-not-allowed opacity-50',
       )}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -119,12 +119,12 @@ const FileDropZone: React.FC<FileDropZoneProps> = ({
       onClick={() => !disabled && fileInputRef.current?.click()}
     >
       <div className="flex flex-col items-center justify-center space-y-2">
-        <Upload className="h-10 w-10 text-muted-foreground mb-2" />
+        <Upload className="mb-2 h-10 w-10 text-muted-foreground" />
         <p className="text-sm font-medium">Drag and drop files here, or click to select files</p>
         <p className="text-xs text-muted-foreground">
           {acceptedFileTypes
             ? `Accepted file types: ${Object.keys(acceptedFileTypes)
-                .map(type => type.replace('/*', ''))
+                .map((type) => type.replace('/*', ''))
                 .join(', ')}`
             : 'All file types accepted'}
         </p>
@@ -138,7 +138,7 @@ const FileDropZone: React.FC<FileDropZoneProps> = ({
         className="hidden"
         multiple
         accept={getAcceptString(acceptedFileTypes)}
-        onChange={e => {
+        onChange={(e) => {
           if (e.target.files?.length) {
             onFilesDrop(Array.from(e.target.files));
 
@@ -163,9 +163,9 @@ const FileErrors: React.FC<FileErrorsProps> = ({ errors }) => {
   if (errors.length === 0) return null;
 
   return (
-    <div className="bg-destructive/10 text-destructive rounded-md p-3">
-      <p className="font-bold text-sm mb-1">Error:</p>
-      <ul className="text-xs list-disc list-inside">
+    <div className="rounded-md bg-destructive/10 p-3 text-destructive">
+      <p className="mb-1 text-sm font-bold">Error:</p>
+      <ul className="list-inside list-disc text-xs">
         {errors.map((error, index) => (
           <li key={index}>{error}</li>
         ))}
@@ -183,11 +183,11 @@ interface FileItemProps {
 
 const FileItem: React.FC<FileItemProps> = ({ file, progress, onRemove }) => {
   return (
-    <div className="flex items-center justify-between bg-muted/40 rounded-md p-3">
+    <div className="flex items-center justify-between rounded-md bg-muted/40 p-3">
       <div className="flex items-center space-x-3">
         {getFileIcon(file)}
         <div className="space-y-1">
-          <p className="text-sm font-medium truncate max-w-[200px]">{file.name}</p>
+          <p className="max-w-[200px] truncate text-sm font-medium">{file.name}</p>
           <p className="text-xs text-muted-foreground">{formatFileSize(file.size)}</p>
           <Progress value={progress} className="h-1 w-32" />
         </div>
@@ -196,7 +196,7 @@ const FileItem: React.FC<FileItemProps> = ({ file, progress, onRemove }) => {
         variant="ghost"
         size="sm"
         className="h-8 w-8 p-0"
-        onClick={e => {
+        onClick={(e) => {
           e.stopPropagation();
           onRemove(file);
         }}
@@ -221,7 +221,7 @@ const FileList: React.FC<FileListProps> = ({ files, progress, onRemove }) => {
   return (
     <div className="space-y-2">
       <p className="text-sm font-medium">Selected Files ({files.length})</p>
-      <div className="space-y-2 max-h-60 overflow-y-auto">
+      <div className="max-h-60 space-y-2 overflow-y-auto">
         {files.map((file, index) => (
           <FileItem
             key={`${file.name}-${index}`}
@@ -291,7 +291,7 @@ export function FileUpload({
       }
 
       // Check if file with same name already exists
-      if (selectedFiles.some(selectedFile => selectedFile.name === file.name)) {
+      if (selectedFiles.some((selectedFile) => selectedFile.name === file.name)) {
         errorMessages.push(`${file.name} is already added.`);
         continue;
       }
@@ -299,7 +299,7 @@ export function FileUpload({
       validFiles.push(file);
 
       // Initialize progress for valid files
-      setUploadProgress(prev => ({
+      setUploadProgress((prev) => ({
         ...prev,
         [file.name]: 0,
       }));
@@ -327,7 +327,7 @@ export function FileUpload({
         clearInterval(interval);
       }
 
-      setUploadProgress(prev => ({
+      setUploadProgress((prev) => ({
         ...prev,
         [fileName]: Math.min(progress, 100),
       }));
@@ -345,11 +345,11 @@ export function FileUpload({
 
   // Remove a file from the selection
   const handleRemoveFile = (fileToRemove: File) => {
-    const updatedFiles = selectedFiles.filter(file => file !== fileToRemove);
+    const updatedFiles = selectedFiles.filter((file) => file !== fileToRemove);
     onFilesSelected(updatedFiles);
 
     // Remove progress entry for the file
-    setUploadProgress(prev => {
+    setUploadProgress((prev) => {
       const newProgress = { ...prev };
       delete newProgress[fileToRemove.name];
       return newProgress;

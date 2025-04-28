@@ -1,9 +1,16 @@
-import { PaymentProvider, CustomerDetails, PaymentDetails, PaymentMethod, PaymentIntent } from './payment-provider';
-import Stripe from 'stripe';
+import type {
+  PaymentProvider,
+  CustomerDetails,
+  PaymentDetails,
+  PaymentMethod,
+  PaymentIntent,
+} from './payment-provider';
+import StripePkg from 'stripe';
+const Stripe: any = (StripePkg as any).default || StripePkg;
 
 /**
  * Stripe implementation of the PaymentProvider interface.
- * 
+ *
  * This class handles integration with the Stripe API for payment processing.
  */
 export class StripePaymentProvider implements PaymentProvider {
@@ -20,7 +27,7 @@ export class StripePaymentProvider implements PaymentProvider {
     }
 
     this.apiKey = config.apiKey;
-    
+
     // Initialize the real Stripe SDK
     this.stripe = new Stripe(this.apiKey, {
       apiVersion: '2023-10-16',
@@ -29,7 +36,7 @@ export class StripePaymentProvider implements PaymentProvider {
         version: '1.0.0',
       },
     });
-    
+
     this.isInitialized = true;
   }
 
@@ -38,7 +45,7 @@ export class StripePaymentProvider implements PaymentProvider {
    */
   async createCustomer(customer: CustomerDetails): Promise<{ id: string }> {
     this.ensureInitialized();
-    
+
     const stripeCustomer = await this.stripe.customers.create({
       email: customer.email,
       name: customer.name,
@@ -47,7 +54,7 @@ export class StripePaymentProvider implements PaymentProvider {
         ...customer.metadata,
       },
     });
-    
+
     return { id: stripeCustomer.id };
   }
 
@@ -61,14 +68,14 @@ export class StripePaymentProvider implements PaymentProvider {
     metadata?: Record<string, string>;
   } | null> {
     this.ensureInitialized();
-    
+
     try {
       const customer = await this.stripe.customers.retrieve(customerId);
-      
+
       if (customer.deleted) {
         return null;
       }
-      
+
       return {
         id: customer.id,
         email: customer.email as string,
@@ -84,18 +91,14 @@ export class StripePaymentProvider implements PaymentProvider {
   /**
    * Add a payment method for a customer
    */
-  async addPaymentMethod(
-    customerId: string,
-    paymentMethodToken: string
-  ): Promise<PaymentMethod> {
+  async addPaymentMethod(customerId: string, paymentMethodToken: string): Promise<PaymentMethod> {
     this.ensureInitialized();
-    
+
     // Attach payment method to customer
-    const paymentMethod = await this.stripe.paymentMethods.attach(
-      paymentMethodToken,
-      { customer: customerId }
-    );
-    
+    const paymentMethod = await this.stripe.paymentMethods.attach(paymentMethodToken, {
+      customer: customerId,
+    });
+
     return {
       id: paymentMethod.id,
       type: paymentMethod.type as 'card' | 'bank' | 'wallet',
@@ -112,17 +115,18 @@ export class StripePaymentProvider implements PaymentProvider {
    */
   async listPaymentMethods(customerId: string): Promise<PaymentMethod[]> {
     this.ensureInitialized();
-    
+
     const response = await this.stripe.paymentMethods.list({
       customer: customerId,
       type: 'card',
     });
-    
+
     // Get customer to check default payment method
     const customer = await this.stripe.customers.retrieve(customerId);
-    const defaultPaymentMethodId = customer.deleted ? undefined 
-      : (customer as any).invoice_settings?.default_payment_method as string;
-    
+    const defaultPaymentMethodId = customer.deleted
+      ? undefined
+      : ((customer as any).invoice_settings?.default_payment_method as string);
+
     return response.data.map((method: any) => ({
       id: method.id,
       type: method.type as 'card' | 'bank' | 'wallet',
@@ -137,12 +141,9 @@ export class StripePaymentProvider implements PaymentProvider {
   /**
    * Set a payment method as default for a customer
    */
-  async setDefaultPaymentMethod(
-    customerId: string,
-    paymentMethodId: string
-  ): Promise<void> {
+  async setDefaultPaymentMethod(customerId: string, paymentMethodId: string): Promise<void> {
     this.ensureInitialized();
-    
+
     await this.stripe.customers.update(customerId, {
       invoice_settings: {
         default_payment_method: paymentMethodId,
@@ -155,10 +156,10 @@ export class StripePaymentProvider implements PaymentProvider {
    */
   async createPaymentIntent(
     customerId: string,
-    paymentDetails: PaymentDetails
+    paymentDetails: PaymentDetails,
   ): Promise<PaymentIntent> {
     this.ensureInitialized();
-    
+
     const intent = await this.stripe.paymentIntents.create({
       amount: Math.round(paymentDetails.amount * 100), // Convert to cents
       currency: paymentDetails.currency,
@@ -169,7 +170,7 @@ export class StripePaymentProvider implements PaymentProvider {
         enabled: true,
       },
     });
-    
+
     return {
       id: intent.id,
       amount: intent.amount / 100, // Convert back to dollars
@@ -186,20 +187,17 @@ export class StripePaymentProvider implements PaymentProvider {
    */
   async confirmPaymentIntent(
     paymentIntentId: string,
-    paymentMethodId?: string
+    paymentMethodId?: string,
   ): Promise<PaymentIntent> {
     this.ensureInitialized();
-    
+
     const options: any = {};
     if (paymentMethodId) {
       options.payment_method = paymentMethodId;
     }
-    
-    const intent = await this.stripe.paymentIntents.confirm(
-      paymentIntentId,
-      options
-    );
-    
+
+    const intent = await this.stripe.paymentIntents.confirm(paymentIntentId, options);
+
     return {
       id: intent.id,
       amount: intent.amount / 100, // Convert to dollars
@@ -216,10 +214,10 @@ export class StripePaymentProvider implements PaymentProvider {
    */
   async retrievePaymentIntent(paymentIntentId: string): Promise<PaymentIntent | null> {
     this.ensureInitialized();
-    
+
     try {
       const intent = await this.stripe.paymentIntents.retrieve(paymentIntentId);
-      
+
       return {
         id: intent.id,
         amount: intent.amount / 100, // Convert to dollars
@@ -240,10 +238,10 @@ export class StripePaymentProvider implements PaymentProvider {
    */
   async cancelPaymentIntent(paymentIntentId: string): Promise<PaymentIntent | null> {
     this.ensureInitialized();
-    
+
     try {
       const intent = await this.stripe.paymentIntents.cancel(paymentIntentId);
-      
+
       return {
         id: intent.id,
         amount: intent.amount / 100, // Convert to dollars
@@ -265,24 +263,24 @@ export class StripePaymentProvider implements PaymentProvider {
   async createRefund(
     paymentIntentId: string,
     amount?: number,
-    reason?: string
+    reason?: string,
   ): Promise<{ id: string; status: string }> {
     this.ensureInitialized();
-    
+
     const options: any = {
       payment_intent: paymentIntentId,
     };
-    
+
     if (amount) {
       options.amount = Math.round(amount * 100); // Convert to cents
     }
-    
+
     if (reason) {
       options.reason = reason as any;
     }
-    
+
     const refund = await this.stripe.refunds.create(options);
-    
+
     return {
       id: refund.id,
       status: refund.status as string,
@@ -295,4 +293,4 @@ export class StripePaymentProvider implements PaymentProvider {
       throw new Error('Stripe provider not initialized');
     }
   }
-} 
+}

@@ -36,7 +36,7 @@ export class PerformanceTestSuite {
 
   public async runAllTests(): Promise<TestResult[]> {
     const startTime = performance.now();
-    
+
     try {
       await Promise.all([
         this.testBundlePerformance(),
@@ -134,7 +134,6 @@ export class PerformanceTestSuite {
     };
 
     const metrics = await this.measureWithTimeout(async () => {
-      const deviceInfo = mobileOptimizer.getDeviceInfo();
       const perfMetrics = await mobileOptimizer.getPerformanceMetrics();
 
       return {
@@ -156,7 +155,6 @@ export class PerformanceTestSuite {
     };
 
     const metrics = await this.measureWithTimeout(async () => {
-      const ssrConfig = ssrOptimizer.getConfig();
       // Add test component rendering here
 
       return {
@@ -191,7 +189,7 @@ export class PerformanceTestSuite {
 
   private async measureWithTimeout<T>(
     fn: () => Promise<T>,
-    config: PerformanceTestConfig
+    config: PerformanceTestConfig,
   ): Promise<T> {
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(() => reject(new Error('Test timeout')), config.timeout);
@@ -226,11 +224,11 @@ export class PerformanceTestSuite {
 
   private evaluateMetrics(metrics: Record<string, number>): boolean {
     // Add metric evaluation logic here
-    return Object.values(metrics).every(value => value !== undefined && value >= 0);
+    return Object.values(metrics).every((value) => value !== undefined && value >= 0);
   }
 
   private checkRegression(result: TestResult): void {
-    const previousResults = this.testResults.filter(r => r.name === result.name);
+    const previousResults = this.testResults.filter((r) => r.name === result.name);
     if (previousResults.length < 2) return;
 
     const previous = previousResults[previousResults.length - 2];
@@ -254,4 +252,4 @@ export class PerformanceTestSuite {
   }
 }
 
-export const performanceTestSuite = PerformanceTestSuite.getInstance(); 
+export {};

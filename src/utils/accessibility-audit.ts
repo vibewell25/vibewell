@@ -47,7 +47,7 @@ const accessibilityRules = {
     },
     message: 'Heading levels should not be skipped',
   },
-  
+
   // WCAG 2.1 Level AA
   'color-contrast': {
     test: (html: string) => {
@@ -62,7 +62,7 @@ const accessibilityRules = {
     },
     message: 'Focus indicators must be visible',
   },
-  
+
   // Additional Best Practices
   'semantic-elements': {
     test: (html: string) => {
@@ -81,15 +81,17 @@ const accessibilityRules = {
   },
 };
 
-export async function auditAccessibility(component: ComponentStandard): Promise<AccessibilityAuditResult> {
+export async function auditAccessibility(
+  component: ComponentStandard,
+): Promise<AccessibilityAuditResult> {
   const issues: AccessibilityIssue[] = [];
   const passedRules: string[] = [];
   const failedRules: string[] = [];
-  
+
   // Mock component rendering for testing
   const html = await renderComponentToString(component);
   const root = parseHTML(html);
-  
+
   // Check each accessibility rule
   for (const [ruleName, rule] of Object.entries(accessibilityRules)) {
     if (rule.test(html)) {
@@ -104,15 +106,15 @@ export async function auditAccessibility(component: ComponentStandard): Promise<
       });
     }
   }
-  
+
   // Additional checks
   checkKeyboardNavigation(root, issues);
   checkARIAUsage(root, issues);
   checkFormLabels(root, issues);
-  
+
   // Calculate accessibility score
   const score = calculateAccessibilityScore(passedRules.length, failedRules.length);
-  
+
   return {
     issues,
     score,
@@ -124,7 +126,7 @@ export async function auditAccessibility(component: ComponentStandard): Promise<
 function checkKeyboardNavigation(root: any, issues: AccessibilityIssue[]): void {
   const interactive = root.querySelectorAll('button, a, input, select, textarea');
   const tabIndexNegative = root.querySelectorAll('[tabindex="-1"]');
-  
+
   if (interactive.length > 0 && tabIndexNegative.length === interactive.length) {
     issues.push({
       type: 'error',
@@ -137,10 +139,10 @@ function checkKeyboardNavigation(root: any, issues: AccessibilityIssue[]): void 
 
 function checkARIAUsage(root: any, issues: AccessibilityIssue[]): void {
   const ariaElements = root.querySelectorAll('[aria-*]');
-  
+
   ariaElements.forEach((element: any) => {
     const ariaAttrs = element.attributes.filter((attr: any) => attr.startsWith('aria-'));
-    
+
     ariaAttrs.forEach((attr: string) => {
       if (!isValidARIAAttribute(attr)) {
         issues.push({
@@ -157,12 +159,13 @@ function checkARIAUsage(root: any, issues: AccessibilityIssue[]): void {
 
 function checkFormLabels(root: any, issues: AccessibilityIssue[]): void {
   const formElements = root.querySelectorAll('input, select, textarea');
-  
+
   formElements.forEach((element: any) => {
     const id = element.getAttribute('id');
     const hasLabel = id ? root.querySelector(`label[for="${id}"]`) : false;
-    const hasAriaLabel = element.getAttribute('aria-label') || element.getAttribute('aria-labelledby');
-    
+    const hasAriaLabel =
+      element.getAttribute('aria-label') || element.getAttribute('aria-labelledby');
+
     if (!hasLabel && !hasAriaLabel) {
       issues.push({
         type: 'error',
@@ -192,7 +195,7 @@ function isValidARIAAttribute(attribute: string): boolean {
     'aria-selected',
     'aria-required',
   ];
-  
+
   return validAttributes.includes(attribute);
 }
 
@@ -212,7 +215,7 @@ function generateSuggestion(ruleName: string, html: string): string {
     'semantic-elements': 'Replace generic divs with semantic HTML elements',
     'button-type': 'Add explicit type attributes to buttons',
   };
-  
+
   return suggestions[ruleName] || 'Review and update according to WCAG 2.1 guidelines';
 }
 
@@ -231,12 +234,12 @@ async function renderComponentToString(component: ComponentStandard): Promise<st
 
 export function generateAccessibilityReport(auditResult: AccessibilityAuditResult): string {
   let report = '# Accessibility Audit Report\n\n';
-  
+
   report += `## Overview\n`;
   report += `- Accessibility Score: ${auditResult.score.toFixed(2)}%\n`;
   report += `- Passed Rules: ${auditResult.passedRules.length}\n`;
   report += `- Failed Rules: ${auditResult.failedRules.length}\n\n`;
-  
+
   report += `## Issues\n`;
   auditResult.issues.forEach((issue) => {
     report += `### ${issue.code}\n`;
@@ -246,11 +249,11 @@ export function generateAccessibilityReport(auditResult: AccessibilityAuditResul
     if (issue.suggestion) report += `- Suggestion: ${issue.suggestion}\n`;
     report += '\n';
   });
-  
+
   report += `## Passed Rules\n`;
   auditResult.passedRules.forEach((rule) => {
     report += `- ${rule}\n`;
   });
-  
+
   return report;
-} 
+}

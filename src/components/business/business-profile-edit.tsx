@@ -77,15 +77,15 @@ export default function BusinessProfileEdit() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleLogoChange = (file: File | null) => {
-    setFormData(prev => ({ ...prev, logo: file }));
+    setFormData((prev) => ({ ...prev, logo: file }));
 
     if (file) {
       const reader = new FileReader();
-      reader.onload = e => {
+      reader.onload = (e) => {
         setLogoPreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
@@ -95,11 +95,11 @@ export default function BusinessProfileEdit() {
   };
 
   const handleBannerChange = (file: File | null) => {
-    setFormData(prev => ({ ...prev, bannerImage: file }));
+    setFormData((prev) => ({ ...prev, bannerImage: file }));
 
     if (file) {
       const reader = new FileReader();
-      reader.onload = e => {
+      reader.onload = (e) => {
         setBannerPreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
@@ -137,7 +137,7 @@ export default function BusinessProfileEdit() {
 
   if (userLoading || isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[500px]">
+      <div className="flex min-h-[500px] items-center justify-center">
         <Spinner size="lg" />
       </div>
     );
@@ -149,13 +149,13 @@ export default function BusinessProfileEdit() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Edit Business Profile</h1>
+    <div className="mx-auto max-w-4xl p-6">
+      <h1 className="mb-6 text-3xl font-bold">Edit Business Profile</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-1">
+            <label htmlFor="name" className="mb-1 block text-sm font-medium">
               Business Name
             </label>
             <Input
@@ -169,7 +169,7 @@ export default function BusinessProfileEdit() {
           </div>
 
           <div>
-            <label htmlFor="description" className="block text-sm font-medium mb-1">
+            <label htmlFor="description" className="mb-1 block text-sm font-medium">
               Description
             </label>
             <Textarea
@@ -183,7 +183,7 @@ export default function BusinessProfileEdit() {
           </div>
 
           <div>
-            <label htmlFor="location" className="block text-sm font-medium mb-1">
+            <label htmlFor="location" className="mb-1 block text-sm font-medium">
               Location
             </label>
             <Input
@@ -196,7 +196,7 @@ export default function BusinessProfileEdit() {
           </div>
 
           <div>
-            <label htmlFor="website" className="block text-sm font-medium mb-1">
+            <label htmlFor="website" className="mb-1 block text-sm font-medium">
               Website
             </label>
             <Input
@@ -210,7 +210,7 @@ export default function BusinessProfileEdit() {
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium mb-1">
+            <label htmlFor="phone" className="mb-1 block text-sm font-medium">
               Phone Number
             </label>
             <Input
@@ -223,14 +223,14 @@ export default function BusinessProfileEdit() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Business Logo</label>
+            <label className="mb-2 block text-sm font-medium">Business Logo</label>
             <div className="flex items-center space-x-4">
               {logoPreview && (
-                <div className="w-24 h-24 rounded-full overflow-hidden">
+                <div className="h-24 w-24 overflow-hidden rounded-full">
                   <img
                     src={logoPreview}
                     alt="Logo preview"
-                    className="w-full h-full object-cover"
+                    className="h-full w-full object-cover"
                   />
                 </div>
               )}
@@ -244,14 +244,14 @@ export default function BusinessProfileEdit() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Banner Image</label>
+            <label className="mb-2 block text-sm font-medium">Banner Image</label>
             <div className="space-y-2">
               {bannerPreview && (
-                <div className="w-full h-40 rounded-md overflow-hidden">
+                <div className="h-40 w-full overflow-hidden rounded-md">
                   <img
                     src={bannerPreview}
                     alt="Banner preview"
-                    className="w-full h-full object-cover"
+                    className="h-full w-full object-cover"
                   />
                 </div>
               )}

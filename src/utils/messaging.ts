@@ -41,7 +41,7 @@ export class MessagingUtils {
     if (!messaging) throw new Error('Messaging service not initialized');
 
     const config = this.manager.getServiceConfig('messaging') as MessagingConfig;
-    
+
     try {
       switch (config.service) {
         case 'sendgrid': {
@@ -53,13 +53,13 @@ export class MessagingUtils {
             html: message.html,
             templateId: message.templateId,
             dynamicTemplateData: message.templateData,
-            attachments: message.attachments?.map(attachment => ({
+            attachments: message.attachments?.map((attachment) => ({
               filename: attachment.filename,
               content: Buffer.isBuffer(attachment.content)
                 ? attachment.content.toString('base64')
                 : attachment.content,
-              type: attachment.contentType
-            }))
+              type: attachment.contentType,
+            })),
           };
 
           return await messaging.send(msg);
@@ -74,7 +74,7 @@ export class MessagingUtils {
             to: Array.isArray(message.to) ? message.to[0] : message.to,
             from: message.from || config.sender?.email,
             templateId: message.templateId,
-            dynamicTemplateData: message.templateData
+            dynamicTemplateData: message.templateData,
           });
         }
 
@@ -92,20 +92,20 @@ export class MessagingUtils {
     if (!messaging) throw new Error('Messaging service not initialized');
 
     const config = this.manager.getServiceConfig('messaging') as MessagingConfig;
-    
+
     try {
       switch (config.service) {
         case 'twilio': {
           const recipients = Array.isArray(message.to) ? message.to : [message.to];
           const responses = await Promise.all(
-            recipients.map(to =>
+            recipients.map((to) =>
               messaging.messages.create({
                 to,
                 from: message.from || config.sender?.phone,
                 body: message.body,
-                mediaUrl: message.mediaUrl
-              })
-            )
+                mediaUrl: message.mediaUrl,
+              }),
+            ),
           );
           return responses;
         }
@@ -124,7 +124,7 @@ export class MessagingUtils {
     if (!messaging) throw new Error('Messaging service not initialized');
 
     const config = this.manager.getServiceConfig('messaging') as MessagingConfig;
-    
+
     try {
       switch (config.service) {
         case 'firebase-fcm': {
@@ -132,14 +132,14 @@ export class MessagingUtils {
             notification: {
               title: notification.title,
               body: notification.body,
-              imageUrl: notification.imageUrl
+              imageUrl: notification.imageUrl,
             },
             data: notification.data,
             android: {
               priority: notification.priority === 'high' ? 'high' : 'normal',
-              ttl: notification.ttl ? notification.ttl * 1000 : undefined
+              ttl: notification.ttl ? notification.ttl * 1000 : undefined,
             },
-            tokens: notification.tokens
+            tokens: notification.tokens,
           };
 
           return await messaging.sendMulticast(message);
@@ -154,19 +154,22 @@ export class MessagingUtils {
     }
   }
 
-  static async validateEmailTemplate(templateId: string, data: Record<string, any>): Promise<boolean> {
+  static async validateEmailTemplate(
+    templateId: string,
+    data: Record<string, any>,
+  ): Promise<boolean> {
     const messaging = this.manager.getService('messaging');
     if (!messaging) throw new Error('Messaging service not initialized');
 
     const config = this.manager.getServiceConfig('messaging') as MessagingConfig;
-    
+
     try {
       switch (config.service) {
         case 'sendgrid': {
           const template = await messaging.templates.get(templateId);
           const requiredVariables = template.versions[0].subject.match(/{{(.*?)}}/g) || [];
-          
-          return requiredVariables.every(variable => {
+
+          return requiredVariables.every((variable) => {
             const key = variable.replace(/[{}]/g, '').trim();
             return data.hasOwnProperty(key);
           });
@@ -186,7 +189,7 @@ export class MessagingUtils {
     if (!messaging) throw new Error('Messaging service not initialized');
 
     const config = this.manager.getServiceConfig('messaging') as MessagingConfig;
-    
+
     try {
       switch (config.service) {
         case 'twilio': {
@@ -212,4 +215,4 @@ export class MessagingUtils {
       throw error;
     }
   }
-} 
+}

@@ -407,11 +407,11 @@ class AuditController {
 
     // Count issues by severity
     const issuesBySeverity = {
-      critical: allIssues.filter(i => i.severity === 'critical').length,
-      high: allIssues.filter(i => i.severity === 'high').length,
-      medium: allIssues.filter(i => i.severity === 'medium').length,
-      low: allIssues.filter(i => i.severity === 'low').length,
-      info: allIssues.filter(i => i.severity === 'info').length,
+      critical: allIssues.filter((i) => i.severity === 'critical').length,
+      high: allIssues.filter((i) => i.severity === 'high').length,
+      medium: allIssues.filter((i) => i.severity === 'medium').length,
+      low: allIssues.filter((i) => i.severity === 'low').length,
+      info: allIssues.filter((i) => i.severity === 'info').length,
     };
 
     // Generate the report
@@ -443,7 +443,7 @@ class AuditController {
   private calculateAuditScore(
     allIssues: AuditIssue[],
     issuesByCategory: Record<AuditCategory, number>,
-    issuesBySeverity: Record<string, number>
+    issuesBySeverity: Record<string, number>,
   ): {
     overallScore: number;
     categoryScores: Record<string, number>;
@@ -482,7 +482,7 @@ class AuditController {
     // Calculate score per category
     const categoryScores: Record<string, number> = {};
     for (const category in issuesByCategory) {
-      const categoryIssues = allIssues.filter(i => i.category === category);
+      const categoryIssues = allIssues.filter((i) => i.category === category);
 
       if (categoryIssues.length === 0) {
         categoryScores[category] = maxScore;
@@ -514,14 +514,14 @@ class AuditController {
       if (score < 90) {
         // Get most severe issues from this category
         const criticalIssues = allIssues.filter(
-          i => i.category === category && (i.severity === 'critical' || i.severity === 'high')
+          (i) => i.category === category && (i.severity === 'critical' || i.severity === 'high'),
         );
 
         if (criticalIssues.length > 0) {
           // Use first critical issue as recommendation focus
           const focus = criticalIssues[0];
           recommendations.push(
-            `Improve ${category} by addressing ${focus.title}: ${focus.remediation || 'No remediation suggestion provided'}`
+            `Improve ${category} by addressing ${focus.title}: ${focus.remediation || 'No remediation suggestion provided'}`,
           );
         } else {
           recommendations.push(`Improve ${category} performance to reach target score.`);
@@ -609,26 +609,26 @@ class AuditController {
   private generateSecuritySummary(issues: AuditIssue[]): ComprehensiveAuditReport['security'] {
     // Count vulnerabilities by severity
     const vulnerabilities = {
-      critical: issues.filter(i => i.severity === 'critical').length,
-      high: issues.filter(i => i.severity === 'high').length,
-      medium: issues.filter(i => i.severity === 'medium').length,
-      low: issues.filter(i => i.severity === 'low').length,
+      critical: issues.filter((i) => i.severity === 'critical').length,
+      high: issues.filter((i) => i.severity === 'high').length,
+      medium: issues.filter((i) => i.severity === 'medium').length,
+      low: issues.filter((i) => i.severity === 'low').length,
     };
 
     // Check for PCI issues
     const pciIssues = issues.filter(
-      i => i.metadata?.requirementId && i.component === 'Payment Processing'
+      (i) => i.metadata?.requirementId && i.component === 'Payment Processing',
     );
 
     const pciStatus = pciIssues.length > 0 ? 'partially_compliant' : 'compliant';
 
     // Check for data protection issues
-    const dataProtectionIssues = issues.filter(i => i.component === 'Data Protection');
+    const dataProtectionIssues = issues.filter((i) => i.component === 'Data Protection');
     const dataProtectionStatus =
       dataProtectionIssues.length > 0 ? 'partially_compliant' : 'compliant';
 
     // Check for social media issues
-    const socialMediaIssues = issues.filter(i => i.component?.includes('Social Media'));
+    const socialMediaIssues = issues.filter((i) => i.component?.includes('Social Media'));
     const socialMediaStatus = socialMediaIssues.length > 0 ? 'vulnerable' : 'secure';
 
     return {
@@ -643,10 +643,10 @@ class AuditController {
    * Generate performance section of the report
    */
   private generatePerformanceSummary(
-    issues: AuditIssue[]
+    issues: AuditIssue[],
   ): ComprehensiveAuditReport['performance'] {
     // Extract metrics from performance-related issues
-    const loadTestIssues = issues.filter(i => i.component?.includes('Load Test'));
+    const loadTestIssues = issues.filter((i) => i.component?.includes('Load Test'));
     let maxUserCount = 10000; // Default value
     let p95ResponseTime = 250; // Default value (ms)
     let errorRate = 0.5; // Default value (%)
@@ -662,26 +662,26 @@ class AuditController {
     }
 
     // Get mobile performance metrics
-    const mobileIssues = issues.filter(i => i.component?.includes('Mobile'));
+    const mobileIssues = issues.filter((i) => i.component?.includes('Mobile'));
     const averageStartupTime =
-      mobileIssues.find(i => i.metadata?.startupTime)?.metadata?.startupTime || 1500;
+      mobileIssues.find((i) => i.metadata?.startupTime)?.metadata?.startupTime || 1500;
     const averageMemoryUsage =
-      mobileIssues.find(i => i.metadata?.memoryUsage)?.metadata?.memoryUsage || 75;
+      mobileIssues.find((i) => i.metadata?.memoryUsage)?.metadata?.memoryUsage || 75;
     const averageFrameRate =
-      mobileIssues.find(i => i.metadata?.frameRate)?.metadata?.frameRate || 58;
+      mobileIssues.find((i) => i.metadata?.frameRate)?.metadata?.frameRate || 58;
 
     // Get database metrics
-    const dbIssues = issues.filter(i => i.component?.includes('Database'));
+    const dbIssues = issues.filter((i) => i.component?.includes('Database'));
     const averageQueryTime =
-      dbIssues.find(i => i.metadata?.avgQueryTime)?.metadata?.avgQueryTime || 50;
+      dbIssues.find((i) => i.metadata?.avgQueryTime)?.metadata?.avgQueryTime || 50;
     const slowQueryCount =
-      dbIssues.find(i => i.metadata?.slowQueryCount)?.metadata?.slowQueryCount || 0;
+      dbIssues.find((i) => i.metadata?.slowQueryCount)?.metadata?.slowQueryCount || 0;
 
     // Get frontend metrics
-    const frontendIssues = issues.filter(i => i.component?.includes('Frontend'));
-    const averageLCP = frontendIssues.find(i => i.metadata?.lcp)?.metadata?.lcp || 2000;
-    const averageFID = frontendIssues.find(i => i.metadata?.fid)?.metadata?.fid || 90;
-    const averageCLS = frontendIssues.find(i => i.metadata?.cls)?.metadata?.cls || 0.08;
+    const frontendIssues = issues.filter((i) => i.component?.includes('Frontend'));
+    const averageLCP = frontendIssues.find((i) => i.metadata?.lcp)?.metadata?.lcp || 2000;
+    const averageFID = frontendIssues.find((i) => i.metadata?.fid)?.metadata?.fid || 90;
+    const averageCLS = frontendIssues.find((i) => i.metadata?.cls)?.metadata?.cls || 0.08;
 
     return {
       loadTestResults: {
@@ -711,13 +711,13 @@ class AuditController {
    */
   private generateUXSummary(issues: AuditIssue[]): ComprehensiveAuditReport['ux'] {
     // User flow metrics
-    const userFlowIssues = issues.filter(i => i.component === 'User Flow');
+    const userFlowIssues = issues.filter((i) => i.component === 'User Flow');
 
     // Calculate average completion rate from metadata
     let totalCompletionRate = 0;
     let rateCount = 0;
 
-    userFlowIssues.forEach(issue => {
+    userFlowIssues.forEach((issue) => {
       if (issue.metadata?.completionRate) {
         totalCompletionRate += issue.metadata.completionRate;
         rateCount++;
@@ -726,20 +726,20 @@ class AuditController {
 
     const averageCompletionRate = rateCount > 0 ? totalCompletionRate / rateCount : 95;
     const problematicFlowCount = userFlowIssues.filter(
-      i => i.severity === 'critical' || i.severity === 'high'
+      (i) => i.severity === 'critical' || i.severity === 'high',
     ).length;
 
     // Accessibility metrics
-    const accessibilityIssues = issues.filter(i => i.component === 'Accessibility');
+    const accessibilityIssues = issues.filter((i) => i.component === 'Accessibility');
     const criticalViolationCount = accessibilityIssues.filter(
-      i => i.severity === 'critical'
+      (i) => i.severity === 'critical',
     ).length;
-    const seriousViolationCount = accessibilityIssues.filter(i => i.severity === 'high').length;
+    const seriousViolationCount = accessibilityIssues.filter((i) => i.severity === 'high').length;
     const totalViolationCount = accessibilityIssues.length;
 
     // Booking UX metrics
     const bookingUXIssues = issues.filter(
-      i => i.component?.includes('Booking') && i.category === 'ux'
+      (i) => i.component?.includes('Booking') && i.category === 'ux',
     );
 
     let totalConversionRate = 0;
@@ -747,7 +747,7 @@ class AuditController {
     let totalSatisfaction = 0;
     let satisfactionCount = 0;
 
-    bookingUXIssues.forEach(issue => {
+    bookingUXIssues.forEach((issue) => {
       if (issue.metadata?.conversionRate) {
         totalConversionRate += issue.metadata.conversionRate;
         conversionCount++;
@@ -764,11 +764,11 @@ class AuditController {
       satisfactionCount > 0 ? totalSatisfaction / satisfactionCount : 4.2;
 
     // Responsiveness metrics
-    const responsivenessIssues = issues.filter(i => i.component?.includes('Responsive'));
+    const responsivenessIssues = issues.filter((i) => i.component?.includes('Responsive'));
 
     // Count issues by device type
     const issuesByDevice: Record<string, number> = {};
-    responsivenessIssues.forEach(issue => {
+    responsivenessIssues.forEach((issue) => {
       if (issue.metadata?.deviceType) {
         const deviceType = issue.metadata.deviceType;
         issuesByDevice[deviceType] = (issuesByDevice[deviceType] || 0) + 1;
@@ -803,21 +803,21 @@ class AuditController {
    */
   private generateComplianceSummary(issues: AuditIssue[]): ComprehensiveAuditReport['compliance'] {
     // GDPR compliance
-    const gdprIssues = issues.filter(i => i.metadata?.regulation === 'GDPR');
+    const gdprIssues = issues.filter((i) => i.metadata?.regulation === 'GDPR');
     const gdprStatus = gdprIssues.length > 0 ? 'partially_compliant' : 'compliant';
 
     // CCPA compliance
-    const ccpaIssues = issues.filter(i => i.metadata?.regulation === 'CCPA');
+    const ccpaIssues = issues.filter((i) => i.metadata?.regulation === 'CCPA');
     const ccpaStatus = ccpaIssues.length > 0 ? 'partially_compliant' : 'compliant';
 
     // Data retention
-    const dataRetentionIssues = issues.filter(i => i.component?.includes('Data Retention'));
+    const dataRetentionIssues = issues.filter((i) => i.component?.includes('Data Retention'));
 
     // Count compliant and non-compliant data types
     let compliantTypesCount = 0;
     let nonCompliantTypesCount = 0;
 
-    dataRetentionIssues.forEach(issue => {
+    dataRetentionIssues.forEach((issue) => {
       if (issue.metadata?.dataTypes) {
         if (issue.severity === 'critical' || issue.severity === 'high') {
           nonCompliantTypesCount += issue.metadata.dataTypes.length || 1;
@@ -834,7 +834,7 @@ class AuditController {
     }
 
     // User consent
-    const consentIssues = issues.filter(i => i.component?.includes('User Consent'));
+    const consentIssues = issues.filter((i) => i.component?.includes('User Consent'));
 
     // Default values
     let averageCoverage = 95;
@@ -869,12 +869,12 @@ class AuditController {
   private generateBookingSummary(issues: AuditIssue[]): ComprehensiveAuditReport['booking'] {
     // Booking integrity
     const integrityIssues = issues.filter(
-      i => i.component === 'Booking System' && i.title?.includes('Booking')
+      (i) => i.component === 'Booking System' && i.title?.includes('Booking'),
     );
 
     // Count double bookings
     const doubleBookingIssues = integrityIssues.filter(
-      i => i.title?.includes('Double Booking') || i.metadata?.doubleBooking
+      (i) => i.title?.includes('Double Booking') || i.metadata?.doubleBooking,
     );
 
     const doubleBookingCount =
@@ -886,7 +886,7 @@ class AuditController {
     let successRate = 100;
     if (integrityIssues.length > 0) {
       // Reduce success rate based on severity
-      integrityIssues.forEach(issue => {
+      integrityIssues.forEach((issue) => {
         if (issue.severity === 'critical') successRate -= 20;
         else if (issue.severity === 'high') successRate -= 10;
         else if (issue.severity === 'medium') successRate -= 5;
@@ -898,7 +898,7 @@ class AuditController {
     }
 
     // Notification delivery
-    const notificationIssues = issues.filter(i => i.component === 'Notification System');
+    const notificationIssues = issues.filter((i) => i.component === 'Notification System');
 
     // Default values
     let averageDeliveryRate = 99.5;
@@ -909,7 +909,7 @@ class AuditController {
       let totalRate = 0;
       let rateCount = 0;
 
-      notificationIssues.forEach(issue => {
+      notificationIssues.forEach((issue) => {
         if (issue.metadata?.deliveryRate) {
           totalRate += issue.metadata.deliveryRate;
           rateCount++;
@@ -937,7 +937,7 @@ class AuditController {
 
     // Booking performance
     const performanceIssues = issues.filter(
-      i => i.component?.includes('Booking') && i.category === 'performance'
+      (i) => i.component?.includes('Booking') && i.category === 'performance',
     );
 
     // Default values

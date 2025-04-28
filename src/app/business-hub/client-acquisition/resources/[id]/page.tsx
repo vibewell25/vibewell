@@ -117,7 +117,7 @@ const clientAcquisitionResources: BaseResource[] = [
 
 // Fetch resource by ID
 const getResourceById = (id: string): BaseResource | undefined => {
-  return clientAcquisitionResources.find(resource => resource.id === id);
+  return clientAcquisitionResources.find((resource) => resource.id === id);
 };
 
 export default function ClientAcquisitionResourceDetailPage() {
@@ -143,9 +143,9 @@ export default function ClientAcquisitionResourceDetailPage() {
   // Showing loading or no resource state
   if (loading || !resource) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
+          <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2 border-green-500"></div>
           <p className="text-gray-600">Loading resource...</p>
         </div>
       </div>

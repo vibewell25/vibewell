@@ -1,6 +1,4 @@
-import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { ProductAnalytics } from '@/components/analytics/product-analytics';
 
 // The tests will use the jest.mock statements to mock these services,

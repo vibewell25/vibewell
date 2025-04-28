@@ -71,7 +71,9 @@ const OptimizedImage = ({
     // If no blur URL is provided and placeholder is blur, generate a simple one
     if (placeholder === 'blur' && !blurDataURL && !generatedBlurUrl) {
       // Create a simple low-quality placeholder (1x1 pixel)
-      setGeneratedBlurUrl('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2YxZjFmMSIvPjwvc3ZnPg==');
+      setGeneratedBlurUrl(
+        'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2YxZjFmMSIvPjwvc3ZnPg==',
+      );
     }
   }, [placeholder, blurDataURL, generatedBlurUrl]);
 
@@ -95,20 +97,20 @@ const OptimizedImage = ({
   const objectFitStyle = objectFit ? { objectFit } : {};
 
   return (
-    <div 
+    <div
       className={cn(
-        "relative overflow-hidden",
-        isLoading && "bg-slate-200 animate-pulse",
-        className
+        'relative overflow-hidden',
+        isLoading && 'animate-pulse bg-slate-200',
+        className,
       )}
       style={{
         width: fill ? '100%' : width,
         height: fill ? '100%' : height,
-        ...style
+        ...style,
       }}
     >
       {placeholder === 'skeleton' && isLoading && (
-        <Skeleton 
+        <Skeleton
           className="absolute inset-0 z-10"
           style={{
             width: '100%',
@@ -116,8 +118,8 @@ const OptimizedImage = ({
           }}
         />
       )}
-      
-      <Image 
+
+      <Image
         src={imgSrc}
         alt={alt}
         width={fill ? undefined : width}
@@ -133,19 +135,19 @@ const OptimizedImage = ({
         onLoad={handleLoad}
         onError={handleError}
         className={cn(
-          "transition-opacity duration-300",
-          isLoading ? "opacity-0" : "opacity-100",
-          error ? "grayscale" : ""
+          'transition-opacity duration-300',
+          isLoading ? 'opacity-0' : 'opacity-100',
+          error ? 'grayscale' : '',
         )}
         style={{
-          ...objectFitStyle
+          ...objectFitStyle,
         }}
         fetchPriority={fetchPriority}
       />
-      
+
       {/* Display alt text for screen readers if image fails to load */}
       {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-100 text-slate-500 text-xs p-2 text-center">
+        <div className="absolute inset-0 flex items-center justify-center bg-slate-100 p-2 text-center text-xs text-slate-500">
           {alt || 'Image failed to load'}
         </div>
       )}

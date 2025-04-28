@@ -1,5 +1,5 @@
 import { Icons } from '@/components/icons';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   format,
   startOfMonth,
@@ -33,7 +33,7 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
     const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
     // Map events to their dates for quick lookup
     const eventsByDate: { [dateString: string]: Event[] } = {};
-    events.forEach(event => {
+    events.forEach((event) => {
       const eventDate = parseISO(event.startDate);
       const dateKey = format(eventDate, 'yyyy-MM-dd');
       if (!eventsByDate[dateKey]) {
@@ -51,11 +51,11 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
     }
   };
   const goToPreviousMonth = () => {
-    setCurrentDate(prevDate => subMonths(prevDate, 1));
+    setCurrentDate((prevDate) => subMonths(prevDate, 1));
     setSelectedDate(null);
   };
   const goToNextMonth = () => {
-    setCurrentDate(prevDate => addMonths(prevDate, 1));
+    setCurrentDate((prevDate) => addMonths(prevDate, 1));
     setSelectedDate(null);
   };
   // Get events for the selected date
@@ -81,22 +81,22 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
   // Get selected date events
   const selectedDateEvents = selectedDate ? getEventsForDate(selectedDate) : [];
   return (
-    <div className={`rounded-lg overflow-hidden border ${className}`}>
+    <div className={`overflow-hidden rounded-lg border ${className}`}>
       {/* Calendar Header */}
-      <div className="bg-white p-4 border-b">
+      <div className="border-b bg-white p-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">{format(currentDate, 'MMMM yyyy')}</h2>
           <div className="flex space-x-2">
             <button
               onClick={goToPreviousMonth}
-              className="p-1 rounded-md hover:bg-gray-100"
+              className="rounded-md p-1 hover:bg-gray-100"
               aria-label="Previous month"
             >
               <Icons.ChevronLeftIcon className="h-5 w-5" />
             </button>
             <button
               onClick={goToNextMonth}
-              className="p-1 rounded-md hover:bg-gray-100"
+              className="rounded-md p-1 hover:bg-gray-100"
               aria-label="Next month"
             >
               <Icons.ChevronRightIcon className="h-5 w-5" />
@@ -107,8 +107,8 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
       {/* Calendar Grid */}
       <div className="bg-white">
         {/* Day Names */}
-        <div className="grid grid-cols-7 text-center text-xs uppercase tracking-wide text-gray-500 border-b">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+        <div className="grid grid-cols-7 border-b text-center text-xs uppercase tracking-wide text-gray-500">
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
             <div key={day} className="py-2">
               {day}
             </div>
@@ -124,24 +124,15 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
             return (
               <div
                 key={i}
-                className={`
-                  min-h-[100px] p-2 border-r border-b last:border-r-0 relative
-                  ${!isSameMonth(day, currentDate) ? 'text-gray-400 bg-gray-50' : ''}
-                  ${isSelected ? 'bg-blue-50' : ''}
-                  ${isTodayDate ? 'bg-yellow-50' : ''}
-                `}
+                className={`relative min-h-[100px] border-b border-r p-2 last:border-r-0 ${!isSameMonth(day, currentDate) ? 'bg-gray-50 text-gray-400' : ''} ${isSelected ? 'bg-blue-50' : ''} ${isTodayDate ? 'bg-yellow-50' : ''} `}
                 onClick={() => !isPast && handleDateClick(day)}
               >
                 <div
-                  className={`
-                  text-sm mb-1 font-medium flex justify-between
-                  ${isTodayDate ? 'text-blue-600' : ''}
-                  ${isPast ? 'text-gray-400' : ''}
-                `}
+                  className={`mb-1 flex justify-between text-sm font-medium ${isTodayDate ? 'text-blue-600' : ''} ${isPast ? 'text-gray-400' : ''} `}
                 >
                   <span>{format(day, 'd')}</span>
                   {dateHasEvents && (
-                    <span className="bg-green-100 text-green-800 text-xs font-medium px-1.5 rounded-full">
+                    <span className="rounded-full bg-green-100 px-1.5 text-xs font-medium text-green-800">
                       {getEventsForDate(day).length}
                     </span>
                   )}
@@ -153,17 +144,14 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
                     .map((event, idx) => (
                       <div
                         key={event.id}
-                        className={`
-                      px-1.5 py-0.5 text-xs truncate rounded
-                      ${isPast ? 'bg-gray-100 text-gray-500' : 'bg-green-100 text-green-800'}
-                    `}
+                        className={`truncate rounded px-1.5 py-0.5 text-xs ${isPast ? 'bg-gray-100 text-gray-500' : 'bg-green-100 text-green-800'} `}
                         title={event.title}
                       >
                         {event.title}
                       </div>
                     ))}
                 {getEventsForDate(day).length > 2 && (
-                  <div className="text-xs text-gray-500 mt-1">
+                  <div className="mt-1 text-xs text-gray-500">
                     +{getEventsForDate(day).length - 2} more
                   </div>
                 )}
@@ -174,13 +162,13 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
       </div>
       {/* Selected Date Events */}
       {selectedDate && (
-        <div className="bg-white p-4 border-t">
-          <h3 className="font-medium mb-3">Events on {format(selectedDate, 'MMMM d, yyyy')}</h3>
+        <div className="border-t bg-white p-4">
+          <h3 className="mb-3 font-medium">Events on {format(selectedDate, 'MMMM d, yyyy')}</h3>
           {selectedDateEvents.length === 0 ? (
             <p className="text-sm text-gray-500">No events scheduled for this date.</p>
           ) : (
             <div className="space-y-3">
-              {selectedDateEvents.map(event => {
+              {selectedDateEvents.map((event) => {
                 const startDate = parseISO(event.startDate);
                 const endDate = parseISO(event.endDate);
                 const durationDays = differenceInCalendarDays(endDate, startDate);
@@ -189,9 +177,9 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
                   <Link
                     href={`/events/${event.id}`}
                     key={event.id}
-                    className="block p-3 border rounded-md hover:bg-gray-50 transition-colors"
+                    className="block rounded-md border p-3 transition-colors hover:bg-gray-50"
                   >
-                    <div className="flex justify-between items-start">
+                    <div className="flex items-start justify-between">
                       <h4 className="font-medium">{event.title}</h4>
                       <Badge
                         className={
@@ -201,10 +189,10 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
                         {event.category}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                    <p className="mt-1 line-clamp-2 text-sm text-gray-600">
                       {event.shortDescription || event.description.substring(0, 120)}
                     </p>
-                    <div className="mt-2 text-xs text-gray-500 flex justify-between">
+                    <div className="mt-2 flex justify-between text-xs text-gray-500">
                       <span>
                         {format(startDate, 'h:mm a')} - {format(endDate, 'h:mm a')}
                         {durationDays > 0 && ` (${durationDays + 1} days)`}

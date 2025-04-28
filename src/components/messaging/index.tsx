@@ -30,7 +30,7 @@ export function Messaging({
   loading = false,
 }: MessagingProps) {
   const [selectedConversation, setSelectedConversation] = useState<string | null>(
-    defaultSelectedConversation || null
+    defaultSelectedConversation || null,
   );
   const [newMessage, setNewMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -48,7 +48,7 @@ export function Messaging({
   }, [conversations, selectedConversation, defaultSelectedConversation]);
 
   // Get the currently selected conversation
-  const currentConversation = conversations.find(conv => conv.id === selectedConversation);
+  const currentConversation = conversations.find((conv) => conv.id === selectedConversation);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,14 +87,14 @@ export function Messaging({
 
   if (loading) {
     return (
-      <div className={twMerge('flex justify-center items-center', height, className)}>
+      <div className={twMerge('flex items-center justify-center', height, className)}>
         <p>Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className={twMerge('grid grid-cols-1 md:grid-cols-3 gap-6', height, className)}>
+    <div className={twMerge('grid grid-cols-1 gap-6 md:grid-cols-3', height, className)}>
       {/* Conversation List */}
       <ConversationList
         conversations={conversations}
@@ -110,7 +110,7 @@ export function Messaging({
       />
 
       {/* Message View */}
-      <div className="md:col-span-2 border rounded-lg overflow-hidden flex flex-col h-full">
+      <div className="flex h-full flex-col overflow-hidden rounded-lg border md:col-span-2">
         <MessageList conversation={currentConversation} currentUserId={currentUserId} />
 
         {currentConversation && (

@@ -9,7 +9,7 @@ export const api = axios.create({
 });
 
 // Add a request interceptor to include auth token in requests
-api.interceptors.request.use(config => {
+api.interceptors.request.use((config) => {
   // Get token from localStorage
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('token');
@@ -22,8 +22,8 @@ api.interceptors.request.use(config => {
 
 // Add a response interceptor to handle auth errors
 api.interceptors.response.use(
-  response => response,
-  async error => {
+  (response) => response,
+  async (error) => {
     // Handle 401 Unauthorized errors
     if (error.response && error.response.status === 401) {
       // Clear token and redirect to login
@@ -33,35 +33,17 @@ api.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 // Helper function to check if the user is authenticated
-export const isAuthenticated = (): boolean => {
-  if (typeof window === 'undefined') {
-    return false;
-  }
-  return !!localStorage.getItem('token');
-};
+export {};
 
 // Helper function to get the authenticated user's token
-export const getAuthToken = (): string | null => {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-  return localStorage.getItem('token');
-};
+export {};
 
 // Helper function to set the authenticated user's token
-export const setAuthToken = (token: string): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('token', token);
-  }
-};
+export {};
 
 // Helper function to clear the authenticated user's token
-export const clearAuthToken = (): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('token');
-  }
-};
+export {};

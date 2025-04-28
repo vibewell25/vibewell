@@ -49,35 +49,13 @@ export const isAngleWithinRange = (angle: number, range: AngleRange): boolean =>
 };
 
 export function getKeypoints(pose: poseDetection.Pose, keypointNames: string[]): Keypoint[] {
-  return keypointNames.map(name => {
-    const kp = pose.keypoints.find(k => k.name === name);
+  return keypointNames.map((name) => {
+    const kp = pose.keypoints.find((k) => k.name === name);
     return kp ? { x: kp.x, y: kp.y, score: kp.score, name: kp.name } : { x: 0, y: 0 };
   });
 }
 
-export const checkPoseAccuracy = (
-  pose: poseDetection.Pose,
-  type: WorkoutType | YogaPose,
-  config: PoseAngleRequirements
-): PoseAccuracyResult => {
-  const feedback: string[] = [];
-  let isCorrect = true;
-
-  Object.entries(config).forEach(([joint, range]) => {
-    const points = getKeypoints(pose, [`${joint}_start`, joint, `${joint}_end`]);
-
-    const angle = calculateAngle(points[0], points[1], points[2]);
-    const withinRange = isAngleWithinRange(angle, range);
-
-    if (!withinRange) {
-      isCorrect = false;
-      const adjustment = angle < range.min ? 'increase' : 'decrease';
-      feedback.push(`${joint}: Please ${adjustment} angle (current: ${Math.round(angle)}°)`);
-    }
-  });
-
-  return { isCorrect, feedback };
-};
+export {};
 
 export function drawGuideLines(ctx: CanvasRenderingContext2D, keypoints: Keypoint[]): void {
   ctx.strokeStyle = 'blue';
@@ -100,7 +78,7 @@ export async function setupCamera(videoElement: HTMLVideoElement): Promise<boole
   });
   videoElement.srcObject = stream;
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     videoElement.onloadedmetadata = () => {
       videoElement.play();
       resolve(true);

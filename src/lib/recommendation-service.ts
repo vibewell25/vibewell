@@ -95,19 +95,19 @@ export class RecommendationService {
       });
 
       // Calculate recommendation scores
-      const recommendations: RecommendationScore[] = services.map(service => {
+      const recommendations: RecommendationScore[] = services.map((service) => {
         let score = 0.5; // Base score
         const reasons: string[] = [];
 
         // Factor in category preferences
-        const categoryPref = preferences.find(p => p.category === service.category.name);
+        const categoryPref = preferences.find((p) => p.category === service.category.name);
         if (categoryPref) {
           score += categoryPref.weight * 0.3;
           reasons.push(`Based on your interest in ${service.category.name}`);
         }
 
         // Factor in past reviews
-        const serviceReviews = reviews.filter(r => r.service.categoryId === service.categoryId);
+        const serviceReviews = reviews.filter((r) => r.service.categoryId === service.categoryId);
         if (serviceReviews.length > 0) {
           const avgRating =
             serviceReviews.reduce((sum, r) => sum + r.rating, 0) / serviceReviews.length;
@@ -126,7 +126,7 @@ export class RecommendationService {
       const topRecommendations = recommendations.sort((a, b) => b.score - a.score).slice(0, 5);
 
       await Promise.all(
-        topRecommendations.map(rec =>
+        topRecommendations.map((rec) =>
           prisma.serviceRecommendation.create({
             data: {
               userId,
@@ -134,8 +134,8 @@ export class RecommendationService {
               score: rec.score,
               reason: rec.reason,
             },
-          })
-        )
+          }),
+        ),
       );
 
       logger.info('Recommendations generated', 'RecommendationService', { userId });
@@ -166,7 +166,7 @@ export class RecommendationService {
 
       // Use OpenAI to analyze preferences and generate suggestions
       const prompt = `Based on the following user preferences and virtual try-on history, suggest suitable styles:
-        Preferences: ${preferences.map(p => `${p.style} (weight: ${p.weight})`).join(', ')}
+        Preferences: ${preferences.map((p) => `${p.style} (weight: ${p.weight})`).join(', ')}
         Try-on history: ${virtualTryOns.length} virtual try-ons
         Generate 3 style suggestions with confidence scores and descriptions.`;
 

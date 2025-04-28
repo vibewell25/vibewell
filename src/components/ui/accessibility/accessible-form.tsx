@@ -23,17 +23,17 @@ export interface AccessibleFormProps {
 export function FormField({ id, label, error, required, children, description }: FormFieldProps) {
   return (
     <div className="mb-4">
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">
+      <label htmlFor={id} className="mb-1 block text-sm font-medium text-gray-700">
         {label}
         {required && (
-          <span className="text-red-500 ml-1" aria-hidden="true">
+          <span className="ml-1 text-red-500" aria-hidden="true">
             *
           </span>
         )}
       </label>
 
       {description && (
-        <p className="text-sm text-gray-500 mb-1" id={`${id}-description`}>
+        <p className="mb-1 text-sm text-gray-500" id={`${id}-description`}>
           {description}
         </p>
       )}
@@ -67,13 +67,13 @@ export function AccessibleForm({
     <LoadingState isLoading={isLoading}>
       <form onSubmit={onSubmit} noValidate aria-busy={isLoading} aria-live="polite">
         {error && (
-          <div role="alert" className="mb-4 p-4 text-sm text-red-700 bg-red-100 rounded">
+          <div role="alert" className="mb-4 rounded bg-red-100 p-4 text-sm text-red-700">
             {error}
           </div>
         )}
 
         {success && (
-          <div role="status" className="mb-4 p-4 text-sm text-green-700 bg-green-100 rounded">
+          <div role="status" className="mb-4 rounded bg-green-100 p-4 text-sm text-green-700">
             {success}
           </div>
         )}

@@ -88,7 +88,7 @@ export function errorHandler(err: any, req: NextApiRequest, res: NextApiResponse
  * @returns A wrapped handler with error handling
  */
 export function withErrorHandler(
-  handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>
+  handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>,
 ) {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     try {

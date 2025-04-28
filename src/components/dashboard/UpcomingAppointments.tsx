@@ -1,7 +1,7 @@
 import { Icons } from '@/components/icons';
 ('use client');
 import { format } from 'date-fns';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useRouter } from 'next/navigation';
 interface Appointment {
   id: string;
@@ -17,15 +17,15 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
   const router = useRouter();
   if (appointments.length === 0) {
     return (
-      <div className="bg-muted/20 rounded-lg p-6 text-center">
-        <p className="text-muted-foreground mb-4">No upcoming appointments</p>
+      <div className="rounded-lg bg-muted/20 p-6 text-center">
+        <p className="mb-4 text-muted-foreground">No upcoming appointments</p>
         <Button onClick={() => router.push('/beauty/services')}>Book a Service</Button>
       </div>
     );
   }
   return (
     <div className="space-y-4">
-      {appointments.map(appointment => (
+      {appointments.map((appointment) => (
         <div key={appointment.id} className="flex items-start gap-4 rounded-lg border p-4">
           <div className="mt-1">
             <Icons.CalendarIcon className="h-5 w-5 text-blue-500" />

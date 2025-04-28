@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { AnalyticsService, EngagementMetrics } from '@/services/analytics-service';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useEffect, useState } from 'react';
+import { AnalyticsService } from '@/services/analytics-service';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { format, subDays, subWeeks, subMonths } from 'date-fns';
-import { ArrowRight, CalendarIcon, DownloadIcon, RefreshCw } from 'lucide-react';
+import { CalendarIcon, DownloadIcon, RefreshCw } from 'lucide-react';
 import {
   BarChart,
   Bar,
@@ -21,8 +21,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
 } from 'recharts';
 
 interface EngagementDashboardProps {
@@ -147,7 +145,7 @@ export default function EngagementDashboard({
 
     const productData = [
       ['Product ID', 'Name', 'Views'],
-      ...metrics.topViewedProducts.map(product => [
+      ...metrics.topViewedProducts.map((product) => [
         product.product_id,
         product.name,
         product.views.toString(),
@@ -172,7 +170,7 @@ export default function EngagementDashboard({
 
     // Convert array to CSV string
     const arrayToCsv = (data: string[][]) => {
-      return data.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+      return data.map((row) => row.map((cell) => `"${cell}"`).join(',')).join('\n');
     };
 
     // Generate CSV content
@@ -206,11 +204,11 @@ export default function EngagementDashboard({
   return (
     <div className="w-full space-y-4">
       {/* Controls section */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0">
+      <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
         <div className="flex flex-wrap gap-2">
           <Tabs
             value={timeRange}
-            onValueChange={value => setTimeRange(value as 'day' | 'week' | 'month' | 'custom')}
+            onValueChange={(value) => setTimeRange(value as 'day' | 'week' | 'month' | 'custom')}
           >
             <TabsList>
               <TabsTrigger value="day">24 Hours</TabsTrigger>
@@ -229,7 +227,7 @@ export default function EngagementDashboard({
                     size="sm"
                     className={cn(
                       'justify-start text-left font-normal',
-                      !dateRange.from && 'text-muted-foreground'
+                      !dateRange.from && 'text-muted-foreground',
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
@@ -255,7 +253,7 @@ export default function EngagementDashboard({
                       from: dateRange.from,
                       to: dateRange.to,
                     }}
-                    onSelect={range => {
+                    onSelect={(range) => {
                       setDateRange({
                         from: range?.from,
                         to: range?.to,
@@ -284,7 +282,7 @@ export default function EngagementDashboard({
         </div>
 
         <Button variant="outline" size="sm" onClick={exportToCsv} disabled={loading || !metrics}>
-          <DownloadIcon className="h-4 w-4 mr-2" />
+          <DownloadIcon className="mr-2 h-4 w-4" />
           Export Data
         </Button>
       </div>
@@ -300,7 +298,7 @@ export default function EngagementDashboard({
       {/* Loading state */}
       {loading && (
         <div className="w-full space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <Card key={i}>
                 <CardHeader className="pb-2">
@@ -313,7 +311,7 @@ export default function EngagementDashboard({
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {Array.from({ length: 2 }).map((_, i) => (
               <Card key={i}>
                 <CardHeader>
@@ -345,7 +343,7 @@ export default function EngagementDashboard({
       {!loading && !error && metrics && (
         <>
           {/* Metric cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium">Total Sessions</CardTitle>
@@ -392,7 +390,7 @@ export default function EngagementDashboard({
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <Card className="col-span-1">
                   <CardHeader>
                     <CardTitle>Activity by Product Category</CardTitle>
@@ -444,7 +442,7 @@ export default function EngagementDashboard({
                           type="category"
                           dataKey="name"
                           width={90}
-                          tickFormatter={value =>
+                          tickFormatter={(value) =>
                             value.length > 15 ? `${value.substring(0, 15)}...` : value
                           }
                         />
@@ -471,21 +469,21 @@ export default function EngagementDashboard({
                     <table className="w-full border-collapse">
                       <thead>
                         <tr className="border-b">
-                          <th className="text-left py-2 px-3 font-medium">Product</th>
-                          <th className="text-right py-2 px-3 font-medium">Views</th>
-                          <th className="text-right py-2 px-3 font-medium">Unique Views</th>
-                          <th className="text-right py-2 px-3 font-medium">Try-On Rate</th>
+                          <th className="px-3 py-2 text-left font-medium">Product</th>
+                          <th className="px-3 py-2 text-right font-medium">Views</th>
+                          <th className="px-3 py-2 text-right font-medium">Unique Views</th>
+                          <th className="px-3 py-2 text-right font-medium">Try-On Rate</th>
                         </tr>
                       </thead>
                       <tbody>
                         {topProductsData.map((product, index) => (
                           <tr key={index} className="border-b hover:bg-muted/50">
-                            <td className="py-2 px-3">{product.name}</td>
-                            <td className="text-right py-2 px-3">{product.views}</td>
-                            <td className="text-right py-2 px-3">
+                            <td className="px-3 py-2">{product.name}</td>
+                            <td className="px-3 py-2 text-right">{product.views}</td>
+                            <td className="px-3 py-2 text-right">
                               {Math.round(product.views * 0.7)}
                             </td>
-                            <td className="text-right py-2 px-3">
+                            <td className="px-3 py-2 text-right">
                               {Math.round(Math.random() * 100)}%
                             </td>
                           </tr>
@@ -498,7 +496,7 @@ export default function EngagementDashboard({
             </TabsContent>
 
             <TabsContent value="tryons" className="space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <Card className="col-span-1">
                   <CardHeader>
                     <CardTitle>Try-On Sessions by Type</CardTitle>
@@ -530,11 +528,11 @@ export default function EngagementDashboard({
                       Percentage of try-on sessions that were successfully completed
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="h-80 flex flex-col justify-center items-center">
-                    <div className="relative w-40 h-40">
-                      <svg className="w-full h-full" viewBox="0 0 100 100">
+                  <CardContent className="flex h-80 flex-col items-center justify-center">
+                    <div className="relative h-40 w-40">
+                      <svg className="h-full w-full" viewBox="0 0 100 100">
                         <circle
-                          className="text-muted stroke-current"
+                          className="stroke-current text-muted"
                           strokeWidth="8"
                           cx="50"
                           cy="50"
@@ -563,7 +561,7 @@ export default function EngagementDashboard({
                         </div>
                       </div>
                     </div>
-                    <div className="mt-6 text-sm text-muted-foreground text-center">
+                    <div className="mt-6 text-center text-sm text-muted-foreground">
                       Based on {metrics.totalSessions} total sessions
                     </div>
                   </CardContent>
@@ -572,7 +570,7 @@ export default function EngagementDashboard({
             </TabsContent>
 
             <TabsContent value="sharing" className="space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <Card className="col-span-1">
                   <CardHeader>
                     <CardTitle>Shares by Method</CardTitle>
@@ -612,7 +610,7 @@ export default function EngagementDashboard({
                   <CardContent>
                     <div className="space-y-4">
                       <div>
-                        <div className="text-sm font-medium text-muted-foreground mb-1">
+                        <div className="mb-1 text-sm font-medium text-muted-foreground">
                           Total Shares
                         </div>
                         <div className="text-2xl font-bold">
@@ -621,7 +619,7 @@ export default function EngagementDashboard({
                       </div>
 
                       <div>
-                        <div className="text-sm font-medium text-muted-foreground mb-1">
+                        <div className="mb-1 text-sm font-medium text-muted-foreground">
                           Share to Try-On Ratio
                         </div>
                         <div className="text-2xl font-bold">
@@ -639,17 +637,17 @@ export default function EngagementDashboard({
                       </div>
 
                       <div className="pt-4">
-                        <div className="text-sm font-medium mb-2">Share Method Breakdown</div>
+                        <div className="mb-2 text-sm font-medium">Share Method Breakdown</div>
                         <div className="space-y-2">
-                          <div className="flex justify-between items-center">
+                          <div className="flex items-center justify-between">
                             <span>Social</span>
                             <span className="font-medium">{metrics.socialShares}</span>
                           </div>
-                          <div className="flex justify-between items-center">
+                          <div className="flex items-center justify-between">
                             <span>Email</span>
                             <span className="font-medium">{metrics.emailShares}</span>
                           </div>
-                          <div className="flex justify-between items-center">
+                          <div className="flex items-center justify-between">
                             <span>Download</span>
                             <span className="font-medium">{metrics.downloadShares}</span>
                           </div>

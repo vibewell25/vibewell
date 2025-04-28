@@ -132,8 +132,5 @@ practitionerCertificationSchema.pre('save', function (next) {
   next();
 });
 
-export const CertificationModel = model<Certification>('Certification', certificationSchema);
-export const PractitionerCertificationModel = model<PractitionerCertification>(
-  'PractitionerCertification',
-  practitionerCertificationSchema
-);
+export {};
+export {};

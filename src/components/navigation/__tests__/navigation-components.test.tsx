@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
@@ -75,7 +74,7 @@ describe('Navigation Components', () => {
 
     it('renders navigation items correctly', () => {
       render(<Sidebar {...defaultProps} />);
-      defaultProps.items.forEach(item => {
+      defaultProps.items.forEach((item) => {
         expect(screen.getByText(item.label)).toBeInTheDocument();
       });
     });
@@ -129,7 +128,7 @@ describe('Navigation Components', () => {
     it('renders when open', () => {
       render(<MobileMenu {...defaultProps} isOpen={true} />);
       expect(screen.getByRole('dialog')).toBeInTheDocument();
-      defaultProps.items.forEach(item => {
+      defaultProps.items.forEach((item) => {
         expect(screen.getByText(item.label)).toBeInTheDocument();
       });
     });
@@ -169,7 +168,7 @@ describe('Navigation Components', () => {
 
     it('renders breadcrumb items correctly', () => {
       render(<Breadcrumbs {...defaultProps} />);
-      defaultProps.items.forEach(item => {
+      defaultProps.items.forEach((item) => {
         expect(screen.getByText(item.label)).toBeInTheDocument();
       });
     });
@@ -217,7 +216,7 @@ describe('Navigation Components', () => {
         <Navbar
           user={{ name: 'Test User', email: 'test@example.com', avatar: '/avatar.jpg' }}
           onLogout={() => {}}
-        />
+        />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -230,7 +229,7 @@ describe('Navigation Components', () => {
             { label: 'Dashboard', href: '/dashboard', icon: 'dashboard' },
             { label: 'Profile', href: '/profile', icon: 'user' },
           ]}
-        />
+        />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -245,7 +244,7 @@ describe('Navigation Components', () => {
           ]}
           isOpen={true}
           onClose={() => {}}
-        />
+        />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -259,7 +258,7 @@ describe('Navigation Components', () => {
             { label: 'Dashboard', href: '/dashboard' },
             { label: 'Settings', href: '/dashboard/settings' },
           ]}
-        />
+        />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();

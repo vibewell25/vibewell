@@ -61,10 +61,10 @@ export async function GET(request: Request) {
     // Determine current level and next level
     const currentLevel =
       LOYALTY_LEVELS.find(
-        level => user.loyaltyPoints >= level.minPoints && user.loyaltyPoints < level.maxPoints
+        (level) => user.loyaltyPoints >= level.minPoints && user.loyaltyPoints < level.maxPoints,
       ) || LOYALTY_LEVELS[0];
 
-    const nextLevel = LOYALTY_LEVELS.find(level => level.minPoints > currentLevel.minPoints);
+    const nextLevel = LOYALTY_LEVELS.find((level) => level.minPoints > currentLevel.minPoints);
 
     // Calculate progress to next level
     const progress = nextLevel
@@ -94,7 +94,7 @@ export async function GET(request: Request) {
       progress: Math.min(progress, 100),
       nextLevel: nextLevel?.name,
       pointsToNextLevel: nextLevel ? nextLevel.minPoints - user.loyaltyPoints : 0,
-      transactions: transactions.map(t => ({
+      transactions: transactions.map((t) => ({
         ...t,
         date: t.createdAt.toISOString(),
       })),

@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { BusinessHubLayout } from '../business-hub-layout';
 import { usePathname } from 'next/navigation';
 import { axe } from 'jest-axe';

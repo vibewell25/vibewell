@@ -64,7 +64,7 @@ export function Stack({
     spacing !== 'none' ? spacingClasses[spacing] : null,
     align ? alignClasses[align] : null,
     justify ? justifyClasses[justify] : null,
-    className
+    className,
   );
 
   return (

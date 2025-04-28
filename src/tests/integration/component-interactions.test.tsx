@@ -1,8 +1,6 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
-import 'jest-axe/extend-expect';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 
@@ -22,7 +20,7 @@ describe('Component Interactions', () => {
             <p>Card content with interactive elements</p>
             <div className="space-y-4">
               <Button
-                onClick={e => {
+                onClick={(e) => {
                   e.stopPropagation();
                   handleButtonClick();
                 }}
@@ -32,7 +30,7 @@ describe('Component Interactions', () => {
               </Button>
             </div>
           </Card.Body>
-        </Card>
+        </Card>,
       );
 
       // Test accessibility
@@ -57,7 +55,7 @@ describe('Component Interactions', () => {
           <Card.Body>
             <Button loading>Loading Button</Button>
           </Card.Body>
-        </Card>
+        </Card>,
       );
 
       // Test initial loading state
@@ -74,7 +72,7 @@ describe('Component Interactions', () => {
           <Card.Body>
             <Button>Button in Loading Card</Button>
           </Card.Body>
-        </Card>
+        </Card>,
       );
 
       expect(screen.getByTestId('card-skeleton')).toBeInTheDocument();
@@ -100,7 +98,7 @@ describe('Component Interactions', () => {
               <Button onClick={handleButtonClick}>Second Button</Button>
             </Card.Body>
           </Card>
-        </div>
+        </div>,
       );
 
       // Get all interactive elements
@@ -145,7 +143,7 @@ describe('Component Interactions', () => {
               Retry
             </Button>
           </Card.Body>
-        </Card>
+        </Card>,
       );
 
       // Test accessibility

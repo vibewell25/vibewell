@@ -51,7 +51,7 @@ export class SocialService {
    * Create a new event
    */
   async createEvent(
-    data: Omit<Event, 'id' | 'status' | 'attendees' | 'waitlist' | 'createdAt' | 'updatedAt'>
+    data: Omit<Event, 'id' | 'status' | 'attendees' | 'waitlist' | 'createdAt' | 'updatedAt'>,
   ) {
     try {
       const event = await prisma.event.create({

@@ -54,13 +54,13 @@ export class CacheManager {
       host: config.redis?.host || process.env.REDIS_URL,
       port: config.redis?.port || 6379,
       ...(config.redis?.password ? { password: config.redis.password } : {}),
-      retryStrategy: (times) => Math.min(times * 50, 2000)
+      retryStrategy: (times) => Math.min(times * 50, 2000),
     });
 
     this.memoryCache = new LRUCache({
       max: config.memory?.maxSize || 1000,
       ttl: config.memory?.ttl || 3600,
-      updateAgeOnGet: true
+      updateAgeOnGet: true,
     });
 
     this.config = {
@@ -101,7 +101,7 @@ export class CacheManager {
       const value = await this.redis.get(key);
       const duration = performance.now() - start;
       this.monitoringService.recordMetric('redis_get_duration', duration);
-      
+
       if (!value) return null;
       return JSON.parse(value);
     } catch (error) {
@@ -124,13 +124,13 @@ export class CacheManager {
   private getFromMemory<T>(key: string): T | null {
     const entry = this.memoryCache.get(key) as CacheEntry<T> | undefined;
     if (!entry) return null;
-    
+
     const now = Date.now();
     if (now > entry.expiresAt) {
       this.memoryCache.delete(key);
       return null;
     }
-    
+
     return entry.value;
   }
 
@@ -139,14 +139,14 @@ export class CacheManager {
     this.memoryCache.set(key, {
       value,
       timestamp: now,
-      expiresAt: now + ttl * 1000
+      expiresAt: now + ttl * 1000,
     });
   }
 
   public async get<T>(
     key: string,
     strategy: string,
-    fetchFn?: () => Promise<T>
+    fetchFn?: () => Promise<T>,
   ): Promise<T | null> {
     const cacheStrategy = this.config.strategies[strategy];
     if (!cacheStrategy) {
@@ -242,8 +242,10 @@ export class CacheManager {
 
   private shouldCleanup(): boolean {
     const now = Date.now();
-    return this.stats.size > this.config.memory.maxSize ||
-           now - this.stats.lastCleanup.getTime() > this.config.memory.ttl * 1000;
+    return (
+      this.stats.size > this.config.memory.maxSize ||
+      now - this.stats.lastCleanup.getTime() > this.config.memory.ttl * 1000
+    );
   }
 
   private async cleanup(): Promise<void> {
@@ -253,14 +255,14 @@ export class CacheManager {
         this.PREFIX + 'access',
         0,
         Math.max(0, this.stats.size - this.config.memory.maxSize),
-        'WITHSCORES'
+        'WITHSCORES',
       );
 
       const keysToRemove = lruKeys.filter((_, i) => i % 2 === 0);
       if (keysToRemove.length > 0) {
         await Promise.all([
-          this.redis.del(...keysToRemove.map(k => this.PREFIX + k)),
-          this.redis.zrem(this.PREFIX + 'access', ...keysToRemove)
+          this.redis.del(...keysToRemove.map((k) => this.PREFIX + k)),
+          this.redis.zrem(this.PREFIX + 'access', ...keysToRemove),
         ]);
         this.stats.size = Math.max(0, this.stats.size - keysToRemove.length);
       }
@@ -278,7 +280,7 @@ export class CacheManager {
     const total = this.stats.hits + this.stats.misses;
     return {
       ...this.stats,
-      hitRate: total > 0 ? this.stats.hits / total : 0
+      hitRate: total > 0 ? this.stats.hits / total : 0,
     };
   }
 
@@ -286,12 +288,12 @@ export class CacheManager {
     const start = performance.now();
     try {
       await Promise.all(
-        keys.map(async key => {
+        keys.map(async (key) => {
           const value = await this.redis.get(this.PREFIX + key);
           if (value) {
             await this.redis.zadd(this.PREFIX + 'access', Date.now(), key);
           }
-        })
+        }),
       );
     } catch (error) {
       logger.error('Cache warmup error:', error);
@@ -319,4 +321,4 @@ export class CacheManager {
       }
     }, this.config.cleanupInterval * 1000);
   }
-} 
+}

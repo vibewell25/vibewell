@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@auth0/nextjs-auth0';
-import { cookies } from 'next/headers';
 import { z } from 'zod';
 import Stripe from 'stripe';
 import { financialRateLimiter, applyRateLimit } from '@/lib/rate-limiter';
@@ -45,7 +44,7 @@ export async function POST(req: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -131,7 +130,7 @@ export async function PUT(req: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

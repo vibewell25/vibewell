@@ -2,7 +2,7 @@
 
 import { Icons } from '@/components/icons';
 import { useEffect, useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/Card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
@@ -53,11 +53,11 @@ export function LoyaltyPoints() {
     return (
       <div className="space-y-6">
         <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2 mb-8"></div>
-          <div className="h-32 bg-gray-200 rounded mb-8"></div>
-          <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          <div className="mb-4 h-8 w-1/4 rounded bg-gray-200"></div>
+          <div className="mb-8 h-4 w-1/2 rounded bg-gray-200"></div>
+          <div className="mb-8 h-32 rounded bg-gray-200"></div>
+          <div className="mb-4 h-4 w-3/4 rounded bg-gray-200"></div>
+          <div className="h-4 w-1/2 rounded bg-gray-200"></div>
         </div>
       </div>
     );
@@ -65,7 +65,7 @@ export function LoyaltyPoints() {
 
   if (!data) {
     return (
-      <div className="text-center py-12">
+      <div className="py-12 text-center">
         <p className="text-muted-foreground">Failed to load loyalty information</p>
       </div>
     );
@@ -76,7 +76,7 @@ export function LoyaltyPoints() {
       {/* Points and Level Card */}
       <Card>
         <CardContent className="pt-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold">{data.points} Points</h2>
               <p className="text-muted-foreground">Current Balance</p>
@@ -101,7 +101,7 @@ export function LoyaltyPoints() {
       {/* Benefits Card */}
       <Card>
         <CardContent className="pt-6">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
             <Icons.GiftIcon className="h-5 w-5" />
             Current Benefits
           </h3>
@@ -118,13 +118,13 @@ export function LoyaltyPoints() {
       {/* Recent Transactions Card */}
       <Card>
         <CardContent className="pt-6">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
             <Icons.ClockIcon className="h-5 w-5" />
             Recent Transactions
           </h3>
           <div className="space-y-4">
-            {data.transactions.map(transaction => (
-              <div key={transaction.id} className="flex justify-between items-center">
+            {data.transactions.map((transaction) => (
+              <div key={transaction.id} className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">{transaction.description}</p>
                   <p className="text-sm text-muted-foreground">

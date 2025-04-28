@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import { Icons } from '@/components/ui/icons';
 import { toast } from '@/components/ui/use-toast';
@@ -122,7 +122,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
           <CardTitle>No Active Subscription</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-gray-600 mb-4">
+          <p className="mb-4 text-gray-600">
             You don't have an active subscription. Choose a plan to get started.
           </p>
           <Button onClick={() => (window.location.href = '/pricing')}>View Plans</Button>
@@ -178,8 +178,8 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
             )}
           </div>
 
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <h4 className="font-medium mb-2">Billing History</h4>
+          <div className="mt-6 border-t border-gray-200 pt-6">
+            <h4 className="mb-2 font-medium">Billing History</h4>
             <Button variant="outline" onClick={() => (window.location.href = '/billing')}>
               View Billing History
             </Button>

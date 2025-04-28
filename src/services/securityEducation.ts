@@ -61,7 +61,7 @@ export class SecurityEducationService {
   async getRelevantTips(
     userId: string,
     userRole: string,
-    currentAction?: string
+    currentAction?: string,
   ): Promise<SecurityTip[]> {
     try {
       // Get all tips
@@ -71,7 +71,7 @@ export class SecurityEducationService {
       const progress = await this.getUserProgress(userId);
 
       // Filter tips based on relevance
-      return tips.filter(tip => {
+      return tips.filter((tip) => {
         // Check if tip has been recently acknowledged
         const hasAcknowledged = progress.acknowledgedTips.includes(tip.id);
         if (hasAcknowledged) return false;
@@ -103,7 +103,7 @@ export class SecurityEducationService {
    */
   private async getAllTips(): Promise<SecurityTip[]> {
     const tipData = await this.redis.hgetall(`${this.keyPrefix}:tips`);
-    return Object.values(tipData).map(data => JSON.parse(data));
+    return Object.values(tipData).map((data) => JSON.parse(data));
   }
 
   /**
@@ -133,7 +133,7 @@ export class SecurityEducationService {
     try {
       const moduleData = await this.redis.hgetall(`${this.keyPrefix}:modules`);
       const modules = Object.values(moduleData).map(
-        data => JSON.parse(data) as SecurityAwarenessModule
+        (data) => JSON.parse(data) as SecurityAwarenessModule,
       );
 
       // Filter modules based on user role if needed
@@ -171,7 +171,7 @@ export class SecurityEducationService {
     userId: string,
     moduleId: string,
     score: number,
-    timeSpent: number
+    timeSpent: number,
   ): Promise<void> {
     try {
       const progress = await this.getUserProgress(userId);

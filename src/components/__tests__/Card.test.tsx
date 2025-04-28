@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { Card } from '../Card';
@@ -12,7 +11,7 @@ describe('Card Component', () => {
         <Card.Header>Header</Card.Header>
         <Card.Body>Content</Card.Body>
         <Card.Footer>Footer</Card.Footer>
-      </Card>
+      </Card>,
     );
     expect(screen.getByText('Header')).toBeInTheDocument();
     expect(screen.getByText('Content')).toBeInTheDocument();
@@ -42,7 +41,7 @@ describe('Card Component', () => {
     render(
       <Card onClick={handleClick} clickable>
         Clickable Card
-      </Card>
+      </Card>,
     );
 
     const card = screen.getByTestId('card');
@@ -65,7 +64,7 @@ describe('Card Component', () => {
       <Card>
         <Card.Image src="/test-image.jpg" alt="Test Image" />
         <Card.Body>Content</Card.Body>
-      </Card>
+      </Card>,
     );
     expect(screen.getByAltText('Test Image')).toBeInTheDocument();
   });
@@ -76,7 +75,7 @@ describe('Card Component', () => {
       <Card>
         <Card.Header>Accessible Header</Card.Header>
         <Card.Body>Accessible Content</Card.Body>
-      </Card>
+      </Card>,
     );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
@@ -86,7 +85,7 @@ describe('Card Component', () => {
     render(
       <Card aria-label="Custom Card Label">
         <Card.Body>Content</Card.Body>
-      </Card>
+      </Card>,
     );
     expect(screen.getByTestId('card')).toHaveAttribute('aria-label', 'Custom Card Label');
   });
@@ -97,7 +96,7 @@ describe('Card Component', () => {
     render(
       <Card onClick={handleClick} clickable>
         Keyboard Navigation Test
-      </Card>
+      </Card>,
     );
 
     const card = screen.getByTestId('card');
@@ -112,7 +111,7 @@ describe('Card Component', () => {
     render(
       <Card responsive>
         <Card.Body>Responsive Content</Card.Body>
-      </Card>
+      </Card>,
     );
     expect(screen.getByTestId('card')).toHaveClass('card-responsive');
   });
@@ -133,7 +132,7 @@ describe('Card Component', () => {
           <button>Action 1</button>
           <button>Action 2</button>
         </Card.Footer>
-      </Card>
+      </Card>,
     );
 
     expect(screen.getByText('Complex Header')).toBeInTheDocument();
@@ -151,7 +150,7 @@ describe('Card Component', () => {
         <Card.Header>Snapshot Header</Card.Header>
         <Card.Body>Snapshot Content</Card.Body>
         <Card.Footer>Snapshot Footer</Card.Footer>
-      </Card>
+      </Card>,
     );
     expect(container.firstChild).toMatchSnapshot();
   });

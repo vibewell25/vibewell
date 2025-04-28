@@ -28,9 +28,9 @@ export function WellnessContentModal({
 }: WellnessContentModalProps) {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-card rounded-lg shadow-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-card p-6 shadow-lg">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">{content ? 'Edit Content' : 'Create New Content'}</h2>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <Icons.XMarkIcon className="h-6 w-6" />

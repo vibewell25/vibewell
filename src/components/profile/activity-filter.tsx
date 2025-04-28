@@ -1,4 +1,4 @@
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Search, Filter, Calendar } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useState } from 'react';
 
 interface ActivityFilterProps {
@@ -54,7 +54,7 @@ export function ActivityFilter({
             id="search"
             placeholder="Search activities..."
             value={searchQuery}
-            onChange={e => handleSearch(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             className="pl-8"
           />
         </div>
@@ -83,7 +83,7 @@ export function ActivityFilter({
           <Input
             type="date"
             value={dateRange.from.toISOString().substring(0, 10)}
-            onChange={e => {
+            onChange={(e) => {
               const newDate = new Date(e.target.value);
               const newRange = { from: newDate, to: dateRange.to };
               handleDateRangeChange(newRange);
@@ -94,7 +94,7 @@ export function ActivityFilter({
           <Input
             type="date"
             value={dateRange.to.toISOString().substring(0, 10)}
-            onChange={e => {
+            onChange={(e) => {
               const newDate = new Date(e.target.value);
               const newRange = { from: dateRange.from, to: newDate };
               handleDateRangeChange(newRange);

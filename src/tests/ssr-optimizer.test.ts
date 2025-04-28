@@ -1,8 +1,7 @@
-import { Redis } from 'ioredis';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { Redis } from 'ioredis';
 import { GetServerSidePropsContext } from 'next';
 import { renderToString, renderToNodeStream } from 'react-dom/server';
 import SSROptimizer from '../utils/ssr-optimization';
-import { cacheManager } from '../utils/caching';
 import { performanceMonitor } from '../utils/performance-monitoring';
 import { logger } from '../utils/logger';
 

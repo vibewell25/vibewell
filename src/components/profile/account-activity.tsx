@@ -1,9 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, Lock, Key, Globe, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { User, Key, Globe, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -83,7 +82,7 @@ export function AccountActivity() {
   const [filter, setFilter] = useState<string>('all');
   const [search, setSearch] = useState('');
 
-  const filteredEvents = events.filter(event => {
+  const filteredEvents = events.filter((event) => {
     const matchesFilter = filter === 'all' || event.type === filter;
     const matchesSearch =
       event.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -116,7 +115,7 @@ export function AccountActivity() {
             <Input
               id="search"
               value={search}
-              onChange={e => setSearch(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search activity..."
             />
           </div>
@@ -139,7 +138,7 @@ export function AccountActivity() {
         </div>
 
         <div className="space-y-4">
-          {filteredEvents.map(event => (
+          {filteredEvents.map((event) => (
             <div key={event.id} className="flex items-start space-x-4 rounded-lg border p-4">
               <div className={`mt-1 ${getStatusColor(event.status)}`}>{event.icon}</div>
               <div className="flex-1 space-y-1">

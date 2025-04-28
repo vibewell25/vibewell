@@ -10,12 +10,12 @@ import {
   AddressElement,
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
-import { validateField, validateForm } from '../../utils/form-validation';
+import { validateForm } from '../../utils/form-validation';
 
 // Load Stripe outside of a component
 // Make sure to include your publishable key from the environment variables
@@ -78,7 +78,7 @@ export function PaymentFormWrapper(props: PaymentFormProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loader2 className="text-primary h-8 w-8 animate-spin" />
         <span className="ml-2">Preparing payment form...</span>
       </div>
     );
@@ -152,14 +152,14 @@ function PaymentForm({
 
     try {
       const validationResult = validateForm(formData);
-      
+
       if (!validationResult.isValid) {
         // Set specific field errors
         if (validationResult.errors.name) {
           setNameError(validationResult.errors.name);
           hasError = true;
         }
-        
+
         if (validationResult.errors.email) {
           setEmailError(validationResult.errors.email);
           hasError = true;
@@ -227,7 +227,7 @@ function PaymentForm({
           <Input
             id="name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             placeholder="John Doe"
             data-cy="customer-name"
           />
@@ -244,7 +244,7 @@ function PaymentForm({
             id="email"
             type="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="john@example.com"
             data-cy="customer-email"
           />

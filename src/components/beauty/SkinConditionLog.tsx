@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Button, Input, Select, Slider } from '@/components/ui';
+import { useState, useEffect } from 'react';
+import { Card, Button, Input, Slider } from '@/components/ui';
 import { logSkinCondition, getSkinConditionLogs } from '@/lib/api/beauty';
-import { SkinConditionLog, SkinConcern } from '@/lib/api/beauty';
+import { SkinConcern } from '@/lib/api/beauty';
 
 const skinConcerns: SkinConcern[] = [
   'acne',
@@ -42,10 +42,10 @@ export default function SkinConditionLogComponent() {
   };
 
   const handleConcernToggle = (concern: SkinConcern) => {
-    setNewLog(prev => ({
+    setNewLog((prev) => ({
       ...prev,
       concerns: prev.concerns.includes(concern)
-        ? prev.concerns.filter(c => c !== concern)
+        ? prev.concerns.filter((c) => c !== concern)
         : [...prev.concerns, concern],
     }));
   };
@@ -72,7 +72,7 @@ export default function SkinConditionLogComponent() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Skin Condition Log</h2>
         <Button onClick={() => setShowNewLog(!showNewLog)}>
           {showNewLog ? 'Cancel' : 'New Log'}
@@ -80,18 +80,18 @@ export default function SkinConditionLogComponent() {
       </div>
 
       {showNewLog && (
-        <Card className="p-6 space-y-4">
+        <Card className="space-y-4 p-6">
           <Input
             type="date"
             label="Date"
             value={newLog.date}
-            onChange={e => setNewLog(prev => ({ ...prev, date: e.target.value }))}
+            onChange={(e) => setNewLog((prev) => ({ ...prev, date: e.target.value }))}
           />
 
           <div className="space-y-2">
             <label className="block text-sm font-medium">Skin Concerns</label>
             <div className="flex flex-wrap gap-2">
-              {skinConcerns.map(concern => (
+              {skinConcerns.map((concern) => (
                 <Button
                   key={concern}
                   variant={newLog.concerns.includes(concern) ? 'default' : 'outline'}
@@ -105,46 +105,46 @@ export default function SkinConditionLogComponent() {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Mood (1-5)</label>
+              <label className="mb-2 block text-sm font-medium">Mood (1-5)</label>
               <Slider
                 value={[newLog.mood]}
                 min={1}
                 max={5}
                 step={1}
-                onValueChange={([value]) => setNewLog(prev => ({ ...prev, mood: value }))}
+                onValueChange={([value]) => setNewLog((prev) => ({ ...prev, mood: value }))}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Stress Level (1-5)</label>
+              <label className="mb-2 block text-sm font-medium">Stress Level (1-5)</label>
               <Slider
                 value={[newLog.stress]}
                 min={1}
                 max={5}
                 step={1}
-                onValueChange={([value]) => setNewLog(prev => ({ ...prev, stress: value }))}
+                onValueChange={([value]) => setNewLog((prev) => ({ ...prev, stress: value }))}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Sleep Quality (1-5)</label>
+              <label className="mb-2 block text-sm font-medium">Sleep Quality (1-5)</label>
               <Slider
                 value={[newLog.sleep]}
                 min={1}
                 max={5}
                 step={1}
-                onValueChange={([value]) => setNewLog(prev => ({ ...prev, sleep: value }))}
+                onValueChange={([value]) => setNewLog((prev) => ({ ...prev, sleep: value }))}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Hydration Level (1-5)</label>
+              <label className="mb-2 block text-sm font-medium">Hydration Level (1-5)</label>
               <Slider
                 value={[newLog.hydration]}
                 min={1}
                 max={5}
                 step={1}
-                onValueChange={([value]) => setNewLog(prev => ({ ...prev, hydration: value }))}
+                onValueChange={([value]) => setNewLog((prev) => ({ ...prev, hydration: value }))}
               />
             </div>
           </div>
@@ -152,29 +152,26 @@ export default function SkinConditionLogComponent() {
           <Input
             label="Notes"
             value={newLog.notes || ''}
-            onChange={e => setNewLog(prev => ({ ...prev, notes: e.target.value }))}
+            onChange={(e) => setNewLog((prev) => ({ ...prev, notes: e.target.value }))}
           />
 
           <Button onClick={handleSubmit}>Save Log</Button>
         </Card>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {logs.map(log => (
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {logs.map((log) => (
           <Card key={log.id} className="p-6">
-            <div className="flex justify-between items-start mb-4">
+            <div className="mb-4 flex items-start justify-between">
               <h3 className="text-xl font-semibold">{new Date(log.date).toLocaleDateString()}</h3>
             </div>
 
             {log.concerns.length > 0 && (
               <div className="mb-4">
-                <h4 className="text-sm font-medium mb-2">Concerns</h4>
+                <h4 className="mb-2 text-sm font-medium">Concerns</h4>
                 <div className="flex flex-wrap gap-2">
-                  {log.concerns.map(concern => (
-                    <span
-                      key={concern}
-                      className="px-2 py-1 bg-gray-100 rounded-full text-sm"
-                    >
+                  {log.concerns.map((concern) => (
+                    <span key={concern} className="rounded-full bg-gray-100 px-2 py-1 text-sm">
                       {concern.replace('_', ' ')}
                     </span>
                   ))}
@@ -182,7 +179,7 @@ export default function SkinConditionLogComponent() {
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="mb-4 grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm text-gray-600">Mood</p>
                 <p className="font-medium">{log.mood}/5</p>
@@ -203,7 +200,7 @@ export default function SkinConditionLogComponent() {
 
             {log.notes && (
               <div>
-                <h4 className="text-sm font-medium mb-1">Notes</h4>
+                <h4 className="mb-1 text-sm font-medium">Notes</h4>
                 <p className="text-gray-600">{log.notes}</p>
               </div>
             )}
@@ -212,4 +209,4 @@ export default function SkinConditionLogComponent() {
       </div>
     </div>
   );
-} 
+}

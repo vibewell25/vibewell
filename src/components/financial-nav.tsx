@@ -73,7 +73,7 @@ export function FinancialNav() {
     return false;
   };
   // Find the currently active item
-  const activeItem = navItems.find(item => isActive(item.href));
+  const activeItem = navItems.find((item) => isActive(item.href));
   // Toggle the dropdown
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -81,12 +81,12 @@ export function FinancialNav() {
   // Determine if we should show mobile or desktop navigation
   const isMobile = windowWidth < 768; // 768px is typical md breakpoint
   return (
-    <div className="bg-white shadow-sm rounded-md mb-6 overflow-hidden">
+    <div className="mb-6 overflow-hidden rounded-md bg-white shadow-sm">
       {/* Mobile View */}
       {isMobile && (
         <>
           <button
-            className="w-full flex items-center justify-between p-4 text-left"
+            className="flex w-full items-center justify-between p-4 text-left"
             onClick={toggleDropdown}
             aria-expanded={isOpen}
             aria-controls="financial-nav-dropdown"
@@ -102,19 +102,19 @@ export function FinancialNav() {
               )}
             </div>
             <Icons.ChevronDownIcon
-              className={`h-5 w-5 transition-transform ${isOpen ? 'transform rotate-180' : ''}`}
+              className={`h-5 w-5 transition-transform ${isOpen ? 'rotate-180 transform' : ''}`}
             />
           </button>
           {/* Dropdown menu */}
           {isOpen && (
             <div id="financial-nav-dropdown" className="border-t border-gray-200 py-2">
-              {navItems.map(item => (
+              {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
                   className={`flex items-center px-4 py-3 ${
                     isActive(item.href)
-                      ? 'bg-green-100 text-green-800 font-medium'
+                      ? 'bg-green-100 font-medium text-green-800'
                       : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                   }`}
                   onClick={() => setIsOpen(false)}
@@ -130,13 +130,13 @@ export function FinancialNav() {
       {/* Desktop View */}
       {!isMobile && (
         <nav className="flex flex-wrap gap-1 p-1">
-          {navItems.map(item => (
+          {navItems.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className={`flex items-center px-3 py-2 text-sm rounded-md ${
+              className={`flex items-center rounded-md px-3 py-2 text-sm ${
                 isActive(item.href)
-                  ? 'bg-green-100 text-green-800 font-medium'
+                  ? 'bg-green-100 font-medium text-green-800'
                   : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
               }`}
             >

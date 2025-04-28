@@ -74,7 +74,7 @@ declare module 'jest-axe' {
     inapplicable: any[];
   }
 
-  export const axe: (html: Element | string, options?: any) => Promise<AxeResults>;
+  export {};
 
   export const toHaveNoViolations: {
     toHaveNoViolations(results: AxeResults): {
@@ -84,7 +84,7 @@ declare module 'jest-axe' {
   };
 
   export function configureAxe(
-    options: any
+    options: any,
   ): (html: Element | string, options?: any) => Promise<AxeResults>;
 
   export function axeTest(html: Element | string, options?: any): Promise<AxeResults>;

@@ -122,7 +122,7 @@ export function Grid({
     align ? alignClasses[align] : null,
     justify ? justifyClasses[justify] : null,
     flow ? flowClasses[flow] : null,
-    className
+    className,
   );
 
   return (
@@ -201,7 +201,7 @@ export function GridItem({ children, span, start, end, className, ...props }: Gr
     span ? spanClasses[span] : null,
     start ? startClasses[start] : null,
     end ? endClasses[end] : null,
-    className
+    className,
   );
 
   return (

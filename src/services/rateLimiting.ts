@@ -19,7 +19,7 @@ export class RateLimitService {
    */
   async isRateLimited(
     key: string,
-    config: RateLimitConfig
+    config: RateLimitConfig,
   ): Promise<{ limited: boolean; remaining: number; resetTime?: Date }> {
     const now = Date.now();
     const keyPrefix = `rate-limit:${key}`;
@@ -84,42 +84,7 @@ export class RateLimitService {
 }
 
 // Rate limit configurations
-export const RATE_LIMITS = {
-  // General API limits
-  api: {
-    points: 100, // 100 requests
-    duration: 60, // per minute
-    blockDuration: 300, // 5 minute block if exceeded
-  },
-
-  // Login attempts
-  login: {
-    points: 5, // 5 attempts
-    duration: 300, // per 5 minutes
-    blockDuration: 900, // 15 minute block if exceeded
-  },
-
-  // MFA verification attempts
-  mfa: {
-    points: 3, // 3 attempts
-    duration: 300, // per 5 minutes
-    blockDuration: 1800, // 30 minute block if exceeded
-  },
-
-  // Password reset requests
-  passwordReset: {
-    points: 3, // 3 attempts
-    duration: 3600, // per hour
-    blockDuration: 7200, // 2 hour block if exceeded
-  },
-
-  // SMS/Email code requests
-  otpRequest: {
-    points: 5, // 5 requests
-    duration: 3600, // per hour
-    blockDuration: 3600, // 1 hour block if exceeded
-  },
-};
+export {};
 
 // Export singleton instance
-export const rateLimitService = new RateLimitService();
+export {};

@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import { AuthenticatorTransport } from '@simplewebauthn/types';
 
 export interface WebAuthnAuthenticator {
@@ -33,7 +32,7 @@ export class WebAuthnError extends Error {
   constructor(
     message: string,
     public code: string,
-    public details?: Record<string, unknown>
+    public details?: Record<string, unknown>,
   ) {
     super(message);
     this.name = 'WebAuthnError';
@@ -56,19 +55,4 @@ export class WebAuthnError extends Error {
   }
 }
 
-export const webAuthnUtils = {
-  bufferToBase64URL(buffer: ArrayBuffer): string {
-    return Buffer.from(buffer)
-      .toString('base64')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=/g, '');
-  },
-
-  base64URLToBuffer(base64url: string): Uint8Array {
-    const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
-    const padding = '='.repeat((4 - (base64.length % 4)) % 4);
-    const base64String = base64 + padding;
-    return new Uint8Array(Buffer.from(base64String, 'base64'));
-  },
-};
+export {};

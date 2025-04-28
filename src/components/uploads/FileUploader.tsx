@@ -145,10 +145,10 @@ export default function FileUploader({
         type="button"
         onClick={triggerFileInput}
         disabled={isUploading}
-        className={`px-4 py-2 rounded transition-colors ${
+        className={`rounded px-4 py-2 transition-colors ${
           isUploading
-            ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-blue-600 hover:bg-blue-700 text-white'
+            ? 'cursor-not-allowed bg-gray-400'
+            : 'bg-blue-600 text-white hover:bg-blue-700'
         }`}
       >
         {isUploading ? 'Uploading...' : buttonText}
@@ -156,19 +156,19 @@ export default function FileUploader({
 
       {isUploading && (
         <div className="mt-2">
-          <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+          <div className="mt-1 h-2.5 w-full rounded-full bg-gray-200">
             <div
-              className="bg-blue-600 h-2.5 rounded-full"
+              className="h-2.5 rounded-full bg-blue-600"
               style={{ width: `${uploadProgress}%` }}
             ></div>
           </div>
-          <p className="text-sm text-gray-600 mt-1">{uploadProgress}% complete</p>
+          <p className="mt-1 text-sm text-gray-600">{uploadProgress}% complete</p>
         </div>
       )}
 
-      {uploadError && <div className="text-red-600 mt-2 text-sm">{uploadError}</div>}
+      {uploadError && <div className="mt-2 text-sm text-red-600">{uploadError}</div>}
 
-      <p className="text-xs text-gray-500 mt-2">
+      <p className="mt-2 text-xs text-gray-500">
         Max file size: {maxSizeMB}MB
         {acceptedFileTypes !== '*' &&
           ` • Accepted formats: ${acceptedFileTypes.replace('*', 'All')}`}

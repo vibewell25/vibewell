@@ -1,5 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { render, screen, waitFor } from '@testing-library/react';
 import { ARViewer } from '../ar-viewer';
 
 // Mock the Three.js and React Three Fiber components

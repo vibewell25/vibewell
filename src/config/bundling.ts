@@ -3,8 +3,8 @@ import crypto from 'crypto';
 
 // Chunk size thresholds
 const CHUNK_SIZE_THRESHOLDS = {
-  MIN: 20000,    // 20KB
-  MAX: 244000,   // ~240KB
+  MIN: 20000, // 20KB
+  MAX: 244000, // ~240KB
   LARGE: 160000, // 160KB
 };
 
@@ -87,8 +87,7 @@ export const splitChunksConfig: NonNullable<Configuration['optimization']>['spli
     },
     lib: {
       test(module: any): boolean {
-        return module.size() > CHUNK_SIZE_THRESHOLDS.LARGE &&
-          /node_modules[/\\]/.test(module.identifier());
+        return (module.size() > CHUNK_SIZE_THRESHOLDS.LARGE && /node_modules[/\\]/.test(module.identifier()));
       },
       name(module: any): string {
         const hash = crypto.createHash('sha1');
@@ -125,7 +124,7 @@ export const splitChunksConfig: NonNullable<Configuration['optimization']>['spli
       chunks: 'async',
       name(module: any, chunks: any[]): string {
         const hash = crypto.createHash('sha1');
-        chunks.forEach(chunk => {
+        chunks.forEach((chunk) => {
           hash.update(chunk.name || '');
         });
         return 'shared-' + hash.digest('hex').substring(0, 8);
@@ -137,61 +136,4 @@ export const splitChunksConfig: NonNullable<Configuration['optimization']>['spli
   },
 };
 
-export const optimizationConfig: NonNullable<Configuration['optimization']> = {
-  splitChunks: splitChunksConfig,
-  runtimeChunk: {
-    name: 'runtime',
-  },
-  minimize: process.env.NODE_ENV === 'production',
-  minimizer: [
-    '...',
-    {
-      apply(compiler: any) {
-        // Optimize modules during compilation
-        compiler.hooks.compilation.tap('OptimizeModules', (compilation: any) => {
-          // Optimize modules
-          compilation.hooks.optimizeModules.tap('OptimizeModules', (modules: any) => {
-            // Add module optimization logic here
-            modules.forEach((module: any) => {
-              if (module.buildInfo) {
-                module.buildInfo.strict = true; // Enable strict mode
-              }
-            });
-          });
-
-          // Optimize chunks
-          compilation.hooks.optimizeChunks.tap('OptimizeChunks', (chunks: any) => {
-            chunks.forEach((chunk: any) => {
-              // Ensure chunks are properly sized and organized
-              if (chunk.files.length > 0) {
-                chunk.files = chunk.files.filter((file: string) => 
-                  !file.endsWith('.map') && !file.includes('hot-update')
-                );
-              }
-            });
-          });
-
-          // Optimize chunk assets
-          compilation.hooks.optimizeChunkAssets.tap('OptimizeChunkAssets', (chunks: any) => {
-            chunks.forEach((chunk: any) => {
-              // Remove source maps in production
-              if (process.env.NODE_ENV === 'production') {
-                chunk.files = chunk.files.filter((file: string) => !file.endsWith('.map'));
-              }
-            });
-          });
-        });
-      }
-    }
-  ],
-  moduleIds: 'deterministic',
-  chunkIds: 'deterministic',
-  mangleExports: 'deterministic',
-  flagIncludedChunks: true, // Adds chunk information to the template
-  mergeDuplicateChunks: true, // Merge chunks with equal content
-  innerGraph: true, // Enable inner graph optimization
-  realContentHash: true, // Use real content for hash calculation
-  removeAvailableModules: true, // Remove modules from chunks when they are already available in parent chunks
-  removeEmptyChunks: true, // Remove empty chunks
-  sideEffects: true, // Respect sideEffects flag in package.json
-}; 
+export {};

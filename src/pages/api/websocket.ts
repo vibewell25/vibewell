@@ -5,15 +5,11 @@ import { NextApiResponse } from '@/types/api';
 import { webSocketRateLimiter } from '@/lib/rate-limiter';
 import { logger } from '@/lib/logger';
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+export {};
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse & { socket: { server: NetServer } }
+  res: NextApiResponse & { socket: { server: NetServer } },
 ) {
   if (req.method !== 'GET') {
     res.status(405).json({ error: 'Method not allowed' });
@@ -66,7 +62,7 @@ export default async function handler(
     });
 
     // Connection event listener
-    io.on('connection', socket => {
+    io.on('connection', (socket) => {
       const ip = String(socket.handshake.headers['x-forwarded-for'] || socket.handshake.address);
       const clientId = socket.id;
 
@@ -82,7 +78,7 @@ export default async function handler(
           const canSendMessage = await webSocketRateLimiter.canSendMessage(
             ip,
             clientId,
-            messageSize
+            messageSize,
           );
 
           if (!canSendMessage) {
@@ -114,7 +110,7 @@ export default async function handler(
       });
 
       // Custom event handlers
-      socket.on('message', data => {
+      socket.on('message', (data) => {
         // Process message and broadcast to appropriate recipients
         socket.emit('message_received', { id: Date.now(), data });
       });

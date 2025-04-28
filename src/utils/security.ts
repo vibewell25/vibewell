@@ -89,7 +89,7 @@ export function sanitizeARData(modelData: Uint8Array): Uint8Array {
 export function validateARModel(
   modelData: Uint8Array,
   maxSize: number = 10 * 1024 * 1024, // 10MB default
-  allowedFormats: string[] = ['glb', 'gltf']
+  allowedFormats: string[] = ['glb', 'gltf'],
 ): boolean {
   // Check size
   if (modelData.length > maxSize) {
@@ -183,7 +183,7 @@ export function isTrustedARSource(url: string, trustedDomains: string[] = []): b
     }
 
     // Check against trusted domains
-    return trustedDomains.some(trusted => {
+    return trustedDomains.some((trusted) => {
       // Exact match
       if (trusted === domain) return true;
 

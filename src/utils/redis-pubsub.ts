@@ -41,7 +41,7 @@ class RedisPubSub extends EventEmitter {
       published: 0,
       received: 0,
       errors: 0,
-      channels: new Map()
+      channels: new Map(),
     };
 
     this.setupSubscriber();
@@ -51,20 +51,17 @@ class RedisPubSub extends EventEmitter {
     this.subscriber.on('message', (channel: string, message: string) => {
       try {
         const parsedMessage = JSON.parse(message) as PubSubMessage;
-        
+
         if (this.config.messageValidation?.enabled) {
           this.validateMessage(parsedMessage);
         }
 
         this.stats.received++;
-        this.stats.channels.set(
-          channel,
-          (this.stats.channels.get(channel) || 0) + 1
-        );
+        this.stats.channels.set(channel, (this.stats.channels.get(channel) || 0) + 1);
 
         const handlers = this.subscriptions.get(channel);
         if (handlers) {
-          handlers.forEach(handler => handler(parsedMessage));
+          handlers.forEach((handler) => handler(parsedMessage));
         }
 
         this.emit('message', channel, parsedMessage);
@@ -110,17 +107,14 @@ class RedisPubSub extends EventEmitter {
         channel,
         data,
         timestamp: Date.now(),
-        messageId: Math.random().toString(36).substring(2, 15)
+        messageId: Math.random().toString(36).substring(2, 15),
       };
 
       if (this.config.messageValidation?.enabled) {
         this.validateMessage(message);
       }
 
-      const result = await this.publisher.publish(
-        fullChannel,
-        JSON.stringify(message)
-      );
+      const result = await this.publisher.publish(fullChannel, JSON.stringify(message));
 
       if (result > 0) {
         this.stats.published++;
@@ -137,7 +131,7 @@ class RedisPubSub extends EventEmitter {
 
   public async subscribe<T>(
     channel: string,
-    handler: (message: PubSubMessage<T>) => void
+    handler: (message: PubSubMessage<T>) => void,
   ): Promise<void> {
     const fullChannel = this.getFullChannel(channel);
     try {
@@ -159,7 +153,7 @@ class RedisPubSub extends EventEmitter {
 
   public async unsubscribe(
     channel: string,
-    handler?: (message: PubSubMessage) => void
+    handler?: (message: PubSubMessage) => void,
   ): Promise<void> {
     const fullChannel = this.getFullChannel(channel);
     try {
@@ -184,7 +178,7 @@ class RedisPubSub extends EventEmitter {
 
   public async pattern<T>(
     pattern: string,
-    handler: (message: PubSubMessage<T>) => void
+    handler: (message: PubSubMessage<T>) => void,
   ): Promise<void> {
     const fullPattern = this.getFullChannel(pattern);
     try {
@@ -207,7 +201,7 @@ class RedisPubSub extends EventEmitter {
   public getStats(): PubSubStats {
     return {
       ...this.stats,
-      channels: new Map(this.stats.channels)
+      channels: new Map(this.stats.channels),
     };
   }
 
@@ -216,16 +210,13 @@ class RedisPubSub extends EventEmitter {
       published: 0,
       received: 0,
       errors: 0,
-      channels: new Map()
+      channels: new Map(),
     };
   }
 
   public async disconnect(): Promise<void> {
     try {
-      await Promise.all([
-        this.publisher.quit(),
-        this.subscriber.quit()
-      ]);
+      await Promise.all([this.publisher.quit(), this.subscriber.quit()]);
       this.subscriptions.clear();
       this.removeAllListeners();
       logger.info('Redis pub/sub disconnected');
@@ -237,4 +228,4 @@ class RedisPubSub extends EventEmitter {
   }
 }
 
-export default RedisPubSub; 
+export default RedisPubSub;

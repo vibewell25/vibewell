@@ -45,7 +45,7 @@ export const Card: React.FC<CardProps> & CardSubComponents = ({
       'card-loading': loading,
       'card-responsive': responsive,
     },
-    className
+    className,
   );
 
   const commonProps = {

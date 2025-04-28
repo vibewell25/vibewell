@@ -46,8 +46,8 @@ export function renderARComponent(ui: React.ReactElement) {
     React.createElement(
       MockCanvas,
       {},
-      React.createElement(MockGL, {}, React.createElement(MockXR, {}, ui))
-    )
+      React.createElement(MockGL, {}, React.createElement(MockXR, {}, ui)),
+    ),
   );
 }
 
@@ -92,8 +92,8 @@ export class ARPerformanceTest {
       measurements: this.measurements,
       averageDuration:
         this.measurements.reduce((acc, m) => acc + m.duration, 0) / this.measurements.length,
-      maxDuration: Math.max(...this.measurements.map(m => m.duration)),
-      minDuration: Math.min(...this.measurements.map(m => m.duration)),
+      maxDuration: Math.max(...this.measurements.map((m) => m.duration)),
+      minDuration: Math.min(...this.measurements.map((m) => m.duration)),
     };
   }
 
@@ -101,7 +101,7 @@ export class ARPerformanceTest {
     const results = this.getResults();
     if (results.averageDuration > maxDuration) {
       throw new Error(
-        `Performance test failed: average duration ${results.averageDuration}ms exceeds maximum ${maxDuration}ms`
+        `Performance test failed: average duration ${results.averageDuration}ms exceeds maximum ${maxDuration}ms`,
       );
     }
   }

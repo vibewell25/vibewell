@@ -36,7 +36,7 @@ export function LevelProgress({ showDetails = true, className = '' }: LevelProgr
         <Skeleton className="h-6 w-32" />
         <Skeleton className="h-4 w-full" />
         {showDetails && (
-          <div className="flex gap-4 mt-4">
+          <div className="mt-4 flex gap-4">
             <Skeleton className="h-16 w-1/3" />
             <Skeleton className="h-16 w-1/3" />
             <Skeleton className="h-16 w-1/3" />
@@ -59,7 +59,7 @@ export function LevelProgress({ showDetails = true, className = '' }: LevelProgr
     <div className={`space-y-2 ${className}`}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Trophy className="h-5 w-5 text-primary" />
+          <Trophy className="text-primary h-5 w-5" />
           <span className="font-semibold">Level {points.level}</span>
         </div>
         <span className="text-sm text-muted-foreground">{points.points} points</span>
@@ -78,25 +78,25 @@ export function LevelProgress({ showDetails = true, className = '' }: LevelProgr
       </div>
 
       {showDetails && (
-        <div className="grid grid-cols-3 gap-4 mt-4">
-          <div className="flex flex-col items-center justify-center p-3 bg-muted/30 rounded-lg">
-            <div className="flex items-center gap-1 text-primary mb-1">
+        <div className="mt-4 grid grid-cols-3 gap-4">
+          <div className="flex flex-col items-center justify-center rounded-lg bg-muted/30 p-3">
+            <div className="text-primary mb-1 flex items-center gap-1">
               <Trophy className="h-4 w-4" />
             </div>
             <span className="text-xl font-bold">{badges.length}</span>
             <span className="text-xs text-muted-foreground">Badges</span>
           </div>
 
-          <div className="flex flex-col items-center justify-center p-3 bg-muted/30 rounded-lg">
-            <div className="flex items-center gap-1 text-primary mb-1">
+          <div className="flex flex-col items-center justify-center rounded-lg bg-muted/30 p-3">
+            <div className="text-primary mb-1 flex items-center gap-1">
               <Star className="h-4 w-4" />
             </div>
             <span className="text-xl font-bold">{points.points}</span>
             <span className="text-xs text-muted-foreground">Points</span>
           </div>
 
-          <div className="flex flex-col items-center justify-center p-3 bg-muted/30 rounded-lg">
-            <div className="flex items-center gap-1 text-primary mb-1">
+          <div className="flex flex-col items-center justify-center rounded-lg bg-muted/30 p-3">
+            <div className="text-primary mb-1 flex items-center gap-1">
               <TrendingUp className="h-4 w-4" />
             </div>
             <span className="text-xl font-bold">{points.level}</span>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Goal, GoalType, HabitLog, WellnessDay, ProgressSummary } from '@/types/progress';
+import { Goal, HabitLog, WellnessDay } from '@/types/progress';
 import { useAuth } from '@/hooks/use-unified-auth';
 import * as wellnessAPI from '@/lib/api/wellness';
 
@@ -189,7 +189,9 @@ const DUMMY_WELLNESS_DAYS: WellnessDay[] = [
 ];
 
 export function useWellnessData() {
-  const { user, loading: authLoading } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [goals, setGoals] = useState<Goal[]>([]);
   const [habitLogs, setHabitLogs] = useState<HabitLog[]>([]);
   const [wellnessDays, setWellnessDays] = useState<WellnessDay[]>([]);
@@ -246,8 +248,8 @@ export function useWellnessData() {
 
   // Generate fallback summary from goal data
   const generateFallbackSummary = (goalsData: Goal[]) => {
-    const activeGoals = goalsData.filter(g => g.status === 'in_progress').length;
-    const completedGoals = goalsData.filter(g => g.status === 'completed').length;
+    const activeGoals = goalsData.filter((g) => g.status === 'in_progress').length;
+    const completedGoals = goalsData.filter((g) => g.status === 'completed').length;
     const dailyStreak = 0;
 
     const thisWeekProgress = {
@@ -289,7 +291,7 @@ export function useWellnessData() {
       const createdGoal = await wellnessAPI.createGoal(user.id, newGoal);
 
       if (createdGoal) {
-        setGoals(prevGoals => [createdGoal, ...prevGoals]);
+        setGoals((prevGoals) => [createdGoal, ...prevGoals]);
       } else {
         throw new Error('Failed to create goal');
       }
@@ -305,7 +307,7 @@ export function useWellnessData() {
         status: 'not_started',
       };
 
-      setGoals(prevGoals => [tempGoal, ...prevGoals]);
+      setGoals((prevGoals) => [tempGoal, ...prevGoals]);
     } finally {
       setIsLoading(false);
     }
@@ -318,7 +320,7 @@ export function useWellnessData() {
       const updatedGoal = await wellnessAPI.updateGoal(goalId, updatedData);
 
       if (updatedGoal) {
-        setGoals(prevGoals => prevGoals.map(goal => (goal.id === goalId ? updatedGoal : goal)));
+        setGoals((prevGoals) => prevGoals.map((goal) => (goal.id === goalId ? updatedGoal : goal)));
       } else {
         throw new Error('Failed to update goal');
       }
@@ -327,8 +329,8 @@ export function useWellnessData() {
       setError('Failed to update goal');
 
       // Optimistic update
-      setGoals(prevGoals =>
-        prevGoals.map(goal => (goal.id === goalId ? { ...goal, ...updatedData } : goal))
+      setGoals((prevGoals) =>
+        prevGoals.map((goal) => (goal.id === goalId ? { ...goal, ...updatedData } : goal)),
       );
     } finally {
       setIsLoading(false);
@@ -342,7 +344,7 @@ export function useWellnessData() {
       const success = await wellnessAPI.deleteGoal(goalId);
 
       if (success) {
-        setGoals(prevGoals => prevGoals.filter(goal => goal.id !== goalId));
+        setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== goalId));
       } else {
         throw new Error('Failed to delete goal');
       }
@@ -364,11 +366,11 @@ export function useWellnessData() {
 
       if (newLog) {
         // Add the new log
-        setHabitLogs(prevLogs => [newLog, ...prevLogs]);
+        setHabitLogs((prevLogs) => [newLog, ...prevLogs]);
 
         // Update the goal's current value optimistically
-        setGoals(prevGoals =>
-          prevGoals.map(goal => {
+        setGoals((prevGoals) =>
+          prevGoals.map((goal) => {
             if (goal.id === goalId) {
               return {
                 ...goal,
@@ -377,7 +379,7 @@ export function useWellnessData() {
               };
             }
             return goal;
-          })
+          }),
         );
 
         // Refresh data to update summary
@@ -397,11 +399,11 @@ export function useWellnessData() {
         value,
       };
 
-      setHabitLogs(prevLogs => [tempLog, ...prevLogs]);
+      setHabitLogs((prevLogs) => [tempLog, ...prevLogs]);
 
       // Update the goal's current value optimistically
-      setGoals(prevGoals =>
-        prevGoals.map(goal => {
+      setGoals((prevGoals) =>
+        prevGoals.map((goal) => {
           if (goal.id === goalId) {
             return {
               ...goal,
@@ -410,7 +412,7 @@ export function useWellnessData() {
             };
           }
           return goal;
-        })
+        }),
       );
     } finally {
       setIsLoading(false);

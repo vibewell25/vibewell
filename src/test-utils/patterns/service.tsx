@@ -1,12 +1,3 @@
-// @ts-nocheck
-/**
- * Service Test Patterns
- *
- * This file provides standardized patterns for testing services and API calls.
- */
-
-import * as React from 'react';
-
 /**
  * Service test case configuration
  */
@@ -34,10 +25,10 @@ export function createServiceTestSuite<ServiceResult, ServiceParams extends any[
   name: string,
   serviceFunction: (...args: ServiceParams) => Promise<ServiceResult>,
   testCases: ServiceTestCase<ServiceResult, ServiceParams>[],
-  mockFn?: (mockResponse: any, mockError?: Error) => void
+  mockFn?: (mockResponse: any, mockError?: Error) => void,
 ): void {
   describe(`${name} Service`, () => {
-    testCases.forEach(testCase => {
+    testCases.forEach((testCase) => {
       it(testCase.name, async () => {
         // Setup mocks if provided
         if (mockFn && (testCase.mockResponse || testCase.mockError)) {
@@ -92,7 +83,7 @@ export function createServiceTestSuite<ServiceResult, ServiceParams extends any[
  * @returns A mock function with the same signature
  */
 export function createServiceMock<ServiceResult, ServiceParams extends any[]>(
-  serviceFunction: (...args: ServiceParams) => Promise<ServiceResult>
+  serviceFunction: (...args: ServiceParams) => Promise<ServiceResult>,
 ): {
   mock: (...args: ServiceParams) => Promise<ServiceResult>;
   setMockResponse: (response: ServiceResult) => void;

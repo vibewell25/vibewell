@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Textarea } from '@/components/ui/textarea';
 import { TryOnService } from '@/services/try-on-service';
 import { cn } from '@/lib/utils';
@@ -95,18 +95,18 @@ export function FeedbackDialog({
         {submitted ? (
           <div className="py-6 text-center">
             <div className="mb-4 text-3xl">🎉</div>
-            <h3 className="text-xl font-medium mb-2">Thank you for your feedback!</h3>
+            <h3 className="mb-2 text-xl font-medium">Thank you for your feedback!</h3>
             <p className="text-muted-foreground">Your input helps us improve our products.</p>
           </div>
         ) : (
-          <div className="py-4 space-y-6">
+          <div className="space-y-6 py-4">
             {/* Star Rating */}
             <div>
-              <label className="block text-sm font-medium mb-2">
+              <label className="mb-2 block text-sm font-medium">
                 How would you rate this product?
               </label>
               <div className="flex gap-1">
-                {[1, 2, 3, 4, 5].map(star => (
+                {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
                     type="button"
@@ -116,7 +116,9 @@ export function FeedbackDialog({
                     <Star
                       className={cn(
                         'h-8 w-8',
-                        star <= rating ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'
+                        star <= rating
+                          ? 'fill-yellow-400 text-yellow-400'
+                          : 'text-muted-foreground',
                       )}
                     />
                   </button>
@@ -126,7 +128,7 @@ export function FeedbackDialog({
 
             {/* Would try in real life */}
             <div>
-              <label className="block text-sm font-medium mb-2">
+              <label className="mb-2 block text-sm font-medium">
                 Would you try this product in real life?
               </label>
               <div className="flex gap-4">
@@ -134,7 +136,7 @@ export function FeedbackDialog({
                   type="button"
                   variant={wouldTryRealLife === true ? 'default' : 'outline'}
                   onClick={() => setWouldTryRealLife(true)}
-                  className="flex-1 flex items-center justify-center gap-2"
+                  className="flex flex-1 items-center justify-center gap-2"
                 >
                   <ThumbsUp className="h-5 w-5" />
                   Yes
@@ -143,7 +145,7 @@ export function FeedbackDialog({
                   type="button"
                   variant={wouldTryRealLife === false ? 'default' : 'outline'}
                   onClick={() => setWouldTryRealLife(false)}
-                  className="flex-1 flex items-center justify-center gap-2"
+                  className="flex flex-1 items-center justify-center gap-2"
                 >
                   <ThumbsDown className="h-5 w-5" />
                   No
@@ -153,14 +155,14 @@ export function FeedbackDialog({
 
             {/* Comments */}
             <div>
-              <label className="block text-sm font-medium mb-2" htmlFor="comment">
+              <label className="mb-2 block text-sm font-medium" htmlFor="comment">
                 Additional comments (optional)
               </label>
               <Textarea
                 id="comment"
                 placeholder={`What did you think about ${productName}?`}
                 value={comment}
-                onChange={e => setComment(e.target.value)}
+                onChange={(e) => setComment(e.target.value)}
                 rows={3}
               />
             </div>

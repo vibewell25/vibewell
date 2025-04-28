@@ -93,22 +93,22 @@ interface TestRunnerContext {
   testEach: <T>(
     description: string,
     testData: T[],
-    testFn: (data: T) => void | Promise<void>
+    testFn: (data: T) => void | Promise<void>,
   ) => void;
   testPerformance: (
     description: string,
     ui: ReactElement,
-    options?: PerformanceTestOptions
+    options?: PerformanceTestOptions,
   ) => void;
   render: (ui: ReactElement, options?: RenderOptions) => RenderResult & { renderTime?: number };
   renderWithAxe: (
     ui: ReactElement,
-    options?: RenderOptions
+    options?: RenderOptions,
   ) => Promise<RenderResult & { axeResults: any }>;
   renderWithSnapshot: (ui: ReactElement, options?: RenderOptions) => RenderResult;
   renderWithRouter: (
     ui: ReactElement,
-    options?: RenderOptions & { route?: string }
+    options?: RenderOptions & { route?: string },
   ) => RenderResult;
   renderWithAuth: (ui: ReactElement, options?: RenderOptions & { user?: any }) => RenderResult;
   testApi: (description: string, testFn: () => void | Promise<void>) => void;
@@ -232,7 +232,7 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
             () => {
               expect(screen).toBeTruthy();
             },
-            { timeout }
+            { timeout },
           );
           unmount();
         }
@@ -303,11 +303,11 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
 
     renderWithAxe: async function (
       ui: ReactElement,
-      options: RenderOptions = {}
+      options: RenderOptions = {},
     ): Promise<RenderResult & { axeResults: any }> {
       if (!axe) {
         throw new Error(
-          'jest-axe is not available. Please install it with: npm install --save-dev jest-axe'
+          'jest-axe is not available. Please install it with: npm install --save-dev jest-axe',
         );
       }
 
@@ -342,7 +342,7 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
       (global.fetch as jest.Mock).mockImplementation(
         (fetchUrl: string, fetchOptions: RequestInit = {}) => {
           if (fetchUrl === url && (!fetchOptions.method || fetchOptions.method === method)) {
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
               setTimeout(() => {
                 resolve({
                   ok: status >= 200 && status < 300,
@@ -355,7 +355,7 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
           }
 
           return Promise.reject(new Error(`Unhandled request: ${fetchUrl}`));
-        }
+        },
       );
     },
 
@@ -375,7 +375,7 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
       it(`Accessibility: ${description}`, async () => {
         if (!axe) {
           throw new Error(
-            'jest-axe is not available. Please install it with: npm install --save-dev jest-axe'
+            'jest-axe is not available. Please install it with: npm install --save-dev jest-axe',
           );
         }
 

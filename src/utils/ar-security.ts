@@ -174,7 +174,7 @@ export function createARSessionId(): string {
   const array = new Uint8Array(16);
   crypto.getRandomValues(array);
   return Array.from(array)
-    .map(b => b.toString(16).padStart(2, '0'))
+    .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
 }
 
@@ -194,7 +194,7 @@ export function validatePermissions(permissions: ModelPermissions): boolean {
   // Check domain access
   if (permissions.allowedDomains && permissions.allowedDomains.length > 0) {
     const currentDomain = window.location.hostname;
-    const isAllowed = permissions.allowedDomains.some(domain => {
+    const isAllowed = permissions.allowedDomains.some((domain) => {
       // Exact match
       if (domain === currentDomain) return true;
 

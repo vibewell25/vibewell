@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   Card,
   CardContent,
@@ -8,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-unified-auth';
 
@@ -17,8 +17,8 @@ export default function UnauthorizedPage() {
   const { isAuthenticated, signOut } = useAuth();
 
   return (
-    <div className="container mx-auto flex items-center justify-center min-h-screen p-4">
-      <Card className="max-w-md w-full">
+    <div className="container mx-auto flex min-h-screen items-center justify-center p-4">
+      <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-center text-2xl">Access Denied</CardTitle>
           <CardDescription className="text-center">
@@ -26,7 +26,7 @@ export default function UnauthorizedPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex justify-center mb-6">
+          <div className="mb-6 flex justify-center">
             <div className="rounded-full bg-red-100 p-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,7 @@ export default function UnauthorizedPage() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="text-red-500 h-6 w-6"
+                className="h-6 w-6 text-red-500"
               >
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="8" x2="12" y2="12" />
@@ -46,7 +46,7 @@ export default function UnauthorizedPage() {
               </svg>
             </div>
           </div>
-          <p className="text-center mb-4">
+          <p className="mb-4 text-center">
             Sorry, you don't have the necessary permissions to view this page. This area may be
             restricted to users with specific roles or privileges.
           </p>

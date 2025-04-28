@@ -42,10 +42,6 @@ export const rolePermissions: RolePermissions = {
   user: ['view_content', 'book_services', 'write_reviews', 'earn_points'],
 };
 
-export const hasPermission = (role: Role, permission: Permission): boolean => {
-  return rolePermissions[role]?.includes(permission) || false;
-};
+export {};
 
-export const getRolePermissions = (role: Role): Permission[] => {
-  return rolePermissions[role] || [];
-};
+export {};

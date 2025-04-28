@@ -1,4 +1,4 @@
-import { ApiVersion, ApiResponse } from '@/types/api';
+import { ApiVersion } from '@/types/api';
 
 export interface ApiEndpointDoc {
   path: string;
@@ -139,6 +139,6 @@ export function getVersionDocs(version: ApiVersion): Record<string, ApiEndpointD
       }
       return acc;
     },
-    {} as Record<string, ApiEndpointDoc>
+    {} as Record<string, ApiEndpointDoc>,
   );
 }

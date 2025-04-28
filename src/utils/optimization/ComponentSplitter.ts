@@ -3,7 +3,6 @@ import { resolve, dirname, join } from 'path';
 import * as parser from '@babel/parser';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
-import * as t from '@babel/types';
 import { MonitoringService } from '../../types/monitoring';
 
 interface SplitConfig {
@@ -33,7 +32,7 @@ export class ComponentSplitter {
     this.config = {
       minSize: config?.minSize ?? 10000,
       maxSize: config?.maxSize ?? 244000,
-      automaticPrefetch: config?.automaticPrefetch ?? true
+      automaticPrefetch: config?.automaticPrefetch ?? true,
     };
   }
 
@@ -43,7 +42,7 @@ export class ComponentSplitter {
       const code = readFileSync(componentPath, 'utf-8');
       const ast = parser.parse(code, {
         sourceType: 'module',
-        plugins: ['typescript', 'jsx', 'decorators-legacy']
+        plugins: ['typescript', 'jsx', 'decorators-legacy'],
       });
 
       const chunks: SplitResult['chunks'] = [];
@@ -58,7 +57,7 @@ export class ComponentSplitter {
             const importPath = resolve(dirname(componentPath), path.node.source.value);
             imports.add(importPath);
           }
-        }
+        },
       });
 
       // Find splittable components
@@ -69,12 +68,15 @@ export class ComponentSplitter {
             const size = componentCode.length;
 
             if (size > this.config.minSize) {
-              const chunkPath = this.createChunkPath(componentPath, path.node.id?.name || 'Component');
+              const chunkPath = this.createChunkPath(
+                componentPath,
+                path.node.id?.name || 'Component',
+              );
               this.extractComponentToChunk(path, chunkPath);
               chunks.push({
                 path: chunkPath,
                 size,
-                imports: Array.from(imports)
+                imports: Array.from(imports),
               });
               currentChunkSize += size;
             }
@@ -92,12 +94,12 @@ export class ComponentSplitter {
               chunks.push({
                 path: chunkPath,
                 size,
-                imports: Array.from(imports)
+                imports: Array.from(imports),
               });
               currentChunkSize += size;
             }
           }
-        }
+        },
       });
 
       totalSize = code.length;
@@ -107,14 +109,14 @@ export class ComponentSplitter {
         this.monitoring.recordMetric(`${this.METRICS_PREFIX}split_time`, duration),
         this.monitoring.recordMetric(`${this.METRICS_PREFIX}chunks_created`, chunks.length),
         this.monitoring.recordMetric(`${this.METRICS_PREFIX}total_size`, totalSize),
-        this.monitoring.recordMetric(`${this.METRICS_PREFIX}split_size`, currentChunkSize)
+        this.monitoring.recordMetric(`${this.METRICS_PREFIX}split_size`, currentChunkSize),
       ]);
 
       return {
         originalPath: componentPath,
         chunks,
         totalSize,
-        reductionPercentage: (currentChunkSize / totalSize) * 100
+        reductionPercentage: (currentChunkSize / totalSize) * 100,
       };
     } catch (error) {
       console.error(`Error splitting component ${componentPath}:`, error);
@@ -125,21 +127,14 @@ export class ComponentSplitter {
   private isComponent(path: any): boolean {
     // Check if it's a React component
     if (path.node.type === 'FunctionDeclaration') {
-      return (
-        path.node.id &&
-        /^[A-Z]/.test(path.node.id.name) &&
-        this.hasJSXReturn(path)
-      );
+      return path.node.id && /^[A-Z]/.test(path.node.id.name) && this.hasJSXReturn(path);
     }
 
     if (path.node.type === 'ArrowFunctionExpression') {
       const parent = path.findParent((p: any) => p.isVariableDeclaration());
-      return (
-        parent &&
-        parent.node.declarations[0]?.id?.name &&
-        /^[A-Z]/.test(parent.node.declarations[0].id.name) &&
-        this.hasJSXReturn(path)
-      );
+      return (parent &&
+      parent.node.declarations[0]?.id?.name &&
+      /^[A-Z]/.test(parent.node.declarations[0].id.name) && this.hasJSXReturn(path));
     }
 
     return false;
@@ -147,18 +142,26 @@ export class ComponentSplitter {
 
   private hasJSXReturn(path: any): boolean {
     let hasJSX = false;
-    traverse(path.node, {
-      ReturnStatement(returnPath) {
-        traverse(returnPath.node, {
-          JSXElement() {
-            hasJSX = true;
-          },
-          JSXFragment() {
-            hasJSX = true;
-          }
-        }, path.scope);
-      }
-    }, path.scope);
+    traverse(
+      path.node,
+      {
+        ReturnStatement(returnPath) {
+          traverse(
+            returnPath.node,
+            {
+              JSXElement() {
+                hasJSX = true;
+              },
+              JSXFragment() {
+                hasJSX = true;
+              },
+            },
+            path.scope,
+          );
+        },
+      },
+      path.scope,
+    );
     return hasJSX;
   }
 
@@ -184,11 +187,15 @@ export class ComponentSplitter {
     const imports = new Set<string>();
 
     // Collect imports
-    traverse(path.node, {
-      ImportDeclaration: (importPath) => {
-        imports.add(generate(importPath.node).code);
-      }
-    }, path.scope);
+    traverse(
+      path.node,
+      {
+        ImportDeclaration: (importPath) => {
+          imports.add(generate(importPath.node).code);
+        },
+      },
+      path.scope,
+    );
 
     // Create dynamic import wrapper
     const componentName = this.getComponentName(path);
@@ -209,9 +216,9 @@ export const ${componentName} = dynamic(() => import('${chunkPath}'), {
     // Replace the original component with the dynamic import wrapper
     const wrapperAst = parser.parse(wrapperCode, {
       sourceType: 'module',
-      plugins: ['typescript', 'jsx']
+      plugins: ['typescript', 'jsx'],
     });
 
     path.replaceWith(wrapperAst.program.body[0]);
   }
-} 
+}

@@ -58,7 +58,7 @@ export default function LoginPage() {
           type="email"
           placeholder="name@example.com"
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           required
           disabled={isLoading}
         />
@@ -69,13 +69,13 @@ export default function LoginPage() {
           type="password"
           placeholder="••••••••"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           required
           disabled={isLoading}
           rightElement={
             <Link
               href={ROUTES.AUTH.FORGOT_PASSWORD}
-              className="text-sm text-primary hover:underline"
+              className="text-primary text-sm hover:underline"
             >
               Forgot password?
             </Link>
@@ -98,21 +98,21 @@ export default function LoginPage() {
         <button
           type="button"
           onClick={() => signInWithGoogle()}
-          className="flex items-center justify-center p-2 border rounded-md hover:bg-muted transition-colors"
+          className="flex items-center justify-center rounded-md border p-2 transition-colors hover:bg-muted"
         >
           <Icons.google className="h-5 w-5" />
         </button>
         <button
           type="button"
           onClick={() => signInWithFacebook()}
-          className="flex items-center justify-center p-2 border rounded-md hover:bg-muted transition-colors"
+          className="flex items-center justify-center rounded-md border p-2 transition-colors hover:bg-muted"
         >
           <Icons.facebook className="h-5 w-5" />
         </button>
         <button
           type="button"
           onClick={() => signInWithApple()}
-          className="flex items-center justify-center p-2 border rounded-md hover:bg-muted transition-colors"
+          className="flex items-center justify-center rounded-md border p-2 transition-colors hover:bg-muted"
         >
           <Icons.apple className="h-5 w-5" />
         </button>

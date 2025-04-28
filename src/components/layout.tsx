@@ -1,12 +1,8 @@
-'use client';
-
+'use client';;
 import React from 'react';
 import { Header } from './layout/Header';
 import { Footer } from './footer';
 import SkipLink from '@/components/SkipLink';
-import { Navigation } from '@/components/navigation';
-import { MobileNav } from '@/components/mobile-nav';
-import { cn } from '@/lib/utils';
 import { ToastProvider } from '@/components/ui/toast';
 
 interface LayoutProps {
@@ -30,7 +26,7 @@ export function Layout({
 }: LayoutProps) {
   return (
     <ToastProvider>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex min-h-screen flex-col">
         <SkipLink targetId="main-content" />
 
         {showHeader && <Header />}

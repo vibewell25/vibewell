@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  Image
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -113,16 +106,16 @@ const PaymentMethodsScreen: React.FC = () => {
     );
   };
 
-  const getCardImage = (brand?: string) => {
+  const getCardIconName = (brand?: string) => {
     switch (brand?.toLowerCase()) {
       case 'visa':
-        return require('../assets/visa.png');
+        return 'cc-visa';
       case 'mastercard':
-        return require('../assets/mastercard.png');
+        return 'cc-mastercard';
       case 'amex':
-        return require('../assets/amex.png');
+        return 'cc-amex';
       default:
-        return require('../assets/generic-card.png');
+        return 'credit-card';
     }
   };
 
@@ -182,10 +175,11 @@ const PaymentMethodsScreen: React.FC = () => {
             ]}
           >
             <View style={styles.cardHeader}>
-              <Image
-                source={getCardImage(method.brand)}
+              <FontAwesome
+                name={getCardIconName(method.brand)}
+                size={40}
+                color={isDarkMode ? '#FFFFFF' : '#000000'}
                 style={styles.cardImage}
-                resizeMode="contain"
               />
               {method.isDefault && (
                 <View style={styles.defaultBadge}>

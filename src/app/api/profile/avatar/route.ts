@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     if (!validTypes.includes(avatarFile.type)) {
       return NextResponse.json(
         { error: 'Invalid file type. Only JPEG, PNG, GIF, and WebP are allowed.' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

@@ -71,18 +71,13 @@ export const AccessibleFileUpload: React.FC<AccessibleFileUploadProps> = ({
   return (
     <div className={className}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="mb-1 block text-sm font-medium text-gray-700">
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="ml-1 text-red-500">*</span>}
         </label>
       )}
       <div
-        className={`
-          relative border-2 border-dashed rounded-lg p-6
-          ${dragActive ? 'border-primary bg-primary bg-opacity-5' : 'border-gray-300'}
-          ${error ? 'border-red-500' : ''}
-          ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-        `}
+        className={`relative rounded-lg border-2 border-dashed p-6 ${dragActive ? 'border-primary bg-primary bg-opacity-5' : 'border-gray-300'} ${error ? 'border-red-500' : ''} ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} `}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
@@ -99,7 +94,7 @@ export const AccessibleFileUpload: React.FC<AccessibleFileUploadProps> = ({
           type="file"
           accept={accept}
           multiple={multiple}
-          onChange={e => handleFileSelect(e.target.files)}
+          onChange={(e) => handleFileSelect(e.target.files)}
           className="hidden"
           disabled={disabled}
           required={required}
@@ -123,7 +118,7 @@ export const AccessibleFileUpload: React.FC<AccessibleFileUploadProps> = ({
               />
             </svg>
             <div className="mt-2 text-sm text-gray-600">
-              <span className="font-medium text-primary hover:text-primary-dark focus:outline-none focus:underline">
+              <span className="text-primary hover:text-primary-dark font-medium focus:underline focus:outline-none">
                 {buttonText}
               </span>
               {' or drag and drop'}

@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
-import { Calendar } from '@/components/ui/calendar';
 
 interface Event {
   id: string;
@@ -104,19 +102,19 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
     <div className="space-y-8">
       {/* Events Section */}
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Upcoming Events</h2>
+        <h2 className="mb-4 text-2xl font-semibold">Upcoming Events</h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {events.map(event => (
+          {events.map((event) => (
             <Card key={event.id} className="p-4">
               {event.imageUrl && (
                 <img
                   src={event.imageUrl}
                   alt={event.title}
-                  className="w-full h-48 object-cover rounded-md mb-4"
+                  className="mb-4 h-48 w-full rounded-md object-cover"
                 />
               )}
-              <h3 className="font-semibold text-lg">{event.title}</h3>
-              <p className="text-sm text-muted-foreground mb-2">{event.description}</p>
+              <h3 className="text-lg font-semibold">{event.title}</h3>
+              <p className="mb-2 text-sm text-muted-foreground">{event.description}</p>
               <div className="space-y-2 text-sm">
                 <p>📅 {event.date.toLocaleDateString()}</p>
                 <p>📍 {event.location}</p>
@@ -125,7 +123,7 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
                 </p>
               </div>
               <Button
-                className="w-full mt-4"
+                className="mt-4 w-full"
                 disabled={event.currentAttendees >= event.maxAttendees}
                 onClick={() => handleEventRegistration(event.id)}
               >
@@ -138,11 +136,11 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
 
       {/* Social Feed Section */}
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Community Feed</h2>
-        <Card className="p-4 mb-6">
+        <h2 className="mb-4 text-2xl font-semibold">Community Feed</h2>
+        <Card className="mb-6 p-4">
           <Textarea
             value={newPost}
-            onChange={e => setNewPost(e.target.value)}
+            onChange={(e) => setNewPost(e.target.value)}
             placeholder="Share your thoughts with the community..."
             className="mb-4"
           />
@@ -152,29 +150,29 @@ export function SocialEvents({ events, posts, userId }: SocialEventsProps) {
         </Card>
 
         <div className="space-y-4">
-          {posts.map(post => (
+          {posts.map((post) => (
             <Card key={post.id} className="p-4">
               <div className="flex items-start gap-4">
                 {post.author.avatar && (
                   <img
                     src={post.author.avatar}
                     alt={post.author.name}
-                    className="w-10 h-10 rounded-full"
+                    className="h-10 w-10 rounded-full"
                   />
                 )}
                 <div className="flex-1">
-                  <div className="flex justify-between items-center mb-2">
+                  <div className="mb-2 flex items-center justify-between">
                     <span className="font-medium">{post.author.name}</span>
                     <span className="text-sm text-muted-foreground">
                       {post.createdAt.toLocaleDateString()}
                     </span>
                   </div>
-                  <p className="text-sm mb-4">{post.content}</p>
+                  <p className="mb-4 text-sm">{post.content}</p>
                   {post.imageUrl && (
                     <img
                       src={post.imageUrl}
                       alt="Post content"
-                      className="w-full rounded-md mb-4"
+                      className="mb-4 w-full rounded-md"
                     />
                   )}
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">

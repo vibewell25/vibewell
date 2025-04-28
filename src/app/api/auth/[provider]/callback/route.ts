@@ -26,7 +26,7 @@ export async function GET(request: NextRequest, { params }: { params: { provider
         provider,
       },
       JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '7d' },
     );
 
     // Set the session cookie

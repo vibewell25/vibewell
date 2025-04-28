@@ -175,7 +175,7 @@ class ErrorTrackingService {
       capturePromiseRejections?: boolean;
       captureWindowErrors?: boolean;
       debug?: boolean;
-    } = {}
+    } = {},
   ) {
     if (this.isInitialized) return;
 
@@ -192,7 +192,7 @@ class ErrorTrackingService {
 
     // Capture unhandled promise rejections
     if (options.capturePromiseRejections && typeof window !== 'undefined') {
-      window.addEventListener('unhandledrejection', event => {
+      window.addEventListener('unhandledrejection', (event) => {
         this.captureError(event.reason, {
           severity: ErrorSeverity.HIGH,
           category: ErrorCategory.UNKNOWN,
@@ -206,7 +206,7 @@ class ErrorTrackingService {
 
     // Capture window errors
     if (options.captureWindowErrors && typeof window !== 'undefined') {
-      window.addEventListener('error', event => {
+      window.addEventListener('error', (event) => {
         this.captureError(event.error || event.message, {
           severity: ErrorSeverity.HIGH,
           category: ErrorCategory.UNKNOWN,
@@ -283,10 +283,10 @@ class ErrorTrackingService {
   private captureConsoleError(args: any[]) {
     // Extract meaningful info from console.error arguments
     const errorMessage = args
-      .map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : String(arg)))
+      .map((arg) => (typeof arg === 'object' ? JSON.stringify(arg) : String(arg)))
       .join(' ');
 
-    const error = args.find(arg => arg instanceof Error);
+    const error = args.find((arg) => arg instanceof Error);
     if (error) {
       this.captureError(error, {
         severity: ErrorSeverity.LOW,
@@ -335,7 +335,7 @@ class ErrorTrackingService {
 
   // Create a wrapper for async functions to auto-catch and report errors
   public wrapAsync<T>(fn: () => Promise<T>, options: ErrorOptions = {}): Promise<T> {
-    return fn().catch(error => {
+    return fn().catch((error) => {
       this.captureError(error, options);
       throw error; // Re-throw to maintain the same behavior
     });
@@ -361,7 +361,7 @@ export function useErrorTracking() {
       }
     },
     trackPromise: <T>(action: string, promise: Promise<T>) =>
-      promise.catch(error => {
+      promise.catch((error) => {
         errorTrackingService.captureError(error, {
           context: { action },
         });

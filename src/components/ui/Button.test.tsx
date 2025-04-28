@@ -1,12 +1,3 @@
-/**
- * @vitest-environment jsdom
- *
- * Button component tests
- *
- * This file tests the Button component functionality, accessibility,
- * and performance. It uses our enhanced testing utilities.
- */
-import React from 'react';
 import { screen } from '@testing-library/react';
 import type { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
 import userEvent from '@testing-library/user-event';
@@ -59,7 +50,7 @@ describe('Button Component: Basic Functionality', () => {
     render(
       <Button disabled onClick={handleClick}>
         Click me
-      </Button>
+      </Button>,
     );
     const button = screen.getByRole('button');
 
@@ -96,7 +87,7 @@ describe('Button Component: Basic Functionality', () => {
           🔍
         </span>
         With Icon
-      </Button>
+      </Button>,
     );
 
     const button = screen.getByRole('button', { name: /with icon/i });
@@ -107,7 +98,7 @@ describe('Button Component: Basic Functionality', () => {
     render(
       <Button type="submit" name="test-button" aria-label="Test button" data-testid="test-btn">
         Test
-      </Button>
+      </Button>,
     );
 
     const button = screen.getByTestId('test-btn');
@@ -187,11 +178,11 @@ describe('Button Component: Integration', () => {
   });
 
   it('works with form submission', async () => {
-    const handleSubmit = vi.fn(e => e.preventDefault());
+    const handleSubmit = vi.fn((e) => e.preventDefault());
     render(
       <form onSubmit={handleSubmit}>
         <Button type="submit">Submit</Button>
-      </form>
+      </form>,
     );
 
     const button = screen.getByRole('button');

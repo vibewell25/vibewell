@@ -7,7 +7,7 @@ import { WebAuthnError } from '@/lib/auth/webauthn-types';
 import type { Metadata } from '@/types/metadata';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Separator } from '@/components/ui/separator';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -52,7 +52,7 @@ export default function SecuritySettingsPage() {
         throw new WebAuthnError(
           error.error || 'Failed to delete authenticator',
           error.code || 'UNKNOWN_ERROR',
-          error.details
+          error.details,
         );
       }
 
@@ -83,7 +83,7 @@ export default function SecuritySettingsPage() {
         throw new WebAuthnError(
           error.error || 'Failed to rename authenticator',
           error.code || 'UNKNOWN_ERROR',
-          error.details
+          error.details,
         );
       }
 
@@ -112,7 +112,7 @@ export default function SecuritySettingsPage() {
   `;
 
   return (
-    <div className="container max-w-4xl py-6 space-y-8">
+    <div className="container max-w-4xl space-y-8 py-6">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Security Settings</h2>
         <p className="text-muted-foreground">
@@ -132,10 +132,10 @@ export default function SecuritySettingsPage() {
           <CardContent className="space-y-4">
             {authenticators.length > 0 && (
               <div className="rounded-md bg-muted p-4">
-                <h4 className="text-sm font-medium mb-2">Registered Authenticators</h4>
-                <ul className="text-sm space-y-2">
-                  {authenticators.map(auth => (
-                    <li key={auth.id} className="flex justify-between items-center">
+                <h4 className="mb-2 text-sm font-medium">Registered Authenticators</h4>
+                <ul className="space-y-2 text-sm">
+                  {authenticators.map((auth) => (
+                    <li key={auth.id} className="flex items-center justify-between">
                       <span>
                         Authenticator registered on {new Date(auth.createdAt).toLocaleDateString()}
                       </span>
@@ -158,7 +158,7 @@ export default function SecuritySettingsPage() {
 
       {message && (
         <div
-          className={`mb-6 p-4 rounded-lg ${
+          className={`mb-6 rounded-lg p-4 ${
             message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
           }`}
         >
@@ -167,9 +167,9 @@ export default function SecuritySettingsPage() {
       )}
 
       <section className="mb-12">
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-semibold mb-2">
+            <h2 className="mb-2 text-xl font-semibold">
               Security Keys and Biometric Authentication
             </h2>
             <p className="text-gray-600">
@@ -185,16 +185,16 @@ export default function SecuritySettingsPage() {
           />
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-medium mb-4">Registered Devices</h3>
+        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+          <h3 className="mb-4 text-lg font-medium">Registered Devices</h3>
           <AuthenticatorList onDelete={handleDelete} onRename={handleRename} />
         </div>
       </section>
 
       <section className="mb-12">
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-semibold mb-2">Biometric Authentication</h2>
+            <h2 className="mb-2 text-xl font-semibold">Biometric Authentication</h2>
             <p className="text-gray-600">
               Add biometric authentication (fingerprint, face recognition) for enhanced security.
             </p>
@@ -208,12 +208,12 @@ export default function SecuritySettingsPage() {
           />
         </div>
 
-        <div className="bg-gray-50 rounded-lg p-6">
-          <h3 className="text-base font-medium mb-4">Why use biometric authentication?</h3>
+        <div className="rounded-lg bg-gray-50 p-6">
+          <h3 className="mb-4 text-base font-medium">Why use biometric authentication?</h3>
           <ul className="space-y-3 text-gray-600">
             <li className="flex items-start">
               <svg
-                className="h-6 w-6 text-green-500 mr-2"
+                className="mr-2 h-6 w-6 text-green-500"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -229,7 +229,7 @@ export default function SecuritySettingsPage() {
             </li>
             <li className="flex items-start">
               <svg
-                className="h-6 w-6 text-green-500 mr-2"
+                className="mr-2 h-6 w-6 text-green-500"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -245,7 +245,7 @@ export default function SecuritySettingsPage() {
             </li>
             <li className="flex items-start">
               <svg
-                className="h-6 w-6 text-green-500 mr-2"
+                className="mr-2 h-6 w-6 text-green-500"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

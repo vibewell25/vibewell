@@ -81,7 +81,7 @@ export class DeploymentService {
           percentage: config.canary.percentage,
           startTime: new Date(),
           status: 'active',
-        })
+        }),
       );
 
       // Start monitoring canary metrics
@@ -109,7 +109,7 @@ export class DeploymentService {
     // Store monitoring reference
     await this.redis.set(
       `${this.keyPrefix}:monitoring:${config.version}`,
-      monitoringInterval.toString()
+      monitoringInterval.toString(),
     );
   }
 
@@ -118,7 +118,7 @@ export class DeploymentService {
    */
   private async evaluateCanaryHealth(
     config: DeploymentConfig,
-    metrics: DeploymentMetrics
+    metrics: DeploymentMetrics,
   ): Promise<void> {
     try {
       const isHealthy = this.checkMetricsHealth(metrics);
@@ -214,7 +214,7 @@ export class DeploymentService {
       if (!config) throw new Error('Deployment config not found');
 
       const previousVersion = await this.redis.get(
-        `${this.keyPrefix}:previous:${config.environment}`
+        `${this.keyPrefix}:previous:${config.environment}`,
       );
 
       if (!previousVersion) {
@@ -275,7 +275,7 @@ export class DeploymentService {
    */
   private async updateFeatureFlags(
     version: string,
-    features: Record<string, boolean>
+    features: Record<string, boolean>,
   ): Promise<void> {
     await this.redis.set(`${this.keyPrefix}:features:${version}`, JSON.stringify(features));
   }

@@ -4,10 +4,8 @@ import { Event } from '@/types/events';
 import { getEvents } from '@/lib/api/events';
 import { useAuth } from '@/hooks/use-unified-auth';
 import { EventShareCard } from './event-share-card';
-import { format, parseISO } from 'date-fns';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { parseISO } from 'date-fns';
+import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 interface EventRecommendationsProps {
   onShare?: (event: Event) => void;
   onAttend?: (event: Event) => void;
@@ -28,7 +26,7 @@ export function EventRecommendations({ onShare, onAttend }: EventRecommendations
         const now = new Date();
         // Filter events that are upcoming and match user interests
         const recommended = allEvents
-          .filter(event => {
+          .filter((event) => {
             const startDate = parseISO(event.startDate);
             return startDate > now;
           })
@@ -57,13 +55,13 @@ export function EventRecommendations({ onShare, onAttend }: EventRecommendations
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Icons.SparklesIcon className="h-5 w-5 text-primary" />
+            <Icons.SparklesIcon className="text-primary h-5 w-5" />
             <h3 className="text-lg font-semibold">Recommended Events</h3>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex justify-center items-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <div className="flex items-center justify-center py-8">
+            <div className="border-primary h-8 w-8 animate-spin rounded-full border-b-2"></div>
           </div>
         </CardContent>
       </Card>
@@ -74,12 +72,12 @@ export function EventRecommendations({ onShare, onAttend }: EventRecommendations
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Icons.SparklesIcon className="h-5 w-5 text-primary" />
+            <Icons.SparklesIcon className="text-primary h-5 w-5" />
             <h3 className="text-lg font-semibold">Recommended Events</h3>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8 text-gray-500">{error}</div>
+          <div className="py-8 text-center text-gray-500">{error}</div>
         </CardContent>
       </Card>
     );
@@ -89,12 +87,12 @@ export function EventRecommendations({ onShare, onAttend }: EventRecommendations
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Icons.SparklesIcon className="h-5 w-5 text-primary" />
+            <Icons.SparklesIcon className="text-primary h-5 w-5" />
             <h3 className="text-lg font-semibold">Recommended Events</h3>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8 text-gray-500">
+          <div className="py-8 text-center text-gray-500">
             No event recommendations available at the moment.
           </div>
         </CardContent>
@@ -105,13 +103,13 @@ export function EventRecommendations({ onShare, onAttend }: EventRecommendations
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Icons.SparklesIcon className="h-5 w-5 text-primary" />
+          <Icons.SparklesIcon className="text-primary h-5 w-5" />
           <h3 className="text-lg font-semibold">Recommended Events</h3>
         </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {recommendedEvents.map(event => (
+          {recommendedEvents.map((event) => (
             <EventShareCard
               key={event.id}
               event={event}

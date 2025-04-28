@@ -41,18 +41,12 @@ class Logger {
       // Create Winston logger with console and file transports
       this.winstonLogger = winston.createLogger({
         level: 'info',
-        format: winston.format.combine(
-          winston.format.timestamp(),
-          winston.format.json()
-        ),
+        format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
         defaultMeta: { service: 'vibewell-app' },
         transports: [
           // Console transport for server logs
           new winston.transports.Console({
-            format: winston.format.combine(
-              winston.format.colorize(),
-              winston.format.simple()
-            ),
+            format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
           }),
         ],
       });
@@ -60,20 +54,20 @@ class Logger {
       // Add file transport if file logging is enabled
       if (process.env['ENABLE_FILE_LOGGING'] === 'true') {
         this.winstonLogger.add(
-          new winston.transports.File({ 
-            filename: 'logs/error.log', 
+          new winston.transports.File({
+            filename: 'logs/error.log',
             level: 'error',
             maxsize: 5242880, // 5MB
             maxFiles: 5,
-          })
+          }),
         );
-        
+
         this.winstonLogger.add(
-          new winston.transports.File({ 
+          new winston.transports.File({
             filename: 'logs/combined.log',
             maxsize: 5242880, // 5MB
             maxFiles: 5,
-          })
+          }),
         );
       }
     } catch (error) {
@@ -92,7 +86,7 @@ class Logger {
     level: LogLevel,
     message: string,
     userId?: string,
-    metadata?: Record<string, unknown>
+    metadata?: Record<string, unknown>,
   ): LogEntry {
     return {
       timestamp: new Date().toISOString(),
@@ -202,4 +196,4 @@ class Logger {
   }
 }
 
-export const logger = Logger.getInstance();
+export {};

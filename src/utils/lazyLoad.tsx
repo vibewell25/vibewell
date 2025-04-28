@@ -1,9 +1,9 @@
-import React, { Suspense, ComponentType, PropsWithChildren } from 'react';
+import React, { Suspense, ComponentType } from 'react';
 
 // Loading component that will be shown while the actual component is loading
 export const LoadingFallback = () => (
-  <div className="flex items-center justify-center w-full h-24">
-    <div className="w-8 h-8 border-t-2 border-b-2 border-primary rounded-full animate-spin"></div>
+  <div className="flex h-24 w-full items-center justify-center">
+    <div className="border-primary h-8 w-8 animate-spin rounded-full border-b-2 border-t-2"></div>
   </div>
 );
 
@@ -15,22 +15,12 @@ type LazyComponentProps<P = {}> = {
 };
 
 // Lazy component wrapper
-export const LazyComponent = <P extends object>({
-  Component,
-  props,
-  fallback = <LoadingFallback />,
-}: LazyComponentProps<P>) => {
-  return (
-    <Suspense fallback={fallback}>
-      <Component {...(props as P)} />
-    </Suspense>
-  );
-};
+export {};
 
 // HOC to lazy load any component
 export function withLazyLoading<P extends object>(
   importFunc: () => Promise<{ default: ComponentType<P> }>,
-  fallback: React.ReactNode = <LoadingFallback />
+  fallback: React.ReactNode = <LoadingFallback />,
 ) {
   const LazyLoadedComponent = React.lazy(importFunc);
 

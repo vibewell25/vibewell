@@ -29,7 +29,7 @@ export interface LazyImageProps {
 /**
  * LazyImage - An enhanced image component with advanced lazy loading, progressive loading,
  * LQIP (Low Quality Image Placeholders), and Intersection Observer integration.
- * 
+ *
  * Features:
  * - Only loads when scrolled into view (or a configurable distance from viewport)
  * - Progressively enhances image quality
@@ -76,19 +76,21 @@ const LazyImage = ({
   useEffect(() => {
     if (placeholder === 'blur' && !blurDataURL && !generatedBlurUrl) {
       // Create a simple low-quality placeholder (1x1 pixel)
-      setGeneratedBlurUrl('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2YxZjFmMSIvPjwvc3ZnPg==');
+      setGeneratedBlurUrl(
+        'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2YxZjFmMSIvPjwvc3ZnPg==',
+      );
     }
   }, [placeholder, blurDataURL, generatedBlurUrl]);
 
   // Set up intersection observer to detect when the image is in viewport
   useEffect(() => {
     if (priority) return; // Skip for priority images that should load immediately
-    
+
     let observer: IntersectionObserver;
     let timeout: NodeJS.Timeout;
-    
+
     const currentRef = imgRef.current;
-    
+
     if (currentRef && typeof IntersectionObserver !== 'undefined') {
       observer = new IntersectionObserver(
         (entries) => {
@@ -97,7 +99,7 @@ const LazyImage = ({
             const entry = entries[0];
             if (entry.isIntersecting) {
               setIsVisible(true);
-              
+
               // Optional delay for non-critical images to prioritize more important content
               if (delayLoadingMs > 0) {
                 timeout = setTimeout(() => {
@@ -106,7 +108,7 @@ const LazyImage = ({
               } else {
                 setImgSrc(src);
               }
-              
+
               // Unobserve once visible
               observer.unobserve(currentRef);
             }
@@ -116,16 +118,16 @@ const LazyImage = ({
           root: null, // viewport
           rootMargin: rootMargin,
           threshold: threshold,
-        }
+        },
       );
-      
+
       observer.observe(currentRef);
     } else {
       // Fallback for browsers without IntersectionObserver
       setIsVisible(true);
       setImgSrc(src);
     }
-    
+
     return () => {
       if (observer && currentRef) {
         observer.unobserve(currentRef);
@@ -165,22 +167,22 @@ const LazyImage = ({
   const objectFitStyle = objectFit ? { objectFit } : {};
 
   return (
-    <div 
+    <div
       ref={imgRef}
       className={cn(
-        "relative overflow-hidden",
-        isLoading && "bg-slate-200 animate-pulse",
-        className
+        'relative overflow-hidden',
+        isLoading && 'animate-pulse bg-slate-200',
+        className,
       )}
       style={{
         width: fill ? '100%' : width,
         height: fill ? '100%' : height,
-        ...style
+        ...style,
       }}
       aria-busy={isLoading}
     >
       {placeholder === 'skeleton' && isLoading && (
-        <Skeleton 
+        <Skeleton
           className="absolute inset-0 z-10"
           style={{
             width: '100%',
@@ -188,10 +190,10 @@ const LazyImage = ({
           }}
         />
       )}
-      
+
       {/* Only render the image when it's visible or a priority image */}
       {imgSrc && (
-        <Image 
+        <Image
           src={imgSrc}
           alt={alt}
           width={fill ? undefined : width}
@@ -207,31 +209,31 @@ const LazyImage = ({
           onLoad={handleLoad}
           onError={handleError}
           className={cn(
-            "transition-opacity duration-300",
-            isLoading ? "opacity-0" : "opacity-100",
-            error ? "grayscale" : ""
+            'transition-opacity duration-300',
+            isLoading ? 'opacity-0' : 'opacity-100',
+            error ? 'grayscale' : '',
           )}
           style={{
-            ...objectFitStyle
+            ...objectFitStyle,
           }}
           fetchPriority={fetchPriority}
         />
       )}
-      
+
       {/* Display alt text for screen readers if image fails to load */}
       {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-100 text-slate-500 text-xs p-2 text-center">
+        <div className="absolute inset-0 flex items-center justify-center bg-slate-100 p-2 text-center text-xs text-slate-500">
           {alt || 'Image failed to load'}
         </div>
       )}
-      
+
       {/* Add a noscript fallback for users with JavaScript disabled */}
       {typeof document !== 'undefined' && (
         <noscript>
           <img
             src={src}
             alt={alt}
-            className={cn("w-full h-full object-cover")}
+            className={cn('h-full w-full object-cover')}
             loading="lazy"
             style={{
               position: 'absolute',
@@ -239,7 +241,7 @@ const LazyImage = ({
               left: 0,
               width: '100%',
               height: '100%',
-              ...objectFitStyle
+              ...objectFitStyle,
             }}
           />
         </noscript>
@@ -249,4 +251,4 @@ const LazyImage = ({
 };
 
 // Memoize the component to prevent unnecessary re-renders
-export default memo(LazyImage); 
+export default memo(LazyImage);

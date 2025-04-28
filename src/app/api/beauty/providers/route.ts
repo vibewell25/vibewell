@@ -84,7 +84,7 @@ export async function GET(request: Request) {
     });
 
     // Calculate average rating
-    const reviews = services.flatMap(service => service.reviews);
+    const reviews = services.flatMap((service) => service.reviews);
     const averageRating =
       reviews.length > 0
         ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
@@ -122,7 +122,7 @@ export async function PUT(request: Request) {
     if (!userIsProvider) {
       return NextResponse.json(
         { error: 'Only providers can update their profile' },
-        { status: 403 }
+        { status: 403 },
       );
     }
 

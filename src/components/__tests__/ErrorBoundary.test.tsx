@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ErrorBoundary } from '../ui/ErrorBoundary';
 
@@ -31,7 +31,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <div>Test content</div>
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('Test content')).toBeInTheDocument();
@@ -41,7 +41,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ErrorThrowingComponent />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     // Error message should be displayed
@@ -58,7 +58,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ErrorThrowingComponent />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     // Check that console.error was called
@@ -66,9 +66,9 @@ describe('ErrorBoundary', () => {
 
     // The error object should be in the args
     const errorArg = consoleSpy.mock.calls.find(
-      call =>
+      (call) =>
         call[0] instanceof Error ||
-        (typeof call[0] === 'object' && call[0]?.message === 'Test error')
+        (typeof call[0] === 'object' && call[0]?.message === 'Test error'),
     );
 
     expect(errorArg).toBeTruthy();
@@ -83,7 +83,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <differentErrorComponent />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     // Error message should still be displayed
@@ -105,7 +105,7 @@ describe('ErrorBoundary', () => {
     const { rerender } = render(
       <ErrorBoundary>
         <TestComponent />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     // Error should be displayed initially
@@ -123,7 +123,7 @@ describe('ErrorBoundary', () => {
     rerender(
       <ErrorBoundary>
         <div>Recovered content</div>
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     // Now the recovered content should be visible

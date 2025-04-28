@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Progress } from '@/components/ui/progress';
 
 type BackupStats = {
@@ -36,9 +36,8 @@ export function BackupStatistics() {
     return () => clearInterval(interval);
   }, []);
 
-  const progress = stats.totalRecords > 0
-    ? Math.round((stats.backedUpRecords / stats.totalRecords) * 100)
-    : 0;
+  const progress =
+    stats.totalRecords > 0 ? Math.round((stats.backedUpRecords / stats.totalRecords) * 100) : 0;
 
   return (
     <Card>
@@ -48,7 +47,7 @@ export function BackupStatistics() {
       <CardContent>
         <div className="space-y-4">
           <div>
-            <div className="flex justify-between mb-2">
+            <div className="mb-2 flex justify-between">
               <span>Progress</span>
               <span>{progress}%</span>
             </div>
@@ -69,9 +68,7 @@ export function BackupStatistics() {
           <div>
             <p className="text-sm text-muted-foreground">Last Backup</p>
             <p className="text-lg">
-              {stats.lastBackupDate
-                ? new Date(stats.lastBackupDate).toLocaleString()
-                : 'Never'}
+              {stats.lastBackupDate ? new Date(stats.lastBackupDate).toLocaleString() : 'Never'}
             </p>
           </div>
 

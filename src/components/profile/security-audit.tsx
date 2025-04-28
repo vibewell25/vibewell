@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Shield, Lock, Key, AlertTriangle, CheckCircle2, Globe } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -98,7 +98,7 @@ export function SecurityAudit() {
         <CardTitle>Security Audit Log</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {securityEvents.map(event => (
+        {securityEvents.map((event) => (
           <div key={event.id} className="flex items-start space-x-4 rounded-lg border p-4">
             <div className={`mt-1 ${getStatusColor(event.status)}`}>{getEventIcon(event.type)}</div>
             <div className="flex-1 space-y-1">

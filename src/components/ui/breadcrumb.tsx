@@ -47,7 +47,7 @@ export function BreadcrumbItem({
           href={href}
           className={cn(
             'text-sm font-medium text-foreground hover:text-muted-foreground',
-            className
+            className,
           )}
           {...props}
         >

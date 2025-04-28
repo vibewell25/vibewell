@@ -1,4 +1,3 @@
-import React from 'react';
 import { createTestRunner } from '@/utils/test-runner';
 import { Icons } from '@/components/icons';
 import * as IconsModule from '@/components/icons';

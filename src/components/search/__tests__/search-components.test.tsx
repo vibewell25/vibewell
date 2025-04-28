@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { axe } from 'jest-axe';
@@ -84,7 +83,7 @@ describe('Search Components', () => {
     it('renders search results', () => {
       render(<SearchResults results={mockSearchResults} />);
 
-      mockSearchResults.forEach(result => {
+      mockSearchResults.forEach((result) => {
         expect(screen.getByText(result.title)).toBeInTheDocument();
         expect(screen.getByText(result.description)).toBeInTheDocument();
       });
@@ -118,7 +117,7 @@ describe('Search Components', () => {
           totalPages={3}
           currentPage={1}
           onPageChange={onPageChange}
-        />
+        />,
       );
 
       const nextButton = screen.getByRole('button', { name: /next/i });
@@ -132,7 +131,7 @@ describe('Search Components', () => {
     it('renders filter options', () => {
       render(<Filters options={mockFilters} />);
 
-      mockFilters.categories.forEach(category => {
+      mockFilters.categories.forEach((category) => {
         expect(screen.getByText(category)).toBeInTheDocument();
       });
     });
@@ -171,12 +170,12 @@ describe('Search Components', () => {
       render(
         <Filters
           options={mockFilters}
-          renderFilter={filter => (
+          renderFilter={(filter) => (
             <div key={filter} data-testid="custom-filter">
               {filter}
             </div>
           )}
-        />
+        />,
       );
 
       expect(screen.getAllByTestId('custom-filter')).toHaveLength(mockFilters.categories.length);
@@ -192,7 +191,7 @@ describe('Search Components', () => {
       await user.type(input, 'sugg');
 
       await waitFor(() => {
-        mockSuggestions.forEach(suggestion => {
+        mockSuggestions.forEach((suggestion) => {
           expect(screen.getByText(suggestion)).toBeInTheDocument();
         });
       });
@@ -245,7 +244,7 @@ describe('Search Components', () => {
         () => {
           expect(getSuggestions).toHaveBeenCalledWith('test');
         },
-        { timeout: 400 }
+        { timeout: 400 },
       );
     });
 
@@ -305,7 +304,7 @@ describe('Search Components', () => {
           <SearchBar aria-label="Search" />
           <SearchResults results={mockSearchResults} aria-label="Search Results" />
           <Filters options={mockFilters} aria-label="Search Filters" />
-        </>
+        </>,
       );
 
       expect(screen.getByRole('searchbox')).toHaveAttribute('aria-label', 'Search');
@@ -322,7 +321,7 @@ describe('Search Components', () => {
 
       await waitFor(() => {
         const suggestions = screen.getAllByRole('option');
-        suggestions.forEach(suggestion => {
+        suggestions.forEach((suggestion) => {
           expect(suggestion).toHaveAttribute('tabIndex', '0');
         });
       });

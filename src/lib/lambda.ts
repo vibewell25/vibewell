@@ -58,18 +58,6 @@ export const invokeLambda = async <T, R>({
 /**
  * Invoke a Lambda function asynchronously (Fire and forget)
  */
-export const invokeLambdaAsync = async <T>({
-  functionName,
-  payload,
-}: {
-  functionName: string;
-  payload: T;
-}): Promise<void> => {
-  await invokeLambda({
-    functionName,
-    payload,
-    invocationType: 'Event',
-  });
-};
+export {};
 
 export default lambdaClient;

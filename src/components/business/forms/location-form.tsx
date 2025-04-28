@@ -1,22 +1,10 @@
-'use client';
-
+'use client';;
 import { useState } from 'react';
-import { UseFormReturn } from 'react-hook-form';
-import {
-  BusinessProfileFormValues,
-  LocationFormProps,
-} from '@/components/business/business-profile-wizard';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { LocationFormProps } from '@/components/business/business-profile-wizard';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/Input';
 import {
   Select,
   SelectContent,
@@ -26,7 +14,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { MapPin, Building, Navigation } from 'lucide-react';
+import { MapPin, Navigation } from 'lucide-react';
 
 // List of US states for the state dropdown
 const US_STATES = [
@@ -85,7 +73,7 @@ const US_STATES = [
 
 export function LocationForm({ form }: LocationFormProps) {
   const [virtualServices, setVirtualServices] = useState(
-    form.getValues('offersVirtualServices') || false
+    form.getValues('offersVirtualServices') || false,
   );
 
   const [detectLocation, setDetectLocation] = useState(false);
@@ -96,11 +84,11 @@ export function LocationForm({ form }: LocationFormProps) {
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        async position => {
+        async (position) => {
           try {
             // Reverse geocoding to get address from coordinates
             const response = await fetch(
-              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
             );
 
             if (!response.ok) {
@@ -153,10 +141,10 @@ export function LocationForm({ form }: LocationFormProps) {
             setDetectLocation(false);
           }
         },
-        error => {
+        (error) => {
           console.error('Geolocation error:', error);
           setDetectLocation(false);
-        }
+        },
       );
     } else {
       alert('Geolocation is not supported by your browser');
@@ -166,7 +154,7 @@ export function LocationForm({ form }: LocationFormProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="mb-6 flex items-center gap-2">
         <MapPin className="h-5 w-5 text-muted-foreground" />
         <h2 className="text-xl font-semibold">Business Location</h2>
       </div>
@@ -219,7 +207,7 @@ export function LocationForm({ form }: LocationFormProps) {
             )}
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <FormField
               control={form.control}
               name="city"
@@ -247,7 +235,7 @@ export function LocationForm({ form }: LocationFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {US_STATES.map(state => (
+                      {US_STATES.map((state) => (
                         <SelectItem key={state.value} value={state.value}>
                           {state.label}
                         </SelectItem>
@@ -260,7 +248,7 @@ export function LocationForm({ form }: LocationFormProps) {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <FormField
               control={form.control}
               name="zipCode"
@@ -351,7 +339,7 @@ export function LocationForm({ form }: LocationFormProps) {
                 <FormControl>
                   <Switch
                     checked={field.value}
-                    onCheckedChange={checked => {
+                    onCheckedChange={(checked) => {
                       field.onChange(checked);
                       setVirtualServices(checked);
                     }}

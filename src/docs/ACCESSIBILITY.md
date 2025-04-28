@@ -39,12 +39,7 @@ import React from 'react';
 import { useAccessibilityContext } from '../contexts/AccessibilityContext';
 
 function MyComponent() {
-  const { 
-    preferences, 
-    setHighContrast, 
-    setLargeText,
-    setReduceMotion 
-  } = useAccessibilityContext();
+  const { preferences, setHighContrast, setLargeText, setReduceMotion } = useAccessibilityContext();
 
   return (
     <div>
@@ -62,6 +57,7 @@ function MyComponent() {
 The providers are already set up in both page directories:
 
 1. For `/pages` directory (Pages Router):
+
 ```tsx
 import { AppProviders } from '../providers/app-providers';
 
@@ -75,6 +71,7 @@ function MyApp({ Component, pageProps }) {
 ```
 
 2. For `/app` directory (App Router):
+
 ```tsx
 // In layout.tsx
 import { LayoutProviders } from '@/components/providers/layout-providers';
@@ -84,9 +81,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ThemeProvider>
-          <LayoutProviders>
-            {children}
-          </LayoutProviders>
+          <LayoutProviders>{children}</LayoutProviders>
         </ThemeProvider>
       </body>
     </html>
@@ -152,9 +147,9 @@ describe('AccessibilityControls', () => {
     render(
       <AccessibilityProvider>
         <AccessibilityControls />
-      </AccessibilityProvider>
+      </AccessibilityProvider>,
     );
-    
+
     expect(screen.getByText('High Contrast')).toBeInTheDocument();
     expect(screen.getByRole('switch', { name: 'High Contrast' })).not.toBeChecked();
   });
@@ -205,4 +200,4 @@ Use ARIA attributes judiciously:
 - [MDN Web Accessibility Guide](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
 - [React Accessibility](https://reactjs.org/docs/accessibility.html)
 - [Inclusive Components](https://inclusive-components.design/)
-- [A11y Project Checklist](https://www.a11yproject.com/checklist/) 
+- [A11y Project Checklist](https://www.a11yproject.com/checklist/)

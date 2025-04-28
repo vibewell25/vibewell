@@ -1,7 +1,7 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import { logger } from '@/lib/logger';
 import { OpenAI } from 'openai';
-import { addDays, differenceInDays, isAfter } from 'date-fns';
+import { addDays, differenceInDays } from 'date-fns';
 
 const prisma = new PrismaClient();
 const openai = new OpenAI();
@@ -45,7 +45,7 @@ export class ClientManagementService {
    */
   public async upsertClientCard(
     userId: string,
-    data: Prisma.ClientCardCreateInput
+    data: Prisma.ClientCardCreateInput,
   ): Promise<ClientCard> {
     try {
       return await prisma.clientCard.upsert({
@@ -89,7 +89,7 @@ export class ClientManagementService {
         clientCard.feedbacks.reduce((sum, f) => sum + f.rating, 0) / clientCard.feedbacks.length;
       const retentionScore = this.calculateRetentionScore(
         averageRating,
-        clientCard.feedbacks.length
+        clientCard.feedbacks.length,
       );
 
       // Update client card
@@ -239,7 +239,7 @@ export class ClientManagementService {
     if (serviceHistory.length < 2) return 0;
 
     const sortedVisits = serviceHistory
-      .map(h => new Date(h.date))
+      .map((h) => new Date(h.date))
       .sort((a, b) => b.getTime() - a.getTime());
 
     const totalDays = differenceInDays(sortedVisits[0], sortedVisits[sortedVisits.length - 1]);
@@ -247,7 +247,7 @@ export class ClientManagementService {
   }
 
   private calculateAverageRating(serviceHistory: ClientCard['serviceHistory']): number {
-    const ratings = serviceHistory.filter(h => h.feedback).map(h => h.feedback?.rating || 0);
+    const ratings = serviceHistory.filter((h) => h.feedback).map((h) => h.feedback?.rating || 0);
 
     if (ratings.length === 0) return 0;
     return ratings.reduce((sum: number, rating: number) => sum + rating, 0) / ratings.length;

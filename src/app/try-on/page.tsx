@@ -1,11 +1,9 @@
-'use client';
-
-import React, { useState } from 'react';
+'use client';;
+import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { ProductSelector } from '@/components/virtual-try-on/ProductSelector';
 import { TryOnViewer } from '@/components/virtual-try-on/TryOnViewer';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks/use-unified-auth';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 
@@ -49,7 +47,7 @@ export default function TryOnPage() {
     try {
       if (navigator.share) {
         // Web Share API is supported
-        const blob = await fetch(imageUrl).then(r => r.blob());
+        const blob = await fetch(imageUrl).then((r) => r.blob());
         const file = new File([blob], 'vibewell-try-on.png', { type: 'image/png' });
 
         await navigator.share({
@@ -76,25 +74,25 @@ export default function TryOnPage() {
   };
 
   return (
-    <ErrorBoundary>
+    (<ErrorBoundary>
       <Layout>
         <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col min-h-[80vh]">
+          <div className="flex min-h-[80vh] flex-col">
             {!user ? (
               // User not signed in
-              <div className="flex flex-col items-center justify-center text-center py-12">
-                <h2 className="text-2xl font-bold mb-4">Sign In to Use Virtual Try-On</h2>
-                <p className="text-gray-600 mb-6 max-w-md">
+              (<div className="flex flex-col items-center justify-center py-12 text-center">
+                <h2 className="mb-4 text-2xl font-bold">Sign In to Use Virtual Try-On</h2>
+                <p className="mb-6 max-w-md text-gray-600">
                   To experience our virtual try-on feature and see how products look on you, please
                   sign in to your account.
                 </p>
                 <Button href="/auth/sign-in" className="max-w-xs">
                   Sign In
                 </Button>
-              </div>
+              </div>)
             ) : selectedProduct ? (
               // Try on viewer
-              <div className="flex-grow">
+              (<div className="flex-grow">
                 <TryOnViewer
                   productId={selectedProduct.id}
                   productName={selectedProduct.name}
@@ -103,16 +101,15 @@ export default function TryOnPage() {
                   onShare={handleShare}
                   onBack={handleBackToProducts}
                 />
-
                 {/* Related products and recommendations could go here */}
-              </div>
+              </div>)
             ) : (
               // Product selector
-              <ProductSelector onSelectProduct={handleSelectProduct} />
+              (<ProductSelector onSelectProduct={handleSelectProduct} />)
             )}
           </div>
         </div>
       </Layout>
-    </ErrorBoundary>
+    </ErrorBoundary>)
   );
 }

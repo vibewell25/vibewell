@@ -1,5 +1,5 @@
 import { uniqueId } from '@/lib/utils';
-import { Event, EventCategory, EventComment, EventParticipant } from '@/types/events';
+import { Event, EventCategory, EventComment } from '@/types/events';
 import { PaymentService } from '../payment/payment-service';
 
 // Storage keys for browser storage
@@ -157,7 +157,7 @@ export async function getEvents(): Promise<Event[]> {
 export async function getFeaturedEvents(limit = 3): Promise<Event[]> {
   const events = await getEvents();
   return events
-    .filter(event => event.isFeatured)
+    .filter((event) => event.isFeatured)
     .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
     .slice(0, limit);
 }
@@ -170,7 +170,7 @@ export async function getUpcomingEvents(limit?: number): Promise<Event[]> {
   const now = new Date().toISOString();
 
   const upcomingEvents = events
-    .filter(event => event.startDate > now)
+    .filter((event) => event.startDate > now)
     .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
   return limit ? upcomingEvents.slice(0, limit) : upcomingEvents;
@@ -181,7 +181,7 @@ export async function getUpcomingEvents(limit?: number): Promise<Event[]> {
  */
 export async function getEventsByCategory(category: EventCategory): Promise<Event[]> {
   const events = await getEvents();
-  return events.filter(event => event.category === category);
+  return events.filter((event) => event.category === category);
 }
 
 /**
@@ -189,14 +189,14 @@ export async function getEventsByCategory(category: EventCategory): Promise<Even
  */
 export async function getEventById(id: string): Promise<Event | null> {
   const events = await getEvents();
-  return events.find(event => event.id === id) || null;
+  return events.find((event) => event.id === id) || null;
 }
 
 /**
  * Create a new event
  */
 export async function createEvent(
-  eventData: Omit<Event, 'id' | 'createdAt' | 'updatedAt' | 'participantsCount'>
+  eventData: Omit<Event, 'id' | 'createdAt' | 'updatedAt' | 'participantsCount'>,
 ): Promise<Event> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot create event in server context');
@@ -229,7 +229,7 @@ export async function createEvent(
  */
 export async function updateEvent(
   id: string,
-  updates: Partial<Omit<Event, 'id' | 'createdAt' | 'participantsCount'>>
+  updates: Partial<Omit<Event, 'id' | 'createdAt' | 'participantsCount'>>,
 ): Promise<Event | null> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot update event in server context');
@@ -237,7 +237,7 @@ export async function updateEvent(
 
   try {
     const events = await getEvents();
-    const index = events.findIndex(e => e.id === id);
+    const index = events.findIndex((e) => e.id === id);
 
     if (index === -1) {
       return null;
@@ -269,7 +269,7 @@ export async function deleteEvent(id: string): Promise<boolean> {
 
   try {
     const events = await getEvents();
-    const filteredEvents = events.filter(e => e.id !== id);
+    const filteredEvents = events.filter((e) => e.id !== id);
 
     if (filteredEvents.length === events.length) {
       return false; // Event not found
@@ -298,7 +298,7 @@ export async function registerForEvent(
   eventId: string,
   userId: string,
   userName: string,
-  userAvatar?: string
+  userAvatar?: string,
 ): Promise<boolean> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot register for event in server context');
@@ -307,7 +307,7 @@ export async function registerForEvent(
   try {
     // Get the event to update participant count
     const events = await getEvents();
-    const eventIndex = events.findIndex(e => e.id === eventId);
+    const eventIndex = events.findIndex((e) => e.id === eventId);
 
     if (eventIndex === -1) {
       return false; // Event not found
@@ -318,14 +318,14 @@ export async function registerForEvent(
     if (!event) {
       return false; // Event not found
     }
-    
+
     event.participantsCount += 1;
 
     if (!event.participants) {
       event.participants = [];
     }
-    
-    const existingParticipant = event.participants.find(p => p.id === userId);
+
+    const existingParticipant = event.participants.find((p) => p.id === userId);
     if (existingParticipant) {
       existingParticipant.status = 'registered';
     } else {
@@ -368,7 +368,7 @@ export async function cancelEventRegistration(eventId: string, userId: string): 
   try {
     // Get the event to update participant count
     const events = await getEvents();
-    const eventIndex = events.findIndex(e => e.id === eventId);
+    const eventIndex = events.findIndex((e) => e.id === eventId);
 
     if (eventIndex === -1) {
       return false; // Event not found
@@ -383,8 +383,8 @@ export async function cancelEventRegistration(eventId: string, userId: string): 
     if (!event.participants) {
       event.participants = [];
     }
-    
-    const participantIndex = event.participants.findIndex(p => p.id === userId);
+
+    const participantIndex = event.participants.findIndex((p) => p.id === userId);
     if (participantIndex !== -1) {
       event.participants[participantIndex].status = 'cancelled';
       event.participantsCount = Math.max(0, event.participantsCount - 1);
@@ -415,7 +415,7 @@ export async function addEventComment(
   userId: string,
   userName: string,
   content: string,
-  userAvatar?: string
+  userAvatar?: string,
 ): Promise<EventComment | null> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot add comment in server context');
@@ -423,7 +423,7 @@ export async function addEventComment(
 
   try {
     const events = await getEvents();
-    const eventIndex = events.findIndex(e => e.id === eventId);
+    const eventIndex = events.findIndex((e) => e.id === eventId);
 
     if (eventIndex === -1) {
       return null; // Event not found
@@ -433,7 +433,7 @@ export async function addEventComment(
     if (!event) {
       return null; // Event not found
     }
-    
+
     const newComment: EventComment = {
       id: uniqueId('cmt_'),
       user: {
@@ -448,7 +448,7 @@ export async function addEventComment(
     if (!event.comments) {
       event.comments = [];
     }
-    
+
     event.comments.push(newComment);
 
     events[eventIndex] = event;
@@ -473,8 +473,8 @@ export async function getUserRegisteredEvents(userId: string): Promise<Event[]> 
     const events = await getEvents();
 
     // Filter events where user is a participant with 'registered' status
-    return events.filter(event =>
-      event.participants?.some(p => p.id === userId && p.status === 'registered')
+    return events.filter((event) =>
+      event.participants?.some((p) => p.id === userId && p.status === 'registered'),
     );
   } catch (error) {
     console.error('Error getting user registered events:', error);
@@ -523,7 +523,7 @@ export async function checkInToEvent(
   userId: string,
   userName: string,
   checkInCode: string,
-  userAvatar?: string
+  userAvatar?: string,
 ): Promise<boolean> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot check in to event in server context');
@@ -532,7 +532,7 @@ export async function checkInToEvent(
   try {
     // Get the event to update check-in status
     const events = await getEvents();
-    const eventIndex = events.findIndex(e => e.id === eventId);
+    const eventIndex = events.findIndex((e) => e.id === eventId);
 
     if (eventIndex === -1) {
       return false; // Event not found
@@ -542,7 +542,7 @@ export async function checkInToEvent(
     if (!event) {
       return false; // Event not found
     }
-    
+
     // Verify the check-in code
     if (!event.checkInEnabled || event.checkInCode !== checkInCode) {
       return false; // Check-in not enabled or code doesn't match
@@ -554,7 +554,7 @@ export async function checkInToEvent(
     }
 
     // Check if user is already checked in
-    const alreadyCheckedIn = event.checkedInParticipants.some(p => p.userId === userId);
+    const alreadyCheckedIn = event.checkedInParticipants.some((p) => p.userId === userId);
     if (alreadyCheckedIn) {
       return true; // User already checked in
     }
@@ -590,7 +590,7 @@ export async function submitEventFeedback(
   eventId: string,
   userId: string,
   rating: number,
-  comment: string
+  comment: string,
 ): Promise<boolean> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot submit feedback in server context');
@@ -599,7 +599,7 @@ export async function submitEventFeedback(
   try {
     // Get the event to update feedback
     const events = await getEvents();
-    const eventIndex = events.findIndex(e => e.id === eventId);
+    const eventIndex = events.findIndex((e) => e.id === eventId);
 
     if (eventIndex === -1) {
       return false; // Event not found
@@ -609,7 +609,7 @@ export async function submitEventFeedback(
     if (!event) {
       return false; // Event not found
     }
-    
+
     // Initialize feedback array if it doesn't exist
     if (!event.feedback) {
       event.feedback = [];
@@ -626,7 +626,7 @@ export async function submitEventFeedback(
     // Update average rating
     const totalRating = event.feedback.reduce((sum, item) => sum + item.rating, 0);
     const averageRating = totalRating / event.feedback.length;
-    
+
     // Update analytics if they exist
     if (!event.analytics) {
       event.analytics = {
@@ -673,7 +673,7 @@ export async function processEventPayment(
     paymentMethodId: string;
     amount: number;
     metadata?: Record<string, any>;
-  }
+  },
 ): Promise<{ success: boolean; message: string; paymentIntentId?: string }> {
   try {
     // Get event
@@ -689,7 +689,7 @@ export async function processEventPayment(
     // Calculate payment amount (consider early bird)
     const currentDate = new Date();
     let amount = event.price || 0;
-    
+
     if (event.earlyBirdPrice && event.earlyBirdEndDate) {
       const earlyBirdEnd = new Date(event.earlyBirdEndDate);
       if (currentDate < earlyBirdEnd) {
@@ -699,9 +699,9 @@ export async function processEventPayment(
 
     // If amount doesn't match expected amount, reject payment
     if (amount !== paymentDetails.amount) {
-      return { 
-        success: false, 
-        message: `Invalid payment amount. Expected: ${amount}, received: ${paymentDetails.amount}` 
+      return {
+        success: false,
+        message: `Invalid payment amount. Expected: ${amount}, received: ${paymentDetails.amount}`,
       };
     }
 
@@ -719,14 +719,14 @@ export async function processEventPayment(
         eventId,
         userId,
         eventName: event.title,
-        ...paymentDetails.metadata
-      }
+        ...paymentDetails.metadata,
+      },
     });
 
     if (!paymentResult.success) {
       return {
         success: false,
-        message: paymentResult.message || 'Payment processing failed'
+        message: paymentResult.message || 'Payment processing failed',
       };
     }
 
@@ -741,7 +741,7 @@ export async function processEventPayment(
       status: 'paid',
       amount,
       paymentIntentId: paymentResult.paymentIntentId,
-      paymentDate: new Date().toISOString()
+      paymentDate: new Date().toISOString(),
     });
 
     // Save the updated event
@@ -750,13 +750,14 @@ export async function processEventPayment(
     return {
       success: true,
       message: 'Payment processed successfully',
-      paymentIntentId: paymentResult.paymentIntentId
+      paymentIntentId: paymentResult.paymentIntentId,
     };
   } catch (error) {
     console.error('Error processing event payment:', error);
-    return { 
-      success: false, 
-      message: error instanceof Error ? error.message : 'An unexpected error occurred during payment'
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : 'An unexpected error occurred during payment',
     };
   }
 }
@@ -769,7 +770,7 @@ export async function processEventPayment(
  */
 export async function refundEventPayment(
   eventId: string,
-  userId: string
+  userId: string,
 ): Promise<{ success: boolean; message: string; refundId?: string }> {
   try {
     // Get event
@@ -784,7 +785,7 @@ export async function refundEventPayment(
 
     // Find the payment status for this user
     const paymentStatus = event.paymentStatuses?.find(
-      status => status.userId === userId && status.status === 'paid'
+      (status) => status.userId === userId && status.status === 'paid',
     );
 
     if (!paymentStatus) {
@@ -795,11 +796,11 @@ export async function refundEventPayment(
     if (event.refundPolicy) {
       const currentDate = new Date();
       const refundCutoffDate = new Date(event.refundPolicy.allowedUntil);
-      
+
       if (currentDate > refundCutoffDate) {
-        return { 
-          success: false, 
-          message: `Refunds are only allowed until ${new Date(event.refundPolicy.allowedUntil).toLocaleDateString()}` 
+        return {
+          success: false,
+          message: `Refunds are only allowed until ${new Date(event.refundPolicy.allowedUntil).toLocaleDateString()}`,
         };
       }
     }
@@ -811,30 +812,36 @@ export async function refundEventPayment(
     // Calculate refund amount based on policy
     let refundAmount = paymentStatus.amount;
     if (event.refundPolicy && event.refundPolicy.percentageToRefund < 100) {
-      refundAmount = Math.floor(paymentStatus.amount * (event.refundPolicy.percentageToRefund / 100));
+      refundAmount = Math.floor(
+        paymentStatus.amount * (event.refundPolicy.percentageToRefund / 100),
+      );
     }
 
     // Process the refund
     const refundResult = await paymentService.createRefund({
       paymentIntentId: paymentStatus.paymentIntentId || '',
       amount: refundAmount,
-      reason: 'requested_by_customer'
+      reason: 'requested_by_customer',
     });
 
     if (!refundResult.success) {
       return {
         success: false,
-        message: refundResult.message || 'Refund processing failed'
+        message: refundResult.message || 'Refund processing failed',
       };
     }
 
     // Update event with refund status
     const updatedEvent = { ...event };
     const paymentStatusIndex = updatedEvent.paymentStatuses?.findIndex(
-      status => status.userId === userId && status.status === 'paid'
+      (status) => status.userId === userId && status.status === 'paid',
     );
 
-    if (paymentStatusIndex !== undefined && paymentStatusIndex >= 0 && updatedEvent.paymentStatuses) {
+    if (
+      paymentStatusIndex !== undefined &&
+      paymentStatusIndex >= 0 &&
+      updatedEvent.paymentStatuses
+    ) {
       updatedEvent.paymentStatuses[paymentStatusIndex].status = 'refunded';
       updatedEvent.paymentStatuses[paymentStatusIndex].refundDate = new Date().toISOString();
     }
@@ -845,13 +852,14 @@ export async function refundEventPayment(
     return {
       success: true,
       message: 'Refund processed successfully',
-      refundId: refundResult.refundId
+      refundId: refundResult.refundId,
     };
   } catch (error) {
     console.error('Error processing event refund:', error);
-    return { 
-      success: false, 
-      message: error instanceof Error ? error.message : 'An unexpected error occurred during refund'
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : 'An unexpected error occurred during refund',
     };
   }
 }
@@ -864,8 +872,8 @@ export async function refundEventPayment(
  */
 export async function getEventPaymentStatus(
   eventId: string,
-  userId: string
-): Promise<{ 
+  userId: string,
+): Promise<{
   status: 'none' | 'pending' | 'paid' | 'refunded' | 'failed';
   amount?: number;
   paymentDate?: string;
@@ -879,8 +887,8 @@ export async function getEventPaymentStatus(
     }
 
     // Find payment status for this user
-    const paymentStatus = event.paymentStatuses?.find(status => status.userId === userId);
-    
+    const paymentStatus = event.paymentStatuses?.find((status) => status.userId === userId);
+
     if (!paymentStatus) {
       return { status: 'none' };
     }
@@ -889,7 +897,7 @@ export async function getEventPaymentStatus(
       status: paymentStatus.status,
       amount: paymentStatus.amount,
       paymentDate: paymentStatus.paymentDate,
-      refundDate: paymentStatus.refundDate
+      refundDate: paymentStatus.refundDate,
     };
   } catch (error) {
     console.error('Error getting event payment status:', error);

@@ -7,7 +7,6 @@ import {
   commentOnPost,
   followUser,
 } from '@/lib/api/beauty';
-import { CommunityPost, Comment, UserProfile } from '@/lib/api/beauty';
 
 export default function BeautyCommunity() {
   const [posts, setPosts] = useState<CommunityPost[]>([]);
@@ -35,7 +34,7 @@ export default function BeautyCommunity() {
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setNewPost(prev => ({
+      setNewPost((prev) => ({
         ...prev,
         images: [...prev.images, ...Array.from(e.target.files!)],
       }));
@@ -44,7 +43,7 @@ export default function BeautyCommunity() {
 
   const handleAddTag = (tag: string) => {
     if (tag && !newPost.tags.includes(tag)) {
-      setNewPost(prev => ({
+      setNewPost((prev) => ({
         ...prev,
         tags: [...prev.tags, tag],
       }));
@@ -52,9 +51,9 @@ export default function BeautyCommunity() {
   };
 
   const handleRemoveTag = (tag: string) => {
-    setNewPost(prev => ({
+    setNewPost((prev) => ({
       ...prev,
-      tags: prev.tags.filter(t => t !== tag),
+      tags: prev.tags.filter((t) => t !== tag),
     }));
   };
 
@@ -86,7 +85,7 @@ export default function BeautyCommunity() {
   const handleComment = async (postId: string) => {
     try {
       await commentOnPost(postId, { content: newComment[postId] });
-      setNewComment(prev => ({ ...prev, [postId]: '' }));
+      setNewComment((prev) => ({ ...prev, [postId]: '' }));
       loadPosts();
     } catch (error) {
       console.error('Error commenting on post:', error);
@@ -104,28 +103,28 @@ export default function BeautyCommunity() {
 
   const formatTimeAgo = (date: string) => {
     const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
-    
+
     let interval = seconds / 31536000;
     if (interval > 1) return Math.floor(interval) + ' years ago';
-    
+
     interval = seconds / 2592000;
     if (interval > 1) return Math.floor(interval) + ' months ago';
-    
+
     interval = seconds / 86400;
     if (interval > 1) return Math.floor(interval) + ' days ago';
-    
+
     interval = seconds / 3600;
     if (interval > 1) return Math.floor(interval) + ' hours ago';
-    
+
     interval = seconds / 60;
     if (interval > 1) return Math.floor(interval) + ' minutes ago';
-    
+
     return Math.floor(seconds) + ' seconds ago';
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Beauty Community</h2>
         <Button onClick={() => setShowNewPost(!showNewPost)}>
           {showNewPost ? 'Cancel' : 'Share Post'}
@@ -133,40 +132,39 @@ export default function BeautyCommunity() {
       </div>
 
       {showNewPost && (
-        <Card className="p-6 space-y-4">
+        <Card className="space-y-4 p-6">
           <Input
             label="Share your thoughts..."
             value={newPost.content}
-            onChange={e => setNewPost(prev => ({ ...prev, content: e.target.value }))}
+            onChange={(e) => setNewPost((prev) => ({ ...prev, content: e.target.value }))}
             multiline
             rows={4}
           />
 
           <div>
-            <label className="block text-sm font-medium mb-2">Add Photos</label>
+            <label className="mb-2 block text-sm font-medium">Add Photos</label>
             <div className="flex flex-wrap gap-2">
               {newPost.images.map((image, index) => (
-                <div
-                  key={index}
-                  className="relative w-24 h-24 rounded overflow-hidden"
-                >
+                <div key={index} className="relative h-24 w-24 overflow-hidden rounded">
                   <img
                     src={URL.createObjectURL(image)}
                     alt={`Upload ${index + 1}`}
-                    className="w-full h-full object-cover"
+                    className="h-full w-full object-cover"
                   />
                   <button
-                    onClick={() => setNewPost(prev => ({
-                      ...prev,
-                      images: prev.images.filter((_, i) => i !== index),
-                    }))}
-                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                    onClick={() =>
+                      setNewPost((prev) => ({
+                        ...prev,
+                        images: prev.images.filter((_, i) => i !== index),
+                      }))
+                    }
+                    className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white"
                   >
                     ×
                   </button>
                 </div>
               ))}
-              <label className="w-24 h-24 border-2 border-dashed border-gray-300 rounded flex items-center justify-center cursor-pointer">
+              <label className="flex h-24 w-24 cursor-pointer items-center justify-center rounded border-2 border-dashed border-gray-300">
                 <input
                   type="file"
                   accept="image/*"
@@ -180,21 +178,17 @@ export default function BeautyCommunity() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Add Tags</label>
-            <div className="flex flex-wrap gap-2 mb-2">
-              {newPost.tags.map(tag => (
-                <Badge
-                  key={tag}
-                  className="cursor-pointer"
-                  onClick={() => handleRemoveTag(tag)}
-                >
+            <label className="mb-2 block text-sm font-medium">Add Tags</label>
+            <div className="mb-2 flex flex-wrap gap-2">
+              {newPost.tags.map((tag) => (
+                <Badge key={tag} className="cursor-pointer" onClick={() => handleRemoveTag(tag)}>
                   #{tag} ×
                 </Badge>
               ))}
             </div>
             <Input
               placeholder="Add tag and press Enter"
-              onKeyPress={e => {
+              onKeyPress={(e) => {
                 if (e.key === 'Enter') {
                   handleAddTag(e.currentTarget.value);
                   e.currentTarget.value = '';
@@ -208,28 +202,18 @@ export default function BeautyCommunity() {
       )}
 
       <div className="space-y-6">
-        {posts.map(post => (
+        {posts.map((post) => (
           <Card key={post.id} className="p-6">
             <div className="flex items-start gap-4">
-              <img
-                src={post.user.avatar}
-                alt={post.user.name}
-                className="w-10 h-10 rounded-full"
-              />
+              <img src={post.user.avatar} alt={post.user.name} className="h-10 w-10 rounded-full" />
               <div className="flex-1">
-                <div className="flex justify-between items-start">
+                <div className="flex items-start justify-between">
                   <div>
                     <h3 className="font-medium">{post.user.name}</h3>
-                    <p className="text-sm text-gray-600">
-                      {formatTimeAgo(post.createdAt)}
-                    </p>
+                    <p className="text-sm text-gray-600">{formatTimeAgo(post.createdAt)}</p>
                   </div>
                   {!post.user.isCurrentUser && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleFollow(post.user.id)}
-                    >
+                    <Button variant="outline" size="sm" onClick={() => handleFollow(post.user.id)}>
                       {post.user.isFollowing ? 'Following' : 'Follow'}
                     </Button>
                   )}
@@ -252,7 +236,7 @@ export default function BeautyCommunity() {
 
                 {post.tags.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {post.tags.map(tag => (
+                    {post.tags.map((tag) => (
                       <Badge key={tag}>#{tag}</Badge>
                     ))}
                   </div>
@@ -263,27 +247,25 @@ export default function BeautyCommunity() {
                     onClick={() => handleLike(post.id)}
                     className="flex items-center gap-1 text-sm"
                   >
-                    <span className={post.isLiked ? 'text-primary' : ''}>
-                      ♥ {post.likes}
-                    </span>
+                    <span className={post.isLiked ? 'text-primary' : ''}>♥ {post.likes}</span>
                   </button>
                   <span className="text-sm">{post.comments.length} comments</span>
                 </div>
 
                 <div className="mt-4 space-y-4">
-                  {post.comments.map(comment => (
+                  {post.comments.map((comment) => (
                     <div key={comment.id} className="flex items-start gap-3">
                       <img
                         src={comment.user.avatar}
                         alt={comment.user.name}
-                        className="w-8 h-8 rounded-full"
+                        className="h-8 w-8 rounded-full"
                       />
                       <div className="flex-1">
-                        <div className="bg-gray-50 rounded-lg p-3">
-                          <p className="font-medium text-sm">{comment.user.name}</p>
+                        <div className="rounded-lg bg-gray-50 p-3">
+                          <p className="text-sm font-medium">{comment.user.name}</p>
                           <p className="text-sm">{comment.content}</p>
                         </div>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="mt-1 text-xs text-gray-500">
                           {formatTimeAgo(comment.createdAt)}
                         </p>
                       </div>
@@ -294,15 +276,14 @@ export default function BeautyCommunity() {
                     <Input
                       placeholder="Add a comment..."
                       value={newComment[post.id] || ''}
-                      onChange={e => setNewComment(prev => ({
-                        ...prev,
-                        [post.id]: e.target.value,
-                      }))}
+                      onChange={(e) =>
+                        setNewComment((prev) => ({
+                          ...prev,
+                          [post.id]: e.target.value,
+                        }))
+                      }
                     />
-                    <Button
-                      onClick={() => handleComment(post.id)}
-                      disabled={!newComment[post.id]}
-                    >
+                    <Button onClick={() => handleComment(post.id)} disabled={!newComment[post.id]}>
                       Post
                     </Button>
                   </div>
@@ -314,4 +295,4 @@ export default function BeautyCommunity() {
       </div>
     </div>
   );
-} 
+}

@@ -1,6 +1,4 @@
-import '@testing-library/jest-dom';
 import { TextEncoder, TextDecoder } from 'util';
-import React from 'react';
 import { axe } from 'jest-axe';
 
 // Add TextEncoder and TextDecoder to global scope for Jest
@@ -105,7 +103,7 @@ global.fetch = jest.fn((_input: RequestInfo | URL, _init?: RequestInit) =>
     ok: true,
     status: 200,
     statusText: 'OK',
-  })
+  }),
 ) as jest.Mock;
 
 // Set up localStorage mock
@@ -151,7 +149,7 @@ jest.mock('next/router', () => ({
 // Mock for window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: jest.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,

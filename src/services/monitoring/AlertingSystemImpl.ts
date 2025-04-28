@@ -5,4 +5,4 @@ export class AlertingSystemImpl implements AlertingSystem {
     // TODO: Implement actual alerting logic (e.g., sending to monitoring service)
     console.log(`Alert: ${name}`, config);
   }
-} 
+}

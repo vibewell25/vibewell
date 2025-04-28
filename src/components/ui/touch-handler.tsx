@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { useResponsive } from '@/hooks/useResponsive';
 
 export interface TouchPosition {
@@ -116,12 +116,12 @@ export function TouchHandler({
       // Calculate pinch scale
       const initialDistance = getDistance(
         { x: initialTouch1.clientX, y: initialTouch1.clientY },
-        { x: initialTouch2.clientX, y: initialTouch2.clientY }
+        { x: initialTouch2.clientX, y: initialTouch2.clientY },
       );
 
       const currentDistance = getDistance(
         { x: touch1.clientX, y: touch1.clientY },
-        { x: touch2.clientX, y: touch2.clientY }
+        { x: touch2.clientX, y: touch2.clientY },
       );
 
       const scale = currentDistance / initialDistance;
@@ -140,12 +140,12 @@ export function TouchHandler({
       // Calculate rotation angle
       const initialAngle = getAngle(
         { x: initialTouch1.clientX, y: initialTouch1.clientY },
-        { x: initialTouch2.clientX, y: initialTouch2.clientY }
+        { x: initialTouch2.clientX, y: initialTouch2.clientY },
       );
 
       const currentAngle = getAngle(
         { x: touch1.clientX, y: touch1.clientY },
-        { x: touch2.clientX, y: touch2.clientY }
+        { x: touch2.clientX, y: touch2.clientY },
       );
 
       const rotation = currentAngle - initialAngle;

@@ -1,9 +1,4 @@
-import {
-  performance,
-  PerformanceEntry,
-  PerformanceObserver as NodePerformanceObserver,
-  Performance,
-} from 'perf_hooks';
+import { performance, Performance } from 'perf_hooks';
 
 type ValidEntryType = 'paint' | 'longtask' | 'measure' | 'mark' | 'resource' | 'navigation';
 type CombinedEntryType = ValidEntryType | string; // Allow string for extensibility while keeping type safety
@@ -31,7 +26,7 @@ declare global {
 interface PerformanceObserverConstructor {
   readonly prototype: PerformanceObserver;
   new (
-    callback: (entries: PerformanceEntryList, observer: PerformanceObserver) => void
+    callback: (entries: PerformanceEntryList, observer: PerformanceObserver) => void,
   ): PerformanceObserver;
   readonly supportedEntryTypes: readonly string[];
 }
@@ -55,9 +50,7 @@ interface PerformanceMetrics {
 }
 
 // Type guard for memory metrics
-function hasMemoryMetrics(
-  perf: Performance
-): perf is Performance & {
+function hasMemoryMetrics(perf: Performance): perf is Performance & {
   memory: { jsHeapSizeLimit: number; totalJSHeapSize: number; usedJSHeapSize: number };
 } {
   return typeof (perf as any).memory !== 'undefined';
@@ -89,9 +82,9 @@ export interface PerformanceResult {
  */
 export function createPerformanceObserver(
   entryTypes: CombinedEntryType[],
-  callback: (entries: PerformanceEntryList) => void
+  callback: (entries: PerformanceEntryList) => void,
 ): PerformanceObserver {
-  const observer = new PerformanceObserver(entries => callback(entries));
+  const observer = new PerformanceObserver((entries) => callback(entries));
   observer.observe({ entryTypes });
   return observer;
 }
@@ -134,7 +127,7 @@ export async function measurePerformance(fn: () => any): Promise<PerformanceResu
  * @returns PerformanceObserver instance
  */
 export function measurePaintTiming(
-  callback: (entries: PerformanceEntryList) => void
+  callback: (entries: PerformanceEntryList) => void,
 ): PerformanceObserver {
   return createPerformanceObserver(['paint'], callback);
 }
@@ -145,7 +138,7 @@ export function measurePaintTiming(
  * @returns PerformanceObserver instance
  */
 export function measureLongTasks(
-  callback: (entries: PerformanceEntryList) => void
+  callback: (entries: PerformanceEntryList) => void,
 ): PerformanceObserver {
   return createPerformanceObserver(['longtask'], callback);
 }
@@ -156,7 +149,7 @@ export function measureLongTasks(
  * @returns Promise resolving to FPS measurement
  */
 export async function measureFPS(duration: number): Promise<number> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     let frameCount = 0;
     const startTime = performance.now();
 
@@ -175,27 +168,7 @@ export async function measureFPS(duration: number): Promise<number> {
   });
 }
 
-export const measureFrameRate = (duration: number = 5000): Promise<number> => {
-  return new Promise(resolve => {
-    let frames = 0;
-    const lastTime = performance.now();
-
-    const countFrame = () => {
-      frames++;
-      const currentTime = performance.now();
-
-      if (currentTime - lastTime >= duration) {
-        const fps = (frames * 1000) / duration;
-        resolve(fps);
-        return;
-      }
-
-      requestAnimationFrame(countFrame);
-    };
-
-    requestAnimationFrame(countFrame);
-  });
-};
+export {};
 
 /**
  * Measures detailed network timing for a request
@@ -213,12 +186,11 @@ function extractNetworkMetrics(timing: PerformanceResourceTiming): NetworkMetric
 
 export async function measureNetworkRequest(
   url: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<{ metrics: NetworkMetrics | undefined }> {
   const start = performance.now();
 
   try {
-    const response = await fetch(url, options);
     const end = performance.now();
 
     // Get timing metrics from the Performance API if available
@@ -261,7 +233,7 @@ export interface PerformanceReport {
 }
 
 export function createPerformanceReport(
-  metrics: Partial<PerformanceReport['metrics']>
+  metrics: Partial<PerformanceReport['metrics']>,
 ): PerformanceReport {
   return {
     timestamp: new Date().toISOString(),

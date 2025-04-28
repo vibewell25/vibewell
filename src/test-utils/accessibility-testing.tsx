@@ -126,7 +126,7 @@ export const axeConfig: AxeOptions = {
  */
 export async function testAccessibility(
   ui: ReactElement,
-  options: TestAccessibilityOptions = {}
+  options: TestAccessibilityOptions = {},
 ): Promise<any> {
   const { axeOptions = axeConfig, renderOptions = {} } = options;
   const container = render(ui, renderOptions).container;
@@ -143,7 +143,7 @@ export async function testAccessibility(
  * @returns Promise resolving when testing completes
  */
 export async function testKeyboardNavigation(
-  options: KeyboardNavigationOptions = {}
+  options: KeyboardNavigationOptions = {},
 ): Promise<void> {
   const { startElement, tabSequence, customKeys = [] } = options;
 
@@ -189,7 +189,7 @@ export async function testKeyboardNavigation(
  */
 export async function testScreenReaderAnnouncements(
   ui: ReactElement,
-  options: ScreenReaderOptions = {}
+  options: ScreenReaderOptions = {},
 ): Promise<void> {
   const { announcements = [], ariaLive = 'polite', waitForAnnouncement = true } = options;
 
@@ -208,7 +208,7 @@ export async function testScreenReaderAnnouncements(
 
       if (waitForAnnouncement) {
         // Wait for announcement to be processed
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 50));
       }
 
       // Check that the announcement is in the DOM and potentially visible to screen readers
@@ -279,7 +279,7 @@ function getLuminance(rgb: { r: number; g: number; b: number }): number {
  */
 function calculateContrastRatio(
   color1: { r: number; g: number; b: number },
-  color2: { r: number; g: number; b: number }
+  color2: { r: number; g: number; b: number },
 ): number {
   const luminance1 = getLuminance(color1);
   const luminance2 = getLuminance(color2);
@@ -350,7 +350,7 @@ export async function testAriaRoles(options: AriaRoleOptions = {}): Promise<void
       // Test aria-label or aria-labelledby if name provided
       if (name) {
         expect(
-          domElement.hasAttribute('aria-label') || domElement.hasAttribute('aria-labelledby')
+          domElement.hasAttribute('aria-label') || domElement.hasAttribute('aria-labelledby'),
         ).toBe(true);
       }
 
@@ -387,7 +387,7 @@ export async function testFocusTrap(options: FocusTrapOptions): Promise<void> {
 
   // Find all focusable elements
   const focusableElements = container.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
   );
 
   // Check that expected elements match actual focusable elements
@@ -454,7 +454,7 @@ export async function testLandmarks(landmarks: LandmarkTest[]): Promise<void> {
  */
 export async function testHeadingHierarchy(): Promise<void> {
   const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'));
-  const headingLevels = headings.map(h => parseInt(h.tagName.substring(1)));
+  const headingLevels = headings.map((h) => parseInt(h.tagName.substring(1)));
 
   let prevLevel = 0;
 

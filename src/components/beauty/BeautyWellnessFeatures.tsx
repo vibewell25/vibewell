@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -65,12 +64,12 @@ export function BeautyWellnessFeatures({
 
   return (
     <div className="space-y-6">
-      <div className="bg-muted p-6 rounded-lg">
-        <h2 className="text-2xl font-semibold mb-4">Beauty & Wellness Tips</h2>
+      <div className="rounded-lg bg-muted p-6">
+        <h2 className="mb-4 text-2xl font-semibold">Beauty & Wellness Tips</h2>
         <div className="grid gap-4 md:grid-cols-2">
           <Card className="p-4">
-            <h3 className="font-semibold mb-2">Preparation Tips</h3>
-            <ul className="list-disc list-inside space-y-2 text-sm">
+            <h3 className="mb-2 font-semibold">Preparation Tips</h3>
+            <ul className="list-inside list-disc space-y-2 text-sm">
               <li>Arrive 10 minutes before your appointment</li>
               <li>Avoid heavy meals before the session</li>
               <li>Wear comfortable clothing</li>
@@ -78,8 +77,8 @@ export function BeautyWellnessFeatures({
             </ul>
           </Card>
           <Card className="p-4">
-            <h3 className="font-semibold mb-2">Aftercare Instructions</h3>
-            <ul className="list-disc list-inside space-y-2 text-sm">
+            <h3 className="mb-2 font-semibold">Aftercare Instructions</h3>
+            <ul className="list-inside list-disc space-y-2 text-sm">
               <li>Stay hydrated</li>
               <li>Follow recommended product routine</li>
               <li>Book follow-up appointments as advised</li>
@@ -90,7 +89,7 @@ export function BeautyWellnessFeatures({
       </div>
 
       <div className="space-y-4">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <h3 className="text-xl font-semibold">Client Reviews</h3>
           <Button variant="outline" onClick={() => setShowReviewForm(!showReviewForm)}>
             {showReviewForm ? 'Cancel Review' : 'Write Review'}
@@ -98,16 +97,16 @@ export function BeautyWellnessFeatures({
         </div>
 
         {showReviewForm && (
-          <Card className="p-4 space-y-4">
+          <Card className="space-y-4 p-4">
             <div className="space-y-2">
               <label className="block text-sm font-medium">Rating</label>
               <div className="flex gap-2">
-                {[1, 2, 3, 4, 5].map(value => (
+                {[1, 2, 3, 4, 5].map((value) => (
                   <Button
                     key={value}
                     variant={rating === value ? 'default' : 'outline'}
                     onClick={() => setRating(value)}
-                    className="w-10 h-10"
+                    className="h-10 w-10"
                   >
                     {value}
                   </Button>
@@ -118,7 +117,7 @@ export function BeautyWellnessFeatures({
               <label className="block text-sm font-medium">Your Review</label>
               <Textarea
                 value={comment}
-                onChange={e => setComment(e.target.value)}
+                onChange={(e) => setComment(e.target.value)}
                 placeholder="Share your experience..."
                 className="min-h-[100px]"
               />
@@ -128,9 +127,9 @@ export function BeautyWellnessFeatures({
         )}
 
         <div className="space-y-4">
-          {reviews.map(review => (
+          {reviews.map((review) => (
             <Card key={review.id} className="p-4">
-              <div className="flex justify-between items-start">
+              <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-medium">{review.userName}</span>

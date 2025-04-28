@@ -73,7 +73,7 @@ export const AccessibleMenu: React.FC<AccessibleMenuProps> = ({
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        setFocusedIndex(prev => {
+        setFocusedIndex((prev) => {
           if (prev === null) return 0;
           const nextIndex = prev + 1;
           return nextIndex < items.length ? nextIndex : 0;
@@ -81,7 +81,7 @@ export const AccessibleMenu: React.FC<AccessibleMenuProps> = ({
         break;
       case 'ArrowUp':
         e.preventDefault();
-        setFocusedIndex(prev => {
+        setFocusedIndex((prev) => {
           if (prev === null) return items.length - 1;
           const nextIndex = prev - 1;
           return nextIndex >= 0 ? nextIndex : items.length - 1;
@@ -120,7 +120,7 @@ export const AccessibleMenu: React.FC<AccessibleMenuProps> = ({
         onClick={() => (isOpen ? closeMenu() : openMenu())}
         aria-haspopup="true"
         aria-expanded={isOpen}
-        className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        className="focus:ring-primary focus:outline-none focus:ring-2 focus:ring-offset-2"
       >
         {trigger}
       </button>
@@ -129,11 +129,7 @@ export const AccessibleMenu: React.FC<AccessibleMenuProps> = ({
           ref={menuRef}
           role="menu"
           aria-orientation="vertical"
-          className={`
-            absolute ${align === 'left' ? 'left-0' : 'right-0'} mt-2
-            w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5
-            focus:outline-none ${className}
-          `}
+          className={`absolute ${align === 'left' ? 'left-0' : 'right-0'} mt-2 w-56 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${className} `}
           onKeyDown={handleKeyDown}
           tabIndex={-1}
         >
@@ -149,16 +145,11 @@ export const AccessibleMenu: React.FC<AccessibleMenuProps> = ({
                   }
                 }}
                 disabled={item.disabled}
-                className={`
-                  w-full text-left px-4 py-2 text-sm
-                  ${
-                    item.disabled
-                      ? 'text-gray-400 cursor-not-allowed'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }
-                  ${focusedIndex === index ? 'bg-gray-100' : ''}
-                  focus:outline-none focus:bg-gray-100
-                `}
+                className={`w-full px-4 py-2 text-left text-sm ${
+                  item.disabled
+                    ? 'cursor-not-allowed text-gray-400'
+                    : 'text-gray-700 hover:bg-gray-100'
+                } ${focusedIndex === index ? 'bg-gray-100' : ''} focus:bg-gray-100 focus:outline-none`}
                 tabIndex={-1}
               >
                 <div className="flex items-center">

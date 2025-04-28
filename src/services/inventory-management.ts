@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, Product, ProductUsage, ProductPerformance } from '@prisma/client';
+import { PrismaClient, Product, ProductUsage, ProductPerformance } from '@prisma/client';
 import { logger } from '@/lib/logger';
 
 const prisma = new PrismaClient();
@@ -31,7 +31,7 @@ export class InventoryManagementService {
   public async updateProductQuantity(
     productId: string,
     quantity: number,
-    type: 'ADD' | 'REMOVE'
+    type: 'ADD' | 'REMOVE',
   ): Promise<void> {
     try {
       const product = await prisma.product.findUnique({
@@ -244,7 +244,7 @@ export class InventoryManagementService {
 
   private calculateWastageRate(product: ProductWithRelations): number {
     const totalWaste = product.usage
-      .filter(u => u.type === 'WASTE')
+      .filter((u) => u.type === 'WASTE')
       .reduce((sum, u) => sum + u.quantity, 0);
 
     const totalUsage = product.usage.reduce((sum, u) => sum + u.quantity, 0);

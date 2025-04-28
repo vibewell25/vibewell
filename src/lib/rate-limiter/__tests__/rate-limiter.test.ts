@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 // Import from mocked next/server
 import { NextRequest, NextResponse } from 'next/server';
 import {
@@ -21,9 +20,6 @@ jest.mock('@/lib/logger', () => ({
     error: jest.fn(),
   },
 }));
-
-// Override the behavior of the custom limiter for testing
-const mockLimiters = new Map();
 
 // Helper to check if a response is a rate limit response
 function isRateLimitResponse(response: any): boolean {
@@ -123,7 +119,7 @@ const createMockRequest = (ip = '127.0.0.1', method = 'GET', url = '/test') => {
     method,
     url,
     headers: {
-      get: jest.fn().mockImplementation(header => {
+      get: jest.fn().mockImplementation((header) => {
         if (header === 'x-forwarded-for') return undefined;
         return null;
       }),
@@ -227,7 +223,7 @@ describe('Rate Limiter', () => {
       }
 
       // Should have some blocked requests
-      expect(results.some(r => isRateLimitResponse(r))).toBe(true);
+      expect(results.some((r) => isRateLimitResponse(r))).toBe(true);
     });
 
     it('should differentiate between different IPs', async () => {
@@ -253,7 +249,7 @@ describe('Rate Limiter', () => {
       const customLimiter = createRateLimiter({
         max: 1,
         windowMs: 60000,
-        skip: req => req.url.includes('/health'),
+        skip: (req) => req.url.includes('/health'),
       });
 
       // Should skip rate limiting for all health check requests

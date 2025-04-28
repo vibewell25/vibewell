@@ -92,7 +92,7 @@ export class SegmentProvider implements AnalyticsProvider {
 
         // Set up callbacks
         script.onload = () => resolve();
-        script.onerror = error => reject(new Error(`Failed to load Segment script: ${error}`));
+        script.onerror = (error) => reject(new Error(`Failed to load Segment script: ${error}`));
 
         // Add to document
         const first = document.getElementsByTagName('script')[0];

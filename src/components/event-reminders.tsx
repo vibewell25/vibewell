@@ -2,9 +2,7 @@ import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import { Event } from '@/types/events';
 import { format, parseISO, addHours } from 'date-fns';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import {
@@ -61,7 +59,7 @@ export function EventReminders({ event, onReminderChange }: EventRemindersProps)
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div className="flex items-center gap-2">
-          <Icons.BellIcon className="h-5 w-5 text-primary" />
+          <Icons.BellIcon className="text-primary h-5 w-5" />
           <h3 className="text-lg font-semibold">Event Reminders</h3>
         </div>
         <Switch checked={reminderEnabled} onCheckedChange={handleReminderToggle} />
@@ -74,7 +72,7 @@ export function EventReminders({ event, onReminderChange }: EventRemindersProps)
               <Label htmlFor="reminder-time">Remind me</Label>
               <Select
                 value={reminderTime.toString()}
-                onValueChange={value => {
+                onValueChange={(value) => {
                   const time = parseInt(value);
                   setReminderTime(time);
                   onReminderChange?.(true, time);

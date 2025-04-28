@@ -287,8 +287,5 @@ clientBehaviorSchema.pre('save', function (next) {
   next();
 });
 
-export const ClientPreferencesModel = model<ClientPreferences>(
-  'ClientPreferences',
-  clientPreferencesSchema
-);
-export const ClientBehaviorModel = model<ClientBehavior>('ClientBehavior', clientBehaviorSchema);
+export {};
+export {};

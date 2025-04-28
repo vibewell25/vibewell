@@ -28,7 +28,7 @@ export function useAuth0Client() {
   // Load user data
   const loadUserData = useCallback(async () => {
     try {
-      setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
+      setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
 
       const response = await fetch('/api/auth/me');
 
@@ -70,7 +70,7 @@ export function useAuth0Client() {
       const returnTo = redirectTo || router.asPath;
       router.push(`/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`);
     },
-    [router]
+    [router],
   );
 
   // Logout
@@ -79,7 +79,7 @@ export function useAuth0Client() {
       const returnTo = redirectTo || '/';
       router.push(`/api/auth/logout?returnTo=${encodeURIComponent(returnTo)}`);
     },
-    [router]
+    [router],
   );
 
   // Refresh user data
@@ -96,7 +96,7 @@ export function useAuth0Client() {
       const userRoles = authState.user[`${namespace}/roles`] || [];
       return userRoles.includes(role);
     },
-    [authState.user]
+    [authState.user],
   );
 
   // Check if user is admin

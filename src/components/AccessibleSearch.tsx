@@ -80,14 +80,14 @@ export const AccessibleSearch: React.FC<AccessibleSearchProps> = ({
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        setFocusedIndex(prev => {
+        setFocusedIndex((prev) => {
           if (prev === null) return 0;
           return prev < results.length - 1 ? prev + 1 : prev;
         });
         break;
       case 'ArrowUp':
         e.preventDefault();
-        setFocusedIndex(prev => {
+        setFocusedIndex((prev) => {
           if (prev === null) return results.length - 1;
           return prev > 0 ? prev - 1 : prev;
         });
@@ -120,9 +120,9 @@ export const AccessibleSearch: React.FC<AccessibleSearchProps> = ({
   return (
     <div className={`relative ${className}`} ref={containerRef}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="mb-1 block text-sm font-medium text-gray-700">
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="ml-1 text-red-500">*</span>}
         </label>
       )}
       <div className="relative">
@@ -133,16 +133,11 @@ export const AccessibleSearch: React.FC<AccessibleSearchProps> = ({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className={`
-            w-full px-3 py-2 border rounded-md
-            ${
-              error
-                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                : 'border-gray-300 focus:ring-primary focus:border-primary'
-            }
-            ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}
-            focus:outline-none
-          `}
+          className={`w-full rounded-md border px-3 py-2 ${
+            error
+              ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+              : 'focus:ring-primary focus:border-primary border-gray-300'
+          } ${disabled ? 'cursor-not-allowed bg-gray-100' : 'bg-white'} focus:outline-none`}
           aria-invalid={!!error}
           aria-describedby={error ? 'error-message' : helperText ? 'helper-text' : undefined}
           aria-expanded={isOpen}
@@ -156,7 +151,7 @@ export const AccessibleSearch: React.FC<AccessibleSearchProps> = ({
           <ul
             id="search-results"
             role="listbox"
-            className="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg max-h-60 overflow-auto"
+            className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg"
           >
             {results.map((result, index) => (
               <li
@@ -164,11 +159,7 @@ export const AccessibleSearch: React.FC<AccessibleSearchProps> = ({
                 role="option"
                 aria-selected={focusedIndex === index}
                 onClick={() => handleResultSelect(result)}
-                className={`
-                  px-3 py-2 cursor-pointer
-                  ${focusedIndex === index ? 'bg-primary text-white' : 'hover:bg-gray-100'}
-                  focus:outline-none focus:bg-gray-100
-                `}
+                className={`cursor-pointer px-3 py-2 ${focusedIndex === index ? 'bg-primary text-white' : 'hover:bg-gray-100'} focus:bg-gray-100 focus:outline-none`}
               >
                 {result.label}
               </li>

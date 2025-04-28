@@ -28,7 +28,7 @@ export class OfflineService {
 
   async syncOfflineBookings() {
     const offlineBookings = await this.getOfflineBookings();
-    const unsynced = offlineBookings.filter(booking => !booking.synced);
+    const unsynced = offlineBookings.filter((booking) => !booking.synced);
 
     for (const booking of unsynced) {
       try {

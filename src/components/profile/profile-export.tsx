@@ -1,20 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import {
-  Download,
-  FileText,
-  FileJson,
-  FileCsv,
-  Calendar,
-  User,
-  Activity,
-  Settings,
-} from 'lucide-react';
+import { Download, FileText, FileJson, FileCsv, User, Activity, Settings } from 'lucide-react';
 
 interface ExportOption {
   id: string;
@@ -51,7 +42,7 @@ export function ProfileExport() {
   const handleExport = async () => {
     try {
       // Simulate API call to generate export
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       toast.success('Export generated successfully!');
 
@@ -74,8 +65,8 @@ export function ProfileExport() {
   };
 
   const toggleOption = (optionId: string) => {
-    setSelectedOptions(prev =>
-      prev.includes(optionId) ? prev.filter(id => id !== optionId) : [...prev, optionId]
+    setSelectedOptions((prev) =>
+      prev.includes(optionId) ? prev.filter((id) => id !== optionId) : [...prev, optionId],
     );
   };
 
@@ -97,7 +88,7 @@ export function ProfileExport() {
                 <RadioGroupItem value="json" id="json" className="peer sr-only" />
                 <Label
                   htmlFor="json"
-                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                  className="peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground"
                 >
                   <FileJson className="mb-3 h-6 w-6" />
                   JSON
@@ -107,7 +98,7 @@ export function ProfileExport() {
                 <RadioGroupItem value="csv" id="csv" className="peer sr-only" />
                 <Label
                   htmlFor="csv"
-                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                  className="peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground"
                 >
                   <FileCsv className="mb-3 h-6 w-6" />
                   CSV
@@ -117,7 +108,7 @@ export function ProfileExport() {
                 <RadioGroupItem value="pdf" id="pdf" className="peer sr-only" />
                 <Label
                   htmlFor="pdf"
-                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                  className="peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground"
                 >
                   <FileText className="mb-3 h-6 w-6" />
                   PDF
@@ -129,9 +120,9 @@ export function ProfileExport() {
           <div className="space-y-2">
             <Label>Data to Export</Label>
             <div className="space-y-4">
-              {exportOptions.map(option => (
+              {exportOptions.map((option) => (
                 <div key={option.id} className="flex items-start space-x-4 rounded-lg border p-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-full">
                     {option.icon}
                   </div>
                   <div className="flex-1 space-y-1">

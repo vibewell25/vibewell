@@ -1,10 +1,5 @@
-/**
- * @vitest-environment jsdom
- */
-import React from 'react';
 import { render, screen } from '../../test-utils/testing-lib-adapter';
 import { userEvent } from '../../test-utils/testing-lib-adapter';
-import '@testing-library/jest-dom';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { AccessibleButton } from '../../components/AccessibleButton';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
@@ -80,7 +75,7 @@ describe('AccessibleButton Component', () => {
         rightIcon={<span data-testid="right-icon">R</span>}
       >
         With Icons
-      </AccessibleButton>
+      </AccessibleButton>,
     );
 
     const leftIcon = screen.getByTestId('left-icon');
@@ -104,7 +99,7 @@ describe('AccessibleButton Component', () => {
     render(
       <AccessibleButton onClick={handleClick} disabled>
         Disabled
-      </AccessibleButton>
+      </AccessibleButton>,
     );
 
     const button = screen.getByRole('button', { name: /disabled/i });
@@ -118,7 +113,7 @@ describe('AccessibleButton Component', () => {
     render(
       <AccessibleButton onClick={handleClick} isLoading>
         Loading
-      </AccessibleButton>
+      </AccessibleButton>,
     );
 
     const button = screen.getByRole('button', { name: /loading/i });

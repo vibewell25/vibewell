@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Box,
   SimpleGrid,
@@ -11,7 +10,6 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 import { FaStar } from 'react-icons/fa';
-import Link from 'next/link';
 
 interface Practitioner {
   id: string;
@@ -43,7 +41,7 @@ export function PractitionerList({
 
   return (
     <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={6}>
-      {practitioners.map(practitioner => (
+      {practitioners.map((practitioner) => (
         <Box
           key={practitioner.id}
           bg={cardBg}
@@ -97,7 +95,7 @@ export function PractitionerList({
                 Specializations
               </Text>
               <Stack direction="row" flexWrap="wrap" gap={2}>
-                {practitioner.specialization.map(spec => (
+                {practitioner.specialization.map((spec) => (
                   <Badge key={spec} colorScheme="purple" variant="subtle">
                     {spec}
                   </Badge>

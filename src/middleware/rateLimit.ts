@@ -20,7 +20,7 @@ const defaultConfig: RateLimitConfig = {
 
 export async function rateLimit(
   req: Request,
-  config: Partial<RateLimitConfig> = {}
+  config: Partial<RateLimitConfig> = {},
 ): Promise<NextResponse | null> {
   const finalConfig = { ...defaultConfig, ...config };
   const ip = getClientIp(req);
@@ -49,7 +49,7 @@ export async function validateRequest(req: Request): Promise<NextResponse | null
   if (contentType && !contentType.includes('application/json')) {
     return NextResponse.json(
       { error: 'Invalid content type. Expected application/json' },
-      { status: 415 }
+      { status: 415 },
     );
   }
 
@@ -93,7 +93,7 @@ export async function sanitizeInput(input: any): Promise<any> {
 }
 
 export async function validateAndSanitizeRequest(
-  req: Request
+  req: Request,
 ): Promise<{ error: NextResponse | null; data: any }> {
   // Validate request
   const validationError = await validateRequest(req);

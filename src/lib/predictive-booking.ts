@@ -31,7 +31,7 @@ export class PredictiveBookingService {
     businessId: string,
     serviceId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<DemandForecast[]> {
     try {
       // Get historical booking data
@@ -59,7 +59,7 @@ export class PredictiveBookingService {
         const historicalDemand = this.calculateHistoricalDemand(
           historicalBookings,
           serviceBookings,
-          dayOfWeek
+          dayOfWeek,
         );
 
         // Factor in seasonal trends
@@ -71,7 +71,7 @@ export class PredictiveBookingService {
         // Calculate confidence based on historical data volume
         const confidence = Math.min(
           (historicalBookings.length + serviceBookings.length) / 100,
-          0.9
+          0.9,
         );
 
         forecasts.push({
@@ -133,19 +133,19 @@ export class PredictiveBookingService {
       // Calculate resource allocation
       const allocation = new Map<string, number>();
 
-      predictions.forEach(prediction => {
+      predictions.forEach((prediction) => {
         // Calculate required practitioners based on predicted demand
         const requiredPractitioners = Math.ceil(prediction.predictedDemand * 1.2); // Add 20% buffer
 
         // Find qualified practitioners
-        const qualifiedPractitioners = practitioners.filter(p =>
-          p.services.some(service => service.serviceId === prediction.serviceId)
+        const qualifiedPractitioners = practitioners.filter((p) =>
+          p.services.some((service) => service.serviceId === prediction.serviceId),
         );
 
         // Allocate based on availability and qualification
         allocation.set(
           prediction.serviceId,
-          Math.min(requiredPractitioners, qualifiedPractitioners.length)
+          Math.min(requiredPractitioners, qualifiedPractitioners.length),
         );
       });
 
@@ -167,14 +167,14 @@ export class PredictiveBookingService {
   private calculateHistoricalDemand(
     historicalBookings: BookingRecord[],
     serviceBookings: BookingRecord[],
-    targetDayOfWeek: number
+    targetDayOfWeek: number,
   ): number {
     // Filter bookings for target day of week
     const dayBookings = historicalBookings.filter(
-      booking => new Date(booking.startTime).getDay() === targetDayOfWeek
+      (booking) => new Date(booking.startTime).getDay() === targetDayOfWeek,
     );
     const dayServiceBookings = serviceBookings.filter(
-      booking => new Date(booking.startTime).getDay() === targetDayOfWeek
+      (booking) => new Date(booking.startTime).getDay() === targetDayOfWeek,
     );
 
     // Calculate average daily demand

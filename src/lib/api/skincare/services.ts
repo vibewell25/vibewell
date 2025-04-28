@@ -1,11 +1,14 @@
 import { WeatherCondition, Product, RecommendationProgress } from './types';
 import { prisma } from '@/lib/database/client';
 
-export async function getWeatherCondition(latitude: number, longitude: number): Promise<WeatherCondition> {
+export async function getWeatherCondition(
+  latitude: number,
+  longitude: number,
+): Promise<WeatherCondition> {
   // In a real application, this would call a weather API
   const currentDate = new Date();
   const month = currentDate.getMonth();
-  
+
   // Simplified season determination
   let season: 'spring' | 'summer' | 'fall' | 'winter';
   if (month >= 2 && month <= 4) season = 'spring';
@@ -54,10 +57,10 @@ export async function getRecommendedProducts(concerns: string[]): Promise<Produc
     // Add more products as needed
   ];
 
-  return productDatabase.filter(product => 
-    concerns.some(concern => product.ingredients.some(i => 
-      getIngredientForConcern(concern).includes(i.toLowerCase())
-    ))
+  return productDatabase.filter((product) =>
+    concerns.some((concern) =>
+      product.ingredients.some((i) => getIngredientForConcern(concern).includes(i.toLowerCase())),
+    ),
   );
 }
 
@@ -65,7 +68,7 @@ export async function trackRecommendationProgress(
   userId: string,
   recommendationId: string,
   status: RecommendationProgress['status'],
-  effectiveness?: number
+  effectiveness?: number,
 ): Promise<RecommendationProgress> {
   try {
     const progress = await prisma.recommendationProgress.upsert({
@@ -103,9 +106,9 @@ function getIngredientForConcern(concern: string): string[] {
     dryness: ['hyaluronic acid', 'glycerin', 'ceramides'],
     redness: ['niacinamide', 'centella asiatica', 'green tea'],
     sensitivity: ['centella asiatica', 'aloe vera', 'chamomile'],
-    'dark_spots': ['vitamin c', 'kojic acid', 'alpha arbutin'],
-    'fine_lines': ['retinol', 'peptides', 'vitamin c'],
+    dark_spots: ['vitamin c', 'kojic acid', 'alpha arbutin'],
+    fine_lines: ['retinol', 'peptides', 'vitamin c'],
   };
 
   return ingredientMap[concern] || [];
-} 
+}

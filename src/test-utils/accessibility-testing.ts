@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
 import { axe, toHaveNoViolations, AxeResults } from 'jest-axe';
 import { ReactElement } from 'react';
-import type { RenderResult } from '@testing-library/react';
 
 // Add jest-axe matchers to jest
 expect.extend(toHaveNoViolations as unknown as jest.ExpectExtendMap);
@@ -16,7 +15,7 @@ interface AccessibilityTestOptions {
  */
 export async function testAccessibility(
   ui: ReactElement,
-  options: AccessibilityTestOptions = {}
+  options: AccessibilityTestOptions = {},
 ): Promise<AxeResults> {
   const { rules, timeout = 5000 } = options;
   const { container } = render(ui);
@@ -35,11 +34,11 @@ export async function testAccessibility(
  */
 export async function testKeyboardNavigation(
   ui: ReactElement,
-  expectedTabOrder: string[]
+  expectedTabOrder: string[],
 ): Promise<void> {
   const { container } = render(ui);
   const focusableElements = container.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
   );
 
   // Verify the number of focusable elements matches expected tab order
@@ -56,7 +55,7 @@ export async function testKeyboardNavigation(
  */
 export function testARIAProperties(
   ui: ReactElement,
-  expectedRoles: Record<string, string[]>
+  expectedRoles: Record<string, string[]>,
 ): void {
   const { container } = render(ui);
 
@@ -81,7 +80,7 @@ export function testColorContrast(ui: ReactElement): void {
   // Get all text elements
   const textElements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a');
 
-  textElements.forEach(element => {
+  textElements.forEach((element) => {
     const style = window.getComputedStyle(element);
     const backgroundColor = style.backgroundColor;
     const color = style.color;

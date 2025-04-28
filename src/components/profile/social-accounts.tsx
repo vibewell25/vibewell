@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Facebook, Instagram, Twitter, Linkedin, Github, Globe } from 'lucide-react';
 import { useState } from 'react';
 import {
@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 
 interface SocialAccount {
@@ -95,7 +95,7 @@ export function SocialAccounts() {
         <CardTitle>Social Accounts</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {socialAccounts.map(account => (
+        {socialAccounts.map((account) => (
           <div key={account.id} className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               {account.icon}
@@ -135,7 +135,7 @@ export function SocialAccounts() {
               <Input
                 id="username"
                 value={username}
-                onChange={e => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
                 placeholder={`Enter your ${selectedPlatform} username`}
               />
             </div>

@@ -45,7 +45,7 @@ export const getBooking = asyncHandler(async (req, res, next) => {
     req.user.role !== 'admin'
   ) {
     return next(
-      new ErrorResponse(`User ${req.user.id} is not authorized to view this booking`, 401)
+      new ErrorResponse(`User ${req.user.id} is not authorized to view this booking`, 401),
     );
   }
 
@@ -87,7 +87,7 @@ export const updateBooking = asyncHandler(async (req, res, next) => {
     req.user.role !== 'admin'
   ) {
     return next(
-      new ErrorResponse(`User ${req.user.id} is not authorized to update this booking`, 401)
+      new ErrorResponse(`User ${req.user.id} is not authorized to update this booking`, 401),
     );
   }
 
@@ -115,7 +115,7 @@ export const deleteBooking = asyncHandler(async (req, res, next) => {
   // Make sure user is booking owner or an admin
   if (booking.customer.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(
-      new ErrorResponse(`User ${req.user.id} is not authorized to delete this booking`, 401)
+      new ErrorResponse(`User ${req.user.id} is not authorized to delete this booking`, 401),
     );
   }
 

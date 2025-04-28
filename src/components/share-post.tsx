@@ -42,46 +42,46 @@ export function SharePost({ postId, postContent }: SharePostProps) {
   return (
     <div className="relative" ref={shareRef}>
       <button
-        className="flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+        className="flex items-center space-x-1 rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
         onClick={() => setShowOptions(!showOptions)}
         aria-label="Share post"
       >
         <Icons.ShareIcon className="h-5 w-5" />
       </button>
       {showOptions && (
-        <div className="absolute bottom-full mb-2 right-0 bg-card rounded-lg shadow-lg border border-border p-3 w-60 z-10">
-          <h4 className="text-sm font-medium mb-2">Share this post</h4>
+        <div className="absolute bottom-full right-0 z-10 mb-2 w-60 rounded-lg border border-border bg-card p-3 shadow-lg">
+          <h4 className="mb-2 text-sm font-medium">Share this post</h4>
           <div className="space-y-2">
             {/* Share via message */}
             <Link
               href={`/messages?share=${encodeURIComponent(getShareLink())}`}
-              className="flex items-center space-x-2 p-2 hover:bg-muted rounded-md transition-colors"
+              className="flex items-center space-x-2 rounded-md p-2 transition-colors hover:bg-muted"
             >
               <Icons.EnvelopeIcon className="h-4 w-4" />
               <span className="text-sm">Send as message</span>
             </Link>
             {/* Share in community */}
-            <button className="w-full flex items-center space-x-2 p-2 hover:bg-muted rounded-md transition-colors">
+            <button className="flex w-full items-center space-x-2 rounded-md p-2 transition-colors hover:bg-muted">
               <Icons.ChatBubbleLeftEllipsisIcon className="h-4 w-4" />
               <span className="text-sm">Share to community</span>
             </button>
             {/* Copy link */}
             <button
-              className="w-full flex items-center space-x-2 p-2 hover:bg-muted rounded-md transition-colors"
+              className="flex w-full items-center space-x-2 rounded-md p-2 transition-colors hover:bg-muted"
               onClick={copyToClipboard}
             >
               {copied ? (
-                <Icons.ClipboardDocumentCheckIcon className="h-4 w-4 text-primary" />
+                <Icons.ClipboardDocumentCheckIcon className="text-primary h-4 w-4" />
               ) : (
                 <Icons.DocumentDuplicateIcon className="h-4 w-4" />
               )}
               <span className="text-sm">{copied ? 'Copied!' : 'Copy link'}</span>
             </button>
           </div>
-          <div className="mt-3 pt-2 border-t border-border">
+          <div className="mt-3 border-t border-border pt-2">
             <div className="flex items-center space-x-2">
               <Icons.LinkIcon className="h-4 w-4 text-muted-foreground" />
-              <p className="text-xs text-muted-foreground truncate">{getTruncatedContent()}</p>
+              <p className="truncate text-xs text-muted-foreground">{getTruncatedContent()}</p>
             </div>
           </div>
         </div>

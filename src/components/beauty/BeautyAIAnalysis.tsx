@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Card, Button, Input } from '@/components/ui';
-import { analyzeSkinCondition, SkinAnalysisResult } from '@/lib/api/beauty';
+import { Card, Button } from '@/components/ui';
+import { analyzeSkinCondition } from '@/lib/api/beauty';
 
 export default function BeautyAIAnalysis() {
   const [image, setImage] = useState<File | null>(null);
@@ -42,21 +42,17 @@ export default function BeautyAIAnalysis() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">AI Skin Analysis</h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <Card className="p-6">
           <div className="space-y-4">
-            <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6">
+            <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-6">
               {previewUrl ? (
                 <div className="space-y-4">
-                  <img
-                    src={previewUrl}
-                    alt="Skin analysis"
-                    className="max-w-full h-auto rounded"
-                  />
+                  <img src={previewUrl} alt="Skin analysis" className="h-auto max-w-full rounded" />
                   <div className="flex gap-2">
                     <Button onClick={handleRetake} variant="outline">
                       Retake Photo
@@ -75,10 +71,7 @@ export default function BeautyAIAnalysis() {
                     className="hidden"
                     ref={fileInputRef}
                   />
-                  <Button
-                    onClick={() => fileInputRef.current?.click()}
-                    variant="outline"
-                  >
+                  <Button onClick={() => fileInputRef.current?.click()} variant="outline">
                     Upload Photo
                   </Button>
                   <p className="mt-2 text-sm text-gray-600">
@@ -89,8 +82,8 @@ export default function BeautyAIAnalysis() {
             </div>
 
             <div className="text-sm text-gray-600">
-              <h4 className="font-medium mb-2">Tips for best results:</h4>
-              <ul className="list-disc list-inside space-y-1">
+              <h4 className="mb-2 font-medium">Tips for best results:</h4>
+              <ul className="list-inside list-disc space-y-1">
                 <li>Use natural lighting</li>
                 <li>Remove makeup</li>
                 <li>Face the camera directly</li>
@@ -102,17 +95,14 @@ export default function BeautyAIAnalysis() {
 
         {analysis && (
           <Card className="p-6">
-            <h3 className="text-xl font-semibold mb-4">Analysis Results</h3>
-            
+            <h3 className="mb-4 text-xl font-semibold">Analysis Results</h3>
+
             <div className="space-y-4">
               <div>
-                <h4 className="text-sm font-medium mb-2">Skin Concerns Detected</h4>
+                <h4 className="mb-2 text-sm font-medium">Skin Concerns Detected</h4>
                 <div className="flex flex-wrap gap-2">
                   {analysis.concerns.map((concern, index) => (
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-gray-100 rounded-full text-sm"
-                    >
+                    <span key={index} className="rounded-full bg-gray-100 px-2 py-1 text-sm">
                       {concern}
                     </span>
                   ))}
@@ -120,7 +110,7 @@ export default function BeautyAIAnalysis() {
               </div>
 
               <div>
-                <h4 className="text-sm font-medium mb-2">Skin Characteristics</h4>
+                <h4 className="mb-2 text-sm font-medium">Skin Characteristics</h4>
                 <div className="grid grid-cols-2 gap-4">
                   {Object.entries(analysis.metrics).map(([key, value]) => (
                     <div key={key}>
@@ -128,9 +118,9 @@ export default function BeautyAIAnalysis() {
                         {key.charAt(0).toUpperCase() + key.slice(1)}
                       </p>
                       <div className="flex items-center gap-2">
-                        <div className="flex-1 h-2 bg-gray-200 rounded-full">
+                        <div className="h-2 flex-1 rounded-full bg-gray-200">
                           <div
-                            className="h-2 bg-primary rounded-full"
+                            className="bg-primary h-2 rounded-full"
                             style={{ width: `${value}%` }}
                           />
                         </div>
@@ -142,7 +132,7 @@ export default function BeautyAIAnalysis() {
               </div>
 
               <div>
-                <h4 className="text-sm font-medium mb-2">Recommendations</h4>
+                <h4 className="mb-2 text-sm font-medium">Recommendations</h4>
                 <ul className="space-y-2">
                   {analysis.recommendations.map((rec, index) => (
                     <li key={index} className="text-sm">
@@ -157,4 +147,4 @@ export default function BeautyAIAnalysis() {
       </div>
     </div>
   );
-} 
+}

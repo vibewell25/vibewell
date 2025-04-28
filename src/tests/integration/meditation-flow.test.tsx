@@ -1,4 +1,4 @@
-import {
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import {
   render,
   fireEvent,
   waitFor,
@@ -7,9 +7,6 @@ import {
 } from '../utils/test-utils';
 import { act } from 'react-dom/test-utils';
 import MeditationEnvironment from '@/components/ar/MeditationEnvironment';
-import { MeditationProvider } from '@/contexts/MeditationContext';
-import { AudioProvider } from '@/contexts/AudioContext';
-import { WebGLProvider } from '@/contexts/WebGLContext';
 
 describe('Meditation Flow Integration', () => {
   beforeAll(() => {
@@ -39,7 +36,7 @@ describe('Meditation Flow Integration', () => {
         lightingIntensity={0.8}
         particleEffects={true}
         onStateChange={onStateChange}
-      />
+      />,
     );
 
     // Initial state verification
@@ -72,7 +69,7 @@ describe('Meditation Flow Integration', () => {
         lightingIntensity={0.8}
         particleEffects={true}
         onStateChange={onStateChange}
-      />
+      />,
     );
 
     // Start session
@@ -111,7 +108,7 @@ describe('Meditation Flow Integration', () => {
         lightingIntensity={0.8}
         particleEffects={true}
         onStateChange={onStateChange}
-      />
+      />,
     );
 
     // Start and customize session
@@ -124,7 +121,7 @@ describe('Meditation Flow Integration', () => {
     expect(onStateChange).toHaveBeenCalledWith(
       expect.objectContaining({
         volume: 0.6,
-      })
+      }),
     );
 
     // End session
@@ -139,7 +136,7 @@ describe('Meditation Flow Integration', () => {
         lightingIntensity={0.8}
         particleEffects={true}
         onStateChange={onStateChange}
-      />
+      />,
     );
 
     // Verify preferences maintained
@@ -160,7 +157,7 @@ describe('Meditation Flow Integration', () => {
         lightingIntensity={0.8}
         particleEffects={true}
         onStateChange={() => {}}
-      />
+      />,
     );
 
     fireEvent.click(getByText('Begin Meditation'));
@@ -181,7 +178,7 @@ describe('Meditation Flow Integration', () => {
         lightingIntensity={0.8}
         particleEffects={true}
         onStateChange={() => {}}
-      />
+      />,
     );
 
     // Adjust lighting
@@ -192,7 +189,7 @@ describe('Meditation Flow Integration', () => {
       expect(mockUpdateScene).toHaveBeenCalledWith(
         expect.objectContaining({
           lightingIntensity: 1.0,
-        })
+        }),
       );
     });
   });

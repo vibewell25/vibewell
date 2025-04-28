@@ -32,4 +32,4 @@ export interface CacheStats {
   misses: number;
   size: number;
   lastCleanup: number;
-} 
+}

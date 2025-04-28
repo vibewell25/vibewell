@@ -280,7 +280,4 @@ performanceReviewSchema.pre('save', function (next) {
   next();
 });
 
-export const PerformanceReviewModel = model<PerformanceReview>(
-  'PerformanceReview',
-  performanceReviewSchema
-);
+export {};

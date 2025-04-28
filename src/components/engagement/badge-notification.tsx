@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import Image from 'next/image';
 import { Confetti } from '@/components/ui/confetti';
 import { Trophy } from 'lucide-react';
@@ -43,8 +43,8 @@ export function BadgeNotification() {
           <DialogTitle className="text-center text-2xl">New Badge Earned!</DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-col items-center py-6 space-y-4">
-          <div className="relative h-32 w-32 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border-4 border-primary animate-pulse">
+        <div className="flex flex-col items-center space-y-4 py-6">
+          <div className="bg-primary/10 border-primary relative flex h-32 w-32 animate-pulse items-center justify-center overflow-hidden rounded-full border-4">
             {currentBadge.image ? (
               <Image
                 src={currentBadge.image}
@@ -54,14 +54,14 @@ export function BadgeNotification() {
                 className="object-cover"
               />
             ) : (
-              <Trophy className="h-16 w-16 text-primary" />
+              <Trophy className="text-primary h-16 w-16" />
             )}
           </div>
 
-          <div className="text-center space-y-2">
+          <div className="space-y-2 text-center">
             <h3 className="text-xl font-bold">{currentBadge.name}</h3>
             <p className="text-muted-foreground">{currentBadge.description}</p>
-            <p className="text-sm font-medium text-primary">+{currentBadge.points} points</p>
+            <p className="text-primary text-sm font-medium">+{currentBadge.points} points</p>
           </div>
         </div>
 

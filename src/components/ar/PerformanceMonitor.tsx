@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 
 /**
@@ -122,7 +122,7 @@ export function PerformanceMonitor({
   }
 
   return (
-    <div className="absolute top-0 left-0 bg-black bg-opacity-50 text-white text-xs p-1 rounded">
+    <div className="absolute left-0 top-0 rounded bg-black bg-opacity-50 p-1 text-xs text-white">
       <div>
         FPS: {metrics.fps} {metrics.isPerformanceIssue && '⚠️'}
       </div>

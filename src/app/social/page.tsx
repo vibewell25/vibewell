@@ -1,10 +1,10 @@
-'use client';
+'use client';;
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/use-unified-auth';
 import { ReactionType } from '@/components/post-reaction';
-import { Post, PostComment } from '@/components/post';
+import { Post } from '@/components/post';
 import { UserAvatar } from '@/components/user-avatar';
 import { RecommendedConnections } from '@/components/recommended-connections';
 import { useRouter } from 'next/navigation';
@@ -21,18 +21,10 @@ import {
   Post as PostType,
 } from '@/lib/api/social';
 import { getUpcomingEvents, registerForEvent, cancelEventRegistration } from '@/lib/api/events';
-import { Event } from '@/types/events';
 import { format, parseISO } from 'date-fns';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { PostReaction } from '@/components/post-reaction';
-import { MessageSquare, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { EventShareCard } from '@/components/event-share-card';
 import { CommunityEventsSection } from '@/components/community-events-section';
-import { Icons } from '@/components/icons';
 // Fallback dummy data in case API fails
 const initialPosts: PostType[] = [
   {
@@ -166,7 +158,7 @@ export default function SocialPage() {
       if (newComment) {
         // Update posts with the new comment
         setPosts(
-          posts.map(post => {
+          posts.map((post) => {
             if (post.id === postId) {
               return {
                 ...post,
@@ -174,7 +166,7 @@ export default function SocialPage() {
               };
             }
             return post;
-          })
+          }),
         );
       } else {
         throw new Error('Failed to add comment');
@@ -193,7 +185,7 @@ export default function SocialPage() {
         createdAt: new Date().toISOString(),
       };
       setPosts(
-        posts.map(post => {
+        posts.map((post) => {
           if (post.id === postId) {
             return {
               ...post,
@@ -201,7 +193,7 @@ export default function SocialPage() {
             };
           }
           return post;
-        })
+        }),
       );
     }
   };
@@ -211,13 +203,13 @@ export default function SocialPage() {
     const prevReaction = userReactions[postId];
     // Optimistically update UI
     // Update user reactions state
-    setUserReactions(prev => ({
+    setUserReactions((prev) => ({
       ...prev,
       [postId]: reactionType,
     }));
     // Update posts with new reaction counts
     setPosts(
-      posts.map(post => {
+      posts.map((post) => {
         if (post.id === postId) {
           const updatedReactions = { ...post.reactions };
           // If there was a previous reaction, decrement it
@@ -234,7 +226,7 @@ export default function SocialPage() {
           };
         }
         return post;
-      })
+      }),
     );
     // Send to API
     try {
@@ -250,18 +242,18 @@ export default function SocialPage() {
     } catch (err) {
       console.error('Error updating reaction:', err);
       // Revert changes on failure
-      setUserReactions(prev => ({
+      setUserReactions((prev) => ({
         ...prev,
         [postId]: prevReaction,
       }));
       // Revert post reaction counts
       setPosts(
-        posts.map(post => {
+        posts.map((post) => {
           if (post.id === postId) {
             return post; // Revert to original post
           }
           return post;
-        })
+        }),
       );
     }
   };
@@ -270,7 +262,7 @@ export default function SocialPage() {
     const isSaved = savedPosts.includes(postId);
     // Optimistic update
     if (isSaved) {
-      setSavedPosts(savedPosts.filter(id => id !== postId));
+      setSavedPosts(savedPosts.filter((id) => id !== postId));
     } else {
       setSavedPosts([...savedPosts, postId]);
     }
@@ -291,7 +283,7 @@ export default function SocialPage() {
       if (isSaved) {
         setSavedPosts([...savedPosts, postId]);
       } else {
-        setSavedPosts(savedPosts.filter(id => id !== postId));
+        setSavedPosts(savedPosts.filter((id) => id !== postId));
       }
     }
   };
@@ -313,13 +305,13 @@ export default function SocialPage() {
   const handleEventShare = async (eventId: string) => {
     if (!user?.id) return;
     try {
-      const event = upcomingEvents.find(e => e.id === eventId);
+      const event = upcomingEvents.find((e) => e.id === eventId);
       if (!event) return;
       const postContent = `I'm excited about this event! 🎉\n\n${event.title}\n${event.shortDescription}\n\nJoin me at ${format(parseISO(event.startDate), 'MMM d, yyyy h:mm a')}`;
       const createdPost = await apiCreatePost(user.id, postContent);
       if (createdPost) {
         setPosts([createdPost, ...posts]);
-        setSharedEvents(prev => ({ ...prev, [eventId]: true }));
+        setSharedEvents((prev) => ({ ...prev, [eventId]: true }));
       }
     } catch (err) {
       console.error('Error sharing event:', err);
@@ -336,10 +328,10 @@ export default function SocialPage() {
           eventId,
           user.id,
           user.user_metadata?.full_name || 'Anonymous',
-          user.user_metadata?.avatar_url
+          user.user_metadata?.avatar_url,
         );
       }
-      setSharedEvents(prev => ({ ...prev, [eventId]: !isAttending }));
+      setSharedEvents((prev) => ({ ...prev, [eventId]: !isAttending }));
       // Refresh upcoming events
       const events = await getUpcomingEvents(3);
       setUpcomingEvents(events);
@@ -351,14 +343,14 @@ export default function SocialPage() {
   return (
     <Layout>
       <div className="container-app py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Main Feed */}
           <div className="lg:col-span-2">
             <div className="mb-6">
-              <h1 className="text-2xl font-bold mb-6">Community Feed</h1>
+              <h1 className="mb-6 text-2xl font-bold">Community Feed</h1>
               {user ? (
                 <div className="card mb-6">
-                  <div className="p-4 flex gap-3">
+                  <div className="flex gap-3 p-4">
                     <UserAvatar
                       src={user.user_metadata?.avatar_url}
                       alt={user.user_metadata?.full_name || 'User'}
@@ -366,9 +358,9 @@ export default function SocialPage() {
                     />
                     <form className="flex-1" onSubmit={handlePostSubmit}>
                       <textarea
-                        className="form-textarea w-full mb-3"
+                        className="form-textarea mb-3 w-full"
                         value={newPost}
-                        onChange={e => setNewPost(e.target.value)}
+                        onChange={(e) => setNewPost(e.target.value)}
                         placeholder="Share something with the community..."
                         rows={3}
                       />
@@ -386,7 +378,7 @@ export default function SocialPage() {
                   </div>
                 </div>
               ) : (
-                <div className="card bg-muted/30 mb-6 p-4 text-center">
+                <div className="card mb-6 bg-muted/30 p-4 text-center">
                   <p className="mb-2">Sign in to share posts and interact with the community</p>
                   <Link href="/auth/sign-in" className="btn-primary">
                     Sign In
@@ -395,23 +387,23 @@ export default function SocialPage() {
               )}
               {isLoading ? (
                 <div className="space-y-4">
-                  {[1, 2, 3].map(n => (
-                    <div key={n} className="card p-4 animate-pulse">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="h-10 w-10 bg-muted rounded-full"></div>
+                  {[1, 2, 3].map((n) => (
+                    <div key={n} className="card animate-pulse p-4">
+                      <div className="mb-4 flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-muted"></div>
                         <div>
-                          <div className="h-4 w-32 bg-muted rounded"></div>
-                          <div className="h-3 w-24 bg-muted/70 rounded mt-1"></div>
+                          <div className="h-4 w-32 rounded bg-muted"></div>
+                          <div className="mt-1 h-3 w-24 rounded bg-muted/70"></div>
                         </div>
                       </div>
-                      <div className="space-y-2 mb-4">
-                        <div className="h-4 bg-muted rounded w-full"></div>
-                        <div className="h-4 bg-muted rounded w-5/6"></div>
-                        <div className="h-4 bg-muted rounded w-4/6"></div>
+                      <div className="mb-4 space-y-2">
+                        <div className="h-4 w-full rounded bg-muted"></div>
+                        <div className="h-4 w-5/6 rounded bg-muted"></div>
+                        <div className="h-4 w-4/6 rounded bg-muted"></div>
                       </div>
                       <div className="flex gap-2">
-                        <div className="h-8 w-16 bg-muted rounded"></div>
-                        <div className="h-8 w-16 bg-muted rounded"></div>
+                        <div className="h-8 w-16 rounded bg-muted"></div>
+                        <div className="h-8 w-16 rounded bg-muted"></div>
                       </div>
                     </div>
                   ))}
@@ -425,15 +417,15 @@ export default function SocialPage() {
                 </div>
               ) : (
                 <div className="space-y-6">
-                  {posts.map(post => (
+                  {posts.map((post) => (
                     <Post
                       key={post.id}
                       post={post}
                       isSaved={savedPosts.includes(post.id)}
                       currentUserReaction={userReactions[post.id] || null}
-                      onReactionChange={reaction => handleReactionChange(post.id, reaction)}
+                      onReactionChange={(reaction) => handleReactionChange(post.id, reaction)}
                       onToggleSave={() => toggleSave(post.id)}
-                      onCommentSubmit={comment => handleCommentSubmit(post.id, comment)}
+                      onCommentSubmit={(comment) => handleCommentSubmit(post.id, comment)}
                       isAuthenticated={!!user}
                       formatDate={formatDate}
                       customActions={
@@ -441,7 +433,7 @@ export default function SocialPage() {
                         user.id !== post.user.id && (
                           <button
                             onClick={() => initiateMessage(post.user.id, post.user.name)}
-                            className="flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                            className="flex items-center space-x-1 rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
                             aria-label="Message"
                             title="Send message"
                           >
@@ -467,12 +459,12 @@ export default function SocialPage() {
           <div className="space-y-6">
             {/* Community Section */}
             <div className="card p-4">
-              <h2 className="text-lg font-semibold mb-4">Community</h2>
+              <h2 className="mb-4 text-lg font-semibold">Community</h2>
               <RecommendedConnections />
               <div className="mt-4">
                 <Link
                   href="/messages"
-                  className="btn-secondary w-full justify-center flex items-center gap-2"
+                  className="btn-secondary flex w-full items-center justify-center gap-2"
                 >
                   <Send className="h-4 w-4" />
                   Messages
@@ -490,17 +482,17 @@ export default function SocialPage() {
             </div>
             {/* Trending Topics */}
             <div className="card p-4">
-              <h2 className="text-lg font-semibold mb-4">Trending Topics</h2>
+              <h2 className="mb-4 text-lg font-semibold">Trending Topics</h2>
               <div className="space-y-3">
-                <div className="bg-muted/30 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <div className="rounded-lg bg-muted/30 p-3 transition-colors hover:bg-muted/50">
                   <h3 className="font-medium">#Meditation</h3>
                   <p className="text-sm text-muted-foreground">125 posts this week</p>
                 </div>
-                <div className="bg-muted/30 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <div className="rounded-lg bg-muted/30 p-3 transition-colors hover:bg-muted/50">
                   <h3 className="font-medium">#Nutrition</h3>
                   <p className="text-sm text-muted-foreground">98 posts this week</p>
                 </div>
-                <div className="bg-muted/30 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <div className="rounded-lg bg-muted/30 p-3 transition-colors hover:bg-muted/50">
                   <h3 className="font-medium">#Yoga</h3>
                   <p className="text-sm text-muted-foreground">87 posts this week</p>
                 </div>
@@ -511,9 +503,9 @@ export default function SocialPage() {
         {/* Upcoming Events Section */}
         {upcomingEvents.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Upcoming Events</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {upcomingEvents.map(event => (
+            <h2 className="mb-4 text-xl font-semibold">Upcoming Events</h2>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {upcomingEvents.map((event) => (
                 <EventShareCard
                   key={event.id}
                   event={event}

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { AuthenticatorInfo } from '@/lib/auth/webauthn-types';
 
 interface AuthenticatorListProps {
   onDelete?: (authenticatorId: string) => Promise<void>;
@@ -60,19 +59,19 @@ export function AuthenticatorList({ onDelete, onRename }: AuthenticatorListProps
   }
 
   if (error) {
-    return <div className="p-4 text-red-500 bg-red-50 rounded-lg">Error: {error}</div>;
+    return <div className="rounded-lg bg-red-50 p-4 text-red-500">Error: {error}</div>;
   }
 
   if (authenticators.length === 0) {
     return (
-      <div className="p-4 text-gray-500 bg-gray-50 rounded-lg">No authenticators registered</div>
+      <div className="rounded-lg bg-gray-50 p-4 text-gray-500">No authenticators registered</div>
     );
   }
 
   return (
     <div className="space-y-4">
-      {authenticators.map(auth => (
-        <div key={auth.id} className="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+      {authenticators.map((auth) => (
+        <div key={auth.id} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               {editingId === auth.id ? (
@@ -80,13 +79,13 @@ export function AuthenticatorList({ onDelete, onRename }: AuthenticatorListProps
                   <input
                     type="text"
                     value={newName}
-                    onChange={e => setNewName(e.target.value)}
-                    className="px-2 py-1 border rounded"
+                    onChange={(e) => setNewName(e.target.value)}
+                    className="rounded border px-2 py-1"
                     placeholder="Enter new name"
                   />
                   <button
                     onClick={() => handleRename(auth.id)}
-                    className="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="rounded bg-blue-500 px-2 py-1 text-sm text-white hover:bg-blue-600"
                   >
                     Save
                   </button>
@@ -95,7 +94,7 @@ export function AuthenticatorList({ onDelete, onRename }: AuthenticatorListProps
                       setEditingId(null);
                       setNewName('');
                     }}
-                    className="px-2 py-1 text-sm bg-gray-500 text-white rounded hover:bg-gray-600"
+                    className="rounded bg-gray-500 px-2 py-1 text-sm text-white hover:bg-gray-600"
                   >
                     Cancel
                   </button>
@@ -105,7 +104,7 @@ export function AuthenticatorList({ onDelete, onRename }: AuthenticatorListProps
                   <h3 className="font-medium">
                     {auth.name || 'Unnamed Device'}
                     {auth.isBiometric && (
-                      <span className="ml-2 px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded">
+                      <span className="ml-2 rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-800">
                         Biometric
                       </span>
                     )}

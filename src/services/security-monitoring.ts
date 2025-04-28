@@ -119,7 +119,7 @@ export class SecurityMonitoringService {
     type: SecurityEvent['type'],
     severity: SecurityEvent['severity'],
     description: string,
-    metadata: SecurityEventMetadata
+    metadata: SecurityEventMetadata,
   ): Promise<void> {
     try {
       // Store event in database for long-term storage and analysis
@@ -135,14 +135,32 @@ export class SecurityMonitoringService {
 
       // Store recent events in Redis for real-time analysis
       const recentEventKey = `security:recent:${type}:${metadata.userId || 'anonymous'}`;
-      await this.redis.lpush(recentEventKey, JSON.stringify({ type, severity, description, timestamp: new Date(), metadata }));
+      await this.redis.lpush(
+        recentEventKey,
+        JSON.stringify({ type, severity, description, timestamp: new Date(), metadata }),
+      );
       await this.redis.ltrim(recentEventKey, 0, 99); // Keep last 100 events
       await this.redis.expire(recentEventKey, 86400); // Expire after 24 hours
 
       // Trigger threat analysis
-      await this.analyzeThreat({ type, severity, description, timestamp: new Date(), userId: metadata.userId, ipAddress: metadata.location?.coordinates[0].toString(), userAgent: metadata.device?.browser, metadata });
+      await this.analyzeThreat({
+        type,
+        severity,
+        description,
+        timestamp: new Date(),
+        userId: metadata.userId,
+        ipAddress: metadata.location?.coordinates[0].toString(),
+        userAgent: metadata.device?.browser,
+        metadata,
+      });
     } catch (error) {
-      logger.error('Failed to log security event', 'security', { error, type, severity, description, metadata });
+      logger.error('Failed to log security event', 'security', {
+        error,
+        type,
+        severity,
+        description,
+        metadata,
+      });
     }
   }
 
@@ -212,7 +230,7 @@ export class SecurityMonitoringService {
       JSON.stringify({
         timestamp: event.timestamp,
         userAgent: event.userAgent,
-      })
+      }),
     );
 
     if (currentSessions >= this.config.maxConcurrentSessions) {
@@ -311,7 +329,7 @@ export class SecurityMonitoringService {
   } {
     // Parse JSON activities
     const parsedActivities = activities
-      .map(activity => {
+      .map((activity) => {
         try {
           return JSON.parse(activity);
         } catch (e) {
@@ -334,7 +352,7 @@ export class SecurityMonitoringService {
     }
 
     // Detect suspicious patterns
-    const rapidActivities = timeGaps.filter(gap => gap < 1000).length;
+    const rapidActivities = timeGaps.filter((gap) => gap < 1000).length;
     const multipleIps = ips.size > 3;
     const multipleUserAgents = userAgents.size > 3;
 
@@ -463,7 +481,7 @@ export class SecurityMonitoringService {
           message: `Security alert: ${threat.severity.toUpperCase()} severity ${threat.type} detected`,
           data: threat,
           timestamp: new Date().toISOString(),
-        })
+        }),
       );
     } catch (error) {
       logger.error('Failed to notify security team', 'security', { error, threat });
@@ -475,7 +493,7 @@ export class SecurityMonitoringService {
     type: string,
     severity: SecurityAlert['severity'],
     description: string,
-    details: SecurityAlertDetails
+    details: SecurityAlertDetails,
   ): Promise<void> {
     // Implementation remains the same but with proper typing
   }
@@ -495,4 +513,4 @@ export class SecurityMonitoringService {
 }
 
 // Export singleton instance
-export const securityMonitoring = new SecurityMonitoringService();
+export {};

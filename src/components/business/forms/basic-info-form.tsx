@@ -2,10 +2,10 @@
 
 import { UseFormReturn } from 'react-hook-form';
 import { BusinessProfileFormValues } from '@/components/business/business-profile-wizard';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import {
   Select,
   SelectContent,
@@ -32,7 +32,7 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="mb-6 flex items-center gap-2">
         <Briefcase className="h-5 w-5 text-muted-foreground" />
         <h2 className="text-xl font-semibold">Basic Information</h2>
       </div>
@@ -81,7 +81,7 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
             </Label>
             <Select
               value={form.watch('businessType')}
-              onValueChange={value =>
+              onValueChange={(value) =>
                 form.setValue('businessType', value as any, { shouldValidate: true })
               }
             >
@@ -89,7 +89,7 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
                 <SelectValue placeholder="Select business type" />
               </SelectTrigger>
               <SelectContent>
-                {businessTypes.map(type => (
+                {businessTypes.map((type) => (
                   <SelectItem key={type.value} value={type.value}>
                     {type.label}
                   </SelectItem>

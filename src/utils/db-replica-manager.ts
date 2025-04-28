@@ -48,16 +48,17 @@ class DatabaseReplicaManager {
   }
 
   private initializeReplicaConnections(): void {
-    this.replicaClients = databaseConfig.replicas.urls.map(url => 
-      new PrismaClient({
-        datasources: {
-          db: { url },
-        },
-        log: [
-          { level: 'query', emit: 'event' },
-          { level: 'error', emit: 'event' },
-        ],
-      })
+    this.replicaClients = databaseConfig.replicas.urls.map(
+      (url) =>
+        new PrismaClient({
+          datasources: {
+            db: { url },
+          },
+          log: [
+            { level: 'query', emit: 'event' },
+            { level: 'error', emit: 'event' },
+          ],
+        }),
     );
 
     // Monitor replica performance
@@ -100,7 +101,7 @@ class DatabaseReplicaManager {
 
     const primary = await checkConnection(this.primaryClient);
     const replicas = await Promise.all(
-      this.replicaClients.map(client => checkConnection(client))
+      this.replicaClients.map((client) => checkConnection(client)),
     );
 
     return { primary, replicas };
@@ -109,9 +110,9 @@ class DatabaseReplicaManager {
   public async disconnect(): Promise<void> {
     await Promise.all([
       this.primaryClient.$disconnect(),
-      ...this.replicaClients.map(client => client.$disconnect()),
+      ...this.replicaClients.map((client) => client.$disconnect()),
     ]);
   }
 }
 
-export const dbReplicaManager = DatabaseReplicaManager.getInstance(); 
+export {};

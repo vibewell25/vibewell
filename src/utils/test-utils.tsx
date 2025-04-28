@@ -1,202 +1,174 @@
-import React, { ReactElement } from 'react';
-import { render, RenderOptions, screen, within } from '@testing-library/react';
-import { axe, toHaveNoViolations, Result } from 'jest-axe';
-import { vi } from 'vitest';
-import { ThemeProvider } from '../components/theme/ThemeProvider';
-import { AuthProvider } from '../components/auth/AuthProvider';
+import { render } from '@testing-library/react';
+import type { ReactElement, ReactNode } from 'react';
 import userEvent from '@testing-library/user-event';
-import { fireEvent } from '@testing-library/react';
+import { ThemeProvider } from '@/components/theme-provider';
+import { AuthProvider } from '@/components/auth/AuthProvider';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '@/utils/i18n';
+import axios from 'axios';
+import type { AxiosInstance } from 'axios';
+import { performance } from 'perf_hooks';
+import { axe } from 'jest-axe';
 
-// Extend expect matchers
-expect.extend(toHaveNoViolations);
-
-// Enhanced accessibility options
-export interface AccessibilityOptions extends RenderOptions {
-  rules?: string[];
-  impact?: 'minor' | 'moderate' | 'serious' | 'critical';
+interface CustomRenderOptions {
+  [key: string]: unknown;
 }
 
-// Enhanced custom render function that includes providers and accessibility testing
-const customRender = (
-  ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'> & {
-    initialTheme?: 'light' | 'dark';
-    isAuthenticated?: boolean;
-    accessibilityOptions?: AccessibilityOptions;
-  }
-) => {
-  const {
-    initialTheme = 'light',
-    isAuthenticated = false,
-    accessibilityOptions,
-    ...renderOptions
-  } = options || {};
-
-  const Wrapper = ({ children }: { children: React.ReactNode }) => {
-    return (
-      <ThemeProvider initialTheme={initialTheme}>
-        <AuthProvider initialAuthState={isAuthenticated}>{children}</AuthProvider>
+// Custom render function that includes providers
+function customRender(ui: ReactElement, options?: CustomRenderOptions) {
+  return render(ui, {
+    wrapper: ({ children }: { children?: ReactNode }) => (
+      <ThemeProvider>
+        <AuthProvider>
+          <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
+        </AuthProvider>
       </ThemeProvider>
-    );
-  };
+    ),
+    ...options,
+  });
+}
 
-  const result = render(ui, { wrapper: Wrapper, ...renderOptions });
+// Helper to generate test cases for form validation
+export function generateFormValidationTests(
+  formComponent: ReactElement,
+  testCases: Array<{
+    field: string;
+    value: string;
+    expectedError?: string;
+  }>,
+) {
+  describe('form validation', () => {
+    testCases.forEach(({ field, value, expectedError }) => {
+      it(`validates ${field} with value "${value}"`, async () => {
+        const { getByLabelText, findByText } = customRender(formComponent);
+        const input = getByLabelText(field);
+        const user = userEvent.setup();
+        await user.type(input, value);
+        await user.tab();
 
-  // Add accessibility testing if options are provided
-  if (accessibilityOptions) {
-    return {
-      ...result,
-      async checkAccessibility() {
-        const results = await axe(result.container, accessibilityOptions);
-        expect(results).toHaveNoViolations();
-        return results;
-      },
-    };
-  }
-
-  return result;
-};
-
-// Enhanced test runner with accessibility checks
-const createTestRunner = ({
-  setup = vi.fn(),
-  teardown = vi.fn(),
-  timeout = 5000,
-  checkAccessibility = false,
-  accessibilityOptions = {},
-} = {}) => {
-  return (
-    name: string,
-    testFn: () => Promise<void> | void,
-    options: { only?: boolean; skip?: boolean } = {}
-  ) => {
-    const testMethod = options.only ? it.only : options.skip ? it.skip : it;
-
-    testMethod(
-      name,
-      async () => {
-        try {
-          await setup();
-          const result = await testFn();
-          if (checkAccessibility) {
-            await testAccessibility(result as ReactElement, accessibilityOptions);
-          }
-        } finally {
-          await teardown();
+        if (expectedError) {
+          const error = await findByText(expectedError);
+          expect(error).toBeInTheDocument();
         }
-      },
-      timeout
-    );
-  };
-};
-
-// Enhanced accessibility test helper with detailed reporting
-const testAccessibility = async (
-  ui: ReactElement,
-  options?: AccessibilityOptions
-): Promise<Result> => {
-  const { container } = customRender(ui, { accessibilityOptions: options });
-  const results = await axe(container, options);
-
-  if (results.violations.length > 0) {
-    console.error('\nAccessibility Violations:');
-    results.violations.forEach(violation => {
-      console.error(`\nRule: ${violation.id}`);
-      console.error(`Impact: ${violation.impact}`);
-      console.error(`Description: ${violation.description}`);
-      console.error(`Help: ${violation.help}`);
-      console.error('Elements:');
-      violation.nodes.forEach(node => {
-        console.error(`- ${node.html}`);
-        console.error(`  ${node.failureSummary}`);
       });
     });
-  }
+  });
+}
 
-  expect(results).toHaveNoViolations();
-  return results;
-};
-
-// Integration test helper
-export const createIntegrationTest = (
-  description: string,
-  steps: Array<{
-    name: string;
-    action: () => Promise<void>;
-    assertion: () => Promise<void>;
-  }>,
-  options?: {
-    timeout?: number;
-    setup?: () => Promise<void>;
-    teardown?: () => Promise<void>;
-  }
-) => {
-  const { timeout = 10000, setup, teardown } = options || {};
-
-  it(
-    description,
-    async () => {
-      if (setup) await setup();
-
-      try {
-        for (const step of steps) {
-          console.log(`\nExecuting step: ${step.name}`);
-          await step.action();
-          await step.assertion();
-        }
-      } finally {
-        if (teardown) await teardown();
-      }
+// Helper to test API endpoints
+export async function testApiEndpoint(
+  endpoint: string,
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+  data?: unknown,
+  expectedStatus = 200,
+): Promise<unknown> {
+  const response = await fetch(endpoint, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
     },
-    timeout
-  );
+    body: data ? JSON.stringify(data) : null,
+  });
+
+  expect(response.status).toBe(expectedStatus);
+  return response.json();
+}
+
+// Helper to test component accessibility
+export async function testAccessibility(component: ReactElement) {
+  const { container } = customRender(component);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+}
+
+// Helper to test responsive behavior
+export function testResponsiveBehavior(component: ReactElement, breakpoints: string[]) {
+  describe('responsive behavior', () => {
+    breakpoints.forEach((breakpoint) => {
+      it(`renders correctly at ${breakpoint}`, () => {
+        window.resizeTo(parseInt(breakpoint), 800);
+        const { container } = customRender(component);
+        expect(container).toMatchSnapshot();
+      });
+    });
+  });
+}
+
+export * from '@testing-library/react';
+export { customRender as render };
+
+interface TestClientConfig {
+  baseURL?: string;
+  timeout?: number;
+  headers?: Record<string, string>;
+}
+
+export function createTestClient(config: TestClientConfig = {}): AxiosInstance {
+  return axios.create({
+    baseURL: config.baseURL || 'http://localhost:3000',
+    timeout: config.timeout || 5000,
+    headers: {
+      'Content-Type': 'application/json',
+      ...config.headers,
+    },
+    validateStatus: (status) => status < 500,
+  });
+}
+
+interface TestDataGenerators {
+  user: () => { id: string; name: string; email: string };
+  post: () => { id: string; title: string; content: string };
+  comment: () => { id: string; content: string; userId: string };
+}
+
+const generators: TestDataGenerators = {
+  user: () => ({
+    id: Math.random().toString(36).substring(2, 9),
+    name: `Test User ${Math.random().toString(36).substring(2, 5)}`,
+    email: `test${Math.random().toString(36).substring(2, 5)}@example.com`,
+  }),
+  post: () => ({
+    id: Math.random().toString(36).substring(2, 9),
+    title: `Test Post ${Math.random().toString(36).substring(2, 5)}`,
+    content: `Test content ${Math.random().toString(36).substring(2, 20)}`,
+  }),
+  comment: () => ({
+    id: Math.random().toString(36).substring(2, 9),
+    content: `Test comment ${Math.random().toString(36).substring(2, 20)}`,
+    userId: Math.random().toString(36).substring(2, 9),
+  }),
 };
 
-// User interaction helper
-export const userInteractions = {
-  async clickButton(name: string | RegExp) {
-    const button = screen.getByRole('button', { name });
-    await userEvent.click(button);
-  },
+export function generateTestData<K extends keyof TestDataGenerators>(
+  type: K,
+  count: number = 1,
+): Array<ReturnType<TestDataGenerators[K]>> {
+  return Array(count)
+    .fill(null)
+    .map(() => generators[type]() as ReturnType<TestDataGenerators[K]>);
+}
 
-  async fillForm(formTestId: string, fields: Record<string, string>) {
-    const form = screen.getByTestId(formTestId);
-    for (const [label, value] of Object.entries(fields)) {
-      const input = within(form).getByLabelText(label);
-      await userEvent.type(input, value);
-    }
-  },
+export async function measureRequestTime(fn: () => Promise<unknown>): Promise<number> {
+  const start = performance.now();
+  await fn();
+  return performance.now() - start;
+}
 
-  async selectOption(label: string, option: string) {
-    const select = screen.getByLabelText(label);
-    await userEvent.selectOptions(select, option);
-  },
+export function calculatePercentile(values: number[], percentile: number): number {
+  const sorted = [...values].sort((a, b) => a - b);
+  const index = Math.ceil((percentile / 100) * sorted.length) - 1;
+  return sorted[index];
+}
 
-  async dragAndDrop(sourceTestId: string, targetTestId: string) {
-    const source = screen.getByTestId(sourceTestId);
-    const target = screen.getByTestId(targetTestId);
+export function formatBytes(bytes: number): string {
+  const units = ['B', 'KB', 'MB', 'GB'];
+  let size = bytes;
+  let unitIndex = 0;
 
-    // Simulate drag and drop events
-    fireEvent.dragStart(source);
-    fireEvent.dragEnter(target);
-    fireEvent.dragOver(target);
-    fireEvent.drop(target);
-    fireEvent.dragEnd(source);
-  },
-};
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024;
+    unitIndex++;
+  }
 
-// Re-export existing performance measurement utilities
-export {
-  measurePerformance,
-  measureMemoryUsage,
-  measureFrameRate,
-  measureNetworkRequest,
-  createPerformanceObserver,
-  measurePaintTiming,
-  measureLongTasks,
-  setupIntersectionObserverMock,
-  setupResizeObserverMock,
-};
-
-// Export enhanced utilities
-export { customRender as render, createTestRunner, testAccessibility };
+  return `${size.toFixed(2)} ${units[unitIndex]}`;
+}

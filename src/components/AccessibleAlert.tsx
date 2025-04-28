@@ -17,7 +17,6 @@ export const AccessibleAlert: React.FC<AccessibleAlertProps> = ({
   onClose,
   className = '',
 }) => {
-  const alertId = `alert-${Math.random().toString(36).substr(2, 9)}`;
   const isDismissible = !!onClose;
 
   const variantStyles = {
@@ -77,11 +76,7 @@ export const AccessibleAlert: React.FC<AccessibleAlertProps> = ({
     <div
       role="alert"
       aria-live="polite"
-      className={`
-        p-4 rounded-md border
-        ${variantStyles[variant]}
-        ${className}
-      `}
+      className={`rounded-md border p-4 ${variantStyles[variant]} ${className} `}
     >
       <div className="flex">
         <div className="flex-shrink-0">{icons[variant]}</div>
@@ -94,12 +89,7 @@ export const AccessibleAlert: React.FC<AccessibleAlertProps> = ({
             <div className="-mx-1.5 -my-1.5">
               <button
                 type="button"
-                className={`
-                  inline-flex rounded-md p-1.5
-                  ${iconStyles[variant]}
-                  hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-offset-2
-                  ${variantStyles[variant].replace('text', 'focus:ring')}
-                `}
+                className={`inline-flex rounded-md p-1.5 ${iconStyles[variant]} hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-offset-2 ${variantStyles[variant].replace('text', 'focus:ring')} `}
                 onClick={onClose}
                 aria-label="Close alert"
               >

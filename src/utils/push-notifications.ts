@@ -1,6 +1,6 @@
 /**
  * Push Notifications Utility for Mobile App Integration
- * 
+ *
  * This utility provides methods for registering, sending and managing push notifications
  * using service workers, Web Push API, and Firebase Cloud Messaging (FCM).
  */
@@ -18,12 +18,7 @@ export const isPushSupported = (): boolean => {
 };
 
 // Check if notifications are allowed
-export const getNotificationPermission = (): NotificationPermission | null => {
-  if (!('Notification' in window)) {
-    return null;
-  }
-  return Notification.permission;
-};
+export {};
 
 // Request permission for notifications
 export const requestNotificationPermission = async (): Promise<NotificationPermission | null> => {
@@ -31,7 +26,7 @@ export const requestNotificationPermission = async (): Promise<NotificationPermi
     console.warn('Notifications not supported in this browser');
     return null;
   }
-  
+
   try {
     const permission = await Notification.requestPermission();
     return permission;
@@ -47,7 +42,7 @@ export const registerServiceWorker = async (): Promise<ServiceWorkerRegistration
     console.warn('Service Workers not supported in this browser');
     return null;
   }
-  
+
   try {
     const registration = await navigator.serviceWorker.register('/service-worker.js');
     return registration;
@@ -59,19 +54,19 @@ export const registerServiceWorker = async (): Promise<ServiceWorkerRegistration
 
 // Get a push subscription for a specific user
 export const getOrCreatePushSubscription = async (
-  publicVapidKey: string
+  publicVapidKey: string,
 ): Promise<PushSubscription | null> => {
   if (!isPushSupported()) {
     return null;
   }
-  
+
   try {
     // Register service worker if not registered
     const registration = await navigator.serviceWorker.ready;
-    
+
     // Get existing subscription or create a new one
     let subscription = await registration.pushManager.getSubscription();
-    
+
     if (!subscription) {
       // Create a new subscription
       subscription = await registration.pushManager.subscribe({
@@ -79,7 +74,7 @@ export const getOrCreatePushSubscription = async (
         applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
       });
     }
-    
+
     return subscription;
   } catch (error) {
     console.error('Error getting/creating push subscription:', error);
@@ -93,18 +88,18 @@ const urlBase64ToUint8Array = (base64String: string): Uint8Array => {
   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
-  
+
   for (let i = 0; i < rawData.length; ++i) {
     outputArray[i] = rawData.charCodeAt(i);
   }
-  
+
   return outputArray;
 };
 
 // Save subscription to server
 export const saveSubscription = async (
   subscription: PushSubscription,
-  userId?: string
+  userId?: string,
 ): Promise<boolean> => {
   try {
     const response = await fetch('/api/push/register', {
@@ -117,11 +112,11 @@ export const saveSubscription = async (
         userId,
       }),
     });
-    
+
     if (!response.ok) {
       throw new Error('Failed to save subscription');
     }
-    
+
     return true;
   } catch (error) {
     console.error('Error saving subscription:', error);
@@ -130,9 +125,7 @@ export const saveSubscription = async (
 };
 
 // Remove subscription from server
-export const removeSubscription = async (
-  subscription: PushSubscription
-): Promise<boolean> => {
+export const removeSubscription = async (subscription: PushSubscription): Promise<boolean> => {
   try {
     const response = await fetch('/api/push/unregister', {
       method: 'POST',
@@ -143,11 +136,11 @@ export const removeSubscription = async (
         endpoint: subscription.endpoint,
       }),
     });
-    
+
     if (!response.ok) {
       throw new Error('Failed to remove subscription');
     }
-    
+
     return true;
   } catch (error) {
     console.error('Error removing subscription:', error);
@@ -156,25 +149,22 @@ export const removeSubscription = async (
 };
 
 // Show a notification
-export const showNotification = (
-  title: string,
-  options: NotificationOptions = {}
-): void => {
+export const showNotification = (title: string, options: NotificationOptions = {}): void => {
   if (!('Notification' in window)) {
     console.warn('Notifications not supported');
     return;
   }
-  
+
   if (Notification.permission === 'granted') {
     navigator.serviceWorker.ready
-      .then(registration => {
+      .then((registration) => {
         registration.showNotification(title, {
           icon: '/images/notification-icon.png',
           badge: '/images/notification-badge.png',
           ...options,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error showing notification:', error);
       });
   } else {
@@ -183,62 +173,10 @@ export const showNotification = (
 };
 
 // Initialize push notifications setup
-export const initPushNotifications = async (
-  publicVapidKey: string,
-  userId?: string
-): Promise<boolean> => {
-  try {
-    // Request notification permission
-    const permission = await requestNotificationPermission();
-    if (permission !== 'granted') {
-      console.log('Notification permission not granted');
-      return false;
-    }
-    
-    // Register service worker
-    await registerServiceWorker();
-    
-    // Get or create subscription
-    const subscription = await getOrCreatePushSubscription(publicVapidKey);
-    if (!subscription) {
-      console.error('Failed to get or create push subscription');
-      return false;
-    }
-    
-    // Save subscription to server
-    const saved = await saveSubscription(subscription, userId);
-    return saved;
-  } catch (error) {
-    console.error('Error initializing push notifications:', error);
-    return false;
-  }
-};
+export {};
 
 // Unregister from push notifications
-export const unregisterPushNotifications = async (): Promise<boolean> => {
-  try {
-    if (!isPushSupported()) {
-      return false;
-    }
-    
-    const registration = await navigator.serviceWorker.ready;
-    const subscription = await registration.pushManager.getSubscription();
-    
-    if (subscription) {
-      // Remove from server
-      await removeSubscription(subscription);
-      
-      // Unsubscribe locally
-      await subscription.unsubscribe();
-      return true;
-    }
-    
-    return false;
-  } catch (error) {
-    console.error('Error unregistering push notifications:', error);
-    return false;
-  }
-};
+export {};
 
 // Interface for push notification payload
 export interface PushNotificationPayload {
@@ -256,7 +194,7 @@ export interface PushNotificationPayload {
 
 /**
  * Example usage:
- * 
+ *
  * // Initialize on app start
  * const publicVapidKey = process.env.NEXT_PUBLIC_VAPID_KEY;
  * if (publicVapidKey) {
@@ -266,7 +204,7 @@ export interface PushNotificationPayload {
  *     }
  *   });
  * }
- * 
+ *
  * // Show a notification
  * showNotification('New Message', {
  *   body: 'You have a new message from John',
@@ -276,4 +214,4 @@ export interface PushNotificationPayload {
  *     { action: 'dismiss', title: 'Dismiss' }
  *   ]
  * });
- */ 
+ */

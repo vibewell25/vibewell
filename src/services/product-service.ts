@@ -53,7 +53,7 @@ export class ProductService {
   async getProduct(id: string): Promise<Product | null> {
     try {
       const product = await prisma.product.findUnique({
-        where: { id }
+        where: { id },
       });
 
       return product as Product;
@@ -68,7 +68,7 @@ export class ProductService {
    */
   async getProducts(
     page: number = 1,
-    limit: number = 20
+    limit: number = 20,
   ): Promise<{ products: Product[]; total: number }> {
     try {
       // Get total count
@@ -78,7 +78,7 @@ export class ProductService {
       const products = await prisma.product.findMany({
         skip: (page - 1) * limit,
         take: limit,
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       });
 
       return { products: products as Product[], total };
@@ -96,7 +96,7 @@ export class ProductService {
       const products = await prisma.product.findMany({
         where: { featured: true },
         orderBy: { rating: 'desc' },
-        take: limit
+        take: limit,
       });
 
       return products as Product[];
@@ -114,7 +114,7 @@ export class ProductService {
       const products = await prisma.product.findMany({
         where: { trending: true },
         orderBy: { rating: 'desc' },
-        take: limit
+        take: limit,
       });
 
       return products as Product[];
@@ -132,7 +132,7 @@ export class ProductService {
       const products = await prisma.product.findMany({
         where: { type },
         orderBy: { rating: 'desc' },
-        take: limit
+        take: limit,
       });
 
       return products as Product[];
@@ -152,24 +152,24 @@ export class ProductService {
     try {
       const products = await prisma.product.findMany({
         where: {
-          category: { not: null }
+          category: { not: null },
         },
         select: {
           category: true,
-          subcategory: true
-        }
+          subcategory: true,
+        },
       });
 
       // Extract unique categories
-      const categories = Array.from(new Set(products.map(item => item.category))).sort();
+      const categories = Array.from(new Set(products.map((item) => item.category))).sort();
 
       // Group subcategories by category
       const subcategories: Record<string, string[]> = {};
 
-      categories.forEach(category => {
+      categories.forEach((category) => {
         const categorySubcategories = products
-          .filter(item => item.category === category)
-          .map(item => item.subcategory);
+          .filter((item) => item.category === category)
+          .map((item) => item.subcategory);
 
         subcategories[category] = Array.from(new Set(categorySubcategories)).sort();
       });
@@ -188,14 +188,14 @@ export class ProductService {
     try {
       const products = await prisma.product.findMany({
         where: {
-          brand: { not: null }
+          brand: { not: null },
         },
         select: {
-          brand: true
-        }
+          brand: true,
+        },
       });
 
-      return Array.from(new Set(products.map(item => item.brand))).sort();
+      return Array.from(new Set(products.map((item) => item.brand))).sort();
     } catch (error) {
       console.error('Error getting product brands:', error);
       return [];
@@ -209,12 +209,12 @@ export class ProductService {
     try {
       const products = await prisma.product.findMany({
         select: {
-          tags: true
-        }
+          tags: true,
+        },
       });
 
       // Flatten and get unique tags
-      const allTags = products.flatMap(item => item.tags || []);
+      const allTags = products.flatMap((item) => item.tags || []);
       return Array.from(new Set(allTags)).sort();
     } catch (error) {
       console.error('Error getting product tags:', error);
@@ -229,7 +229,7 @@ export class ProductService {
     filter: ProductFilter = {},
     sort: ProductSortOption = { field: 'rating', direction: 'desc' },
     page: number = 1,
-    limit: number = 20
+    limit: number = 20,
   ): Promise<{ products: Product[]; total: number }> {
     try {
       // Build where clause
@@ -285,7 +285,7 @@ export class ProductService {
         if (term) {
           where.OR = [
             { name: { contains: term, mode: 'insensitive' } },
-            { description: { contains: term, mode: 'insensitive' } }
+            { description: { contains: term, mode: 'insensitive' } },
           ];
         }
       }
@@ -298,23 +298,23 @@ export class ProductService {
         where,
         orderBy: { [sort.field]: sort.direction },
         skip: (page - 1) * limit,
-        take: limit
+        take: limit,
       });
 
       // Post-process for tag filtering if needed
       let filteredProducts = products;
       if (filter.tags && filter.tags.length > 0 && filteredProducts) {
-        filteredProducts = filteredProducts.filter(product => {
+        filteredProducts = filteredProducts.filter((product) => {
           if (!product.tags) return false;
-          return filter.tags!.every(tag =>
-            product.tags.some(productTag => productTag.toLowerCase().includes(tag.toLowerCase()))
+          return filter.tags!.every((tag) =>
+            product.tags.some((productTag) => productTag.toLowerCase().includes(tag.toLowerCase())),
           );
         });
       }
 
       return {
         products: filteredProducts as Product[],
-        total: filter.tags?.length ? filteredProducts.length : total
+        total: filter.tags?.length ? filteredProducts.length : total,
       };
     } catch (error) {
       console.error('Error searching products:', error);
@@ -329,7 +329,7 @@ export class ProductService {
     try {
       // First get the original product
       const product = await prisma.product.findUnique({
-        where: { id: productId }
+        where: { id: productId },
       });
 
       if (!product) {
@@ -341,10 +341,10 @@ export class ProductService {
         where: {
           type: product.type,
           category: product.category,
-          id: { not: productId }
+          id: { not: productId },
         },
         orderBy: { rating: 'desc' },
-        take: limit
+        take: limit,
       });
 
       // If not enough products found, get more based on type only
@@ -355,11 +355,11 @@ export class ProductService {
             type: product.type,
             id: {
               not: productId,
-              notIn: relatedProducts.map(p => p.id)
-            }
+              notIn: relatedProducts.map((p) => p.id),
+            },
           },
           orderBy: { rating: 'desc' },
-          take: remaining
+          take: remaining,
         });
 
         relatedProducts.push(...moreProducts);

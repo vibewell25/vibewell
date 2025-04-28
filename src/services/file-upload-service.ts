@@ -22,7 +22,7 @@ export class FileUploadService {
   async getPresignedUploadUrl(
     fileName: string,
     contentType: string,
-    expiresIn = 3600
+    expiresIn = 3600,
   ): Promise<string> {
     const key = `uploads/${Date.now()}-${fileName}`;
     const command = new PutObjectCommand({

@@ -1,6 +1,5 @@
 import React from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import { FaGoogle, FaFacebook, FaTwitter, FaLinkedin, FaGithub } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import { cn } from '@/lib/utils';
@@ -91,13 +90,13 @@ export const SocialButton: React.FC<SocialButtonProps> = ({
       type="button"
       onClick={handleSignIn}
       className={cn(
-        'flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500',
+        'flex items-center justify-center gap-2 rounded-md px-4 py-2 font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
         provider.className,
-        className
+        className,
       )}
       aria-label={`Sign in with ${provider.name}`}
     >
-      <Icon aria-hidden="true" className="w-5 h-5" />
+      <Icon aria-hidden="true" className="h-5 w-5" />
       <span>{displayText}</span>
     </button>
   );
@@ -123,13 +122,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
   callbackUrl,
 }) => {
   return (
-    <div
-      className={cn(
-        'flex gap-3', 
-        vertical ? 'flex-col' : 'flex-row flex-wrap',
-        className
-      )}
-    >
+    <div className={cn('flex gap-3', vertical ? 'flex-col' : 'flex-row flex-wrap', className)}>
       {selectedProviders.map((providerId) => (
         <SocialButton
           key={providerId}
@@ -144,4 +137,4 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
   );
 };
 
-export default SocialLogin; 
+export default SocialLogin;

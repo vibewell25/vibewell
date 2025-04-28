@@ -40,16 +40,19 @@ export async function getTrainingPlan(planId: string) {
   });
 }
 
-export async function updateTrainingPlan(planId: string, data: {
-  title?: string;
-  description?: string;
-  startDate?: Date;
-  endDate?: Date;
-  objectives?: any[];
-  status?: TrainingPlanStatus;
-  progress?: number;
-  budget?: number;
-}) {
+export async function updateTrainingPlan(
+  planId: string,
+  data: {
+    title?: string;
+    description?: string;
+    startDate?: Date;
+    endDate?: Date;
+    objectives?: any[];
+    status?: TrainingPlanStatus;
+    progress?: number;
+    budget?: number;
+  },
+) {
   return prisma.trainingPlan.update({
     where: { id: planId },
     data,
@@ -78,16 +81,19 @@ export async function createTrainingModule(data: {
   });
 }
 
-export async function updateTrainingModule(moduleId: string, data: {
-  name?: string;
-  description?: string;
-  type?: TrainingModuleType;
-  duration?: number;
-  order?: number;
-  required?: boolean;
-  content?: any;
-  status?: ModuleStatus;
-}) {
+export async function updateTrainingModule(
+  moduleId: string,
+  data: {
+    name?: string;
+    description?: string;
+    type?: TrainingModuleType;
+    duration?: number;
+    order?: number;
+    required?: boolean;
+    content?: any;
+    status?: ModuleStatus;
+  },
+) {
   return prisma.trainingPlanModule.update({
     where: { id: moduleId },
     data: {
@@ -167,7 +173,7 @@ export async function getTrainingAnalytics(staffId: string) {
     },
   });
 
-  const completedModules = progress.filter(p => p.status === 'COMPLETED').length;
+  const completedModules = progress.filter((p) => p.status === 'COMPLETED').length;
   const totalModules = progress.length;
   const averageScore = progress.reduce((acc, p) => acc + (p.score || 0), 0) / completedModules || 0;
   const totalTimeSpent = progress.reduce((acc, p) => acc + (p.timeSpent || 0), 0);
@@ -178,9 +184,12 @@ export async function getTrainingAnalytics(staffId: string) {
     completionRate: totalModules ? (completedModules / totalModules) * 100 : 0,
     averageScore,
     totalTimeSpent,
-    moduleBreakdown: progress.reduce((acc, p) => {
-      acc[p.status] = (acc[p.status] || 0) + 1;
-      return acc;
-    }, {} as Record<ModuleStatus, number>),
+    moduleBreakdown: progress.reduce(
+      (acc, p) => {
+        acc[p.status] = (acc[p.status] || 0) + 1;
+        return acc;
+      },
+      {} as Record<ModuleStatus, number>,
+    ),
   };
-} 
+}

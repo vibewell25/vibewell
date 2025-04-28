@@ -1,10 +1,7 @@
-'use client';
-import React from 'react';
-import { useParams, useRouter, notFound } from 'next/navigation';
+'use client';;
+import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { PremiumContentLock } from '@/components/premium-content-lock';
+import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 import { Layout } from '@/components/layout';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
@@ -222,7 +219,6 @@ const trackResourceView = (resourceId: string, resourceName: string) => {
 };
 export default function ResourceDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const resourceId = params.id as string;
   const [resource, setResource] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -256,7 +252,7 @@ export default function ResourceDetailPage() {
     // Fetch the resource by ID - in a real app, this would be an API call
     setLoading(true);
     try {
-      const foundResource = financialResources.find(r => r.id === resourceId);
+      const foundResource = financialResources.find((r) => r.id === resourceId);
       if (foundResource) {
         setResource(foundResource);
         // Track this view for analytics and recently viewed
@@ -300,37 +296,28 @@ export default function ResourceDetailPage() {
       setIsBookmarked(true);
     }
   };
-  // Handle rating change
-  const handleRatingChange = (rating: number) => {
-    if (!resource) return;
-    saveRating(resourceId, 'resource', rating);
-    setUserRating(rating);
-    // Update average rating
-    const newAverage = getAverageRating(resourceId, 'resource');
-    setAverageRating(newAverage);
-  };
   // Loading state
   if (loading) {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
-          <p className="text-gray-600 mb-6">
+          <h1 className="mb-2 text-3xl font-bold">Business Hub</h1>
+          <p className="mb-6 text-gray-600">
             Tools, resources, and education to grow your wellness business
           </p>
           {/* Main Navigation */}
           <BusinessHubNavigation />
           {/* Financial Management Navigation */}
           <FinancialNav />
-          <div className="max-w-4xl mx-auto">
+          <div className="mx-auto max-w-4xl">
             <div className="animate-pulse space-y-4">
-              <div className="h-8 bg-gray-200 rounded w-3/4"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-              <div className="h-64 bg-gray-200 rounded"></div>
+              <div className="h-8 w-3/4 rounded bg-gray-200"></div>
+              <div className="h-4 w-1/2 rounded bg-gray-200"></div>
+              <div className="h-64 rounded bg-gray-200"></div>
               <div className="space-y-2">
-                <div className="h-4 bg-gray-200 rounded"></div>
-                <div className="h-4 bg-gray-200 rounded"></div>
-                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                <div className="h-4 rounded bg-gray-200"></div>
+                <div className="h-4 rounded bg-gray-200"></div>
+                <div className="h-4 w-5/6 rounded bg-gray-200"></div>
               </div>
             </div>
           </div>
@@ -343,16 +330,16 @@ export default function ResourceDetailPage() {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
-          <p className="text-gray-600 mb-6">
+          <h1 className="mb-2 text-3xl font-bold">Business Hub</h1>
+          <p className="mb-6 text-gray-600">
             Tools, resources, and education to grow your wellness business
           </p>
           {/* Main Navigation */}
           <BusinessHubNavigation />
           {/* Financial Management Navigation */}
           <FinancialNav />
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-2xl font-bold text-red-600 mb-4">
+          <div className="mx-auto max-w-4xl text-center">
+            <h1 className="mb-4 text-2xl font-bold text-red-600">
               {error || 'Resource not found'}
             </h1>
             <p className="mb-6">The resource you're looking for could not be found.</p>
@@ -366,13 +353,13 @@ export default function ResourceDetailPage() {
   }
   // Find related resources
   const relatedResources = financialResources
-    .filter(item => resource.relatedResources.includes(item.id))
+    .filter((item) => resource.relatedResources.includes(item.id))
     .slice(0, 3);
   return (
     <Layout>
-      <div className="container mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
-        <p className="text-gray-600 mb-6">
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="mb-2 text-3xl font-bold">Business Hub</h1>
+        <p className="mb-6 text-gray-600">
           Tools, resources, and education to grow your wellness business
         </p>
         {/* Main Navigation */}
@@ -381,12 +368,12 @@ export default function ResourceDetailPage() {
         <FinancialNav />
         <Link
           href="/business-hub/financial-management"
-          className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6"
+          className="mb-6 inline-flex items-center text-blue-600 hover:text-blue-800"
         >
-          <Icons.ArrowLeftIcon className="h-4 w-4 mr-2" />
+          <Icons.ArrowLeftIcon className="mr-2 h-4 w-4" />
           Back to Financial Management
         </Link>
-        <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+        <article className="mx-auto max-w-4xl overflow-hidden rounded-lg bg-white shadow-md">
           <div className="flex justify-between p-4">
             <div className="flex items-center">
               <StarRating
@@ -398,7 +385,7 @@ export default function ResourceDetailPage() {
             </div>
             <button
               onClick={toggleBookmark}
-              className={`p-2 rounded-full ${isBookmarked ? 'text-yellow-500' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`rounded-full p-2 ${isBookmarked ? 'text-yellow-500' : 'text-gray-400 hover:text-gray-600'}`}
               title={isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'}
             >
               <Icons.BookmarkIcon className="h-6 w-6" />
@@ -412,7 +399,7 @@ export default function ResourceDetailPage() {
               />
               <div className="absolute inset-0 bg-black bg-opacity-30"></div>
               <div className="absolute bottom-0 left-0 p-6 text-white">
-                <div className="inline-block px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded-md mb-2">
+                <div className="mb-2 inline-block rounded-md bg-blue-600 px-3 py-1 text-sm font-medium text-white">
                   {resource.category}
                 </div>
                 <h1 className="text-3xl font-bold">{resource.title}</h1>
@@ -420,16 +407,16 @@ export default function ResourceDetailPage() {
             </div>
           )}
           <div className="p-6">
-            <div className="flex items-center text-gray-500 text-sm mb-6">
-              <Icons.UserIcon className="h-4 w-4 mr-1" />
+            <div className="mb-6 flex items-center text-sm text-gray-500">
+              <Icons.UserIcon className="mr-1 h-4 w-4" />
               <span className="mr-4">{resource.author}</span>
-              <Icons.CalendarIcon className="h-4 w-4 mr-1" />
+              <Icons.CalendarIcon className="mr-1 h-4 w-4" />
               <span className="mr-4">{new Date(resource.date).toLocaleDateString()}</span>
-              <Icons.ClockIcon className="h-4 w-4 mr-1" />
+              <Icons.ClockIcon className="mr-1 h-4 w-4" />
               <span>{resource.readTime}</span>
             </div>
             <div
-              className="prose max-w-none prose-blue prose-headings:text-gray-800"
+              className="prose prose-blue prose-headings:text-gray-800 max-w-none"
               dangerouslySetInnerHTML={{ __html: resource.content }}
             />
           </div>
@@ -438,23 +425,23 @@ export default function ResourceDetailPage() {
           </div>
         </article>
         {relatedResources.length > 0 && (
-          <div className="max-w-4xl mx-auto mt-12">
-            <h2 className="text-xl font-bold mb-4">Related Resources</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {relatedResources.map(related => (
+          <div className="mx-auto mt-12 max-w-4xl">
+            <h2 className="mb-4 text-xl font-bold">Related Resources</h2>
+            <div className="grid gap-6 md:grid-cols-3">
+              {relatedResources.map((related) => (
                 <Link
                   key={related.id}
                   href={`/business-hub/financial-management/resources/${related.id}`}
-                  className="block bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="block rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md"
                 >
                   <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                    <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-gray-900">
                       {related.title}
                     </h3>
-                    <div className="flex items-center text-gray-500 text-sm">
-                      <Icons.DocumentTextIcon className="h-4 w-4 mr-1" />
+                    <div className="flex items-center text-sm text-gray-500">
+                      <Icons.DocumentTextIcon className="mr-1 h-4 w-4" />
                       <span className="mr-2">{related.category}</span>
-                      <Icons.ClockIcon className="h-4 w-4 mr-1" />
+                      <Icons.ClockIcon className="mr-1 h-4 w-4" />
                       <span>{related.readTime}</span>
                     </div>
                   </div>

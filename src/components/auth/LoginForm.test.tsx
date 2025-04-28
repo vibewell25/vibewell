@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@/utils/test-utils';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { render, screen, fireEvent, waitFor } from '@/utils/test-utils';
 import { LoginForm } from './LoginForm';
 import { testAccessibility, generateFormValidationTests } from '@/utils/test-utils';
 
@@ -11,7 +11,7 @@ describe('LoginForm', () => {
 
   it('renders login form correctly', () => {
     render(<LoginForm onSubmit={mockOnSubmit} />);
-    
+
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
@@ -32,17 +32,17 @@ describe('LoginForm', () => {
 
   it('submits form with valid data', async () => {
     render(<LoginForm onSubmit={mockOnSubmit} />);
-    
+
     fireEvent.change(screen.getByLabelText(/email/i), {
       target: { value: 'test@example.com' },
     });
-    
+
     fireEvent.change(screen.getByLabelText(/password/i), {
       target: { value: 'password123' },
     });
-    
+
     fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
-    
+
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith({
         email: 'test@example.com',
@@ -54,17 +54,17 @@ describe('LoginForm', () => {
   it('shows error message on failed login', async () => {
     mockOnSubmit.mockRejectedValueOnce(new Error('Invalid credentials'));
     render(<LoginForm onSubmit={mockOnSubmit} />);
-    
+
     fireEvent.change(screen.getByLabelText(/email/i), {
       target: { value: 'test@example.com' },
     });
-    
+
     fireEvent.change(screen.getByLabelText(/password/i), {
       target: { value: 'wrongpassword' },
     });
-    
+
     fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
-    
+
     await waitFor(() => {
       expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument();
     });
@@ -73,4 +73,4 @@ describe('LoginForm', () => {
   it('meets accessibility requirements', async () => {
     await testAccessibility(<LoginForm onSubmit={mockOnSubmit} />);
   });
-}); 
+});

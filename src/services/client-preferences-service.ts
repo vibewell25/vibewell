@@ -23,7 +23,7 @@ export class ClientPreferencesService {
    */
   async updateClientPreferences(
     clientId: string,
-    preferences: Partial<ClientPreferences>
+    preferences: Partial<ClientPreferences>,
   ): Promise<ClientPreferences> {
     const existingPreferences = await ClientPreferencesModel.findOne({ clientId });
 
@@ -45,7 +45,7 @@ export class ClientPreferencesService {
   async updateServicePreference(
     clientId: string,
     serviceId: string,
-    preference: Partial<ServicePreference>
+    preference: Partial<ServicePreference>,
   ): Promise<ClientPreferences> {
     const preferences = await ClientPreferencesModel.findOne({ clientId });
 
@@ -54,7 +54,7 @@ export class ClientPreferencesService {
     }
 
     const existingIndex = preferences.servicePreferences.findIndex(
-      p => p.serviceId.toString() === serviceId
+      (p) => p.serviceId.toString() === serviceId,
     );
 
     if (existingIndex >= 0) {
@@ -80,7 +80,7 @@ export class ClientPreferencesService {
   async updatePractitionerPreference(
     clientId: string,
     practitionerId: string,
-    preference: Partial<PractitionerPreference>
+    preference: Partial<PractitionerPreference>,
   ): Promise<ClientPreferences> {
     const preferences = await ClientPreferencesModel.findOne({ clientId });
 
@@ -89,7 +89,7 @@ export class ClientPreferencesService {
     }
 
     const existingIndex = preferences.practitionerPreferences.findIndex(
-      p => p.practitionerId.toString() === practitionerId
+      (p) => p.practitionerId.toString() === practitionerId,
     );
 
     if (existingIndex >= 0) {
@@ -114,7 +114,7 @@ export class ClientPreferencesService {
    */
   async trackClientBehavior(
     clientId: string,
-    behavior: Partial<ClientBehavior>
+    behavior: Partial<ClientBehavior>,
   ): Promise<ClientBehavior> {
     const existingBehavior = await ClientBehaviorModel.findOne({ clientId });
 
@@ -140,7 +140,7 @@ export class ClientPreferencesService {
       type: 'booking' | 'completion' | 'cancellation' | 'rating';
       rating?: number;
       amount?: number;
-    }
+    },
   ): Promise<void> {
     const behavior = await ClientBehaviorModel.findOne({ clientId });
 
@@ -149,7 +149,7 @@ export class ClientPreferencesService {
     }
 
     const serviceIndex = behavior.serviceHistory.findIndex(
-      s => s.serviceId.toString() === serviceId
+      (s) => s.serviceId.toString() === serviceId,
     );
 
     if (serviceIndex >= 0) {
@@ -215,16 +215,16 @@ export class ClientPreferencesService {
 
     // Get highly rated services
     const favoriteServices = preferences.servicePreferences
-      .filter(p => p.rating >= 4)
-      .map(p => p.serviceId);
+      .filter((p) => p.rating >= 4)
+      .map((p) => p.serviceId);
 
     // Get frequently booked practitioners
     const frequentPractitioners = behavior.practitionerHistory
-      .filter(p => p.bookingCount >= 3)
-      .map(p => p.practitionerId);
+      .filter((p) => p.bookingCount >= 3)
+      .map((p) => p.practitionerId);
 
     // Get services based on goals
-    const activeGoals = preferences.goals.filter(g => g.status === 'active').map(g => g.type);
+    const activeGoals = preferences.goals.filter((g) => g.status === 'active').map((g) => g.type);
 
     return {
       recommendedServices: favoriteServices,
@@ -260,7 +260,7 @@ export class ClientPreferencesService {
         },
       },
       preferences: {
-        services: preferences.servicePreferences.map(p => ({
+        services: preferences.servicePreferences.map((p) => ({
           serviceId: p.serviceId,
           rating: p.rating,
           frequency: p.frequency,
@@ -297,7 +297,7 @@ export class ClientPreferencesService {
       commonThemes: behavior.feedback.commonThemes,
       improvements: behavior.feedback.improvements,
       compliments: behavior.feedback.compliments,
-      serviceRatings: behavior.serviceHistory.map(s => ({
+      serviceRatings: behavior.serviceHistory.map((s) => ({
         serviceId: s.serviceId,
         rating: s.averageRating,
       })),

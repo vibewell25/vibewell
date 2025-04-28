@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -26,9 +26,7 @@ export default function PaginationArrow({
       onClick={onClick}
     >
       <Icon className="h-4 w-4" />
-      <span className="sr-only">
-        {direction === 'left' ? 'Previous page' : 'Next page'}
-      </span>
+      <span className="sr-only">{direction === 'left' ? 'Previous page' : 'Next page'}</span>
     </Button>
   );
-} 
+}

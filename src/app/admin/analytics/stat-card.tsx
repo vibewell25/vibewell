@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { cn } from '@/lib/utils';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 
@@ -31,7 +31,7 @@ export function StatCard({
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
         {description && (
-          <p className="text-xs text-muted-foreground flex items-center mt-1">
+          <p className="mt-1 flex items-center text-xs text-muted-foreground">
             {trend === 'up' && <ArrowUp className="mr-1 h-3 w-3 text-emerald-500" />}
             {trend === 'down' && <ArrowDown className="mr-1 h-3 w-3 text-rose-500" />}
             {description}

@@ -26,11 +26,11 @@ export default function RatingBreakdown({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex items-center mb-6">
+    <div className="rounded-lg bg-white p-6 shadow">
+      <div className="mb-6 flex items-center">
         <div className="flex items-center">
-          <span className="text-4xl font-bold mr-2">{averageRating.toFixed(1)}</span>
-          <Star className="h-8 w-8 text-yellow-400 fill-yellow-400" fill="currentColor" />
+          <span className="mr-2 text-4xl font-bold">{averageRating.toFixed(1)}</span>
+          <Star className="h-8 w-8 fill-yellow-400 text-yellow-400" fill="currentColor" />
         </div>
         <div className="ml-4 text-sm text-gray-500">
           Based on {totalReviews} {totalReviews === 1 ? 'review' : 'reviews'}
@@ -39,14 +39,14 @@ export default function RatingBreakdown({
       <div className="space-y-3">
         {/* 5 star rating */}
         <div className="flex items-center">
-          <div className="w-24 flex items-center">
-            <span className="text-sm font-medium mr-2">5</span>
-            <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" fill="currentColor" />
+          <div className="flex w-24 items-center">
+            <span className="mr-2 text-sm font-medium">5</span>
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" fill="currentColor" />
           </div>
           <div className="flex-1">
-            <div className="bg-gray-200 rounded-full h-2.5 w-full">
+            <div className="h-2.5 w-full rounded-full bg-gray-200">
               <div
-                className="bg-yellow-400 h-2.5 rounded-full"
+                className="h-2.5 rounded-full bg-yellow-400"
                 style={{ width: `${calculatePercentage(5)}%` }}
               ></div>
             </div>
@@ -57,14 +57,14 @@ export default function RatingBreakdown({
         </div>
         {/* 4 star rating */}
         <div className="flex items-center">
-          <div className="w-24 flex items-center">
-            <span className="text-sm font-medium mr-2">4</span>
-            <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" fill="currentColor" />
+          <div className="flex w-24 items-center">
+            <span className="mr-2 text-sm font-medium">4</span>
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" fill="currentColor" />
           </div>
           <div className="flex-1">
-            <div className="bg-gray-200 rounded-full h-2.5 w-full">
+            <div className="h-2.5 w-full rounded-full bg-gray-200">
               <div
-                className="bg-yellow-400 h-2.5 rounded-full"
+                className="h-2.5 rounded-full bg-yellow-400"
                 style={{ width: `${calculatePercentage(4)}%` }}
               ></div>
             </div>
@@ -75,14 +75,14 @@ export default function RatingBreakdown({
         </div>
         {/* 3 star rating */}
         <div className="flex items-center">
-          <div className="w-24 flex items-center">
-            <span className="text-sm font-medium mr-2">3</span>
-            <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" fill="currentColor" />
+          <div className="flex w-24 items-center">
+            <span className="mr-2 text-sm font-medium">3</span>
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" fill="currentColor" />
           </div>
           <div className="flex-1">
-            <div className="bg-gray-200 rounded-full h-2.5 w-full">
+            <div className="h-2.5 w-full rounded-full bg-gray-200">
               <div
-                className="bg-yellow-400 h-2.5 rounded-full"
+                className="h-2.5 rounded-full bg-yellow-400"
                 style={{ width: `${calculatePercentage(3)}%` }}
               ></div>
             </div>
@@ -93,14 +93,14 @@ export default function RatingBreakdown({
         </div>
         {/* 2 star rating */}
         <div className="flex items-center">
-          <div className="w-24 flex items-center">
-            <span className="text-sm font-medium mr-2">2</span>
-            <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" fill="currentColor" />
+          <div className="flex w-24 items-center">
+            <span className="mr-2 text-sm font-medium">2</span>
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" fill="currentColor" />
           </div>
           <div className="flex-1">
-            <div className="bg-gray-200 rounded-full h-2.5 w-full">
+            <div className="h-2.5 w-full rounded-full bg-gray-200">
               <div
-                className="bg-yellow-400 h-2.5 rounded-full"
+                className="h-2.5 rounded-full bg-yellow-400"
                 style={{ width: `${calculatePercentage(2)}%` }}
               ></div>
             </div>
@@ -111,14 +111,14 @@ export default function RatingBreakdown({
         </div>
         {/* 1 star rating */}
         <div className="flex items-center">
-          <div className="w-24 flex items-center">
-            <span className="text-sm font-medium mr-2">1</span>
-            <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" fill="currentColor" />
+          <div className="flex w-24 items-center">
+            <span className="mr-2 text-sm font-medium">1</span>
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" fill="currentColor" />
           </div>
           <div className="flex-1">
-            <div className="bg-gray-200 rounded-full h-2.5 w-full">
+            <div className="h-2.5 w-full rounded-full bg-gray-200">
               <div
-                className="bg-yellow-400 h-2.5 rounded-full"
+                className="h-2.5 rounded-full bg-yellow-400"
                 style={{ width: `${calculatePercentage(1)}%` }}
               ></div>
             </div>

@@ -19,7 +19,7 @@ class AnalyticsClient {
   private reconnectDelay = 1000; // Start with 1 second delay
 
   constructor(
-    private wsUrl: string = `ws://localhost:${process.env.NEXT_PUBLIC_ANALYTICS_WS_PORT || 3001}`
+    private wsUrl: string = `ws://localhost:${process.env.NEXT_PUBLIC_ANALYTICS_WS_PORT || 3001}`,
   ) {
     this.sessionId = this.getOrCreateSessionId();
     this.connect();
@@ -50,7 +50,7 @@ class AnalyticsClient {
         this.handleReconnect();
       };
 
-      this.ws.onerror = error => {
+      this.ws.onerror = (error) => {
         console.error('Analytics WebSocket error:', error);
         this.handleReconnect();
       };
@@ -135,4 +135,4 @@ class AnalyticsClient {
 }
 
 // Export a singleton instance
-export const analytics = new AnalyticsClient();
+export {};

@@ -13,11 +13,13 @@ export interface AccessibleBreadcrumbProps {
 
 export function AccessibleBreadcrumb({ items, className }: AccessibleBreadcrumbProps) {
   // Generate a unique ID for aria-labelledby
-  const labelId = React.useId ? React.useId() : `breadcrumb-label-${Math.random().toString(36).substr(2, 5)}`;
+  const labelId = React.useId
+    ? React.useId()
+    : `breadcrumb-label-${Math.random().toString(36).substr(2, 5)}`;
 
   // Warn if labels are too long
   React.useEffect(() => {
-    items.forEach(item => {
+    items.forEach((item) => {
       if (item.label.length > 50) {
         console.warn(`Breadcrumb label exceeds recommended length: ${item.label}`);
       }

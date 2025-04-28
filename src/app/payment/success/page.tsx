@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   Card,
   CardContent,
@@ -11,7 +11,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import { CheckCircle } from 'lucide-react';
 
 // Component that uses useSearchParams
@@ -33,7 +33,7 @@ function PaymentSuccessContent() {
       try {
         // In a real application, you would fetch payment details from your backend
         // This is just a simulated response
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
         setPaymentDetails({
           id: paymentId,
@@ -59,7 +59,7 @@ function PaymentSuccessContent() {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <div className="border-primary mx-auto h-12 w-12 animate-spin rounded-full border-b-2"></div>
           <h2 className="mt-4 text-xl font-semibold">Processing Payment</h2>
           <p className="mt-2 text-gray-500">Please wait while we confirm your payment...</p>
         </div>
@@ -142,7 +142,7 @@ function PaymentSuccessContent() {
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">
-          <p className="text-center text-sm text-gray-500 mb-2">
+          <p className="mb-2 text-center text-sm text-gray-500">
             A receipt has been sent to your email address.
           </p>
           <Link href="/" passHref>
@@ -161,7 +161,7 @@ export default function PaymentSuccessPage() {
       fallback={
         <div className="flex min-h-screen items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <div className="border-primary mx-auto h-12 w-12 animate-spin rounded-full border-b-2"></div>
             <h2 className="mt-4 text-xl font-semibold">Loading Payment Details</h2>
             <p className="mt-2 text-gray-500">Please wait...</p>
           </div>

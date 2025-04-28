@@ -1,22 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription 
-} from '@/components/ui/card';
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/Button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
 
@@ -35,7 +28,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Cell
+  Cell,
 } from 'recharts';
 
 type DataPoint = {
@@ -73,7 +66,10 @@ const EnhancedAnalyticsDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
-  const [dateRange, setDateRange] = useState({ from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), to: new Date() });
+  const [dateRange, setDateRange] = useState({
+    from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+    to: new Date(),
+  });
   const [timeFrame, setTimeFrame] = useState('daily');
   const [dataSegment, setDataSegment] = useState('all');
 
@@ -85,7 +81,7 @@ const EnhancedAnalyticsDashboard = () => {
         // In a real implementation, this would call your API with the selected filters
         // const response = await fetch(`/api/analytics?from=${dateRange.from}&to=${dateRange.to}&timeFrame=${timeFrame}&segment=${dataSegment}`);
         // const data = await response.json();
-        
+
         // Mock data for demonstration
         const mockData: AnalyticsData = {
           userEngagement: Array.from({ length: 30 }, (_, i) => ({
@@ -121,11 +117,46 @@ const EnhancedAnalyticsDashboard = () => {
             ],
           },
           demographics: [
-            { category: '18-24', value: 25, subCategories: [{ name: 'Male', value: 12 }, { name: 'Female', value: 13 }] },
-            { category: '25-34', value: 35, subCategories: [{ name: 'Male', value: 17 }, { name: 'Female', value: 18 }] },
-            { category: '35-44', value: 20, subCategories: [{ name: 'Male', value: 10 }, { name: 'Female', value: 10 }] },
-            { category: '45-54', value: 10, subCategories: [{ name: 'Male', value: 5 }, { name: 'Female', value: 5 }] },
-            { category: '55+', value: 10, subCategories: [{ name: 'Male', value: 4 }, { name: 'Female', value: 6 }] },
+            {
+              category: '18-24',
+              value: 25,
+              subCategories: [
+                { name: 'Male', value: 12 },
+                { name: 'Female', value: 13 },
+              ],
+            },
+            {
+              category: '25-34',
+              value: 35,
+              subCategories: [
+                { name: 'Male', value: 17 },
+                { name: 'Female', value: 18 },
+              ],
+            },
+            {
+              category: '35-44',
+              value: 20,
+              subCategories: [
+                { name: 'Male', value: 10 },
+                { name: 'Female', value: 10 },
+              ],
+            },
+            {
+              category: '45-54',
+              value: 10,
+              subCategories: [
+                { name: 'Male', value: 5 },
+                { name: 'Female', value: 5 },
+              ],
+            },
+            {
+              category: '55+',
+              value: 10,
+              subCategories: [
+                { name: 'Male', value: 4 },
+                { name: 'Female', value: 6 },
+              ],
+            },
           ],
           contentPerformance: [
             { category: 'Health', value: 30 },
@@ -135,7 +166,7 @@ const EnhancedAnalyticsDashboard = () => {
             { category: 'Yoga', value: 10 },
           ],
         };
-        
+
         setAnalyticsData(mockData);
       } catch (err) {
         setError('Failed to load analytics data. Please try again later.');
@@ -150,8 +181,8 @@ const EnhancedAnalyticsDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-96">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="flex h-96 items-center justify-center">
+        <Loader2 className="text-primary h-8 w-8 animate-spin" />
         <span className="ml-2">Loading analytics data...</span>
       </div>
     );
@@ -177,7 +208,7 @@ const EnhancedAnalyticsDashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Enhanced Analytics Dashboard</h1>
         <div className="flex space-x-2">
           <DateRangePicker date={dateRange} setDate={setDateRange} />
@@ -222,7 +253,9 @@ const EnhancedAnalyticsDashboard = () => {
                 <CardTitle className="text-sm font-medium">Daily Active Users</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{analyticsData.userActivity.daily.reduce((acc, item) => acc + item.value, 0)}</div>
+                <div className="text-2xl font-bold">
+                  {analyticsData.userActivity.daily.reduce((acc, item) => acc + item.value, 0)}
+                </div>
                 <p className="text-xs text-muted-foreground">+2.5% from last period</p>
               </CardContent>
             </Card>
@@ -231,7 +264,13 @@ const EnhancedAnalyticsDashboard = () => {
                 <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{(analyticsData.conversionRates[analyticsData.conversionRates.length - 1]?.value * 100).toFixed(1)}%</div>
+                <div className="text-2xl font-bold">
+                  {(
+                    analyticsData.conversionRates[analyticsData.conversionRates.length - 1]?.value *
+                    100
+                  ).toFixed(1)}
+                  %
+                </div>
                 <p className="text-xs text-muted-foreground">+0.8% from last period</p>
               </CardContent>
             </Card>
@@ -240,7 +279,12 @@ const EnhancedAnalyticsDashboard = () => {
                 <CardTitle className="text-sm font-medium">Retention Rate</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{(analyticsData.userRetention[analyticsData.userRetention.length - 1]?.value * 100).toFixed(1)}%</div>
+                <div className="text-2xl font-bold">
+                  {(
+                    analyticsData.userRetention[analyticsData.userRetention.length - 1]?.value * 100
+                  ).toFixed(1)}
+                  %
+                </div>
                 <p className="text-xs text-muted-foreground">-1.2% from last period</p>
               </CardContent>
             </Card>
@@ -321,13 +365,19 @@ const EnhancedAnalyticsDashboard = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} name="User Count" />
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#8884d8"
+                      activeDot={{ r: 8 }}
+                      name="User Count"
+                    />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
-          
+
           <div className="grid grid-cols-2 gap-4">
             <Card>
               <CardHeader>
@@ -343,9 +393,17 @@ const EnhancedAnalyticsDashboard = () => {
                     >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="date" />
-                      <YAxis domain={[0, 1]} tickFormatter={(value) => `${(value * 100).toFixed(0)}%`} />
+                      <YAxis
+                        domain={[0, 1]}
+                        tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+                      />
                       <Tooltip formatter={(value) => `${(Number(value) * 100).toFixed(1)}%`} />
-                      <Line type="monotone" dataKey="value" stroke="#82ca9d" name="Retention Rate" />
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#82ca9d"
+                        name="Retention Rate"
+                      />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -427,7 +485,12 @@ const EnhancedAnalyticsDashboard = () => {
                     <Tooltip />
                     <Legend />
                     <Bar dataKey="subCategories[0].value" stackId="a" fill="#8884d8" name="Male" />
-                    <Bar dataKey="subCategories[1].value" stackId="a" fill="#82ca9d" name="Female" />
+                    <Bar
+                      dataKey="subCategories[1].value"
+                      stackId="a"
+                      fill="#82ca9d"
+                      name="Female"
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -453,7 +516,9 @@ const EnhancedAnalyticsDashboard = () => {
                       outerRadius={100}
                       fill="#8884d8"
                       dataKey="value"
-                      label={({ category, percent }) => `${category}: ${(percent * 100).toFixed(0)}%`}
+                      label={({ category, percent }) =>
+                        `${category}: ${(percent * 100).toFixed(0)}%`
+                      }
                     >
                       {analyticsData.contentPerformance.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -507,7 +572,10 @@ const EnhancedAnalyticsDashboard = () => {
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />
-                    <YAxis domain={[0, 0.3]} tickFormatter={(value) => `${(value * 100).toFixed(0)}%`} />
+                    <YAxis
+                      domain={[0, 0.3]}
+                      tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+                    />
                     <Tooltip formatter={(value) => `${(Number(value) * 100).toFixed(1)}%`} />
                     <Legend />
                     <Line type="monotone" dataKey="value" stroke="#ff7300" name="Conversion Rate" />
@@ -524,7 +592,12 @@ const EnhancedAnalyticsDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {(analyticsData.conversionRates.reduce((acc, item) => acc + item.value, 0) / analyticsData.conversionRates.length * 100).toFixed(1)}%
+                  {(
+                    (analyticsData.conversionRates.reduce((acc, item) => acc + item.value, 0) /
+                      analyticsData.conversionRates.length) *
+                    100
+                  ).toFixed(1)}
+                  %
                 </div>
                 <p className="text-xs text-muted-foreground">+0.5% from last period</p>
               </CardContent>
@@ -535,10 +608,21 @@ const EnhancedAnalyticsDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {analyticsData.conversionRates.reduce((best, current) => current.value > best.value ? current : best, { date: '', value: 0 }).date}
+                  {
+                    analyticsData.conversionRates.reduce(
+                      (best, current) => (current.value > best.value ? current : best),
+                      { date: '', value: 0 },
+                    ).date
+                  }
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {(analyticsData.conversionRates.reduce((best, current) => current.value > best.value ? current : best, { date: '', value: 0 }).value * 100).toFixed(1)}%
+                  {(
+                    analyticsData.conversionRates.reduce(
+                      (best, current) => (current.value > best.value ? current : best),
+                      { date: '', value: 0 },
+                    ).value * 100
+                  ).toFixed(1)}
+                  %
                 </p>
               </CardContent>
             </Card>
@@ -549,9 +633,13 @@ const EnhancedAnalyticsDashboard = () => {
               <CardContent>
                 <div className="text-2xl font-bold">
                   {(
-                    (analyticsData.conversionRates[analyticsData.conversionRates.length - 1]?.value / 
-                    analyticsData.conversionRates[0]?.value - 1) * 100
-                  ).toFixed(1)}%
+                    (analyticsData.conversionRates[analyticsData.conversionRates.length - 1]
+                      ?.value /
+                      analyticsData.conversionRates[0]?.value -
+                      1) *
+                    100
+                  ).toFixed(1)}
+                  %
                 </div>
                 <p className="text-xs text-muted-foreground">Month-over-month</p>
               </CardContent>
@@ -563,4 +651,4 @@ const EnhancedAnalyticsDashboard = () => {
   );
 };
 
-export default EnhancedAnalyticsDashboard; 
+export default EnhancedAnalyticsDashboard;

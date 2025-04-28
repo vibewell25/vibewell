@@ -123,4 +123,4 @@ export function AnalyticsProvider({ children, trackingId }: AnalyticsProviderPro
   );
 }
 
-export const useAnalytics = () => useContext(AnalyticsContext);
+export {};

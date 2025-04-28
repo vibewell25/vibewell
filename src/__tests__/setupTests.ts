@@ -1,6 +1,3 @@
-// Add testing-library jest-dom extensions
-import '@testing-library/jest-dom';
-
 // Extend Jest types
 declare global {
   namespace jest {
@@ -26,7 +23,7 @@ global.fetch = jest.fn(() =>
     ok: true,
     status: 200,
     text: () => Promise.resolve(''),
-  } as Response)
+  } as Response),
 );
 
 // Setup environment variables needed for tests

@@ -1,13 +1,7 @@
-import { NextResponse } from 'next/server';
 import { Redis } from 'ioredis';
 import { gzip } from 'zlib';
 import { promisify } from 'util';
-import { createHash } from 'crypto';
-import { MonitoringService } from '../types/monitoring';
-import { performanceMonitor } from './performanceMonitor';
-import { OptimizationOptions, CacheConfig, PrefetchConfig, RateLimitConfig } from '../types/optimization';
-
-const gzipAsync = promisify(gzip);
+import { OptimizationOptions } from '../types/optimization';
 
 // Initialize Redis client
 const redis = new Redis(process.env['REDIS_URL'] || 'redis://localhost:6379');
@@ -54,17 +48,17 @@ const DEFAULT_OPTIONS: OptimizationOptions = {
     enabled: true,
     ttl: 3600000, // 1 hour
     maxSize: 1000,
-    invalidateOnMutation: true
+    invalidateOnMutation: true,
   },
   prefetch: {
     enabled: true,
-    interval: 300000 // 5 minutes
+    interval: 300000, // 5 minutes
   },
   rateLimit: {
     enabled: true,
     windowMs: 60000, // 1 minute
-    max: 100
-  }
+    max: 100,
+  },
 };
 
 // Rate limiting implementation
@@ -94,7 +88,7 @@ function generateETag(data: any): string {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash = hash & hash;
   }
   return `"${hash.toString(36)}"`;
@@ -121,7 +115,7 @@ class MemoryCache {
 
   invalidate(pattern?: RegExp): void {
     if (pattern) {
-      Array.from(this.cache.keys()).forEach(key => {
+      Array.from(this.cache.keys()).forEach((key) => {
         if (pattern.test(key)) {
           this.cache.delete(key);
         }
@@ -134,11 +128,14 @@ class MemoryCache {
 
 // Request batching implementation
 class RequestBatcher {
-  private batch: Map<string, { 
-    promise: Promise<any>;
-    resolve: (value: any) => void;
-    reject: (reason: any) => void;
-  }> = new Map();
+  private batch: Map<
+    string,
+    {
+      promise: Promise<any>;
+      resolve: (value: any) => void;
+      reject: (reason: any) => void;
+    }
+  > = new Map();
   private timeout: NodeJS.Timeout | null = null;
   private options: OptimizationOptions;
 
@@ -172,9 +169,7 @@ class RequestBatcher {
 
     try {
       const batchEntries = Array.from(currentBatch.entries());
-      const results = await Promise.allSettled(
-        batchEntries.map(([_, item]) => item.promise)
-      );
+      const results = await Promise.allSettled(batchEntries.map(([_, item]) => item.promise));
 
       batchEntries.forEach((entry, index) => {
         if (!entry) return;
@@ -212,7 +207,7 @@ class Cache {
       this.store.delete(oldestKey);
     }
 
-    const expiry = Date.now() + (this.duration * 1000);
+    const expiry = Date.now() + this.duration * 1000;
     this.store.set(key, { value, expiry });
   }
 
@@ -256,23 +251,23 @@ export class ApiOptimization {
         maxSize: 1000,
         invalidateOnMutation: true,
         key: 'default',
-        duration: 300000
+        duration: 300000,
       },
       prefetch: {
         enabled: false,
-        interval: 60000 // 1 minute
+        interval: 60000, // 1 minute
       },
       rateLimit: {
         enabled: true,
         windowMs: 60000, // 1 minute
         max: 100,
-        maxRequests: 100
+        maxRequests: 100,
       },
       batchRequests: {
         enabled: false,
         maxBatchSize: 10,
-        batchDelay: 50
-      }
+        batchDelay: 50,
+      },
     };
 
     this.options = { ...defaultOptions, ...options };
@@ -288,7 +283,7 @@ export class ApiOptimization {
 
   async get(url: string): Promise<any> {
     if (!url) throw new Error('URL is required');
-    
+
     const cacheKey = this.getCacheKey(url);
     if (this.options.cache.enabled) {
       const cached = this.cache.get(cacheKey);
@@ -304,7 +299,7 @@ export class ApiOptimization {
     try {
       const response = await fetch(url);
       const data = await response.json();
-      
+
       if (this.options.cache.enabled) {
         this.cache.set(cacheKey, { data, timestamp: Date.now() });
         this.maintainCacheSize();
@@ -320,7 +315,7 @@ export class ApiOptimization {
     if (this.cache.size > this.options.cache.maxSize) {
       const entries = Array.from(this.cache.entries());
       entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
-      
+
       const deleteCount = this.cache.size - this.options.cache.maxSize;
       entries.slice(0, deleteCount).forEach(([key]) => this.cache.delete(key));
     }
@@ -329,7 +324,10 @@ export class ApiOptimization {
   private checkRateLimit(url: string): boolean {
     const now = Date.now();
     const key = `${url}-${now - (now % this.options.rateLimit.windowMs)}`;
-    const limit = this.rateLimitMap.get(key) || { count: 0, resetTime: now + this.options.rateLimit.windowMs };
+    const limit = this.rateLimitMap.get(key) || {
+      count: 0,
+      resetTime: now + this.options.rateLimit.windowMs,
+    };
 
     const maxRequests = this.options.rateLimit.maxRequests ?? this.options.rateLimit.max;
     if (limit.count >= maxRequests) {
@@ -369,7 +367,7 @@ export class ApiOptimization {
   }
 
   cleanup(): void {
-    Array.from(this.prefetchIntervals.values()).forEach(interval => clearInterval(interval));
+    Array.from(this.prefetchIntervals.values()).forEach((interval) => clearInterval(interval));
     this.prefetchIntervals.clear();
     this.cache.clear();
     this.rateLimitMap.clear();
@@ -382,22 +380,22 @@ export default apiOptimizer;
 // Cache warming utility
 export async function warmCache(
   urls: string[],
-  options: OptimizationOptions = DEFAULT_OPTIONS
+  options: OptimizationOptions = DEFAULT_OPTIONS,
 ): Promise<void> {
-  const requests = urls.map(url =>
+  const requests = urls.map((url) =>
     fetch(url)
-      .then(res => res.json())
-      .then(async data => {
+      .then((res) => res.json())
+      .then(async (data) => {
         if (options.cache?.key) {
           await redis.set(
             options.cache.key,
             JSON.stringify({ data, headers: {} }),
             'KEEPTTL',
-            options.cache.duration
+            options.cache.duration,
           );
         }
       })
-      .catch(console.error)
+      .catch(console.error),
   );
 
   await Promise.all(requests);
@@ -409,4 +407,4 @@ export async function invalidateApiCache(pattern: string): Promise<void> {
   if (keys.length > 0) {
     await redis.del(...keys);
   }
-} 
+}

@@ -27,7 +27,7 @@ export class ApiKeyManager {
       `${this.keyPrefix}${userId}:${hash}`,
       JSON.stringify(apiKey),
       'EX',
-      Math.ceil(this.rotationInterval / 1000)
+      Math.ceil(this.rotationInterval / 1000),
     );
 
     // Keep track of active keys
@@ -65,7 +65,7 @@ export class ApiKeyManager {
           }
         }
       },
-      24 * 60 * 60 * 1000
+      24 * 60 * 60 * 1000,
     );
 
     return newKey;
@@ -76,4 +76,4 @@ export class ApiKeyManager {
   }
 }
 
-export const apiKeyManager = new ApiKeyManager();
+export {};

@@ -1,6 +1,6 @@
-import { ApiResponse, ApiError } from '@/types/api';
+import { ApiResponse } from '@/types/api';
 import { API_CONFIG } from '../../config/api';
-import { requestInterceptor, responseInterceptor, handleErrorResponse } from './interceptors';
+import { requestInterceptor, responseInterceptor } from './interceptors';
 import { ApiRequestError, NetworkError, TimeoutError } from './errors';
 import { apiCache } from '../cache/api-cache';
 
@@ -95,7 +95,7 @@ export class ApiClient {
   async patch<T>(
     path: string,
     data?: any,
-    options: ApiClientOptions = {}
+    options: ApiClientOptions = {},
   ): Promise<ApiResponse<T>> {
     return this.request<T>(path, {
       ...options,
@@ -138,7 +138,7 @@ export class ApiClient {
       const response = await this.executeWithRetry(
         () => fetch(interceptedRequest),
         mergedOptions.retryAttempts || 0,
-        mergedOptions.retryDelay || 0
+        mergedOptions.retryDelay || 0,
       );
 
       // Apply response interceptor
@@ -194,7 +194,7 @@ export class ApiClient {
   private async executeWithRetry(
     fn: () => Promise<Response>,
     retries: number,
-    delay: number
+    delay: number,
   ): Promise<Response> {
     try {
       return await fn();
@@ -203,7 +203,7 @@ export class ApiClient {
         throw error;
       }
 
-      await new Promise(resolve => setTimeout(resolve, delay));
+      await new Promise((resolve) => setTimeout(resolve, delay));
 
       return this.executeWithRetry(fn, retries - 1, delay);
     }
@@ -211,4 +211,4 @@ export class ApiClient {
 }
 
 // Export a default instance
-export const apiClient = new ApiClient();
+export {};

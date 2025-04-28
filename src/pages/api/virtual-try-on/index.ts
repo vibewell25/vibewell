@@ -4,13 +4,7 @@ import { VirtualTryOnService } from '../../../services/virtualTryOn.service';
 
 const tryOnService = new VirtualTryOnService();
 
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '10mb',
-    },
-  },
-};
+export {};
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { userId } = getAuth(req);

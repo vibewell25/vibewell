@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Event } from '@/types/events';
@@ -20,13 +25,11 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  LineChart,
-  Line,
   PieChart,
   Pie,
   Cell,
   AreaChart,
-  Area
+  Area,
 } from 'recharts';
 
 interface EventsAnalyticsDashboardProps {
@@ -38,7 +41,7 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
   const [events, setEvents] = useState<Event[]>([]);
   const [dateRange, setDateRange] = useState({
     from: subDays(new Date(), 30),
-    to: new Date()
+    to: new Date(),
   });
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
   const [activeTab, setActiveTab] = useState('overview');
@@ -67,53 +70,67 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
   }, [initialEvents]);
 
   // Filter events based on date range and category
-  const filteredEvents = events.filter(event => {
+  const filteredEvents = events.filter((event) => {
     const eventDate = parseISO(event.startDate);
     const isInDateRange = eventDate >= dateRange.from && eventDate <= dateRange.to;
-    const matchesCategory = selectedCategoryFilter === 'all' || event.category === selectedCategoryFilter;
+    const matchesCategory =
+      selectedCategoryFilter === 'all' || event.category === selectedCategoryFilter;
     return isInDateRange && matchesCategory;
   });
 
   // Calculate analytics metrics
   const totalEvents = filteredEvents.length;
-  const totalParticipants = filteredEvents.reduce((sum, event) => sum + (event.participantsCount || 0), 0);
-  const totalCheckIns = filteredEvents.reduce((sum, event) => sum + (event.checkedInParticipants?.length || 0), 0);
+  const totalParticipants = filteredEvents.reduce(
+    (sum, event) => sum + (event.participantsCount || 0),
+    0,
+  );
+  const totalCheckIns = filteredEvents.reduce(
+    (sum, event) => sum + (event.checkedInParticipants?.length || 0),
+    0,
+  );
   const checkInRate = totalParticipants > 0 ? (totalCheckIns / totalParticipants) * 100 : 0;
-  
-  const eventsWithFeedback = filteredEvents.filter(event => event.feedback && event.feedback.length > 0);
-  const totalFeedback = eventsWithFeedback.reduce((sum, event) => sum + (event.feedback?.length || 0), 0);
-  const averageRating = eventsWithFeedback.length > 0 
-    ? eventsWithFeedback.reduce((sum, event) => sum + (event.averageRating || 0), 0) / eventsWithFeedback.length 
-    : 0;
+
+  const eventsWithFeedback = filteredEvents.filter(
+    (event) => event.feedback && event.feedback.length > 0,
+  );
+  const totalFeedback = eventsWithFeedback.reduce(
+    (sum, event) => sum + (event.feedback?.length || 0),
+    0,
+  );
+  const averageRating =
+    eventsWithFeedback.length > 0
+      ? eventsWithFeedback.reduce((sum, event) => sum + (event.averageRating || 0), 0) /
+        eventsWithFeedback.length
+      : 0;
 
   // Data for charts
   const generateEventsByCategory = () => {
     const categoryMap = new Map<string, number>();
-    
-    filteredEvents.forEach(event => {
+
+    filteredEvents.forEach((event) => {
       const category = event.category;
       categoryMap.set(category, (categoryMap.get(category) || 0) + 1);
     });
-    
+
     return Array.from(categoryMap.entries()).map(([category, count]) => ({
       name: category,
-      value: count
+      value: count,
     }));
   };
 
   const generateEventsByDate = () => {
     const dateMap = new Map<string, number>();
-    
-    filteredEvents.forEach(event => {
+
+    filteredEvents.forEach((event) => {
       const date = format(parseISO(event.startDate), 'yyyy-MM-dd');
       dateMap.set(date, (dateMap.get(date) || 0) + 1);
     });
-    
+
     return Array.from(dateMap.entries())
       .sort((a, b) => a[0].localeCompare(b[0]))
       .map(([date, count]) => ({
         date: format(parseISO(date), 'MMM dd'),
-        events: count
+        events: count,
       }));
   };
 
@@ -121,10 +138,10 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
     return filteredEvents
       .sort((a, b) => (b.participantsCount || 0) - (a.participantsCount || 0))
       .slice(0, 10)
-      .map(event => ({
+      .map((event) => ({
         name: event.title.length > 20 ? event.title.substring(0, 20) + '...' : event.title,
         participants: event.participantsCount || 0,
-        checkIns: event.checkedInParticipants?.length || 0
+        checkIns: event.checkedInParticipants?.length || 0,
       }));
   };
 
@@ -132,10 +149,10 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
     return eventsWithFeedback
       .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))
       .slice(0, 10)
-      .map(event => ({
+      .map((event) => ({
         name: event.title.length > 20 ? event.title.substring(0, 20) + '...' : event.title,
         rating: event.averageRating || 0,
-        reviews: event.feedback?.length || 0
+        reviews: event.feedback?.length || 0,
       }));
   };
 
@@ -146,10 +163,20 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
     }
 
     // Column headers
-    const data = [['Event Title', 'Category', 'Date', 'Participants', 'Check-ins', 'Average Rating', 'Feedback Count']];
-    
+    const data = [
+      [
+        'Event Title',
+        'Category',
+        'Date',
+        'Participants',
+        'Check-ins',
+        'Average Rating',
+        'Feedback Count',
+      ],
+    ];
+
     // Add each event as a row
-    filteredEvents.forEach(event => {
+    filteredEvents.forEach((event) => {
       const eventDate = format(parseISO(event.startDate), 'MM/dd/yyyy');
       data.push([
         event.title,
@@ -158,38 +185,35 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
         event.participantsCount?.toString() || '0',
         (event.checkedInParticipants?.length || 0).toString(),
         (event.averageRating || 0).toFixed(1),
-        (event.feedback?.length || 0).toString()
+        (event.feedback?.length || 0).toString(),
       ]);
     });
-    
+
     return data;
   };
 
   const prepareCheckInsData = () => {
-    if (filteredEvents.length === 0 || !filteredEvents.some(e => e.checkedInParticipants && e.checkedInParticipants.length > 0)) {
+    if (
+      filteredEvents.length === 0 ||
+      !filteredEvents.some((e) => e.checkedInParticipants && e.checkedInParticipants.length > 0)
+    ) {
       return [['No check-in data available']];
     }
 
     // Column headers
     const data = [['Event Title', 'Event Date', 'User Name', 'User ID', 'Check-in Time']];
-    
+
     // Add each check-in as a row
-    filteredEvents.forEach(event => {
+    filteredEvents.forEach((event) => {
       if (event.checkedInParticipants && event.checkedInParticipants.length > 0) {
         const eventDate = format(parseISO(event.startDate), 'MM/dd/yyyy');
-        event.checkedInParticipants.forEach(participant => {
+        event.checkedInParticipants.forEach((participant) => {
           const checkInTime = format(parseISO(participant.checkedInAt), 'MM/dd/yyyy h:mm a');
-          data.push([
-            event.title,
-            eventDate,
-            participant.name,
-            participant.userId,
-            checkInTime
-          ]);
+          data.push([event.title, eventDate, participant.name, participant.userId, checkInTime]);
         });
       }
     });
-    
+
     return data;
   };
 
@@ -200,12 +224,12 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
 
     // Column headers
     const data = [['Event Title', 'Event Date', 'User ID', 'Rating', 'Comment', 'Submission Time']];
-    
+
     // Add each feedback as a row
-    eventsWithFeedback.forEach(event => {
+    eventsWithFeedback.forEach((event) => {
       if (event.feedback && event.feedback.length > 0) {
         const eventDate = format(parseISO(event.startDate), 'MM/dd/yyyy');
-        event.feedback.forEach(item => {
+        event.feedback.forEach((item) => {
           const submissionTime = format(parseISO(item.submittedAt), 'MM/dd/yyyy h:mm a');
           data.push([
             event.title,
@@ -213,22 +237,22 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
             item.userId,
             item.rating.toString(),
             item.comment,
-            submissionTime
+            submissionTime,
           ]);
         });
       }
     });
-    
+
     return data;
   };
 
   // Get unique categories for the filter
-  const categories = Array.from(new Set(events.map(event => event.category)));
+  const categories = Array.from(new Set(events.map((event) => event.category)));
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-96">
-        <Icons.spinner className="h-8 w-8 animate-spin text-primary" />
+      <div className="flex h-96 items-center justify-center">
+        <Icons.spinner className="text-primary h-8 w-8 animate-spin" />
         <span className="ml-2">Loading analytics data...</span>
       </div>
     );
@@ -236,21 +260,20 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <h1 className="text-2xl font-bold">Events Analytics Dashboard</h1>
-        <div className="flex flex-col md:flex-row items-center gap-2">
-          <DateRangePicker
-            value={dateRange}
-            onChange={setDateRange}
-          />
+        <div className="flex flex-col items-center gap-2 md:flex-row">
+          <DateRangePicker value={dateRange} onChange={setDateRange} />
           <Select value={selectedCategoryFilter} onValueChange={setSelectedCategoryFilter}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Filter by category" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Categories</SelectItem>
-              {categories.map(category => (
-                <SelectItem key={category} value={category}>{category}</SelectItem>
+              {categories.map((category) => (
+                <SelectItem key={category} value={category}>
+                  {category}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -262,7 +285,7 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Total Events</CardTitle>
@@ -304,22 +327,22 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-6">
           <TabsTrigger value="overview">
-            <Icons.activity className="h-4 w-4 mr-2" />
+            <Icons.activity className="mr-2 h-4 w-4" />
             Overview
           </TabsTrigger>
           <TabsTrigger value="checkins">
-            <Icons.checkCircle className="h-4 w-4 mr-2" />
+            <Icons.checkCircle className="mr-2 h-4 w-4" />
             Check-ins
           </TabsTrigger>
           <TabsTrigger value="feedback">
-            <Icons.star className="h-4 w-4 mr-2" />
+            <Icons.star className="mr-2 h-4 w-4" />
             Feedback
           </TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}
         <TabsContent value="overview">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle>Events by Category</CardTitle>
@@ -399,20 +422,22 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
 
         {/* Check-ins Tab */}
         <TabsContent value="checkins">
-          <div className="flex justify-between items-center mb-4">
+          <div className="mb-4 flex items-center justify-between">
             <h3 className="text-lg font-semibold">Check-in Analytics</h3>
-            <CSVDownload 
+            <CSVDownload
               data={prepareCheckInsData()}
               filename="event-checkins.csv"
               buttonText="Export Check-ins"
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle>Check-in Rate</CardTitle>
-                <CardDescription>Percentage of registered participants who checked in</CardDescription>
+                <CardDescription>
+                  Percentage of registered participants who checked in
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="h-80">
@@ -421,7 +446,7 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
                       <Pie
                         data={[
                           { name: 'Checked In', value: totalCheckIns },
-                          { name: 'Not Checked In', value: totalParticipants - totalCheckIns }
+                          { name: 'Not Checked In', value: totalParticipants - totalCheckIns },
                         ]}
                         cx="50%"
                         cy="50%"
@@ -447,23 +472,32 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
                 <CardDescription>Latest check-ins across all events</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4 max-h-80 overflow-auto">
+                <div className="max-h-80 space-y-4 overflow-auto">
                   {filteredEvents
-                    .flatMap(event => 
-                      (event.checkedInParticipants || []).map(participant => ({
+                    .flatMap((event) =>
+                      (event.checkedInParticipants || []).map((participant) => ({
                         eventTitle: event.title,
                         eventId: event.id,
-                        ...participant
-                      }))
+                        ...participant,
+                      })),
                     )
-                    .sort((a, b) => new Date(b.checkedInAt).getTime() - new Date(a.checkedInAt).getTime())
+                    .sort(
+                      (a, b) =>
+                        new Date(b.checkedInAt).getTime() - new Date(a.checkedInAt).getTime(),
+                    )
                     .slice(0, 10)
                     .map((checkIn, index) => (
-                      <div key={index} className="flex items-center justify-between p-2 border rounded-md">
+                      <div
+                        key={index}
+                        className="flex items-center justify-between rounded-md border p-2"
+                      >
                         <div>
                           <p className="font-medium">{checkIn.name}</p>
                           <p className="text-sm text-muted-foreground">
-                            Event: {checkIn.eventTitle.length > 20 ? checkIn.eventTitle.substring(0, 20) + '...' : checkIn.eventTitle}
+                            Event:{' '}
+                            {checkIn.eventTitle.length > 20
+                              ? checkIn.eventTitle.substring(0, 20) + '...'
+                              : checkIn.eventTitle}
                           </p>
                           <p className="text-xs text-muted-foreground">
                             {format(parseISO(checkIn.checkedInAt), 'MMM d, yyyy h:mm a')}
@@ -471,10 +505,11 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
                         </div>
                         <Badge variant="outline">Checked In</Badge>
                       </div>
-                    ))
-                  }
-                  {!filteredEvents.some(e => e.checkedInParticipants && e.checkedInParticipants.length > 0) && (
-                    <div className="text-center p-4">
+                    ))}
+                  {!filteredEvents.some(
+                    (e) => e.checkedInParticipants && e.checkedInParticipants.length > 0,
+                  ) && (
+                    <div className="p-4 text-center">
                       <p className="text-muted-foreground">No check-in data available</p>
                     </div>
                   )}
@@ -486,16 +521,16 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
 
         {/* Feedback Tab */}
         <TabsContent value="feedback">
-          <div className="flex justify-between items-center mb-4">
+          <div className="mb-4 flex items-center justify-between">
             <h3 className="text-lg font-semibold">Feedback Analytics</h3>
-            <CSVDownload 
+            <CSVDownload
               data={prepareFeedbackData()}
               filename="event-feedback.csv"
               buttonText="Export Feedback"
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle>Highest Rated Events</CardTitle>
@@ -533,8 +568,8 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
                         <Pie
                           data={(() => {
                             const ratingCounts = [0, 0, 0, 0, 0];
-                            eventsWithFeedback.forEach(event => {
-                              event.feedback?.forEach(f => {
+                            eventsWithFeedback.forEach((event) => {
+                              event.feedback?.forEach((f) => {
                                 if (f.rating >= 1 && f.rating <= 5) {
                                   ratingCounts[f.rating - 1]++;
                                 }
@@ -567,7 +602,7 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
                       </PieChart>
                     </ResponsiveContainer>
                   ) : (
-                    <div className="flex items-center justify-center h-full">
+                    <div className="flex h-full items-center justify-center">
                       <p className="text-muted-foreground">No feedback data available</p>
                     </div>
                   )}
@@ -580,20 +615,23 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
                 <CardDescription>Latest feedback from events</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4 max-h-80 overflow-auto">
+                <div className="max-h-80 space-y-4 overflow-auto">
                   {eventsWithFeedback
-                    .flatMap(event => 
-                      (event.feedback || []).map(feedback => ({
+                    .flatMap((event) =>
+                      (event.feedback || []).map((feedback) => ({
                         eventTitle: event.title,
                         eventId: event.id,
-                        ...feedback
-                      }))
+                        ...feedback,
+                      })),
                     )
-                    .sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime())
+                    .sort(
+                      (a, b) =>
+                        new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime(),
+                    )
                     .slice(0, 10)
                     .map((feedback, index) => (
-                      <div key={index} className="p-4 border rounded-lg">
-                        <div className="flex justify-between mb-2">
+                      <div key={index} className="rounded-lg border p-4">
+                        <div className="mb-2 flex justify-between">
                           <div className="flex items-center">
                             {[...Array(5)].map((_, i) => (
                               <Icons.star
@@ -608,15 +646,14 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
                             {format(parseISO(feedback.submittedAt), 'MMM d, yyyy')}
                           </span>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-1">
+                        <p className="mb-1 text-sm text-muted-foreground">
                           Event: {feedback.eventTitle}
                         </p>
                         <p className="text-gray-700">{feedback.comment}</p>
                       </div>
-                    ))
-                  }
+                    ))}
                   {eventsWithFeedback.length === 0 && (
-                    <div className="text-center p-4">
+                    <div className="p-4 text-center">
                       <p className="text-muted-foreground">No feedback data available</p>
                     </div>
                   )}
@@ -628,4 +665,4 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
       </Tabs>
     </div>
   );
-} 
+}

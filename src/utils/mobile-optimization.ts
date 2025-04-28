@@ -91,16 +91,21 @@ export class MobileOptimization {
     if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
       return 'tablet';
     }
-    if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+    if (
+      /Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+        ua,
+      )
+    ) {
       return 'mobile';
     }
     return 'desktop';
   }
 
   private async getConnectionInfo() {
-    const connection = (navigator as any).connection || 
-                      (navigator as any).mozConnection || 
-                      (navigator as any).webkitConnection;
+    const connection =
+      (navigator as any).connection ||
+      (navigator as any).mozConnection ||
+      (navigator as any).webkitConnection;
 
     return {
       type: connection?.type || 'unknown',
@@ -147,7 +152,7 @@ export class MobileOptimization {
 
   private calculateOptimalConfig(): OptimizationConfig {
     const { connection, memory, battery, type } = this.deviceInfo;
-    
+
     // Base configuration
     const config: OptimizationConfig = {
       imageQuality: 80,
@@ -417,7 +422,7 @@ export class MobileOptimization {
   public getOptimizedImageUrl(url: string, width?: number): string {
     const quality = this.config.imageQuality;
     const targetWidth = width || this.deviceInfo.viewport.width;
-    
+
     return `${url}?w=${targetWidth}&q=${quality}&auto=format`;
   }
 
@@ -455,4 +460,4 @@ declare global {
   }
 }
 
-export const mobileOptimizer = MobileOptimization.getInstance();
+export {};

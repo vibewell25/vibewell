@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -20,6 +20,9 @@ import {
   BeautyServiceDetails
 } from '../types/navigation';
 import { createBooking, BookingRequest } from '../services/beautyService';
+import { beautyApi } from '../services/api';
+import { addBookingToCalendar } from '../services/calendarService';
+import { Calendar } from 'react-native-calendars';
 
 // Get current date and format it to YYYY-MM-DD
 const getCurrentDate = (): string => {
@@ -73,6 +76,8 @@ const BeautyBookingScreen: React.FC = () => {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>('');
   const [specialRequests, setSpecialRequests] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [timeSlots, setTimeSlots] = useState<{id:string;time:string;available:boolean}[]>(service.availability?.timeSlots || []);
+  const [availabilityLoading, setAvailabilityLoading] = useState<boolean>(false);
   
   // Customer info (if not logged in)
   const [name, setName] = useState<string>(user?.name || '');
@@ -102,7 +107,7 @@ const BeautyBookingScreen: React.FC = () => {
     
     try {
       // Get the selected time slot
-      const timeSlot = service.availability?.timeSlots.find(slot => slot.id === selectedTimeSlot);
+      const timeSlot = timeSlots.find(slot => slot.id === selectedTimeSlot);
       if (!timeSlot) {
         Alert.alert('Error', 'Selected time slot not available');
         setIsSubmitting(false);
@@ -129,6 +134,8 @@ const BeautyBookingScreen: React.FC = () => {
       };
       // Execute booking
       const bookingResponse = await createBooking(bookingRequest);
+      // Auto-add booking to device calendar
+      try { await addBookingToCalendar(bookingResponse); } catch (err) { console.error('Calendar add failed', err); }
       // Navigate to confirmation
       navigation.navigate('BookingConfirmation', {
         bookingId: bookingResponse.bookingId,
@@ -157,6 +164,38 @@ const BeautyBookingScreen: React.FC = () => {
     return strPrice.includes('+') ? `From ${strPrice}` : strPrice;
   };
   
+  // Fetch real-time availability when date changes
+  useEffect(() => {
+    const fetchAvailability = async () => {
+      setAvailabilityLoading(true);
+      try {
+        const formatted = getSelectedDateObj()?.formattedDate;
+        if (formatted) {
+          const slots = await beautyApi.checkAvailability(service.id, formatted);
+          setTimeSlots(slots);
+        }
+      } catch (err) {
+        console.error('Error fetching availability:', err);
+      } finally {
+        setAvailabilityLoading(false);
+      }
+    };
+    fetchAvailability();
+    // Clear previous time selection when date changes
+    setSelectedTimeSlot('');
+  }, [selectedDate]);
+  
+  // Build markedDates for calendar
+  const availableDates = service.availability?.dates || [];
+  const markedDates = availableDates.reduce<Record<string, any>>((acc, date) => {
+    acc[date] = {
+      disabled: false,
+      selected: date === selectedDate,
+      selectedColor: isDarkMode ? '#4F46E5' : '#4F46E5',
+    };
+    return acc;
+  }, {});
+
   return (
     <ScrollView
       style={[
@@ -227,71 +266,21 @@ const BeautyBookingScreen: React.FC = () => {
         </View>
       </View>
       
-      {/* Date Selection */}
+      {/* Date Selection (Calendar) */}
       <View style={styles.section}>
-        <Text style={[
-          styles.sectionTitle,
-          { color: isDarkMode ? '#FFFFFF' : '#000000' }
-        ]}>
-          Select Date
-        </Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.dateScroll}
-        >
-          {getAvailableDates().map((date) => (
-            <TouchableOpacity
-              key={date.id}
-              style={[
-                styles.dateCard,
-                {
-                  backgroundColor: selectedDate === date.id
-                    ? (isDarkMode ? '#4F46E5' : '#4F46E5')
-                    : (isDarkMode ? '#1E1E1E' : '#FFFFFF')
-                }
-              ]}
-              onPress={() => setSelectedDate(date.id)}
-            >
-              <Text style={[
-                styles.dateDay,
-                {
-                  color: selectedDate === date.id
-                    ? '#FFFFFF'
-                    : (isDarkMode ? '#BBBBBB' : '#666666')
-                }
-              ]}>
-                {date.day}
-              </Text>
-              <Text style={[
-                styles.dateNumber,
-                {
-                  color: selectedDate === date.id
-                    ? '#FFFFFF'
-                    : (isDarkMode ? '#FFFFFF' : '#000000')
-                }
-              ]}>
-                {date.dateNum}
-              </Text>
-              <Text style={[
-                styles.dateMonth,
-                {
-                  color: selectedDate === date.id
-                    ? '#FFFFFF'
-                    : (isDarkMode ? '#BBBBBB' : '#666666')
-                }
-              ]}>
-                {date.month}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-        <Text style={[
-          styles.selectedDateFull,
-          { color: isDarkMode ? '#BBBBBB' : '#666666' }
-        ]}>
-          {getSelectedDateObj()?.fullDate}
-        </Text>
+        <Text style={[styles.sectionTitle, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>Select Date</Text>
+        <Calendar
+          current={selectedDate}
+          minDate={getCurrentDate()}
+          onDayPress={(day) => setSelectedDate(day.dateString)}
+          markedDates={markedDates}
+          theme={{
+            dayTextColor: isDarkMode ? '#FFFFFF' : '#000000',
+            monthTextColor: isDarkMode ? '#FFFFFF' : '#000000',
+            textDisabledColor: '#AAAAAA',
+            selectedDayBackgroundColor: '#4F46E5',
+          }}
+        />
       </View>
       
       {/* Time Selection */}
@@ -302,38 +291,46 @@ const BeautyBookingScreen: React.FC = () => {
         ]}>
           Select Time
         </Text>
-        <View style={styles.timeGrid}>
-          {service.availability?.timeSlots.map((slot) => (
-            <TouchableOpacity
-              key={slot.id}
-              style={[
-                styles.timeSlot,
-                {
-                  backgroundColor: !slot.available
-                    ? (isDarkMode ? '#2A2A2A' : '#F0F0F0')
-                    : selectedTimeSlot === slot.id
-                      ? (isDarkMode ? '#4F46E5' : '#4F46E5')
-                      : (isDarkMode ? '#1E1E1E' : '#FFFFFF')
-                }
-              ]}
-              disabled={!slot.available}
-              onPress={() => setSelectedTimeSlot(slot.id)}
-            >
-              <Text style={[
-                styles.timeText,
-                {
-                  color: !slot.available
-                    ? (isDarkMode ? '#555555' : '#AAAAAA')
-                    : selectedTimeSlot === slot.id
-                      ? '#FFFFFF'
-                      : (isDarkMode ? '#FFFFFF' : '#000000')
-                }
-              ]}>
-                {slot.time}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        {availabilityLoading ? (
+          <ActivityIndicator size="large" style={{ marginVertical: 20 }} />
+        ) : timeSlots.length === 0 ? (
+          <Text style={{ textAlign: 'center', marginVertical: 16, color: isDarkMode ? '#FFFFFF' : '#000000' }}>
+            No available time slots for this date.
+          </Text>
+        ) : (
+          <View style={styles.timeGrid}>
+            {timeSlots.map((slot) => (
+              <TouchableOpacity
+                key={slot.id}
+                style={[
+                  styles.timeSlot,
+                  {
+                    backgroundColor: !slot.available
+                      ? (isDarkMode ? '#2A2A2A' : '#F0F0F0')
+                      : selectedTimeSlot === slot.id
+                        ? (isDarkMode ? '#4F46E5' : '#4F46E5')
+                        : (isDarkMode ? '#1E1E1E' : '#FFFFFF')
+                  }
+                ]}
+                disabled={!slot.available}
+                onPress={() => setSelectedTimeSlot(slot.id)}
+              >
+                <Text style={[
+                  styles.timeText,
+                  {
+                    color: !slot.available
+                      ? (isDarkMode ? '#555555' : '#AAAAAA')
+                      : selectedTimeSlot === slot.id
+                        ? '#FFFFFF'
+                        : (isDarkMode ? '#FFFFFF' : '#000000')
+                  }
+                ]}>
+                  {slot.time}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
       </View>
       
       {/* Customer Information (if not logged in) */}
@@ -474,7 +471,7 @@ const BeautyBookingScreen: React.FC = () => {
             styles.summaryValue,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
-            {getSelectedDateObj()?.fullDate}
+            {selectedDate}
           </Text>
         </View>
         <View style={styles.summaryRow}>
@@ -488,7 +485,7 @@ const BeautyBookingScreen: React.FC = () => {
             styles.summaryValue,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
-            {selectedTimeSlot ? service.availability?.timeSlots.find(slot => slot.id === selectedTimeSlot)?.time : 'Not selected'}
+            {selectedTimeSlot ? timeSlots.find(slot => slot.id === selectedTimeSlot)?.time : 'Not selected'}
           </Text>
         </View>
         <View style={styles.summaryRow}>
@@ -606,34 +603,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 15,
-  },
-  dateScroll: {
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
-  dateCard: {
-    width: 70,
-    height: 90,
-    borderRadius: 10,
-    marginRight: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  dateDay: {
-    fontSize: 12,
-    marginBottom: 5,
-  },
-  dateNumber: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  dateMonth: {
-    fontSize: 12,
-  },
-  selectedDateFull: {
-    fontSize: 14,
-    marginTop: 5,
   },
   timeGrid: {
     flexDirection: 'row',

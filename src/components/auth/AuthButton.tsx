@@ -31,10 +31,10 @@ export default function AuthButton({
   if (isLoading) {
     return (
       <button
-        className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-400 rounded-md ${className}`}
+        className={`inline-flex items-center rounded-md bg-gray-400 px-4 py-2 text-sm font-medium text-white ${className}`}
         disabled
       >
-        <svg className="w-4 h-4 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+        <svg className="mr-2 h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
           <circle
             className="opacity-25"
             cx="12"
@@ -59,7 +59,7 @@ export default function AuthButton({
       <Link
         href={`/api/auth/logout?returnTo=${encodeURIComponent(logoutRedirectUrl)}`}
         onClick={handleAuthClick}
-        className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md ${className}`}
+        className={`inline-flex items-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 ${className}`}
         aria-disabled={isButtonDisabled}
       >
         {logoutButtonText}
@@ -71,7 +71,7 @@ export default function AuthButton({
     <Link
       href={`/api/auth/login?returnTo=${encodeURIComponent(loginRedirectUrl)}`}
       onClick={handleAuthClick}
-      className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md ${className}`}
+      className={`inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 ${className}`}
       aria-disabled={isButtonDisabled}
     >
       {loginButtonText}

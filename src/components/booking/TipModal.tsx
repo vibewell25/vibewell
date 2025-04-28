@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'react-hot-toast';
@@ -70,7 +70,7 @@ export function TipModal({ bookingId, open, onOpenChange }: TipModalProps) {
               min="0"
               step="0.01"
               value={amount}
-              onChange={e => setAmount(e.target.value)}
+              onChange={(e) => setAmount(e.target.value)}
               placeholder="Enter tip amount"
               required
             />
@@ -79,7 +79,7 @@ export function TipModal({ bookingId, open, onOpenChange }: TipModalProps) {
             <Label>Message (Optional)</Label>
             <Textarea
               value={message}
-              onChange={e => setMessage(e.target.value)}
+              onChange={(e) => setMessage(e.target.value)}
               placeholder="Add a message to your tip"
               rows={3}
             />

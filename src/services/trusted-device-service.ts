@@ -169,7 +169,7 @@ export class TrustedDeviceService {
         },
       });
 
-      return devices.map(device => ({
+      return devices.map((device) => ({
         id: device.deviceId,
         name: device.deviceName,
         browser: device.browserInfo,

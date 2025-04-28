@@ -7,7 +7,7 @@ import { HubSearch } from '@/components/hub-search';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { StarRating } from '@/components/star-rating';
 import { ResourceReview, Review } from '@/components/resource-review';
 import { addBookmark, removeBookmark, isBookmarked } from '@/lib/bookmarks';
@@ -33,8 +33,8 @@ function SearchLoadingSkeleton() {
   return (
     <Layout>
       <div className="container-app py-8">
-        <Skeleton className="h-12 w-1/3 mb-6" />
-        <div className="flex gap-4 mb-8">
+        <Skeleton className="mb-6 h-12 w-1/3" />
+        <div className="mb-8 flex gap-4">
           <Skeleton className="h-10 w-[200px]" />
           <Skeleton className="h-10 w-[150px]" />
         </div>
@@ -92,7 +92,7 @@ function SearchPageContent() {
   // Check bookmarked status of results
   useEffect(() => {
     const bookmarked: Record<string, boolean> = {};
-    results.forEach(result => {
+    results.forEach((result) => {
       bookmarked[result.id] = isBookmarked(result.id, result.type);
     });
     setBookmarkedItems(bookmarked);
@@ -186,7 +186,7 @@ function SearchPageContent() {
       ];
       // Filter by category if specified
       if (searchCategory && searchCategory !== 'all') {
-        mockResults = mockResults.filter(result => {
+        mockResults = mockResults.filter((result) => {
           if (searchCategory === 'marketing') return result.section === 'marketing';
           if (searchCategory === 'financial') return result.section === 'financial';
           if (searchCategory === 'resources') return result.type === 'resource';
@@ -195,7 +195,7 @@ function SearchPageContent() {
         });
       }
       // Simulate relevance scoring - in a real app this would be done by the search engine
-      mockResults = mockResults.map(result => {
+      mockResults = mockResults.map((result) => {
         // Add the query to the result for highlighting in a real app
         return { ...result, relevanceScore: Math.random() * 10 };
       });
@@ -228,14 +228,14 @@ function SearchPageContent() {
         category: result.section,
       });
     }
-    setBookmarkedItems(prev => ({
+    setBookmarkedItems((prev) => ({
       ...prev,
       [result.id]: !currentStatus,
     }));
   };
   // Toggle reviews visibility for a result
   const toggleReviews = (resultId: string) => {
-    setExpandedReviews(prev => ({
+    setExpandedReviews((prev) => ({
       ...prev,
       [resultId]: !prev[resultId],
     }));
@@ -244,12 +244,12 @@ function SearchPageContent() {
   const handleReviewAdded = (review: Review) => {
     // Refresh average ratings after a review is added
     // In a real app, this might trigger a refetch of data
-    setResults(currentResults =>
-      currentResults.map(result => (result.id === review.resourceId ? { ...result } : result))
+    setResults((currentResults) =>
+      currentResults.map((result) => (result.id === review.resourceId ? { ...result } : result)),
     );
   };
   // Filter results based on selected filters
-  const filteredResults = results.filter(result => {
+  const filteredResults = results.filter((result) => {
     const matchesType = selectedType === 'all' || result.type === selectedType;
     const matchesSection = selectedSection === 'all' || result.section === selectedSection;
     const matchesRating = getAverageRating(result.id, result.type).average >= minRating;
@@ -269,8 +269,8 @@ function SearchPageContent() {
     }
   });
   // Get unique sections and types for filters
-  const sections = [...new Set(results.map(result => result.section))];
-  const types = [...new Set(results.map(result => result.type))];
+  const sections = [...new Set(results.map((result) => result.section))];
+  const types = [...new Set(results.map((result) => result.type))];
   // Render icon based on result type
   const renderTypeIcon = (type: string) => {
     switch (type) {
@@ -287,13 +287,13 @@ function SearchPageContent() {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
-        <p className="text-gray-600 mb-6">
+        <h1 className="mb-2 text-3xl font-bold">Business Hub</h1>
+        <p className="mb-6 text-gray-600">
           Tools, resources, and education to grow your wellness business
         </p>
         {/* Main Navigation */}
         <BusinessHubNavigation />
-        <div className="max-w-5xl mx-auto">
+        <div className="mx-auto max-w-5xl">
           {/* Search Bar */}
           <div className="mb-8">
             <HubSearch
@@ -305,16 +305,16 @@ function SearchPageContent() {
           </div>
           {isLoading ? (
             <div className="py-12">
-              <div className="flex justify-center items-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+              <div className="flex items-center justify-center">
+                <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-500"></div>
               </div>
-              <p className="text-center text-gray-500 mt-4">Searching for "{query}"...</p>
+              <p className="mt-4 text-center text-gray-500">Searching for "{query}"...</p>
             </div>
           ) : query && results.length === 0 ? (
-            <div className="bg-white rounded-lg shadow-md p-8 text-center">
-              <Icons.MagnifyingGlassIcon className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <h2 className="text-xl font-semibold mb-2">No results found</h2>
-              <p className="text-gray-600 mb-6">
+            <div className="rounded-lg bg-white p-8 text-center shadow-md">
+              <Icons.MagnifyingGlassIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+              <h2 className="mb-2 text-xl font-semibold">No results found</h2>
+              <p className="mb-6 text-gray-600">
                 We couldn't find any matches for "{query}". Try adjusting your search terms or
                 browse our popular resources below.
               </p>
@@ -326,10 +326,10 @@ function SearchPageContent() {
             </div>
           ) : query ? (
             <div>
-              <div className="flex justify-between items-center mb-6">
+              <div className="mb-6 flex items-center justify-between">
                 <h2 className="text-xl font-semibold">
                   Search Results
-                  <span className="text-gray-500 font-normal ml-2">
+                  <span className="ml-2 font-normal text-gray-500">
                     {filteredResults.length} {filteredResults.length === 1 ? 'result' : 'results'}{' '}
                     for "{query}"
                   </span>
@@ -337,26 +337,26 @@ function SearchPageContent() {
                 <div className="flex gap-2">
                   <div className="relative">
                     <select
-                      className="appearance-none bg-white border border-gray-300 rounded-md py-2 px-4 pr-8 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 pr-8 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                       value={sortBy}
-                      onChange={e => setSortBy(e.target.value as any)}
+                      onChange={(e) => setSortBy(e.target.value as any)}
                     >
                       <option value="relevance">Sort by Relevance</option>
                       <option value="date">Sort by Date</option>
                       <option value="rating">Sort by Rating</option>
                     </select>
-                    <Icons.ArrowsUpDownIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                    <Icons.ArrowsUpDownIcon className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex flex-col gap-6 md:flex-row">
                 {/* Filters Sidebar */}
-                <div className="md:w-64 bg-white rounded-lg shadow-md p-4 h-fit">
-                  <h3 className="font-semibold mb-4 flex items-center">
-                    <Icons.FunnelIcon className="h-4 w-4 mr-2" /> Filters
+                <div className="h-fit rounded-lg bg-white p-4 shadow-md md:w-64">
+                  <h3 className="mb-4 flex items-center font-semibold">
+                    <Icons.FunnelIcon className="mr-2 h-4 w-4" /> Filters
                   </h3>
                   <div className="mb-6">
-                    <h4 className="text-sm font-medium mb-2">Content Type</h4>
+                    <h4 className="mb-2 text-sm font-medium">Content Type</h4>
                     <div className="space-y-2">
                       <label className="flex items-center">
                         <input
@@ -368,7 +368,7 @@ function SearchPageContent() {
                         />
                         <span>All Types</span>
                       </label>
-                      {types.map(type => (
+                      {types.map((type) => (
                         <label key={type} className="flex items-center">
                           <input
                             type="radio"
@@ -383,7 +383,7 @@ function SearchPageContent() {
                     </div>
                   </div>
                   <div className="mb-6">
-                    <h4 className="text-sm font-medium mb-2">Section</h4>
+                    <h4 className="mb-2 text-sm font-medium">Section</h4>
                     <div className="space-y-2">
                       <label className="flex items-center">
                         <input
@@ -395,7 +395,7 @@ function SearchPageContent() {
                         />
                         <span>All Sections</span>
                       </label>
-                      {sections.map(section => (
+                      {sections.map((section) => (
                         <label key={section} className="flex items-center">
                           <input
                             type="radio"
@@ -411,9 +411,9 @@ function SearchPageContent() {
                   </div>
                   {/* Rating Filter */}
                   <div className="mb-6">
-                    <h4 className="text-sm font-medium mb-2">Minimum Rating</h4>
+                    <h4 className="mb-2 text-sm font-medium">Minimum Rating</h4>
                     <div className="space-y-2">
-                      {[0, 1, 2, 3, 4, 5].map(rating => (
+                      {[0, 1, 2, 3, 4, 5].map((rating) => (
                         <label key={rating} className="flex items-center">
                           <input
                             type="radio"
@@ -452,8 +452,8 @@ function SearchPageContent() {
                 {/* Results List */}
                 <div className="flex-1">
                   {sortedResults.length === 0 ? (
-                    <div className="bg-white rounded-lg shadow-md p-8 text-center">
-                      <p className="text-gray-600 mb-4">No results match your current filters.</p>
+                    <div className="rounded-lg bg-white p-8 text-center shadow-md">
+                      <p className="mb-4 text-gray-600">No results match your current filters.</p>
                       <Button
                         variant="outline"
                         onClick={() => {
@@ -466,13 +466,13 @@ function SearchPageContent() {
                     </div>
                   ) : (
                     <div className="space-y-6">
-                      {sortedResults.map(result => (
+                      {sortedResults.map((result) => (
                         <div
                           key={result.id}
-                          className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row border border-gray-100"
+                          className="flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md md:flex-row"
                         >
                           {result.image && (
-                            <div className="md:w-1/3 h-48 md:h-auto relative">
+                            <div className="relative h-48 md:h-auto md:w-1/3">
                               <Image
                                 src={result.image}
                                 alt={result.title}
@@ -480,34 +480,34 @@ function SearchPageContent() {
                                 className="object-cover"
                               />
                               {result.premium && (
-                                <div className="absolute top-2 right-2 bg-indigo-600 text-white text-xs px-2 py-1 rounded-full">
+                                <div className="absolute right-2 top-2 rounded-full bg-indigo-600 px-2 py-1 text-xs text-white">
                                   Premium
                                 </div>
                               )}
                             </div>
                           )}
-                          <div className="p-4 flex-1">
-                            <div className="flex justify-between items-start">
+                          <div className="flex-1 p-4">
+                            <div className="flex items-start justify-between">
                               <div className="flex items-center">
                                 {renderTypeIcon(result.type)}
                                 <Badge variant="outline" className="ml-2 text-xs capitalize">
                                   {result.section.replace('-', ' ')}
                                 </Badge>
-                                <Badge className="ml-2 text-xs capitalize bg-blue-100 text-blue-800 border-blue-200">
+                                <Badge className="ml-2 border-blue-200 bg-blue-100 text-xs capitalize text-blue-800">
                                   {result.type}
                                 </Badge>
                               </div>
                               <div className="flex items-center space-x-2">
                                 <button
                                   onClick={() => toggleReviews(result.id)}
-                                  className={`p-1 rounded-full text-gray-400 hover:text-gray-600`}
+                                  className={`rounded-full p-1 text-gray-400 hover:text-gray-600`}
                                   title="View reviews"
                                 >
                                   <Icons.ChatBubbleLeftRightIcon className="h-5 w-5" />
                                 </button>
                                 <button
                                   onClick={() => toggleBookmark(result)}
-                                  className={`p-1 rounded-full ${
+                                  className={`rounded-full p-1 ${
                                     bookmarkedItems[result.id]
                                       ? 'text-yellow-500'
                                       : 'text-gray-400 hover:text-gray-600'
@@ -523,17 +523,17 @@ function SearchPageContent() {
                               </div>
                             </div>
                             <Link href={result.url}>
-                              <h3 className="text-xl font-semibold mt-2 mb-2 hover:text-blue-600">
+                              <h3 className="mb-2 mt-2 text-xl font-semibold hover:text-blue-600">
                                 {result.title}
                               </h3>
                             </Link>
-                            <p className="text-gray-600 mb-3 line-clamp-2">{result.description}</p>
-                            <div className="flex items-center justify-between mt-4">
+                            <p className="mb-3 line-clamp-2 text-gray-600">{result.description}</p>
+                            <div className="mt-4 flex items-center justify-between">
                               <div className="flex flex-wrap gap-1">
-                                {result.tags.map(tag => (
+                                {result.tags.map((tag) => (
                                   <span
                                     key={tag}
-                                    className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full"
+                                    className="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600"
                                   >
                                     {tag}
                                   </span>
@@ -555,7 +555,7 @@ function SearchPageContent() {
                             {/* Reviews Section - Expandable */}
                             {expandedReviews[result.id] && (
                               <div className="mt-4 border-t pt-4">
-                                <div className="flex justify-between items-center mb-3">
+                                <div className="mb-3 flex items-center justify-between">
                                   <h4 className="font-semibold">Reviews & Ratings</h4>
                                   <button
                                     onClick={() => toggleReviews(result.id)}
@@ -580,13 +580,13 @@ function SearchPageContent() {
               </div>
             </div>
           ) : (
-            <div className="bg-white rounded-lg shadow-md p-8 text-center">
-              <h2 className="text-xl font-semibold mb-4">Search the Business Hub</h2>
-              <p className="text-gray-600 mb-6">
+            <div className="rounded-lg bg-white p-8 text-center shadow-md">
+              <h2 className="mb-4 text-xl font-semibold">Search the Business Hub</h2>
+              <p className="mb-6 text-gray-600">
                 Find resources, tools, templates, and guides to help you grow your wellness
                 business.
               </p>
-              <div className="flex justify-center gap-4 flex-wrap">
+              <div className="flex flex-wrap justify-center gap-4">
                 <Link href="/business-hub/marketing">
                   <Button variant="outline">Marketing Resources</Button>
                 </Link>
@@ -622,11 +622,11 @@ function SearchPageSkeleton() {
   return (
     <div className="container-app py-8">
       <div className="animate-pulse">
-        <div className="h-8 w-64 bg-gray-200 rounded mb-4"></div>
-        <div className="h-4 w-full max-w-2xl bg-gray-200 rounded mb-8"></div>
+        <div className="mb-4 h-8 w-64 rounded bg-gray-200"></div>
+        <div className="mb-8 h-4 w-full max-w-2xl rounded bg-gray-200"></div>
         <div className="grid gap-4">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="h-32 bg-gray-200 rounded"></div>
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-32 rounded bg-gray-200"></div>
           ))}
         </div>
       </div>

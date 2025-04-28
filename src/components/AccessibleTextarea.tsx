@@ -30,22 +30,14 @@ export const AccessibleTextarea: React.FC<AccessibleTextareaProps> = ({
 
   return (
     <div className="w-full">
-      <label htmlFor={textareaId} className="block text-sm font-medium text-gray-700 mb-1">
+      <label htmlFor={textareaId} className="mb-1 block text-sm font-medium text-gray-700">
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className="ml-1 text-red-500">*</span>}
       </label>
 
       <textarea
         id={textareaId}
-        className={`
-          block w-full rounded-md border
-          ${error ? 'border-red-300' : 'border-gray-300'}
-          px-3 py-2 text-gray-900 placeholder-gray-400
-          focus:outline-none focus:ring-2 focus:ring-offset-2
-          ${error ? 'focus:ring-red-500' : 'focus:ring-primary'}
-          ${resizeStyles[resize]}
-          ${className}
-        `}
+        className={`block w-full rounded-md border ${error ? 'border-red-300' : 'border-gray-300'} px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 ${error ? 'focus:ring-red-500' : 'focus:ring-primary'} ${resizeStyles[resize]} ${className} `}
         aria-invalid={error ? 'true' : 'false'}
         aria-describedby={`${errorId} ${helperId}`}
         required={required}

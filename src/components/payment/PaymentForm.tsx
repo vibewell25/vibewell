@@ -106,8 +106,8 @@ function PaymentFormContent({
   return (
     <form onSubmit={handleSubmit} className="payment-form">
       <div className="mb-6">
-        <div className="text-xl font-semibold mb-2">Payment Details</div>
-        <div className="text-sm text-gray-500 mb-4">
+        <div className="mb-2 text-xl font-semibold">Payment Details</div>
+        <div className="mb-4 text-sm text-gray-500">
           Amount: {new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount)}
         </div>
       </div>
@@ -115,13 +115,13 @@ function PaymentFormContent({
       <PaymentElement className="mb-6" />
 
       {errorMessage && (
-        <div className="text-red-600 mb-4 p-2 bg-red-50 rounded border border-red-200">
+        <div className="mb-4 rounded border border-red-200 bg-red-50 p-2 text-red-600">
           {errorMessage}
         </div>
       )}
 
       {paymentStatus === 'succeeded' && (
-        <div className="text-green-600 mb-4 p-2 bg-green-50 rounded border border-green-200">
+        <div className="mb-4 rounded border border-green-200 bg-green-50 p-2 text-green-600">
           Payment successful! Thank you for your purchase.
         </div>
       )}
@@ -129,16 +129,15 @@ function PaymentFormContent({
       <button
         type="submit"
         disabled={!stripe || isProcessing}
-        className={`w-full py-3 px-4 text-white font-medium rounded transition-colors
-          ${
-            !stripe || isProcessing
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-indigo-600 hover:bg-indigo-700'
-          }`}
+        className={`w-full rounded px-4 py-3 font-medium text-white transition-colors ${
+          !stripe || isProcessing
+            ? 'cursor-not-allowed bg-gray-400'
+            : 'bg-indigo-600 hover:bg-indigo-700'
+        }`}
       >
         {isProcessing ? (
           <span className="flex items-center justify-center">
-            <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+            <svg className="mr-3 h-5 w-5 animate-spin" viewBox="0 0 24 24">
               <circle
                 className="opacity-25"
                 cx="12"
@@ -160,7 +159,7 @@ function PaymentFormContent({
         )}
       </button>
 
-      <div className="mt-4 text-xs text-center text-gray-500">
+      <div className="mt-4 text-center text-xs text-gray-500">
         Your payment is processed securely through Stripe.
       </div>
     </form>

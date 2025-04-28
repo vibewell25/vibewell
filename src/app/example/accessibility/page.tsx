@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { NotificationPermissionButton } from '@/components/ui/notification-toast';
@@ -47,14 +47,14 @@ export default function AccessibilityExample() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6" tabIndex={0}>
+      <h1 className="mb-6 text-2xl font-bold" tabIndex={0}>
         {t('settings.accessibility.title')}
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {/* Theme and Language Settings */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4" tabIndex={0}>
+        <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
+          <h2 className="mb-4 text-xl font-semibold" tabIndex={0}>
             {t('settings.theme.title')}
           </h2>
 
@@ -66,8 +66,8 @@ export default function AccessibilityExample() {
               <select
                 id="theme-selector"
                 value={theme}
-                onChange={e => setTheme(e.target.value as 'light' | 'dark' | 'system')}
-                className="mt-1 block w-1/2 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                onChange={(e) => setTheme(e.target.value as 'light' | 'dark' | 'system')}
+                className="mt-1 block w-1/2 rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                 aria-label={t('settings.theme.title')}
               >
                 <option value="light">{t('settings.theme.light')}</option>
@@ -80,7 +80,7 @@ export default function AccessibilityExample() {
               <label htmlFor="language-selector" className="block text-sm font-medium">
                 {t('profile.language')}
               </label>
-              <div className="w-1/2 flex justify-end">
+              <div className="flex w-1/2 justify-end">
                 <LanguageSwitcher />
               </div>
             </div>
@@ -92,8 +92,8 @@ export default function AccessibilityExample() {
         </div>
 
         {/* Accessibility Settings */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4" tabIndex={0}>
+        <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
+          <h2 className="mb-4 text-xl font-semibold" tabIndex={0}>
             {t('settings.accessibility.title')}
           </h2>
 
@@ -105,8 +105,8 @@ export default function AccessibilityExample() {
               <select
                 id="font-size-selector"
                 value={fontSize}
-                onChange={e => handleFontSizeChange(e.target.value)}
-                className="mt-1 block w-1/2 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                onChange={(e) => handleFontSizeChange(e.target.value)}
+                className="mt-1 block w-1/2 rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                 aria-label={t('settings.accessibility.fontSize')}
               >
                 <option value="small">Small</option>
@@ -120,7 +120,7 @@ export default function AccessibilityExample() {
               <span className="block text-sm font-medium">
                 {t('settings.accessibility.contrastMode')}
               </span>
-              <div className="relative inline-block w-10 mr-2 align-middle select-none">
+              <div className="relative mr-2 inline-block w-10 select-none align-middle">
                 <input
                   type="checkbox"
                   id="toggle-contrast"
@@ -131,12 +131,12 @@ export default function AccessibilityExample() {
                 />
                 <label
                   htmlFor="toggle-contrast"
-                  className={`block overflow-hidden h-6 rounded-full cursor-pointer transition-colors ${
+                  className={`block h-6 cursor-pointer overflow-hidden rounded-full transition-colors ${
                     highContrast ? 'bg-indigo-500' : 'bg-gray-300'
                   }`}
                 >
                   <span
-                    className={`block h-6 w-6 rounded-full bg-white shadow transform transition-transform ${
+                    className={`block h-6 w-6 transform rounded-full bg-white shadow transition-transform ${
                       highContrast ? 'translate-x-full' : 'translate-x-0'
                     }`}
                   ></span>
@@ -148,7 +148,7 @@ export default function AccessibilityExample() {
               <span className="block text-sm font-medium">
                 {t('settings.accessibility.reduceMotion')}
               </span>
-              <div className="relative inline-block w-10 mr-2 align-middle select-none">
+              <div className="relative mr-2 inline-block w-10 select-none align-middle">
                 <input
                   type="checkbox"
                   id="toggle-motion"
@@ -159,12 +159,12 @@ export default function AccessibilityExample() {
                 />
                 <label
                   htmlFor="toggle-motion"
-                  className={`block overflow-hidden h-6 rounded-full cursor-pointer transition-colors ${
+                  className={`block h-6 cursor-pointer overflow-hidden rounded-full transition-colors ${
                     reduceMotion ? 'bg-indigo-500' : 'bg-gray-300'
                   }`}
                 >
                   <span
-                    className={`block h-6 w-6 rounded-full bg-white shadow transform transition-transform ${
+                    className={`block h-6 w-6 transform rounded-full bg-white shadow transition-transform ${
                       reduceMotion ? 'translate-x-full' : 'translate-x-0'
                     }`}
                   ></span>
@@ -176,8 +176,8 @@ export default function AccessibilityExample() {
       </div>
 
       {/* Example Content to Demo Accessibility Features */}
-      <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold mb-4" tabIndex={0}>
+      <div className="mt-8 rounded-lg bg-white p-6 shadow dark:bg-gray-800">
+        <h2 className="mb-4 text-xl font-semibold" tabIndex={0}>
           Demo Content
         </h2>
 
@@ -188,14 +188,14 @@ export default function AccessibilityExample() {
           </p>
 
           <div
-            className={`p-4 rounded-lg bg-blue-100 dark:bg-blue-900 ${highContrast ? 'text-black dark:text-white font-bold' : ''}`}
+            className={`rounded-lg bg-blue-100 p-4 dark:bg-blue-900 ${highContrast ? 'font-bold text-black dark:text-white' : ''}`}
           >
             This box demonstrates the high contrast mode. Toggle it to see the difference.
           </div>
 
-          <div className="p-4 rounded-lg bg-green-100 dark:bg-green-900">
+          <div className="rounded-lg bg-green-100 p-4 dark:bg-green-900">
             <button
-              className={`px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 ${reduceMotion ? 'transition-none' : 'transition-all duration-300 hover:-translate-y-1'}`}
+              className={`rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 ${reduceMotion ? 'transition-none' : 'transition-all duration-300 hover:-translate-y-1'}`}
               aria-label="Demo button for reduce motion setting"
             >
               Hover me to see animation (affected by reduce motion setting)
@@ -205,8 +205,8 @@ export default function AccessibilityExample() {
       </div>
 
       {/* ARIA Example */}
-      <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold mb-4" tabIndex={0}>
+      <div className="mt-8 rounded-lg bg-white p-6 shadow dark:bg-gray-800">
+        <h2 className="mb-4 text-xl font-semibold" tabIndex={0}>
           ARIA Examples
         </h2>
 
@@ -214,7 +214,7 @@ export default function AccessibilityExample() {
           <div
             role="alert"
             aria-live="assertive"
-            className="p-4 bg-yellow-100 dark:bg-yellow-900 rounded-lg"
+            className="rounded-lg bg-yellow-100 p-4 dark:bg-yellow-900"
           >
             <p className="font-bold">Accessibility Notice</p>
             <p>This is a live region that will be announced by screen readers when it changes.</p>
@@ -225,7 +225,7 @@ export default function AccessibilityExample() {
               <li>
                 <button
                   aria-label="Previous page"
-                  className="p-2 border rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="rounded border p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   &laquo; Prev
                 </button>
@@ -234,7 +234,7 @@ export default function AccessibilityExample() {
                 <button
                   aria-label="Page 1"
                   aria-current="page"
-                  className="p-2 border rounded bg-blue-500 text-white"
+                  className="rounded border bg-blue-500 p-2 text-white"
                 >
                   1
                 </button>
@@ -242,7 +242,7 @@ export default function AccessibilityExample() {
               <li>
                 <button
                   aria-label="Page 2"
-                  className="p-2 border rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="rounded border p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   2
                 </button>
@@ -250,7 +250,7 @@ export default function AccessibilityExample() {
               <li>
                 <button
                   aria-label="Next page"
-                  className="p-2 border rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="rounded border p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   Next &raquo;
                 </button>
@@ -259,7 +259,7 @@ export default function AccessibilityExample() {
           </nav>
 
           <div className="mt-4">
-            <label id="progress-label" className="block mb-2">
+            <label id="progress-label" className="mb-2 block">
               Download Progress (ARIA Progressbar Example):
             </label>
             <div
@@ -268,9 +268,9 @@ export default function AccessibilityExample() {
               aria-valuenow={75}
               aria-valuemin={0}
               aria-valuemax={100}
-              className="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700"
+              className="h-4 w-full rounded-full bg-gray-200 dark:bg-gray-700"
             >
-              <div className="bg-blue-600 h-4 rounded-full" style={{ width: '75%' }}></div>
+              <div className="h-4 rounded-full bg-blue-600" style={{ width: '75%' }}></div>
             </div>
             <span className="sr-only">75 percent complete</span>
           </div>

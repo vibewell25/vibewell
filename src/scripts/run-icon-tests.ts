@@ -6,7 +6,6 @@
 
 // We need to set up the module aliases for testing
 import path from 'path';
-import { pathToFileURL } from 'url';
 
 // Add path aliases for testing
 const moduleAlias = require('module-alias');
@@ -20,8 +19,6 @@ const runTests = async () => {
     // Load test runner and required modules
     const { createTestRunner } = await import('../utils/test-runner');
     const { Icons } = await import('../components/icons');
-    const IconsModule = await import('../components/icons');
-    const IconsIndex = await import('../components/icons/index');
 
     const { describe, test, expect, run } = createTestRunner();
 

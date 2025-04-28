@@ -1,6 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { render, screen, fireEvent } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import 'jest-axe/extend-expect';
 import { Card } from './Card';
 
 describe('Card Accessibility', () => {
@@ -11,7 +10,7 @@ describe('Card Accessibility', () => {
         <Card.Header>Header</Card.Header>
         <Card.Body>Content</Card.Body>
         <Card.Footer>Footer</Card.Footer>
-      </Card>
+      </Card>,
     );
     expect(await axe(elevatedContainer)).toHaveNoViolations();
 
@@ -19,7 +18,7 @@ describe('Card Accessibility', () => {
     const { container: outlinedContainer } = render(
       <Card variant="outlined">
         <Card.Body>Content</Card.Body>
-      </Card>
+      </Card>,
     );
     expect(await axe(outlinedContainer)).toHaveNoViolations();
 
@@ -27,7 +26,7 @@ describe('Card Accessibility', () => {
     const { container: flatContainer } = render(
       <Card variant="flat">
         <Card.Body>Content</Card.Body>
-      </Card>
+      </Card>,
     );
     expect(await axe(flatContainer)).toHaveNoViolations();
   });
@@ -37,7 +36,7 @@ describe('Card Accessibility', () => {
     const { container } = render(
       <Card clickable onClick={handleClick} aria-label="Interactive card">
         <Card.Body>Clickable Content</Card.Body>
-      </Card>
+      </Card>,
     );
 
     expect(await axe(container)).toHaveNoViolations();
@@ -51,7 +50,7 @@ describe('Card Accessibility', () => {
     const { container } = render(
       <Card loading aria-label="Loading content">
         <Card.Body>Hidden while loading</Card.Body>
-      </Card>
+      </Card>,
     );
 
     expect(await axe(container)).toHaveNoViolations();
@@ -70,7 +69,7 @@ describe('Card Accessibility', () => {
           aria-describedby="image-description"
         />
         <Card.Body id="image-description">Detailed description of the image</Card.Body>
-      </Card>
+      </Card>,
     );
 
     expect(await axe(container)).toHaveNoViolations();
@@ -85,7 +84,7 @@ describe('Card Accessibility', () => {
     render(
       <Card clickable onClick={handleClick}>
         <Card.Body>Keyboard Navigation Test</Card.Body>
-      </Card>
+      </Card>,
     );
 
     const card = screen.getByRole('button');
@@ -112,7 +111,7 @@ describe('Card Accessibility', () => {
           <h3>Subheading</h3>
           <p>Content</p>
         </Card.Body>
-      </Card>
+      </Card>,
     );
 
     expect(await axe(container)).toHaveNoViolations();

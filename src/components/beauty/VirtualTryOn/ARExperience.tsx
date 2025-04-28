@@ -29,7 +29,6 @@ const ARExperience: React.FC<ARExperienceProps> = memo(
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const requestRef = useRef<number | undefined>();
-    const streamRef = useRef<MediaStream | null>(null);
 
     // Set up camera stream and face detection on component mount
     useEffect(() => {
@@ -57,7 +56,7 @@ const ARExperience: React.FC<ARExperienceProps> = memo(
       // Clean up on unmount
       return () => {
         if (stream) {
-          stream.getTracks().forEach(track => track.stop());
+          stream.getTracks().forEach((track) => track.stop());
         }
 
         if (requestRef.current) {
@@ -79,7 +78,7 @@ const ARExperience: React.FC<ARExperienceProps> = memo(
       if (!ctx) return;
 
       // Selected color from the product
-      const selectedColor = product.colors.find(c => c.id === colorId);
+      const selectedColor = product.colors.find((c) => c.id === colorId);
       if (!selectedColor || !selectedColor.arOverlayUrl) return;
 
       // Create overlay image for the selected product/color
@@ -190,21 +189,21 @@ const ARExperience: React.FC<ARExperienceProps> = memo(
     }, [arActive, product, colorId, zoomLevel, videoRef, canvasRef, requestRef]);
 
     return (
-      <div className="relative w-full h-full overflow-hidden bg-black">
+      <div className="relative h-full w-full overflow-hidden bg-black">
         {/* Video element for camera feed */}
         <video
           ref={videoRef}
           autoPlay
           playsInline
           muted
-          className={`w-full h-full object-cover ${arActive ? 'hidden' : 'block'}`}
+          className={`h-full w-full object-cover ${arActive ? 'hidden' : 'block'}`}
           aria-hidden={arActive}
         />
 
         {/* Canvas for AR overlay */}
         <canvas
           ref={canvasRef}
-          className={`w-full h-full object-cover ${arActive ? 'block' : 'hidden'}`}
+          className={`h-full w-full object-cover ${arActive ? 'block' : 'hidden'}`}
           aria-hidden={!arActive}
         />
 
@@ -212,7 +211,7 @@ const ARExperience: React.FC<ARExperienceProps> = memo(
         {!product && arActive && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/70 text-white">
             <div className="text-center">
-              <p className="text-xl font-medium mb-2">Select a product to try on</p>
+              <p className="mb-2 text-xl font-medium">Select a product to try on</p>
               <p className="text-sm text-gray-300">
                 Choose from our collection to visualize how it looks on you
               </p>
@@ -222,15 +221,15 @@ const ARExperience: React.FC<ARExperienceProps> = memo(
 
         {/* Face tracking guide overlay */}
         {!faceDetected && (
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="w-64 h-64 mx-auto mt-16 border-2 border-dashed border-white/60 rounded-full flex items-center justify-center">
-              <p className="text-white text-center text-sm font-medium">Position your face here</p>
+          <div className="pointer-events-none absolute inset-0">
+            <div className="mx-auto mt-16 flex h-64 w-64 items-center justify-center rounded-full border-2 border-dashed border-white/60">
+              <p className="text-center text-sm font-medium text-white">Position your face here</p>
             </div>
           </div>
         )}
       </div>
     );
-  }
+  },
 );
 
 export default ARExperience;

@@ -297,7 +297,7 @@ export class PredictiveAnalyticsService {
   private buildRetentionPrompt(
     clientData: any,
     churnPrediction: ChurnPrediction,
-    patterns: Record<string, any>
+    patterns: Record<string, any>,
   ): string {
     return `Generate personalized retention strategies for a client with:
       - Profile: ${JSON.stringify(clientData)}
@@ -329,7 +329,7 @@ export class PredictiveAnalyticsService {
     if (bookings.length < 2) return 0;
     const daysBetweenFirst = differenceInDays(
       new Date(bookings[bookings.length - 1].createdAt),
-      new Date(bookings[0].createdAt)
+      new Date(bookings[0].createdAt),
     );
     return bookings.length / (daysBetweenFirst / 30); // visits per month
   }
@@ -342,13 +342,13 @@ export class PredictiveAnalyticsService {
 
   private calculateDaysSinceLastVisit(bookings: Booking[]): number {
     if (bookings.length === 0) return 365; // Default to a year if no visits
-    const lastVisit = new Date(Math.max(...bookings.map(b => new Date(b.createdAt).getTime())));
+    const lastVisit = new Date(Math.max(...bookings.map((b) => new Date(b.createdAt).getTime())));
     return differenceInDays(new Date(), lastVisit);
   }
 
   private calculateServiceLoyalty(bookings: Booking[]): number {
     if (bookings.length === 0) return 0;
-    const serviceIds = bookings.map(b => b.service.id);
+    const serviceIds = bookings.map((b) => b.service.id);
     const uniqueServices = new Set(serviceIds).size;
     return uniqueServices > 0 ? bookings.length / uniqueServices : 0;
   }

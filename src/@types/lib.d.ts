@@ -3,7 +3,7 @@
 declare module '@/lib/auth' {
   import { NextAuthOptions } from 'next-auth';
 
-  export const authOptions: NextAuthOptions;
+  export {};
 
   export interface User {
     id: string;

@@ -1,8 +1,6 @@
-import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
-import { axe, toHaveNoViolations } from 'jest-axe';
-import 'jest-axe/extend-expect';
+import { toHaveNoViolations } from 'jest-axe';
 import type { ReactNode } from 'react';
 
 // Extend expect with jest-axe
@@ -43,7 +41,7 @@ vi.mock('next-auth/react', () => ({
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -238,24 +236,24 @@ const mock2DContext = {
 // Type-safe mock implementation of getContext with overloads
 function getContextMock(
   contextId: '2d',
-  options?: CanvasRenderingContext2DSettings
+  options?: CanvasRenderingContext2DSettings,
 ): CanvasRenderingContext2D | null;
 function getContextMock(
   contextId: 'bitmaprenderer',
-  options?: ImageBitmapRenderingContextSettings
+  options?: ImageBitmapRenderingContextSettings,
 ): ImageBitmapRenderingContext | null;
 function getContextMock(
   contextId: 'webgl',
-  options?: WebGLContextAttributes
+  options?: WebGLContextAttributes,
 ): WebGLRenderingContext | null;
 function getContextMock(
   contextId: 'webgl2',
-  options?: WebGLContextAttributes
+  options?: WebGLContextAttributes,
 ): WebGL2RenderingContext | null;
 function getContextMock(
   this: HTMLCanvasElement,
   contextId: string,
-  options?: any
+  options?: any,
 ): RenderingContext | null {
   if (contextId === 'webgl' || contextId === 'webgl2') {
     return mockWebGLContext;
@@ -276,7 +274,7 @@ global.ResizeObserver = class ResizeObserver {
 };
 
 // Mock requestAnimationFrame
-global.requestAnimationFrame = callback => setTimeout(callback, 0);
+global.requestAnimationFrame = (callback) => setTimeout(callback, 0);
 global.cancelAnimationFrame = jest.fn();
 
 // Mock AudioContext

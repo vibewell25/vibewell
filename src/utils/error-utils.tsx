@@ -6,8 +6,8 @@
  * and guard against undefined/null errors.
  */
 
-import { isError, exists, isString } from './type-guards';
-import { AppError, ErrorCategory, ErrorSource, ErrorSeverity } from './error-handler';
+import { isError, isString } from './type-guards';
+import { ErrorCategory, ErrorSource, ErrorSeverity } from './error-handler';
 
 /**
  * Safely creates an error message from any error type
@@ -187,7 +187,7 @@ export function enhanceError(
     severity?: ErrorSeverity;
     metadata?: Record<string, any>;
     code?: string;
-  }
+  },
 ): {
   errorMessage: string;
   originalError: Error | undefined;

@@ -1,5 +1,4 @@
-'use client';
-
+'use client';;
 import { useState } from 'react';
 import {
   ContentItem,
@@ -14,9 +13,9 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
@@ -27,10 +26,8 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Label } from '@/components/ui/label';
-import { CalendarIcon, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { format } from 'date-fns';
 import { DateTimePicker } from '@/components/ui/date-time-picker';
 import { FileUpload } from '@/components/ui/file-upload';
@@ -67,16 +64,16 @@ export function ContentItemModal({
   };
 
   const handleInputChange = (field: keyof ContentItem, value: any) => {
-    setUpdatedItem(prev => ({
+    setUpdatedItem((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
   const togglePlatform = (platformId: string) => {
-    setUpdatedItem(prev => {
+    setUpdatedItem((prev) => {
       const platformIds = prev.platformIds.includes(platformId)
-        ? prev.platformIds.filter(id => id !== platformId)
+        ? prev.platformIds.filter((id) => id !== platformId)
         : [...prev.platformIds, platformId];
 
       return {
@@ -89,7 +86,7 @@ export function ContentItemModal({
   const addTag = () => {
     if (!newTag.trim() || updatedItem.tags.includes(newTag.trim())) return;
 
-    setUpdatedItem(prev => ({
+    setUpdatedItem((prev) => ({
       ...prev,
       tags: [...prev.tags, newTag.trim()],
     }));
@@ -98,9 +95,9 @@ export function ContentItemModal({
   };
 
   const removeTag = (tagToRemove: string) => {
-    setUpdatedItem(prev => ({
+    setUpdatedItem((prev) => ({
       ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove),
+      tags: prev.tags.filter((tag) => tag !== tagToRemove),
     }));
   };
 
@@ -114,7 +111,7 @@ export function ContentItemModal({
       createdAt: new Date().toISOString(),
     };
 
-    setUpdatedItem(prev => ({
+    setUpdatedItem((prev) => ({
       ...prev,
       comments: [...prev.comments, comment],
     }));
@@ -129,9 +126,9 @@ export function ContentItemModal({
   const handleFilesSelected = (files: File[]) => {
     setSelectedFiles(files);
 
-    setUpdatedItem(prev => ({
+    setUpdatedItem((prev) => ({
       ...prev,
-      attachments: files.map(file => ({
+      attachments: files.map((file) => ({
         id: `temp-${file.name}`,
         fileName: file.name,
         fileUrl: URL.createObjectURL(file),
@@ -143,14 +140,14 @@ export function ContentItemModal({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden flex flex-col">
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="flex max-h-[90vh] max-w-3xl flex-col overflow-hidden">
         <DialogHeader>
           <DialogTitle>
             <Input
               value={updatedItem.title}
-              onChange={e => handleInputChange('title', e.target.value)}
-              className="text-xl font-semibold border-0 focus-visible:ring-0 px-0 h-auto"
+              onChange={(e) => handleInputChange('title', e.target.value)}
+              className="h-auto border-0 px-0 text-xl font-semibold focus-visible:ring-0"
               placeholder="Content Title"
             />
           </DialogTitle>
@@ -159,9 +156,9 @@ export function ContentItemModal({
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
-          className="flex-1 overflow-hidden flex flex-col"
+          className="flex flex-1 flex-col overflow-hidden"
         >
-          <TabsList className="grid grid-cols-3 w-full max-w-md mb-4">
+          <TabsList className="mb-4 grid w-full max-w-md grid-cols-3">
             <TabsTrigger value="details">Details</TabsTrigger>
             <TabsTrigger value="content">Content</TabsTrigger>
             <TabsTrigger value="comments">Comments ({updatedItem.comments.length})</TabsTrigger>
@@ -169,15 +166,15 @@ export function ContentItemModal({
 
           <div className="flex-1 overflow-auto">
             <TabsContent value="details" className="mt-0 h-full">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 {/* Main Details */}
-                <div className="md:col-span-2 space-y-4">
+                <div className="space-y-4 md:col-span-2">
                   <div>
                     <Label htmlFor="description">Description</Label>
                     <Textarea
                       id="description"
                       value={updatedItem.description}
-                      onChange={e => handleInputChange('description', e.target.value)}
+                      onChange={(e) => handleInputChange('description', e.target.value)}
                       placeholder="Enter a description for this content"
                       className="mt-1 h-32"
                     />
@@ -185,11 +182,11 @@ export function ContentItemModal({
 
                   <div>
                     <Label>Tags</Label>
-                    <div className="flex mt-1">
+                    <div className="mt-1 flex">
                       <Input
                         value={newTag}
-                        onChange={e => setNewTag(e.target.value)}
-                        onKeyDown={e => e.key === 'Enter' && addTag()}
+                        onChange={(e) => setNewTag(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && addTag()}
                         placeholder="Add a tag"
                         className="mr-2"
                       />
@@ -199,8 +196,8 @@ export function ContentItemModal({
                     </div>
 
                     {updatedItem.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-2">
-                        {updatedItem.tags.map(tag => (
+                      <div className="mt-2 flex flex-wrap gap-1">
+                        {updatedItem.tags.map((tag) => (
                           <Badge key={tag} className="flex items-center gap-1">
                             {tag}
                             <X className="h-3 w-3 cursor-pointer" onClick={() => removeTag(tag)} />
@@ -212,11 +209,11 @@ export function ContentItemModal({
 
                   <div>
                     <Label>Platforms</Label>
-                    <div className="flex flex-wrap gap-2 mt-1">
-                      {platforms.map(platform => (
+                    <div className="mt-1 flex flex-wrap gap-2">
+                      {platforms.map((platform) => (
                         <Badge
                           key={platform.id}
-                          className="cursor-pointer flex items-center gap-1"
+                          className="flex cursor-pointer items-center gap-1"
                           variant={
                             updatedItem.platformIds.includes(platform.id) ? 'default' : 'outline'
                           }
@@ -243,17 +240,17 @@ export function ContentItemModal({
                     <Label htmlFor="status">Status</Label>
                     <Select
                       value={updatedItem.status}
-                      onValueChange={value => handleInputChange('status', value)}
+                      onValueChange={(value) => handleInputChange('status', value)}
                     >
                       <SelectTrigger className="mt-1">
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>
                       <SelectContent>
-                        {statuses.map(status => (
+                        {statuses.map((status) => (
                           <SelectItem key={status.id} value={status.id}>
                             <div className="flex items-center">
                               <div
-                                className="w-2 h-2 rounded-full mr-2"
+                                className="mr-2 h-2 w-2 rounded-full"
                                 style={{ backgroundColor: status.color }}
                               ></div>
                               {status.name}
@@ -268,16 +265,16 @@ export function ContentItemModal({
                     <Label htmlFor="assignee">Assigned To</Label>
                     <Select
                       value={updatedItem.assignedTo}
-                      onValueChange={value => handleInputChange('assignedTo', value)}
+                      onValueChange={(value) => handleInputChange('assignedTo', value)}
                     >
                       <SelectTrigger className="mt-1">
                         <SelectValue placeholder="Assign to..." />
                       </SelectTrigger>
                       <SelectContent>
-                        {teamMembers.map(member => (
+                        {teamMembers.map((member) => (
                           <SelectItem key={member.id} value={member.id}>
                             <div className="flex items-center">
-                              <Avatar className="h-6 w-6 mr-2">
+                              <Avatar className="mr-2 h-6 w-6">
                                 <AvatarImage src={member.avatar} alt={member.name} />
                                 <AvatarFallback>
                                   {member.name.slice(0, 2).toUpperCase()}
@@ -329,7 +326,7 @@ export function ContentItemModal({
               <div className="space-y-4">
                 <div>
                   <Label>Content Preview</Label>
-                  <div className="border rounded-md p-4 mt-1 min-h-[200px] text-center flex items-center justify-center text-muted-foreground">
+                  <div className="mt-1 flex min-h-[200px] items-center justify-center rounded-md border p-4 text-center text-muted-foreground">
                     Content editor will be implemented in the next phase.
                   </div>
                 </div>
@@ -349,16 +346,16 @@ export function ContentItemModal({
                   />
 
                   {selectedFiles.length > 0 &&
-                    selectedFiles.some(file => file.type.startsWith('image/')) && (
+                    selectedFiles.some((file) => file.type.startsWith('image/')) && (
                       <div className="mt-4">
                         <Label>Image Previews</Label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
+                        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
                           {selectedFiles
-                            .filter(file => file.type.startsWith('image/'))
+                            .filter((file) => file.type.startsWith('image/'))
                             .map((file, index) => (
                               <div
                                 key={index}
-                                className="relative aspect-square rounded-md overflow-hidden border"
+                                className="relative aspect-square overflow-hidden rounded-md border"
                               >
                                 <Image
                                   src={URL.createObjectURL(file)}
@@ -368,7 +365,7 @@ export function ContentItemModal({
                                   sizes="(max-width: 640px) 50vw, 33vw"
                                 />
                                 <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-1">
-                                  <p className="text-white text-xs truncate">{file.name}</p>
+                                  <p className="truncate text-xs text-white">{file.name}</p>
                                 </div>
                               </div>
                             ))}
@@ -381,11 +378,11 @@ export function ContentItemModal({
 
             <TabsContent value="comments" className="mt-0 h-full">
               <div className="space-y-4">
-                <div className="border rounded-md p-4">
+                <div className="rounded-md border p-4">
                   <Textarea
                     placeholder="Add a comment..."
                     value={newComment}
-                    onChange={e => setNewComment(e.target.value)}
+                    onChange={(e) => setNewComment(e.target.value)}
                     className="mb-2"
                   />
                   <Button onClick={addComment}>Add Comment</Button>
@@ -393,15 +390,15 @@ export function ContentItemModal({
 
                 <div className="space-y-3">
                   {updatedItem.comments.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8">No comments yet</p>
+                    <p className="py-8 text-center text-muted-foreground">No comments yet</p>
                   ) : (
-                    updatedItem.comments.map(comment => {
-                      const commenter = teamMembers.find(member => member.id === comment.userId);
+                    updatedItem.comments.map((comment) => {
+                      const commenter = teamMembers.find((member) => member.id === comment.userId);
 
                       return (
-                        <div key={comment.id} className="border rounded-md p-3">
+                        <div key={comment.id} className="rounded-md border p-3">
                           <div className="flex items-start">
-                            <Avatar className="h-8 w-8 mr-2">
+                            <Avatar className="mr-2 h-8 w-8">
                               <AvatarImage src={commenter?.avatar} />
                               <AvatarFallback>
                                 {commenter?.name.slice(0, 2).toUpperCase() || 'UN'}
@@ -410,7 +407,7 @@ export function ContentItemModal({
                             <div>
                               <div className="flex items-center">
                                 <span className="font-medium">{commenter?.name || 'Unknown'}</span>
-                                <span className="text-xs text-muted-foreground ml-2">
+                                <span className="ml-2 text-xs text-muted-foreground">
                                   {format(new Date(comment.createdAt), 'MMM d, yyyy h:mm a')}
                                 </span>
                               </div>

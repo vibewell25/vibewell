@@ -21,7 +21,7 @@ export function createGraphQLRateLimiter(options: RateLimitOptions = {}) {
 
   return async function graphqlRateLimiter(
     context: GraphQLContext,
-    fieldName: string
+    fieldName: string,
   ): Promise<void> {
     // Skip rate limiting if specified
     if (mergedOptions.skip && mergedOptions.skip({ context, fieldName })) {
@@ -100,7 +100,7 @@ export function createGraphQLRateLimitMiddleware(options: RateLimitOptions = {})
 export function withGraphQLRateLimit(
   resolver: any,
   fieldName: string,
-  options: RateLimitOptions = {}
+  options: RateLimitOptions = {},
 ) {
   const rateLimiter = createGraphQLRateLimiter(options);
 
@@ -156,4 +156,4 @@ export const graphqlRateLimiter = createGraphQLRateLimiter({
 /**
  * Apollo Server plugin for rate limiting
  */
-export const graphQLRateLimitMiddleware = createGraphQLRateLimitMiddleware();
+export {};

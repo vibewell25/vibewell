@@ -183,7 +183,7 @@ export class MFAService {
       }
 
       const codes = Array.from({ length: 10 }, () => this.generateCode(8));
-      const hashedCodes = await Promise.all(codes.map(code => this.encryption.hash(code)));
+      const hashedCodes = await Promise.all(codes.map((code) => this.encryption.hash(code)));
 
       settings.backupCodes = hashedCodes;
       await this.storeMFASettings(userId, settings);

@@ -1,10 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';
-import Image from 'next/image';
 import { Message } from '@/types/messaging';
-import { twMerge } from 'tailwind-merge';
-import { Conversation } from './types';
-import { formatLastSeen } from './utils';
 
 interface MessageListProps {
   /**
@@ -65,7 +61,7 @@ export function MessageList({
   const groupedMessages = React.useMemo(() => {
     const grouped: { [key: string]: Message[] } = {};
 
-    messages.forEach(message => {
+    messages.forEach((message) => {
       const date = new Date(message.timestamp);
       const dateKey = format(date, 'yyyy-MM-dd');
 
@@ -98,7 +94,7 @@ export function MessageList({
   if (messages.length === 0) {
     return (
       <div className={`flex flex-col items-center justify-center p-4 ${className}`}>
-        {emptyPlaceholder || <p className="text-muted-foreground text-sm">No messages yet</p>}
+        {emptyPlaceholder || <p className="text-sm text-muted-foreground">No messages yet</p>}
       </div>
     );
   }
@@ -106,17 +102,17 @@ export function MessageList({
   return (
     <div className={`flex flex-col space-y-4 p-4 ${className}`}>
       {/* Render messages grouped by date */}
-      {Object.keys(groupedMessages).map(dateKey => (
+      {Object.keys(groupedMessages).map((dateKey) => (
         <div key={dateKey} className="flex flex-col space-y-3">
           {/* Date header */}
           <div className="flex justify-center">
-            <div className="text-xs bg-muted px-2 py-1 rounded-full text-muted-foreground">
+            <div className="rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground">
               {getDateHeader(dateKey)}
             </div>
           </div>
 
           {/* Messages for this date */}
-          {groupedMessages[dateKey].map(message => {
+          {groupedMessages[dateKey].map((message) => {
             const isCurrentUser = message.senderId === currentUserId;
 
             return (
@@ -126,22 +122,16 @@ export function MessageList({
                 onClick={() => onMessageClick && onMessageClick(message)}
               >
                 <div
-                  className={`
-                    max-w-[75%] px-4 py-2 rounded-lg break-words
-                    ${
-                      isCurrentUser
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-foreground'
-                    }
-                  `}
+                  className={`max-w-[75%] break-words rounded-lg px-4 py-2 ${
+                    isCurrentUser
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-foreground'
+                  } `}
                 >
                   <div className="flex flex-col">
                     <div>{message.content}</div>
                     <div
-                      className={`
-                        text-xs mt-1 flex justify-end
-                        ${isCurrentUser ? 'text-primary-foreground/70' : 'text-muted-foreground'}
-                      `}
+                      className={`mt-1 flex justify-end text-xs ${isCurrentUser ? 'text-primary-foreground/70' : 'text-muted-foreground'} `}
                     >
                       {formatMessageTime(message.timestamp)}
                       {isCurrentUser && message.read && <span className="ml-1">✓</span>}

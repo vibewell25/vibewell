@@ -141,7 +141,7 @@ export const AccessibleBreadcrumb: React.FC<AccessibleBreadcrumbProps> = ({
                 ) : (
                   <a
                     href={sanitizedHref}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault();
                       onItemClick?.(item, index);
                     }}

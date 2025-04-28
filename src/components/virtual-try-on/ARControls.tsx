@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { CameraOff, ZoomIn, ZoomOut, RotateCcw, Share2 } from 'lucide-react';
 
 interface ARControlsProps {
@@ -43,7 +43,7 @@ export function ARControls({ modelId }: ARControlsProps) {
           text: 'Try this product virtually with Vibewell AR!',
           url: `https://vibewell.com/virtual-try-on/${modelId}`,
         })
-        .catch(err => {
+        .catch((err) => {
           console.error('Error sharing:', err);
         });
     } else {
@@ -55,11 +55,11 @@ export function ARControls({ modelId }: ARControlsProps) {
   };
 
   return (
-    <div className="ar-controls absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-4 bg-white/80 backdrop-blur-sm rounded-full px-6 py-3">
+    <div className="ar-controls absolute bottom-4 left-1/2 flex -translate-x-1/2 transform items-center space-x-4 rounded-full bg-white/80 px-6 py-3 backdrop-blur-sm">
       {!inARMode ? (
         <button
           onClick={startARSession}
-          className="bg-primary text-white p-3 rounded-full flex items-center justify-center"
+          className="bg-primary flex items-center justify-center rounded-full p-3 text-white"
           aria-label="Try in AR"
         >
           <span className="mr-2">Try in AR</span>
@@ -81,7 +81,7 @@ export function ARControls({ modelId }: ARControlsProps) {
       ) : (
         <button
           onClick={stopARSession}
-          className="bg-gray-700 text-white p-3 rounded-full"
+          className="rounded-full bg-gray-700 p-3 text-white"
           aria-label="Exit AR"
         >
           <span className="mr-2">Exit AR</span>
@@ -90,21 +90,21 @@ export function ARControls({ modelId }: ARControlsProps) {
       )}
 
       <div className="flex items-center space-x-3">
-        <button className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full" aria-label="Zoom in">
+        <button className="rounded-full bg-gray-200 p-2 hover:bg-gray-300" aria-label="Zoom in">
           <ZoomIn size={18} />
         </button>
 
-        <button className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full" aria-label="Zoom out">
+        <button className="rounded-full bg-gray-200 p-2 hover:bg-gray-300" aria-label="Zoom out">
           <ZoomOut size={18} />
         </button>
 
-        <button className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full" aria-label="Reset view">
+        <button className="rounded-full bg-gray-200 p-2 hover:bg-gray-300" aria-label="Reset view">
           <RotateCcw size={18} />
         </button>
 
         <button
           onClick={shareModel}
-          className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full"
+          className="rounded-full bg-gray-200 p-2 hover:bg-gray-300"
           aria-label="Share"
         >
           <Share2 size={18} />

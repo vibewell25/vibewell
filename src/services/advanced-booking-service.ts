@@ -36,7 +36,7 @@ export class AdvancedBookingService {
     userId: string,
     serviceId: string,
     startDate: Date,
-    options: RecurringBookingOptions
+    options: RecurringBookingOptions,
   ) {
     try {
       const service = await prisma.beautyService.findUnique({
@@ -52,7 +52,7 @@ export class AdvancedBookingService {
       const bookings = [];
 
       // Create bookings in a transaction
-      await prisma.$transaction(async tx => {
+      await prisma.$transaction(async (tx) => {
         // Create recurring booking group
         const recurringGroup = await tx.recurringBookingGroup.create({
           data: {
@@ -139,7 +139,7 @@ export class AdvancedBookingService {
       }
 
       // Create package booking in a transaction
-      const bookings = await prisma.$transaction(async tx => {
+      const bookings = await prisma.$transaction(async (tx) => {
         const packageBooking = await tx.packageBooking.create({
           data: {
             userId,
@@ -159,13 +159,13 @@ export class AdvancedBookingService {
                 startTime: options.preferredDates[index] || options.preferredDates[0],
                 endTime: new Date(
                   (options.preferredDates[index] || options.preferredDates[0]).getTime() +
-                    service.duration * 60000
+                    service.duration * 60000,
                 ),
                 status: 'CONFIRMED',
                 packageBookingId: packageBooking.id,
               },
-            })
-          )
+            }),
+          ),
         );
       });
 
@@ -185,7 +185,7 @@ export class AdvancedBookingService {
   // Dynamic Pricing
   async calculateDynamicPrice(
     serviceId: string,
-    date: Date
+    date: Date,
   ): Promise<{ price: number; discounts: Array<{ type: string; amount: number }> }> {
     try {
       const service = await prisma.beautyService.findUnique({
@@ -238,7 +238,9 @@ export class AdvancedBookingService {
 
     while (currentDate <= options.endDate) {
       if (
-        !options.skipDates?.some(skipDate => skipDate.toDateString() === currentDate.toDateString())
+        !options.skipDates?.some(
+          (skipDate) => skipDate.toDateString() === currentDate.toDateString(),
+        )
       ) {
         dates.push(new Date(currentDate));
       }
@@ -324,7 +326,7 @@ export class AdvancedBookingService {
     if (!waitlistEntry) return 0;
 
     const daysOnWaitlist = Math.floor(
-      (Date.now() - waitlistEntry.createdAt.getTime()) / (24 * 60 * 60 * 1000)
+      (Date.now() - waitlistEntry.createdAt.getTime()) / (24 * 60 * 60 * 1000),
     );
 
     return daysOnWaitlist;
@@ -367,7 +369,7 @@ export class AdvancedBookingService {
 
   private async checkSlotAvailability(
     serviceId: string,
-    date: Date
+    date: Date,
   ): Promise<{ available: boolean; slots: Date[] }> {
     const service = await prisma.beautyService.findUnique({
       where: { id: serviceId },
@@ -408,8 +410,8 @@ export class AdvancedBookingService {
         const slotEnd = new Date(slotStart.getTime() + duration * 60000);
 
         // Check if slot conflicts with existing bookings
-        const hasConflict = existingBookings.some(booking =>
-          this.hasTimeConflict(slotStart, slotEnd, booking.startTime, booking.endTime)
+        const hasConflict = existingBookings.some((booking) =>
+          this.hasTimeConflict(slotStart, slotEnd, booking.startTime, booking.endTime),
         );
 
         if (!hasConflict) {

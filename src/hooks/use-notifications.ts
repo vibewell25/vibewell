@@ -46,30 +46,19 @@ interface UseNotificationsOptions {
 }
 
 export function useNotifications(options: UseNotificationsOptions = {}) {
-  const { 
-    initialPage = 1, 
-    pageSize = 10, 
-    filter = 'all',
-    enabled = true
-  } = options;
-  
+  const { initialPage = 1, pageSize = 10, filter = 'all', enabled = true } = options;
+
   const [page, setPage] = useState(initialPage);
   const queryClient = useQueryClient();
   const { captureError } = useErrorHandler();
 
   // Get notifications with pagination
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    refetch
-  } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['notifications', page, pageSize, filter],
     queryFn: async () => {
       try {
         const response = await axios.get<{ success: boolean; data: PaginatedNotifications }>(
-          `/api/notifications?page=${page}&limit=${pageSize}&filter=${filter}`
+          `/api/notifications?page=${page}&limit=${pageSize}&filter=${filter}`,
         );
         return response.data.data;
       } catch (error) {
@@ -77,37 +66,37 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
           source: ErrorSource.API,
           category: ErrorCategory.DATA_FETCHING,
           severity: ErrorSeverity.ERROR,
-          metadata: { page, pageSize, filter }
+          metadata: { page, pageSize, filter },
         });
         throw error;
       }
     },
-    enabled
+    enabled,
   });
 
   // Get notification counts (total and unread)
-  const { 
+  const {
     data: countData,
     isLoading: isCountLoading,
-    refetch: refetchCount
+    refetch: refetchCount,
   } = useQuery({
     queryKey: ['notifications-count'],
     queryFn: async () => {
       try {
         const response = await axios.get<{ success: boolean; data: NotificationCount }>(
-          '/api/notifications/count'
+          '/api/notifications/count',
         );
         return response.data.data;
       } catch (error) {
         captureError(error, {
           source: ErrorSource.API,
           category: ErrorCategory.DATA_FETCHING,
-          severity: ErrorSeverity.ERROR
+          severity: ErrorSeverity.ERROR,
         });
         throw error;
       }
     },
-    enabled
+    enabled,
   });
 
   // Mark a single notification as read
@@ -121,46 +110,38 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
           source: ErrorSource.API,
           category: ErrorCategory.DATA_SUBMISSION,
           severity: ErrorSeverity.ERROR,
-          metadata: { notificationId }
+          metadata: { notificationId },
         });
         throw error;
       }
     },
     onSuccess: (data, notificationId) => {
       // Update the notification in the cache
-      queryClient.setQueryData(
-        ['notifications', page, pageSize, filter],
-        (oldData: any) => {
-          if (!oldData) return oldData;
-          
-          return {
-            ...oldData,
-            notifications: oldData.notifications.map((notification: Notification) => 
-              notification.id === notificationId 
-                ? { ...notification, read: true } 
-                : notification
-            )
-          };
-        }
-      );
-      
+      queryClient.setQueryData(['notifications', page, pageSize, filter], (oldData: any) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          notifications: oldData.notifications.map((notification: Notification) =>
+            notification.id === notificationId ? { ...notification, read: true } : notification,
+          ),
+        };
+      });
+
       // Update the count
       if (data.updated) {
-        queryClient.setQueryData(
-          ['notifications-count'],
-          (oldData: any) => {
-            if (!oldData) return oldData;
-            return {
-              ...oldData,
-              unread: Math.max(0, oldData.unread - 1)
-            };
-          }
-        );
+        queryClient.setQueryData(['notifications-count'], (oldData: any) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            unread: Math.max(0, oldData.unread - 1),
+          };
+        });
       }
     },
     onError: (error) => {
       toast.error('Failed to mark notification as read');
-    }
+    },
   });
 
   // Mark all notifications as read
@@ -180,36 +161,30 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
     },
     onSuccess: (data) => {
       // Update all notifications to read
-      queryClient.setQueryData(
-        ['notifications', page, pageSize, filter],
-        (oldData: any) => {
-          if (!oldData) return oldData;
-          
-          return {
-            ...oldData,
-            notifications: oldData.notifications.map((notification: Notification) => ({
-              ...notification, 
-              read: true
-            }))
-          };
-        }
-      );
-      
+      queryClient.setQueryData(['notifications', page, pageSize, filter], (oldData: any) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          notifications: oldData.notifications.map((notification: Notification) => ({
+            ...notification,
+            read: true,
+          })),
+        };
+      });
+
       // Update the unread count to zero
-      queryClient.setQueryData(
-        ['notifications-count'],
-        (oldData: any) => {
-          if (!oldData) return oldData;
-          return {
-            ...oldData,
-            unread: 0
-          };
-        }
-      );
+      queryClient.setQueryData(['notifications-count'], (oldData: any) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          unread: 0,
+        };
+      });
     },
     onError: () => {
       toast.error('Failed to mark all notifications as read');
-    }
+    },
   });
 
   // Delete a notification
@@ -223,7 +198,7 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
           source: ErrorSource.API,
           category: ErrorCategory.DATA_SUBMISSION,
           severity: ErrorSeverity.ERROR,
-          metadata: { notificationId }
+          metadata: { notificationId },
         });
         throw error;
       }
@@ -231,44 +206,38 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
     onSuccess: (_, notificationId) => {
       // Find the notification in cache before removing it to check if it was unread
       const cachedData = queryClient.getQueryData(['notifications', page, pageSize, filter]) as any;
-      const wasUnread = cachedData?.notifications?.find(
-        (n: Notification) => n.id === notificationId
-      )?.read === false;
-      
+      const wasUnread =
+        cachedData?.notifications?.find((n: Notification) => n.id === notificationId)?.read ===
+        false;
+
       // Remove the notification from cache
-      queryClient.setQueryData(
-        ['notifications', page, pageSize, filter],
-        (oldData: any) => {
-          if (!oldData) return oldData;
-          
-          return {
-            ...oldData,
-            notifications: oldData.notifications.filter(
-              (notification: Notification) => notification.id !== notificationId
-            )
-          };
-        }
-      );
-      
+      queryClient.setQueryData(['notifications', page, pageSize, filter], (oldData: any) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          notifications: oldData.notifications.filter(
+            (notification: Notification) => notification.id !== notificationId,
+          ),
+        };
+      });
+
       // Update the counts
-      queryClient.setQueryData(
-        ['notifications-count'],
-        (oldData: any) => {
-          if (!oldData) return oldData;
-                    
-          return {
-            ...oldData,
-            total: Math.max(0, oldData.total - 1),
-            unread: wasUnread ? Math.max(0, oldData.unread - 1) : oldData.unread
-          };
-        }
-      );
+      queryClient.setQueryData(['notifications-count'], (oldData: any) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          total: Math.max(0, oldData.total - 1),
+          unread: wasUnread ? Math.max(0, oldData.unread - 1) : oldData.unread,
+        };
+      });
 
       toast.success('Notification deleted');
     },
     onError: () => {
       toast.error('Failed to delete notification');
-    }
+    },
   });
 
   // Pagination utilities
@@ -284,11 +253,14 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
     }
   }, [data]);
 
-  const goToPage = useCallback((pageNumber: number) => {
-    if (data && pageNumber >= 1 && pageNumber <= data.pagination.totalPages) {
-      setPage(pageNumber);
-    }
-  }, [data]);
+  const goToPage = useCallback(
+    (pageNumber: number) => {
+      if (data && pageNumber >= 1 && pageNumber <= data.pagination.totalPages) {
+        setPage(pageNumber);
+      }
+    },
+    [data],
+  );
 
   const refresh = useCallback(() => {
     refetch();
@@ -311,6 +283,6 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
     goToPage,
     refresh,
     page,
-    setPage
+    setPage,
   };
-} 
+}

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import { theme as themeConfig } from '../styles/theme';
 
 type ThemeType = 'light' | 'dark' | 'system';
 
@@ -8,6 +9,7 @@ interface ThemeContextType {
   theme: ThemeType;
   isDarkMode: boolean;
   setTheme: (theme: ThemeType) => void;
+  colors: typeof themeConfig.navigation.colors;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -58,6 +60,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         theme,
         isDarkMode,
         setTheme,
+        colors: themeConfig.navigation.colors,
       }}
     >
       {children}

@@ -45,7 +45,7 @@ const DynamicCharts: React.FC<DynamicChartsProps> = ({ data, timeRange }) => {
     return {
       timestamp: point.timestamp,
       duration: point.duration,
-      average
+      average,
     };
   });
 
@@ -58,21 +58,13 @@ const DynamicCharts: React.FC<DynamicChartsProps> = ({ data, timeRange }) => {
           tickFormatter={(value) => formatTimestamp(value, timeRange)}
           interval="preserveStartEnd"
         />
-        <YAxis
-          label={{ value: 'Load Time (ms)', angle: -90, position: 'insideLeft' }}
-        />
+        <YAxis label={{ value: 'Load Time (ms)', angle: -90, position: 'insideLeft' }} />
         <Tooltip
           labelFormatter={(value) => formatTimestamp(Number(value), timeRange)}
           formatter={(value: number) => [`${value.toFixed(2)} ms`, '']}
         />
         <Legend />
-        <Line
-          type="monotone"
-          dataKey="duration"
-          stroke="#8884d8"
-          name="Load Time"
-          dot={false}
-        />
+        <Line type="monotone" dataKey="duration" stroke="#8884d8" name="Load Time" dot={false} />
         <Line
           type="monotone"
           dataKey="average"
@@ -86,4 +78,4 @@ const DynamicCharts: React.FC<DynamicChartsProps> = ({ data, timeRange }) => {
   );
 };
 
-export default DynamicCharts; 
+export default DynamicCharts;

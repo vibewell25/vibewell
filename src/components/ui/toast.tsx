@@ -82,12 +82,12 @@ export function Toast({
       className={cn(
         'pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-300',
         styles.container,
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0',
       )}
     >
       <div className="p-4">
         <div className="flex items-start">
-          {styles.icon && <div className="flex-shrink-0 mr-3">{styles.icon}</div>}
+          {styles.icon && <div className="mr-3 flex-shrink-0">{styles.icon}</div>}
           <div className="flex-1">
             {title && <div className={cn('text-sm font-medium', styles.title)}>{title}</div>}
             {description && (
@@ -95,9 +95,9 @@ export function Toast({
             )}
             {action && <div className="mt-3">{action}</div>}
           </div>
-          <div className="ml-4 flex-shrink-0 flex">
+          <div className="ml-4 flex flex-shrink-0">
             <button
-              className="bg-transparent rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="inline-flex rounded-md bg-transparent text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               onClick={handleDismiss}
             >
               <span className="sr-only">Close</span>
@@ -111,14 +111,17 @@ export function Toast({
 }
 
 export interface ToastContainerProps {
-  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
+  position?:
+    | 'top-right'
+    | 'top-left'
+    | 'bottom-right'
+    | 'bottom-left'
+    | 'top-center'
+    | 'bottom-center';
   children: React.ReactNode;
 }
 
-export function ToastContainer({ 
-  position = 'bottom-right', 
-  children 
-}: ToastContainerProps) {
+export function ToastContainer({ position = 'bottom-right', children }: ToastContainerProps) {
   const positionClasses = {
     'top-right': 'top-0 right-0',
     'top-left': 'top-0 left-0',
@@ -131,8 +134,8 @@ export function ToastContainer({
   return (
     <div
       className={cn(
-        'fixed z-50 p-4 max-h-screen overflow-hidden pointer-events-none flex flex-col gap-2',
-        positionClasses[position]
+        'pointer-events-none fixed z-50 flex max-h-screen flex-col gap-2 overflow-hidden p-4',
+        positionClasses[position],
       )}
     >
       {children}
@@ -145,9 +148,7 @@ import React, { createContext, useContext, useCallback, useReducer } from 'react
 
 type ToastState = ToastProps[];
 
-type ToastAction =
-  | { type: 'ADD_TOAST'; toast: ToastProps }
-  | { type: 'REMOVE_TOAST'; id: string };
+type ToastAction = { type: 'ADD_TOAST'; toast: ToastProps } | { type: 'REMOVE_TOAST'; id: string };
 
 const ToastStateContext = createContext<ToastState | undefined>(undefined);
 const ToastDispatchContext = createContext<React.Dispatch<ToastAction> | undefined>(undefined);
@@ -186,7 +187,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
 export function useToast() {
   const dispatch = useContext(ToastDispatchContext);
-  
+
   if (!dispatch) {
     throw new Error('useToast must be used within a ToastProvider');
   }
@@ -200,14 +201,14 @@ export function useToast() {
       });
       return id;
     },
-    [dispatch]
+    [dispatch],
   );
 
   const dismissToast = useCallback(
     (id: string) => {
       dispatch({ type: 'REMOVE_TOAST', id });
     },
-    [dispatch]
+    [dispatch],
   );
 
   return { toast, dismissToast };

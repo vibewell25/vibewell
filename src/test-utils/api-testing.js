@@ -13,7 +13,7 @@ import { mockApiResponse } from '@/types/api';
  */
 export function createMockApiClient(responses = {}) {
   return {
-    get: jest.fn(path => {
+    get: jest.fn((path) => {
       if (responses[path]) {
         return Promise.resolve(responses[path]);
       }
@@ -23,7 +23,7 @@ export function createMockApiClient(responses = {}) {
     post: jest.fn((path, data) => {
       if (responses[path]) {
         return Promise.resolve(
-          typeof responses[path] === 'function' ? responses[path](data) : responses[path]
+          typeof responses[path] === 'function' ? responses[path](data) : responses[path],
         );
       }
       return Promise.resolve(mockApiResponse({ message: 'Mock POST response', data }));
@@ -32,7 +32,7 @@ export function createMockApiClient(responses = {}) {
     put: jest.fn((path, data) => {
       if (responses[path]) {
         return Promise.resolve(
-          typeof responses[path] === 'function' ? responses[path](data) : responses[path]
+          typeof responses[path] === 'function' ? responses[path](data) : responses[path],
         );
       }
       return Promise.resolve(mockApiResponse({ message: 'Mock PUT response', data }));
@@ -41,24 +41,24 @@ export function createMockApiClient(responses = {}) {
     patch: jest.fn((path, data) => {
       if (responses[path]) {
         return Promise.resolve(
-          typeof responses[path] === 'function' ? responses[path](data) : responses[path]
+          typeof responses[path] === 'function' ? responses[path](data) : responses[path],
         );
       }
       return Promise.resolve(mockApiResponse({ message: 'Mock PATCH response', data }));
     }),
 
-    delete: jest.fn(path => {
+    delete: jest.fn((path) => {
       if (responses[path]) {
         return Promise.resolve(responses[path]);
       }
       return Promise.resolve(mockApiResponse({ message: 'Mock DELETE response' }));
     }),
 
-    request: jest.fn(config => {
+    request: jest.fn((config) => {
       const { url, method = 'GET', data } = config;
       if (responses[url]) {
         return Promise.resolve(
-          typeof responses[url] === 'function' ? responses[url](data, method) : responses[url]
+          typeof responses[url] === 'function' ? responses[url](data, method) : responses[url],
         );
       }
       return Promise.resolve(mockApiResponse({ message: `Mock ${method} response`, data }));

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   Card,
   CardContent,
@@ -7,9 +7,8 @@ import {
   CardTitle,
   CardDescription,
   CardFooter,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import { Mail, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
-import { prisma } from '@/lib/database/client';
 import { toast } from '@/components/ui/use-toast';
 
 interface EmailVerificationProps {
@@ -71,7 +70,7 @@ export function EmailVerification({ email, onSuccess }: EmailVerificationProps) 
             <CheckCircle className="h-16 w-16 text-green-500" />
             <div>
               <h3 className="text-lg font-medium">Verification Email Sent</h3>
-              <p className="text-muted-foreground mt-1">
+              <p className="mt-1 text-muted-foreground">
                 We've sent a verification email to <span className="font-medium">{email}</span>.
                 Please check your inbox and click on the verification link.
               </p>
@@ -82,15 +81,15 @@ export function EmailVerification({ email, onSuccess }: EmailVerificationProps) 
             <AlertCircle className="h-16 w-16 text-red-500" />
             <div>
               <h3 className="text-lg font-medium">Verification Failed</h3>
-              <p className="text-muted-foreground mt-1">{error}</p>
+              <p className="mt-1 text-muted-foreground">{error}</p>
             </div>
           </div>
         ) : (
           <div className="flex flex-col items-center space-y-4 text-center">
-            <Mail className="h-16 w-16 text-primary" />
+            <Mail className="text-primary h-16 w-16" />
             <div>
               <h3 className="text-lg font-medium">Verify Your Email</h3>
-              <p className="text-muted-foreground mt-1">
+              <p className="mt-1 text-muted-foreground">
                 Click the button below to send a verification email to{' '}
                 <span className="font-medium">{email}</span>
               </p>

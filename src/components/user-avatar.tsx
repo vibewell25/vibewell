@@ -1,6 +1,4 @@
-'use client';
-
-import { Icons } from '@/components/icons';
+'use client';;
 import Image from 'next/image';
 import { User } from 'lucide-react';
 
@@ -36,13 +34,6 @@ export function UserAvatar({
   size = 'md',
   fallbackInitials,
 }: UserAvatarProps) {
-  // Size mapping in pixels
-  const sizeMap = {
-    xs: 24, // h-6 w-6
-    sm: 32, // h-8 w-8
-    md: 40, // h-10 w-10
-    lg: 48, // h-12 w-12
-  };
   // Size mapping for classes
   const sizeClasses = {
     xs: 'h-6 w-6',
@@ -59,7 +50,7 @@ export function UserAvatar({
     if (!fallbackInitials) return '';
     return fallbackInitials
       .split(' ')
-      .map(part => part[0])
+      .map((part) => part[0])
       .join('')
       .toUpperCase()
       .substring(0, 2);
@@ -68,7 +59,7 @@ export function UserAvatar({
   if (src) {
     return (
       <div
-        className={`relative ${sizeClasses[size]} rounded-full overflow-hidden flex-shrink-0 bg-muted`}
+        className={`relative ${sizeClasses[size]} flex-shrink-0 overflow-hidden rounded-full bg-muted`}
       >
         <Image src={src} alt={alt} fill className="object-cover" />
       </div>
@@ -78,7 +69,7 @@ export function UserAvatar({
   if (fallbackInitials) {
     return (
       <div
-        className={`${sizeClasses[size]} rounded-full flex-shrink-0 bg-primary/10 flex items-center justify-center text-primary font-medium text-sm`}
+        className={`${sizeClasses[size]} bg-primary/10 text-primary flex flex-shrink-0 items-center justify-center rounded-full text-sm font-medium`}
       >
         {getInitials()}
       </div>
@@ -87,7 +78,7 @@ export function UserAvatar({
   // Otherwise, show the default user icon
   return (
     <div
-      className={`${sizeClasses[size]} rounded-full flex-shrink-0 bg-muted flex items-center justify-center`}
+      className={`${sizeClasses[size]} flex flex-shrink-0 items-center justify-center rounded-full bg-muted`}
     >
       <User className="h-full w-full text-muted-foreground" />
     </div>

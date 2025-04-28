@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls, useGLTF } from '@react-three/drei';
 
@@ -60,11 +60,11 @@ export default function ARViewer({
   if (!isLoaded) {
     return (
       <div
-        className="w-full h-96 flex items-center justify-center bg-gray-100"
+        className="flex h-96 w-full items-center justify-center bg-gray-100"
         data-testid="ar-viewer-container"
       >
         <div
-          className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"
+          className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-500"
           data-testid="loading-spinner"
         ></div>
       </div>
@@ -72,7 +72,7 @@ export default function ARViewer({
   }
 
   return (
-    <div className="w-full h-96" style={{ backgroundColor }} data-testid="ar-viewer-container">
+    <div className="h-96 w-full" style={{ backgroundColor }} data-testid="ar-viewer-container">
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />

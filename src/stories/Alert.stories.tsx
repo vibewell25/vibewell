@@ -151,10 +151,10 @@ export const WithActions: Story = {
         <AlertDescription>
           Please take action on this alert.
           <div className="mt-4 flex space-x-4">
-            <button className="px-3 py-1.5 text-sm font-medium bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90">
+            <button className="rounded-md bg-destructive px-3 py-1.5 text-sm font-medium text-destructive-foreground hover:bg-destructive/90">
               Delete
             </button>
-            <button className="px-3 py-1.5 text-sm font-medium bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80">
+            <button className="bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-md px-3 py-1.5 text-sm font-medium">
               Cancel
             </button>
           </div>

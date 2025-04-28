@@ -23,7 +23,7 @@ export const AccessibleSlider: React.FC<AccessibleSliderProps> = ({
   className = '',
   disabled = false,
   showValue = true,
-  formatValue = val => val.toString(),
+  formatValue = (val) => val.toString(),
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -104,7 +104,7 @@ export const AccessibleSlider: React.FC<AccessibleSliderProps> = ({
   return (
     <div className={className}>
       {label && (
-        <div className="flex justify-between items-center mb-2">
+        <div className="mb-2 flex items-center justify-between">
           <label className="text-sm font-medium text-gray-700">{label}</label>
           {showValue && <span className="text-sm text-gray-500">{formatValue(value)}</span>}
         </div>
@@ -120,23 +120,15 @@ export const AccessibleSlider: React.FC<AccessibleSliderProps> = ({
         tabIndex={disabled ? -1 : 0}
         onKeyDown={handleKeyDown}
         onMouseDown={handleMouseDown}
-        className={`
-          relative h-2 bg-gray-200 rounded-full
-          ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-        `}
+        className={`relative h-2 rounded-full bg-gray-200 ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} `}
       >
         <div
-          className="absolute h-full bg-primary rounded-full"
+          className="bg-primary absolute h-full rounded-full"
           style={{ width: `${percentage}%` }}
         />
         <div
           ref={thumbRef}
-          className={`
-            absolute top-0 w-4 h-4 bg-white rounded-full
-            border-2 border-primary
-            ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
-            focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
-          `}
+          className={`border-primary absolute top-0 h-4 w-4 rounded-full border-2 bg-white ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} focus:ring-primary focus:outline-none focus:ring-2 focus:ring-offset-2`}
           style={{ left: `${percentage}%`, transform: 'translateX(-50%)' }}
           tabIndex={-1}
         />

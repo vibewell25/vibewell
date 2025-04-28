@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { act } from 'react-dom/test-utils';
@@ -29,7 +25,7 @@ declare global {
 // Mock the Three.js components
 jest.mock('@react-three/fiber', () => ({
   Canvas: jest.fn(({ children }) => <div data-testid="canvas">{children}</div>),
-  useFrame: jest.fn(cb => cb({ clock: { getElapsedTime: () => 0 } })),
+  useFrame: jest.fn((cb) => cb({ clock: { getElapsedTime: () => 0 } })),
 }));
 
 jest.mock('@react-three/drei', () => ({
@@ -96,7 +92,7 @@ describe('MeditationEnvironment', () => {
         src: ['/sounds/rain.mp3'],
         loop: true,
         volume: 0.5,
-      })
+      }),
     );
 
     const endButton = screen.getByText('End Session');
@@ -114,7 +110,7 @@ describe('MeditationEnvironment', () => {
     expect(Howl).toHaveBeenCalledWith(
       expect.objectContaining({
         src: ['/sounds/waves.mp3'],
-      })
+      }),
     );
   });
 
@@ -177,7 +173,7 @@ describe('MeditationEnvironment', () => {
         {...defaultProps}
         onStateChange={onStateChange}
         particleEffects={true}
-      />
+      />,
     );
 
     // Find and click the particle effects toggle
@@ -194,7 +190,7 @@ describe('MeditationEnvironment', () => {
         {...defaultProps}
         onStateChange={onStateChange}
         guidedMeditation={false}
-      />
+      />,
     );
 
     // Find and click the guided meditation toggle
@@ -206,7 +202,7 @@ describe('MeditationEnvironment', () => {
 
   it('renders particle system when enabled', () => {
     const { container } = render(
-      <MeditationEnvironment {...defaultProps} particleEffects={true} />
+      <MeditationEnvironment {...defaultProps} particleEffects={true} />,
     );
 
     const canvas = container.querySelector('[data-testid="canvas"]');
@@ -226,7 +222,7 @@ describe('MeditationEnvironment', () => {
         testLighting: () =>
           testModelLighting(
             new THREE.Group(), // Mock model
-            intensity
+            intensity,
           ),
       };
     });

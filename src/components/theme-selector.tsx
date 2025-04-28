@@ -1,7 +1,7 @@
 'use client';
 
 import { useTheme } from '@/components/theme-provider';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,7 +32,7 @@ export function ThemeSelector({
 
   const setColorTheme = (theme: string) => {
     const root = window.document.documentElement;
-    colorThemes.forEach(ct => {
+    colorThemes.forEach((ct) => {
       root.classList.remove(ct.value);
     });
     root.classList.add(theme);
@@ -51,7 +51,7 @@ export function ThemeSelector({
   if (variant === 'mobile') {
     return (
       <div className="flex flex-col space-y-4">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <h3 className="text-lg font-medium">Display Mode</h3>
           <div className="flex space-x-2">
             <Button
@@ -85,10 +85,10 @@ export function ThemeSelector({
           <div className="space-y-2">
             <h3 className="text-lg font-medium">Color Theme</h3>
             <div className="flex flex-wrap gap-2">
-              {colorThemes.map(colorTheme => (
+              {colorThemes.map((colorTheme) => (
                 <button
                   key={colorTheme.value}
-                  className="w-8 h-8 rounded-full border-2 border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                  className="focus:ring-primary h-8 w-8 rounded-full border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:border-gray-700"
                   style={{ backgroundColor: colorTheme.color }}
                   onClick={() => setColorTheme(colorTheme.value)}
                   aria-label={`Select ${colorTheme.name} theme`}
@@ -126,11 +126,11 @@ export function ThemeSelector({
 
         {showColorThemes && (
           <>
-            <DropdownMenuItem className="border-t mt-1 pt-1">
+            <DropdownMenuItem className="mt-1 border-t pt-1">
               <Icons.PaintBrushIcon className="mr-2 h-4 w-4" />
               <span>Color Themes</span>
             </DropdownMenuItem>
-            {colorThemes.map(colorTheme => (
+            {colorThemes.map((colorTheme) => (
               <DropdownMenuItem
                 key={colorTheme.value}
                 onClick={() => setColorTheme(colorTheme.value)}

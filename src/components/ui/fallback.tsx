@@ -1,6 +1,4 @@
-'use client';
-
-import React from 'react';
+'use client';;
 import { Loader2 } from 'lucide-react';
 
 interface FallbackProps {
@@ -19,8 +17,8 @@ export function Fallback({
 }: FallbackProps) {
   return (
     <div className={`flex flex-col items-center justify-center p-8 ${className}`}>
-      <Loader2 className="animate-spin mb-4" size={spinnerSize} />
-      <p className="text-gray-600 text-center font-medium">{message}</p>
+      <Loader2 className="mb-4 animate-spin" size={spinnerSize} />
+      <p className="text-center font-medium text-gray-600">{message}</p>
     </div>
   );
 }
@@ -34,17 +32,17 @@ export function CardFallback({ count = 1 }: { count?: number }) {
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
-          className="rounded-lg border border-gray-200 shadow-sm overflow-hidden animate-pulse"
+          className="animate-pulse overflow-hidden rounded-lg border border-gray-200 shadow-sm"
           aria-hidden="true"
         >
           <div className="h-48 bg-gray-200" />
-          <div className="p-4 space-y-3">
-            <div className="h-5 bg-gray-200 rounded w-2/3" />
-            <div className="h-4 bg-gray-200 rounded w-4/5" />
-            <div className="h-4 bg-gray-200 rounded w-1/2" />
+          <div className="space-y-3 p-4">
+            <div className="h-5 w-2/3 rounded bg-gray-200" />
+            <div className="h-4 w-4/5 rounded bg-gray-200" />
+            <div className="h-4 w-1/2 rounded bg-gray-200" />
           </div>
-          <div className="p-4 border-t border-gray-100">
-            <div className="h-8 bg-gray-200 rounded w-1/3" />
+          <div className="border-t border-gray-100 p-4">
+            <div className="h-8 w-1/3 rounded bg-gray-200" />
           </div>
         </div>
       ))}
@@ -57,17 +55,17 @@ export function CardFallback({ count = 1 }: { count?: number }) {
  */
 export function TableFallback({ rows = 5, columns = 4 }: { rows?: number; columns?: number }) {
   return (
-    <div className="rounded-lg border border-gray-200 overflow-hidden animate-pulse">
+    <div className="animate-pulse overflow-hidden rounded-lg border border-gray-200">
       <div className="bg-gray-50 p-4">
-        <div className="h-6 bg-gray-200 rounded w-1/4" />
+        <div className="h-6 w-1/4 rounded bg-gray-200" />
       </div>
       <div className="divide-y divide-gray-200">
         {Array.from({ length: rows }).map((_, rowIndex) => (
-          <div key={rowIndex} className="p-4 flex space-x-4">
+          <div key={rowIndex} className="flex space-x-4 p-4">
             {Array.from({ length: columns }).map((_, colIndex) => (
               <div
                 key={colIndex}
-                className="h-5 bg-gray-200 rounded"
+                className="h-5 rounded bg-gray-200"
                 style={{ width: `${Math.floor(Math.random() * 30) + 10}%` }}
               />
             ))}
@@ -83,20 +81,20 @@ export function TableFallback({ rows = 5, columns = 4 }: { rows?: number; column
  */
 export function ProfileFallback() {
   return (
-    <div className="space-y-6 animate-pulse">
+    <div className="animate-pulse space-y-6">
       <div className="flex items-center space-x-4">
         <div className="h-16 w-16 rounded-full bg-gray-200" />
-        <div className="space-y-2 flex-1">
-          <div className="h-5 bg-gray-200 rounded w-1/3" />
-          <div className="h-4 bg-gray-200 rounded w-1/4" />
+        <div className="flex-1 space-y-2">
+          <div className="h-5 w-1/3 rounded bg-gray-200" />
+          <div className="h-4 w-1/4 rounded bg-gray-200" />
         </div>
       </div>
       <div className="space-y-4">
-        <div className="h-4 bg-gray-200 rounded w-full" />
-        <div className="h-4 bg-gray-200 rounded w-5/6" />
-        <div className="h-4 bg-gray-200 rounded w-4/6" />
+        <div className="h-4 w-full rounded bg-gray-200" />
+        <div className="h-4 w-5/6 rounded bg-gray-200" />
+        <div className="h-4 w-4/6 rounded bg-gray-200" />
       </div>
-      <div className="h-10 bg-gray-200 rounded w-1/4" />
+      <div className="h-10 w-1/4 rounded bg-gray-200" />
     </div>
   );
 }

@@ -71,22 +71,23 @@ jest.mock('@/services/analytics-service', () => ({
 }));
 
 // Mock the ARviewer component
-jest.mock('@/components/ar/ar-viewer', () => ({
-  ARViewer: ({ onModelLoaded, type, modelUrl }: any) => {
-    // Simulate model loaded after render
-    React.useEffect(() => {
-      if (onModelLoaded) {
-        onModelLoaded();
-      }
-    }, [onModelLoaded]);
-    
-    return (
-      <div data-testid="ar-viewer" data-model-url={modelUrl} data-type={type}>
-        AR Viewer Mock
-      </div>
-    );
-  }
-}));
+jest.mock('@/components/ar/ar-viewer', () => {
+  const React = require('react');
+  return {
+    ARViewer: ({ onModelLoaded, type, modelUrl }: any) => {
+      React.useEffect(() => {
+        if (onModelLoaded) {
+          onModelLoaded();
+        }
+      }, [onModelLoaded]);
+      return (
+        <div data-testid="ar-viewer" data-model-url={modelUrl} data-type={type}>
+          AR Viewer Mock
+        </div>
+      );
+    }
+  };
+});
 
 describe('VirtualTryOn', () => {
   const mockModels = [

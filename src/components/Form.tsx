@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from './ui/button';
+import { Button } from './ui/Button';
 import { useCsrfToken } from '../utils/csrf';
 import { validateForm } from '../utils/form-validation';
 
@@ -81,13 +81,13 @@ export function Form({ onSuccess }: FormProps) {
           id="email"
           type="email"
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? 'email-error' : undefined}
         />
         {errors.email && (
-          <span id="email-error" className="text-red-500 text-sm" role="alert">
+          <span id="email-error" className="text-sm text-red-500" role="alert">
             {errors.email}
           </span>
         )}
@@ -101,20 +101,20 @@ export function Form({ onSuccess }: FormProps) {
           id="password"
           type="password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           aria-invalid={!!errors.password}
           aria-describedby={errors.password ? 'password-error' : undefined}
         />
         {errors.password && (
-          <span id="password-error" className="text-red-500 text-sm" role="alert">
+          <span id="password-error" className="text-sm text-red-500" role="alert">
             {errors.password}
           </span>
         )}
       </div>
 
       {errors.form && (
-        <div className="text-red-500 text-sm" role="alert">
+        <div className="text-sm text-red-500" role="alert">
           {errors.form}
         </div>
       )}

@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { PageLayout, Container, Grid, Stack } from '../';
@@ -15,7 +14,7 @@ describe('Layout Components', () => {
       render(
         <PageLayout {...defaultProps}>
           <div>Main Content</div>
-        </PageLayout>
+        </PageLayout>,
       );
 
       expect(screen.getByText('Header')).toBeInTheDocument();
@@ -28,7 +27,7 @@ describe('Layout Components', () => {
       render(
         <PageLayout>
           <div>Main Content</div>
-        </PageLayout>
+        </PageLayout>,
       );
 
       expect(screen.queryByText('Header')).not.toBeInTheDocument();
@@ -47,7 +46,7 @@ describe('Layout Components', () => {
           {...defaultProps}
         >
           <div>Main Content</div>
-        </PageLayout>
+        </PageLayout>,
       );
 
       expect(screen.getByTestId('page-layout')).toHaveClass('custom-layout');
@@ -62,7 +61,7 @@ describe('Layout Components', () => {
       render(
         <Container>
           <div>Container Content</div>
-        </Container>
+        </Container>,
       );
 
       expect(screen.getByText('Container Content')).toBeInTheDocument();
@@ -72,21 +71,21 @@ describe('Layout Components', () => {
       const { rerender } = render(
         <Container size="sm">
           <div>Content</div>
-        </Container>
+        </Container>,
       );
       expect(screen.getByTestId('container')).toHaveClass('container-sm');
 
       rerender(
         <Container size="md">
           <div>Content</div>
-        </Container>
+        </Container>,
       );
       expect(screen.getByTestId('container')).toHaveClass('container-md');
 
       rerender(
         <Container size="lg">
           <div>Content</div>
-        </Container>
+        </Container>,
       );
       expect(screen.getByTestId('container')).toHaveClass('container-lg');
     });
@@ -95,7 +94,7 @@ describe('Layout Components', () => {
       render(
         <Container fluid>
           <div>Content</div>
-        </Container>
+        </Container>,
       );
 
       expect(screen.getByTestId('container')).toHaveClass('container-fluid');
@@ -105,7 +104,7 @@ describe('Layout Components', () => {
       render(
         <Container padding="p-8">
           <div>Content</div>
-        </Container>
+        </Container>,
       );
 
       expect(screen.getByTestId('container')).toHaveClass('p-8');
@@ -119,7 +118,7 @@ describe('Layout Components', () => {
           <div>Item 1</div>
           <div>Item 2</div>
           <div>Item 3</div>
-        </Grid>
+        </Grid>,
       );
 
       expect(screen.getByText('Item 1')).toBeInTheDocument();
@@ -133,7 +132,7 @@ describe('Layout Components', () => {
           <div>Item 1</div>
           <div>Item 2</div>
           <div>Item 3</div>
-        </Grid>
+        </Grid>,
       );
 
       expect(screen.getByTestId('grid')).toHaveClass('grid-cols-3');
@@ -143,7 +142,7 @@ describe('Layout Components', () => {
       render(
         <Grid cols={{ sm: 1, md: 2, lg: 3 }}>
           <div>Item</div>
-        </Grid>
+        </Grid>,
       );
 
       const grid = screen.getByTestId('grid');
@@ -157,7 +156,7 @@ describe('Layout Components', () => {
         <Grid gap={4}>
           <div>Item 1</div>
           <div>Item 2</div>
-        </Grid>
+        </Grid>,
       );
 
       expect(screen.getByTestId('grid')).toHaveClass('gap-4');
@@ -171,7 +170,7 @@ describe('Layout Components', () => {
           <div>Item 1</div>
           <div>Item 2</div>
           <div>Item 3</div>
-        </Stack>
+        </Stack>,
       );
 
       expect(screen.getByText('Item 1')).toBeInTheDocument();
@@ -184,7 +183,7 @@ describe('Layout Components', () => {
         <Stack spacing={4}>
           <div>Item 1</div>
           <div>Item 2</div>
-        </Stack>
+        </Stack>,
       );
 
       expect(screen.getByTestId('stack')).toHaveClass('space-y-4');
@@ -195,7 +194,7 @@ describe('Layout Components', () => {
         <Stack direction="horizontal" spacing={4}>
           <div>Item 1</div>
           <div>Item 2</div>
-        </Stack>
+        </Stack>,
       );
 
       expect(screen.getByTestId('stack')).toHaveClass('flex-row');
@@ -207,7 +206,7 @@ describe('Layout Components', () => {
         <Stack align="center" justify="between">
           <div>Item 1</div>
           <div>Item 2</div>
-        </Stack>
+        </Stack>,
       );
 
       const stack = screen.getByTestId('stack');
@@ -226,7 +225,7 @@ describe('Layout Components', () => {
           sidebar={<div>Sidebar</div>}
         >
           <div>Main Content</div>
-        </PageLayout>
+        </PageLayout>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -236,7 +235,7 @@ describe('Layout Components', () => {
       const { container } = render(
         <Container>
           <div>Container Content</div>
-        </Container>
+        </Container>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -248,7 +247,7 @@ describe('Layout Components', () => {
           <div>Item 1</div>
           <div>Item 2</div>
           <div>Item 3</div>
-        </Grid>
+        </Grid>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -260,7 +259,7 @@ describe('Layout Components', () => {
           <div>Item 1</div>
           <div>Item 2</div>
           <div>Item 3</div>
-        </Stack>
+        </Stack>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();

@@ -25,7 +25,7 @@ class RedisCache {
     hits: 0,
     misses: 0,
     sets: 0,
-    deletes: 0
+    deletes: 0,
   };
 
   constructor(redis: Redis, config: CacheConfig) {
@@ -34,8 +34,8 @@ class RedisCache {
       ...config,
       compression: {
         enabled: config.compression?.enabled ?? true,
-        threshold: config.compression?.threshold ?? 1024
-      }
+        threshold: config.compression?.threshold ?? 1024,
+      },
     };
   }
 
@@ -67,17 +67,17 @@ class RedisCache {
     const fullKey = this.getFullKey(key);
     try {
       const value = await this.redis.get(fullKey);
-      
+
       if (!value) {
         this.stats.misses++;
         return null;
       }
 
       this.stats.hits++;
-      
+
       // Check if value is compressed (starts with gzip magic number)
       const isCompressed = value.startsWith('\x1f\x8b');
-      const decompressedValue = isCompressed 
+      const decompressedValue = isCompressed
         ? await this.decompressValue(Buffer.from(value))
         : value;
 
@@ -92,12 +92,12 @@ class RedisCache {
   public async set<T>(
     key: string,
     value: T,
-    ttl: number = this.config.defaultTTL
+    ttl: number = this.config.defaultTTL,
   ): Promise<boolean> {
     const fullKey = this.getFullKey(key);
     try {
       const stringValue = JSON.stringify(value);
-      
+
       let finalValue = stringValue;
       if (
         this.config.compression?.enabled &&
@@ -164,7 +164,7 @@ class RedisCache {
   }
 
   public async getMultiple<T>(keys: string[]): Promise<(T | null)[]> {
-    const fullKeys = keys.map(key => this.getFullKey(key));
+    const fullKeys = keys.map((key) => this.getFullKey(key));
     try {
       const values = await this.redis.mget(...fullKeys);
       return await Promise.all(
@@ -181,7 +181,7 @@ class RedisCache {
             : value;
 
           return JSON.parse(decompressedValue);
-        })
+        }),
       );
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -192,10 +192,10 @@ class RedisCache {
 
   public async setMultiple<T>(
     entries: Array<{ key: string; value: T }>,
-    ttl: number = this.config.defaultTTL
+    ttl: number = this.config.defaultTTL,
   ): Promise<boolean[]> {
     const pipeline = this.redis.pipeline();
-    
+
     try {
       const compressionPromises = entries.map(async ({ key, value }) => {
         const fullKey = this.getFullKey(key);
@@ -216,7 +216,7 @@ class RedisCache {
 
       await Promise.all(compressionPromises);
       const results = await pipeline.exec();
-      
+
       if (!results) return entries.map(() => false);
 
       return results.map(([error, result]) => {
@@ -242,9 +242,9 @@ class RedisCache {
       hits: 0,
       misses: 0,
       sets: 0,
-      deletes: 0
+      deletes: 0,
     };
   }
 }
 
-export default RedisCache; 
+export default RedisCache;

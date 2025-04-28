@@ -67,17 +67,17 @@ export default function ResetPasswordPage() {
 
   if (isSuccessful) {
     return (
-      <div className="container max-w-md mx-auto py-8 px-4">
-        <div className="flex flex-col items-center mb-8">
-          <Icons.logo className="h-12 w-12 mb-4 text-primary" />
-          <h1 className="text-2xl font-bold mb-2">Password reset successful</h1>
-          <p className="text-muted-foreground text-center">
+      <div className="container mx-auto max-w-md px-4 py-8">
+        <div className="mb-8 flex flex-col items-center">
+          <Icons.logo className="text-primary mb-4 h-12 w-12" />
+          <h1 className="mb-2 text-2xl font-bold">Password reset successful</h1>
+          <p className="text-center text-muted-foreground">
             Your password has been updated successfully. You can now log in with your new password.
           </p>
         </div>
         <Link
           href="/auth/login"
-          className="block w-full bg-primary text-primary-foreground py-2 rounded-md font-medium hover:bg-primary/90 transition-colors text-center"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full rounded-md py-2 text-center font-medium transition-colors"
         >
           Go to login
         </Link>
@@ -86,15 +86,15 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="container max-w-md mx-auto py-8 px-4">
-      <div className="flex flex-col items-center mb-8">
-        <Icons.logo className="h-12 w-12 mb-4 text-primary" />
-        <h1 className="text-2xl font-bold mb-2">Reset your password</h1>
-        <p className="text-muted-foreground text-center">Enter your new password below.</p>
+    <div className="container mx-auto max-w-md px-4 py-8">
+      <div className="mb-8 flex flex-col items-center">
+        <Icons.logo className="text-primary mb-4 h-12 w-12" />
+        <h1 className="mb-2 text-2xl font-bold">Reset your password</h1>
+        <p className="text-center text-muted-foreground">Enter your new password below.</p>
       </div>
 
       {error && (
-        <div className="bg-destructive/20 text-destructive p-3 rounded-md mb-4">{error}</div>
+        <div className="mb-4 rounded-md bg-destructive/20 p-3 text-destructive">{error}</div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -107,10 +107,10 @@ export default function ResetPasswordPage() {
             type="password"
             placeholder="••••••••"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
             minLength={8}
-            className="w-full p-2 border rounded-md"
+            className="w-full rounded-md border p-2"
             disabled={isLoading}
           />
           <p className="text-xs text-muted-foreground">
@@ -127,23 +127,23 @@ export default function ResetPasswordPage() {
             type="password"
             placeholder="••••••••"
             value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            className="w-full p-2 border rounded-md"
+            className="w-full rounded-md border p-2"
             disabled={isLoading}
           />
         </div>
 
         <button
           type="submit"
-          className="w-full bg-primary text-primary-foreground py-2 rounded-md font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 w-full rounded-md py-2 font-medium transition-colors disabled:opacity-50"
           disabled={isLoading}
         >
           {isLoading ? 'Resetting password...' : 'Reset password'}
         </button>
       </form>
 
-      <p className="text-center mt-6 text-sm text-muted-foreground">
+      <p className="mt-6 text-center text-sm text-muted-foreground">
         Remember your password?{' '}
         <Link href="/auth/login" className="text-primary hover:underline">
           Back to login

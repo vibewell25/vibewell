@@ -36,7 +36,7 @@ export function Slider({
       return;
     }
 
-    const clampedValues = newValues.map(v => Math.max(min, Math.min(max, v)));
+    const clampedValues = newValues.map((v) => Math.max(min, Math.min(max, v)));
 
     setInternalValues(clampedValues);
     onValueChange?.(clampedValues);
@@ -77,7 +77,7 @@ export function Slider({
         const pointerPos = e.clientX;
         const pointerPercent = Math.max(
           0,
-          Math.min(100, ((pointerPos - trackRect.left) / trackWidth) * 100)
+          Math.min(100, ((pointerPos - trackRect.left) / trackWidth) * 100),
         );
         newValues[i] = percentToValue(pointerPercent);
       }
@@ -125,9 +125,9 @@ export function Slider({
         {currentValues.map((val, index) => (
           <div
             key={index}
-            className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white border-2 border-indigo-500 shadow cursor-pointer focus:outline-none"
+            className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full border-2 border-indigo-500 bg-white shadow focus:outline-none"
             style={{ left: `${valueToPercent(val)}%` }}
-            onPointerDown={e => handlePointerDown(e, index)}
+            onPointerDown={(e) => handlePointerDown(e, index)}
             role="slider"
             aria-valuemin={min}
             aria-valuemax={max}

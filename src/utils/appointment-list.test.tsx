@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { AppointmentList } from '../components/booking/appointment-list';
 import { updateAppointmentStatus } from '../implementation-files/appointments-create-logic';

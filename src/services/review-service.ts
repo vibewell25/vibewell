@@ -155,7 +155,7 @@ export class ReviewService {
         };
       } = {};
 
-      reviews.forEach(review => {
+      reviews.forEach((review) => {
         if (review.sentiment) {
           // Update sentiment breakdown
           sentimentBreakdown[review.sentiment.sentiment]++;
@@ -171,7 +171,7 @@ export class ReviewService {
             }
             aspectsMap[aspect].count++;
             aspectsMap[aspect].totalScore += data.score;
-            data.keywords.forEach(keyword => aspectsMap[aspect].keywords.add(keyword));
+            data.keywords.forEach((keyword) => aspectsMap[aspect].keywords.add(keyword));
           });
         }
       });

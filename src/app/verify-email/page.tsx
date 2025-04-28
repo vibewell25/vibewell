@@ -1,11 +1,7 @@
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/database/client';
 
-export default async function VerifyEmail({
-  searchParams,
-}: {
-  searchParams: { token?: string };
-}) {
+export default async function VerifyEmail({ searchParams }: { searchParams: { token?: string } }) {
   const { token } = searchParams;
 
   if (!token) {

@@ -1,9 +1,9 @@
 /**
  * Standardized Form Validation Utility using Zod
- * 
+ *
  * This utility provides a consistent interface for validating forms across the Vibewell platform
  * using Zod schemas. It includes helper functions for common validation patterns.
- * 
+ *
  * NOTE: There are some TypeScript linter warnings related to Zod's API that we can't easily fix:
  * - RefinementCtx.data is used at runtime but not defined in TypeScript types
  * - Some operations with ctx.path in refinements cause type errors but work correctly
@@ -39,13 +39,13 @@ export class ValidationError extends Error {
 
 /**
  * Formats ZodError into a user-friendly errors object
- * 
+ *
  * @param error - ZodError from validation attempt
  * @returns Object with field keys and error message values
  */
 export function formatZodError(error: ZodError): FormErrors {
   const formattedErrors: FormErrors = {};
-  
+
   error.errors.forEach((err) => {
     if (err.path.length > 0) {
       const field = err.path.join('.');
@@ -55,25 +55,22 @@ export function formatZodError(error: ZodError): FormErrors {
       formattedErrors['form'] = err.message;
     }
   });
-  
+
   return formattedErrors;
 }
 
 /**
  * Validates form data against a Zod schema
- * 
+ *
  * @param data - Form data to validate
  * @param schema - Zod schema to validate against
  * @returns Validation result with isValid flag and errors
  */
-export function validateForm<T>(
-  data: T,
-  schema: z.ZodType<T>
-): ValidationResult {
+export function validateForm<T>(data: T, schema: z.ZodType<T>): ValidationResult {
   try {
     // Attempt to parse the data with the schema
     schema.parse(data);
-    
+
     // If successful, return valid result
     return { isValid: true, errors: {} };
   } catch (error) {
@@ -82,19 +79,19 @@ export function validateForm<T>(
       const errors = formatZodError(error);
       return { isValid: false, errors };
     }
-    
+
     // Handle unexpected errors
     console.error('Unexpected validation error:', error);
-    return { 
-      isValid: false, 
-      errors: { 'form': 'An unexpected validation error occurred.' } 
+    return {
+      isValid: false,
+      errors: { form: 'An unexpected validation error occurred.' },
     };
   }
 }
 
 /**
  * Validates a single field against a Zod schema
- * 
+ *
  * @param fieldName - The field name to validate
  * @param value - The value to validate
  * @param schema - The Zod schema that includes this field
@@ -103,17 +100,17 @@ export function validateForm<T>(
 export function validateField<T>(
   fieldName: keyof T & string,
   value: any,
-  schema: z.ZodObject<any>
+  schema: z.ZodObject<any>,
 ): string | undefined {
   try {
     // Extract the field schema
     const fieldSchema = schema.shape[fieldName];
-    
+
     if (!fieldSchema) {
       console.warn(`No schema found for field: ${fieldName}`);
       return undefined;
     }
-    
+
     // Validate just this field
     fieldSchema.parse(value);
     return undefined;
@@ -132,14 +129,13 @@ export const CommonSchemas = {
   /**
    * Basic email validation schema
    */
-  email: z.string()
-    .min(1, 'Email is required')
-    .email('Please enter a valid email address'),
+  email: z.string().min(1, 'Email is required').email('Please enter a valid email address'),
 
   /**
    * Strong password validation schema
    */
-  password: z.string()
+  password: z
+    .string()
     .min(8, 'Password must be at least 8 characters')
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
@@ -149,14 +145,16 @@ export const CommonSchemas = {
   /**
    * Name validation schema
    */
-  name: z.string()
+  name: z
+    .string()
     .min(2, 'Name must be at least 2 characters')
     .max(100, 'Name must be less than 100 characters'),
 
   /**
    * Phone number validation schema (US format)
    */
-  phone: z.string()
+  phone: z
+    .string()
     .regex(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/, 'Invalid phone number format')
     .optional()
     .or(z.literal('')),
@@ -164,7 +162,8 @@ export const CommonSchemas = {
   /**
    * Age validation schema (18+ years)
    */
-  age: z.number()
+  age: z
+    .number()
     .int('Age must be a whole number')
     .min(18, 'You must be at least 18 years old')
     .max(150, 'Age cannot exceed 150'),
@@ -172,29 +171,27 @@ export const CommonSchemas = {
   /**
    * Date validation schema
    */
-  date: z.date()
+  date: z
+    .date()
     .min(new Date('1900-01-01'), 'Date must be after 1900')
     .max(new Date(), 'Date cannot be in the future'),
 
   /**
    * URL validation schema
    */
-  url: z.string()
-    .url('Please enter a valid URL')
-    .optional()
-    .or(z.literal('')),
+  url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
 };
 
 /**
  * Create a schema that ensures a field matches another field in the form
- * 
+ *
  * @param field - The field this should match
  * @param message - The error message if they don't match
  * @returns A Zod refinement function to add to a schema
  */
 export function matches<T extends Record<string, any>>(
-  field: keyof T, 
-  message: string
+  field: keyof T,
+  message: string,
 ): (value: string, ctx: z.RefinementCtx) => boolean {
   return (value: string, ctx) => {
     const data = ctx.path[0] ? ctx.path[0][0] : null;
@@ -216,28 +213,26 @@ export function matches<T extends Record<string, any>>(
 /**
  * Helper function to create a schema for confirming passwords
  * This ensures the confirmPassword field matches the password field
- * 
+ *
  * @returns A schema for a password confirmation form
  */
 export function createPasswordConfirmationSchema() {
   const passwordSchema = CommonSchemas.password;
-  
-  return z.object({
-    password: passwordSchema,
-    confirmPassword: z.string()
-      .min(1, 'Please confirm your password')
-  }).refine(
-    (data) => data.password === data.confirmPassword,
-    {
+
+  return z
+    .object({
+      password: passwordSchema,
+      confirmPassword: z.string().min(1, 'Please confirm your password'),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords don't match",
-      path: ["confirmPassword"], // path of error
-    }
-  );
+      path: ['confirmPassword'], // path of error
+    });
 }
 
 /**
  * Helper function to test if a field is empty (undefined, null, or empty string)
- * 
+ *
  * @param value - The value to check
  * @returns True if the value is empty
  */
@@ -247,26 +242,26 @@ export function isEmpty(value: any): boolean {
 
 /**
  * Helper function to apply conditional validation based on another field's value
- * 
+ *
  * @param condition - The condition function that determines if validation should apply
  * @param schema - The schema to apply conditionally
  * @returns A refined validation function
  */
 export function applyIf<T>(
   condition: (data: T) => boolean,
-  schema: z.ZodType<any>
+  schema: z.ZodType<any>,
 ): (value: any, ctx: z.RefinementCtx) => boolean {
   return (value: any, ctx: z.RefinementCtx) => {
     // We can safely cast ctx.data to T since it's coming from a Zod validation context
     // @ts-ignore - RefinementCtx.data is available at runtime but not in types
     const typedData = ctx.data as T;
-    
+
     if (condition(typedData)) {
       try {
         schema.parse(value);
       } catch (error) {
         if (error instanceof ZodError) {
-          error.errors.forEach(err => {
+          error.errors.forEach((err) => {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
               message: err.message,
@@ -279,4 +274,4 @@ export function applyIf<T>(
     }
     return true;
   };
-} 
+}

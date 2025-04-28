@@ -1,11 +1,9 @@
-'use client';
-
+'use client';;
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 import { Calendar } from '@/components/ui/calendar';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import {
@@ -104,7 +102,7 @@ function PaymentForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <PaymentElement />
-      {error && <div className="text-red-500 text-sm">{error}</div>}
+      {error && <div className="text-sm text-red-500">{error}</div>}
       <Button type="submit" disabled={!stripe || processing} className="w-full">
         {processing ? 'Processing...' : 'Pay and Confirm Booking'}
       </Button>
@@ -218,7 +216,7 @@ export function BookingForm({
     try {
       setIsLoading(true);
 
-      const selectedService = SERVICES.find(s => s.id === data.serviceId);
+      const selectedService = SERVICES.find((s) => s.id === data.serviceId);
       const bookingData = {
         providerId,
         clientId: user?.id,
@@ -284,22 +282,22 @@ export function BookingForm({
 
   return (
     <ErrorBoundary>
-      <div className={`p-6 bg-white rounded-lg shadow-md ${className}`}>
-        <h2 className="text-xl font-bold mb-6">Book an Appointment with {providerName}</h2>
+      <div className={`rounded-lg bg-white p-6 shadow-md ${className}`}>
+        <h2 className="mb-6 text-xl font-bold">Book an Appointment with {providerName}</h2>
 
         {bookingStep === 'details' ? (
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             {/* Date Selection */}
             <div>
-              <Label htmlFor="date" className="block mb-2">
+              <Label htmlFor="date" className="mb-2 block">
                 Select Date
               </Label>
-              <div className="border rounded-md p-4">
+              <div className="rounded-md border p-4">
                 <Calendar
                   mode="single"
                   selected={date}
                   onSelect={setDate}
-                  disabled={date => {
+                  disabled={(date) => {
                     // Disable dates in the past and weekends
                     const now = new Date();
                     now.setHours(0, 0, 0, 0);
@@ -313,7 +311,7 @@ export function BookingForm({
 
             {/* Time Slot Selection */}
             <div>
-              <Label htmlFor="timeSlot" className="block mb-2">
+              <Label htmlFor="timeSlot" className="mb-2 block">
                 Select Time
               </Label>
               {date ? (
@@ -322,7 +320,7 @@ export function BookingForm({
                 ) : (
                   <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
                     {availableTimeSlots.length > 0 ? (
-                      availableTimeSlots.map(slot => (
+                      availableTimeSlots.map((slot) => (
                         <Button
                           key={slot}
                           type="button"
@@ -334,14 +332,14 @@ export function BookingForm({
                         </Button>
                       ))
                     ) : (
-                      <p className="col-span-full text-center py-3 text-red-500">
+                      <p className="col-span-full py-3 text-center text-red-500">
                         No available time slots for this date
                       </p>
                     )}
                   </div>
                 )
               ) : (
-                <p className="text-muted-foreground italic py-3">
+                <p className="py-3 italic text-muted-foreground">
                   Please select a date to see available time slots
                 </p>
               )}
@@ -349,7 +347,7 @@ export function BookingForm({
 
             {/* Service Selection */}
             <div>
-              <Label htmlFor="service" className="block mb-2">
+              <Label htmlFor="service" className="mb-2 block">
                 Select Service
               </Label>
               <Select value={serviceId} onValueChange={setServiceId}>
@@ -357,7 +355,7 @@ export function BookingForm({
                   <SelectValue placeholder="Select a service" />
                 </SelectTrigger>
                 <SelectContent>
-                  {SERVICES.map(service => (
+                  {SERVICES.map((service) => (
                     <SelectItem key={service.id} value={service.id}>
                       {service.name} - ${service.price} ({service.duration} min)
                     </SelectItem>
@@ -368,21 +366,21 @@ export function BookingForm({
 
             {/* Notes */}
             <div>
-              <Label htmlFor="notes" className="block mb-2">
+              <Label htmlFor="notes" className="mb-2 block">
                 Additional Notes
               </Label>
               <Textarea
                 id="notes"
                 placeholder="Any special requirements or information for your provider"
                 value={notes}
-                onChange={e => form.setValue('notes', e.target.value)}
+                onChange={(e) => form.setValue('notes', e.target.value)}
                 rows={3}
               />
             </div>
 
             {/* Contact Preference */}
             <div>
-              <Label className="block mb-2">Preferred Contact Method</Label>
+              <Label className="mb-2 block">Preferred Contact Method</Label>
               <RadioGroup
                 value={contactPreference}
                 onValueChange={setContactPreference}
@@ -408,7 +406,7 @@ export function BookingForm({
               <Checkbox
                 id="reminders"
                 checked={sendReminders}
-                onCheckedChange={checked => form.setValue('sendReminders', checked as boolean)}
+                onCheckedChange={(checked) => form.setValue('sendReminders', checked as boolean)}
               />
               <Label htmlFor="reminders">Send me appointment reminders</Label>
             </div>
@@ -418,7 +416,7 @@ export function BookingForm({
               <Checkbox
                 id="terms"
                 checked={agreeToTerms}
-                onCheckedChange={checked => form.setValue('agreeToTerms', checked as boolean)}
+                onCheckedChange={(checked) => form.setValue('agreeToTerms', checked as boolean)}
                 required
               />
               <Label htmlFor="terms" className="text-sm">
@@ -437,7 +435,7 @@ export function BookingForm({
         ) : (
           <div className="space-y-6">
             <div className="mb-4">
-              <h3 className="text-lg font-semibold mb-2">Payment Details</h3>
+              <h3 className="mb-2 text-lg font-semibold">Payment Details</h3>
               <p className="text-gray-600">Complete your payment to confirm your booking</p>
             </div>
 
@@ -450,7 +448,7 @@ export function BookingForm({
             <Button
               variant="outline"
               onClick={() => setBookingStep('details')}
-              className="w-full mt-4"
+              className="mt-4 w-full"
             >
               Back to Booking Details
             </Button>

@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { axe } from 'jest-axe';
@@ -44,7 +43,7 @@ describe('Media Components', () => {
     it('renders gallery with images', () => {
       render(<ImageGallery images={mockImages} />);
 
-      mockImages.forEach(image => {
+      mockImages.forEach((image) => {
         expect(screen.getByAltText(image.alt)).toBeInTheDocument();
       });
     });
@@ -82,7 +81,7 @@ describe('Media Components', () => {
       render(<ImageGallery images={mockImages} lazyLoad={true} />);
 
       const images = screen.getAllByRole('img');
-      images.forEach(image => {
+      images.forEach((image) => {
         expect(image).toHaveAttribute('loading', 'lazy');
       });
     });
@@ -278,11 +277,11 @@ describe('Media Components', () => {
         <>
           <VideoPlayer src={mockVideo.src} />
           <AudioPlayer src={mockAudio.src} />
-        </>
+        </>,
       );
 
       const controls = screen.getAllByRole('button');
-      controls.forEach(control => {
+      controls.forEach((control) => {
         expect(control).toHaveAttribute('tabIndex', '0');
       });
     });

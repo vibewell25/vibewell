@@ -55,7 +55,7 @@ export function getUserCollections(): Collection[] {
  */
 export function getCollectionById(id: string): Collection | null {
   const collections = getUserCollections();
-  return collections.find(collection => collection.id === id) || null;
+  return collections.find((collection) => collection.id === id) || null;
 }
 
 /**
@@ -65,7 +65,7 @@ export function createCollection(
   name: string,
   description: string = '',
   icon: string = '',
-  isPublic: boolean = false
+  isPublic: boolean = false,
 ): Collection {
   if (typeof window === 'undefined') {
     throw new Error('Cannot create collection in server context');
@@ -101,7 +101,7 @@ export function createCollection(
  */
 export function updateCollection(
   id: string,
-  updates: Partial<Omit<Collection, 'id' | 'createdAt' | 'resourceIds'>>
+  updates: Partial<Omit<Collection, 'id' | 'createdAt' | 'resourceIds'>>,
 ): Collection | null {
   if (typeof window === 'undefined') {
     throw new Error('Cannot update collection in server context');
@@ -109,7 +109,7 @@ export function updateCollection(
 
   try {
     const collections = getUserCollections();
-    const index = collections.findIndex(c => c.id === id);
+    const index = collections.findIndex((c) => c.id === id);
 
     if (index === -1) {
       return null;
@@ -141,7 +141,7 @@ export function deleteCollection(id: string): boolean {
 
   try {
     const collections = getUserCollections();
-    const filteredCollections = collections.filter(c => c.id !== id);
+    const filteredCollections = collections.filter((c) => c.id !== id);
 
     if (filteredCollections.length === collections.length) {
       return false; // Collection not found
@@ -170,7 +170,7 @@ export function addToCollection(collectionId: string, resource: ResourceForColle
   try {
     // Get the collection
     const collections = getUserCollections();
-    const collectionIndex = collections.findIndex(c => c.id === collectionId);
+    const collectionIndex = collections.findIndex((c) => c.id === collectionId);
 
     if (collectionIndex === -1) {
       return false; // Collection not found
@@ -221,14 +221,14 @@ export function removeFromCollection(collectionId: string, resourceId: string): 
   try {
     // Update the collection's resource IDs
     const collections = getUserCollections();
-    const collectionIndex = collections.findIndex(c => c.id === collectionId);
+    const collectionIndex = collections.findIndex((c) => c.id === collectionId);
 
     if (collectionIndex === -1) {
       return false; // Collection not found
     }
 
     const collection = collections[collectionIndex];
-    const updatedResourceIds = collection.resourceIds.filter(id => id !== resourceId);
+    const updatedResourceIds = collection.resourceIds.filter((id) => id !== resourceId);
 
     if (updatedResourceIds.length === collection.resourceIds.length) {
       return false; // Resource not in collection
@@ -275,7 +275,7 @@ export function getCollectionResources(collectionId: string): ResourceForCollect
     const collectionItems = getCollectionItems();
     const resources: ResourceForCollection[] = [];
 
-    collection.resourceIds.forEach(resourceId => {
+    collection.resourceIds.forEach((resourceId) => {
       const itemKey = `${collectionId}:${resourceId}`;
       const item = collectionItems[itemKey];
 
@@ -312,7 +312,7 @@ export function isInCollection(collectionId: string, resourceId: string): boolea
  */
 export function getResourceCollections(resourceId: string): Collection[] {
   const collections = getUserCollections();
-  return collections.filter(collection => collection.resourceIds.includes(resourceId));
+  return collections.filter((collection) => collection.resourceIds.includes(resourceId));
 }
 
 /**

@@ -22,7 +22,7 @@ const REPORTS_DIR = path.join(process.cwd(), 'reports', 'analytics');
  * @returns Path to the generated report file(s)
  */
 export async function generateAnalyticsReport(
-  options: ReportOptions = {}
+  options: ReportOptions = {},
 ): Promise<{ htmlPath: string; pdfPath: string }> {
   try {
     // Ensure reports directory exists
@@ -100,14 +100,14 @@ function prepareReportData(data: any, options: ReportOptions): AnalyticsReportDa
       <td>${product.tryOns.toLocaleString()}</td>
       <td>${product.conversionRate.toFixed(2)}%</td>
     </tr>
-  `
+  `,
     )
     .join('');
 
   // Generate recommendations based on data
   const recommendations = options.includeRecommendations ? generateRecommendations(data) : [];
 
-  const recommendationsHtml = recommendations.map(rec => `<li>${rec}</li>`).join('');
+  const recommendationsHtml = recommendations.map((rec) => `<li>${rec}</li>`).join('');
 
   // Prepare chart data in the format expected by Chart.js
   const engagementData = {
@@ -195,18 +195,18 @@ function generateRecommendations(data: any): string[] {
   // Check for declining conversion rate
   if (data.conversionRate < data.previousPeriod.conversionRate) {
     recommendations.push(
-      'Conversion rate has decreased compared to the previous period. Consider reviewing your product pages and checkout process for potential improvements.'
+      'Conversion rate has decreased compared to the previous period. Consider reviewing your product pages and checkout process for potential improvements.',
     );
   }
 
   // Check for popular but low-converting products
   const lowConvertingPopular = data.topProducts.find(
-    (p: any) => p.views > 1000 && p.conversionRate < 2
+    (p: any) => p.views > 1000 && p.conversionRate < 2,
   );
 
   if (lowConvertingPopular) {
     recommendations.push(
-      `${lowConvertingPopular.name} has high views but low conversion. Consider improving product presentation or pricing strategy.`
+      `${lowConvertingPopular.name} has high views but low conversion. Consider improving product presentation or pricing strategy.`,
     );
   }
 
@@ -214,18 +214,18 @@ function generateRecommendations(data: any): string[] {
   if (data.averageDuration < 120) {
     // Less than 2 minutes
     recommendations.push(
-      'Average session duration is relatively short. Consider adding more engaging content or improving the user experience to keep users on the platform longer.'
+      'Average session duration is relatively short. Consider adding more engaging content or improving the user experience to keep users on the platform longer.',
     );
   }
 
   // Add general recommendations
   recommendations.push(
-    'Regularly review your top products and optimize their listings to maintain and improve conversion rates.'
+    'Regularly review your top products and optimize their listings to maintain and improve conversion rates.',
   );
 
   if (data.mobilePercentage > 60) {
     recommendations.push(
-      'Most of your users access the platform via mobile devices. Ensure your mobile experience is fully optimized.'
+      'Most of your users access the platform via mobile devices. Ensure your mobile experience is fully optimized.',
     );
   }
 
@@ -255,7 +255,7 @@ if (require.main === module) {
       console.log(`HTML report: ${htmlPath}`);
       console.log(`PDF report: ${pdfPath}`);
     })
-    .catch(error => {
+    .catch((error) => {
       console.error('Report generation failed:', error);
       process.exit(1);
     });

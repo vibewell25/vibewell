@@ -24,7 +24,7 @@ export class HairTryOnService {
       75,
       container.clientWidth / container.clientHeight,
       0.1,
-      1000
+      1000,
     );
 
     // Initialize renderer with WebGL
@@ -77,7 +77,7 @@ export class HairTryOnService {
       const textureLoader = new THREE.TextureLoader();
       const texture = await textureLoader.loadAsync(model.textureUrl);
 
-      this.currentModel.traverse(child => {
+      this.currentModel.traverse((child) => {
         if (child instanceof THREE.Mesh) {
           child.material.map = texture;
           child.material.needsUpdate = true;
@@ -99,7 +99,7 @@ export class HairTryOnService {
   public updateHairColor(color: string): void {
     if (!this.currentModel) return;
 
-    this.currentModel.traverse(child => {
+    this.currentModel.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         child.material.color = new THREE.Color(color);
         child.material.needsUpdate = true;
@@ -146,11 +146,11 @@ export class HairTryOnService {
   public dispose(): void {
     if (this.currentModel) {
       this.scene.remove(this.currentModel);
-      this.currentModel.traverse(child => {
+      this.currentModel.traverse((child) => {
         if (child instanceof THREE.Mesh) {
           child.geometry.dispose();
           if (Array.isArray(child.material)) {
-            child.material.forEach(material => material.dispose());
+            child.material.forEach((material) => material.dispose());
           } else {
             child.material.dispose();
           }

@@ -29,7 +29,7 @@ export function detectDeviceType(): DeviceType {
 
   // Check for mobile devices via user agent
   const isMobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
+    navigator.userAgent,
   );
 
   // Get the screen width
@@ -106,7 +106,7 @@ export function matchesBreakpoint(breakpoint: keyof typeof BREAKPOINTS): boolean
  * Create a custom hook to detect screen size changes
  */
 export function createResponsiveListener(
-  callback: (deviceType: DeviceType, dimensions: { width: number; height: number }) => void
+  callback: (deviceType: DeviceType, dimensions: { width: number; height: number }) => void,
 ): () => void {
   if (typeof window === 'undefined') {
     return () => {}; // No-op for server-side rendering

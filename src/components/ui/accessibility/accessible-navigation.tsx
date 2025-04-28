@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useKeyboardInteraction } from './accessibility-utils';
 
 export interface NavItem {
@@ -36,7 +36,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
     () => {
       setActiveItem(null);
       setExpandedItems(new Set());
-    }
+    },
   );
 
   // Handle arrow key navigation
@@ -69,7 +69,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
         case 'ArrowRight':
           e.preventDefault();
           if (currentItem.getAttribute('aria-expanded') === 'false') {
-            setExpandedItems(prev => {
+            setExpandedItems((prev) => {
               const newSet = new Set(prev);
               newSet.add(activeItem);
               return newSet;
@@ -80,7 +80,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
         case 'ArrowLeft':
           e.preventDefault();
           if (currentItem.getAttribute('aria-expanded') === 'true') {
-            setExpandedItems(prev => {
+            setExpandedItems((prev) => {
               const newSet = new Set(prev);
               newSet.delete(activeItem);
               return newSet;
@@ -113,7 +113,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
               setActiveItem(null);
             }
           }}
-          className="flex items-center justify-between py-2 px-3 hover:bg-gray-100 rounded-md"
+          className="flex items-center justify-between rounded-md px-3 py-2 hover:bg-gray-100"
         >
           <a href={item.href} className="flex-1" aria-label={item.description}>
             {item.label}
@@ -123,7 +123,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
             <button
               aria-label={isExpanded ? 'Collapse submenu' : 'Expand submenu'}
               onClick={() => {
-                setExpandedItems(prev => {
+                setExpandedItems((prev) => {
                   const newSet = new Set(prev);
                   if (isExpanded) {
                     newSet.delete(item.label);
@@ -133,7 +133,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
                   return newSet;
                 });
               }}
-              className="ml-2 p-1 hover:bg-gray-200 rounded"
+              className="ml-2 rounded p-1 hover:bg-gray-200"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +157,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
 
         {hasChildren && isExpanded && item.children && (
           <ul role="menu" aria-label={`${item.label} submenu`} className="mt-1">
-            {item.children.map(child => renderNavItem(child, level + 1))}
+            {item.children.map((child) => renderNavItem(child, level + 1))}
           </ul>
         )}
       </li>
@@ -167,7 +167,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
   return (
     <nav ref={navRef} role="navigation" aria-label="Main navigation" className={className}>
       <ul role="menubar" className="space-y-1">
-        {items.map(item => renderNavItem(item))}
+        {items.map((item) => renderNavItem(item))}
       </ul>
     </nav>
   );

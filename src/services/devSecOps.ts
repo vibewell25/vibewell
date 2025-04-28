@@ -111,7 +111,7 @@ export class DevSecOpsService {
       }
 
       const response = await fetch(
-        `${sonarUrl}/api/issues/search?projectKeys=${projectKey}&types=VULNERABILITY`
+        `${sonarUrl}/api/issues/search?projectKeys=${projectKey}&types=VULNERABILITY`,
       );
       const data = await response.json();
 
@@ -192,7 +192,7 @@ export class DevSecOpsService {
       const response = await fetch(`${zapUrl}/JSON/spider/view/status/`);
       const data = await response.json();
       if (data.status === '100') break;
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   }
 
@@ -204,7 +204,7 @@ export class DevSecOpsService {
       const response = await fetch(`${zapUrl}/JSON/ascan/view/status/`);
       const data = await response.json();
       if (data.status === '100') break;
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   }
 
@@ -212,11 +212,11 @@ export class DevSecOpsService {
    * Calculate overall severity from findings
    */
   private calculateOverallSeverity(
-    findings: Array<{ severity: string }>
+    findings: Array<{ severity: string }>,
   ): SecurityScanResult['severity'] {
-    if (findings.some(f => f.severity === 'critical')) return 'critical';
-    if (findings.some(f => f.severity === 'high')) return 'high';
-    if (findings.some(f => f.severity === 'medium')) return 'medium';
+    if (findings.some((f) => f.severity === 'critical')) return 'critical';
+    if (findings.some((f) => f.severity === 'high')) return 'high';
+    if (findings.some((f) => f.severity === 'medium')) return 'medium';
     return 'low';
   }
 
@@ -226,7 +226,7 @@ export class DevSecOpsService {
   private async logScanResults(results: SecurityScanResult[]): Promise<void> {
     for (const result of results) {
       const criticalFindings = result.findings.filter(
-        f => f.severity === 'critical' || f.severity === 'high'
+        (f) => f.severity === 'critical' || f.severity === 'high',
       );
 
       if (criticalFindings.length > 0) {
@@ -251,7 +251,7 @@ export class DevSecOpsService {
     reason?: string;
   }> {
     const criticalIssues = results.some(
-      r => r.severity === 'critical' || (r.severity === 'high' && r.findings.length > 5)
+      (r) => r.severity === 'critical' || (r.severity === 'high' && r.findings.length > 5),
     );
 
     if (criticalIssues) {

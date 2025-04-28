@@ -66,14 +66,14 @@ class SecurityMonitor {
     // Get recent events of the same type
     const keys = await redisClient.keys(`${this.eventPrefix}*`);
     const events = await Promise.all(
-      keys.map(async key => {
+      keys.map(async (key) => {
         const eventData = await redisClient.get(key);
         return eventData ? (JSON.parse(eventData) as SecurityEvent) : null;
-      })
+      }),
     );
 
     const recentEvents = events.filter(
-      e => e && e.type === event.type && e.timestamp > windowStart
+      (e) => e && e.type === event.type && e.timestamp > windowStart,
     );
 
     // Check thresholds and trigger alerts
@@ -128,7 +128,7 @@ class SecurityMonitor {
         timestamp: Date.now(),
       }),
       'EX',
-      60 * 60 * 24 * 7
+      60 * 60 * 24 * 7,
     ); // 7 day retention for alerts
 
     // Create security alert object
@@ -139,7 +139,7 @@ class SecurityMonitor {
       timestamp: Date.now(),
       ip: data.ip,
       userId: data.userId,
-      metadata: { ...data }
+      metadata: { ...data },
     };
 
     // Determine severity from data
@@ -170,7 +170,10 @@ class SecurityMonitor {
     }
   }
 
-  private async sendToExternalServices(alert: SecurityAlert, severity: AlertSeverity): Promise<void> {
+  private async sendToExternalServices(
+    alert: SecurityAlert,
+    severity: AlertSeverity,
+  ): Promise<void> {
     try {
       // Send to appropriate external services based on severity
       if (severity === 'critical') {
@@ -178,13 +181,13 @@ class SecurityMonitor {
         await Promise.all([
           this.sendEmailAlert(alert, severity),
           this.sendSlackAlert(alert, severity),
-          this.sendSmsAlert(alert)
+          this.sendSmsAlert(alert),
         ]);
       } else if (severity === 'high') {
         // For high severity, use email and Slack
         await Promise.all([
           this.sendEmailAlert(alert, severity),
-          this.sendSlackAlert(alert, severity)
+          this.sendSlackAlert(alert, severity),
         ]);
       } else {
         // For medium and low, just use Slack
@@ -193,7 +196,7 @@ class SecurityMonitor {
     } catch (error) {
       this.logger.error('Failed to send security alert to external services', {
         alertId: alert.id,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -208,7 +211,7 @@ class SecurityMonitor {
 
       // Import email service dynamically
       const { EmailService } = await import('@/lib/email');
-      
+
       // Create email content
       const subject = `🚨 VibeWell Security Alert (${severity.toUpperCase()}): ${alert.type}`;
       const html = `
@@ -228,17 +231,17 @@ class SecurityMonitor {
         to: securityEmail,
         subject,
         html,
-        text: this.formatPlainTextAlert(alert, severity)
+        text: this.formatPlainTextAlert(alert, severity),
       });
 
       this.logger.info('Security alert email sent', {
         alertId: alert.id,
-        to: securityEmail
+        to: securityEmail,
       });
     } catch (error) {
       this.logger.error('Failed to send security alert email', {
         alertId: alert.id,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -276,48 +279,48 @@ URL: ${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/admin/secu
             text: {
               type: 'plain_text',
               text: `🚨 Security Alert: ${alert.type}`,
-              emoji: true
-            }
+              emoji: true,
+            },
           },
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `*Message:* ${alert.message}`
-            }
+              text: `*Message:* ${alert.message}`,
+            },
           },
           {
             type: 'section',
             fields: [
               {
                 type: 'mrkdwn',
-                text: `*Severity:* ${this.getSeverityEmoji(severity)} ${severity.toUpperCase()}`
+                text: `*Severity:* ${this.getSeverityEmoji(severity)} ${severity.toUpperCase()}`,
               },
               {
                 type: 'mrkdwn',
-                text: `*Time:* ${new Date(alert.timestamp).toLocaleString()}`
-              }
-            ]
+                text: `*Time:* ${new Date(alert.timestamp).toLocaleString()}`,
+              },
+            ],
           },
           {
             type: 'section',
             fields: [
               {
                 type: 'mrkdwn',
-                text: `*User ID:* ${alert.userId || 'N/A'}`
+                text: `*User ID:* ${alert.userId || 'N/A'}`,
               },
               {
                 type: 'mrkdwn',
-                text: `*IP Address:* ${alert.ip || 'N/A'}`
-              }
-            ]
+                text: `*IP Address:* ${alert.ip || 'N/A'}`,
+              },
+            ],
           },
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `*Metadata:*\n\`\`\`${JSON.stringify(alert.metadata, null, 2)}\`\`\``
-            }
+              text: `*Metadata:*\n\`\`\`${JSON.stringify(alert.metadata, null, 2)}\`\`\``,
+            },
           },
           {
             type: 'actions',
@@ -327,29 +330,29 @@ URL: ${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/admin/secu
                 text: {
                   type: 'plain_text',
                   text: 'View in Dashboard',
-                  emoji: true
+                  emoji: true,
                 },
-                url: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/admin/security?alert=${alert.id}`
-              }
-            ]
-          }
-        ]
+                url: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/admin/security?alert=${alert.id}`,
+              },
+            ],
+          },
+        ],
       };
 
       // Send to Slack
       await fetch(slackWebhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       this.logger.info('Security alert sent to Slack', {
-        alertId: alert.id
+        alertId: alert.id,
       });
     } catch (error) {
       this.logger.error('Failed to send security alert to Slack', {
         alertId: alert.id,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -390,17 +393,17 @@ URL: ${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/admin/secu
       await client.messages.create({
         body: message,
         from: twilioPhoneNumber,
-        to: securityPhoneNumber
+        to: securityPhoneNumber,
       });
 
       this.logger.info('Security alert SMS sent', {
         alertId: alert.id,
-        to: securityPhoneNumber
+        to: securityPhoneNumber,
       });
     } catch (error) {
       this.logger.error('Failed to send security alert SMS', {
         alertId: alert.id,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -425,10 +428,10 @@ URL: ${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/admin/secu
     const windowStart = Date.now() - minutes * 60 * 1000;
     const keys = await redisClient.keys(`${this.eventPrefix}*`);
     const events = await Promise.all(
-      keys.map(async key => {
+      keys.map(async (key) => {
         const eventData = await redisClient.get(key);
         return eventData ? (JSON.parse(eventData) as SecurityEvent) : null;
-      })
+      }),
     );
 
     return events
@@ -441,7 +444,7 @@ URL: ${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/admin/secu
       // Import PrismaClient dynamically
       const { PrismaClient } = await import('@prisma/client');
       const prisma = new PrismaClient();
-      
+
       // Get admin users who should receive security alerts
       const adminUsers = await prisma.user.findMany({
         where: {
@@ -473,7 +476,7 @@ URL: ${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/admin/secu
       if (securityAlert.userId) message += `User: ${securityAlert.userId}\n`;
 
       // Send notifications to all admin users
-      const adminIds = adminUsers.map(user => user.id);
+      const adminIds = adminUsers.map((user) => user.id);
       await notificationService.sendBulkNotifications(adminIds, {
         type: 'SYSTEM',
         title,
@@ -502,4 +505,4 @@ URL: ${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/admin/secu
   }
 }
 
-export const securityMonitor = new SecurityMonitor();
+export {};

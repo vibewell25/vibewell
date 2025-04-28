@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { axe } from 'jest-axe';
@@ -52,7 +51,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <TestComponent />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       expect(screen.getByText('Notification Count: 2')).toBeInTheDocument();
@@ -62,7 +61,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <div>Test Content</div>
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       expect(mockNotificationService.subscribe).toHaveBeenCalled();
@@ -72,7 +71,7 @@ describe('Notification Components', () => {
       const { unmount } = render(
         <NotificationProvider>
           <div>Test Content</div>
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       unmount();
@@ -84,7 +83,7 @@ describe('Notification Components', () => {
         const { notifications, markAsRead } = useNotifications();
         return (
           <div>
-            <span>Unread: {notifications.filter(n => !n.read).length}</span>
+            <span>Unread: {notifications.filter((n) => !n.read).length}</span>
             <button onClick={() => markAsRead('1')}>Mark as Read</button>
           </div>
         );
@@ -93,7 +92,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <TestComponent />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       expect(screen.getByText('Unread: 1')).toBeInTheDocument();
@@ -107,7 +106,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <NotificationList />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       await waitFor(() => {
@@ -122,7 +121,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <NotificationList />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       await waitFor(() => {
@@ -134,7 +133,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <NotificationList />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       await waitFor(() => {
@@ -149,7 +148,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <NotificationList filter="unread" />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       await waitFor(() => {
@@ -162,7 +161,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <NotificationList sortBy="timestamp" />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       const notifications = screen.getAllByTestId('notification-item');
@@ -176,7 +175,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <NotificationBadge />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       await waitFor(() => {
@@ -193,7 +192,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <NotificationBadge />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       await waitFor(() => {
@@ -217,7 +216,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <NotificationBadge maxCount={2} />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       await waitFor(() => {
@@ -231,7 +230,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <NotificationBadge onClick={onClickSpy} />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       await waitFor(() => {
@@ -249,7 +248,7 @@ describe('Notification Components', () => {
       const { container } = render(
         <NotificationProvider>
           <NotificationList />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -259,7 +258,7 @@ describe('Notification Components', () => {
       const { container } = render(
         <NotificationProvider>
           <NotificationBadge />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -269,7 +268,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <NotificationList />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       await waitFor(() => {
@@ -283,7 +282,7 @@ describe('Notification Components', () => {
       render(
         <NotificationProvider>
           <NotificationBadge />
-        </NotificationProvider>
+        </NotificationProvider>,
       );
 
       await waitFor(() => {

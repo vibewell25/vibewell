@@ -51,14 +51,6 @@ export const socialAuthProviders: Record<string, SocialAuthConfig> = {
   },
 };
 
-export const getProviderConfig = (providerName: string): SocialAuthConfig => {
-  const config = socialAuthProviders[providerName];
-  if (!config) {
-    throw new Error(`Provider ${providerName} not configured`);
-  }
-  return config;
-};
+export {};
 
-export const validateProviderConfig = (config: SocialAuthConfig): boolean => {
-  return Boolean(config.clientId && config.clientSecret);
-}; 
+export {};

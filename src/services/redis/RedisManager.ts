@@ -76,7 +76,7 @@ class RedisManager extends EventEmitter {
 
       // Configure as slave
       await slave.slaveof(config.masterHost, config.masterPort);
-      
+
       if (config.masterPassword) {
         await slave.auth(config.masterPassword);
       }
@@ -128,10 +128,10 @@ class RedisManager extends EventEmitter {
     try {
       // Stop the server to load the RDB file
       await this.master.shutdown('SAVE');
-      
+
       // Copy the new RDB file
       fs.copyFileSync(filePath, path.join(this.rdbPath, 'dump.rdb'));
-      
+
       // Restart the server
       await this.initializeMaster({
         host: this.master.options.host as string,
@@ -187,4 +187,4 @@ class RedisManager extends EventEmitter {
   }
 }
 
-export default RedisManager; 
+export default RedisManager;

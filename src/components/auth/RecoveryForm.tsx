@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Card } from '@/components/ui/Card';
 import { Loader2 } from 'lucide-react';
 
 export function RecoveryForm() {
@@ -53,7 +53,7 @@ export function RecoveryForm() {
             id="code"
             type="text"
             value={code}
-            onChange={e => setCode(e.target.value)}
+            onChange={(e) => setCode(e.target.value)}
             placeholder="XXXX-XXXX-XXXX-XXXX"
             pattern="^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$"
             required
@@ -70,7 +70,7 @@ export function RecoveryForm() {
           Verify Recovery Code
         </Button>
 
-        <div className="text-center mt-4">
+        <div className="mt-4 text-center">
           <Button
             variant="link"
             type="button"

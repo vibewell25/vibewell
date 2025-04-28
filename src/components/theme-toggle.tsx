@@ -21,8 +21,8 @@ export function ThemeToggle() {
     <div className="flex items-center space-x-2">
       <button
         onClick={() => setTheme('light')}
-        className={`p-2 rounded-md ${
-          theme === 'light' ? 'bg-muted text-primary' : 'text-muted-foreground'
+        className={`rounded-md p-2 ${
+          theme === 'light' ? 'text-primary bg-muted' : 'text-muted-foreground'
         }`}
         title="Light mode"
       >
@@ -32,8 +32,8 @@ export function ThemeToggle() {
 
       <button
         onClick={() => setTheme('dark')}
-        className={`p-2 rounded-md ${
-          theme === 'dark' ? 'bg-muted text-primary' : 'text-muted-foreground'
+        className={`rounded-md p-2 ${
+          theme === 'dark' ? 'text-primary bg-muted' : 'text-muted-foreground'
         }`}
         title="Dark mode"
       >
@@ -43,8 +43,8 @@ export function ThemeToggle() {
 
       <button
         onClick={() => setTheme('system')}
-        className={`p-2 rounded-md ${
-          theme === 'system' ? 'bg-muted text-primary' : 'text-muted-foreground'
+        className={`rounded-md p-2 ${
+          theme === 'system' ? 'text-primary bg-muted' : 'text-muted-foreground'
         }`}
         title="System preference"
       >

@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { isAdmin } from '@/lib/utils/admin';
-import redisClient from '@/lib/redis-client';
 import { securityMiddleware } from '@/middleware/security/index';
-import { NextFetchEvent } from 'next/server';
 import { getSession } from '@auth0/nextjs-auth0';
 import { RateLimiter } from 'limiter';
 import { rateLimitService } from '@/lib/auth/rate-limit';
@@ -246,7 +243,7 @@ function handleApiVersioning(req: NextRequest): NextResponse | null {
  * Check if a path is public (doesn't require authentication)
  */
 function isPublicPath(path: string): boolean {
-  return publicRoutes.some(route => {
+  return publicRoutes.some((route) => {
     if (route.endsWith('*')) {
       const baseRoute = route.slice(0, -1);
       return path.startsWith(baseRoute);
@@ -319,14 +316,14 @@ export async function middleware(req: NextRequest) {
   const isAuthenticated = !!session?.user;
 
   // For protected routes, check if user is authenticated
-  if (protectedRoutes.some(route => path.startsWith(route)) && !isAuthenticated) {
+  if (protectedRoutes.some((route) => path.startsWith(route)) && !isAuthenticated) {
     const loginUrl = new URL('/auth/login', req.url);
     loginUrl.searchParams.set('returnTo', path);
     return NextResponse.redirect(loginUrl);
   }
 
   // For admin routes, check if user is admin
-  if (adminRoutes.some(route => path.startsWith(route)) && !(await checkAdminAccess(req))) {
+  if (adminRoutes.some((route) => path.startsWith(route)) && !(await checkAdminAccess(req))) {
     return NextResponse.redirect(new URL('/error/unauthorized', req.url));
   }
 
@@ -383,14 +380,4 @@ export async function middleware(req: NextRequest) {
   return addVersionHeaders(response, extractVersionFromPath(path) || ApiVersion.LATEST);
 }
 
-export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!_next/static|_next/image|favicon.ico).*)',
-  ],
-};
+export {};

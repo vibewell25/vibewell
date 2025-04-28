@@ -240,14 +240,14 @@ export const LoadingState: Story = {
   render: () => (
     <Card>
       <CardHeader>
-        <div className="h-4 w-1/2 bg-gray-200 animate-pulse rounded" />
-        <div className="h-3 w-3/4 bg-gray-100 animate-pulse rounded mt-2" />
+        <div className="h-4 w-1/2 animate-pulse rounded bg-gray-200" />
+        <div className="mt-2 h-3 w-3/4 animate-pulse rounded bg-gray-100" />
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          <div className="h-3 bg-gray-100 animate-pulse rounded" />
-          <div className="h-3 bg-gray-100 animate-pulse rounded" />
-          <div className="h-3 bg-gray-100 animate-pulse rounded" />
+          <div className="h-3 animate-pulse rounded bg-gray-100" />
+          <div className="h-3 animate-pulse rounded bg-gray-100" />
+          <div className="h-3 animate-pulse rounded bg-gray-100" />
         </div>
       </CardContent>
     </Card>

@@ -295,7 +295,7 @@ export async function detectDeviceCapabilities(): Promise<DeviceCapabilities> {
   // Device type detection
   const userAgent = navigator.userAgent.toLowerCase();
   const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
-    userAgent
+    userAgent,
   );
 
   // Get battery status

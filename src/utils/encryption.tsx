@@ -26,7 +26,7 @@ export async function encryptData(data: Uint8Array, key?: CryptoKey): Promise<Ui
       iv,
     },
     key,
-    data
+    data,
   );
 
   // Combine IV and encrypted data
@@ -63,7 +63,7 @@ export async function decryptData(encryptedData: Uint8Array, key?: CryptoKey): P
       iv,
     },
     key,
-    data
+    data,
   );
 
   return new Uint8Array(decryptedData);
@@ -82,7 +82,7 @@ async function deriveKey(): Promise<CryptoKey> {
   // Throw error if encryption key is not provided
   if (!appSecret) {
     throw new Error(
-      'Encryption key not configured. Set NEXT_PUBLIC_ENCRYPTION_KEY environment variable.'
+      'Encryption key not configured. Set NEXT_PUBLIC_ENCRYPTION_KEY environment variable.',
     );
   }
 
@@ -110,7 +110,7 @@ async function deriveKey(): Promise<CryptoKey> {
     importedKey,
     { name: 'AES-GCM', length: 256 },
     false,
-    ['encrypt', 'decrypt']
+    ['encrypt', 'decrypt'],
   );
 }
 
@@ -123,7 +123,7 @@ async function deriveKey(): Promise<CryptoKey> {
 export async function hashData(data: Uint8Array): Promise<string> {
   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 /**
@@ -135,7 +135,7 @@ export async function hashData(data: Uint8Array): Promise<string> {
  */
 export async function verifyDataIntegrity(
   data: Uint8Array,
-  expectedHash: string
+  expectedHash: string,
 ): Promise<boolean> {
   const actualHash = await hashData(data);
   return actualHash === expectedHash;

@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     if (error instanceof WebAuthnError) {
       return NextResponse.json(
         { error: error.message, code: error.code, details: error.details },
-        { status: 400 }
+        { status: 400 },
       );
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -45,7 +45,7 @@ export async function DELETE(req: NextRequest) {
     if (error instanceof WebAuthnError) {
       return NextResponse.json(
         { error: error.message, code: error.code, details: error.details },
-        { status: 400 }
+        { status: 400 },
       );
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -71,7 +71,7 @@ export async function PATCH(req: NextRequest) {
     if (error instanceof WebAuthnError) {
       return NextResponse.json(
         { error: error.message, code: error.code, details: error.details },
-        { status: 400 }
+        { status: 400 },
       );
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

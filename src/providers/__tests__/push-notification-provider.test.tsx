@@ -1,9 +1,4 @@
-/**
- * @vitest-environment jsdom
- */
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { PushNotificationProvider } from '../../providers/push-notification-provider';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
@@ -26,7 +21,7 @@ global.fetch = vi.fn(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve({ success: true }),
-  })
+  }),
 ) as unknown as typeof fetch;
 
 // Mock the Notification API
@@ -36,7 +31,7 @@ class NotificationMock {
 
   constructor(
     public title: string,
-    public options: any
+    public options: any,
   ) {}
 
   onclick: () => void = () => {};
@@ -55,7 +50,7 @@ describe('PushNotificationProvider', () => {
     render(
       <PushNotificationProvider>
         <div data-testid="test-child">Test Child</div>
-      </PushNotificationProvider>
+      </PushNotificationProvider>,
     );
 
     expect(screen.getByTestId('test-child')).toBeInTheDocument();
@@ -73,7 +68,7 @@ describe('PushNotificationProvider', () => {
         >
           Request Permission
         </button>
-      </PushNotificationProvider>
+      </PushNotificationProvider>,
     );
 
     fireEvent.click(getByText('Request Permission'));
@@ -93,7 +88,7 @@ describe('PushNotificationProvider', () => {
     render(
       <PushNotificationProvider>
         <div>Test</div>
-      </PushNotificationProvider>
+      </PushNotificationProvider>,
     );
 
     // Simulate a message received
@@ -111,7 +106,7 @@ describe('PushNotificationProvider', () => {
         'Test Notification',
         expect.objectContaining({
           body: 'This is a test notification',
-        })
+        }),
       );
     });
 
@@ -125,7 +120,7 @@ describe('PushNotificationProvider', () => {
     render(
       <PushNotificationProvider>
         <div>Test</div>
-      </PushNotificationProvider>
+      </PushNotificationProvider>,
     );
 
     await waitFor(() => {
@@ -135,7 +130,7 @@ describe('PushNotificationProvider', () => {
           method: 'POST',
           headers: expect.any(Object),
           body: expect.stringContaining('token'),
-        })
+        }),
       );
     });
   });

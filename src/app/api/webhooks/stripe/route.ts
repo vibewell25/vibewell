@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       console.error(`Webhook signature verification failed: ${err.message}`);
       return NextResponse.json(
         { error: `Webhook signature verification failed: ${err.message}` },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -118,8 +118,6 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
     const expandedSession = await stripe.checkout.sessions.retrieve(session.id, {
       expand: ['line_items'],
     });
-
-    const lineItems = expandedSession.line_items;
 
     // Process subscription or one-time payment
     if (session.mode === 'subscription') {

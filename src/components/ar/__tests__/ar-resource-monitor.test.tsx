@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { render, screen } from '@testing-library/react';
 import { ARResourceMonitor } from '../ARResourceMonitor';
 import { useThree } from '@react-three/fiber';
 import { errorTrackingService } from '@/lib/error-tracking';
@@ -6,7 +6,7 @@ import { errorTrackingService } from '@/lib/error-tracking';
 // Mock @react-three/fiber
 jest.mock('@react-three/fiber', () => ({
   useThree: jest.fn(),
-  useFrame: jest.fn(cb => cb()),
+  useFrame: jest.fn((cb) => cb()),
 }));
 
 // Mock error tracking service
@@ -56,7 +56,7 @@ describe('ARResourceMonitor', () => {
         enableAdaptiveQuality={true}
         performanceThreshold={30}
         devModeOnly={false}
-      />
+      />,
     );
 
     expect(screen.getByText(/FPS:/)).toBeInTheDocument();
@@ -73,7 +73,7 @@ describe('ARResourceMonitor', () => {
         enableAdaptiveQuality={true}
         performanceThreshold={60}
         onPerformanceWarning={onPerformanceWarning}
-      />
+      />,
     );
 
     // Simulate poor performance
@@ -93,7 +93,7 @@ describe('ARResourceMonitor', () => {
         enableAdaptiveQuality={true}
         performanceThreshold={30}
         devModeOnly={true}
-      />
+      />,
     );
 
     expect(screen.queryByText(/FPS:/)).not.toBeInTheDocument();
@@ -105,7 +105,7 @@ describe('ARResourceMonitor', () => {
     const mockLoggingInterval = 1000;
 
     render(
-      <ARResourceMonitor enablePerformanceLogging={true} loggingInterval={mockLoggingInterval} />
+      <ARResourceMonitor enablePerformanceLogging={true} loggingInterval={mockLoggingInterval} />,
     );
 
     // Simulate time passing
@@ -132,7 +132,7 @@ describe('ARResourceMonitor', () => {
     expect(mockBattery.addEventListener).toHaveBeenCalledWith('levelchange', expect.any(Function));
     expect(mockBattery.addEventListener).toHaveBeenCalledWith(
       'chargingchange',
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 });

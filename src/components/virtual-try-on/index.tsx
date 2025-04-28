@@ -46,7 +46,7 @@ export function VirtualTryOn() {
   if (isARSupported === false) {
     return (
       <div className="p-8 text-center">
-        <h2 className="text-xl font-bold mb-4">AR Not Supported</h2>
+        <h2 className="mb-4 text-xl font-bold">AR Not Supported</h2>
         <p className="mb-4">Your device or browser doesn't support AR experiences.</p>
         <p>Please try using a modern mobile device with the latest Chrome, Safari, or Firefox.</p>
       </div>
@@ -55,28 +55,28 @@ export function VirtualTryOn() {
 
   return (
     <div className="virtual-try-on">
-      <h1 className="text-2xl font-bold mb-6">Virtual Try-On</h1>
+      <h1 className="mb-6 text-2xl font-bold">Virtual Try-On</h1>
 
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">Select a Product</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {SAMPLE_PRODUCTS.map(product => (
+        <h2 className="mb-4 text-xl font-semibold">Select a Product</h2>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+          {SAMPLE_PRODUCTS.map((product) => (
             <div
               key={product.id}
-              className={`cursor-pointer p-4 border rounded-lg transition-all ${
+              className={`cursor-pointer rounded-lg border p-4 transition-all ${
                 modelId === product.id
-                  ? 'border-primary ring-2 ring-primary/50'
+                  ? 'border-primary ring-primary/50 ring-2'
                   : 'hover:border-gray-400'
               }`}
               onClick={() => handleModelSelect(product.id)}
             >
-              <div className="aspect-square bg-gray-100 rounded-md mb-2 relative">
+              <div className="relative mb-2 aspect-square rounded-md bg-gray-100">
                 <Image
                   src={product.thumbnail}
                   alt={product.name}
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
-                  className="object-cover rounded-md"
+                  className="rounded-md object-cover"
                   priority={modelId === product.id}
                 />
               </div>
@@ -89,7 +89,7 @@ export function VirtualTryOn() {
 
       {modelId && (
         <Suspense fallback={<div className="p-8 text-center">Loading AR experience...</div>}>
-          <div className="ar-container h-[500px] rounded-lg overflow-hidden border relative">
+          <div className="ar-container relative h-[500px] overflow-hidden rounded-lg border">
             <ARModelViewer modelId={modelId} />
             <ARControls modelId={modelId} />
           </div>

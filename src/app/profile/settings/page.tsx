@@ -53,11 +53,11 @@ export default function SettingsPage() {
   ];
   return (
     <MobileLayout>
-      <div className="bg-background min-h-screen pb-16">
+      <div className="min-h-screen bg-background pb-16">
         {/* Header with Back Button */}
-        <div className="bg-card px-5 py-4 flex items-center border-b border-border">
+        <div className="flex items-center border-b border-border bg-card px-5 py-4">
           <Link href="/profile/mobile" className="mr-4">
-            <Icons.ChevronLeftIcon className="w-5 h-5" />
+            <Icons.ChevronLeftIcon className="h-5 w-5" />
           </Link>
           <h1 className="text-xl font-semibold">Settings</h1>
         </div>
@@ -67,11 +67,11 @@ export default function SettingsPage() {
               <Link
                 key={option.id}
                 href={option.href}
-                className="flex items-center justify-between py-3 border-b border-border last:border-0"
+                className="flex items-center justify-between border-b border-border py-3 last:border-0"
               >
                 <div className="flex items-center">
-                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <option.icon className="w-5 h-5 text-primary" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+                    <option.icon className="text-primary h-5 w-5" />
                   </div>
                   <div className="ml-3">
                     <div className="font-medium">{option.name}</div>
@@ -80,15 +80,15 @@ export default function SettingsPage() {
                 </div>
                 <div className="flex items-center">
                   {option.indicator && (
-                    <span className="text-sm text-muted-foreground mr-2">{option.indicator}</span>
+                    <span className="mr-2 text-sm text-muted-foreground">{option.indicator}</span>
                   )}
-                  <Icons.ChevronRightIcon className="w-5 h-5 text-muted-foreground" />
+                  <Icons.ChevronRightIcon className="h-5 w-5 text-muted-foreground" />
                 </div>
               </Link>
             ))}
           </div>
-          <div className="px-5 py-4 mt-4">
-            <div className="text-sm text-muted-foreground text-center">
+          <div className="mt-4 px-5 py-4">
+            <div className="text-center text-sm text-muted-foreground">
               <p>Vibewell App</p>
               <p>Version 1.0.0</p>
             </div>

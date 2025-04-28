@@ -2,10 +2,9 @@ import { Icons } from '@/components/icons';
 import { Event } from '@/types/events';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';
 import Image from 'next/image';
-import Link from 'next/link';
 interface EventShareCardProps {
   event: Event;
   onShare?: () => void;
@@ -23,13 +22,13 @@ export function EventShareCard({ event, onShare, onAttend, isAttending }: EventS
             <Image src={event.imageUrl} alt={event.title} fill className="object-cover" />
           </div>
         ) : (
-          <div className="h-48 bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center text-white">
+          <div className="flex h-48 items-center justify-center bg-gradient-to-r from-blue-400 to-indigo-500 text-white">
             <Icons.CalendarIcon className="h-12 w-12" />
           </div>
         )}
       </CardHeader>
       <CardContent className="p-4">
-        <div className="flex gap-2 mb-2">
+        <div className="mb-2 flex gap-2">
           <Badge variant="secondary">{event.category}</Badge>
           {isVirtual && (
             <Badge variant="outline" className="bg-blue-50 text-blue-700">
@@ -37,8 +36,8 @@ export function EventShareCard({ event, onShare, onAttend, isAttending }: EventS
             </Badge>
           )}
         </div>
-        <h3 className="text-lg font-semibold mb-2">{event.title}</h3>
-        <p className="text-gray-600 text-sm mb-4">{event.shortDescription}</p>
+        <h3 className="mb-2 text-lg font-semibold">{event.title}</h3>
+        <p className="mb-4 text-sm text-gray-600">{event.shortDescription}</p>
         <div className="space-y-2 text-sm text-gray-600">
           <div className="flex items-center gap-2">
             <Icons.CalendarIcon className="h-4 w-4" />
@@ -62,7 +61,7 @@ export function EventShareCard({ event, onShare, onAttend, isAttending }: EventS
           </div>
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex gap-2">
+      <CardFooter className="flex gap-2 p-4 pt-0">
         <Button variant="outline" className="flex-1" onClick={onShare}>
           Share
         </Button>

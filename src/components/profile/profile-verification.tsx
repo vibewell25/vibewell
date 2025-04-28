@@ -1,9 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Progress } from '@/components/ui/progress';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { Mail, Phone, Check, X, AlertCircle, Shield, Loader2 } from 'lucide-react';
+import { Mail, Phone, Check, AlertCircle, Shield, Loader2 } from 'lucide-react';
 
 interface VerificationMethod {
   id: string;
@@ -44,7 +44,7 @@ export function ProfileVerification() {
 
   const [isVerifying, setIsVerifying] = useState(false);
 
-  const verifiedMethods = methods.filter(m => m.status === 'verified').length;
+  const verifiedMethods = methods.filter((m) => m.status === 'verified').length;
   const totalMethods = methods.length;
   const verificationPercentage = (verifiedMethods / totalMethods) * 100;
 
@@ -52,10 +52,10 @@ export function ProfileVerification() {
     try {
       setIsVerifying(true);
       // Simulate verification process
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      setMethods(prev =>
-        prev.map(method => (method.id === methodId ? { ...method, status: 'verified' } : method))
+      setMethods((prev) =>
+        prev.map((method) => (method.id === methodId ? { ...method, status: 'verified' } : method)),
       );
 
       toast.success('Verification completed successfully');
@@ -102,7 +102,7 @@ export function ProfileVerification() {
         </div>
 
         <div className="space-y-4">
-          {methods.map(method => (
+          {methods.map((method) => (
             <div
               key={method.id}
               className="flex items-center justify-between rounded-lg border p-4"

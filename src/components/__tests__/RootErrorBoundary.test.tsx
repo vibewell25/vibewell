@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { RootErrorBoundary } from '../RootErrorBoundary';
 
@@ -19,7 +18,7 @@ describe('RootErrorBoundary', () => {
     render(
       <RootErrorBoundary>
         <div>Normal application content</div>
-      </RootErrorBoundary>
+      </RootErrorBoundary>,
     );
 
     expect(screen.getByText('Normal application content')).toBeInTheDocument();
@@ -30,13 +29,13 @@ describe('RootErrorBoundary', () => {
     render(
       <RootErrorBoundary>
         <ErrorComponent />
-      </RootErrorBoundary>
+      </RootErrorBoundary>,
     );
 
     // Check error UI is rendered
     expect(screen.getByText(/Oops, something went wrong/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/We're sorry, but we encountered an unexpected error/i)
+      screen.getByText(/We're sorry, but we encountered an unexpected error/i),
     ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Refresh page/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Go to homepage/i })).toBeInTheDocument();
@@ -46,12 +45,12 @@ describe('RootErrorBoundary', () => {
     render(
       <RootErrorBoundary>
         <ErrorComponent />
-      </RootErrorBoundary>
+      </RootErrorBoundary>,
     );
 
     expect(console.error).toHaveBeenCalledWith(
       'Application error caught by RootErrorBoundary:',
-      expect.any(Error)
+      expect.any(Error),
     );
   });
 
@@ -62,7 +61,7 @@ describe('RootErrorBoundary', () => {
     render(
       <RootErrorBoundary>
         <ErrorComponent />
-      </RootErrorBoundary>
+      </RootErrorBoundary>,
     );
 
     expect(screen.getByText(/Error details \(development only\)/i)).toBeInTheDocument();
@@ -78,7 +77,7 @@ describe('RootErrorBoundary', () => {
     render(
       <RootErrorBoundary>
         <ErrorComponent />
-      </RootErrorBoundary>
+      </RootErrorBoundary>,
     );
 
     expect(screen.queryByText(/Error details \(development only\)/i)).not.toBeInTheDocument();
@@ -96,7 +95,7 @@ describe('RootErrorBoundary', () => {
     render(
       <RootErrorBoundary>
         <ErrorComponent />
-      </RootErrorBoundary>
+      </RootErrorBoundary>,
     );
 
     fireEvent.click(screen.getByRole('button', { name: /Refresh page/i }));
@@ -112,7 +111,7 @@ describe('RootErrorBoundary', () => {
     const { container } = render(
       <RootErrorBoundary>
         <ErrorComponent />
-      </RootErrorBoundary>
+      </RootErrorBoundary>,
     );
     expect(container).toMatchSnapshot();
   });
@@ -121,7 +120,7 @@ describe('RootErrorBoundary', () => {
     const { container } = render(
       <RootErrorBoundary>
         <div>Normal content</div>
-      </RootErrorBoundary>
+      </RootErrorBoundary>,
     );
     expect(container).toMatchSnapshot();
   });

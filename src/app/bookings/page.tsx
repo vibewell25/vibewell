@@ -13,7 +13,7 @@ function BookingsContent() {
 
   if (!user) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className="flex h-64 items-center justify-center">
         <p>Please sign in to view your bookings</p>
       </div>
     );
@@ -31,7 +31,7 @@ function BookingsContent() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">My Bookings</h1>
+      <h1 className="mb-8 text-3xl font-bold">My Bookings</h1>
       <BookingList userId={user.id} role={user.role as 'customer' | 'provider'} />
     </div>
   );
@@ -40,7 +40,7 @@ function BookingsContent() {
 export default function BookingsPage() {
   return (
     <Suspense
-      fallback={<div className="flex justify-center items-center h-64">Loading bookings...</div>}
+      fallback={<div className="flex h-64 items-center justify-center">Loading bookings...</div>}
     >
       <BookingsContent />
     </Suspense>

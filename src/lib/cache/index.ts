@@ -48,7 +48,7 @@ const cache = {
       api: {
         entryCount:
           typeof localStorage !== 'undefined'
-            ? Object.keys(localStorage).filter(key => key.startsWith(apiCache.getNamespace()))
+            ? Object.keys(localStorage).filter((key) => key.startsWith(apiCache.getNamespace()))
                 .length
             : 0,
       },

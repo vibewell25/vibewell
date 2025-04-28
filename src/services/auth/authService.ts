@@ -23,7 +23,7 @@ class AuthService {
   async signUp(
     email: string,
     password: string,
-    name: string
+    name: string,
   ): Promise<{ user: User; session: Session }> {
     // In a real app, this would make an API call to your backend
     const response = await fetch('/api/auth/signup', {
@@ -104,4 +104,4 @@ class AuthService {
   }
 }
 
-export const authService = new AuthService();
+export {};

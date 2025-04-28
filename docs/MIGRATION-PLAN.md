@@ -1,179 +1,132 @@
-# Supabase to Prisma Migration Plan
+# Icon Standardization Migration Plan
 
-This document outlines the comprehensive plan to complete the migration from Supabase to Prisma for the VibeWell platform.
+This document outlines the plan for standardizing icon usage across the VibeWell platform.
 
-## Current Status
+## Completed Tasks
 
-The migration from Supabase to Prisma is partially complete:
+1. ✅ Created a centralized `Icons` component that provides:
+   - All heroicons (outline and solid variants)
+   - Consistent sizing props
+   - Custom icons (logo, social, etc.)
+   
+2. ✅ Updated key components to use the centralized Icons:
+   - ThemeToggle
+   - ThemeSelector
+   - NotificationIndicator
+   - MobileLayout
+   
+3. ✅ Fixed type definitions and enhanced component structure.
 
-- ✅ Prisma schema created and configured
-- ✅ Basic Prisma client implementation
-- ✅ Environment variables for database connection updated
-- ✅ Automatic migration script created
-- ✅ Environment variables cleanup script created
-- ❌ Several files still use Supabase directly
-- ❌ Some Supabase-specific code patterns remain
+## Components to Update
 
-## Migration Steps
+Based on the grep search for direct heroicon imports, the following components need to be updated:
 
-### 1. Manual Code Updates
+### High Priority (Core UI Components)
 
-Files requiring manual updates (based on migration script output):
+1. Header components
+2. Button components with icons
+3. Form components with icons
+4. Navigation components
 
-| File | Changes Needed |
-|------|---------------|
-| `src/app/admin/rate-limits/page.tsx` | Replace Supabase auth with Auth0 or Prisma queries |
-| `src/app/api/analytics/track/route.ts` | Replace Supabase auth with Auth0 |
-| `src/app/api/auth/password-reset/route.ts` | Replace with Auth0 password reset flow |
-| `src/app/api/payments/route.ts` | Replace Supabase auth with Auth0 and DB queries with Prisma |
-| `src/app/api/reviews/route.ts` | Complete migration to Prisma (partially done) |
-| `src/app/auth/callback/page.tsx` | Replace with Auth0 callback handling |
-| `src/app/auth/mfa-setup/page.tsx` | Replace with Auth0 MFA setup flow |
-| `src/components/profile/notification-preferences.tsx` | Update to use Prisma |
-| `src/components/profile/privacy-settings.tsx` | Update to use Prisma |
-| `src/contexts/__tests__/auth-context.test.tsx` | Update mocks to reflect Auth0 instead of Supabase |
-| `src/middleware/auth.ts` | Replace Supabase auth with Auth0 middleware |
-| `src/pages/api/_backup/graphql.ts` | Update or remove if obsolete |
+### Component List
 
-### 2. Authentication Migration
-
-Replace Supabase Auth with Auth0:
-
-1. Ensure Auth0 is properly configured (see `SERVICE-SETUP-GUIDE.md`)
-2. Update all authentication flows:
-   - Login/Logout
-   - Registration
-   - Password Reset
-   - Email Verification
-   - MFA Setup
-   - Session Management
-
-#### Example of Auth0 Implementation:
-
-```typescript
-// OLD Supabase Auth
-const { data: { session } } = await supabase.auth.getSession();
-
-// NEW Auth0
-import { getSession } from '@auth0/nextjs-auth0';
-const session = await getSession();
+```
+src/components/recommended-connections.tsx
+src/components/event-groups-networking.tsx
+src/components/event-recommendations.tsx
+src/components/hub-search.tsx
+src/components/resource-detail-template.tsx
+src/components/event-analytics-integrations.tsx
+src/components/message-notification-badge.tsx
+src/components/events-calendar.tsx
+src/components/event-reminders.tsx
+src/components/event-analytics.tsx
+src/components/resource-review.tsx
+src/components/event-checkin-feedback.tsx
+src/components/notifications/NotificationCenter.tsx
+src/components/notifications/NotificationButton.tsx
+src/components/notifications/NotificationList.tsx
+src/components/beauty/UpcomingAppointments.tsx
+src/components/share-post.tsx
+src/components/beauty/BeautyContentModal.tsx
+src/components/enhanced-header.tsx
+src/components/content-calendar/content-calendar-sidebar.tsx
+src/components/client-acquisition-nav.tsx
+src/components/community-events-section.tsx
+src/components/RatingBreakdown.tsx
+src/components/common/Dropdown.tsx
+src/components/common/SearchInput.tsx
+src/components/notification-badge.tsx
+src/components/event-management.tsx
+src/components/common/Modal.tsx
+src/components/common/Notification.tsx
+src/components/common/FileUpload.tsx
+src/components/common/Accordion.tsx
+src/components/common/Pagination.tsx
+src/components/ReviewForm.tsx
+src/components/event-materials-agenda.tsx
+src/components/dashboard/UpcomingAppointments.tsx
+src/components/event-share-card.tsx
+src/components/common/Breadcrumbs.tsx
+src/components/common/SearchBar.tsx
+src/components/business/InventoryManagement.tsx
+src/components/business/AnalyticsDashboard.tsx
+src/components/business/BusinessList.tsx
+src/components/ReviewCard.tsx
+src/components/rewards/LoyaltyPointsCard.tsx
+src/components/rewards/LoyaltyTransactions.tsx
+src/components/rewards/LoyaltyPoints.tsx
+src/components/business/BusinessDirectory.tsx
+src/components/business-hub-mobile-nav.tsx
+src/components/business-hub-navigation.tsx
+src/components/star-rating.tsx
+src/components/dashboard/ActivityFeed.tsx
+src/components/marketing-nav.tsx
+src/components/top-rated-resources.tsx
+src/components/wellness/GoalProgressCard.tsx
+src/components/wellness/ContentActions.tsx
+src/components/wellness/DeleteConfirmationModal.tsx
+src/components/wellness/ProgressSummaryCard.tsx
+src/components/wellness/GoalList.tsx
+src/components/wellness/WellnessContentModal.tsx
+src/components/wellness/ContentFilter.tsx
+src/components/messaging.tsx
+src/components/wellness/GoalCreationModal.tsx
+src/components/user-avatar.tsx
+src/components/financial-nav.tsx
+src/components/business-hub-sidebar.tsx
+src/components/premium-content-lock.tsx
 ```
 
-### 3. Database Query Migration
+## Migration Process
 
-Replace all remaining Supabase database queries with Prisma:
+For each component:
 
-#### Example of Prisma Implementation:
+1. Import the Icons component: `import { Icons } from '@/components/icons';`
+2. Remove direct heroicon imports
+3. Replace icon usage:
+   - From: `<SunIcon className="h-5 w-5" />`
+   - To: `<Icons.SunIcon className="h-5 w-5" />`
+4. For solid icons, use the naming convention with "Solid" suffix:
+   - From: `<StarIcon className="h-5 w-5" />` (from solid import)
+   - To: `<Icons.StarSolid className="h-5 w-5" />`
 
-```typescript
-// OLD Supabase Query
-const { data, error } = await supabase
-  .from('users')
-  .select('*')
-  .eq('id', userId);
+## Testing
 
-// NEW Prisma Query
-const user = await prisma.user.findUnique({
-  where: { id: userId }
-});
+After migration:
+1. Run TypeScript checks: `npm run type-check`
+2. Run linter: `npm run lint`
+3. Visually verify key components render correctly
+4. Run component tests: `npm test`
+
+## CI/CD Integration
+
+Add the following checks to the CI pipeline:
+
+```yaml
+- name: Check for direct heroicon imports
+  run: |
+    ! grep -r "from '@heroicons/react" --include="*.tsx" src/components
 ```
 
-For complex queries:
-
-```typescript
-// OLD Supabase with Joins
-const { data, error } = await supabase
-  .from('providers')
-  .select(`
-    *,
-    services (*),
-    reviews (*)
-  `)
-  .eq('id', providerId);
-
-// NEW Prisma with Relations
-const provider = await prisma.provider.findUnique({
-  where: { id: providerId },
-  include: {
-    services: true,
-    reviews: true
-  }
-});
-```
-
-### 4. Remove Supabase Dependencies
-
-After all code has been migrated:
-
-1. Remove Supabase packages from dependencies:
-   - `@supabase/auth-helpers-nextjs`
-   - `@supabase/ssr`
-   - `@supabase/supabase-js`
-
-2. Run:
-```bash
-npm uninstall @supabase/auth-helpers-nextjs @supabase/ssr @supabase/supabase-js
-```
-
-### 5. Testing
-
-1. **Unit Tests**:
-   - Update all tests that mock Supabase
-   - Ensure they now properly mock Prisma and Auth0
-
-2. **Integration Tests**:
-   - Test all API endpoints
-   - Verify database operations
-   - Check authentication flows
-
-3. **End-to-End Tests**:
-   - Run full E2E tests to verify complete workflows
-   - Test user journeys that involve database and auth operations
-
-### 6. Documentation Updates
-
-1. **Update `TROUBLESHOOTING-GUIDE.md`**:
-   - Remove or update Supabase-specific troubleshooting steps
-   - Add Prisma-specific troubleshooting information
-
-2. **Update `README.md` and other docs**:
-   - Remove references to Supabase
-   - Update database setup instructions to focus on Prisma
-   - Update authentication setup to focus on Auth0
-
-### 7. Cleanup
-
-1. Remove any lingering Supabase files:
-   - `/src/lib/supabase/` directory
-   - Any migration files in `supabase/` directory
-
-2. Delete migration scripts once complete:
-   - `scripts/migrate-remaining-supabase.js`
-   - `scripts/remove-supabase-env-vars.js`
-
-## Rollback Plan
-
-In case issues arise during the migration:
-
-1. Keep Git commits small and focused
-2. Document database schema changes
-3. Have a backup plan for reverting to Supabase if critical issues occur
-4. Consider a phased rollout to production
-
-## Timeline
-
-| Task | Estimated Time | Priority |
-|------|---------------|----------|
-| Manual code updates | 3-5 days | High |
-| Authentication migration | 2-3 days | High |
-| Database query migration | 2-4 days | High |
-| Remove dependencies | 1 day | Medium |
-| Testing | 3-4 days | High |
-| Documentation updates | 1-2 days | Medium |
-| Cleanup | 1 day | Low |
-
-## Resources
-
-- [Prisma Documentation](https://www.prisma.io/docs/)
-- [Auth0 Next.js SDK](https://auth0.com/docs/quickstart/webapp/nextjs)
-- [Existing Migration Guide](./supabase-to-prisma-migration.md) 
+This will ensure no new direct imports are added to components. 

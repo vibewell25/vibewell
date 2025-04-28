@@ -1,7 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -11,7 +9,7 @@ import {
 } from '@/components/ui/select';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { Bell, Mail, Globe, Palette, Clock, Calendar, Languages, Moon } from 'lucide-react';
+import { Bell, Mail, Palette, Clock, Calendar, Languages, Moon } from 'lucide-react';
 
 interface Preference {
   id: string;
@@ -108,12 +106,12 @@ export function ProfilePreferences() {
   const handlePreferenceChange = async (id: string, newValue: boolean | string) => {
     try {
       // Simulate API call to update preference
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      setPreferences(prev =>
-        prev.map(preference =>
-          preference.id === id ? { ...preference, value: newValue } : preference
-        )
+      setPreferences((prev) =>
+        prev.map((preference) =>
+          preference.id === id ? { ...preference, value: newValue } : preference,
+        ),
       );
 
       toast.success('Preference updated successfully!');
@@ -130,13 +128,13 @@ export function ProfilePreferences() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          {preferences.map(preference => (
+          {preferences.map((preference) => (
             <div
               key={preference.id}
               className="flex items-start justify-between rounded-lg border p-4"
             >
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-full">
                   {preference.icon}
                 </div>
                 <div className="space-y-1">
@@ -155,13 +153,13 @@ export function ProfilePreferences() {
                 ) : (
                   <Select
                     value={preference.value as string}
-                    onValueChange={value => handlePreferenceChange(preference.id, value)}
+                    onValueChange={(value) => handlePreferenceChange(preference.id, value)}
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {preference.options?.map(option => (
+                      {preference.options?.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>

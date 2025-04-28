@@ -1,6 +1,4 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { TwoFactorAuth } from '@/components/profile/two-factor-auth';
 import { toast } from '@/components/ui/use-toast';
 
@@ -77,7 +75,7 @@ describe('TwoFactorAuth Component', () => {
         expect.objectContaining({
           title: '2FA Enabled',
           description: expect.stringContaining('enabled successfully'),
-        })
+        }),
       );
     });
   });
@@ -94,7 +92,7 @@ describe('TwoFactorAuth Component', () => {
       expect.objectContaining({
         title: 'SMS Verification',
         description: expect.stringContaining('phone number'),
-      })
+      }),
     );
   });
 
@@ -124,7 +122,7 @@ describe('TwoFactorAuth Component', () => {
       expect.objectContaining({
         title: '2FA Disabled',
         description: expect.stringContaining('has been disabled'),
-      })
+      }),
     );
   });
 });

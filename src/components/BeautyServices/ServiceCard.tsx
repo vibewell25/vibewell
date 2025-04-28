@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Box,
   Image,
@@ -99,7 +98,7 @@ export function ServiceCard({
               Available Practitioners
             </Text>
             <HStack spacing={2} overflow="hidden">
-              {practitioners.slice(0, 3).map(practitioner => (
+              {practitioners.slice(0, 3).map((practitioner) => (
                 <Box
                   key={practitioner.id}
                   position="relative"

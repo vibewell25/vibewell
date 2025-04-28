@@ -1,12 +1,9 @@
-'use client';
-
-import React from 'react';
+'use client';;
 import Link from 'next/link';
 import { NotificationIndicator } from '@/components/notifications/NotificationIndicator';
 import { useAuth } from '@/hooks/use-unified-auth';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { UserMenu } from '@/components/user-menu';
-import { Icons } from '@/components/icons';
 
 export interface HeaderProps {
   className?: string;
@@ -16,11 +13,11 @@ export function Header({ className = '' }: HeaderProps) {
   const { user, loading } = useAuth();
 
   return (
-    <header className={`bg-background border-b border-border py-4 ${className}`}>
-      <div className="container-app mx-auto px-4 flex items-center justify-between">
+    <header className={`border-b border-border bg-background py-4 ${className}`}>
+      <div className="container-app mx-auto flex items-center justify-between px-4">
         <div className="flex items-center">
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold text-primary">Vibewell</span>
+            <span className="text-primary text-2xl font-bold">Vibewell</span>
           </Link>
         </div>
 

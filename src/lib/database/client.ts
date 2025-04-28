@@ -185,7 +185,7 @@ export const db = {
   transaction: async (id?: string) => {
     const txId = id || `tx-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
     try {
-      const tx = await prisma.$transaction(async prisma => {
+      const tx = await prisma.$transaction(async (prisma) => {
         activeTransactions.set(txId, prisma);
         return txId;
       });

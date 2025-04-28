@@ -255,6 +255,4 @@ export const mockPractitioners = [
   },
 ];
 
-export const mockSpecializations = Array.from(
-  new Set(mockPractitioners.flatMap(p => p.specialization))
-).sort();
+export {};

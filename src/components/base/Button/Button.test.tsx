@@ -1,7 +1,3 @@
-/**
- * @vitest-environment jsdom
- */
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi, describe, it, expect } from 'vitest';
 import { axe } from 'jest-axe';
@@ -41,7 +37,7 @@ describe('Button Component', () => {
     render(<Button size={size as any}>Button</Button>);
     const classes = expectedClass.split(' ');
     const button = screen.getByRole('button');
-    classes.forEach(className => {
+    classes.forEach((className) => {
       expect(button).toHaveClass(className);
     });
   });

@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/unified-auth-context';
 import { analytics } from '@/utils/analytics';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { useDeviceType } from '@/utils/responsive';
 
 interface SubscriptionPlan {
@@ -141,7 +141,7 @@ export default function SubscriptionPage() {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Subscription Management</h1>
+      <h1 className="mb-6 text-3xl font-bold">Subscription Management</h1>
 
       {subscription && (
         <Card className="mb-8">
@@ -175,11 +175,11 @@ export default function SubscriptionPage() {
         </Card>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {plans.map(plan => (
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {plans.map((plan) => (
           <Card
             key={plan.id}
-            className={`${subscription?.plan === plan.id ? 'ring-2 ring-primary' : ''}`}
+            className={`${subscription?.plan === plan.id ? 'ring-primary ring-2' : ''}`}
           >
             <CardHeader>
               <CardTitle>{plan.name}</CardTitle>
@@ -188,11 +188,11 @@ export default function SubscriptionPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ul className="space-y-2 mb-6">
+              <ul className="mb-6 space-y-2">
                 {plan.features.map((feature, index) => (
                   <li key={index} className="flex items-center">
                     <svg
-                      className="w-4 h-4 mr-2 text-green-500"
+                      className="mr-2 h-4 w-4 text-green-500"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

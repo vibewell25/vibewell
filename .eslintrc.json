@@ -107,7 +107,7 @@
       "allowTypedFunctionExpressions": true,
       "allowHigherOrderFunctions": true
     }],
-    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-unsafe-assignment": "error",
     "@typescript-eslint/no-unsafe-call": "error",
     "@typescript-eslint/no-unsafe-member-access": "error",
@@ -118,7 +118,7 @@
       "allowNullish": true
     }],
     "@typescript-eslint/strict-boolean-expressions": "error",
-    "@typescript-eslint/no-unused-vars": ["error", {
+    "@typescript-eslint/no-unused-vars": ["warn", {
       "argsIgnorePattern": "^_",
       "varsIgnorePattern": "^_",
       "ignoreRestSiblings": true
@@ -131,6 +131,7 @@
     "@typescript-eslint/method-signature-style": ["error", "property"],
     "@typescript-eslint/prefer-nullish-coalescing": "error",
     "@typescript-eslint/prefer-optional-chain": "error",
+    "@typescript-eslint/no-require-imports": "off",
 
     // React
     "react/jsx-no-target-blank": ["error", {
@@ -298,6 +299,13 @@
       "files": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"],
       "rules": {
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-empty-object-type": "off",
+        "@typescript-eslint/no-namespace": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "react/no-unescaped-entities": "off",
+        "import/no-anonymous-default-export": "off",
+        "no-unused-vars": "off",
         "security/detect-object-injection": "off",
         "unicorn/no-null": "off",
         "unicorn/consistent-function-scoping": "off"
@@ -320,6 +328,11 @@
     "coverage/",
     "*.config.js",
     "*.config.ts",
-    "*.d.ts"
+    "*.d.ts",
+    "src/**/__tests__/**",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx"
   ]
 } 

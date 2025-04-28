@@ -7,7 +7,7 @@ import {
 } from '@/services/analytics-alert-service';
 import { ProductService } from '@/services/product-service';
 import { useAuth } from '@/hooks/use-unified-auth';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,7 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import {
@@ -84,8 +84,7 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
     handleSubmit,
     setValue,
     watch,
-    reset,
-    formState: { errors },
+    reset
   } = useForm<FormValues>({
     defaultValues: {
       name: '',
@@ -114,10 +113,10 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
 
         if (response.products && response.products.length > 0) {
           setProducts(
-            response.products.map(p => ({
+            response.products.map((p) => ({
               id: p.id,
               name: p.name,
-            }))
+            })),
           );
         }
       } catch (error) {
@@ -135,7 +134,7 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
 
   useEffect(() => {
     // Update metric label based on selected metric type
-    const selectedMetric = metricOptions.find(m => m.value === currentMetricType);
+    const selectedMetric = metricOptions.find((m) => m.value === currentMetricType);
     setMetricLabel(selectedMetric?.label || 'Value');
 
     // Set appropriate default values based on metric type
@@ -163,10 +162,10 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
         value: alertToEdit.threshold.value,
         timeframeHours: alertToEdit.threshold.timeframeHours,
         emailEnabled:
-          alertToEdit.notificationMethods.find(m => m.type === 'email')?.enabled || false,
-        smsEnabled: alertToEdit.notificationMethods.find(m => m.type === 'sms')?.enabled || false,
+          alertToEdit.notificationMethods.find((m) => m.type === 'email')?.enabled || false,
+        smsEnabled: alertToEdit.notificationMethods.find((m) => m.type === 'sms')?.enabled || false,
         inAppEnabled:
-          alertToEdit.notificationMethods.find(m => m.type === 'inApp')?.enabled || false,
+          alertToEdit.notificationMethods.find((m) => m.type === 'inApp')?.enabled || false,
       });
     } else {
       reset({
@@ -290,7 +289,7 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
               <Switch
                 id="isActive"
                 checked={watch('isActive')}
-                onCheckedChange={checked => setValue('isActive', checked)}
+                onCheckedChange={(checked) => setValue('isActive', checked)}
               />
             </div>
 
@@ -299,14 +298,14 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
               <Label htmlFor="productId">Product (Optional)</Label>
               <Select
                 value={watch('productId')}
-                onValueChange={value => setValue('productId', value)}
+                onValueChange={(value) => setValue('productId', value)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="All Products" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">All Products</SelectItem>
-                  {products.map(product => (
+                  {products.map((product) => (
                     <SelectItem key={product.id} value={product.id}>
                       {product.name}
                     </SelectItem>
@@ -321,13 +320,13 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
               <Label htmlFor="metricType">Metric</Label>
               <Select
                 value={watch('metricType')}
-                onValueChange={value => setValue('metricType', value)}
+                onValueChange={(value) => setValue('metricType', value)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a metric" />
                 </SelectTrigger>
                 <SelectContent>
-                  {metricOptions.map(option => (
+                  {metricOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
                     </SelectItem>
@@ -379,7 +378,7 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
                       : 5
                 }
                 value={[currentValue]}
-                onValueChange={values => setValue('value', values[0])}
+                onValueChange={(values) => setValue('value', values[0])}
               />
             </div>
 
@@ -388,13 +387,13 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
               <Label htmlFor="timeframeHours">Time Period</Label>
               <Select
                 value={watch('timeframeHours').toString()}
-                onValueChange={value => setValue('timeframeHours', parseInt(value))}
+                onValueChange={(value) => setValue('timeframeHours', parseInt(value))}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select time period" />
                 </SelectTrigger>
                 <SelectContent>
-                  {timeframeOptions.map(option => (
+                  {timeframeOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value.toString()}>
                       {option.label}
                     </SelectItem>
@@ -414,7 +413,7 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
                 <Switch
                   id="emailEnabled"
                   checked={watch('emailEnabled')}
-                  onCheckedChange={checked => setValue('emailEnabled', checked)}
+                  onCheckedChange={(checked) => setValue('emailEnabled', checked)}
                 />
               </div>
 
@@ -425,7 +424,7 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
                 <Switch
                   id="smsEnabled"
                   checked={watch('smsEnabled')}
-                  onCheckedChange={checked => setValue('smsEnabled', checked)}
+                  onCheckedChange={(checked) => setValue('smsEnabled', checked)}
                 />
               </div>
 
@@ -436,7 +435,7 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
                 <Switch
                   id="inAppEnabled"
                   checked={watch('inAppEnabled')}
-                  onCheckedChange={checked => setValue('inAppEnabled', checked)}
+                  onCheckedChange={(checked) => setValue('inAppEnabled', checked)}
                 />
               </div>
             </div>

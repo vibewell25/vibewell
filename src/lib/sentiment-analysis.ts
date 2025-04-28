@@ -67,7 +67,7 @@ export class SentimentAnalysisService {
     commonAspects: { [key: string]: number };
   }> {
     try {
-      const results = await Promise.all(reviews.map(review => this.analyzeSentiment(review)));
+      const results = await Promise.all(reviews.map((review) => this.analyzeSentiment(review)));
 
       // Calculate overall sentiment score
       const totalScore = results.reduce((sum, result) => sum + result.score, 0);
@@ -75,8 +75,8 @@ export class SentimentAnalysisService {
 
       // Aggregate aspects
       const aspectCounts: { [key: string]: number } = {};
-      results.forEach(result => {
-        Object.keys(result.aspects).forEach(aspect => {
+      results.forEach((result) => {
+        Object.keys(result.aspects).forEach((aspect) => {
           aspectCounts[aspect] = (aspectCounts[aspect] || 0) + 1;
         });
       });
@@ -107,7 +107,7 @@ export class SentimentAnalysisService {
   private aggregateAspects(results: SentimentResult[]): SentimentResult['aspects'] {
     const aspects: SentimentResult['aspects'] = {};
 
-    results.forEach(result => {
+    results.forEach((result) => {
       Object.entries(result.aspects).forEach(([aspect, data]) => {
         if (!aspects[aspect]) {
           aspects[aspect] = {
@@ -123,7 +123,7 @@ export class SentimentAnalysisService {
     });
 
     // Average the scores and determine sentiment
-    Object.keys(aspects).forEach(aspect => {
+    Object.keys(aspects).forEach((aspect) => {
       aspects[aspect].score /= results.length;
       aspects[aspect].sentiment = this.scoreToSentiment(aspects[aspect].score);
     });

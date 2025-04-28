@@ -6,14 +6,17 @@ import { useState, useEffect } from 'react';
  * @param initialValue Initial value if nothing is found in localStorage
  * @returns [storedValue, setValue] tuple similar to useState
  */
-export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val: T) => T)) => void] {
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T,
+): [T, (value: T | ((val: T) => T)) => void] {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === 'undefined') {
       return initialValue;
     }
-    
+
     try {
       // Get from local storage by key
       const item = window.localStorage.getItem(key);
@@ -31,10 +34,10 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
     try {
       // Allow value to be a function so we have same API as useState
       const valueToStore = value instanceof Function ? value(storedValue) : value;
-      
+
       // Save state
       setStoredValue(valueToStore);
-      
+
       // Save to local storage
       if (typeof window !== 'undefined') {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
@@ -48,7 +51,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
   // Listen for changes to this localStorage key from other tabs/windows
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    
+
     // Create event handler
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === key && event.newValue) {
@@ -59,10 +62,10 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
         }
       }
     };
-    
+
     // Add event listener
     window.addEventListener('storage', handleStorageChange);
-    
+
     // Remove event listener on cleanup
     return () => {
       window.removeEventListener('storage', handleStorageChange);

@@ -42,9 +42,8 @@ export default function PractitionersPage({
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
   const router = useRouter();
-  const toast = useToast();
 
-  const filteredPractitioners = practitioners.filter(practitioner => {
+  const filteredPractitioners = practitioners.filter((practitioner) => {
     const matchesSearch = practitioner.user.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesSpecialization =
       !selectedSpecialization || practitioner.specialization.includes(selectedSpecialization);
@@ -76,15 +75,15 @@ export default function PractitionersPage({
             <Input
               placeholder="Search practitioners..."
               value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Select
               placeholder="All Specializations"
               value={selectedSpecialization}
-              onChange={e => setSelectedSpecialization(e.target.value)}
+              onChange={(e) => setSelectedSpecialization(e.target.value)}
               maxW="200px"
             >
-              {specializations.map(spec => (
+              {specializations.map((spec) => (
                 <option key={spec} value={spec}>
                   {spec}
                 </option>
@@ -120,35 +119,4 @@ export default function PractitionersPage({
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const practitionerService = new PractitionerService();
-
-  try {
-    const practitioners = await practitionerService.getPractitionersByBusiness(
-      process.env.BUSINESS_ID as string
-    );
-
-    // Extract unique specializations from all practitioners
-    const specializations = Array.from(
-      new Set(practitioners.flatMap(practitioner => practitioner.specialization))
-    ).sort();
-
-    return {
-      props: {
-        practitioners: practitioners.map(p => ({
-          ...p,
-          servicesCount: p.services.length,
-        })),
-        specializations,
-      },
-    };
-  } catch (error) {
-    console.error('Error fetching practitioners:', error);
-    return {
-      props: {
-        practitioners: [],
-        specializations: [],
-      },
-    };
-  }
-};
+export {};

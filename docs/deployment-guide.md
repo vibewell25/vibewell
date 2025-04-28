@@ -1,37 +1,63 @@
-# Vibewell Deployment Guide
+# VibeWell Deployment Guide
 
-This guide provides detailed instructions for deploying the Vibewell application to different environments, setting up infrastructure, and handling deployments.
+This guide provides detailed instructions for deploying the VibeWell platform to various environments, including development, staging, and production.
 
 ## Prerequisites
 
-Before deploying the application, ensure you have:
+Before deployment, ensure you have the following:
 
-1. Node.js 18.x or higher
-2. npm 9.x or higher
-3. A Vercel account (for production deployment)
-4. Access to the application's Git repository
-5. Required environment variables and API keys
+- Node.js (version 16.x or later)
+- NPM (version 8.x or later)
+- Vercel CLI installed (`npm i -g vercel`)
+- Access to VibeWell GitHub repository
+- Access to AWS console (for S3 and other services)
+- Access to Auth0 dashboard
+- Access to Stripe dashboard
+- Access to database credentials
+- Environment variables configured
 
-## Environment Variables
+## Environment Setup
 
-The application requires the following environment variables:
+### Environment Variables
 
-| Variable Name | Description | Example Value |
-|---------------|-------------|--------------|
-| `NEXT_PUBLIC_API_URL` | Base URL for API requests | `https://api.vibewell.com` |
-| `NEXT_PUBLIC_WEBSITE_URL` | Base URL for the website | `https://vibewell.com` |
-| `DATABASE_URL` | Connection string for the database | `postgresql://user:password@localhost:5432/vibewell` |
-| `AUTH_SECRET` | Secret key for authentication | `your-secret-key` |
-| `STRIPE_SECRET_KEY` | Stripe API secret key | `sk_test_1234567890` |
-| `STRIPE_WEBHOOK_SECRET` | Stripe webhook secret | `whsec_1234567890` |
+Create a `.env` file in the root directory with the following variables:
+
+```
+# Base URLs
+NEXT_PUBLIC_APP_URL=https://yourappurl.com
+
+# Database
+DATABASE_URL=postgresql://username:password@host:port/database
+
+# Auth0
+AUTH0_SECRET=your_auth0_secret
+AUTH0_BASE_URL=https://yourappurl.com
+AUTH0_ISSUER_BASE_URL=https://yourtenant.auth0.com
+AUTH0_CLIENT_ID=your_auth0_client_id
+AUTH0_CLIENT_SECRET=your_auth0_client_secret
+
+# AWS S3
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+AWS_REGION=your_aws_region
+AWS_S3_BUCKET_NAME=your_s3_bucket_name
+
+# Stripe
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+
+# Other
+NEXTAUTH_SECRET=your_nextauth_secret
+```
+
+For different environments, use environment-specific values.
 
 ## Local Development Deployment
 
-To run the application locally:
-
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/vibewell.git
+   git clone https://github.com/your-org/vibewell.git
    cd vibewell
    ```
 
@@ -40,59 +66,72 @@ To run the application locally:
    npm install
    ```
 
-3. Create a `.env.local` file in the root directory and add the required environment variables.
+3. Set up your local environment variables (see above).
 
-4. Run the development server:
+4. Run database migrations:
+   ```bash
+   npx prisma migrate dev
+   ```
+
+5. Start the development server:
    ```bash
    npm run dev
    ```
 
-5. The application will be available at `http://localhost:3000`.
+The application should now be running at `http://localhost:3000`.
 
-## Staging Environment Deployment
+## Staging Deployment
 
-For staging deployments, we use Vercel Preview Environments:
+Staging deployment uses Vercel Preview environments.
 
-1. Push your changes to a feature branch:
+1. Create a new branch for your feature:
    ```bash
-   git checkout -b feature/my-feature
-   git add .
-   git commit -m "Add my feature"
-   git push origin feature/my-feature
+   git checkout -b feature/your-feature-name
    ```
 
-2. Create a Pull Request on GitHub.
+2. Make your changes and commit them:
+   ```bash
+   git add .
+   git commit -m "Description of changes"
+   ```
 
-3. Vercel will automatically create a preview deployment for the PR.
+3. Push to GitHub:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
 
-4. The preview URL will be posted as a comment on your PR.
+4. Create a Pull Request on GitHub.
+
+5. Vercel will automatically create a preview deployment for your PR.
+
+6. After reviewing the preview deployment, merge the PR to trigger a production deployment.
 
 ## Production Deployment
 
-To deploy to production:
+### Automated Deployment with Vercel
 
-1. Merge your changes to the main branch:
+1. Ensure all tests pass in the staging environment.
+
+2. Merge your changes to the main branch:
    ```bash
    git checkout main
-   git pull
-   git merge feature/my-feature
-   git push origin main
+   git pull origin main
    ```
 
-2. Vercel will automatically deploy the main branch to production.
+3. Vercel will automatically deploy the main branch to production.
 
-3. Monitor the deployment on the Vercel dashboard.
+4. Verify the deployment by accessing the production URL.
 
-## Manual Deployment to Vercel
+### Manual Production Deployment
 
-If you need to deploy manually:
+If you need to manually deploy to production:
 
-1. Install the Vercel CLI:
+1. Install the Vercel CLI if not already installed:
    ```bash
-   npm install -g vercel
+   npm i -g vercel
    ```
 
-2. Log in to Vercel:
+2. Login to Vercel:
    ```bash
    vercel login
    ```
@@ -104,106 +143,112 @@ If you need to deploy manually:
 
 ## Database Migrations
 
-When deploying changes that include database migrations:
+### Running Migrations in Production
 
-1. Ensure your migrations are tested in the staging environment.
-
-2. Back up the production database before applying migrations:
+1. Generate the migration:
    ```bash
-   pg_dump -U username -d vibewell > backup_$(date +%Y%m%d_%H%M%S).sql
+   npx prisma migrate dev --name descriptive-migration-name
    ```
 
-3. Apply migrations using Prisma:
+2. Apply the migration to production:
    ```bash
    npx prisma migrate deploy
    ```
 
+Always back up your production database before running migrations!
+
+## AWS S3 Configuration
+
+Ensure your S3 bucket is configured correctly:
+
+1. Create an S3 bucket with the proper name.
+2. Configure CORS to allow uploads from your domains:
+   ```json
+   [
+     {
+       "AllowedHeaders": ["*"],
+       "AllowedMethods": ["GET", "PUT", "POST", "DELETE"],
+       "AllowedOrigins": ["https://yourappurl.com"],
+       "ExposeHeaders": ["ETag"]
+     }
+   ]
+   ```
+3. Set appropriate bucket policies and IAM permissions.
+
+## Stripe Webhook Configuration
+
+1. In the Stripe dashboard, navigate to Developers > Webhooks.
+2. Add an endpoint with the URL: `https://yourappurl.com/api/webhooks/stripe`.
+3. Select events to listen for (e.g., `checkout.session.completed`, `invoice.paid`).
+4. Get the webhook secret and add it to your environment variables.
+
+## Auth0 Configuration
+
+1. Create a new application in Auth0 dashboard.
+2. Configure the callback URLs:
+   - Allowed Callback URLs: `https://yourappurl.com/api/auth/callback/auth0`
+   - Allowed Logout URLs: `https://yourappurl.com`
+   - Allowed Web Origins: `https://yourappurl.com`
+3. Get your Client ID and Client Secret and add them to your environment variables.
+
+## SSL Configuration
+
+Ensure HTTPS is enabled:
+
+1. Vercel handles SSL certificates automatically.
+2. If using a custom domain, configure it in the Vercel dashboard.
+3. Verify the SSL certificate is valid and properly configured.
+
+## Post-Deployment Verification
+
+After deploying, verify the following:
+
+1. The application loads correctly at the production URL.
+2. User authentication works as expected.
+3. Database operations are functioning properly.
+4. File uploads to S3 are working.
+5. Stripe payments are processing correctly.
+6. All critical user flows are functioning as expected.
+
 ## Rollback Procedure
 
-If you need to roll back a deployment:
+If issues are encountered after deployment:
 
-1. On Vercel:
-   - Go to the Vercel dashboard
-   - Navigate to the Vibewell project
-   - Go to "Deployments"
-   - Find the previous working deployment
-   - Click "..." and select "Promote to Production"
+1. In the Vercel dashboard, navigate to the "Deployments" tab.
+2. Find the last stable deployment.
+3. Click the three dots menu and select "Promote to Production".
+4. Verify the rollback fixed the issue.
 
-2. For database rollbacks:
-   - Restore from the backup created before the deployment
+## Monitoring and Logging
+
+1. Set up Sentry.io for error tracking:
    ```bash
-   psql -U username -d vibewell < backup_filename.sql
+   npm install @sentry/nextjs
    ```
 
-## Monitoring and Logs
+2. Configure Sentry in your `next.config.js` file.
 
-After deployment, monitor the application's health:
+3. Monitor application health using Vercel Analytics.
 
-1. Check Vercel logs in the dashboard under the "Logs" tab.
+4. Set up alerts for critical errors and performance issues.
 
-2. Monitor application performance using Vercel Analytics.
+## Scheduled Maintenance
 
-3. Check server logs for any errors or warnings.
+For planned maintenance:
 
-## SSL Certificates
-
-Vercel handles SSL certificates automatically. If you're deploying to a custom domain:
-
-1. Add your domain in the Vercel dashboard.
-
-2. Configure DNS settings as instructed by Vercel.
-
-3. Vercel will automatically issue and renew SSL certificates.
-
-## Continuous Integration
-
-The repository is configured with GitHub Actions for CI:
-
-1. Automated tests run on every push and PR.
-
-2. The workflow file is located at `.github/workflows/ci.yml`.
-
-3. Tests must pass before merging to main.
-
-## Security Considerations
-
-When deploying, ensure:
-
-1. All environment variables are properly set and secured.
-
-2. The application is using HTTPS.
-
-3. Database access is restricted to application IP addresses.
-
-4. Regular security audits and updates are performed.
+1. Notify users at least 24 hours in advance.
+2. Schedule maintenance during low-traffic periods.
+3. Use a maintenance page if necessary.
+4. Keep a log of all maintenance activities.
 
 ## Performance Optimization
 
-For optimal performance:
+After deployment, consider running:
 
-1. Enable Vercel's Edge Caching for static assets.
+1. Lighthouse audits for performance metrics.
+2. Load testing to ensure the application can handle expected traffic.
+3. Database query optimization if needed.
 
-2. Configure proper cache headers for API responses.
+---
 
-3. Use Vercel's Image Optimization for image assets.
-
-## Troubleshooting
-
-Common deployment issues:
-
-1. **Build Failure**: Check the build logs for errors.
-
-2. **API Connection Issues**: Verify environment variables and network access.
-
-3. **Database Connection Problems**: Check connection strings and firewall rules.
-
-4. **Missing Environment Variables**: Ensure all required variables are set.
-
-## Contact and Support
-
-For deployment assistance, contact:
-
-- DevOps Team: devops@vibewell.com
-- Engineering Lead: engineering-lead@vibewell.com
-
-Emergency support is available 24/7 at support@vibewell.com. 
+This deployment guide should be updated regularly as the deployment process evolves. For any questions or issues, contact the DevOps team or system administrator. 

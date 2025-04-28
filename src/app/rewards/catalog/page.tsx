@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'react-hot-toast';
 import { Icons } from '@/components/icons';
@@ -79,12 +79,12 @@ export default function RewardsCatalogPage() {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="mx-auto max-w-4xl space-y-8">
           <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+            <div className="h-8 w-1/4 rounded bg-gray-200"></div>
             <div className="grid gap-6 md:grid-cols-2">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-64 bg-gray-200 rounded"></div>
+                <div key={i} className="h-64 rounded bg-gray-200"></div>
               ))}
             </div>
           </div>
@@ -94,7 +94,7 @@ export default function RewardsCatalogPage() {
   }
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto space-y-8">
+      <div className="mx-auto max-w-4xl space-y-8">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Rewards Catalog</h1>
           <div className="flex items-center gap-2">
@@ -103,17 +103,17 @@ export default function RewardsCatalogPage() {
           </div>
         </div>
         <div className="grid gap-6 md:grid-cols-2">
-          {rewards.map(reward => (
+          {rewards.map((reward) => (
             <Card key={reward.id} className="overflow-hidden">
-              <div className="aspect-video bg-gray-100 relative">
+              <div className="relative aspect-video bg-gray-100">
                 <img
                   src={reward.imageUrl}
                   alt={reward.name}
-                  className="object-cover w-full h-full"
+                  className="h-full w-full object-cover"
                 />
                 <Badge
                   variant={reward.available ? 'default' : 'secondary'}
-                  className="absolute top-2 right-2"
+                  className="absolute right-2 top-2"
                 >
                   {reward.available ? 'Available' : 'Out of Stock'}
                 </Badge>
@@ -122,7 +122,7 @@ export default function RewardsCatalogPage() {
                 <CardTitle>{reward.name}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-4">{reward.description}</p>
+                <p className="mb-4 text-muted-foreground">{reward.description}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Icons.StarIcon className="h-5 w-5 text-yellow-400" />
@@ -132,7 +132,7 @@ export default function RewardsCatalogPage() {
                     onClick={() => handleRedeem(reward.id, reward.points)}
                     disabled={!reward.available || userPoints < reward.points}
                   >
-                    <Icons.GiftIcon className="h-5 w-5 mr-2" />
+                    <Icons.GiftIcon className="mr-2 h-5 w-5" />
                     Redeem
                   </Button>
                 </div>

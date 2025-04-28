@@ -8,7 +8,7 @@ import { API_CONFIG } from '../../config/api';
 export function createMockApiResponse<T>(
   data: T,
   success = true,
-  error?: ApiError
+  error?: ApiError,
 ): ApiResponse<T> {
   return {
     success,
@@ -35,23 +35,23 @@ export function createMockApiClient(options: ApiClientOptions = {}) {
 
   // Setup default successful responses
   mockClient.get.mockImplementation((path: string) =>
-    Promise.resolve(createMockApiResponse({ path, method: 'GET' }))
+    Promise.resolve(createMockApiResponse({ path, method: 'GET' })),
   );
 
   mockClient.post.mockImplementation((path: string, data: any) =>
-    Promise.resolve(createMockApiResponse({ path, method: 'POST', data }))
+    Promise.resolve(createMockApiResponse({ path, method: 'POST', data })),
   );
 
   mockClient.put.mockImplementation((path: string, data: any) =>
-    Promise.resolve(createMockApiResponse({ path, method: 'PUT', data }))
+    Promise.resolve(createMockApiResponse({ path, method: 'PUT', data })),
   );
 
   mockClient.delete.mockImplementation((path: string) =>
-    Promise.resolve(createMockApiResponse({ path, method: 'DELETE' }))
+    Promise.resolve(createMockApiResponse({ path, method: 'DELETE' })),
   );
 
   mockClient.patch.mockImplementation((path: string, data: any) =>
-    Promise.resolve(createMockApiResponse({ path, method: 'PATCH', data }))
+    Promise.resolve(createMockApiResponse({ path, method: 'PATCH', data })),
   );
 
   return mockClient;
@@ -63,7 +63,7 @@ export function createMockApiClient(options: ApiClientOptions = {}) {
 export function createMockApiError(
   code: string,
   message: string,
-  details?: Record<string, any>
+  details?: Record<string, any>,
 ): ApiResponse {
   return createMockApiResponse(undefined, false, {
     code,
@@ -91,7 +91,7 @@ export function createMockTimeoutError(): ApiResponse {
  */
 export function createServiceTestWrapper<T extends { apiClient: ApiClient }>(
   Service: new (client: ApiClient) => T,
-  mockResponses: Record<string, ApiResponse> = {}
+  mockResponses: Record<string, ApiResponse> = {},
 ): T {
   const mockClient = createMockApiClient();
 
@@ -103,27 +103,27 @@ export function createServiceTestWrapper<T extends { apiClient: ApiClient }>(
     switch (method.toUpperCase()) {
       case 'GET':
         mockClient.get.mockImplementation((p: string) =>
-          p === actualPath ? Promise.resolve(response) : Promise.reject()
+          p === actualPath ? Promise.resolve(response) : Promise.reject(),
         );
         break;
       case 'POST':
         mockClient.post.mockImplementation((p: string) =>
-          p === actualPath ? Promise.resolve(response) : Promise.reject()
+          p === actualPath ? Promise.resolve(response) : Promise.reject(),
         );
         break;
       case 'PUT':
         mockClient.put.mockImplementation((p: string) =>
-          p === actualPath ? Promise.resolve(response) : Promise.reject()
+          p === actualPath ? Promise.resolve(response) : Promise.reject(),
         );
         break;
       case 'DELETE':
         mockClient.delete.mockImplementation((p: string) =>
-          p === actualPath ? Promise.resolve(response) : Promise.reject()
+          p === actualPath ? Promise.resolve(response) : Promise.reject(),
         );
         break;
       case 'PATCH':
         mockClient.patch.mockImplementation((p: string) =>
-          p === actualPath ? Promise.resolve(response) : Promise.reject()
+          p === actualPath ? Promise.resolve(response) : Promise.reject(),
         );
         break;
     }
@@ -136,5 +136,5 @@ export function createServiceTestWrapper<T extends { apiClient: ApiClient }>(
  * Wait for all pending API requests to complete
  */
 export async function waitForApiRequests(): Promise<void> {
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }

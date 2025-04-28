@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Meta, StoryFn } from '@storybook/react';
 import { Card, CardProps } from '../components/Card';
 
@@ -71,7 +70,7 @@ WithImage.args = {
     <>
       <Card.Image src="https://source.unsplash.com/random/800x400" alt="Random image" />
       <Card.Body>
-        <h3 className="text-xl font-semibold mb-2">Card with Image</h3>
+        <h3 className="mb-2 text-xl font-semibold">Card with Image</h3>
         <p>This card includes an image at the top.</p>
       </Card.Body>
     </>
@@ -84,7 +83,7 @@ Interactive.args = {
   onClick: () => alert('Card clicked!'),
   children: (
     <Card.Body>
-      <h3 className="text-xl font-semibold mb-2">Clickable Card</h3>
+      <h3 className="mb-2 text-xl font-semibold">Clickable Card</h3>
       <p>Click me to trigger an action!</p>
     </Card.Body>
   ),
@@ -101,26 +100,14 @@ Loading.args = {
   ),
 };
 
-export const Variants = () => (
-  <div className="space-y-4">
-    <Card variant="elevated">
-      <Card.Body>Elevated Card</Card.Body>
-    </Card>
-    <Card variant="outlined">
-      <Card.Body>Outlined Card</Card.Body>
-    </Card>
-    <Card variant="flat">
-      <Card.Body>Flat Card</Card.Body>
-    </Card>
-  </div>
-);
+export {};
 
 export const ComplexContent = Template.bind({});
 ComplexContent.args = {
   children: (
     <>
       <Card.Header>
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <h3 className="text-xl font-semibold">Complex Layout</h3>
           <button className="text-primary-500">⋮</button>
         </div>
@@ -130,22 +117,22 @@ ComplexContent.args = {
         <div className="space-y-4">
           <p>This card demonstrates a more complex content layout.</p>
           <div className="flex space-x-2">
-            <span className="px-2 py-1 bg-primary-100 text-primary-800 rounded-full text-sm">
+            <span className="rounded-full bg-primary-100 px-2 py-1 text-sm text-primary-800">
               Tag 1
             </span>
-            <span className="px-2 py-1 bg-primary-100 text-primary-800 rounded-full text-sm">
+            <span className="rounded-full bg-primary-100 px-2 py-1 text-sm text-primary-800">
               Tag 2
             </span>
           </div>
         </div>
       </Card.Body>
       <Card.Footer>
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <button className="text-primary-500">Learn More</button>
           <div className="flex space-x-2">
-            <button className="p-2 hover:bg-gray-100 rounded">👍</button>
-            <button className="p-2 hover:bg-gray-100 rounded">💬</button>
-            <button className="p-2 hover:bg-gray-100 rounded">Share</button>
+            <button className="rounded p-2 hover:bg-gray-100">👍</button>
+            <button className="rounded p-2 hover:bg-gray-100">💬</button>
+            <button className="rounded p-2 hover:bg-gray-100">Share</button>
           </div>
         </div>
       </Card.Footer>

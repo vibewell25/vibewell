@@ -28,14 +28,13 @@ const PractitionersPage = () => {
   const [sortBy, setSortBy] = useState('rating');
   const [error, setError] = useState<string | null>(null);
 
-  const router = useRouter();
   const toast = useToast();
 
   const filteredPractitioners = useMemo(() => {
-    return mockPractitioners.filter(practitioner => {
+    return mockPractitioners.filter((practitioner) => {
       const nameMatch = practitioner.user.name.toLowerCase().includes(searchQuery.toLowerCase());
       const specializationMatch = practitioner.specialization.some((specialization: string) =>
-        specialization.toLowerCase().includes(searchQuery.toLowerCase())
+        specialization.toLowerCase().includes(searchQuery.toLowerCase()),
       );
 
       const specializationFilterMatch =
@@ -62,7 +61,7 @@ const PractitionersPage = () => {
 
   const handleViewProfile = (id: string) => {
     try {
-      const practitioner = mockPractitioners.find(p => p.id === id);
+      const practitioner = mockPractitioners.find((p) => p.id === id);
       if (practitioner) {
         setSelectedPractitioner(practitioner);
         setShowList(false);
@@ -137,7 +136,7 @@ const PractitionersPage = () => {
                   }
                 >
                   <option value="">All Specializations</option>
-                  {mockSpecializations.map(spec => (
+                  {mockSpecializations.map((spec) => (
                     <option key={spec} value={spec}>
                       {spec}
                     </option>

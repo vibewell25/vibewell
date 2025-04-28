@@ -30,7 +30,7 @@ afterAll(async () => {
 
 export const testVisualRegression = async (
   component: React.ReactElement,
-  options: VisualRegressionOptions = {}
+  options: VisualRegressionOptions = {},
 ) => {
   const { viewport = { width: 1280, height: 720 }, theme = 'light', delay = 0 } = options;
 
@@ -41,32 +41,13 @@ export const testVisualRegression = async (
 
   const { container } = render(component);
   if (delay) {
-    await new Promise(resolve => setTimeout(resolve, delay));
+    await new Promise((resolve) => setTimeout(resolve, delay));
   }
 
   const screenshot = await page.screenshot();
   expect(screenshot).toMatchImageSnapshot();
 };
 
-export const testResponsiveVisualRegression = async (
-  component: React.ReactElement,
-  options: Omit<VisualRegressionOptions, 'viewport'> = {}
-) => {
-  const viewports = {
-    mobile: { width: 375, height: 667 },
-    tablet: { width: 768, height: 1024 },
-    desktop: { width: 1280, height: 720 },
-  };
+export {};
 
-  for (const [device, viewport] of Object.entries(viewports)) {
-    await testVisualRegression(component, { ...options, viewport });
-  }
-};
-
-export const testThemeVisualRegression = async (
-  component: React.ReactElement,
-  options: Omit<VisualRegressionOptions, 'theme'> = {}
-) => {
-  await testVisualRegression(component, { ...options, theme: 'light' });
-  await testVisualRegression(component, { ...options, theme: 'dark' });
-};
+export {};

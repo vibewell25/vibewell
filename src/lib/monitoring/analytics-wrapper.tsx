@@ -19,4 +19,4 @@ export function AnalyticsWrapper({ children }: AnalyticsWrapperProps): React.Rea
   );
 }
 
-export default AnalyticsWrapper; 
+export default AnalyticsWrapper;

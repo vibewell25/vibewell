@@ -68,11 +68,7 @@ export const AccessibleNotification: React.FC<AccessibleNotificationProps> = ({
     <div
       role="alert"
       aria-live={type === 'error' ? 'assertive' : 'polite'}
-      className={`
-        fixed top-4 right-4 p-4 rounded-lg border
-        ${getTypeStyles()}
-        ${className}
-      `}
+      className={`fixed right-4 top-4 rounded-lg border p-4 ${getTypeStyles()} ${className} `}
     >
       <div className="flex items-start">
         {showIcon && (

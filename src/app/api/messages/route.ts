@@ -3,8 +3,6 @@ import { z } from 'zod';
 import { auth } from '@/lib/auth';
 import { messagesStore } from '@/lib/api/messages';
 
-// For development purposes, add some sample data
-import { randomUUID } from 'crypto';
 if (process.env.NODE_ENV === 'development' && messagesStore.conversations.length === 0) {
   // Sample user IDs
   const currentUserId = 'current-user';
@@ -19,24 +17,24 @@ if (process.env.NODE_ENV === 'development' && messagesStore.conversations.length
     '/avatar-current.png',
     user1Id,
     'Emma Thompson',
-    '/avatar1.png'
+    '/avatar1.png',
   );
 
   // Add messages to conversation 1
   messagesStore.addMessage(
     conversation1.id,
     user1Id,
-    "Hi there! I saw your post about meditation. I've been practicing for years and would love to share some tips!"
+    "Hi there! I saw your post about meditation. I've been practicing for years and would love to share some tips!",
   );
   messagesStore.addMessage(
     conversation1.id,
     currentUserId,
-    "That would be amazing! I'm just getting started and could use some guidance."
+    "That would be amazing! I'm just getting started and could use some guidance.",
   );
   messagesStore.addMessage(
     conversation1.id,
     user1Id,
-    'Great! I recommend starting with just 5 minutes a day and gradually increasing. Consistency is more important than duration.'
+    'Great! I recommend starting with just 5 minutes a day and gradually increasing. Consistency is more important than duration.',
   );
 
   // Create conversation 2
@@ -46,14 +44,14 @@ if (process.env.NODE_ENV === 'development' && messagesStore.conversations.length
     '/avatar-current.png',
     user2Id,
     'David Chen',
-    '/avatar2.png'
+    '/avatar2.png',
   );
 
   // Add messages to conversation 2
   messagesStore.addMessage(
     conversation2.id,
     user2Id,
-    'Hey! Are you joining the yoga challenge next week?'
+    'Hey! Are you joining the yoga challenge next week?',
   );
 
   // Create conversation 3
@@ -63,19 +61,19 @@ if (process.env.NODE_ENV === 'development' && messagesStore.conversations.length
     '/avatar-current.png',
     user3Id,
     'Sarah Williams',
-    '/avatar3.png'
+    '/avatar3.png',
   );
 
   // Add messages to conversation 3
   messagesStore.addMessage(
     conversation3.id,
     user3Id,
-    'Thanks for the nutrition advice! I tried that recipe and it was delicious.'
+    'Thanks for the nutrition advice! I tried that recipe and it was delicious.',
   );
   messagesStore.addMessage(
     conversation3.id,
     user3Id,
-    'Do you have any other healthy meal prep suggestions?'
+    'Do you have any other healthy meal prep suggestions?',
   );
 }
 
@@ -130,7 +128,7 @@ export async function POST(req: NextRequest) {
     if (!validationResult.success) {
       return NextResponse.json(
         { error: 'Invalid request data', details: validationResult.error.format() },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -143,7 +141,7 @@ export async function POST(req: NextRequest) {
       session.user.image || null,
       recipientId,
       recipientName || 'User',
-      null
+      null,
     );
 
     // Add message to conversation

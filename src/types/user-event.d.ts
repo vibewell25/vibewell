@@ -18,11 +18,11 @@ declare module '@testing-library/user-event' {
     paste(element: Element, text: string): Promise<void>;
     selectOptions(
       element: Element,
-      values: string | string[] | HTMLElement | HTMLElement[]
+      values: string | string[] | HTMLElement | HTMLElement[],
     ): Promise<void>;
     deselectOptions(
       element: Element,
-      values: string | string[] | HTMLElement | HTMLElement[]
+      values: string | string[] | HTMLElement | HTMLElement[],
     ): Promise<void>;
     tab({ shift }?: { shift?: boolean }): Promise<void>;
   }

@@ -198,4 +198,9 @@ export interface CustomMetric extends PerformanceMetric {
   metadata?: Record<string, unknown>;
 }
 
-export type MetricType = PerformanceMetric | ResourceMetric | WebVitalMetric | ErrorMetric | CustomMetric; 
+export type MetricType =
+  | PerformanceMetric
+  | ResourceMetric
+  | WebVitalMetric
+  | ErrorMetric
+  | CustomMetric;

@@ -34,10 +34,7 @@ export class ImageOptimizationService {
     }
   }
 
-  private getCacheKey(
-    imagePath: string,
-    options: ImageOptimizationOptions
-  ): string {
+  private getCacheKey(imagePath: string, options: ImageOptimizationOptions): string {
     const { quality, format, width, height, fit } = options;
     const key = `${imagePath}-${quality}-${format}-${width}-${height}-${fit}`;
     return path.join(this.cacheDir, Buffer.from(key).toString('base64'));
@@ -45,17 +42,11 @@ export class ImageOptimizationService {
 
   public async optimizeImage(
     inputPath: string,
-    options: ImageOptimizationOptions = {}
+    options: ImageOptimizationOptions = {},
   ): Promise<{ outputPath: string; metadata: ImageMetadata }> {
     await this.ensureCacheDir();
 
-    const {
-      quality = 80,
-      format = 'webp',
-      width,
-      height,
-      fit = 'cover',
-    } = options;
+    const { quality = 80, format = 'webp', width, height, fit = 'cover' } = options;
 
     if (!this.supportedFormats.includes(format)) {
       throw new Error(`Unsupported format: ${format}`);
@@ -126,7 +117,7 @@ export class ImageOptimizationService {
 
   public async generateResponsiveImages(
     inputPath: string,
-    breakpoints: number[] = [640, 768, 1024, 1280, 1536]
+    breakpoints: number[] = [640, 768, 1024, 1280, 1536],
   ): Promise<Array<{ width: number; outputPath: string }>> {
     const results = await Promise.all(
       breakpoints.map(async (width) => {
@@ -136,7 +127,7 @@ export class ImageOptimizationService {
           quality: 80,
         });
         return { width, outputPath };
-      })
+      }),
     );
 
     return results;
@@ -156,11 +147,11 @@ export class ImageOptimizationService {
           if (age > maxAge) {
             await fs.unlink(filePath);
           }
-        })
+        }),
       );
     } catch (error) {
       console.error('Failed to clean cache:', error);
       throw error;
     }
   }
-} 
+}

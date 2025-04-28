@@ -1,9 +1,4 @@
-/**
- * @jest-environment jsdom
- */
-import React from 'react';
 import { render, screen, fireEvent } from '../../test-utils/testing-library';
-import '@testing-library/jest-dom';
 import { RecentSearches } from '../RecentSearches';
 import * as useLocalStorageModule from '../../hooks/useLocalStorage';
 

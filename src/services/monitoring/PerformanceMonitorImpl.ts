@@ -20,4 +20,4 @@ export class PerformanceMonitorImpl implements PerformanceMonitor {
   clearMetrics(): void {
     this.metrics = {};
   }
-} 
+}

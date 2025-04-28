@@ -89,7 +89,7 @@ export async function getPosts(): Promise<Post[]> {
 export async function createPost(
   userId: string,
   content: string,
-  imageUrl?: string
+  imageUrl?: string,
 ): Promise<Post | null> {
   try {
     const post = await prisma.post.create({
@@ -126,7 +126,7 @@ export async function createPost(
 export async function addComment(
   userId: string,
   postId: number,
-  content: string
+  content: string,
 ): Promise<PostComment | null> {
   try {
     const comment = await prisma.postComment.create({
@@ -159,7 +159,7 @@ export async function addComment(
 export async function addReaction(
   userId: string,
   postId: number,
-  reactionType: ReactionType
+  reactionType: ReactionType,
 ): Promise<boolean> {
   try {
     const post = await prisma.post.findUnique({
@@ -169,9 +169,9 @@ export async function addReaction(
 
     if (!post) return false;
 
-    const userReactions = post.userReactions as Record<string, ReactionType> || {};
+    const userReactions = (post.userReactions as Record<string, ReactionType>) || {};
     const previousReaction = userReactions[userId];
-    const updatedReactions = { ...post.reactions as Record<ReactionType, number> };
+    const updatedReactions = { ...(post.reactions as Record<ReactionType, number>) };
 
     if (previousReaction) {
       updatedReactions[previousReaction] = Math.max(0, updatedReactions[previousReaction] - 1);
@@ -204,12 +204,12 @@ export async function removeReaction(userId: string, postId: number): Promise<bo
 
     if (!post) return false;
 
-    const userReactions = post.userReactions as Record<string, ReactionType> || {};
+    const userReactions = (post.userReactions as Record<string, ReactionType>) || {};
     const previousReaction = userReactions[userId];
 
     if (!previousReaction) return true;
 
-    const updatedReactions = { ...post.reactions as Record<ReactionType, number> };
+    const updatedReactions = { ...(post.reactions as Record<ReactionType, number>) };
     updatedReactions[previousReaction] = Math.max(0, updatedReactions[previousReaction] - 1);
 
     const { [userId]: _, ...updatedUserReactions } = userReactions;
@@ -267,7 +267,7 @@ export async function getSavedPosts(userId: string): Promise<number[]> {
       where: { userId },
       select: { postId: true },
     });
-    return savedPosts.map(sp => sp.postId);
+    return savedPosts.map((sp) => sp.postId);
   } catch (error) {
     console.error('Error in getSavedPosts:', error);
     return [];
@@ -289,13 +289,16 @@ export async function getUserReactions(userId: string): Promise<{ [key: number]:
       },
     });
 
-    return posts.reduce((acc, post) => {
-      const userReactions = post.userReactions as Record<string, ReactionType>;
-      if (userReactions && userReactions[userId]) {
-        acc[post.id] = userReactions[userId];
-      }
-      return acc;
-    }, {} as { [key: number]: ReactionType });
+    return posts.reduce(
+      (acc, post) => {
+        const userReactions = post.userReactions as Record<string, ReactionType>;
+        if (userReactions && userReactions[userId]) {
+          acc[post.id] = userReactions[userId];
+        }
+        return acc;
+      },
+      {} as { [key: number]: ReactionType },
+    );
   } catch (error) {
     console.error('Error in getUserReactions:', error);
     return {};

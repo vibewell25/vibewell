@@ -62,7 +62,7 @@ const mockAudioContext = {
 // Setup global mocks
 const setupGlobalMocks = () => {
   // Mock WebGL
-  HTMLCanvasElement.prototype.getContext = jest.fn(contextId => {
+  HTMLCanvasElement.prototype.getContext = jest.fn((contextId) => {
     if (contextId === 'webgl') {
       return mockWebGLContext;
     }
@@ -80,8 +80,8 @@ const setupGlobalMocks = () => {
   }));
 
   // Mock requestAnimationFrame
-  global.requestAnimationFrame = jest.fn(callback => setTimeout(callback, 0));
-  global.cancelAnimationFrame = jest.fn(id => clearTimeout(id));
+  global.requestAnimationFrame = jest.fn((callback) => setTimeout(callback, 0));
+  global.cancelAnimationFrame = jest.fn((id) => clearTimeout(id));
 };
 
 // Cleanup global mocks

@@ -2,17 +2,12 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import {
-  ProductService,
-  Product,
-  ProductFilter,
-  ProductSortOption,
-} from '@/services/product-service';
+import { ProductService, ProductFilter } from '@/services/product-service';
 import { ProductCard } from '@/components/products/product-card';
 import { ProductFilters } from '@/components/products/product-filters';
 import { Pagination } from '@/components/ui/pagination';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import {
   Select,
   SelectContent,
@@ -33,7 +28,7 @@ function ProductsLoadingSkeleton() {
         <Skeleton className="h-10 w-[200px]" />
         <Skeleton className="h-10 w-[150px]" />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {Array(8)
           .fill(0)
           .map((_, i) => (
@@ -141,7 +136,7 @@ function ProductsContent() {
           searchFilter,
           sort,
           currentPage,
-          limit
+          limit,
         );
 
         setProducts(products);
@@ -235,16 +230,15 @@ function ProductsContent() {
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">Browse Products</h1>
-
+    (<div className="container mx-auto py-8">
+      <h1 className="mb-6 text-3xl font-bold">Browse Products</h1>
       {/* Search and Sort */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
-        <form onSubmit={handleSearch} className="flex-1 flex gap-2">
+      <div className="mb-6 flex flex-col gap-4 md:flex-row">
+        <form onSubmit={handleSearch} className="flex flex-1 gap-2">
           <Input
             placeholder="Search products..."
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="flex-1"
           />
           <Button type="submit" size="icon">
@@ -253,7 +247,7 @@ function ProductsContent() {
         </form>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm whitespace-nowrap">Sort by:</span>
+          <span className="whitespace-nowrap text-sm">Sort by:</span>
           <Select value={`${sort.field}-${sort.direction}`} onValueChange={handleSortChange}>
             <SelectTrigger className="min-w-[180px]">
               <SelectValue placeholder="Sort by" />
@@ -271,9 +265,8 @@ function ProductsContent() {
           </Select>
         </div>
       </div>
-
       {/* Mobile/Responsive View Handling */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
         {/* Filters Sidebar */}
         <div className="md:col-span-1">
           <ProductFilters
@@ -302,26 +295,26 @@ function ProductsContent() {
               </div>
 
               {/* Products Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {loading ? (
                   // Loading skeletons
-                  Array.from({ length: limit }).map((_, i) => (
+                  (Array.from({ length: limit }).map((_, i) => (
                     <div key={i} className="space-y-3">
                       <Skeleton className="h-40 w-full rounded-lg" />
                       <Skeleton className="h-4 w-2/3" />
                       <Skeleton className="h-4 w-full" />
                       <Skeleton className="h-4 w-1/3" />
                     </div>
-                  ))
+                  )))
                 ) : products.length === 0 ? (
-                  <div className="col-span-full text-center py-12">
-                    <p className="text-xl font-medium mb-2">No products found</p>
+                  <div className="col-span-full py-12 text-center">
+                    <p className="mb-2 text-xl font-medium">No products found</p>
                     <p className="text-muted-foreground">
                       Try adjusting your search or filter criteria
                     </p>
                   </div>
                 ) : (
-                  products.map(product => <ProductCard key={product.id} product={product} />)
+                  products.map((product) => <ProductCard key={product.id} product={product} />)
                 )}
               </div>
 
@@ -339,7 +332,7 @@ function ProductsContent() {
           )}
         </div>
       </div>
-    </div>
+    </div>)
   );
 }
 
@@ -359,10 +352,10 @@ function ProductsPageSkeleton() {
   return (
     <div className="container-app py-8">
       <div className="animate-pulse">
-        <div className="h-8 w-64 bg-gray-200 rounded mb-4"></div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map(i => (
-            <div key={i} className="h-64 bg-gray-200 rounded"></div>
+        <div className="mb-4 h-8 w-64 rounded bg-gray-200"></div>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="h-64 rounded bg-gray-200"></div>
           ))}
         </div>
       </div>

@@ -23,8 +23,8 @@ export const authOptions: NextAuthOptions = {
         params: {
           prompt: 'consent',
           access_type: 'offline',
-          response_type: 'code'
-        }
+          response_type: 'code',
+        },
       },
     }),
     FacebookProvider({
@@ -63,7 +63,9 @@ export const authOptions: NextAuthOptions = {
 
           // If the user registered using a social provider
           if (!user.password) {
-            logger.warn(`User ${credentials.email} registered via social provider, cannot use password login`);
+            logger.warn(
+              `User ${credentials.email} registered via social provider, cannot use password login`,
+            );
             throw new Error('This account was registered through a social provider');
           }
 
@@ -134,8 +136,10 @@ export const authOptions: NextAuthOptions = {
   },
   events: {
     async signIn({ user, account, isNewUser }) {
-      logger.info(`User signed in: ${user.email}, Provider: ${account?.provider}, New User: ${isNewUser}`);
-      
+      logger.info(
+        `User signed in: ${user.email}, Provider: ${account?.provider}, New User: ${isNewUser}`,
+      );
+
       // Track analytics for new user registration
       if (isNewUser) {
         try {
@@ -162,4 +166,4 @@ export const authOptions: NextAuthOptions = {
   debug: process.env.NODE_ENV === 'development',
 };
 
-export default NextAuth(authOptions); 
+export default NextAuth(authOptions);

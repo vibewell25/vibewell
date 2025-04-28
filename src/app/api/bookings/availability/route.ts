@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { BookingStatus, BeautyService, Prisma } from '@prisma/client';
+import { BookingStatus } from '@prisma/client';
 
 type BreakTime = {
   startTime: string;
@@ -43,7 +43,7 @@ export async function GET(request: Request) {
     // Get business hours for the day
     const dayOfWeek = new Date(date).getDay();
     const businessHours = service.businessHours?.find(
-      (hours: { dayOfWeek: number }) => hours.dayOfWeek === dayOfWeek
+      (hours: { dayOfWeek: number }) => hours.dayOfWeek === dayOfWeek,
     );
 
     if (!businessHours || businessHours.isClosed) {
@@ -140,10 +140,10 @@ export async function GET(request: Request) {
 
     // Helper function to check if a time slot overlaps with existing bookings
     const overlapsWithBooking = (slotStart: Date, slotEnd: Date) => {
-      return existingBookings.some(booking => {
+      return existingBookings.some((booking) => {
         const bookingStart = new Date(booking.date);
         const bookingEnd = new Date(
-          bookingStart.getTime() + (booking.service?.duration || 0) * 60000
+          bookingStart.getTime() + (booking.service?.duration || 0) * 60000,
         );
 
         return (

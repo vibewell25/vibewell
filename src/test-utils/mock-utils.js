@@ -40,17 +40,17 @@ export function setupLocalStorageMock() {
   const localStorageMock = (() => {
     let store = {};
     return {
-      getItem: vi.fn(key => store[key] || null),
+      getItem: vi.fn((key) => store[key] || null),
       setItem: vi.fn((key, value) => {
         store[key] = String(value);
       }),
-      removeItem: vi.fn(key => {
+      removeItem: vi.fn((key) => {
         delete store[key];
       }),
       clear: vi.fn(() => {
         store = {};
       }),
-      key: vi.fn(index => Object.keys(store)[index] || null),
+      key: vi.fn((index) => Object.keys(store)[index] || null),
       get length() {
         return Object.keys(store).length;
       },
@@ -74,17 +74,17 @@ export function setupSessionStorageMock() {
   const sessionStorageMock = (() => {
     let store = {};
     return {
-      getItem: vi.fn(key => store[key] || null),
+      getItem: vi.fn((key) => store[key] || null),
       setItem: vi.fn((key, value) => {
         store[key] = String(value);
       }),
-      removeItem: vi.fn(key => {
+      removeItem: vi.fn((key) => {
         delete store[key];
       }),
       clear: vi.fn(() => {
         store = {};
       }),
-      key: vi.fn(index => Object.keys(store)[index] || null),
+      key: vi.fn((index) => Object.keys(store)[index] || null),
       get length() {
         return Object.keys(store).length;
       },
@@ -107,7 +107,7 @@ export function setupSessionStorageMock() {
 export function setupMatchMediaMock() {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: vi.fn().mockImplementation(query => ({
+    value: vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
@@ -229,13 +229,13 @@ export function mockWindowLocation(properties = {}) {
 export function mockConsole(methods = ['error', 'warn', 'log', 'info', 'debug']) {
   const originalMethods = {};
 
-  methods.forEach(method => {
+  methods.forEach((method) => {
     originalMethods[method] = console[method];
     console[method] = vi.fn();
   });
 
   return () => {
-    methods.forEach(method => {
+    methods.forEach((method) => {
       console[method] = originalMethods[method];
     });
   };

@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { Button } from '../Button';
@@ -68,7 +67,7 @@ describe('Button Component', () => {
     render(
       <Button onClick={handleClick} disabled>
         Click Me
-      </Button>
+      </Button>,
     );
 
     await userEvent.click(screen.getByRole('button'));

@@ -40,7 +40,7 @@ export default function ProtectedRoute({ children, requiredRoles = [] }: Protect
     // If roles are required, check if the user has at least one of them
     if (requiredRoles.length > 0) {
       const userRoles = user[`${namespace}/roles`] || [];
-      const hasRequiredRole = requiredRoles.some(role => userRoles.includes(role));
+      const hasRequiredRole = requiredRoles.some((role) => userRoles.includes(role));
 
       if (!hasRequiredRole) {
         router.push('/unauthorized');
@@ -51,8 +51,8 @@ export default function ProtectedRoute({ children, requiredRoles = [] }: Protect
   // Show loading state
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-indigo-600"></div>
       </div>
     );
   }
@@ -60,7 +60,7 @@ export default function ProtectedRoute({ children, requiredRoles = [] }: Protect
   // Show error state
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="text-red-600">An authentication error occurred. Please try again.</div>
       </div>
     );
@@ -70,7 +70,7 @@ export default function ProtectedRoute({ children, requiredRoles = [] }: Protect
   if (
     !user ||
     (requiredRoles.length > 0 &&
-      !requiredRoles.some(role => (user[`${namespace}/roles`] || []).includes(role)))
+      !requiredRoles.some((role) => (user[`${namespace}/roles`] || []).includes(role)))
   ) {
     return null; // The useEffect will handle the redirect
   }

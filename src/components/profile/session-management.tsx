@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Smartphone, Laptop, Tablet, Globe, XCircle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useState } from 'react';
@@ -53,7 +53,7 @@ export function SessionManagement() {
   const handleEndSession = async (id: string) => {
     try {
       // Implement session termination logic here
-      setSessions(prev => prev.filter(session => session.id !== id));
+      setSessions((prev) => prev.filter((session) => session.id !== id));
       toast({
         title: 'Session Ended',
         description: 'The selected session has been terminated.',
@@ -70,7 +70,7 @@ export function SessionManagement() {
   const handleEndAllSessions = async () => {
     try {
       // Implement logic to end all sessions except current
-      setSessions(prev => prev.filter(session => session.current));
+      setSessions((prev) => prev.filter((session) => session.current));
       toast({
         title: 'Sessions Ended',
         description: 'All other sessions have been terminated.',
@@ -91,7 +91,7 @@ export function SessionManagement() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          {sessions.map(session => (
+          {sessions.map((session) => (
             <div key={session.id} className="flex items-start space-x-4 rounded-lg border p-4">
               <div className="mt-1">{session.icon}</div>
               <div className="flex-1 space-y-1">

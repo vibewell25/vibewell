@@ -1,12 +1,15 @@
-import { PerformanceTestSuite } from './performance-testing';
 import { performanceMonitor } from './performance-monitoring';
-import { measurePerformance, measureFPS, measureMemoryUsage, measureNetworkRequest } from './performance-test-utils';
+import {
+  measurePerformance,
+  measureFPS,
+  measureMemoryUsage,
+  measureNetworkRequest,
+} from './performance-test-utils';
 import { dbOptimizer } from './db-optimization';
 import { bundleOptimizer } from './bundle-optimization';
 import { imageOptimizer } from './image-optimization';
 import { mobileOptimizer } from './mobile-optimization';
-import { ssrOptimizer } from './ssr-optimization';
-import { PerformanceResult, QueryMetrics, ImageOptimizationStats } from '../types/monitoring';
+import { QueryMetrics } from '../types/monitoring';
 
 interface E2ETestConfig {
   name: string;
@@ -67,11 +70,11 @@ export class E2EPerformanceSuite {
         this.runFrontendTests(),
         this.runBackendTests(),
         this.runMobileTests(),
-        this.runNetworkTests()
+        this.runNetworkTests(),
       ]);
 
       performanceMonitor.track({
-        e2eTestSuiteDuration: performance.now() - startTime
+        e2eTestSuiteDuration: performance.now() - startTime,
       });
 
       return this.testResults;
@@ -88,36 +91,36 @@ export class E2EPerformanceSuite {
         threshold: 2000,
         timeout: 5000,
         retries: 3,
-        category: 'frontend'
+        category: 'frontend',
       },
       {
         name: 'Route Navigation',
         threshold: 300,
         timeout: 2000,
         retries: 2,
-        category: 'frontend'
+        category: 'frontend',
       },
       {
         name: 'Component Rendering',
         threshold: 100,
         timeout: 1000,
         retries: 2,
-        category: 'frontend'
-      }
+        category: 'frontend',
+      },
     ];
 
     for (const test of tests) {
       await this.runTest(test, async () => {
         const metrics = await measurePerformance(async () => {
           const fps = await measureFPS(1000);
-          const memory = await measureMemoryUsage() || { usedJSHeapSize: 0 };
+          const memory = (await measureMemoryUsage()) || { usedJSHeapSize: 0 };
           const bundleStats = bundleOptimizer.getMetrics();
 
           return {
             fps: fps || 0,
             memoryUsed: memory.usedJSHeapSize,
             bundleSize: bundleStats.totalSize,
-            loadTime: bundleStats.loadTime
+            loadTime: bundleStats.loadTime,
           };
         });
 
@@ -133,34 +136,34 @@ export class E2EPerformanceSuite {
         threshold: 200,
         timeout: 2000,
         retries: 3,
-        category: 'backend'
+        category: 'backend',
       },
       {
         name: 'Database Performance',
         threshold: 100,
         timeout: 1500,
         retries: 2,
-        category: 'backend'
+        category: 'backend',
       },
       {
         name: 'Cache Performance',
         threshold: 50,
         timeout: 1000,
         retries: 2,
-        category: 'backend'
-      }
+        category: 'backend',
+      },
     ];
 
     for (const test of tests) {
       await this.runTest(test, async () => {
         const dbStats = await dbOptimizer.getPoolStats();
         const queryMetrics = await dbOptimizer.getQueryMetrics(5);
-        const metrics = queryMetrics[0] || { averageTime: 0, cacheHitRate: 0 } as QueryMetrics;
+        const metrics = queryMetrics[0] || ({ averageTime: 0, cacheHitRate: 0 } as QueryMetrics);
 
         return {
           queryTime: metrics.averageTime,
           connectionUtilization: dbStats.total / dbStats.idle,
-          cacheHitRate: metrics.cacheHitRate
+          cacheHitRate: metrics.cacheHitRate,
         };
       });
     }
@@ -173,15 +176,15 @@ export class E2EPerformanceSuite {
         threshold: 300,
         timeout: 3000,
         retries: 2,
-        category: 'mobile'
+        category: 'mobile',
       },
       {
         name: 'Mobile Network',
         threshold: 500,
         timeout: 4000,
         retries: 2,
-        category: 'mobile'
-      }
+        category: 'mobile',
+      },
     ];
 
     for (const test of tests) {
@@ -193,7 +196,7 @@ export class E2EPerformanceSuite {
           fps: perfMetrics.fps || 0,
           memoryUsage: perfMetrics.memoryUsage?.usedJSHeapSize || 0,
           batteryLevel: perfMetrics.batteryLevel || 100,
-          deviceType: deviceInfo.type === 'mobile' ? 1 : 0
+          deviceType: deviceInfo.type === 'mobile' ? 1 : 0,
         };
       });
     }
@@ -206,15 +209,15 @@ export class E2EPerformanceSuite {
         threshold: 150,
         timeout: 2000,
         retries: 3,
-        category: 'network'
+        category: 'network',
       },
       {
         name: 'Asset Loading',
         threshold: 1000,
         timeout: 3000,
         retries: 2,
-        category: 'network'
-      }
+        category: 'network',
+      },
     ];
 
     for (const test of tests) {
@@ -226,7 +229,7 @@ export class E2EPerformanceSuite {
           ttfb: metrics?.ttfb || 0,
           downloadTime: metrics?.downloadTime || 0,
           imageOptimizationRate: imageStats.optimizationRate,
-          cdnLatency: imageStats.cdnLatency
+          cdnLatency: imageStats.cdnLatency,
         };
       });
     }
@@ -234,7 +237,7 @@ export class E2EPerformanceSuite {
 
   private async runTest(
     config: E2ETestConfig,
-    testFn: () => Promise<Record<string, number>>
+    testFn: () => Promise<Record<string, number>>,
   ): Promise<void> {
     const startTime = performance.now();
     let metrics: Record<string, number> = {};
@@ -249,12 +252,11 @@ export class E2EPerformanceSuite {
         duration,
         passed: duration <= config.threshold,
         metrics,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       this.checkRegression(result);
       this.testResults.push(result);
-
     } catch (error) {
       console.error(`Test "${config.name}" failed:`, error);
       throw error;
@@ -263,7 +265,7 @@ export class E2EPerformanceSuite {
 
   private async retryTest(
     config: E2ETestConfig,
-    testFn: () => Promise<Record<string, number>>
+    testFn: () => Promise<Record<string, number>>,
   ): Promise<Record<string, number>> {
     let lastError: Error | null = null;
 
@@ -274,7 +276,7 @@ export class E2EPerformanceSuite {
         });
 
         const testPromise = testFn();
-        return await Promise.race([testPromise, timeoutPromise]) as Record<string, number>;
+        return (await Promise.race([testPromise, timeoutPromise])) as Record<string, number>;
       } catch (error) {
         lastError = error as Error;
         console.warn(`Attempt ${attempt}/${config.retries} failed for "${config.name}":`, error);
@@ -296,13 +298,13 @@ export class E2EPerformanceSuite {
       result.regressionDetails = {
         previousValue: baselineValue,
         currentValue: result.duration,
-        percentageChange
+        percentageChange,
       };
 
       console.warn(`Performance regression detected in "${result.name}":`, {
         previous: baselineValue,
         current: result.duration,
-        change: `${(percentageChange * 100).toFixed(2)}%`
+        change: `${(percentageChange * 100).toFixed(2)}%`,
       });
     }
   }
@@ -313,7 +315,7 @@ export class E2EPerformanceSuite {
 
   public async saveBaseline(): Promise<void> {
     const newBaseline: Record<string, number> = {};
-    
+
     for (const result of this.testResults) {
       if (result.passed && !result.regressionDetected) {
         newBaseline[result.name] = result.duration;
@@ -330,4 +332,4 @@ export class E2EPerformanceSuite {
   }
 }
 
-export const e2ePerformanceSuite = E2EPerformanceSuite.getInstance(); 
+export {};

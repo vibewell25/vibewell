@@ -1,5 +1,10 @@
 import { PerformanceMetrics } from '../../types/performance-metrics';
-import { MetricStatus, ErrorCodes, getMetricsSummary, createMetricsFromStatus } from '../../utils/performance-metric-utils';
+import {
+  MetricStatus,
+  ErrorCodes,
+  getMetricsSummary,
+  createMetricsFromStatus,
+} from '../../utils/performance-metric-utils';
 
 export class PerformanceMetricsImpl implements PerformanceMetrics {
   serviceWorkerRegistration?: number; // 1 for registered, 0 for not registered
@@ -66,7 +71,7 @@ export class PerformanceMetricsImpl implements PerformanceMetrics {
       fetchSuccess: this.fetchSuccess,
       fetchError: this.fetchError,
       syncSuccess: this.syncSuccess,
-      syncError: this.syncError
+      syncError: this.syncError,
     };
   }
-} 
+}

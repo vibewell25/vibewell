@@ -67,20 +67,20 @@ export async function getSkinCareRoutines(userId: string): Promise<SkinCareRouti
       orderBy: { createdAt: 'desc' },
     });
 
-    return routines.map(routine => ({
+    return routines.map((routine) => ({
       id: routine.id,
       userId: routine.userId,
       name: routine.name,
       description: routine.description,
       timeOfDay: routine.timeOfDay as 'morning' | 'evening' | 'both',
-      products: routine.products.map(product => ({
+      products: routine.products.map((product) => ({
         id: product.id,
         name: product.name,
         brand: product.brand,
         category: product.category as SkinCareCategory,
         frequency: product.frequency,
         notes: product.notes || undefined,
-        ingredients: product.ingredients as string[] || undefined,
+        ingredients: (product.ingredients as string[]) || undefined,
       })),
       createdAt: routine.createdAt.toISOString(),
       updatedAt: routine.updatedAt.toISOString(),
@@ -94,7 +94,7 @@ export async function getSkinCareRoutines(userId: string): Promise<SkinCareRouti
 // Create a new skincare routine
 export async function createSkinCareRoutine(
   userId: string,
-  routineData: Omit<SkinCareRoutine, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
+  routineData: Omit<SkinCareRoutine, 'id' | 'userId' | 'createdAt' | 'updatedAt'>,
 ): Promise<SkinCareRoutine | null> {
   try {
     const routine = await prisma.skinCareRoutine.create({
@@ -104,7 +104,7 @@ export async function createSkinCareRoutine(
         description: routineData.description,
         timeOfDay: routineData.timeOfDay,
         products: {
-          create: routineData.products.map(product => ({
+          create: routineData.products.map((product) => ({
             name: product.name,
             brand: product.brand,
             category: product.category,
@@ -125,14 +125,14 @@ export async function createSkinCareRoutine(
       name: routine.name,
       description: routine.description,
       timeOfDay: routine.timeOfDay as 'morning' | 'evening' | 'both',
-      products: routine.products.map(product => ({
+      products: routine.products.map((product) => ({
         id: product.id,
         name: product.name,
         brand: product.brand,
         category: product.category as SkinCareCategory,
         frequency: product.frequency,
         notes: product.notes || undefined,
-        ingredients: product.ingredients as string[] || undefined,
+        ingredients: (product.ingredients as string[]) || undefined,
       })),
       createdAt: routine.createdAt.toISOString(),
       updatedAt: routine.updatedAt.toISOString(),
@@ -146,7 +146,7 @@ export async function createSkinCareRoutine(
 // Log daily skin condition
 export async function logSkinCondition(
   userId: string,
-  logData: Omit<SkinConditionLog, 'id'>
+  logData: Omit<SkinConditionLog, 'id'>,
 ): Promise<SkinConditionLog | null> {
   try {
     const log = await prisma.skinConditionLog.create({
@@ -172,7 +172,7 @@ export async function logSkinCondition(
       sleep: log.sleep,
       hydration: log.hydration,
       notes: log.notes || undefined,
-      photos: log.photos as string[] || undefined,
+      photos: (log.photos as string[]) || undefined,
     };
   } catch (error) {
     console.error('Error in logSkinCondition:', error);
@@ -184,11 +184,11 @@ export async function logSkinCondition(
 export async function getSkinConditionLogs(
   userId: string,
   startDate?: string,
-  endDate?: string
+  endDate?: string,
 ): Promise<SkinConditionLog[]> {
   try {
     const where: Prisma.SkinConditionLogWhereInput = { userId };
-    
+
     if (startDate) where.date = { gte: startDate };
     if (endDate) where.date = { ...where.date, lte: endDate };
 
@@ -197,7 +197,7 @@ export async function getSkinConditionLogs(
       orderBy: { date: 'desc' },
     });
 
-    return logs.map(log => ({
+    return logs.map((log) => ({
       id: log.id,
       date: log.date,
       concerns: log.concerns as SkinConcern[],
@@ -206,7 +206,7 @@ export async function getSkinConditionLogs(
       sleep: log.sleep,
       hydration: log.hydration,
       notes: log.notes || undefined,
-      photos: log.photos as string[] || undefined,
+      photos: (log.photos as string[]) || undefined,
     }));
   } catch (error) {
     console.error('Error in getSkinConditionLogs:', error);
@@ -240,16 +240,19 @@ export async function getBeautyProgressSummary(userId: string): Promise<{
     ]);
 
     // Calculate consistency score (0-100) based on logging frequency
-    const daysWithLogs = new Set(recentLogs.map(log => log.date)).size;
+    const daysWithLogs = new Set(recentLogs.map((log) => log.date)).size;
     const consistencyScore = Math.round((daysWithLogs / 30) * 100);
 
     // Analyze common skin concerns
-    const concernCounts = recentLogs.reduce((acc, log) => {
-      (log.concerns as SkinConcern[]).forEach(concern => {
-        acc[concern] = (acc[concern] || 0) + 1;
-      });
-      return acc;
-    }, {} as Record<SkinConcern, number>);
+    const concernCounts = recentLogs.reduce(
+      (acc, log) => {
+        (log.concerns as SkinConcern[]).forEach((concern) => {
+          acc[concern] = (acc[concern] || 0) + 1;
+        });
+        return acc;
+      },
+      {} as Record<SkinConcern, number>,
+    );
 
     const commonConcerns = Object.entries(concernCounts)
       .sort(([, a], [, b]) => b - a)
@@ -281,14 +284,14 @@ export async function getBeautyProgressSummary(userId: string): Promise<{
 // Helper function to analyze improvements
 function analyzeImprovements(logs: any[]): string[] {
   const improvements: string[] = [];
-  
+
   if (logs.length < 7) return improvements;
 
   const recent = logs.slice(0, 7);
   const older = logs.slice(7, 14);
 
   // Compare average metrics
-  const getAverage = (arr: any[], key: string) => 
+  const getAverage = (arr: any[], key: string) =>
     arr.reduce((sum, log) => sum + log[key], 0) / arr.length;
 
   const metrics = {
@@ -308,10 +311,10 @@ function analyzeImprovements(logs: any[]): string[] {
   }
 
   // Analyze concern frequency
-  const recentConcerns = new Set(recent.flatMap(log => log.concerns));
-  const olderConcerns = new Set(older.flatMap(log => log.concerns));
-  
-  olderConcerns.forEach(concern => {
+  const recentConcerns = new Set(recent.flatMap((log) => log.concerns));
+  const olderConcerns = new Set(older.flatMap((log) => log.concerns));
+
+  olderConcerns.forEach((concern) => {
     if (!recentConcerns.has(concern)) {
       improvements.push(`${concern.replace('_', ' ')} has improved`);
     }
@@ -351,10 +354,10 @@ export async function getRoutines(): Promise<Routine[]> {
     },
   });
 
-  return routines.map(routine => ({
+  return routines.map((routine) => ({
     id: routine.id,
     type: routine.type,
-    steps: routine.steps.map(step => ({
+    steps: routine.steps.map((step) => ({
       id: step.id,
       order: step.order,
       name: step.name,
@@ -367,14 +370,16 @@ export async function getRoutines(): Promise<Routine[]> {
   }));
 }
 
-export async function createRoutine(routine: Omit<Routine, 'id' | 'createdAt' | 'updatedAt'>): Promise<Routine> {
+export async function createRoutine(
+  routine: Omit<Routine, 'id' | 'createdAt' | 'updatedAt'>,
+): Promise<Routine> {
   const { steps, ...routineData } = routine;
 
   const createdRoutine = await prisma.beautyRoutine.create({
     data: {
       ...routineData,
       steps: {
-        create: steps.map(step => ({
+        create: steps.map((step) => ({
           order: step.order,
           name: step.name,
           category: step.category,
@@ -390,7 +395,7 @@ export async function createRoutine(routine: Omit<Routine, 'id' | 'createdAt' | 
   return {
     id: createdRoutine.id,
     type: createdRoutine.type,
-    steps: createdRoutine.steps.map(step => ({
+    steps: createdRoutine.steps.map((step) => ({
       id: step.id,
       order: step.order,
       name: step.name,
@@ -413,7 +418,7 @@ export async function updateRoutine(routine: Routine): Promise<Routine> {
       ...routineData,
       steps: {
         deleteMany: {}, // Remove all existing steps
-        create: steps.map(step => ({
+        create: steps.map((step) => ({
           order: step.order,
           name: step.name,
           category: step.category,
@@ -433,7 +438,7 @@ export async function updateRoutine(routine: Routine): Promise<Routine> {
   return {
     id: updatedRoutine.id,
     type: updatedRoutine.type,
-    steps: updatedRoutine.steps.map(step => ({
+    steps: updatedRoutine.steps.map((step) => ({
       id: step.id,
       order: step.order,
       name: step.name,
@@ -455,7 +460,7 @@ export async function deleteRoutine(id: string): Promise<void> {
 export async function updateRoutineStep(
   routineId: string,
   stepId: string,
-  data: Partial<RoutineStep>
+  data: Partial<RoutineStep>,
 ): Promise<RoutineStep> {
   const updatedStep = await prisma.beautyRoutineStep.update({
     where: {
@@ -472,4 +477,4 @@ export async function updateRoutineStep(
     category: updatedStep.category,
     completed: updatedStep.completed,
   };
-} 
+}

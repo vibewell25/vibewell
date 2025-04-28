@@ -1,8 +1,6 @@
-import type { Metadata } from '@/types/metadata';
 import Link from 'next/link';
 import { UserAuthForm } from '@/components/auth/user-auth-form';
 import { WebAuthnAuth } from '@/components/WebAuthnAuth';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -10,13 +8,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-export const metadata: Metadata = {
-  title: 'Sign In - VibeWell',
-  description: 'Sign in to your VibeWell account',
-};
+export {};
 
 export default function SignInPage() {
   return (
@@ -24,7 +19,7 @@ export default function SignInPage() {
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <Card>
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Welcome back</CardTitle>
+            <CardTitle className="text-center text-2xl">Welcome back</CardTitle>
             <CardDescription className="text-center">
               Choose your preferred sign in method
             </CardDescription>
@@ -48,7 +43,7 @@ export default function SignInPage() {
                       // Handle successful authentication
                       console.log('WebAuthn authentication successful');
                     }}
-                    onError={error => {
+                    onError={(error) => {
                       console.error('WebAuthn authentication failed:', error);
                     }}
                   />
@@ -57,8 +52,8 @@ export default function SignInPage() {
             </TabsContent>
           </Tabs>
           <CardFooter className="flex flex-col space-y-4">
-            <div className="text-sm text-muted-foreground text-center">
-              Don't have an account?{' '}
+            <div className="text-center text-sm text-muted-foreground">
+              Don&apos;t have an account?{' '}
               <Link href="/sign-up" className="text-primary underline-offset-4 hover:underline">
                 Sign up
               </Link>

@@ -13,30 +13,6 @@ export interface TestRunnerOptions extends RenderOptions {
   performanceThreshold?: number;
 }
 
-export const createTestRunner = (name: string) => {
-  const runComponentTest = async (
-    element: React.ReactElement,
-    options?: Omit<TestRunnerOptions, 'name'>
-  ) => {
-    const startTime = performance.now();
-    const { container } = render(element, options);
-    const endTime = performance.now();
-    const renderTime = endTime - startTime;
-
-    // Run accessibility tests
-    const results = await axe(container);
-
-    return {
-      renderTime,
-      accessibilityResults: results,
-      container,
-    };
-  };
-
-  return {
-    name,
-    runComponentTest,
-  };
-};
+export {};
 
 export * from './custom-test-runner';

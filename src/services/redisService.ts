@@ -14,27 +14,36 @@ class RedisService {
   private initializeConnections(): void {
     try {
       // Initialize standard connection
-      this.clients.set(defaultPorts.standard, new Redis({
-        host: process.env.REDIS_HOST || 'localhost',
-        port: defaultPorts.standard,
-        password: process.env.REDIS_PASSWORD,
-      }));
+      this.clients.set(
+        defaultPorts.standard,
+        new Redis({
+          host: process.env.REDIS_HOST || 'localhost',
+          port: defaultPorts.standard,
+          password: process.env.REDIS_PASSWORD,
+        }),
+      );
 
       // Initialize TLS connection
-      this.clients.set(defaultPorts.tls, new Redis({
-        host: process.env.REDIS_HOST || 'localhost',
-        port: defaultPorts.tls,
-        password: process.env.REDIS_PASSWORD,
-        ...redisTLSConfig.getTLSConfig(defaultPorts.tls),
-      }));
+      this.clients.set(
+        defaultPorts.tls,
+        new Redis({
+          host: process.env.REDIS_HOST || 'localhost',
+          port: defaultPorts.tls,
+          password: process.env.REDIS_PASSWORD,
+          ...redisTLSConfig.getTLSConfig(defaultPorts.tls),
+        }),
+      );
 
       // Initialize TLS connection with client authentication
-      this.clients.set(defaultPorts.tlsClientAuth, new Redis({
-        host: process.env.REDIS_HOST || 'localhost',
-        port: defaultPorts.tlsClientAuth,
-        password: process.env.REDIS_PASSWORD,
-        ...redisTLSConfig.getTLSConfig(defaultPorts.tlsClientAuth),
-      }));
+      this.clients.set(
+        defaultPorts.tlsClientAuth,
+        new Redis({
+          host: process.env.REDIS_HOST || 'localhost',
+          port: defaultPorts.tlsClientAuth,
+          password: process.env.REDIS_PASSWORD,
+          ...redisTLSConfig.getTLSConfig(defaultPorts.tlsClientAuth),
+        }),
+      );
 
       // Set up error handlers
       for (const [port, client] of this.clients) {
@@ -60,7 +69,7 @@ class RedisService {
     if (useTLS) {
       port = requireClientAuth ? defaultPorts.tlsClientAuth : defaultPorts.tls;
     }
-    
+
     const client = this.clients.get(port);
     if (!client) {
       throw new Error(`No Redis client available for port ${port}`);
@@ -98,4 +107,4 @@ class RedisService {
   }
 }
 
-export default RedisService; 
+export default RedisService;

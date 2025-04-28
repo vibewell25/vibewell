@@ -1,6 +1,4 @@
-'use client';
-
-import * as React from 'react';
+'use client';;
 import { useState } from 'react';
 import {
   useErrorHandler,
@@ -8,7 +6,7 @@ import {
   ErrorCategory,
   ErrorSeverity,
 } from '../../utils/error-handler';
-import { Button } from '../../components/ui/button';
+import { Button } from '../../components/ui/Button';
 import { withErrorBoundary } from '../../hooks/useErrorBoundary';
 
 /**
@@ -61,7 +59,7 @@ function ErrorHandlingExampleComponent() {
   // Example 3: Error with metadata and retry function
   const handleErrorWithMetadata = () => {
     const retryFunc = () => {
-      setRetryCount(prev => prev + 1);
+      setRetryCount((prev) => prev + 1);
       return Promise.resolve(`Retry attempt #${retryCount + 1} successful`);
     };
 
@@ -84,7 +82,7 @@ function ErrorHandlingExampleComponent() {
   // Example 4: Wrapping an async function with error handling
   const fetchDataAsync = async () => {
     // Simulate an API call that fails
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     throw new Error('Failed to fetch data from API');
   };
 
@@ -116,14 +114,14 @@ function ErrorHandlingExampleComponent() {
   };
 
   return (
-    <div className="p-6 space-y-6 border rounded-lg">
+    <div className="space-y-6 rounded-lg border p-6">
       <h2 className="text-2xl font-bold">Error Handling Examples</h2>
       <p className="text-gray-600">
         This component demonstrates the recommended patterns for error handling in the Vibewell
         platform.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Button onClick={handleBasicError} variant="outline">
           Basic Error Example
         </Button>
@@ -150,7 +148,7 @@ function ErrorHandlingExampleComponent() {
       </div>
 
       {retryCount > 0 && (
-        <div className="mt-4 p-3 bg-green-100 text-green-800 rounded">
+        <div className="mt-4 rounded bg-green-100 p-3 text-green-800">
           Retry was successful! Attempt #{retryCount}
         </div>
       )}
@@ -161,13 +159,13 @@ function ErrorHandlingExampleComponent() {
 // Wrap the component with an error boundary for component-level protection
 export const ErrorHandlingExample = withErrorBoundary(ErrorHandlingExampleComponent, {
   fallback: (
-    <div className="p-6 border rounded-lg bg-red-50 text-red-800">
+    <div className="rounded-lg border bg-red-50 p-6 text-red-800">
       <h3 className="text-lg font-medium">Error in Error Handling Example</h3>
       <p>The error example component itself has crashed.</p>
       <p>This fallback UI is provided by the error boundary wrapper.</p>
     </div>
   ),
-  onError: error => {
+  onError: (error) => {
     console.error('Error boundary caught error:', error);
     // You could send this to your monitoring service
   },

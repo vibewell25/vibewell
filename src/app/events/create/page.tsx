@@ -2,17 +2,19 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
-import { EventCategory, EventLocation } from '@/types/events';
+import { EventCategory } from '@/types/events';
 import { createEvent } from '@/lib/api/events';
 import { useAuth } from '@/hooks/use-unified-auth';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { format, addHours } from 'date-fns';
 import { Icons } from '@/components/icons';
-import { validateForm, ValidationResult } from '@/utils/form-validation';
+import { validateForm } from '@/utils/form-validation';
 
 export default function CreateEventPage() {
   const router = useRouter();
-  const { user, loading: authLoading } = useAuth();
+  const {
+    user
+  } = useAuth();
   // Event form state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -65,7 +67,7 @@ export default function CreateEventPage() {
   };
   // Remove a tag
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
+    setTags(tags.filter((tag) => tag !== tagToRemove));
   };
   // Update location fields
   const updateLocation = (field: string, value: string) => {
@@ -98,7 +100,7 @@ export default function CreateEventPage() {
       router.push('/auth/login?returnUrl=' + encodeURIComponent('/events/create'));
       return;
     }
-    
+
     // Create form data object
     const formData = {
       title,
@@ -107,17 +109,19 @@ export default function CreateEventPage() {
       startTime,
       endDate,
       endTime,
-      ...(isVirtual ? { meetingUrl: location.meetingUrl } : {
-        address: location.address,
-        city: location.city,
-        state: location.state,
-        zipCode: location.zipCode,
-      })
+      ...(isVirtual
+        ? { meetingUrl: location.meetingUrl }
+        : {
+            address: location.address,
+            city: location.city,
+            state: location.state,
+            zipCode: location.zipCode,
+          }),
     };
-    
+
     // Validate using the standardized utility
     const validationResult = validateForm(formData);
-    
+
     // Add custom validations for dates
     if (validationResult.isValid && startDate && endDate && startTime && endTime) {
       const startDateTime = new Date(`${startDate}T${startTime}`);
@@ -127,9 +131,9 @@ export default function CreateEventPage() {
         validationResult.isValid = false;
       }
     }
-    
+
     setErrors(validationResult.errors);
-    
+
     if (!validationResult.isValid) {
       return;
     }
@@ -196,39 +200,39 @@ export default function CreateEventPage() {
         {/* Back button */}
         <button
           onClick={() => router.push('/events')}
-          className="flex items-center text-gray-600 hover:text-gray-900 mb-6"
+          className="mb-6 flex items-center text-gray-600 hover:text-gray-900"
         >
-          <Icons.ArrowLeftIcon className="h-4 w-4 mr-1" />
+          <Icons.ArrowLeftIcon className="mr-1 h-4 w-4" />
           Back to Events
         </button>
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-bold mb-2">Create Event</h1>
-          <p className="text-gray-600 mb-8">Share your wellness event with the community</p>
+        <div className="mx-auto max-w-3xl">
+          <h1 className="mb-2 text-3xl font-bold">Create Event</h1>
+          <p className="mb-8 text-gray-600">Share your wellness event with the community</p>
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* General Information */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-xl font-semibold mb-4">General Information</h2>
+            <div className="rounded-lg bg-white p-6 shadow-sm">
+              <h2 className="mb-4 text-xl font-semibold">General Information</h2>
               <div className="space-y-4">
                 {/* Title */}
                 <div>
-                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="title" className="mb-1 block text-sm font-medium text-gray-700">
                     Event Title <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     id="title"
                     value={title}
-                    onChange={e => setTitle(e.target.value)}
-                    className={`w-full p-2 border rounded-md ${errors.title ? 'border-red-500' : 'border-gray-300'}`}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className={`w-full rounded-md border p-2 ${errors.title ? 'border-red-500' : 'border-gray-300'}`}
                     placeholder="Enter a descriptive title for your event"
                   />
-                  {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
+                  {errors.title && <p className="mt-1 text-xs text-red-500">{errors.title}</p>}
                 </div>
                 {/* Short Description */}
                 <div>
                   <label
                     htmlFor="shortDescription"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="mb-1 block text-sm font-medium text-gray-700"
                   >
                     Short Description
                   </label>
@@ -236,11 +240,11 @@ export default function CreateEventPage() {
                     type="text"
                     id="shortDescription"
                     value={shortDescription}
-                    onChange={e => setShortDescription(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    onChange={(e) => setShortDescription(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 p-2"
                     placeholder="Brief description (for listings and previews)"
                   />
-                  <p className="text-gray-500 text-xs mt-1">
+                  <p className="mt-1 text-xs text-gray-500">
                     Optional. A short summary for event listings (max 160 characters)
                   </p>
                 </div>
@@ -248,37 +252,37 @@ export default function CreateEventPage() {
                 <div>
                   <label
                     htmlFor="description"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="mb-1 block text-sm font-medium text-gray-700"
                   >
                     Description <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     id="description"
                     value={description}
-                    onChange={e => setDescription(e.target.value)}
-                    className={`w-full p-2 border rounded-md h-40 ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className={`h-40 w-full rounded-md border p-2 ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
                     placeholder="Describe your event in detail. What will participants experience or learn?"
                   />
                   {errors.description && (
-                    <p className="text-red-500 text-xs mt-1">{errors.description}</p>
+                    <p className="mt-1 text-xs text-red-500">{errors.description}</p>
                   )}
-                  <p className="text-gray-500 text-xs mt-1">You can use HTML for formatting</p>
+                  <p className="mt-1 text-xs text-gray-500">You can use HTML for formatting</p>
                 </div>
                 {/* Category */}
                 <div>
                   <label
                     htmlFor="category"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="mb-1 block text-sm font-medium text-gray-700"
                   >
                     Category <span className="text-red-500">*</span>
                   </label>
                   <select
                     id="category"
                     value={category}
-                    onChange={e => setCategory(e.target.value as EventCategory)}
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    onChange={(e) => setCategory(e.target.value as EventCategory)}
+                    className="w-full rounded-md border border-gray-300 p-2"
                   >
-                    {categories.map(cat => (
+                    {categories.map((cat) => (
                       <option key={cat} value={cat}>
                         {cat}
                       </option>
@@ -289,7 +293,7 @@ export default function CreateEventPage() {
                 <div>
                   <label
                     htmlFor="imageUrl"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="mb-1 block text-sm font-medium text-gray-700"
                   >
                     Image URL
                   </label>
@@ -297,26 +301,26 @@ export default function CreateEventPage() {
                     type="url"
                     id="imageUrl"
                     value={imageUrl}
-                    onChange={e => setImageUrl(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 p-2"
                     placeholder="https://example.com/image.jpg"
                   />
-                  <p className="text-gray-500 text-xs mt-1">
+                  <p className="mt-1 text-xs text-gray-500">
                     Optional. URL to an image for your event
                   </p>
                 </div>
               </div>
             </div>
             {/* Date and Time */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-xl font-semibold mb-4">Date and Time</h2>
+            <div className="rounded-lg bg-white p-6 shadow-sm">
+              <h2 className="mb-4 text-xl font-semibold">Date and Time</h2>
               <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {/* Start Date */}
                   <div>
                     <label
                       htmlFor="startDate"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="mb-1 block text-sm font-medium text-gray-700"
                     >
                       Start Date <span className="text-red-500">*</span>
                     </label>
@@ -324,19 +328,19 @@ export default function CreateEventPage() {
                       type="date"
                       id="startDate"
                       value={startDate}
-                      onChange={e => setStartDate(e.target.value)}
-                      className={`w-full p-2 border rounded-md ${errors.startDate ? 'border-red-500' : 'border-gray-300'}`}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className={`w-full rounded-md border p-2 ${errors.startDate ? 'border-red-500' : 'border-gray-300'}`}
                       onFocus={setDefaultDates}
                     />
                     {errors.startDate && (
-                      <p className="text-red-500 text-xs mt-1">{errors.startDate}</p>
+                      <p className="mt-1 text-xs text-red-500">{errors.startDate}</p>
                     )}
                   </div>
                   {/* Start Time */}
                   <div>
                     <label
                       htmlFor="startTime"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="mb-1 block text-sm font-medium text-gray-700"
                     >
                       Start Time <span className="text-red-500">*</span>
                     </label>
@@ -344,19 +348,19 @@ export default function CreateEventPage() {
                       type="time"
                       id="startTime"
                       value={startTime}
-                      onChange={e => setStartTime(e.target.value)}
-                      className={`w-full p-2 border rounded-md ${errors.startTime ? 'border-red-500' : 'border-gray-300'}`}
+                      onChange={(e) => setStartTime(e.target.value)}
+                      className={`w-full rounded-md border p-2 ${errors.startTime ? 'border-red-500' : 'border-gray-300'}`}
                       onFocus={setDefaultDates}
                     />
                     {errors.startTime && (
-                      <p className="text-red-500 text-xs mt-1">{errors.startTime}</p>
+                      <p className="mt-1 text-xs text-red-500">{errors.startTime}</p>
                     )}
                   </div>
                   {/* End Date */}
                   <div>
                     <label
                       htmlFor="endDate"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="mb-1 block text-sm font-medium text-gray-700"
                     >
                       End Date <span className="text-red-500">*</span>
                     </label>
@@ -364,19 +368,19 @@ export default function CreateEventPage() {
                       type="date"
                       id="endDate"
                       value={endDate}
-                      onChange={e => setEndDate(e.target.value)}
-                      className={`w-full p-2 border rounded-md ${errors.endDate ? 'border-red-500' : 'border-gray-300'}`}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className={`w-full rounded-md border p-2 ${errors.endDate ? 'border-red-500' : 'border-gray-300'}`}
                       onFocus={setDefaultDates}
                     />
                     {errors.endDate && (
-                      <p className="text-red-500 text-xs mt-1">{errors.endDate}</p>
+                      <p className="mt-1 text-xs text-red-500">{errors.endDate}</p>
                     )}
                   </div>
                   {/* End Time */}
                   <div>
                     <label
                       htmlFor="endTime"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="mb-1 block text-sm font-medium text-gray-700"
                     >
                       End Time <span className="text-red-500">*</span>
                     </label>
@@ -384,20 +388,20 @@ export default function CreateEventPage() {
                       type="time"
                       id="endTime"
                       value={endTime}
-                      onChange={e => setEndTime(e.target.value)}
-                      className={`w-full p-2 border rounded-md ${errors.endTime ? 'border-red-500' : 'border-gray-300'}`}
+                      onChange={(e) => setEndTime(e.target.value)}
+                      className={`w-full rounded-md border p-2 ${errors.endTime ? 'border-red-500' : 'border-gray-300'}`}
                       onFocus={setDefaultDates}
                     />
                     {errors.endTime && (
-                      <p className="text-red-500 text-xs mt-1">{errors.endTime}</p>
+                      <p className="mt-1 text-xs text-red-500">{errors.endTime}</p>
                     )}
                   </div>
                 </div>
               </div>
             </div>
             {/* Location */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-xl font-semibold mb-4">Location</h2>
+            <div className="rounded-lg bg-white p-6 shadow-sm">
+              <h2 className="mb-4 text-xl font-semibold">Location</h2>
               <div className="space-y-4">
                 {/* Virtual or In-Person */}
                 <div className="flex items-center">
@@ -406,7 +410,7 @@ export default function CreateEventPage() {
                     id="isVirtual"
                     checked={isVirtual}
                     onChange={toggleVirtual}
-                    className="h-4 w-4 text-primary border-gray-300 rounded"
+                    className="text-primary h-4 w-4 rounded border-gray-300"
                   />
                   <label htmlFor="isVirtual" className="ml-2 block text-sm text-gray-700">
                     This is a virtual event
@@ -416,7 +420,7 @@ export default function CreateEventPage() {
                   <div>
                     <label
                       htmlFor="meetingUrl"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="mb-1 block text-sm font-medium text-gray-700"
                     >
                       Meeting URL <span className="text-red-500">*</span>
                     </label>
@@ -424,14 +428,14 @@ export default function CreateEventPage() {
                       type="url"
                       id="meetingUrl"
                       value={location.meetingUrl || ''}
-                      onChange={e => updateLocation('meetingUrl', e.target.value)}
-                      className={`w-full p-2 border rounded-md ${errors.meetingUrl ? 'border-red-500' : 'border-gray-300'}`}
+                      onChange={(e) => updateLocation('meetingUrl', e.target.value)}
+                      className={`w-full rounded-md border p-2 ${errors.meetingUrl ? 'border-red-500' : 'border-gray-300'}`}
                       placeholder="https://zoom.us/j/example"
                     />
                     {errors.meetingUrl && (
-                      <p className="text-red-500 text-xs mt-1">{errors.meetingUrl}</p>
+                      <p className="mt-1 text-xs text-red-500">{errors.meetingUrl}</p>
                     )}
-                    <p className="text-gray-500 text-xs mt-1">
+                    <p className="mt-1 text-xs text-gray-500">
                       Zoom, Google Meet, Microsoft Teams, etc.
                     </p>
                   </div>
@@ -441,7 +445,7 @@ export default function CreateEventPage() {
                     <div>
                       <label
                         htmlFor="address"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="mb-1 block text-sm font-medium text-gray-700"
                       >
                         Address <span className="text-red-500">*</span>
                       </label>
@@ -449,20 +453,20 @@ export default function CreateEventPage() {
                         type="text"
                         id="address"
                         value={location.address || ''}
-                        onChange={e => updateLocation('address', e.target.value)}
-                        className={`w-full p-2 border rounded-md ${errors.address ? 'border-red-500' : 'border-gray-300'}`}
+                        onChange={(e) => updateLocation('address', e.target.value)}
+                        className={`w-full rounded-md border p-2 ${errors.address ? 'border-red-500' : 'border-gray-300'}`}
                         placeholder="123 Main St"
                       />
                       {errors.address && (
-                        <p className="text-red-500 text-xs mt-1">{errors.address}</p>
+                        <p className="mt-1 text-xs text-red-500">{errors.address}</p>
                       )}
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                       {/* City */}
                       <div>
                         <label
                           htmlFor="city"
-                          className="block text-sm font-medium text-gray-700 mb-1"
+                          className="mb-1 block text-sm font-medium text-gray-700"
                         >
                           City <span className="text-red-500">*</span>
                         </label>
@@ -470,17 +474,17 @@ export default function CreateEventPage() {
                           type="text"
                           id="city"
                           value={location.city || ''}
-                          onChange={e => updateLocation('city', e.target.value)}
-                          className={`w-full p-2 border rounded-md ${errors.city ? 'border-red-500' : 'border-gray-300'}`}
+                          onChange={(e) => updateLocation('city', e.target.value)}
+                          className={`w-full rounded-md border p-2 ${errors.city ? 'border-red-500' : 'border-gray-300'}`}
                           placeholder="City"
                         />
-                        {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
+                        {errors.city && <p className="mt-1 text-xs text-red-500">{errors.city}</p>}
                       </div>
                       {/* State */}
                       <div>
                         <label
                           htmlFor="state"
-                          className="block text-sm font-medium text-gray-700 mb-1"
+                          className="mb-1 block text-sm font-medium text-gray-700"
                         >
                           State <span className="text-red-500">*</span>
                         </label>
@@ -488,19 +492,19 @@ export default function CreateEventPage() {
                           type="text"
                           id="state"
                           value={location.state || ''}
-                          onChange={e => updateLocation('state', e.target.value)}
-                          className={`w-full p-2 border rounded-md ${errors.state ? 'border-red-500' : 'border-gray-300'}`}
+                          onChange={(e) => updateLocation('state', e.target.value)}
+                          className={`w-full rounded-md border p-2 ${errors.state ? 'border-red-500' : 'border-gray-300'}`}
                           placeholder="State"
                         />
                         {errors.state && (
-                          <p className="text-red-500 text-xs mt-1">{errors.state}</p>
+                          <p className="mt-1 text-xs text-red-500">{errors.state}</p>
                         )}
                       </div>
                       {/* Zip Code */}
                       <div>
                         <label
                           htmlFor="zipCode"
-                          className="block text-sm font-medium text-gray-700 mb-1"
+                          className="mb-1 block text-sm font-medium text-gray-700"
                         >
                           Zip Code <span className="text-red-500">*</span>
                         </label>
@@ -508,12 +512,12 @@ export default function CreateEventPage() {
                           type="text"
                           id="zipCode"
                           value={location.zipCode || ''}
-                          onChange={e => updateLocation('zipCode', e.target.value)}
-                          className={`w-full p-2 border rounded-md ${errors.zipCode ? 'border-red-500' : 'border-gray-300'}`}
+                          onChange={(e) => updateLocation('zipCode', e.target.value)}
+                          className={`w-full rounded-md border p-2 ${errors.zipCode ? 'border-red-500' : 'border-gray-300'}`}
                           placeholder="12345"
                         />
                         {errors.zipCode && (
-                          <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>
+                          <p className="mt-1 text-xs text-red-500">{errors.zipCode}</p>
                         )}
                       </div>
                     </div>
@@ -521,7 +525,7 @@ export default function CreateEventPage() {
                     <div>
                       <label
                         htmlFor="country"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="mb-1 block text-sm font-medium text-gray-700"
                       >
                         Country
                       </label>
@@ -529,8 +533,8 @@ export default function CreateEventPage() {
                         type="text"
                         id="country"
                         value={location.country || ''}
-                        onChange={e => updateLocation('country', e.target.value)}
-                        className="w-full p-2 border border-gray-300 rounded-md"
+                        onChange={(e) => updateLocation('country', e.target.value)}
+                        className="w-full rounded-md border border-gray-300 p-2"
                         placeholder="Country"
                       />
                     </div>
@@ -539,14 +543,14 @@ export default function CreateEventPage() {
               </div>
             </div>
             {/* Additional Details */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-xl font-semibold mb-4">Additional Details</h2>
+            <div className="rounded-lg bg-white p-6 shadow-sm">
+              <h2 className="mb-4 text-xl font-semibold">Additional Details</h2>
               <div className="space-y-4">
                 {/* Capacity */}
                 <div>
                   <label
                     htmlFor="capacity"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="mb-1 block text-sm font-medium text-gray-700"
                   >
                     Capacity
                   </label>
@@ -555,17 +559,17 @@ export default function CreateEventPage() {
                     id="capacity"
                     min="1"
                     value={capacity}
-                    onChange={e => setCapacity(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    onChange={(e) => setCapacity(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 p-2"
                     placeholder="Maximum number of participants"
                   />
-                  <p className="text-gray-500 text-xs mt-1">
+                  <p className="mt-1 text-xs text-gray-500">
                     Optional. Leave blank for unlimited capacity
                   </p>
                 </div>
                 {/* Tags */}
                 <div>
-                  <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="tags" className="mb-1 block text-sm font-medium text-gray-700">
                     Tags
                   </label>
                   <div className="flex">
@@ -573,28 +577,28 @@ export default function CreateEventPage() {
                       type="text"
                       id="tags"
                       value={tagInput}
-                      onChange={e => setTagInput(e.target.value)}
-                      onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                      className="w-full p-2 border border-gray-300 rounded-md rounded-r-none"
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                      className="w-full rounded-md rounded-r-none border border-gray-300 p-2"
                       placeholder="Add relevant tags"
                     />
                     <button
                       type="button"
                       onClick={addTag}
-                      className="px-4 py-2 bg-gray-200 border border-gray-300 border-l-0 rounded-md rounded-l-none"
+                      className="rounded-md rounded-l-none border border-l-0 border-gray-300 bg-gray-200 px-4 py-2"
                     >
                       Add
                     </button>
                   </div>
-                  <p className="text-gray-500 text-xs mt-1">
+                  <p className="mt-1 text-xs text-gray-500">
                     Press Enter or click Add to add a tag
                   </p>
                   {tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {tags.map(tag => (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {tags.map((tag) => (
                         <div
                           key={tag}
-                          className="inline-flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm"
+                          className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm"
                         >
                           {tag}
                           <button
@@ -613,7 +617,7 @@ export default function CreateEventPage() {
             </div>
             {/* Submit */}
             <div className="flex justify-end">
-              {errors.form && <p className="text-red-500 text-sm mr-auto">{errors.form}</p>}
+              {errors.form && <p className="mr-auto text-sm text-red-500">{errors.form}</p>}
               <Button
                 type="button"
                 variant="outline"

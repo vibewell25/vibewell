@@ -27,7 +27,6 @@ interface EngagementContextType {
 const EngagementContext = createContext<EngagementContextType | undefined>(undefined);
 
 export function EngagementProvider({ children }: { children: React.ReactNode }) {
-  const { data: session } = useSession();
   const userId = session?.user?.id;
   const { toast } = useToast();
 
@@ -76,7 +75,7 @@ export function EngagementProvider({ children }: { children: React.ReactNode }) 
   };
 
   const closeNewBadgeNotification = (badgeId: string) => {
-    setNewBadges(prev => prev.filter(badge => badge.id !== badgeId));
+    setNewBadges((prev) => prev.filter((badge) => badge.id !== badgeId));
   };
 
   const checkForNewAchievements = async () => {
@@ -90,11 +89,11 @@ export function EngagementProvider({ children }: { children: React.ReactNode }) 
       if (newBadgeIds.length > 0) {
         // Get badge details
         const earnedBadges = newBadgeIds
-          .map(id => BADGES.find(badge => badge.id === id))
+          .map((id) => BADGES.find((badge) => badge.id === id))
           .filter(Boolean) as Badge[];
 
         // Update state
-        setNewBadges(prev => [...prev, ...earnedBadges]);
+        setNewBadges((prev) => [...prev, ...earnedBadges]);
 
         // Refresh user badges
         const updatedBadges = await engagementService.getUserBadges(userId);

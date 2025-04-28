@@ -1,16 +1,13 @@
-/**
- * Stripe Payment Integration Tests
- *
- * This file contains tests for the Stripe payment integration, including
- * the payment form, submission handling, and error states.
- */
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping *//**
+* Stripe Payment Integration Tests
+*
+* This file contains tests for the Stripe payment integration, including
+* the payment form, submission handling, and error states.
+*/
 
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-// Use specific jest-dom type imports
-import '@testing-library/jest-dom';
 import { PaymentFormWrapper } from '@/components/payment/payment-form';
-import * as stripeJs from '@stripe/stripe-js';
 import * as reactStripe from '@stripe/react-stripe-js';
 import { useRouter } from 'next/navigation';
 
@@ -59,7 +56,7 @@ describe('PaymentFormWrapper', () => {
       Promise.resolve({
         ok: true,
         json: () => Promise.resolve({ clientSecret: mockClientSecret }),
-      })
+      }),
     );
   });
 
@@ -71,7 +68,7 @@ describe('PaymentFormWrapper', () => {
         description={mockDescription}
         onSuccess={mockOnSuccess}
         onError={mockOnError}
-      />
+      />,
     );
 
     expect(screen.getByText('Preparing payment form...')).toBeInTheDocument();
@@ -87,7 +84,7 @@ describe('PaymentFormWrapper', () => {
         onSuccess={mockOnSuccess}
         onError={mockOnError}
         clientSecret={mockClientSecret}
-      />
+      />,
     );
 
     expect(screen.getByTestId('stripe-elements')).toBeInTheDocument();
@@ -99,7 +96,7 @@ describe('PaymentFormWrapper', () => {
       Promise.resolve({
         ok: false,
         status: 500,
-      })
+      }),
     );
 
     render(
@@ -109,7 +106,7 @@ describe('PaymentFormWrapper', () => {
         description={mockDescription}
         onSuccess={mockOnSuccess}
         onError={mockOnError}
-      />
+      />,
     );
 
     await waitFor(() => {
@@ -147,7 +144,7 @@ describe('PaymentForm', () => {
         onSuccess={mockOnSuccess}
         onError={mockOnError}
         clientSecret="test_client_secret"
-      />
+      />,
     );
 
     // Check form fields
@@ -170,7 +167,7 @@ describe('PaymentForm', () => {
         onSuccess={mockOnSuccess}
         onError={mockOnError}
         clientSecret="test_client_secret"
-      />
+      />,
     );
 
     // Submit without filling fields
@@ -212,7 +209,7 @@ describe('PaymentForm', () => {
         onSuccess={mockOnSuccess}
         onError={mockOnError}
         clientSecret="test_client_secret"
-      />
+      />,
     );
 
     // Fill form fields
@@ -258,7 +255,7 @@ describe('PaymentForm', () => {
         onSuccess={mockOnSuccess}
         onError={mockOnError}
         clientSecret="test_client_secret"
-      />
+      />,
     );
 
     // Fill form fields
@@ -281,11 +278,11 @@ describe('PaymentForm', () => {
     // Mock a delay in payment confirmation
     mockStripe.confirmPayment.mockImplementation(
       () =>
-        new Promise(resolve => {
+        new Promise((resolve) => {
           setTimeout(() => {
             resolve({ paymentIntent: { id: 'test_payment_id' } });
           }, 100);
-        })
+        }),
     );
 
     render(
@@ -296,7 +293,7 @@ describe('PaymentForm', () => {
         onSuccess={mockOnSuccess}
         onError={mockOnError}
         clientSecret="test_client_secret"
-      />
+      />,
     );
 
     // Fill form fields

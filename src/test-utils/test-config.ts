@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';
 
@@ -28,5 +27,5 @@ global.ResizeObserver = class ResizeObserver {
 };
 
 // Export test constants
-export const TEST_TIMEOUT = DEFAULT_TIMEOUT;
-export const EXTENDED_TIMEOUT = DEFAULT_TIMEOUT * 2;
+export {};
+export {};

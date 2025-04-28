@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Alert, AlertTitle, AlertDescription } from './alert';
 import { axe, toHaveNoViolations } from 'jest-axe';
@@ -11,7 +10,7 @@ describe('Alert Component', () => {
     render(
       <Alert>
         <div>Alert content</div>
-      </Alert>
+      </Alert>,
     );
 
     const alert = screen.getByRole('alert');
@@ -24,7 +23,7 @@ describe('Alert Component', () => {
     render(
       <Alert variant="destructive">
         <div>Destructive alert</div>
-      </Alert>
+      </Alert>,
     );
 
     const alert = screen.getByRole('alert');
@@ -38,12 +37,12 @@ describe('Alert Component', () => {
       <Alert>
         <AlertTitle>Alert Title</AlertTitle>
         <AlertDescription>This is the alert description providing more details.</AlertDescription>
-      </Alert>
+      </Alert>,
     );
 
     expect(screen.getByText('Alert Title')).toBeInTheDocument();
     expect(
-      screen.getByText('This is the alert description providing more details.')
+      screen.getByText('This is the alert description providing more details.'),
     ).toBeInTheDocument();
   });
 
@@ -51,7 +50,7 @@ describe('Alert Component', () => {
     render(
       <Alert className="custom-alert-class">
         <div>Alert with custom class</div>
-      </Alert>
+      </Alert>,
     );
 
     const alert = screen.getByRole('alert');
@@ -62,7 +61,7 @@ describe('Alert Component', () => {
     render(
       <Alert data-testid="custom-alert">
         <div>Alert with custom data attribute</div>
-      </Alert>
+      </Alert>,
     );
 
     expect(screen.getByTestId('custom-alert')).toBeInTheDocument();
@@ -72,7 +71,7 @@ describe('Alert Component', () => {
     render(
       <Alert>
         <AlertTitle className="custom-title-class">Alert Title</AlertTitle>
-      </Alert>
+      </Alert>,
     );
 
     const title = screen.getByText('Alert Title');
@@ -83,7 +82,7 @@ describe('Alert Component', () => {
     render(
       <Alert>
         <AlertDescription className="custom-description-class">Alert Description</AlertDescription>
-      </Alert>
+      </Alert>,
     );
 
     const description = screen.getByText('Alert Description');
@@ -95,7 +94,7 @@ describe('Alert Component', () => {
       <Alert>
         <AlertTitle>Accessibility Test</AlertTitle>
         <AlertDescription>Testing the alert component for accessibility.</AlertDescription>
-      </Alert>
+      </Alert>,
     );
 
     const results = await axe(container);
@@ -114,7 +113,7 @@ describe('Alert Component', () => {
           </ul>
           <button>Action Button</button>
         </AlertDescription>
-      </Alert>
+      </Alert>,
     );
 
     expect(screen.getByText('Complex Alert')).toBeInTheDocument();

@@ -1,9 +1,8 @@
-import { renderWithProviders } from '@/test-utils/component-testing';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { renderWithProviders } from '@/test-utils/component-testing';
 import { screen } from '@testing-library/dom';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
 import { I18nextProvider } from 'react-i18next';
-import '@testing-library/jest-dom';
 
 // Test component that uses translations
 const TestComponent = () => {
@@ -60,7 +59,7 @@ describe('Internationalization', () => {
     renderWithProviders(
       <I18nextProvider i18n={i18n}>
         <TestComponent />
-      </I18nextProvider>
+      </I18nextProvider>,
     );
     expect(screen.getByText('Welcome to Vibewell')).toBeInTheDocument();
     expect(screen.getByText('Save')).toBeInTheDocument();
@@ -71,7 +70,7 @@ describe('Internationalization', () => {
     renderWithProviders(
       <I18nextProvider i18n={i18n}>
         <TestComponent />
-      </I18nextProvider>
+      </I18nextProvider>,
     );
     expect(screen.getByText('Bienvenido a Vibewell')).toBeInTheDocument();
     expect(screen.getByText('Guardar')).toBeInTheDocument();
@@ -82,7 +81,7 @@ describe('Internationalization', () => {
     renderWithProviders(
       <I18nextProvider i18n={i18n}>
         <TestComponent />
-      </I18nextProvider>
+      </I18nextProvider>,
     );
     // Should fall back to English
     expect(screen.getByText('Welcome to Vibewell')).toBeInTheDocument();

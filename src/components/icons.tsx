@@ -1,5 +1,4 @@
-'use client';
-
+'use client';;
 // Import SVG component types from React
 import type { SVGProps } from 'react';
 import { Loader2, Github } from 'lucide-react';
@@ -78,26 +77,6 @@ const enhanceIconWithSize = (Icon: React.FC<SVGProps<SVGSVGElement>>) => {
     <Icon width={size || props.width || 24} height={size || props.height || 24} {...props} />
   );
 };
-
-// Enhance all outline icons
-const enhancedOutlineIcons = Object.entries(OutlineIcons).reduce(
-  (acc, [key, Icon]) => ({
-    ...acc,
-    [key]: enhanceIconWithSize(Icon as React.FC<SVGProps<SVGSVGElement>>),
-  }),
-  {} as Record<string, React.FC<IconProps>>
-);
-
-// Enhance all solid icons and rename them with "Solid" suffix
-const enhancedSolidIcons = Object.entries(SolidIcons).reduce(
-  (acc, [key, Icon]) => ({
-    ...acc,
-    [`${key.replace('Icon', '')}Solid`]: enhanceIconWithSize(
-      Icon as React.FC<SVGProps<SVGSVGElement>>
-    ),
-  }),
-  {} as Record<string, React.FC<IconProps>>
-);
 
 // Export individual icons for direct imports
 export const {

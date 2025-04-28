@@ -1,12 +1,11 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Box, Sphere } from '@react-three/drei';
-import * as THREE from 'three';
 
 export function Forest() {
   const groupRef = useRef<THREE.Group>(null);
 
-  useFrame(state => {
+  useFrame((state) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += 0.001;
     }

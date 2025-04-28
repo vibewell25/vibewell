@@ -84,7 +84,7 @@ export async function POST(request: Request) {
     console.error('Error updating performance configuration:', error);
     return NextResponse.json(
       { error: 'Failed to update performance configuration' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

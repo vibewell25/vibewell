@@ -74,10 +74,7 @@ export const AccessibleModal: React.FC<AccessibleModalProps> = ({
 
       <div className="flex min-h-full items-center justify-center p-4">
         <div
-          className={`
-            relative w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left shadow-xl transition-all
-            ${className}
-          `}
+          className={`relative w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left shadow-xl transition-all ${className} `}
         >
           <div className="flex items-center justify-between">
             <h2 id="modal-title" className="text-lg font-medium text-gray-900">
@@ -85,7 +82,7 @@ export const AccessibleModal: React.FC<AccessibleModalProps> = ({
             </h2>
             <button
               type="button"
-              className="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              className="focus:ring-primary rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2"
               onClick={onClose}
               aria-label="Close modal"
             >
@@ -105,7 +102,7 @@ export const AccessibleModal: React.FC<AccessibleModalProps> = ({
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 };
 

@@ -1,10 +1,9 @@
-import React from 'react';
 import { Icons } from '@/components/icons';
 ('use client');
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 
 interface Business {
@@ -28,10 +27,10 @@ export function BusinessList({ businesses }: BusinessListProps) {
 
   return (
     <div className="space-y-4">
-      {businesses.map(business => (
+      {businesses.map((business) => (
         <Card key={business.id} className="overflow-hidden">
           <div className="flex flex-col md:flex-row">
-            <div className="md:w-1/3 relative h-48 md:h-auto">
+            <div className="relative h-48 md:h-auto md:w-1/3">
               <Image
                 src={business.imageUrl}
                 alt={business.name}
@@ -42,10 +41,10 @@ export function BusinessList({ businesses }: BusinessListProps) {
               />
             </div>
             <CardContent className="flex-1 p-6">
-              <div className="flex justify-between items-start mb-2">
+              <div className="mb-2 flex items-start justify-between">
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">{business.name}</h3>
-                  <div className="flex items-center gap-2 mb-2">
+                  <h3 className="mb-1 text-xl font-semibold">{business.name}</h3>
+                  <div className="mb-2 flex items-center gap-2">
                     <div className="flex items-center">
                       <Icons.StarIcon className="h-4 w-4 text-yellow-500" />
                       <span className="ml-1 text-sm font-medium">{business.rating.toFixed(1)}</span>
@@ -57,13 +56,13 @@ export function BusinessList({ businesses }: BusinessListProps) {
                 </div>
                 <Badge variant="outline">{business.category}</Badge>
               </div>
-              <p className="text-muted-foreground mb-4">{business.description}</p>
-              <div className="flex items-center gap-2 mb-4">
+              <p className="mb-4 text-muted-foreground">{business.description}</p>
+              <div className="mb-4 flex items-center gap-2">
                 <Icons.MapPinIcon className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">{business.location}</span>
               </div>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {business.services.slice(0, 3).map(service => (
+              <div className="mb-4 flex flex-wrap gap-2">
+                {business.services.slice(0, 3).map((service) => (
                   <Badge key={service} variant="secondary">
                     {service}
                   </Badge>

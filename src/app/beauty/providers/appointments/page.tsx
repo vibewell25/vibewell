@@ -1,16 +1,13 @@
-'use client';
+'use client';;
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import Calendar, { CalendarProps, TileArgs } from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import { Value } from 'react-calendar';
+import Calendar, { TileArgs } from 'react-calendar';
 interface Appointment {
   id: string;
   client: {
@@ -86,19 +83,18 @@ export default function AppointmentsPage() {
   const [view, setView] = useState<'list' | 'calendar'>('list');
   const [calendarDate, setCalendarDate] = useState<Date>(new Date());
   const handleStatusChange = (appointmentId: string, newStatus: Appointment['status']) => {
-    import { updateAppointmentStatus } from '../../../../implementation-files/appointments-create-logic';
     import { Icons } from '@/components/icons';
     console.log(`Changing status for appointment ${appointmentId} to ${newStatus}`);
   };
   // Add function to convert appointments to calendar events
   const getCalendarEvents = (appointments: Appointment[]): CalendarEvent[] => {
-    return appointments.map(appointment => ({
+    return appointments.map((appointment) => ({
       id: appointment.id,
       title: `${appointment.client.name} - ${appointment.service.name}`,
       start: new Date(`${appointment.date}T${appointment.time}`),
       end: new Date(
         new Date(`${appointment.date}T${appointment.time}`).getTime() +
-          appointment.service.duration * 60000
+          appointment.service.duration * 60000,
       ),
       client: {
         name: appointment.client.name,
@@ -118,20 +114,20 @@ export default function AppointmentsPage() {
         <Calendar
           onChange={setCalendarDate}
           value={calendarDate}
-          className="w-full border rounded-lg"
+          className="w-full rounded-lg border"
           tileClassName={({ date }: TileArgs) => {
             const hasAppointments = events.some(
-              event => date.toDateString() === event.start.toDateString()
+              (event) => date.toDateString() === event.start.toDateString(),
             );
             return hasAppointments ? 'bg-primary/10' : '';
           }}
           tileContent={({ date }: TileArgs) => {
             const dayAppointments = events.filter(
-              event => date.toDateString() === event.start.toDateString()
+              (event) => date.toDateString() === event.start.toDateString(),
             );
             return dayAppointments.length > 0 ? (
-              <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 transform">
+                <div className="bg-primary h-1.5 w-1.5 rounded-full" />
               </div>
             ) : null;
           }}
@@ -143,13 +139,15 @@ export default function AppointmentsPage() {
           <CardContent>
             <div className="space-y-4">
               {events
-                .filter(event => event.start.toDateString() === calendarDate.toDateString())
-                .map(event => (
+                .filter((event) => event.start.toDateString() === calendarDate.toDateString())
+                .map((event) => (
                   <div
                     key={event.id}
-                    className="p-4 border rounded-lg cursor-pointer hover:bg-muted"
+                    className="cursor-pointer rounded-lg border p-4 hover:bg-muted"
                     onClick={() =>
-                      setSelectedAppointment(dummyAppointments.find(a => a.id === event.id) || null)
+                      setSelectedAppointment(
+                        dummyAppointments.find((a) => a.id === event.id) || null,
+                      )
                     }
                   >
                     <div className="flex items-center justify-between">
@@ -200,7 +198,7 @@ export default function AppointmentsPage() {
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Appointment Management</h1>
+          <h1 className="mb-2 text-4xl font-bold">Appointment Management</h1>
           <p className="text-xl text-muted-foreground">Manage and track your appointments</p>
         </div>
         <div className="grid gap-6">
@@ -213,14 +211,14 @@ export default function AppointmentsPage() {
                     variant={view === 'list' ? 'default' : 'outline'}
                     onClick={() => setView('list')}
                   >
-                    <Icons.ListBulletIcon className="h-5 w-5 mr-2" />
+                    <Icons.ListBulletIcon className="mr-2 h-5 w-5" />
                     List View
                   </Button>
                   <Button
                     variant={view === 'calendar' ? 'default' : 'outline'}
                     onClick={() => setView('calendar')}
                   >
-                    <Icons.CalendarIcon className="h-5 w-5 mr-2" />
+                    <Icons.CalendarIcon className="mr-2 h-5 w-5" />
                     Calendar View
                   </Button>
                 </div>
@@ -231,15 +229,15 @@ export default function AppointmentsPage() {
                       placeholder="Search appointments..."
                       className="pl-10"
                       value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
+                      onChange={(e) => setSearchQuery(e.target.value)}
                     />
                   </div>
                   <Button variant="outline">
-                    <Icons.FunnelIcon className="h-5 w-5 mr-2" />
+                    <Icons.FunnelIcon className="mr-2 h-5 w-5" />
                     Filter
                   </Button>
                   <Button>
-                    <Icons.PlusIcon className="h-5 w-5 mr-2" />
+                    <Icons.PlusIcon className="mr-2 h-5 w-5" />
                     New Appointment
                   </Button>
                 </div>
@@ -261,10 +259,10 @@ export default function AppointmentsPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        {dummyAppointments.map(appointment => (
+                        {dummyAppointments.map((appointment) => (
                           <div
                             key={appointment.id}
-                            className={`p-4 rounded-lg cursor-pointer transition-colors ${
+                            className={`cursor-pointer rounded-lg p-4 transition-colors ${
                               selectedAppointment?.id === appointment.id
                                 ? 'bg-primary/10'
                                 : 'hover:bg-muted'
@@ -407,7 +405,7 @@ export default function AppointmentsPage() {
                               <p className="text-muted-foreground">No notes available</p>
                             )}
                             <Button variant="outline" className="w-full">
-                              <Icons.PlusIcon className="h-5 w-5 mr-2" />
+                              <Icons.PlusIcon className="mr-2 h-5 w-5" />
                               Add Note
                             </Button>
                           </div>
@@ -434,7 +432,7 @@ export default function AppointmentsPage() {
                     </div>
                   ) : (
                     <Card>
-                      <CardContent className="flex items-center justify-center h-64">
+                      <CardContent className="flex h-64 items-center justify-center">
                         <p className="text-muted-foreground">
                           Select an appointment to view details
                         </p>

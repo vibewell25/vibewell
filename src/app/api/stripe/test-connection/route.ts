@@ -39,7 +39,7 @@ export async function GET() {
           appUrl: process.env.NEXT_PUBLIC_APP_URL,
         },
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

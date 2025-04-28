@@ -113,7 +113,7 @@ export function OptimizedModelLoader({
 
         console.log(
           `Loaded model ${modelId} at ${quality} quality with settings:`,
-          settings[quality]
+          settings[quality],
         );
 
         // In a real implementation, you would render the model to the containerRef element
@@ -126,34 +126,34 @@ export function OptimizedModelLoader({
   // If there's an error loading the model
   if (modelError) {
     return (
-      <div className="flex flex-col items-center justify-center h-full bg-red-50 p-4 rounded-md">
-        <p className="text-red-500 mb-2">Error loading model</p>
+      <div className="flex h-full flex-col items-center justify-center rounded-md bg-red-50 p-4">
+        <p className="mb-2 text-red-500">Error loading model</p>
         <p className="text-sm text-gray-600">{modelError.message}</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full relative" style={{ height: '100%', minHeight: '300px' }}>
+    <div className="relative w-full" style={{ height: '100%', minHeight: '300px' }}>
       {/* The 3D model container */}
-      <div ref={containerRef} className="w-full h-full" />
+      <div ref={containerRef} className="h-full w-full" />
 
       {/* Loading overlay */}
       {isLoading && (
-        <div className="absolute inset-0 bg-gray-100 bg-opacity-80 flex flex-col items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary mb-2" />
-          <div className="w-48 h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 bg-opacity-80">
+          <Loader2 className="text-primary mb-2 h-8 w-8 animate-spin" />
+          <div className="h-2 w-48 overflow-hidden rounded-full bg-gray-200">
             <div
-              className="h-full bg-primary transition-all duration-300 ease-out"
+              className="bg-primary h-full transition-all duration-300 ease-out"
               style={{ width: `${loadingProgress}%` }}
             />
           </div>
-          <p className="text-sm text-gray-600 mt-2">
+          <p className="mt-2 text-sm text-gray-600">
             Loading {modelId} ({loadingProgress}%)
           </p>
 
           {enableProgressiveLoading && loadingProgress >= 30 && (
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="mt-1 text-xs text-gray-500">
               {loadingProgress < 60
                 ? 'Basic model loaded. Enhancing details...'
                 : loadingProgress < 100

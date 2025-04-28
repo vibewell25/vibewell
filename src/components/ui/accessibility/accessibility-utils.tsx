@@ -32,7 +32,7 @@ export function useFocusTrap<T extends HTMLElement>(active = true) {
 
     const container = containerRef.current;
     const focusableElements = container.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
     const firstFocusable = focusableElements[0] as HTMLElement;
     const lastFocusable = focusableElements[focusableElements.length - 1] as HTMLElement;
@@ -66,7 +66,7 @@ export function useFocusTrap<T extends HTMLElement>(active = true) {
 export function useKeyboardInteraction(
   onEnter?: () => void,
   onEscape?: () => void,
-  onSpace?: () => void
+  onSpace?: () => void,
 ) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -112,7 +112,7 @@ export function ErrorMessage({ id, error }: { id: string; error?: string }) {
   if (!error) return null;
 
   return (
-    <div id={`${id}-error`} className="text-sm text-red-500 mt-1" role="alert">
+    <div id={`${id}-error`} className="mt-1 text-sm text-red-500" role="alert">
       {error}
     </div>
   );
@@ -144,7 +144,7 @@ export function Tooltip({ children, content }: { children: React.ReactNode; cont
       {children}
       <div
         role="tooltip"
-        className="invisible group-hover:visible absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-sm text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+        className="invisible absolute bottom-full left-1/2 mb-2 -translate-x-1/2 transform rounded bg-gray-900 px-2 py-1 text-sm text-white opacity-0 transition-opacity group-hover:visible group-hover:opacity-100"
       >
         {content}
       </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ProductFilter } from '@/services/product-service';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
@@ -12,7 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { FilterX } from 'lucide-react';
 
 interface ProductFiltersProps {
@@ -35,10 +35,10 @@ export function ProductFilters({
   // State for each filter type
   const [selectedTypes, setSelectedTypes] = useState<string[]>(initialFilter.types || []);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    initialFilter.categories || []
+    initialFilter.categories || [],
   );
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(
-    initialFilter.subcategories || []
+    initialFilter.subcategories || [],
   );
   const [selectedBrands, setSelectedBrands] = useState<string[]>(initialFilter.brands || []);
   const [selectedTags, setSelectedTags] = useState<string[]>(initialFilter.tags || []);
@@ -49,12 +49,6 @@ export function ProductFilters({
   const [minRating, setMinRating] = useState<number>(initialFilter.minRating || 0);
   const [arCompatible, setArCompatible] = useState<boolean>(initialFilter.arCompatible || false);
   const [activeFiltersCount, setActiveFiltersCount] = useState(0);
-
-  // Get available subcategories based on selected categories
-  const availableSubcategories =
-    selectedCategories.length > 0
-      ? selectedCategories.flatMap(cat => subcategories[cat] || [])
-      : Object.values(subcategories).flat();
 
   // Get filtered tags based on current selection (optional feature, may be resource intensive)
   const filteredTags = tags.slice(0, 15); // Show top 15 tags for simplicity
@@ -147,7 +141,7 @@ export function ProductFilters({
     if (checked) {
       setSelectedTypes([...selectedTypes, type]);
     } else {
-      setSelectedTypes(selectedTypes.filter(t => t !== type));
+      setSelectedTypes(selectedTypes.filter((t) => t !== type));
     }
   };
 
@@ -155,11 +149,11 @@ export function ProductFilters({
     if (checked) {
       setSelectedCategories([...selectedCategories, category]);
     } else {
-      setSelectedCategories(selectedCategories.filter(c => c !== category));
+      setSelectedCategories(selectedCategories.filter((c) => c !== category));
       // Also remove any subcategories that belong to this category
       const catSubcategories = subcategories[category] || [];
       setSelectedSubcategories(
-        selectedSubcategories.filter(sub => !catSubcategories.includes(sub))
+        selectedSubcategories.filter((sub) => !catSubcategories.includes(sub)),
       );
     }
   };
@@ -168,7 +162,7 @@ export function ProductFilters({
     if (checked) {
       setSelectedSubcategories([...selectedSubcategories, subcategory]);
     } else {
-      setSelectedSubcategories(selectedSubcategories.filter(s => s !== subcategory));
+      setSelectedSubcategories(selectedSubcategories.filter((s) => s !== subcategory));
     }
   };
 
@@ -176,7 +170,7 @@ export function ProductFilters({
     if (checked) {
       setSelectedBrands([...selectedBrands, brand]);
     } else {
-      setSelectedBrands(selectedBrands.filter(b => b !== brand));
+      setSelectedBrands(selectedBrands.filter((b) => b !== brand));
     }
   };
 
@@ -184,7 +178,7 @@ export function ProductFilters({
     if (checked) {
       setSelectedTags([...selectedTags, tag]);
     } else {
-      setSelectedTags(selectedTags.filter(t => t !== tag));
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
     }
   };
 
@@ -226,18 +220,18 @@ export function ProductFilters({
           {/* Product Type Filter */}
           <AccordionItem value="product-type">
             <AccordionTrigger className="px-4 text-sm">Product Type</AccordionTrigger>
-            <AccordionContent className="px-4 pt-2 pb-3">
+            <AccordionContent className="px-4 pb-3 pt-2">
               <div className="space-y-2">
-                {productTypes.map(type => (
+                {productTypes.map((type) => (
                   <div key={type} className="flex items-center space-x-2">
                     <Checkbox
                       id={`type-${type}`}
                       checked={selectedTypes.includes(type)}
-                      onCheckedChange={checked => handleTypeChange(type, checked === true)}
+                      onCheckedChange={(checked) => handleTypeChange(type, checked === true)}
                     />
                     <label
                       htmlFor={`type-${type}`}
-                      className="text-sm font-medium leading-none capitalize cursor-pointer"
+                      className="cursor-pointer text-sm font-medium capitalize leading-none"
                     >
                       {type}
                     </label>
@@ -250,21 +244,21 @@ export function ProductFilters({
           {/* Category Filter */}
           <AccordionItem value="category">
             <AccordionTrigger className="px-4 text-sm">Category</AccordionTrigger>
-            <AccordionContent className="px-4 pt-2 pb-3">
+            <AccordionContent className="px-4 pb-3 pt-2">
               <div className="space-y-2">
-                {categories.map(category => (
+                {categories.map((category) => (
                   <div key={category} className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id={`category-${category}`}
                         checked={selectedCategories.includes(category)}
-                        onCheckedChange={checked =>
+                        onCheckedChange={(checked) =>
                           handleCategoryChange(category, checked === true)
                         }
                       />
                       <label
                         htmlFor={`category-${category}`}
-                        className="text-sm font-medium leading-none cursor-pointer"
+                        className="cursor-pointer text-sm font-medium leading-none"
                       >
                         {category}
                       </label>
@@ -273,19 +267,19 @@ export function ProductFilters({
                     {/* Show subcategories if category is selected */}
                     {selectedCategories.includes(category) &&
                       subcategories[category]?.length > 0 && (
-                        <div className="ml-6 space-y-1 border-l-2 pl-2 border-muted-foreground/20">
-                          {subcategories[category].map(sub => (
+                        <div className="ml-6 space-y-1 border-l-2 border-muted-foreground/20 pl-2">
+                          {subcategories[category].map((sub) => (
                             <div key={sub} className="flex items-center space-x-2">
                               <Checkbox
                                 id={`subcategory-${sub}`}
                                 checked={selectedSubcategories.includes(sub)}
-                                onCheckedChange={checked =>
+                                onCheckedChange={(checked) =>
                                   handleSubcategoryChange(sub, checked === true)
                                 }
                               />
                               <label
                                 htmlFor={`subcategory-${sub}`}
-                                className="text-xs cursor-pointer"
+                                className="cursor-pointer text-xs"
                               >
                                 {sub}
                               </label>
@@ -302,18 +296,18 @@ export function ProductFilters({
           {/* Brand Filter */}
           <AccordionItem value="brand">
             <AccordionTrigger className="px-4 text-sm">Brand</AccordionTrigger>
-            <AccordionContent className="px-4 pt-2 pb-3">
-              <div className="space-y-2 max-h-40 overflow-y-auto pr-2">
-                {brands.map(brand => (
+            <AccordionContent className="px-4 pb-3 pt-2">
+              <div className="max-h-40 space-y-2 overflow-y-auto pr-2">
+                {brands.map((brand) => (
                   <div key={brand} className="flex items-center space-x-2">
                     <Checkbox
                       id={`brand-${brand}`}
                       checked={selectedBrands.includes(brand)}
-                      onCheckedChange={checked => handleBrandChange(brand, checked === true)}
+                      onCheckedChange={(checked) => handleBrandChange(brand, checked === true)}
                     />
                     <label
                       htmlFor={`brand-${brand}`}
-                      className="text-sm leading-none cursor-pointer"
+                      className="cursor-pointer text-sm leading-none"
                     >
                       {brand}
                     </label>
@@ -326,14 +320,14 @@ export function ProductFilters({
           {/* Price Range Filter */}
           <AccordionItem value="price">
             <AccordionTrigger className="px-4 text-sm">Price Range</AccordionTrigger>
-            <AccordionContent className="px-4 pt-4 pb-3">
+            <AccordionContent className="px-4 pb-3 pt-4">
               <Slider
                 defaultValue={priceRange}
                 min={0}
                 max={200}
                 step={5}
                 value={priceRange}
-                onValueChange={value => setPriceRange(value as [number, number])}
+                onValueChange={(value) => setPriceRange(value as [number, number])}
                 className="mb-4"
               />
               <div className="flex items-center justify-between">
@@ -346,14 +340,14 @@ export function ProductFilters({
           {/* Rating Filter */}
           <AccordionItem value="rating">
             <AccordionTrigger className="px-4 text-sm">Min Rating</AccordionTrigger>
-            <AccordionContent className="px-4 pt-4 pb-3">
+            <AccordionContent className="px-4 pb-3 pt-4">
               <Slider
                 defaultValue={[minRating]}
                 min={0}
                 max={5}
                 step={0.5}
                 value={[minRating]}
-                onValueChange={value => setMinRating(value[0])}
+                onValueChange={(value) => setMinRating(value[0])}
                 className="mb-4"
               />
               <div className="flex items-center justify-between">
@@ -365,9 +359,9 @@ export function ProductFilters({
           {/* Tags Filter */}
           <AccordionItem value="tags">
             <AccordionTrigger className="px-4 text-sm">Tags</AccordionTrigger>
-            <AccordionContent className="px-4 pt-2 pb-3">
+            <AccordionContent className="px-4 pb-3 pt-2">
               <div className="flex flex-wrap gap-2">
-                {filteredTags.map(tag => (
+                {filteredTags.map((tag) => (
                   <div key={tag} className="inline-flex">
                     <Badge
                       variant={selectedTags.includes(tag) ? 'default' : 'outline'}
@@ -385,15 +379,15 @@ export function ProductFilters({
           {/* Features Filter */}
           <AccordionItem value="features">
             <AccordionTrigger className="px-4 text-sm">Features</AccordionTrigger>
-            <AccordionContent className="px-4 pt-2 pb-3">
+            <AccordionContent className="px-4 pb-3 pt-2">
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="ar-compatible"
                     checked={arCompatible}
-                    onCheckedChange={checked => setArCompatible(checked === true)}
+                    onCheckedChange={(checked) => setArCompatible(checked === true)}
                   />
-                  <label htmlFor="ar-compatible" className="text-sm leading-none cursor-pointer">
+                  <label htmlFor="ar-compatible" className="cursor-pointer text-sm leading-none">
                     AR Compatible
                   </label>
                 </div>

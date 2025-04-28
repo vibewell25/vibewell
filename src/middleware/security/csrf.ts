@@ -99,7 +99,7 @@ export function csrfMiddleware(req: NextRequest): NextResponse {
       {
         status: 403,
         headers: { 'Content-Type': 'application/json' },
-      }
+      },
     );
   }
 
@@ -113,7 +113,7 @@ export function csrfMiddleware(req: NextRequest): NextResponse {
       {
         status: 403,
         headers: { 'Content-Type': 'application/json' },
-      }
+      },
     );
   }
 

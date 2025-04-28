@@ -54,7 +54,7 @@ export class RealTimeAnalytics extends EventEmitter {
 
   private broadcastEvent(event: AnalyticsEvent): void {
     const message = JSON.stringify(event);
-    this.connections.forEach(client => {
+    this.connections.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(message);
       }
@@ -76,7 +76,7 @@ export class RealTimeAnalytics extends EventEmitter {
       this.eventBuffer = [];
 
       // Batch insert events into database
-      await prisma.$transaction(async tx => {
+      await prisma.$transaction(async (tx) => {
         for (const event of events) {
           switch (event.type) {
             case 'view':

@@ -41,7 +41,7 @@ async function monitorBackups() {
   } catch (error) {
     logger.error(
       'Error in backup monitoring:',
-      error instanceof Error ? error.message : String(error)
+      error instanceof Error ? error.message : String(error),
     );
     process.exit(1);
   }
@@ -53,10 +53,10 @@ monitorBackups()
     logger.info('Backup monitoring script completed successfully');
     process.exit(0);
   })
-  .catch(error => {
+  .catch((error) => {
     logger.error(
       'Unhandled error in backup monitoring script:',
-      error instanceof Error ? error.message : String(error)
+      error instanceof Error ? error.message : String(error),
     );
     process.exit(1);
   });

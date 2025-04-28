@@ -11,12 +11,12 @@ const contentSchema = z.object({
   content: z.string().min(1),
   sequence: z.number().int().positive(),
   duration: z.number().int().positive().optional(),
-  isRequired: z.boolean()
+  isRequired: z.boolean(),
 });
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { moduleId: string; contentId: string } }
+  { params }: { params: { moduleId: string; contentId: string } },
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -27,30 +27,24 @@ export async function GET(
     const moduleContent = await prisma.moduleContent.findUnique({
       where: {
         id: params.contentId,
-        moduleId: params.moduleId
-      }
+        moduleId: params.moduleId,
+      },
     });
 
     if (!moduleContent) {
-      return NextResponse.json(
-        { error: 'Module content not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Module content not found' }, { status: 404 });
     }
 
     return NextResponse.json(moduleContent);
   } catch (error) {
     console.error('Error fetching module content:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch module content' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch module content' }, { status: 500 });
   }
 }
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { moduleId: string; contentId: string } }
+  { params }: { params: { moduleId: string; contentId: string } },
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -64,9 +58,9 @@ export async function PUT(
     const moduleContent = await prisma.moduleContent.update({
       where: {
         id: params.contentId,
-        moduleId: params.moduleId
+        moduleId: params.moduleId,
       },
-      data: validatedData
+      data: validatedData,
     });
 
     return NextResponse.json(moduleContent);
@@ -74,20 +68,17 @@ export async function PUT(
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Invalid input data', details: error.errors },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.error('Error updating module content:', error);
-    return NextResponse.json(
-      { error: 'Failed to update module content' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to update module content' }, { status: 500 });
   }
 }
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { moduleId: string; contentId: string } }
+  { params }: { params: { moduleId: string; contentId: string } },
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -98,16 +89,13 @@ export async function DELETE(
     await prisma.moduleContent.delete({
       where: {
         id: params.contentId,
-        moduleId: params.moduleId
-      }
+        moduleId: params.moduleId,
+      },
     });
 
     return NextResponse.json({ message: 'Module content deleted successfully' });
   } catch (error) {
     console.error('Error deleting module content:', error);
-    return NextResponse.json(
-      { error: 'Failed to delete module content' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to delete module content' }, { status: 500 });
   }
-} 
+}

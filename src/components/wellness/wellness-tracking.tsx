@@ -1,5 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Progress } from '@/components/ui/progress';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
@@ -57,7 +56,7 @@ export function WellnessTracking() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
       </div>
     );
   }
@@ -65,7 +64,7 @@ export function WellnessTracking() {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {metrics.map(metric => (
+        {metrics.map((metric) => (
           <Card key={metric.id}>
             <CardHeader>
               <CardTitle className="text-lg">{metric.name}</CardTitle>
@@ -102,9 +101,9 @@ export function WellnessTracking() {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" tickFormatter={date => format(new Date(date), 'MMM d')} />
+                <XAxis dataKey="date" tickFormatter={(date) => format(new Date(date), 'MMM d')} />
                 <YAxis />
-                <Tooltip labelFormatter={date => format(new Date(date), 'MMMM d, yyyy')} />
+                <Tooltip labelFormatter={(date) => format(new Date(date), 'MMMM d, yyyy')} />
                 <Line type="monotone" dataKey="value" stroke="#8884d8" strokeWidth={2} />
               </LineChart>
             </ResponsiveContainer>

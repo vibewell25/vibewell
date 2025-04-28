@@ -1,8 +1,8 @@
 import React from 'react';
 import { DataTable } from '@/components/ui/data-table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Card } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUsers } from '@/hooks/use-users';
 import { useAuth } from '@/hooks/use-unified-auth';
@@ -53,14 +53,14 @@ export default function AdminDashboard() {
   }
 
   const filteredUsers = users.filter(
-    user =>
+    (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase())
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+      <h1 className="mb-8 text-3xl font-bold">Admin Dashboard</h1>
 
       <Tabs defaultValue="users" className="w-full">
         <TabsList>
@@ -71,11 +71,11 @@ export default function AdminDashboard() {
 
         <TabsContent value="users">
           <Card className="p-6">
-            <div className="flex justify-between items-center mb-6">
+            <div className="mb-6 flex items-center justify-between">
               <Input
                 placeholder="Search users..."
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="max-w-sm"
               />
               <Button onClick={() => handleAddUser()}>Add User</Button>
@@ -87,14 +87,14 @@ export default function AdminDashboard() {
 
         <TabsContent value="analytics">
           <Card className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">User Analytics</h2>
+            <h2 className="mb-4 text-2xl font-semibold">User Analytics</h2>
             {/* Add analytics components here */}
           </Card>
         </TabsContent>
 
         <TabsContent value="settings">
           <Card className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">Admin Settings</h2>
+            <h2 className="mb-4 text-2xl font-semibold">Admin Settings</h2>
             {/* Add settings components here */}
           </Card>
         </TabsContent>
@@ -104,12 +104,12 @@ export default function AdminDashboard() {
 }
 
 // Handler functions
-const handleEdit = user => {
+const handleEdit = (user) => {
   trackEvent('admin_edit_user', { userId: user.id });
   // Implement edit functionality
 };
 
-const handleDelete = user => {
+const handleDelete = (user) => {
   trackEvent('admin_delete_user', { userId: user.id });
   // Implement delete functionality
 };

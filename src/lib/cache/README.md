@@ -39,7 +39,7 @@ await cache.clearAll();
 // Get storage statistics
 const stats = await cache.getStorageStats();
 console.log(
-  `AR cache: ${stats.ar.modelCount} models, ${Math.round(stats.ar.totalSize / 1024 / 1024)}MB`
+  `AR cache: ${stats.ar.modelCount} models, ${Math.round(stats.ar.totalSize / 1024 / 1024)}MB`,
 );
 console.log(`API cache: ${stats.api.entryCount} entries`);
 ```

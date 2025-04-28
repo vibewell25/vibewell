@@ -1,9 +1,8 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { axe } from 'jest-axe';
-import { Table, Chart, List, Card, useSort, usePagination } from '../';
+import { Table, Chart, List, Card } from '../';
 
 // Mock data
 const mockTableData = [
@@ -61,7 +60,7 @@ describe('Data Display Components', () => {
           columns={['name', 'age', 'city']}
           pagination={true}
           itemsPerPage={2}
-        />
+        />,
       );
 
       expect(screen.getByText('John Doe')).toBeInTheDocument();
@@ -80,7 +79,7 @@ describe('Data Display Components', () => {
           columns={['name', 'age', 'city']}
           selectable={true}
           onRowSelect={onSelect}
-        />
+        />,
       );
 
       const firstRow = screen.getByText('John Doe').closest('tr');
@@ -99,7 +98,7 @@ describe('Data Display Components', () => {
 
     it('updates when data changes', async () => {
       const { rerender } = render(
-        <Chart data={mockChartData} type="line" options={{ responsive: true }} />
+        <Chart data={mockChartData} type="line" options={{ responsive: true }} />,
       );
 
       const updatedData = {
@@ -115,7 +114,7 @@ describe('Data Display Components', () => {
 
     it('supports different chart types', () => {
       const { rerender } = render(
-        <Chart data={mockChartData} type="line" options={{ responsive: true }} />
+        <Chart data={mockChartData} type="line" options={{ responsive: true }} />,
       );
 
       expect(screen.getByTestId('chart-container')).toHaveAttribute('data-type', 'line');
@@ -131,7 +130,7 @@ describe('Data Display Components', () => {
       expect(screen.getByTestId('chart-loading')).toBeInTheDocument();
 
       const { rerender } = render(
-        <Chart data={mockChartData} type="line" error="Failed to load chart data" />
+        <Chart data={mockChartData} type="line" error="Failed to load chart data" />,
       );
 
       expect(screen.getByText('Failed to load chart data')).toBeInTheDocument();
@@ -151,12 +150,12 @@ describe('Data Display Components', () => {
       render(
         <List
           items={mockListData}
-          renderItem={item => (
+          renderItem={(item) => (
             <div key={item.id} data-testid="custom-item">
               {item.title.toUpperCase()}
             </div>
           )}
-        />
+        />,
       );
 
       expect(screen.getByText('ITEM 1')).toBeInTheDocument();
@@ -196,7 +195,7 @@ describe('Data Display Components', () => {
           footer={<div data-testid="custom-footer">Custom Footer</div>}
         >
           Content
-        </Card>
+        </Card>,
       );
 
       expect(screen.getByTestId('custom-header')).toBeInTheDocument();
@@ -222,7 +221,7 @@ describe('Data Display Components', () => {
   describe('Accessibility', () => {
     it('Table meets accessibility standards', async () => {
       const { container } = render(
-        <Table data={mockTableData} columns={['name', 'age', 'city']} />
+        <Table data={mockTableData} columns={['name', 'age', 'city']} />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -252,7 +251,7 @@ describe('Data Display Components', () => {
           data={mockTableData}
           columns={['name', 'age', 'city']}
           aria-label="User Data Table"
-        />
+        />,
       );
       expect(screen.getByRole('table')).toHaveAttribute('aria-label', 'User Data Table');
     });

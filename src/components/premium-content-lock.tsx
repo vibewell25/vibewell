@@ -2,7 +2,7 @@
 
 import { Icons } from '@/components/icons';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks/use-unified-auth';
 import Link from 'next/link';
 
@@ -26,7 +26,7 @@ export function PremiumContentLock({
   const checkPremiumStatus = async () => {
     setCheckingSubscription(true);
     // Simulate API call to check subscription status
-    const mockApiCall = new Promise<boolean>(resolve => {
+    const mockApiCall = new Promise<boolean>((resolve) => {
       setTimeout(() => {
         // For demo purposes, assume user with email containing "premium" has a subscription
         const hasPremium = user?.email?.includes('premium') || false;
@@ -71,8 +71,8 @@ export function PremiumContentLock({
   if (loading || (user && checkingSubscription)) {
     return (
       <div className="rounded-lg border border-amber-200 bg-amber-50 p-8 text-center">
-        <div className="animate-pulse flex flex-col items-center">
-          <Icons.SparklesIcon className="h-12 w-12 text-amber-500 mb-4" />
+        <div className="flex animate-pulse flex-col items-center">
+          <Icons.SparklesIcon className="mb-4 h-12 w-12 text-amber-500" />
           <p className="text-amber-800">Checking subscription status...</p>
         </div>
       </div>
@@ -87,8 +87,8 @@ export function PremiumContentLock({
     return (
       <div className="rounded-lg border border-amber-200 bg-amber-50 p-8">
         <div className="flex flex-col items-center text-center">
-          <Icons.LockClosedIcon className="h-12 w-12 text-amber-500 mb-4" />
-          <h3 className="text-xl font-bold mb-2">Premium {resourceType} Locked</h3>
+          <Icons.LockClosedIcon className="mb-4 h-12 w-12 text-amber-500" />
+          <h3 className="mb-2 text-xl font-bold">Premium {resourceType} Locked</h3>
           <p className="mb-6 text-amber-800">
             This {resourceType} requires a premium subscription to access.
           </p>
@@ -108,8 +108,8 @@ export function PremiumContentLock({
   return (
     <div className="rounded-lg border border-amber-200 bg-amber-50 p-8">
       <div className="flex flex-col items-center text-center">
-        <Icons.LockClosedIcon className="h-12 w-12 text-amber-500 mb-4" />
-        <h3 className="text-xl font-bold mb-2">Premium {resourceType} Locked</h3>
+        <Icons.LockClosedIcon className="mb-4 h-12 w-12 text-amber-500" />
+        <h3 className="mb-2 text-xl font-bold">Premium {resourceType} Locked</h3>
         <p className="mb-6 text-amber-800">Please sign in to access this premium {resourceType}.</p>
         <div className="space-y-3">
           <Link href="/auth/sign-in">

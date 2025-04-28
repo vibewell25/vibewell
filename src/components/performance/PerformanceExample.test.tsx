@@ -1,5 +1,3 @@
-import React from 'react';
-import '@testing-library/jest-dom';
 import { createTestRunner } from '../../test-utils/test-runner';
 import PerformanceExample from './PerformanceExample';
 
@@ -21,7 +19,7 @@ describe('PerformanceExample Component', () => {
     expect(screen.getByText('Run Expensive Operation')).toBeInTheDocument();
     expect(screen.getByText('Operations run: 0')).toBeInTheDocument();
     expect(
-      screen.getByText('No operations run yet. Click the button to start.')
+      screen.getByText('No operations run yet. Click the button to start.'),
     ).toBeInTheDocument();
   });
 
@@ -36,7 +34,7 @@ describe('PerformanceExample Component', () => {
     // Check that the operation was run
     expect(screen.getByText('Operations run: 1')).toBeInTheDocument();
     expect(
-      screen.queryByText('No operations run yet. Click the button to start.')
+      screen.queryByText('No operations run yet. Click the button to start.'),
     ).not.toBeInTheDocument();
 
     // The result should be in the list

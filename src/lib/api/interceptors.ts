@@ -25,7 +25,7 @@ export interface ResponseInterceptorConfig {
  */
 export async function requestInterceptor(
   request: Request,
-  config: RequestInterceptorConfig = {}
+  config: RequestInterceptorConfig = {},
 ): Promise<Request> {
   const headers = new Headers(request.headers);
 
@@ -54,7 +54,7 @@ export async function requestInterceptor(
  */
 export async function responseInterceptor(
   response: Response,
-  config: ResponseInterceptorConfig = {}
+  config: ResponseInterceptorConfig = {},
 ): Promise<ApiResponse> {
   const validateStatus = config.validateStatus || defaultValidateStatus;
   const transformResponse = config.transformResponse || defaultTransformResponse;

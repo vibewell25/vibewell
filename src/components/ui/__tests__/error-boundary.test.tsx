@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ErrorBoundary, withErrorBoundary } from '../error-boundary';
 import { axe } from 'jest-axe';
@@ -6,7 +5,7 @@ import { axe } from 'jest-axe';
 // Mock console.error to prevent error logging during tests
 const originalConsoleError = console.error;
 beforeAll(() => {
-  console.error = vi.fn();
+  console.error = jest.fn();
 });
 
 afterAll(() => {
@@ -35,7 +34,7 @@ describe('ErrorBoundary Component', () => {
     render(
       <ErrorBoundary>
         <SafeComponent />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(screen.getByText('Safe Component')).toBeInTheDocument();
   });
@@ -44,7 +43,7 @@ describe('ErrorBoundary Component', () => {
     render(
       <ErrorBoundary>
         <ThrowError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
@@ -54,7 +53,7 @@ describe('ErrorBoundary Component', () => {
     const { container } = render(
       <ErrorBoundary>
         <SafeComponent />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
@@ -64,7 +63,7 @@ describe('ErrorBoundary Component', () => {
     render(
       <ErrorBoundary>
         <Button />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     fireEvent.click(screen.getByText('Trigger Error'));
@@ -72,11 +71,11 @@ describe('ErrorBoundary Component', () => {
   });
 
   it('resets error state when try again is clicked', () => {
-    const onReset = vi.fn();
+    const onReset = jest.fn();
     render(
       <ErrorBoundary onReset={onReset}>
         <ThrowError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     fireEvent.click(screen.getByText(/try again/i));
@@ -84,11 +83,11 @@ describe('ErrorBoundary Component', () => {
   });
 
   it('calls onError when an error occurs', () => {
-    const onError = vi.fn();
+    const onError = jest.fn();
     render(
       <ErrorBoundary onError={onError}>
         <ThrowError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(onError).toHaveBeenCalledWith(expect.any(Error), expect.any(Object));
@@ -99,7 +98,7 @@ describe('ErrorBoundary Component', () => {
     render(
       <ErrorBoundary fallback={<CustomFallback />}>
         <ThrowError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('Custom Error UI')).toBeInTheDocument();

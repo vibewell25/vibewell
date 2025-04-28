@@ -13,10 +13,10 @@ export default function BusinessHubLayout({ children }: BusinessHubLayoutProps) 
   return (
     <Layout>
       <div className="flex flex-col md:flex-row">
-        <div className="hidden md:block h-[calc(100vh-4rem)] sticky top-16">
+        <div className="sticky top-16 hidden h-[calc(100vh-4rem)] md:block">
           <BusinessHubSidebar />
         </div>
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           <BusinessHubMobileNav />
           {children}
         </div>

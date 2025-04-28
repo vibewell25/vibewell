@@ -10,7 +10,6 @@ import {
   complianceAuditService,
   bookingAuditService,
   AuditCategory,
-  AuditIssue,
 } from '../../services/audit';
 
 type AuditAction =
@@ -59,7 +58,7 @@ async function handleGetRequest(req: AuditApiRequest, res: NextApiResponse) {
       const reportsDir = path.join(process.cwd(), 'reports/audit');
       const files = fs
         .readdirSync(reportsDir)
-        .filter(file => file.startsWith('comprehensive_'))
+        .filter((file) => file.startsWith('comprehensive_'))
         .sort()
         .reverse();
 
@@ -77,11 +76,11 @@ async function handleGetRequest(req: AuditApiRequest, res: NextApiResponse) {
       if (fs.existsSync(categoryDir)) {
         const files = fs
           .readdirSync(categoryDir)
-          .filter(file => file.endsWith('.json'))
+          .filter((file) => file.endsWith('.json'))
           .sort()
           .reverse();
 
-        const reports = files.slice(0, 10).map(file => {
+        const reports = files.slice(0, 10).map((file) => {
           const content = fs.readFileSync(path.join(categoryDir, file), 'utf8');
           return JSON.parse(content);
         });
@@ -96,8 +95,8 @@ async function handleGetRequest(req: AuditApiRequest, res: NextApiResponse) {
     const auditDir = path.join(process.cwd(), 'reports/audit');
     const categories = fs
       .readdirSync(auditDir, { withFileTypes: true })
-      .filter(dirent => dirent.isDirectory())
-      .map(dirent => dirent.name);
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
 
     const reportsByCategory: Record<string, string[]> = {};
 
@@ -106,7 +105,7 @@ async function handleGetRequest(req: AuditApiRequest, res: NextApiResponse) {
       if (fs.existsSync(catDir)) {
         const files = fs
           .readdirSync(catDir)
-          .filter(file => file.endsWith('.json'))
+          .filter((file) => file.endsWith('.json'))
           .sort()
           .reverse();
 
@@ -116,7 +115,7 @@ async function handleGetRequest(req: AuditApiRequest, res: NextApiResponse) {
 
     const rootFiles = fs
       .readdirSync(auditDir)
-      .filter(file => file.endsWith('.json') && file.startsWith('comprehensive_'))
+      .filter((file) => file.endsWith('.json') && file.startsWith('comprehensive_'))
       .sort()
       .reverse();
 
@@ -154,7 +153,7 @@ async function handlePostRequest(req: AuditApiRequest, res: NextApiResponse) {
           data.severity,
           data.title,
           data.description,
-          data.metadata || {}
+          data.metadata || {},
         );
         return res.status(200).json({ success: true, issueId: newIssueId });
 

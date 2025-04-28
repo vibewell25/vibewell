@@ -29,7 +29,6 @@ export async function GET(request: Request) {
     }
 
     const businessId = user.practitioner.businessId;
-    const practitionerId = user.practitioner.id;
 
     // Get total bookings (excluding cancelled)
     const totalBookings = await prisma.booking.count({

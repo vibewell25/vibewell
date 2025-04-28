@@ -47,7 +47,7 @@ export function AccessibleDialog({
   }, [isOpen]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         ref={initialFocusRef}
         tabIndex={-1}

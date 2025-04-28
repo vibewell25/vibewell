@@ -61,7 +61,7 @@ class CalendarSyncService {
   private async getGoogleCalendarClient(provider: CalendarProvider) {
     const auth = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET
+      process.env.GOOGLE_CLIENT_SECRET,
     );
 
     auth.setCredentials({
@@ -96,9 +96,12 @@ class CalendarSyncService {
     }
   }
 
-  private async createGoogleEvent(provider: CalendarProvider, event: CalendarEvent): Promise<string> {
+  private async createGoogleEvent(
+    provider: CalendarProvider,
+    event: CalendarEvent,
+  ): Promise<string> {
     const calendar = await this.getGoogleCalendarClient(provider);
-    
+
     const googleEvent = {
       summary: event.title,
       description: event.description,
@@ -111,13 +114,17 @@ class CalendarSyncService {
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       },
       location: event.location,
-      attendees: event.attendees?.map(email => ({ email })),
-      recurrence: event.recurrence ? [
-        `RRULE:FREQ=${event.recurrence.frequency.toUpperCase()}` +
-        (event.recurrence.interval ? `;INTERVAL=${event.recurrence.interval}` : '') +
-        (event.recurrence.until ? `;UNTIL=${format(event.recurrence.until, "yyyyMMdd'T'HHmmss'Z'")}` : '') +
-        (event.recurrence.count ? `;COUNT=${event.recurrence.count}` : '')
-      ] : undefined,
+      attendees: event.attendees?.map((email) => ({ email })),
+      recurrence: event.recurrence
+        ? [
+            `RRULE:FREQ=${event.recurrence.frequency.toUpperCase()}` +
+              (event.recurrence.interval ? `;INTERVAL=${event.recurrence.interval}` : '') +
+              (event.recurrence.until
+                ? `;UNTIL=${format(event.recurrence.until, "yyyyMMdd'T'HHmmss'Z'")}`
+                : '') +
+              (event.recurrence.count ? `;COUNT=${event.recurrence.count}` : ''),
+          ]
+        : undefined,
     };
 
     const response = await calendar.events.insert({
@@ -128,9 +135,12 @@ class CalendarSyncService {
     return response.data.id || '';
   }
 
-  private async createMicrosoftEvent(provider: CalendarProvider, event: CalendarEvent): Promise<string> {
+  private async createMicrosoftEvent(
+    provider: CalendarProvider,
+    event: CalendarEvent,
+  ): Promise<string> {
     const client = await this.getMicrosoftGraphClient(provider);
-    
+
     const microsoftEvent = {
       subject: event.title,
       body: {
@@ -148,34 +158,38 @@ class CalendarSyncService {
       location: {
         displayName: event.location,
       },
-      attendees: event.attendees?.map(email => ({
+      attendees: event.attendees?.map((email) => ({
         emailAddress: {
           address: email,
         },
         type: 'required',
       })),
-      recurrence: event.recurrence ? {
-        pattern: {
-          type: event.recurrence.frequency,
-          interval: event.recurrence.interval || 1,
-        },
-        range: {
-          type: event.recurrence.until ? 'endDate' : 'noEnd',
-          endDate: event.recurrence.until?.toISOString(),
-          numberOfOccurrences: event.recurrence.count,
-        },
-      } : undefined,
+      recurrence: event.recurrence
+        ? {
+            pattern: {
+              type: event.recurrence.frequency,
+              interval: event.recurrence.interval || 1,
+            },
+            range: {
+              type: event.recurrence.until ? 'endDate' : 'noEnd',
+              endDate: event.recurrence.until?.toISOString(),
+              numberOfOccurrences: event.recurrence.count,
+            },
+          }
+        : undefined,
     };
 
-    const response = await client
-      .api('/me/events')
-      .post(microsoftEvent);
+    const response = await client.api('/me/events').post(microsoftEvent);
 
     return response.id;
   }
 
   // Sync Management
-  public async syncEvents(providerName: string, startDate: Date, endDate: Date): Promise<CalendarEvent[]> {
+  public async syncEvents(
+    providerName: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<CalendarEvent[]> {
     const provider = this.getProvider(providerName);
     if (!provider) throw new Error(`Provider ${providerName} not found`);
 
@@ -189,9 +203,13 @@ class CalendarSyncService {
     }
   }
 
-  private async syncGoogleEvents(provider: CalendarProvider, startDate: Date, endDate: Date): Promise<CalendarEvent[]> {
+  private async syncGoogleEvents(
+    provider: CalendarProvider,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<CalendarEvent[]> {
     const calendar = await this.getGoogleCalendarClient(provider);
-    
+
     const response = await calendar.events.list({
       calendarId: 'primary',
       timeMin: startDate.toISOString(),
@@ -200,20 +218,26 @@ class CalendarSyncService {
       orderBy: 'startTime',
     });
 
-    return response.data.items?.map(item => ({
-      id: item.id,
-      title: item.summary || '',
-      description: item.description,
-      startTime: new Date(item.start?.dateTime || ''),
-      endTime: new Date(item.end?.dateTime || ''),
-      location: item.location,
-      attendees: item.attendees?.map(a => a.email || '').filter(Boolean),
-    })) || [];
+    return (
+      response.data.items?.map((item) => ({
+        id: item.id,
+        title: item.summary || '',
+        description: item.description,
+        startTime: new Date(item.start?.dateTime || ''),
+        endTime: new Date(item.end?.dateTime || ''),
+        location: item.location,
+        attendees: item.attendees?.map((a) => a.email || '').filter(Boolean),
+      })) || []
+    );
   }
 
-  private async syncMicrosoftEvents(provider: CalendarProvider, startDate: Date, endDate: Date): Promise<CalendarEvent[]> {
+  private async syncMicrosoftEvents(
+    provider: CalendarProvider,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<CalendarEvent[]> {
     const client = await this.getMicrosoftGraphClient(provider);
-    
+
     const response = await client
       .api('/me/calendarView')
       .query({
@@ -234,4 +258,4 @@ class CalendarSyncService {
   }
 }
 
-export const calendarSyncService = CalendarSyncService.getInstance(); 
+export {};

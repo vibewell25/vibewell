@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../../test-utils/server';
@@ -18,7 +18,7 @@ beforeAll(() => {
       }
 
       return HttpResponse.json({ success: true, message: 'Form submitted successfully' });
-    })
+    }),
   );
 });
 

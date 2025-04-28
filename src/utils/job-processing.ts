@@ -2,7 +2,6 @@ import { Redis } from 'ioredis';
 import { AlertingSystem, PerformanceMonitor } from '../types/monitoring';
 import { AlertingSystemImpl } from '../services/monitoring/AlertingSystemImpl';
 import { PerformanceMonitorImpl } from '../services/monitoring/PerformanceMonitorImpl';
-import { dbOptimizer } from './db-optimization';
 
 interface JobConfig {
   name: string;
@@ -88,7 +87,7 @@ class JobProcessor {
   public async enqueue<T>(
     jobName: string,
     data: T,
-    config: Partial<JobConfig> = {}
+    config: Partial<JobConfig> = {},
   ): Promise<string> {
     const defaultConfig: JobConfig = {
       name: jobName,
@@ -121,7 +120,7 @@ class JobProcessor {
 
     const startTime = performance.now();
     await this.redis.lpush(`queue:${finalConfig.queue}`, JSON.stringify(job));
-    
+
     this.performanceMonitor.recordMetric('jobEnqueueTime', performance.now() - startTime);
 
     return job.id;
@@ -133,7 +132,7 @@ class JobProcessor {
 
     while (this.isProcessing) {
       if (this.workerCount >= this.MAX_WORKERS) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         continue;
       }
 
@@ -175,13 +174,11 @@ class JobProcessor {
 
       const result = await Promise.race([
         handler(job.data),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Job timeout')), job.timeout)
-        ),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Job timeout')), job.timeout)),
       ]);
 
       await this.completeJob(job, result);
-      
+
       this.performanceMonitor.recordMetric('jobProcessingTime', performance.now() - startTime);
       this.performanceMonitor.recordMetric('jobSuccess', 1);
     } catch (error) {
@@ -205,7 +202,7 @@ class JobProcessor {
       `job:${job.id}`,
       JSON.stringify(job),
       'EX',
-      86400 // Store completed jobs for 24 hours
+      86400, // Store completed jobs for 24 hours
     );
   }
 
@@ -218,7 +215,7 @@ class JobProcessor {
       `job:${job.id}`,
       JSON.stringify(job),
       'EX',
-      86400 * 7 // Store failed jobs for 7 days
+      86400 * 7, // Store failed jobs for 7 days
     );
 
     await this.alertingSystem.sendAlert('Job Processing Error', {
@@ -234,11 +231,7 @@ class JobProcessor {
     job.nextRetryAt = Date.now() + backoff;
     job.error = error instanceof Error ? error.message : 'Unknown error';
 
-    await this.redis.zadd(
-      `retry:${job.queue}`,
-      job.nextRetryAt,
-      JSON.stringify(job)
-    );
+    await this.redis.zadd(`retry:${job.queue}`, job.nextRetryAt, JSON.stringify(job));
   }
 
   private calculateBackoff(job: Job): number {
@@ -248,7 +241,7 @@ class JobProcessor {
     if (job.backoff.type === 'exponential') {
       return Math.min(
         baseDelay * Math.pow(2, attempt),
-        1000 * 60 * 60 // Max 1 hour
+        1000 * 60 * 60, // Max 1 hour
       );
     }
 
@@ -258,11 +251,7 @@ class JobProcessor {
   public async processRetries(): Promise<void> {
     for (const queue of Array.from(this.queues)) {
       const now = Date.now();
-      const jobs = await this.redis.zrangebyscore(
-        `retry:${queue}`,
-        0,
-        now
-      );
+      const jobs = await this.redis.zrangebyscore(`retry:${queue}`, 0, now);
 
       for (const jobStr of jobs) {
         const job: Job = JSON.parse(jobStr);
@@ -294,7 +283,7 @@ class JobProcessor {
 
   public async shutdown(): Promise<void> {
     this.isProcessing = false;
-    await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for workers to finish
+    await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for workers to finish
     await this.redis.quit();
   }
 
@@ -303,10 +292,10 @@ class JobProcessor {
       metric: 'job_error',
       value: 1,
       severity: 'warning',
-      message: `Job ${job.id} failed: ${error.message}`
+      message: `Job ${job.id} failed: ${error.message}`,
     });
     this.performanceMonitor.recordMetric('job_error', 1);
   }
 }
 
-export const jobProcessor = JobProcessor.getInstance(); 
+export {};

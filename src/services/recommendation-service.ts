@@ -79,7 +79,7 @@ export class RecommendationService {
       const allScores = await this.calculateRecommendationScores(
         userInteractions,
         includeViewed,
-        includePurchased
+        includePurchased,
       );
 
       // Get the top N products
@@ -125,8 +125,8 @@ export class RecommendationService {
         select: {
           productId: true,
           count: true,
-          lastViewed: true
-        }
+          lastViewed: true,
+        },
       });
 
       // Fetch product purchases
@@ -134,12 +134,12 @@ export class RecommendationService {
         where: { userId },
         select: {
           products: true,
-          createdAt: true
-        }
+          createdAt: true,
+        },
       });
 
       // Process views into interactions
-      const viewInteractions = viewData.map(view => ({
+      const viewInteractions = viewData.map((view) => ({
         productId: view.productId,
         type: 'view' as const,
         count: view.count,
@@ -148,11 +148,11 @@ export class RecommendationService {
 
       // Process purchases into interactions
       const purchaseInteractions: UserInteraction[] = [];
-      purchaseData.forEach(order => {
+      purchaseData.forEach((order) => {
         if (order.products && Array.isArray(order.products)) {
           order.products.forEach((product: any) => {
             const existingInteraction = purchaseInteractions.find(
-              interaction => interaction.productId === product.id
+              (interaction) => interaction.productId === product.id,
             );
 
             if (existingInteraction) {
@@ -176,8 +176,8 @@ export class RecommendationService {
           productId: true,
           createdAt: true,
           feedback: true,
-          completed: true
-        }
+          completed: true,
+        },
       });
 
       // Process try-ons into interactions
@@ -191,7 +191,7 @@ export class RecommendationService {
         }
       >();
 
-      tryOnData.forEach(session => {
+      tryOnData.forEach((session) => {
         if (!session.productId) return;
 
         const existing = tryOnMap.get(session.productId);
@@ -252,7 +252,7 @@ export class RecommendationService {
   private async calculateRecommendationScores(
     userInteractions: UserInteraction[],
     includeViewed: boolean,
-    includePurchased: boolean
+    includePurchased: boolean,
   ): Promise<Map<string, number>> {
     try {
       // Get all products
@@ -261,14 +261,14 @@ export class RecommendationService {
       // Get user's viewed and purchased product IDs
       const viewedProductIds = new Set(
         userInteractions
-          .filter(interaction => interaction.type === 'view')
-          .map(interaction => interaction.productId)
+          .filter((interaction) => interaction.type === 'view')
+          .map((interaction) => interaction.productId),
       );
 
       const purchasedProductIds = new Set(
         userInteractions
-          .filter(interaction => interaction.type === 'purchase')
-          .map(interaction => interaction.productId)
+          .filter((interaction) => interaction.type === 'purchase')
+          .map((interaction) => interaction.productId),
       );
 
       // Create a map to store the scores
@@ -276,7 +276,7 @@ export class RecommendationService {
 
       // Get all product interactions grouped by product ID
       const productInteractions = new Map<string, UserInteraction[]>();
-      userInteractions.forEach(interaction => {
+      userInteractions.forEach((interaction) => {
         if (!productInteractions.has(interaction.productId)) {
           productInteractions.set(interaction.productId, []);
         }
@@ -309,9 +309,9 @@ export class RecommendationService {
         score += Math.min(product.review_count / 100, 1) * WEIGHT_FACTORS.REVIEW_COUNT;
 
         // For each product the user has interacted with, calculate similarity and add to score
-        userInteractions.forEach(interaction => {
+        userInteractions.forEach((interaction) => {
           // Get the interacted product
-          const interactedProduct = products.find(p => p.id === interaction.productId);
+          const interactedProduct = products.find((p) => p.id === interaction.productId);
           if (!interactedProduct) return;
 
           let similarityScore = 0;
@@ -338,7 +338,7 @@ export class RecommendationService {
 
           // Add score for matching tags
           if (product.tags && interactedProduct.tags) {
-            const matchingTags = product.tags.filter(tag => interactedProduct.tags.includes(tag));
+            const matchingTags = product.tags.filter((tag) => interactedProduct.tags.includes(tag));
             similarityScore += matchingTags.length * WEIGHT_FACTORS.TAGS;
           }
 
@@ -386,7 +386,7 @@ export class RecommendationService {
    */
   private async getTopScoredProducts(
     scores: Map<string, number>,
-    limit: number
+    limit: number,
   ): Promise<Product[]> {
     try {
       // Sort the product IDs by score (descending)
@@ -425,7 +425,7 @@ export class RecommendationService {
 
       // Add featured products that aren't already in the list
       for (const product of featuredProducts) {
-        if (!allProducts.some(p => p.id === product.id)) {
+        if (!allProducts.some((p) => p.id === product.id)) {
           allProducts.push(product);
         }
       }
@@ -449,9 +449,9 @@ export class RecommendationService {
         where: {
           userId_productId: {
             userId,
-            productId
-          }
-        }
+            productId,
+          },
+        },
       });
 
       const now = new Date();
@@ -462,13 +462,13 @@ export class RecommendationService {
           where: {
             userId_productId: {
               userId,
-              productId
-            }
+              productId,
+            },
           },
           data: {
             count: existingRecord.count + 1,
-            lastViewed: now
-          }
+            lastViewed: now,
+          },
         });
       } else {
         // Insert new record
@@ -477,8 +477,8 @@ export class RecommendationService {
             userId,
             productId,
             count: 1,
-            lastViewed: now
-          }
+            lastViewed: now,
+          },
         });
       }
     } catch (err) {
@@ -497,28 +497,27 @@ export class RecommendationService {
         where: {
           userId,
           feedback: {
-            not: null
-          }
+            not: null,
+          },
         },
         select: {
           productId: true,
-          feedback: true
-        }
+          feedback: true,
+        },
       });
 
       // Filter sessions with positive feedback
       const productsWithPositiveFeedback = positiveFeedbackSessions
-        .filter(session => {
+        .filter((session) => {
           if (!session.feedback) return false;
 
           // Consider positive if rating is 4+ or would try in real life
           const feedback = session.feedback as any;
           return (
-            (feedback.rating && feedback.rating >= 4) ||
-            feedback.would_try_in_real_life === true
+            (feedback.rating && feedback.rating >= 4) || feedback.would_try_in_real_life === true
           );
         })
-        .map(session => session.productId);
+        .map((session) => session.productId);
 
       if (productsWithPositiveFeedback.length === 0) {
         // If no positive feedback, fall back to regular recommendations
@@ -535,7 +534,7 @@ export class RecommendationService {
         // Add to results, avoiding duplicates
         for (const product of related) {
           if (
-            !similarProducts.some(p => p.id === product.id) &&
+            !similarProducts.some((p) => p.id === product.id) &&
             !productsWithPositiveFeedback.includes(product.id)
           ) {
             similarProducts.push(product);
@@ -560,7 +559,7 @@ export class RecommendationService {
         // Add to results, avoiding duplicates
         for (const product of regularRecs) {
           if (
-            !similarProducts.some(p => p.id === product.id) &&
+            !similarProducts.some((p) => p.id === product.id) &&
             !productsWithPositiveFeedback.includes(product.id)
           ) {
             similarProducts.push(product);

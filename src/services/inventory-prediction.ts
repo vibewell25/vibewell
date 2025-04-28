@@ -1,10 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { OpenAI } from 'openai';
 import { logger } from '@/lib/logger';
-import { addDays, subDays, differenceInDays } from 'date-fns';
 
 const prisma = new PrismaClient();
-const openai = new OpenAI();
 
 interface DemandPrediction {
   productId: string;
@@ -32,7 +30,7 @@ export class InventoryPredictionService {
    */
   async predictDemand(
     productId: string,
-    timeframe: number = 30 // days
+    timeframe: number = 30, // days
   ): Promise<DemandPrediction> {
     try {
       // Gather historical data
@@ -69,7 +67,7 @@ export class InventoryPredictionService {
    */
   async generateReorderSuggestion(
     productId: string,
-    currentStock: number
+    currentStock: number,
   ): Promise<ReorderSuggestion> {
     try {
       // Get product data
@@ -194,7 +192,7 @@ export class InventoryPredictionService {
 
   private async generateDemandPrediction(
     features: Record<string, any>,
-    timeframe: number
+    timeframe: number,
   ): Promise<DemandPrediction> {
     // Implementation for generating demand prediction
     return {
@@ -288,7 +286,7 @@ export class InventoryPredictionService {
   private suggestOrderTiming(
     currentStock: number,
     reorderPoint: number,
-    demand: DemandPrediction
+    demand: DemandPrediction,
   ): string {
     // Implementation for suggesting optimal timing
     return '';
@@ -340,7 +338,7 @@ export class InventoryPredictionService {
   }
 
   private async generateSupplierRecommendations(
-    metrics: Record<string, number>
+    metrics: Record<string, number>,
   ): Promise<string[]> {
     // Implementation for generating recommendations
     return [];

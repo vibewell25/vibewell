@@ -1,4 +1,3 @@
-import 'next-auth';
 import { Role } from '@/lib/auth/roles';
 
 declare module 'next-auth' {

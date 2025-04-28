@@ -2,7 +2,11 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { prisma } from '@/lib/database/client';
-import { getWeatherCondition, getRecommendedProducts, trackRecommendationProgress } from '@/lib/api/skincare/services';
+import {
+  getWeatherCondition,
+  getRecommendedProducts,
+  trackRecommendationProgress,
+} from '@/lib/api/skincare/services';
 
 export async function GET(request: Request) {
   try {
@@ -35,7 +39,7 @@ export async function GET(request: Request) {
     const analysis = analyzeLogs(logs);
 
     // Get common concerns
-    const commonConcerns = analysis.concerns.map(c => c.name);
+    const commonConcerns = analysis.concerns.map((c) => c.name);
 
     // Get product recommendations
     const recommendedProducts = await getRecommendedProducts(commonConcerns);
@@ -84,11 +88,11 @@ function analyzeLogs(logs: any[]) {
   const concernCounts = new Map();
   const concernSeverities = new Map();
 
-  logs.forEach(log => {
+  logs.forEach((log) => {
     log.concerns.forEach((concern: any) => {
       const count = (concernCounts.get(concern.name) || 0) + 1;
       concernCounts.set(concern.name, count);
-      
+
       const totalSeverity = (concernSeverities.get(concern.name) || 0) + concern.severity;
       concernSeverities.set(concern.name, totalSeverity);
     });
@@ -142,7 +146,7 @@ function generateRecommendations(analysis: any, weather: any, products: any[]) {
   }
 
   // Product recommendations
-  products.forEach(product => {
+  products.forEach((product) => {
     recommendations.products.push({
       id: `product_${product.id}`,
       type: 'product',
@@ -178,12 +182,12 @@ export async function POST(request: Request) {
     }
 
     const { recommendationId, status, effectiveness } = await request.json();
-    
+
     const progress = await trackRecommendationProgress(
       session.user.id,
       recommendationId,
       status,
-      effectiveness
+      effectiveness,
     );
 
     return NextResponse.json(progress);
@@ -191,4 +195,4 @@ export async function POST(request: Request) {
     console.error('Error tracking recommendation progress:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-} 
+}

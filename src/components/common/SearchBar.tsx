@@ -1,7 +1,7 @@
 'use client';
 
 import { Search } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 
 interface SearchBarProps {
   value: string;
@@ -17,7 +17,7 @@ export function SearchBar({ value, onChange, placeholder = 'Search...' }: Search
         type="search"
         placeholder={placeholder}
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         className="pl-9"
       />
     </div>

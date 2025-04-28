@@ -136,6 +136,9 @@ export const sendBookingConfirmation = async (
       });
     }
     
+    // Schedule booking reminder notifications (1 hour and 1 day prior)
+    await scheduleBookingReminder(booking.serviceTitle, booking.appointmentDate, new Date(booking.appointmentDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), booking.bookingId);
+    
     return true;
   } catch (error) {
     console.error('Error sending booking confirmation:', error);

@@ -85,7 +85,7 @@ export function testRenderPerformance(renderFn, timeBudget, iterations = 5) {
 
   expect(average).toBeLessThanOrEqual(
     timeBudget,
-    `Component rendered in ${average.toFixed(2)}ms, which exceeds the time budget of ${timeBudget}ms`
+    `Component rendered in ${average.toFixed(2)}ms, which exceeds the time budget of ${timeBudget}ms`,
   );
 
   return average <= timeBudget;
@@ -173,7 +173,7 @@ export async function testApiPerformance(apiFn, timeBudget, iterations = 5) {
 
   expect(average).toBeLessThanOrEqual(
     timeBudget,
-    `API responded in ${average.toFixed(2)}ms, which exceeds the time budget of ${timeBudget}ms`
+    `API responded in ${average.toFixed(2)}ms, which exceeds the time budget of ${timeBudget}ms`,
   );
 
   return average <= timeBudget;
@@ -197,7 +197,7 @@ export async function measureFrameRate(renderFn, interactionFn, durationMs = 100
   const startTime = performance.now();
 
   // Create a promise that resolves after the duration
-  const frameRatePromise = new Promise(resolve => {
+  const frameRatePromise = new Promise((resolve) => {
     // Function to count frames
     const countFrame = () => {
       frames++;
@@ -247,7 +247,7 @@ export async function testFrameRate(renderFn, interactionFn, minFps = 30, durati
 
   expect(fps).toBeGreaterThanOrEqual(
     minFps,
-    `Component ran at ${fps.toFixed(2)} FPS, which is below the minimum of ${minFps} FPS`
+    `Component ran at ${fps.toFixed(2)} FPS, which is below the minimum of ${minFps} FPS`,
   );
 
   return fps >= minFps;

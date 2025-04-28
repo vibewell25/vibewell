@@ -1,231 +1,301 @@
-# Vibewell Documentation
+# Vibewell Platform
 
-Welcome to the Vibewell documentation. This centralized documentation system provides a unified interface to all aspects of the Vibewell platform.
+A comprehensive beauty and wellness booking platform that seamlessly connects beauty professionals, wellness practitioners, and clients. Our AI-powered platform enhances the experience for both beauty services (skincare, hair, makeup, nail care, esthetics, spa treatments) and wellness services (fitness, meditation, nutrition, therapy, holistic healing).
 
-## 📚 Documentation Index
+## ✨ Core Features
 
-### 🏗️ Architecture
-- [System Architecture](architecture/overview.md)
-- [Component Structure](architecture/components.md)
-- [Data Flow](architecture/data-flow.md)
-- [State Management](architecture/state-management.md)
-- [API Design](architecture/api-design.md)
+### Beauty Services
+- **Treatment Management**: Comprehensive beauty service scheduling and tracking
+- **Beauty Profile**: Client beauty preferences, history, and personalized care plans
+- **Product Recommendations**: AI-powered skincare and beauty product suggestions
+- **Treatment Tracking**: Progress tracking for skincare and beauty treatments
+- **Service Menu**: Customizable beauty service offerings and packages
 
-### 🧩 Components
-- [Component Library](components/README.md)
-- [UI Components](components/ui/README.md)
-- [Accessibility Components](components/accessibility/README.md)
-- [Business Components](components/business/README.md)
-- [AR/VR Components](components/ar/README.md)
+### Wellness Services
+- **Wellness Programs**: Structured wellness and fitness program management
+- **Health Tracking**: Client wellness journey and progress monitoring
+- **Nutrition Planning**: Dietary recommendations and meal planning
+- **Wellness Goals**: Goal setting and achievement tracking
+- **Session Planning**: Customizable wellness session templates
 
-### 🔌 API Reference
-- [API Overview](api/README.md)
-- [API Versioning Strategy](api/versioning.md)
-- [Authentication](api/authentication.md)
-- [Endpoints](api/endpoints.md)
-- [Schema Reference](api/schema/README.md)
+### Business Tools
+- **Appointment Management**: Smart scheduling for all service types
+- **Inventory Control**: Beauty product and wellness equipment tracking
+- **Client Management**: Comprehensive CRM for both beauty and wellness clients
+- **Marketing Tools**: Targeted promotions for different service categories
+- **Analytics Dashboard**: Performance metrics for all service types
+- **Payment Processing**: Secure payment handling with multiple options
+- **Staff Management**: Provider scheduling and expertise tracking
 
-### 🔧 Development Guides
-- [Getting Started](guides/getting-started.md)
-- [Development Workflow](guides/workflow.md)
-- [Code Style Guide](guides/style-guide.md)
-- [Testing Guide](guides/testing.md)
-- [Performance Optimization](guides/performance.md)
-- [Error Handling](guides/error-handling.md)
+### Client Experience
+- **Mobile Access**: On-the-go booking and management
+- **Smart Recommendations**: AI-driven personalization
+- **Progress Tracking**: Visual progress and results monitoring
+- **Secure Communications**: HIPAA-compliant messaging
+- **Online Booking**: Easy service discovery and scheduling
+- **Loyalty Program**: Rewards for both beauty and wellness services
 
-### 🔍 Testing
-- [Testing Strategy](testing/README.md)
-- [Unit Testing](testing/unit-testing.md)
-- [Integration Testing](testing/integration-testing.md)
-- [End-to-End Testing](testing/e2e-testing.md)
-- [Performance Testing](testing/performance-testing.md)
-- [Accessibility Testing](testing/accessibility-testing.md)
+## 🛠️ Tech Stack
 
-### 🚀 Deployment
-- [Deployment Guide](deployment/README.md)
-- [CI/CD Pipeline](deployment/ci-cd.md)
-- [Environment Configuration](deployment/environments.md)
-- [Monitoring & Logging](deployment/monitoring.md)
-- [Backup & Recovery](deployment/backup-recovery.md)
+- **Frontend**: Next.js 15.3, React 18.3, TypeScript
+- **Backend**: Node.js (≥18.0.0)
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: Auth0, JWT
+- **State Management**: Recoil, React Query
+- **UI Components**: Chakra UI, Radix UI
+- **Testing**: Jest, Playwright, Storybook
+- **Analytics**: Vercel Analytics, PostHog
+- **Monitoring**: Sentry, New Relic
+- **AI Integration**: Anthropic, OpenAI
+- **Payment Processing**: Stripe, PayPal, Square
+- **Cloud Storage**: AWS S3, Azure Blob Storage
+- **Search**: Algolia, Meilisearch
+- **Caching**: Redis, Node Cache
 
-### 🔒 Security
-- [Security Overview](security/README.md)
-- [Authentication & Authorization](security/auth.md)
-- [Data Protection](security/data-protection.md)
-- [API Security](security/api-security.md)
-- [Security Testing](security/testing.md)
+## 🚀 Getting Started
 
-### 🌐 Internationalization
-- [i18n Guide](i18n/README.md)
-- [Adding New Languages](i18n/adding-languages.md)
-- [Translation Workflow](i18n/translation-workflow.md)
+### Prerequisites
 
-### 📐 Design System
-- [Design Principles](design/README.md)
-- [Color System](design/colors.md)
-- [Typography](design/typography.md)
-- [Iconography](design/icons.md)
-- [Spacing & Layout](design/spacing.md)
+- Node.js ≥18.0.0
+- PostgreSQL
+- Redis
+- pnpm, yarn, or npm
 
-### 📱 Mobile Development
-- [Mobile Overview](mobile/README.md)
-- [Cross-platform Strategy](mobile/cross-platform.md)
-- [Native Integration](mobile/native-integration.md)
-- [Responsive Design](mobile/responsive-design.md)
+### Installation
 
-### 🧪 Feature Guides
-- [User Authentication Flow](features/authentication.md)
-- [Booking System](features/booking.md)
-- [Provider Management](features/provider-management.md)
-- [Notifications System](features/notifications.md)
-- [Virtual Try-on](features/virtual-try-on.md)
-- [Analytics Dashboard](features/analytics.md)
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/vibewell.git
+cd vibewell
+```
 
-### 🔄 Integration Guides
-- [Third-party Integrations](integrations/README.md)
-- [Payment Processing](integrations/payments.md)
-- [Social Media](integrations/social-media.md)
-- [Calendar Systems](integrations/calendars.md)
-- [Analytics Services](integrations/analytics.md)
+2. Install dependencies:
+```bash
+pnpm install
+```
 
-### 📊 Performance Monitoring
-- [Monitoring Overview](performance/README.md)
-- [Performance Metrics](performance/metrics.md)
-- [Optimization Techniques](performance/optimization.md)
-- [Automatic Remediation](performance/auto-remediation.md)
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+```
 
-### 🧰 Utilities
-- [Error Handling](./utilities/error-handling.md)
-- [Performance Monitoring](./utilities/performance-monitoring.md)
-- [Performance Hooks](./utilities/performance-hooks.md)
-- [State Management](./utilities/state-management.md)
-- [API Client](./utilities/api-client.md)
-- [WebXR Compatibility](./utilities/webxr-compatibility.md)
+4. Configure your environment variables in `.env.local`
 
-### 📝 Contributing
-- [How to Contribute](contributing/README.md)
-- [Code Review Process](contributing/code-review.md)
-- [Issue Tracking](contributing/issue-tracking.md)
-- [Documentation Standards](contributing/documentation-standards.md)
+5. Initialize the database:
+```bash
+pnpm db:migrate
+pnpm db:seed
+```
 
-## 📋 Documentation Standards
+6. Start the development server:
+```bash
+pnpm dev
+```
 
-All documentation in this repository follows these standards:
+Visit `http://localhost:3000` to see the application.
 
-1. **Markdown Format**: All documentation is written in Markdown for consistency and ease of use.
-2. **Documentation Structure**: Each section has its own directory with a README.md file as an entry point.
-3. **Cross-References**: Documents link to each other where relevant to create a connected knowledge base.
-4. **Code Examples**: Code examples are included where appropriate and are syntax highlighted.
-5. **Regular Updates**: Documentation is updated with each significant code change or feature addition.
-6. **Versioning**: The documentation reflects the current version of the software.
+## 📱 Mobile App
 
-## 🔄 Updating Documentation
+Our mobile app provides seamless access to both beauty and wellness services, featuring:
+- Real-time appointment booking and management
+- Beauty and wellness progress tracking
+- Secure payment processing
+- Push notifications for appointments and updates
+- Offline access to essential features
+- Client-provider messaging
 
-To update this documentation:
+To run the mobile app:
+```bash
+cd mobile
+pnpm install
+pnpm start
+```
 
-1. Create a branch from `main`
-2. Make your changes following the standards above
-3. Submit a pull request with a clear description of your changes
-4. After review and approval, your changes will be merged
+## 🧪 Testing
 
-## 📞 Need Help?
+We employ a comprehensive testing strategy:
 
-If you have questions about the Vibewell platform that aren't answered in this documentation:
+```bash
+# Unit and integration tests
+pnpm test
 
-- Check the [FAQ](faq.md) for common questions
-- Join our [Slack channel](https://vibewell-team.slack.com)
-- Email the development team at dev@vibewell.com
+# End-to-end tests
+pnpm test:e2e
+
+# Component tests with Storybook
+pnpm storybook
+
+# Accessibility tests
+pnpm test:a11y
+
+# Performance tests
+pnpm test:performance
+```
+
+## 🔒 Security Features
+
+- OAuth2/OIDC authentication with Auth0
+- JWT token validation
+- Rate limiting with `rate-limiter-flexible`
+- Input validation with Zod
+- WebAuthn support for passwordless authentication
+- Secure session management
+- CORS and security headers
+- API route protection
+- Data encryption at rest
+- Regular security audits
+- PCI compliance for payment processing
+- HIPAA-aligned data protection measures
+- Secure file storage for client photos and documents
+- End-to-end encryption for sensitive communications
+- Regular automated security scanning
+- Multi-factor authentication support
+
+## 📦 Available Scripts
+
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm start` - Start production server
+- `pnpm lint` - Run ESLint
+- `pnpm type-check` - Run TypeScript checks
+- `pnpm test` - Run tests
+- `pnpm db:studio` - Open Prisma Studio
+- `pnpm storybook` - Run Storybook for component development
+- `pnpm test:e2e` - Run end-to-end tests
+- `pnpm test:accessibility` - Run accessibility tests
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please ensure your PR adheres to:
+- Conventional commit messages
+- Includes tests
+- Updates documentation
+- Follows code style guidelines
+- Maintains accessibility standards
+- Considers both beauty and wellness use cases
+
+## 🚀 Deployment
+
+### Supported Platforms
+- Vercel (recommended)
+- AWS
+- Google Cloud Platform
+- Azure
+- Self-hosted
+
+### Deployment Commands
+```bash
+# Build for production
+pnpm build
+
+# Start production server
+pnpm start
+
+# Analyze bundle
+pnpm analyze
+```
+
+## 🔧 Environment Setup
+
+Required environment variables:
+
+```env
+# Core
+DATABASE_URL=
+REDIS_URL=
+NODE_ENV=
+
+# Authentication
+AUTH0_SECRET=
+AUTH0_BASE_URL=
+AUTH0_ISSUER_BASE_URL=
+AUTH0_CLIENT_ID=
+AUTH0_CLIENT_SECRET=
+
+# Storage
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_REGION=
+AWS_BUCKET_NAME=
+
+# Payments
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+PAYPAL_CLIENT_ID=
+PAYPAL_CLIENT_SECRET=
+
+# AI Services
+OPENAI_API_KEY=
+ANTHROPIC_API_KEY=
+
+# Analytics
+POSTHOG_API_KEY=
+SENTRY_DSN=
+```
+
+See `.env.example` for a complete list of variables.
+
+## 💻 Development
+
+### Code Style
+
+We follow strict coding standards:
+- ESLint for code quality
+- Prettier for code formatting
+- TypeScript strict mode
+- Conventional commits
+
+### Branch Strategy
+
+- `main` - Production branch
+- `develop` - Development branch
+- `feature/*` - Feature branches
+- `hotfix/*` - Hotfix branches
+- `release/*` - Release branches
+
+### Performance Optimization
+
+- Use React.memo() for expensive components
+- Implement proper code splitting
+- Optimize images and assets
+- Use proper caching strategies
+- Monitor bundle size
+
+### Monitoring
+
+- Sentry for error tracking
+- New Relic for performance monitoring
+- Custom analytics for business metrics
+- Health check endpoints
+
+## 📚 Documentation
+
+- [API Documentation](https://docs.vibewell.com/api)
+- [Beauty Service Integration Guide](https://docs.vibewell.com/beauty)
+- [Wellness Service Integration Guide](https://docs.vibewell.com/wellness)
+- [Security Best Practices](https://docs.vibewell.com/security)
+- [Mobile App Documentation](https://docs.vibewell.com/mobile)
+- [Provider Dashboard Guide](https://docs.vibewell.com/provider)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+For support:
+- Create an issue in the repository
+- Email: support@vibewell.com
+- Join our Discord community
+- Documentation: [docs.vibewell.com](https://docs.vibewell.com)
+- Technical Support: [support.vibewell.com](https://support.vibewell.com)
 
 ---
 
-© 2023 Vibewell. All rights reserved.
-
-# VibeWell API Documentation
-
-## Overview
-
-This directory contains the comprehensive API documentation for the VibeWell platform. The documentation is provided in multiple formats to suit different needs:
-
-1. OpenAPI/Swagger Specification (`openapi.yaml`)
-2. Markdown Documentation (`API.md`)
-3. API Reference Guide (`api/README.md`)
-
-## Using the Documentation
-
-### OpenAPI/Swagger Specification
-
-The `openapi.yaml` file contains our complete API specification in OpenAPI 3.0 format. This specification can be:
-
-1. Imported into API development tools like Postman or Insomnia
-2. Used with Swagger UI for interactive documentation
-3. Used to generate client libraries in various programming languages
-
-To view the documentation interactively:
-
-1. Visit [Swagger Editor](https://editor.swagger.io/)
-2. Copy the contents of `openapi.yaml` into the editor
-3. Explore the API documentation with interactive examples
-
-### Authentication
-
-All API endpoints require authentication using JWT tokens. Include the token in the Authorization header:
-
-```http
-Authorization: Bearer <your_jwt_token>
-```
-
-### Rate Limiting
-
-- 1000 requests per hour for authenticated users
-- 60 requests per hour for unauthenticated users
-- Rate limit headers are included in responses
-
-### Error Handling
-
-All error responses follow a consistent format:
-
-```json
-{
-  "error": {
-    "code": "ERROR_CODE",
-    "message": "Human readable message",
-    "details": {
-      "field": "Specific field with error",
-      "issue": "Description of the issue"
-    }
-  }
-}
-```
-
-## Development
-
-### Local Setup
-
-1. Clone the repository
-2. Navigate to the API documentation directory
-3. Use a markdown viewer or OpenAPI tool to browse the documentation
-
-### Contributing
-
-When adding or modifying API endpoints:
-
-1. Update the OpenAPI specification (`openapi.yaml`)
-2. Update the corresponding markdown documentation
-3. Follow the existing format and standards
-4. Include examples for new endpoints
-5. Test the OpenAPI specification for validity
-
-### Generating Documentation
-
-You can generate various documentation formats from the OpenAPI specification using tools like:
-
-- [Redoc](https://github.com/Redocly/redoc)
-- [Swagger UI](https://swagger.io/tools/swagger-ui/)
-- [Slate](https://github.com/slatedocs/slate)
-
-## Support
-
-For API support and questions:
-- Email: api-support@vibewell.com
-- Developer Portal: https://developers.vibewell.com
-- Issue Tracker: https://github.com/vibewell/api/issues 
+Built with ❤️ by the Vibewell team

@@ -1,4 +1,11 @@
-import { MonitoringService, MonitoringConfig, SystemHealthStatus, DashboardData, PerformanceReport, AlertConfig } from '../../types/monitoring';
+import {
+  MonitoringService,
+  MonitoringConfig,
+  SystemHealthStatus,
+  DashboardData,
+  PerformanceReport,
+  AlertConfig,
+} from '../../types/monitoring';
 import { Redis } from 'ioredis';
 import { performance } from 'perf_hooks';
 import os from 'os';
@@ -29,7 +36,7 @@ export class MonitoringServiceImpl implements MonitoringService {
 
   async startMonitoring(): Promise<void> {
     if (this.isMonitoring) return;
-    
+
     this.isMonitoring = true;
     this.metricsInterval = setInterval(() => {
       this.collectMetrics();
@@ -38,7 +45,7 @@ export class MonitoringServiceImpl implements MonitoringService {
 
   async stopMonitoring(): Promise<void> {
     if (!this.isMonitoring) return;
-    
+
     this.isMonitoring = false;
     if (this.metricsInterval) {
       clearInterval(this.metricsInterval);
@@ -53,14 +60,10 @@ export class MonitoringServiceImpl implements MonitoringService {
       responseTime: performance.now(),
       cpuUsage: typeof cpuLoad === 'number' ? cpuLoad : 0,
       memoryUsage: process.memoryUsage().heapUsed / 1024 / 1024,
-      networkLatency: await this.measureNetworkLatency()
+      networkLatency: await this.measureNetworkLatency(),
     };
 
-    await Promise.all(
-      Object.entries(metrics).map(([key, value]) => 
-        this.recordMetric(key, value)
-      )
-    );
+    await Promise.all(Object.entries(metrics).map(([key, value]) => this.recordMetric(key, value)));
 
     await this.checkAlertThresholds(metrics);
   }
@@ -84,21 +87,24 @@ export class MonitoringServiceImpl implements MonitoringService {
     return { ...this.metrics };
   }
 
-  async getMetricHistory(name: string, duration: string): Promise<Array<{ timestamp: number; value: number }>> {
+  async getMetricHistory(
+    name: string,
+    duration: string,
+  ): Promise<Array<{ timestamp: number; value: number }>> {
     const key = `${this.METRICS_KEY_PREFIX}${name}`;
     const now = Date.now();
     const durationMs = this.parseDuration(duration);
     const start = now - durationMs;
-    
+
     const data = await this.redis.zrangebyscore(key, start, '+inf');
-    return data.map(item => JSON.parse(item));
+    return data.map((item) => JSON.parse(item));
   }
 
   private parseDuration(duration: string): number {
     const units: Record<string, number> = {
       h: 60 * 60 * 1000,
       d: 24 * 60 * 60 * 1000,
-      w: 7 * 24 * 60 * 60 * 1000
+      w: 7 * 24 * 60 * 60 * 1000,
     };
     const match = duration.match(/^(\d+)([hdw])$/);
     if (!match) throw new Error('Invalid duration format');
@@ -111,21 +117,22 @@ export class MonitoringServiceImpl implements MonitoringService {
   }
 
   async acknowledgeAlert(alertId: string): Promise<void> {
-    const alerts = JSON.parse(await this.redis.get(this.ALERTS_KEY) || '[]');
-    const updatedAlerts = alerts.map((alert: AlertConfig) => 
-      alert.id === alertId ? { ...alert, acknowledged: true } : alert
+    const alerts = JSON.parse((await this.redis.get(this.ALERTS_KEY)) || '[]');
+    const updatedAlerts = alerts.map((alert: AlertConfig) =>
+      alert.id === alertId ? { ...alert, acknowledged: true } : alert,
     );
     await this.redis.set(this.ALERTS_KEY, JSON.stringify(updatedAlerts));
   }
 
   private async checkAlertThresholds(metrics: Record<string, number>): Promise<void> {
-    const alerts = JSON.parse(await this.redis.get(this.ALERTS_KEY) || '[]');
-    
+    const alerts = JSON.parse((await this.redis.get(this.ALERTS_KEY)) || '[]');
+
     for (const alert of alerts) {
       const value = metrics[alert.metric];
       if (value === undefined) continue;
 
-      const threshold = this.config.alertThresholds[alert.metric as keyof typeof this.config.alertThresholds];
+      const threshold =
+        this.config.alertThresholds[alert.metric as keyof typeof this.config.alertThresholds];
       if (value > threshold && !alert.acknowledged) {
         await this.triggerAlert(alert, value);
       }
@@ -144,7 +151,7 @@ export class MonitoringServiceImpl implements MonitoringService {
       value,
       threshold: alert.threshold,
       timestamp: Date.now(),
-      acknowledged: alert.acknowledged
+      acknowledged: alert.acknowledged,
     };
 
     await this.redis.zadd(alertHistoryKey, alertData.timestamp, JSON.stringify(alertData));
@@ -157,15 +164,17 @@ export class MonitoringServiceImpl implements MonitoringService {
     const checks: HealthCheckResult[] = await Promise.all([
       this.checkDatabaseHealth(),
       this.checkCacheHealth(),
-      this.checkAPIHealth()
+      this.checkAPIHealth(),
     ]);
 
-    const status: 'healthy' | 'unhealthy' = checks.every(check => check.status === 'pass') ? 'healthy' : 'unhealthy';
-    
+    const status: 'healthy' | 'unhealthy' = checks.every((check) => check.status === 'pass')
+      ? 'healthy'
+      : 'unhealthy';
+
     this.lastHealthCheck = {
       status,
       checks,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
     return this.lastHealthCheck;
@@ -179,14 +188,14 @@ export class MonitoringServiceImpl implements MonitoringService {
         name: 'database',
         status: 'pass',
         latency: Date.now() - startTime,
-        lastChecked: new Date().toISOString()
+        lastChecked: new Date().toISOString(),
       };
     } catch (error) {
       return {
         name: 'database',
         status: 'fail',
         latency: Date.now() - startTime,
-        lastChecked: new Date().toISOString()
+        lastChecked: new Date().toISOString(),
       };
     }
   }
@@ -199,14 +208,14 @@ export class MonitoringServiceImpl implements MonitoringService {
         name: 'cache',
         status: 'pass',
         latency: Date.now() - startTime,
-        lastChecked: new Date().toISOString()
+        lastChecked: new Date().toISOString(),
       };
     } catch (error) {
       return {
         name: 'cache',
         status: 'fail',
         latency: Date.now() - startTime,
-        lastChecked: new Date().toISOString()
+        lastChecked: new Date().toISOString(),
       };
     }
   }
@@ -219,14 +228,14 @@ export class MonitoringServiceImpl implements MonitoringService {
         name: 'api',
         status: 'pass',
         latency: Date.now() - startTime,
-        lastChecked: new Date().toISOString()
+        lastChecked: new Date().toISOString(),
       };
     } catch (error) {
       return {
         name: 'api',
         status: 'fail',
         latency: Date.now() - startTime,
-        lastChecked: new Date().toISOString()
+        lastChecked: new Date().toISOString(),
       };
     }
   }
@@ -238,7 +247,7 @@ export class MonitoringServiceImpl implements MonitoringService {
   async getDashboardData(): Promise<DashboardData> {
     const currentMetrics = this.getMetrics();
     const health = await this.checkSystemHealth();
-    const alerts = JSON.parse(await this.redis.get(this.ALERTS_KEY) || '[]');
+    const alerts = JSON.parse((await this.redis.get(this.ALERTS_KEY)) || '[]');
     const activeAlerts = alerts.filter((alert: AlertConfig) => !alert.acknowledged);
 
     return {
@@ -253,8 +262,8 @@ export class MonitoringServiceImpl implements MonitoringService {
         errorRate: currentMetrics['errorRate'] || 0,
         cpuUsage: currentMetrics['cpuUsage'] || 0,
         memoryUsage: currentMetrics['memoryUsage'] || 0,
-        networkLatency: currentMetrics['networkLatency'] || 0
-      }
+        networkLatency: currentMetrics['networkLatency'] || 0,
+      },
     };
   }
 
@@ -264,9 +273,12 @@ export class MonitoringServiceImpl implements MonitoringService {
 
     const metrics = ['responseTime', 'cpuUsage', 'memoryUsage', 'errorRate'];
     const trends = await Promise.all(
-      metrics.map(async metric => ({
-        [metric]: await this.getMetricHistory(metric, `${Math.ceil((end - start) / (24 * 60 * 60 * 1000))}d`)
-      }))
+      metrics.map(async (metric) => ({
+        [metric]: await this.getMetricHistory(
+          metric,
+          `${Math.ceil((end - start) / (24 * 60 * 60 * 1000))}d`,
+        ),
+      })),
     );
 
     return {
@@ -274,7 +286,7 @@ export class MonitoringServiceImpl implements MonitoringService {
       summary: await this.calculateSummaryMetrics(start, end),
       trends: Object.assign({}, ...trends),
       alerts: await this.getAlertHistory(start, end),
-      recommendations: await this.generateRecommendations()
+      recommendations: await this.generateRecommendations(),
     };
   }
 
@@ -287,14 +299,14 @@ export class MonitoringServiceImpl implements MonitoringService {
       totalRequests: 0,
       errorRate: 0,
       averageCpuUsage: 0,
-      averageMemoryUsage: 0
+      averageMemoryUsage: 0,
     };
   }
 
   private async getAlertHistory(start: number, end: number): Promise<any[]> {
     const alertHistoryKey = 'vibewell:alert-history';
     const alerts = await this.redis.zrangebyscore(alertHistoryKey, start, end);
-    return alerts.map(alert => JSON.parse(alert));
+    return alerts.map((alert) => JSON.parse(alert));
   }
 
   private async generateRecommendations(): Promise<any[]> {
@@ -307,7 +319,7 @@ export class MonitoringServiceImpl implements MonitoringService {
         severity: 'high',
         metric: 'cpuUsage',
         description: 'High CPU usage detected',
-        recommendation: 'Consider scaling horizontally or optimizing CPU-intensive operations'
+        recommendation: 'Consider scaling horizontally or optimizing CPU-intensive operations',
       });
     }
 
@@ -317,7 +329,7 @@ export class MonitoringServiceImpl implements MonitoringService {
         severity: 'high',
         metric: 'memoryUsage',
         description: 'High memory usage detected',
-        recommendation: 'Check for memory leaks and consider increasing memory allocation'
+        recommendation: 'Check for memory leaks and consider increasing memory allocation',
       });
     }
 
@@ -327,7 +339,8 @@ export class MonitoringServiceImpl implements MonitoringService {
         severity: 'medium',
         metric: 'responseTime',
         description: 'Slow response times detected',
-        recommendation: 'Implement caching, optimize database queries, or use CDN for static assets'
+        recommendation:
+          'Implement caching, optimize database queries, or use CDN for static assets',
       });
     }
 
@@ -339,7 +352,7 @@ export class MonitoringServiceImpl implements MonitoringService {
   }
 
   public configureAlert(config: AlertConfig): void {
-    const existingIndex = this.alerts.findIndex(alert => alert.id === config.id);
+    const existingIndex = this.alerts.findIndex((alert) => alert.id === config.id);
     if (existingIndex >= 0) {
       this.alerts[existingIndex] = config;
     } else {
@@ -348,9 +361,9 @@ export class MonitoringServiceImpl implements MonitoringService {
   }
 
   public acknowledgeAlert(alertId: string): void {
-    const alert = this.alerts.find(a => a.id === alertId);
+    const alert = this.alerts.find((a) => a.id === alertId);
     if (alert) {
       alert.acknowledged = true;
     }
   }
-} 
+}

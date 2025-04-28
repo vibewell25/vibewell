@@ -1,6 +1,4 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { BookingForm } from '@/components/booking/booking-form';
 import { useAuth } from '@/hooks/use-unified-auth';
 
@@ -14,7 +12,7 @@ global.fetch = jest.fn(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve({ id: 'booking-123', success: true }),
-  })
+  }),
 ) as jest.Mock;
 
 describe('BookingForm Security Tests', () => {

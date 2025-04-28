@@ -34,7 +34,35 @@ import MembershipScreen from '../screens/MembershipScreen';
 import ModelSelectionScreen from '../screens/ModelSelectionScreen';
 import SubscriptionsScreen from '../screens/SubscriptionsScreen';
 import ReferralScreen from '../screens/ReferralScreen';
-import AnalyticsDashboardScreen from '../screens/AnalyticsDashboardScreen';
+import AnalyticsStackNavigator from './AnalyticsStackNavigator';
+import PromotionsScreen from '../screens/PromotionsScreen';
+import EmailCampaignsScreen from '../screens/EmailCampaignsScreen';
+import NotificationsScreen from '../screens/NotificationsScreen';
+import BookingListScreen from '../screens/BookingListScreen';
+import BookingDetailScreen from '../screens/BookingDetailScreen';
+import NewBookingScreen from '../screens/NewBookingScreen';
+import StaffScheduleScreen from '../screens/StaffScheduleScreen';
+import AttendanceScreen from '../screens/AttendanceScreen';
+import TrainingModulesScreen from '../screens/TrainingModulesScreen';
+import TrainingProgressScreen from '../screens/TrainingProgressScreen';
+import CalendarScreen from '../screens/CalendarScreen';
+import FormListScreen from '../screens/FormListScreen';
+import FormDetailScreen from '../screens/FormDetailScreen';
+import InventoryListScreen from '../screens/InventoryListScreen';
+import InventoryDetailScreen from '../screens/InventoryDetailScreen';
+import InventoryFormScreen from '../screens/InventoryFormScreen';
+import EquipmentListScreen from '../screens/EquipmentListScreen';
+import EquipmentDetailScreen from '../screens/EquipmentDetailScreen';
+import EquipmentFormScreen from '../screens/EquipmentFormScreen';
+import PostListScreen from '../screens/PostListScreen';
+import PostDetailScreen from '../screens/PostDetailScreen';
+import PostFormScreen from '../screens/PostFormScreen';
+import EventListScreen from '../screens/EventListScreen';
+import EventDetailScreen from '../screens/EventDetailScreen';
+import EventFormScreen from '../screens/EventFormScreen';
+import ThreadListScreen from '../screens/ThreadListScreen';
+import ThreadDetailScreen from '../screens/ThreadDetailScreen';
+import ThreadFormScreen from '../screens/ThreadFormScreen';
 import { RootStackParamList } from '../types/navigation';
 import { sendPushNotification } from '../services/push-notification';
 
@@ -42,18 +70,6 @@ import { sendPushNotification } from '../services/push-notification';
 const WellnessScreen = () => (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text>Wellness Screen</Text>
-  </View>
-);
-
-const BookingsScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Bookings Screen</Text>
-  </View>
-);
-
-const CommunityScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Community Screen</Text>
   </View>
 );
 
@@ -103,6 +119,23 @@ const BeautyStack = () => {
   );
 };
 
+// Community & Social stack navigator
+const CommunityStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="PostList" component={PostListScreen} options={{ title: 'Posts' }} />
+      <Stack.Screen name="PostDetail" component={PostDetailScreen} options={{ title: 'Post' }} />
+      <Stack.Screen name="PostForm" component={PostFormScreen} options={{ title: 'New Post' }} />
+      <Stack.Screen name="ThreadList" component={ThreadListScreen} options={{ title: 'Threads' }} />
+      <Stack.Screen name="ThreadDetail" component={ThreadDetailScreen} options={{ title: 'Thread' }} />
+      <Stack.Screen name="ThreadForm" component={ThreadFormScreen} options={{ title: 'New Thread' }} />
+      <Stack.Screen name="EventList" component={EventListScreen} options={{ title: 'Events' }} />
+      <Stack.Screen name="EventDetail" component={EventDetailScreen} options={{ title: 'Event' }} />
+      <Stack.Screen name="EventForm" component={EventFormScreen} options={{ title: 'New Event' }} />
+    </Stack.Navigator>
+  );
+};
+
 const MainTabNavigator = () => {
   return (
     <Tab.Navigator
@@ -130,14 +163,32 @@ const MainTabNavigator = () => {
             iconName = 'credit-card';
           } else if (route.name === 'Membership') {
             iconName = 'gift';
-          } else if (route.name === 'Profile') {
-            iconName = 'user';
           } else if (route.name === 'Subscriptions') {
             iconName = 'layers';
           } else if (route.name === 'Referral') {
             iconName = 'gift';
           } else if (route.name === 'Analytics') {
             iconName = 'bar-chart-2';
+          } else if (route.name === 'Promotions') {
+            iconName = 'tag';
+          } else if (route.name === 'EmailCampaigns') {
+            iconName = 'mail';
+          } else if (route.name === 'Notifications') {
+            iconName = 'bell';
+          } else if (route.name === 'StaffSchedules') {
+            iconName = 'calendar';
+          } else if (route.name === 'Attendance') {
+            iconName = 'check-square';
+          } else if (route.name === 'TrainingModules') {
+            iconName = 'book-open';
+          } else if (route.name === 'TrainingProgress') {
+            iconName = 'trending-up';
+          } else if (route.name === 'Calendar') {
+            iconName = 'calendar';
+          } else if (route.name === 'FormList') {
+            iconName = 'file-text';
+          } else if (route.name === 'EquipmentList') {
+            iconName = 'tool';
           }
 
           return <Feather name={iconName} size={size} color={color} />;
@@ -149,8 +200,8 @@ const MainTabNavigator = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Wellness" component={WellnessScreen} />
       <Tab.Screen name="Beauty" component={BeautyStack} />
-      <Tab.Screen name="Bookings" component={BookingsScreen} />
-      <Tab.Screen name="Community" component={CommunityScreen} />
+      <Tab.Screen name="Bookings" component={BookingListScreen} />
+      <Tab.Screen name="Community" component={CommunityStack} options={{ title: 'Community' }} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="SkinAnalysis" component={SkinAnalysisScreen} options={{ title: 'Skin Analysis' }} />
       <Tab.Screen name="Membership" component={MembershipScreen} options={{ title: 'Membership' }} />
@@ -159,7 +210,17 @@ const MainTabNavigator = () => {
       <Tab.Screen name="Referral" component={ReferralScreen} options={{ title: 'Referral' }} />
       <Tab.Screen name="PaymentMethods" component={PaymentMethodsScreen} options={{ title: 'Payments' }} />
       <Tab.Screen name="Subscriptions" component={SubscriptionsScreen} options={{ title: 'Subscriptions' }} />
-      <Tab.Screen name="Analytics" component={AnalyticsDashboardScreen} options={{ title: 'Analytics' }} />
+      <Tab.Screen name="Analytics" component={AnalyticsStackNavigator} options={{ title: 'Analytics' }} />
+      <Tab.Screen name="Promotions" component={PromotionsScreen} options={{ title: 'Promotions' }} />
+      <Tab.Screen name="EmailCampaigns" component={EmailCampaignsScreen} options={{ title: 'Email Campaigns' }} />
+      <Tab.Screen name="Notifications" component={NotificationsScreen} options={{ title: 'Notifications' }} />
+      <Tab.Screen name="Calendar" component={CalendarScreen} options={{ title: 'Calendar' }} />
+      <Tab.Screen name="FormList" component={FormListScreen} options={{ title: 'Forms' }} />
+      <Tab.Screen name="StaffSchedules" component={StaffScheduleScreen} options={{ title: 'Schedules' }} />
+      <Tab.Screen name="Attendance" component={AttendanceScreen} options={{ title: 'Attendance' }} />
+      <Tab.Screen name="TrainingModules" component={TrainingModulesScreen} options={{ title: 'Modules' }} />
+      <Tab.Screen name="TrainingProgress" component={TrainingProgressScreen} options={{ title: 'Progress' }} />
+      <Tab.Screen name="EquipmentList" component={EquipmentListScreen} options={{ title: 'Equipment' }} />
     </Tab.Navigator>
   );
 };
@@ -208,6 +269,20 @@ const AppNavigator = () => {
       <Stack.Screen name="PaymentMethods" component={PaymentMethodsScreen} />
       <Stack.Screen name="ModelSelection" component={ModelSelectionScreen} />
       <Stack.Screen name="Payment" component={PaymentScreen} />
+      <Stack.Screen name="BookingDetail" component={BookingDetailScreen} />
+      <Stack.Screen name="NewBooking" component={NewBookingScreen} />
+      <Stack.Screen name="Calendar" component={CalendarScreen} />
+      <Stack.Screen name="InventoryList" component={InventoryListScreen} />
+      <Stack.Screen name="InventoryDetail" component={InventoryDetailScreen} />
+      <Stack.Screen name="InventoryForm" component={InventoryFormScreen} />
+      <Stack.Screen name="FormDetail" component={FormDetailScreen} />
+      <Stack.Screen name="EquipmentList" component={EquipmentListScreen} />
+      <Stack.Screen name="EquipmentDetail" component={EquipmentDetailScreen} />
+      <Stack.Screen name="EquipmentForm" component={EquipmentFormScreen} />
+      {/* Admin: Payroll */}
+      <Stack.Screen name="PayrollList" component={PayrollListScreen} />
+      <Stack.Screen name="PayrollDetail" component={PayrollDetailScreen} />
+      <Stack.Screen name="PayrollForm" component={PayrollFormScreen} />
     </Stack.Navigator>
   );
 };

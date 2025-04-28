@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
@@ -43,7 +42,7 @@ describe('Performance Benchmarks', () => {
             { key: 'date', label: 'Date' },
           ]}
         />,
-        { maxDuration: 100, label: 'Table with 1000 rows' }
+        { maxDuration: 100, label: 'Table with 1000 rows' },
       );
     });
 
@@ -55,7 +54,7 @@ describe('Performance Benchmarks', () => {
             { key: 'name', label: 'Name', sortable: true },
             { key: 'value', label: 'Value', sortable: true },
           ]}
-        />
+        />,
       );
 
       await measureLongTasks(1000, 1);
@@ -78,13 +77,20 @@ describe('Performance Benchmarks', () => {
           height={400}
           width={800}
         />,
-        { maxDuration: 50, label: 'Line chart with 100 points' }
+        { maxDuration: 50, label: 'Line chart with 100 points' },
       );
     });
 
     it('should handle real-time updates smoothly', async () => {
       const { rerender } = render(
-        <Chart data={mediumDataset} type="line" xKey="date" yKey="value" height={400} width={800} />
+        <Chart
+          data={mediumDataset}
+          type="line"
+          xKey="date"
+          yKey="value"
+          height={400}
+          width={800}
+        />,
       );
 
       await measureFrameRate(1000, 55);
@@ -93,9 +99,16 @@ describe('Performance Benchmarks', () => {
       for (let i = 0; i < 10; i++) {
         const updatedData = [...mediumDataset, ...generateLargeDataset(10)];
         rerender(
-          <Chart data={updatedData} type="line" xKey="date" yKey="value" height={400} width={800} />
+          <Chart
+            data={updatedData}
+            type="line"
+            xKey="date"
+            yKey="value"
+            height={400}
+            width={800}
+          />,
         );
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       }
     });
   });
@@ -105,7 +118,7 @@ describe('Performance Benchmarks', () => {
       await measurePerformance(
         <List
           items={largeDataset}
-          renderItem={item => (
+          renderItem={(item) => (
             <div key={item.id} style={{ padding: '1rem' }}>
               <h3>{item.name}</h3>
               <p>{item.description}</p>
@@ -114,14 +127,14 @@ describe('Performance Benchmarks', () => {
           height={400}
           itemHeight={80}
         />,
-        { maxDuration: 50, label: 'Virtualized list with 1000 items' }
+        { maxDuration: 50, label: 'Virtualized list with 1000 items' },
       );
     });
   });
 
   describe('Image Gallery', () => {
     it('should load and display images efficiently', async () => {
-      const images = mediumDataset.map(item => ({
+      const images = mediumDataset.map((item) => ({
         src: item.image,
         alt: item.name,
         width: 200,
@@ -131,9 +144,9 @@ describe('Performance Benchmarks', () => {
       await measureMemoryUsage(
         async () => {
           render(<ImageGallery images={images} />);
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          await new Promise((resolve) => setTimeout(resolve, 2000));
         },
-        100 * 1024 * 1024
+        100 * 1024 * 1024,
       ); // 100MB limit
     });
 
@@ -146,7 +159,7 @@ describe('Performance Benchmarks', () => {
   describe('Search Performance', () => {
     it('should perform search operations efficiently', async () => {
       const { container } = render(
-        <SearchInput data={largeDataset} onSearch={() => {}} placeholder="Search items..." />
+        <SearchInput data={largeDataset} onSearch={() => {}} placeholder="Search items..." />,
       );
 
       const input = container.querySelector('input');

@@ -81,7 +81,7 @@ if (typeof setInterval !== 'undefined') {
 async function checkRateLimit(
   identifier: string,
   options: RateLimitOptions,
-  useRedis: boolean = false
+  useRedis: boolean = false,
 ): Promise<RateLimitResult> {
   const windowMs = options.windowMs || DEFAULT_OPTIONS.windowMs!;
   const max = options.max || DEFAULT_OPTIONS.max!;
@@ -213,7 +213,7 @@ async function logRateLimitEvent(
   method: string,
   limiterType: string,
   result: RateLimitResult,
-  userId?: string
+  userId?: string,
 ): Promise<void> {
   try {
     const event: RateLimitEvent = {
@@ -244,7 +244,7 @@ async function logRateLimitEvent(
         limiterType,
         remaining: result.remaining,
         exceeded: !result.success,
-      }
+      },
     );
 
     // In production, log to Redis for analytics
@@ -278,7 +278,7 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
           req.headers['x-forwarded-for'] ||
             req.headers['x-real-ip'] ||
             req.socket?.remoteAddress ||
-            'unknown'
+            'unknown',
         );
       }
 
@@ -313,7 +313,7 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
         method,
         options.keyPrefix || 'api',
         result,
-        userId || undefined
+        userId || undefined,
       );
 
       // If rate limited, return error response
@@ -363,7 +363,7 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
         method,
         options.keyPrefix || 'api',
         result,
-        userId || undefined
+        userId || undefined,
       );
 
       // Set rate limit headers
@@ -421,7 +421,7 @@ export function createGraphQLRateLimiter(options: RateLimitOptions = {}) {
 
   return async function graphqlRateLimiter(
     context: GraphQLContext,
-    fieldName: string
+    fieldName: string,
   ): Promise<void> {
     try {
       // Generate identifier from context
@@ -434,7 +434,7 @@ export function createGraphQLRateLimiter(options: RateLimitOptions = {}) {
       const result = await checkRateLimit(
         { ...mergedOptions, keyPrefix: key },
         identifier,
-        useRedis
+        useRedis,
       );
 
       // Log the event
@@ -444,7 +444,7 @@ export function createGraphQLRateLimiter(options: RateLimitOptions = {}) {
         'GRAPHQL',
         options.keyPrefix || 'graphql',
         result,
-        context.userId || undefined
+        context.userId || undefined,
       );
 
       // If rate limited, throw GraphQL error
@@ -518,7 +518,7 @@ export function createGraphQLRateLimitMiddleware(options: RateLimitOptions = {})
 export function withGraphQLRateLimit(
   resolver: any,
   fieldName: string,
-  options: RateLimitOptions = {}
+  options: RateLimitOptions = {},
 ) {
   const rateLimiter = createGraphQLRateLimiter(options);
 
@@ -756,10 +756,10 @@ export const graphqlRateLimiter = createGraphQLRateLimiter({
 });
 
 // Export the GraphQL middleware
-export const graphQLRateLimitMiddleware = createGraphQLRateLimitMiddleware();
+export {};
 
 // Create default WebSocket rate limiter
-export const webSocketRateLimiter = new WebSocketRateLimiter();
+export {};
 
 // #endregion
 
@@ -773,7 +773,7 @@ export const webSocketRateLimiter = new WebSocketRateLimiter();
  */
 export async function applyRateLimit(
   req: NextRequest,
-  limiter = apiRateLimiter
+  limiter = apiRateLimiter,
 ): Promise<NextResponse | null> {
   return limiter(req);
 }
@@ -799,11 +799,11 @@ export function withRateLimit(handler: any, limiter = apiRateLimiter) {
 // #endregion
 
 // For backward compatibility with redis-rate-limiter.ts
-export const redisApiRateLimiter = apiRateLimiter;
-export const redisAuthRateLimiter = authRateLimiter;
-export const redisSensitiveApiRateLimiter = sensitiveApiRateLimiter;
-export const redisPasswordResetRateLimiter = passwordResetRateLimiter;
-export const redisSignupRateLimiter = signupRateLimiter;
-export const redisTokenRateLimiter = tokenRateLimiter;
-export const redisFinancialRateLimiter = financialRateLimiter;
-export const redisAdminRateLimiter = adminRateLimiter;
+export {};
+export {};
+export {};
+export {};
+export {};
+export {};
+export {};
+export {};

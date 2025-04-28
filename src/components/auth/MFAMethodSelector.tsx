@@ -33,19 +33,19 @@ export const MFAMethodSelector: React.FC<MFAMethodSelectorProps> = ({
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold mb-4">Choose Your Preferred Verification Method</h3>
+      <h3 className="mb-4 text-lg font-semibold">Choose Your Preferred Verification Method</h3>
       <div className="grid gap-4">
-        {methods.map(method => (
+        {methods.map((method) => (
           <button
             key={method.id}
             onClick={() => onMethodSelect(method.id)}
-            className={`flex items-start p-4 border rounded-lg transition-all ${
+            className={`flex items-start rounded-lg border p-4 transition-all ${
               selectedMethod === method.id
                 ? 'border-primary bg-primary/5'
-                : 'border-gray-200 hover:border-primary/50'
+                : 'hover:border-primary/50 border-gray-200'
             }`}
           >
-            <span className="text-2xl mr-4">{method.icon}</span>
+            <span className="mr-4 text-2xl">{method.icon}</span>
             <div className="text-left">
               <h4 className="font-medium">{method.title}</h4>
               <p className="text-sm text-gray-600">{method.description}</p>

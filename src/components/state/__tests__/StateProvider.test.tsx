@@ -1,6 +1,6 @@
-import React, { createContext, useContext } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { createContext, useContext } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { ContextProvider, StateReduxProvider } from '../StateProvider';
 import { axe } from 'jest-axe';
@@ -55,10 +55,10 @@ describe('ContextProvider', () => {
       <div>
         <div data-testid="count">{state.count}</div>
         <div data-testid="text">{state.text}</div>
-        <button onClick={() => setState(prev => ({ ...prev, count: prev.count + 1 }))}>
+        <button onClick={() => setState((prev) => ({ ...prev, count: prev.count + 1 }))}>
           Increment
         </button>
-        <button onClick={() => setState(prev => ({ ...prev, text: 'Updated' }))}>
+        <button onClick={() => setState((prev) => ({ ...prev, text: 'Updated' }))}>
           Update Text
         </button>
       </div>
@@ -69,7 +69,7 @@ describe('ContextProvider', () => {
     render(
       <ContextProvider initialState={initialState} stateContext={TestStateContext}>
         <TestComponent />
-      </ContextProvider>
+      </ContextProvider>,
     );
 
     expect(screen.getByTestId('count')).toHaveTextContent('0');
@@ -80,7 +80,7 @@ describe('ContextProvider', () => {
     render(
       <ContextProvider initialState={initialState} stateContext={TestStateContext}>
         <TestComponent />
-      </ContextProvider>
+      </ContextProvider>,
     );
 
     fireEvent.click(screen.getByText('Increment'));
@@ -99,13 +99,13 @@ describe('ContextProvider', () => {
         onStateChange={onStateChange}
       >
         <TestComponent />
-      </ContextProvider>
+      </ContextProvider>,
     );
 
     fireEvent.click(screen.getByText('Increment'));
     expect(onStateChange).toHaveBeenCalledWith(
       expect.objectContaining({ count: 1 }),
-      expect.objectContaining({ count: 0 })
+      expect.objectContaining({ count: 0 }),
     );
   });
 
@@ -113,7 +113,7 @@ describe('ContextProvider', () => {
     const { container } = render(
       <ContextProvider initialState={initialState} stateContext={TestStateContext}>
         <TestComponent />
-      </ContextProvider>
+      </ContextProvider>,
     );
 
     const results = await axe(container);
@@ -139,7 +139,7 @@ describe('StateReduxProvider', () => {
     render(
       <StateReduxProvider store={store}>
         <TestReduxComponent />
-      </StateReduxProvider>
+      </StateReduxProvider>,
     );
 
     expect(screen.getByTestId('count')).toHaveTextContent('0');
@@ -149,7 +149,7 @@ describe('StateReduxProvider', () => {
     render(
       <StateReduxProvider store={store}>
         <TestReduxComponent />
-      </StateReduxProvider>
+      </StateReduxProvider>,
     );
 
     fireEvent.click(screen.getByText('Increment'));
@@ -163,7 +163,7 @@ describe('StateReduxProvider', () => {
     const { container } = render(
       <StateReduxProvider store={store}>
         <TestReduxComponent />
-      </StateReduxProvider>
+      </StateReduxProvider>,
     );
 
     const results = await axe(container);
@@ -174,7 +174,7 @@ describe('StateReduxProvider', () => {
     const { container, rerender } = render(
       <StateReduxProvider store={store}>
         <TestReduxComponent />
-      </StateReduxProvider>
+      </StateReduxProvider>,
     );
 
     fireEvent.click(screen.getByText('Increment'));
@@ -183,7 +183,7 @@ describe('StateReduxProvider', () => {
     rerender(
       <StateReduxProvider store={store}>
         <TestReduxComponent />
-      </StateReduxProvider>
+      </StateReduxProvider>,
     );
 
     expect(screen.getByTestId('count')).toHaveTextContent('1');

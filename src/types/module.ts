@@ -31,4 +31,4 @@ export interface UpdateModuleContentInput {
   sequence?: number;
   duration?: number;
   isRequired?: boolean;
-} 
+}

@@ -1,5 +1,3 @@
-import React from 'react';
-
 const testimonials = [
   { id: 1, author: 'Alice', text: 'VibeWell transformed my wellness journey!' },
   { id: 2, author: 'Bob', text: 'Easy booking and great service.' },
@@ -9,12 +7,12 @@ const testimonials = [
 export default function Testimonials() {
   return (
     <section className="testimonials py-16">
-      <h2 className="text-3xl font-bold text-center mb-6">Testimonials</h2>
-      <div className="space-y-8 max-w-xl mx-auto">
-        {testimonials.map(item => (
+      <h2 className="mb-6 text-center text-3xl font-bold">Testimonials</h2>
+      <div className="mx-auto max-w-xl space-y-8">
+        {testimonials.map((item) => (
           <blockquote key={item.id} className="text-center">
-            <p className="italic text-lg">“{item.text}”</p>
-            <cite className="block mt-2 text-gray-600">— {item.author}</cite>
+            <p className="text-lg italic">“{item.text}”</p>
+            <cite className="mt-2 block text-gray-600">— {item.author}</cite>
           </blockquote>
         ))}
       </div>

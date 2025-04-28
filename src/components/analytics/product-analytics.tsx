@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProductService } from '@/services/product-service';
 import { FeedbackService } from '@/services/feedback-service';
@@ -166,7 +166,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
   // In production, this would be an API call
   const fetchProductMetrics = async (id: string, days: number): Promise<ProductMetrics> => {
     // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     // Mock data for demonstration
     return {
@@ -184,7 +184,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
   // Mock function to fetch time series data
   const fetchTimeSeriesData = async (id: string, days: number): Promise<TimeSeriesData> => {
     // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 700));
+    await new Promise((resolve) => setTimeout(resolve, 700));
 
     const dates: string[] = [];
     const views: number[] = [];
@@ -235,7 +235,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
 
     return (
       <div className={`flex items-center ${color}`}>
-        <Icon className="h-4 w-4 mr-1" />
+        <Icon className="mr-1 h-4 w-4" />
         <span>{formatTrend(Math.abs(value))}</span>
       </div>
     );
@@ -249,8 +249,8 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
             <CardTitle>Loading Product Analytics...</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[300px] flex items-center justify-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <div className="flex h-[300px] items-center justify-center">
+              <div className="border-primary h-12 w-12 animate-spin rounded-full border-b-2"></div>
             </div>
           </CardContent>
         </Card>
@@ -274,10 +274,10 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
   return (
     <div className="grid gap-4">
       {/* Product header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+      <div className="flex flex-col items-start justify-between md:flex-row md:items-center">
         <div>
           <h2 className="text-2xl font-bold">{product.name}</h2>
-          <div className="flex flex-wrap gap-2 mt-2">
+          <div className="mt-2 flex flex-wrap gap-2">
             <Badge variant="outline">{product.category}</Badge>
             {product.subcategory && <Badge variant="outline">{product.subcategory}</Badge>}
             {product.brand && <Badge variant="outline">{product.brand}</Badge>}
@@ -286,12 +286,12 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
       </div>
 
       {/* Key metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               <div className="flex items-center">
-                <EyeIcon className="h-4 w-4 mr-2" />
+                <EyeIcon className="mr-2 h-4 w-4" />
                 Views
               </div>
             </CardTitle>
@@ -306,7 +306,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               <div className="flex items-center">
-                <ShoppingCartIcon className="h-4 w-4 mr-2" />
+                <ShoppingCartIcon className="mr-2 h-4 w-4" />
                 Conversions
               </div>
             </CardTitle>
@@ -321,7 +321,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               <div className="flex items-center">
-                <StarIcon className="h-4 w-4 mr-2" />
+                <StarIcon className="mr-2 h-4 w-4" />
                 Rating
               </div>
             </CardTitle>
@@ -336,7 +336,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               <div className="flex items-center">
-                <HeartIcon className="h-4 w-4 mr-2" />
+                <HeartIcon className="mr-2 h-4 w-4" />
                 Save Rate
               </div>
             </CardTitle>
@@ -374,7 +374,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
                     },
                   ]}
                   colors={['#14b8a6']}
-                  valueFormatter={value => `${value.toLocaleString()} views`}
+                  valueFormatter={(value) => `${value.toLocaleString()} views`}
                 />
               </div>
             </TabsContent>
@@ -390,7 +390,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
                     },
                   ]}
                   colors={['#6366f1']}
-                  valueFormatter={value => `${value.toLocaleString()} orders`}
+                  valueFormatter={(value) => `${value.toLocaleString()} orders`}
                 />
               </div>
             </TabsContent>
@@ -406,7 +406,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
                     },
                   ]}
                   colors={['#f97316']}
-                  valueFormatter={value => `${value.toLocaleString()} ratings`}
+                  valueFormatter={(value) => `${value.toLocaleString()} ratings`}
                 />
               </div>
             </TabsContent>
@@ -422,7 +422,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
                     },
                   ]}
                   colors={['#ec4899']}
-                  valueFormatter={value => `${value.toLocaleString()} saves`}
+                  valueFormatter={(value) => `${value.toLocaleString()} saves`}
                 />
               </div>
             </TabsContent>
@@ -431,7 +431,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
       </Card>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Rating Distribution</CardTitle>
@@ -448,7 +448,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
                   },
                 ]}
                 colors={['#f97316']}
-                valueFormatter={value => `${value.toLocaleString()} ratings`}
+                valueFormatter={(value) => `${value.toLocaleString()} ratings`}
               />
             </div>
           </CardContent>
@@ -467,7 +467,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
                   value,
                 }))}
                 colors={['#14b8a6', '#6366f1', '#f97316', '#ec4899', '#8b5cf6']}
-                valueFormatter={value => `${value}%`}
+                valueFormatter={(value) => `${value}%`}
               />
             </div>
           </CardContent>

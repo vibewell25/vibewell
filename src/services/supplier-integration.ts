@@ -74,7 +74,7 @@ export class SupplierIntegrationService {
         },
       });
 
-      suppliers.forEach(supplier => {
+      suppliers.forEach((supplier) => {
         if (supplier.integrationConfig) {
           const config = supplierConfigSchema.parse(supplier.integrationConfig);
           this.supplierConfigs.set(supplier.id, config);
@@ -168,7 +168,7 @@ export class SupplierIntegrationService {
           headers: {
             Authorization: `Bearer ${supplierConfig.apiKey}`,
           },
-        }
+        },
       );
 
       // Update supplier config
@@ -241,7 +241,7 @@ export class SupplierIntegrationService {
 
   private prepareOrderPayload(
     supplierType: SupplierConfig['supplierType'],
-    orderRequest: OrderRequest
+    orderRequest: OrderRequest,
   ): Record<string, any> {
     // Implement different payload formats based on supplier type
     switch (supplierType) {
@@ -275,7 +275,7 @@ export class SupplierIntegrationService {
   private async storeOrder(
     supplierId: string,
     request: OrderRequest,
-    response: Record<string, any>
+    response: Record<string, any>,
   ): Promise<void> {
     await prisma.supplierOrder.create({
       data: {

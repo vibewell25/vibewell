@@ -1,5 +1,4 @@
-'use client';
-
+'use client';;
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -13,7 +12,7 @@ import {
 } from 'lucide-react';
 import { AlertService, AlertThreshold } from '@/services/alert-service';
 import { ProductService } from '@/services/product-service';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   Dialog,
   DialogContent,
@@ -21,15 +20,8 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { FormLabel } from '@/components/ui/form';
+import { Input } from '@/components/ui/Input';
 import {
   Select,
   SelectTrigger,
@@ -38,9 +30,8 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Slider } from '@/components/ui/slider';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 
 // Define interface for the product
@@ -64,7 +55,6 @@ function AlertsContent() {
   const [showDialog, setShowDialog] = useState(false);
   const [editingAlert, setEditingAlert] = useState<AlertThreshold | null>(null);
   const [activeTab, setActiveTab] = useState('active');
-  const searchParams = useSearchParams();
 
   // Form state
   const [formState, setFormState] = useState<
@@ -195,7 +185,7 @@ function AlertsContent() {
     setShowDialog(true);
   };
 
-  const filteredAlerts = alerts.filter(alert => {
+  const filteredAlerts = alerts.filter((alert) => {
     if (activeTab === 'active') return alert.is_active;
     if (activeTab === 'inactive') return !alert.is_active;
     if (activeTab === 'triggered') return alert.last_triggered;
@@ -203,7 +193,7 @@ function AlertsContent() {
   });
 
   const getProductName = (productId: string) => {
-    const product = products.find(p => p.id === productId);
+    const product = products.find((p) => p.id === productId);
     return product ? product.name : 'Unknown Product';
   };
 
@@ -221,7 +211,7 @@ function AlertsContent() {
 
   return (
     <div className="container mx-auto py-8">
-      <div className="flex justify-between items-center mb-6">
+      <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Analytics Alerts</h1>
           <p className="text-muted-foreground">Manage threshold-based alerts for product metrics</p>
@@ -233,7 +223,7 @@ function AlertsContent() {
       </div>
 
       {error && (
-        <div className="bg-destructive/15 text-destructive p-4 rounded-md mb-6">{error}</div>
+        <div className="mb-6 rounded-md bg-destructive/15 p-4 text-destructive">{error}</div>
       )}
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
@@ -246,9 +236,9 @@ function AlertsContent() {
       </Tabs>
 
       {isLoading ? (
-        <div className="text-center py-10">Loading alerts...</div>
+        <div className="py-10 text-center">Loading alerts...</div>
       ) : filteredAlerts.length === 0 ? (
-        <div className="text-center py-10 border rounded-lg">
+        <div className="rounded-lg border py-10 text-center">
           <AlertTriangleIcon className="mx-auto h-12 w-12 text-muted-foreground" />
           <h3 className="mt-4 text-lg font-medium">No alerts found</h3>
           <p className="mt-2 text-muted-foreground">
@@ -260,12 +250,12 @@ function AlertsContent() {
         </div>
       ) : (
         <div className="grid gap-4">
-          {filteredAlerts.map(alert => {
+          {filteredAlerts.map((alert) => {
             const status = getAlertStatus(alert);
             return (
               <Card key={alert.id} className="overflow-hidden">
                 <CardHeader className="pb-2">
-                  <div className="flex justify-between items-start">
+                  <div className="flex items-start justify-between">
                     <div>
                       <CardTitle className="flex items-center">
                         <BellIcon className="mr-2 h-5 w-5" />
@@ -348,7 +338,7 @@ function AlertsContent() {
                 <Input
                   id="name"
                   value={formState.name}
-                  onChange={e => setFormState({ ...formState, name: e.target.value })}
+                  onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                   placeholder="Critical Rating Drop"
                 />
               </div>
@@ -356,13 +346,13 @@ function AlertsContent() {
                 <FormLabel htmlFor="product">Product</FormLabel>
                 <Select
                   value={formState.product_id}
-                  onValueChange={value => setFormState({ ...formState, product_id: value })}
+                  onValueChange={(value) => setFormState({ ...formState, product_id: value })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select product" />
                   </SelectTrigger>
                   <SelectContent>
-                    {products.map(product => (
+                    {products.map((product) => (
                       <SelectItem key={product.id} value={product.id}>
                         {product.name}
                       </SelectItem>
@@ -376,7 +366,7 @@ function AlertsContent() {
               <Input
                 id="description"
                 value={formState.description}
-                onChange={e => setFormState({ ...formState, description: e.target.value })}
+                onChange={(e) => setFormState({ ...formState, description: e.target.value })}
                 placeholder="Alert when product rating drops below threshold"
               />
             </div>
@@ -385,7 +375,7 @@ function AlertsContent() {
                 <FormLabel htmlFor="metric">Metric</FormLabel>
                 <Select
                   value={formState.metric}
-                  onValueChange={value =>
+                  onValueChange={(value) =>
                     setFormState({
                       ...formState,
                       metric: value as AlertThreshold['metric'],
@@ -407,7 +397,7 @@ function AlertsContent() {
                 <FormLabel htmlFor="condition">Condition</FormLabel>
                 <Select
                   value={formState.condition}
-                  onValueChange={value =>
+                  onValueChange={(value) =>
                     setFormState({
                       ...formState,
                       condition: value as AlertThreshold['condition'],
@@ -430,7 +420,7 @@ function AlertsContent() {
                     id="threshold"
                     type="number"
                     value={formState.threshold}
-                    onChange={e =>
+                    onChange={(e) =>
                       setFormState({ ...formState, threshold: parseFloat(e.target.value) })
                     }
                     step={0.1}
@@ -448,10 +438,10 @@ function AlertsContent() {
                     type="checkbox"
                     id="email-notification"
                     checked={formState.notification_methods.includes('email')}
-                    onChange={e => {
+                    onChange={(e) => {
                       const methods = e.target.checked
                         ? [...formState.notification_methods, 'email']
-                        : formState.notification_methods.filter(m => m !== 'email');
+                        : formState.notification_methods.filter((m) => m !== 'email');
                       setFormState({ ...formState, notification_methods: methods });
                     }}
                   />
@@ -462,10 +452,10 @@ function AlertsContent() {
                     type="checkbox"
                     id="sms-notification"
                     checked={formState.notification_methods.includes('sms')}
-                    onChange={e => {
+                    onChange={(e) => {
                       const methods = e.target.checked
                         ? [...formState.notification_methods, 'sms']
-                        : formState.notification_methods.filter(m => m !== 'sms');
+                        : formState.notification_methods.filter((m) => m !== 'sms');
                       setFormState({ ...formState, notification_methods: methods });
                     }}
                   />
@@ -476,10 +466,10 @@ function AlertsContent() {
                     type="checkbox"
                     id="push-notification"
                     checked={formState.notification_methods.includes('push')}
-                    onChange={e => {
+                    onChange={(e) => {
                       const methods = e.target.checked
                         ? [...formState.notification_methods, 'push']
-                        : formState.notification_methods.filter(m => m !== 'push');
+                        : formState.notification_methods.filter((m) => m !== 'push');
                       setFormState({ ...formState, notification_methods: methods });
                     }}
                   />
@@ -491,7 +481,7 @@ function AlertsContent() {
               <Switch
                 id="active"
                 checked={formState.is_active}
-                onCheckedChange={checked => setFormState({ ...formState, is_active: checked })}
+                onCheckedChange={(checked) => setFormState({ ...formState, is_active: checked })}
               />
               <label htmlFor="active">Active</label>
             </div>
@@ -512,7 +502,7 @@ function AlertsContent() {
 
 export default function AlertsPage() {
   return (
-    <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
+    <Suspense fallback={<div className="py-10 text-center">Loading...</div>}>
       <AlertsContent />
     </Suspense>
   );

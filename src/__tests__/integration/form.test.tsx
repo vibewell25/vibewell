@@ -1,7 +1,5 @@
-import React from 'react';
 import { screen, waitFor } from '@testing-library/react/pure';
 import { setup } from '@/test-utils/setup';
-import '@testing-library/jest-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -14,8 +12,8 @@ import {
   FormDescription,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
 
 // Define the test form schema using Zod
 const formSchema = z.object({
@@ -145,7 +143,7 @@ describe('Form Integration', () => {
           username: 'johndoe',
           email: 'john@example.com',
         },
-        expect.anything()
+        expect.anything(),
       );
     });
 

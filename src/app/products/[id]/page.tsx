@@ -5,10 +5,10 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { useAuth } from '@/hooks/use-unified-auth';
 import { Star, ShoppingCart, Share2, ArrowLeft, HeartIcon, Clock } from 'lucide-react';
-import { ProductService, Product } from '@/services/product-service';
+import { ProductService } from '@/services/product-service';
 import { RecommendationService } from '@/services/recommendation-service';
 import { ProductRecommendations } from '@/components/products/product-recommendations';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
@@ -126,9 +126,9 @@ export default function ProductDetailPage() {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>
-            <Skeleton className="w-full aspect-square rounded-lg" />
+            <Skeleton className="aspect-square w-full rounded-lg" />
           </div>
           <div className="space-y-4">
             <Skeleton className="h-10 w-3/4" />
@@ -150,8 +150,8 @@ export default function ProductDetailPage() {
   if (error || !product) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="text-center py-12">
-          <h2 className="text-2xl font-semibold mb-2">{error || 'Product not found'}</h2>
+        <div className="py-12 text-center">
+          <h2 className="mb-2 text-2xl font-semibold">{error || 'Product not found'}</h2>
           <p className="mb-6 text-muted-foreground">
             Sorry, we couldn't find the product you're looking for.
           </p>
@@ -171,14 +171,14 @@ export default function ProductDetailPage() {
       {/* Back button */}
       <div className="mb-6">
         <Link href="/products">
-          <Button variant="ghost" className="pl-0 flex items-center gap-2">
+          <Button variant="ghost" className="flex items-center gap-2 pl-0">
             <ArrowLeft className="h-4 w-4" />
             Back to Products
           </Button>
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {/* Product Image */}
         <div className="relative">
           <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
@@ -191,14 +191,14 @@ export default function ProductDetailPage() {
                 priority
               />
             ) : (
-              <div className="flex items-center justify-center h-full bg-muted">
+              <div className="flex h-full items-center justify-center bg-muted">
                 <p className="text-muted-foreground">No image available</p>
               </div>
             )}
           </div>
 
           {/* Product badges */}
-          <div className="absolute top-3 left-3 flex flex-col gap-2">
+          <div className="absolute left-3 top-3 flex flex-col gap-2">
             {product.trending && (
               <Badge variant="secondary" className="bg-orange-600 text-white hover:bg-orange-700">
                 Trending
@@ -223,16 +223,16 @@ export default function ProductDetailPage() {
             <div className="flex items-center justify-between">
               <h1 className="text-3xl font-bold">{product.name}</h1>
             </div>
-            <p className="text-xl font-semibold mt-2">{formatPrice(product.price)}</p>
+            <p className="mt-2 text-xl font-semibold">{formatPrice(product.price)}</p>
 
             {/* Rating */}
-            <div className="flex items-center mt-2">
+            <div className="mt-2 flex items-center">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star
                   key={i}
                   className={`h-5 w-5 ${
                     i < Math.floor(product.rating)
-                      ? 'text-yellow-500 fill-yellow-500'
+                      ? 'fill-yellow-500 text-yellow-500'
                       : 'text-gray-300'
                   }`}
                 />
@@ -243,7 +243,7 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Availability */}
-            <div className="flex items-center mt-2">
+            <div className="mt-2 flex items-center">
               <Badge
                 variant={product.availability === 'in_stock' ? 'default' : 'secondary'}
                 className={product.availability === 'in_stock' ? 'bg-green-600' : ''}
@@ -257,7 +257,7 @@ export default function ProductDetailPage() {
 
               {product.availability === 'in_stock' && (
                 <span className="ml-2 flex items-center text-sm text-muted-foreground">
-                  <Clock className="h-4 w-4 mr-1" />
+                  <Clock className="mr-1 h-4 w-4" />
                   Fast Delivery
                 </span>
               )}
@@ -265,7 +265,7 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Quick details */}
-          <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="mt-4 grid grid-cols-2 gap-3">
             <div className="text-sm">
               <span className="text-muted-foreground">Category:</span>{' '}
               <span className="font-medium">{product.category}</span>
@@ -286,8 +286,8 @@ export default function ProductDetailPage() {
 
           {/* Product tags */}
           {product.tags && product.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
-              {product.tags.map(tag => (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {product.tags.map((tag) => (
                 <Badge key={tag} variant="outline">
                   {tag}
                 </Badge>
@@ -296,7 +296,7 @@ export default function ProductDetailPage() {
           )}
 
           {/* Action buttons */}
-          <div className="flex items-center gap-3 mt-6">
+          <div className="mt-6 flex items-center gap-3">
             <Button
               size="lg"
               className="flex-1"
@@ -342,7 +342,7 @@ export default function ProductDetailPage() {
               <p>{product.description}</p>
 
               {/* Additional details could be added here */}
-              <h3 className="text-xl font-semibold mt-6">Features</h3>
+              <h3 className="mt-6 text-xl font-semibold">Features</h3>
               <ul>
                 {product.meta && product.meta.features ? (
                   (product.meta.features as string[]).map((feature: string, index: number) => (
@@ -361,9 +361,9 @@ export default function ProductDetailPage() {
           </TabsContent>
 
           <TabsContent value="specs" className="mt-6">
-            <div className="bg-muted rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">Technical Specifications</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
+            <div className="rounded-lg bg-muted p-6">
+              <h3 className="mb-4 text-xl font-semibold">Technical Specifications</h3>
+              <div className="grid grid-cols-1 gap-x-8 gap-y-4 md:grid-cols-2">
                 {/* Technical specs would come from product.specifications or similar */}
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-medium">Dimensions</span>
@@ -395,7 +395,7 @@ export default function ProductDetailPage() {
 
           <TabsContent value="reviews" className="mt-6">
             <div>
-              <div className="flex items-center justify-between mb-6">
+              <div className="mb-6 flex items-center justify-between">
                 <h3 className="text-xl font-semibold">Customer Reviews</h3>
                 <Button>Write a Review</Button>
               </div>
@@ -403,9 +403,9 @@ export default function ProductDetailPage() {
               {/* Reviews would be fetched and displayed here */}
               <div className="space-y-6">
                 <div className="border-b pb-6">
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="mb-2 flex items-center justify-between">
                     <div className="flex items-center">
-                      <div className="mr-3 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <div className="bg-primary/10 mr-3 flex h-10 w-10 items-center justify-center rounded-full">
                         <span className="text-primary text-sm font-medium">JD</span>
                       </div>
                       <div>
@@ -417,7 +417,7 @@ export default function ProductDetailPage() {
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-4 w-4 ${i < 4 ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`}
+                          className={`h-4 w-4 ${i < 4 ? 'fill-yellow-500 text-yellow-500' : 'text-gray-300'}`}
                         />
                       ))}
                     </div>
@@ -429,9 +429,9 @@ export default function ProductDetailPage() {
                 </div>
 
                 <div className="border-b pb-6">
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="mb-2 flex items-center justify-between">
                     <div className="flex items-center">
-                      <div className="mr-3 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <div className="bg-primary/10 mr-3 flex h-10 w-10 items-center justify-center rounded-full">
                         <span className="text-primary text-sm font-medium">JS</span>
                       </div>
                       <div>
@@ -443,7 +443,7 @@ export default function ProductDetailPage() {
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-4 w-4 ${i < 5 ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`}
+                          className={`h-4 w-4 ${i < 5 ? 'fill-yellow-500 text-yellow-500' : 'text-gray-300'}`}
                         />
                       ))}
                     </div>

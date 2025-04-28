@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/Card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -47,7 +47,7 @@ export function ReviewList({ providerId }: ReviewListProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
       </div>
     );
   }
@@ -62,7 +62,7 @@ export function ReviewList({ providerId }: ReviewListProps) {
 
   return (
     <div className="space-y-4">
-      {reviews.map(review => (
+      {reviews.map((review) => (
         <Card key={review.id}>
           <CardContent className="pt-6">
             <div className="flex items-start gap-4">
@@ -71,7 +71,7 @@ export function ReviewList({ providerId }: ReviewListProps) {
                 <AvatarFallback>
                   {review.user.name
                     .split(' ')
-                    .map(n => n[0])
+                    .map((n) => n[0])
                     .join('')}
                 </AvatarFallback>
               </Avatar>

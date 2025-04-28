@@ -1,4 +1,4 @@
-/**
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping *//**
  * Test for the health service API
  */
 import { server, apiMock } from '../test-utils/server';
@@ -39,7 +39,7 @@ describe('Health Service', () => {
             storage: 'ok',
           },
         });
-      })
+      }),
     );
 
     const result = await fetchHealthStatus();
@@ -61,7 +61,7 @@ describe('Health Service', () => {
           status: 500,
           statusText: 'Internal Server Error',
         });
-      })
+      }),
     );
 
     await expect(fetchHealthStatus()).rejects.toThrow('Failed to fetch health status');
@@ -72,7 +72,7 @@ describe('Health Service', () => {
     server.use(
       http.get('/api/health', () => {
         throw new Error('Network error');
-      })
+      }),
     );
 
     await expect(fetchHealthStatus()).rejects.toThrow('Failed to fetch health status');

@@ -80,18 +80,9 @@ export const AccessibleTooltip: React.FC<AccessibleTooltipProps> = ({
         <div
           ref={tooltipRef}
           role="tooltip"
-          className={`
-            absolute z-50 px-3 py-2 text-sm text-white bg-gray-900 rounded-md
-            ${positionStyles[position]}
-            ${className}
-          `}
+          className={`absolute z-50 rounded-md bg-gray-900 px-3 py-2 text-sm text-white ${positionStyles[position]} ${className} `}
         >
-          <div
-            className={`
-              absolute w-2 h-2 bg-gray-900
-              ${arrowStyles[position]}
-            `}
-          />
+          <div className={`absolute h-2 w-2 bg-gray-900 ${arrowStyles[position]} `} />
           {content}
         </div>
       )}

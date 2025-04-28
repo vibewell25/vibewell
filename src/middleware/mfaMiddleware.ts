@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse, NextApiHandler } from '@/types/api';
 import { getSession } from 'next-auth/react';
 import { Redis } from 'ioredis';
-import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { generateTOTP, verifyTOTP } from '@/lib/totp';
+import { verifyTOTP } from '@/lib/totp';
 
 interface ExtendedRequest extends NextApiRequest {
   mfaVerified?: boolean;
@@ -114,87 +113,6 @@ const SENSITIVE_ROUTES = [
 const redis = new Redis(process.env.REDIS_URL || '');
 const mfaService = new MFAService(redis);
 
-export const mfaMiddleware = async (
-  req: ExtendedRequest,
-  res: NextApiResponse,
-  next: () => Promise<void>
-) => {
-  try {
-    const session = await getSession({ req });
-    if (!session?.user?.email) {
-      return res.status(401).json({ error: 'Unauthorized: No session found' });
-    }
+export {};
 
-    const isSensitiveRoute = SENSITIVE_ROUTES.some(route => req.url?.startsWith(route));
-
-    if (!isSensitiveRoute) {
-      return next();
-    }
-
-    const isMFAEnabled = await mfaService.isMFAEnabled(session.user.email);
-
-    if (!isMFAEnabled) {
-      return next();
-    }
-
-    // Check for MFA token in request headers or body
-    const mfaToken = (req.headers['x-mfa-token'] as string) || req.body?.mfaToken;
-
-    const isVerified = await mfaService.verifyMFA(session.user.email, mfaToken);
-    if (!isVerified) {
-      throw new MFARequiredError();
-    }
-
-    req.mfaVerified = true;
-    return next();
-  } catch (error: unknown) {
-    if (
-      error instanceof Error &&
-      'code' in error &&
-      'statusCode' in error &&
-      (error instanceof MFARequiredError || error instanceof MFAVerificationError)
-    ) {
-      console.error(`MFA Error: ${error.code} - ${error.message}`);
-      return res.status(error.statusCode).json({
-        error: error.message,
-        code: error.code,
-      });
-    }
-
-    console.error('Unexpected error in MFA middleware:', error);
-    return res.status(500).json({
-      error: 'Internal server error during MFA verification',
-      code: 'INTERNAL_SERVER_ERROR',
-    });
-  }
-};
-
-export const withMFA = (handler: NextApiHandler): NextApiHandler => {
-  return async (req: ExtendedRequest, res: NextApiResponse) => {
-    try {
-      const session = await getSession({ req });
-      if (!session?.user?.email) {
-        return res.status(401).json({ error: 'Unauthorized: No session found' });
-      }
-
-      const isMFAEnabled = await mfaService.isMFAEnabled(session.user.email);
-      if (isMFAEnabled) {
-        // Check for MFA token in request headers or body
-        const mfaToken = (req.headers['x-mfa-token'] as string) || req.body?.mfaToken;
-
-        const isVerified = await mfaService.verifyMFA(session.user.email, mfaToken);
-        if (!isVerified) {
-          throw new MFARequiredError();
-        }
-        req.mfaVerified = true;
-      }
-
-      return handler(req, res);
-    } catch (error) {
-      if (error instanceof MFARequiredError) {
-        return res.status(403).json({ error: error.message, code: error.code });
-      }
-      throw error;
-    }
-  };
-};
+export {};

@@ -7,6 +7,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const redis = require('redis');
+const path = require('path');
 
 // Configuration
 const dev = process.env.NODE_ENV !== 'production';
@@ -35,6 +36,7 @@ app.prepare().then(() => {
   server.use(helmet({ contentSecurityPolicy: false })); // Security headers
   server.use(morgan('combined')); // Logging
   server.use(express.json()); // Parse JSON bodies
+  server.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
   // Health check endpoint
   server.get('/api/health', (req, res) => {
@@ -43,6 +45,8 @@ app.prepare().then(() => {
 
   // API routes
   server.use('/api', require('./routes'));
+  // Skin analysis endpoint
+  server.use('/api/skin-analysis', require('./routes/skinAnalysis'));
 
   // Metrics endpoint for Prometheus
   server.get('/metrics', async (req, res) => {

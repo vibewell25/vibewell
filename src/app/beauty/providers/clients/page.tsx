@@ -1,16 +1,15 @@
 'use client';
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Icons } from '@/components/icons';
 import {
-  UserIcon,
   CalendarIcon,
   StarIcon,
   ChatBubbleLeftIcon,
@@ -19,8 +18,6 @@ import {
   PlusIcon,
   PencilIcon,
   TrashIcon,
-  EnvelopeIcon,
-  PhoneIcon
 } from '@heroicons/react/24/outline';
 
 interface Client {
@@ -66,14 +63,14 @@ const mockClients: Client[] = [
     notes: [
       'Prefers natural-looking highlights',
       'Allergic to certain hair products',
-      'Likes to book appointments 2 weeks in advance'
+      'Likes to book appointments 2 weeks in advance',
     ],
     preferences: {
       communication: ['Email', 'SMS'],
       allergies: ['Certain hair dyes'],
-      concerns: ['Dry scalp']
+      concerns: ['Dry scalp'],
     },
-    status: 'active'
+    status: 'active',
   },
   // Add more mock clients here
 ];
@@ -86,8 +83,8 @@ const mockAppointments: Appointment[] = [
     service: 'Haircut & Highlights',
     status: 'completed',
     amount: 180,
-    notes: 'Client requested natural-looking highlights'
-  }
+    notes: 'Client requested natural-looking highlights',
+  },
 ];
 
 export default function ClientsPage() {
@@ -96,20 +93,19 @@ export default function ClientsPage() {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [clients, setClients] = useState<Client[]>(mockClients);
 
-  const filteredClients = clients.filter((client) =>
-    client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    client.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    client.phone.includes(searchQuery)
+  const filteredClients = clients.filter(
+    (client) =>
+      client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      client.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      client.phone.includes(searchQuery),
   );
 
   return (
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Client Management</h1>
-          <p className="text-xl text-muted-foreground">
-            Manage your clients and their preferences
-          </p>
+          <h1 className="mb-2 text-4xl font-bold">Client Management</h1>
+          <p className="text-xl text-muted-foreground">Manage your clients and their preferences</p>
         </div>
         <div className="grid gap-6">
           {/* Search and Filter */}
@@ -126,11 +122,11 @@ export default function ClientsPage() {
                   />
                 </div>
                 <Button variant="outline">
-                  <Icons.FunnelIcon className="h-5 w-5 mr-2" />
+                  <Icons.FunnelIcon className="mr-2 h-5 w-5" />
                   Filter
                 </Button>
                 <Button>
-                  <Icons.PlusIcon className="h-5 w-5 mr-2" />
+                  <Icons.PlusIcon className="mr-2 h-5 w-5" />
                   Add Client
                 </Button>
               </div>
@@ -143,19 +139,15 @@ export default function ClientsPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Clients</CardTitle>
-                  <CardDescription>
-                    {clients.length} total clients
-                  </CardDescription>
+                  <CardDescription>{clients.length} total clients</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {filteredClients.map((client) => (
                       <div
                         key={client.id}
-                        className={`p-4 rounded-lg cursor-pointer transition-colors ${
-                          selectedClient?.id === client.id
-                            ? 'bg-primary/10'
-                            : 'hover:bg-muted'
+                        className={`cursor-pointer rounded-lg p-4 transition-colors ${
+                          selectedClient?.id === client.id ? 'bg-primary/10' : 'hover:bg-muted'
                         }`}
                         onClick={() => setSelectedClient(client)}
                       >
@@ -193,7 +185,8 @@ export default function ClientsPage() {
                           <div>
                             <CardTitle>{selectedClient.name}</CardTitle>
                             <CardDescription>
-                              {selectedClient.totalVisits} visits • ${selectedClient.totalSpent} spent
+                              {selectedClient.totalVisits} visits • ${selectedClient.totalSpent}{' '}
+                              spent
                             </CardDescription>
                           </div>
                         </div>
@@ -232,15 +225,15 @@ export default function ClientsPage() {
                   <Tabs defaultValue="appointments">
                     <TabsList>
                       <TabsTrigger value="appointments">
-                        <Icons.CalendarIcon className="h-5 w-5 mr-2" />
+                        <Icons.CalendarIcon className="mr-2 h-5 w-5" />
                         Appointments
                       </TabsTrigger>
                       <TabsTrigger value="preferences">
-                        <Icons.StarIcon className="h-5 w-5 mr-2" />
+                        <Icons.StarIcon className="mr-2 h-5 w-5" />
                         Preferences
                       </TabsTrigger>
                       <TabsTrigger value="notes">
-                        <Icons.ChatBubbleLeftIcon className="h-5 w-5 mr-2" />
+                        <Icons.ChatBubbleLeftIcon className="mr-2 h-5 w-5" />
                         Notes
                       </TabsTrigger>
                     </TabsList>
@@ -255,7 +248,7 @@ export default function ClientsPage() {
                             {mockAppointments.map((appointment) => (
                               <div
                                 key={appointment.id}
-                                className="flex items-center justify-between p-4 border rounded-lg"
+                                className="flex items-center justify-between rounded-lg border p-4"
                               >
                                 <div>
                                   <h3 className="font-medium">{appointment.service}</h3>
@@ -263,7 +256,7 @@ export default function ClientsPage() {
                                     {appointment.date} at {appointment.time}
                                   </p>
                                   {appointment.notes && (
-                                    <p className="text-sm mt-2">{appointment.notes}</p>
+                                    <p className="mt-2 text-sm">{appointment.notes}</p>
                                   )}
                                 </div>
                                 <div className="text-right">
@@ -272,13 +265,13 @@ export default function ClientsPage() {
                                       appointment.status === 'completed'
                                         ? 'success'
                                         : appointment.status === 'cancelled'
-                                        ? 'destructive'
-                                        : 'warning'
+                                          ? 'destructive'
+                                          : 'warning'
                                     }
                                   >
                                     {appointment.status}
                                   </Badge>
-                                  <p className="font-medium mt-2">${appointment.amount}</p>
+                                  <p className="mt-2 font-medium">${appointment.amount}</p>
                                 </div>
                               </div>
                             ))}
@@ -296,7 +289,7 @@ export default function ClientsPage() {
                           <div className="space-y-6">
                             <div>
                               <Label>Favorite Services</Label>
-                              <div className="flex flex-wrap gap-2 mt-2">
+                              <div className="mt-2 flex flex-wrap gap-2">
                                 {selectedClient.favoriteServices.map((service) => (
                                   <Badge key={service} variant="outline">
                                     {service}
@@ -306,7 +299,7 @@ export default function ClientsPage() {
                             </div>
                             <div>
                               <Label>Communication Preferences</Label>
-                              <div className="flex flex-wrap gap-2 mt-2">
+                              <div className="mt-2 flex flex-wrap gap-2">
                                 {selectedClient.preferences.communication.map((pref) => (
                                   <Badge key={pref} variant="outline">
                                     {pref}
@@ -316,7 +309,7 @@ export default function ClientsPage() {
                             </div>
                             <div>
                               <Label>Allergies</Label>
-                              <div className="flex flex-wrap gap-2 mt-2">
+                              <div className="mt-2 flex flex-wrap gap-2">
                                 {selectedClient.preferences.allergies.map((allergy) => (
                                   <Badge key={allergy} variant="destructive">
                                     {allergy}
@@ -326,7 +319,7 @@ export default function ClientsPage() {
                             </div>
                             <div>
                               <Label>Concerns</Label>
-                              <div className="flex flex-wrap gap-2 mt-2">
+                              <div className="mt-2 flex flex-wrap gap-2">
                                 {selectedClient.preferences.concerns.map((concern) => (
                                   <Badge key={concern} variant="warning">
                                     {concern}
@@ -347,15 +340,12 @@ export default function ClientsPage() {
                         <CardContent>
                           <div className="space-y-4">
                             {selectedClient.notes.map((note, index) => (
-                              <div
-                                key={index}
-                                className="p-4 border rounded-lg"
-                              >
+                              <div key={index} className="rounded-lg border p-4">
                                 <p>{note}</p>
                               </div>
                             ))}
                             <Button variant="outline" className="w-full">
-                              <Icons.PlusIcon className="h-5 w-5 mr-2" />
+                              <Icons.PlusIcon className="mr-2 h-5 w-5" />
                               Add Note
                             </Button>
                           </div>
@@ -366,10 +356,8 @@ export default function ClientsPage() {
                 </div>
               ) : (
                 <Card>
-                  <CardContent className="flex items-center justify-center h-64">
-                    <p className="text-muted-foreground">
-                      Select a client to view details
-                    </p>
+                  <CardContent className="flex h-64 items-center justify-center">
+                    <p className="text-muted-foreground">Select a client to view details</p>
                   </CardContent>
                 </Card>
               )}
@@ -379,4 +367,4 @@ export default function ClientsPage() {
       </div>
     </Layout>
   );
-} 
+}

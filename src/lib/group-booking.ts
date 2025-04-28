@@ -66,7 +66,7 @@ export class GroupBookingService {
                 role: 'ORGANIZER',
                 status: 'CONFIRMED',
               },
-              ...data.participants.map(userId => ({
+              ...data.participants.map((userId) => ({
                 userId,
                 role: 'PARTICIPANT',
                 status: 'PENDING',
@@ -86,8 +86,8 @@ export class GroupBookingService {
       // Send notifications to participants
       await Promise.all(
         groupBooking.participants
-          .filter(p => p.role === 'PARTICIPANT')
-          .map(participant =>
+          .filter((p) => p.role === 'PARTICIPANT')
+          .map((participant) =>
             this.notificationService.sendNotification(participant.userId, {
               type: 'GROUP_BOOKING_INVITATION',
               title: 'Group Booking Invitation',
@@ -96,11 +96,11 @@ export class GroupBookingService {
                 groupBookingId: groupBooking.id,
                 serviceName: service.name,
                 startTime: data.startTime.toISOString(),
-                organizerName: groupBooking.participants.find(p => p.role === 'ORGANIZER')?.user
+                organizerName: groupBooking.participants.find((p) => p.role === 'ORGANIZER')?.user
                   .name,
               },
-            })
-          )
+            }),
+          ),
       );
 
       logger.info(`Created group booking`, { groupBookingId: groupBooking.id });
@@ -115,7 +115,7 @@ export class GroupBookingService {
   async updateParticipantStatus(
     groupBookingId: string,
     userId: string,
-    status: 'CONFIRMED' | 'DECLINED'
+    status: 'CONFIRMED' | 'DECLINED',
   ) {
     try {
       const participant = await prisma.groupBookingParticipant.update({
@@ -138,7 +138,7 @@ export class GroupBookingService {
 
       // Check if minimum participants requirement is met
       const confirmedCount = participant.groupBooking.participants.filter(
-        p => p.status === 'CONFIRMED'
+        (p) => p.status === 'CONFIRMED',
       ).length;
 
       if (
@@ -153,7 +153,7 @@ export class GroupBookingService {
 
         // Notify all participants
         await Promise.all(
-          participant.groupBooking.participants.map(p =>
+          participant.groupBooking.participants.map((p) =>
             this.notificationService.sendNotification(p.userId, {
               type: 'GROUP_BOOKING_CONFIRMED',
               title: 'Group Booking Confirmed',
@@ -163,8 +163,8 @@ export class GroupBookingService {
                 serviceName: participant.groupBooking.service.name,
                 startTime: participant.groupBooking.startTime.toISOString(),
               },
-            })
-          )
+            }),
+          ),
         );
       }
 
@@ -228,7 +228,7 @@ export class GroupBookingService {
 
       // Notify all participants
       await Promise.all(
-        groupBooking.participants.map(participant =>
+        groupBooking.participants.map((participant) =>
           this.notificationService.sendNotification(participant.userId, {
             type: 'GROUP_BOOKING_CANCELLED',
             title: 'Group Booking Cancelled',
@@ -240,8 +240,8 @@ export class GroupBookingService {
               serviceName: groupBooking.service.name,
               startTime: groupBooking.startTime.toISOString(),
             },
-          })
-        )
+          }),
+        ),
       );
 
       logger.info(`Cancelled group booking`, {
@@ -258,4 +258,4 @@ export class GroupBookingService {
   }
 }
 
-export const groupBookingService = new GroupBookingService(new NotificationService());
+export {};

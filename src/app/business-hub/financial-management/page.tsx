@@ -1,8 +1,7 @@
-'use client';
+'use client';;
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Card,
@@ -11,7 +10,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
@@ -166,17 +165,17 @@ export default function FinancialManagementPage() {
   ];
   // Filter tools based on category
   const filteredTools = financialTools.filter(
-    tool => selectedCategory === 'all' || tool.category === selectedCategory
+    (tool) => selectedCategory === 'all' || tool.category === selectedCategory,
   );
   // Filter resources based on category
   const filteredResources = financialResources.filter(
-    resource => selectedCategory === 'all' || resource.category === selectedCategory
+    (resource) => selectedCategory === 'all' || resource.category === selectedCategory,
   );
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-2">Business Hub</h1>
-        <p className="text-gray-600 mb-6">
+        <h1 className="mb-2 text-3xl font-bold">Business Hub</h1>
+        <p className="mb-6 text-gray-600">
           Tools, resources, and education to grow your wellness business
         </p>
         {/* Main Navigation */}
@@ -184,10 +183,10 @@ export default function FinancialManagementPage() {
         {/* Financial Management Navigation */}
         <FinancialNav />
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-green-100 to-blue-100 rounded-xl p-8 mb-12">
+        <div className="mb-12 rounded-xl bg-gradient-to-r from-green-100 to-blue-100 p-8">
           <div className="max-w-3xl">
-            <h1 className="text-3xl font-bold mb-4">Financial Management</h1>
-            <p className="text-lg mb-6">
+            <h1 className="mb-4 text-3xl font-bold">Financial Management</h1>
+            <p className="mb-6 text-lg">
               Take control of your beauty or wellness business finances with our specialized tools,
               templates, and resources. From pricing and budgeting to tax planning and financial
               reporting, find everything you need to build a profitable and sustainable business.
@@ -198,7 +197,7 @@ export default function FinancialManagementPage() {
                 className="bg-green-600 hover:bg-green-700"
                 onClick={() => setActiveTab('tools')}
               >
-                <Icons.CalculatorIcon className="h-5 w-5 mr-2" />
+                <Icons.CalculatorIcon className="mr-2 h-5 w-5" />
                 Financial Tools
               </Button>
               <Button
@@ -206,7 +205,7 @@ export default function FinancialManagementPage() {
                 className="border-green-600 text-green-600 hover:bg-green-50"
                 onClick={() => setActiveTab('resources')}
               >
-                <Icons.DocumentTextIcon className="h-5 w-5 mr-2" />
+                <Icons.DocumentTextIcon className="mr-2 h-5 w-5" />
                 Resources & Guides
               </Button>
             </div>
@@ -214,7 +213,7 @@ export default function FinancialManagementPage() {
         </div>
         {/* Category Filters */}
         <div className="mb-8">
-          <h2 className="text-lg font-semibold mb-4">Filter by Category</h2>
+          <h2 className="mb-4 text-lg font-semibold">Filter by Category</h2>
           <div className="flex flex-wrap gap-2">
             <Button
               variant={selectedCategory === 'all' ? 'default' : 'outline'}
@@ -274,14 +273,14 @@ export default function FinancialManagementPage() {
           </TabsList>
           {/* Tools Tab Content */}
           <TabsContent value="tools">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTools.map(tool => (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filteredTools.map((tool) => (
                 <Card key={tool.id}>
                   <CardHeader>
-                    <div className="flex items-center space-x-3 mb-2">
-                      <div className="p-2 bg-gray-100 rounded-lg">{tool.icon}</div>
+                    <div className="mb-2 flex items-center space-x-3">
+                      <div className="rounded-lg bg-gray-100 p-2">{tool.icon}</div>
                       {tool.premium && (
-                        <Badge className="bg-amber-100 text-amber-800 border-amber-200">
+                        <Badge className="border-amber-200 bg-amber-100 text-amber-800">
                           Premium
                         </Badge>
                       )}
@@ -304,18 +303,13 @@ export default function FinancialManagementPage() {
           </TabsContent>
           {/* Resources Tab Content */}
           <TabsContent value="resources">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredResources.map(resource => (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filteredResources.map((resource) => (
                 <Card key={resource.id}>
                   <CardHeader>
-                    <div className="flex justify-between items-start mb-2">
+                    <div className="mb-2 flex items-start justify-between">
                       <Badge
-                        className={`
-                        ${resource.type === 'guide' ? 'bg-blue-100 text-blue-800' : ''}
-                        ${resource.type === 'template' ? 'bg-purple-100 text-purple-800' : ''}
-                        ${resource.type === 'calculator' ? 'bg-green-100 text-green-800' : ''}
-                        ${resource.type === 'checklist' ? 'bg-orange-100 text-orange-800' : ''}
-                      `}
+                        className={` ${resource.type === 'guide' ? 'bg-blue-100 text-blue-800' : ''} ${resource.type === 'template' ? 'bg-purple-100 text-purple-800' : ''} ${resource.type === 'calculator' ? 'bg-green-100 text-green-800' : ''} ${resource.type === 'checklist' ? 'bg-orange-100 text-orange-800' : ''} `}
                       >
                         {resource.type.charAt(0).toUpperCase() + resource.type.slice(1)}
                       </Badge>
@@ -344,19 +338,19 @@ export default function FinancialManagementPage() {
           </TabsContent>
         </Tabs>
         {/* Profit Analysis CTA */}
-        <div className="mt-12 mb-12 bg-white rounded-xl shadow-md p-8 border border-gray-200">
-          <div className="flex flex-col md:flex-row items-center">
+        <div className="mb-12 mt-12 rounded-xl border border-gray-200 bg-white p-8 shadow-md">
+          <div className="flex flex-col items-center md:flex-row">
             <div className="md:w-2/3 md:pr-8">
-              <h2 className="text-2xl font-bold mb-4">Get a Custom Profit Analysis</h2>
-              <p className="text-gray-700 mb-4">
+              <h2 className="mb-4 text-2xl font-bold">Get a Custom Profit Analysis</h2>
+              <p className="mb-4 text-gray-700">
                 Let our financial experts analyze your beauty or wellness business and identify
                 opportunities to increase profitability, optimize pricing, and improve your overall
                 financial health.
               </p>
-              <ul className="space-y-2 mb-6">
+              <ul className="mb-6 space-y-2">
                 <li className="flex items-center">
                   <svg
-                    className="h-5 w-5 mr-2 text-green-500"
+                    className="mr-2 h-5 w-5 text-green-500"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -370,7 +364,7 @@ export default function FinancialManagementPage() {
                 </li>
                 <li className="flex items-center">
                   <svg
-                    className="h-5 w-5 mr-2 text-green-500"
+                    className="mr-2 h-5 w-5 text-green-500"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -384,7 +378,7 @@ export default function FinancialManagementPage() {
                 </li>
                 <li className="flex items-center">
                   <svg
-                    className="h-5 w-5 mr-2 text-green-500"
+                    className="mr-2 h-5 w-5 text-green-500"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -401,7 +395,7 @@ export default function FinancialManagementPage() {
                 Schedule Free Consultation
               </Button>
             </div>
-            <div className="md:w-1/3 mt-6 md:mt-0 flex justify-center">
+            <div className="mt-6 flex justify-center md:mt-0 md:w-1/3">
               <Image
                 src="https://images.unsplash.com/photo-1554224155-6726b3ff858f"
                 alt="Financial Analysis"
@@ -414,43 +408,43 @@ export default function FinancialManagementPage() {
         </div>
         {/* Financial Insights */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">Key Financial Insights</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <h2 className="mb-6 text-2xl font-bold">Key Financial Insights</h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle>Industry Benchmarks</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700 mb-4">
+                <p className="mb-4 text-gray-700">
                   How does your business compare to industry standards? Review these key financial
                   metrics:
                 </p>
                 <div className="space-y-4">
                   <div>
-                    <div className="flex justify-between mb-1">
+                    <div className="mb-1 flex justify-between">
                       <span className="text-sm font-medium">Labor Costs</span>
                       <span className="text-sm text-gray-500">35-45% of revenue</span>
                     </div>
-                    <div className="h-2 bg-gray-200 rounded-full">
-                      <div className="h-2 bg-green-500 rounded-full" style={{ width: '40%' }}></div>
+                    <div className="h-2 rounded-full bg-gray-200">
+                      <div className="h-2 rounded-full bg-green-500" style={{ width: '40%' }}></div>
                     </div>
                   </div>
                   <div>
-                    <div className="flex justify-between mb-1">
+                    <div className="mb-1 flex justify-between">
                       <span className="text-sm font-medium">Product Costs</span>
                       <span className="text-sm text-gray-500">8-12% of revenue</span>
                     </div>
-                    <div className="h-2 bg-gray-200 rounded-full">
-                      <div className="h-2 bg-green-500 rounded-full" style={{ width: '10%' }}></div>
+                    <div className="h-2 rounded-full bg-gray-200">
+                      <div className="h-2 rounded-full bg-green-500" style={{ width: '10%' }}></div>
                     </div>
                   </div>
                   <div>
-                    <div className="flex justify-between mb-1">
+                    <div className="mb-1 flex justify-between">
                       <span className="text-sm font-medium">Net Profit Margin</span>
                       <span className="text-sm text-gray-500">8-15% of revenue</span>
                     </div>
-                    <div className="h-2 bg-gray-200 rounded-full">
-                      <div className="h-2 bg-green-500 rounded-full" style={{ width: '12%' }}></div>
+                    <div className="h-2 rounded-full bg-gray-200">
+                      <div className="h-2 rounded-full bg-green-500" style={{ width: '12%' }}></div>
                     </div>
                   </div>
                 </div>
@@ -468,14 +462,14 @@ export default function FinancialManagementPage() {
                 <CardTitle>Common Financial Mistakes</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700 mb-4">
+                <p className="mb-4 text-gray-700">
                   Avoid these frequent financial pitfalls that affect beauty and wellness
                   businesses:
                 </p>
                 <ul className="space-y-2">
                   <li className="flex items-start">
                     <svg
-                      className="h-5 w-5 mr-2 text-red-500 mt-0.5"
+                      className="mr-2 mt-0.5 h-5 w-5 text-red-500"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -489,7 +483,7 @@ export default function FinancialManagementPage() {
                   </li>
                   <li className="flex items-start">
                     <svg
-                      className="h-5 w-5 mr-2 text-red-500 mt-0.5"
+                      className="mr-2 mt-0.5 h-5 w-5 text-red-500"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -503,7 +497,7 @@ export default function FinancialManagementPage() {
                   </li>
                   <li className="flex items-start">
                     <svg
-                      className="h-5 w-5 mr-2 text-red-500 mt-0.5"
+                      className="mr-2 mt-0.5 h-5 w-5 text-red-500"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -517,7 +511,7 @@ export default function FinancialManagementPage() {
                   </li>
                   <li className="flex items-start">
                     <svg
-                      className="h-5 w-5 mr-2 text-red-500 mt-0.5"
+                      className="mr-2 mt-0.5 h-5 w-5 text-red-500"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -542,19 +536,19 @@ export default function FinancialManagementPage() {
           </div>
         </div>
         {/* Financial Workshop CTA */}
-        <div className="bg-gradient-to-r from-blue-600 to-green-600 rounded-xl overflow-hidden">
+        <div className="overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-green-600">
           <div className="flex flex-col md:flex-row">
-            <div className="md:w-2/3 p-8 text-white">
-              <h2 className="text-2xl font-bold mb-4">Free Financial Workshop</h2>
+            <div className="p-8 text-white md:w-2/3">
+              <h2 className="mb-4 text-2xl font-bold">Free Financial Workshop</h2>
               <p className="mb-6">
                 Join our upcoming workshop: "Financial Foundations for Beauty Business Success" and
                 learn essential financial strategies specifically for salon, spa, and wellness
                 business owners.
               </p>
-              <ul className="space-y-2 mb-6">
+              <ul className="mb-6 space-y-2">
                 <li className="flex items-center">
                   <svg
-                    className="h-5 w-5 mr-2 text-blue-200"
+                    className="mr-2 h-5 w-5 text-blue-200"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -568,7 +562,7 @@ export default function FinancialManagementPage() {
                 </li>
                 <li className="flex items-center">
                   <svg
-                    className="h-5 w-5 mr-2 text-blue-200"
+                    className="mr-2 h-5 w-5 text-blue-200"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -582,7 +576,7 @@ export default function FinancialManagementPage() {
                 </li>
                 <li className="flex items-center">
                   <svg
-                    className="h-5 w-5 mr-2 text-blue-200"
+                    className="mr-2 h-5 w-5 text-blue-200"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -599,7 +593,7 @@ export default function FinancialManagementPage() {
                 Register Now - Limited Spots
               </Button>
             </div>
-            <div className="md:w-1/3 relative">
+            <div className="relative md:w-1/3">
               <div className="h-64 md:h-full">
                 <Image
                   src="https://images.unsplash.com/photo-1434626881859-194d67b2b86f"

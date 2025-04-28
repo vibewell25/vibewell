@@ -77,45 +77,6 @@ export const AccessibleDatePicker: React.FC<AccessibleDatePickerProps> = ({
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (!isOpen) return;
-
-    const currentDate = focusedDate || new Date();
-    const newDate = new Date(currentDate);
-
-    switch (e.key) {
-      case 'ArrowLeft':
-        e.preventDefault();
-        newDate.setDate(currentDate.getDate() - 1);
-        break;
-      case 'ArrowRight':
-        e.preventDefault();
-        newDate.setDate(currentDate.getDate() + 1);
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        newDate.setDate(currentDate.getDate() - 7);
-        break;
-      case 'ArrowDown':
-        e.preventDefault();
-        newDate.setDate(currentDate.getDate() + 7);
-        break;
-      case 'Enter':
-      case ' ':
-        e.preventDefault();
-        handleDateSelect(currentDate);
-        return;
-      case 'Escape':
-        e.preventDefault();
-        setIsOpen(false);
-        return;
-    }
-
-    if (!isDateDisabled(newDate)) {
-      setFocusedDate(newDate);
-    }
-  };
-
   const renderCalendar = () => {
     if (!isOpen) return null;
 
@@ -126,7 +87,7 @@ export const AccessibleDatePicker: React.FC<AccessibleDatePickerProps> = ({
 
     // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
-      days.push(<div key={`empty-${i}`} className="w-8 h-8" />);
+      days.push(<div key={`empty-${i}`} className="h-8 w-8" />);
     }
 
     // Add cells for each day of the month
@@ -141,31 +102,25 @@ export const AccessibleDatePicker: React.FC<AccessibleDatePickerProps> = ({
           key={day}
           onClick={() => handleDateSelect(date)}
           disabled={isDisabled}
-          className={`
-            w-8 h-8 rounded-full flex items-center justify-center text-sm
-            ${isDisabled ? 'text-gray-400 cursor-not-allowed' : 'text-gray-700 hover:bg-gray-100'}
-            ${isSelected ? 'bg-primary text-white' : ''}
-            ${isFocused ? 'ring-2 ring-primary' : ''}
-            focus:outline-none
-          `}
+          className={`flex h-8 w-8 items-center justify-center rounded-full text-sm ${isDisabled ? 'cursor-not-allowed text-gray-400' : 'text-gray-700 hover:bg-gray-100'} ${isSelected ? 'bg-primary text-white' : ''} ${isFocused ? 'ring-primary ring-2' : ''} focus:outline-none`}
           aria-label={`${day} ${currentDate.toLocaleString('default', { month: 'long' })}`}
           aria-selected={isSelected || false}
           aria-disabled={isDisabled}
         >
           {day}
-        </button>
+        </button>,
       );
     }
 
     return (
       <div
-        className="absolute z-10 mt-1 bg-white rounded-lg shadow-lg p-4"
+        className="absolute z-10 mt-1 rounded-lg bg-white p-4 shadow-lg"
         role="dialog"
         aria-label="Calendar"
         aria-modal="true"
       >
         <div className="grid grid-cols-7 gap-1">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
             <div key={day} className="text-center text-xs font-medium text-gray-500">
               {day}
             </div>
@@ -179,9 +134,9 @@ export const AccessibleDatePicker: React.FC<AccessibleDatePickerProps> = ({
   return (
     <div className={`relative ${className}`} ref={containerRef}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="mb-1 block text-sm font-medium text-gray-700">
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="ml-1 text-red-500">*</span>}
         </label>
       )}
       <div className="relative">
@@ -191,16 +146,11 @@ export const AccessibleDatePicker: React.FC<AccessibleDatePickerProps> = ({
           value={selectedDate ? formatDate(selectedDate) : ''}
           readOnly
           onClick={() => !disabled && setIsOpen(true)}
-          className={`
-            w-full px-3 py-2 border rounded-md
-            ${
-              error
-                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                : 'border-gray-300 focus:ring-primary focus:border-primary'
-            }
-            ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}
-            focus:outline-none
-          `}
+          className={`w-full rounded-md border px-3 py-2 ${
+            error
+              ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+              : 'focus:ring-primary focus:border-primary border-gray-300'
+          } ${disabled ? 'cursor-not-allowed bg-gray-100' : 'bg-white'} focus:outline-none`}
           aria-invalid={!!error}
           aria-describedby={error ? 'error-message' : helperText ? 'helper-text' : undefined}
           disabled={disabled}
@@ -209,7 +159,7 @@ export const AccessibleDatePicker: React.FC<AccessibleDatePickerProps> = ({
         <button
           type="button"
           onClick={() => !disabled && setIsOpen(!isOpen)}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2"
+          className="absolute right-2 top-1/2 -translate-y-1/2 transform"
           aria-label="Open calendar"
           disabled={disabled}
         >

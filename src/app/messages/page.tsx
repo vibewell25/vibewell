@@ -1,20 +1,10 @@
-'use client';
+'use client';;
 import { useState, useEffect, Suspense } from 'react';
 import { Layout } from '@/components/layout';
 import { useAuth } from '@/hooks/use-unified-auth';
-import { format } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 import { Messaging, type Conversation as UIConversation } from '@/components/messaging';
 import { toast, Toaster } from 'react-hot-toast';
-import type { Conversation } from '@/lib/api/messages';
-import Link from 'next/link';
-import { GoalCreationModal } from '@/components/wellness/GoalCreationModal';
-import { useWellnessData } from '@/hooks/useWellnessData';
-import { Goal } from '@/types/progress';
-import { Card, CardContent } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 // Loading fallback component
 function MessagesLoadingSkeleton() {
@@ -22,15 +12,15 @@ function MessagesLoadingSkeleton() {
     <div className="container mx-auto p-4">
       <div className="flex h-[calc(100vh-200px)] gap-4">
         <div className="w-1/3">
-          <Skeleton className="h-12 w-full mb-4" />
+          <Skeleton className="mb-4 h-12 w-full" />
           {Array(5)
             .fill(0)
             .map((_, i) => (
-              <Skeleton key={i} className="h-20 w-full mb-2" />
+              <Skeleton key={i} className="mb-2 h-20 w-full" />
             ))}
         </div>
         <div className="w-2/3">
-          <Skeleton className="h-12 w-full mb-4" />
+          <Skeleton className="mb-4 h-12 w-full" />
           <div className="space-y-4">
             {Array(8)
               .fill(0)
@@ -84,8 +74,8 @@ function MessagesPageContent() {
     const initiateUserName = searchParams?.get('name');
     if (initiateUserId && initiateUserName && user && !isLoading) {
       // Check if we already have a conversation with this user
-      const existingConversation = conversations.find(conv => {
-        const otherParticipant = conv.participants.find(p => p.id !== user.id);
+      const existingConversation = conversations.find((conv) => {
+        const otherParticipant = conv.participants.find((p) => p.id !== user.id);
         return otherParticipant?.id === initiateUserId;
       });
       if (existingConversation) {
@@ -107,10 +97,10 @@ function MessagesPageContent() {
     if (!newMessage.trim() || !selectedConversation || loading || !user) return;
     try {
       // Get the current conversation
-      const conversation = conversations.find(c => c.id === selectedConversation);
+      const conversation = conversations.find((c) => c.id === selectedConversation);
       if (!conversation) return;
       // Get the recipient
-      const recipient = conversation.participants.find(p => p.id !== user.id);
+      const recipient = conversation.participants.find((p) => p.id !== user.id);
       if (!recipient) return;
       // Add optimistic update
       const optimisticMsg = {
@@ -121,8 +111,8 @@ function MessagesPageContent() {
         read: false,
       };
       // Update UI optimistically
-      setConversations(prev =>
-        prev.map(conv => {
+      setConversations((prev) =>
+        prev.map((conv) => {
           if (conv.id === selectedConversation) {
             return {
               ...conv,
@@ -130,7 +120,7 @@ function MessagesPageContent() {
             };
           }
           return conv;
-        })
+        }),
       );
       // Clear input
       setNewMessage('');
@@ -188,20 +178,20 @@ function MessagesPageContent() {
     setSelectedConversation(conversationId);
     try {
       // Find the conversation
-      const conversation = conversations.find(c => c.id === conversationId);
+      const conversation = conversations.find((c) => c.id === conversationId);
       if (!conversation || !user) return;
       // Check if there are unread messages from the other user
       const unreadMessages = conversation.messages.filter(
-        msg => msg.senderId !== user.id && !msg.read
+        (msg) => msg.senderId !== user.id && !msg.read,
       );
       if (unreadMessages.length === 0) return;
       // Mark messages as read optimistically
-      setConversations(prev =>
-        prev.map(conv => {
+      setConversations((prev) =>
+        prev.map((conv) => {
           if (conv.id === conversationId) {
             return {
               ...conv,
-              messages: conv.messages.map(msg => {
+              messages: conv.messages.map((msg) => {
                 if (msg.senderId !== user.id) {
                   return { ...msg, read: true };
                 }
@@ -210,7 +200,7 @@ function MessagesPageContent() {
             };
           }
           return conv;
-        })
+        }),
       );
       // Send request to mark as read
       await fetch(`/api/messages/${conversationId}/read`, {
@@ -227,7 +217,7 @@ function MessagesPageContent() {
     }
     try {
       // Remove conversation from UI optimistically
-      setConversations(prev => prev.filter(c => c.id !== conversationId));
+      setConversations((prev) => prev.filter((c) => c.id !== conversationId));
       // Clear selected conversation if it was the deleted one
       if (selectedConversation === conversationId) {
         setSelectedConversation(null);
@@ -245,20 +235,20 @@ function MessagesPageContent() {
     }
   };
   // Convert conversations to UI format
-  const uiConversations: UIConversation[] = conversations.map(conv => {
+  const uiConversations: UIConversation[] = conversations.map((conv) => {
     // Get other participant
-    const otherParticipant = conv.participants.find(p => p.id !== user?.id) || {
+    const otherParticipant = conv.participants.find((p) => p.id !== user?.id) || {
       id: 'unknown',
       name: 'Unknown User',
       avatar: '/placeholder-avatar.jpg',
     };
     // Count unread messages
     const unreadCount = user
-      ? conv.messages.filter(m => m.senderId !== user.id && !m.read).length
+      ? conv.messages.filter((m) => m.senderId !== user.id && !m.read).length
       : 0;
     return {
       id: conv.id,
-      participants: conv.participants.map(p => ({
+      participants: conv.participants.map((p) => ({
         ...p,
         avatar: p.avatar || undefined,
       })),
@@ -270,13 +260,13 @@ function MessagesPageContent() {
     <Layout>
       <div className="container-app py-8">
         <Toaster position="top-right" />
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+        <div className="mb-6 flex flex-col items-start justify-between md:flex-row md:items-center">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">Messages</h1>
+            <h1 className="mb-2 text-2xl font-bold md:text-3xl">Messages</h1>
             <p className="text-muted-foreground">Connect with other wellness enthusiasts</p>
           </div>
           {error ? (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+            <div className="mb-6 rounded border border-red-200 bg-red-50 px-4 py-3 text-red-700">
               {error}
               <button className="ml-2 underline" onClick={fetchConversations}>
                 Try again
@@ -284,13 +274,13 @@ function MessagesPageContent() {
             </div>
           ) : null}
           {isLoading ? (
-            <div className="flex justify-center items-center h-[60vh]">
+            <div className="flex h-[60vh] items-center justify-center">
               <p>Loading conversations...</p>
             </div>
           ) : conversations.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-[40vh] bg-muted/20 rounded-lg">
-              <h2 className="text-xl font-bold mb-2">No conversations yet</h2>
-              <p className="text-muted-foreground mb-6">
+            <div className="flex h-[40vh] flex-col items-center justify-center rounded-lg bg-muted/20">
+              <h2 className="mb-2 text-xl font-bold">No conversations yet</h2>
+              <p className="mb-6 text-muted-foreground">
                 Start connecting with other users to begin messaging
               </p>
               <a href="/community" className="btn-primary">
@@ -333,13 +323,13 @@ function MessagesPageSkeleton() {
   return (
     <div className="container-app py-8">
       <div className="animate-pulse">
-        <div className="h-8 w-64 bg-gray-200 rounded mb-4"></div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="mb-4 h-8 w-64 rounded bg-gray-200"></div>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="lg:col-span-1">
-            <div className="h-[calc(100vh-12rem)] bg-gray-200 rounded"></div>
+            <div className="h-[calc(100vh-12rem)] rounded bg-gray-200"></div>
           </div>
           <div className="lg:col-span-2">
-            <div className="h-[calc(100vh-12rem)] bg-gray-200 rounded"></div>
+            <div className="h-[calc(100vh-12rem)] rounded bg-gray-200"></div>
           </div>
         </div>
       </div>

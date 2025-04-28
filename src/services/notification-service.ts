@@ -3,14 +3,7 @@
  * Handles notifications across the application
  */
 
-import {
-  PrismaClient,
-  User,
-  ServiceBooking,
-  Prisma,
-  NotificationType,
-  NotificationStatus,
-} from '@prisma/client';
+import { PrismaClient, ServiceBooking, NotificationType, NotificationStatus } from '@prisma/client';
 import nodemailer from 'nodemailer';
 import twilio from 'twilio';
 import { logger } from '@/lib/logger';
@@ -24,17 +17,6 @@ import {
 } from '../templates/loyalty-email-templates';
 
 const prisma = new PrismaClient();
-
-// Initialize email transporter
-const emailTransporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: process.env.SMTP_SECURE === 'true',
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
 
 // Initialize Twilio client
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -158,15 +140,15 @@ export class NotificationService {
 
       // Send notifications to all user devices
       await Promise.all(
-        user.pushTokens.map(token =>
+        user.pushTokens.map((token) =>
           pushService.sendNotification({
             token,
             title: payload.title,
             body: payload.message,
             data: payload.data || {},
             type: payload.type,
-          })
-        )
+          }),
+        ),
       );
 
       logger.info('Push notification sent', 'NotificationService', {
@@ -266,7 +248,7 @@ export class NotificationService {
   async sendBulkNotifications(userIds: string[], notification: NotificationData) {
     try {
       const notifications = await Promise.all(
-        userIds.map(userId => this.notifyUser(userId, notification as NotificationPayload))
+        userIds.map((userId) => this.notifyUser(userId, notification as NotificationPayload)),
       );
 
       logger.info(`Sent bulk notifications`, {
@@ -368,7 +350,7 @@ export class NotificationService {
       unreadOnly?: boolean;
       limit?: number;
       offset?: number;
-    } = {}
+    } = {},
   ) {
     try {
       const { unreadOnly = false, limit = 10, offset = 0 } = options;
@@ -583,7 +565,7 @@ export class NotificationService {
   async sendWaitlistNotification(
     userId: string,
     serviceId: string,
-    availableSlot: Date
+    availableSlot: Date,
   ): Promise<void> {
     try {
       const [user, service] = await Promise.all([

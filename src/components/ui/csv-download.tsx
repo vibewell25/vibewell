@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Icons } from '@/components/icons';
 
 interface CSVDownloadProps {
@@ -20,20 +20,26 @@ export function CSVDownload({
 }: CSVDownloadProps) {
   const handleDownload = () => {
     // Convert 2D array to CSV string
-    const csvContent = data.map(row => row.map(cell => {
-      // Escape cells with commas, quotes, or newlines
-      if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
-        return `"${cell.replace(/"/g, '""')}"`;
-      }
-      return cell;
-    }).join(',')).join('\n');
-    
+    const csvContent = data
+      .map((row) =>
+        row
+          .map((cell) => {
+            // Escape cells with commas, quotes, or newlines
+            if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
+              return `"${cell.replace(/"/g, '""')}"`;
+            }
+            return cell;
+          })
+          .join(','),
+      )
+      .join('\n');
+
     // Create a blob with the CSV content
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    
+
     // Create a URL for the blob
     const url = URL.createObjectURL(blob);
-    
+
     // Create a temporary link and click it to download
     const link = document.createElement('a');
     link.href = url;
@@ -41,7 +47,7 @@ export function CSVDownload({
     link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
-    
+
     // Clean up
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
@@ -59,4 +65,4 @@ export function CSVDownload({
       {buttonText}
     </Button>
   );
-} 
+}

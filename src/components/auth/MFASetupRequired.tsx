@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AuthService } from '@/services/auth-service';
 import { setup2FA, verify2FA } from '@/lib/auth/two-factor';
 import { QRCode } from 'qrcode.react';
 import { toast } from 'react-hot-toast';
@@ -29,7 +28,6 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState<SetupStep>('method-selection');
   const [selectedMethod, setSelectedMethod] = useState<MFAMethod>();
-  const router = useRouter();
 
   const initiateMFASetup = async () => {
     try {
@@ -83,14 +81,14 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="border-primary h-8 w-8 animate-spin rounded-full border-b-2"></div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-6 text-center">Two-Factor Authentication Required</h2>
+    <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-lg">
+      <h2 className="mb-6 text-center text-2xl font-bold">Two-Factor Authentication Required</h2>
 
       {step === 'method-selection' && (
         <div>
@@ -109,7 +107,7 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
           <p className="mb-4">You'll need to set up an authenticator app to continue.</p>
           <button
             onClick={initiateMFASetup}
-            className="bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark"
+            className="bg-primary hover:bg-primary-dark rounded px-6 py-2 text-white"
           >
             Begin Setup
           </button>
@@ -123,22 +121,22 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
             already.
           </p>
           <p className="mb-4">2. Scan this QR code with your authenticator app:</p>
-          <div className="flex justify-center mb-6">
+          <div className="mb-6 flex justify-center">
             <QRCode value={setupData.qrCodeUrl} size={200} />
           </div>
           <p className="mb-4">3. Enter the verification code from your authenticator app:</p>
           <input
             type="text"
             value={verificationCode}
-            onChange={e => setVerificationCode(e.target.value)}
+            onChange={(e) => setVerificationCode(e.target.value)}
             placeholder="Enter 6-digit code"
-            className="w-full px-4 py-2 mb-4 border rounded"
+            className="mb-4 w-full rounded border px-4 py-2"
             maxLength={6}
           />
           <button
             onClick={handleVerification}
             disabled={verificationCode.length !== 6}
-            className="w-full bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark disabled:opacity-50"
+            className="bg-primary hover:bg-primary-dark w-full rounded px-6 py-2 text-white disabled:opacity-50"
           >
             Verify Code
           </button>
@@ -151,15 +149,15 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
           <input
             type="text"
             value={verificationCode}
-            onChange={e => setVerificationCode(e.target.value)}
+            onChange={(e) => setVerificationCode(e.target.value)}
             placeholder="Enter 6-digit code"
-            className="w-full px-4 py-2 mb-4 border rounded"
+            className="mb-4 w-full rounded border px-4 py-2"
             maxLength={6}
           />
           <button
             onClick={handleVerification}
             disabled={verificationCode.length !== 6}
-            className="w-full bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark disabled:opacity-50"
+            className="bg-primary hover:bg-primary-dark w-full rounded px-6 py-2 text-white disabled:opacity-50"
           >
             Verify Code
           </button>
@@ -172,15 +170,15 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
           <input
             type="text"
             value={verificationCode}
-            onChange={e => setVerificationCode(e.target.value)}
+            onChange={(e) => setVerificationCode(e.target.value)}
             placeholder="Enter 6-digit code"
-            className="w-full px-4 py-2 mb-4 border rounded"
+            className="mb-4 w-full rounded border px-4 py-2"
             maxLength={6}
           />
           <button
             onClick={handleVerification}
             disabled={verificationCode.length !== 6}
-            className="w-full bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark disabled:opacity-50"
+            className="bg-primary hover:bg-primary-dark w-full rounded px-6 py-2 text-white disabled:opacity-50"
           >
             Verify Code
           </button>
@@ -199,16 +197,16 @@ export const MFASetupRequired: React.FC<MFASetupRequiredProps> = ({
                 : 'email'}
             .
           </p>
-          <div className="bg-gray-100 p-4 rounded mb-6">
+          <div className="mb-6 rounded bg-gray-100 p-4">
             {setupData.backupCodes.map((code, index) => (
-              <div key={index} className="font-mono mb-1">
+              <div key={index} className="mb-1 font-mono">
                 {code}
               </div>
             ))}
           </div>
           <button
             onClick={handleBackupCodesSaved}
-            className="w-full bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark"
+            className="bg-primary hover:bg-primary-dark w-full rounded px-6 py-2 text-white"
           >
             I've Saved My Backup Codes
           </button>

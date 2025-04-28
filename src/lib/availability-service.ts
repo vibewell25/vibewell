@@ -44,7 +44,7 @@ export class AvailabilityService {
   }
 
   public notifySubscribers(date: string): void {
-    this.subscribers.forEach(callback => callback(date));
+    this.subscribers.forEach((callback) => callback(date));
   }
 
   public async getAvailability(providerId: string, date: string): Promise<TimeSlot[]> {
@@ -67,7 +67,7 @@ export class AvailabilityService {
   public async updateAvailability(
     providerId: string,
     date: string,
-    timeSlot: TimeSlot
+    timeSlot: TimeSlot,
   ): Promise<void> {
     try {
       const response = await fetch('/api/availability', {
@@ -98,11 +98,11 @@ export class AvailabilityService {
     providerId: string,
     date: string,
     time: string,
-    service: Service
+    service: Service,
   ): Promise<boolean> {
     try {
       const availability = await this.getAvailability(providerId, date);
-      const slot = availability.find(s => s.time === time);
+      const slot = availability.find((s) => s.time === time);
 
       if (!slot || !slot.available) return false;
 
@@ -114,7 +114,7 @@ export class AvailabilityService {
       // Check if any slots in the service duration are unavailable
       let currentTime = slotTime;
       while (currentTime < endTime) {
-        const currentSlot = availability.find(s => s.time === format(currentTime, 'HH:mm'));
+        const currentSlot = availability.find((s) => s.time === format(currentTime, 'HH:mm'));
         if (!currentSlot || !currentSlot.available) return false;
         currentTime = addMinutes(currentTime, 30);
       }
@@ -130,7 +130,7 @@ export class AvailabilityService {
     providerId: string,
     date: string,
     time: string,
-    service: Service
+    service: Service,
   ): Promise<boolean> {
     try {
       const response = await fetch('/api/availability', {

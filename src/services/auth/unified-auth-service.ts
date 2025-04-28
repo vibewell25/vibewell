@@ -54,7 +54,7 @@ export class UnifiedAuthService {
     // Require MFA for admin users and specific email domains
     const isAdmin = this.hasRole(user, 'admin');
     const isBusinessDomain = user.email.endsWith('@vibewell.com');
-    
+
     return isAdmin || isBusinessDomain;
   }
 
@@ -68,7 +68,7 @@ export class UnifiedAuthService {
     const userRoles = user[`${namespace}/roles`] || [];
 
     if (Array.isArray(role)) {
-      return role.some(r => userRoles.includes(r));
+      return role.some((r) => userRoles.includes(r));
     }
 
     return userRoles.includes(role);
@@ -93,11 +93,14 @@ export class UnifiedAuthService {
    */
   async getUserMetadata(user: User): Promise<any> {
     try {
-      const response = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}`, {
-        headers: {
-          Authorization: `Bearer ${process.env.AUTH0_MANAGEMENT_API_TOKEN}`,
+      const response = await fetch(
+        `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.AUTH0_MANAGEMENT_API_TOKEN}`,
+          },
         },
-      });
+      );
 
       if (!response.ok) {
         throw new Error('Failed to fetch user metadata');
@@ -116,16 +119,19 @@ export class UnifiedAuthService {
    */
   async updateUserMetadata(user: User, metadata: any): Promise<void> {
     try {
-      const response = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.AUTH0_MANAGEMENT_API_TOKEN}`,
+      const response = await fetch(
+        `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${process.env.AUTH0_MANAGEMENT_API_TOKEN}`,
+          },
+          body: JSON.stringify({
+            user_metadata: metadata,
+          }),
         },
-        body: JSON.stringify({
-          user_metadata: metadata,
-        }),
-      });
+      );
 
       if (!response.ok) {
         throw new Error('Failed to update user metadata');
@@ -155,7 +161,7 @@ export class UnifiedAuthService {
     const userPermissions = this.getUserPermissions(user);
 
     if (Array.isArray(permission)) {
-      return permission.some(p => userPermissions.includes(p));
+      return permission.some((p) => userPermissions.includes(p));
     }
 
     return userPermissions.includes(permission);
@@ -163,4 +169,4 @@ export class UnifiedAuthService {
 }
 
 // Export a singleton instance
-export const authService = UnifiedAuthService.getInstance(); 
+export {};

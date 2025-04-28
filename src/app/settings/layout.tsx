@@ -1,11 +1,7 @@
 import type { Metadata } from '@/types/metadata';
-import Link from 'next/link';
 import { SidebarNav } from '@/components/sidebar-nav';
 
-export const metadata: Metadata = {
-  title: 'Settings - VibeWell',
-  description: 'Manage your account settings',
-};
+export {};
 
 const sidebarNavItems = [
   {

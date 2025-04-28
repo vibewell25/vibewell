@@ -55,7 +55,7 @@ export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
       id,
       ...props
     },
-    ref
+    ref,
   ) => {
     // Generate a unique ID if none is provided
     const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
@@ -80,10 +80,10 @@ export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           <label
             htmlFor={inputId}
             className={cn(
-              'block text-sm font-medium mb-1',
+              'mb-1 block text-sm font-medium',
               size === 'sm' && 'text-xs',
               size === 'lg' && 'text-base',
-              labelClassName
+              labelClassName,
             )}
           >
             {label}
@@ -91,7 +91,7 @@ export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
         )}
 
         {description && (
-          <div className={cn('text-sm text-muted-foreground mb-2', descriptionClassName)}>
+          <div className={cn('mb-2 text-sm text-muted-foreground', descriptionClassName)}>
             {description}
           </div>
         )}
@@ -100,10 +100,10 @@ export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           {leftIcon && (
             <div
               className={cn(
-                'absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none',
+                'pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3',
                 size === 'sm' && 'pl-2',
                 size === 'lg' && 'pl-4',
-                iconContainerClassName
+                iconContainerClassName,
               )}
             >
               {leftIcon}
@@ -123,7 +123,7 @@ export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               error && 'border-destructive focus-visible:ring-destructive',
-              className
+              className,
             )}
             aria-invalid={error ? 'true' : 'false'}
             aria-errormessage={error ? `${inputId}-error` : undefined}
@@ -132,10 +132,10 @@ export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           {rightIcon && (
             <div
               className={cn(
-                'absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none',
+                'pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3',
                 size === 'sm' && 'pr-2',
                 size === 'lg' && 'pr-4',
-                iconContainerClassName
+                iconContainerClassName,
               )}
             >
               {rightIcon}
@@ -160,7 +160,7 @@ export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
 BaseInput.displayName = 'BaseInput';

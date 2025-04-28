@@ -110,4 +110,4 @@ export interface ThirdPartyConfig {
   search?: SearchConfig;
   logging?: LoggingConfig;
   ai?: AIConfig;
-} 
+}

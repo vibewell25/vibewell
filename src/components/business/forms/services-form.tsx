@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { BusinessProfileFormValues } from '@/components/business/business-profile-wizard';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   Card,
   CardContent,
@@ -14,7 +14,7 @@ import {
   CardHeader,
   CardTitle,
   CardFooter,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Scissors, Plus, Trash2, Pencil, Check, X, Sparkles } from 'lucide-react';
@@ -116,15 +116,15 @@ export function ServicesForm({ form }: ServicesFormProps) {
       // Remove category
       form.setValue(
         'serviceCategories',
-        currentCategories.filter(id => id !== categoryId),
-        { shouldValidate: true }
+        currentCategories.filter((id) => id !== categoryId),
+        { shouldValidate: true },
       );
     }
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="mb-6 flex items-center gap-2">
         <Scissors className="h-5 w-5 text-muted-foreground" />
         <h2 className="text-xl font-semibold">Services & Specialties</h2>
       </div>
@@ -135,22 +135,24 @@ export function ServicesForm({ form }: ServicesFormProps) {
           <CardDescription>Select the categories of services you offer</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {serviceCategories.map(category => (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {serviceCategories.map((category) => (
               <div key={category.id} className="flex items-start space-x-2">
                 <Checkbox
                   id={`category-${category.id}`}
                   checked={form.watch('serviceCategories')?.includes(category.id)}
-                  onCheckedChange={checked => handleCategoryChange(category.id, checked as boolean)}
+                  onCheckedChange={(checked) =>
+                    handleCategoryChange(category.id, checked as boolean)
+                  }
                 />
-                <Label htmlFor={`category-${category.id}`} className="font-normal cursor-pointer">
+                <Label htmlFor={`category-${category.id}`} className="cursor-pointer font-normal">
                   {category.label}
                 </Label>
               </div>
             ))}
           </div>
           {form.formState.errors.serviceCategories && (
-            <p className="text-sm text-red-500 mt-2">
+            <p className="mt-2 text-sm text-red-500">
               {form.formState.errors.serviceCategories.message}
             </p>
           )}
@@ -168,18 +170,18 @@ export function ServicesForm({ form }: ServicesFormProps) {
           {/* Current services list */}
           {form.watch('services').length > 0 ? (
             <ScrollArea className="h-[200px] rounded-md border">
-              <div className="p-4 space-y-2">
+              <div className="space-y-2 p-4">
                 {form.watch('services').map((service, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
+                    className="flex items-center justify-between rounded-lg bg-muted/50 p-3"
                   >
                     <div>
                       <h3 className="font-medium">{service.name}</h3>
                       {service.description && (
                         <p className="text-sm text-muted-foreground">{service.description}</p>
                       )}
-                      <div className="flex items-center gap-2 mt-1 text-sm">
+                      <div className="mt-1 flex items-center gap-2 text-sm">
                         <span>${service.price}</span>
                         <span className="text-muted-foreground">•</span>
                         <span>{service.duration} min</span>
@@ -204,8 +206,8 @@ export function ServicesForm({ form }: ServicesFormProps) {
               </div>
             </ScrollArea>
           ) : (
-            <div className="flex flex-col items-center justify-center py-8 border rounded-md bg-muted/50">
-              <Sparkles className="h-10 w-10 text-muted-foreground mb-3" />
+            <div className="flex flex-col items-center justify-center rounded-md border bg-muted/50 py-8">
+              <Sparkles className="mb-3 h-10 w-10 text-muted-foreground" />
               <p className="text-center text-muted-foreground">
                 No services added yet. Add your first service below.
               </p>
@@ -229,7 +231,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
                 <Input
                   id="serviceName"
                   value={newService.name}
-                  onChange={e => setNewService({ ...newService, name: e.target.value })}
+                  onChange={(e) => setNewService({ ...newService, name: e.target.value })}
                   placeholder="Haircut, Massage, Facial, etc."
                 />
               </div>
@@ -239,7 +241,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
                 <Textarea
                   id="serviceDescription"
                   value={newService.description}
-                  onChange={e => setNewService({ ...newService, description: e.target.value })}
+                  onChange={(e) => setNewService({ ...newService, description: e.target.value })}
                   placeholder="Briefly describe what this service includes..."
                   rows={2}
                 />
@@ -252,7 +254,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
                     id="serviceDuration"
                     type="number"
                     value={newService.duration}
-                    onChange={e =>
+                    onChange={(e) =>
                       setNewService({ ...newService, duration: parseInt(e.target.value) || 0 })
                     }
                     placeholder="60"
@@ -266,7 +268,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
                     id="servicePrice"
                     type="number"
                     value={newService.price}
-                    onChange={e =>
+                    onChange={(e) =>
                       setNewService({ ...newService, price: parseFloat(e.target.value) || 0 })
                     }
                     placeholder="0.00"
@@ -279,7 +281,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
             <CardFooter className="flex justify-end space-x-2">
               {editingServiceIndex !== null && (
                 <Button variant="outline" onClick={handleCancelEdit}>
-                  <X className="h-4 w-4 mr-2" />
+                  <X className="mr-2 h-4 w-4" />
                   Cancel
                 </Button>
               )}
@@ -289,7 +291,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
                   onClick={handleUpdateService}
                   disabled={!newService.name || newService.price <= 0 || newService.duration <= 0}
                 >
-                  <Check className="h-4 w-4 mr-2" />
+                  <Check className="mr-2 h-4 w-4" />
                   Update Service
                 </Button>
               ) : (
@@ -297,7 +299,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
                   onClick={handleAddService}
                   disabled={!newService.name || newService.price <= 0 || newService.duration <= 0}
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="mr-2 h-4 w-4" />
                   Add Service
                 </Button>
               )}

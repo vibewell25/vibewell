@@ -31,7 +31,7 @@ export function BusinessFilters({
       <div className="space-y-2">
         <Label>Category</Label>
         <RadioGroup value={selectedCategory} onValueChange={onCategoryChange} className="space-y-2">
-          {CATEGORIES.map(category => (
+          {CATEGORIES.map((category) => (
             <div key={category.value} className="flex items-center space-x-2">
               <RadioGroupItem value={category.value} id={category.value} />
               <Label htmlFor={category.value} className="text-sm">
@@ -53,7 +53,7 @@ export function BusinessFilters({
             step={0.5}
             className="flex-1"
           />
-          <span className="text-sm font-medium w-12">{minRating.toFixed(1)}</span>
+          <span className="w-12 text-sm font-medium">{minRating.toFixed(1)}</span>
         </div>
       </div>
     </div>

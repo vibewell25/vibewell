@@ -42,8 +42,7 @@ export default function ReviewForm({
     register,
     handleSubmit,
     setValue,
-    watch,
-    formState: { errors },
+    watch
   } = useForm<ReviewFormInputs>({
     resolver: zodResolver(reviewSchema),
     defaultValues: initialData || {
@@ -56,7 +55,7 @@ export default function ReviewForm({
   const handleRatingClick = (rating: number) => {
     setValue('rating', rating, { shouldValidate: true });
   };
-  const submitHandler: SubmitHandler<ReviewFormInputs> = async data => {
+  const submitHandler: SubmitHandler<ReviewFormInputs> = async (data) => {
     setSubmitting(true);
     try {
       await onSubmit(data);
@@ -67,14 +66,14 @@ export default function ReviewForm({
     }
   };
   return (
-    <form onSubmit={handleSubmit(submitHandler)} className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold mb-4">
+    <form onSubmit={handleSubmit(submitHandler)} className="rounded-lg bg-white p-6 shadow">
+      <h2 className="mb-4 text-xl font-semibold">
         {isEdit ? 'Edit Your Review' : 'Write a Review'}
       </h2>
       <div className="mb-4">
-        <label className="block text-gray-700 font-medium mb-2">Rating</label>
+        <label className="mb-2 block font-medium text-gray-700">Rating</label>
         <div className="flex">
-          {[1, 2, 3, 4, 5].map(rating => (
+          {[1, 2, 3, 4, 5].map((rating) => (
             <button
               type="button"
               key={rating}
@@ -90,40 +89,40 @@ export default function ReviewForm({
             </button>
           ))}
         </div>
-        {errors.rating && <p className="text-red-500 text-sm mt-1">{errors.rating.message}</p>}
+        {errors.rating && <p className="mt-1 text-sm text-red-500">{errors.rating.message}</p>}
       </div>
       <div className="mb-4">
-        <label htmlFor="title" className="block text-gray-700 font-medium mb-2">
+        <label htmlFor="title" className="mb-2 block font-medium text-gray-700">
           Title
         </label>
         <input
           id="title"
           type="text"
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           placeholder="Summarize your experience"
           {...register('title')}
         />
-        {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
+        {errors.title && <p className="mt-1 text-sm text-red-500">{errors.title.message}</p>}
       </div>
       <div className="mb-6">
-        <label htmlFor="text" className="block text-gray-700 font-medium mb-2">
+        <label htmlFor="text" className="mb-2 block font-medium text-gray-700">
           Review
         </label>
         <textarea
           id="text"
           rows={4}
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           placeholder="Share your experience with this service provider"
           {...register('text')}
         ></textarea>
-        {errors.text && <p className="text-red-500 text-sm mt-1">{errors.text.message}</p>}
+        {errors.text && <p className="mt-1 text-sm text-red-500">{errors.text.message}</p>}
       </div>
       <div className="flex justify-end space-x-4">
         {onCancel && (
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+            className="rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50"
             disabled={submitting}
           >
             Cancel
@@ -131,13 +130,13 @@ export default function ReviewForm({
         )}
         <button
           type="submit"
-          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
+          className="rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 disabled:opacity-50"
           disabled={submitting}
         >
           {submitting ? (
             <span className="flex items-center">
               <svg
-                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                className="-ml-1 mr-2 h-4 w-4 animate-spin text-white"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"

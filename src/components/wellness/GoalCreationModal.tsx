@@ -2,7 +2,7 @@
 
 import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
-import { Goal, GoalType, GoalFrequency, GoalUnit, GoalStatus } from '@/types/progress';
+import { Goal, GoalType, GoalFrequency, GoalUnit } from '@/types/progress';
 // Color options for goals
 const colorOptions = [
   '#6366F1', // Indigo
@@ -74,10 +74,10 @@ export function GoalCreationModal({
   }, [editingGoal, isOpen]);
   // Handle input changes
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -85,14 +85,14 @@ export function GoalCreationModal({
   // Handle checkbox changes
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: checked,
     }));
   };
   // Handle color selection
   const handleColorSelect = (color: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       color,
     }));
@@ -138,7 +138,7 @@ export function GoalCreationModal({
           newUnit = 'custom';
           newTarget = 1;
       }
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         type: newType,
         unit: newUnit,
@@ -146,7 +146,7 @@ export function GoalCreationModal({
       }));
     } else {
       // Just update the type if we're editing and keeping the original unit and target
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         type: newType,
       }));
@@ -193,9 +193,9 @@ export function GoalCreationModal({
     }
   };
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-card rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg bg-card p-6 shadow-lg">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">{editingGoal ? 'Edit Goal' : 'Create New Goal'}</h2>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <Icons.XMarkIcon className="h-6 w-6" />
@@ -204,7 +204,7 @@ export function GoalCreationModal({
         <form onSubmit={handleSubmit}>
           {/* Title */}
           <div className="mb-4">
-            <label htmlFor="title" className="block text-sm font-medium mb-1">
+            <label htmlFor="title" className="mb-1 block text-sm font-medium">
               Goal Title *
             </label>
             <input
@@ -220,7 +220,7 @@ export function GoalCreationModal({
           </div>
           {/* Description */}
           <div className="mb-4">
-            <label htmlFor="description" className="block text-sm font-medium mb-1">
+            <label htmlFor="description" className="mb-1 block text-sm font-medium">
               Description
             </label>
             <textarea
@@ -235,7 +235,7 @@ export function GoalCreationModal({
           </div>
           {/* Goal Type */}
           <div className="mb-4">
-            <label htmlFor="type" className="block text-sm font-medium mb-1">
+            <label htmlFor="type" className="mb-1 block text-sm font-medium">
               Goal Type *
             </label>
             <select
@@ -277,9 +277,9 @@ export function GoalCreationModal({
             </div>
           </div>
           {/* Target and Unit */}
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="mb-4 grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="target" className="block text-sm font-medium mb-1">
+              <label htmlFor="target" className="mb-1 block text-sm font-medium">
                 Target *
               </label>
               <input
@@ -295,7 +295,7 @@ export function GoalCreationModal({
               />
             </div>
             <div>
-              <label htmlFor="unit" className="block text-sm font-medium mb-1">
+              <label htmlFor="unit" className="mb-1 block text-sm font-medium">
                 Unit *
               </label>
               <select
@@ -320,7 +320,7 @@ export function GoalCreationModal({
           </div>
           {/* Frequency */}
           <div className="mb-4">
-            <label htmlFor="frequency" className="block text-sm font-medium mb-1">
+            <label htmlFor="frequency" className="mb-1 block text-sm font-medium">
               Frequency *
             </label>
             <select
@@ -338,9 +338,9 @@ export function GoalCreationModal({
             </select>
           </div>
           {/* Start and End Dates */}
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="mb-4 grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="startDate" className="block text-sm font-medium mb-1">
+              <label htmlFor="startDate" className="mb-1 block text-sm font-medium">
                 Start Date *
               </label>
               <input
@@ -354,7 +354,7 @@ export function GoalCreationModal({
               />
             </div>
             <div>
-              <label htmlFor="endDate" className="block text-sm font-medium mb-1">
+              <label htmlFor="endDate" className="mb-1 block text-sm font-medium">
                 End Date
               </label>
               <input
@@ -369,13 +369,13 @@ export function GoalCreationModal({
           </div>
           {/* Color Selection */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Color</label>
+            <label className="mb-2 block text-sm font-medium">Color</label>
             <div className="flex flex-wrap gap-2">
-              {colorOptions.map(color => (
+              {colorOptions.map((color) => (
                 <button
                   key={color}
                   type="button"
-                  className={`w-8 h-8 rounded-full border-2 ${
+                  className={`h-8 w-8 rounded-full border-2 ${
                     formData.color === color ? 'border-primary' : 'border-transparent'
                   }`}
                   style={{ backgroundColor: color }}
@@ -386,7 +386,7 @@ export function GoalCreationModal({
           </div>
           {/* Reminders */}
           <div className="mb-6">
-            <div className="flex items-center mb-2">
+            <div className="mb-2 flex items-center">
               <input
                 type="checkbox"
                 id="reminders"
@@ -401,7 +401,7 @@ export function GoalCreationModal({
             </div>
             {formData.reminders && (
               <div>
-                <label htmlFor="reminderTime" className="block text-sm font-medium mb-1">
+                <label htmlFor="reminderTime" className="mb-1 block text-sm font-medium">
                   Reminder Time
                 </label>
                 <input

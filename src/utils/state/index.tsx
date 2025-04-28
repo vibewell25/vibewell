@@ -82,7 +82,7 @@ export function createContextStateManager<T>(initialState: T): StateManager<T> &
       return initialState;
     },
 
-    setState: newState => {
+    setState: (newState) => {
       // This is a placeholder - in actual components you'd use the hook and setState
       console.warn('setState outside of React component is not supported for context state');
       // Can't actually set state here because context state is bound to components
@@ -93,7 +93,7 @@ export function createContextStateManager<T>(initialState: T): StateManager<T> &
       console.warn('resetState outside of React component is not supported for context state');
     },
 
-    subscribe: listener => {
+    subscribe: (listener) => {
       // Context doesn't support direct subscription outside components
       console.warn('subscribe outside of React component is not supported for context state');
       return () => {}; // Noop unsubscribe
@@ -147,7 +147,7 @@ export function createReduxStateManager<T>(initialState: T): StateManager<T> & {
   const manager: StateManager<T> = {
     getState: () => store.getState() as T,
 
-    setState: newState => {
+    setState: (newState) => {
       store.dispatch(setState(newState));
     },
 
@@ -155,7 +155,7 @@ export function createReduxStateManager<T>(initialState: T): StateManager<T> & {
       store.dispatch(resetState());
     },
 
-    subscribe: listener => {
+    subscribe: (listener) => {
       return store.subscribe(() => listener(store.getState() as T));
     },
   };
@@ -184,9 +184,9 @@ export function createZustandStateManager<T>(initialState: T): StateManager<T> &
   };
 
   // Create Zustand store
-  const useStoreHook = create<StoreWithActions>(set => ({
+  const useStoreHook = create<StoreWithActions>((set) => ({
     ...initialState,
-    set: fn => set(state => ({ ...state, ...fn(state) })),
+    set: (fn) => set((state) => ({ ...state, ...fn(state) })),
     reset: () => set(initialState as unknown as StoreWithActions),
   }));
 
@@ -199,7 +199,7 @@ export function createZustandStateManager<T>(initialState: T): StateManager<T> &
       return pureState as T;
     },
 
-    setState: newState => {
+    setState: (newState) => {
       useStoreHook.setState(newState as Partial<StoreWithActions>);
     },
 
@@ -207,8 +207,8 @@ export function createZustandStateManager<T>(initialState: T): StateManager<T> &
       useStoreHook.getState().reset();
     },
 
-    subscribe: listener => {
-      return useStoreHook.subscribe(state => {
+    subscribe: (listener) => {
+      return useStoreHook.subscribe((state) => {
         const { set, reset, ...pureState } = state;
         listener(pureState as T);
       });
@@ -224,7 +224,7 @@ export function createZustandStateManager<T>(initialState: T): StateManager<T> &
 // Unified function to create state with any state management solution
 export function createState<T>(
   initialState: T,
-  type: StateManagerType = StateManagerType.ZUSTAND // Changed default to Zustand
+  type: StateManagerType = StateManagerType.ZUSTAND, // Changed default to Zustand
 ): StateManager<T> {
   switch (type) {
     case StateManagerType.CONTEXT:
@@ -241,7 +241,7 @@ export function createState<T>(
 // Create a selector hook that works with any state manager
 export function createSelector<T, R>(
   selector: (state: T) => R,
-  stateManager: StateManager<T>
+  stateManager: StateManager<T>,
 ): () => R {
   return () => selector(stateManager.getState());
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import { Icons } from '../icons';
 
@@ -9,7 +8,7 @@ describe('Icons', () => {
         <Icons.BellIcon data-testid="bell-icon" />
         <Icons.UserIcon data-testid="user-icon" />
         <Icons.HomeIcon data-testid="home-icon" />
-      </div>
+      </div>,
     );
     expect(container.querySelector('[data-testid="bell-icon"]')).toBeInTheDocument();
     expect(container.querySelector('[data-testid="user-icon"]')).toBeInTheDocument();
@@ -22,7 +21,7 @@ describe('Icons', () => {
         <Icons.logo data-testid="logo-icon" />
         <Icons.google data-testid="google-icon" />
         <Icons.facebook data-testid="facebook-icon" />
-      </div>
+      </div>,
     );
     expect(container.querySelector('[data-testid="logo-icon"]')).toBeInTheDocument();
     expect(container.querySelector('[data-testid="google-icon"]')).toBeInTheDocument();
@@ -38,7 +37,7 @@ describe('Icons', () => {
 
   it('passes className props correctly', () => {
     const { container } = render(
-      <Icons.UserIcon className="test-class" data-testid="class-icon" />
+      <Icons.UserIcon className="test-class" data-testid="class-icon" />,
     );
     const icon = container.querySelector('[data-testid="class-icon"]');
     expect(icon).toHaveClass('test-class');
@@ -49,7 +48,7 @@ describe('Icons', () => {
       <div>
         <Icons.UserSolid data-testid="user-solid" />
         <Icons.HomeSolid data-testid="home-solid" />
-      </div>
+      </div>,
     );
     expect(container.querySelector('[data-testid="user-solid"]')).toBeInTheDocument();
     expect(container.querySelector('[data-testid="home-solid"]')).toBeInTheDocument();
@@ -68,7 +67,7 @@ describe('Icons', () => {
         stroke="red"
         fill="blue"
         data-testid="multi-prop-icon"
-      />
+      />,
     );
     const icon = container.querySelector('[data-testid="multi-prop-icon"]');
     expect(icon).toHaveClass('test-class');

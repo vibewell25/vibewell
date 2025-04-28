@@ -50,13 +50,13 @@ class RedisReplicationManager {
 
   public async setupMaster(): Promise<void> {
     const { host, port, password, tls } = this.config.master;
-    
+
     const redisOptions = {
       host,
       port,
       password: password || undefined,
       tls: tls ? this.configureTLS(tls) : undefined,
-      retryStrategy: (times: number) => Math.min(times * 100, 3000)
+      retryStrategy: (times: number) => Math.min(times * 100, 3000),
     } as RedisOptions;
 
     this.master = new Redis(redisOptions);
@@ -88,7 +88,7 @@ class RedisReplicationManager {
         port: config.port,
         cert: fs.readFileSync(path.resolve(config.cert)),
         key: fs.readFileSync(path.resolve(config.key)),
-        ca: fs.readFileSync(path.resolve(config.ca))
+        ca: fs.readFileSync(path.resolve(config.ca)),
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -104,13 +104,13 @@ class RedisReplicationManager {
         port: slaveConfig.port,
         password: slaveConfig.password || null,
         tls: slaveConfig.tls ? this.configureTLS(slaveConfig.tls) : undefined,
-        retryStrategy: (times: number) => Math.min(times * 100, 3000)
+        retryStrategy: (times: number) => Math.min(times * 100, 3000),
       } as RedisOptions;
 
       const slave = new Redis(redisOptions);
 
       await slave.slaveof(this.config.master.host, this.config.master.port);
-      
+
       slave.on('error', (error: Error) => {
         logger.error(`Redis slave error (${slaveConfig.host}:${slaveConfig.port}):`, error.message);
       });
@@ -129,7 +129,7 @@ class RedisReplicationManager {
 
   public async removeSlave(host: string, port: number): Promise<void> {
     const index = this.slaves.findIndex(
-      (slave) => slave.options.host === host && slave.options.port === port
+      (slave) => slave.options.host === host && slave.options.port === port,
     );
 
     if (index !== -1) {
@@ -180,7 +180,7 @@ class RedisReplicationManager {
     const result: ReplicationInfo = {
       role: '',
       connected_slaves: 0,
-      slaves: []
+      slaves: [],
     };
 
     const lines = info.split('\n');
@@ -210,7 +210,7 @@ class RedisReplicationManager {
             id: index || '0',
             ip: ip.trim(),
             port: parseInt(port.trim(), 10),
-            state: state.trim()
+            state: state.trim(),
           });
         }
       }
@@ -264,9 +264,7 @@ class RedisReplicationManager {
   }
 
   public async promoteSlaveToMaster(host: string, port: number): Promise<void> {
-    const slave = this.slaves.find(
-      (s) => s.options.host === host && s.options.port === port
-    );
+    const slave = this.slaves.find((s) => s.options.host === host && s.options.port === port);
 
     if (!slave) {
       throw new Error(`Slave ${host}:${port} not found`);
@@ -274,17 +272,15 @@ class RedisReplicationManager {
 
     try {
       await slave.slaveof('NO', 'ONE');
-      
+
       // Update other slaves to point to the new master
-      const otherSlaves = this.slaves.filter(s => s !== slave);
-      await Promise.all(
-        otherSlaves.map(s => s.slaveof(host, port))
-      );
+      const otherSlaves = this.slaves.filter((s) => s !== slave);
+      await Promise.all(otherSlaves.map((s) => s.slaveof(host, port)));
 
       // Update configuration
       const newMasterConfig = {
         host,
-        port
+        port,
       } as ReplicationConfig['master'];
 
       // Only add optional properties if they exist
@@ -308,7 +304,7 @@ class RedisReplicationManager {
   public async disconnect(): Promise<void> {
     try {
       await this.master.quit();
-      await Promise.all(this.slaves.map(slave => slave.quit()));
+      await Promise.all(this.slaves.map((slave) => slave.quit()));
       logger.info('Disconnected from all Redis instances');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -326,4 +322,4 @@ class RedisReplicationManager {
   }
 }
 
-export default RedisReplicationManager; 
+export default RedisReplicationManager;

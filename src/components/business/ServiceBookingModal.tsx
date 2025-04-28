@@ -1,12 +1,10 @@
-'use client';
-
+'use client';;
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
-import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
 
 interface ServiceBookingModalProps {
@@ -90,20 +88,20 @@ export function ServiceBookingModal({
           </div>
           <div className="space-y-2">
             <Label>Time</Label>
-            <Input type="time" value={time} onChange={e => setTime(e.target.value)} required />
+            <Input type="time" value={time} onChange={(e) => setTime(e.target.value)} required />
           </div>
           <div className="space-y-2">
             <Label>Notes (Optional)</Label>
             <Input
               value={notes}
-              onChange={e => setNotes(e.target.value)}
+              onChange={(e) => setNotes(e.target.value)}
               placeholder="Any special requests or notes"
             />
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <div>
               <span className="text-lg font-semibold">${service.price}</span>
-              <span className="text-muted-foreground ml-2">({service.duration} min)</span>
+              <span className="ml-2 text-muted-foreground">({service.duration} min)</span>
             </div>
             <Button type="submit" disabled={loading}>
               {loading ? 'Booking...' : 'Confirm Booking'}

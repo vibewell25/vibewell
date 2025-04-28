@@ -44,7 +44,7 @@ export function addBookmark(bookmark: Omit<Bookmark, 'timestamp'>): Bookmark {
 
     // Check if already bookmarked
     const existingIndex = bookmarks.findIndex(
-      b => b.id === bookmark.id && b.type === bookmark.type
+      (b) => b.id === bookmark.id && b.type === bookmark.type,
     );
 
     if (existingIndex >= 0) {
@@ -69,7 +69,7 @@ export function addBookmark(bookmark: Omit<Bookmark, 'timestamp'>): Bookmark {
 export function removeBookmark(id: string, type: Bookmark['type']): boolean {
   try {
     const bookmarks = getBookmarks();
-    const filteredBookmarks = bookmarks.filter(b => !(b.id === id && b.type === type));
+    const filteredBookmarks = bookmarks.filter((b) => !(b.id === id && b.type === type));
 
     if (filteredBookmarks.length !== bookmarks.length) {
       localStorage.setItem(BOOKMARKS_STORAGE_KEY, JSON.stringify(filteredBookmarks));
@@ -88,7 +88,7 @@ export function removeBookmark(id: string, type: Bookmark['type']): boolean {
  */
 export function isBookmarked(id: string, type: Bookmark['type']): boolean {
   const bookmarks = getBookmarks();
-  return bookmarks.some(b => b.id === id && b.type === type);
+  return bookmarks.some((b) => b.id === id && b.type === type);
 }
 
 /**
@@ -109,7 +109,7 @@ export function trackRecentView(item: Omit<Bookmark, 'timestamp'>): void {
     const recentViews: RecentView[] = storedRecentViews ? JSON.parse(storedRecentViews) : [];
 
     // Check if already viewed
-    const existingIndex = recentViews.findIndex(v => v.id === item.id && v.type === item.type);
+    const existingIndex = recentViews.findIndex((v) => v.id === item.id && v.type === item.type);
     const now = new Date().toISOString();
 
     if (existingIndex >= 0) {

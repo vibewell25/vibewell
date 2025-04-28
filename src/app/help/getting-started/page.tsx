@@ -1,7 +1,7 @@
 'use client';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { 
 import { Icons } from '@/components/icons';
   ChevronRightIcon,

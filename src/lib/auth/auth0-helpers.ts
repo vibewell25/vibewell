@@ -1,5 +1,4 @@
 import { getSession, updateSession } from '@auth0/nextjs-auth0';
-import { cookies } from 'next/headers';
 
 // Interface for Auth0 user profile
 export interface Auth0UserProfile {

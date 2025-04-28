@@ -87,9 +87,10 @@ export class FraudDetectionService {
       // Calculate features
       const features: Record<string, number> = {
         actionFrequency: recentActions.length,
-        uniqueIPs: new Set(recentActions.map(a => a.ip)).size,
-        uniqueUserAgents: new Set(recentActions.map(a => a.userAgent)).size,
-        suspiciousActionCount: recentActions.filter(a => this.isSuspiciousAction(a.action)).length,
+        uniqueIPs: new Set(recentActions.map((a) => a.ip)).size,
+        uniqueUserAgents: new Set(recentActions.map((a) => a.userAgent)).size,
+        suspiciousActionCount: recentActions.filter((a) => this.isSuspiciousAction(a.action))
+          .length,
         timeSinceLastAction: this.getTimeSinceLastAction(recentActions),
         locationVariance: await this.calculateLocationVariance(recentActions),
         riskScore: await this.getUserRiskScore(userId),
@@ -180,10 +181,10 @@ export class FraudDetectionService {
     const actions = await this.redis.zrangebyscore(
       `user:actions:${userId}`,
       since.getTime(),
-      '+inf'
+      '+inf',
     );
 
-    return actions.map(action => JSON.parse(action));
+    return actions.map((action) => JSON.parse(action));
   }
 
   /**
@@ -206,7 +207,7 @@ export class FraudDetectionService {
   private getTimeSinceLastAction(actions: UserBehavior[]): number {
     if (actions.length === 0) return Infinity;
 
-    const lastActionTime = Math.max(...actions.map(a => a.timestamp.getTime()));
+    const lastActionTime = Math.max(...actions.map((a) => a.timestamp.getTime()));
     return Date.now() - lastActionTime;
   }
 
@@ -218,7 +219,7 @@ export class FraudDetectionService {
 
     // This would typically involve geolocation lookup and distance calculation
     // For now, we'll just check if IPs are different
-    const uniqueIPs = new Set(actions.map(a => a.ip));
+    const uniqueIPs = new Set(actions.map((a) => a.ip));
     return uniqueIPs.size > 1 ? 1000 : 0;
   }
 
@@ -231,7 +232,7 @@ export class FraudDetectionService {
     if (scores.length === 0) return 0;
 
     const avgScore =
-      scores.map(s => JSON.parse(s).score).reduce((a, b) => a + b, 0) / scores.length;
+      scores.map((s) => JSON.parse(s).score).reduce((a, b) => a + b, 0) / scores.length;
 
     return avgScore;
   }

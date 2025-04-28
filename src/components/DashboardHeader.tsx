@@ -8,7 +8,7 @@ interface DashboardHeaderProps {
 
 const DashboardHeader = ({ heading, text, children }: DashboardHeaderProps) => {
   return (
-    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6 p-6 pb-0">
+    <div className="mb-6 flex flex-col gap-4 p-6 pb-0 md:flex-row md:items-center md:justify-between">
       <div className="grid gap-1">
         <h1 className="text-2xl font-bold tracking-tight">{heading}</h1>
         {text && <p className="text-muted-foreground">{text}</p>}
@@ -18,4 +18,4 @@ const DashboardHeader = ({ heading, text, children }: DashboardHeaderProps) => {
   );
 };
 
-export default DashboardHeader; 
+export default DashboardHeader;

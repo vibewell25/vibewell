@@ -50,15 +50,7 @@ export const AccessibleToggle: React.FC<AccessibleToggleProps> = ({
           aria-checked={checked}
           aria-labelledby={`${toggleId}-label`}
           aria-describedby={`${errorId} ${helperId}`}
-          className={`
-            relative inline-flex flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent
-            transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2
-            ${checked ? 'bg-primary' : 'bg-gray-200'}
-            ${error ? 'focus:ring-red-500' : 'focus:ring-primary'}
-            ${sizeStyles[size]}
-            ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
-            ${className}
-          `}
+          className={`relative inline-flex flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 ${checked ? 'bg-primary' : 'bg-gray-200'} ${error ? 'focus:ring-red-500' : 'focus:ring-primary'} ${sizeStyles[size]} ${disabled ? 'cursor-not-allowed opacity-50' : ''} ${className} `}
           onClick={() => {
             if (onChange) {
               const event = {
@@ -71,11 +63,7 @@ export const AccessibleToggle: React.FC<AccessibleToggleProps> = ({
         >
           <span
             aria-hidden="true"
-            className={`
-              inline-block transform rounded-full bg-white shadow transition duration-200 ease-in-out
-              ${checked ? 'translate-x-full' : 'translate-x-0'}
-              ${dotSizeStyles[size]}
-            `}
+            className={`inline-block transform rounded-full bg-white shadow transition duration-200 ease-in-out ${checked ? 'translate-x-full' : 'translate-x-0'} ${dotSizeStyles[size]} `}
           />
         </button>
         <label
@@ -84,7 +72,7 @@ export const AccessibleToggle: React.FC<AccessibleToggleProps> = ({
           className="ml-3 block text-sm font-medium text-gray-700"
         >
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="ml-1 text-red-500">*</span>}
         </label>
       </div>
 

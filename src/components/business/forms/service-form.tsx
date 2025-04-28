@@ -1,23 +1,10 @@
-'use client';
-
+'use client';;
 import { useState } from 'react';
-import { UseFormReturn } from 'react-hook-form';
-import {
-  BusinessProfileFormValues,
-  ServiceFormProps,
-} from '@/components/business/business-profile-wizard';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { ServiceFormProps } from '@/components/business/business-profile-wizard';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -35,7 +22,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { PenLine, Plus, Scissors, Sparkles, Tag, Trash, DollarSign } from 'lucide-react';
+import { Plus, Scissors, Trash, DollarSign } from 'lucide-react';
 
 // Service categories for beauty and wellness businesses
 const SERVICE_CATEGORIES = [
@@ -213,7 +200,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
 
   // Delete a service
   const deleteService = (serviceId: string) => {
-    const updatedServices = services.filter(service => service.id !== serviceId);
+    const updatedServices = services.filter((service) => service.id !== serviceId);
     form.setValue('services', updatedServices, { shouldValidate: true });
   };
 
@@ -225,7 +212,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="mb-6 flex items-center gap-2">
         <Scissors className="h-5 w-5 text-muted-foreground" />
         <h2 className="text-xl font-semibold">Services & Pricing</h2>
       </div>
@@ -236,7 +223,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
           <CardDescription>List the services you offer with pricing and duration</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="space-y-4">
               <FormItem>
                 <FormLabel>Service Name</FormLabel>
@@ -244,7 +231,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
                   <Input
                     placeholder="e.g. Haircut & Style"
                     value={newServiceName}
-                    onChange={e => setNewServiceName(e.target.value)}
+                    onChange={(e) => setNewServiceName(e.target.value)}
                   />
                 </FormControl>
               </FormItem>
@@ -258,7 +245,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {SERVICE_CATEGORIES.map(category => (
+                    {SERVICE_CATEGORIES.map((category) => (
                       <SelectItem key={category.value} value={category.value}>
                         {category.label}
                       </SelectItem>
@@ -278,8 +265,8 @@ export function ServiceForm({ form }: ServiceFormProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
                       {SERVICE_CATEGORIES.find(
-                        c => c.value === selectedCategory
-                      )?.subcategories.map(sub => (
+                        (c) => c.value === selectedCategory,
+                      )?.subcategories.map((sub) => (
                         <DropdownMenuItem key={sub}>{sub}</DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>
@@ -293,13 +280,13 @@ export function ServiceForm({ form }: ServiceFormProps) {
                 <FormLabel>Price ($)</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <DollarSign className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
                     <Input
                       type="number"
                       placeholder="e.g. 75"
                       className="pl-10"
                       value={newServicePrice}
-                      onChange={e => setNewServicePrice(e.target.value)}
+                      onChange={(e) => setNewServicePrice(e.target.value)}
                       min={0}
                       step="0.01"
                     />
@@ -316,7 +303,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {SERVICE_DURATIONS.map(duration => (
+                    {SERVICE_DURATIONS.map((duration) => (
                       <SelectItem key={duration.value} value={duration.value}>
                         {duration.label}
                       </SelectItem>
@@ -333,7 +320,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
                       type="number"
                       placeholder="Enter minutes"
                       value={customDuration}
-                      onChange={e => setCustomDuration(e.target.value)}
+                      onChange={(e) => setCustomDuration(e.target.value)}
                       min={1}
                     />
                   </FormControl>
@@ -348,7 +335,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
               <Textarea
                 placeholder="Describe what this service includes..."
                 value={newServiceDescription}
-                onChange={e => setNewServiceDescription(e.target.value)}
+                onChange={(e) => setNewServiceDescription(e.target.value)}
                 rows={3}
               />
             </FormControl>
@@ -361,21 +348,21 @@ export function ServiceForm({ form }: ServiceFormProps) {
 
           {services.length > 0 && (
             <div className="mt-6">
-              <h3 className="font-medium mb-3">Your Services</h3>
+              <h3 className="mb-3 font-medium">Your Services</h3>
               <ScrollArea className="h-[300px] rounded-md border">
-                <div className="p-4 space-y-4">
-                  {services.map(service => (
+                <div className="space-y-4 p-4">
+                  {services.map((service) => (
                     <div
                       key={service.id}
-                      className="flex items-start justify-between bg-muted/50 rounded-lg p-4"
+                      className="flex items-start justify-between rounded-lg bg-muted/50 p-4"
                     >
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <h4 className="font-medium">{service.name}</h4>
                           {service.category && (
                             <Badge variant="outline" className="text-xs">
-                              {SERVICE_CATEGORIES.find(c => c.value === service.category)?.label ||
-                                service.category}
+                              {SERVICE_CATEGORIES.find((c) => c.value === service.category)
+                                ?.label || service.category}
                             </Badge>
                           )}
                         </div>
@@ -384,7 +371,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
                           {service.duration} minutes
                         </div>
                         {service.description && (
-                          <p className="text-sm text-muted-foreground mt-1">
+                          <p className="mt-1 text-sm text-muted-foreground">
                             {service.description}
                           </p>
                         )}

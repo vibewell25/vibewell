@@ -32,7 +32,7 @@ export class BeautyServiceService {
         aftercare: data.aftercare,
         practitioners: data.practitionerIds
           ? {
-              connect: data.practitionerIds.map(id => ({ id })),
+              connect: data.practitionerIds.map((id) => ({ id })),
             }
           : undefined,
       },
@@ -135,7 +135,7 @@ export class BeautyServiceService {
         aftercare: data.aftercare,
         practitioners: data.practitionerIds
           ? {
-              set: data.practitionerIds.map(id => ({ id })),
+              set: data.practitionerIds.map((id) => ({ id })),
             }
           : undefined,
       },

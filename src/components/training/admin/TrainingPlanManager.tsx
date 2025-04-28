@@ -1,11 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, Button, Input, Select, Dialog } from '@/components/ui';
-import { getAllTrainingPlans, assignTrainingPlan, bulkUpdateModuleOrder } from '@/lib/api/training-admin';
+import { Card, Button, Select, Dialog } from '@/components/ui';
+import {
+  getAllTrainingPlans,
+  assignTrainingPlan,
+  bulkUpdateModuleOrder,
+} from '@/lib/api/training-admin';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, PencilIcon } from '@heroicons/react/24/outline';
 
 interface DraggableModuleProps {
   id: string;
@@ -35,7 +39,7 @@ const DraggableModule = ({ id, name, order, onMove }: DraggableModuleProps) => {
   return (
     <div
       ref={(node) => drag(drop(node))}
-      className={`p-4 bg-white border rounded-lg mb-2 cursor-move ${
+      className={`mb-2 cursor-move rounded-lg border bg-white p-4 ${
         isDragging ? 'opacity-50' : ''
       }`}
     >
@@ -74,7 +78,7 @@ export default function TrainingPlanManager() {
 
     const dragModule = selectedPlan.modules.find((m: any) => m.id === dragId);
     const hoverModule = selectedPlan.modules.find((m: any) => m.id === hoverId);
-    
+
     if (!dragModule || !hoverModule) return;
 
     const newModules = [...selectedPlan.modules];
@@ -124,13 +128,13 @@ export default function TrainingPlanManager() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Plans List */}
         <Card className="p-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Training Plans</h2>
             <Button size="sm">
-              <PlusIcon className="h-4 w-4 mr-1" />
+              <PlusIcon className="mr-1 h-4 w-4" />
               New Plan
             </Button>
           </div>
@@ -138,17 +142,15 @@ export default function TrainingPlanManager() {
             {plans.map((plan) => (
               <div
                 key={plan.id}
-                className={`p-3 rounded-lg cursor-pointer ${
+                className={`cursor-pointer rounded-lg p-3 ${
                   selectedPlan?.id === plan.id
-                    ? 'bg-blue-50 border-blue-200'
+                    ? 'border-blue-200 bg-blue-50'
                     : 'bg-gray-50 hover:bg-gray-100'
                 }`}
                 onClick={() => setSelectedPlan(plan)}
               >
                 <h3 className="font-medium">{plan.title}</h3>
-                <p className="text-sm text-gray-500">
-                  {plan.modules.length} modules
-                </p>
+                <p className="text-sm text-gray-500">{plan.modules.length} modules</p>
               </div>
             ))}
           </div>
@@ -156,18 +158,15 @@ export default function TrainingPlanManager() {
 
         {/* Selected Plan Details */}
         {selectedPlan && (
-          <div className="md:col-span-2 space-y-6">
+          <div className="space-y-6 md:col-span-2">
             <Card className="p-6">
-              <div className="flex items-start justify-between mb-6">
+              <div className="mb-6 flex items-start justify-between">
                 <div>
                   <h2 className="text-xl font-bold">{selectedPlan.title}</h2>
                   <p className="text-gray-500">{selectedPlan.description}</p>
                 </div>
                 <div className="space-x-2">
-                  <Button
-                    variant="outline"
-                    onClick={() => setIsAssignDialogOpen(true)}
-                  >
+                  <Button variant="outline" onClick={() => setIsAssignDialogOpen(true)}>
                     Assign to Staff
                   </Button>
                   <Button variant="outline">
@@ -176,7 +175,7 @@ export default function TrainingPlanManager() {
                 </div>
               </div>
 
-              <h3 className="text-lg font-semibold mb-4">Modules</h3>
+              <h3 className="mb-4 text-lg font-semibold">Modules</h3>
               <div className="space-y-2">
                 {selectedPlan.modules.map((module: any) => (
                   <DraggableModule
@@ -192,35 +191,23 @@ export default function TrainingPlanManager() {
 
             {/* Progress Overview */}
             <Card className="p-6">
-              <h3 className="text-lg font-semibold mb-4">Progress Overview</h3>
+              <h3 className="mb-4 text-lg font-semibold">Progress Overview</h3>
               <div className="grid grid-cols-3 gap-4">
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="text-sm font-medium text-gray-500">
-                    Assigned Staff
-                  </h4>
-                  <p className="mt-1 text-2xl font-semibold">
-                    {selectedPlan.staff?.length || 0}
-                  </p>
+                <div className="rounded-lg bg-gray-50 p-4">
+                  <h4 className="text-sm font-medium text-gray-500">Assigned Staff</h4>
+                  <p className="mt-1 text-2xl font-semibold">{selectedPlan.staff?.length || 0}</p>
                 </div>
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="text-sm font-medium text-gray-500">
-                    Completion Rate
-                  </h4>
+                <div className="rounded-lg bg-gray-50 p-4">
+                  <h4 className="text-sm font-medium text-gray-500">Completion Rate</h4>
                   <p className="mt-1 text-2xl font-semibold">
                     {selectedPlan.progress?.toFixed(1)}%
                   </p>
                 </div>
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="text-sm font-medium text-gray-500">
-                    Average Score
-                  </h4>
+                <div className="rounded-lg bg-gray-50 p-4">
+                  <h4 className="text-sm font-medium text-gray-500">Average Score</h4>
                   <p className="mt-1 text-2xl font-semibold">
                     {selectedPlan.modules
-                      .reduce(
-                        (acc: number, m: any) =>
-                          acc + (m.progress?.[0]?.score || 0),
-                        0
-                      )
+                      .reduce((acc: number, m: any) => acc + (m.progress?.[0]?.score || 0), 0)
                       .toFixed(1)}
                   </p>
                 </div>
@@ -249,10 +236,7 @@ export default function TrainingPlanManager() {
             ]}
           />
           <div className="flex justify-end space-x-2">
-            <Button
-              variant="outline"
-              onClick={() => setIsAssignDialogOpen(false)}
-            >
+            <Button variant="outline" onClick={() => setIsAssignDialogOpen(false)}>
               Cancel
             </Button>
             <Button onClick={handleAssign}>Assign</Button>
@@ -261,4 +245,4 @@ export default function TrainingPlanManager() {
       </Dialog>
     </DndProvider>
   );
-} 
+}

@@ -7,7 +7,7 @@ declare module 'react-native' {
         startDate: Date,
         endDate: Date,
         description?: string,
-        location?: string
+        location?: string,
       ): Promise<{ eventId: string }>;
       updateEvent(
         eventId: string,
@@ -15,7 +15,7 @@ declare module 'react-native' {
         startDate: Date,
         endDate: Date,
         description?: string,
-        location?: string
+        location?: string,
       ): Promise<boolean>;
       deleteEvent(eventId: string): Promise<boolean>;
     };

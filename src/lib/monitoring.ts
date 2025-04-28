@@ -24,7 +24,7 @@ export function initializeMonitoring() {
     sdk
       .start()
       .then(() => console.log('Monitoring initialized'))
-      .catch(error => console.error('Error initializing monitoring:', error));
+      .catch((error) => console.error('Error initializing monitoring:', error));
   }
 }
 
@@ -32,6 +32,6 @@ process.on('SIGTERM', () => {
   sdk
     .shutdown()
     .then(() => console.log('Monitoring shut down'))
-    .catch(error => console.error('Error shutting down monitoring:', error))
+    .catch((error) => console.error('Error shutting down monitoring:', error))
     .finally(() => process.exit(0));
 });

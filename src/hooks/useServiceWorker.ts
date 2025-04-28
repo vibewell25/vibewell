@@ -20,12 +20,11 @@ export function useServiceWorker() {
 
     const registerServiceWorker = async () => {
       try {
-        setState(prev => ({ ...prev, isUpdating: true }));
-        
-        const registration = await navigator.serviceWorker.register(
-          '/service-worker.js',
-          { scope: '/' }
-        );
+        setState((prev) => ({ ...prev, isUpdating: true }));
+
+        const registration = await navigator.serviceWorker.register('/service-worker.js', {
+          scope: '/',
+        });
 
         // Handle updates
         registration.addEventListener('updatefound', () => {
@@ -36,9 +35,9 @@ export function useServiceWorker() {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
               // New content is available, show update prompt
               const shouldUpdate = window.confirm(
-                'A new version of the app is available. Would you like to update now?'
+                'A new version of the app is available. Would you like to update now?',
               );
-              
+
               if (shouldUpdate) {
                 newWorker.postMessage({ type: 'SKIP_WAITING' });
                 window.location.reload();
@@ -47,14 +46,14 @@ export function useServiceWorker() {
           });
         });
 
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           registration,
           isUpdating: false,
           error: null,
         }));
       } catch (error) {
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           isUpdating: false,
           error: error instanceof Error ? error : new Error('Failed to register service worker'),
@@ -82,13 +81,13 @@ export function useServiceWorker() {
 
   const update = async () => {
     if (!state.registration) return;
-    
+
     try {
-      setState(prev => ({ ...prev, isUpdating: true }));
+      setState((prev) => ({ ...prev, isUpdating: true }));
       await state.registration.update();
-      setState(prev => ({ ...prev, isUpdating: false }));
+      setState((prev) => ({ ...prev, isUpdating: false }));
     } catch (error) {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         isUpdating: false,
         error: error instanceof Error ? error : new Error('Failed to update service worker'),
@@ -100,4 +99,4 @@ export function useServiceWorker() {
     ...state,
     update,
   };
-} 
+}

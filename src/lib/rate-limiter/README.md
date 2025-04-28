@@ -73,7 +73,7 @@ const resolvers = {
         // Implementation
       },
       'createUser',
-      { max: 3, windowMs: 60 * 60 * 1000 } // 3 per hour
+      { max: 3, windowMs: 60 * 60 * 1000 }, // 3 per hour
     ),
   },
 };
@@ -100,7 +100,7 @@ wss.on('connection', async (ws, req) => {
   webSocketRateLimiter.registerConnection(ip, connectionId);
 
   // Handle messages with rate limiting
-  ws.on('message', async data => {
+  ws.on('message', async (data) => {
     const canSendMessage = await webSocketRateLimiter.canSendMessage(ip, connectionId, data.length);
 
     if (!canSendMessage) {
@@ -130,13 +130,13 @@ const myCustomLimiter = createRateLimiter({
   keyPrefix: 'custom:',
 
   // Optional custom identifier function
-  identifierGenerator: req => {
+  identifierGenerator: (req) => {
     // Use API key or custom header if present, otherwise use IP
     return req.headers.get('x-api-key') || req.ip;
   },
 
   // Optional skip function
-  skip: req => {
+  skip: (req) => {
     // Skip rate limiting for health checks
     return req.url.includes('/health');
   },

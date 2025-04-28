@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Icons } from '@/components/ui/icons';
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/use-unified-auth';
@@ -95,7 +95,7 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
       if (!response.ok) throw new Error('Failed to like post');
 
       setPosts(
-        posts.map(post => {
+        posts.map((post) => {
           if (post.id === postId) {
             return {
               ...post,
@@ -104,7 +104,7 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
             };
           }
           return post;
-        })
+        }),
       );
     } catch (error) {
       console.error('Error liking post:', error);
@@ -137,7 +137,7 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
               <Input
                 placeholder="Share something..."
                 value={newPost}
-                onChange={e => setNewPost(e.target.value)}
+                onChange={(e) => setNewPost(e.target.value)}
                 className="mb-2"
               />
               <Button onClick={handleCreatePost} disabled={!newPost.trim()}>
@@ -150,7 +150,7 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
 
       {/* Posts Feed */}
       <div className="space-y-4">
-        {posts.map(post => (
+        {posts.map((post) => (
           <Card key={post.id}>
             <CardHeader>
               <div className="flex items-center space-x-4">
@@ -171,7 +171,7 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
                 <img
                   src={post.imageUrl}
                   alt="Post"
-                  className="rounded-lg mb-4 max-h-96 w-full object-cover"
+                  className="mb-4 max-h-96 w-full rounded-lg object-cover"
                 />
               )}
               <div className="flex items-center space-x-4">
@@ -181,11 +181,11 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
                   onClick={() => handleLikePost(post.id)}
                   className={post.hasLiked ? 'text-blue-600' : ''}
                 >
-                  <Icons.Heart className="h-5 w-5 mr-1" />
+                  <Icons.Heart className="mr-1 h-5 w-5" />
                   {post.likes}
                 </Button>
                 <Button variant="ghost" size="sm">
-                  <Icons.MessageCircle className="h-5 w-5 mr-1" />
+                  <Icons.MessageCircle className="mr-1 h-5 w-5" />
                   {post.comments}
                 </Button>
               </div>

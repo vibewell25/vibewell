@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 import { Steps } from '@/components/ui/steps';
 import { BookingCalendar } from './BookingCalendar';
 import { BookingForm } from './booking-form';
@@ -32,7 +32,7 @@ export function BookingFlow({ services, practitionerId, practitionerName }: Book
   const [currentStep, setCurrentStep] = useState<BookingStep>('service');
   const [selectedService, setSelectedService] = useState<(typeof services)[0] | null>(null);
   const [selectedDateTime, setSelectedDateTime] = useState<{ date: Date; time: string } | null>(
-    null
+    null,
   );
   const [bookingDetails, setBookingDetails] = useState<{
     notes?: string;
@@ -147,24 +147,24 @@ export function BookingFlow({ services, practitionerId, practitionerName }: Book
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="mx-auto max-w-3xl">
       <Steps
         steps={steps}
-        currentStep={steps.findIndex(step => step.id === currentStep)}
+        currentStep={steps.findIndex((step) => step.id === currentStep)}
         className="mb-8"
       />
 
       {currentStep === 'service' && (
         <div className="grid gap-4 md:grid-cols-2">
-          {services.map(service => (
+          {services.map((service) => (
             <Card
               key={service.id}
-              className="p-4 cursor-pointer hover:bg-muted transition-colors"
+              className="cursor-pointer p-4 transition-colors hover:bg-muted"
               onClick={() => handleServiceSelect(service)}
             >
               <h3 className="font-semibold">{service.name}</h3>
               <p className="text-sm text-muted-foreground">{service.description}</p>
-              <div className="mt-2 flex justify-between items-center">
+              <div className="mt-2 flex items-center justify-between">
                 <span className="font-medium">${service.price}</span>
                 <span className="text-sm text-muted-foreground">{service.duration} min</span>
               </div>
@@ -202,7 +202,7 @@ export function BookingFlow({ services, practitionerId, practitionerName }: Book
 
       {currentStep === 'confirmation' && (
         <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-4">Booking Confirmed!</h2>
+          <h2 className="mb-4 text-2xl font-semibold">Booking Confirmed!</h2>
           <p className="mb-6">
             Your appointment has been scheduled for {selectedDateTime?.date.toLocaleDateString()} at{' '}
             {selectedDateTime?.time}

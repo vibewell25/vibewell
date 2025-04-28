@@ -1,11 +1,10 @@
 import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { Event } from '@/types/events';
-import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -62,19 +61,19 @@ export function EventGroupsNetworking({
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="groups">
-              <Icons.UserGroupIcon className="h-4 w-4 mr-2" />
+              <Icons.UserGroupIcon className="mr-2 h-4 w-4" />
               Groups
             </TabsTrigger>
             <TabsTrigger value="chat">
-              <Icons.ChatBubbleLeftIcon className="h-4 w-4 mr-2" />
+              <Icons.ChatBubbleLeftIcon className="mr-2 h-4 w-4" />
               Chat
             </TabsTrigger>
             <TabsTrigger value="photos">
-              <Icons.PhotoIcon className="h-4 w-4 mr-2" />
+              <Icons.PhotoIcon className="mr-2 h-4 w-4" />
               Photos
             </TabsTrigger>
             <TabsTrigger value="networking">
-              <Icons.SparklesIcon className="h-4 w-4 mr-2" />
+              <Icons.SparklesIcon className="mr-2 h-4 w-4" />
               Networking
             </TabsTrigger>
           </TabsList>
@@ -90,7 +89,7 @@ export function EventGroupsNetworking({
                   <Label>Group Name</Label>
                   <Input
                     value={newGroup.name}
-                    onChange={e => setNewGroup({ ...newGroup, name: e.target.value })}
+                    onChange={(e) => setNewGroup({ ...newGroup, name: e.target.value })}
                     placeholder="Group name"
                   />
                 </div>
@@ -98,7 +97,7 @@ export function EventGroupsNetworking({
                   <Label>Description (Optional)</Label>
                   <Input
                     value={newGroup.description}
-                    onChange={e => setNewGroup({ ...newGroup, description: e.target.value })}
+                    onChange={(e) => setNewGroup({ ...newGroup, description: e.target.value })}
                     placeholder="Group description"
                   />
                 </div>
@@ -108,9 +107,9 @@ export function EventGroupsNetworking({
             {event.groupId && (
               <div className="space-y-2">
                 <Label>Event Group</Label>
-                <div className="p-4 border rounded-md">
+                <div className="rounded-md border p-4">
                   <h4 className="font-medium">{event.groupName}</h4>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     Join the group to connect with other participants
                   </p>
                   <Button className="mt-2">Join Group</Button>
@@ -128,7 +127,7 @@ export function EventGroupsNetworking({
                   <div className="flex gap-2">
                     <Input
                       value={newMessage}
-                      onChange={e => setNewMessage(e.target.value)}
+                      onChange={(e) => setNewMessage(e.target.value)}
                       placeholder="Type your message..."
                     />
                     <Button onClick={handleMessageSend}>Send</Button>
@@ -138,7 +137,7 @@ export function EventGroupsNetworking({
                   <Label>Chat Messages</Label>
                   <div className="space-y-2">
                     {/* Sample chat messages - in a real app, these would come from a chat service */}
-                    <div className="p-2 border rounded-md">
+                    <div className="rounded-md border p-2">
                       <div className="flex items-start gap-2">
                         <Avatar>
                           <AvatarImage src="/images/avatars/user1.jpg" />
@@ -154,7 +153,7 @@ export function EventGroupsNetworking({
                 </div>
               </>
             ) : (
-              <div className="text-center py-8 text-muted-foreground">
+              <div className="py-8 text-center text-muted-foreground">
                 Chat is not enabled for this event
               </div>
             )}
@@ -172,10 +171,10 @@ export function EventGroupsNetworking({
                   <div className="space-y-2">
                     <Label>Event Photos</Label>
                     <div className="grid grid-cols-2 gap-4">
-                      {event.photos.map(photo => (
+                      {event.photos.map((photo) => (
                         <div
                           key={photo.id}
-                          className="relative aspect-square rounded-md overflow-hidden"
+                          className="relative aspect-square overflow-hidden rounded-md"
                         >
                           <Image
                             src={photo.url}
@@ -184,9 +183,9 @@ export function EventGroupsNetworking({
                             fill
                             sizes="(max-width: 640px) 50vw, 33vw"
                           />
-                          <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/50 to-transparent">
-                            <p className="text-white text-sm">{photo.caption}</p>
-                            <p className="text-white/70 text-xs">By {photo.uploadedBy.name}</p>
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-2">
+                            <p className="text-sm text-white">{photo.caption}</p>
+                            <p className="text-xs text-white/70">By {photo.uploadedBy.name}</p>
                           </div>
                         </div>
                       ))}
@@ -195,7 +194,7 @@ export function EventGroupsNetworking({
                 )}
               </>
             ) : (
-              <div className="text-center py-8 text-muted-foreground">
+              <div className="py-8 text-center text-muted-foreground">
                 Photo gallery is not enabled for this event
               </div>
             )}
@@ -207,10 +206,10 @@ export function EventGroupsNetworking({
               <>
                 <div className="space-y-2">
                   <Label>Networking Preferences</Label>
-                  <div className="p-4 border rounded-md space-y-2">
+                  <div className="space-y-2 rounded-md border p-4">
                     <p className="text-sm">Match with other participants based on:</p>
                     <div className="flex gap-2">
-                      {event.networkingPreferences?.matchBy.map(criteria => (
+                      {event.networkingPreferences?.matchBy.map((criteria) => (
                         <Badge key={criteria} variant="secondary">
                           {criteria}
                         </Badge>
@@ -225,7 +224,7 @@ export function EventGroupsNetworking({
                 <div className="space-y-2">
                   <Label>Suggested Matches</Label>
                   <div className="space-y-2">
-                    <div className="p-4 border rounded-md">
+                    <div className="rounded-md border p-4">
                       <div className="flex items-center gap-4">
                         <Avatar>
                           <AvatarImage src="/images/avatars/user2.jpg" />
@@ -244,7 +243,7 @@ export function EventGroupsNetworking({
                 </div>
               </>
             ) : (
-              <div className="text-center py-8 text-muted-foreground">
+              <div className="py-8 text-center text-muted-foreground">
                 Networking features are not enabled for this event
               </div>
             )}

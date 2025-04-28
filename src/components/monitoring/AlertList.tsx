@@ -165,4 +165,4 @@ const AlertList: React.FC<AlertListProps> = ({ alerts, onDismiss }) => {
   );
 };
 
-export default AlertList; 
+export default AlertList;

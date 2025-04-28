@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { resolve, relative } from 'path';
+import { resolve } from 'path';
 import * as parser from '@babel/parser';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
@@ -37,7 +37,7 @@ export class TreeShaker {
       analyzedFiles: 0,
       unusedExports: 0,
       deadCode: 0,
-      bundleSizeReduction: 0
+      bundleSizeReduction: 0,
     };
 
     try {
@@ -64,7 +64,11 @@ export class TreeShaker {
     }
   }
 
-  private async buildDependencyGraph(filePath: string, stats: TreeShakingStats, visited = new Set<string>()): Promise<void> {
+  private async buildDependencyGraph(
+    filePath: string,
+    stats: TreeShakingStats,
+    visited = new Set<string>(),
+  ): Promise<void> {
     if (visited.has(filePath)) return;
     visited.add(filePath);
 
@@ -74,13 +78,13 @@ export class TreeShaker {
 
       const ast = parser.parse(code, {
         sourceType: 'module',
-        plugins: ['typescript', 'jsx']
+        plugins: ['typescript', 'jsx'],
       });
 
       this.dependencyGraph[filePath] = {
         imports: new Set(),
         exports: new Set(),
-        usedExports: new Set()
+        usedExports: new Set(),
       };
 
       const fileGraph = this.dependencyGraph[filePath];
@@ -90,14 +94,16 @@ export class TreeShaker {
         ImportDeclaration: (path) => {
           const source = path.node.source;
           if (!source || typeof source.value !== 'string') return;
-          
+
           const importPath = resolve(filePath, '..', source.value);
           fileGraph.imports.add(importPath);
-          
-          path.node.specifiers.forEach(specifier => {
-            if (t.isImportSpecifier(specifier) && 
-                t.isIdentifier(specifier.imported) && 
-                t.isIdentifier(specifier.local)) {
+
+          path.node.specifiers.forEach((specifier) => {
+            if (
+              t.isImportSpecifier(specifier) &&
+              t.isIdentifier(specifier.imported) &&
+              t.isIdentifier(specifier.local)
+            ) {
               const importedName = specifier.imported.name;
               const localName = specifier.local.name;
               if (importedName !== localName) {
@@ -107,7 +113,7 @@ export class TreeShaker {
           });
         },
         ExportNamedDeclaration: (path) => {
-          path.node.specifiers.forEach(specifier => {
+          path.node.specifiers.forEach((specifier) => {
             if (t.isExportSpecifier(specifier) && t.isIdentifier(specifier.exported)) {
               fileGraph.exports.add(specifier.exported.name);
             }
@@ -115,15 +121,16 @@ export class TreeShaker {
         },
         ExportDefaultDeclaration: () => {
           fileGraph.exports.add('default');
-        }
+        },
       });
 
       stats.analyzedFiles++;
 
       // Recursively analyze dependencies
-      const importPaths = Array.from(fileGraph.imports)
-        .filter(importPath => !importPath.includes(':'));
-      
+      const importPaths = Array.from(fileGraph.imports).filter(
+        (importPath) => !importPath.includes(':'),
+      );
+
       for (const importPath of importPaths) {
         await this.buildDependencyGraph(importPath, stats, visited);
       }
@@ -138,7 +145,7 @@ export class TreeShaker {
     const markUsed = (filePath: string, exportName: string) => {
       const file = this.dependencyGraph[filePath];
       if (!file) return;
-      
+
       const fileExports = file.exports;
       const fileUsed = file.usedExports;
 
@@ -148,7 +155,7 @@ export class TreeShaker {
 
       if (!visited.has(filePath)) {
         visited.add(filePath);
-        Array.from(file.imports).forEach(importPath => {
+        Array.from(file.imports).forEach((importPath) => {
           if (importPath.includes(':')) {
             const [path, name] = importPath.split(':');
             if (path && name) {
@@ -161,15 +168,15 @@ export class TreeShaker {
       }
     };
 
-    Object.keys(this.dependencyGraph).forEach(filePath => {
+    Object.keys(this.dependencyGraph).forEach((filePath) => {
       markUsed(filePath, '*');
     });
   }
 
   private calculateUnusedExports(): number {
     let unusedCount = 0;
-    Object.values(this.dependencyGraph).forEach(file => {
-      file.exports.forEach(exportName => {
+    Object.values(this.dependencyGraph).forEach((file) => {
+      file.exports.forEach((exportName) => {
         if (!file.usedExports.has(exportName)) {
           unusedCount++;
         }
@@ -185,7 +192,7 @@ export class TreeShaker {
         const code = readFileSync(filePath, 'utf-8');
         const ast = parser.parse(code, {
           sourceType: 'module',
-          plugins: ['typescript', 'jsx']
+          plugins: ['typescript', 'jsx'],
         });
 
         traverse(ast, {
@@ -203,7 +210,7 @@ export class TreeShaker {
                 deadCodeCount++;
               }
             }
-          }
+          },
         });
       } catch (error) {
         console.error(`Error analyzing dead code in ${filePath}:`, error);
@@ -221,7 +228,7 @@ export class TreeShaker {
         const code = readFileSync(filePath, 'utf-8');
         const ast = parser.parse(code, {
           sourceType: 'module',
-          plugins: ['typescript', 'jsx']
+          plugins: ['typescript', 'jsx'],
         });
 
         totalSize += code.length;
@@ -229,7 +236,7 @@ export class TreeShaker {
         // Remove unused exports
         traverse(ast, {
           ExportNamedDeclaration(path) {
-            const specifiers = path.node.specifiers.filter(specifier => {
+            const specifiers = path.node.specifiers.filter((specifier) => {
               if (t.isExportSpecifier(specifier) && t.isIdentifier(specifier.exported)) {
                 return file.usedExports.has(specifier.exported.name);
               }
@@ -240,7 +247,7 @@ export class TreeShaker {
             } else {
               path.node.specifiers = specifiers;
             }
-          }
+          },
         });
 
         const { code: optimizedCode } = generate(ast);
@@ -259,7 +266,10 @@ export class TreeShaker {
       this.monitoring.recordMetric(`${this.METRICS_PREFIX}analyzed_files`, stats.analyzedFiles),
       this.monitoring.recordMetric(`${this.METRICS_PREFIX}unused_exports`, stats.unusedExports),
       this.monitoring.recordMetric(`${this.METRICS_PREFIX}dead_code`, stats.deadCode),
-      this.monitoring.recordMetric(`${this.METRICS_PREFIX}bundle_size_reduction`, stats.bundleSizeReduction)
+      this.monitoring.recordMetric(
+        `${this.METRICS_PREFIX}bundle_size_reduction`,
+        stats.bundleSizeReduction,
+      ),
     ]);
   }
 
@@ -268,7 +278,7 @@ export class TreeShaker {
       const code = readFileSync(filePath, 'utf-8');
       const ast = parser.parse(code, {
         sourceType: 'module',
-        plugins: ['typescript', 'jsx']
+        plugins: ['typescript', 'jsx'],
       });
 
       const file = this.dependencyGraph[filePath];
@@ -277,7 +287,7 @@ export class TreeShaker {
       // Remove unused exports
       traverse(ast, {
         ExportNamedDeclaration(path) {
-          const specifiers = path.node.specifiers.filter(specifier => {
+          const specifiers = path.node.specifiers.filter((specifier) => {
             if (t.isExportSpecifier(specifier) && t.isIdentifier(specifier.exported)) {
               return file.usedExports.has(specifier.exported.name);
             }
@@ -290,12 +300,16 @@ export class TreeShaker {
           }
         },
         FunctionDeclaration(path) {
-          if (path.node.id && t.isIdentifier(path.node.id) && !file.usedExports.has(path.node.id.name)) {
+          if (
+            path.node.id &&
+            t.isIdentifier(path.node.id) &&
+            !file.usedExports.has(path.node.id.name)
+          ) {
             path.remove();
           }
         },
         VariableDeclaration(path) {
-          const declarations = path.node.declarations.filter(declaration => {
+          const declarations = path.node.declarations.filter((declaration) => {
             if (t.isIdentifier(declaration.id)) {
               return file.usedExports.has(declaration.id.name);
             }
@@ -306,7 +320,7 @@ export class TreeShaker {
           } else {
             path.node.declarations = declarations;
           }
-        }
+        },
       });
 
       const { code: optimizedCode } = generate(ast);
@@ -314,11 +328,11 @@ export class TreeShaker {
 
       await this.monitoring.recordMetric(
         `${this.METRICS_PREFIX}file_size_reduction`,
-        code.length - optimizedCode.length
+        code.length - optimizedCode.length,
       );
     } catch (error) {
       console.error(`Error optimizing file ${filePath}:`, error);
       throw error;
     }
   }
-} 
+}

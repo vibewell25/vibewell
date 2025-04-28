@@ -1,10 +1,10 @@
 /**
- * @deprecated This component is deprecated. Use the standardized Button component from '@/components/ui/button' instead.
+ * @deprecated This component is deprecated. Use the standardized Button component from '@/components/ui/Button' instead.
  * This is maintained for backwards compatibility only.
  */
 
 import React from 'react';
-import { Button as UIButton } from '../ui/button';
+import { Button as UIButton } from '../ui/Button';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'text';
@@ -28,7 +28,7 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   console.warn(
     'Warning: The Button component from @/components/common/Button is deprecated. ' +
-      'Use the standardized Button component from @/components/ui/button instead.'
+      'Use the standardized Button component from @/components/ui/Button instead.',
   );
 
   // Map variant to standardized variant

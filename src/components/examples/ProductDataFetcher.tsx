@@ -1,20 +1,12 @@
-'use client';
-
-import React from 'react';
+'use client';;
 import { useState, useEffect } from 'react';
 import { useErrorHandler, ErrorSource, ErrorCategory, ErrorSeverity } from '@/utils/error-handler';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { withErrorBoundary } from '@/hooks/useErrorBoundary';
-import { isError, exists } from '@/utils/type-guards';
-import {
-  enhanceError,
-  isNetworkError,
-  isNotFoundError,
-  isServerError,
-  isTimeoutError,
-} from '@/utils/error-utils';
+import { isError } from '@/utils/type-guards';
+import { enhanceError } from '@/utils/error-utils';
 
 interface Product {
   id: string;
@@ -112,7 +104,7 @@ function ProductDataFetcherComponent() {
         component: 'ProductDataFetcher',
         endpoint: '/api/products',
       },
-    }
+    },
   );
 
   // Fetch a single product with custom error handling
@@ -197,7 +189,7 @@ function ProductDataFetcherComponent() {
 
   // UI for testing different error scenarios
   return (
-    <div className="space-y-6">
+    (<div className="space-y-6">
       <div className="flex flex-col space-y-4">
         <h2 className="text-2xl font-bold">Product Data Fetcher</h2>
         <p className="text-gray-600">
@@ -246,14 +238,13 @@ function ProductDataFetcherComponent() {
           Fetch Product
         </Button>
       </div>
-
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {loading ? (
           // Loading skeleton
-          Array(3)
+          (Array(3)
             .fill(0)
             .map((_, index) => (
-              <Card key={index} className="p-4 space-y-3">
+              <Card key={index} className="space-y-3 p-4">
                 <Skeleton className="h-4 w-3/4" />
                 <Skeleton className="h-4 w-1/2" />
                 <Skeleton className="h-20 w-full" />
@@ -262,15 +253,15 @@ function ProductDataFetcherComponent() {
                   <Skeleton className="h-8 w-1/4" />
                 </div>
               </Card>
-            ))
+            )))
         ) : products.length > 0 ? (
           // Products display
-          products.map(product => (
-            <Card key={product.id} className="p-4 space-y-3">
-              <h3 className="font-bold text-lg">{product.name}</h3>
-              <p className="text-green-600 font-medium">${product.price.toFixed(2)}</p>
+          (products.map((product) => (
+            <Card key={product.id} className="space-y-3 p-4">
+              <h3 className="text-lg font-bold">{product.name}</h3>
+              <p className="font-medium text-green-600">${product.price.toFixed(2)}</p>
               <p className="text-gray-600">{product.description}</p>
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <span className={product.inStock ? 'text-green-500' : 'text-red-500'}>
                   {product.inStock ? 'In Stock' : 'Out of Stock'}
                 </span>
@@ -279,18 +270,18 @@ function ProductDataFetcherComponent() {
                 </Button>
               </div>
             </Card>
-          ))
+          )))
         ) : (
           // Empty state
-          <div className="col-span-full flex flex-col items-center justify-center p-8 border rounded-lg">
-            <p className="text-gray-500 mb-4">No products found</p>
+          (<div className="col-span-full flex flex-col items-center justify-center rounded-lg border p-8">
+            <p className="mb-4 text-gray-500">No products found</p>
             <Button variant="outline" onClick={() => fetchProducts()}>
               Retry
             </Button>
-          </div>
+          </div>)
         )}
       </div>
-    </div>
+    </div>)
   );
 }
 

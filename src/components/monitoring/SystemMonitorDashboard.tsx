@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import performanceMonitor from '@/utils/performanceMonitor';
-import { AlertConfig } from '@/types/monitoring';
 import dynamic from 'next/dynamic';
-import { Alert } from './AlertList';
 import { MetricDataPoint } from './SystemMetricsChart';
 
 const DynamicGaugeChart = dynamic(() => import('./GaugeChart'), {
   ssr: false,
-  loading: () => <div>Loading gauge...</div>
+  loading: () => <div>Loading gauge...</div>,
 });
 
 const DynamicSystemMetricsChart = dynamic(() => import('./SystemMetricsChart'), {
   ssr: false,
-  loading: () => <div>Loading metrics chart...</div>
+  loading: () => <div>Loading metrics chart...</div>,
 });
 
 const DynamicAlertList = dynamic(() => import('./AlertList'), {
   ssr: false,
-  loading: () => <div>Loading alerts...</div>
+  loading: () => <div>Loading alerts...</div>,
 });
 
 interface SystemMetrics {
@@ -41,7 +39,7 @@ const SystemMonitorDashboard: React.FC = () => {
     'cpuUsage',
     'memoryUsage',
     'diskUsage',
-    'networkHealth'
+    'networkHealth',
   ]);
 
   useEffect(() => {
@@ -62,14 +60,15 @@ const SystemMonitorDashboard: React.FC = () => {
         setMetrics(currentMetrics);
 
         // Update historical data
-        setHistoricalData(prevData => {
+        setHistoricalData((prevData) => {
           const newDataPoint: MetricDataPoint = {
             timestamp: Date.now(),
-            ...currentMetrics
+            ...currentMetrics,
           };
-          
+
           // Keep last 24 hours of minute data, or 7 days of hourly data
-          const maxDataPoints = selectedTimeRange === '1h' ? 60 : selectedTimeRange === '24h' ? 1440 : 168;
+          const maxDataPoints =
+            selectedTimeRange === '1h' ? 60 : selectedTimeRange === '24h' ? 1440 : 168;
           const newData = [...prevData, newDataPoint];
           return newData.slice(-maxDataPoints);
         });
@@ -95,21 +94,18 @@ const SystemMonitorDashboard: React.FC = () => {
   };
 
   const handleDismissAlert = (alertId: string) => {
-    setAlerts(prevAlerts => prevAlerts.filter(alert => alert.id !== alertId));
+    setAlerts((prevAlerts) => prevAlerts.filter((alert) => alert.id !== alertId));
   };
 
   const handleMetricToggle = (metric: keyof SystemMetrics) => {
-    setSelectedMetrics(prev => 
-      prev.includes(metric)
-        ? prev.filter(m => m !== metric)
-        : [...prev, metric]
+    setSelectedMetrics((prev) =>
+      prev.includes(metric) ? prev.filter((m) => m !== metric) : [...prev, metric],
     );
   };
 
   return (
-    <div className="system-monitor">
+    (<div className="system-monitor">
       <h2>System Health Monitor</h2>
-
       <div className="controls">
         <div className="time-range-selector">
           <select
@@ -135,7 +131,6 @@ const SystemMonitorDashboard: React.FC = () => {
           ))}
         </div>
       </div>
-
       <div className="metrics-grid">
         <div className="metric-card">
           <h3>CPU Usage</h3>
@@ -177,7 +172,6 @@ const SystemMonitorDashboard: React.FC = () => {
           />
         </div>
       </div>
-
       <div className="metrics-chart-section">
         <h3>Historical Metrics</h3>
         <DynamicSystemMetricsChart
@@ -186,15 +180,10 @@ const SystemMonitorDashboard: React.FC = () => {
           metrics={selectedMetrics}
         />
       </div>
-
       <div className="alerts-section">
         <h3>Active Alerts</h3>
-        <DynamicAlertList
-          alerts={alerts}
-          onDismiss={handleDismissAlert}
-        />
+        <DynamicAlertList alerts={alerts} onDismiss={handleDismissAlert} />
       </div>
-
       <style jsx>{`
         .system-monitor {
           padding: 2rem;
@@ -261,13 +250,14 @@ const SystemMonitorDashboard: React.FC = () => {
           color: var(--text-primary);
         }
 
-        h2, h3 {
+        h2,
+        h3 {
           color: var(--text-primary);
           margin: 0 0 1rem;
         }
       `}</style>
-    </div>
+    </div>)
   );
 };
 
-export default SystemMonitorDashboard; 
+export default SystemMonitorDashboard;

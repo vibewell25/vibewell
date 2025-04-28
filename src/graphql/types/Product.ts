@@ -1,5 +1,3 @@
-import { ObjectType, Field, ID, Float } from 'type-graphql';
-
 @ObjectType()
 export class Product {
   @Field(() => ID)

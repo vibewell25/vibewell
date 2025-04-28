@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuth } from '@/hooks/use-unified-auth';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import {
   Card,
@@ -16,7 +16,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Link from 'next/link';
 import { Icons } from '@/components/ui/icons';
@@ -33,11 +33,11 @@ const signUpSchema = z
       .regex(/[0-9]/, 'Password must contain at least one number')
       .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
     confirmPassword: z.string(),
-    termsAccepted: z.boolean().refine(val => val === true, {
+    termsAccepted: z.boolean().refine((val) => val === true, {
       message: 'You must accept the terms and conditions',
     }),
   })
-  .refine(data => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   });
@@ -47,13 +47,11 @@ type SignUpFormValues = z.infer<typeof signUpSchema>;
 export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
   const { signUp, signInWithGoogle, signInWithFacebook, signInWithApple } = useAuth();
 
   const {
     register,
-    handleSubmit,
-    formState: { errors },
+    handleSubmit
   } = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
   });
@@ -255,7 +253,7 @@ export function SignUpForm() {
         </div>
       </CardContent>
       <CardFooter>
-        <p className="text-sm text-center w-full">
+        <p className="w-full text-center text-sm">
           Already have an account?{' '}
           <Link href="/auth/login" className="text-blue-600 hover:text-blue-800">
             Sign in

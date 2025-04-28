@@ -1,4 +1,4 @@
-import { notificationService, Notification, NotificationPreferences } from './notification-service';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { notificationService, Notification, NotificationPreferences } from './notification-service';
 import { apiClient } from './api-client';
 
 // Mock the apiClient
@@ -299,7 +299,7 @@ describe('NotificationService', () => {
       // Assertions
       expect(apiClient.put).toHaveBeenCalledWith(
         '/api/notifications/preferences',
-        updatedPreferences
+        updatedPreferences,
       );
       expect(result.data?.email.promotion).toBe(true);
     });

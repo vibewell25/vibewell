@@ -1,5 +1,5 @@
-import { serverBaseUrl } from '../config';
 import { SkinAnalysisResult } from '../types/navigation';
+import { serverBaseUrl } from '../config';
 
 export const analyzeSkin = async (uri: string): Promise<SkinAnalysisResult> => {
   const formData = new FormData();

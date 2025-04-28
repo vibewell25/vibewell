@@ -18,20 +18,10 @@ const { generateToken, doubleCsrfProtection } = doubleCsrf({
 });
 
 // Middleware to generate CSRF token
-export const csrfTokenMiddleware = (req: NextApiRequest, res: NextApiResponse) => {
-  const token = generateToken(req, res);
-  return token;
-};
+export {};
 
 // Middleware to protect routes from CSRF
-export const csrfProtection = doubleCsrfProtection;
+export {};
 
 // Export config for Next.js middleware
-export const config = {
-  matcher: [
-    // Apply to all API routes except auth and webhooks
-    '/api/:path*',
-    '!api/auth/:path*',
-    '!api/webhooks/:path*',
-  ],
-};
+export {};

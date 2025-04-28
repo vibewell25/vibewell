@@ -99,7 +99,7 @@ export function useAdaptiveQuality() {
               fps,
               maxTextureSize,
               Boolean(isLowEndDevice),
-              Boolean(isHighEndDevice)
+              Boolean(isHighEndDevice),
             );
           }
         };
@@ -125,7 +125,7 @@ export function useAdaptiveQuality() {
       fps: number,
       maxTextureSize: number,
       isLowEndDevice: boolean,
-      isHighEndDevice: boolean
+      isHighEndDevice: boolean,
     ) => {
       let level: 1 | 2 | 3;
       let settings: AdaptiveSettings;

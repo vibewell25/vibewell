@@ -16,7 +16,7 @@ export async function createModuleContent(moduleId: string, data: CreateModuleCo
     },
     body: JSON.stringify(data),
   });
-  
+
   if (!response.ok) {
     throw new Error('Failed to create module content');
   }
@@ -31,7 +31,7 @@ export async function updateModuleContent(moduleId: string, data: UpdateModuleCo
     },
     body: JSON.stringify(data),
   });
-  
+
   if (!response.ok) {
     throw new Error('Failed to update module content');
   }
@@ -42,9 +42,9 @@ export async function deleteModuleContent(moduleId: string, contentId: string) {
   const response = await fetch(`/api/training/module/${moduleId}/content?contentId=${contentId}`, {
     method: 'DELETE',
   });
-  
+
   if (!response.ok) {
     throw new Error('Failed to delete module content');
   }
   return response.json();
-} 
+}

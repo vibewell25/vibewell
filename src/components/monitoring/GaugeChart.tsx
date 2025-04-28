@@ -14,13 +14,13 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, maxValue, label, severit
 
   const data = [
     { name: 'value', value: percentage },
-    { name: 'empty', value: 100 - percentage }
+    { name: 'empty', value: 100 - percentage },
   ];
 
   const COLORS = {
-    low: '#4CAF50',    // Green
+    low: '#4CAF50', // Green
     medium: '#FFA726', // Orange
-    high: '#EF5350'    // Red
+    high: '#EF5350', // Red
   };
 
   return (
@@ -85,4 +85,4 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, maxValue, label, severit
   );
 };
 
-export default GaugeChart; 
+export default GaugeChart;

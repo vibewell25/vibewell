@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { z } from 'zod';
 import { authRateLimiter, applyRateLimit } from '../rate-limit-middleware';
-import { handleAuth, handleLogin } from '@auth0/nextjs-auth0';
+import { handleLogin } from '@auth0/nextjs-auth0';
 
 // Schema for validating the request body
 const loginSchema = z.object({
@@ -28,7 +27,7 @@ export async function POST(req: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

@@ -96,7 +96,7 @@ export function ResponsiveContainer({
     paddingClasses,
     centerContent && 'flex flex-col items-center',
     stretchHeight && 'h-full',
-    className
+    className,
   );
 
   return <Component className={containerClasses}>{children}</Component>;

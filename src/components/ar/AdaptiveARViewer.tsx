@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useAdaptiveQuality } from '@/hooks/useDeviceCapabilities';
 import { OptimizedModelLoader } from '@/components/ar/OptimizedModelLoader';
@@ -111,7 +111,7 @@ export function AdaptiveARViewer({
           () => {
             setProgressiveQuality('medium');
           },
-          { timeout: 2000 }
+          { timeout: 2000 },
         );
       } else {
         // Fallback for browsers without requestIdleCallback
@@ -132,7 +132,7 @@ export function AdaptiveARViewer({
           () => {
             setProgressiveQuality('high');
           },
-          { timeout: 5000 }
+          { timeout: 5000 },
         );
       } else {
         // Fallback for browsers without requestIdleCallback
@@ -163,7 +163,7 @@ export function AdaptiveARViewer({
       {!isModelLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-sm">
           <div className="text-center">
-            <div className="inline-block w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mb-2"></div>
+            <div className="border-primary mb-2 inline-block h-6 w-6 animate-spin rounded-full border-2 border-t-transparent"></div>
             <p>
               Loading{' '}
               {finalQuality === 'low'
@@ -236,7 +236,7 @@ export function AdaptiveARViewer({
 
       {/* Performance Stats (if enabled) */}
       {showPerformanceStats && (
-        <div className="absolute bottom-2 left-2 text-xs bg-black/50 text-white p-1 rounded">
+        <div className="absolute bottom-2 left-2 rounded bg-black/50 p-1 text-xs text-white">
           <div>Quality: {finalQuality}</div>
           <div>Device: {isMobile ? 'Mobile' : 'Desktop'}</div>
           <div>Battery: {isLowBattery ? 'Low' : 'Normal'}</div>

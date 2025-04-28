@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Product } from '@/services/product-service';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Star, ArrowRight } from 'lucide-react';
 
 interface ProductCardProps {
@@ -47,14 +47,14 @@ export function ProductCard({ product }: ProductCardProps) {
     <div className="group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all hover:shadow-md">
       {/* Product badges */}
       {badge && (
-        <Badge className="absolute top-2 right-2 z-10" variant={badge.variant}>
+        <Badge className="absolute right-2 top-2 z-10" variant={badge.variant}>
           {badge.label}
         </Badge>
       )}
 
       {/* AR compatible badge */}
       {product.ar_compatible && (
-        <Badge className="absolute top-2 left-2 z-10" variant="outline">
+        <Badge className="absolute left-2 top-2 z-10" variant="outline">
           AR Ready
         </Badge>
       )}
@@ -79,24 +79,24 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         <Link href={`/products/${product.id}`} className="mb-2">
-          <h3 className="font-medium line-clamp-2 group-hover:text-primary transition-colors">
+          <h3 className="group-hover:text-primary line-clamp-2 font-medium transition-colors">
             {product.name}
           </h3>
         </Link>
 
-        <p className="text-sm text-muted-foreground line-clamp-2 mb-auto">{product.description}</p>
+        <p className="mb-auto line-clamp-2 text-sm text-muted-foreground">{product.description}</p>
 
         <div className="mt-4 flex items-center justify-between">
           <div className="flex items-center">
-            <Star className="h-4 w-4 text-yellow-400 mr-1 fill-yellow-400" />
+            <Star className="mr-1 h-4 w-4 fill-yellow-400 text-yellow-400" />
             <span className="text-sm font-medium">{product.rating.toFixed(1)}</span>
-            <span className="text-xs text-muted-foreground ml-1">({product.review_count})</span>
+            <span className="ml-1 text-xs text-muted-foreground">({product.review_count})</span>
           </div>
 
           <div className="font-semibold">
             {product.discount_price ? (
               <div className="flex items-center gap-1">
-                <span className="text-muted-foreground line-through text-xs">
+                <span className="text-xs text-muted-foreground line-through">
                   {formatPrice(product.price)}
                 </span>
                 <span className="text-primary">{formatPrice(product.discount_price)}</span>

@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { axe } from 'jest-axe';
@@ -63,7 +62,7 @@ describe('Performance Components', () => {
       render(
         <PerformanceMonitor interval={1000}>
           <TestComponent />
-        </PerformanceMonitor>
+        </PerformanceMonitor>,
       );
 
       await user.click(screen.getByText('Disable Monitoring'));
@@ -73,7 +72,7 @@ describe('Performance Components', () => {
     it('handles performance measurement errors', async () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       mockPerformanceService.measurePerformance.mockRejectedValueOnce(
-        new Error('Measurement failed')
+        new Error('Measurement failed'),
       );
 
       render(<PerformanceMonitor interval={1000} />);
@@ -124,7 +123,7 @@ describe('Performance Components', () => {
       render(
         <OptimizationController {...defaultProps}>
           <button>Optimize Now</button>
-        </OptimizationController>
+        </OptimizationController>,
       );
 
       await user.click(screen.getByText('Optimize Now'));
@@ -138,7 +137,7 @@ describe('Performance Components', () => {
 
       await waitFor(() => {
         expect(logSpy).toHaveBeenCalledWith(
-          expect.stringContaining('Performance optimization applied')
+          expect.stringContaining('Performance optimization applied'),
         );
       });
       logSpy.mockRestore();
@@ -202,7 +201,7 @@ describe('Performance Components', () => {
       const { container } = render(
         <PerformanceMonitor interval={1000}>
           <div>Monitored Content</div>
-        </PerformanceMonitor>
+        </PerformanceMonitor>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -213,7 +212,7 @@ describe('Performance Components', () => {
         <OptimizationController
           thresholds={{ fps: 30, memoryUsage: 90, cpuUsage: 80 }}
           onOptimize={() => {}}
-        />
+        />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();

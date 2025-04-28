@@ -41,15 +41,15 @@ export default function ReviewsList({
   if (isLoading) {
     return (
       <div className="space-y-4">
-        {[1, 2, 3].map(index => (
-          <div key={index} className="animate-pulse bg-white rounded-lg shadow p-4">
+        {[1, 2, 3].map((index) => (
+          <div key={index} className="animate-pulse rounded-lg bg-white p-4 shadow">
             <div className="flex items-start">
-              <div className="h-12 w-12 bg-gray-200 rounded-full mr-4"></div>
+              <div className="mr-4 h-12 w-12 rounded-full bg-gray-200"></div>
               <div className="flex-1">
-                <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/3 mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                <div className="mb-2 h-4 w-1/4 rounded bg-gray-200"></div>
+                <div className="mb-4 h-4 w-1/3 rounded bg-gray-200"></div>
+                <div className="mb-2 h-4 w-full rounded bg-gray-200"></div>
+                <div className="h-4 w-5/6 rounded bg-gray-200"></div>
               </div>
             </div>
           </div>
@@ -60,16 +60,16 @@ export default function ReviewsList({
 
   if (reviews.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow p-8 text-center">
-        <p className="text-gray-500 mb-2">No reviews yet</p>
-        <p className="text-gray-400 text-sm">Be the first to leave a review!</p>
+      <div className="rounded-lg bg-white p-8 text-center shadow">
+        <p className="mb-2 text-gray-500">No reviews yet</p>
+        <p className="text-sm text-gray-400">Be the first to leave a review!</p>
       </div>
     );
   }
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <h3 className="text-lg font-medium text-gray-900">Customer Reviews ({reviews.length})</h3>
         <div>
           <label htmlFor="sort-by" className="sr-only">
@@ -77,9 +77,9 @@ export default function ReviewsList({
           </label>
           <select
             id="sort-by"
-            className="border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500"
+            className="rounded-md border-gray-300 text-sm focus:border-indigo-500 focus:ring-indigo-500"
             value={sortBy}
-            onChange={e => setSortBy(e.target.value as 'newest' | 'highest' | 'lowest')}
+            onChange={(e) => setSortBy(e.target.value as 'newest' | 'highest' | 'lowest')}
           >
             <option value="newest">Newest First</option>
             <option value="highest">Highest Rated</option>
@@ -89,7 +89,7 @@ export default function ReviewsList({
       </div>
 
       <div className="space-y-4">
-        {sortedReviews.map(review => (
+        {sortedReviews.map((review) => (
           <ReviewCard
             key={review.id}
             id={review.id}

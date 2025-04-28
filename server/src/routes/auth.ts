@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import prisma from '../prismaClient';
 import { checkJwt } from '../middleware/auth';
 
@@ -31,6 +31,22 @@ router.get('/me', checkJwt, async (req, res) => {
     res.json({ user });
   } catch (error) {
     console.error('Error in /auth/me:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Update user profile
+router.put('/me', checkJwt, async (req: Request, res: Response) => {
+  try {
+    const auth0Id = (req.auth as any).sub as string;
+    const { name, avatar } = req.body;
+    const user = await prisma.user.update({
+      where: { auth0Id },
+      data: { name, avatar },
+    });
+    res.json({ user });
+  } catch (error) {
+    console.error('Error in PUT /auth/me:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });

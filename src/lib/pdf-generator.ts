@@ -8,7 +8,6 @@
 
 import fs from 'fs';
 import { promisify } from 'util';
-import path from 'path';
 
 /**
  * Generate a PDF file from an HTML file
@@ -82,7 +81,7 @@ startxref
 
     console.log(`PDF placeholder created at: ${pdfPath}`);
     console.log(
-      'Note: This is a simulated PDF. In a real application, you would use a proper PDF generation library.'
+      'Note: This is a simulated PDF. In a real application, you would use a proper PDF generation library.',
     );
 
     return;

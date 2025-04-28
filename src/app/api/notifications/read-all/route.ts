@@ -11,27 +11,21 @@ export async function PUT(request: NextRequest) {
   try {
     // Check if the user is authenticated
     if (!(await isAuthenticated())) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user ID from auth state
     const { user } = await getAuthState();
     if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Get count of unread notifications before update
     const unreadCount = await prisma.notification.count({
       where: {
         userId: user.id,
-        read: false
-      }
+        read: false,
+      },
     });
 
     // If no unread notifications, return early
@@ -39,7 +33,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({
         success: true,
         message: 'No unread notifications found',
-        count: 0
+        count: 0,
       });
     }
 
@@ -47,11 +41,11 @@ export async function PUT(request: NextRequest) {
     const result = await prisma.notification.updateMany({
       where: {
         userId: user.id,
-        read: false
+        read: false,
       },
       data: {
-        read: true
-      }
+        read: true,
+      },
     });
 
     logger.info(`Marked ${result.count} notifications as read for user ${user.id}`);
@@ -60,16 +54,17 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: 'All notifications marked as read',
-      count: result.count
+      count: result.count,
     });
   } catch (error) {
-    logger.error('Error marking all notifications as read', 
-      error instanceof Error ? error.message : String(error)
+    logger.error(
+      'Error marking all notifications as read',
+      error instanceof Error ? error.message : String(error),
     );
 
     return NextResponse.json(
       { error: 'Failed to mark all notifications as read' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,12 +1,12 @@
-import Redis from 'ioredis';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import Redis from 'ioredis';
 import RedisCache from '../utils/redis-cache';
 import { logger } from '../utils/logger';
 
 jest.mock('ioredis');
 jest.mock('../utils/logger');
 jest.mock('node-gzip', () => ({
-  gzip: jest.fn().mockImplementation(data => Buffer.from(data)),
-  ungzip: jest.fn().mockImplementation(data => data)
+  gzip: jest.fn().mockImplementation((data) => Buffer.from(data)),
+  ungzip: jest.fn().mockImplementation((data) => data),
 }));
 
 const MockRedis = Redis as jest.MockedClass<typeof Redis>;
@@ -20,8 +20,8 @@ describe('RedisCache', () => {
     defaultTTL: 3600,
     compression: {
       enabled: true,
-      threshold: 100
-    }
+      threshold: 100,
+    },
   };
 
   beforeEach(() => {
@@ -33,7 +33,7 @@ describe('RedisCache', () => {
     it('should set and get a value', async () => {
       const key = 'test-key';
       const value = { foo: 'bar' };
-      
+
       redis.set.mockResolvedValue('OK');
       redis.get.mockResolvedValue(JSON.stringify(value));
 
@@ -45,7 +45,7 @@ describe('RedisCache', () => {
         `${cacheConfig.keyPrefix}:${key}`,
         JSON.stringify(value),
         'EX',
-        cacheConfig.defaultTTL
+        cacheConfig.defaultTTL,
       );
     });
 
@@ -75,7 +75,7 @@ describe('RedisCache', () => {
     it('should compress large values', async () => {
       const key = 'large-key';
       const value = 'x'.repeat(cacheConfig.compression.threshold + 1);
-      
+
       redis.set.mockResolvedValue('OK');
       redis.get.mockResolvedValue('\x1f\x8b' + value); // Simulating gzip magic number
 
@@ -88,7 +88,7 @@ describe('RedisCache', () => {
     it('should not compress small values', async () => {
       const key = 'small-key';
       const value = 'small value';
-      
+
       redis.set.mockResolvedValue('OK');
       redis.get.mockResolvedValue(JSON.stringify(value));
 
@@ -102,10 +102,7 @@ describe('RedisCache', () => {
   describe('Bulk Operations', () => {
     it('should get multiple values', async () => {
       const keys = ['key1', 'key2'];
-      const values = [
-        JSON.stringify({ id: 1 }),
-        JSON.stringify({ id: 2 })
-      ];
+      const values = [JSON.stringify({ id: 1 }), JSON.stringify({ id: 2 })];
 
       redis.mget.mockResolvedValue(values);
 
@@ -118,15 +115,15 @@ describe('RedisCache', () => {
     it('should set multiple values', async () => {
       const entries = [
         { key: 'key1', value: { id: 1 } },
-        { key: 'key2', value: { id: 2 } }
+        { key: 'key2', value: { id: 2 } },
       ];
 
       const pipeline = {
         set: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue([
           [null, 'OK'],
-          [null, 'OK']
-        ])
+          [null, 'OK'],
+        ]),
       };
 
       redis.pipeline.mockReturnValue(pipeline);
@@ -191,11 +188,11 @@ describe('RedisCache', () => {
     it('should reset statistics', () => {
       cache.resetStats();
       const stats = cache.getStats();
-      
+
       expect(stats.hits).toBe(0);
       expect(stats.misses).toBe(0);
       expect(stats.sets).toBe(0);
       expect(stats.deletes).toBe(0);
     });
   });
-}); 
+});

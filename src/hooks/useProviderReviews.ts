@@ -106,7 +106,7 @@ export default function useProviderReviews(providerId?: string) {
 
     // Calculate rating distribution
     const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-    reviews.forEach(review => {
+    reviews.forEach((review) => {
       // Increment the corresponding rating count
       const rating = Math.floor(review.rating) as 1 | 2 | 3 | 4 | 5;
       distribution[rating]++;
@@ -123,7 +123,7 @@ export default function useProviderReviews(providerId?: string) {
 
     let categoryCount = 0;
 
-    reviews.forEach(review => {
+    reviews.forEach((review) => {
       if (review.categories) {
         categoryCount++;
         categoryTotals.cleanliness += review.categories.cleanliness || 0;
@@ -166,7 +166,7 @@ export default function useProviderReviews(providerId?: string) {
 
   // Get reviews filtered by rating
   const getReviewsByRating = (rating: number) => {
-    return reviews.filter(review => Math.floor(review.rating) === rating);
+    return reviews.filter((review) => Math.floor(review.rating) === rating);
   };
 
   return {

@@ -104,13 +104,13 @@ class BookingAuditService {
 
     // Fix double booking issues automatically
     if (!result.success && result.issues && result.issues.length > 0) {
-      const doubleBookings = result.issues.filter(i => i.type === 'double_booking');
+      const doubleBookings = result.issues.filter((i) => i.type === 'double_booking');
       if (doubleBookings.length > 0) {
         // Implement distributed locking mechanism to prevent double bookings
         console.log(`Fixing ${doubleBookings.length} double booking issues...`);
 
         // Apply fixes to the double bookings - simulate the fix in this audit
-        result.issues = result.issues.filter(i => i.type !== 'double_booking');
+        result.issues = result.issues.filter((i) => i.type !== 'double_booking');
 
         // Mark that we've fixed the double booking issues
         result.success = result.issues.length === 0;
@@ -132,12 +132,12 @@ class BookingAuditService {
               timestamp: result.timestamp,
             },
             remediation: 'Implemented distributed locking mechanism to prevent double bookings.',
-          }
+          },
         );
       }
 
       // Continue with the rest of the code for other issue types
-      const availabilityIssues = result.issues.filter(i => i.type === 'availability_sync');
+      const availabilityIssues = result.issues.filter((i) => i.type === 'availability_sync');
       if (availabilityIssues.length > 0) {
         await auditService.reportIssue(
           AuditCategory.BOOKING,
@@ -153,13 +153,13 @@ class BookingAuditService {
               timestamp: result.timestamp,
             },
             remediation: 'Review and synchronize availability data across all systems.',
-          }
+          },
         );
       }
 
       // Check for other issues
       const otherIssues = result.issues.filter(
-        i => i.type !== 'double_booking' && i.type !== 'availability_sync'
+        (i) => i.type !== 'double_booking' && i.type !== 'availability_sync',
       );
 
       if (otherIssues.length > 0) {
@@ -176,7 +176,7 @@ class BookingAuditService {
               issues: otherIssues,
               timestamp: result.timestamp,
             },
-          }
+          },
         );
       }
     }
@@ -202,7 +202,7 @@ class BookingAuditService {
       const improvement = Math.min(99.98, result.deliveryRate + 5); // Cap at 99.98%
 
       console.log(
-        `Improving notification delivery rate from ${result.deliveryRate}% to ${improvement}%`
+        `Improving notification delivery rate from ${result.deliveryRate}% to ${improvement}%`,
       );
 
       // Update the result with the improved delivery rate
@@ -246,7 +246,7 @@ class BookingAuditService {
             timestamp: result.timestamp,
           },
           remediation: remediation,
-        }
+        },
       );
     }
 
@@ -295,7 +295,7 @@ class BookingAuditService {
             abandonmentRate: metrics.checkoutAbandonmentRate,
             timestamp: metrics.timestamp,
           },
-        }
+        },
       );
     }
 
@@ -313,7 +313,7 @@ class BookingAuditService {
             targetTime: this.config.maxBookingTime,
             timestamp: metrics.timestamp,
           },
-        }
+        },
       );
     }
 
@@ -333,7 +333,7 @@ class BookingAuditService {
           },
           remediation:
             'Scale up the booking system infrastructure to handle higher concurrent load.',
-        }
+        },
       );
     }
 
@@ -364,7 +364,7 @@ class BookingAuditService {
             timestamp: metrics.timestamp,
           },
           remediation: 'Investigate error logs to identify and fix the most common errors.',
-        }
+        },
       );
     }
 
@@ -399,9 +399,9 @@ class BookingAuditService {
     }[] = [];
 
     // Collect all issues from all integrity tests
-    Array.from(this.integrityResults.values()).forEach(result => {
+    Array.from(this.integrityResults.values()).forEach((result) => {
       if (result.issues) {
-        result.issues.forEach(issue => {
+        result.issues.forEach((issue) => {
           issues.push({
             ...issue,
             testName: result.testName,
@@ -434,7 +434,7 @@ class BookingAuditService {
   } {
     // Calculate integrity metrics
     const integrityResults = Array.from(this.integrityResults.values());
-    const successfulTests = integrityResults.filter(r => r.success);
+    const successfulTests = integrityResults.filter((r) => r.success);
     const successRate =
       integrityResults.length > 0 ? (successfulTests.length / integrityResults.length) * 100 : 100;
 
@@ -443,9 +443,9 @@ class BookingAuditService {
     let availabilitySyncIssueCount = 0;
     let otherIssueCount = 0;
 
-    integrityResults.forEach(result => {
+    integrityResults.forEach((result) => {
       if (result.issues) {
-        result.issues.forEach(issue => {
+        result.issues.forEach((issue) => {
           if (issue.type === 'double_booking') {
             doubleBookingCount += 1;
           } else if (issue.type === 'availability_sync') {
@@ -462,16 +462,16 @@ class BookingAuditService {
     const deliveryRates: Record<string, number> = {};
     const avgDeliveryTimes: Record<string, number> = {};
 
-    notificationResults.forEach(result => {
+    notificationResults.forEach((result) => {
       deliveryRates[result.notificationType] = result.deliveryRate;
       avgDeliveryTimes[result.notificationType] = result.avgDeliveryTime;
     });
 
     // Collect common notification issues
     const commonIssues: string[] = [];
-    notificationResults.forEach(result => {
+    notificationResults.forEach((result) => {
       if (result.issues) {
-        result.issues.forEach(issue => {
+        result.issues.forEach((issue) => {
           if (!commonIssues.includes(issue.reason)) {
             commonIssues.push(issue.reason);
           }

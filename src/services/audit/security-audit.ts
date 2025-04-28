@@ -154,7 +154,7 @@ class SecurityAuditService {
               vulnerableVersions: result.vulnerable_versions,
               patchedVersions: result.patched_versions,
             },
-          }
+          },
         );
 
         // Log security event
@@ -187,9 +187,9 @@ class SecurityAuditService {
             component: 'Payment Processing',
             metadata: {
               requirementId: requirement.requirement,
-              failedControls: requirement.controls.filter(c => c.status === 'fail'),
+              failedControls: requirement.controls.filter((c) => c.status === 'fail'),
             },
-          }
+          },
         );
       } else if (requirement.status === 'partially_compliant') {
         await auditService.reportIssue(
@@ -201,9 +201,9 @@ class SecurityAuditService {
             component: 'Payment Processing',
             metadata: {
               requirementId: requirement.requirement,
-              warningControls: requirement.controls.filter(c => c.status === 'warning'),
+              warningControls: requirement.controls.filter((c) => c.status === 'warning'),
             },
-          }
+          },
         );
       }
     }
@@ -213,7 +213,7 @@ class SecurityAuditService {
       overallStatus: status.overallStatus,
       timestamp: status.lastChecked,
       requirementCount: status.requirements.length,
-      nonCompliantCount: status.requirements.filter(r => r.status === 'non_compliant').length,
+      nonCompliantCount: status.requirements.filter((r) => r.status === 'non_compliant').length,
     });
   }
 
@@ -233,7 +233,7 @@ class SecurityAuditService {
       status.dataBackups,
       status.rightToBeForgotten,
       status.dataPortability,
-    ].filter(control => control.status === 'fail');
+    ].filter((control) => control.status === 'fail');
 
     // Implement stronger encryption at rest
     if (status.encryptionAtRest.status === 'fail') {
@@ -280,7 +280,7 @@ class SecurityAuditService {
             controlName: control.name,
             lastChecked: control.lastChecked,
           },
-        }
+        },
       );
     }
 
@@ -303,7 +303,7 @@ class SecurityAuditService {
       status.fakeAccountDetection,
       status.privacyControls,
       status.dataLeakagePrevention,
-    ].filter(control => control.status === 'fail');
+    ].filter((control) => control.status === 'fail');
 
     for (const control of failingControls) {
       await auditService.reportIssue(
@@ -317,7 +317,7 @@ class SecurityAuditService {
             controlName: control.name,
             lastChecked: control.lastChecked,
           },
-        }
+        },
       );
     }
 

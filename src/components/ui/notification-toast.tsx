@@ -1,7 +1,7 @@
 'use client';
 
 import { Icons } from '@/components/icons';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { usePushNotifications } from '@/providers/push-notification-provider';
@@ -59,12 +59,12 @@ export function NotificationToast({
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
           className={cn(
-            'fixed z-50 top-4 right-4 max-w-sm rounded-lg shadow-md border flex items-start p-4',
-            toastStyles[type]
+            'fixed right-4 top-4 z-50 flex max-w-sm items-start rounded-lg border p-4 shadow-md',
+            toastStyles[type],
           )}
         >
-          <div className={cn('flex-shrink-0 w-6 h-6', iconStyles[type])}>
-            <Icons.BellIcon className="w-6 h-6" />
+          <div className={cn('h-6 w-6 flex-shrink-0', iconStyles[type])}>
+            <Icons.BellIcon className="h-6 w-6" />
           </div>
           <div className="ml-3 flex-1">
             <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">{title}</h3>
@@ -72,11 +72,11 @@ export function NotificationToast({
           </div>
           <button
             type="button"
-            className="flex-shrink-0 ml-4 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="ml-4 flex-shrink-0 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             onClick={dismiss}
             aria-label="Close notification"
           >
-            <Icons.XMarkIcon className="w-5 h-5" />
+            <Icons.XMarkIcon className="h-5 w-5" />
           </button>
         </motion.div>
       )}
@@ -120,11 +120,11 @@ export function NotificationPermissionButton() {
       onClick={handleRequestPermission}
       disabled={notificationPermission.permission === 'granted'}
       className={cn(
-        'flex items-center space-x-2 px-4 py-2 rounded-md transition-colors',
-        getButtonStyles()
+        'flex items-center space-x-2 rounded-md px-4 py-2 transition-colors',
+        getButtonStyles(),
       )}
     >
-      <Icons.BellIcon className="w-5 h-5" />
+      <Icons.BellIcon className="h-5 w-5" />
       <span>{getButtonText()}</span>
     </button>
   );

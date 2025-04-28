@@ -27,7 +27,7 @@ class ImageOptimizerImpl implements ImageOptimizer {
     optimizationRate: 0,
     cdnLatency: 0,
     compressionRatio: 0,
-    processingTime: 0
+    processingTime: 0,
   };
 
   private cacheDir: string;
@@ -81,11 +81,9 @@ class ImageOptimizerImpl implements ImageOptimizer {
 
   public async optimizeImage(
     input: Buffer | string,
-    options: ImageOptimizationOptions = {}
+    options: ImageOptimizationOptions = {},
   ): Promise<OptimizedImage> {
-    const inputBuffer = typeof input === 'string' 
-      ? await fs.readFile(input)
-      : input;
+    const inputBuffer = typeof input === 'string' ? await fs.readFile(input) : input;
 
     const cacheKey = this.generateCacheKey(inputBuffer, options);
     const cachedBuffer = await this.getCachedImage(cacheKey);
@@ -97,46 +95,49 @@ class ImageOptimizerImpl implements ImageOptimizer {
         format: metadata.format || 'unknown',
         width: metadata.width || 0,
         height: metadata.height || 0,
-        size: cachedBuffer.length
+        size: cachedBuffer.length,
       };
     }
 
-    let pipeline = sharp(inputBuffer);
-    const metadata = await pipeline.metadata();
+    const pipeline = sharp(inputBuffer);
+    const initialMetadata = await pipeline.metadata();
 
     // Apply resizing if dimensions are specified
     if (options.width || options.height) {
-      pipeline = pipeline.resize(options.width, options.height, {
+      pipeline.resize(options.width, options.height, {
         fit: options.fit || 'cover',
-        withoutEnlargement: true
+        withoutEnlargement: true,
       });
     }
 
     // Convert format if specified
     if (options.format) {
-      pipeline = pipeline.toFormat(options.format, {
+      pipeline.toFormat(options.format, {
         quality: options.quality || 80,
-        effort: 6 // Higher compression effort
+        effort: 6, // Higher compression effort
       });
     }
 
     const outputBuffer = await pipeline.toBuffer();
     await this.cacheImage(cacheKey, outputBuffer);
 
-    const outputMetadata = await sharp(outputBuffer).metadata();
+    let outputMetadata = initialMetadata;
+    if (options.width || options.height || options.format) {
+      outputMetadata = await sharp(outputBuffer).metadata();
+    }
 
     return {
       buffer: outputBuffer,
       format: outputMetadata.format || 'unknown',
       width: outputMetadata.width || 0,
       height: outputMetadata.height || 0,
-      size: outputBuffer.length
+      size: outputBuffer.length,
     };
   }
 
   public async generateResponsiveImages(
     input: Buffer | string,
-    breakpoints: number[] = [640, 750, 828, 1080, 1200, 1920]
+    breakpoints: number[] = [640, 750, 828, 1080, 1200, 1920],
   ): Promise<Map<number, OptimizedImage>> {
     const results = new Map<number, OptimizedImage>();
 
@@ -145,10 +146,10 @@ class ImageOptimizerImpl implements ImageOptimizer {
         const optimized = await this.optimizeImage(input, {
           width,
           format: 'webp',
-          quality: 80
+          quality: 80,
         });
         results.set(width, optimized);
-      })
+      }),
     );
 
     return results;
@@ -159,7 +160,7 @@ class ImageOptimizerImpl implements ImageOptimizer {
       width: 10,
       height: 10,
       format: 'webp',
-      quality: 30
+      quality: 30,
     });
 
     return `data:image/${placeholder.format};base64,${placeholder.buffer.toString('base64')}`;
@@ -178,7 +179,7 @@ class ImageOptimizerImpl implements ImageOptimizer {
           if (now - stats.mtimeMs > maxAge) {
             await fs.unlink(filePath);
           }
-        })
+        }),
       );
     } catch (error) {
       console.error('Error cleaning cache:', error);
@@ -186,16 +187,14 @@ class ImageOptimizerImpl implements ImageOptimizer {
   }
 
   public async getImageMetadata(input: Buffer | string): Promise<sharp.Metadata> {
-    const inputBuffer = typeof input === 'string'
-      ? await fs.readFile(input)
-      : input;
+    const inputBuffer = typeof input === 'string' ? await fs.readFile(input) : input;
 
     return sharp(inputBuffer).metadata();
   }
 
   async optimize(image: Buffer): Promise<{ size: number; quality: number }> {
     const startTime = performance.now();
-    
+
     try {
       // TODO: Implement actual image optimization
       const optimizedSize = image.length * 0.7; // Simulate 30% reduction
@@ -218,12 +217,12 @@ class ImageOptimizerImpl implements ImageOptimizer {
       ...this.stats,
       optimizationRate: (1 - compressionRatio) * 100,
       processingTime,
-      compressionRatio
+      compressionRatio,
     };
 
     performanceMonitor.track({
       imageOptimizationTime: processingTime,
-      imageCompressionRatio: compressionRatio
+      imageCompressionRatio: compressionRatio,
     });
   }
 
@@ -236,9 +235,9 @@ class ImageOptimizerImpl implements ImageOptimizer {
       optimizationRate: this.stats.optimizationRate,
       cdnLatency: this.stats.cdnLatency,
       compressionRatio: this.stats.compressionRatio,
-      processingTime: this.stats.processingTime
+      processingTime: this.stats.processingTime,
     };
   }
 }
 
-export default ImageOptimizerImpl; 
+export default ImageOptimizerImpl;

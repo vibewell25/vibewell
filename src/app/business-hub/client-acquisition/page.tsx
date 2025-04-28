@@ -1,9 +1,7 @@
-'use client';
-import React, { Suspense, useState } from 'react';
-import Link from 'next/link';
+'use client';;
+import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/Button';
 import Layout from '@/components/layout/business-hub-layout';
 interface Strategy {
   id: string;
@@ -18,7 +16,6 @@ interface Strategy {
 function ClientAcquisitionContent() {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [activeDifficulty, setActiveDifficulty] = useState<string>('all');
-  const searchParams = useSearchParams();
   // Client acquisition strategies
   const strategies: Strategy[] = [
     {
@@ -75,35 +72,20 @@ function ClientAcquisitionContent() {
     },
   ];
   // Filter strategies based on selected category and difficulty
-  const filteredStrategies = strategies.filter(strategy => {
+  const filteredStrategies = strategies.filter((strategy) => {
     const matchesCategory = activeCategory === 'all' || strategy.category === activeCategory;
     const matchesDifficulty =
       activeDifficulty === 'all' || strategy.difficulty === activeDifficulty;
     return matchesCategory && matchesDifficulty;
   });
-  // Categories for filtering
-  const categories = [
-    { id: 'all', name: 'All Strategies' },
-    { id: 'lead-generation', name: 'Lead Generation' },
-    { id: 'retention', name: 'Client Retention' },
-    { id: 'referral', name: 'Referral Programs' },
-    { id: 'reactivation', name: 'Client Reactivation' },
-  ];
-  // Difficulty levels for filtering
-  const difficultyLevels = [
-    { id: 'all', name: 'All Levels' },
-    { id: 'beginner', name: 'Beginner' },
-    { id: 'intermediate', name: 'Intermediate' },
-    { id: 'advanced', name: 'Advanced' },
-  ];
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-blue-100 to-indigo-100 rounded-xl p-8 mb-12">
+        <div className="mb-12 rounded-xl bg-gradient-to-r from-blue-100 to-indigo-100 p-8">
           <div className="max-w-3xl">
-            <h1 className="text-3xl font-bold mb-4">Client Acquisition Strategies</h1>
-            <p className="text-lg mb-6">
+            <h1 className="mb-4 text-3xl font-bold">Client Acquisition Strategies</h1>
+            <p className="mb-6 text-lg">
               Proven tactics to attract new clients, retain your existing ones, and grow your beauty
               or wellness business.
             </p>
@@ -119,16 +101,16 @@ function ClientAcquisitionContent() {
         </div>
         {/* Strategies Section */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">Acquisition & Retention Strategies</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredStrategies.map(strategy => (
+          <h2 className="mb-6 text-2xl font-bold">Acquisition & Retention Strategies</h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {filteredStrategies.map((strategy) => (
               <div
                 key={strategy.id}
-                className="bg-white rounded-lg shadow-md p-6 border border-gray-100"
+                className="rounded-lg border border-gray-100 bg-white p-6 shadow-md"
               >
-                <h3 className="text-xl font-semibold mb-2">{strategy.title}</h3>
-                <p className="text-gray-600 mb-4">{strategy.description}</p>
-                <ol className="space-y-2 pl-5 list-decimal mb-4">
+                <h3 className="mb-2 text-xl font-semibold">{strategy.title}</h3>
+                <p className="mb-4 text-gray-600">{strategy.description}</p>
+                <ol className="mb-4 list-decimal space-y-2 pl-5">
                   {strategy.steps.map((step, index) => (
                     <li key={index} className="text-sm text-gray-600">
                       {step}
@@ -147,7 +129,7 @@ export default function ClientAcquisitionPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex justify-center items-center min-h-screen">
+        <div className="flex min-h-screen items-center justify-center">
           Loading client acquisition strategies...
         </div>
       }

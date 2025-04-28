@@ -151,7 +151,7 @@ export function getHighestRatedItems(limit: number = 5): PopularRating[] {
       : {};
 
     return Object.values(popularRatings)
-      .filter(rating => rating.count >= 2) // Require at least 2 ratings
+      .filter((rating) => rating.count >= 2) // Require at least 2 ratings
       .sort((a, b) => b.average - a.average)
       .slice(0, limit);
   } catch (error) {

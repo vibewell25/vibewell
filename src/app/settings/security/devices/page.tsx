@@ -4,10 +4,7 @@ import { authOptions } from '@/lib/auth';
 import { TrustedDeviceManager } from '@/components/auth/TrustedDeviceManager';
 import { redirect } from 'next/navigation';
 
-export const metadata: Metadata = {
-  title: 'Trusted Devices - Security Settings - VibeWell',
-  description: 'Manage your trusted devices and security settings',
-};
+export {};
 
 export default async function TrustedDevicesPage() {
   const session = await getServerSession(authOptions);
@@ -17,9 +14,9 @@ export default async function TrustedDevicesPage() {
   }
 
   return (
-    <div className="container max-w-4xl mx-auto py-8">
+    <div className="container mx-auto max-w-4xl py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Trusted Devices</h1>
+        <h1 className="mb-2 text-3xl font-bold">Trusted Devices</h1>
         <p className="text-gray-600">
           Manage the devices that are trusted to access your account. You can revoke access for any
           device at any time.
@@ -28,8 +25,8 @@ export default async function TrustedDevicesPage() {
 
       <TrustedDeviceManager userId={session.user.id} />
 
-      <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-        <h2 className="text-lg font-semibold mb-2">About Device Trust</h2>
+      <div className="mt-8 rounded-lg bg-gray-50 p-4">
+        <h2 className="mb-2 text-lg font-semibold">About Device Trust</h2>
         <div className="space-y-2 text-sm text-gray-600">
           <p>
             When you trust a device, you won't need to enter a two-factor authentication code when

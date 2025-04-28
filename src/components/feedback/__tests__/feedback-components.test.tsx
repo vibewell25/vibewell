@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { axe } from 'jest-axe';
@@ -86,7 +85,7 @@ describe('Feedback Components', () => {
     it('renders different types with appropriate styling', () => {
       const types = ['info', 'success', 'warning', 'error'] as const;
 
-      types.forEach(type => {
+      types.forEach((type) => {
         const { container, unmount } = render(<Alert {...defaultProps} type={type} />);
         expect(container.firstChild).toHaveClass(type);
         unmount();
@@ -113,7 +112,7 @@ describe('Feedback Components', () => {
       render(
         <Modal {...defaultProps}>
           <div>Modal content</div>
-        </Modal>
+        </Modal>,
       );
 
       expect(screen.getByText('Modal Title')).toBeInTheDocument();
@@ -124,7 +123,7 @@ describe('Feedback Components', () => {
       render(
         <Modal {...defaultProps} isOpen={false}>
           <div>Modal content</div>
-        </Modal>
+        </Modal>,
       );
 
       expect(screen.queryByText('Modal Title')).not.toBeInTheDocument();
@@ -134,7 +133,7 @@ describe('Feedback Components', () => {
       render(
         <Modal {...defaultProps}>
           <div>Modal content</div>
-        </Modal>
+        </Modal>,
       );
 
       await user.click(screen.getByTestId('modal-overlay'));
@@ -145,7 +144,7 @@ describe('Feedback Components', () => {
       render(
         <Modal {...defaultProps}>
           <div>Modal content</div>
-        </Modal>
+        </Modal>,
       );
 
       await user.keyboard('{Escape}');
@@ -156,7 +155,7 @@ describe('Feedback Components', () => {
       render(
         <Modal {...defaultProps} closeOnOverlayClick={false}>
           <div>Modal content</div>
-        </Modal>
+        </Modal>,
       );
 
       await user.click(screen.getByTestId('modal-overlay'));
@@ -169,7 +168,7 @@ describe('Feedback Components', () => {
           <button>First</button>
           <button>Second</button>
           <button>Third</button>
-        </Modal>
+        </Modal>,
       );
 
       await user.tab();
@@ -217,7 +216,7 @@ describe('Feedback Components', () => {
   describe('Accessibility', () => {
     it('Toast meets accessibility standards', async () => {
       const { container } = render(
-        <Toast message="Test message" type="success" onClose={() => {}} />
+        <Toast message="Test message" type="success" onClose={() => {}} />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -225,7 +224,7 @@ describe('Feedback Components', () => {
 
     it('Alert meets accessibility standards', async () => {
       const { container } = render(
-        <Alert title="Test Alert" message="Test message" type="info" onClose={() => {}} />
+        <Alert title="Test Alert" message="Test message" type="info" onClose={() => {}} />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -235,7 +234,7 @@ describe('Feedback Components', () => {
       const { container } = render(
         <Modal isOpen={true} onClose={() => {}} title="Test Modal">
           <div>Modal content</div>
-        </Modal>
+        </Modal>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();

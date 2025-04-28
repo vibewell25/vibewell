@@ -1,9 +1,8 @@
-'use client';
+'use client';;
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import Link from 'next/link';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Card, CardContent } from '@/components/ui/Card';
 import Image from 'next/image';
 import { Icons } from '@/components/icons';
 export default function GreenThemePage() {
@@ -32,26 +31,26 @@ export default function GreenThemePage() {
   return (
     <div className="min-h-screen bg-[#F0F0E7]">
       {/* Header with cool gradient */}
-      <div className="bg-gradient-to-br from-[#4B8270] to-[#3A6351] p-4 pt-12 pb-6 text-white">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-gradient-to-br from-[#4B8270] to-[#3A6351] p-4 pb-6 pt-12 text-white">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">Edge</h2>
           <div className="flex space-x-2">
-            <Button size="icon" variant="ghost" className="text-white h-8 w-8">
+            <Button size="icon" variant="ghost" className="h-8 w-8 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="w-5 h-5"
+                className="h-5 w-5"
               >
                 <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
               </svg>
             </Button>
-            <Button size="icon" variant="ghost" className="text-white h-8 w-8">
+            <Button size="icon" variant="ghost" className="h-8 w-8 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="w-5 h-5"
+                className="h-5 w-5"
               >
                 <path
                   fillRule="evenodd"
@@ -63,15 +62,15 @@ export default function GreenThemePage() {
           </div>
         </div>
         <div className="mb-4">
-          <Card className="bg-white/10 border-0 backdrop-blur">
+          <Card className="border-0 bg-white/10 backdrop-blur">
             <CardContent className="p-4">
               <div className="relative">
-                <Icons.MagnifyingGlassSolid className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/70" />
+                <Icons.MagnifyingGlassSolid className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-white/70" />
                 <Input
-                  className="pl-10 pr-3 py-2 rounded-lg border-0 bg-white/20 text-white placeholder:text-white/70"
+                  className="rounded-lg border-0 bg-white/20 py-2 pl-10 pr-3 text-white placeholder:text-white/70"
                   placeholder="Search services..."
                   value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
             </CardContent>
@@ -80,25 +79,25 @@ export default function GreenThemePage() {
       </div>
       {/* Main Content */}
       <div className="px-4 py-6">
-        <Card className="mb-6 bg-white rounded-xl overflow-hidden border-0 shadow-sm">
+        <Card className="mb-6 overflow-hidden rounded-xl border-0 bg-white shadow-sm">
           <CardContent className="p-4">
-            <div className="flex justify-between items-center mb-3">
+            <div className="mb-3 flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-bold text-[#3A6351]">Thought Wellecs</h2>
                 <p className="text-sm text-gray-500">Solight for besttar eat napi dennampitou</p>
               </div>
-              <div className="bg-amber-400 text-white text-xs font-bold px-2 py-1 rounded">T</div>
+              <div className="rounded bg-amber-400 px-2 py-1 text-xs font-bold text-white">T</div>
             </div>
-            <div className="grid grid-cols-4 gap-3 mb-4">
+            <div className="mb-4 grid grid-cols-4 gap-3">
               <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-1">
+                <div className="mb-1 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-5 h-5 text-[#3A6351]"
+                    className="h-5 w-5 text-[#3A6351]"
                   >
                     <path
                       strokeLinecap="round"
@@ -110,14 +109,14 @@ export default function GreenThemePage() {
                 <span className="text-xs">Apptmnts</span>
               </div>
               <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-1">
+                <div className="mb-1 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-5 h-5 text-[#3A6351]"
+                    className="h-5 w-5 text-[#3A6351]"
                   >
                     <path
                       strokeLinecap="round"
@@ -129,14 +128,14 @@ export default function GreenThemePage() {
                 <span className="text-xs">Menu</span>
               </div>
               <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-1">
+                <div className="mb-1 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-5 h-5 text-[#3A6351]"
+                    className="h-5 w-5 text-[#3A6351]"
                   >
                     <path
                       strokeLinecap="round"
@@ -148,14 +147,14 @@ export default function GreenThemePage() {
                 <span className="text-xs">Goals</span>
               </div>
               <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-1">
+                <div className="mb-1 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-5 h-5 text-[#3A6351]"
+                    className="h-5 w-5 text-[#3A6351]"
                   >
                     <path
                       strokeLinecap="round"
@@ -167,17 +166,17 @@ export default function GreenThemePage() {
                 <span className="text-xs">Mi sagen</span>
               </div>
             </div>
-            <h3 className="text-sm font-semibold mb-3">Recommendations</h3>
-            <div className="grid grid-cols-3 gap-2 mb-3">
-              <div className="col-span-1 text-center bg-gray-50 p-2 rounded-lg">
+            <h3 className="mb-3 text-sm font-semibold">Recommendations</h3>
+            <div className="mb-3 grid grid-cols-3 gap-2">
+              <div className="col-span-1 rounded-lg bg-gray-50 p-2 text-center">
                 <div className="text-xs text-gray-500">Gemerations</div>
                 <div className="font-bold">$25.30</div>
               </div>
-              <div className="col-span-1 text-center bg-gray-50 p-2 rounded-lg">
+              <div className="col-span-1 rounded-lg bg-gray-50 p-2 text-center">
                 <div className="text-xs text-gray-500">Entermidratina</div>
                 <div className="font-bold">$9.570</div>
               </div>
-              <div className="col-span-1 text-center bg-gray-50 p-2 rounded-lg">
+              <div className="col-span-1 rounded-lg bg-gray-50 p-2 text-center">
                 <div className="text-xs text-gray-500">Basometines</div>
                 <div className="font-bold">$3.40</div>
               </div>
@@ -189,15 +188,15 @@ export default function GreenThemePage() {
                     <Image src={service.image} alt={service.name} fill className="object-cover" />
                   </div>
                   <div className="p-2">
-                    <h3 className="font-medium text-sm">{service.name}</h3>
+                    <h3 className="text-sm font-medium">{service.name}</h3>
                     <p className="text-xs text-gray-500">{service.provider}</p>
-                    <div className="flex items-center mt-1">
+                    <div className="mt-1 flex items-center">
                       <div className="flex">
                         {Array.from({ length: service.rating }).map((_, i) => (
                           <Icons.StarSolid key={i} className="h-3 w-3 text-amber-400" />
                         ))}
                       </div>
-                      <span className="text-xs text-gray-500 ml-1">{service.reviewCount}</span>
+                      <span className="ml-1 text-xs text-gray-500">{service.reviewCount}</span>
                     </div>
                   </div>
                 </div>
@@ -206,26 +205,26 @@ export default function GreenThemePage() {
           </CardContent>
         </Card>
         {/* Footer Navigation */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around p-2">
-          <button className="p-2 flex flex-col items-center">
+        <div className="fixed bottom-0 left-0 right-0 flex justify-around border-t border-gray-200 bg-white p-2">
+          <button className="flex flex-col items-center p-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="w-6 h-6 text-[#3A6351]"
+              className="h-6 w-6 text-[#3A6351]"
             >
               <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
               <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
             </svg>
           </button>
-          <button className="p-2 flex flex-col items-center">
+          <button className="flex flex-col items-center p-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6 text-gray-500"
+              className="h-6 w-6 text-gray-500"
             >
               <path
                 strokeLinecap="round"
@@ -234,14 +233,14 @@ export default function GreenThemePage() {
               />
             </svg>
           </button>
-          <button className="p-2 flex flex-col items-center">
+          <button className="flex flex-col items-center p-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6 text-gray-500"
+              className="h-6 w-6 text-gray-500"
             >
               <path
                 strokeLinecap="round"
@@ -255,14 +254,14 @@ export default function GreenThemePage() {
               />
             </svg>
           </button>
-          <button className="p-2 flex flex-col items-center">
+          <button className="flex flex-col items-center p-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6 text-gray-500"
+              className="h-6 w-6 text-gray-500"
             >
               <path
                 strokeLinecap="round"
@@ -271,14 +270,14 @@ export default function GreenThemePage() {
               />
             </svg>
           </button>
-          <button className="p-2 flex flex-col items-center">
+          <button className="flex flex-col items-center p-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6 text-gray-500"
+              className="h-6 w-6 text-gray-500"
             >
               <path
                 strokeLinecap="round"

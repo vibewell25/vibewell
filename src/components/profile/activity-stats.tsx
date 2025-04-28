@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Activity, AlertTriangle, CheckCircle2, Clock, XCircle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { AlertTriangle, CheckCircle2, XCircle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 interface ActivityStats {
@@ -51,7 +51,7 @@ export function ActivityStats() {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Most Common Event</span>
-              <span className="text-sm text-muted-foreground capitalize">
+              <span className="text-sm capitalize text-muted-foreground">
                 {stats.mostCommonEvent}
               </span>
             </div>

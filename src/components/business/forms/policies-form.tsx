@@ -1,30 +1,13 @@
-'use client';
-
+'use client';;
 import { useState } from 'react';
 import { PoliciesFormProps } from '@/components/business/business-profile-wizard';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Switch } from '@/components/ui/switch';
-import { FileText, Clock, AlertCircle, InfoIcon } from 'lucide-react';
+import { FileText, InfoIcon } from 'lucide-react';
 
 // Cancellation policies
 const CANCELLATION_POLICIES = [
@@ -56,10 +39,10 @@ const CANCELLATION_POLICIES = [
 
 export function PoliciesForm({ form }: PoliciesFormProps) {
   const [cancellationPolicy, setCancellationPolicy] = useState<string>(
-    form.getValues('cancellationPolicy') || 'flexible'
+    form.getValues('cancellationPolicy') || 'flexible',
   );
   const [hasLatePolicy, setHasLatePolicy] = useState<boolean>(
-    form.getValues('hasLateArrivalPolicy') || false
+    form.getValues('hasLateArrivalPolicy') || false,
   );
 
   // Handle cancellation policy selection
@@ -67,7 +50,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
     setCancellationPolicy(value);
 
     if (value !== 'custom') {
-      const selectedPolicy = CANCELLATION_POLICIES.find(policy => policy.id === value);
+      const selectedPolicy = CANCELLATION_POLICIES.find((policy) => policy.id === value);
 
       if (selectedPolicy) {
         form.setValue(
@@ -76,7 +59,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
           {
             shouldValidate: true,
             shouldDirty: true,
-          }
+          },
         );
       }
     }
@@ -84,7 +67,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="mb-6 flex items-center gap-2">
         <FileText className="h-5 w-5 text-muted-foreground" />
         <h2 className="text-xl font-semibold">Business Policies</h2>
       </div>
@@ -103,13 +86,13 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
               onValueChange={handleCancellationPolicyChange}
               className="space-y-4"
             >
-              {CANCELLATION_POLICIES.map(policy => (
+              {CANCELLATION_POLICIES.map((policy) => (
                 <div key={policy.id} className="flex items-start space-x-2">
                   <RadioGroupItem value={policy.id} id={`policy-${policy.id}`} className="mt-1" />
                   <div className="grid gap-1.5">
                     <label
                       htmlFor={`policy-${policy.id}`}
-                      className="text-sm font-medium leading-none cursor-pointer"
+                      className="cursor-pointer text-sm font-medium leading-none"
                     >
                       {policy.name}
                     </label>
@@ -159,7 +142,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
             </div>
             <Switch
               checked={hasLatePolicy}
-              onCheckedChange={checked => {
+              onCheckedChange={(checked) => {
                 setHasLatePolicy(checked);
                 form.setValue('hasLateArrivalPolicy', checked, { shouldValidate: true });
 
@@ -185,7 +168,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
                       <Input
                         type="number"
                         {...field}
-                        onChange={e => field.onChange(parseInt(e.target.value || '0', 10))}
+                        onChange={(e) => field.onChange(parseInt(e.target.value || '0', 10))}
                         min={0}
                         max={60}
                         className="w-20"
@@ -276,7 +259,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
             </div>
             <Switch
               checked={form.watch('requirePolicyConfirmation') || false}
-              onCheckedChange={checked => {
+              onCheckedChange={(checked) => {
                 form.setValue('requirePolicyConfirmation', checked, { shouldValidate: true });
               }}
             />
@@ -293,7 +276,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
             </div>
             <Switch
               checked={form.watch('includePoliciesInEmails') || false}
-              onCheckedChange={checked => {
+              onCheckedChange={(checked) => {
                 form.setValue('includePoliciesInEmails', checked, { shouldValidate: true });
               }}
             />
@@ -302,11 +285,11 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
       </Card>
 
       {/* Help Text */}
-      <div className="bg-blue-50 border border-blue-200 rounded-md p-4 text-blue-700">
+      <div className="rounded-md border border-blue-200 bg-blue-50 p-4 text-blue-700">
         <div className="flex space-x-3">
-          <InfoIcon className="h-5 w-5 text-blue-500 mt-0.5" />
+          <InfoIcon className="mt-0.5 h-5 w-5 text-blue-500" />
           <div>
-            <h4 className="text-sm font-medium text-blue-800 mb-1">Why policies matter</h4>
+            <h4 className="mb-1 text-sm font-medium text-blue-800">Why policies matter</h4>
             <p className="text-sm">
               Clear policies help set expectations with your clients, reduce no-shows, and protect
               your business. Well-defined policies show professionalism and can reduce

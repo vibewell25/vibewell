@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
 interface ColorPickerProps {
@@ -32,18 +32,18 @@ export function ColorPicker({ color, onChange, className }: ColorPickerProps) {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={cn('w-10 h-8 p-0 border-2', className)}
+          className={cn('h-8 w-10 border-2 p-0', className)}
           style={{ backgroundColor: color }}
         />
       </PopoverTrigger>
       <PopoverContent className="w-auto p-3">
         <div className="grid grid-cols-5 gap-2">
-          {predefinedColors.map(presetColor => (
+          {predefinedColors.map((presetColor) => (
             <button
               key={presetColor}
               className={cn(
-                'w-6 h-6 rounded-md border border-gray-200',
-                color === presetColor ? 'ring-2 ring-offset-2 ring-primary' : ''
+                'h-6 w-6 rounded-md border border-gray-200',
+                color === presetColor ? 'ring-primary ring-2 ring-offset-2' : '',
               )}
               style={{ backgroundColor: presetColor }}
               onClick={() => {
@@ -53,17 +53,17 @@ export function ColorPicker({ color, onChange, className }: ColorPickerProps) {
             />
           ))}
         </div>
-        <div className="flex items-center mt-3">
+        <div className="mt-3 flex items-center">
           <input
             type="color"
             value={color}
-            onChange={e => onChange(e.target.value)}
-            className="w-8 h-8 cursor-pointer appearance-none bg-transparent border-0"
+            onChange={(e) => onChange(e.target.value)}
+            className="h-8 w-8 cursor-pointer appearance-none border-0 bg-transparent"
             id="custom-color-picker"
           />
           <label
             htmlFor="custom-color-picker"
-            className="ml-2 text-xs text-muted-foreground cursor-pointer"
+            className="ml-2 cursor-pointer text-xs text-muted-foreground"
           >
             Custom color
           </label>

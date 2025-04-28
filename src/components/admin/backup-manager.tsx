@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { BackupService, BackupMetadata } from '@/lib/backup/backup-service';
 import { backupConfig } from '@/config/backup-config';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import {
   Select,
   SelectContent,
@@ -79,7 +79,7 @@ export function BackupManager() {
       setBackupInProgress(true);
       setError(null);
       const backup = await backupService.createBackup(type);
-      setBackups(prev => [backup, ...prev]);
+      setBackups((prev) => [backup, ...prev]);
       toast({
         title: 'Backup Created',
         description: `Successfully created ${type} backup`,
@@ -134,7 +134,7 @@ export function BackupManager() {
 
     return (
       <Badge className={config.color}>
-        <Icon className="w-4 h-4 mr-1" />
+        <Icon className="mr-1 h-4 w-4" />
         {status}
       </Badge>
     );
@@ -151,7 +151,7 @@ export function BackupManager() {
           <div className="space-y-4">
             <div className="flex items-center gap-4">
               <Button onClick={() => handleCreateBackup('full')} disabled={backupInProgress}>
-                <Upload className="w-4 h-4 mr-2" />
+                <Upload className="mr-2 h-4 w-4" />
                 Create Full Backup
               </Button>
               <Button
@@ -159,14 +159,14 @@ export function BackupManager() {
                 disabled={backupInProgress}
                 variant="secondary"
               >
-                <Upload className="w-4 h-4 mr-2" />
+                <Upload className="mr-2 h-4 w-4" />
                 Create Incremental Backup
               </Button>
             </div>
 
             {error && (
               <Alert variant="destructive">
-                <AlertTriangle className="w-4 h-4" />
+                <AlertTriangle className="h-4 w-4" />
                 <AlertTitle>Error</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
@@ -184,7 +184,7 @@ export function BackupManager() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {backups.map(backup => (
+                {backups.map((backup) => (
                   <TableRow key={backup.id}>
                     <TableCell>{backup.id}</TableCell>
                     <TableCell>
@@ -202,7 +202,7 @@ export function BackupManager() {
                         onClick={() => setSelectedBackup(backup.id)}
                         disabled={backup.status !== 'completed'}
                       >
-                        <Download className="w-4 h-4" />
+                        <Download className="h-4 w-4" />
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -223,8 +223,8 @@ export function BackupManager() {
               </SelectTrigger>
               <SelectContent>
                 {backups
-                  .filter(b => b.status === 'completed')
-                  .map(backup => (
+                  .filter((b) => b.status === 'completed')
+                  .map((backup) => (
                     <SelectItem key={backup.id} value={backup.id}>
                       {backup.type} - {format(new Date(backup.timestamp), 'PPpp')}
                     </SelectItem>
@@ -236,12 +236,12 @@ export function BackupManager() {
               disabled={!selectedBackup || restoreInProgress}
               variant="destructive"
             >
-              <RefreshCw className="w-4 h-4 mr-2" />
+              <RefreshCw className="mr-2 h-4 w-4" />
               Restore Selected Backup
             </Button>
           </div>
           <Button onClick={loadBackups} variant="outline" disabled={loading}>
-            <RefreshCw className="w-4 h-4 mr-2" />
+            <RefreshCw className="mr-2 h-4 w-4" />
             Refresh
           </Button>
         </CardFooter>

@@ -93,7 +93,7 @@ export class PerformanceReviewService {
   async createReview(
     practitionerId: string,
     reviewType: 'quarterly' | 'annual' | 'probation' | 'special',
-    period: { start: Date; end: Date }
+    period: { start: Date; end: Date },
   ): Promise<PerformanceReview> {
     // Check for existing review in the same period
     const existingReview = await PerformanceReviewModel.findOne({
@@ -111,7 +111,7 @@ export class PerformanceReviewService {
       practitionerId,
       reviewType,
       reviewPeriod: period,
-      metrics: this.STANDARD_METRICS.map(metric => ({
+      metrics: this.STANDARD_METRICS.map((metric) => ({
         metricId: metric.id,
         score: 0,
         notes: '',
@@ -138,7 +138,7 @@ export class PerformanceReviewService {
   async updateMetricEvaluation(
     reviewId: string,
     metricId: string,
-    evaluation: Partial<MetricEvaluation>
+    evaluation: Partial<MetricEvaluation>,
   ): Promise<PerformanceReview> {
     const review = await PerformanceReviewModel.findById(reviewId);
 
@@ -146,7 +146,7 @@ export class PerformanceReviewService {
       throw new Error('Review not found');
     }
 
-    const metricIndex = review.metrics.findIndex(m => m.metricId === metricId);
+    const metricIndex = review.metrics.findIndex((m) => m.metricId === metricId);
 
     if (metricIndex === -1) {
       throw new Error('Metric not found in review');
@@ -161,7 +161,7 @@ export class PerformanceReviewService {
     // Calculate overall score
     const totalWeight = this.STANDARD_METRICS.reduce((sum, m) => sum + m.weight, 0);
     const weightedSum = review.metrics.reduce((sum, m) => {
-      const metric = this.STANDARD_METRICS.find(sm => sm.id === m.metricId);
+      const metric = this.STANDARD_METRICS.find((sm) => sm.id === m.metricId);
       return sum + m.score * (metric?.weight || 0);
     }, 0);
 
@@ -175,7 +175,7 @@ export class PerformanceReviewService {
    */
   async addDevelopmentGoal(
     reviewId: string,
-    goal: Omit<DevelopmentGoal, 'id' | 'status' | 'progress'>
+    goal: Omit<DevelopmentGoal, 'id' | 'status' | 'progress'>,
   ): Promise<PerformanceReview> {
     const review = await PerformanceReviewModel.findById(reviewId);
 
@@ -204,7 +204,7 @@ export class PerformanceReviewService {
       status?: DevelopmentGoal['status'];
       progress?: number;
       completedMilestones?: string[];
-    }
+    },
   ): Promise<PerformanceReview> {
     const review = await PerformanceReviewModel.findById(reviewId);
 
@@ -212,7 +212,7 @@ export class PerformanceReviewService {
       throw new Error('Review not found');
     }
 
-    const goalIndex = review.developmentGoals.findIndex(g => g.id === goalId);
+    const goalIndex = review.developmentGoals.findIndex((g) => g.id === goalId);
 
     if (goalIndex === -1) {
       throw new Error('Goal not found');
@@ -229,7 +229,7 @@ export class PerformanceReviewService {
     }
 
     if (update.completedMilestones) {
-      goal.milestones = goal.milestones.map(m => ({
+      goal.milestones = goal.milestones.map((m) => ({
         ...m,
         status: update.completedMilestones?.includes(m.title) ? 'completed' : m.status,
         completedDate: update.completedMilestones?.includes(m.title) ? new Date() : m.completedDate,
@@ -249,7 +249,7 @@ export class PerformanceReviewService {
       reviewerId: string;
       rating: number;
       comments: string;
-    }
+    },
   ): Promise<PerformanceReview> {
     const review = await PerformanceReviewModel.findById(reviewId);
 
@@ -274,7 +274,7 @@ export class PerformanceReviewService {
       strengths: string[];
       challenges: string[];
       goals: string[];
-    }
+    },
   ): Promise<PerformanceReview> {
     const review = await PerformanceReviewModel.findById(reviewId);
 
@@ -299,7 +299,7 @@ export class PerformanceReviewService {
       scheduledDate: Date;
       duration: number;
       attendees: string[];
-    }
+    },
   ): Promise<PerformanceReview> {
     const review = await PerformanceReviewModel.findById(reviewId);
 
@@ -342,7 +342,7 @@ export class PerformanceReviewService {
         bonusRecommendation?: number;
         bonusJustification?: string;
       };
-    }
+    },
   ): Promise<PerformanceReview> {
     const review = await PerformanceReviewModel.findById(reviewId);
 
@@ -354,7 +354,7 @@ export class PerformanceReviewService {
       throw new Error('Review must be in review status to complete');
     }
 
-    if (!review.metrics.every(m => m.score > 0)) {
+    if (!review.metrics.every((m) => m.score > 0)) {
       throw new Error('All metrics must be evaluated before completion');
     }
 
@@ -406,12 +406,12 @@ export class PerformanceReviewService {
       totalReviews: reviews.length,
       averageScore: reviews.reduce((sum, r) => sum + (r.overallScore || 0), 0) / reviews.length,
       completedGoals: reviews.reduce(
-        (sum, r) => sum + r.developmentGoals.filter(g => g.status === 'completed').length,
-        0
+        (sum, r) => sum + r.developmentGoals.filter((g) => g.status === 'completed').length,
+        0,
       ),
       strengthAreas: this.aggregateStrengths(reviews),
       improvementAreas: this.aggregateImprovements(reviews),
-      recentReviews: reviews.slice(0, 3).map(r => ({
+      recentReviews: reviews.slice(0, 3).map((r) => ({
         id: r._id,
         period: r.reviewPeriod,
         type: r.reviewType,
@@ -424,8 +424,8 @@ export class PerformanceReviewService {
   private aggregateStrengths(reviews: PerformanceReview[]): { area: string; frequency: number }[] {
     const strengthCounts = new Map<string, number>();
 
-    reviews.forEach(review => {
-      review.strengths.forEach(strength => {
+    reviews.forEach((review) => {
+      review.strengths.forEach((strength) => {
         strengthCounts.set(strength, (strengthCounts.get(strength) || 0) + 1);
       });
     });
@@ -436,12 +436,12 @@ export class PerformanceReviewService {
   }
 
   private aggregateImprovements(
-    reviews: PerformanceReview[]
+    reviews: PerformanceReview[],
   ): { area: string; frequency: number }[] {
     const improvementCounts = new Map<string, number>();
 
-    reviews.forEach(review => {
-      review.areasForImprovement.forEach(area => {
+    reviews.forEach((review) => {
+      review.areasForImprovement.forEach((area) => {
         improvementCounts.set(area, (improvementCounts.get(area) || 0) + 1);
       });
     });

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { z } from 'zod';
 import { passwordResetRateLimiter, applyRateLimit } from '../rate-limit-middleware';
 import { ManagementClient } from 'auth0-js';
@@ -45,7 +44,7 @@ export async function POST(req: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -90,7 +89,7 @@ export async function PUT(req: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -105,7 +104,7 @@ export async function PUT(req: NextRequest) {
           connection: 'Username-Password-Authentication',
           client_id: process.env.AUTH0_CLIENT_ID,
         },
-        token
+        token,
       );
 
       // Return success response
@@ -117,7 +116,7 @@ export async function PUT(req: NextRequest) {
       console.error('Auth0 password update error:', auth0Error);
       return NextResponse.json(
         { error: 'Failed to update password. The reset link may have expired.' },
-        { status: 400 }
+        { status: 400 },
       );
     }
   } catch (error) {

@@ -26,12 +26,12 @@ const Avatar = React.forwardRef<React.ElementRef<typeof AvatarPrimitive.Root>, A
         className={cn(
           'relative flex shrink-0 overflow-hidden rounded-full',
           sizeClasses[size],
-          className
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 Avatar.displayName = AvatarPrimitive.Root.displayName;
 
@@ -60,7 +60,7 @@ const AvatarFallback = React.forwardRef<
     ref={ref}
     className={cn(
       'flex h-full w-full items-center justify-center rounded-full bg-muted text-muted-foreground',
-      className
+      className,
     )}
     delayMs={delayMs}
     {...props}

@@ -1,887 +1,804 @@
-# Vibewell API Documentation
+# VibeWell API Documentation
 
-## Overview
+This document provides comprehensive documentation for the VibeWell API, including endpoints, request/response formats, authentication, error handling, and usage examples.
 
-This document provides detailed information about the Vibewell RESTful API endpoints, authentication requirements, request/response formats, and usage examples.
+## API Overview
 
-## Base URL
+The VibeWell API is a RESTful API that allows developers to interact with the VibeWell platform programmatically. The API enables access to user data, wellness activities, progress tracking, and more.
 
-All API endpoints are relative to:
-
-```
-https://api.vibewell.com/v1
-```
-
-For development environments:
-
-```
-http://localhost:3000/api
-```
+**Base URL**: `https://api.vibewell.com/v1`
 
 ## Authentication
 
-Most API endpoints require authentication using JWT tokens. Include the token in the Authorization header:
+All API requests require authentication using JSON Web Tokens (JWT).
+
+### Getting an Access Token
+
+To obtain an access token, use Auth0's authentication endpoints:
 
 ```
-Authorization: Bearer <your_jwt_token>
-```
+POST https://vibewell.auth0.com/oauth/token
+Content-Type: application/json
 
-### Getting a Token
-
-```
-POST /auth/login
-```
-
-Request body:
-```json
 {
-  "email": "user@example.com",
-  "password": "yourpassword"
+  "client_id": "YOUR_CLIENT_ID",
+  "client_secret": "YOUR_CLIENT_SECRET",
+  "audience": "https://api.vibewell.com",
+  "grant_type": "client_credentials"
 }
 ```
 
-> **SECURITY NOTE**: All JWT tokens shown in the examples are non-functional samples used for illustrative purposes only. They are truncated and do not represent actual authentication tokens. Never share real authentication tokens in documentation or code repositories.
+### Using the Access Token
 
-Response:
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "id": "user_123",
-    "email": "user@example.com",
-    "name": "John Doe",
-    "role": "customer"
-  }
-}
-```
-
-## Rate Limiting
-
-To ensure fair usage and protect our systems, all API endpoints are subject to rate limiting. The specific limits vary by endpoint and user role.
-
-### Rate Limit Headers
-
-Rate limit information is returned in the following HTTP headers:
+Include the access token in the Authorization header of all API requests:
 
 ```
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 99
-X-RateLimit-Reset: 1628537268
+Authorization: Bearer YOUR_ACCESS_TOKEN
 ```
 
-If you exceed the rate limit, you'll receive a `429 Too Many Requests` response with a `Retry-After` header indicating how many seconds to wait before retrying.
+## API Endpoints
 
-### Rate Limits by Endpoint Category
+### User Management
 
-| Category | Default Limit | Notes |
-|----------|--------------|-------|
-| General API | 100 requests per minute | Applied to most endpoints |
-| Authentication | 10 requests per minute | Login, signup, password reset |
-| Password Reset | 3 requests per hour | Per email address |
-| User Registration | 5 registrations per day | Per IP address |
-| MFA Operations | Varies | See below |
-| Financial Operations | 10 per 5 minutes | Payment processing, subscriptions |
+#### Get Current User
 
-### MFA-Specific Rate Limits
-
-| Operation | Limit |
-|-----------|-------|
-| MFA Enrollment | 3 enrollments per hour per user |
-| MFA Verification | 5 attempts per 15 minutes per user |
-| MFA Unenrollment | 2 unenrollments per 24 hours per user |
-
-### Best Practices for Handling Rate Limits
-
-1. **Implement exponential backoff**: When receiving a 429 response, use the `Retry-After` header to wait before retrying, and increase the delay for consecutive failures.
-
-2. **Cache responses**: Where appropriate, cache API responses to reduce the number of requests.
-
-3. **Use bulk operations**: Instead of making multiple individual requests, use bulk endpoints where available.
-
-4. **Monitor your usage**: Keep track of your rate limit headers to ensure you're not approaching limits.
-
-### Example: Handling Rate Limits in Client Code
-
-```javascript
-async function makeApiRequest(url) {
-  try {
-    const response = await fetch(url, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    // Check if rate limited
-    if (response.status === 429) {
-      const retryAfter = parseInt(response.headers.get('Retry-After') || '60');
-      console.log(`Rate limited. Retrying after ${retryAfter} seconds`);
-      
-      // Wait and retry
-      await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
-      return makeApiRequest(url); // Retry the request
-    }
-    
-    return await response.json();
-  } catch (error) {
-    console.error('API request failed:', error);
-    throw error;
-  }
-}
-```
-
-## Error Handling
-
-All API errors follow this format:
-
-```json
-{
-  "error": {
-    "code": "ERROR_CODE",
-    "message": "Human-readable error message",
-    "details": {} // Optional additional information
-  }
-}
-```
-
-Common error codes:
-- `UNAUTHORIZED`: Authentication required or token invalid
-- `FORBIDDEN`: Insufficient permissions for the operation
-- `NOT_FOUND`: Resource not found
-- `VALIDATION_ERROR`: Request data failed validation
-- `INTERNAL_ERROR`: Server error
-
-## User API
-
-### Get Current User
-
-Retrieves the profile information for the currently authenticated user.
+Retrieves the profile of the authenticated user.
 
 ```
 GET /users/me
 ```
 
-Response:
+**Response**:
 ```json
 {
   "id": "user_123",
   "email": "user@example.com",
-  "name": "John Doe",
-  "phone": "+1234567890",
-  "profileImage": "https://storage.vibewell.com/avatars/user_123.jpg",
-  "role": "customer",
+  "firstName": "John",
+  "lastName": "Doe",
+  "createdAt": "2023-01-15T10:30:00Z",
+  "updatedAt": "2023-04-20T15:45:00Z",
+  "profilePicture": "https://s3.amazonaws.com/vibewell/users/profile_123.jpg",
   "preferences": {
-    "notifications": {
-      "email": true,
-      "sms": false,
-      "push": true
-    },
-    "privacy": {
-      "profileVisibility": "public",
-      "emailVisibility": "private"
-    }
-  },
-  "createdAt": "2023-01-15T12:00:00Z",
-  "updatedAt": "2023-02-20T15:30:00Z"
-}
-```
-
-### Update User Profile
-
-Updates profile information for the current user.
-
-```
-PATCH /users/me
-```
-
-Request body:
-```json
-{
-  "name": "John Smith",
-  "phone": "+1987654321",
-  "preferences": {
-    "notifications": {
-      "sms": true
-    }
+    "notifications": true,
+    "theme": "light"
   }
 }
 ```
 
-Response:
+#### Update User Profile
+
+Updates the profile information of the authenticated user.
+
+```
+PATCH /users/me
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "preferences": {
+    "notifications": false
+  }
+}
+```
+
+**Response**:
 ```json
 {
   "id": "user_123",
   "email": "user@example.com",
-  "name": "John Smith",
-  "phone": "+1987654321",
-  "profileImage": "https://storage.vibewell.com/avatars/user_123.jpg",
-  "role": "customer",
+  "firstName": "John",
+  "lastName": "Smith",
+  "createdAt": "2023-01-15T10:30:00Z",
+  "updatedAt": "2023-06-10T11:20:00Z",
+  "profilePicture": "https://s3.amazonaws.com/vibewell/users/profile_123.jpg",
   "preferences": {
-    "notifications": {
-      "email": true,
-      "sms": true,
-      "push": true
+    "notifications": false,
+    "theme": "light"
+  }
+}
+```
+
+#### Get User by ID (Admin Only)
+
+Retrieves a user profile by ID (requires admin permissions).
+
+```
+GET /users/{userId}
+```
+
+**Response**: Same format as Get Current User
+
+### Wellness Activities
+
+#### List Wellness Activities
+
+Retrieves a paginated list of wellness activities.
+
+```
+GET /activities?page=1&limit=10&category=meditation
+```
+
+**Query Parameters**:
+- `page`: Page number (default: 1)
+- `limit`: Number of items per page (default: 20, max: 100)
+- `category`: Filter by category (optional)
+- `difficulty`: Filter by difficulty level (optional)
+- `duration`: Filter by duration in minutes (optional)
+
+**Response**:
+```json
+{
+  "data": [
+    {
+      "id": "activity_123",
+      "title": "Morning Meditation",
+      "description": "Start your day with a calming meditation session",
+      "category": "meditation",
+      "difficulty": "beginner",
+      "duration": 15,
+      "imageUrl": "https://s3.amazonaws.com/vibewell/activities/meditation_123.jpg",
+      "createdAt": "2023-02-10T08:00:00Z",
+      "updatedAt": "2023-02-10T08:00:00Z"
     },
-    "privacy": {
-      "profileVisibility": "public",
-      "emailVisibility": "private"
+    {
+      "id": "activity_124",
+      "title": "Mindful Breathing",
+      "description": "Focus on your breath to reduce stress",
+      "category": "meditation",
+      "difficulty": "beginner",
+      "duration": 10,
+      "imageUrl": "https://s3.amazonaws.com/vibewell/activities/breathing_124.jpg",
+      "createdAt": "2023-02-11T09:30:00Z",
+      "updatedAt": "2023-02-11T09:30:00Z"
+    }
+  ],
+  "pagination": {
+    "total": 45,
+    "page": 1,
+    "limit": 10,
+    "pages": 5
+  }
+}
+```
+
+#### Get Activity Details
+
+Retrieves detailed information about a specific wellness activity.
+
+```
+GET /activities/{activityId}
+```
+
+**Response**:
+```json
+{
+  "id": "activity_123",
+  "title": "Morning Meditation",
+  "description": "Start your day with a calming meditation session",
+  "category": "meditation",
+  "difficulty": "beginner",
+  "duration": 15,
+  "imageUrl": "https://s3.amazonaws.com/vibewell/activities/meditation_123.jpg",
+  "content": {
+    "steps": [
+      "Find a comfortable seated position",
+      "Close your eyes and take deep breaths",
+      "Focus on your breathing for 5 minutes",
+      "Gradually bring awareness back to your surroundings",
+      "Open your eyes and reflect on how you feel"
+    ],
+    "audioUrl": "https://s3.amazonaws.com/vibewell/audio/meditation_123.mp3",
+    "videoUrl": "https://s3.amazonaws.com/vibewell/videos/meditation_123.mp4"
+  },
+  "benefits": [
+    "Reduces stress and anxiety",
+    "Improves focus and concentration",
+    "Promotes emotional well-being"
+  ],
+  "createdAt": "2023-02-10T08:00:00Z",
+  "updatedAt": "2023-02-10T08:00:00Z"
+}
+```
+
+#### Create Activity (Admin Only)
+
+Creates a new wellness activity (requires admin permissions).
+
+```
+POST /activities
+Content-Type: application/json
+
+{
+  "title": "Evening Relaxation",
+  "description": "Wind down with this relaxing routine",
+  "category": "relaxation",
+  "difficulty": "intermediate",
+  "duration": 20,
+  "content": {
+    "steps": ["Step 1", "Step 2", "Step 3"],
+    "audioUrl": "https://s3.amazonaws.com/vibewell/audio/relaxation_new.mp3"
+  },
+  "benefits": [
+    "Improves sleep quality",
+    "Reduces nighttime anxiety"
+  ]
+}
+```
+
+**Response**: Returns the created activity object with a 201 status code.
+
+#### Update Activity (Admin Only)
+
+Updates an existing wellness activity (requires admin permissions).
+
+```
+PUT /activities/{activityId}
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "description": "Updated description",
+  "duration": 25
+}
+```
+
+**Response**: Returns the updated activity object.
+
+#### Delete Activity (Admin Only)
+
+Deletes a wellness activity (requires admin permissions).
+
+```
+DELETE /activities/{activityId}
+```
+
+**Response**: Returns a 204 No Content status code on success.
+
+### User Progress
+
+#### Track Activity Completion
+
+Records that a user has completed an activity.
+
+```
+POST /progress
+Content-Type: application/json
+
+{
+  "activityId": "activity_123",
+  "duration": 15,
+  "notes": "Felt very relaxed afterward",
+  "rating": 5
+}
+```
+
+**Response**:
+```json
+{
+  "id": "progress_456",
+  "userId": "user_123",
+  "activityId": "activity_123",
+  "duration": 15,
+  "notes": "Felt very relaxed afterward",
+  "rating": 5,
+  "completedAt": "2023-06-15T19:30:00Z"
+}
+```
+
+#### Get User Progress
+
+Retrieves a user's progress history.
+
+```
+GET /progress?page=1&limit=10&startDate=2023-06-01&endDate=2023-06-30
+```
+
+**Query Parameters**:
+- `page`: Page number (default: 1)
+- `limit`: Number of items per page (default: 20, max: 100)
+- `startDate`: Filter by start date (format: YYYY-MM-DD)
+- `endDate`: Filter by end date (format: YYYY-MM-DD)
+- `activityId`: Filter by activity ID (optional)
+- `category`: Filter by activity category (optional)
+
+**Response**:
+```json
+{
+  "data": [
+    {
+      "id": "progress_456",
+      "userId": "user_123",
+      "activity": {
+        "id": "activity_123",
+        "title": "Morning Meditation",
+        "category": "meditation",
+        "duration": 15
+      },
+      "duration": 15,
+      "notes": "Felt very relaxed afterward",
+      "rating": 5,
+      "completedAt": "2023-06-15T19:30:00Z"
+    },
+    {
+      "id": "progress_457",
+      "userId": "user_123",
+      "activity": {
+        "id": "activity_125",
+        "title": "Stretching Routine",
+        "category": "fitness",
+        "duration": 20
+      },
+      "duration": 18,
+      "notes": "Felt more flexible",
+      "rating": 4,
+      "completedAt": "2023-06-16T07:15:00Z"
+    }
+  ],
+  "pagination": {
+    "total": 12,
+    "page": 1,
+    "limit": 10,
+    "pages": 2
+  }
+}
+```
+
+#### Get Progress Summary
+
+Retrieves a summary of the user's progress.
+
+```
+GET /progress/summary?period=month&date=2023-06
+```
+
+**Query Parameters**:
+- `period`: Time period for the summary (options: week, month, year)
+- `date`: Reference date for the period (format depends on period)
+
+**Response**:
+```json
+{
+  "period": "month",
+  "date": "2023-06",
+  "totalActivities": 22,
+  "totalDuration": 345,
+  "categorySummary": {
+    "meditation": {
+      "count": 12,
+      "duration": 180,
+      "avgRating": 4.5
+    },
+    "fitness": {
+      "count": 8,
+      "duration": 145,
+      "avgRating": 4.2
+    },
+    "nutrition": {
+      "count": 2,
+      "duration": 20,
+      "avgRating": 3.5
     }
   },
-  "updatedAt": "2023-03-10T09:45:00Z"
+  "streaks": {
+    "current": 5,
+    "longest": 14
+  }
 }
 ```
 
-### Upload Profile Image
+### Wellness Plans
 
-Uploads a new profile image.
+#### List Available Plans
+
+Retrieves a list of available wellness plans.
 
 ```
-POST /users/me/profile-image
+GET /plans?page=1&limit=10&category=fitness
 ```
 
-Request: multipart/form-data with 'image' field containing the image file
+**Query Parameters**:
+- `page`: Page number (default: 1)
+- `limit`: Number of items per page (default: 20, max: 100)
+- `category`: Filter by category (optional)
+- `duration`: Filter by plan duration in days (optional)
 
-Response:
+**Response**:
 ```json
 {
-  "profileImage": "https://storage.vibewell.com/avatars/user_123.jpg",
-  "updatedAt": "2023-03-15T14:20:00Z"
-}
-```
-
-## Booking API
-
-### Get User Bookings
-
-Retrieves all bookings for the current user.
-
-```
-GET /bookings
-```
-
-Query parameters:
-- `status` (optional): Filter by status (pending, confirmed, completed, cancelled)
-- `from` (optional): Start date (YYYY-MM-DD)
-- `to` (optional): End date (YYYY-MM-DD)
-- `limit` (optional): Maximum number of results (default: 20)
-- `offset` (optional): Results offset for pagination (default: 0)
-
-Response:
-```json
-{
-  "bookings": [
+  "data": [
     {
-      "id": "booking_123",
-      "providerId": "provider_456",
-      "providerName": "Style Studio",
-      "serviceId": "service_789",
-      "serviceName": "Haircut & Style",
-      "date": "2023-04-15",
-      "startTime": "14:00:00",
-      "endTime": "15:00:00",
-      "status": "confirmed",
-      "price": 75.00,
-      "currency": "USD",
-      "notes": "Please arrive 10 minutes early",
-      "createdAt": "2023-03-20T10:15:00Z"
+      "id": "plan_123",
+      "title": "30-Day Meditation Challenge",
+      "description": "Build a daily meditation habit in 30 days",
+      "category": "meditation",
+      "durationDays": 30,
+      "difficulty": "beginner",
+      "imageUrl": "https://s3.amazonaws.com/vibewell/plans/meditation_30day.jpg",
+      "createdAt": "2023-03-10T12:00:00Z"
     },
-    // More bookings...
-  ],
-  "total": 5,
-  "limit": 20,
-  "offset": 0
-}
-```
-
-### Create Booking
-
-Creates a new booking.
-
-```
-POST /bookings
-```
-
-Request body:
-```json
-{
-  "providerId": "provider_456",
-  "serviceId": "service_789",
-  "date": "2023-05-10",
-  "startTime": "11:00:00",
-  "notes": "First-time client"
-}
-```
-
-Response:
-```json
-{
-  "id": "booking_124",
-  "providerId": "provider_456",
-  "providerName": "Style Studio",
-  "serviceId": "service_789",
-  "serviceName": "Haircut & Style",
-  "date": "2023-05-10",
-  "startTime": "11:00:00",
-  "endTime": "12:00:00",
-  "status": "pending",
-  "price": 75.00,
-  "currency": "USD",
-  "notes": "First-time client",
-  "createdAt": "2023-03-25T09:30:00Z"
-}
-```
-
-### Cancel Booking
-
-Cancels an existing booking.
-
-```
-POST /bookings/{bookingId}/cancel
-```
-
-Request body:
-```json
-{
-  "reason": "Schedule conflict"
-}
-```
-
-Response:
-```json
-{
-  "id": "booking_123",
-  "status": "cancelled",
-  "cancellationReason": "Schedule conflict",
-  "cancellationDate": "2023-03-26T15:45:00Z",
-  "refundAmount": 0.00
-}
-```
-
-## Provider API
-
-### Get Provider Details
-
-Retrieves detailed information about a service provider.
-
-```
-GET /providers/{providerId}
-```
-
-Response:
-```json
-{
-  "id": "provider_456",
-  "name": "Style Studio",
-  "description": "Premium hair salon with 15 years of experience",
-  "images": [
-    "https://storage.vibewell.com/providers/provider_456_1.jpg",
-    "https://storage.vibewell.com/providers/provider_456_2.jpg"
-  ],
-  "address": {
-    "street": "123 Main St",
-    "city": "New York",
-    "state": "NY",
-    "zipCode": "10001",
-    "country": "USA",
-    "coordinates": {
-      "latitude": 40.7128,
-      "longitude": -74.0060
+    {
+      "id": "plan_124",
+      "title": "Stress Reduction Program",
+      "description": "Reduce stress and anxiety in 14 days",
+      "category": "stress-management",
+      "durationDays": 14,
+      "difficulty": "intermediate",
+      "imageUrl": "https://s3.amazonaws.com/vibewell/plans/stress_reduction.jpg",
+      "createdAt": "2023-03-15T14:30:00Z"
     }
+  ],
+  "pagination": {
+    "total": 8,
+    "page": 1,
+    "limit": 10,
+    "pages": 1
+  }
+}
+```
+
+#### Get Plan Details
+
+Retrieves detailed information about a specific wellness plan.
+
+```
+GET /plans/{planId}
+```
+
+**Response**:
+```json
+{
+  "id": "plan_123",
+  "title": "30-Day Meditation Challenge",
+  "description": "Build a daily meditation habit in 30 days",
+  "category": "meditation",
+  "durationDays": 30,
+  "difficulty": "beginner",
+  "imageUrl": "https://s3.amazonaws.com/vibewell/plans/meditation_30day.jpg",
+  "activities": [
+    {
+      "day": 1,
+      "activityId": "activity_123",
+      "title": "Introduction to Meditation",
+      "duration": 10
+    },
+    {
+      "day": 2,
+      "activityId": "activity_124",
+      "title": "Mindful Breathing",
+      "duration": 12
+    },
+    {
+      "day": 3,
+      "activityId": "activity_125",
+      "title": "Body Scan Meditation",
+      "duration": 15
+    }
+  ],
+  "benefits": [
+    "Establish a consistent meditation practice",
+    "Reduce daily stress and anxiety",
+    "Improve focus and concentration"
+  ],
+  "createdAt": "2023-03-10T12:00:00Z",
+  "updatedAt": "2023-03-10T12:00:00Z"
+}
+```
+
+#### Subscribe to Plan
+
+Subscribes the current user to a wellness plan.
+
+```
+POST /plans/{planId}/subscribe
+```
+
+**Response**:
+```json
+{
+  "id": "subscription_789",
+  "userId": "user_123",
+  "planId": "plan_123",
+  "startDate": "2023-06-20T00:00:00Z",
+  "currentDay": 1,
+  "status": "active",
+  "progress": {
+    "completed": 0,
+    "total": 30,
+    "percentage": 0
   },
-  "contactInfo": {
-    "phone": "+1234567890",
-    "email": "contact@stylestudio.com",
-    "website": "https://stylestudio.com"
-  },
-  "businessHours": [
-    {
-      "day": "monday",
-      "open": "09:00:00",
-      "close": "18:00:00"
-    },
-    // Other days...
-  ],
-  "services": [
-    {
-      "id": "service_789",
-      "name": "Haircut & Style",
-      "description": "Professional haircut and styling",
-      "duration": 60,
-      "price": 75.00,
-      "currency": "USD"
-    },
-    // More services...
-  ],
-  "rating": 4.8,
-  "reviewCount": 124,
-  "verified": true
+  "createdAt": "2023-06-20T08:30:00Z"
 }
 ```
 
-### Search Providers
+#### Get User Plans
 
-Searches for providers based on various criteria.
+Retrieves the wellness plans subscribed to by the current user.
 
 ```
-GET /providers/search
+GET /users/me/plans?status=active
 ```
 
-Query parameters:
-- `query` (optional): Search term
-- `category` (optional): Service category
-- `location` (optional): Location name
-- `lat` & `lng` (optional): Coordinates for location-based search
-- `radius` (optional): Search radius in km (default: 10)
-- `minRating` (optional): Minimum rating
-- `limit` (optional): Maximum number of results (default: 20)
-- `offset` (optional): Results offset for pagination (default: 0)
+**Query Parameters**:
+- `status`: Filter by subscription status (options: active, completed, abandoned)
 
-Response:
+**Response**:
 ```json
 {
-  "providers": [
+  "data": [
     {
-      "id": "provider_456",
-      "name": "Style Studio",
-      "description": "Premium hair salon with 15 years of experience",
-      "mainImage": "https://storage.vibewell.com/providers/provider_456_1.jpg",
-      "address": {
-        "city": "New York",
-        "state": "NY"
+      "id": "subscription_789",
+      "planId": "plan_123",
+      "title": "30-Day Meditation Challenge",
+      "startDate": "2023-06-20T00:00:00Z",
+      "currentDay": 5,
+      "status": "active",
+      "progress": {
+        "completed": 4,
+        "total": 30,
+        "percentage": 13.33
       },
-      "distance": 2.4,
-      "rating": 4.8,
-      "reviewCount": 124,
-      "priceRange": "$$$",
-      "topService": "Haircut & Style"
-    },
-    // More providers...
-  ],
-  "total": 15,
-  "limit": 20,
-  "offset": 0
-}
-```
-
-## Service API
-
-### Get Services by Category
-
-Retrieves services filtered by category.
-
-```
-GET /services
-```
-
-Query parameters:
-- `category` (required): Service category ID
-- `limit` (optional): Maximum number of results (default: 20)
-- `offset` (optional): Results offset for pagination (default: 0)
-
-Response:
-```json
-{
-  "services": [
-    {
-      "id": "service_789",
-      "name": "Haircut & Style",
-      "category": "haircare",
-      "description": "Professional haircut and styling",
-      "image": "https://storage.vibewell.com/services/haircut.jpg",
-      "duration": 60,
-      "price": {
-        "amount": 75.00,
-        "currency": "USD"
-      },
-      "popularityScore": 98
-    },
-    // More services...
-  ],
-  "total": 25,
-  "limit": 20,
-  "offset": 0
-}
-```
-
-## AR API
-
-### Get AR Models
-
-Retrieves available AR models for virtual try-on.
-
-```
-GET /ar/models
-```
-
-Query parameters:
-- `category` (optional): Filter by category (makeup, hairstyle, accessory)
-- `limit` (optional): Maximum number of results (default: 20)
-- `offset` (optional): Results offset for pagination (default: 0)
-
-Response:
-```json
-{
-  "models": [
-    {
-      "id": "model_123",
-      "name": "Natural Makeup Look",
-      "category": "makeup",
-      "description": "Subtle everyday makeup look",
-      "thumbnail": "https://storage.vibewell.com/ar/thumbnails/model_123.jpg",
-      "modelUrl": "https://storage.vibewell.com/ar/models/model_123.glb",
-      "previewImages": [
-        "https://storage.vibewell.com/ar/previews/model_123_1.jpg",
-        "https://storage.vibewell.com/ar/previews/model_123_2.jpg"
-      ],
-      "popularity": 95,
-      "attributes": {
-        "style": "natural",
-        "complexity": "simple",
-        "occasion": "everyday"
+      "todayActivity": {
+        "day": 5,
+        "activityId": "activity_127",
+        "title": "Loving-Kindness Meditation",
+        "duration": 15
       }
-    },
-    // More models...
-  ],
-  "total": 30,
-  "limit": 20,
-  "offset": 0
+    }
+  ]
 }
 ```
 
-### Get Model Details
+### File Upload
 
-Retrieves detailed information about a specific AR model.
+#### Get S3 Presigned URL
+
+Generates a presigned URL for uploading files directly to S3.
 
 ```
-GET /ar/models/{modelId}
+GET /uploads/presigned?fileName=profile.jpg&contentType=image/jpeg
 ```
 
-Response:
+**Query Parameters**:
+- `fileName`: Name of the file to upload
+- `contentType`: MIME type of the file
+- `fileType`: Type of file (options: profile, activity)
+
+**Response**:
 ```json
 {
-  "id": "model_123",
-  "name": "Natural Makeup Look",
-  "category": "makeup",
-  "description": "Subtle everyday makeup look with neutral tones for a fresh appearance",
-  "thumbnail": "https://storage.vibewell.com/ar/thumbnails/model_123.jpg",
-  "modelUrl": "https://storage.vibewell.com/ar/models/model_123.glb",
-  "previewImages": [
-    "https://storage.vibewell.com/ar/previews/model_123_1.jpg",
-    "https://storage.vibewell.com/ar/previews/model_123_2.jpg",
-    "https://storage.vibewell.com/ar/previews/model_123_3.jpg"
-  ],
-  "popularity": 95,
-  "version": "1.2",
-  "fileSize": 2.4, // Size in MB
-  "lastUpdated": "2023-02-10T14:25:00Z",
-  "attributes": {
-    "style": "natural",
-    "complexity": "simple",
-    "occasion": "everyday",
-    "colors": ["beige", "pink", "brown"],
-    "recommendedFor": ["fair skin", "medium skin"]
+  "url": "https://vibewell-uploads.s3.amazonaws.com/...",
+  "fields": {
+    "key": "users/user_123/profile/profile.jpg",
+    "bucket": "vibewell-uploads",
+    "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+    "X-Amz-Credential": "...",
+    "X-Amz-Date": "...",
+    "X-Amz-Signature": "..."
   },
-  "relatedServices": [
+  "fileUrl": "https://s3.amazonaws.com/vibewell-uploads/users/user_123/profile/profile.jpg"
+}
+```
+
+### Subscriptions and Payments
+
+#### Get Subscription Plans
+
+Retrieves the available subscription plans.
+
+```
+GET /subscriptions/plans
+```
+
+**Response**:
+```json
+{
+  "data": [
     {
-      "id": "service_456",
-      "name": "Natural Makeup Application",
-      "providers": [
-        {
-          "id": "provider_789",
-          "name": "Beauty Studio",
-          "rating": 4.7
-        }
+      "id": "price_1234567890",
+      "name": "Basic Plan",
+      "description": "Access to essential wellness content",
+      "amount": 999,
+      "currency": "usd",
+      "interval": "month",
+      "features": [
+        "Basic wellness activities",
+        "Progress tracking",
+        "Limited wellness plans"
+      ]
+    },
+    {
+      "id": "price_0987654321",
+      "name": "Premium Plan",
+      "description": "Full access to all VibeWell features",
+      "amount": 1999,
+      "currency": "usd",
+      "interval": "month",
+      "features": [
+        "All wellness activities",
+        "Advanced progress analytics",
+        "All wellness plans",
+        "Personalized recommendations"
       ]
     }
   ]
 }
 ```
 
-## Content API
+#### Create Checkout Session
 
-### Get Content Articles
-
-Retrieves wellness content articles.
+Creates a Stripe checkout session for subscription purchase.
 
 ```
-GET /content/articles
-```
+POST /subscriptions/checkout
+Content-Type: application/json
 
-Query parameters:
-- `category` (optional): Filter by category (meditation, yoga, nutrition, etc.)
-- `tags` (optional): Filter by tags (comma-separated list)
-- `limit` (optional): Maximum number of results (default: 20)
-- `offset` (optional): Results offset for pagination (default: 0)
-
-Response:
-```json
 {
-  "articles": [
-    {
-      "id": "article_123",
-      "title": "Beginner's Guide to Meditation",
-      "summary": "Learn the basics of meditation in this comprehensive guide",
-      "category": "meditation",
-      "image": "https://storage.vibewell.com/content/meditation_guide.jpg",
-      "author": {
-        "id": "author_456",
-        "name": "Sarah Johnson",
-        "title": "Meditation Instructor"
-      },
-      "readTime": 8, // minutes
-      "published": "2023-01-20T12:00:00Z",
-      "tags": ["meditation", "beginners", "wellness"]
-    },
-    // More articles...
-  ],
-  "total": 45,
-  "limit": 20,
-  "offset": 0
+  "priceId": "price_1234567890",
+  "successUrl": "https://vibewell.com/thank-you",
+  "cancelUrl": "https://vibewell.com/plans"
 }
 ```
 
-### Get Article Content
-
-Retrieves the full content of a specific article.
-
-```
-GET /content/articles/{articleId}
-```
-
-Response:
+**Response**:
 ```json
 {
-  "id": "article_123",
-  "title": "Beginner's Guide to Meditation",
-  "summary": "Learn the basics of meditation in this comprehensive guide",
-  "content": "# Beginner's Guide to Meditation\n\nMeditation is a practice that has been around for thousands of years...",
-  "contentFormat": "markdown",
-  "category": "meditation",
-  "image": "https://storage.vibewell.com/content/meditation_guide.jpg",
-  "author": {
-    "id": "author_456",
-    "name": "Sarah Johnson",
-    "title": "Meditation Instructor",
-    "bio": "Sarah is a certified meditation instructor with 10 years of experience",
-    "image": "https://storage.vibewell.com/authors/sarah.jpg"
+  "sessionId": "cs_test_1234567890",
+  "url": "https://checkout.stripe.com/pay/cs_test_1234567890"
+}
+```
+
+#### Get Current Subscription
+
+Retrieves the current user's subscription details.
+
+```
+GET /subscriptions/me
+```
+
+**Response**:
+```json
+{
+  "subscriptionId": "sub_1234567890",
+  "plan": {
+    "id": "price_1234567890",
+    "name": "Basic Plan",
+    "amount": 999,
+    "currency": "usd",
+    "interval": "month"
   },
-  "readTime": 8, // minutes
-  "published": "2023-01-20T12:00:00Z",
-  "updated": "2023-01-25T09:15:00Z",
-  "tags": ["meditation", "beginners", "wellness"],
-  "relatedArticles": [
-    {
-      "id": "article_124",
-      "title": "Benefits of Daily Meditation",
-      "summary": "Discover how daily meditation can improve your mental health"
+  "status": "active",
+  "currentPeriodStart": "2023-06-01T00:00:00Z",
+  "currentPeriodEnd": "2023-07-01T00:00:00Z",
+  "cancelAtPeriodEnd": false
+}
+```
+
+#### Cancel Subscription
+
+Cancels the current user's subscription at the end of the billing period.
+
+```
+POST /subscriptions/me/cancel
+```
+
+**Response**:
+```json
+{
+  "subscriptionId": "sub_1234567890",
+  "status": "active",
+  "cancelAtPeriodEnd": true,
+  "currentPeriodEnd": "2023-07-01T00:00:00Z"
+}
+```
+
+## Error Handling
+
+The API uses standard HTTP status codes to indicate the success or failure of requests. In case of an error, the response will include a JSON object with error details.
+
+**Error Response Format**:
+```json
+{
+  "error": {
+    "code": "invalid_request",
+    "message": "The provided parameter 'email' is invalid",
+    "status": 400,
+    "details": {
+      "field": "email",
+      "reason": "format"
     }
-  ]
+  }
 }
 ```
 
-## Reviews API
+### Common Error Codes
 
-### Get Reviews for Provider
+- `invalid_request`: The request was invalid (400)
+- `unauthorized`: Authentication is required (401)
+- `forbidden`: The authenticated user lacks permission (403)
+- `not_found`: The requested resource was not found (404)
+- `rate_limit_exceeded`: Too many requests (429)
+- `internal_error`: Server error (500)
 
-Retrieves reviews for a specific service provider.
+## Rate Limiting
+
+API requests are subject to rate limiting to prevent abuse. The current limits are:
+
+- 100 requests per minute per user
+- 1000 requests per day per user
+
+Rate limit information is included in the response headers:
 
 ```
-GET /providers/{providerId}/reviews
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1623423152
 ```
 
-Query parameters:
-- `rating` (optional): Filter by rating (1-5)
-- `sort` (optional): Sort order (newest, oldest, highest, lowest) (default: newest)
-- `limit` (optional): Maximum number of results (default: 20)
-- `offset` (optional): Results offset for pagination (default: 0)
+If you exceed the rate limit, you'll receive a 429 Too Many Requests response.
 
-Response:
+## Pagination
+
+List endpoints support pagination through the following query parameters:
+
+- `page`: Page number (starting from 1)
+- `limit`: Number of items per page (default: 20, max: 100)
+
+Pagination details are included in the response:
+
 ```json
 {
-  "reviews": [
-    {
-      "id": "review_123",
-      "rating": 5,
-      "title": "Excellent service!",
-      "content": "I had a wonderful experience. Very professional and friendly staff.",
-      "serviceId": "service_789",
-      "serviceName": "Haircut & Style",
-      "user": {
-        "id": "user_456",
-        "name": "Jane Smith",
-        "image": "https://storage.vibewell.com/avatars/user_456.jpg"
-      },
-      "date": "2023-03-15T16:30:00Z",
-      "images": [
-        "https://storage.vibewell.com/reviews/review_123_1.jpg"
-      ],
-      "helpfulCount": 12,
-      "providerResponse": {
-        "content": "Thank you for your kind words, Jane! We look forward to seeing you again.",
-        "date": "2023-03-16T10:45:00Z"
-      }
-    },
-    // More reviews...
-  ],
-  "summary": {
-    "average": 4.8,
-    "total": 124,
-    "distribution": {
-      "5": 98,
-      "4": 20,
-      "3": 4,
-      "2": 1,
-      "1": 1
-    }
-  },
-  "limit": 20,
-  "offset": 0
+  "data": [...],
+  "pagination": {
+    "total": 45,
+    "page": 1,
+    "limit": 10,
+    "pages": 5
+  }
 }
 ```
 
-### Create Review
+## Versioning
 
-Creates a new review for a completed service.
+The API is versioned through the URL path (e.g., `/v1/users`). When breaking changes are introduced, a new version will be released, and the previous version will be maintained for a deprecation period.
 
-```
-POST /bookings/{bookingId}/review
-```
+## SDK and Client Libraries
 
-Request body:
+We provide official client libraries for easy integration:
+
+- [JavaScript](https://github.com/vibewell/vibewell-js)
+- [Python](https://github.com/vibewell/vibewell-python)
+- [Ruby](https://github.com/vibewell/vibewell-ruby)
+
+## Webhook Events
+
+VibeWell can send webhook notifications for various events. To register a webhook endpoint, contact our support team.
+
+**Supported Events**:
+- `user.created`
+- `user.updated`
+- `activity.completed`
+- `plan.subscribed`
+- `plan.completed`
+- `subscription.created`
+- `subscription.updated`
+- `subscription.canceled`
+
+**Webhook Payload Example**:
 ```json
 {
-  "rating": 5,
-  "title": "Excellent service!",
-  "content": "I had a wonderful experience. Very professional and friendly staff.",
-  "images": [
-    {
-      "data": "base64EncodedImageData..."
-    }
-  ]
-}
-```
-
-Response:
-```json
-{
-  "id": "review_124",
-  "rating": 5,
-  "title": "Excellent service!",
-  "content": "I had a wonderful experience. Very professional and friendly staff.",
-  "bookingId": "booking_456",
-  "serviceId": "service_789",
-  "serviceName": "Haircut & Style",
-  "providerId": "provider_123",
-  "providerName": "Style Studio",
-  "date": "2023-03-25T14:20:00Z",
-  "images": [
-    "https://storage.vibewell.com/reviews/review_124_1.jpg"
-  ]
-}
-```
-
-## Webhook Notifications
-
-Vibewell provides webhook notifications for key events. To receive webhooks:
-
-1. Register a webhook URL in the developer dashboard
-2. Select which events you want to receive
-3. Implement an endpoint to receive the webhook POST requests
-
-Example webhook payload:
-
-```json
-{
-  "event": "booking.created",
-  "timestamp": "2023-03-25T14:20:00Z",
+  "event": "activity.completed",
+  "timestamp": "2023-06-15T19:30:00Z",
   "data": {
-    "bookingId": "booking_123",
-    "providerId": "provider_456",
-    "userId": "user_789",
-    "serviceId": "service_101",
-    "date": "2023-05-10",
-    "status": "pending"
+    "userId": "user_123",
+    "activityId": "activity_123",
+    "activityTitle": "Morning Meditation",
+    "duration": 15,
+    "rating": 5
   }
 }
 ```
 
-Available webhook events:
-- `booking.created`
-- `booking.confirmed`
-- `booking.cancelled`
-- `booking.completed`
-- `review.created`
-- `user.registered`
-- `payment.succeeded`
-- `payment.failed`
+## Support
 
-## API Versioning
-
-The API uses URL versioning (e.g., `/v1/users`). When breaking changes are introduced, a new API version will be released.
-
-Deprecation process:
-1. Announcement of upcoming changes (at least 3 months in advance)
-2. Introduction of new version alongside the old one
-3. Deprecation warning headers in responses from the old version
-4. Eventual retirement of the old version
-
-## Request Examples
-
-### cURL
-
-```bash
-# Get user profile
-curl -X GET "https://api.vibewell.com/v1/users/me" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-
-# Create a booking
-curl -X POST "https://api.vibewell.com/v1/bookings" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "providerId": "provider_456",
-    "serviceId": "service_789",
-    "date": "2023-05-10",
-    "startTime": "11:00:00",
-    "notes": "First-time client"
-  }'
-```
-
-### JavaScript
-
-```javascript
-// Get user profile
-async function getUserProfile() {
-  const response = await fetch('https://api.vibewell.com/v1/users/me', {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${jwtToken}`,
-      'Content-Type': 'application/json'
-    }
-  });
-  
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status}`);
-  }
-  
-  return await response.json();
-}
-
-// Create a booking
-async function createBooking(bookingData) {
-  const response = await fetch('https://api.vibewell.com/v1/bookings', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${jwtToken}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(bookingData)
-  });
-  
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status}`);
-  }
-  
-  return await response.json();
-}
-``` 
+For API support, please contact us at api-support@vibewell.com or visit our [Developer Portal](https://developers.vibewell.com). 

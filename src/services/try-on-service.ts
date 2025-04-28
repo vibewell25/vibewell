@@ -66,7 +66,7 @@ export class TryOnService {
       duration_seconds?: number;
       screenshots?: string[];
       feedback?: TryOnFeedback;
-    }
+    },
   ): Promise<void> {
     try {
       await prisma.tryOnSession.updateMany({
@@ -121,7 +121,7 @@ export class TryOnService {
         },
       });
 
-      return sessions.map(session => ({
+      return sessions.map((session) => ({
         id: session.id,
         user_id: session.userId,
         product_id: session.productId,
@@ -190,7 +190,7 @@ export class TryOnService {
         },
       });
 
-      return sessions.map(session => ({
+      return sessions.map((session) => ({
         id: session.id,
         user_id: session.userId,
         product_id: session.productId,
@@ -211,7 +211,7 @@ export class TryOnService {
    */
   async getAnalytics(
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<{
     totalSessions: number;
     completedSessions: number;
@@ -228,7 +228,7 @@ export class TryOnService {
         },
       });
 
-      const completedSessions = sessions.filter(s => s.completed);
+      const completedSessions = sessions.filter((s) => s.completed);
 
       const totalDuration = completedSessions.reduce((sum, session) => {
         return sum + (session.durationSeconds || 0);
@@ -238,7 +238,7 @@ export class TryOnService {
         completedSessions.length > 0 ? totalDuration / completedSessions.length : 0;
 
       const productBreakdown: Record<string, number> = {};
-      sessions.forEach(session => {
+      sessions.forEach((session) => {
         productBreakdown[session.productId] = (productBreakdown[session.productId] || 0) + 1;
       });
 

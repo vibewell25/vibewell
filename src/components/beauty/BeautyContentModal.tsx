@@ -30,8 +30,8 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto max-w-2xl w-full bg-white rounded-lg shadow-xl">
-          <div className="flex items-center justify-between p-6 border-b">
+        <Dialog.Panel className="mx-auto w-full max-w-2xl rounded-lg bg-white shadow-xl">
+          <div className="flex items-center justify-between border-b p-6">
             <Dialog.Title className="text-xl font-semibold">Create Beauty Content</Dialog.Title>
             <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
               <Icons.XMarkIcon className="h-6 w-6" />
@@ -40,39 +40,39 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
           <form onSubmit={handleSubmit} className="p-6">
             <div className="space-y-6">
               <div>
-                <label htmlFor="title" className="block text-sm font-medium mb-2">
+                <label htmlFor="title" className="mb-2 block text-sm font-medium">
                   Title
                 </label>
                 <input
                   type="text"
                   id="title"
                   value={title}
-                  onChange={e => setTitle(e.target.value)}
+                  onChange={(e) => setTitle(e.target.value)}
                   className="form-input w-full"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="description" className="block text-sm font-medium mb-2">
+                <label htmlFor="description" className="mb-2 block text-sm font-medium">
                   Description
                 </label>
                 <textarea
                   id="description"
                   value={description}
-                  onChange={e => setDescription(e.target.value)}
+                  onChange={(e) => setDescription(e.target.value)}
                   className="form-textarea w-full"
                   rows={4}
                   required
                 />
               </div>
               <div>
-                <label htmlFor="category" className="block text-sm font-medium mb-2">
+                <label htmlFor="category" className="mb-2 block text-sm font-medium">
                   Category
                 </label>
                 <select
                   id="category"
                   value={category}
-                  onChange={e => setCategory(e.target.value)}
+                  onChange={(e) => setCategory(e.target.value)}
                   className="form-select w-full"
                   required
                 >
@@ -86,27 +86,27 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                 </select>
               </div>
               <div>
-                <label htmlFor="duration" className="block text-sm font-medium mb-2">
+                <label htmlFor="duration" className="mb-2 block text-sm font-medium">
                   Duration
                 </label>
                 <input
                   type="text"
                   id="duration"
                   value={duration}
-                  onChange={e => setDuration(e.target.value)}
+                  onChange={(e) => setDuration(e.target.value)}
                   className="form-input w-full"
                   placeholder="e.g., 30 mins"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="level" className="block text-sm font-medium mb-2">
+                <label htmlFor="level" className="mb-2 block text-sm font-medium">
                   Level
                 </label>
                 <select
                   id="level"
                   value={level}
-                  onChange={e => setLevel(e.target.value)}
+                  onChange={(e) => setLevel(e.target.value)}
                   className="form-select w-full"
                   required
                 >
@@ -116,7 +116,7 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Content Type</label>
+                <label className="mb-2 block text-sm font-medium">Content Type</label>
                 <ContentTypeSelector selectedType={contentType} onSelectType={setContentType} />
               </div>
             </div>

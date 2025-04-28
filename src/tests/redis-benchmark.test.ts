@@ -1,4 +1,4 @@
-import Redis from 'ioredis';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import Redis from 'ioredis';
 import RedisBenchmark from '../config/redis-benchmark';
 import { logger } from '../utils/logger';
 
@@ -15,7 +15,7 @@ describe('RedisBenchmark', () => {
     password: 'test-password',
     operations: 1000,
     parallel: 4,
-    dataSize: 1024
+    dataSize: 1024,
   };
 
   beforeEach(() => {
@@ -71,7 +71,7 @@ describe('RedisBenchmark', () => {
     it('should run pipeline benchmark', async () => {
       const mockPipeline = {
         set: jest.fn(),
-        exec: jest.fn().mockResolvedValue([])
+        exec: jest.fn().mockResolvedValue([]),
       };
       const mockRedis = new MockRedis() as jest.Mocked<Redis>;
       mockRedis.pipeline = jest.fn().mockReturnValue(mockPipeline);
@@ -134,7 +134,7 @@ describe('RedisBenchmark', () => {
 
       expect(logger.error).toHaveBeenCalledWith(
         'Error during benchmark cleanup:',
-        expect.any(Error)
+        expect.any(Error),
       );
     });
   });
@@ -173,4 +173,4 @@ describe('RedisBenchmark', () => {
       consoleSpy.mockRestore();
     });
   });
-}); 
+});

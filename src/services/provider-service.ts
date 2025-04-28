@@ -66,7 +66,7 @@ export class ProviderService {
       const providers = await prisma.provider.findMany({
         skip: offset,
         take: limit,
-        orderBy: { name: 'asc' }
+        orderBy: { name: 'asc' },
       });
 
       return providers as Provider[];
@@ -131,7 +131,7 @@ export class ProviderService {
         {
           params: { limit, offset },
           ttl: 30 * 60 * 1000, // Cache for 30 minutes
-        }
+        },
       );
     } catch (error) {
       console.error(`Error fetching providers by category ${category}:`, error);

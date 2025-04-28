@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 import { logger } from '@/lib/logger';
 
 interface Props {
@@ -39,11 +39,11 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         this.props.fallback || (
-          <div className="flex flex-col items-center justify-center p-8 bg-red-50 rounded-lg">
-            <div className="text-red-600 text-lg font-semibold mb-4">
+          <div className="flex flex-col items-center justify-center rounded-lg bg-red-50 p-8">
+            <div className="mb-4 text-lg font-semibold text-red-600">
               {this.state.error?.message || 'Something went wrong'}
             </div>
-            <div className="text-gray-600 mb-6">
+            <div className="mb-6 text-gray-600">
               {this.state.error instanceof Error &&
               this.state.error.name === 'NotSupportedError' ? (
                 <>
@@ -56,7 +56,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </div>
             <button
               onClick={this.handleRetry}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+              className="rounded bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700"
             >
               Try Again
             </button>

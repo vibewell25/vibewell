@@ -78,7 +78,7 @@ export interface Event {
   updatedAt: string;
   // Participants list
   participants?: EventParticipant[];
-  // Comments 
+  // Comments
   comments?: EventComment[];
   // New fields for recurring events
   isRecurring?: boolean;

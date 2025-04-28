@@ -1,11 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { AlertTriangle, Trash2, X, Download, Shield } from 'lucide-react';
+import { AlertTriangle, Trash2, X } from 'lucide-react';
 import { DeleteConfirmationDialog } from './delete-confirmation-dialog';
 import { DataBackup } from './data-backup';
 import { ProfileVerification } from './profile-verification';
@@ -26,7 +26,7 @@ export function ProfileDeletion() {
   const handleDelete = async () => {
     try {
       // Simulate API call to delete account
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       toast.success('Account deleted successfully');
       // Redirect to home page or show success message
@@ -37,7 +37,7 @@ export function ProfileDeletion() {
   };
 
   const handleAcknowledge = (key: keyof typeof acknowledgements) => {
-    setAcknowledgements(prev => ({
+    setAcknowledgements((prev) => ({
       ...prev,
       [key]: !prev[key],
     }));
@@ -161,7 +161,7 @@ export function ProfileDeletion() {
                 <Input
                   id="confirmation"
                   value={confirmationText}
-                  onChange={e => setConfirmationText(e.target.value)}
+                  onChange={(e) => setConfirmationText(e.target.value)}
                   placeholder="DELETE MY ACCOUNT"
                   className="font-mono"
                 />

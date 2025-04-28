@@ -1,5 +1,4 @@
-'use client';
-
+'use client';;
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,7 +10,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import {
   Form,
   FormControl,
@@ -28,12 +27,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BackupConfig } from '@/lib/backup/backup-service';
 import {
   backupConfig,
   storageConfig,
@@ -108,7 +105,6 @@ export function BackupSettings() {
       setLoading(true);
       setError(null);
 
-      import { updateBackupSettings } from '../../implementation-files/backup-settings-update';
       console.log('Updating backup settings:', values);
 
       toast({
@@ -174,7 +170,7 @@ export function BackupSettings() {
                       <Input
                         type="number"
                         {...field}
-                        onChange={e => field.onChange(parseInt(e.target.value))}
+                        onChange={(e) => field.onChange(parseInt(e.target.value))}
                       />
                     </FormControl>
                     <FormDescription>

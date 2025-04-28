@@ -310,6 +310,25 @@ const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
               You can manage or reschedule your booking from your profile.
             </Text>
           </View>
+          {notificationSent && (
+            <View style={styles.stepItem}>
+              <View style={[
+                styles.stepNumber,
+                { backgroundColor: isDarkMode ? '#2D3748' : '#E6F7FF' }
+              ]}>
+                <Text style={[
+                  styles.stepNumberText,
+                  { color: isDarkMode ? '#FFFFFF' : '#4F46E5' }
+                ]}>4</Text>
+              </View>
+              <Text style={[
+                styles.stepText,
+                { color: isDarkMode ? '#E0E0E0' : '#444444' }
+              ]}>
+                Reminder notifications are scheduled 1 day and 1 hour before your appointment.
+              </Text>
+            </View>
+          )}
         </View>
         
         {/* Action Buttons */}

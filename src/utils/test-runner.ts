@@ -9,8 +9,8 @@ interface TestRunner {
   describe: SuiteFunction;
   test: TestFunction;
   it: TestFunction;
-  expect: (value: any) => {
-    toBe: (expected: any) => boolean;
+  expect: (value: unknown) => {
+    toBe: (expected: unknown) => boolean;
     toBeDefined: () => boolean;
     toBeUndefined: () => boolean;
     toBeTruthy: () => boolean;
@@ -53,8 +53,8 @@ export function createTestRunner(): TestRunner {
 
   const it: TestFunction = test;
 
-  const expect = (value: any) => ({
-    toBe: (expected: any) => {
+  const expect = (value: unknown) => ({
+    toBe: (expected: unknown) => {
       const result = value === expected;
       if (!result) {
         throw new Error(`Expected ${value} to be ${expected}`);

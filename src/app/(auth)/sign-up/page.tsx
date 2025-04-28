@@ -1,8 +1,6 @@
-import type { Metadata } from '@/types/metadata';
 import Link from 'next/link';
 import { UserAuthForm } from '@/components/auth/user-auth-form';
 import { WebAuthnAuth } from '@/components/WebAuthnAuth';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -10,13 +8,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-export const metadata: Metadata = {
-  title: 'Sign Up - VibeWell',
-  description: 'Create your VibeWell account',
-};
+export {};
 
 export default function SignUpPage() {
   return (
@@ -24,7 +19,7 @@ export default function SignUpPage() {
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <Card>
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Create an account</CardTitle>
+            <CardTitle className="text-center text-2xl">Create an account</CardTitle>
             <CardDescription className="text-center">
               Choose your preferred sign up method
             </CardDescription>
@@ -48,7 +43,7 @@ export default function SignUpPage() {
                       // Handle successful registration
                       console.log('WebAuthn registration successful');
                     }}
-                    onError={error => {
+                    onError={(error) => {
                       console.error('WebAuthn registration failed:', error);
                     }}
                   />
@@ -57,7 +52,7 @@ export default function SignUpPage() {
             </TabsContent>
           </Tabs>
           <CardFooter className="flex flex-col space-y-4">
-            <div className="text-sm text-muted-foreground text-center">
+            <div className="text-center text-sm text-muted-foreground">
               Already have an account?{' '}
               <Link href="/sign-in" className="text-primary underline-offset-4 hover:underline">
                 Sign in

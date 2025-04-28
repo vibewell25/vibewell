@@ -1,13 +1,11 @@
-'use client';
+'use client';;
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Calendar } from '@/components/ui/calendar';
 import { Icons } from '@/components/icons';
 import {
   StarIcon,
@@ -18,7 +16,6 @@ import {
   EnvelopeIcon,
   GlobeAltIcon,
   ChatBubbleLeftIcon,
-  PhotoIcon,
   BookmarkIcon,
   ShareIcon,
   UserIcon,
@@ -114,9 +111,9 @@ export default function ProviderProfilePage() {
     <Layout>
       <div className="container-app py-12">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row gap-8 mb-8">
+        <div className="mb-8 flex flex-col gap-8 md:flex-row">
           <div className="flex-1">
-            <div className="flex items-center gap-4 mb-4">
+            <div className="mb-4 flex items-center gap-4">
               <Avatar className="h-24 w-24">
                 <AvatarImage src={provider.avatar} alt={provider.name} />
                 <AvatarFallback>
@@ -125,35 +122,31 @@ export default function ProviderProfilePage() {
               </Avatar>
               <div>
                 <h1 className="text-4xl font-bold">{provider.name}</h1>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="mt-1 flex items-center gap-2">
                   <div className="flex items-center">
                     <Icons.StarIcon className="h-5 w-5 text-yellow-500" />
                     <span className="ml-1 font-medium">{provider.rating}</span>
                   </div>
-                  <span className="text-muted-foreground">
-                    ({provider.reviewCount} reviews)
-                  </span>
+                  <span className="text-muted-foreground">({provider.reviewCount} reviews)</span>
                 </div>
-                <div className="flex gap-2 mt-2">
-                  {/* Add specialty badges here */}
-                </div>
+                <div className="mt-2 flex gap-2">{/* Add specialty badges here */}</div>
               </div>
             </div>
             <div className="flex gap-4">
               <Button>
-                <Icons.CalendarIcon className="h-5 w-5 mr-2" />
+                <Icons.CalendarIcon className="mr-2 h-5 w-5" />
                 Book Appointment
               </Button>
               <Button variant="outline">
-                <Icons.ChatBubbleLeftIcon className="h-5 w-5 mr-2" />
+                <Icons.ChatBubbleLeftIcon className="mr-2 h-5 w-5" />
                 Message
               </Button>
               <Button variant="outline">
-                <Icons.BookmarkIcon className="h-5 w-5 mr-2" />
+                <Icons.BookmarkIcon className="mr-2 h-5 w-5" />
                 Save
               </Button>
               <Button variant="outline">
-                <Icons.ShareIcon className="h-5 w-5 mr-2" />
+                <Icons.ShareIcon className="mr-2 h-5 w-5" />
                 Share
               </Button>
             </div>
@@ -243,18 +236,14 @@ export default function ProviderProfilePage() {
               {provider.services.map((service) => (
                 <Card key={service.id}>
                   <CardContent className="p-4">
-                    <div className="flex justify-between items-start">
+                    <div className="flex items-start justify-between">
                       <div>
                         <h3 className="font-medium">{service.name}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {service.description}
-                        </p>
+                        <p className="text-sm text-muted-foreground">{service.description}</p>
                       </div>
                       <div className="text-right">
                         <p className="font-medium">${service.price}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {service.duration} min
-                        </p>
+                        <p className="text-sm text-muted-foreground">{service.duration} min</p>
                       </div>
                     </div>
                   </CardContent>
@@ -264,9 +253,7 @@ export default function ProviderProfilePage() {
           </TabsContent>
           {/* Reviews Tab */}
           <TabsContent value="reviews" className="mt-6">
-            <div className="space-y-4">
-              {/* Add review cards here */}
-            </div>
+            <div className="space-y-4">{/* Add review cards here */}</div>
           </TabsContent>
           {/* Availability Tab */}
           <TabsContent value="availability" className="mt-6">
@@ -276,4 +263,4 @@ export default function ProviderProfilePage() {
       </div>
     </Layout>
   );
-} 
+}

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from '@/types/api';
-import auditController, { ComprehensiveAuditReport } from '../../../controllers/audit-controller';
+import auditController from '../../../controllers/audit-controller';
 import auditService, { AuditCategory, AuditSeverity } from '../../../services/audit-service';
 
 /**
@@ -236,7 +236,7 @@ async function reportIssue(data: any, res: NextApiResponse) {
         component: data.component,
         remediation: data.remediation,
         metadata: data.metadata,
-      }
+      },
     );
 
     return res.status(201).json({
@@ -280,7 +280,7 @@ async function updateIssue(data: any, res: NextApiResponse) {
     const success = auditService.updateIssueStatus(
       data.id,
       data.status as 'open' | 'in_progress' | 'resolved' | 'wontfix',
-      data.remediation
+      data.remediation,
     );
 
     if (!success) {

@@ -7,8 +7,8 @@ import { ResponsiveImage } from '@/components/ui/responsive-image';
 import { ResponsiveTester } from '@/components/ui/responsive-tester';
 import { TouchHandler } from '@/components/ui/touch-handler';
 import { useResponsive } from '@/hooks/useResponsive';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 
 export default function ResponsiveTestPage() {
   const { deviceType, isMobile, isTablet, isDesktop } = useResponsive();
@@ -20,7 +20,7 @@ export default function ResponsiveTestPage() {
     const gesture = `${type}${details ? `: ${details}` : ''}`;
     setLastGesture(gesture);
 
-    setTouchEvents(prev => {
+    setTouchEvents((prev) => {
       const updated = [gesture, ...prev];
       // Keep only the last 5 events
       return updated.slice(0, 5);
@@ -34,22 +34,22 @@ export default function ResponsiveTestPage() {
       <ResponsiveContainer maxWidth="xl" className="py-8">
         <div className="space-y-8">
           <div>
-            <h1 className="text-3xl font-bold mb-4">Responsive Components Test</h1>
-            <p className="text-lg text-muted-foreground mb-8">
+            <h1 className="mb-4 text-3xl font-bold">Responsive Components Test</h1>
+            <p className="mb-8 text-lg text-muted-foreground">
               Testing responsive behavior across different screen sizes and devices.
             </p>
           </div>
 
-          <Card className="p-6 space-y-4">
+          <Card className="space-y-4 p-6">
             <h2 className="text-2xl font-bold">Device Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="font-medium mb-2">Device Type</h3>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div className="rounded-lg bg-muted p-4">
+                <h3 className="mb-2 font-medium">Device Type</h3>
                 <div className="text-xl font-bold">{deviceType}</div>
               </div>
 
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="font-medium mb-2">Screen Category</h3>
+              <div className="rounded-lg bg-muted p-4">
+                <h3 className="mb-2 font-medium">Screen Category</h3>
                 <div>
                   <span className={`text-xl font-bold ${isMobile ? 'text-primary' : ''}`}>
                     Mobile
@@ -65,8 +65,8 @@ export default function ResponsiveTestPage() {
                 </div>
               </div>
 
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="font-medium mb-2">Layout Adaptation</h3>
+              <div className="rounded-lg bg-muted p-4">
+                <h3 className="mb-2 font-medium">Layout Adaptation</h3>
                 <div className="text-xl font-bold">
                   {isMobile ? 'Compact Layout' : isTablet ? 'Medium Layout' : 'Full Layout'}
                 </div>
@@ -74,12 +74,12 @@ export default function ResponsiveTestPage() {
             </div>
           </Card>
 
-          <Card className="p-6 space-y-4">
+          <Card className="space-y-4 p-6">
             <h2 className="text-2xl font-bold">Touch Interaction Test</h2>
             <p>Try using touch gestures in the area below (tap, swipe, pinch, rotate):</p>
 
             <TouchHandler
-              onGesture={gesture => {
+              onGesture={(gesture) => {
                 if (gesture.type === 'swipe' && gesture.direction) {
                   handleGesture('Swipe', gesture.direction);
                 } else if (gesture.type === 'pinch' && gesture.scale) {
@@ -92,18 +92,18 @@ export default function ResponsiveTestPage() {
                   handleGesture('Long Press');
                 }
               }}
-              className="h-64 bg-muted/50 rounded-lg border-2 border-dashed border-muted-foreground/30 flex items-center justify-center"
+              className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/50"
             >
               <div className="text-center">
-                <p className="font-medium mb-2">Touch Interaction Area</p>
-                <p className="text-muted-foreground text-sm">Last gesture: {lastGesture}</p>
+                <p className="mb-2 font-medium">Touch Interaction Area</p>
+                <p className="text-sm text-muted-foreground">Last gesture: {lastGesture}</p>
               </div>
             </TouchHandler>
 
             <div>
-              <h3 className="font-medium mb-2">Recent Touch Events:</h3>
+              <h3 className="mb-2 font-medium">Recent Touch Events:</h3>
               {touchEvents.length > 0 ? (
-                <ul className="list-disc pl-5 space-y-1">
+                <ul className="list-disc space-y-1 pl-5">
                   {touchEvents.map((event, index) => (
                     <li key={index}>{event}</li>
                   ))}
@@ -114,11 +114,11 @@ export default function ResponsiveTestPage() {
             </div>
           </Card>
 
-          <Card className="p-6 space-y-4">
+          <Card className="space-y-4 p-6">
             <h2 className="text-2xl font-bold">Responsive Image Test</h2>
             <p>This image will adapt based on your device:</p>
 
-            <div className="rounded-lg overflow-hidden">
+            <div className="overflow-hidden rounded-lg">
               <ResponsiveImage
                 src="https://images.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=1200"
                 mobileSrc="https://images.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=400"
@@ -132,7 +132,7 @@ export default function ResponsiveTestPage() {
 
             <div className="text-sm text-muted-foreground">
               This image uses different resolutions based on device type:
-              <ul className="list-disc pl-5 mt-2">
+              <ul className="mt-2 list-disc pl-5">
                 <li>Mobile: 400px width version</li>
                 <li>Tablet: 800px width version</li>
                 <li>Desktop: 1200px width version</li>
@@ -140,13 +140,13 @@ export default function ResponsiveTestPage() {
             </div>
           </Card>
 
-          <Card className="p-6 space-y-4">
+          <Card className="space-y-4 p-6">
             <h2 className="text-2xl font-bold">Layout Adaptation Test</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map(item => (
-                <div key={item} className="bg-muted p-4 rounded-lg">
-                  <h3 className="font-medium mb-2">Item {item}</h3>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {[1, 2, 3, 4].map((item) => (
+                <div key={item} className="rounded-lg bg-muted p-4">
+                  <h3 className="mb-2 font-medium">Item {item}</h3>
                   <p className="text-muted-foreground">
                     This grid will adapt its columns based on screen size.
                   </p>
@@ -154,16 +154,16 @@ export default function ResponsiveTestPage() {
               ))}
             </div>
 
-            <div className="mt-6 flex flex-col sm:flex-row gap-4">
+            <div className="mt-6 flex flex-col gap-4 sm:flex-row">
               <div className="sm:w-1/2">
-                <h3 className="font-medium mb-2">Column 1</h3>
+                <h3 className="mb-2 font-medium">Column 1</h3>
                 <p className="text-muted-foreground">
                   On small screens, these sections will stack vertically. On larger screens, they
                   will appear side by side.
                 </p>
               </div>
               <div className="sm:w-1/2">
-                <h3 className="font-medium mb-2">Column 2</h3>
+                <h3 className="mb-2 font-medium">Column 2</h3>
                 <p className="text-muted-foreground">
                   Responsive design allows us to create layouts that work well on any device.
                 </p>
@@ -171,7 +171,7 @@ export default function ResponsiveTestPage() {
             </div>
           </Card>
 
-          <div className="text-center mt-8">
+          <div className="mt-8 text-center">
             <Button size="lg">Take Action</Button>
           </div>
         </div>

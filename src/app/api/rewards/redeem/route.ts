@@ -81,7 +81,7 @@ export async function POST(request: Request) {
     console.error('Error redeeming reward:', error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Failed to redeem reward' },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

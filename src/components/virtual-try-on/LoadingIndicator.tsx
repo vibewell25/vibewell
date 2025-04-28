@@ -1,4 +1,3 @@
-import React from 'react';
 import { Loader2, Camera, Sparkles } from 'lucide-react';
 
 interface Props {
@@ -12,16 +11,16 @@ export function LoadingIndicator({ type = 'default', message = 'Loading...', pro
     <div className="flex flex-col items-center justify-center p-6">
       <div className="relative mb-4">
         {type === 'camera' ? (
-          <Camera className="w-8 h-8 text-pink-500 animate-pulse" />
+          <Camera className="h-8 w-8 animate-pulse text-pink-500" />
         ) : type === 'processing' ? (
-          <Sparkles className="w-8 h-8 text-pink-500 animate-spin" />
+          <Sparkles className="h-8 w-8 animate-spin text-pink-500" />
         ) : (
-          <Loader2 className="w-8 h-8 text-pink-500 animate-spin" />
+          <Loader2 className="h-8 w-8 animate-spin text-pink-500" />
         )}
 
         {progress !== undefined && (
-          <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-12">
-            <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
+          <div className="absolute -bottom-4 left-1/2 w-12 -translate-x-1/2 transform">
+            <div className="h-1 overflow-hidden rounded-full bg-gray-200">
               <div
                 className="h-full bg-pink-500 transition-all duration-300"
                 style={{ width: `${progress}%` }}
@@ -31,7 +30,7 @@ export function LoadingIndicator({ type = 'default', message = 'Loading...', pro
         )}
       </div>
 
-      <div className="text-gray-600 text-sm font-medium">{message}</div>
+      <div className="text-sm font-medium text-gray-600">{message}</div>
 
       {type === 'camera' && (
         <div className="mt-2 text-xs text-gray-500">Please allow camera access when prompted</div>

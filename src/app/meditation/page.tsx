@@ -6,14 +6,14 @@ export default function MeditationPage() {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Meditation Space</h1>
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <h1 className="mb-8 text-3xl font-bold">Meditation Space</h1>
+        <div className="overflow-hidden rounded-lg bg-white shadow-lg">
           <MeditationEnvironment
             theme="forest"
             soundscape="rain"
             lightingIntensity={1}
             particleEffects={true}
-            onStateChange={state => {
+            onStateChange={(state) => {
               console.log('Environment state changed:', state);
             }}
           />

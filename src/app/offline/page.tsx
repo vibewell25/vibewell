@@ -1,13 +1,13 @@
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 
 export default function OfflinePage() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="max-w-lg w-full p-8 text-center">
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <Card className="w-full max-w-lg p-8 text-center">
         <div className="mb-8">
           <svg
-            className="w-16 h-16 mx-auto text-gray-400"
+            className="mx-auto h-16 w-16 text-gray-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -21,23 +21,19 @@ export default function OfflinePage() {
             />
           </svg>
         </div>
-        
-        <h1 className="text-2xl font-bold mb-4">You're Offline</h1>
-        
-        <p className="text-gray-600 mb-8">
-          It seems you've lost your internet connection. Don't worry - some features
-          are still available offline, and we'll sync everything once you're back online.
+
+        <h1 className="mb-4 text-2xl font-bold">You're Offline</h1>
+
+        <p className="mb-8 text-gray-600">
+          It seems you've lost your internet connection. Don't worry - some features are still
+          available offline, and we'll sync everything once you're back online.
         </p>
-        
+
         <div className="space-y-4">
-          <Button
-            onClick={() => window.location.reload()}
-            className="w-full"
-            size="lg"
-          >
+          <Button onClick={() => window.location.reload()} className="w-full" size="lg">
             Try Again
           </Button>
-          
+
           <Button
             onClick={() => window.history.back()}
             variant="outline"
@@ -47,9 +43,9 @@ export default function OfflinePage() {
             Go Back
           </Button>
         </div>
-        
+
         <div className="mt-8 text-sm text-gray-500">
-          <h2 className="font-semibold mb-2">Available Offline:</h2>
+          <h2 className="mb-2 font-semibold">Available Offline:</h2>
           <ul className="space-y-1">
             <li>• Previously viewed pages</li>
             <li>• Cached images and resources</li>
@@ -59,4 +55,4 @@ export default function OfflinePage() {
       </Card>
     </div>
   );
-} 
+}

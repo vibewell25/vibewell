@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     if (query.length < 2) {
       return NextResponse.json(
         { error: 'Search query must be at least 2 characters' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

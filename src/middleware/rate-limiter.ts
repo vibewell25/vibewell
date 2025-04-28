@@ -14,9 +14,6 @@ const rateLimiterOptions = {
   duration: 1, // Per second
 };
 
-// Create rate limiter instance
-const rateLimiter = new RateLimiterRedis(rateLimiterOptions);
-
 // Rate limiting configurations for different routes
 const routeConfigs: Record<string, { points: number; duration: number }> = {
   '/api/auth': { points: 5, duration: 60 }, // 5 requests per minute
@@ -65,7 +62,7 @@ export async function rateLimiterMiddleware(request: NextRequest) {
             'Retry-After': String(retryAfter),
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
 
@@ -80,7 +77,7 @@ export async function rateLimiterMiddleware(request: NextRequest) {
         headers: {
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
   }
 }

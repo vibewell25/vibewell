@@ -62,12 +62,14 @@ const getAnalyticsData = () => {
     const totalViews = resourceViews.reduce((sum, item) => sum + item.views, 0);
     // Search history
     const searchHistory = JSON.parse(
-      localStorage.getItem('search_history') || '[]'
+      localStorage.getItem('search_history') || '[]',
     ) as SearchHistoryItem[];
     // Popular searches (count occurrences)
-    const searchTerms = searchHistory.map(item => item.query.toLowerCase().trim()).filter(Boolean);
+    const searchTerms = searchHistory
+      .map((item) => item.query.toLowerCase().trim())
+      .filter(Boolean);
     const searchCounts: Record<string, number> = {};
-    searchTerms.forEach(term => {
+    searchTerms.forEach((term) => {
       searchCounts[term] = (searchCounts[term] || 0) + 1;
     });
     const popularSearches = Object.entries(searchCounts)
@@ -210,11 +212,11 @@ export default function BusinessHubAnalyticsPage() {
   };
   return (
     <Layout>
-      <div className="flex flex-col min-h-screen bg-gray-50">
+      <div className="flex min-h-screen flex-col bg-gray-50">
         <div className="container mx-auto px-4 py-8">
           {/* Breadcrumb Navigation */}
           <div className="mb-6">
-            <div className="flex items-center text-sm text-gray-500 mb-4">
+            <div className="mb-4 flex items-center text-sm text-gray-500">
               <Link href="/business-hub" className="hover:text-blue-600">
                 Business Hub
               </Link>
@@ -222,34 +224,34 @@ export default function BusinessHubAnalyticsPage() {
               <span className="text-gray-700">Analytics Dashboard</span>
             </div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
             {/* Sidebar Navigation */}
             <div className="lg:col-span-1">
               <BusinessHubNavigation />
             </div>
             {/* Main Content */}
             <div className="lg:col-span-3">
-              <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                <h1 className="text-2xl font-bold mb-2">Analytics Dashboard</h1>
-                <p className="text-gray-600 mb-6">
+              <div className="mb-6 rounded-lg bg-white p-6 shadow-md">
+                <h1 className="mb-2 text-2xl font-bold">Analytics Dashboard</h1>
+                <p className="mb-6 text-gray-600">
                   Track your engagement with Business Hub resources and discover popular content.
                 </p>
                 {/* Metrics Overview */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
                   {metricCards.map((card, index) => (
                     <div
                       key={index}
-                      className="bg-white border border-gray-100 rounded-lg p-4 shadow-sm"
+                      className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm"
                     >
-                      <div className="flex justify-between items-start">
+                      <div className="flex items-start justify-between">
                         <div>
                           <p className="text-sm text-gray-500">{card.title}</p>
-                          <p className="text-2xl font-bold mt-1">{card.value}</p>
+                          <p className="mt-1 text-2xl font-bold">{card.value}</p>
                         </div>
-                        <div className="p-2 bg-gray-50 rounded-lg">{card.icon}</div>
+                        <div className="rounded-lg bg-gray-50 p-2">{card.icon}</div>
                       </div>
                       <div
-                        className={`flex items-center mt-4 text-sm ${
+                        className={`mt-4 flex items-center text-sm ${
                           card.changeType === 'increase'
                             ? 'text-green-600'
                             : card.changeType === 'decrease'
@@ -258,9 +260,9 @@ export default function BusinessHubAnalyticsPage() {
                         }`}
                       >
                         {card.changeType === 'increase' ? (
-                          <Icons.ArrowUpIcon className="h-4 w-4 mr-1" />
+                          <Icons.ArrowUpIcon className="mr-1 h-4 w-4" />
                         ) : card.changeType === 'decrease' ? (
-                          <Icons.ArrowDownIcon className="h-4 w-4 mr-1" />
+                          <Icons.ArrowDownIcon className="mr-1 h-4 w-4" />
                         ) : null}
                         <span>{card.change}% from last month</span>
                       </div>
@@ -269,48 +271,48 @@ export default function BusinessHubAnalyticsPage() {
                 </div>
                 {/* Popular Resources */}
                 <div className="mb-8">
-                  <h2 className="text-xl font-semibold mb-4 flex items-center">
-                    <Icons.CircleStackIcon className="h-5 w-5 mr-2 text-blue-600" />
+                  <h2 className="mb-4 flex items-center text-xl font-semibold">
+                    <Icons.CircleStackIcon className="mr-2 h-5 w-5 text-blue-600" />
                     Most Viewed Resources
                   </h2>
-                  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                  <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
                     <div className="overflow-x-auto">
                       <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                           <tr>
                             <th
                               scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
                             >
                               Resource
                             </th>
                             <th
                               scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
                             >
                               Category
                             </th>
                             <th
                               scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
                             >
                               Views
                             </th>
                             <th
                               scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
                             >
                               Type
                             </th>
                           </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                          {popularResources.map(resource => (
+                        <tbody className="divide-y divide-gray-200 bg-white">
+                          {popularResources.map((resource) => (
                             <tr key={resource.id} className="hover:bg-gray-50">
-                              <td className="px-6 py-4 whitespace-nowrap">
+                              <td className="whitespace-nowrap px-6 py-4">
                                 <div className="flex items-center">
                                   {resource.imageUrl && (
-                                    <div className="flex-shrink-0 h-10 w-10 mr-3">
+                                    <div className="mr-3 h-10 w-10 flex-shrink-0">
                                       <Image
                                         src={resource.imageUrl}
                                         alt={resource.title}
@@ -330,18 +332,18 @@ export default function BusinessHubAnalyticsPage() {
                                   </div>
                                 </div>
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
+                              <td className="whitespace-nowrap px-6 py-4">
                                 <span className="inline-flex text-xs font-semibold">
                                   {resource.category}
                                 </span>
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
+                              <td className="whitespace-nowrap px-6 py-4">
                                 <div className="flex items-center text-sm text-gray-900">
-                                  <Icons.ArrowTrendingUpIcon className="h-4 w-4 mr-2 text-green-500" />
+                                  <Icons.ArrowTrendingUpIcon className="mr-2 h-4 w-4 text-green-500" />
                                   {resource.views}
                                 </div>
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                 <Badge variant="outline" className="capitalize">
                                   {resource.type}
                                 </Badge>
@@ -354,33 +356,33 @@ export default function BusinessHubAnalyticsPage() {
                   </div>
                 </div>
                 {/* Recent Activity and Popular Searches */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   {/* Recent Activity */}
                   <div>
-                    <h2 className="text-lg font-semibold mb-4 flex items-center">
-                      <Icons.ClockIcon className="h-5 w-5 mr-2 text-blue-600" />
+                    <h2 className="mb-4 flex items-center text-lg font-semibold">
+                      <Icons.ClockIcon className="mr-2 h-5 w-5 text-blue-600" />
                       Your Recent Activity
                     </h2>
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="rounded-lg border border-gray-200 bg-white p-4">
                       {isClient && analyticsData.resourceViews.length > 0 ? (
                         <div className="space-y-4">
                           {analyticsData.resourceViews
                             .sort(
                               (a, b) =>
-                                new Date(b.lastViewed).getTime() - new Date(a.lastViewed).getTime()
+                                new Date(b.lastViewed).getTime() - new Date(a.lastViewed).getTime(),
                             )
                             .slice(0, 5)
-                            .map(item => (
+                            .map((item) => (
                               <div
                                 key={item.id}
-                                className="flex items-start pb-4 border-b border-gray-100 last:border-0 last:pb-0"
+                                className="flex items-start border-b border-gray-100 pb-4 last:border-0 last:pb-0"
                               >
-                                <div className="bg-blue-100 p-2 rounded-md mr-3">
+                                <div className="mr-3 rounded-md bg-blue-100 p-2">
                                   <Icons.ChartBarIcon className="h-5 w-5 text-blue-700" />
                                 </div>
                                 <div>
                                   <p className="text-sm font-medium">Viewed: {item.name}</p>
-                                  <p className="text-xs text-gray-500 mt-1">
+                                  <p className="mt-1 text-xs text-gray-500">
                                     {formatDate(item.lastViewed)} • {item.views}{' '}
                                     {item.views === 1 ? 'view' : 'views'}
                                   </p>
@@ -389,29 +391,29 @@ export default function BusinessHubAnalyticsPage() {
                             ))}
                         </div>
                       ) : (
-                        <div className="text-center py-8 text-gray-500">
+                        <div className="py-8 text-center text-gray-500">
                           <p>No recent activity to display</p>
-                          <p className="text-sm mt-1">View resources to track your activity</p>
+                          <p className="mt-1 text-sm">View resources to track your activity</p>
                         </div>
                       )}
                     </div>
                   </div>
                   {/* Popular Searches */}
                   <div>
-                    <h2 className="text-lg font-semibold mb-4 flex items-center">
-                      <Icons.MagnifyingGlassIcon className="h-5 w-5 mr-2 text-blue-600" />
+                    <h2 className="mb-4 flex items-center text-lg font-semibold">
+                      <Icons.MagnifyingGlassIcon className="mr-2 h-5 w-5 text-blue-600" />
                       Popular Searches
                     </h2>
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="rounded-lg border border-gray-200 bg-white p-4">
                       {isClient && analyticsData.popularSearches.length > 0 ? (
                         <div className="space-y-3">
                           {analyticsData.popularSearches.map((item, index) => (
                             <div
                               key={index}
-                              className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0"
+                              className="flex items-center justify-between border-b border-gray-100 py-2 last:border-0"
                             >
                               <div className="flex items-center">
-                                <div className="bg-gray-100 h-7 w-7 rounded-full flex items-center justify-center mr-3 text-xs font-medium">
+                                <div className="mr-3 flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-xs font-medium">
                                   {index + 1}
                                 </div>
                                 <p className="text-sm">{item.term}</p>
@@ -423,9 +425,9 @@ export default function BusinessHubAnalyticsPage() {
                           ))}
                         </div>
                       ) : (
-                        <div className="text-center py-8 text-gray-500">
+                        <div className="py-8 text-center text-gray-500">
                           <p>No search data available</p>
-                          <p className="text-sm mt-1">Search for resources to see popular terms</p>
+                          <p className="mt-1 text-sm">Search for resources to see popular terms</p>
                         </div>
                       )}
                     </div>

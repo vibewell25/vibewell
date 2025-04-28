@@ -4,15 +4,10 @@ import {
   generateAuthenticationOptions,
   verifyRegistrationResponse,
   verifyAuthenticationResponse,
-  type PublicKeyCredentialCreationOptionsJSON,
-  type PublicKeyCredentialRequestOptionsJSON,
   type RegistrationResponseJSON,
   type AuthenticationResponseJSON,
   type AuthenticatorTransportFuture,
-  type VerifiedRegistrationResponse,
-  type VerifiedAuthenticationResponse,
 } from '@simplewebauthn/server';
-import { isoBase64URL } from '@simplewebauthn/server/helpers';
 import { prisma } from '@/lib/prisma';
 import { nanoid } from 'nanoid';
 
@@ -34,7 +29,7 @@ interface UserWithAuthenticators {
 export class WebAuthnError extends Error {
   constructor(
     message: string,
-    public code: 'CHALLENGE_NOT_FOUND' | 'USER_NOT_FOUND' | 'VERIFICATION_FAILED'
+    public code: 'CHALLENGE_NOT_FOUND' | 'USER_NOT_FOUND' | 'VERIFICATION_FAILED',
   ) {
     super(message);
     this.name = 'WebAuthnError';
@@ -67,7 +62,7 @@ export class WebAuthnService {
         userVerification: 'preferred',
         residentKey: 'preferred',
       },
-      excludeCredentials: user.authenticators.map(authenticator => ({
+      excludeCredentials: user.authenticators.map((authenticator) => ({
         id: Buffer.from(authenticator.credentialID, 'base64'),
         type: 'public-key',
         transports: authenticator.transports as AuthenticatorTransport[],
@@ -134,7 +129,7 @@ export class WebAuthnService {
 
     const options = await generateAuthenticationOptions({
       rpID: this.rpID,
-      allowCredentials: user.authenticators.map(authenticator => ({
+      allowCredentials: user.authenticators.map((authenticator) => ({
         id: Buffer.from(authenticator.credentialID, 'base64'),
         type: 'public-key',
         transports: authenticator.transports as AuthenticatorTransport[],
@@ -165,7 +160,7 @@ export class WebAuthnService {
     if (!challenge) throw new Error('Challenge not found');
 
     const authenticator = user.authenticators.find(
-      auth => auth.credentialID === Buffer.from(response.id, 'base64').toString('base64')
+      (auth) => auth.credentialID === Buffer.from(response.id, 'base64').toString('base64'),
     );
 
     if (!authenticator) throw new Error('Authenticator not found');

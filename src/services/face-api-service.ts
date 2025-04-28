@@ -1,10 +1,8 @@
 import * as faceapi from 'face-api.js';
 import { logger } from '@/lib/logger';
 import { Canvas, Image } from 'canvas';
-import { FaceMeshResults, NormalizedLandmark } from './mediapipe-service';
+import { FaceMeshResults } from './mediapipe-service';
 
-// Configure face-api.js to use canvas
-const canvas = require('canvas');
 faceapi.env.monkeyPatch({ Canvas, Image });
 
 export interface FaceDetectionOptions {
@@ -52,7 +50,7 @@ export class FaceApiService {
 
   async detectFace(
     image: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageData,
-    options: FaceDetectionOptions = {}
+    options: FaceDetectionOptions = {},
   ): Promise<FaceAnalysisResult[]> {
     try {
       if (!this.isInitialized) {
@@ -90,7 +88,7 @@ export class FaceApiService {
 
       // Run detection
       const results = await Promise.all(tasks);
-      return results.map(result => ({
+      return results.map((result) => ({
         detection: result.detection,
         landmarks: result.landmarks,
         expressions: result.expressions,
@@ -106,7 +104,7 @@ export class FaceApiService {
 
   async convertToFaceMeshResults(detections: FaceAnalysisResult[]): Promise<FaceMeshResults> {
     try {
-      const multiFaceLandmarks = detections.map(detection => {
+      const multiFaceLandmarks = detections.map((detection) => {
         if (!detection.landmarks) {
           throw new Error('Face landmarks not detected');
         }
@@ -115,7 +113,7 @@ export class FaceApiService {
         const points = detection.landmarks.positions;
         const imageSize = detection.detection.imageDims;
 
-        return points.map(point => ({
+        return points.map((point) => ({
           x: point.x / imageSize.width,
           y: point.y / imageSize.height,
           z: 0, // face-api doesn't provide z-coordinates
@@ -153,7 +151,7 @@ export class FaceApiService {
           Object.entries(detection.expressions).map(([key, value]) => [
             key,
             parseFloat(value.toFixed(2)),
-          ])
+          ]),
         );
       }
 

@@ -66,10 +66,10 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* Progress Overview */}
         <Card className="p-6">
-          <h2 className="text-lg font-semibold mb-4">Training Progress</h2>
+          <h2 className="mb-4 text-lg font-semibold">Training Progress</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={progressData}>
@@ -86,7 +86,7 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
 
         {/* Module Status Distribution */}
         <Card className="p-6">
-          <h2 className="text-lg font-semibold mb-4">Module Status Distribution</h2>
+          <h2 className="mb-4 text-lg font-semibold">Module Status Distribution</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -115,21 +115,17 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
 
       {/* Detailed Stats */}
       <Card className="p-6">
-        <h2 className="text-lg font-semibold mb-4">Training Statistics</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-gray-50 rounded-lg">
+        <h2 className="mb-4 text-lg font-semibold">Training Statistics</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="rounded-lg bg-gray-50 p-4">
             <h3 className="text-sm font-medium text-gray-500">Completion Rate</h3>
-            <p className="mt-1 text-2xl font-semibold">
-              {analytics.completionRate.toFixed(1)}%
-            </p>
+            <p className="mt-1 text-2xl font-semibold">{analytics.completionRate.toFixed(1)}%</p>
           </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
+          <div className="rounded-lg bg-gray-50 p-4">
             <h3 className="text-sm font-medium text-gray-500">Average Score</h3>
-            <p className="mt-1 text-2xl font-semibold">
-              {analytics.averageScore.toFixed(1)}
-            </p>
+            <p className="mt-1 text-2xl font-semibold">{analytics.averageScore.toFixed(1)}</p>
           </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
+          <div className="rounded-lg bg-gray-50 p-4">
             <h3 className="text-sm font-medium text-gray-500">Total Time Spent</h3>
             <p className="mt-1 text-2xl font-semibold">
               {Math.round(analytics.totalTimeSpent / 60)} hrs
@@ -140,14 +136,15 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
 
       {/* Status Breakdown */}
       <Card className="p-6">
-        <h2 className="text-lg font-semibold mb-4">Module Status Breakdown</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <h2 className="mb-4 text-lg font-semibold">Module Status Breakdown</h2>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
           {statusData.map((status) => (
             <div
               key={status.name}
-              className="p-4 rounded-lg"
+              className="rounded-lg p-4"
               style={{
-                backgroundColor: COLORS[status.name.replace(' ', '_') as keyof typeof COLORS] + '20',
+                backgroundColor:
+                  COLORS[status.name.replace(' ', '_') as keyof typeof COLORS] + '20',
               }}
             >
               <h3 className="text-sm font-medium text-gray-500">{status.name}</h3>
@@ -158,4 +155,4 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
       </Card>
     </div>
   );
-} 
+}

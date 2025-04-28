@@ -31,7 +31,7 @@ const productState = createState<{
     loading: false,
     filter: '',
   },
-  StateManagerType.REDUX
+  StateManagerType.REDUX,
 );
 
 /**
@@ -47,8 +47,8 @@ export default function DataFetchingExample() {
 
   return (
     <Provider>
-      <div className="p-6 max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Products Catalog</h1>
+      <div className="mx-auto max-w-6xl p-6">
+        <h1 className="mb-8 text-3xl font-bold">Products Catalog</h1>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
           <div className="md:col-span-8">
             <ProductList />
@@ -149,7 +149,7 @@ function ProductList() {
     ? products.filter(
         (product: Product) =>
           product.name.toLowerCase().includes(filter.toLowerCase()) ||
-          product.description.toLowerCase().includes(filter.toLowerCase())
+          product.description.toLowerCase().includes(filter.toLowerCase()),
       )
     : products;
 
@@ -161,42 +161,42 @@ function ProductList() {
           placeholder="Search products..."
           value={filter}
           onChange={handleFilterChange}
-          className="w-full p-2 border rounded"
+          className="w-full rounded border p-2"
         />
       </div>
 
       {loading ? (
         <div className="py-8 text-center">
-          <div className="animate-spin h-10 w-10 border-4 border-blue-500 rounded-full border-t-transparent mx-auto"></div>
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
           <p className="mt-2">Loading products...</p>
         </div>
       ) : filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {filteredProducts.map((product: Product) => (
             <div
               key={product.id}
-              className="border rounded p-4 cursor-pointer hover:shadow-md transition-shadow"
+              className="cursor-pointer rounded border p-4 transition-shadow hover:shadow-md"
               onClick={() => selectProduct(product)}
             >
-              <div className="w-full h-40 bg-gray-100 mb-2 rounded overflow-hidden">
+              <div className="mb-2 h-40 w-full overflow-hidden rounded bg-gray-100">
                 <img
                   src={product.imageUrl}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-cover"
                 />
               </div>
-              <h3 className="font-semibold text-lg">{product.name}</h3>
-              <p className="text-gray-500 truncate">{product.description}</p>
-              <p className="font-bold mt-2">${product.price.toFixed(2)}</p>
+              <h3 className="text-lg font-semibold">{product.name}</h3>
+              <p className="truncate text-gray-500">{product.description}</p>
+              <p className="mt-2 font-bold">${product.price.toFixed(2)}</p>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center py-8">
+        <div className="py-8 text-center">
           <p>No products found{filter ? ` matching "${filter}"` : ''}.</p>
           <button
             onClick={fetchProductsWithErrorHandling}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
           >
             Refresh Products
           </button>
@@ -256,32 +256,32 @@ function ProductDetail() {
 
   if (!selectedProduct) {
     return (
-      <div className="border rounded p-6 h-full flex items-center justify-center text-gray-500">
+      <div className="flex h-full items-center justify-center rounded border p-6 text-gray-500">
         Select a product to view details
       </div>
     );
   }
 
   return (
-    <div className="border rounded p-6">
-      <div className="w-full h-64 bg-gray-100 mb-4 rounded overflow-hidden">
+    <div className="rounded border p-6">
+      <div className="mb-4 h-64 w-full overflow-hidden rounded bg-gray-100">
         <img
           src={selectedProduct.imageUrl}
           alt={selectedProduct.name}
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
         />
       </div>
-      <h2 className="text-2xl font-bold mb-2">{selectedProduct.name}</h2>
-      <p className="text-3xl font-bold text-blue-600 mb-4">${selectedProduct.price.toFixed(2)}</p>
+      <h2 className="mb-2 text-2xl font-bold">{selectedProduct.name}</h2>
+      <p className="mb-4 text-3xl font-bold text-blue-600">${selectedProduct.price.toFixed(2)}</p>
       <div className="mb-6">
-        <h3 className="font-semibold mb-2">Description:</h3>
+        <h3 className="mb-2 font-semibold">Description:</h3>
         <p className="text-gray-600">{selectedProduct.description}</p>
       </div>
       <button
         onClick={addToCart}
         disabled={isAdding}
-        className={`w-full py-3 rounded font-medium ${
-          isAdding ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
+        className={`w-full rounded py-3 font-medium ${
+          isAdding ? 'cursor-not-allowed bg-gray-400' : 'bg-blue-600 text-white hover:bg-blue-700'
         }`}
       >
         {isAdding ? 'Adding...' : 'Add to Cart'}

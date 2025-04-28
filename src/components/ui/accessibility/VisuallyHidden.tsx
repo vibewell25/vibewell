@@ -14,14 +14,14 @@ export interface VisuallyHiddenProps extends React.HTMLAttributes<HTMLSpanElemen
 /**
  * VisuallyHidden component renders content that is invisible to sighted users
  * but still accessible to screen readers - a common accessibility pattern.
- * 
+ *
  * Use this component to provide additional context to screen reader users
  * without affecting the visual design.
  */
 export const VisuallyHidden = forwardRef<HTMLElement, VisuallyHiddenProps>(
   ({ hidden = true, children, className, as: Component = 'span', ...props }, ref) => {
     const visuallyHiddenClassName = 'sr-only';
-    
+
     // If not hidden, render the content visually
     if (!hidden) {
       return (
@@ -30,17 +30,13 @@ export const VisuallyHidden = forwardRef<HTMLElement, VisuallyHiddenProps>(
         </Component>
       );
     }
-    
+
     return (
-      <Component 
-        ref={ref as any}
-        className={cn(visuallyHiddenClassName, className)}
-        {...props}
-      >
+      <Component ref={ref as any} className={cn(visuallyHiddenClassName, className)} {...props}>
         {children}
       </Component>
     );
-  }
+  },
 );
 
 VisuallyHidden.displayName = 'VisuallyHidden';
@@ -55,11 +51,18 @@ export function ScreenReaderOnly({ children, ...props }: Omit<VisuallyHiddenProp
   return <VisuallyHidden {...props}>{children}</VisuallyHidden>;
 }
 
-export function ScreenReaderText({ text, ...props }: Omit<VisuallyHiddenProps, 'hidden' | 'children'> & { text: string }) {
+export function ScreenReaderText({
+  text,
+  ...props
+}: Omit<VisuallyHiddenProps, 'hidden' | 'children'> & { text: string }) {
   return <VisuallyHidden {...props}>{text}</VisuallyHidden>;
 }
 
-export function IconLabel({ icon, label, ...props }: { icon: React.ReactNode; label: string } & Omit<VisuallyHiddenProps, 'hidden' | 'children'>) {
+export function IconLabel({
+  icon,
+  label,
+  ...props
+}: { icon: React.ReactNode; label: string } & Omit<VisuallyHiddenProps, 'hidden' | 'children'>) {
   return (
     <>
       {icon}
@@ -68,10 +71,10 @@ export function IconLabel({ icon, label, ...props }: { icon: React.ReactNode; la
   );
 }
 
-export function A11yButton({ 
-  children, 
+export function A11yButton({
+  children,
   a11yLabel,
-  ...props 
+  ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & { a11yLabel: string }) {
   return (
     <button {...props}>
@@ -84,38 +87,48 @@ export function A11yButton({
 /**
  * Use this when a heading is needed for screen readers but should be visually styled differently
  */
-export function A11yHeading({ 
-  visualLevel, 
-  a11yLevel = 2, 
+export function A11yHeading({
+  visualLevel,
+  a11yLevel = 2,
   children,
   className,
-  ...props 
-}: React.HTMLAttributes<HTMLHeadingElement> & { 
+  ...props
+}: React.HTMLAttributes<HTMLHeadingElement> & {
   visualLevel?: 1 | 2 | 3 | 4 | 5 | 6;
   a11yLevel: 1 | 2 | 3 | 4 | 5 | 6;
 }) {
   const A11yHeadingTag = `h${a11yLevel}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-  
+
   // Apply styles based on visual heading level if specified
   let headingStyles = '';
   if (visualLevel) {
-    switch(visualLevel) {
-      case 1: headingStyles = 'text-4xl font-bold'; break;
-      case 2: headingStyles = 'text-3xl font-bold'; break;
-      case 3: headingStyles = 'text-2xl font-semibold'; break;
-      case 4: headingStyles = 'text-xl font-semibold'; break;
-      case 5: headingStyles = 'text-lg font-medium'; break;
-      case 6: headingStyles = 'text-base font-medium'; break;
-      default: headingStyles = '';
+    switch (visualLevel) {
+      case 1:
+        headingStyles = 'text-4xl font-bold';
+        break;
+      case 2:
+        headingStyles = 'text-3xl font-bold';
+        break;
+      case 3:
+        headingStyles = 'text-2xl font-semibold';
+        break;
+      case 4:
+        headingStyles = 'text-xl font-semibold';
+        break;
+      case 5:
+        headingStyles = 'text-lg font-medium';
+        break;
+      case 6:
+        headingStyles = 'text-base font-medium';
+        break;
+      default:
+        headingStyles = '';
     }
   }
-  
+
   return (
-    <A11yHeadingTag 
-      className={cn(headingStyles, className)} 
-      {...props}
-    >
+    <A11yHeadingTag className={cn(headingStyles, className)} {...props}>
       {children}
     </A11yHeadingTag>
   );
-} 
+}

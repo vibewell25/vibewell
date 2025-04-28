@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'react-hot-toast';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 
@@ -30,8 +30,7 @@ export function ProfileForm() {
   const {
     register,
     handleSubmit,
-    setValue,
-    formState: { errors, isSubmitting },
+    setValue
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
   });
@@ -86,10 +85,10 @@ export function ProfileForm() {
   if (isLoading) {
     return (
       <div className="animate-pulse space-y-4">
-        <div className="h-10 bg-gray-200 rounded"></div>
-        <div className="h-10 bg-gray-200 rounded"></div>
-        <div className="h-10 bg-gray-200 rounded"></div>
-        <div className="h-32 bg-gray-200 rounded"></div>
+        <div className="h-10 rounded bg-gray-200"></div>
+        <div className="h-10 rounded bg-gray-200"></div>
+        <div className="h-10 rounded bg-gray-200"></div>
+        <div className="h-32 rounded bg-gray-200"></div>
       </div>
     );
   }
@@ -100,25 +99,25 @@ export function ProfileForm() {
         <div>
           <Label htmlFor="name">Name</Label>
           <Input id="name" {...register('name')} placeholder="Your name" />
-          {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>}
+          {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>}
         </div>
 
         <div>
           <Label htmlFor="email">Email</Label>
           <Input id="email" type="email" {...register('email')} placeholder="your@email.com" />
-          {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
+          {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
         </div>
 
         <div>
           <Label htmlFor="phone">Phone</Label>
           <Input id="phone" type="tel" {...register('phone')} placeholder="+1 (555) 000-0000" />
-          {errors.phone && <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>}
+          {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone.message}</p>}
         </div>
 
         <div>
           <Label htmlFor="bio">Bio</Label>
           <Textarea id="bio" {...register('bio')} placeholder="Tell us about yourself" rows={4} />
-          {errors.bio && <p className="text-sm text-red-500 mt-1">{errors.bio.message}</p>}
+          {errors.bio && <p className="mt-1 text-sm text-red-500">{errors.bio.message}</p>}
         </div>
       </div>
 

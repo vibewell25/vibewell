@@ -58,7 +58,7 @@ export class SecurityMonitoringService {
    */
   async getRecentEvents(
     limit: number = 100,
-    severity?: SecurityEvent['severity']
+    severity?: SecurityEvent['severity'],
   ): Promise<SecurityEvent[]> {
     try {
       const keys = await this.redis.keys('security:event:*');
@@ -90,7 +90,6 @@ export class SecurityMonitoringService {
     byType: Record<string, number>;
   }> {
     const now = Date.now();
-    const windowStart = now - timeWindow * 1000;
 
     try {
       const counters = await this.redis.hgetall(`security:counters:${this.getTimeKey()}`);
@@ -110,7 +109,7 @@ export class SecurityMonitoringService {
               ...acc,
               [key.replace('type_', '')]: parseInt(value),
             }),
-            {}
+            {},
           ),
       };
     } catch (error) {
@@ -129,18 +128,18 @@ export class SecurityMonitoringService {
   async detectSuspiciousActivity(userId: string): Promise<boolean> {
     try {
       const recentEvents = await this.getRecentEvents(50);
-      const userEvents = recentEvents.filter(e => e.userId === userId);
+      const userEvents = recentEvents.filter((e) => e.userId === userId);
 
       // Check for multiple failed login attempts
-      const failedLogins = userEvents.filter(e => e.type === 'login_failed').length;
+      const failedLogins = userEvents.filter((e) => e.type === 'login_failed').length;
       if (failedLogins >= 5) return true;
 
       // Check for multiple MFA failures
-      const mfaFailures = userEvents.filter(e => e.type === 'mfa_verification_failed').length;
+      const mfaFailures = userEvents.filter((e) => e.type === 'mfa_verification_failed').length;
       if (mfaFailures >= 3) return true;
 
       // Check for password reset attempts
-      const passwordResets = userEvents.filter(e => e.type === 'password_reset_requested').length;
+      const passwordResets = userEvents.filter((e) => e.type === 'password_reset_requested').length;
       if (passwordResets >= 3) return true;
 
       return false;
@@ -168,13 +167,10 @@ export class SecurityMonitoringService {
           this.sendSlackAlert(event),
           this.sendPagerDutyAlert(event),
         ]);
-      } 
+      }
       // For medium severity, use email and Slack only
       else if (event.severity === 'medium') {
-        await Promise.all([
-          this.sendEmailAlert(event),
-          this.sendSlackAlert(event),
-        ]);
+        await Promise.all([this.sendEmailAlert(event), this.sendSlackAlert(event)]);
       }
       // For low severity, just use Slack
       else {
@@ -187,7 +183,7 @@ export class SecurityMonitoringService {
 
   private async sendEmailAlert(event: SecurityEvent): Promise<void> {
     const securityEmail = process.env['SECURITY_ALERT_EMAIL'];
-    
+
     if (!securityEmail) {
       logger.warn('No security alert email configured', 'security');
       return;
@@ -196,7 +192,7 @@ export class SecurityMonitoringService {
     try {
       // Import email service
       const { EmailService } = await import('@/lib/email');
-      
+
       // Send security alert email
       await EmailService.send({
         to: securityEmail,
@@ -205,7 +201,10 @@ export class SecurityMonitoringService {
         text: this.formatEmailAlertText(event),
       });
 
-      logger.info('Security alert email sent', 'security', { to: securityEmail, eventType: event.type });
+      logger.info('Security alert email sent', 'security', {
+        to: securityEmail,
+        eventType: event.type,
+      });
     } catch (error) {
       logger.error('Failed to send security alert email', 'security', { error, event });
     }
@@ -268,7 +267,7 @@ Please investigate this security alert immediately.
 
   private async sendSlackAlert(event: SecurityEvent): Promise<void> {
     const slackWebhookUrl = process.env['SLACK_SECURITY_WEBHOOK_URL'];
-    
+
     if (!slackWebhookUrl) {
       logger.warn('No Slack webhook configured for security alerts', 'security');
       return;
@@ -359,7 +358,7 @@ Please investigate this security alert immediately.
 
   private async sendPagerDutyAlert(event: SecurityEvent): Promise<void> {
     const pagerDutyRoutingKey = process.env['PAGERDUTY_ROUTING_KEY'];
-    
+
     if (!pagerDutyRoutingKey) {
       logger.warn('No PagerDuty routing key configured', 'security');
       return;

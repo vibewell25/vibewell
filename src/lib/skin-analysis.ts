@@ -119,7 +119,7 @@ export class SkinAnalysisService {
         confidence: concernProbs[i + concernTypes.length],
         regions: [], // Would be populated by a separate detection model
       }))
-      .filter(concern => concern.confidence > 0.5);
+      .filter((concern) => concern.confidence > 0.5);
 
     // Generate recommendations
     const recommendations = await this.generateRecommendations(skinType, concerns, healthScore[0]);
@@ -138,7 +138,7 @@ export class SkinAnalysisService {
   private async generateRecommendations(
     skinType: SkinAnalysisResult['skinType'],
     concerns: SkinConcern[],
-    healthScore: number
+    healthScore: number,
   ): Promise<SkinAnalysisResult['recommendations']> {
     // This would typically involve a separate recommendation engine
     // For now, using basic rules-based recommendations
@@ -187,7 +187,7 @@ export class SkinAnalysisService {
       recommendations.lifestyle.push(
         'Increase water intake',
         'Improve sleep quality',
-        'Protect from sun exposure'
+        'Protect from sun exposure',
       );
     }
 

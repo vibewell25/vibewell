@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Download, ExternalLink } from 'lucide-react';
 
 interface FormField {
@@ -38,7 +38,7 @@ export function FormResponseViewer({ response, fields, onDownload }: FormRespons
       case 'select':
         return value;
       case 'file':
-        const attachment = response.attachments.find(a => a.id === value);
+        const attachment = response.attachments.find((a) => a.id === value);
         if (!attachment) return 'No file';
         return (
           <div className="flex items-center space-x-2">
@@ -70,7 +70,7 @@ export function FormResponseViewer({ response, fields, onDownload }: FormRespons
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {fields.map(field => (
+          {fields.map((field) => (
             <div key={field.id} className="space-y-1">
               <div className="font-medium">{field.label}</div>
               <div className="text-gray-700">

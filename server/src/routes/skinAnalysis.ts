@@ -7,6 +7,9 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Skin analysis endpoint (stubbed)
 router.post('/', upload.single('photo'), async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
     // In production, process req.file.buffer with AI service
     const results = { hydration: 80, oiliness: 30, spots: 5 };
     res.json({ results });

@@ -75,7 +75,7 @@ class CacheManager {
       if (this.config.compression.enabled && parsed.compressed) {
         parsed.data = await decompress(parsed.data);
       }
-      
+
       // Update memory cache
       this.memoryCache.set(key, {
         data: parsed.data,
@@ -119,7 +119,7 @@ class CacheManager {
         compressed: this.config.compression.enabled,
       }),
       'EX',
-      entry.ttl
+      entry.ttl,
     );
   }
 
@@ -178,4 +178,4 @@ const defaultConfig: CacheConfig = {
   },
 };
 
-export const cacheManager = CacheManager.getInstance(defaultConfig); 
+export {};

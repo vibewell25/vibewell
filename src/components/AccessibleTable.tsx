@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 
 interface TableColumn {
   key: string;
@@ -102,12 +102,9 @@ export const AccessibleTable: React.FC<AccessibleTableProps> = ({
               <th
                 key={column.key}
                 scope="col"
-                className={`
-                  px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider
-                  ${column.sortable ? 'cursor-pointer' : ''}
-                `}
+                className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 ${column.sortable ? 'cursor-pointer' : ''} `}
                 onClick={() => column.sortable && handleSort(column.key)}
-                onKeyDown={e => handleKeyDown(e, 0, columnIndex)}
+                onKeyDown={(e) => handleKeyDown(e, 0, columnIndex)}
                 tabIndex={0}
                 aria-sort={
                   column.sortable
@@ -131,15 +128,15 @@ export const AccessibleTable: React.FC<AccessibleTableProps> = ({
             ))}
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="divide-y divide-gray-200 bg-white">
           {data.map((row, rowIndex) => (
             <tr key={rowIndex} className="hover:bg-gray-50">
               {columns.map((column, columnIndex) => (
                 <td
                   key={column.key}
-                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                  className="whitespace-nowrap px-6 py-4 text-sm text-gray-900"
                   tabIndex={0}
-                  onKeyDown={e => handleKeyDown(e, rowIndex, columnIndex)}
+                  onKeyDown={(e) => handleKeyDown(e, rowIndex, columnIndex)}
                 >
                   {row[column.key]}
                 </td>

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import {
   Card,
   CardContent,
@@ -9,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import Link from 'next/link';
 import { Calculator, ArrowDownToLine, Plus, Copy, Trash, RotateCw } from 'lucide-react';
 
@@ -47,11 +47,11 @@ export default function ProfitCalculatorPage() {
   const [hourlyCost, setHourlyCost] = useState(30);
   const [hourlyOverhead, setHourlyOverhead] = useState(15);
   // Get active service
-  const activeService = services.find(service => service.id === activeServiceId) || services[0];
+  const activeService = services.find((service) => service.id === activeServiceId) || services[0];
   // Calculate total direct costs
   const calculateDirectCosts = (service: ServiceCalculation) => {
     return service.expenses
-      .filter(expense => expense.category === 'direct')
+      .filter((expense) => expense.category === 'direct')
       .reduce((total, expense) => total + expense.cost, 0);
   };
   // Calculate time-based costs (staff time + overhead)
@@ -77,7 +77,7 @@ export default function ProfitCalculatorPage() {
   };
   // Add a new service
   const addService = () => {
-    const newId = (Math.max(...services.map(s => parseInt(s.id)), 0) + 1).toString();
+    const newId = (Math.max(...services.map((s) => parseInt(s.id)), 0) + 1).toString();
     const newService: ServiceCalculation = {
       id: newId,
       name: `Service ${newId}`,
@@ -94,9 +94,9 @@ export default function ProfitCalculatorPage() {
   };
   // Duplicate a service
   const duplicateService = (serviceId: string) => {
-    const serviceToDuplicate = services.find(s => s.id === serviceId);
+    const serviceToDuplicate = services.find((s) => s.id === serviceId);
     if (!serviceToDuplicate) return;
-    const newId = (Math.max(...services.map(s => parseInt(s.id)), 0) + 1).toString();
+    const newId = (Math.max(...services.map((s) => parseInt(s.id)), 0) + 1).toString();
     const newService: ServiceCalculation = {
       ...serviceToDuplicate,
       id: newId,
@@ -108,7 +108,7 @@ export default function ProfitCalculatorPage() {
   // Delete a service
   const deleteService = (serviceId: string) => {
     if (services.length < 1) return; // Don't allow deleting the last service
-    const updatedServices = services.filter(s => s.id !== serviceId);
+    const updatedServices = services.filter((s) => s.id !== serviceId);
     setServices(updatedServices);
     // Set active service to first available if the active one was deleted
     if (serviceId === activeServiceId) {
@@ -118,18 +118,18 @@ export default function ProfitCalculatorPage() {
   // Update service info
   const updateServiceInfo = (field: keyof ServiceCalculation, value: any) => {
     setServices(
-      services.map(service => {
+      services.map((service) => {
         if (service.id === activeServiceId) {
           return { ...service, [field]: value };
         }
         return service;
-      })
+      }),
     );
   };
   // Add an expense to active service
   const addExpense = (category: 'direct' | 'indirect') => {
     setServices(
-      services.map(service => {
+      services.map((service) => {
         if (service.id === activeServiceId) {
           const newExpenseId = (
             Math.max(...service.expenses.map((e: ExpenseItem) => parseInt(e.id)), 0) + 1
@@ -148,13 +148,13 @@ export default function ProfitCalculatorPage() {
           };
         }
         return service;
-      })
+      }),
     );
   };
   // Update an expense
   const updateExpense = (expenseId: string, field: keyof ExpenseItem, value: any) => {
     setServices(
-      services.map(service => {
+      services.map((service) => {
         if (service.id === activeServiceId) {
           return {
             ...service,
@@ -167,13 +167,13 @@ export default function ProfitCalculatorPage() {
           };
         }
         return service;
-      })
+      }),
     );
   };
   // Delete an expense
   const deleteExpense = (expenseId: string) => {
     setServices(
-      services.map(service => {
+      services.map((service) => {
         if (service.id === activeServiceId) {
           return {
             ...service,
@@ -181,7 +181,7 @@ export default function ProfitCalculatorPage() {
           };
         }
         return service;
-      })
+      }),
     );
   };
   // Calculate results for active service
@@ -195,7 +195,7 @@ export default function ProfitCalculatorPage() {
           services,
           hourlyCost,
           hourlyOverhead,
-        })
+        }),
       );
     }
   }, [services, hourlyCost, hourlyOverhead]);
@@ -220,7 +220,7 @@ export default function ProfitCalculatorPage() {
     const headers =
       'Service Name,Price,Duration (min),Direct Costs,Time Costs,Total Cost,Profit,Profit Margin %\n';
     const rows = services
-      .map(service => {
+      .map((service) => {
         const result = calculateProfit(service);
         return `"${service.name}",${service.price},${service.duration},${result.directCosts.toFixed(2)},${result.timeCosts.toFixed(2)},${result.totalCost.toFixed(2)},${result.profit.toFixed(2)},${result.profitMargin.toFixed(2)}`;
       })
@@ -235,19 +235,19 @@ export default function ProfitCalculatorPage() {
     document.body.removeChild(link);
   };
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="container mx-auto max-w-6xl px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
+        <div className="mb-2 flex items-center gap-3">
           <Calculator className="h-8 w-8 text-green-600" />
           <h1 className="text-3xl font-bold">Service Profit Calculator</h1>
         </div>
-        <p className="text-gray-600 mb-6">
+        <p className="mb-6 text-gray-600">
           Calculate the true profitability of each service you offer by accounting for all direct
           costs, staff time, and overhead expenses. Make data-driven decisions to optimize your
           service menu.
         </p>
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex flex-wrap gap-4">
           <Button
             onClick={exportToCSV}
             className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
@@ -262,7 +262,7 @@ export default function ProfitCalculatorPage() {
           </Link>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Service selection sidebar */}
         <div className="lg:col-span-1">
           <Card>
@@ -271,13 +271,13 @@ export default function ProfitCalculatorPage() {
               <CardDescription>Select a service to calculate</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2 mb-4">
-                {services.map(service => (
+              <div className="mb-4 space-y-2">
+                {services.map((service) => (
                   <div
                     key={service.id}
-                    className={`p-3 border rounded-md flex justify-between items-center cursor-pointer ${
+                    className={`flex cursor-pointer items-center justify-between rounded-md border p-3 ${
                       service.id === activeServiceId
-                        ? 'bg-green-50 border-green-500'
+                        ? 'border-green-500 bg-green-50'
                         : 'hover:bg-gray-50'
                     }`}
                     onClick={() => setActiveServiceId(service.id)}
@@ -290,7 +290,7 @@ export default function ProfitCalculatorPage() {
                     </div>
                     <div className="flex gap-1">
                       <button
-                        onClick={e => {
+                        onClick={(e) => {
                           e.stopPropagation();
                           duplicateService(service.id);
                         }}
@@ -301,7 +301,7 @@ export default function ProfitCalculatorPage() {
                       </button>
                       {services.length > 1 && (
                         <button
-                          onClick={e => {
+                          onClick={(e) => {
                             e.stopPropagation();
                             deleteService(service.id);
                           }}
@@ -318,20 +318,20 @@ export default function ProfitCalculatorPage() {
               <Button
                 onClick={addService}
                 variant="outline"
-                className="w-full flex items-center justify-center gap-1"
+                className="flex w-full items-center justify-center gap-1"
               >
                 <Plus className="h-4 w-4" />
                 Add New Service
               </Button>
             </CardContent>
-            <CardHeader className="border-t border-gray-200 mt-6 pt-6">
+            <CardHeader className="mt-6 border-t border-gray-200 pt-6">
               <CardTitle>Global Settings</CardTitle>
               <CardDescription>Apply to all services</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium mb-1">
+                  <label className="mb-1 block text-sm font-medium">
                     Staff Hourly Cost: ${hourlyCost}/hr
                   </label>
                   <input
@@ -340,15 +340,15 @@ export default function ProfitCalculatorPage() {
                     min={10}
                     max={100}
                     step={1}
-                    onChange={e => setHourlyCost(Number(e.target.value))}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    onChange={(e) => setHourlyCost(Number(e.target.value))}
+                    className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200"
                   />
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="mt-2 text-xs text-gray-500">
                     The cost of your or your staff's time per hour, including benefits
                   </p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">
+                  <label className="mb-1 block text-sm font-medium">
                     Overhead Cost: ${hourlyOverhead}/hr
                   </label>
                   <input
@@ -357,10 +357,10 @@ export default function ProfitCalculatorPage() {
                     min={5}
                     max={100}
                     step={1}
-                    onChange={e => setHourlyOverhead(Number(e.target.value))}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    onChange={(e) => setHourlyOverhead(Number(e.target.value))}
+                    className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200"
                   />
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="mt-2 text-xs text-gray-500">
                     Rent, utilities, software, and other indirect costs per hour of operation
                   </p>
                 </div>
@@ -378,43 +378,43 @@ export default function ProfitCalculatorPage() {
             <CardContent>
               <div className="space-y-6">
                 {/* Basic service info */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium mb-1">Service Name</label>
+                    <label className="mb-1 block text-sm font-medium">Service Name</label>
                     <Input
                       value={activeService.name}
-                      onChange={e => updateServiceInfo('name', e.target.value)}
+                      onChange={(e) => updateServiceInfo('name', e.target.value)}
                       className="w-full"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">Price ($)</label>
+                    <label className="mb-1 block text-sm font-medium">Price ($)</label>
                     <Input
                       type="number"
                       value={activeService.price}
-                      onChange={e => updateServiceInfo('price', Number(e.target.value))}
+                      onChange={(e) => updateServiceInfo('price', Number(e.target.value))}
                       className="w-full"
                       min={0}
                       step={0.01}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">Duration (minutes)</label>
+                    <label className="mb-1 block text-sm font-medium">Duration (minutes)</label>
                     <Input
                       type="number"
                       value={activeService.duration}
-                      onChange={e => updateServiceInfo('duration', Number(e.target.value))}
+                      onChange={(e) => updateServiceInfo('duration', Number(e.target.value))}
                       className="w-full"
                       min={1}
                       step={1}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">Staff Hourly Rate ($)</label>
+                    <label className="mb-1 block text-sm font-medium">Staff Hourly Rate ($)</label>
                     <Input
                       type="number"
                       value={activeService.timeCost}
-                      onChange={e => updateServiceInfo('timeCost', Number(e.target.value))}
+                      onChange={(e) => updateServiceInfo('timeCost', Number(e.target.value))}
                       className="w-full"
                       min={0}
                       step={0.01}
@@ -423,13 +423,13 @@ export default function ProfitCalculatorPage() {
                 </div>
                 {/* Direct costs */}
                 <div>
-                  <div className="flex justify-between items-center mb-2">
+                  <div className="mb-2 flex items-center justify-between">
                     <h3 className="font-medium">Direct Costs</h3>
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => addExpense('direct')}
-                      className="text-xs flex items-center gap-1"
+                      className="flex items-center gap-1 text-xs"
                     >
                       <Plus className="h-3 w-3" />
                       Add Cost
@@ -437,21 +437,21 @@ export default function ProfitCalculatorPage() {
                   </div>
                   <div className="space-y-2">
                     {activeService.expenses
-                      .filter(expense => expense.category === 'direct')
-                      .map(expense => (
+                      .filter((expense) => expense.category === 'direct')
+                      .map((expense) => (
                         <div key={expense.id} className="flex items-center gap-2">
                           <Input
                             value={expense.name}
-                            onChange={e => updateExpense(expense.id, 'name', e.target.value)}
+                            onChange={(e) => updateExpense(expense.id, 'name', e.target.value)}
                             className="flex-grow"
                             placeholder="Cost name"
                           />
-                          <div className="w-20 relative">
+                          <div className="relative w-20">
                             <span className="absolute inset-y-0 left-2 flex items-center">$</span>
                             <Input
                               type="number"
                               value={expense.cost}
-                              onChange={e =>
+                              onChange={(e) =>
                                 updateExpense(expense.id, 'cost', Number(e.target.value))
                               }
                               className="pl-6"
@@ -469,7 +469,7 @@ export default function ProfitCalculatorPage() {
                         </div>
                       ))}
                   </div>
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="mt-2 text-xs text-gray-500">
                     Direct costs are expenses directly tied to providing this service (products,
                     supplies, etc.)
                   </p>
@@ -478,13 +478,13 @@ export default function ProfitCalculatorPage() {
             </CardContent>
           </Card>
           {/* Results */}
-          <Card className="bg-green-50 border-green-200">
+          <Card className="border-green-200 bg-green-50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <span>Profit Analysis</span>
                 <button
                   onClick={() => {}}
-                  className="p-1 text-gray-500 hover:text-gray-700 rounded-full"
+                  className="rounded-full p-1 text-gray-500 hover:text-gray-700"
                   title="Refresh Calculations"
                 >
                   <RotateCw className="h-4 w-4" />
@@ -495,57 +495,57 @@ export default function ProfitCalculatorPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Cost Breakdown</h3>
+                  <h3 className="mb-4 text-lg font-semibold">Cost Breakdown</h3>
                   <div className="space-y-4">
                     <div>
-                      <div className="flex justify-between mb-1">
+                      <div className="mb-1 flex justify-between">
                         <span>Direct Costs</span>
                         <span className="font-medium">${results.directCosts.toFixed(2)}</span>
                       </div>
-                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-2 overflow-hidden rounded-full bg-gray-200">
                         <div
                           className="h-full bg-blue-500"
                           style={{ width: `${(results.directCosts / activeService.price) * 100}%` }}
                         ></div>
                       </div>
-                      <div className="text-xs text-gray-600 mt-1">
+                      <div className="mt-1 text-xs text-gray-600">
                         {((results.directCosts / activeService.price) * 100).toFixed(1)}% of price
                       </div>
                     </div>
                     <div>
-                      <div className="flex justify-between mb-1">
+                      <div className="mb-1 flex justify-between">
                         <span>Time-Based Costs</span>
                         <span className="font-medium">${results.timeCosts.toFixed(2)}</span>
                       </div>
-                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-2 overflow-hidden rounded-full bg-gray-200">
                         <div
                           className="h-full bg-purple-500"
                           style={{ width: `${(results.timeCosts / activeService.price) * 100}%` }}
                         ></div>
                       </div>
-                      <div className="text-xs text-gray-600 mt-1">
+                      <div className="mt-1 text-xs text-gray-600">
                         {((results.timeCosts / activeService.price) * 100).toFixed(1)}% of price
                       </div>
                     </div>
                     <div>
-                      <div className="flex justify-between mb-1">
+                      <div className="mb-1 flex justify-between">
                         <span className="font-semibold">Total Cost</span>
                         <span className="font-semibold">${results.totalCost.toFixed(2)}</span>
                       </div>
-                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-2 overflow-hidden rounded-full bg-gray-200">
                         <div
                           className="h-full bg-red-500"
                           style={{ width: `${(results.totalCost / activeService.price) * 100}%` }}
                         ></div>
                       </div>
-                      <div className="text-xs text-gray-600 mt-1">
+                      <div className="mt-1 text-xs text-gray-600">
                         {((results.totalCost / activeService.price) * 100).toFixed(1)}% of price
                       </div>
                     </div>
                     <div>
-                      <div className="flex justify-between mb-1">
+                      <div className="mb-1 flex justify-between">
                         <span className="font-semibold">Profit</span>
                         <span
                           className={`font-semibold ${results.profit < 0 ? 'text-red-600' : 'text-green-600'}`}
@@ -553,7 +553,7 @@ export default function ProfitCalculatorPage() {
                           ${results.profit.toFixed(2)}
                         </span>
                       </div>
-                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-2 overflow-hidden rounded-full bg-gray-200">
                         <div
                           className={`h-full ${results.profit < 0 ? 'bg-red-500' : 'bg-green-500'}`}
                           style={{
@@ -561,39 +561,39 @@ export default function ProfitCalculatorPage() {
                           }}
                         ></div>
                       </div>
-                      <div className="text-xs text-gray-600 mt-1">
+                      <div className="mt-1 text-xs text-gray-600">
                         {results.profitMargin.toFixed(1)}% profit margin
                       </div>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Summary</h3>
+                  <h3 className="mb-4 text-lg font-semibold">Summary</h3>
                   <div className="space-y-4">
-                    <div className="bg-white rounded-lg p-4 border border-gray-200">
-                      <p className="text-sm text-gray-600 mb-1">Service Price</p>
+                    <div className="rounded-lg border border-gray-200 bg-white p-4">
+                      <p className="mb-1 text-sm text-gray-600">Service Price</p>
                       <p className="text-3xl font-bold">${activeService.price.toFixed(2)}</p>
                     </div>
-                    <div className="bg-white rounded-lg p-4 border border-gray-200">
-                      <p className="text-sm text-gray-600 mb-1">Total Cost</p>
+                    <div className="rounded-lg border border-gray-200 bg-white p-4">
+                      <p className="mb-1 text-sm text-gray-600">Total Cost</p>
                       <p className="text-3xl font-bold">${results.totalCost.toFixed(2)}</p>
                     </div>
-                    <div className="bg-white rounded-lg p-4 border border-green-200">
-                      <p className="text-sm text-gray-600 mb-1">Profit Per Service</p>
+                    <div className="rounded-lg border border-green-200 bg-white p-4">
+                      <p className="mb-1 text-sm text-gray-600">Profit Per Service</p>
                       <p
                         className={`text-3xl font-bold ${results.profit < 0 ? 'text-red-600' : 'text-green-600'}`}
                       >
                         ${results.profit.toFixed(2)}
                       </p>
                     </div>
-                    <div className="bg-white rounded-lg p-4 border border-green-200">
-                      <p className="text-sm text-gray-600 mb-1">Profit Margin</p>
+                    <div className="rounded-lg border border-green-200 bg-white p-4">
+                      <p className="mb-1 text-sm text-gray-600">Profit Margin</p>
                       <p
                         className={`text-3xl font-bold ${results.profitMargin < 0 ? 'text-red-600' : 'text-green-600'}`}
                       >
                         {results.profitMargin.toFixed(1)}%
                       </p>
-                      <p className="text-xs text-gray-500 mt-2">
+                      <p className="mt-2 text-xs text-gray-500">
                         {results.profitMargin >= 30
                           ? 'Excellent! This service has a healthy profit margin.'
                           : results.profitMargin >= 15
@@ -609,8 +609,8 @@ export default function ProfitCalculatorPage() {
             </CardContent>
             <CardFooter className="border-t border-green-200 pt-4">
               <div className="w-full">
-                <p className="text-sm text-gray-600 mb-2">Profit Recommendations:</p>
-                <ul className="text-sm space-y-1 list-disc pl-5">
+                <p className="mb-2 text-sm text-gray-600">Profit Recommendations:</p>
+                <ul className="list-disc space-y-1 pl-5 text-sm">
                   {results.profitMargin < 15 && (
                     <li>
                       Consider raising your price to at least $
@@ -630,7 +630,7 @@ export default function ProfitCalculatorPage() {
                     </li>
                   )}
                   {results.profitMargin < 0 && (
-                    <li className="text-red-600 font-semibold">
+                    <li className="font-semibold text-red-600">
                       This service is not profitable. Consider discontinuing or significantly
                       restructuring it.
                     </li>

@@ -7,7 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from 'recharts';
 
 export interface MetricDataPoint {
@@ -24,11 +24,7 @@ interface SystemMetricsChartProps {
   metrics: Array<'cpuUsage' | 'memoryUsage' | 'diskUsage' | 'networkHealth'>;
 }
 
-const SystemMetricsChart: React.FC<SystemMetricsChartProps> = ({
-  data,
-  timeRange,
-  metrics
-}) => {
+const SystemMetricsChart: React.FC<SystemMetricsChartProps> = ({ data, timeRange, metrics }) => {
   const formatXAxis = (timestamp: number) => {
     const date = new Date(timestamp);
     switch (timeRange) {
@@ -38,7 +34,7 @@ const SystemMetricsChart: React.FC<SystemMetricsChartProps> = ({
         return date.toLocaleString([], {
           month: 'numeric',
           day: 'numeric',
-          hour: '2-digit'
+          hour: '2-digit',
         });
       case '7d':
         return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
@@ -48,32 +44,25 @@ const SystemMetricsChart: React.FC<SystemMetricsChartProps> = ({
   };
 
   const COLORS = {
-    cpuUsage: '#2196F3',      // Blue
-    memoryUsage: '#4CAF50',   // Green
-    diskUsage: '#FFA726',     // Orange
-    networkHealth: '#AB47BC'  // Purple
+    cpuUsage: '#2196F3', // Blue
+    memoryUsage: '#4CAF50', // Green
+    diskUsage: '#FFA726', // Orange
+    networkHealth: '#AB47BC', // Purple
   };
 
   const METRIC_LABELS = {
     cpuUsage: 'CPU Usage',
     memoryUsage: 'Memory Usage',
     diskUsage: 'Disk Usage',
-    networkHealth: 'Network Health'
+    networkHealth: 'Network Health',
   };
 
   return (
     <div className="metrics-chart">
       <ResponsiveContainer width="100%" height={400}>
-        <LineChart
-          data={data}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        >
+        <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
-          <XAxis
-            dataKey="timestamp"
-            tickFormatter={formatXAxis}
-            stroke="var(--text-secondary)"
-          />
+          <XAxis dataKey="timestamp" tickFormatter={formatXAxis} stroke="var(--text-secondary)" />
           <YAxis
             domain={[0, 100]}
             stroke="var(--text-secondary)"
@@ -83,14 +72,14 @@ const SystemMetricsChart: React.FC<SystemMetricsChartProps> = ({
             contentStyle={{
               backgroundColor: 'var(--background-secondary)',
               border: '1px solid var(--border-color)',
-              borderRadius: '4px'
+              borderRadius: '4px',
             }}
             labelFormatter={(timestamp) => new Date(timestamp).toLocaleString()}
           />
           <Legend
             wrapperStyle={{
               paddingTop: '20px',
-              color: 'var(--text-primary)'
+              color: 'var(--text-primary)',
             }}
           />
           {metrics.map((metric) => (
@@ -127,4 +116,4 @@ const SystemMetricsChart: React.FC<SystemMetricsChartProps> = ({
   );
 };
 
-export default SystemMetricsChart; 
+export default SystemMetricsChart;

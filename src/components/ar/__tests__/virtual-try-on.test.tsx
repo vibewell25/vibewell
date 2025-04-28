@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { VirtualTryOn } from '../virtual-try-on';
 import { useARCache } from '@/hooks/use-ar-cache';
 import { useAnalytics } from '@/hooks/use-analytics';
@@ -64,7 +64,7 @@ describe('VirtualTryOn', () => {
         onModelLoaded={() => {}}
         onModelError={() => {}}
         userId="user123"
-      />
+      />,
     );
     expect(screen.getByTestId('ar-support-check')).toBeInTheDocument();
   });
@@ -86,7 +86,7 @@ describe('VirtualTryOn', () => {
         onModelLoaded={() => {}}
         onModelError={() => {}}
         userId="user123"
-      />
+      />,
     );
 
     expect(screen.getByRole('progressbar')).toBeInTheDocument();
@@ -110,7 +110,7 @@ describe('VirtualTryOn', () => {
         onModelLoaded={() => {}}
         onModelError={() => {}}
         userId="user123"
-      />
+      />,
     );
 
     const modelButtons = screen.getAllByRole('button');
@@ -129,7 +129,7 @@ describe('VirtualTryOn', () => {
         onModelLoaded={() => {}}
         onModelError={() => {}}
         userId="user123"
-      />
+      />,
     );
 
     const slider = screen.getByRole('slider');
@@ -158,7 +158,7 @@ describe('VirtualTryOn', () => {
         onModelLoaded={() => {}}
         onModelError={onModelError}
         userId="user123"
-      />
+      />,
     );
 
     await waitFor(() => {
@@ -176,7 +176,7 @@ describe('VirtualTryOn', () => {
         onModelLoaded={() => {}}
         onModelError={() => {}}
         userId="user123"
-      />
+      />,
     );
 
     // Fast-forward time
@@ -189,7 +189,7 @@ describe('VirtualTryOn', () => {
       expect.objectContaining({
         duration: expect.any(Number),
         userId: 'user123',
-      })
+      }),
     );
   });
 
@@ -203,7 +203,7 @@ describe('VirtualTryOn', () => {
         onModelLoaded={() => {}}
         onModelError={() => {}}
         userId="user123"
-      />
+      />,
     );
 
     // Simulate AR unsupported callback

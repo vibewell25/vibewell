@@ -1,11 +1,15 @@
-'use client';
-
-import React from 'react';
+'use client';;
 import { useAccessibilityContext } from '@/contexts/AccessibilityContext';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export const AccessibilityControls = () => {
   const {
@@ -20,9 +24,9 @@ export const AccessibilityControls = () => {
   } = useAccessibilityContext();
 
   return (
-    <div className="p-6 bg-card rounded-lg shadow-sm space-y-6">
-      <h2 className="text-xl font-semibold mb-4">Accessibility Settings</h2>
-      
+    <div className="space-y-6 rounded-lg bg-card p-6 shadow-sm">
+      <h2 className="mb-4 text-xl font-semibold">Accessibility Settings</h2>
+
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <Label htmlFor="high-contrast">High Contrast</Label>
@@ -32,16 +36,12 @@ export const AccessibilityControls = () => {
             onCheckedChange={setHighContrast}
           />
         </div>
-        
+
         <div className="flex items-center justify-between">
           <Label htmlFor="large-text">Large Text</Label>
-          <Switch
-            id="large-text"
-            checked={preferences.largeText}
-            onCheckedChange={setLargeText}
-          />
+          <Switch id="large-text" checked={preferences.largeText} onCheckedChange={setLargeText} />
         </div>
-        
+
         <div className="flex items-center justify-between">
           <Label htmlFor="reduce-motion">Reduce Motion</Label>
           <Switch
@@ -50,7 +50,7 @@ export const AccessibilityControls = () => {
             onCheckedChange={setReduceMotion}
           />
         </div>
-        
+
         <div className="flex items-center justify-between">
           <Label htmlFor="keyboard-focus">Show Keyboard Focus</Label>
           <Switch
@@ -59,13 +59,10 @@ export const AccessibilityControls = () => {
             onCheckedChange={setKeyboardFocusVisible}
           />
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="language-select">Language</Label>
-          <Select
-            value={preferences.language}
-            onValueChange={setLanguage}
-          >
+          <Select value={preferences.language} onValueChange={setLanguage}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Language" />
             </SelectTrigger>
@@ -79,7 +76,7 @@ export const AccessibilityControls = () => {
           </Select>
         </div>
       </div>
-      
+
       <div className="pt-4">
         <Button variant="outline" className="w-full" onClick={resetPreferences}>
           Reset to Defaults
@@ -89,4 +86,4 @@ export const AccessibilityControls = () => {
   );
 };
 
-export default AccessibilityControls; 
+export default AccessibilityControls;

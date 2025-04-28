@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma';
-import { TrainingModuleType, TrainingPlanStatus } from '@prisma/client';
 
 // Training Plan Management
 export async function getAllTrainingPlans() {
@@ -22,21 +21,21 @@ export async function getAllTrainingPlans() {
 }
 
 export async function assignTrainingPlan(planId: string, staffIds: string[]) {
-  const assignments = staffIds.map(staffId => ({
+  const assignments = staffIds.map((staffId) => ({
     staffId,
     planId,
   }));
 
   return prisma.$transaction(
-    assignments.map(assignment =>
+    assignments.map((assignment) =>
       prisma.trainingPlan.create({
         data: {
           ...assignment,
           status: 'ACTIVE',
           progress: 0,
         },
-      })
-    )
+      }),
+    ),
   );
 }
 
@@ -46,8 +45,8 @@ export async function bulkUpdateModuleOrder(updates: { id: string; order: number
       prisma.trainingPlanModule.update({
         where: { id },
         data: { order },
-      })
-    )
+      }),
+    ),
   );
 }
 
@@ -109,16 +108,15 @@ export async function getTeamProgress(teamId: string) {
     },
   });
 
-  return teamMembers.map(member => {
+  return teamMembers.map((member) => {
     const plans = member.trainingPlans;
     const totalModules = plans.reduce((acc, plan) => acc + plan.modules.length, 0);
     const completedModules = plans.reduce(
       (acc, plan) =>
         acc +
-        plan.modules.filter(module =>
-          module.progress.some(p => p.status === 'COMPLETED')
-        ).length,
-      0
+        plan.modules.filter((module) => module.progress.some((p) => p.status === 'COMPLETED'))
+          .length,
+      0,
     );
 
     return {
@@ -145,20 +143,17 @@ export async function getTrainingInsights() {
     }),
   ]);
 
-  const moduleStats = modules.map(module => {
+  const moduleStats = modules.map((module) => {
     const moduleProgress = module.progress;
     const completionRate =
       moduleProgress.length > 0
-        ? (moduleProgress.filter(p => p.status === 'COMPLETED').length /
-            moduleProgress.length) *
+        ? (moduleProgress.filter((p) => p.status === 'COMPLETED').length / moduleProgress.length) *
           100
         : 0;
     const averageScore =
-      moduleProgress.reduce((acc, p) => acc + (p.score || 0), 0) /
-        moduleProgress.length || 0;
+      moduleProgress.reduce((acc, p) => acc + (p.score || 0), 0) / moduleProgress.length || 0;
     const averageTimeSpent =
-      moduleProgress.reduce((acc, p) => acc + (p.timeSpent || 0), 0) /
-        moduleProgress.length || 0;
+      moduleProgress.reduce((acc, p) => acc + (p.timeSpent || 0), 0) / moduleProgress.length || 0;
 
     return {
       moduleId: module.id,
@@ -175,11 +170,8 @@ export async function getTrainingInsights() {
     totalModules: modules.length,
     totalProgress: progress.length,
     averageCompletionRate:
-      moduleStats.reduce((acc, stat) => acc + stat.completionRate, 0) /
-      moduleStats.length,
-    mostChallenging: moduleStats
-      .sort((a, b) => a.averageScore - b.averageScore)
-      .slice(0, 3),
+      moduleStats.reduce((acc, stat) => acc + stat.completionRate, 0) / moduleStats.length,
+    mostChallenging: moduleStats.sort((a, b) => a.averageScore - b.averageScore).slice(0, 3),
     mostTimeConsuming: moduleStats
       .sort((a, b) => b.averageTimeSpent - a.averageTimeSpent)
       .slice(0, 3),
@@ -202,7 +194,7 @@ export async function createCertification(data: {
     data: {
       ...data,
       modules: {
-        connect: data.requiredModules.map(id => ({ id })),
+        connect: data.requiredModules.map((id) => ({ id })),
       },
     },
   });
@@ -236,20 +228,18 @@ export async function sendTrainingReminders() {
     },
   });
 
-  const notifications = incompleteProgress.map(progress => ({
+  const notifications = incompleteProgress.map((progress) => ({
     staffId: progress.staffId,
     type: 'TRAINING_REMINDER',
     message: `Don't forget to complete your "${progress.module.name}" training module.`,
     data: {
       moduleId: progress.moduleId,
       moduleName: progress.module.name,
-      daysElapsed: Math.floor(
-        (Date.now() - progress.startedAt.getTime()) / (24 * 60 * 60 * 1000)
-      ),
+      daysElapsed: Math.floor((Date.now() - progress.startedAt.getTime()) / (24 * 60 * 60 * 1000)),
     },
   }));
 
   return prisma.notification.createMany({
     data: notifications,
   });
-} 
+}

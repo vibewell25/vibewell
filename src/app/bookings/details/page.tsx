@@ -1,8 +1,7 @@
-'use client';
+'use client';;
 import { useState } from 'react';
 import { MobileLayout } from '@/components/layout/MobileLayout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Icons } from '@/components/icons';
@@ -24,16 +23,6 @@ const availableDates = [
   { day: 27, weekday: 'Tu', isSelected: false, isAvailable: true },
   { day: 28, weekday: 'We', isSelected: false, isAvailable: true },
 ];
-// Mock data for available time slots
-const timeSlots = [
-  '09:00 AM',
-  '10:00 AM',
-  '11:00 AM',
-  '12:00 PM',
-  '01:00 PM',
-  '02:00 PM',
-  '03:00 PM',
-];
 export default function BookingDetailsPage() {
   const [selectedDate, setSelectedDate] = useState(availableDates[0]);
   const [selectedTime, setSelectedTime] = useState('');
@@ -41,21 +30,21 @@ export default function BookingDetailsPage() {
     <MobileLayout>
       <div className="pb-24">
         {/* Header with Back Button */}
-        <div className="bg-white px-5 py-4 flex items-center border-b border-gray-200">
+        <div className="flex items-center border-b border-gray-200 bg-white px-5 py-4">
           <Link href="/bookings/search" className="mr-4">
-            <Icons.ChevronLeftIcon className="w-5 h-5" />
+            <Icons.ChevronLeftIcon className="h-5 w-5" />
           </Link>
           <h1 className="text-xl font-semibold">Booking</h1>
         </div>
         {/* Availability Section */}
-        <div className="px-5 py-4 border-b border-gray-200">
-          <h2 className="font-medium text-lg mb-3">Availability</h2>
-          <div className="flex justify-between mb-4">
-            {availableDates.map(date => (
+        <div className="border-b border-gray-200 px-5 py-4">
+          <h2 className="mb-3 text-lg font-medium">Availability</h2>
+          <div className="mb-4 flex justify-between">
+            {availableDates.map((date) => (
               <button
                 key={date.day}
                 onClick={() => setSelectedDate(date)}
-                className={`flex flex-col items-center justify-center w-12 h-12 rounded-md ${
+                className={`flex h-12 w-12 flex-col items-center justify-center rounded-md ${
                   date.isSelected
                     ? 'bg-primary text-white'
                     : date.isAvailable
@@ -71,10 +60,10 @@ export default function BookingDetailsPage() {
           </div>
         </div>
         {/* Provider Info */}
-        <div className="px-5 py-4 border-b border-gray-200">
-          <h2 className="font-medium text-lg mb-3">Availability</h2>
+        <div className="border-b border-gray-200 px-5 py-4">
+          <h2 className="mb-3 text-lg font-medium">Availability</h2>
           <div className="flex items-center">
-            <div className="relative w-12 h-12 rounded-full overflow-hidden mr-3">
+            <div className="relative mr-3 h-12 w-12 overflow-hidden rounded-full">
               <Image src={provider.image} alt={provider.name} fill className="object-cover" />
             </div>
             <div>
@@ -86,15 +75,15 @@ export default function BookingDetailsPage() {
             <p className="font-medium">{provider.service}</p>
             <p className="text-sm text-gray-500">{provider.location}</p>
           </div>
-          <div className="mt-2 flex justify-between items-center">
+          <div className="mt-2 flex items-center justify-between">
             <p className="text-gray-500">Signing price</p>
             <p className="font-medium">{provider.price}</p>
           </div>
         </div>
         {/* Time Slots */}
         <div className="px-5 py-4">
-          <h2 className="font-medium text-lg mb-3">Payment</h2>
-          <div className="flex items-center justify-between mb-4">
+          <h2 className="mb-3 text-lg font-medium">Payment</h2>
+          <div className="mb-4 flex items-center justify-between">
             <div className="flex space-x-3">
               <Button
                 variant="outline"
@@ -113,15 +102,15 @@ export default function BookingDetailsPage() {
                 Selso Plan
               </Button>
             </div>
-            <Link href="/bookings/subscription" className="text-primary text-sm flex items-center">
+            <Link href="/bookings/subscription" className="text-primary flex items-center text-sm">
               <span>Subscription</span>
-              <Icons.ChevronRightIcon className="w-4 h-4 ml-1" />
+              <Icons.ChevronRightIcon className="ml-1 h-4 w-4" />
             </Link>
           </div>
         </div>
         {/* Fixed Bottom Button */}
-        <div className="fixed bottom-16 left-0 right-0 p-4 bg-white border-t border-gray-200">
-          <Button className="w-full h-12 rounded-md">Confirm Booking</Button>
+        <div className="fixed bottom-16 left-0 right-0 border-t border-gray-200 bg-white p-4">
+          <Button className="h-12 w-full rounded-md">Confirm Booking</Button>
         </div>
       </div>
     </MobileLayout>

@@ -1,7 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { render, screen, fireEvent } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import 'jest-axe/extend-expect';
 import { Button } from './Button';
 
 describe('Button Accessibility', () => {
@@ -39,7 +37,7 @@ describe('Button Accessibility', () => {
     render(
       <Button aria-label="Custom action" aria-describedby="tooltip-1" aria-controls="panel-1">
         Custom ARIA
-      </Button>
+      </Button>,
     );
 
     const button = screen.getByRole('button');

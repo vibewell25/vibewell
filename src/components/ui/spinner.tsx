@@ -44,7 +44,7 @@ export function Spinner({
     'animate-spin rounded-full',
     sizeClasses[size],
     variantClasses[variant],
-    className
+    className,
   );
 
   return (

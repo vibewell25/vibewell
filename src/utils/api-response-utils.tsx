@@ -23,7 +23,7 @@ export function hasData<T>(response: ApiResponse<T>): response is ApiResponse<T>
  * @returns True if the response has an error
  */
 export function hasError<T>(
-  response: ApiResponse<T>
+  response: ApiResponse<T>,
 ): response is ApiResponse<T> & { error: string } {
   return exists(response.error) && isString(response.error);
 }
@@ -46,7 +46,7 @@ export function getResponseData<T, D = T>(response: ApiResponse<T>, defaultValue
  */
 export function getResponseError<T>(
   response: ApiResponse<T>,
-  defaultError = 'Unknown error'
+  defaultError = 'Unknown error',
 ): string {
   return hasError(response) ? response.error : defaultError;
 }
@@ -70,7 +70,7 @@ export function isSuccessResponse<T>(response: ApiResponse<T>): boolean {
 export function handleResponse<T, S, E>(
   response: ApiResponse<T>,
   onSuccess: (data: T) => S,
-  onError: (error: string) => E
+  onError: (error: string) => E,
 ): S | E {
   if (isSuccessResponse(response) && hasData(response)) {
     return onSuccess(response.data);
@@ -89,7 +89,7 @@ export function handleResponse<T, S, E>(
 export function mapResponseData<T, R, D = R>(
   response: ApiResponse<T>,
   mapFn: (data: T) => R,
-  defaultValue: D
+  defaultValue: D,
 ): R | D {
   if (hasData(response)) {
     return mapFn(response.data);
@@ -113,7 +113,7 @@ export function isResponseStatus<T>(response: ApiResponse<T>, status: number): b
  * @returns A wrapped function that provides consistent error handling
  */
 export function withApiErrorHandling<T, Args extends any[]>(
-  apiMethod: (...args: Args) => Promise<ApiResponse<T>>
+  apiMethod: (...args: Args) => Promise<ApiResponse<T>>,
 ): (...args: Args) => Promise<ApiResponse<T>> {
   return async (...args: Args): Promise<ApiResponse<T>> => {
     try {

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Laptop, Smartphone, Trash2 } from 'lucide-react';
@@ -93,8 +93,8 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
   return (
     <div className="space-y-4">
       <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-4">Trusted Devices</h3>
-        <p className="text-sm text-gray-600 mb-6">
+        <h3 className="mb-4 text-lg font-semibold">Trusted Devices</h3>
+        <p className="mb-6 text-sm text-gray-600">
           These are the devices that are currently trusted for your account. You can revoke access
           for any device at any time.
         </p>
@@ -108,10 +108,10 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
           </Alert>
         ) : (
           <div className="space-y-4">
-            {devices.map(device => (
+            {devices.map((device) => (
               <div
                 key={device.id}
-                className="flex items-center justify-between p-4 border rounded-lg"
+                className="flex items-center justify-between rounded-lg border p-4"
               >
                 <div className="flex items-center space-x-4">
                   {getDeviceIcon(device)}
@@ -129,7 +129,7 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
                   variant="ghost"
                   size="icon"
                   onClick={() => handleRevoke(device)}
-                  className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                  className="text-red-500 hover:bg-red-50 hover:text-red-600"
                 >
                   <Trash2 className="h-5 w-5" />
                 </Button>
@@ -150,7 +150,7 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
               if you want to use it again.
             </p>
             {selectedDevice && (
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="rounded-lg bg-gray-50 p-4">
                 <p className="font-medium">{selectedDevice.name}</p>
                 <p className="text-sm text-gray-500">
                   {selectedDevice.browser} • {selectedDevice.os}

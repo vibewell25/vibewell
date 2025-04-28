@@ -2,15 +2,13 @@
  * Admin Rate Limiting Dashboard
  * Displays rate limiting events and provides tools for monitoring and analysis
  */
-'use client';
-
+'use client';;
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { prisma } from '@/lib/database/client';
 import { Spinner } from '@/components/ui/spinner';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import {
   Table,
   TableBody,
@@ -63,7 +61,10 @@ interface SuspiciousIP {
 // Main Admin Rate Limiting Dashboard Component
 export default function RateLimitDashboard() {
   const router = useRouter();
-  const { user, isLoading: userLoading, error: userError } = useUser();
+  const {
+    user,
+    error: userError
+  } = useUser();
   const [events, setEvents] = useState<RateLimitEvent[]>([]);
   const [suspiciousIPs, setSuspiciousIPs] = useState<SuspiciousIP[]>([]);
   const [loading, setLoading] = useState(true);
@@ -72,7 +73,7 @@ export default function RateLimitDashboard() {
   const [timeRange, setTimeRange] = useState('24h');
   const [statsData, setStatsData] = useState<any[]>([]);
   const [authStatus, setAuthStatus] = useState<'loading' | 'authenticated' | 'unauthenticated'>(
-    'loading'
+    'loading',
   );
   const [redisClient, setRedisClient] = useState<any>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -169,15 +170,15 @@ export default function RateLimitDashboard() {
             ? 60 * 60 * 1000
             : 7 * 24 * 60 * 60 * 1000;
 
-      filteredEvents = filteredEvents.filter(e => now - e.timestamp <= timeRangeMs);
+      filteredEvents = filteredEvents.filter((e) => now - e.timestamp <= timeRangeMs);
 
       // Filter by limiter type
       if (filter !== 'all') {
         if (filter === 'suspicious') {
-          filteredEvents = filteredEvents.filter(e => e.suspicious === true);
+          filteredEvents = filteredEvents.filter((e) => e.suspicious === true);
         } else {
-          filteredEvents = filteredEvents.filter(e =>
-            e.limiterType.toLowerCase().includes(filter.toLowerCase())
+          filteredEvents = filteredEvents.filter((e) =>
+            e.limiterType.toLowerCase().includes(filter.toLowerCase()),
           );
         }
       }
@@ -208,7 +209,7 @@ export default function RateLimitDashboard() {
     // Count events by limiter type
     const limiterCounts: Record<string, { exceeded: number; allowed: number }> = {};
 
-    events.forEach(event => {
+    events.forEach((event) => {
       const limiterType = event.limiterType || 'unknown';
 
       if (!limiterCounts[limiterType]) {
@@ -236,11 +237,6 @@ export default function RateLimitDashboard() {
   const handleRefresh = () => {
     setRefreshing(true);
     fetchRateLimitEvents();
-  };
-
-  // Handle suspicious events filtering
-  const showSuspiciousOnly = () => {
-    setFilter('suspicious');
   };
 
   // Calculate how long ago an event occurred
@@ -285,7 +281,7 @@ export default function RateLimitDashboard() {
 
   if (authStatus === 'loading' || loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex min-h-screen items-center justify-center">
         <Spinner />
       </div>
     );
@@ -293,22 +289,22 @@ export default function RateLimitDashboard() {
 
   return (
     <div className="container mx-auto py-8">
-      <div className="flex justify-between items-center mb-6">
+      <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Rate Limiting Dashboard</h1>
         <HStack spacing="sm">
           <select
-            className="border rounded px-2 py-1"
+            className="rounded border px-2 py-1"
             value={timeRange}
-            onChange={e => setTimeRange(e.target.value)}
+            onChange={(e) => setTimeRange(e.target.value)}
           >
             <option value="1h">Last Hour</option>
             <option value="24h">Last 24 Hours</option>
             <option value="7d">Last 7 Days</option>
           </select>
           <select
-            className="border rounded px-2 py-1"
+            className="rounded border px-2 py-1"
             value={filter}
-            onChange={e => setFilter(e.target.value)}
+            onChange={(e) => setFilter(e.target.value)}
           >
             <option value="all">All Events</option>
             <option value="auth">Authentication</option>
@@ -339,27 +335,27 @@ export default function RateLimitDashboard() {
         <GridItem>
           <Card className="p-4">
             <h3 className="font-semibold">Rate Limited</h3>
-            <p className="text-2xl text-amber-500">{events.filter(e => e.exceeded).length}</p>
+            <p className="text-2xl text-amber-500">{events.filter((e) => e.exceeded).length}</p>
           </Card>
         </GridItem>
         <GridItem>
           <Card className="p-4">
             <h3 className="font-semibold">Suspicious Activity</h3>
-            <p className="text-2xl text-red-500">{events.filter(e => e.suspicious).length}</p>
+            <p className="text-2xl text-red-500">{events.filter((e) => e.suspicious).length}</p>
           </Card>
         </GridItem>
         <GridItem>
           <Card className="p-4">
             <h3 className="font-semibold">Unique IPs</h3>
-            <p className="text-2xl">{new Set(events.map(e => e.ip)).size}</p>
+            <p className="text-2xl">{new Set(events.map((e) => e.ip)).size}</p>
           </Card>
         </GridItem>
       </Grid>
 
       {/* Visualization */}
       {statsData.length > 0 && (
-        <Card className="p-4 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Rate Limiting by Category</h2>
+        <Card className="mb-6 p-4">
+          <h2 className="mb-4 text-xl font-semibold">Rate Limiting by Category</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={statsData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -380,8 +376,8 @@ export default function RateLimitDashboard() {
         <GridItem span={8}>
           <Card>
             <div className="p-4">
-              <h2 className="text-xl font-semibold mb-2">Rate Limit Events</h2>
-              <p className="text-sm text-gray-600 mb-4">
+              <h2 className="mb-2 text-xl font-semibold">Rate Limit Events</h2>
+              <p className="mb-4 text-sm text-gray-600">
                 Showing {events.length} events from {filter === 'all' ? 'all categories' : filter}
               </p>
             </div>
@@ -399,28 +395,28 @@ export default function RateLimitDashboard() {
                 </TableHeader>
                 <TableBody>
                   {events.length > 0 ? (
-                    events.map(event => (
+                    events.map((event) => (
                       <TableRow key={event.id} className={event.suspicious ? 'bg-red-50' : ''}>
                         <TableCell>
                           <div className="flex items-center">
-                            <Clock className="h-4 w-4 mr-1 text-gray-400" />
+                            <Clock className="mr-1 h-4 w-4 text-gray-400" />
                             {timeAgo(event.timestamp)}
                           </div>
                         </TableCell>
                         <TableCell>{event.ip}</TableCell>
-                        <TableCell className="font-mono text-xs truncate max-w-[150px]">
+                        <TableCell className="max-w-[150px] truncate font-mono text-xs">
                           {event.path}
                         </TableCell>
                         <TableCell>{event.limiterType}</TableCell>
                         <TableCell>
                           {event.exceeded ? (
                             <span className="flex items-center text-red-500">
-                              <X className="h-4 w-4 mr-1" />
+                              <X className="mr-1 h-4 w-4" />
                               Blocked
                             </span>
                           ) : (
                             <span className="flex items-center text-green-500">
-                              <Check className="h-4 w-4 mr-1" />
+                              <Check className="mr-1 h-4 w-4" />
                               Allowed
                             </span>
                           )}
@@ -436,9 +432,9 @@ export default function RateLimitDashboard() {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={6} className="text-center py-10">
+                      <TableCell colSpan={6} className="py-10 text-center">
                         <VStack>
-                          <AlertCircle className="h-8 w-8 text-gray-400 mb-2" />
+                          <AlertCircle className="mb-2 h-8 w-8 text-gray-400" />
                           <p className="text-muted-foreground">No rate limit events found</p>
                         </VStack>
                       </TableCell>
@@ -454,8 +450,8 @@ export default function RateLimitDashboard() {
         <GridItem span={4}>
           <Card>
             <div className="p-4">
-              <h2 className="text-xl font-semibold mb-2">Suspicious IPs</h2>
-              <p className="text-sm text-gray-600 mb-4">IPs with multiple rate limit violations</p>
+              <h2 className="mb-2 text-xl font-semibold">Suspicious IPs</h2>
+              <p className="mb-4 text-sm text-gray-600">IPs with multiple rate limit violations</p>
             </div>
             <div className="max-h-[500px] overflow-auto">
               <Table>
@@ -467,11 +463,11 @@ export default function RateLimitDashboard() {
                 </TableHeader>
                 <TableBody>
                   {suspiciousIPs.length > 0 ? (
-                    suspiciousIPs.map(ip => (
+                    suspiciousIPs.map((ip) => (
                       <TableRow key={ip.ip}>
                         <TableCell>{ip.ip}</TableCell>
                         <TableCell>
-                          <span className="bg-red-100 text-red-800 px-2 py-1 rounded">
+                          <span className="rounded bg-red-100 px-2 py-1 text-red-800">
                             {ip.count}
                           </span>
                         </TableCell>
@@ -479,9 +475,9 @@ export default function RateLimitDashboard() {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={2} className="text-center py-10">
+                      <TableCell colSpan={2} className="py-10 text-center">
                         <VStack>
-                          <AlertCircle className="h-8 w-8 text-gray-400 mb-2" />
+                          <AlertCircle className="mb-2 h-8 w-8 text-gray-400" />
                           <p className="text-muted-foreground">No suspicious IPs detected</p>
                         </VStack>
                       </TableCell>

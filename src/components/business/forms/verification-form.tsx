@@ -3,17 +3,10 @@
 import { useState, useRef } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { BusinessProfileFormValues } from '@/components/business/business-profile-wizard';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/Input';
 import {
   Select,
   SelectContent,
@@ -87,7 +80,7 @@ export function VerificationForm({ form }: VerificationFormProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="mb-6 flex items-center gap-2">
         <ShieldCheckIcon className="h-5 w-5 text-muted-foreground" />
         <h2 className="text-xl font-semibold">Business Verification</h2>
       </div>
@@ -171,12 +164,12 @@ export function VerificationForm({ form }: VerificationFormProps) {
                   <FormLabel>Document Type</FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={value => {
+                      onValueChange={(value) => {
                         field.onChange(value);
                         setDocumentType(value);
                       }}
                       defaultValue={field.value || 'business_license'}
-                      className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                      className="grid grid-cols-1 gap-4 md:grid-cols-2"
                     >
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
@@ -209,17 +202,17 @@ export function VerificationForm({ form }: VerificationFormProps) {
               )}
             />
 
-            <div className="border rounded-lg p-4 space-y-4">
+            <div className="space-y-4 rounded-lg border p-4">
               {documentName ? (
-                <div className="flex items-center justify-between p-3 bg-muted rounded-md">
+                <div className="flex items-center justify-between rounded-md bg-muted p-3">
                   <div className="flex items-center space-x-3">
-                    <FileText className="h-6 w-6 text-primary" />
+                    <FileText className="text-primary h-6 w-6" />
                     <div>
                       <p className="text-sm font-medium">{documentName}</p>
                       <p className="text-xs text-muted-foreground">
                         {documentType
                           .split('_')
-                          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                           .join(' ')}
                       </p>
                     </div>
@@ -229,9 +222,9 @@ export function VerificationForm({ form }: VerificationFormProps) {
                   </Button>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center rounded-lg bg-muted border-2 border-dashed border-muted-foreground/25 h-40">
-                  <FileText className="h-10 w-10 text-muted-foreground mb-2" />
-                  <p className="text-sm text-muted-foreground mb-2">
+                <div className="flex h-40 flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted">
+                  <FileText className="mb-2 h-10 w-10 text-muted-foreground" />
+                  <p className="mb-2 text-sm text-muted-foreground">
                     Drag and drop your document here, or click to browse
                   </p>
                   <Badge variant="outline">PDF, JPG, PNG (Max 10MB)</Badge>
@@ -252,7 +245,7 @@ export function VerificationForm({ form }: VerificationFormProps) {
                   variant="outline"
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  <Upload className="h-4 w-4 mr-2" />
+                  <Upload className="mr-2 h-4 w-4" />
                   {documentName ? 'Replace Document' : 'Upload Document'}
                 </Button>
               </div>

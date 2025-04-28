@@ -10,7 +10,7 @@ export function withRateLimit(options: RateLimitOptions) {
   return async function rateLimitMiddleware(
     req: NextApiRequest,
     res: NextApiResponse,
-    next: () => void
+    next: () => void,
   ) {
     try {
       // Get identifier for rate limiting
@@ -24,7 +24,7 @@ export function withRateLimit(options: RateLimitOptions) {
       const key = `${options.type}:${identifier}`;
       const { limited, remaining, resetTime } = await rateLimitService.isRateLimited(
         key,
-        RATE_LIMITS[options.type]
+        RATE_LIMITS[options.type],
       );
 
       // Set rate limit headers

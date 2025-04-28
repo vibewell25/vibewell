@@ -40,20 +40,20 @@ export function RecommendedConnections() {
   const handleConnect = (userId: string) => {
     // In a real app, this would make an API call
     if (connectedUsers.includes(userId)) {
-      setConnectedUsers(connectedUsers.filter(id => id !== userId));
+      setConnectedUsers(connectedUsers.filter((id) => id !== userId));
     } else {
       setConnectedUsers([...connectedUsers, userId]);
     }
   };
   const handleDismiss = (userId: string) => {
     // Remove the user from recommendations
-    setRecommendations(recommendations.filter(user => user.id !== userId));
+    setRecommendations(recommendations.filter((user) => user.id !== userId));
   };
   // If no recommendations left, show a message
   if (recommendations.length === 0) {
     return (
       <div className="card">
-        <h2 className="text-xl font-bold mb-4">Recommended Connections</h2>
+        <h2 className="mb-4 text-xl font-bold">Recommended Connections</h2>
         <p className="text-sm text-muted-foreground">
           No more recommendations at the moment. Check back later!
         </p>
@@ -62,9 +62,9 @@ export function RecommendedConnections() {
   }
   return (
     <div className="card">
-      <h2 className="text-xl font-bold mb-4">Recommended Connections</h2>
+      <h2 className="mb-4 text-xl font-bold">Recommended Connections</h2>
       <div className="space-y-4">
-        {recommendations.map(user => (
+        {recommendations.map((user) => (
           <div key={user.id} className="flex items-start justify-between">
             <div className="flex items-start space-x-3">
               <UserAvatar
@@ -73,9 +73,9 @@ export function RecommendedConnections() {
                 fallbackInitials={user.name}
               />
               <div>
-                <h3 className="font-medium text-sm">{user.name}</h3>
-                <p className="text-xs text-muted-foreground line-clamp-2">{user.bio}</p>
-                <p className="text-xs text-primary mt-1">
+                <h3 className="text-sm font-medium">{user.name}</h3>
+                <p className="line-clamp-2 text-xs text-muted-foreground">{user.bio}</p>
+                <p className="text-primary mt-1 text-xs">
                   {user.mutualConnections} mutual connection
                   {user.mutualConnections !== 1 ? 's' : ''}
                 </p>
@@ -83,7 +83,7 @@ export function RecommendedConnections() {
             </div>
             <div className="flex items-center space-x-2">
               <button
-                className={`p-1.5 rounded-full ${
+                className={`rounded-full p-1.5 ${
                   connectedUsers.includes(user.id)
                     ? 'bg-primary/10 text-primary'
                     : 'bg-muted text-foreground hover:bg-muted/80'
@@ -98,7 +98,7 @@ export function RecommendedConnections() {
                 )}
               </button>
               <button
-                className="text-muted-foreground hover:text-foreground text-xs"
+                className="text-xs text-muted-foreground hover:text-foreground"
                 onClick={() => handleDismiss(user.id)}
               >
                 Dismiss

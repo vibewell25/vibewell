@@ -1,6 +1,4 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { getSession } from '@auth0/nextjs-auth0';
 import { prisma } from '@/lib/database/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -107,7 +105,7 @@ export async function POST(request: Request) {
     if (!practitioner) {
       return NextResponse.json(
         { error: 'Practitioner not found or not associated with this service' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -180,7 +178,7 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Invalid booking data', details: error.errors },
-        { status: 400 }
+        { status: 400 },
       );
     }
     return NextResponse.json({ error: 'Failed to create booking' }, { status: 500 });

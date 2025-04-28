@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPresignedUploadUrl, generateS3Key } from '@/lib/s3';
+import { getPresignedUploadUrl } from '@/lib/s3';
 import { withAuth } from '@/app/api/auth/middleware';
 import { auth } from '@/lib/auth';
 import { FileUploadService } from '@/services/file-upload-service';
@@ -15,8 +15,6 @@ const ALLOWED_TYPES = [
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 ];
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-
 export async function POST(req: Request) {
   try {
     const session = await auth();
@@ -29,7 +27,7 @@ export async function POST(req: Request) {
     if (!filename || !contentType) {
       return NextResponse.json(
         { error: 'Filename and content type are required' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -82,7 +80,7 @@ export async function DELETE(req: NextRequest) {
       if (!key.includes(user.sub) && !user['vibewell/roles']?.includes('admin')) {
         return NextResponse.json(
           { error: 'Permission denied to delete this file' },
-          { status: 403 }
+          { status: 403 },
         );
       }
 

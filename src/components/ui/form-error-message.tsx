@@ -17,7 +17,7 @@ export function FormErrorMessage({ className, id, children }: FormErrorMessagePr
   }
 
   return (
-    <div id={id} role="alert" className={cn('text-destructive text-sm mt-1', className)}>
+    <div id={id} role="alert" className={cn('mt-1 text-sm text-destructive', className)}>
       {children}
     </div>
   );

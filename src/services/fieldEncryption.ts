@@ -91,7 +91,7 @@ export class FieldEncryptionService {
    */
   async encryptFields<T extends Record<string, any>>(
     data: T,
-    fieldsToEncrypt: (keyof T)[]
+    fieldsToEncrypt: (keyof T)[],
   ): Promise<T> {
     const result = { ...data };
 
@@ -109,7 +109,7 @@ export class FieldEncryptionService {
    */
   async decryptFields<T extends Record<string, any>>(
     data: T,
-    fieldsToDecrypt: (keyof T)[]
+    fieldsToDecrypt: (keyof T)[],
   ): Promise<T> {
     const result = { ...data };
 

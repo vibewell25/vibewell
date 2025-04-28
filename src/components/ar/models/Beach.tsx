@@ -1,13 +1,12 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Box, Sphere, Cylinder } from '@react-three/drei';
-import * as THREE from 'three';
+import { Box, Cylinder } from '@react-three/drei';
 
 export function Beach() {
   const waterRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
 
-  useFrame(state => {
+  useFrame((state) => {
     if (waterRef.current) {
       waterRef.current.position.y = Math.sin(state.clock.elapsedTime) * 0.1;
     }

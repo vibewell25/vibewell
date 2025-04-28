@@ -196,7 +196,7 @@ export class BeautyService {
     rating: number,
     comment?: string,
     serviceId?: string,
-    bookingId?: string
+    bookingId?: string,
   ) {
     try {
       const review = await prisma.practitionerReview.create({

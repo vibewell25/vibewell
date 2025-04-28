@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AlertService } from '@/services/alert-service';
 import { ProductService } from '@/services/product-service';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
@@ -18,7 +18,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/components/ui/use-toast';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 
 interface AlertFormProps {
   alertId?: string;
@@ -89,19 +89,19 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setAlert(prev => ({ ...prev, [name]: value }));
+    setAlert((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setAlert(prev => ({ ...prev, [name]: value }));
+    setAlert((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSwitchChange = (checked: boolean) => {
-    setAlert(prev => ({ ...prev, is_active: checked }));
+    setAlert((prev) => ({ ...prev, is_active: checked }));
   };
 
   const handleNotificationMethodChange = (method: string, checked: boolean) => {
-    setAlert(prev => {
+    setAlert((prev) => {
       const methods = [...prev.notification_methods];
 
       if (checked && !methods.includes(method)) {
@@ -118,7 +118,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
   const handleThresholdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     if (!isNaN(value)) {
-      setAlert(prev => ({ ...prev, threshold: value }));
+      setAlert((prev) => ({ ...prev, threshold: value }));
     }
   };
 
@@ -175,7 +175,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
   };
 
   return (
-    <Card className="w-full max-w-3xl mx-auto">
+    <Card className="mx-auto w-full max-w-3xl">
       <CardHeader>
         <CardTitle>{alertId ? 'Edit Alert' : 'Create New Alert'}</CardTitle>
       </CardHeader>
@@ -210,14 +210,14 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
               <Label htmlFor="product_id">Product*</Label>
               <Select
                 value={alert.product_id}
-                onValueChange={value => handleSelectChange('product_id', value)}
+                onValueChange={(value) => handleSelectChange('product_id', value)}
                 disabled={!!productId}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a product" />
                 </SelectTrigger>
                 <SelectContent>
-                  {products.map(product => (
+                  {products.map((product) => (
                     <SelectItem key={product.id} value={product.id}>
                       {product.name}
                     </SelectItem>
@@ -226,12 +226,12 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
               </Select>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <div>
                 <Label htmlFor="metric">Metric*</Label>
                 <Select
                   value={alert.metric}
-                  onValueChange={value => handleSelectChange('metric', value)}
+                  onValueChange={(value) => handleSelectChange('metric', value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select metric" />
@@ -249,7 +249,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                 <Label htmlFor="condition">Condition*</Label>
                 <Select
                   value={alert.condition}
-                  onValueChange={value => handleSelectChange('condition', value)}
+                  onValueChange={(value) => handleSelectChange('condition', value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select condition" />
@@ -292,7 +292,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                   <Checkbox
                     id="email"
                     checked={alert.notification_methods.includes('email')}
-                    onCheckedChange={checked =>
+                    onCheckedChange={(checked) =>
                       handleNotificationMethodChange('email', checked as boolean)
                     }
                   />
@@ -302,7 +302,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                   <Checkbox
                     id="dashboard"
                     checked={alert.notification_methods.includes('dashboard')}
-                    onCheckedChange={checked =>
+                    onCheckedChange={(checked) =>
                       handleNotificationMethodChange('dashboard', checked as boolean)
                     }
                   />
@@ -312,7 +312,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                   <Checkbox
                     id="sms"
                     checked={alert.notification_methods.includes('sms')}
-                    onCheckedChange={checked =>
+                    onCheckedChange={(checked) =>
                       handleNotificationMethodChange('sms', checked as boolean)
                     }
                   />

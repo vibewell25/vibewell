@@ -7,20 +7,19 @@ import TrainingAnalytics from '@/components/training/TrainingAnalytics';
 import { useSession } from 'next-auth/react';
 
 export default function TrainingPage() {
-  const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState('dashboard');
 
   if (!session?.user?.id) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex min-h-screen items-center justify-center">
         <p>Please sign in to access training.</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-8">Staff Training Portal</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="mb-8 text-3xl font-bold">Staff Training Portal</h1>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-8">
@@ -38,4 +37,4 @@ export default function TrainingPage() {
       </Tabs>
     </div>
   );
-} 
+}

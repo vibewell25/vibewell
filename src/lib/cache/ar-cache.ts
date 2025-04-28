@@ -184,7 +184,7 @@ export class ARModelCache {
   async getModel(
     url: string,
     type: string,
-    onProgress?: (progress: number) => void
+    onProgress?: (progress: number) => void,
   ): Promise<Uint8Array | null> {
     if (!url) {
       throw new Error('URL is required');
@@ -342,7 +342,7 @@ export class ARModelCache {
 
       // Prefetch in parallel
       await Promise.all(
-        urls.map(async url => {
+        urls.map(async (url) => {
           try {
             // Skip if already in memory cache
             if (this.memoryCache.has(url)) {
@@ -353,7 +353,7 @@ export class ARModelCache {
             const response = await fetch(url);
             if (!response.ok) {
               throw new Error(
-                `Failed to prefetch model: ${response.status} ${response.statusText}`
+                `Failed to prefetch model: ${response.status} ${response.statusText}`,
               );
             }
 
@@ -370,7 +370,7 @@ export class ARModelCache {
               url,
             });
           }
-        })
+        }),
       );
     } finally {
       this.isPrefetching = false;
@@ -681,7 +681,7 @@ export class ARModelCache {
           updatedMetadata.lastCleanup = now;
           updatedMetadata.modelCount = Math.max(
             0,
-            (updatedMetadata.modelCount || 0) - removedCount
+            (updatedMetadata.modelCount || 0) - removedCount,
           );
           await metadataTx.store.put(updatedMetadata);
         }
@@ -762,7 +762,7 @@ export class ARModelCache {
   removeEventListener(event: CacheEventType, callback: CacheEventCallback): void {
     if (!this.eventListeners[event]) return;
 
-    this.eventListeners[event] = this.eventListeners[event].filter(cb => cb !== callback);
+    this.eventListeners[event] = this.eventListeners[event].filter((cb) => cb !== callback);
   }
 
   /**
@@ -787,4 +787,4 @@ export class ARModelCache {
 }
 
 // Create and export a singleton instance
-export const arModelCache = new ARModelCache();
+export {};

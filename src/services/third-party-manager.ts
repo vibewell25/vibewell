@@ -113,7 +113,10 @@ export class ThirdPartyManager {
         break;
       case 'azure-blob':
         const { BlobServiceClient } = await import('@azure/storage-blob');
-        this.serviceInstances.set('storage', BlobServiceClient.fromConnectionString(config.credentials.apiKey!));
+        this.serviceInstances.set(
+          'storage',
+          BlobServiceClient.fromConnectionString(config.credentials.apiKey!),
+        );
         break;
     }
   }
@@ -128,7 +131,10 @@ export class ThirdPartyManager {
         break;
       case 'twilio':
         const twilio = await import('twilio');
-        this.serviceInstances.set('messaging', twilio(config.credentials.apiKey!, config.credentials.apiSecret!));
+        this.serviceInstances.set(
+          'messaging',
+          twilio(config.credentials.apiKey!, config.credentials.apiSecret!),
+        );
         break;
       case 'firebase-fcm':
         const admin = await import('firebase-admin');
@@ -142,7 +148,10 @@ export class ThirdPartyManager {
     switch (config.service) {
       case 'algolia':
         const algoliasearch = await import('algoliasearch');
-        this.serviceInstances.set('search', algoliasearch(config.credentials.clientId!, config.credentials.apiKey!));
+        this.serviceInstances.set(
+          'search',
+          algoliasearch(config.credentials.clientId!, config.credentials.apiKey!),
+        );
         break;
       case 'elasticsearch':
         const { Client } = await import('@elastic/elasticsearch');
@@ -163,7 +172,7 @@ export class ThirdPartyManager {
         Sentry.init({
           dsn: config.credentials.apiKey,
           environment: config.environment,
-          debug: config.logLevel === 'debug'
+          debug: config.logLevel === 'debug',
         });
         this.serviceInstances.set('logging', Sentry);
         break;
@@ -202,8 +211,14 @@ export class ThirdPartyManager {
   private createPayPalClient(config: ServiceConfig): any {
     const paypal = require('@paypal/checkout-server-sdk');
     const environment = config.testMode
-      ? new paypal.core.SandboxEnvironment(config.credentials.clientId, config.credentials.clientSecret)
-      : new paypal.core.LiveEnvironment(config.credentials.clientId, config.credentials.clientSecret);
+      ? new paypal.core.SandboxEnvironment(
+          config.credentials.clientId,
+          config.credentials.clientSecret,
+        )
+      : new paypal.core.LiveEnvironment(
+          config.credentials.clientId,
+          config.credentials.clientSecret,
+        );
     return new paypal.core.PayPalHttpClient(environment);
   }
 
@@ -219,4 +234,4 @@ export class ThirdPartyManager {
   public getServiceConfig(serviceName: keyof ThirdPartyConfig): ServiceConfig | undefined {
     return this.config[serviceName];
   }
-} 
+}

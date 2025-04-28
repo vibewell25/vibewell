@@ -4,9 +4,6 @@ import {
   createDecipheriv,
   scrypt as scryptCallback,
   timingSafeEqual,
-  Cipher,
-  Decipher,
-  BinaryLike,
 } from 'crypto';
 import { promisify } from 'util';
 import { Redis } from 'ioredis';
@@ -87,7 +84,7 @@ export class EncryptionService {
           expiresAt: keyData.expiresAt.toISOString(),
         }),
         'PX',
-        expirationMs
+        expirationMs,
       );
     } catch (error) {
       logger.error('Failed to store encryption key', 'encryption', { error, keyId: keyData.id });
@@ -171,7 +168,7 @@ export class EncryptionService {
 
   async decrypt(
     encryptedData: string,
-    metadata: { iv: string; algorithm: string; keyId: string; encryptedKey: string }
+    metadata: { iv: string; algorithm: string; keyId: string; encryptedKey: string },
   ): Promise<string> {
     // Get the key using HSM
     const encryptedKeyBuffer = Buffer.from(metadata.encryptedKey, 'base64');
@@ -244,7 +241,7 @@ export class EncryptionService {
    */
   scheduleKeyRotation(): void {
     setInterval(() => {
-      this.rotateKeys().catch(error => {
+      this.rotateKeys().catch((error) => {
         logger.error('Scheduled key rotation failed', 'encryption', { error });
       });
     }, this.keyRotationInterval);
@@ -252,7 +249,6 @@ export class EncryptionService {
 
   // Helper method to rotate encryption keys
   async reencryptData(data: string, oldKey: Buffer, newKey: Buffer): Promise<EncryptedData> {
-    const tempService = new EncryptionService();
     const newService = new EncryptionService();
 
     // Create temporary encryption services with the old and new keys
@@ -290,4 +286,4 @@ export class EncryptionService {
 }
 
 // Export singleton instance
-export const encryptionService = new EncryptionService();
+export {};

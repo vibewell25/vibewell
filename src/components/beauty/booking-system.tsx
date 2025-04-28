@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -43,7 +43,7 @@ export function BookingSystem({ providerId, services }: BookingSystemProps) {
 
     try {
       const availabilityService = AvailabilityService.getInstance();
-      const service = services.find(s => s.id === selectedService);
+      const service = services.find((s) => s.id === selectedService);
 
       if (!service) {
         throw new Error('Selected service not found');
@@ -53,7 +53,7 @@ export function BookingSystem({ providerId, services }: BookingSystemProps) {
         providerId,
         format(selectedDate, 'yyyy-MM-dd'),
         selectedTime,
-        service
+        service,
       );
 
       if (!isAvailable) {
@@ -65,7 +65,7 @@ export function BookingSystem({ providerId, services }: BookingSystemProps) {
         providerId,
         format(selectedDate, 'yyyy-MM-dd'),
         selectedTime,
-        service
+        service,
       );
 
       toast.success('Booking confirmed!');
@@ -90,7 +90,7 @@ export function BookingSystem({ providerId, services }: BookingSystemProps) {
               <SelectValue placeholder="Choose a service" />
             </SelectTrigger>
             <SelectContent>
-              {services.map(service => (
+              {services.map((service) => (
                 <SelectItem key={service.id} value={service.id}>
                   {service.name} - {service.price} ({service.duration})
                 </SelectItem>
@@ -115,7 +115,7 @@ export function BookingSystem({ providerId, services }: BookingSystemProps) {
             id="time"
             type="time"
             value={selectedTime}
-            onChange={e => setSelectedTime(e.target.value)}
+            onChange={(e) => setSelectedTime(e.target.value)}
           />
         </div>
 

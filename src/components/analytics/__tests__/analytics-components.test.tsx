@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
@@ -35,7 +34,7 @@ describe('Analytics Components', () => {
       render(
         <AnalyticsProvider>
           <TestComponent />
-        </AnalyticsProvider>
+        </AnalyticsProvider>,
       );
 
       expect(screen.getByText('Analytics Enabled: true')).toBeInTheDocument();
@@ -45,7 +44,7 @@ describe('Analytics Components', () => {
       render(
         <AnalyticsProvider>
           <div>Test Content</div>
-        </AnalyticsProvider>
+        </AnalyticsProvider>,
       );
 
       await waitFor(() => {
@@ -67,7 +66,7 @@ describe('Analytics Components', () => {
       render(
         <AnalyticsProvider>
           <TestComponent />
-        </AnalyticsProvider>
+        </AnalyticsProvider>,
       );
 
       expect(screen.getByText('Tracking: true')).toBeInTheDocument();
@@ -89,7 +88,7 @@ describe('Analytics Components', () => {
           <EventTracker {...defaultProps}>
             <button>Trigger Event</button>
           </EventTracker>
-        </AnalyticsProvider>
+        </AnalyticsProvider>,
       );
 
       await user.click(screen.getByText('Trigger Event'));
@@ -105,7 +104,7 @@ describe('Analytics Components', () => {
           <EventTracker {...defaultProps} trigger="hover">
             <button>Hover Event</button>
           </EventTracker>
-        </AnalyticsProvider>
+        </AnalyticsProvider>,
       );
 
       fireEvent.mouseEnter(screen.getByText('Hover Event'));
@@ -121,7 +120,7 @@ describe('Analytics Components', () => {
           <EventTracker {...defaultProps}>
             <button>Error Event</button>
           </EventTracker>
-        </AnalyticsProvider>
+        </AnalyticsProvider>,
       );
 
       await user.click(screen.getByText('Error Event'));
@@ -172,13 +171,13 @@ describe('Analytics Components', () => {
 
       expect(mockAnalyticsService.getMetrics).toHaveBeenCalledWith(
         'users',
-        expect.objectContaining({ range: '7d' })
+        expect.objectContaining({ range: '7d' }),
       );
     });
 
     it('supports different chart types', () => {
       const { rerender } = render(
-        <DataVisualization type="line" metric="users" data={mockData.metrics} />
+        <DataVisualization type="line" metric="users" data={mockData.metrics} />,
       );
 
       expect(screen.getByTestId('line-chart')).toBeInTheDocument();
@@ -195,7 +194,7 @@ describe('Analytics Components', () => {
       const { container } = render(
         <AnalyticsProvider>
           <div>Test Content</div>
-        </AnalyticsProvider>
+        </AnalyticsProvider>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -207,7 +206,7 @@ describe('Analytics Components', () => {
           <EventTracker eventName="test" onTrack={() => {}}>
             <button>Track Event</button>
           </EventTracker>
-        </AnalyticsProvider>
+        </AnalyticsProvider>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -222,7 +221,7 @@ describe('Analytics Components', () => {
             { date: '2024-01-01', value: 10 },
             { date: '2024-01-02', value: 20 },
           ]}
-        />
+        />,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();

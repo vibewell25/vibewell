@@ -9,9 +9,9 @@ import {
 } from '@/types/content-calendar';
 import { Badge } from '@/components/ui/badge';
 import { Calendar as CalendarIcon, MoreHorizontal, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Calendar } from '@/components/ui/calendar';
-import { Card } from '@/components/ui/card';
+import { Card } from '@/components/ui/Card';
 import {
   format,
   isSameDay,
@@ -95,23 +95,23 @@ export function ContentCalendarCalendar({
   };
 
   const getPlatformById = (id: string) => {
-    return platforms.find(platform => platform.id === id);
+    return platforms.find((platform) => platform.id === id);
   };
 
   const getTeamMemberById = (id: string) => {
-    return teamMembers.find(member => member.id === id);
+    return teamMembers.find((member) => member.id === id);
   };
 
   const getStatusById = (id: string) => {
-    return statuses.find(status => status.id === id);
+    return statuses.find((status) => status.id === id);
   };
 
   const getItemsForDate = (date: Date) => {
-    return contentItems.filter(item => item.dueDate && isSameDay(parseISO(item.dueDate), date));
+    return contentItems.filter((item) => item.dueDate && isSameDay(parseISO(item.dueDate), date));
   };
 
   const toggleShowAllItems = (dateKey: string) => {
-    setShowAllItems(prev => ({
+    setShowAllItems((prev) => ({
       ...prev,
       [dateKey]: !prev[dateKey],
     }));
@@ -120,7 +120,7 @@ export function ContentCalendarCalendar({
     if (window.announcer) {
       const isShowing = !showAllItems[dateKey];
       window.announcer.announce(
-        isShowing ? `Showing all items for ${dateKey}` : `Showing fewer items for ${dateKey}`
+        isShowing ? `Showing all items for ${dateKey}` : `Showing fewer items for ${dateKey}`,
       );
     }
   };
@@ -128,7 +128,6 @@ export function ContentCalendarCalendar({
   // Generate days in the current month view
   const start = startOfMonth(selectedDate);
   const end = endOfMonth(selectedDate);
-  const days = eachDayOfInterval({ start, end });
 
   // Adjust start day to begin on Sunday of the week that includes the first of the month
   const calendarStart = addDays(start, -start.getDay());
@@ -151,8 +150,8 @@ export function ContentCalendarCalendar({
       {/* Include LiveAnnouncer for screen reader announcements */}
       <LiveAnnouncer />
 
-      <div className="flex flex-col h-full" role="region" aria-label="Content Calendar">
-        <div className="flex justify-between items-center mb-4">
+      <div className="flex h-full flex-col" role="region" aria-label="Content Calendar">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold" id="calendar-heading">
             {format(selectedDate, 'MMMM yyyy')}
           </h2>
@@ -174,7 +173,7 @@ export function ContentCalendarCalendar({
                   aria-expanded={isDateSelectOpen}
                 >
                   <AccessibleIcon
-                    icon={<CalendarIcon className="h-4 w-4 mr-2" />}
+                    icon={<CalendarIcon className="mr-2 h-4 w-4" />}
                     label="Select Month"
                     labelPosition="after"
                   />
@@ -184,7 +183,7 @@ export function ContentCalendarCalendar({
                 <Calendar
                   mode="single"
                   selected={selectedDate}
-                  onSelect={date => {
+                  onSelect={(date) => {
                     if (date) {
                       handleMonthChange(date);
                       setIsDateSelectOpen(false);
@@ -199,10 +198,10 @@ export function ContentCalendarCalendar({
         </div>
 
         <div className="grid grid-cols-7 gap-1" role="grid" aria-labelledby="calendar-heading">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
             <div
               key={day}
-              className="text-center text-sm font-medium py-2 border-b"
+              className="border-b py-2 text-center text-sm font-medium"
               role="columnheader"
               aria-label={day}
             >
@@ -231,9 +230,9 @@ export function ContentCalendarCalendar({
                 }${dayItems.length > 0 ? `, ${dayItems.length} items` : ', No items'}`}
                 tabIndex={isToday_ ? 0 : -1}
               >
-                <div className="flex justify-between items-center mb-1">
+                <div className="mb-1 flex items-center justify-between">
                   <span
-                    className={`text-sm font-medium ${isToday_ ? 'bg-primary text-primary-foreground px-1.5 rounded-full' : ''}`}
+                    className={`text-sm font-medium ${isToday_ ? 'bg-primary text-primary-foreground rounded-full px-1.5' : ''}`}
                   >
                     {format(day, 'd')}
                     {isToday_ && <ScreenReaderOnly>Today</ScreenReaderOnly>}
@@ -241,7 +240,7 @@ export function ContentCalendarCalendar({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-5 w-5 opacity-0 group-hover:opacity-100 hover:opacity-100"
+                    className="h-5 w-5 opacity-0 hover:opacity-100 group-hover:opacity-100"
                     onClick={() => handleAddNewItem(day)}
                     aria-label={`Add new item for ${format(day, 'MMMM d, yyyy')}`}
                   >
@@ -251,19 +250,19 @@ export function ContentCalendarCalendar({
 
                 <div className="space-y-1">
                   {displayedItems.length > 0 ? (
-                    displayedItems.map(item => {
+                    displayedItems.map((item) => {
                       const status = getStatusById(item.status);
                       const assignedTeamMember = getTeamMemberById(item.assignedTo);
 
                       return (
                         <Card
                           key={item.id}
-                          className="cursor-pointer hover:shadow-sm transition-shadow p-1"
+                          className="cursor-pointer p-1 transition-shadow hover:shadow-sm"
                           onClick={() => openItemModal(item)}
                           tabIndex={0}
                           role="button"
                           aria-label={`${item.title}, status: ${status?.name || item.status}`}
-                          onKeyDown={e => {
+                          onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                               e.preventDefault();
                               openItemModal(item);
@@ -272,21 +271,21 @@ export function ContentCalendarCalendar({
                         >
                           <div className="flex items-start justify-between space-x-1">
                             <div
-                              className="w-1 h-full rounded-full"
+                              className="h-full w-1 rounded-full"
                               style={{ backgroundColor: status?.color }}
                               aria-hidden="true"
                             ></div>
 
                             <div className="flex-1 text-xs">
-                              <div className="font-medium line-clamp-1" title={item.title}>
+                              <div className="line-clamp-1 font-medium" title={item.title}>
                                 {item.title}
                               </div>
 
                               {item.assignedTo && assignedTeamMember && (
-                                <div className="flex items-center mt-1">
+                                <div className="mt-1 flex items-center">
                                   <Tooltip content={`Assigned to: ${assignedTeamMember.name}`}>
                                     <div className="flex items-center">
-                                      <Avatar className="h-4 w-4 mr-1">
+                                      <Avatar className="mr-1 h-4 w-4">
                                         <AvatarImage
                                           src={assignedTeamMember.avatar}
                                           alt={assignedTeamMember.name || ''}
@@ -295,7 +294,7 @@ export function ContentCalendarCalendar({
                                           {assignedTeamMember.name?.charAt(0) || '?'}
                                         </AvatarFallback>
                                       </Avatar>
-                                      <span className="truncate max-w-[80px]">
+                                      <span className="max-w-[80px] truncate">
                                         {assignedTeamMember.name}
                                       </span>
                                     </div>
@@ -304,8 +303,8 @@ export function ContentCalendarCalendar({
                               )}
 
                               {item.platformIds && item.platformIds.length > 0 && (
-                                <div className="flex flex-wrap gap-1 mt-1">
-                                  {item.platformIds.slice(0, 2).map(platformId => {
+                                <div className="mt-1 flex flex-wrap gap-1">
+                                  {item.platformIds.slice(0, 2).map((platformId) => {
                                     const platform = getPlatformById(platformId);
                                     return platform ? (
                                       <Badge
@@ -354,7 +353,7 @@ export function ContentCalendarCalendar({
                                     // Announce to screen readers
                                     if (window.announcer) {
                                       window.announcer.announce(
-                                        `Deleted content item: ${item.title}`
+                                        `Deleted content item: ${item.title}`,
                                       );
                                     }
                                   }}
@@ -375,7 +374,7 @@ export function ContentCalendarCalendar({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="w-full text-xs text-muted-foreground h-6 py-1"
+                      className="h-6 w-full py-1 text-xs text-muted-foreground"
                       onClick={() => toggleShowAllItems(dateKey)}
                       aria-label={`Show ${dayItems.length - 3} more items for ${format(day, 'MMMM d')}`}
                     >
@@ -387,7 +386,7 @@ export function ContentCalendarCalendar({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="w-full text-xs text-muted-foreground h-6 py-1"
+                      className="h-6 w-full py-1 text-xs text-muted-foreground"
                       onClick={() => toggleShowAllItems(dateKey)}
                       aria-label={`Show fewer items for ${format(day, 'MMMM d')}`}
                     >
@@ -412,12 +411,12 @@ export function ContentCalendarCalendar({
             }
           }}
           item={currentItem}
-          onSave={updatedItem => {
+          onSave={(updatedItem) => {
             onEditItem(updatedItem);
             // Announce to screen readers
             if (window.announcer) {
               window.announcer.announce(
-                `Content item ${currentItem.id.startsWith('new') ? 'created' : 'updated'}: ${updatedItem.title}`
+                `Content item ${currentItem.id.startsWith('new') ? 'created' : 'updated'}: ${updatedItem.title}`,
               );
             }
           }}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
@@ -53,7 +53,7 @@ export default function LazyImage({
     if (!imageRef.current || priority) return;
 
     observerRef.current = new IntersectionObserver(
-      entries => {
+      (entries) => {
         const [entry] = entries;
         if (entry.isIntersecting) {
           setShouldLoad(true);
@@ -62,7 +62,7 @@ export default function LazyImage({
       },
       {
         rootMargin: '200px', // Start loading before the image comes into view
-      }
+      },
     );
 
     observerRef.current.observe(imageRef.current);
@@ -87,7 +87,7 @@ export default function LazyImage({
       className={cn(
         'relative overflow-hidden bg-gray-100 dark:bg-gray-800',
         containerClassName,
-        aspectRatioClass
+        aspectRatioClass,
       )}
       style={{
         width: width ? `${width}px` : '100%',
@@ -97,7 +97,7 @@ export default function LazyImage({
       {shouldLoad && (
         <>
           {!isLoaded && !hasError && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800 animate-pulse">
+            <div className="absolute inset-0 flex animate-pulse items-center justify-center bg-gray-100 dark:bg-gray-800">
               <span className="sr-only">Loading image...</span>
             </div>
           )}
@@ -107,7 +107,7 @@ export default function LazyImage({
             className={cn(
               'transition-opacity duration-300',
               isLoaded ? 'opacity-100' : 'opacity-0',
-              className
+              className,
             )}
             fill={!(width && height)}
             width={width}

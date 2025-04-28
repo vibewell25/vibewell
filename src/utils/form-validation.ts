@@ -34,7 +34,7 @@ export function validateField(fieldName: string, value: any): boolean {
     case 'password':
       if (!passwordRegex.test(value)) {
         throw new ValidationError(
-          'Password must be at least 8 characters long and contain uppercase, lowercase, number, and special character'
+          'Password must be at least 8 characters long and contain uppercase, lowercase, number, and special character',
         );
       }
       break;

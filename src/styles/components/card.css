@@ -1,5 +1,5 @@
 .card {
-  @apply rounded-lg overflow-hidden bg-white transition-all duration-200;
+  @apply overflow-hidden rounded-lg bg-white transition-all duration-200;
 }
 
 /* Variants */
@@ -17,7 +17,7 @@
 
 /* Interactive States */
 .card-clickable {
-  @apply cursor-pointer hover:transform hover:scale-[1.02] active:scale-[0.98];
+  @apply cursor-pointer hover:scale-[1.02] hover:transform active:scale-[0.98];
 }
 
 .card-clickable:focus-visible {
@@ -30,11 +30,11 @@
 }
 
 .card-skeleton {
-  @apply p-4 space-y-4 animate-pulse;
+  @apply animate-pulse space-y-4 p-4;
 }
 
 .skeleton-line {
-  @apply h-4 bg-gray-200 rounded;
+  @apply h-4 rounded bg-gray-200;
 }
 
 .skeleton-line:nth-child(2) {
@@ -64,7 +64,7 @@
 
 /* Sub-components */
 .card-header {
-  @apply p-4 border-b border-gray-200;
+  @apply border-b border-gray-200 p-4;
 }
 
 .card-body {
@@ -72,11 +72,11 @@
 }
 
 .card-footer {
-  @apply p-4 border-t border-gray-200;
+  @apply border-t border-gray-200 p-4;
 }
 
 .card-image {
-  @apply w-full h-48 object-cover;
+  @apply h-48 w-full object-cover;
 }
 
 /* Dark Mode */

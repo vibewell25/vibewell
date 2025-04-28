@@ -7,9 +7,7 @@
  */
 
 import React from 'react';
-import { render, screen, waitFor } from './testing-lib-adapter';
-import userEvent from '@testing-library/user-event';
-import { axe } from 'jest-axe';
+import { render } from './testing-lib-adapter';
 
 /**
  * Common XSS attack vectors to test against
@@ -36,13 +34,13 @@ export function testXSSVulnerabilities(
     additionalVectors?: string[];
     renderOptions?: Record<string, any>;
     checkFunction?: (container: HTMLElement) => boolean;
-  } = {}
+  } = {},
 ): void {
   const { additionalVectors = [], renderOptions = {}, checkFunction } = options;
   const vectors = [...XSS_VECTORS, ...additionalVectors];
 
   describe('XSS Security Testing', () => {
-    vectors.forEach(vector => {
+    vectors.forEach((vector) => {
       it(`should sanitize potential XSS vector: ${vector.substring(0, 20)}...`, () => {
         const props = { [propName]: vector };
         const { container } = render(<Component {...props} />, renderOptions);
@@ -62,7 +60,7 @@ export function testXSSVulnerabilities(
 
           // 3. No javascript: URLs should be rendered
           const links = container.querySelectorAll('a');
-          links.forEach(link => {
+          links.forEach((link) => {
             expect(link.href).not.toMatch(/^javascript:/i);
           });
         }
@@ -96,13 +94,13 @@ export function testSQLInjectionVulnerabilities(
     additionalVectors?: string[];
     baseParams?: Record<string, any>;
     expectError?: boolean;
-  } = {}
+  } = {},
 ): void {
   const { additionalVectors = [], baseParams = {}, expectError = true } = options;
   const vectors = [...SQL_INJECTION_VECTORS, ...additionalVectors];
 
   describe('SQL Injection Security Testing', () => {
-    vectors.forEach(vector => {
+    vectors.forEach((vector) => {
       it(`should handle SQL injection vector: ${vector.substring(0, 20)}...`, async () => {
         const params = { ...baseParams, [paramName]: vector };
 
@@ -151,7 +149,7 @@ export function testAuthorization(
   options: {
     setupAuth?: (permissionLevel: PermissionLevel | string) => Promise<void>;
     teardownAuth?: () => Promise<void>;
-  } = {}
+  } = {},
 ): void {
   const { setupAuth, teardownAuth } = options;
 
@@ -193,7 +191,7 @@ export function testAuthenticationRequired(
     mockAuthState?: { isAuthenticated: boolean };
     redirectPath?: string;
     renderOptions?: Record<string, any>;
-  } = {}
+  } = {},
 ): void {
   const {
     mockAuthState = { isAuthenticated: false },
@@ -235,7 +233,7 @@ export function testSensitiveDataLeakage(
     props?: Record<string, any>;
     sensitiveData?: string[];
     renderOptions?: Record<string, any>;
-  } = {}
+  } = {},
 ): void {
   const {
     props = {},
@@ -250,7 +248,7 @@ export function testSensitiveDataLeakage(
       const html = container.innerHTML.toLowerCase();
 
       // Check for sensitive data leakage
-      sensitiveData.forEach(term => {
+      sensitiveData.forEach((term) => {
         expect(html).not.toContain(term.toLowerCase());
       });
 
@@ -273,7 +271,7 @@ export function testCSRFProtection(
   options: {
     csrfTokenSelector?: string;
     mockFetch?: boolean;
-  } = {}
+  } = {},
 ): void {
   const { csrfTokenSelector = 'input[name="csrf_token"]', mockFetch = true } = options;
 
@@ -340,7 +338,7 @@ export function checkSecurityHeaders(
     'X-Frame-Options': /(DENY|SAMEORIGIN)/,
     'X-XSS-Protection': '1; mode=block',
     'Strict-Transport-Security': /.+/,
-  }
+  },
 ): void {
   Object.entries(expectedHeaders).forEach(([header, expected]) => {
     const value = response.headers.get(header);
@@ -364,7 +362,7 @@ export function testRedirectAfterAuthFailure<P>(
   Component: React.ComponentType<P>,
   props: P,
   expectedRedirectPath: string,
-  renderOptions = {}
+  renderOptions = {},
 ): void {
   describe('Redirect after auth failure', () => {
     let originalLocation: Location;

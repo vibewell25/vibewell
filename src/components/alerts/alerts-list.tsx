@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Alert } from '@/services/analytics-alert-service';
 import { AnalyticsAlertService } from '@/services/analytics-alert-service';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   Card,
   CardContent,
@@ -12,14 +12,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import {
   Table,
   TableBody,
@@ -53,7 +53,6 @@ interface AlertsListProps {
 }
 
 export default function AlertsList({ userId, onCreateAlert, onEditAlert }: AlertsListProps) {
-  const router = useRouter();
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [filteredAlerts, setFilteredAlerts] = useState<Alert[]>([]);
   const [loading, setLoading] = useState(true);
@@ -93,8 +92,8 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
 
     // Apply status filter
     if (filterStatus !== 'all') {
-      result = result.filter(alert =>
-        filterStatus === 'active' ? alert.isActive : !alert.isActive
+      result = result.filter((alert) =>
+        filterStatus === 'active' ? alert.isActive : !alert.isActive,
       );
     }
 
@@ -102,9 +101,9 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
-        alert =>
+        (alert) =>
           alert.name.toLowerCase().includes(query) ||
-          (alert.description && alert.description.toLowerCase().includes(query))
+          (alert.description && alert.description.toLowerCase().includes(query)),
       );
     }
 
@@ -159,7 +158,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
       if (error) throw error;
 
       // Update local state
-      setAlerts(prev => prev.map(a => (a.id === alert.id ? updatedAlert : a)));
+      setAlerts((prev) => prev.map((a) => (a.id === alert.id ? updatedAlert : a)));
     } catch (err) {
       console.error('Error toggling alert status:', err);
       // Show error notification
@@ -175,7 +174,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
       if (error) throw error;
 
       // Update local state
-      setAlerts(prev => prev.filter(a => a.id !== alertId));
+      setAlerts((prev) => prev.filter((a) => a.id !== alertId));
     } catch (err) {
       console.error('Error deleting alert:', err);
       // Show error notification
@@ -197,8 +196,8 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center p-8">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="text-primary h-8 w-8 animate-spin" />
       </div>
     );
   }
@@ -206,33 +205,33 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
   return (
     <Card>
       <CardHeader>
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <div>
             <CardTitle>Product Analytics Alerts</CardTitle>
             <CardDescription>Manage alerts for your product metrics</CardDescription>
           </div>
           <Button onClick={onCreateAlert}>
-            <PlusCircle className="h-4 w-4 mr-2" />
+            <PlusCircle className="mr-2 h-4 w-4" />
             Create Alert
           </Button>
         </div>
       </CardHeader>
       <CardContent>
         {error && (
-          <div className="bg-destructive/10 text-destructive p-3 rounded-md mb-4 flex items-center gap-2">
+          <div className="mb-4 flex items-center gap-2 rounded-md bg-destructive/10 p-3 text-destructive">
             <AlertTriangle className="h-4 w-4" />
             <p>{error}</p>
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row">
           <div className="relative flex-1">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search alerts..."
               className="pl-8"
               value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
@@ -262,12 +261,12 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
         </div>
 
         {filteredAlerts.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
+          <div className="py-8 text-center text-muted-foreground">
             {searchQuery || filterStatus !== 'all' ? (
               <p>No alerts match your filters.</p>
             ) : (
               <div className="space-y-3">
-                <AlertTriangle className="h-8 w-8 mx-auto text-muted-foreground" />
+                <AlertTriangle className="mx-auto h-8 w-8 text-muted-foreground" />
                 <p>No alerts have been created yet.</p>
                 <Button variant="outline" size="sm" onClick={onCreateAlert}>
                   Create your first alert
@@ -276,7 +275,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
             )}
           </div>
         ) : (
-          <div className="border rounded-md">
+          <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -304,7 +303,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredAlerts.map(alert => (
+                {filteredAlerts.map((alert) => (
                   <TableRow key={alert.id}>
                     <TableCell className="font-medium">{alert.name}</TableCell>
                     <TableCell>{formatMetricType(alert.threshold.metricType)}</TableCell>
@@ -312,7 +311,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
                       {alert.threshold.condition === 'above' ? '>' : '<'} {alert.threshold.value}
                       {alert.threshold.metricType === 'conversion' ? '%' : ''}
                       {alert.threshold.metricType === 'rating' ? ' stars' : ''}
-                      <div className="text-xs text-muted-foreground mt-1">
+                      <div className="mt-1 text-xs text-muted-foreground">
                         in {alert.threshold.timeframeHours}h window
                       </div>
                     </TableCell>
@@ -338,18 +337,18 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={() => onEditAlert(alert.id as string)}>
-                            <Edit className="h-4 w-4 mr-2" />
+                            <Edit className="mr-2 h-4 w-4" />
                             Edit
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleToggleActive(alert)}>
                             {alert.isActive ? (
                               <>
-                                <BellOff className="h-4 w-4 mr-2" />
+                                <BellOff className="mr-2 h-4 w-4" />
                                 Deactivate
                               </>
                             ) : (
                               <>
-                                <Bell className="h-4 w-4 mr-2" />
+                                <Bell className="mr-2 h-4 w-4" />
                                 Activate
                               </>
                             )}
@@ -358,7 +357,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
                             className="text-destructive focus:text-destructive"
                             onClick={() => handleDeleteAlert(alert.id as string)}
                           >
-                            <Trash2 className="h-4 w-4 mr-2" />
+                            <Trash2 className="mr-2 h-4 w-4" />
                             Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>

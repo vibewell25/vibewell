@@ -23,22 +23,12 @@ export { customRender as render };
 export { axe, toHaveNoViolations };
 
 // Export custom test utilities
-export const createMockWebGLContext = () => ({
-  canvas: document.createElement('canvas'),
-  drawingBufferWidth: 0,
-  drawingBufferHeight: 0,
-  viewport: jest.fn(),
-  clearColor: jest.fn(),
-  clear: jest.fn(),
-  enable: jest.fn(),
-  disable: jest.fn(),
-  getExtension: jest.fn(() => null),
-});
+export {};
 
 export const mockMatchMedia = () => {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: jest.fn().mockImplementation(query => ({
+    value: jest.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
@@ -97,9 +87,4 @@ export const suppressConsoleErrors = () => {
 };
 
 // Setup all mocks
-export const setupTestEnvironment = () => {
-  mockMatchMedia();
-  mockIntersectionObserver();
-  mockResizeObserver();
-  suppressConsoleErrors();
-};
+export {};

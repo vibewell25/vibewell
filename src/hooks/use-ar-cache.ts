@@ -83,7 +83,7 @@ export function useARCache(options: UseARCacheOptions = {}) {
       arModelCache.removeEventListener('error', handleCacheError);
 
       // Cancel any pending requests
-      abortControllers.current.forEach(controller => {
+      abortControllers.current.forEach((controller) => {
         controller.abort();
       });
     };
@@ -96,7 +96,7 @@ export function useARCache(options: UseARCacheOptions = {}) {
     async (
       url: string,
       type: string,
-      progressCallback?: (progress: number) => void
+      progressCallback?: (progress: number) => void,
     ): Promise<Uint8Array> => {
       if (!url) {
         throw new Error('URL is required');
@@ -220,7 +220,7 @@ export function useARCache(options: UseARCacheOptions = {}) {
         throw err;
       }
     },
-    [trackEvent, onError]
+    [trackEvent, onError],
   );
 
   /**
@@ -234,7 +234,7 @@ export function useARCache(options: UseARCacheOptions = {}) {
         await arModelCache.prefetchModel(url, type, priority);
       }
     },
-    [prefetchEnabled]
+    [prefetchEnabled],
   );
 
   /**
@@ -245,13 +245,12 @@ export function useARCache(options: UseARCacheOptions = {}) {
       trackEvent('clear_cache_started');
       await arModelCache.clearCache();
 
-      // Update stats
-      const cacheStats = await arModelCache.getCacheStats();
+      // Reset stats after clearing cache
       setStats({
-        modelCount: cacheStats.modelCount,
-        totalSize: cacheStats.totalSize,
-        deviceQuota: cacheStats.deviceQuota,
-        percentUsed: cacheStats.percentUsed,
+        modelCount: 0,
+        totalSize: 0,
+        deviceQuota: 0,
+        percentUsed: 0,
       });
 
       trackEvent('clear_cache_completed');
@@ -288,6 +287,7 @@ export function useARCache(options: UseARCacheOptions = {}) {
       arModelCache.prefetchModel(url, type, priority),
     prefetchModels,
     clearCache: clearARCache,
+    clearARCache,
     cancelLoading: cancelModelLoading,
     isLoading: modelLoading,
     loadingProgress,

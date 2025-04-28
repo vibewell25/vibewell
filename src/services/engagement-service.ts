@@ -166,7 +166,7 @@ export class EngagementService {
         userId: userBadge.userId,
         badgeId: userBadge.badgeId,
         awardedAt: userBadge.awardedAt.toISOString(),
-        badge: BADGES.find(badge => badge.id === userBadge.badgeId),
+        badge: BADGES.find((badge) => badge.id === userBadge.badgeId),
       }));
     } catch (error) {
       console.error('Error getting user badges:', error);
@@ -266,7 +266,7 @@ export class EngagementService {
           userId: existingBadge.userId,
           badgeId: existingBadge.badgeId,
           awardedAt: existingBadge.awardedAt.toISOString(),
-          badge: BADGES.find(badge => badge.id === badgeId),
+          badge: BADGES.find((badge) => badge.id === badgeId),
         };
       }
 
@@ -280,7 +280,7 @@ export class EngagementService {
       });
 
       // Award points for the badge
-      const badge = BADGES.find(b => b.id === badgeId);
+      const badge = BADGES.find((b) => b.id === badgeId);
       if (badge) {
         await this.awardPoints(userId, badge.points);
       }
@@ -307,7 +307,7 @@ export class EngagementService {
     try {
       // Get user's current badges
       const userBadges = await this.getUserBadges(userId);
-      const earnedBadgeIds = userBadges.map(badge => badge.badgeId);
+      const earnedBadgeIds = userBadges.map((badge) => badge.badgeId);
 
       // Get user's achievements for badge criteria
       const achievements = await prisma.achievement.findMany({
@@ -321,8 +321,8 @@ export class EngagementService {
       });
 
       // Check each badge's criteria
-      const eligibleBadgeIds = BADGES.filter(badge => !earnedBadgeIds.includes(badge.id))
-        .filter(badge => {
+      const eligibleBadgeIds = BADGES.filter((badge) => !earnedBadgeIds.includes(badge.id))
+        .filter((badge) => {
           const { type, count, filter } = badge.criteria;
 
           if (type === 'streak') {
@@ -340,7 +340,7 @@ export class EngagementService {
           // Check simple criteria
           return (achievementsByType[type] || 0) >= count;
         })
-        .map(badge => badge.id);
+        .map((badge) => badge.id);
 
       return eligibleBadgeIds;
     } catch (error) {
@@ -412,13 +412,6 @@ export class EngagementService {
    */
   async getPersonalizedRecommendations(userId: string, limit: number = 5): Promise<any[]> {
     try {
-      // Get user session history
-      const userSessions = await prisma.tryOnSession.findMany({
-        where: { userId },
-        orderBy: { createdAt: 'desc' },
-        take: 20,
-      });
-
       // Get top products the user has tried
       const topProducts = await prisma.tryOnSession.groupBy({
         by: ['productId'],

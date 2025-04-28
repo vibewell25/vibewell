@@ -9,7 +9,7 @@ export type WebAuthnErrorCode =
 export class WebAuthnError extends Error {
   constructor(
     message: string,
-    public code: WebAuthnErrorCode
+    public code: WebAuthnErrorCode,
   ) {
     super(message);
     this.name = 'WebAuthnError';

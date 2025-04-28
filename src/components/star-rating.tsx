@@ -52,7 +52,7 @@ export function StarRating({
   return (
     <div className="flex items-center">
       <div className="flex">
-        {[1, 2, 3, 4, 5].map(star => {
+        {[1, 2, 3, 4, 5].map((star) => {
           const isHighlighted = (hover || rating || 0) >= star;
           return (
             <button
@@ -66,7 +66,7 @@ export function StarRating({
               aria-label={`Rate ${star} out of 5 stars`}
             >
               <Star
-                className={`${starClass} ${isHighlighted ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
+                className={`${starClass} ${isHighlighted ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
                 fill={isHighlighted ? 'currentColor' : 'none'}
               />
             </button>

@@ -1,7 +1,4 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-
+'use client';;
 interface CacheOptions {
   maxSize?: number;
   expirationTime?: number;

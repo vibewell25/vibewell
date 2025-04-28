@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 import Redis, { RedisOptions } from 'ioredis';
 import { performance } from 'perf_hooks';
-import { logger } from '../utils/logger';
 import { cpus } from 'os';
 
 dotenv.config();
@@ -35,7 +34,9 @@ export const redisBenchmarkConfig: RedisBenchmarkConfig = {
   keepAlive: process.env['REDIS_BENCHMARK_KEEP_ALIVE'] === 'true',
   tls: {
     enabled: process.env['REDIS_BENCHMARK_TLS_ENABLED'] === 'true',
-    ...(process.env['REDIS_BENCHMARK_TLS_CERT'] && { cert: process.env['REDIS_BENCHMARK_TLS_CERT'] }),
+    ...(process.env['REDIS_BENCHMARK_TLS_CERT'] && {
+      cert: process.env['REDIS_BENCHMARK_TLS_CERT'],
+    }),
     ...(process.env['REDIS_BENCHMARK_TLS_KEY'] && { key: process.env['REDIS_BENCHMARK_TLS_KEY'] }),
   },
 };
@@ -46,10 +47,12 @@ export const redisClientConfig: RedisOptions = {
   ...(redisBenchmarkConfig.password && { password: redisBenchmarkConfig.password }),
   maxRetriesPerRequest: 1,
   keepAlive: redisBenchmarkConfig.keepAlive ? 60000 : 0,
-  tls: redisBenchmarkConfig.tls?.enabled ? {
-    ...(redisBenchmarkConfig.tls.cert && { cert: redisBenchmarkConfig.tls.cert }),
-    ...(redisBenchmarkConfig.tls.key && { key: redisBenchmarkConfig.tls.key }),
-  } : undefined,
+  tls: redisBenchmarkConfig.tls?.enabled
+    ? {
+        ...(redisBenchmarkConfig.tls.cert && { cert: redisBenchmarkConfig.tls.cert }),
+        ...(redisBenchmarkConfig.tls.key && { key: redisBenchmarkConfig.tls.key }),
+      }
+    : undefined,
 } as RedisOptions;
 
 interface BenchmarkResult {
@@ -81,18 +84,15 @@ class RedisBenchmark {
     return 'x'.repeat(size);
   }
 
-  private async measureLatency(
-    operation: () => Promise<any>,
-    samples: number
-  ): Promise<number[]> {
+  private async measureLatency(operation: () => Promise<any>, samples: number): Promise<number[]> {
     const latencies: number[] = [];
-    
+
     for (let i = 0; i < samples; i++) {
       const start = performance.now();
       await operation();
       latencies.push(performance.now() - start);
     }
-    
+
     return latencies;
   }
 
@@ -111,17 +111,17 @@ class RedisBenchmark {
       average,
       p95: sorted[p95Index] || average,
       p99: sorted[p99Index] || average,
-      opsPerSecond: 1000 / average
+      opsPerSecond: 1000 / average,
     };
   }
 
   private async monitorResources(): Promise<void> {
-    const info = await this.redis.info() || '';
+    const info = (await this.redis.info()) || '';
     const memory = /used_memory:(\d+)/.exec(info);
     this.memoryUsage = memory ? parseInt(memory[1], 10) : 0;
 
     const startCpu = process.cpuUsage();
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     const endCpu = process.cpuUsage(startCpu);
     this.cpuUsage = (endCpu.user + endCpu.system) / 1000000;
   }
@@ -161,15 +161,12 @@ class RedisBenchmark {
 
     const cpuLatencies = await Promise.all(
       clients.map((client, index) =>
-        this.measureLatency(
-          async () => {
-            process.env['UV_THREADPOOL_SIZE'] = '1';
-            process.env['NODE_WORKER_ID'] = index.toString();
-            return await client.set('benchmark:cpu', testData);
-          },
-          opsPerCpu
-        )
-      )
+        this.measureLatency(async () => {
+          process.env['UV_THREADPOOL_SIZE'] = '1';
+          process.env['NODE_WORKER_ID'] = index.toString();
+          return await client.set('benchmark:cpu', testData);
+        }, opsPerCpu),
+      ),
     );
 
     const allLatencies = cpuLatencies.flat();
@@ -184,30 +181,30 @@ class RedisBenchmark {
       cpuUsage: this.cpuUsage,
     });
 
-    await Promise.all(clients.map(client => client.quit()));
+    await Promise.all(clients.map((client) => client.quit()));
   }
 
   public async runBenchmark(config: RedisBenchmarkConfig): Promise<Map<string, BenchmarkResult>> {
     await this.monitorResources();
-    
+
     const testData = this.generateRandomData(config.dataSize);
-    
+
     // Run basic benchmarks
     await this.runBasicBenchmarks(testData, config);
-    
+
     // Run memory test if configured
     await this.runMemoryTest();
-    
+
     // Run CPU affinity test if configured
     await this.runCpuAffinityTest();
 
     // Get Redis info for version
-    this.info = await this.redis.info().then(info => 
+    this.info = await this.redis.info().then((info) =>
       info.split('\n').reduce((acc: Record<string, string>, line) => {
         const [key, value] = line.split(':');
         if (key && value) acc[key.trim()] = value.trim();
         return acc;
-      }, {})
+      }, {}),
     );
 
     return this.results;
@@ -217,7 +214,7 @@ class RedisBenchmark {
     // SET benchmark
     const setLatencies = await this.measureLatency(
       async () => await this.redis.set('benchmark:key', testData),
-      config.operations
+      config.operations,
     );
     const setMetrics = this.calculateMetrics(setLatencies);
     this.results.set('SET', {
@@ -225,13 +222,13 @@ class RedisBenchmark {
       opsPerSecond: setMetrics.opsPerSecond,
       averageLatency: setMetrics.average,
       p95Latency: setMetrics.p95,
-      p99Latency: setMetrics.p99
+      p99Latency: setMetrics.p99,
     });
 
     // GET benchmark
     const getLatencies = await this.measureLatency(
       async () => await this.redis.get('benchmark:key'),
-      config.operations
+      config.operations,
     );
     const getMetrics = this.calculateMetrics(getLatencies);
     this.results.set('GET', {
@@ -239,7 +236,7 @@ class RedisBenchmark {
       opsPerSecond: getMetrics.opsPerSecond,
       averageLatency: getMetrics.average,
       p95Latency: getMetrics.p95,
-      p99Latency: getMetrics.p99
+      p99Latency: getMetrics.p99,
     });
 
     // Pipeline benchmark
@@ -251,7 +248,7 @@ class RedisBenchmark {
         }
         await pipeline.exec();
       },
-      Math.floor(config.operations / 100)
+      Math.floor(config.operations / 100),
     );
     const pipelineMetrics = this.calculateMetrics(pipelineLatencies);
     this.results.set('PIPELINE', {
@@ -259,7 +256,7 @@ class RedisBenchmark {
       opsPerSecond: pipelineMetrics.opsPerSecond * 100,
       averageLatency: pipelineMetrics.average / 100,
       p95Latency: pipelineMetrics.p95,
-      p99Latency: pipelineMetrics.p99
+      p99Latency: pipelineMetrics.p99,
     });
   }
 
@@ -273,15 +270,15 @@ class RedisBenchmark {
       console.log(`  Average Latency: ${result.averageLatency.toFixed(2)}ms`);
       console.log(`  P95 Latency: ${result.p95Latency.toFixed(2)}ms`);
       console.log(`  P99 Latency: ${result.p99Latency.toFixed(2)}ms`);
-      
+
       if ('memoryUsage' in result) {
         console.log(`  Memory Usage: ${(result.memoryUsage / 1024 / 1024).toFixed(2)}MB`);
       }
-      
+
       if ('cpuUsage' in result) {
         console.log(`  CPU Usage: ${result.cpuUsage.toFixed(2)}%`);
       }
-      
+
       console.log('');
     });
 
@@ -295,4 +292,4 @@ class RedisBenchmark {
   }
 }
 
-export default RedisBenchmark; 
+export default RedisBenchmark;

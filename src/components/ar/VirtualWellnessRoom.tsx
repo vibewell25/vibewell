@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Environment } from '@react-three/drei';
 import { Vector3 } from 'three';
-import { motion } from 'framer-motion';
 
 interface RoomProps {
   theme: 'zen' | 'energetic' | 'calming' | 'focus';
@@ -52,7 +51,7 @@ const VirtualWellnessRoom: React.FC<RoomProps> = ({
   });
 
   const handleCustomization = (updates: Partial<typeof roomState>) => {
-    setRoomState(prev => {
+    setRoomState((prev) => {
       const newState = { ...prev, ...updates };
       onCustomize?.(newState);
       return newState;
@@ -60,7 +59,7 @@ const VirtualWellnessRoom: React.FC<RoomProps> = ({
   };
 
   return (
-    <div className="relative w-full h-[600px] rounded-lg overflow-hidden">
+    <div className="relative h-[600px] w-full overflow-hidden rounded-lg">
       <Canvas camera={{ position: [0, 2, 5], fov: 75 }} shadows gl={{ antialias: true }}>
         <Environment preset="sunset" />
         <ambientLight
@@ -73,7 +72,7 @@ const VirtualWellnessRoom: React.FC<RoomProps> = ({
         <RoomModel theme={theme} />
 
         {/* Custom Objects */}
-        {roomState.objects.map(obj => (
+        {roomState.objects.map((obj) => (
           <CustomObject key={obj.id} {...obj} />
         ))}
 
@@ -86,18 +85,18 @@ const VirtualWellnessRoom: React.FC<RoomProps> = ({
       </Canvas>
 
       {/* Customization Controls */}
-      <div className="absolute bottom-4 left-4 right-4 bg-white/90 p-4 rounded-lg backdrop-blur-sm">
+      <div className="absolute bottom-4 left-4 right-4 rounded-lg bg-white/90 p-4 backdrop-blur-sm">
         <div className="flex items-center justify-between gap-4">
           <ThemeSelector
             currentTheme={roomState.theme}
-            onChange={newTheme => handleCustomization({ theme: newTheme })}
+            onChange={(newTheme) => handleCustomization({ theme: newTheme })}
           />
           <LightingControls
             intensity={roomState.lightingIntensity}
-            onChange={intensity => handleCustomization({ lightingIntensity: intensity })}
+            onChange={(intensity) => handleCustomization({ lightingIntensity: intensity })}
           />
           <ObjectPlacer
-            onAddObject={object =>
+            onAddObject={(object) =>
               handleCustomization({
                 objects: [...roomState.objects, object],
               })
@@ -136,10 +135,10 @@ const ThemeSelector: React.FC<{
 }> = ({ currentTheme, onChange }) => {
   return (
     <div className="flex items-center gap-2">
-      {Object.keys(THEME_SETTINGS).map(theme => (
+      {Object.keys(THEME_SETTINGS).map((theme) => (
         <button
           key={theme}
-          className={`px-3 py-1 rounded ${
+          className={`rounded px-3 py-1 ${
             currentTheme === theme ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-gray-200'
           }`}
           onClick={() => onChange(theme as 'zen' | 'energetic' | 'calming' | 'focus')}
@@ -164,7 +163,7 @@ const LightingControls: React.FC<{
         max="2"
         step="0.1"
         value={intensity}
-        onChange={e => onChange(parseFloat(e.target.value))}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
         className="w-32"
       />
     </div>
@@ -186,13 +185,13 @@ const ObjectPlacer: React.FC<{
   return (
     <div className="flex items-center gap-2">
       <button
-        className="px-3 py-1 bg-secondary text-white rounded hover:bg-secondary-dark"
+        className="bg-secondary hover:bg-secondary-dark rounded px-3 py-1 text-white"
         onClick={() => handleAddObject('meditation-cushion')}
       >
         Add Cushion
       </button>
       <button
-        className="px-3 py-1 bg-secondary text-white rounded hover:bg-secondary-dark"
+        className="bg-secondary hover:bg-secondary-dark rounded px-3 py-1 text-white"
         onClick={() => handleAddObject('plant')}
       >
         Add Plant

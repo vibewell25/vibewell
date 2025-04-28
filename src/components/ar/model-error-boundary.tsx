@@ -1,9 +1,7 @@
-'use client';
-
+'use client';;
 import { Component, ErrorInfo, ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { useToast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 
 interface Props {
   children: ReactNode;
@@ -41,7 +39,7 @@ export class ModelErrorBoundary extends Component<Props, State> {
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">Model Loading Failed</h2>
             <p className="text-gray-500">We couldn't load the 3D model. This might be due to:</p>
-            <ul className="list-disc list-inside text-sm text-gray-500">
+            <ul className="list-inside list-disc text-sm text-gray-500">
               <li>Poor internet connection</li>
               <li>Browser compatibility issues</li>
               <li>Model file corruption</li>
@@ -53,7 +51,7 @@ export class ModelErrorBoundary extends Component<Props, State> {
               </Button>
             </div>
             {process.env.NODE_ENV === 'development' && this.state.error && (
-              <div className="mt-4 p-4 bg-red-50 rounded-md">
+              <div className="mt-4 rounded-md bg-red-50 p-4">
                 <p className="text-sm text-red-500">Error details: {this.state.error.message}</p>
               </div>
             )}

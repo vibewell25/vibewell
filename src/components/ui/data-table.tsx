@@ -7,8 +7,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
 
 export interface Column {
   accessorKey?: string;
@@ -41,10 +41,10 @@ export function DataTable({
   // Apply filtering
   const filteredData = React.useMemo(() => {
     if (!filtering || !filterValue) return data;
-    return data.filter(item =>
-      Object.values(item).some(value =>
-        String(value).toLowerCase().includes(filterValue.toLowerCase())
-      )
+    return data.filter((item) =>
+      Object.values(item).some((value) =>
+        String(value).toLowerCase().includes(filterValue.toLowerCase()),
+      ),
     );
   }, [data, filterValue, filtering]);
 
@@ -77,7 +77,7 @@ export function DataTable({
           <Input
             placeholder="Filter records..."
             value={filterValue}
-            onChange={e => setFilterValue(e.target.value)}
+            onChange={(e) => setFilterValue(e.target.value)}
             className="max-w-sm"
           />
         </div>
@@ -86,7 +86,7 @@ export function DataTable({
       <Table>
         <TableHeader>
           <TableRow>
-            {columns.map(column => (
+            {columns.map((column) => (
               <TableHead
                 key={column.id || column.accessorKey}
                 onClick={() => {
@@ -112,7 +112,7 @@ export function DataTable({
         <TableBody>
           {paginatedData.map((row, rowIndex) => (
             <TableRow key={rowIndex}>
-              {columns.map(column => (
+              {columns.map((column) => (
                 <TableCell key={column.id || column.accessorKey}>
                   {column.cell
                     ? column.cell({ row: { original: row } })
@@ -127,12 +127,12 @@ export function DataTable({
       </Table>
 
       {pagination && (
-        <div className="flex justify-between items-center mt-4">
+        <div className="mt-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <select
               value={pageSize}
-              onChange={e => setPageSize(Number(e.target.value))}
-              className="border rounded p-1"
+              onChange={(e) => setPageSize(Number(e.target.value))}
+              className="rounded border p-1"
             >
               <option value="10">10</option>
               <option value="20">20</option>

@@ -1,7 +1,6 @@
-import { describe, expect, test, beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { describe, expect, test, beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
-import { rest } from 'msw';
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LoginPage from '@/app/login/page';
@@ -18,7 +17,7 @@ const server = setupServer(
         {
           error: 'Email and password are required',
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -40,9 +39,9 @@ const server = setupServer(
       {
         error: 'Invalid email or password',
       },
-      { status: 401 }
+      { status: 401 },
     );
-  })
+  }),
 );
 
 // Setup mock server

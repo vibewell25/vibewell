@@ -1,23 +1,9 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
-import { 
-  FaGoogle, 
-  FaFacebook, 
-  FaApple, 
-  FaTwitter, 
-  FaGithub, 
-  FaLinkedin
-} from 'react-icons/fa';
+import { FaGoogle, FaFacebook, FaApple, FaTwitter, FaGithub, FaLinkedin } from 'react-icons/fa';
 
 // Define available providers
-export type SocialProvider = 
-  | 'google' 
-  | 'facebook' 
-  | 'apple' 
-  | 'twitter' 
-  | 'github'
-  | 'linkedin';
+export type SocialProvider = 'google' | 'facebook' | 'apple' | 'twitter' | 'github' | 'linkedin';
 
 // Configuration for each provider
 const providerConfig = {
@@ -83,21 +69,21 @@ export function SocialLoginButton({
   loading = false,
 }: SocialLoginButtonProps) {
   const { name, icon: Icon, bgColor, textColor, borderColor } = providerConfig[provider];
-  
+
   // Size configurations
   const sizeClasses = {
     sm: 'h-8 text-xs',
     md: 'h-10 text-sm',
     lg: 'h-12 text-base',
   };
-  
+
   // Icon size based on button size
   const iconSize = {
     sm: 14,
     md: 18,
     lg: 20,
   };
-  
+
   return (
     <Button
       variant="outline"
@@ -107,11 +93,11 @@ export function SocialLoginButton({
         textColor,
         `border ${borderColor}`,
         sizeClasses[size],
-        iconOnly ? 'w-10 p-0' : 'px-4 w-full',
+        iconOnly ? 'w-10 p-0' : 'w-full px-4',
         'flex items-center justify-center gap-2',
         'font-medium transition-colors',
-        'focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:outline-none',
-        className
+        'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+        className,
       )}
       onClick={() => onLogin(provider)}
       disabled={loading}
@@ -120,8 +106,8 @@ export function SocialLoginButton({
       <Icon size={iconSize[size]} aria-hidden="true" />
       {!iconOnly && <span>Sign in with {name}</span>}
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 rounded">
-          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+        <div className="absolute inset-0 flex items-center justify-center rounded bg-black bg-opacity-20">
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
         </div>
       )}
     </Button>
@@ -140,13 +126,13 @@ export interface SocialLoginButtonsProps {
 
 /**
  * SocialLoginButtons - A component for displaying social login options
- * 
+ *
  * This component provides a consistent interface for social login buttons across the application.
  * It supports multiple providers and can be customized for different sizes and layouts.
- * 
+ *
  * Usage:
  * ```tsx
- * <SocialLoginButtons 
+ * <SocialLoginButtons
  *   providers={['google', 'facebook', 'apple']}
  *   onLogin={(provider) => handleSocialLogin(provider)}
  * />
@@ -162,11 +148,11 @@ export function SocialLoginButtons({
   loading = null,
 }: SocialLoginButtonsProps) {
   return (
-    <div 
+    <div
       className={cn(
         'flex gap-3',
         direction === 'column' ? 'flex-col' : 'flex-row flex-wrap',
-        className
+        className,
       )}
     >
       {providers.map((provider) => (
@@ -184,4 +170,4 @@ export function SocialLoginButtons({
   );
 }
 
-export default SocialLoginButtons; 
+export default SocialLoginButtons;

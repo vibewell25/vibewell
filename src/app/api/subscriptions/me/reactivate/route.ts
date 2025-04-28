@@ -40,7 +40,7 @@ export async function POST() {
     if (!subscription.cancel_at_period_end) {
       return NextResponse.json(
         { error: 'Subscription is not scheduled for cancellation' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

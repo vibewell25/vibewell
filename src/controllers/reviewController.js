@@ -175,7 +175,9 @@ export const markHelpful = asyncHandler(async (req, res, next) => {
 
   if (alreadyMarked) {
     // Remove user from helpful list
-    review.helpful.users = review.helpful.users.filter(userId => userId.toString() !== req.user.id);
+    review.helpful.users = review.helpful.users.filter(
+      (userId) => userId.toString() !== req.user.id,
+    );
     review.helpful.count = Math.max(0, review.helpful.count - 1);
   } else {
     // Add user to helpful list

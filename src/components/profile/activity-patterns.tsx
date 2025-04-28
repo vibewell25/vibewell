@@ -1,6 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Activity, Clock, TrendingUp, Calendar } from 'lucide-react';
-import { format } from 'date-fns';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Clock, TrendingUp, Calendar } from 'lucide-react';
 
 interface ActivityPattern {
   id: string;
@@ -49,7 +48,7 @@ export function ActivityPatterns() {
   ];
 
   const getMaxValue = (data: ActivityPattern['data']) => {
-    return Math.max(...data.map(item => item.value));
+    return Math.max(...data.map((item) => item.value));
   };
 
   return (
@@ -59,7 +58,7 @@ export function ActivityPatterns() {
         <CardDescription>View your account activity patterns and trends over time.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-8">
-        {patterns.map(pattern => {
+        {patterns.map((pattern) => {
           const maxValue = getMaxValue(pattern.data);
           return (
             <div key={pattern.id} className="space-y-4">
@@ -72,10 +71,10 @@ export function ActivityPatterns() {
               </div>
 
               <div className="flex h-32 items-end space-x-2">
-                {pattern.data.map(item => (
+                {pattern.data.map((item) => (
                   <div key={item.label} className="flex-1 space-y-2 text-center">
                     <div
-                      className="w-full rounded-t bg-primary/20"
+                      className="bg-primary/20 w-full rounded-t"
                       style={{
                         height: `${(item.value / maxValue) * 100}%`,
                       }}

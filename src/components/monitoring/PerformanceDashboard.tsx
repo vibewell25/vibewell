@@ -2,22 +2,12 @@ import React, { useEffect, useState } from 'react';
 import type { LoadMetrics } from '@/utils/performanceMonitor';
 import performanceMonitor from '@/utils/performanceMonitor';
 import dynamic from 'next/dynamic';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
 
 // Dynamically import recharts components to reduce initial bundle size
-const DynamicCharts = dynamic(
-  () => import('./DynamicCharts'),
-  { ssr: false, loading: () => <div>Loading charts...</div> }
-);
+const DynamicCharts = dynamic(() => import('./DynamicCharts'), {
+  ssr: false,
+  loading: () => <div>Loading charts...</div>,
+});
 
 interface MetricsData {
   name: string;
@@ -48,9 +38,9 @@ const PerformanceDashboard: React.FC = () => {
           const lastLoadTime = filteredMetrics[filteredMetrics.length - 1]?.loadDuration || 0;
 
           // Create trend data
-          const trend = filteredMetrics.map(m => ({
+          const trend = filteredMetrics.map((m) => ({
             timestamp: m.loadStartTime,
-            duration: m.loadDuration
+            duration: m.loadDuration,
           }));
 
           return {
@@ -58,9 +48,9 @@ const PerformanceDashboard: React.FC = () => {
             avgLoadTime,
             totalLoads: filteredMetrics.length,
             lastLoadTime,
-            trend
+            trend,
           };
-        }
+        },
       );
 
       setMetricsData(processedData);
@@ -71,7 +61,10 @@ const PerformanceDashboard: React.FC = () => {
     }
   }, [timeRange]);
 
-  const getTimeRangeData = (metrics: LoadMetrics[], range: 'hour' | 'day' | 'week'): LoadMetrics[] => {
+  const getTimeRangeData = (
+    metrics: LoadMetrics[],
+    range: 'hour' | 'day' | 'week',
+  ): LoadMetrics[] => {
     const now = Date.now();
     const ranges = {
       hour: 60 * 60 * 1000,
@@ -79,9 +72,7 @@ const PerformanceDashboard: React.FC = () => {
       week: 7 * 24 * 60 * 60 * 1000,
     };
 
-    return metrics.filter(
-      (metric) => now - metric.loadStartTime <= ranges[range]
-    );
+    return metrics.filter((metric) => now - metric.loadStartTime <= ranges[range]);
   };
 
   if (error) {
@@ -138,7 +129,7 @@ const PerformanceDashboard: React.FC = () => {
         <div className="chart-container">
           <h3>Load Time Trend - {selectedMetric}</h3>
           <DynamicCharts
-            data={metricsData.find(m => m.name === selectedMetric)?.trend || []}
+            data={metricsData.find((m) => m.name === selectedMetric)?.trend || []}
             timeRange={timeRange}
           />
         </div>
@@ -242,4 +233,4 @@ const PerformanceDashboard: React.FC = () => {
   );
 };
 
-export default PerformanceDashboard; 
+export default PerformanceDashboard;

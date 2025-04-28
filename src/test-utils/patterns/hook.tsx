@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { render, waitFor as testingWaitFor } from '../testing-lib-adapter';
+import { render } from '../testing-lib-adapter';
 
 /**
  * Hook test case configuration
@@ -34,10 +34,10 @@ export interface HookTestCase<HookResult, HookArgs extends any[]> {
 export function createHookTestSuite<HookResult, HookArgs extends any[]>(
   name: string,
   useHook: (...args: HookArgs) => HookResult,
-  testCases: HookTestCase<HookResult, HookArgs>[]
+  testCases: HookTestCase<HookResult, HookArgs>[],
 ): void {
   describe(`${name} Hook`, () => {
-    testCases.forEach(testCase => {
+    testCases.forEach((testCase) => {
       it(testCase.name, async () => {
         // Setup the test case
         if (testCase.setup) {
@@ -53,7 +53,7 @@ export function createHookTestSuite<HookResult, HookArgs extends any[]>(
         // Create a wrapper component to test the hook
         const HookTestComponent: React.FC<{
           onResult: (res: HookResult) => void;
-        }> = props => {
+        }> = (props) => {
           const result = useHook(...initialArgs);
           React.useEffect(() => {
             props.onResult(result);

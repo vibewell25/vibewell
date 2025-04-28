@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 import Link from 'next/link';
 import { Icons } from './icons';
 
@@ -58,14 +58,14 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
-          <div className="w-full max-w-md p-6 rounded-lg shadow-lg bg-card border border-border">
-            <div className="flex items-center justify-center mb-6 text-red-500">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+          <div className="w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-lg">
+            <div className="mb-6 flex items-center justify-center text-red-500">
               <Icons.XCircleIcon className="h-12 w-12" />
             </div>
 
-            <h1 className="text-2xl font-bold text-foreground mb-2">Oops, something went wrong</h1>
-            <p className="text-muted-foreground mb-6">
+            <h1 className="mb-2 text-2xl font-bold text-foreground">Oops, something went wrong</h1>
+            <p className="mb-6 text-muted-foreground">
               We're sorry, but we encountered an unexpected error. Please try refreshing the page or
               go back to the homepage.
             </p>
@@ -73,7 +73,7 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
             <div className="space-y-4">
               <button
                 onClick={this.handleReload}
-                className="w-full py-2 px-4 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 w-full rounded px-4 py-2 transition-colors"
               >
                 Refresh page
               </button>
@@ -81,22 +81,22 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
               <Link
                 href="/"
                 onClick={this.handleGoHome}
-                className="block w-full py-2 px-4 bg-secondary text-secondary-foreground rounded hover:bg-secondary/90 transition-colors text-center"
+                className="bg-secondary text-secondary-foreground hover:bg-secondary/90 block w-full rounded px-4 py-2 text-center transition-colors"
               >
                 Go to homepage
               </Link>
             </div>
 
             {process.env.NODE_ENV === 'development' && (
-              <details className="mt-6 p-3 border border-border rounded-md bg-muted">
-                <summary className="cursor-pointer font-medium text-sm">
+              <details className="mt-6 rounded-md border border-border bg-muted p-3">
+                <summary className="cursor-pointer text-sm font-medium">
                   Error details (development only)
                 </summary>
                 <div className="mt-2">
-                  <p className="text-red-600 font-mono text-sm mb-2">
+                  <p className="mb-2 font-mono text-sm text-red-600">
                     {this.state.error?.toString()}
                   </p>
-                  <pre className="whitespace-pre-wrap text-xs text-muted-foreground overflow-auto max-h-60 p-2 bg-card rounded">
+                  <pre className="max-h-60 overflow-auto whitespace-pre-wrap rounded bg-card p-2 text-xs text-muted-foreground">
                     {this.state.errorInfo?.componentStack}
                   </pre>
                 </div>

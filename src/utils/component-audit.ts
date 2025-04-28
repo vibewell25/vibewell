@@ -29,7 +29,7 @@ export function auditComponent(content: string, filePath: string): Partial<Compo
     hasStorybook: checkStorybookExists(filePath),
     hasStyles: checkStyleImplementation(content),
     hasErrorBoundary: checkErrorBoundaryImplementation(content),
-    hasMemoization: checkMemoizationImplementation(content)
+    hasMemoization: checkMemoizationImplementation(content),
   };
 }
 
@@ -38,7 +38,8 @@ function determineComponentCategory(content: string): ComponentCategory {
   if (content.includes('form') || content.includes('Form')) return ComponentCategory.Form;
   if (content.includes('nav') || content.includes('Nav')) return ComponentCategory.Navigation;
   if (content.includes('display') || content.includes('Display')) return ComponentCategory.Display;
-  if (content.includes('feedback') || content.includes('Feedback')) return ComponentCategory.Feedback;
+  if (content.includes('feedback') || content.includes('Feedback'))
+    return ComponentCategory.Feedback;
   if (content.includes('ar') || content.includes('AR')) return ComponentCategory.AR;
   if (content.includes('media') || content.includes('Media')) return ComponentCategory.Media;
   if (content.includes('chart') || content.includes('Chart')) return ComponentCategory.Chart;
@@ -49,7 +50,7 @@ function calculateComplexity(content: string): ComponentComplexity {
   const lines = content.split('\n').length;
   const hooks = (content.match(/use[A-Z]/g) || []).length;
   const jsx = (content.match(/<[A-Z][^>]*>/g) || []).length;
-  
+
   if (lines > 300 || hooks > 5 || jsx > 20) return ComponentComplexity.Complex;
   if (lines > 150 || hooks > 3 || jsx > 10) return ComponentComplexity.Compound;
   if (content.includes('Page') || content.includes('Screen')) return ComponentComplexity.Page;
@@ -67,9 +68,9 @@ function extractExpectedProps(content: string): string[] {
   if (!propsMatch) return [];
   return propsMatch[1]
     .split('\n')
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-    .map(line => line.split(':')[0]);
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .map((line) => line.split(':')[0]);
 }
 
 function extractRequiredProps(content: string): string[] {
@@ -77,10 +78,10 @@ function extractRequiredProps(content: string): string[] {
   if (!propsMatch) return [];
   return propsMatch[1]
     .split('\n')
-    .filter(line => !line.includes('?:'))
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-    .map(line => line.split(':')[0]);
+    .filter((line) => !line.includes('?:'))
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .map((line) => line.split(':')[0]);
 }
 
 function checkChildrenUsage(content: string): boolean {
@@ -134,11 +135,7 @@ function checkPerformanceIssues(content: string): boolean {
 }
 
 function checkAccessibilityIssues(content: string): boolean {
-  return (
-    !content.includes('aria-') &&
-    !content.includes('role=') &&
-    content.includes('onClick')
-  );
+  return !content.includes('aria-') && !content.includes('role=') && content.includes('onClick');
 }
 
 function checkDesignSystemCompliance(content: string): boolean {
@@ -189,16 +186,11 @@ function checkStyleImplementation(content: string): boolean {
 }
 
 function checkErrorBoundaryImplementation(content: string): boolean {
-  return (
-    content.includes('componentDidCatch') ||
-    content.includes('ErrorBoundary')
-  );
+  return content.includes('componentDidCatch') || content.includes('ErrorBoundary');
 }
 
 function checkMemoizationImplementation(content: string): boolean {
   return (
-    content.includes('React.memo') ||
-    content.includes('useMemo') ||
-    content.includes('useCallback')
+    content.includes('React.memo') || content.includes('useMemo') || content.includes('useCallback')
   );
-} 
+}

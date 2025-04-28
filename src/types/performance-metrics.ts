@@ -15,4 +15,4 @@ export interface PerformanceMetrics {
   // Sync metrics
   syncSuccess?: number;
   syncError?: number;
-} 
+}

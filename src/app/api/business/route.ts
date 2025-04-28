@@ -31,7 +31,7 @@ export async function GET() {
       },
     });
 
-    const formattedBusinesses = businesses.map(business => {
+    const formattedBusinesses = businesses.map((business) => {
       const totalReviews = business.reviews.length;
       const averageRating =
         totalReviews > 0
@@ -47,7 +47,7 @@ export async function GET() {
         reviewCount: totalReviews,
         imageUrl: business.imageUrl,
         location: business.location,
-        services: business.services.map(service => service.name),
+        services: business.services.map((service) => service.name),
       };
     });
 

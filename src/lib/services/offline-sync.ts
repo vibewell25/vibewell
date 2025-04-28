@@ -40,7 +40,7 @@ class OfflineSyncService {
       request.onerror = () => reject(request.error);
       request.onsuccess = () => resolve(request.result);
 
-      request.onupgradeneeded = event => {
+      request.onupgradeneeded = (event) => {
         const db = (event.target as IDBOpenDBRequest).result;
         if (!db.objectStoreNames.contains(this.cachedDataStore)) {
           db.createObjectStore(this.cachedDataStore, { keyPath: 'id' });
@@ -131,28 +131,28 @@ class OfflineSyncService {
       // Sync appointments
       const appointmentResults = await Promise.all(
         cachedData.appointments
-          .filter(appointment => appointment.needsSync)
-          .map(appointment => this.syncAppointment(appointment))
+          .filter((appointment) => appointment.needsSync)
+          .map((appointment) => this.syncAppointment(appointment)),
       );
 
       // Sync services
       const serviceResults = await Promise.all(
         cachedData.services
-          .filter(service => service.needsSync)
-          .map(service => this.syncService(service))
+          .filter((service) => service.needsSync)
+          .map((service) => this.syncService(service)),
       );
 
       // Update last synced timestamp
       await this.setCachedData({
         ...cachedData,
         lastSynced: new Date().toISOString(),
-        appointments: cachedData.appointments.map(appointment => ({
+        appointments: cachedData.appointments.map((appointment) => ({
           ...appointment,
-          needsSync: appointmentResults.some(result => !result) && appointment.needsSync,
+          needsSync: appointmentResults.some((result) => !result) && appointment.needsSync,
         })),
-        services: cachedData.services.map(service => ({
+        services: cachedData.services.map((service) => ({
           ...service,
-          needsSync: serviceResults.some(result => !result) && service.needsSync,
+          needsSync: serviceResults.some((result) => !result) && service.needsSync,
         })),
       });
 
@@ -206,4 +206,4 @@ class OfflineSyncService {
   }
 }
 
-export const offlineSyncService = new OfflineSyncService();
+export {};

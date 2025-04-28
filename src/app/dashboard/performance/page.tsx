@@ -12,7 +12,6 @@ function PerformanceContent() {
   const { user, loading } = useAuth();
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -47,8 +46,8 @@ function PerformanceContent() {
       <Layout>
         <div className="container-app py-12">
           <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-            <div className="h-64 bg-gray-200 rounded"></div>
+            <div className="h-8 w-1/4 rounded bg-gray-200"></div>
+            <div className="h-64 rounded bg-gray-200"></div>
           </div>
         </div>
       </Layout>
@@ -74,7 +73,7 @@ function PerformanceContent() {
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Performance Monitoring</h1>
+          <h1 className="mb-2 text-3xl font-bold">Performance Monitoring</h1>
           <p className="text-muted-foreground">
             Monitor application performance metrics and receive alerts when thresholds are exceeded.
           </p>
@@ -89,7 +88,7 @@ function PerformanceContent() {
 export default function PerformancePage() {
   return (
     <Suspense
-      fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}
+      fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}
     >
       <PerformanceContent />
     </Suspense>

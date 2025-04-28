@@ -43,13 +43,13 @@ export const PerformanceExample: React.FC = () => {
     endMeasure();
 
     // Update state with results
-    setResults(prev => [
+    setResults((prev) => [
       `Operation completed in ${duration.toFixed(2)}ms, result: ${result}`,
       ...prev.slice(0, 4), // Keep only the last 5 results
     ]);
 
     // Update counter
-    setCount(prev => prev + 1);
+    setCount((prev) => prev + 1);
   };
 
   return (

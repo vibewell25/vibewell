@@ -1,6 +1,4 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react/pure';
-import '@testing-library/jest-dom';
 import { ErrorBoundary, withErrorBoundary } from '@/components/ui/error-boundary';
 
 interface BuggyComponentProps {
@@ -29,7 +27,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <div>No error here</div>
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('No error here')).toBeInTheDocument();
@@ -43,7 +41,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <BuggyComponent />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     // Check that the fallback UI is rendered
@@ -60,7 +58,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary fallback={customFallback}>
         <BuggyComponent />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('Custom error UI')).toBeInTheDocument();
@@ -72,7 +70,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary onError={handleError}>
         <BuggyComponent />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(handleError).toHaveBeenCalled();
@@ -87,7 +85,7 @@ describe('ErrorBoundary', () => {
     const { rerender } = render(
       <ErrorBoundary onReset={onReset}>
         <BuggyComponent shouldThrow={shouldThrow} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     // Check that the error UI is shown
@@ -103,7 +101,7 @@ describe('ErrorBoundary', () => {
     rerender(
       <ErrorBoundary onReset={onReset}>
         <BuggyComponent shouldThrow={shouldThrow} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     // Now the component should render successfully

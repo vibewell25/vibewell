@@ -51,7 +51,7 @@ export function verifyTOTP(token: string, secret: string): boolean {
 export function generateTOTPQRCodeURL(
   secret: string,
   account: string,
-  issuer: string = 'Vibewell'
+  issuer: string = 'Vibewell',
 ): string {
   return authenticator.keyuri(account, issuer, secret);
 }
@@ -64,7 +64,7 @@ export function generateTOTPQRCodeURL(
  */
 export function generateTOTPCredentials(
   account: string,
-  issuer: string = 'Vibewell'
+  issuer: string = 'Vibewell',
 ): {
   secret: string;
   qrCodeUrl: string;

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Icons } from '@/components/ui/icons';
 import { toast } from '@/components/ui/use-toast';
 
@@ -125,7 +125,7 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
       request.onerror = () => reject(request.error);
       request.onsuccess = () => resolve(request.result);
 
-      request.onupgradeneeded = event => {
+      request.onupgradeneeded = (event) => {
         const db = (event.target as IDBOpenDBRequest).result;
         if (!db.objectStoreNames.contains('cachedData')) {
           db.createObjectStore('cachedData', { keyPath: 'id' });
@@ -171,7 +171,7 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
           </div>
 
           <div>
-            <h3 className="font-medium mb-2">Cached Data</h3>
+            <h3 className="mb-2 font-medium">Cached Data</h3>
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span>Appointments</span>
@@ -185,7 +185,7 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
           </div>
 
           {!isOnline && (
-            <div className="bg-yellow-50 p-4 rounded-md">
+            <div className="rounded-md bg-yellow-50 p-4">
               <p className="text-sm text-yellow-800">
                 You're currently offline. Your changes will be synchronized when you're back online.
               </p>

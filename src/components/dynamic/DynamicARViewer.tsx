@@ -5,30 +5,31 @@ import { Skeleton } from '@/components/ui/skeleton';
 // Dynamically import the AR components with no SSR
 // This significantly reduces the initial bundle size
 const AdaptiveARViewer = dynamic(
-  () => import('@/components/ar/AdaptiveARViewer').then(mod => ({ default: mod.AdaptiveARViewer })),
+  () =>
+    import('@/components/ar/AdaptiveARViewer').then((mod) => ({ default: mod.AdaptiveARViewer })),
   {
     ssr: false,
     loading: () => <ARViewerSkeleton />,
-  }
+  },
 );
 
 // Optional components that may be needed depending on use case
 const OptimizedModelLoader = dynamic(
   () =>
-    import('@/components/ar/OptimizedModelLoader').then(mod => ({
+    import('@/components/ar/OptimizedModelLoader').then((mod) => ({
       default: mod.OptimizedModelLoader,
     })),
-  { ssr: false }
+  { ssr: false },
 );
 
 // Loading skeleton for AR viewer
 function ARViewerSkeleton() {
   return (
-    <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
-      <div className="absolute inset-0 bg-gray-100 animate-pulse"></div>
+    <div className="relative h-[400px] w-full overflow-hidden rounded-lg">
+      <div className="absolute inset-0 animate-pulse bg-gray-100"></div>
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="flex flex-col items-center">
-          <Skeleton className="h-8 w-8 rounded-full mb-2" />
+          <Skeleton className="mb-2 h-8 w-8 rounded-full" />
           <div className="text-sm text-gray-500">Loading AR Experience...</div>
         </div>
       </div>
@@ -44,16 +45,16 @@ interface ARErrorFallbackProps {
 // Error fallback component for AR viewer
 function ARErrorFallback({ error, resetErrorBoundary }: ARErrorFallbackProps) {
   return (
-    <div className="relative w-full h-[400px] rounded-lg overflow-hidden bg-gray-50 border border-red-200">
+    <div className="relative h-[400px] w-full overflow-hidden rounded-lg border border-red-200 bg-gray-50">
       <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
-        <div className="text-red-500 text-lg font-medium mb-2">Something went wrong</div>
-        <div className="text-sm text-gray-600 mb-4 text-center">
+        <div className="mb-2 text-lg font-medium text-red-500">Something went wrong</div>
+        <div className="mb-4 text-center text-sm text-gray-600">
           {error.message ||
             'Failed to load AR experience. Your device may not support AR features.'}
         </div>
         <button
           onClick={resetErrorBoundary}
-          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+          className="bg-primary hover:bg-primary/90 rounded-md px-4 py-2 text-white transition-colors"
         >
           Try again
         </button>
@@ -61,13 +62,6 @@ function ARErrorFallback({ error, resetErrorBoundary }: ARErrorFallbackProps) {
     </div>
   );
 }
-
-// Performance monitoring for AR components - loaded only when AR is active
-const ARPerformanceMonitor = dynamic(
-  () =>
-    import('@/components/ar/ARResourceMonitor').then(mod => ({ default: mod.ARResourceMonitor })),
-  { ssr: false }
-);
 
 export interface DynamicARViewerProps {
   /** ID of the model to display */

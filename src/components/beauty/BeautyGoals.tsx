@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, Button, Input, Select, Badge } from '@/components/ui';
 import { getBeautyGoals, createBeautyGoal, updateBeautyGoal } from '@/lib/api/beauty';
-import { BeautyGoal } from '@/lib/api/beauty';
 
 const goalCategories = [
   'skin_health',
@@ -10,7 +9,7 @@ const goalCategories = [
   'hydration',
   'even_tone',
   'texture_improvement',
-  'other'
+  'other',
 ] as const;
 
 const goalStatuses = ['not_started', 'in_progress', 'completed', 'on_hold'] as const;
@@ -42,17 +41,17 @@ export default function BeautyGoals() {
   };
 
   const handleAddMilestone = () => {
-    setNewGoal(prev => ({
+    setNewGoal((prev) => ({
       ...prev,
       milestones: [...prev.milestones, { description: '', completed: false }],
     }));
   };
 
   const handleMilestoneChange = (index: number, description: string) => {
-    setNewGoal(prev => ({
+    setNewGoal((prev) => ({
       ...prev,
       milestones: prev.milestones.map((milestone, i) =>
-        i === index ? { ...milestone, description } : milestone
+        i === index ? { ...milestone, description } : milestone,
       ),
     }));
   };
@@ -76,7 +75,7 @@ export default function BeautyGoals() {
     }
   };
 
-  const handleUpdateStatus = async (goalId: string, newStatus: typeof goalStatuses[number]) => {
+  const handleUpdateStatus = async (goalId: string, newStatus: (typeof goalStatuses)[number]) => {
     try {
       await updateBeautyGoal(goalId, { status: newStatus });
       loadGoals();
@@ -87,7 +86,7 @@ export default function BeautyGoals() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Beauty Goals</h2>
         <Button onClick={() => setShowNewGoal(!showNewGoal)}>
           {showNewGoal ? 'Cancel' : 'New Goal'}
@@ -95,28 +94,35 @@ export default function BeautyGoals() {
       </div>
 
       {showNewGoal && (
-        <Card className="p-6 space-y-4">
+        <Card className="space-y-4 p-6">
           <Input
             label="Goal Title"
             value={newGoal.title}
-            onChange={e => setNewGoal(prev => ({ ...prev, title: e.target.value }))}
+            onChange={(e) => setNewGoal((prev) => ({ ...prev, title: e.target.value }))}
           />
-          
+
           <Input
             label="Description"
             value={newGoal.description}
-            onChange={e => setNewGoal(prev => ({ ...prev, description: e.target.value }))}
+            onChange={(e) => setNewGoal((prev) => ({ ...prev, description: e.target.value }))}
           />
 
           <Select
             label="Category"
             value={newGoal.category}
-            onChange={e => setNewGoal(prev => ({ ...prev, category: e.target.value as typeof goalCategories[number] }))}
-            options={goalCategories.map(cat => ({
+            onChange={(e) =>
+              setNewGoal((prev) => ({
+                ...prev,
+                category: e.target.value as (typeof goalCategories)[number],
+              }))
+            }
+            options={goalCategories.map((cat) => ({
               value: cat,
-              label: cat.replace('_', ' ').split('_').map(word => 
-                word.charAt(0).toUpperCase() + word.slice(1)
-              ).join(' '),
+              label: cat
+                .replace('_', ' ')
+                .split('_')
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' '),
             }))}
           />
 
@@ -124,13 +130,15 @@ export default function BeautyGoals() {
             type="date"
             label="Target Date"
             value={newGoal.targetDate}
-            onChange={e => setNewGoal(prev => ({ ...prev, targetDate: e.target.value }))}
+            onChange={(e) => setNewGoal((prev) => ({ ...prev, targetDate: e.target.value }))}
           />
 
           <div className="space-y-4">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">Milestones</h3>
-              <Button variant="outline" onClick={handleAddMilestone}>Add Milestone</Button>
+              <Button variant="outline" onClick={handleAddMilestone}>
+                Add Milestone
+              </Button>
             </div>
 
             {newGoal.milestones.map((milestone, index) => (
@@ -138,7 +146,7 @@ export default function BeautyGoals() {
                 key={index}
                 label={`Milestone ${index + 1}`}
                 value={milestone.description}
-                onChange={e => handleMilestoneChange(index, e.target.value)}
+                onChange={(e) => handleMilestoneChange(index, e.target.value)}
               />
             ))}
           </div>
@@ -147,10 +155,10 @@ export default function BeautyGoals() {
         </Card>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {goals.map(goal => (
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {goals.map((goal) => (
           <Card key={goal.id} className="p-6">
-            <div className="flex justify-between items-start mb-4">
+            <div className="mb-4 flex items-start justify-between">
               <div>
                 <h3 className="text-xl font-semibold">{goal.title}</h3>
                 <p className="text-gray-600">{goal.description}</p>
@@ -159,43 +167,44 @@ export default function BeautyGoals() {
             </div>
 
             <div className="space-y-3">
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <p className="text-sm text-gray-600">
                   Target Date: {new Date(goal.targetDate).toLocaleDateString()}
                 </p>
                 <Select
                   value={goal.status}
-                  onChange={e => handleUpdateStatus(goal.id, e.target.value as typeof goalStatuses[number])}
-                  options={goalStatuses.map(status => ({
+                  onChange={(e) =>
+                    handleUpdateStatus(goal.id, e.target.value as (typeof goalStatuses)[number])
+                  }
+                  options={goalStatuses.map((status) => ({
                     value: status,
-                    label: status.replace('_', ' ').split('_').map(word => 
-                      word.charAt(0).toUpperCase() + word.slice(1)
-                    ).join(' '),
+                    label: status
+                      .replace('_', ' ')
+                      .split('_')
+                      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                      .join(' '),
                   }))}
                 />
               </div>
 
               {goal.milestones.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-medium mb-2">Milestones</h4>
+                  <h4 className="mb-2 text-sm font-medium">Milestones</h4>
                   <div className="space-y-2">
                     {goal.milestones.map((milestone, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-2 text-sm"
-                      >
+                      <div key={index} className="flex items-center gap-2 text-sm">
                         <input
                           type="checkbox"
                           checked={milestone.completed}
                           onChange={() => {
                             const updatedMilestones = goal.milestones.map((m, i) =>
-                              i === index ? { ...m, completed: !m.completed } : m
+                              i === index ? { ...m, completed: !m.completed } : m,
                             );
                             updateBeautyGoal(goal.id, { milestones: updatedMilestones });
                             loadGoals();
                           }}
                         />
-                        <span className={milestone.completed ? 'line-through text-gray-500' : ''}>
+                        <span className={milestone.completed ? 'text-gray-500 line-through' : ''}>
                           {milestone.description}
                         </span>
                       </div>
@@ -209,4 +218,4 @@ export default function BeautyGoals() {
       </div>
     </div>
   );
-} 
+}

@@ -61,7 +61,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
       // Otherwise, use the default fallback UI
       return (
-        <div className="p-4 rounded-lg border border-gray-200 shadow-sm bg-white">
+        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
           <Alert variant="destructive" className="mb-4">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Something went wrong</AlertTitle>
@@ -70,7 +70,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             </AlertDescription>
           </Alert>
 
-          <div className="mt-4 text-gray-600 text-sm">
+          <div className="mt-4 text-sm text-gray-600">
             <p>
               We apologize for the inconvenience. You can try to recover by clicking the button
               below, or navigate to another page.
@@ -96,7 +96,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
  */
 export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
-  errorBoundaryProps: Omit<ErrorBoundaryProps, 'children'> = {}
+  errorBoundaryProps: Omit<ErrorBoundaryProps, 'children'> = {},
 ): React.ComponentType<P> {
   const displayName = Component.displayName || Component.name || 'Component';
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { DataTable, Column } from '@/components/ui/data-table';
 import { useSubscriptions, Subscription } from '@/hooks/use-subscriptions';
 import { useAuth } from '@/hooks/use-unified-auth';
@@ -59,38 +59,38 @@ export default function SubscriptionManagement() {
 
   const subscriptionStats = {
     total: subscriptions.length,
-    active: subscriptions.filter(s => s.status === 'active').length,
-    cancelled: subscriptions.filter(s => s.status === 'cancelled').length,
+    active: subscriptions.filter((s) => s.status === 'active').length,
+    cancelled: subscriptions.filter((s) => s.status === 'cancelled').length,
     revenue: subscriptions
-      .filter(s => s.status === 'active')
+      .filter((s) => s.status === 'active')
       .reduce((acc, curr) => acc + curr.amount, 0),
   };
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">Subscription Management</h1>
+      <h1 className="mb-8 text-3xl font-bold">Subscription Management</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-4">
         <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-2">Total Subscriptions</h3>
+          <h3 className="mb-2 text-lg font-semibold">Total Subscriptions</h3>
           <p className="text-3xl">{subscriptionStats.total}</p>
         </Card>
         <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-2">Active Subscriptions</h3>
+          <h3 className="mb-2 text-lg font-semibold">Active Subscriptions</h3>
           <p className="text-3xl">{subscriptionStats.active}</p>
         </Card>
         <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-2">Cancelled</h3>
+          <h3 className="mb-2 text-lg font-semibold">Cancelled</h3>
           <p className="text-3xl">{subscriptionStats.cancelled}</p>
         </Card>
         <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-2">Monthly Revenue</h3>
+          <h3 className="mb-2 text-lg font-semibold">Monthly Revenue</h3>
           <p className="text-3xl">{formatCurrency(subscriptionStats.revenue)}</p>
         </Card>
       </div>
 
       <Card className="p-6">
-        <div className="flex justify-between items-center mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-semibold">Subscriptions</h2>
           <Button onClick={() => handleCreateSubscription()}>Create Subscription</Button>
         </div>

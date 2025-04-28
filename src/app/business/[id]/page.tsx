@@ -1,9 +1,8 @@
-'use client';
+'use client';;
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
@@ -68,14 +67,14 @@ export default function BusinessPage({ params }: { params: { businessId: string 
       <Layout>
         <div className="container-app py-12">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/2 mb-8"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="h-64 bg-gray-200 rounded"></div>
+            <div className="mb-4 h-8 w-1/4 rounded bg-gray-200"></div>
+            <div className="mb-8 h-4 w-1/2 rounded bg-gray-200"></div>
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              <div className="h-64 rounded bg-gray-200"></div>
               <div className="space-y-4">
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                <div className="h-4 w-3/4 rounded bg-gray-200"></div>
+                <div className="h-4 w-1/2 rounded bg-gray-200"></div>
+                <div className="h-4 w-2/3 rounded bg-gray-200"></div>
               </div>
             </div>
           </div>
@@ -88,8 +87,8 @@ export default function BusinessPage({ params }: { params: { businessId: string 
       <Layout>
         <div className="container-app py-12">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Business not found</h1>
-            <p className="text-muted-foreground mb-6">
+            <h1 className="mb-4 text-2xl font-bold">Business not found</h1>
+            <p className="mb-6 text-muted-foreground">
               The business you're looking for doesn't exist or has been removed.
             </p>
             <Button asChild>
@@ -103,25 +102,25 @@ export default function BusinessPage({ params }: { params: { businessId: string 
   return (
     <Layout>
       <div className="container-app py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* Business Image */}
-          <div className="relative aspect-video rounded-lg overflow-hidden">
+          <div className="relative aspect-video overflow-hidden rounded-lg">
             <img
               src={business.imageUrl}
               alt={business.name}
-              className="object-cover w-full h-full"
+              className="h-full w-full object-cover"
             />
           </div>
           {/* Business Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold mb-2">{business.name}</h1>
-              <div className="flex items-center gap-2 mb-4">
+              <h1 className="mb-2 text-3xl font-bold">{business.name}</h1>
+              <div className="mb-4 flex items-center gap-2">
                 <Badge variant="secondary">{business.category}</Badge>
                 <div className="flex items-center">
                   <Icons.StarIcon className="h-5 w-5 text-yellow-400" />
                   <span className="ml-1">{business.rating.toFixed(1)}</span>
-                  <span className="text-muted-foreground ml-1">
+                  <span className="ml-1 text-muted-foreground">
                     ({business.reviewCount} reviews)
                   </span>
                 </div>
@@ -146,17 +145,17 @@ export default function BusinessPage({ params }: { params: { businessId: string 
         </div>
         {/* Services */}
         <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-6">Services</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {business.services.map(service => (
+          <h2 className="mb-6 text-2xl font-bold">Services</h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {business.services.map((service) => (
               <Card key={service.id}>
                 <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold mb-2">{service.name}</h3>
-                  <p className="text-muted-foreground mb-4">{service.description}</p>
-                  <div className="flex justify-between items-center">
+                  <h3 className="mb-2 text-lg font-semibold">{service.name}</h3>
+                  <p className="mb-4 text-muted-foreground">{service.description}</p>
+                  <div className="flex items-center justify-between">
                     <div>
                       <span className="text-lg font-semibold">${service.price}</span>
-                      <span className="text-muted-foreground ml-2">({service.duration} min)</span>
+                      <span className="ml-2 text-muted-foreground">({service.duration} min)</span>
                     </div>
                     <Button
                       onClick={() => {
@@ -174,18 +173,18 @@ export default function BusinessPage({ params }: { params: { businessId: string 
         </div>
         {/* Reviews */}
         <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-6">Reviews</h2>
+          <h2 className="mb-6 text-2xl font-bold">Reviews</h2>
           <div className="space-y-6">
-            {business.reviews.map(review => (
+            {business.reviews.map((review) => (
               <Card key={review.id}>
                 <CardContent className="p-6">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="mb-2 flex items-center gap-2">
                     <span className="font-semibold">{review.userName}</span>
                     <div className="flex items-center">
                       <Icons.StarIcon className="h-4 w-4 text-yellow-400" />
                       <span className="ml-1">{review.rating}</span>
                     </div>
-                    <span className="text-muted-foreground text-sm">
+                    <span className="text-sm text-muted-foreground">
                       {format(new Date(review.date), 'MMM d, yyyy')}
                     </span>
                   </div>

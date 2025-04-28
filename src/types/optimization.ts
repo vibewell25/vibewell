@@ -96,4 +96,4 @@ export interface OptimizationMetrics {
     memory: number;
     bandwidth: number;
   };
-} 
+}

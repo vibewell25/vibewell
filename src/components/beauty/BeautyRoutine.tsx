@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, Button, Input, Select, Switch } from '@/components/ui';
-import { getRoutines, updateRoutine, createRoutine, Routine, RoutineStep } from '@/lib/api/beauty';
+import { getRoutines, updateRoutine, RoutineStep } from '@/lib/api/beauty';
 
 export default function BeautyRoutine() {
   const [routines, setRoutines] = useState<Routine[]>([]);
@@ -25,7 +25,7 @@ export default function BeautyRoutine() {
     if (!editingRoutine) return;
     try {
       const updatedRoutine = await updateRoutine(editingRoutine);
-      setRoutines(routines.map(r => r.id === updatedRoutine.id ? updatedRoutine : r));
+      setRoutines(routines.map((r) => (r.id === updatedRoutine.id ? updatedRoutine : r)));
       setIsEditing(false);
       setEditingRoutine(null);
     } catch (error) {
@@ -39,24 +39,26 @@ export default function BeautyRoutine() {
     { value: 'weekly', label: 'Weekly Treatment' },
   ];
 
-  const currentRoutine = routines.find(r => r.type === selectedRoutine);
+  const currentRoutine = routines.find((r) => r.type === selectedRoutine);
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Beauty Routine</h2>
         {!isEditing && (
-          <Button onClick={() => {
-            setIsEditing(true);
-            setEditingRoutine(currentRoutine || null);
-          }}>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+              setEditingRoutine(currentRoutine || null);
+            }}
+          >
             Edit Routine
           </Button>
         )}
       </div>
 
       <div className="flex gap-4">
-        {routineTypes.map(type => (
+        {routineTypes.map((type) => (
           <Button
             key={type.value}
             variant={selectedRoutine === type.value ? 'default' : 'outline'}
@@ -70,14 +72,16 @@ export default function BeautyRoutine() {
       {isEditing ? (
         <Card className="p-6">
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold">Edit {routineTypes.find(t => t.value === selectedRoutine)?.label}</h3>
+            <h3 className="text-xl font-semibold">
+              Edit {routineTypes.find((t) => t.value === selectedRoutine)?.label}
+            </h3>
             {editingRoutine?.steps.map((step, index) => (
               <div key={step.id} className="flex items-center gap-4">
                 <Input
                   value={step.order}
                   type="number"
                   className="w-16"
-                  onChange={e => {
+                  onChange={(e) => {
                     const newSteps = [...editingRoutine.steps];
                     newSteps[index] = { ...step, order: parseInt(e.target.value) };
                     setEditingRoutine({ ...editingRoutine, steps: newSteps });
@@ -86,7 +90,7 @@ export default function BeautyRoutine() {
                 <Input
                   value={step.name}
                   className="flex-1"
-                  onChange={e => {
+                  onChange={(e) => {
                     const newSteps = [...editingRoutine.steps];
                     newSteps[index] = { ...step, name: e.target.value };
                     setEditingRoutine({ ...editingRoutine, steps: newSteps });
@@ -100,7 +104,7 @@ export default function BeautyRoutine() {
                     { value: 'moisturize', label: 'Moisturize' },
                     { value: 'protect', label: 'Protection' },
                   ]}
-                  onChange={e => {
+                  onChange={(e) => {
                     const newSteps = [...editingRoutine.steps];
                     newSteps[index] = { ...step, category: e.target.value };
                     setEditingRoutine({ ...editingRoutine, steps: newSteps });
@@ -134,11 +138,14 @@ export default function BeautyRoutine() {
             >
               Add Step
             </Button>
-            <div className="flex justify-end gap-4 mt-4">
-              <Button variant="outline" onClick={() => {
-                setIsEditing(false);
-                setEditingRoutine(null);
-              }}>
+            <div className="mt-4 flex justify-end gap-4">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setIsEditing(false);
+                  setEditingRoutine(null);
+                }}
+              >
                 Cancel
               </Button>
               <Button onClick={handleSaveRoutine}>Save Changes</Button>
@@ -148,21 +155,21 @@ export default function BeautyRoutine() {
       ) : (
         <Card className="p-6">
           <div className="space-y-4">
-            {currentRoutine?.steps.map(step => (
+            {currentRoutine?.steps.map((step) => (
               <div key={step.id} className="flex items-center gap-4">
                 <Switch
                   checked={step.completed}
-                  onCheckedChange={checked => {
+                  onCheckedChange={(checked) => {
                     const updatedRoutine = {
                       ...currentRoutine,
-                      steps: currentRoutine.steps.map(s =>
-                        s.id === step.id ? { ...s, completed: checked } : s
+                      steps: currentRoutine.steps.map((s) =>
+                        s.id === step.id ? { ...s, completed: checked } : s,
                       ),
                     };
                     updateRoutine(updatedRoutine);
-                    setRoutines(routines.map(r =>
-                      r.id === currentRoutine.id ? updatedRoutine : r
-                    ));
+                    setRoutines(
+                      routines.map((r) => (r.id === currentRoutine.id ? updatedRoutine : r)),
+                    );
                   }}
                 />
                 <div className="flex-1">
@@ -177,11 +184,11 @@ export default function BeautyRoutine() {
       )}
 
       <Card className="p-6">
-        <h3 className="text-xl font-semibold mb-4">Routine Progress</h3>
+        <h3 className="mb-4 text-xl font-semibold">Routine Progress</h3>
         <div className="space-y-4">
-          {routineTypes.map(type => {
-            const routine = routines.find(r => r.type === type.value);
-            const completed = routine?.steps.filter(s => s.completed).length || 0;
+          {routineTypes.map((type) => {
+            const routine = routines.find((r) => r.type === type.value);
+            const completed = routine?.steps.filter((s) => s.completed).length || 0;
             const total = routine?.steps.length || 0;
             const progress = total > 0 ? (completed / total) * 100 : 0;
 
@@ -193,9 +200,9 @@ export default function BeautyRoutine() {
                     {completed}/{total} steps completed
                   </span>
                 </div>
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-2 overflow-hidden rounded-full bg-gray-200">
                   <div
-                    className="h-full bg-primary rounded-full transition-all"
+                    className="bg-primary h-full rounded-full transition-all"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
@@ -206,4 +213,4 @@ export default function BeautyRoutine() {
       </Card>
     </div>
   );
-} 
+}

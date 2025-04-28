@@ -98,7 +98,7 @@ export class WAF {
     const dataToCheck = [url, body, ...Object.values(headers)].join(' ');
 
     // Check against WAF rules
-    const violations = WAF_RULES.filter(rule => rule.pattern.test(dataToCheck));
+    const violations = WAF_RULES.filter((rule) => rule.pattern.test(dataToCheck));
 
     if (violations.length > 0) {
       // Log violations
@@ -123,13 +123,13 @@ export class WAF {
       if (recentViolations >= this.MAX_VIOLATIONS) {
         await this.blockIP(
           ip,
-          `Exceeded maximum WAF violations (${recentViolations} in last hour)`
+          `Exceeded maximum WAF violations (${recentViolations} in last hour)`,
         );
         return new NextResponse('Access Denied', { status: 403 });
       }
 
       // Return 400 for less severe violations
-      if (violations.every(v => v.severity === 'low')) {
+      if (violations.every((v) => v.severity === 'low')) {
         return new NextResponse('Bad Request', { status: 400 });
       }
 
@@ -146,7 +146,7 @@ export class WAF {
       `${key}:${Date.now()}`,
       JSON.stringify({ ruleId: rule.id, timestamp: Date.now() }),
       'EX',
-      this.VIOLATION_WINDOW
+      this.VIOLATION_WINDOW,
     );
   }
 

@@ -69,7 +69,7 @@ class ServiceWorkerRegistrationTracker {
    */
   public addEventListener(
     event: ServiceWorkerEvent,
-    callback: EventListenerOrEventListenerObject
+    callback: EventListenerOrEventListenerObject,
   ): void {
     this.eventTarget.addEventListener(event, callback);
   }
@@ -79,7 +79,7 @@ class ServiceWorkerRegistrationTracker {
    */
   public removeEventListener(
     event: ServiceWorkerEvent,
-    callback: EventListenerOrEventListenerObject
+    callback: EventListenerOrEventListenerObject,
   ): void {
     this.eventTarget.removeEventListener(event, callback);
   }
@@ -96,7 +96,7 @@ class ServiceWorkerRegistrationTracker {
    */
   public registerServiceWorker(
     scriptUrl: string,
-    options: RegistrationOptions = {}
+    options: RegistrationOptions = {},
   ): Promise<ServiceWorkerRegistration> {
     // If registration is already in progress, return the existing promise
     if (this.registrationPromise) {
@@ -125,7 +125,7 @@ class ServiceWorkerRegistrationTracker {
       // Attempt to register the service worker
       navigator.serviceWorker
         .register(scriptUrl, { scope })
-        .then(registration => {
+        .then((registration) => {
           // Update status
           this.registrationStatus = {
             status: ServiceWorkerStatus.REGISTERED,
@@ -157,7 +157,7 @@ class ServiceWorkerRegistrationTracker {
 
           resolve(registration);
         })
-        .catch(error => {
+        .catch((error) => {
           // Update status
           this.registrationStatus = {
             status: ServiceWorkerStatus.ERROR,
@@ -193,7 +193,7 @@ class ServiceWorkerRegistrationTracker {
    */
   private setupUpdateHandling(
     registration: ServiceWorkerRegistration,
-    options: RegistrationOptions
+    options: RegistrationOptions,
   ): void {
     // Handle updates
     registration.addEventListener('updatefound', () => {
@@ -265,10 +265,10 @@ class ServiceWorkerRegistrationTracker {
    */
   private handleInstalledServiceWorker(
     registration: ServiceWorkerRegistration,
-    options: RegistrationOptions
+    options: RegistrationOptions,
   ): void {
     // Check for updates
-    registration.update().catch(error => {
+    registration.update().catch((error) => {
       console.error('Error checking for service worker updates:', error);
     });
 
@@ -313,7 +313,7 @@ class ServiceWorkerRegistrationTracker {
     return registration
       .update()
       .then(() => this.registrationStatus.updateAvailable || false)
-      .catch(error => {
+      .catch((error) => {
         console.error('Error checking for updates:', error);
         return false;
       });
@@ -325,12 +325,12 @@ class ServiceWorkerRegistrationTracker {
   public unregisterAll(): Promise<boolean> {
     return navigator.serviceWorker
       .getRegistrations()
-      .then(registrations => {
-        return Promise.all(registrations.map(registration => registration.unregister())).then(
-          results => results.every(Boolean)
+      .then((registrations) => {
+        return Promise.all(registrations.map((registration) => registration.unregister())).then(
+          (results) => results.every(Boolean),
         );
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error unregistering service workers:', error);
         return false;
       })
@@ -348,7 +348,7 @@ class ServiceWorkerRegistrationTracker {
  */
 export function registerServiceWorker(
   scriptUrl = '/service-worker.js',
-  options: RegistrationOptions = {}
+  options: RegistrationOptions = {},
 ): Promise<ServiceWorkerRegistration> {
   // Create and use the singleton tracker
   const tracker = ServiceWorkerRegistrationTracker.getInstance();
@@ -388,7 +388,7 @@ export function getServiceWorkerStatus(): RegistrationStatus {
  */
 export function addServiceWorkerEventListener(
   event: ServiceWorkerEvent,
-  callback: EventListenerOrEventListenerObject
+  callback: EventListenerOrEventListenerObject,
 ): void {
   ServiceWorkerRegistrationTracker.getInstance().addEventListener(event, callback);
 }
@@ -398,7 +398,7 @@ export function addServiceWorkerEventListener(
  */
 export function removeServiceWorkerEventListener(
   event: ServiceWorkerEvent,
-  callback: EventListenerOrEventListenerObject
+  callback: EventListenerOrEventListenerObject,
 ): void {
   ServiceWorkerRegistrationTracker.getInstance().removeEventListener(event, callback);
 }
@@ -417,11 +417,7 @@ export default {
 };
 
 // This is to be used in _app.js or similar entry point
-export const initServiceWorker = () => {
-  if (process.env.NODE_ENV === 'production') {
-    registerServiceWorker();
-  }
-};
+export {};
 
 // For TypeScript support
 declare global {

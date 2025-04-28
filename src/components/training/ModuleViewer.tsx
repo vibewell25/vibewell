@@ -1,15 +1,8 @@
-'use client';
-
+'use client';;
 import { useState, useEffect } from 'react';
 import { Card, Button, TextArea, FileUpload } from '@/components/ui';
 import { createOrUpdateProgress, getModuleProgress } from '@/lib/api/training';
-import { ModuleStatus, TrainingModuleType } from '@prisma/client';
-import { 
-  DocumentTextIcon, 
-  VideoCameraIcon, 
-  ClipboardDocumentCheckIcon,
-  AcademicCapIcon 
-} from '@heroicons/react/24/outline';
+import { TrainingModuleType } from '@prisma/client';
 
 interface ModuleViewerProps {
   moduleId: string;
@@ -82,7 +75,7 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
           // Here you would implement your file upload logic
           // and return the URL of the uploaded file
           return `/uploads/${file.name}`;
-        })
+        }),
       );
 
       const updated = await createOrUpdateProgress({
@@ -107,12 +100,8 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
     switch (module.type) {
       case 'VIDEO':
         return (
-          <div className="aspect-video bg-black rounded-lg">
-            <video
-              src={module.content.videoUrl}
-              controls
-              className="w-full h-full"
-            />
+          <div className="aspect-video rounded-lg bg-black">
+            <video src={module.content.videoUrl} controls className="h-full w-full" />
           </div>
         );
       case 'DOCUMENT':
@@ -126,7 +115,7 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
           <div className="space-y-4">
             {module.content.questions.map((q: any, i: number) => (
               <Card key={i} className="p-4">
-                <h3 className="font-medium mb-2">{q.question}</h3>
+                <h3 className="mb-2 font-medium">{q.question}</h3>
                 <div className="space-y-2">
                   {q.options.map((option: string, j: number) => (
                     <label key={j} className="flex items-center space-x-2">
@@ -150,12 +139,10 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-2xl font-bold">{module.name}</h1>
-            <p className="text-gray-500 mt-1">{module.description}</p>
+            <p className="mt-1 text-gray-500">{module.description}</p>
           </div>
           <div className="flex items-center space-x-2">
-            {!progress && (
-              <Button onClick={handleStart}>Start Module</Button>
-            )}
+            {!progress && <Button onClick={handleStart}>Start Module</Button>}
             {progress?.status === 'IN_PROGRESS' && (
               <Button onClick={handleComplete}>Complete Module</Button>
             )}
@@ -163,10 +150,8 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
         </div>
 
         {progress?.status === 'IN_PROGRESS' && (
-          <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-            <p className="text-sm text-blue-700">
-              Time spent: {Math.round(timeSpent)} minutes
-            </p>
+          <div className="mt-4 rounded-lg bg-blue-50 p-4">
+            <p className="text-sm text-blue-700">Time spent: {Math.round(timeSpent)} minutes</p>
           </div>
         )}
       </Card>
@@ -178,7 +163,7 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
       )}
 
       {progress?.status === 'IN_PROGRESS' && (
-        <Card className="p-6 space-y-4">
+        <Card className="space-y-4 p-6">
           <h2 className="text-lg font-semibold">Notes & Evidence</h2>
           <TextArea
             value={notes}
@@ -196,4 +181,4 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
       )}
     </div>
   );
-} 
+}

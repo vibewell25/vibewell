@@ -45,26 +45,26 @@ export function MarketingNav() {
     return pathname === path || pathname?.startsWith(`${path}/`);
   };
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="rounded-lg bg-white p-4 shadow-md">
       <div
-        className="flex justify-between items-center cursor-pointer mb-4"
+        className="mb-4 flex cursor-pointer items-center justify-between"
         onClick={() => setExpanded(!expanded)}
       >
-        <h3 className="font-semibold text-lg flex items-center">
-          <Icons.MegaphoneIcon className="h-5 w-5 mr-2 text-blue-600" />
+        <h3 className="flex items-center text-lg font-semibold">
+          <Icons.MegaphoneIcon className="mr-2 h-5 w-5 text-blue-600" />
           Marketing
         </h3>
         <button className="text-gray-500 hover:text-gray-700">{expanded ? '−' : '+'}</button>
       </div>
       {expanded && (
         <nav className="mt-2 space-y-1">
-          {marketingCategories.map(item => (
+          {marketingCategories.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className={`flex items-center px-3 py-2 text-sm rounded-md ${
+              className={`flex items-center rounded-md px-3 py-2 text-sm ${
                 isActive(item.href)
-                  ? 'bg-blue-50 text-blue-700 font-medium'
+                  ? 'bg-blue-50 font-medium text-blue-700'
                   : 'text-gray-700 hover:bg-gray-100'
               }`}
             >

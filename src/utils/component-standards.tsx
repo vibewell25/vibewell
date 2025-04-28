@@ -12,8 +12,6 @@ import React, {
 } from 'react';
 import fs from 'fs';
 import path from 'path';
-import { parse as parseTypescript } from '@typescript-eslint/parser';
-import { ESLintUtils } from '@typescript-eslint/utils';
 import { auditComponent } from './component-audit';
 
 // Component categories for organization
@@ -129,7 +127,7 @@ export const COMPONENT_AUDIT_RESULTS: Record<string, ComponentAuditResult> = {
 export function checkComponentStandards(
   componentName: string,
   componentProps: string[],
-  componentImplementation: string
+  componentImplementation: string,
 ): Partial<ComponentStandard> {
   const defaultAudit = {
     name: componentName,
@@ -140,59 +138,13 @@ export function checkComponentStandards(
     complexityScore: 5,
   };
 
-  return COMPONENT_AUDIT_RESULTS[componentName] 
+  return COMPONENT_AUDIT_RESULTS[componentName]
     ? { ...defaultAudit, ...COMPONENT_AUDIT_RESULTS[componentName] }
     : defaultAudit;
 }
 
 // Guidelines for standardization
-export const COMPONENT_GUIDELINES = {
-  naming: {
-    components: 'Use PascalCase for component names (e.g., Button, UserProfile)',
-    props: 'Use camelCase for prop names (e.g., onClick, isDisabled)',
-    events: 'Prefix event handlers with "on" (e.g., onClick, onSubmit)',
-    boolean:
-      'Use positive boolean names without "is" prefix where possible (e.g., disabled instead of isDisabled)',
-  },
-
-  structure: {
-    singleResponsibility: 'Each component should have a single responsibility',
-    composition: 'Prefer composition over inheritance',
-    propsInterface: 'Define a typed interface for component props',
-    defaultProps: 'Provide sensible default props where appropriate',
-    propTypes: 'Use TypeScript for prop type checking',
-  },
-
-  patterns: {
-    hooks: 'Prefer functional components with hooks over class components',
-    context: 'Use context for deeply shared state, props for everything else',
-    hoc: 'Avoid Higher Order Components when hooks can be used instead',
-    renderProps: 'Limit use of render props to specific use cases only',
-    memoization: 'Use React.memo() for pure functional components that render often',
-  },
-
-  accessibility: {
-    semantics: 'Use appropriate semantic HTML elements',
-    aria: 'Include ARIA attributes when needed',
-    keyboard: 'Ensure keyboard navigation works for all interactive elements',
-    focus: 'Maintain clear focus states and management',
-    images: 'Always include alt text for images',
-  },
-
-  styling: {
-    cssModules: 'Use CSS Modules or styled-components for component styling',
-    designTokens: 'Use design tokens for colors, spacing, typography instead of hard-coded values',
-    responsiveness: 'Ensure components work across all supported viewport sizes',
-    darkMode: 'Support light and dark mode where applicable',
-  },
-
-  testing: {
-    coverage: 'Aim for 80% test coverage for critical components',
-    userEvents: 'Test both mouse and keyboard interactions',
-    accessibility: 'Include accessibility tests',
-    snapshots: 'Use snapshot tests sparingly and intentionally',
-  },
-};
+export {};
 
 // Component refactoring suggestions
 export function generateRefactoringSuggestions(componentName: string): string[] {
@@ -234,10 +186,10 @@ export function generateRefactoringSuggestions(componentName: string): string[] 
 // Enhanced component template generation
 export function generateStandardComponent<P extends StandardProps>(
   name: string,
-  props: Array<keyof P> = []
+  props: Array<keyof P> = [],
 ): string {
   const propsInterface = `interface ${name}Props extends StandardProps {
-    ${props.map(prop => `${String(prop)}: string;`).join('\n    ')}
+    ${props.map((prop) => `${String(prop)}: string;`).join('\n    ')}
   }`;
 
   return `import React from 'react';
@@ -275,7 +227,7 @@ ${name}.displayName = '${name}';
 
 // Enhanced prop standardization with type safety
 export function standardizeProps<T extends Record<string, unknown>>(
-  oldProps: T
+  oldProps: T,
 ): Record<string, unknown> {
   const standardPropMappings: Record<string, string> = {
     // Common props standardization
@@ -319,14 +271,14 @@ export function standardizeProps<T extends Record<string, unknown>>(
       acc[standardKey] = value;
       return acc;
     },
-    {} as Record<string, unknown>
+    {} as Record<string, unknown>,
   );
 }
 
 // Type-safe component wrapper with proper return type
 export function withStandardization<P extends StandardProps>(
   WrappedComponent: ComponentType<P>,
-  options: Partial<ComponentStandard> = {}
+  options: Partial<ComponentStandard> = {},
 ): ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<unknown>> {
   const StandardizedComponent = React.forwardRef<unknown, P>((props, ref) => {
     const standardizedProps = standardizeProps(props);
@@ -343,13 +295,13 @@ export function withStandardization<P extends StandardProps>(
 
 // Component audit functions
 export function auditComponentDirectory(
-  directoryPath: string
+  directoryPath: string,
 ): Record<string, Partial<ComponentStandard>> {
   const results: Record<string, Partial<ComponentStandard>> = {};
-  
+
   try {
     const files = fs.readdirSync(directoryPath);
-    
+
     for (const file of files) {
       if (file.match(/\.(tsx|jsx)$/)) {
         const filePath = path.join(directoryPath, file);
@@ -357,7 +309,7 @@ export function auditComponentDirectory(
         results[file] = auditComponent(content, filePath);
       }
     }
-    
+
     return results;
   } catch (error) {
     console.error(`Error auditing directory ${directoryPath}:`, error);
@@ -370,7 +322,8 @@ function determineComponentCategory(content: string): ComponentCategory {
   if (content.includes('form') || content.includes('Form')) return ComponentCategory.Form;
   if (content.includes('nav') || content.includes('Nav')) return ComponentCategory.Navigation;
   if (content.includes('display') || content.includes('Display')) return ComponentCategory.Display;
-  if (content.includes('feedback') || content.includes('Feedback')) return ComponentCategory.Feedback;
+  if (content.includes('feedback') || content.includes('Feedback'))
+    return ComponentCategory.Feedback;
   if (content.includes('ar') || content.includes('AR')) return ComponentCategory.AR;
   if (content.includes('media') || content.includes('Media')) return ComponentCategory.Media;
   if (content.includes('chart') || content.includes('Chart')) return ComponentCategory.Chart;
@@ -381,7 +334,7 @@ function calculateComplexity(content: string): ComponentComplexity {
   const lines = content.split('\n').length;
   const hooks = (content.match(/use[A-Z]/g) || []).length;
   const jsx = (content.match(/<[A-Z][^>]*>/g) || []).length;
-  
+
   if (lines > 300 || hooks > 5 || jsx > 20) return ComponentComplexity.Complex;
   if (lines > 150 || hooks > 3 || jsx > 10) return ComponentComplexity.Compound;
   if (content.includes('Page') || content.includes('Screen')) return ComponentComplexity.Page;
@@ -398,9 +351,9 @@ function extractExpectedProps(content: string): string[] {
   if (!propsMatch) return [];
   return propsMatch[1]
     .split('\n')
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-    .map(line => line.split(':')[0]);
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .map((line) => line.split(':')[0]);
 }
 
 function extractRequiredProps(content: string): string[] {
@@ -408,10 +361,10 @@ function extractRequiredProps(content: string): string[] {
   if (!propsMatch) return [];
   return propsMatch[1]
     .split('\n')
-    .filter(line => !line.includes('?:'))
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-    .map(line => line.split(':')[0]);
+    .filter((line) => !line.includes('?:'))
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .map((line) => line.split(':')[0]);
 }
 
 function checkChildrenUsage(content: string): boolean {
@@ -466,11 +419,7 @@ function checkPerformanceIssues(content: string): boolean {
 }
 
 function checkAccessibilityIssues(content: string): boolean {
-  return (
-    !content.includes('aria-') &&
-    !content.includes('role=') &&
-    content.includes('onClick')
-  );
+  return !content.includes('aria-') && !content.includes('role=') && content.includes('onClick');
 }
 
 function checkDesignSystemCompliance(content: string): boolean {
@@ -522,34 +471,29 @@ function checkStyleImplementation(content: string): boolean {
 }
 
 function checkErrorBoundaryImplementation(content: string): boolean {
-  return (
-    content.includes('componentDidCatch') ||
-    content.includes('ErrorBoundary')
-  );
+  return content.includes('componentDidCatch') || content.includes('ErrorBoundary');
 }
 
 function checkMemoizationImplementation(content: string): boolean {
   return (
-    content.includes('React.memo') ||
-    content.includes('useMemo') ||
-    content.includes('useCallback')
+    content.includes('React.memo') || content.includes('useMemo') || content.includes('useCallback')
   );
 }
 
 export function generateAuditReport(results: Record<string, Partial<ComponentStandard>>): string {
   let report = '# Component Standards Audit Report\n\n';
-  
+
   for (const [file, standard] of Object.entries(results)) {
     report += `## ${file}\n\n`;
-    
+
     for (const [key, value] of Object.entries(standard)) {
       const status = value ? '✅' : '❌';
       report += `- ${status} ${key}\n`;
     }
-    
+
     report += '\n';
   }
-  
+
   return report;
 }
 

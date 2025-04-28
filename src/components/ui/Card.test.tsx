@@ -1,4 +1,4 @@
-/**
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping *//**
  * @vitest-environment jsdom
  */
 import React from 'react';
@@ -36,7 +36,7 @@ describe('Card Components', () => {
       render(<Card variant={variant as any}>Card Content</Card>);
       const card = screen.getByText('Card Content').parentElement;
       const classes = expectedClass.split(' ');
-      classes.forEach(className => {
+      classes.forEach((className) => {
         expect(card).toHaveClass(className);
       });
     });
@@ -144,7 +144,7 @@ describe('Card Components', () => {
           </CardHeader>
           <CardContent>Main Content</CardContent>
           <CardFooter>Footer Content</CardFooter>
-        </Card>
+        </Card>,
       );
 
       expect(screen.getByText('Card Title')).toBeInTheDocument();
@@ -158,7 +158,7 @@ describe('Card Components', () => {
       render(
         <Card onClick={handleClick} isClickable>
           <CardContent>Clickable Content</CardContent>
-        </Card>
+        </Card>,
       );
 
       const card = screen.getByText('Clickable Content').parentElement;
@@ -173,7 +173,7 @@ describe('Card Components', () => {
         <Card isCollapsible onCollapse={handleCollapse}>
           <CardHeader>Collapsible Header</CardHeader>
           <CardContent>Collapsible Content</CardContent>
-        </Card>
+        </Card>,
       );
 
       const collapseButton = screen.getByLabelText('Collapse');
@@ -191,7 +191,7 @@ describe('Card Components', () => {
         </CardHeader>
         <CardContent>Test Content</CardContent>
         <CardFooter>Test Footer</CardFooter>
-      </Card>
+      </Card>,
     );
 
     expect(screen.getByText('Test Title')).toBeInTheDocument();
@@ -206,7 +206,7 @@ describe('Card Components', () => {
         <CardHeader className="custom-header">
           <CardTitle>Title</CardTitle>
         </CardHeader>
-      </Card>
+      </Card>,
     );
     const header = screen.getByText('Title').closest('div');
     expect(header).toHaveClass('custom-header');
@@ -216,7 +216,7 @@ describe('Card Components', () => {
     render(
       <Card>
         <CardContent className="custom-content">Content</CardContent>
-      </Card>
+      </Card>,
     );
     const content = screen.getByText('Content').closest('div');
     expect(content).toHaveClass('custom-content');
@@ -226,7 +226,7 @@ describe('Card Components', () => {
     render(
       <Card>
         <CardFooter className="custom-footer">Footer</CardFooter>
-      </Card>
+      </Card>,
     );
     const footer = screen.getByText('Footer').closest('div');
     expect(footer).toHaveClass('custom-footer');
@@ -245,7 +245,7 @@ describe('Card Components', () => {
         </CardHeader>
         <CardContent ref={contentRef}>Content</CardContent>
         <CardFooter ref={footerRef}>Footer</CardFooter>
-      </Card>
+      </Card>,
     );
 
     expect(cardRef).toHaveBeenCalled();
@@ -268,7 +268,7 @@ describe('Card Components', () => {
             <p>Nested content</p>
           </div>
         </CardContent>
-      </Card>
+      </Card>,
     );
 
     expect(screen.getByText('Nested')).toBeInTheDocument();
@@ -289,7 +289,7 @@ describe('Card Components', () => {
         <CardFooter>
           <button>Action Button</button>
         </CardFooter>
-      </Card>
+      </Card>,
     );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
@@ -303,7 +303,7 @@ describe('Card Components', () => {
           <CardDescription>Card Description</CardDescription>
         </CardHeader>
         <CardContent>Content</CardContent>
-      </Card>
+      </Card>,
     );
 
     const heading = screen.getByRole('heading', { level: 2, name: 'Card Title' });
@@ -318,7 +318,7 @@ describe('Card Components', () => {
           <CardDescription id="card-desc">Card Description</CardDescription>
         </CardHeader>
         <CardContent aria-describedby="card-desc">Main content</CardContent>
-      </Card>
+      </Card>,
     );
 
     const article = screen.getByRole('article');
@@ -338,7 +338,7 @@ describe('Card Components', () => {
           <button>First Button</button>
           <button>Second Button</button>
         </CardContent>
-      </Card>
+      </Card>,
     );
 
     const card = screen.getByRole('generic');
@@ -346,7 +346,7 @@ describe('Card Components', () => {
 
     expect(card).toHaveAttribute('tabindex', '0');
     expect(buttons).toHaveLength(2);
-    buttons.forEach(button => {
+    buttons.forEach((button) => {
       expect(button).toBeVisible();
       expect(button).not.toBeDisabled();
     });

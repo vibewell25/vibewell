@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     console.error('Error generating authentication options:', error);
     return NextResponse.json(
       { error: 'Failed to generate authentication options' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

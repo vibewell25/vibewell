@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from 'next/image';
 import { Participant } from '@/types/messaging';
 import { formatLastSeen } from './utils';
@@ -63,21 +62,21 @@ export function ConversationHeader({
   onVideoCall,
 }: ConversationHeaderProps) {
   return (
-    <div className={`p-4 border-b flex items-center justify-between ${className}`}>
+    <div className={`flex items-center justify-between border-b p-4 ${className}`}>
       <div className="flex items-center space-x-3">
         {showBackButton && (
           <button
             onClick={onBack}
-            className="p-1 rounded-full hover:bg-muted transition-colors"
+            className="rounded-full p-1 transition-colors hover:bg-muted"
             aria-label="Back"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
         )}
 
-        <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center overflow-hidden">
+        <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted">
           {participant?.avatar ? (
-            <div className="relative w-full h-full">
+            <div className="relative h-full w-full">
               <Image
                 src={participant.avatar}
                 alt={participant?.name || 'User'}
@@ -108,7 +107,7 @@ export function ConversationHeader({
           <>
             <button
               onClick={onCall}
-              className="p-2 rounded-full hover:bg-muted transition-colors"
+              className="rounded-full p-2 transition-colors hover:bg-muted"
               aria-label="Call"
               disabled={!onCall}
             >
@@ -117,7 +116,7 @@ export function ConversationHeader({
 
             <button
               onClick={onVideoCall}
-              className="p-2 rounded-full hover:bg-muted transition-colors"
+              className="rounded-full p-2 transition-colors hover:bg-muted"
               aria-label="Video call"
               disabled={!onVideoCall}
             >
@@ -128,7 +127,7 @@ export function ConversationHeader({
 
         <button
           onClick={onMoreOptions}
-          className="p-2 rounded-full hover:bg-muted transition-colors"
+          className="rounded-full p-2 transition-colors hover:bg-muted"
           aria-label="More options"
           disabled={!onMoreOptions}
         >

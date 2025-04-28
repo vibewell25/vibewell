@@ -67,20 +67,20 @@ export function BusinessHubLayout({ children }: BusinessHubLayoutProps) {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-        <div className="flex flex-col flex-grow pt-5 bg-card border-r">
-          <div className="px-4 mb-6">
+      <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
+        <div className="flex flex-grow flex-col border-r bg-card pt-5">
+          <div className="mb-6 px-4">
             <h2 className="text-xl font-bold tracking-tight">Business Hub</h2>
           </div>
-          <nav className="flex-1 px-4 pb-4 space-y-1">
-            {navItems.map(item => {
+          <nav className="flex-1 space-y-1 px-4 pb-4">
+            {navItems.map((item) => {
               const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
 
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center px-4 py-3 rounded-md transition-colors ${
+                  className={`flex items-center rounded-md px-4 py-3 transition-colors ${
                     isActive
                       ? 'bg-primary/10 text-primary'
                       : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
@@ -92,9 +92,9 @@ export function BusinessHubLayout({ children }: BusinessHubLayoutProps) {
               );
             })}
           </nav>
-          <div className="p-4 border-t">
+          <div className="border-t p-4">
             <div className="flex items-center">
-              <div className="w-8 h-8 rounded-full bg-gray-300 mr-3" />
+              <div className="mr-3 h-8 w-8 rounded-full bg-gray-300" />
               <div>
                 <p className="text-sm font-medium">Business Profile</p>
                 <p className="text-xs text-muted-foreground">business@vibewell.com</p>
@@ -105,7 +105,7 @@ export function BusinessHubLayout({ children }: BusinessHubLayoutProps) {
       </div>
 
       {/* Mobile header */}
-      <div className="md:hidden flex items-center border-b py-3 px-4">
+      <div className="flex items-center border-b px-4 py-3 md:hidden">
         <button type="button" className="mr-3 text-gray-500">
           <span className="sr-only">Open sidebar</span>
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -121,10 +121,10 @@ export function BusinessHubLayout({ children }: BusinessHubLayoutProps) {
       </div>
 
       {/* Main content */}
-      <div className="md:pl-64 flex flex-col flex-1">
+      <div className="flex flex-1 flex-col md:pl-64">
         <main className="flex-1">
           <div className="py-6">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">{children}</div>
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">{children}</div>
           </div>
         </main>
       </div>

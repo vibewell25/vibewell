@@ -1,5 +1,4 @@
-import Redis, { RedisOptions, ChainableCommander } from 'ioredis';
-import { createClient } from 'redis';
+import Redis, { RedisOptions } from 'ioredis';
 import { performance } from 'perf_hooks';
 import { logger } from '../utils/logger';
 
@@ -36,7 +35,7 @@ interface RedisConfig {
   host: string;
   port: number;
   password?: string;
-  tls?: TLSConfig | TLSConfig[];  // Support for multiple TLS configurations
+  tls?: TLSConfig | TLSConfig[]; // Support for multiple TLS configurations
   replication?: {
     role: 'master' | 'slave';
     masterHost?: string;
@@ -49,14 +48,16 @@ interface RedisConfig {
 const TEST_OPERATIONS = {
   SET: (client: Redis, data: string) => client.set(`benchmark:key:${Math.random()}`, data),
   GET: (client: Redis) => client.get('benchmark:key:1'),
-  HSET: (client: Redis, data: string) => client.hset(`benchmark:hash:${Math.random()}`, 'field', data),
+  HSET: (client: Redis, data: string) =>
+    client.hset(`benchmark:hash:${Math.random()}`, 'field', data),
   HGET: (client: Redis) => client.hget('benchmark:hash:1', 'field'),
   LPUSH: (client: Redis, data: string) => client.lpush(`benchmark:list:${Math.random()}`, data),
   LPOP: (client: Redis) => client.lpop('benchmark:list:1'),
   SADD: (client: Redis, data: string) => client.sadd(`benchmark:set:${Math.random()}`, data),
   SPOP: (client: Redis) => client.spop('benchmark:set:1'),
-  ZADD: (client: Redis, data: string) => client.zadd(`benchmark:zset:${Math.random()}`, Math.random(), data),
-  ZRANGE: (client: Redis) => client.zrange('benchmark:zset:1', 0, -1)
+  ZADD: (client: Redis, data: string) =>
+    client.zadd(`benchmark:zset:${Math.random()}`, Math.random(), data),
+  ZRANGE: (client: Redis) => client.zrange('benchmark:zset:1', 0, -1),
 } as const;
 
 class RedisManager {
@@ -71,10 +72,18 @@ class RedisManager {
       host: config.host,
       port: config.port,
       ...(config.password && { password: config.password }),
+      ...(config.tls &&
+        !Array.isArray(config.tls) && {
+          tls: {
+            cert: config.tls.cert,
+            key: config.tls.key,
+            ca: [config.tls.ca],
+          },
+        }),
       retryStrategy: (times) => {
         const delay = Math.min(times * 50, 2000);
         return delay;
-      }
+      },
     };
 
     // Initialize main client
@@ -93,10 +102,16 @@ class RedisManager {
             ca: [tlsConfig.ca],
             ...(tlsConfig.protocols && { secureProtocol: tlsConfig.protocols.join(' ') }),
             ...(tlsConfig.cipherSuite && { ciphers: tlsConfig.cipherSuite }),
-            ...(tlsConfig.preferServerCiphers !== undefined && { honorCipherOrder: tlsConfig.preferServerCiphers }),
-            ...(tlsConfig.sessionTimeout !== undefined && { sessionTimeout: tlsConfig.sessionTimeout }),
-            ...(tlsConfig.rejectUnauthorized !== undefined && { rejectUnauthorized: tlsConfig.rejectUnauthorized })
-          }
+            ...(tlsConfig.preferServerCiphers !== undefined && {
+              honorCipherOrder: tlsConfig.preferServerCiphers,
+            }),
+            ...(tlsConfig.sessionTimeout !== undefined && {
+              sessionTimeout: tlsConfig.sessionTimeout,
+            }),
+            ...(tlsConfig.rejectUnauthorized !== undefined && {
+              rejectUnauthorized: tlsConfig.rejectUnauthorized,
+            }),
+          },
         };
 
         const tlsClient = new Redis(tlsOptions);
@@ -108,10 +123,7 @@ class RedisManager {
     // Setup replication if configured
     if (config.replication) {
       if (config.replication.role === 'slave' && config.replication.masterHost) {
-        this.client.slaveof(
-          config.replication.masterHost,
-          config.replication.masterPort ?? 6379
-        );
+        this.client.slaveof(config.replication.masterHost, config.replication.masterPort ?? 6379);
       }
     }
 
@@ -141,21 +153,21 @@ class RedisManager {
 
   private async measureLatency(operation: () => Promise<any>, samples: number): Promise<number[]> {
     const latencies: number[] = [];
-    
+
     for (let i = 0; i < samples; i++) {
       const start = performance.now();
       await operation();
       const end = performance.now();
       latencies.push(end - start);
     }
-    
+
     return latencies;
   }
 
   private calculatePercentile(latencies: number[], percentile: number): number {
     const sorted = [...latencies].sort((a, b) => a - b);
     const index = Math.ceil((percentile / 100) * sorted.length) - 1;
-    return sorted[index] ?? 0;  // Provide default value if undefined
+    return sorted[index] ?? 0; // Provide default value if undefined
   }
 
   public async runBenchmark(options: BenchmarkOptions = {}): Promise<BenchmarkResult[]> {
@@ -164,7 +176,7 @@ class RedisManager {
       dataSize = 100,
       pipeline = false,
       parallel = 1,
-      tests = Object.keys(TEST_OPERATIONS) as Array<keyof typeof TEST_OPERATIONS>
+      tests = Object.keys(TEST_OPERATIONS) as Array<keyof typeof TEST_OPERATIONS>,
     } = options;
 
     const results: BenchmarkResult[] = [];
@@ -183,14 +195,18 @@ class RedisManager {
         await pipeline.exec();
       } else if (parallel > 1) {
         const batchSize = Math.ceil(operations / parallel);
-        const batches = Array(parallel).fill(null).map(() => 
-          Array(batchSize).fill(null).map(() => operation(this.client, testData))
-        );
-        await Promise.all(batches.map(batch => Promise.all(batch)));
+        const batches = Array(parallel)
+          .fill(null)
+          .map(() =>
+            Array(batchSize)
+              .fill(null)
+              .map(() => operation(this.client, testData)),
+          );
+        await Promise.all(batches.map((batch) => Promise.all(batch)));
       } else {
         const operationLatencies = await this.measureLatency(
           () => operation(this.client, testData),
-          operations
+          operations,
         );
         latencies.push(...operationLatencies);
       }
@@ -202,17 +218,18 @@ class RedisManager {
       const memoryInfo = await this.client.info('memory');
       const memoryBefore = memoryInfo.match(/used_memory:(\d+)/)?.[1];
       const memoryAfter = memoryInfo.match(/used_memory:(\d+)/)?.[1];
-      const memoryUsed = memoryBefore && memoryAfter ? 
-        parseInt(memoryAfter) - parseInt(memoryBefore) : 
-        0;
+      const memoryUsed =
+        memoryBefore && memoryAfter ? parseInt(memoryAfter) - parseInt(memoryBefore) : 0;
 
       results.push({
         name: testName,
         opsPerSecond,
-        averageLatency: latencies.length ? latencies.reduce((a, b) => a + b, 0) / latencies.length : 0,
+        averageLatency: latencies.length
+          ? latencies.reduce((a, b) => a + b, 0) / latencies.length
+          : 0,
         p95Latency: latencies.length ? this.calculatePercentile(latencies, 95) : 0,
         p99Latency: latencies.length ? this.calculatePercentile(latencies, 99) : 0,
-        memoryUsed
+        memoryUsed,
       });
 
       // Clean up test data
@@ -225,33 +242,35 @@ class RedisManager {
   public async generateBenchmarkReport(options?: BenchmarkOptions): Promise<string> {
     const results = await this.runBenchmark(options);
     let report = '=== Redis Benchmark Report ===\n\n';
-    
+
     report += `Time: ${new Date().toISOString()}\n`;
     report += `Host: ${this.client.options.host}:${this.client.options.port}\n`;
     report += `Operations: ${options?.operations || 1000}\n`;
     report += `Data Size: ${options?.dataSize || 100} bytes\n`;
     report += `Pipeline: ${options?.pipeline ? 'Yes' : 'No'}\n`;
     report += `Parallel Connections: ${options?.parallel || 1}\n\n`;
-    
+
     report += 'Results:\n';
     report += '-'.repeat(80) + '\n';
-    report += 'Operation'.padEnd(15) + 
-              'Ops/sec'.padEnd(15) + 
-              'Avg Latency'.padEnd(15) + 
-              'P95 Latency'.padEnd(15) + 
-              'P99 Latency'.padEnd(15) + 
-              'Memory Used\n';
+    report +=
+      'Operation'.padEnd(15) +
+      'Ops/sec'.padEnd(15) +
+      'Avg Latency'.padEnd(15) +
+      'P95 Latency'.padEnd(15) +
+      'P99 Latency'.padEnd(15) +
+      'Memory Used\n';
     report += '-'.repeat(80) + '\n';
-    
+
     for (const result of results) {
-      report += `${result.name.padEnd(15)}` +
-                `${Math.round(result.opsPerSecond).toString().padEnd(15)}` +
-                `${Math.round(result.averageLatency)}ms`.padEnd(15) +
-                `${Math.round(result.p95Latency)}ms`.padEnd(15) +
-                `${Math.round(result.p99Latency)}ms`.padEnd(15) +
-                `${Math.round(result.memoryUsed / 1024)}KB\n`;
+      report +=
+        `${result.name.padEnd(15)}` +
+        `${Math.round(result.opsPerSecond).toString().padEnd(15)}` +
+        `${Math.round(result.averageLatency)}ms`.padEnd(15) +
+        `${Math.round(result.p95Latency)}ms`.padEnd(15) +
+        `${Math.round(result.p99Latency)}ms`.padEnd(15) +
+        `${Math.round(result.memoryUsed / 1024)}KB\n`;
     }
-    
+
     return report;
   }
 
@@ -260,14 +279,15 @@ class RedisManager {
       host: config.host,
       port: config.port,
       ...(config.password && { password: config.password }),
-      ...(config.tls && !Array.isArray(config.tls) && {
-        tls: {
-          port: config.tls.port,
-          cert: config.tls.cert,
-          key: config.tls.key,
-          ca: [config.tls.ca]
-        }
-      })
+      ...(config.tls &&
+        !Array.isArray(config.tls) && {
+          tls: {
+            port: config.tls.port,
+            cert: config.tls.cert,
+            key: config.tls.key,
+            ca: [config.tls.ca],
+          },
+        }),
     };
 
     const slave = new Redis(redisOptions);
@@ -283,7 +303,7 @@ class RedisManager {
 
   public async removeSlave(host: string, port: number): Promise<void> {
     const index = this.slaves.findIndex(
-      (slave) => slave.options.host === host && slave.options.port === port
+      (slave) => slave.options.host === host && slave.options.port === port,
     );
 
     if (index !== -1) {
@@ -313,7 +333,7 @@ class RedisManager {
         const info = await this.client.info('persistence');
         saving = info.includes('rdb_bgsave_in_progress:1');
         if (saving) {
-          await new Promise(resolve => setTimeout(resolve, 100));
+          await new Promise((resolve) => setTimeout(resolve, 100));
         }
       }
 
@@ -334,7 +354,7 @@ class RedisManager {
       if (options.saveFrequency) {
         // First, disable all existing save points
         await this.client.config('SET', 'save', '');
-        
+
         // Then add new save points
         for (const { seconds, changes } of options.saveFrequency) {
           await this.client.config('SET', 'save', `${seconds} ${changes}`);
@@ -351,7 +371,10 @@ class RedisManager {
         await this.client.config('SET', 'dbfilename', options.filename);
       }
     } catch (error) {
-      logger.error('Error configuring RDB:', error instanceof Error ? error.message : 'Unknown error');
+      logger.error(
+        'Error configuring RDB:',
+        error instanceof Error ? error.message : 'Unknown error',
+      );
       throw error;
     }
   }
@@ -367,7 +390,7 @@ class RedisManager {
     try {
       // Configure slave
       await this.client.slaveof(options.masterHost, options.masterPort);
-      
+
       if (options.masterAuth) {
         await this.client.auth(options.masterAuth);
       }
@@ -391,11 +414,14 @@ class RedisManager {
         const syncStatus = info.match(/master_sync_in_progress:(\d)/)?.[1];
         syncing = syncStatus === '1';
         if (syncing) {
-          await new Promise(resolve => setTimeout(resolve, 100));
+          await new Promise((resolve) => setTimeout(resolve, 100));
         }
       }
     } catch (error) {
-      logger.error('Error configuring slave:', error instanceof Error ? error.message : 'Unknown error');
+      logger.error(
+        'Error configuring slave:',
+        error instanceof Error ? error.message : 'Unknown error',
+      );
       throw error;
     }
   }
@@ -415,7 +441,7 @@ class RedisManager {
     const info = await this.client.info('replication');
     const role = info.match(/role:(\w+)/)?.[1] || 'unknown';
     const connectedSlaves = parseInt(info.match(/connected_slaves:(\d+)/)?.[1] || '0');
-    
+
     const slaves = [];
     for (let i = 0; i < connectedSlaves; i++) {
       const slaveInfo = info.match(new RegExp(`slave${i}:([^\n]+)`))?.[1];
@@ -427,7 +453,7 @@ class RedisManager {
           port: parseInt(port),
           state: state || 'unknown',
           offset: parseInt(offset),
-          lag: parseInt(lag)
+          lag: parseInt(lag),
         });
       }
     }
@@ -435,7 +461,7 @@ class RedisManager {
     return {
       role,
       connectedSlaves,
-      slaves
+      slaves,
     };
   }
 
@@ -447,28 +473,28 @@ class RedisManager {
   private parseSlaveInfo(info: string): any[] {
     const slaves: any[] = [];
     const lines = info.split('\n');
-    
+
     for (const line of lines) {
       if (line.startsWith('slave')) {
         const parts = line.split(':');
         if (parts.length < 2) continue;
-        
+
         const [, index] = parts;
         const details = parts[2];
         if (!details) continue;
 
         const slaveDetails = details.split(',');
         if (slaveDetails.length < 3) continue;
-        
+
         slaves.push({
           id: index,
           ip: slaveDetails[0] || 'unknown',
           port: parseInt(slaveDetails[1] || '0'),
-          state: slaveDetails[2] || 'unknown'
+          state: slaveDetails[2] || 'unknown',
         });
       }
     }
-    
+
     return slaves;
   }
 
@@ -477,13 +503,13 @@ class RedisManager {
       const info = await this.client.info();
       const memory = await this.client.info('memory');
       const cpu = await this.client.info('cpu');
-      
+
       const metrics = {
         memory: this.parseMemoryInfo(memory),
         cpu: this.parseCPUInfo(cpu),
-        general: this.parseGeneralInfo(info)
+        general: this.parseGeneralInfo(info),
       };
-      
+
       logger.info('Redis Performance Metrics: ' + JSON.stringify(metrics));
     }, interval);
   }
@@ -491,7 +517,7 @@ class RedisManager {
   private parseMemoryInfo(info: string): Record<string, number> {
     const metrics: Record<string, number> = {};
     const lines = info.split('\n');
-    
+
     for (const line of lines) {
       if (line.includes('used_memory') || line.includes('maxmemory')) {
         const parts = line.split(':');
@@ -502,14 +528,14 @@ class RedisManager {
         }
       }
     }
-    
+
     return metrics;
   }
 
   private parseCPUInfo(info: string): Record<string, number> {
     const metrics: Record<string, number> = {};
     const lines = info.split('\n');
-    
+
     for (const line of lines) {
       if (line.includes('used_cpu')) {
         const parts = line.split(':');
@@ -520,18 +546,20 @@ class RedisManager {
         }
       }
     }
-    
+
     return metrics;
   }
 
   private parseGeneralInfo(info: string): Record<string, number> {
     const metrics: Record<string, number> = {};
     const lines = info.split('\n');
-    
+
     for (const line of lines) {
-      if (line.includes('connected_clients') || 
-          line.includes('total_connections_received') ||
-          line.includes('total_commands_processed')) {
+      if (
+        line.includes('connected_clients') ||
+        line.includes('total_connections_received') ||
+        line.includes('total_commands_processed')
+      ) {
         const parts = line.split(':');
         if (parts.length !== 2) continue;
         const [key, value] = parts;
@@ -540,7 +568,7 @@ class RedisManager {
         }
       }
     }
-    
+
     return metrics;
   }
 
@@ -555,7 +583,14 @@ class RedisManager {
     }
   }
 
-  public async configureTLS(config: TLSConfig): Promise<void> {
+  public async configureTLS(options: TLSConfig | number[]): Promise<void> {
+    if (Array.isArray(options)) {
+      for (const port of options) {
+        await this.client.config('SET', 'tls-port', port.toString());
+      }
+      return;
+    }
+    const config = options as TLSConfig;
     try {
       // Configure TLS settings
       const port = config.port.toString();
@@ -582,7 +617,11 @@ class RedisManager {
       }
 
       if (typeof config.preferServerCiphers === 'boolean') {
-        await this.client.config('SET', 'tls-prefer-server-ciphers', config.preferServerCiphers ? 'yes' : 'no');
+        await this.client.config(
+          'SET',
+          'tls-prefer-server-ciphers',
+          config.preferServerCiphers ? 'yes' : 'no',
+        );
       }
 
       if (typeof config.sessionTimeout === 'number') {
@@ -600,17 +639,24 @@ class RedisManager {
           ca: [config.ca],
           ...(config.protocols && { secureProtocol: config.protocols.join(' ') }),
           ...(config.cipherSuite && { ciphers: config.cipherSuite }),
-          ...(config.preferServerCiphers !== undefined && { honorCipherOrder: config.preferServerCiphers }),
+          ...(config.preferServerCiphers !== undefined && {
+            honorCipherOrder: config.preferServerCiphers,
+          }),
           ...(config.sessionTimeout !== undefined && { sessionTimeout: config.sessionTimeout }),
-          ...(config.rejectUnauthorized !== undefined && { rejectUnauthorized: config.rejectUnauthorized })
-        }
+          ...(config.rejectUnauthorized !== undefined && {
+            rejectUnauthorized: config.rejectUnauthorized,
+          }),
+        },
       };
 
       const tlsClient = new Redis(tlsOptions);
       this.tlsClients.set(config.port, tlsClient);
       this.setupEventHandlers(tlsClient, `TLS Client (Port ${config.port})`);
     } catch (error) {
-      logger.error('Error configuring TLS:', error instanceof Error ? error.message : 'Unknown error');
+      logger.error(
+        'Error configuring TLS:',
+        error instanceof Error ? error.message : 'Unknown error',
+      );
       throw error;
     }
   }
@@ -630,9 +676,29 @@ class RedisManager {
       enabled: info.includes('tls_enabled:1'),
       ports: Array.from(this.tlsClients.keys()),
       activeConnections: this.tlsClients.size,
-      authClients: info.match(/tls_auth_clients:(\w+)/)?.[1] || 'unknown'
+      authClients: info.match(/tls_auth_clients:(\w+)/)?.[1] || 'unknown',
     };
+  }
+
+  public async getSlaveClients(): Promise<Redis[]> {
+    return this.slaves;
+  }
+
+  public async enableRDB(options: { filename: string; frequency: number }): Promise<void> {
+    await this.client.config('SET', 'dbfilename', options.filename);
+    await this.client.config('SET', 'save', `${options.frequency} 1`);
+  }
+
+  public parseBenchmarkResults(
+    output: string,
+  ): Record<string, { requestsPerSecond: number; averageLatency: number }> {
+    const results: Record<string, { requestsPerSecond: number; averageLatency: number }> = {};
+    for (const line of output.trim().split('\n')) {
+      const [name, ops, lat] = line.split(',');
+      results[name] = { requestsPerSecond: Number(ops), averageLatency: Number(lat) };
+    }
+    return results;
   }
 }
 
-export default RedisManager; 
+export default RedisManager;

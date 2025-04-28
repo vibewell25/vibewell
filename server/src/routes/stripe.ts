@@ -1,16 +1,20 @@
 // @ts-nocheck
 import express, { Router, Request, Response } from 'express';
 import Stripe from 'stripe';
-import dotenv from 'dotenv';
 import prisma from '../prismaClient';
 import { checkJwt } from '../middleware/auth';
 
-dotenv.config();
+// Env vars loaded in index.ts; skip dotenv here
 
 const router: Router = Router();
 const stripeKey = process.env.STRIPE_SECRET_KEY;
-if (!stripeKey) throw new Error('STRIPE_SECRET_KEY not set');
-const stripe = new Stripe(stripeKey, { apiVersion: '2025-03-31.basil' });
+if (!stripeKey && process.env.NODE_ENV !== 'test') throw new Error('STRIPE_SECRET_KEY not set');
+let stripe: any;
+if (stripeKey) {
+  stripe = new Stripe(stripeKey, { apiVersion: '2025-03-31.basil' });
+} else {
+  stripe = {} as any;
+}
 
 // Subscription management endpoints
 router.get('/subscriptions', checkJwt, async (req: Request, res: Response) => {

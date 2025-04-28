@@ -177,7 +177,7 @@ export function detectDevicePerformanceProfile(): DevicePerformanceProfile {
  */
 export function throttle<T extends (...args: any[]) => any>(
   func: T,
-  limit: number
+  limit: number,
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean = false;
   let lastFunc: ReturnType<typeof setTimeout>;
@@ -201,7 +201,7 @@ export function throttle<T extends (...args: any[]) => any>(
             lastRan = Date.now();
           }
         },
-        limit - (Date.now() - lastRan)
+        limit - (Date.now() - lastRan),
       );
     }
   };
@@ -229,8 +229,8 @@ export function optimizeImages(maxWidth: number = 1200): void {
   // Check if Intersection Observer is available
   if ('IntersectionObserver' in window) {
     // Create observer for images
-    const imageObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
+    const imageObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const img = entry.target as HTMLImageElement;
 
@@ -257,7 +257,7 @@ export function optimizeImages(maxWidth: number = 1200): void {
 
     // Setup enhanced image loading
     setTimeout(() => {
-      document.querySelectorAll('img:not([loading])').forEach(img => {
+      document.querySelectorAll('img:not([loading])').forEach((img) => {
         // Skip images that are in the viewport or marked as eager
         if (img.getAttribute('loading') === 'eager') return;
 
@@ -298,7 +298,7 @@ export function optimizeImages(maxWidth: number = 1200): void {
   } else {
     // Fallback for browsers without Intersection Observer
     setTimeout(() => {
-      document.querySelectorAll('img:not([loading])').forEach(img => {
+      document.querySelectorAll('img:not([loading])').forEach((img) => {
         img.setAttribute('loading', 'lazy');
       });
     }, 1000);
@@ -310,7 +310,7 @@ export function optimizeImages(maxWidth: number = 1200): void {
  */
 function getOptimizedImageUrl(
   originalUrl: string,
-  options: { width?: number; quality?: number } = {}
+  options: { width?: number; quality?: number } = {},
 ): string {
   const { width, quality } = options;
 
@@ -351,8 +351,8 @@ export function setupDynamicCodeSplitting(): void {
   // Register preloading for visible components
   if ('IntersectionObserver' in window) {
     const preloadObserver = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
+      (entries) => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const element = entry.target;
             const modulePath = element.getAttribute('data-module');
@@ -371,17 +371,17 @@ export function setupDynamicCodeSplitting(): void {
       },
       {
         rootMargin: '200px', // Preload when within 200px of viewport
-      }
+      },
     );
 
     // Observe elements marked for preloading
-    document.querySelectorAll('[data-module]').forEach(element => {
+    document.querySelectorAll('[data-module]').forEach((element) => {
       preloadObserver.observe(element);
     });
   }
 
   // Preload modules for next likely navigation
-  document.querySelectorAll('a[data-preload]').forEach(link => {
+  document.querySelectorAll('a[data-preload]').forEach((link) => {
     link.addEventListener('mouseenter', () => {
       const modulePath = link.getAttribute('data-preload');
       if (modulePath) {
@@ -463,8 +463,8 @@ export function monitorPerformance(): PerformanceMetrics {
   }
 
   // Resource load times
-  const observer = new PerformanceObserver(list => {
-    list.getEntries().forEach(entry => {
+  const observer = new PerformanceObserver((list) => {
+    list.getEntries().forEach((entry) => {
       if (entry.entryType === 'resource') {
         const resourceEntry = entry as PerformanceResourceTiming;
         metrics.resourceLoadTimes[resourceEntry.name] = resourceEntry.duration;
@@ -475,7 +475,7 @@ export function monitorPerformance(): PerformanceMetrics {
   observer.observe({ entryTypes: ['resource'] });
 
   // Interaction delay monitoring
-  document.addEventListener('click', event => {
+  document.addEventListener('click', (event) => {
     const startTime = performance.now();
 
     // Measure time until visual feedback
@@ -550,7 +550,7 @@ export function applyAllMobileOptimizations(options: MobileOptimizationOptions =
         window.dispatchEvent(
           new CustomEvent('memory-pressure', {
             detail: { level: 'high', usage: metrics.memoryUsage },
-          })
+          }),
         );
       }
     }, 10000);

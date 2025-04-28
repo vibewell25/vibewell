@@ -52,7 +52,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     if (!updated) {
       return NextResponse.json(
         { error: 'Conversation not found or no messages to mark as read' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 

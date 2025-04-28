@@ -22,7 +22,7 @@ export interface ShareData {
 
 export class SharingService {
   static async shareImage(
-    data: ShareData
+    data: ShareData,
   ): Promise<{ success: boolean; shareId?: string; error?: string }> {
     try {
       // Generate a unique ID for the share

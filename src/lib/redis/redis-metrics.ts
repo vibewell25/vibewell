@@ -228,21 +228,21 @@ export async function calculateRedisStats(): Promise<Record<string, any>> {
     // Calculate averages, min, max for key metrics
     const stats = {
       period: {
-        from: Math.min(...metrics.map(m => m.timestamp)),
-        to: Math.max(...metrics.map(m => m.timestamp)),
+        from: Math.min(...metrics.map((m) => m.timestamp)),
+        to: Math.max(...metrics.map((m) => m.timestamp)),
       },
       memory: {
-        avg: average(metrics.map(m => m.usedMemory)),
-        max: Math.max(...metrics.map(m => m.usedMemory)),
-        trend: calculateTrend(metrics.map(m => m.usedMemory)),
+        avg: average(metrics.map((m) => m.usedMemory)),
+        max: Math.max(...metrics.map((m) => m.usedMemory)),
+        trend: calculateTrend(metrics.map((m) => m.usedMemory)),
       },
       hitRate: {
-        avg: average(metrics.map(m => m.hitRate)),
-        min: Math.min(...metrics.map(m => m.hitRate)),
+        avg: average(metrics.map((m) => m.hitRate)),
+        min: Math.min(...metrics.map((m) => m.hitRate)),
       },
       connections: {
-        avg: average(metrics.map(m => m.connectedClients)),
-        max: Math.max(...metrics.map(m => m.connectedClients)),
+        avg: average(metrics.map((m) => m.connectedClients)),
+        max: Math.max(...metrics.map((m) => m.connectedClients)),
       },
       rateLimiting: {
         totalBlocked: metrics[0]?.rateLimitMetrics.blockedIPs || 0,

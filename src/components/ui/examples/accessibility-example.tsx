@@ -5,7 +5,6 @@ import {
   AccessibleDialog,
   AccessibleIcon,
   FormErrorMessage,
-  LiveAnnouncer,
   ScreenReaderOnly,
   SkipLink,
   VisuallyHidden,
@@ -39,7 +38,7 @@ export function AccessibilityExample() {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="mx-auto w-full max-w-2xl">
       <CardHeader>
         <CardTitle>Accessibility Components Demo</CardTitle>
         <CardDescription>
@@ -49,9 +48,9 @@ export function AccessibilityExample() {
 
       <CardContent className="space-y-6">
         {/* SkipLink example - Only visible when tabbing */}
-        <div className="border p-4 rounded-md relative">
-          <h3 className="font-medium mb-2">SkipLink</h3>
-          <p className="text-sm text-muted-foreground mb-4">
+        <div className="relative rounded-md border p-4">
+          <h3 className="mb-2 font-medium">SkipLink</h3>
+          <p className="mb-4 text-sm text-muted-foreground">
             This component is only visible when tabbed to. Try pressing Tab key.
           </p>
           <SkipLink targetId="main-content" />
@@ -66,9 +65,9 @@ export function AccessibilityExample() {
         </div>
 
         {/* ScreenReaderOnly example */}
-        <div className="border p-4 rounded-md">
-          <h3 className="font-medium mb-2">ScreenReaderOnly</h3>
-          <p className="text-sm text-muted-foreground mb-4">
+        <div className="rounded-md border p-4">
+          <h3 className="mb-2 font-medium">ScreenReaderOnly</h3>
+          <p className="mb-4 text-sm text-muted-foreground">
             This content is only visible to screen readers, not to sighted users.
           </p>
           <div className="flex items-center gap-2">
@@ -80,9 +79,9 @@ export function AccessibilityExample() {
         </div>
 
         {/* VisuallyHidden example */}
-        <div className="border p-4 rounded-md">
-          <h3 className="font-medium mb-2">VisuallyHidden</h3>
-          <p className="text-sm text-muted-foreground mb-4">
+        <div className="rounded-md border p-4">
+          <h3 className="mb-2 font-medium">VisuallyHidden</h3>
+          <p className="mb-4 text-sm text-muted-foreground">
             Similar to ScreenReaderOnly but with a different implementation.
           </p>
           <div className="flex items-center gap-2">
@@ -94,9 +93,9 @@ export function AccessibilityExample() {
         </div>
 
         {/* AccessibleIcon example */}
-        <div className="border p-4 rounded-md">
-          <h3 className="font-medium mb-2">AccessibleIcon</h3>
-          <p className="text-sm text-muted-foreground mb-4">
+        <div className="rounded-md border p-4">
+          <h3 className="mb-2 font-medium">AccessibleIcon</h3>
+          <p className="mb-4 text-sm text-muted-foreground">
             Makes icons accessible to screen readers.
           </p>
           <div className="flex items-center gap-4">
@@ -117,9 +116,9 @@ export function AccessibilityExample() {
         </div>
 
         {/* FormErrorMessage example */}
-        <div className="border p-4 rounded-md">
-          <h3 className="font-medium mb-2">FormErrorMessage</h3>
-          <p className="text-sm text-muted-foreground mb-4">
+        <div className="rounded-md border p-4">
+          <h3 className="mb-2 font-medium">FormErrorMessage</h3>
+          <p className="mb-4 text-sm text-muted-foreground">
             Properly associates error messages with form fields.
           </p>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -128,7 +127,7 @@ export function AccessibilityExample() {
               <Input
                 id="name"
                 value={name}
-                onChange={e => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 aria-describedby={nameError ? 'name-error' : undefined}
                 aria-invalid={Boolean(nameError)}
               />
@@ -139,9 +138,9 @@ export function AccessibilityExample() {
         </div>
 
         {/* AccessibleDialog example */}
-        <div className="border p-4 rounded-md">
-          <h3 className="font-medium mb-2">AccessibleDialog & LiveAnnouncer</h3>
-          <p className="text-sm text-muted-foreground mb-4">
+        <div className="rounded-md border p-4">
+          <h3 className="mb-2 font-medium">AccessibleDialog & LiveAnnouncer</h3>
+          <p className="mb-4 text-sm text-muted-foreground">
             Dialog with proper focus management and announcements.
           </p>
           <Button onClick={() => setIsDialogOpen(true)}>Open Dialog</Button>
@@ -154,7 +153,7 @@ export function AccessibilityExample() {
             footer={<Button onClick={() => setIsDialogOpen(false)}>Close</Button>}
           >
             <p>This dialog follows accessibility best practices:</p>
-            <ul className="list-disc pl-6 mt-2 space-y-1">
+            <ul className="mt-2 list-disc space-y-1 pl-6">
               <li>Focus is trapped inside the dialog</li>
               <li>Focus returns to the trigger when closed</li>
               <li>ESC key closes the dialog</li>

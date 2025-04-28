@@ -17,4 +17,4 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps): React.R
   );
 }
 
-export default AnalyticsProvider; 
+export default AnalyticsProvider;

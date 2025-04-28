@@ -1,9 +1,7 @@
-'use client';
-
-import { useState, ReactNode } from 'react';
+'use client';;
+import { ReactNode } from 'react';
 import Link from 'next/link';
 import { Icons } from '@/components/icons';
-import { ROUTES } from '@/constants/routes';
 
 export interface AuthFormProps {
   type: 'login' | 'signup' | 'forgotPassword' | 'resetPassword';
@@ -39,9 +37,9 @@ export function AuthForm({
 }: AuthFormProps) {
   if (isSuccessful && successContent) {
     return (
-      <div className="container max-w-md mx-auto py-8 px-4">
-        <div className="flex flex-col items-center mb-8">
-          <Icons.logo className="h-12 w-12 mb-4 text-primary" />
+      <div className="container mx-auto max-w-md px-4 py-8">
+        <div className="mb-8 flex flex-col items-center">
+          <Icons.logo className="text-primary mb-4 h-12 w-12" />
           {successContent}
         </div>
       </div>
@@ -49,21 +47,21 @@ export function AuthForm({
   }
 
   return (
-    <div className="container max-w-md mx-auto py-8 px-4">
-      <div className="flex flex-col items-center mb-8">
-        <Icons.logo className="h-12 w-12 mb-4 text-primary" />
-        <h1 className="text-2xl font-bold mb-2">{title}</h1>
-        {subtitle && <p className="text-muted-foreground text-center">{subtitle}</p>}
+    <div className="container mx-auto max-w-md px-4 py-8">
+      <div className="mb-8 flex flex-col items-center">
+        <Icons.logo className="text-primary mb-4 h-12 w-12" />
+        <h1 className="mb-2 text-2xl font-bold">{title}</h1>
+        {subtitle && <p className="text-center text-muted-foreground">{subtitle}</p>}
       </div>
 
       {error && (
-        <div className="bg-destructive/20 text-destructive p-3 rounded-md mb-4">{error}</div>
+        <div className="mb-4 rounded-md bg-destructive/20 p-3 text-destructive">{error}</div>
       )}
 
       {children}
 
       {footerText && footerLink && (
-        <p className="text-center mt-6 text-sm text-muted-foreground">
+        <p className="mt-6 text-center text-sm text-muted-foreground">
           {footerText}{' '}
           <Link href={footerLink.href} className="text-primary hover:underline">
             {footerLink.text}
@@ -119,7 +117,7 @@ export function AuthFormInput({
         onChange={onChange}
         required={required}
         minLength={minLength}
-        className="w-full p-2 border rounded-md"
+        className="w-full rounded-md border p-2"
         disabled={disabled}
       />
       {helpText && <p className="text-xs text-muted-foreground">{helpText}</p>}
@@ -145,7 +143,7 @@ export function AuthSubmitButton({
   return (
     <button
       type="submit"
-      className="w-full bg-primary text-primary-foreground py-2 rounded-md font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+      className="bg-primary text-primary-foreground hover:bg-primary/90 w-full rounded-md py-2 font-medium transition-colors disabled:opacity-50"
       disabled={isLoading || disabled}
     >
       {isLoading ? loadingText || 'Loading...' : text}

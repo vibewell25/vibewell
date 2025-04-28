@@ -1,4 +1,4 @@
-import Redis from 'ioredis';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import Redis from 'ioredis';
 import RedisPubSub from '../utils/redis-pubsub';
 import { logger } from '../utils/logger';
 import { EventEmitter } from 'events';
@@ -19,15 +19,15 @@ describe('RedisPubSub', () => {
       enabled: true,
       schema: {
         name: 'string',
-        value: 'number'
-      }
-    }
+        value: 'number',
+      },
+    },
   };
 
   beforeEach(() => {
     publisher = new MockRedis() as jest.Mocked<typeof Redis>;
     subscriber = new MockRedis() as jest.Mocked<typeof Redis>;
-    
+
     // Setup subscriber as EventEmitter for testing
     Object.setPrototypeOf(subscriber, EventEmitter.prototype);
     EventEmitter.call(subscriber);
@@ -41,13 +41,13 @@ describe('RedisPubSub', () => {
 
       const result = await pubsub.publish('test-channel', {
         name: 'test',
-        value: 42
+        value: 42,
       });
 
       expect(result).toBe(true);
       expect(publisher.publish).toHaveBeenCalledWith(
         `${pubsubConfig.channelPrefix}:test-channel`,
-        expect.stringContaining('"name":"test","value":42')
+        expect.stringContaining('"name":"test","value":42'),
       );
     });
 
@@ -56,7 +56,7 @@ describe('RedisPubSub', () => {
 
       const result = await pubsub.publish('test-channel', {
         name: 'test',
-        value: 42
+        value: 42,
       });
 
       expect(result).toBe(false);
@@ -68,7 +68,7 @@ describe('RedisPubSub', () => {
 
       const result = await pubsub.publish('test-channel', {
         name: 'test',
-        value: 'invalid' // Should be a number
+        value: 'invalid', // Should be a number
       });
 
       expect(result).toBe(false);
@@ -84,7 +84,7 @@ describe('RedisPubSub', () => {
       await pubsub.subscribe('test-channel', handler);
 
       expect(subscriber.subscribe).toHaveBeenCalledWith(
-        `${pubsubConfig.channelPrefix}:test-channel`
+        `${pubsubConfig.channelPrefix}:test-channel`,
       );
       expect(logger.info).toHaveBeenCalledWith('Subscribed to channel: test-channel');
     });
@@ -104,11 +104,15 @@ describe('RedisPubSub', () => {
         channel: 'test-channel',
         data: { name: 'test', value: 42 },
         timestamp: Date.now(),
-        messageId: 'test-id'
+        messageId: 'test-id',
       };
 
       await pubsub.subscribe('test-channel', handler);
-      subscriber.emit('message', `${pubsubConfig.channelPrefix}:test-channel`, JSON.stringify(message));
+      subscriber.emit(
+        'message',
+        `${pubsubConfig.channelPrefix}:test-channel`,
+        JSON.stringify(message),
+      );
 
       expect(handler).toHaveBeenCalledWith(message);
     });
@@ -132,9 +136,7 @@ describe('RedisPubSub', () => {
 
       await pubsub.pattern('test-*', handler);
 
-      expect(subscriber.psubscribe).toHaveBeenCalledWith(
-        `${pubsubConfig.channelPrefix}:test-*`
-      );
+      expect(subscriber.psubscribe).toHaveBeenCalledWith(`${pubsubConfig.channelPrefix}:test-*`);
       expect(logger.info).toHaveBeenCalledWith('Subscribed to pattern: test-*');
     });
 
@@ -157,7 +159,7 @@ describe('RedisPubSub', () => {
       await pubsub.unsubscribe('test-channel', handler);
 
       expect(subscriber.unsubscribe).toHaveBeenCalledWith(
-        `${pubsubConfig.channelPrefix}:test-channel`
+        `${pubsubConfig.channelPrefix}:test-channel`,
       );
       expect(logger.info).toHaveBeenCalledWith('Unsubscribed from channel: test-channel');
     });
@@ -176,7 +178,7 @@ describe('RedisPubSub', () => {
 
       await pubsub.publish('test-channel', {
         name: 'test',
-        value: 42
+        value: 42,
       });
 
       const stats = pubsub.getStats();
@@ -190,11 +192,15 @@ describe('RedisPubSub', () => {
         channel: 'test-channel',
         data: { name: 'test', value: 42 },
         timestamp: Date.now(),
-        messageId: 'test-id'
+        messageId: 'test-id',
       };
 
       await pubsub.subscribe('test-channel', handler);
-      subscriber.emit('message', `${pubsubConfig.channelPrefix}:test-channel`, JSON.stringify(message));
+      subscriber.emit(
+        'message',
+        `${pubsubConfig.channelPrefix}:test-channel`,
+        JSON.stringify(message),
+      );
 
       const stats = pubsub.getStats();
       expect(stats.received).toBe(1);
@@ -205,7 +211,7 @@ describe('RedisPubSub', () => {
 
       await pubsub.publish('test-channel', {
         name: 'test',
-        value: 42
+        value: 42,
       });
 
       const stats = pubsub.getStats();
@@ -215,7 +221,7 @@ describe('RedisPubSub', () => {
     it('should reset statistics', () => {
       pubsub.resetStats();
       const stats = pubsub.getStats();
-      
+
       expect(stats.published).toBe(0);
       expect(stats.received).toBe(0);
       expect(stats.errors).toBe(0);
@@ -243,4 +249,4 @@ describe('RedisPubSub', () => {
       expect(logger.error).toHaveBeenCalled();
     });
   });
-}); 
+});

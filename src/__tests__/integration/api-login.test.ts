@@ -1,4 +1,4 @@
-/// <reference types="jest" />
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping *//// <reference types="jest" />
 
 // Add type declaration for toHaveProperty matcher
 declare global {
@@ -117,8 +117,8 @@ describe('Login API Endpoint', () => {
     applyRateLimit.mockResolvedValue(
       NextResponse.json(
         { error: 'Too many requests', retryAfter: 60 },
-        { status: 429, headers: { 'Retry-After': '60' } }
-      )
+        { status: 429, headers: { 'Retry-After': '60' } },
+      ),
     );
 
     // Create a sample request

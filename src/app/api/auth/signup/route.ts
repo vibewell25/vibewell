@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { z } from 'zod';
 import { signupRateLimiter, applyRateLimit } from '../rate-limit-middleware';
 import { prisma } from '@/lib/database/client';
-import { handleAuth, handleSignup } from '@auth0/nextjs-auth0';
+import { handleSignup } from '@auth0/nextjs-auth0';
 
 // Schema for validating signup request
 const signupSchema = z.object({
@@ -38,7 +37,7 @@ export async function POST(req: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -97,7 +96,7 @@ export async function POST(req: NextRequest) {
           {
             user_metadata: { role },
             app_metadata: { role },
-          }
+          },
         );
       }
 

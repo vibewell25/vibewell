@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { MobileLayout } from '@/components/layout/MobileLayout';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/Card';
 import { ThemeSelector } from '@/components/theme-selector';
 import Link from 'next/link';
 import { Icons } from '@/components/icons';
@@ -23,40 +23,40 @@ export default function MobileDashboardPage() {
   return (
     <MobileLayout>
       <div className="px-5 py-6">
-        <div className="flex justify-between items-center mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">He Kōrero Yourservii</p>
             <h1 className="text-2xl font-bold">Hi, {user.name}</h1>
           </div>
-          <div className="flex space-x-2 items-center">
+          <div className="flex items-center space-x-2">
             {/* Theme selector */}
             <ThemeSelector showColorThemes />
             {/* Notifications */}
             <div className="relative">
               <Link href="/notifications">
-                <Icons.BellIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                <Icons.BellIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
+                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
                   3
                 </span>
               </Link>
             </div>
             {/* Settings */}
             <Link href="/profile/settings">
-              <Icons.Cog6ToothIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+              <Icons.Cog6ToothIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
             </Link>
           </div>
         </div>
         <Card className="mb-4">
           <CardContent className="p-4">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold">Booking Overview</h2>
-              <Link href="/bookings" className="flex items-center text-primary text-sm">
+              <Link href="/bookings" className="text-primary flex items-center text-sm">
                 <span>View</span>
-                <Icons.ChevronRightIcon className="w-4 h-4 ml-1" />
+                <Icons.ChevronRightIcon className="ml-1 h-4 w-4" />
               </Link>
             </div>
             <div className="mt-4 flex items-center">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+              <div className="bg-primary/10 mr-3 flex h-10 w-10 items-center justify-center rounded-full">
                 <span className="text-primary">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +64,7 @@ export default function MobileDashboardPage() {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-5 h-5"
+                    className="h-5 w-5"
                   >
                     <path
                       strokeLinecap="round"
@@ -84,8 +84,8 @@ export default function MobileDashboardPage() {
         <Card className="mb-4">
           <CardContent className="p-4">
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
-                <Icons.UserIcon className="w-5 h-5 text-primary" />
+              <div className="bg-primary/10 mr-3 flex h-10 w-10 items-center justify-center rounded-full">
+                <Icons.UserIcon className="text-primary h-5 w-5" />
               </div>
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{user.role}</p>
@@ -95,7 +95,7 @@ export default function MobileDashboardPage() {
           </CardContent>
         </Card>
         <div className="mt-8">
-          <div className="flex justify-between items-center mb-3">
+          <div className="mb-3 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Clients</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">Notification</p>
           </div>

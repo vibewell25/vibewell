@@ -1,10 +1,8 @@
-'use client';
-
-import React from 'react';
+'use client';;
 import ProductMetricsDashboard from '@/components/analytics/product-metrics-dashboard';
 import FeedbackDashboard from '@/components/analytics/feedback-dashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useParams } from 'next/navigation';
 
 export default function ProductAnalytics() {

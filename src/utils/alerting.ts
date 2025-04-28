@@ -1,4 +1,3 @@
-import { performanceMonitor } from './performance-monitoring';
 import { performanceTestSuite } from './performance-testing';
 
 interface AlertConfig {
@@ -109,14 +108,14 @@ class AlertingSystem {
 
   private async checkMetrics() {
     const testResults = await performanceTestSuite.runAllTests();
-    
+
     for (const config of this.configs) {
-      const metric = testResults.find(r => r.metrics[config.metric]);
-      
+      const metric = testResults.find((r) => r.metrics[config.metric]);
+
       if (metric && metric.metrics[config.metric] > config.threshold) {
         const lastAlertTime = this.lastAlerts.get(config.name) || 0;
         const cooldownInMs = config.cooldown * 60 * 1000;
-        
+
         if (Date.now() - lastAlertTime > cooldownInMs) {
           await this.createAlert(config, metric.metrics[config.metric]);
         }
@@ -216,7 +215,7 @@ class AlertingSystem {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Token token=${config.apiKey}`,
+        Authorization: `Token token=${config.apiKey}`,
       },
       body: JSON.stringify(payload),
     });
@@ -245,13 +244,13 @@ class AlertingSystem {
 
   private pruneOldAlerts() {
     const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
-    this.alerts = this.alerts.filter(alert => 
-      Date.now() - alert.timestamp < ONE_WEEK || !alert.acknowledged
+    this.alerts = this.alerts.filter(
+      (alert) => Date.now() - alert.timestamp < ONE_WEEK || !alert.acknowledged,
     );
   }
 
   public acknowledgeAlert(alertId: string, userId: string): void {
-    const alert = this.alerts.find(a => a.id === alertId);
+    const alert = this.alerts.find((a) => a.id === alertId);
     if (alert) {
       alert.acknowledged = true;
       alert.acknowledgedBy = userId;
@@ -260,12 +259,12 @@ class AlertingSystem {
   }
 
   public getActiveAlerts(): Alert[] {
-    return this.alerts.filter(alert => !alert.acknowledged);
+    return this.alerts.filter((alert) => !alert.acknowledged);
   }
 
   public getAlertHistory(days: number = 7): Alert[] {
-    const cutoff = Date.now() - (days * 24 * 60 * 60 * 1000);
-    return this.alerts.filter(alert => alert.timestamp >= cutoff);
+    const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+    return this.alerts.filter((alert) => alert.timestamp >= cutoff);
   }
 
   public addAlertConfig(config: AlertConfig): void {
@@ -273,11 +272,11 @@ class AlertingSystem {
   }
 
   public removeAlertConfig(name: string): void {
-    this.configs = this.configs.filter(config => config.name !== name);
+    this.configs = this.configs.filter((config) => config.name !== name);
   }
 
   public updateAlertConfig(name: string, updates: Partial<AlertConfig>): void {
-    const config = this.configs.find(c => c.name === name);
+    const config = this.configs.find((c) => c.name === name);
     if (config) {
       Object.assign(config, updates);
     }
@@ -288,4 +287,4 @@ class AlertingSystem {
   }
 }
 
-export const alertingSystem = AlertingSystem.getInstance(); 
+export {};

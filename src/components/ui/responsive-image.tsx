@@ -137,7 +137,7 @@ export function ResponsiveImage({
   const imageStyles = cn(
     'transition-opacity duration-300',
     isLoading ? 'opacity-0' : 'opacity-100',
-    className
+    className,
   );
 
   // Return appropriate loading placeholder while image is loading

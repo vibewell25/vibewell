@@ -1,8 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import '@testing-library/jest-dom';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 describe('Button Component', () => {
   test('renders the button with default properties', () => {
@@ -62,7 +60,7 @@ describe('Button Component', () => {
     render(
       <Button asChild>
         <a href="https://example.com">Link Button</a>
-      </Button>
+      </Button>,
     );
 
     const linkButton = screen.getByRole('link', { name: /link button/i });
@@ -75,7 +73,7 @@ describe('Button Component', () => {
     render(
       <Button disabled data-testid="test-button">
         Disabled Button
-      </Button>
+      </Button>,
     );
 
     const button = screen.getByTestId('test-button');

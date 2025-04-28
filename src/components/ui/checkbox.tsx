@@ -38,7 +38,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         'h-4 w-4 rounded border-gray-300',
         error ? 'border-red-300' : 'border-gray-300',
         variantClasses[variant],
-        className
+        className,
       )}
       containerClassName="relative flex items-start"
       {...props}

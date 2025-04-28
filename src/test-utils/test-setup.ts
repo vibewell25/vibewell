@@ -1,7 +1,6 @@
 import React from 'react';
 import { render as rtlRender, screen, fireEvent, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 import * as THREE from 'three';
 
@@ -19,7 +18,7 @@ interface CustomRenderResult {
 
 const customRender = (
   ui: React.ReactElement,
-  options?: CustomRenderOptions
+  options?: CustomRenderOptions,
 ): CustomRenderResult => {
   const user = userEvent.setup();
   const result = rtlRender(ui, options);
@@ -58,8 +57,8 @@ const mockWebGLContext = {
 HTMLCanvasElement.prototype.getContext = () => mockWebGLContext.getContext();
 
 // Mock requestAnimationFrame
-global.requestAnimationFrame = vi.fn(callback => setTimeout(callback, 0));
-global.cancelAnimationFrame = vi.fn(id => clearTimeout(id));
+global.requestAnimationFrame = vi.fn((callback) => setTimeout(callback, 0));
+global.cancelAnimationFrame = vi.fn((id) => clearTimeout(id));
 
 // Mock ResizeObserver
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
@@ -90,7 +89,7 @@ vi.mock('@react-three/fiber', async () => {
   return {
     ...actual,
     Canvas: vi.fn(({ children }) =>
-      React.createElement('div', { 'data-testid': 'canvas' }, children)
+      React.createElement('div', { 'data-testid': 'canvas' }, children),
     ),
     useFrame: vi.fn(),
     useThree: vi.fn(() => ({
@@ -109,10 +108,10 @@ vi.mock('@react-three/drei', async () => {
     Environment: vi.fn(() => null),
     OrbitControls: vi.fn(() => null),
     useGLTF: vi.fn(() => ({ scene: new THREE.Group() })),
-    Box: vi.fn(props => React.createElement('mesh', props)),
-    Sphere: vi.fn(props => React.createElement('mesh', props)),
-    Cylinder: vi.fn(props => React.createElement('mesh', props)),
-    TransformControls: vi.fn(props => React.createElement('group', props)),
+    Box: vi.fn((props) => React.createElement('mesh', props)),
+    Sphere: vi.fn((props) => React.createElement('mesh', props)),
+    Cylinder: vi.fn((props) => React.createElement('mesh', props)),
+    TransformControls: vi.fn((props) => React.createElement('group', props)),
   };
 });
 

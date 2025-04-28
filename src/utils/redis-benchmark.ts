@@ -32,7 +32,7 @@ class RedisBenchmark {
       port: config.port,
       password: config.password,
       maxRetriesPerRequest: 0,
-      enableOfflineQueue: false
+      enableOfflineQueue: false,
     });
     this.results = new Map();
   }
@@ -49,24 +49,26 @@ class RedisBenchmark {
 
   private async runOperation(
     name: string,
-    operation: () => Promise<void>
+    operation: () => Promise<void>,
   ): Promise<BenchmarkResult> {
     const latencies: number[] = [];
     let errors = 0;
     const startTime = Date.now();
 
-    const tasks = Array(this.config.operations).fill(null).map(async () => {
-      const opStart = process.hrtime();
-      try {
-        await operation();
-        const [seconds, nanoseconds] = process.hrtime(opStart);
-        latencies.push(seconds * 1000 + nanoseconds / 1e6);
-      } catch (error) {
-        errors++;
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        logger.error(`Error in benchmark operation ${name}:`, errorMessage);
-      }
-    });
+    const tasks = Array(this.config.operations)
+      .fill(null)
+      .map(async () => {
+        const opStart = process.hrtime();
+        try {
+          await operation();
+          const [seconds, nanoseconds] = process.hrtime(opStart);
+          latencies.push(seconds * 1000 + nanoseconds / 1e6);
+        } catch (error) {
+          errors++;
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          logger.error(`Error in benchmark operation ${name}:`, errorMessage);
+        }
+      });
 
     // Run operations in parallel batches
     for (let i = 0; i < tasks.length; i += this.config.parallel) {
@@ -84,7 +86,7 @@ class RedisBenchmark {
       avgLatency: latencies.reduce((a, b) => a + b, 0) / latencies.length,
       p95Latency: this.calculatePercentile(latencies, 95),
       p99Latency: this.calculatePercentile(latencies, 99),
-      errors
+      errors,
     };
 
     this.results.set(name, result);
@@ -117,7 +119,7 @@ class RedisBenchmark {
       await this.redis.hset(hash, {
         field1: data,
         field2: data,
-        field3: data
+        field3: data,
       });
     });
   }
@@ -127,11 +129,11 @@ class RedisBenchmark {
     return this.runOperation('PIPELINE', async () => {
       const pipeline = this.redis.pipeline();
       const key = `bench:pipeline:${Math.random().toString(36).substring(7)}`;
-      
+
       pipeline.set(key, data);
       pipeline.get(key);
       pipeline.del(key);
-      
+
       await pipeline.exec();
     });
   }
@@ -139,12 +141,14 @@ class RedisBenchmark {
   public async benchmarkParallel(): Promise<BenchmarkResult> {
     const data = this.generateData(this.config.dataSize);
     return this.runOperation('PARALLEL', async () => {
-      const promises = Array(10).fill(null).map(async (_, i) => {
-        const key = `bench:parallel:${i}:${Math.random().toString(36).substring(7)}`;
-        await this.redis.set(key, data);
-        await this.redis.get(key);
-        await this.redis.del(key);
-      });
+      const promises = Array(10)
+        .fill(null)
+        .map(async (_, i) => {
+          const key = `bench:parallel:${i}:${Math.random().toString(36).substring(7)}`;
+          await this.redis.set(key, data);
+          await this.redis.get(key);
+          await this.redis.del(key);
+        });
       await Promise.all(promises);
     });
   }
@@ -156,7 +160,7 @@ class RedisBenchmark {
       await this.benchmarkHSet();
       await this.benchmarkPipeline();
       await this.benchmarkParallel();
-      
+
       return this.results;
     } finally {
       await this.cleanup();
@@ -180,7 +184,7 @@ class RedisBenchmark {
   public printResults(): void {
     console.log('\nRedis Benchmark Results:');
     console.log('=======================');
-    
+
     this.results.forEach((result) => {
       console.log(`\nOperation: ${result.operation}`);
       console.log(`Total Time: ${result.totalTime}ms`);
@@ -193,4 +197,4 @@ class RedisBenchmark {
   }
 }
 
-export default RedisBenchmark; 
+export default RedisBenchmark;

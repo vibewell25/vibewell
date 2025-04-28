@@ -1,12 +1,10 @@
 import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
-import { Event } from '@/types/events';
 import { getUpcomingEvents, registerForEvent, cancelEventRegistration } from '@/lib/api/events';
 import { useAuth } from '@/hooks/use-unified-auth';
 import { format, parseISO } from 'date-fns';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';
 import Link from 'next/link';
 import { EventShareCard } from './event-share-card';
 interface CommunityEventsSectionProps {
@@ -44,12 +42,11 @@ export function CommunityEventsSection({
   const handleEventShare = async (eventId: string) => {
     if (!user?.id) return;
     try {
-      const event = events.find(e => e.id === eventId);
+      const event = events.find((e) => e.id === eventId);
       if (!event) return;
-      const postContent = `I'm excited about this event! 🎉\n\n${event.title}\n${event.shortDescription}\n\nJoin me at ${format(parseISO(event.startDate), 'MMM d, yyyy h:mm a')}`;
       // In a real app, this would create a post in the social feed
       console.log('Sharing event:', event.title);
-      setSharedEvents(prev => ({ ...prev, [eventId]: true }));
+      setSharedEvents((prev) => ({ ...prev, [eventId]: true }));
     } catch (err) {
       console.error('Error sharing event:', err);
     }
@@ -65,10 +62,10 @@ export function CommunityEventsSection({
           eventId,
           user.id,
           user.user_metadata?.full_name || 'Anonymous',
-          user.user_metadata?.avatar_url
+          user.user_metadata?.avatar_url,
         );
       }
-      setSharedEvents(prev => ({ ...prev, [eventId]: !isAttending }));
+      setSharedEvents((prev) => ({ ...prev, [eventId]: !isAttending }));
       // Refresh events
       const upcomingEvents = await getUpcomingEvents(limit);
       setEvents(upcomingEvents);
@@ -78,7 +75,7 @@ export function CommunityEventsSection({
   };
   return (
     <div className={className}>
-      <div className="flex justify-between items-center mb-6">
+      <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold">{title}</h2>
         <div className="flex items-center gap-2">
           {showCreateButton && user && (
@@ -94,28 +91,28 @@ export function CommunityEventsSection({
         </div>
       </div>
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {Array(limit)
             .fill(0)
             .map((_, idx) => (
               <Card key={idx} className="animate-pulse">
                 <CardHeader>
-                  <div className="h-4 bg-muted rounded w-3/4"></div>
+                  <div className="h-4 w-3/4 rounded bg-muted"></div>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-3 bg-muted rounded w-1/2 mb-4"></div>
-                  <div className="h-2 bg-muted rounded w-full mb-2"></div>
-                  <div className="h-2 bg-muted rounded w-2/3"></div>
+                  <div className="mb-4 h-3 w-1/2 rounded bg-muted"></div>
+                  <div className="mb-2 h-2 w-full rounded bg-muted"></div>
+                  <div className="h-2 w-2/3 rounded bg-muted"></div>
                 </CardContent>
                 <CardFooter>
-                  <div className="h-8 bg-muted rounded w-24"></div>
+                  <div className="h-8 w-24 rounded bg-muted"></div>
                 </CardFooter>
               </Card>
             ))}
         </div>
       ) : events.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {events.map(event => (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {events.map((event) => (
             <EventShareCard
               key={event.id}
               event={event}
@@ -128,8 +125,8 @@ export function CommunityEventsSection({
       ) : (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-8">
-            <Icons.CalendarIcon className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground text-center mb-4">No upcoming community events.</p>
+            <Icons.CalendarIcon className="mb-4 h-12 w-12 text-muted-foreground" />
+            <p className="mb-4 text-center text-muted-foreground">No upcoming community events.</p>
             {user && (
               <Link href="/events/create">
                 <Button>Create an Event</Button>

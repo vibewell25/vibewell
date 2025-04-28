@@ -33,10 +33,10 @@ export default function ReviewCard({
         stars.push(
           <Star
             key={i}
-            className="h-5 w-5 text-yellow-400 fill-yellow-400"
+            className="h-5 w-5 fill-yellow-400 text-yellow-400"
             aria-hidden="true"
             fill="currentColor"
-          />
+          />,
         );
       } else {
         stars.push(<Star key={i} className="h-5 w-5 text-yellow-400" aria-hidden="true" />);
@@ -46,9 +46,9 @@ export default function ReviewCard({
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow p-4 ${compact ? 'mb-2' : 'mb-4'}`}>
+    <div className={`rounded-lg bg-white p-4 shadow ${compact ? 'mb-2' : 'mb-4'}`}>
       <div className="flex items-start">
-        <div className="flex-shrink-0 mr-4">
+        <div className="mr-4 flex-shrink-0">
           {customer.avatar_url ? (
             <Image
               src={customer.avatar_url}
@@ -58,8 +58,8 @@ export default function ReviewCard({
               className="rounded-full object-cover"
             />
           ) : (
-            <div className="h-12 w-12 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center">
-              <span className="text-white font-medium text-lg">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-purple-500 to-indigo-600">
+              <span className="text-lg font-medium text-white">
                 {customer.name.charAt(0).toUpperCase()}
               </span>
             </div>
@@ -72,8 +72,8 @@ export default function ReviewCard({
               {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
             </p>
           </div>
-          <div className="flex mt-1 mb-2">{renderStars(rating)}</div>
-          <h4 className="font-semibold text-lg text-gray-800 mb-1">{title}</h4>
+          <div className="mb-2 mt-1 flex">{renderStars(rating)}</div>
+          <h4 className="mb-1 text-lg font-semibold text-gray-800">{title}</h4>
           {!compact && <p className="text-gray-600">{text}</p>}
           {compact && text.length > 120 ? (
             <p className="text-gray-600">{text.substring(0, 120)}...</p>

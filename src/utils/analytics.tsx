@@ -122,7 +122,7 @@ class AnalyticsService {
         } catch (error) {
           console.warn(
             'Failed to load analytics providers:',
-            error instanceof Error ? error.message : 'Unknown error'
+            error instanceof Error ? error.message : 'Unknown error',
           );
           // Ensure we have at least the console provider
           if (this.providers.length === 0) {
@@ -142,7 +142,7 @@ class AnalyticsService {
     } catch (error) {
       console.error(
         'Failed to initialize analytics:',
-        error instanceof Error ? error.message : 'Unknown error'
+        error instanceof Error ? error.message : 'Unknown error',
       );
     }
   }
@@ -156,7 +156,7 @@ class AnalyticsService {
         const { eventName, eventType, properties } = event;
         console.groupCollapsed(
           `%c Analytics: ${eventType} - ${eventName}`,
-          'color: #3498db; font-weight: bold;'
+          'color: #3498db; font-weight: bold;',
         );
         console.log('Properties:', properties);
         console.log('Timestamp:', new Date(event.timestamp).toISOString());
@@ -167,7 +167,7 @@ class AnalyticsService {
         console.log(
           `%c Analytics: Set User ${userId}`,
           'color: #2ecc71; font-weight: bold;',
-          props
+          props,
         );
       },
     });
@@ -178,25 +178,25 @@ class AnalyticsService {
    */
   private async initializeProviders(): Promise<void> {
     try {
-      await Promise.all(this.providers.map(p => p.initialize()));
+      await Promise.all(this.providers.map((p) => p.initialize()));
       this.initialized = true;
       this.retryCount = 0;
     } catch (error) {
       this.retryCount++;
       console.error(
         `Analytics initialization failed (attempt ${this.retryCount}/${this.MAX_RETRIES}):`,
-        error instanceof Error ? error.message : 'Unknown error'
+        error instanceof Error ? error.message : 'Unknown error',
       );
 
       if (this.retryCount < this.MAX_RETRIES) {
         // Retry with exponential backoff
         const delay = this.RETRY_DELAY * Math.pow(2, this.retryCount - 1);
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise((resolve) => setTimeout(resolve, delay));
         return this.initializeProviders();
       } else {
         // Max retries reached, set initialized to avoid infinite retries
         console.warn(
-          'Max analytics initialization retries reached, some events may not be tracked'
+          'Max analytics initialization retries reached, some events may not be tracked',
         );
         this.initialized = true;
       }
@@ -237,7 +237,7 @@ class AnalyticsService {
     this.userProperties = { ...this.userProperties, ...properties };
 
     // Update user in all providers
-    this.providers.forEach(provider => {
+    this.providers.forEach((provider) => {
       try {
         provider.setUser(userId, this.userProperties);
       } catch (error) {
@@ -268,7 +268,7 @@ class AnalyticsService {
     this.sessionId = this.generateSessionId();
 
     // Update in providers
-    this.providers.forEach(provider => {
+    this.providers.forEach((provider) => {
       try {
         provider.setUser('anonymous');
       } catch (error) {
@@ -283,7 +283,7 @@ class AnalyticsService {
   private trackEvent(
     eventType: EventType,
     eventName: string,
-    properties: Partial<BaseProperties> = {}
+    properties: Partial<BaseProperties> = {},
   ): void {
     if (this.disabled) {
       return;
@@ -306,13 +306,13 @@ class AnalyticsService {
       return;
     }
 
-    this.providers.forEach(provider => {
+    this.providers.forEach((provider) => {
       try {
         provider.trackEvent(event);
       } catch (error) {
         console.error(
           'Error tracking event:',
-          error instanceof Error ? error.message : 'Unknown error'
+          error instanceof Error ? error.message : 'Unknown error',
         );
       }
     });
@@ -325,13 +325,13 @@ class AnalyticsService {
     while (this.queue.length > 0) {
       const event = this.queue.shift();
       if (event) {
-        this.providers.forEach(provider => {
+        this.providers.forEach((provider) => {
           try {
             provider.trackEvent(event);
           } catch (error) {
             console.error(
               'Error processing queued event:',
-              error instanceof Error ? error.message : 'Unknown error'
+              error instanceof Error ? error.message : 'Unknown error',
             );
           }
         });
@@ -372,7 +372,7 @@ class AnalyticsService {
    */
   public trackPageView(
     pagePath: string,
-    properties: Partial<PageViewProperties> = { pagePath }
+    properties: Partial<PageViewProperties> = { pagePath },
   ): void {
     const pageViewProps: PageViewProperties = {
       pagePath,
@@ -432,7 +432,7 @@ export const trackError = (errorName: string, properties: Partial<ErrorPropertie
 
 export const trackPerformance = (
   metricName: string,
-  properties: Partial<PerformanceProperties>
+  properties: Partial<PerformanceProperties>,
 ): void => analyticsService.trackPerformance(metricName, properties);
 
 export const setUser = (userId: string, properties?: Partial<UserProperties>): void =>

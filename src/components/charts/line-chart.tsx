@@ -27,7 +27,7 @@ interface LineChartProps {
 export default function LineChart({ data, lines, xAxisKey, grid = true }: LineChartProps) {
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-muted-foreground">
+      <div className="flex h-full items-center justify-center text-muted-foreground">
         No data available
       </div>
     );

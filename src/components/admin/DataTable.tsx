@@ -7,8 +7,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
 import {
   ColumnDef,
   flexRender,
@@ -45,7 +45,7 @@ const columns: ColumnDef<User & { subscriptions: Subscription[]; bookings: Booki
     header: 'Subscription Status',
     cell: ({ row }) => {
       const subscriptions = row.original.subscriptions;
-      const activeSubscription = subscriptions.find(sub => sub.status === 'active');
+      const activeSubscription = subscriptions.find((sub) => sub.status === 'active');
       return activeSubscription ? 'Active' : 'Inactive';
     },
   },
@@ -86,7 +86,7 @@ export function DataTable({ data }: DataTableProps) {
         <Input
           placeholder="Filter users..."
           value={filtering}
-          onChange={e => setFiltering(e.target.value)}
+          onChange={(e) => setFiltering(e.target.value)}
           className="max-w-sm"
         />
       </div>
@@ -94,9 +94,9 @@ export function DataTable({ data }: DataTableProps) {
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map(headerGroup => (
+            {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
+                {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
@@ -108,9 +108,9 @@ export function DataTable({ data }: DataTableProps) {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
+              table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map(cell => (
+                  {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>

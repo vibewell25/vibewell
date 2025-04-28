@@ -36,7 +36,7 @@ export default function BarChart({
 }: BarChartProps) {
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-muted-foreground">
+      <div className="flex h-full items-center justify-center text-muted-foreground">
         No data available
       </div>
     );

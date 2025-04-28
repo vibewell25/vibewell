@@ -2,8 +2,8 @@
 
 import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { StarRating } from '@/components/star-rating';
 import { getUserRating, saveRating, getAverageRating } from '@/lib/ratings';
 import { formatDistanceToNow } from 'date-fns';
@@ -37,7 +37,7 @@ export function getResourceReviews(resourceId: string, resourceType: string): Re
     const storedReviews = localStorage.getItem(REVIEWS_STORAGE_KEY);
     const allReviews: Review[] = storedReviews ? JSON.parse(storedReviews) : [];
     return allReviews.filter(
-      review => review.resourceId === resourceId && review.resourceType === resourceType
+      (review) => review.resourceId === resourceId && review.resourceType === resourceType,
     );
   } catch (error) {
     console.error('Error retrieving reviews:', error);
@@ -54,10 +54,10 @@ export function addReview(review: Omit<Review, 'id' | 'createdAt'>): Review {
     const allReviews: Review[] = storedReviews ? JSON.parse(storedReviews) : [];
     // Check if user already reviewed this resource
     const existingIndex = allReviews.findIndex(
-      r =>
+      (r) =>
         r.resourceId === review.resourceId &&
         r.resourceType === review.resourceType &&
-        r.userId === review.userId
+        r.userId === review.userId,
     );
     const newReview = {
       ...review,
@@ -105,10 +105,10 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
       setReviews(resourceReviews);
       // Check if user already reviewed
       if (user) {
-        const hasReviewed = resourceReviews.some(review => review.userId === user.id);
+        const hasReviewed = resourceReviews.some((review) => review.userId === user.id);
         setUserReviewed(hasReviewed);
         if (hasReviewed) {
-          const userReview = resourceReviews.find(review => review.userId === user.id);
+          const userReview = resourceReviews.find((review) => review.userId === user.id);
           if (userReview) {
             setReviewTitle(userReview.title);
             setReviewComment(userReview.comment);
@@ -145,9 +145,9 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
       const savedReview = addReview(review);
       // Update local state
       setUserReviewed(true);
-      setReviews(prev => {
+      setReviews((prev) => {
         const newReviews = [...prev];
-        const existingIndex = newReviews.findIndex(r => r.userId === user.id);
+        const existingIndex = newReviews.findIndex((r) => r.userId === user.id);
         if (existingIndex >= 0) {
           newReviews[existingIndex] = savedReview;
         } else {
@@ -179,15 +179,15 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
   };
   return (
     <div className="mt-8 border-t border-gray-200 pt-6">
-      <h3 className="text-xl font-semibold mb-4">Ratings & Reviews</h3>
+      <h3 className="mb-4 text-xl font-semibold">Ratings & Reviews</h3>
       {/* Average Rating Display */}
-      <div className="flex items-center mb-6">
-        <div className="flex flex-col items-center mr-6">
+      <div className="mb-6 flex items-center">
+        <div className="mr-6 flex flex-col items-center">
           <span className="text-3xl font-bold text-gray-900">
             {averageRating.average.toFixed(1)}
           </span>
           <StarRating initialRating={averageRating.average} readonly={true} size="md" />
-          <span className="text-sm text-gray-500 mt-1">
+          <span className="mt-1 text-sm text-gray-500">
             {averageRating.count} {averageRating.count === 1 ? 'review' : 'reviews'}
           </span>
         </div>
@@ -220,14 +220,14 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
       </div>
       {/* Review Form */}
       {user && showForm && (
-        <div className="bg-gray-50 p-4 rounded-lg mb-6">
-          <h4 className="font-semibold mb-3">Your Review</h4>
+        <div className="mb-6 rounded-lg bg-gray-50 p-4">
+          <h4 className="mb-3 font-semibold">Your Review</h4>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Rating</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Rating</label>
             <StarRating initialRating={userRating} onChange={handleRatingChange} size="lg" />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Title</label>
             <Input
               value={reviewTitle}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReviewTitle(e.target.value)}
@@ -236,14 +236,14 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Review</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Review</label>
             <textarea
               value={reviewComment}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 setReviewComment(e.target.value)
               }
               placeholder="Share your experience with this resource"
-              className="w-full h-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="h-24 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="flex justify-end">
@@ -259,11 +259,11 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
       {/* Reviews List */}
       <div className="space-y-6">
         {reviews.length === 0 ? (
-          <p className="text-gray-500 italic">
+          <p className="italic text-gray-500">
             No reviews yet. Be the first to review this {resourceType}!
           </p>
         ) : (
-          reviews.map(review => (
+          reviews.map((review) => (
             <div key={review.id} className="border-b border-gray-200 pb-6 last:border-b-0">
               <div className="flex items-start justify-between">
                 <div>
@@ -271,11 +271,11 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
                     <StarRating initialRating={review.rating} readonly={true} size="sm" />
                     <h4 className="ml-2 font-semibold">{review.title}</h4>
                   </div>
-                  <div className="flex items-center text-sm text-gray-500 mt-1">
-                    <Icons.UserIcon className="h-4 w-4 mr-1" />
+                  <div className="mt-1 flex items-center text-sm text-gray-500">
+                    <Icons.UserIcon className="mr-1 h-4 w-4" />
                     <span>{review.userName}</span>
                     {review.isVerified && (
-                      <span className="ml-2 text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
+                      <span className="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-800">
                         Verified
                       </span>
                     )}
@@ -288,10 +288,10 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
               </div>
               <div className="mt-2 flex justify-end">
                 <button
-                  className="text-xs text-gray-500 flex items-center hover:text-gray-700"
+                  className="flex items-center text-xs text-gray-500 hover:text-gray-700"
                   title="Report review"
                 >
-                  <Icons.FlagIcon className="h-3 w-3 mr-1" />
+                  <Icons.FlagIcon className="mr-1 h-3 w-3" />
                   Report
                 </button>
               </div>

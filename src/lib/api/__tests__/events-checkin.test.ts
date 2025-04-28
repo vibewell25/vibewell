@@ -1,4 +1,4 @@
-import { checkInToEvent, submitEventFeedback, getEventById } from '../events';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { checkInToEvent, submitEventFeedback, getEventById } from '../events';
 
 // Mock localStorage
 const mockLocalStorage = (function () {
@@ -67,7 +67,7 @@ describe('Event Check-in and Feedback API', () => {
         'user-123',
         'Test User',
         'TEST123',
-        '/images/user.jpg'
+        '/images/user.jpg',
       );
 
       expect(result).toBe(true);
@@ -85,7 +85,7 @@ describe('Event Check-in and Feedback API', () => {
         'user-123',
         'Test User',
         'WRONG123',
-        '/images/user.jpg'
+        '/images/user.jpg',
       );
 
       expect(result).toBe(false);
@@ -97,13 +97,7 @@ describe('Event Check-in and Feedback API', () => {
 
     it('should not allow duplicate check-ins', async () => {
       // First check-in
-      await checkInToEvent(
-        'event-123',
-        'user-123',
-        'Test User',
-        'TEST123',
-        '/images/user.jpg'
-      );
+      await checkInToEvent('event-123', 'user-123', 'Test User', 'TEST123', '/images/user.jpg');
 
       // Get event after first check-in
       const eventAfterFirstCheckIn = await getEventById('event-123');
@@ -115,7 +109,7 @@ describe('Event Check-in and Feedback API', () => {
         'user-123',
         'Test User',
         'TEST123',
-        '/images/user.jpg'
+        '/images/user.jpg',
       );
 
       expect(result).toBe(true); // Returns true even though it's a duplicate
@@ -131,7 +125,7 @@ describe('Event Check-in and Feedback API', () => {
         'user-123',
         'Test User',
         'TEST123',
-        '/images/user.jpg'
+        '/images/user.jpg',
       );
 
       expect(result).toBe(false);
@@ -140,12 +134,7 @@ describe('Event Check-in and Feedback API', () => {
 
   describe('submitEventFeedback', () => {
     it('should submit feedback for an event', async () => {
-      const result = await submitEventFeedback(
-        'event-123',
-        'user-123',
-        5,
-        'Great event!'
-      );
+      const result = await submitEventFeedback('event-123', 'user-123', 5, 'Great event!');
 
       expect(result).toBe(true);
 
@@ -161,20 +150,10 @@ describe('Event Check-in and Feedback API', () => {
 
     it('should calculate average rating correctly', async () => {
       // First feedback
-      await submitEventFeedback(
-        'event-123',
-        'user-123',
-        5,
-        'Great event!'
-      );
+      await submitEventFeedback('event-123', 'user-123', 5, 'Great event!');
 
       // Second feedback
-      await submitEventFeedback(
-        'event-123',
-        'user-456',
-        3,
-        'It was okay'
-      );
+      await submitEventFeedback('event-123', 'user-456', 3, 'It was okay');
 
       // Verify average rating
       const event = await getEventById('event-123');
@@ -184,12 +163,7 @@ describe('Event Check-in and Feedback API', () => {
     });
 
     it('should update analytics with feedback data', async () => {
-      await submitEventFeedback(
-        'event-123',
-        'user-123',
-        4,
-        'Nice event'
-      );
+      await submitEventFeedback('event-123', 'user-123', 4, 'Nice event');
 
       const event = await getEventById('event-123');
       expect(event?.analytics?.averageRating).toBe(4);
@@ -197,14 +171,9 @@ describe('Event Check-in and Feedback API', () => {
     });
 
     it('should return false for non-existent event', async () => {
-      const result = await submitEventFeedback(
-        'non-existent-event',
-        'user-123',
-        5,
-        'Great event!'
-      );
+      const result = await submitEventFeedback('non-existent-event', 'user-123', 5, 'Great event!');
 
       expect(result).toBe(false);
     });
   });
-}); 
+});

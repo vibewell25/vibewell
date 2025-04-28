@@ -1,7 +1,5 @@
-'use client';
-
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+'use client';;
+import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 import Image from 'next/image';
 import { MobileLayout } from '@/components/layout/MobileLayout';
@@ -9,7 +7,7 @@ import { MobileLayout } from '@/components/layout/MobileLayout';
 export default function MobileHomePage() {
   return (
     <MobileLayout hideNavigation>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex min-h-screen flex-col">
         <div className="relative h-[65vh]">
           <div className="absolute inset-0">
             <Image
@@ -22,33 +20,33 @@ export default function MobileHomePage() {
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/60"></div>
           </div>
 
-          <div className="absolute top-16 left-0 right-0 p-6 z-10">
+          <div className="absolute left-0 right-0 top-16 z-10 p-6">
             <div className="text-white">
-              <h1 className="text-4xl font-bold mb-2">
+              <h1 className="mb-2 text-4xl font-bold">
                 Beauty
                 <br />
                 and wellness
                 <br />
                 services
               </h1>
-              <p className="text-2xl font-medium mt-2">on demand</p>
+              <p className="mt-2 text-2xl font-medium">on demand</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white flex-1 px-6 py-10 -mt-10 rounded-t-3xl flex flex-col space-y-4 z-10">
+        <div className="z-10 -mt-10 flex flex-1 flex-col space-y-4 rounded-t-3xl bg-white px-6 py-10">
           <Button
-            className="h-14 rounded-full font-medium bg-gradient-to-r from-rose-400 to-rose-500 hover:from-rose-500 hover:to-rose-600"
+            className="h-14 rounded-full bg-gradient-to-r from-rose-400 to-rose-500 font-medium hover:from-rose-500 hover:to-rose-600"
             asChild
           >
             <Link href="/register">Sign Up</Link>
           </Button>
 
-          <Button variant="outline" className="h-14 rounded-full font-medium border-2" asChild>
+          <Button variant="outline" className="h-14 rounded-full border-2 font-medium" asChild>
             <Link href="/login">Log in</Link>
           </Button>
 
-          <div className="flex justify-between mt-auto pt-8">
+          <div className="mt-auto flex justify-between pt-8">
             <span className="text-sm text-gray-500">Sign up with:</span>
             <span className="text-sm text-gray-500">Log in with:</span>
             <span className="text-sm text-gray-500">Or continue as:</span>

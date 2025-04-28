@@ -5,23 +5,25 @@ import { useSession } from 'next-auth/react';
 import { BadgesDisplay } from '@/components/engagement/badges-display';
 import { LevelProgress } from '@/components/engagement/level-progress';
 import { Recommendations } from '@/components/engagement/recommendations';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { EngagementProvider } from '@/hooks/use-engagement';
 import { Trophy, Star, History } from 'lucide-react';
 
 // Content component that uses session
 function EngagementContent() {
-  const { data: session, status } = useSession();
+  const {
+    status
+  } = useSession();
   const isLoading = status === 'loading';
   const isAuthenticated = status === 'authenticated';
 
   if (isLoading) {
     return (
-      <div className="container mx-auto py-8 space-y-6 animate-pulse">
-        <div className="h-8 w-48 bg-gray-200 rounded-lg" />
-        <div className="h-24 w-full bg-gray-200 rounded-lg" />
-        <div className="h-64 w-full bg-gray-200 rounded-lg" />
+      <div className="container mx-auto animate-pulse space-y-6 py-8">
+        <div className="h-8 w-48 rounded-lg bg-gray-200" />
+        <div className="h-24 w-full rounded-lg bg-gray-200" />
+        <div className="h-64 w-full rounded-lg bg-gray-200" />
       </div>
     );
   }
@@ -41,13 +43,13 @@ function EngagementContent() {
 
   return (
     <EngagementProvider>
-      <div className="container mx-auto py-8 space-y-6">
+      <div className="container mx-auto space-y-6 py-8">
         <h1 className="text-3xl font-bold">Your Engagement Profile</h1>
 
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Star className="h-5 w-5 text-primary" />
+              <Star className="text-primary h-5 w-5" />
               Progress & Level
             </CardTitle>
             <CardDescription>Track your progress and level up as you use ViBEWELL</CardDescription>
@@ -58,12 +60,12 @@ function EngagementContent() {
         </Card>
 
         <Tabs defaultValue="badges">
-          <TabsList className="grid w-full grid-cols-2 mb-4">
-            <TabsTrigger value="badges" className="flex gap-2 items-center">
+          <TabsList className="mb-4 grid w-full grid-cols-2">
+            <TabsTrigger value="badges" className="flex items-center gap-2">
               <Trophy className="h-4 w-4" />
               Badges
             </TabsTrigger>
-            <TabsTrigger value="recommendations" className="flex gap-2 items-center">
+            <TabsTrigger value="recommendations" className="flex items-center gap-2">
               <History className="h-4 w-4" />
               Recommendations
             </TabsTrigger>
@@ -113,10 +115,10 @@ export default function EngagementPage() {
   // Safeguard against server-rendering session-dependent components
   if (!hasMounted) {
     return (
-      <div className="container mx-auto py-8 space-y-6 animate-pulse">
-        <div className="h-8 w-48 bg-gray-200 rounded-lg" />
-        <div className="h-24 w-full bg-gray-200 rounded-lg" />
-        <div className="h-64 w-full bg-gray-200 rounded-lg" />
+      <div className="container mx-auto animate-pulse space-y-6 py-8">
+        <div className="h-8 w-48 rounded-lg bg-gray-200" />
+        <div className="h-24 w-full rounded-lg bg-gray-200" />
+        <div className="h-64 w-full rounded-lg bg-gray-200" />
       </div>
     );
   }
@@ -124,10 +126,10 @@ export default function EngagementPage() {
   return (
     <Suspense
       fallback={
-        <div className="container mx-auto py-8 space-y-6 animate-pulse">
-          <div className="h-8 w-48 bg-gray-200 rounded-lg" />
-          <div className="h-24 w-full bg-gray-200 rounded-lg" />
-          <div className="h-64 w-full bg-gray-200 rounded-lg" />
+        <div className="container mx-auto animate-pulse space-y-6 py-8">
+          <div className="h-8 w-48 rounded-lg bg-gray-200" />
+          <div className="h-24 w-full rounded-lg bg-gray-200" />
+          <div className="h-64 w-full rounded-lg bg-gray-200" />
         </div>
       }
     >

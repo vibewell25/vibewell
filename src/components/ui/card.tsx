@@ -7,12 +7,6 @@ import {
   BaseCardTitle,
   BaseCardDescription,
   BaseCardContent,
-  type BaseCardProps,
-  type BaseCardHeaderProps,
-  type BaseCardFooterProps,
-  type BaseCardTitleProps,
-  type BaseCardDescriptionProps,
-  type BaseCardContentProps,
 } from './base-card';
 
 const Card = React.forwardRef<HTMLDivElement, BaseCardProps>(({ className, ...props }, ref) => (
@@ -23,33 +17,35 @@ Card.displayName = 'Card';
 const CardHeader = React.forwardRef<HTMLDivElement, BaseCardHeaderProps>(
   ({ className, ...props }, ref) => (
     <BaseCardHeader ref={ref} className={cn(className)} {...props} />
-  )
+  ),
 );
 CardHeader.displayName = 'CardHeader';
 
 const CardTitle = React.forwardRef<HTMLHeadingElement, BaseCardTitleProps>(
-  ({ className, ...props }, ref) => <BaseCardTitle ref={ref} className={cn(className)} {...props} />
+  ({ className, ...props }, ref) => (
+    <BaseCardTitle ref={ref} className={cn(className)} {...props} />
+  ),
 );
 CardTitle.displayName = 'CardTitle';
 
 const CardDescription = React.forwardRef<HTMLParagraphElement, BaseCardDescriptionProps>(
   ({ className, ...props }, ref) => (
     <BaseCardDescription ref={ref} className={cn(className)} {...props} />
-  )
+  ),
 );
 CardDescription.displayName = 'CardDescription';
 
 const CardContent = React.forwardRef<HTMLDivElement, BaseCardContentProps>(
   ({ className, ...props }, ref) => (
     <BaseCardContent ref={ref} className={cn(className)} {...props} />
-  )
+  ),
 );
 CardContent.displayName = 'CardContent';
 
 const CardFooter = React.forwardRef<HTMLDivElement, BaseCardFooterProps>(
   ({ className, ...props }, ref) => (
     <BaseCardFooter ref={ref} className={cn(className)} {...props} />
-  )
+  ),
 );
 CardFooter.displayName = 'CardFooter';
 

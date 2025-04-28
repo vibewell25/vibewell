@@ -33,11 +33,11 @@ export function ProgressCharts({
   const formattedData = useMemo(() => {
     // Sort days by date
     const sortedDays = [...wellnessDays].sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     );
 
     // Map days to chart-friendly format
-    return sortedDays.map(day => ({
+    return sortedDays.map((day) => ({
       date: format(parseISO(day.date), 'MMM dd'),
       rawDate: day.date,
       meditation: day.meditation,
@@ -66,7 +66,7 @@ export function ProgressCharts({
     }
 
     const cutoffDate = subDays(new Date(), days).getTime();
-    return formattedData.filter(day => new Date(day.rawDate).getTime() >= cutoffDate);
+    return formattedData.filter((day) => new Date(day.rawDate).getTime() >= cutoffDate);
   }, [formattedData, timeRange]);
 
   // Determine y-axis label based on selected type
@@ -230,17 +230,17 @@ export function ProgressCharts({
   return (
     <div className="space-y-8">
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4 capitalize">{selectedType} Trend</h3>
+        <h3 className="mb-4 text-lg font-semibold capitalize">{selectedType} Trend</h3>
         {renderLineChart()}
       </div>
 
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Mood Tracking</h3>
+        <h3 className="mb-4 text-lg font-semibold">Mood Tracking</h3>
         {renderMoodChart()}
       </div>
 
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Weekly Summary</h3>
+        <h3 className="mb-4 text-lg font-semibold">Weekly Summary</h3>
         {renderWeeklySummary()}
       </div>
     </div>

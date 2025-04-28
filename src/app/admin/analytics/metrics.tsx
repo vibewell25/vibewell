@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { ArrowUpIcon, ArrowDownIcon, Users, Calendar, CreditCard, BarChart3 } from 'lucide-react';
 
 interface MetricCardProps {

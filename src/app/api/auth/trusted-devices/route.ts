@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
         // Check rate limit for registration
         const limited = await rateLimiter.isRateLimited(
           `device:register:${session.user.id}`,
-          RATE_LIMIT.REGISTER
+          RATE_LIMIT.REGISTER,
         );
         if (limited) {
           return NextResponse.json({ error: 'Too many device registrations' }, { status: 429 });
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         // Check rate limit for verification
         const limited = await rateLimiter.isRateLimited(
           `device:verify:${session.user.id}`,
-          RATE_LIMIT.VERIFY
+          RATE_LIMIT.VERIFY,
         );
         if (limited) {
           return NextResponse.json({ error: 'Too many verification attempts' }, { status: 429 });

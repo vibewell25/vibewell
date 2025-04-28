@@ -9,7 +9,7 @@ export const FormErrorMessage: React.FC<FormErrorMessageProps> = ({ id, children
   if (!children) return null;
 
   return (
-    <div id={id} role="alert" className="text-sm text-error mt-1">
+    <div id={id} role="alert" className="text-error mt-1 text-sm">
       {children}
     </div>
   );

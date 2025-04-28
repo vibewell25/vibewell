@@ -1,8 +1,7 @@
-'use client';
+'use client';;
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Card,
@@ -11,7 +10,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/Card';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Icons } from '@/components/icons';
@@ -260,7 +259,7 @@ export default function SchedulingOptimizationPage() {
     },
   ];
   // Filter strategies based on selected category and difficulty
-  const filteredStrategies = strategies.filter(strategy => {
+  const filteredStrategies = strategies.filter((strategy) => {
     const matchesCategory = selectedCategory === 'all' || strategy.category === selectedCategory;
     const matchesDifficulty =
       selectedDifficulty === 'all' || strategy.difficulty === selectedDifficulty;
@@ -268,7 +267,7 @@ export default function SchedulingOptimizationPage() {
   });
   // Filter tools based on selected category
   const filteredTools = tools.filter(
-    tool => selectedCategory === 'all' || tool.category === selectedCategory
+    (tool) => selectedCategory === 'all' || tool.category === selectedCategory,
   );
   // Categories for filtering
   const categories = [
@@ -288,10 +287,10 @@ export default function SchedulingOptimizationPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-indigo-100 to-purple-100 rounded-xl p-8 mb-12">
+      <div className="mb-12 rounded-xl bg-gradient-to-r from-indigo-100 to-purple-100 p-8">
         <div className="max-w-3xl">
-          <h1 className="text-3xl font-bold mb-4">Scheduling Optimization</h1>
-          <p className="text-lg mb-6">
+          <h1 className="mb-4 text-3xl font-bold">Scheduling Optimization</h1>
+          <p className="mb-6 text-lg">
             Maximize your revenue and efficiency with proven scheduling strategies and tools
             designed for beauty and wellness businesses. Reduce no-shows, optimize booking capacity,
             and implement effective scheduling policies.
@@ -302,7 +301,7 @@ export default function SchedulingOptimizationPage() {
               className="bg-indigo-600 hover:bg-indigo-700"
               onClick={() => setActiveTab('strategies')}
             >
-              <Icons.CalendarIcon className="h-5 w-5 mr-2" />
+              <Icons.CalendarIcon className="mr-2 h-5 w-5" />
               Scheduling Strategies
             </Button>
             <Button
@@ -310,21 +309,21 @@ export default function SchedulingOptimizationPage() {
               className="border-indigo-600 text-indigo-600 hover:bg-indigo-50"
               onClick={() => setActiveTab('tools')}
             >
-              <Icons.ChartBarIcon className="h-5 w-5 mr-2" />
+              <Icons.ChartBarIcon className="mr-2 h-5 w-5" />
               Optimization Tools
             </Button>
           </div>
         </div>
       </div>
       {/* Stats Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
-          <div className="flex items-start mb-2">
-            <div className="p-2 bg-red-100 rounded-lg mr-4">
+      <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-md">
+          <div className="mb-2 flex items-start">
+            <div className="mr-4 rounded-lg bg-red-100 p-2">
               <Icons.ExclamationTriangleIcon className="h-8 w-8 text-red-600" />
             </div>
             <div>
-              <p className="text-gray-500 text-sm">No-Show Impact</p>
+              <p className="text-sm text-gray-500">No-Show Impact</p>
               <h3 className="text-2xl font-bold">$24,000</h3>
             </div>
           </div>
@@ -333,13 +332,13 @@ export default function SchedulingOptimizationPage() {
             cancellations.
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
-          <div className="flex items-start mb-2">
-            <div className="p-2 bg-teal-100 rounded-lg mr-4">
+        <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-md">
+          <div className="mb-2 flex items-start">
+            <div className="mr-4 rounded-lg bg-teal-100 p-2">
               <Icons.ClockIcon className="h-8 w-8 text-teal-600" />
             </div>
             <div>
-              <p className="text-gray-500 text-sm">Time Optimization</p>
+              <p className="text-sm text-gray-500">Time Optimization</p>
               <h3 className="text-2xl font-bold">15-20%</h3>
             </div>
           </div>
@@ -347,13 +346,13 @@ export default function SchedulingOptimizationPage() {
             Potential increase in service capacity through optimized scheduling strategies.
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
-          <div className="flex items-start mb-2">
-            <div className="p-2 bg-amber-100 rounded-lg mr-4">
+        <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-md">
+          <div className="mb-2 flex items-start">
+            <div className="mr-4 rounded-lg bg-amber-100 p-2">
               <Icons.CurrencyDollarIcon className="h-8 w-8 text-amber-600" />
             </div>
             <div>
-              <p className="text-gray-500 text-sm">Revenue Impact</p>
+              <p className="text-sm text-gray-500">Revenue Impact</p>
               <h3 className="text-2xl font-bold">30%+</h3>
             </div>
           </div>
@@ -365,12 +364,12 @@ export default function SchedulingOptimizationPage() {
       </div>
       {/* Category and Difficulty Filters */}
       <div className="mb-8">
-        <h2 className="text-lg font-semibold mb-4">Filter Options</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <h2 className="mb-4 text-lg font-semibold">Filter Options</h2>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <p className="text-sm font-medium text-gray-700 mb-2">By Category:</p>
+            <p className="mb-2 text-sm font-medium text-gray-700">By Category:</p>
             <div className="flex flex-wrap gap-3">
-              {categories.map(category => (
+              {categories.map((category) => (
                 <Button
                   key={category.id}
                   variant={selectedCategory === category.id ? 'default' : 'outline'}
@@ -386,9 +385,9 @@ export default function SchedulingOptimizationPage() {
             </div>
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-700 mb-2">By Difficulty:</p>
+            <p className="mb-2 text-sm font-medium text-gray-700">By Difficulty:</p>
             <div className="flex flex-wrap gap-3">
-              {difficultyLevels.map(level => (
+              {difficultyLevels.map((level) => (
                 <Button
                   key={level.id}
                   variant={selectedDifficulty === level.id ? 'default' : 'outline'}
@@ -414,31 +413,31 @@ export default function SchedulingOptimizationPage() {
         {/* Strategies Tab Content */}
         <TabsContent value="strategies">
           {filteredStrategies.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredStrategies.map(strategy => (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {filteredStrategies.map((strategy) => (
                 <Card key={strategy.id}>
                   <CardHeader className="pb-2">
-                    <div className="flex justify-between items-start mb-2">
+                    <div className="mb-2 flex items-start justify-between">
                       <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-gray-100 rounded-lg">{strategy.icon}</div>
+                        <div className="rounded-lg bg-gray-100 p-2">{strategy.icon}</div>
                         <CardTitle className="text-xl">{strategy.title}</CardTitle>
                       </div>
                       <div className="flex space-x-2">
                         {strategy.difficulty === 'beginner' && (
-                          <Badge className="bg-green-100 text-green-800 border-green-200">
+                          <Badge className="border-green-200 bg-green-100 text-green-800">
                             Beginner
                           </Badge>
                         )}
                         {strategy.difficulty === 'intermediate' && (
-                          <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                          <Badge className="border-yellow-200 bg-yellow-100 text-yellow-800">
                             Intermediate
                           </Badge>
                         )}
                         {strategy.difficulty === 'advanced' && (
-                          <Badge className="bg-red-100 text-red-800 border-red-200">Advanced</Badge>
+                          <Badge className="border-red-200 bg-red-100 text-red-800">Advanced</Badge>
                         )}
                         {strategy.impact === 'high' && (
-                          <Badge className="bg-purple-100 text-purple-800 border-purple-200">
+                          <Badge className="border-purple-200 bg-purple-100 text-purple-800">
                             High Impact
                           </Badge>
                         )}
@@ -447,7 +446,7 @@ export default function SchedulingOptimizationPage() {
                     <CardDescription className="text-base">{strategy.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="mb-4 grid grid-cols-2 gap-4">
                       <div>
                         <p className="text-xs text-gray-500">Time to Implement</p>
                         <p className="font-medium">{strategy.timeToImplement}</p>
@@ -460,8 +459,8 @@ export default function SchedulingOptimizationPage() {
                       </div>
                     </div>
                     <div>
-                      <p className="text-sm font-medium mb-2">Implementation Steps:</p>
-                      <ol className="space-y-1 pl-5 list-decimal text-sm text-gray-600">
+                      <p className="mb-2 text-sm font-medium">Implementation Steps:</p>
+                      <ol className="list-decimal space-y-1 pl-5 text-sm text-gray-600">
                         {strategy.steps.map((step, index) => (
                           <li key={index}>{step}</li>
                         ))}
@@ -482,11 +481,11 @@ export default function SchedulingOptimizationPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 bg-gray-50 rounded-lg">
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <div className="rounded-lg bg-gray-50 py-12 text-center">
+              <h3 className="mb-2 text-lg font-medium text-gray-900">
                 No strategies match your filters
               </h3>
-              <p className="text-gray-500 mb-6">Try adjusting your filter criteria</p>
+              <p className="mb-6 text-gray-500">Try adjusting your filter criteria</p>
               <Button
                 variant="outline"
                 onClick={() => {
@@ -501,23 +500,23 @@ export default function SchedulingOptimizationPage() {
         </TabsContent>
         {/* Tools Tab Content */}
         <TabsContent value="tools">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredTools.map(tool => (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filteredTools.map((tool) => (
               <Card
                 key={tool.id}
                 className={`${tool.premium ? 'border-purple-200' : 'border-gray-200'}`}
               >
-                <div className="aspect-video w-full relative overflow-hidden rounded-t-lg">
+                <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
                   <Image src={tool.image} alt={tool.title} fill style={{ objectFit: 'cover' }} />
                   {tool.premium && (
                     <Badge
                       variant="secondary"
-                      className="absolute top-2 left-2 bg-purple-100 text-purple-800"
+                      className="absolute left-2 top-2 bg-purple-100 text-purple-800"
                     >
                       Premium
                     </Badge>
                   )}
-                  <Badge className="absolute top-2 right-2 bg-indigo-600">
+                  <Badge className="absolute right-2 top-2 bg-indigo-600">
                     {tool.category === 'efficiency' && 'Efficiency'}
                     {tool.category === 'no-shows' && 'No-Shows'}
                     {tool.category === 'capacity' && 'Capacity'}
@@ -543,18 +542,18 @@ export default function SchedulingOptimizationPage() {
         </TabsContent>
       </Tabs>
       {/* Call to Action: Schedule Analysis */}
-      <div className="bg-white rounded-xl shadow-md p-8 mb-12 border border-gray-200">
-        <div className="flex flex-col md:flex-row items-center">
+      <div className="mb-12 rounded-xl border border-gray-200 bg-white p-8 shadow-md">
+        <div className="flex flex-col items-center md:flex-row">
           <div className="md:w-2/3 md:pr-8">
-            <h2 className="text-2xl font-bold mb-4">Get a Personalized Schedule Analysis</h2>
-            <p className="text-gray-700 mb-4">
+            <h2 className="mb-4 text-2xl font-bold">Get a Personalized Schedule Analysis</h2>
+            <p className="mb-4 text-gray-700">
               Upload your current schedule and receive a detailed analysis with personalized
               recommendations to optimize your booking system, reduce gaps, and maximize revenue
               potential.
             </p>
             <Button className="bg-indigo-600 hover:bg-indigo-700">Schedule Free Analysis</Button>
           </div>
-          <div className="md:w-1/3 mt-6 md:mt-0 flex justify-center">
+          <div className="mt-6 flex justify-center md:mt-0 md:w-1/3">
             <Image
               src="https://images.unsplash.com/photo-1551288049-bebda4e38f71"
               alt="Schedule Analysis"
@@ -567,19 +566,19 @@ export default function SchedulingOptimizationPage() {
       </div>
       {/* Cancellation Policy Generator */}
       <div className="mb-12">
-        <h2 className="text-2xl font-bold mb-6">Cancellation Policy Generator</h2>
-        <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-          <p className="text-gray-700 mb-6">
+        <h2 className="mb-6 text-2xl font-bold">Cancellation Policy Generator</h2>
+        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md">
+          <p className="mb-6 text-gray-700">
             Create a professional, legally-sound cancellation policy tailored to your beauty or
             wellness business. Our generator creates policies that protect your business while
             maintaining positive client relationships.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="mb-2 block text-sm font-medium text-gray-700">
                 Notice Period Required
               </label>
-              <select className="w-full border border-gray-300 rounded-md shadow-sm p-2">
+              <select className="w-full rounded-md border border-gray-300 p-2 shadow-sm">
                 <option>24 hours</option>
                 <option>48 hours</option>
                 <option>72 hours</option>
@@ -587,10 +586,10 @@ export default function SchedulingOptimizationPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="mb-2 block text-sm font-medium text-gray-700">
                 Late Cancellation Fee
               </label>
-              <select className="w-full border border-gray-300 rounded-md shadow-sm p-2">
+              <select className="w-full rounded-md border border-gray-300 p-2 shadow-sm">
                 <option>50% of service price</option>
                 <option>Flat fee ($25)</option>
                 <option>Full service price</option>
@@ -605,14 +604,14 @@ export default function SchedulingOptimizationPage() {
       </div>
       {/* Expert Tips Section */}
       <div className="mb-12">
-        <h2 className="text-2xl font-bold mb-6">Expert Scheduling Tips</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <h2 className="mb-6 text-2xl font-bold">Expert Scheduling Tips</h2>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <Card>
             <CardHeader>
               <CardTitle>The Psychology of No-Shows</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-700 mb-4">
+              <p className="mb-4 text-gray-700">
                 Understanding why clients miss appointments is key to preventing them. Learn the
                 psychological factors behind no-shows and how to address them through effective
                 communication strategies.
@@ -632,7 +631,7 @@ export default function SchedulingOptimizationPage() {
               <CardTitle>Setting Boundaries with Chronically Late Clients</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-700 mb-4">
+              <p className="mb-4 text-gray-700">
                 Chronically late clients can disrupt your entire day. Learn how to address tardiness
                 professionally while maintaining client relationships and protecting your schedule.
               </p>

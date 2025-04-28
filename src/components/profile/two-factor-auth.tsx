@@ -1,8 +1,8 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
-import { Lock, Smartphone, Shield } from 'lucide-react';
+import { Smartphone } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { QRCodeSVG } from 'qrcode.react';
@@ -60,13 +60,13 @@ export function TwoFactorAuth() {
   const handleDisable = async (methodId: string) => {
     try {
       // Implement disable logic here
-      setMethods(prev =>
-        prev.map(method => {
+      setMethods((prev) =>
+        prev.map((method) => {
           if (method.id === methodId) {
             return { ...method, enabled: false };
           }
           return method;
-        })
+        }),
       );
       toast({
         title: '2FA Disabled',
@@ -86,13 +86,13 @@ export function TwoFactorAuth() {
       // Implement verification logic here
       setShowQRCode(false);
       setVerificationCode('');
-      setMethods(prev =>
-        prev.map(method => {
+      setMethods((prev) =>
+        prev.map((method) => {
           if (method.id === 'authenticator') {
             return { ...method, enabled: true };
           }
           return method;
-        })
+        }),
       );
       toast({
         title: '2FA Enabled',
@@ -116,7 +116,7 @@ export function TwoFactorAuth() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {methods.map(method => (
+        {methods.map((method) => (
           <div key={method.id} className="space-y-4">
             <div className="flex items-start space-x-4">
               <div className="mt-1">{method.icon}</div>
@@ -151,7 +151,7 @@ export function TwoFactorAuth() {
               <Input
                 id="verification-code"
                 value={verificationCode}
-                onChange={e => setVerificationCode(e.target.value)}
+                onChange={(e) => setVerificationCode(e.target.value)}
                 placeholder="Enter the 6-digit code"
               />
             </div>
@@ -161,14 +161,14 @@ export function TwoFactorAuth() {
           </div>
         )}
 
-        {methods.find(m => m.id === 'sms')?.enabled && (
+        {methods.find((m) => m.id === 'sms')?.enabled && (
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="phone-number">Phone Number</Label>
               <Input
                 id="phone-number"
                 value={phoneNumber}
-                onChange={e => setPhoneNumber(e.target.value)}
+                onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder="Enter your phone number"
               />
             </div>

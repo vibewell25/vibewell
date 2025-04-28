@@ -1,5 +1,4 @@
-import { GET } from '@/app/api/health/route';
-import { NextRequest } from 'next/server';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { GET } from '@/app/api/health/route';
 
 describe('Health API Endpoint', () => {
   test('should return status ok and the correct data structure', async () => {
@@ -20,9 +19,6 @@ describe('Health API Endpoint', () => {
   });
 
   test('should include CORS headers in the response', async () => {
-    // Create a sample request with an origin
-    const req = new NextRequest('https://test-origin.com/api/health');
-
     // Execute the handler
     const response = await GET();
 

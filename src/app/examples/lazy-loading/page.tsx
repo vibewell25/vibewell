@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { ARViewerLazy } from '@/components/ar/ARViewerLazy';
 import { EventCalendarLazy } from '@/components/event-calendar/EventCalendarLazy';
 
@@ -39,11 +39,11 @@ export default function LazyLoadingDemo() {
 
   return (
     <div className="container mx-auto py-12">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Lazy Loading Components Demo</h1>
+      <div className="mx-auto max-w-4xl">
+        <h1 className="mb-6 text-3xl font-bold">Lazy Loading Components Demo</h1>
 
-        <div className="mb-8 bg-blue-50 p-6 rounded-lg border border-blue-200">
-          <h2 className="text-xl font-semibold mb-3">About This Demo</h2>
+        <div className="mb-8 rounded-lg border border-blue-200 bg-blue-50 p-6">
+          <h2 className="mb-3 text-xl font-semibold">About This Demo</h2>
           <p className="mb-4">
             This page demonstrates lazy loading of heavy components. The components below will only
             be loaded when they're needed, reducing the initial page load time.
@@ -70,8 +70,8 @@ export default function LazyLoadingDemo() {
               <TabsTrigger value="event-calendar">Event Calendar</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="ar-viewer" className="border rounded-lg p-4">
-              <h2 className="text-xl font-semibold mb-4">AR Viewer Component</h2>
+            <TabsContent value="ar-viewer" className="rounded-lg border p-4">
+              <h2 className="mb-4 text-xl font-semibold">AR Viewer Component</h2>
               <p className="mb-4">This component uses Three.js to render 3D models:</p>
               <ARViewerLazy
                 modelUrl="https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/vase-09/model.gltf"
@@ -79,23 +79,23 @@ export default function LazyLoadingDemo() {
               />
             </TabsContent>
 
-            <TabsContent value="event-calendar" className="border rounded-lg p-4">
-              <h2 className="text-xl font-semibold mb-4">Event Calendar Component</h2>
+            <TabsContent value="event-calendar" className="rounded-lg border p-4">
+              <h2 className="mb-4 text-xl font-semibold">Event Calendar Component</h2>
               <p className="mb-4">This calendar component handles events and date selection:</p>
               <EventCalendarLazy
                 events={events}
-                onEventClick={event => alert(`Event clicked: ${event.title}`)}
+                onEventClick={(event) => alert(`Event clicked: ${event.title}`)}
               />
             </TabsContent>
           </Tabs>
         )}
 
-        <div className="mt-12 bg-gray-50 p-6 rounded-lg border">
-          <h2 className="text-xl font-semibold mb-3">Implementation Details</h2>
+        <div className="mt-12 rounded-lg border bg-gray-50 p-6">
+          <h2 className="mb-3 text-xl font-semibold">Implementation Details</h2>
           <p className="mb-2">
             These components are loaded using React's <code>lazy()</code> and <code>Suspense</code>:
           </p>
-          <pre className="bg-gray-900 text-white p-4 rounded-md overflow-x-auto mb-4">
+          <pre className="mb-4 overflow-x-auto rounded-md bg-gray-900 p-4 text-white">
             {`// Lazy loading implementation
 import { lazy, Suspense } from 'react';
 

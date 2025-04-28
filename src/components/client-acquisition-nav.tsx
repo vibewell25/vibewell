@@ -45,26 +45,26 @@ export function ClientAcquisitionNav() {
     return pathname === path || pathname?.startsWith(`${path}/`);
   };
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="rounded-lg bg-white p-4 shadow-md">
       <div
-        className="flex justify-between items-center cursor-pointer mb-4"
+        className="mb-4 flex cursor-pointer items-center justify-between"
         onClick={() => setExpanded(!expanded)}
       >
-        <h3 className="font-semibold text-lg flex items-center">
-          <Icons.UserPlusIcon className="h-5 w-5 mr-2 text-green-600" />
+        <h3 className="flex items-center text-lg font-semibold">
+          <Icons.UserPlusIcon className="mr-2 h-5 w-5 text-green-600" />
           Client Acquisition
         </h3>
         <button className="text-gray-500 hover:text-gray-700">{expanded ? '−' : '+'}</button>
       </div>
       {expanded && (
         <nav className="mt-2 space-y-1">
-          {clientAcquisitionCategories.map(item => (
+          {clientAcquisitionCategories.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className={`flex items-center px-3 py-2 text-sm rounded-md ${
+              className={`flex items-center rounded-md px-3 py-2 text-sm ${
                 isActive(item.href)
-                  ? 'bg-green-50 text-green-700 font-medium'
+                  ? 'bg-green-50 font-medium text-green-700'
                   : 'text-gray-700 hover:bg-gray-100'
               }`}
             >

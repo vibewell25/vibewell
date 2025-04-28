@@ -1,6 +1,6 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import { logger } from '@/lib/logger';
-import { createHash, createCipheriv, createDecipheriv } from 'crypto';
+import { createCipheriv, createDecipheriv } from 'crypto';
 import { z } from 'zod';
 import { ZodError } from 'zod';
 import NodeCache from 'node-cache';
@@ -102,10 +102,10 @@ class AnalyticsWebSocketServer {
 
   private startFlushInterval() {
     setInterval(() => {
-      this.flushBuffer().catch(error => {
+      this.flushBuffer().catch((error) => {
         logger.error(
           'Error flushing buffer:',
-          error instanceof Error ? error.message : String(error)
+          error instanceof Error ? error.message : String(error),
         );
       });
     }, this.FLUSH_INTERVAL);
@@ -113,10 +113,10 @@ class AnalyticsWebSocketServer {
 
   private startBroadcastInterval() {
     setInterval(() => {
-      this.broadcastMetrics().catch(error => {
+      this.broadcastMetrics().catch((error) => {
         logger.error(
           'Error broadcasting metrics:',
-          error instanceof Error ? error.message : String(error)
+          error instanceof Error ? error.message : String(error),
         );
       });
     }, this.BROADCAST_INTERVAL);
@@ -126,15 +126,17 @@ class AnalyticsWebSocketServer {
     setInterval(() => {
       const cutoff = new Date(Date.now() - this.RETENTION_PERIOD);
 
-      this.inMemoryStore.views = this.inMemoryStore.views.filter(event => event.timestamp > cutoff);
+      this.inMemoryStore.views = this.inMemoryStore.views.filter(
+        (event) => event.timestamp > cutoff,
+      );
       this.inMemoryStore.interactions = this.inMemoryStore.interactions.filter(
-        event => event.timestamp > cutoff
+        (event) => event.timestamp > cutoff,
       );
       this.inMemoryStore.conversions = this.inMemoryStore.conversions.filter(
-        event => event.timestamp > cutoff
+        (event) => event.timestamp > cutoff,
       );
       this.inMemoryStore.errors = this.inMemoryStore.errors.filter(
-        event => event.timestamp > cutoff
+        (event) => event.timestamp > cutoff,
       );
 
       logger.info('Cleaned up old analytics data');
@@ -151,7 +153,7 @@ class AnalyticsWebSocketServer {
       } else {
         logger.error(
           'Invalid analytics event:',
-          error instanceof Error ? error.message : String(error)
+          error instanceof Error ? error.message : String(error),
         );
       }
       throw new Error('Invalid analytics event');
@@ -178,7 +180,7 @@ class AnalyticsWebSocketServer {
     const events = [...this.eventBuffer];
     this.eventBuffer = [];
 
-    events.forEach(event => {
+    events.forEach((event) => {
       switch (event.type) {
         case 'view':
           this.inMemoryStore.views.push(event);
@@ -212,16 +214,16 @@ class AnalyticsWebSocketServer {
     const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
 
     const views = this.inMemoryStore.views.filter(
-      event => event.timestamp >= fiveMinutesAgo
+      (event) => event.timestamp >= fiveMinutesAgo,
     ).length;
     const interactions = this.inMemoryStore.interactions.filter(
-      event => event.timestamp >= fiveMinutesAgo
+      (event) => event.timestamp >= fiveMinutesAgo,
     ).length;
     const conversions = this.inMemoryStore.conversions.filter(
-      event => event.timestamp >= fiveMinutesAgo
+      (event) => event.timestamp >= fiveMinutesAgo,
     ).length;
     const errors = this.inMemoryStore.errors.filter(
-      event => event.timestamp >= fiveMinutesAgo
+      (event) => event.timestamp >= fiveMinutesAgo,
     ).length;
 
     return {
@@ -243,7 +245,7 @@ class AnalyticsWebSocketServer {
       const metrics = await this.getMetricsFromCache();
       const message = JSON.stringify(metrics);
 
-      Array.from(this.clients).forEach(client => {
+      Array.from(this.clients).forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
           client.send(message);
         }
@@ -251,7 +253,7 @@ class AnalyticsWebSocketServer {
     } catch (error) {
       logger.error(
         'Error broadcasting metrics:',
-        error instanceof Error ? error.message : String(error)
+        error instanceof Error ? error.message : String(error),
       );
     }
   }
@@ -306,6 +308,4 @@ class AnalyticsWebSocketServer {
 }
 
 // Export a singleton instance
-export const analyticsServer = new AnalyticsWebSocketServer(
-  parseInt(process.env.ANALYTICS_WS_PORT || '3001', 10)
-);
+export {};

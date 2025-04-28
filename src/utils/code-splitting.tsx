@@ -16,13 +16,9 @@ interface LoadableOptions {
  */
 export function loadable<T extends ComponentType<any>>(
   importFunc: () => Promise<{ default: T }>,
-  options: LoadableOptions = {}
+  options: LoadableOptions = {},
 ) {
-  const {
-    fallback = <div>Loading...</div>,
-    ssr = false,
-    suspenseFallback = fallback
-  } = options;
+  const { fallback = <div>Loading...</div>, ssr = false, suspenseFallback = fallback } = options;
 
   const LazyComponent = lazy(importFunc);
 
@@ -50,7 +46,7 @@ export function loadable<T extends ComponentType<any>>(
 /**
  * Preloads a component by triggering its import function.
  * Useful for prefetching components when user hovers on links, etc.
- * 
+ *
  * @param componentImport - The component import function
  */
 export function preloadComponent(componentImport: () => Promise<any>) {
@@ -60,12 +56,12 @@ export function preloadComponent(componentImport: () => Promise<any>) {
 /**
  * Creates a route component that can be loaded dynamically.
  * Provides a better loading experience with a standard page skeleton.
- * 
+ *
  * @param importFunc - Dynamic import function for the route component
  * @returns - Dynamically loaded route component with appropriate loading UI
  */
 export function loadableRoute<T extends ComponentType<any>>(
-  importFunc: () => Promise<{ default: T }>
+  importFunc: () => Promise<{ default: T }>,
 ) {
   return loadable(importFunc, {
     suspenseFallback: (
@@ -78,35 +74,35 @@ export function loadableRoute<T extends ComponentType<any>>(
           <div className="skeleton-text animate-pulse" />
         </div>
       </div>
-    )
+    ),
   });
 }
 
 /**
  * Load a component only when it's visible in the viewport.
  * Useful for below-the-fold content or components that are not immediately needed.
- * 
+ *
  * @param importFunc - Dynamic import function for the component
  * @param options - Loading options
  * @returns - Component that only loads when visible
  */
 export function loadableVisible<T extends ComponentType<any>>(
   importFunc: () => Promise<{ default: T }>,
-  options: LoadableOptions = {}
+  options: LoadableOptions = {},
 ) {
   // We'll implement the intersection observer logic to load components when they're visible
   // For now, we'll just use loadable with a small delay
   const VisibleComponent = loadable(importFunc, options);
-  
+
   return VisibleComponent;
 }
 
 /**
  * Example usage:
- * 
+ *
  * const MyLazyComponent = loadable(() => import('../components/MyComponent'));
  * const DashboardRoute = loadableRoute(() => import('../pages/Dashboard'));
- * 
+ *
  * // Use in a component
  * function App() {
  *   return (
@@ -116,17 +112,17 @@ export function loadableVisible<T extends ComponentType<any>>(
  *     </div>
  *   );
  * }
- * 
+ *
  * // Preload on hover
  * function NavLink({ to, children }) {
  *   const handleMouseEnter = () => {
  *     preloadComponent(() => import('../pages/Dashboard'));
  *   };
- *   
+ *
  *   return (
  *     <Link to={to} onMouseEnter={handleMouseEnter}>
  *       {children}
  *     </Link>
  *   );
  * }
- */ 
+ */

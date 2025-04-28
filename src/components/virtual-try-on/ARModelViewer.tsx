@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { useEffect, useState } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, OrbitControls, useGLTF } from '@react-three/drei';
 import { Suspense } from 'react';
 
@@ -51,11 +51,11 @@ export function ARModelViewer({ modelId }: ARModelViewerProps) {
   };
 
   return (
-    <div className="ar-model-viewer w-full h-full">
+    <div className="ar-model-viewer h-full w-full">
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-sm">
           <div className="text-center">
-            <div className="inline-block w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mb-2"></div>
+            <div className="border-primary mb-2 inline-block h-6 w-6 animate-spin rounded-full border-2 border-t-transparent"></div>
             <p>Loading 3D Model...</p>
           </div>
         </div>

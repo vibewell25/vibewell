@@ -48,7 +48,7 @@ const metricsCollectionJob = new CronJob(
   false,
 
   // timezone (null = server timezone)
-  null
+  null,
 );
 
 /**
@@ -66,7 +66,7 @@ export function startRedisMetricsCollection(): void {
   } else {
     logger.info(
       'Redis metrics collection not started (not in production or Redis not enabled)',
-      'redis-metrics-job'
+      'redis-metrics-job',
     );
   }
 }

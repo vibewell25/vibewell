@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Event } from '@/types/events';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import {
@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Image from 'next/image';
 
@@ -65,11 +65,11 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="recurring">
-              <Icons.CalendarIcon className="h-4 w-4 mr-2" />
+              <Icons.CalendarIcon className="mr-2 h-4 w-4" />
               Recurring
             </TabsTrigger>
             <TabsTrigger value="waitlist">
-              <Icons.UserGroupIcon className="h-4 w-4 mr-2" />
+              <Icons.UserGroupIcon className="mr-2 h-4 w-4" />
               Waitlist
             </TabsTrigger>
           </TabsList>
@@ -93,7 +93,7 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                   <Label>Frequency</Label>
                   <Select
                     value={event.recurrencePattern?.frequency}
-                    onValueChange={value => handleRecurrenceChange('frequency', value)}
+                    onValueChange={(value) => handleRecurrenceChange('frequency', value)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select frequency" />
@@ -112,7 +112,7 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                     type="number"
                     min="1"
                     value={event.recurrencePattern?.interval || 1}
-                    onChange={e => handleRecurrenceChange('interval', parseInt(e.target.value))}
+                    onChange={(e) => handleRecurrenceChange('interval', parseInt(e.target.value))}
                   />
                 </div>
                 {event.recurrencePattern?.frequency === 'weekly' && (
@@ -131,7 +131,7 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                           onClick={() => {
                             const days = event.recurrencePattern?.daysOfWeek || [];
                             const newDays = days.includes(index)
-                              ? days.filter(d => d !== index)
+                              ? days.filter((d) => d !== index)
                               : [...days, index];
                             handleRecurrenceChange('daysOfWeek', newDays);
                           }}
@@ -147,7 +147,7 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                   <Input
                     type="date"
                     value={event.recurrencePattern?.endDate?.split('T')[0] || ''}
-                    onChange={e => handleRecurrenceChange('endDate', e.target.value)}
+                    onChange={(e) => handleRecurrenceChange('endDate', e.target.value)}
                   />
                 </div>
               </div>
@@ -171,17 +171,17 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                     type="number"
                     min="1"
                     value={event.waitlistCapacity || 20}
-                    onChange={e => handleWaitlistCapacityChange(parseInt(e.target.value))}
+                    onChange={(e) => handleWaitlistCapacityChange(parseInt(e.target.value))}
                   />
                 </div>
                 {event.waitlistParticipants && event.waitlistParticipants.length > 0 && (
                   <div className="space-y-2">
                     <Label>Waitlist Participants</Label>
                     <div className="space-y-2">
-                      {event.waitlistParticipants.map(participant => (
+                      {event.waitlistParticipants.map((participant) => (
                         <div
                           key={participant.userId}
-                          className="flex items-center justify-between p-2 border rounded-md"
+                          className="flex items-center justify-between rounded-md border p-2"
                         >
                           <div className="flex items-center gap-2">
                             <div className="relative h-8 w-8">

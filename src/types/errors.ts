@@ -74,4 +74,4 @@ export class TokenError extends Error {
     super(message);
     this.name = 'TokenError';
   }
-} 
+}

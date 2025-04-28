@@ -1,4 +1,4 @@
-/**
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping *//**
  * @vitest-environment jsdom
  */
 import { useState } from 'react';
@@ -14,8 +14,8 @@ interface CounterHook {
 // Example Hook to Test
 function useCounter(initialValue = 0): CounterHook {
   const [count, setCount] = useState(initialValue);
-  const increment = () => setCount(prev => prev + 1);
-  const decrement = () => setCount(prev => prev - 1);
+  const increment = () => setCount((prev) => prev + 1);
+  const decrement = () => setCount((prev) => prev - 1);
   return { count, increment, decrement };
 }
 
@@ -35,12 +35,12 @@ describe('useCounter', () => {
       () => useCounter(),
       [
         {
-          act: result => result.result.current.increment(),
-          assert: result => {
+          act: (result) => result.result.current.increment(),
+          assert: (result) => {
             expect(result.result.current.count).toBe(1);
           },
         },
-      ]
+      ],
     );
   });
 
@@ -49,12 +49,12 @@ describe('useCounter', () => {
       () => useCounter(5),
       [
         {
-          act: result => result.result.current.decrement(),
-          assert: result => {
+          act: (result) => result.result.current.decrement(),
+          assert: (result) => {
             expect(result.result.current.count).toBe(4);
           },
         },
-      ]
+      ],
     );
   });
 
@@ -63,24 +63,24 @@ describe('useCounter', () => {
       () => useCounter(),
       [
         {
-          act: result => result.result.current.increment(),
-          assert: result => {
+          act: (result) => result.result.current.increment(),
+          assert: (result) => {
             expect(result.result.current.count).toBe(1);
           },
         },
         {
-          act: result => result.result.current.increment(),
-          assert: result => {
+          act: (result) => result.result.current.increment(),
+          assert: (result) => {
             expect(result.result.current.count).toBe(2);
           },
         },
         {
-          act: result => result.result.current.decrement(),
-          assert: result => {
+          act: (result) => result.result.current.decrement(),
+          assert: (result) => {
             expect(result.result.current.count).toBe(1);
           },
         },
-      ]
+      ],
     );
   });
 });

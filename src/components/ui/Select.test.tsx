@@ -1,4 +1,4 @@
-/**
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping *//**
  * @vitest-environment jsdom
  */
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
@@ -108,7 +108,7 @@ describe('Select Component', () => {
       <div>
         <div data-testid="outside">Outside</div>
         <BasicSelect />
-      </div>
+      </div>,
     );
 
     // Open the dropdown
@@ -134,7 +134,7 @@ describe('Select Component', () => {
             Apple
           </SelectItem>
         </SelectContent>
-      </Select>
+      </Select>,
     );
 
     // Check custom classes

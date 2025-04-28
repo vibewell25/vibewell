@@ -3,15 +3,6 @@ import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
-// Route-based code splitting
-const AccessibilityPage = dynamic(() => import('./AccessibilityPage'), {
-  loading: () => <LoadingSpinner />
-});
-
-const BookingPage = dynamic(() => import('./booking'), {
-  loading: () => <LoadingSpinner />
-});
-
 function MyApp({ Component, pageProps, router }: AppProps) {
   // Wrap the component with Suspense for smooth loading transitions
   return (
@@ -21,4 +12,4 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   );
 }
 
-export default MyApp; 
+export default MyApp;

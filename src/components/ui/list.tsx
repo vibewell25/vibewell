@@ -6,9 +6,9 @@ const listVariants = cva('w-full', {
   variants: {
     variant: {
       default: '',
-      bordered: 'border rounded-md',
+      bordered: 'rounded-md border',
       separated: 'divide-y',
-      card: 'border rounded-md shadow-sm',
+      card: 'rounded-md border shadow-sm',
     },
     size: {
       default: '',
@@ -69,7 +69,7 @@ interface ListProps
 const List = React.forwardRef<HTMLUListElement, ListProps>(
   ({ className, variant, size, ...props }, ref) => {
     return <ul ref={ref} className={cn(listVariants({ variant, size, className }))} {...props} />;
-  }
+  },
 );
 List.displayName = 'List';
 
@@ -81,7 +81,7 @@ interface ListItemProps extends React.HTMLAttributes<HTMLLIElement> {
  * ListItem - Individual list item component
  */
 const ListItem = React.forwardRef<HTMLLIElement, ListItemProps>(({ className, ...props }, ref) => {
-  return <li ref={ref} className={cn('py-2 px-4', className)} {...props} />;
+  return <li ref={ref} className={cn('px-4 py-2', className)} {...props} />;
 });
 ListItem.displayName = 'ListItem';
 
@@ -91,7 +91,7 @@ ListItem.displayName = 'ListItem';
 const OrderedList = React.forwardRef<HTMLOListElement, Omit<ListProps, 'as'>>(
   ({ className, variant, size, ...props }, ref) => {
     return <ol ref={ref} className={cn(listVariants({ variant, size, className }))} {...props} />;
-  }
+  },
 );
 OrderedList.displayName = 'OrderedList';
 
@@ -104,8 +104,8 @@ interface ListTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
  */
 const ListTitle = React.forwardRef<HTMLHeadingElement, ListTitleProps>(
   ({ className, ...props }, ref) => {
-    return <h3 ref={ref} className={cn('font-medium text-lg py-2 px-4', className)} {...props} />;
-  }
+    return <h3 ref={ref} className={cn('px-4 py-2 text-lg font-medium', className)} {...props} />;
+  },
 );
 ListTitle.displayName = 'ListTitle';
 
@@ -124,16 +124,16 @@ const ListEmpty = React.forwardRef<HTMLDivElement, ListEmptyProps>(
     return (
       <div
         ref={ref}
-        className={cn('flex flex-col items-center justify-center text-center p-8', className)}
+        className={cn('flex flex-col items-center justify-center p-8 text-center', className)}
         {...props}
       >
         {icon && <div className="mb-4">{icon}</div>}
-        {title && <h4 className="text-lg font-medium mb-2">{title}</h4>}
-        {description && <p className="text-sm text-muted-foreground mb-4">{description}</p>}
+        {title && <h4 className="mb-2 text-lg font-medium">{title}</h4>}
+        {description && <p className="mb-4 text-sm text-muted-foreground">{description}</p>}
         {children}
       </div>
     );
-  }
+  },
 );
 ListEmpty.displayName = 'ListEmpty';
 

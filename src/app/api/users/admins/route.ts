@@ -36,10 +36,7 @@ export async function GET() {
     return NextResponse.json(admins);
   } catch (error) {
     console.error('Error fetching admin users:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch admin users' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch admin users' }, { status: 500 });
   }
 }
 
@@ -62,10 +59,7 @@ export async function POST(request: Request) {
 
     const { userId } = await request.json();
     if (!userId) {
-      return NextResponse.json(
-        { error: 'User ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
     }
 
     // Update user role to admin
@@ -85,10 +79,7 @@ export async function POST(request: Request) {
     return NextResponse.json(updatedUser);
   } catch (error) {
     console.error('Error creating admin user:', error);
-    return NextResponse.json(
-      { error: 'Failed to create admin user' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to create admin user' }, { status: 500 });
   }
 }
 
@@ -111,10 +102,7 @@ export async function DELETE(request: Request) {
 
     const { userId } = await request.json();
     if (!userId) {
-      return NextResponse.json(
-        { error: 'User ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
     }
 
     // Prevent removing the last admin
@@ -123,10 +111,7 @@ export async function DELETE(request: Request) {
     });
 
     if (adminCount <= 1) {
-      return NextResponse.json(
-        { error: 'Cannot remove the last admin user' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Cannot remove the last admin user' }, { status: 400 });
     }
 
     // Update user role to regular user
@@ -146,9 +131,6 @@ export async function DELETE(request: Request) {
     return NextResponse.json(updatedUser);
   } catch (error) {
     console.error('Error removing admin user:', error);
-    return NextResponse.json(
-      { error: 'Failed to remove admin user' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to remove admin user' }, { status: 500 });
   }
 }

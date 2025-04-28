@@ -1,14 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import {
   Table,
   TableBody,
@@ -26,7 +19,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import {
   Form,
@@ -37,7 +29,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
@@ -54,7 +46,7 @@ import * as z from 'zod';
 import { AlertService } from '@/services/alert-service';
 import { ProductService } from '@/services/product-service';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AlertCircle, Bell, Check, Edit, Plus, Trash2 } from 'lucide-react';
+import { AlertCircle, Edit, Plus, Trash2 } from 'lucide-react';
 
 // Alert form schema
 const alertFormSchema = z.object({
@@ -77,7 +69,6 @@ const alertFormSchema = z.object({
 type AlertFormValues = z.infer<typeof alertFormSchema>;
 
 export function AlertsDashboard() {
-  const router = useRouter();
   const [alerts, setAlerts] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -129,7 +120,7 @@ export function AlertsDashboard() {
     fetchData();
   }, []);
 
-  const filteredAlerts = alerts.filter(alert => {
+  const filteredAlerts = alerts.filter((alert) => {
     if (activeTab === 'all') return true;
     if (activeTab === 'active') return alert.is_active;
     if (activeTab === 'triggered') return alert.last_triggered !== null;
@@ -175,7 +166,7 @@ export function AlertsDashboard() {
 
     try {
       await alertService.deleteAlert(deletingAlertId);
-      setAlerts(alerts.filter(alert => alert.id !== deletingAlertId));
+      setAlerts(alerts.filter((alert) => alert.id !== deletingAlertId));
       setDeletingAlertId(null);
       toast({
         title: 'Alert deleted',
@@ -211,7 +202,7 @@ export function AlertsDashboard() {
     try {
       await alertService.updateAlert(alertId, { is_active: !isActive });
       setAlerts(
-        alerts.map(alert => (alert.id === alertId ? { ...alert, is_active: !isActive } : alert))
+        alerts.map((alert) => (alert.id === alertId ? { ...alert, is_active: !isActive } : alert)),
       );
       toast({
         title: 'Alert status updated',
@@ -243,7 +234,7 @@ export function AlertsDashboard() {
   };
 
   const getProductName = (productId: string) => {
-    const product = products.find(p => p.id === productId);
+    const product = products.find((p) => p.id === productId);
     return product ? product.name : 'Unknown Product';
   };
 
@@ -278,7 +269,7 @@ export function AlertsDashboard() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3 mb-4">
+        <TabsList className="mb-4 grid w-full grid-cols-3">
           <TabsTrigger value="all">All Alerts</TabsTrigger>
           <TabsTrigger value="active">Active Alerts</TabsTrigger>
           <TabsTrigger value="triggered">Recently Triggered</TabsTrigger>
@@ -300,17 +291,17 @@ export function AlertsDashboard() {
                   {[...Array(3)].map((_, i) => (
                     <div key={i} className="flex items-center space-x-4">
                       <div className="space-y-2">
-                        <div className="h-4 w-[250px] bg-gray-200 rounded-full"></div>
-                        <div className="h-4 w-[200px] bg-gray-200 rounded-full"></div>
+                        <div className="h-4 w-[250px] rounded-full bg-gray-200"></div>
+                        <div className="h-4 w-[200px] rounded-full bg-gray-200"></div>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : filteredAlerts.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-10 text-center">
-                  <AlertCircle className="h-10 w-10 text-muted-foreground mb-4" />
+                  <AlertCircle className="mb-4 h-10 w-10 text-muted-foreground" />
                   <h3 className="text-lg font-semibold">No alerts found</h3>
-                  <p className="text-muted-foreground mt-2">
+                  <p className="mt-2 text-muted-foreground">
                     {activeTab === 'all'
                       ? 'No alerts have been created yet.'
                       : activeTab === 'active'
@@ -338,7 +329,7 @@ export function AlertsDashboard() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredAlerts.map(alert => (
+                    {filteredAlerts.map((alert) => (
                       <TableRow key={alert.id}>
                         <TableCell>
                           <Switch
@@ -447,7 +438,7 @@ export function AlertsDashboard() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {products.map(product => (
+                        {products.map((product) => (
                           <SelectItem key={product.id} value={product.id}>
                             {product.name}
                           </SelectItem>
@@ -541,12 +532,12 @@ export function AlertsDashboard() {
                             <FormControl>
                               <Checkbox
                                 checked={field.value?.includes('email')}
-                                onCheckedChange={checked => {
+                                onCheckedChange={(checked) => {
                                   const current = field.value || [];
                                   if (checked) {
                                     field.onChange([...current, 'email']);
                                   } else {
-                                    field.onChange(current.filter(v => v !== 'email'));
+                                    field.onChange(current.filter((v) => v !== 'email'));
                                   }
                                 }}
                               />
@@ -563,12 +554,12 @@ export function AlertsDashboard() {
                             <FormControl>
                               <Checkbox
                                 checked={field.value?.includes('dashboard')}
-                                onCheckedChange={checked => {
+                                onCheckedChange={(checked) => {
                                   const current = field.value || [];
                                   if (checked) {
                                     field.onChange([...current, 'dashboard']);
                                   } else {
-                                    field.onChange(current.filter(v => v !== 'dashboard'));
+                                    field.onChange(current.filter((v) => v !== 'dashboard'));
                                   }
                                 }}
                               />
@@ -620,7 +611,7 @@ export function AlertsDashboard() {
       </Dialog>
 
       {/* Delete Confirmation Dialog */}
-      <Dialog open={!!deletingAlertId} onOpenChange={open => !open && setDeletingAlertId(null)}>
+      <Dialog open={!!deletingAlertId} onOpenChange={(open) => !open && setDeletingAlertId(null)}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Confirm Deletion</DialogTitle>

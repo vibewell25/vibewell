@@ -76,7 +76,7 @@ export const Model = React.memo(
           // Optimize materials
           if (object.material) {
             if (Array.isArray(object.material)) {
-              object.material.forEach(material => {
+              object.material.forEach((material) => {
                 optimizeMaterial(material);
               });
             } else {
@@ -94,7 +94,7 @@ export const Model = React.memo(
       // Apply renderer optimizations
       if (optimizationConfig.adaptiveRendering) {
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
+          navigator.userAgent,
         );
 
         if (isMobile) {
@@ -204,7 +204,7 @@ export const Model = React.memo(
             // Optimize materials
             if (object.material) {
               if (Array.isArray(object.material)) {
-                object.material.forEach(material => {
+                object.material.forEach((material) => {
                   optimizeMaterial(material);
                   applyTextureOptimizations(material);
                 });
@@ -216,7 +216,7 @@ export const Model = React.memo(
           }
         });
       },
-      [optimizeMaterial, applyTextureOptimizations]
+      [optimizeMaterial, applyTextureOptimizations],
     );
 
     // Optimized model loading
@@ -251,16 +251,14 @@ export const Model = React.memo(
 
       // Setup a detailed loading manager
       const loadingManager = new THREE.LoadingManager();
-      loadingManager.onProgress = (url, loaded, total) => {
-        const progress = total > 0 ? (loaded / total) * 100 : 0;
-      };
+      loadingManager.onProgress = (url, loaded, total) => {};
 
       loader.manager = loadingManager;
 
       // Load the model
       loader.load(
         blobUrl,
-        gltf => {
+        (gltf) => {
           // Success callback
           if (modelRef.current) {
             // Clear previous model
@@ -293,10 +291,9 @@ export const Model = React.memo(
           onLoad?.();
         },
         undefined,
-        error => {
+        (error) => {
           console.error('Error loading model:', error);
-          const errorMessage = error instanceof Error ? error.message : String(error);
-        }
+        },
       );
 
       return () => {
@@ -318,5 +315,5 @@ export const Model = React.memo(
       prevProps.type === nextProps.type &&
       prevProps.intensity === nextProps.intensity
     );
-  }
+  },
 );

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ReviewCard from '@/components/ReviewCard';
 import { Icons } from '@/components/icons';
@@ -134,7 +134,7 @@ export default function AdminReviewsPage() {
     }, 1000);
   }, []);
   // Filter reviews by status and search term
-  const filteredReviews = reviews.filter(review => {
+  const filteredReviews = reviews.filter((review) => {
     const matchesStatus = review.status === activeTab || activeTab === 'all';
     const searchContent =
       `${review.title} ${review.text} ${review.customer.name} ${review.provider.name}`.toLowerCase();
@@ -143,10 +143,10 @@ export default function AdminReviewsPage() {
   });
   // Approve a review
   const handleApproveReview = (reviewId: string) => {
-    setReviews(prevReviews =>
-      prevReviews.map(review =>
-        review.id === reviewId ? { ...review, status: 'approved' } : review
-      )
+    setReviews((prevReviews) =>
+      prevReviews.map((review) =>
+        review.id === reviewId ? { ...review, status: 'approved' } : review,
+      ),
     );
   };
   // Reject a review
@@ -155,8 +155,8 @@ export default function AdminReviewsPage() {
       alert('Please provide a reason for rejection');
       return;
     }
-    setReviews(prevReviews =>
-      prevReviews.map(review =>
+    setReviews((prevReviews) =>
+      prevReviews.map((review) =>
         review.id === reviewId
           ? {
               ...review,
@@ -164,8 +164,8 @@ export default function AdminReviewsPage() {
               moderationNotes:
                 selectedReview?.id === reviewId ? moderationNote : review.moderationNotes,
             }
-          : review
-      )
+          : review,
+      ),
     );
     setSelectedReview(null);
     setModerationNote('');
@@ -176,8 +176,8 @@ export default function AdminReviewsPage() {
       alert('Please provide resolution notes');
       return;
     }
-    setReviews(prevReviews =>
-      prevReviews.map(review =>
+    setReviews((prevReviews) =>
+      prevReviews.map((review) =>
         review.id === reviewId
           ? {
               ...review,
@@ -188,8 +188,8 @@ export default function AdminReviewsPage() {
                   ? `${review.moderationNotes || ''}\n${new Date().toISOString()}: Flag resolved - ${moderationNote}`
                   : review.moderationNotes,
             }
-          : review
-      )
+          : review,
+      ),
     );
     setSelectedReview(null);
     setModerationNote('');
@@ -211,26 +211,26 @@ export default function AdminReviewsPage() {
   return (
     <Layout>
       <div className="container mx-auto max-w-6xl px-4 py-8">
-        <div className="flex justify-between items-center mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <h1 className="text-3xl font-bold">Review Management</h1>
           <div className="relative">
-            <Icons.MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-3 text-gray-400" />
+            <Icons.MagnifyingGlassIcon className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
             <input
               type="text"
               placeholder="Search reviews..."
-              className="pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+              className="rounded-md border border-gray-300 py-2 pl-10 pr-4 focus:border-indigo-500 focus:ring-indigo-500"
               value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
         <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="pending">
           <TabsList className="mb-8">
             <TabsTrigger value="pending">
-              Pending ({reviews.filter(r => r.status === 'pending').length})
+              Pending ({reviews.filter((r) => r.status === 'pending').length})
             </TabsTrigger>
             <TabsTrigger value="flagged">
-              Flagged ({reviews.filter(r => r.status === 'flagged').length})
+              Flagged ({reviews.filter((r) => r.status === 'flagged').length})
             </TabsTrigger>
             <TabsTrigger value="approved">Approved</TabsTrigger>
             <TabsTrigger value="rejected">Rejected</TabsTrigger>
@@ -239,24 +239,24 @@ export default function AdminReviewsPage() {
           <TabsContent value={activeTab}>
             {isLoading ? (
               <div className="space-y-4">
-                {[1, 2, 3].map(index => (
-                  <div key={index} className="animate-pulse bg-white rounded-lg shadow p-4">
+                {[1, 2, 3].map((index) => (
+                  <div key={index} className="animate-pulse rounded-lg bg-white p-4 shadow">
                     <div className="flex items-start">
-                      <div className="h-12 w-12 bg-gray-200 rounded-full mr-4"></div>
+                      <div className="mr-4 h-12 w-12 rounded-full bg-gray-200"></div>
                       <div className="flex-1">
-                        <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-                        <div className="h-4 bg-gray-200 rounded w-1/3 mb-4"></div>
-                        <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-                        <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                        <div className="mb-2 h-4 w-1/4 rounded bg-gray-200"></div>
+                        <div className="mb-4 h-4 w-1/3 rounded bg-gray-200"></div>
+                        <div className="mb-2 h-4 w-full rounded bg-gray-200"></div>
+                        <div className="h-4 w-5/6 rounded bg-gray-200"></div>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
             ) : filteredReviews.length === 0 ? (
-              <div className="bg-white rounded-lg shadow p-8 text-center">
-                <p className="text-gray-500 mb-2">No reviews found</p>
-                <p className="text-gray-400 text-sm">
+              <div className="rounded-lg bg-white p-8 text-center shadow">
+                <p className="mb-2 text-gray-500">No reviews found</p>
+                <p className="text-sm text-gray-400">
                   {searchTerm
                     ? 'Try adjusting your search terms'
                     : `There are no ${activeTab} reviews at this time`}
@@ -264,14 +264,14 @@ export default function AdminReviewsPage() {
               </div>
             ) : (
               <div className="space-y-6">
-                {filteredReviews.map(review => (
-                  <div key={review.id} className="bg-white rounded-lg shadow">
-                    <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+                {filteredReviews.map((review) => (
+                  <div key={review.id} className="rounded-lg bg-white shadow">
+                    <div className="flex items-center justify-between rounded-t-lg border-b border-gray-200 bg-gray-50 px-6 py-4">
                       <div className="flex items-center">
                         {getStatusIcon(review.status)}
                         <span className="ml-2 font-medium capitalize">{review.status}</span>
                         {review.isReported && (
-                          <span className="ml-2 px-2 py-1 text-xs bg-red-100 text-red-800 rounded">
+                          <span className="ml-2 rounded bg-red-100 px-2 py-1 text-xs text-red-800">
                             Reported
                           </span>
                         )}
@@ -295,7 +295,7 @@ export default function AdminReviewsPage() {
                       />
                     </div>
                     <div className="flex flex-col border-t border-gray-100 p-4">
-                      <div className="flex justify-between items-center mb-3">
+                      <div className="mb-3 flex items-center justify-between">
                         <div className="text-sm">
                           <span className="text-gray-500">Customer:</span> {review.customer.name} (
                           {review.customer.email})
@@ -305,18 +305,18 @@ export default function AdminReviewsPage() {
                         </div>
                       </div>
                       {review.moderationNotes && (
-                        <div className="mb-3 p-3 bg-gray-50 text-sm rounded">
-                          <div className="font-medium text-gray-700 mb-1">Moderation Notes:</div>
-                          <div className="text-gray-600 whitespace-pre-line">
+                        <div className="mb-3 rounded bg-gray-50 p-3 text-sm">
+                          <div className="mb-1 font-medium text-gray-700">Moderation Notes:</div>
+                          <div className="whitespace-pre-line text-gray-600">
                             {review.moderationNotes}
                           </div>
                         </div>
                       )}
                       {review.isReported && (
-                        <div className="mb-3 p-3 bg-red-50 text-sm rounded">
-                          <div className="font-medium text-red-700 mb-1">Report Reason:</div>
+                        <div className="mb-3 rounded bg-red-50 p-3 text-sm">
+                          <div className="mb-1 font-medium text-red-700">Report Reason:</div>
                           <div className="text-red-600">{review.reportReason}</div>
-                          <div className="text-gray-500 mt-1">
+                          <div className="mt-1 text-gray-500">
                             Reported by: {review.reportedBy?.name}
                           </div>
                         </div>
@@ -325,13 +325,13 @@ export default function AdminReviewsPage() {
                         <div className="mb-3">
                           <textarea
                             value={moderationNote}
-                            onChange={e => setModerationNote(e.target.value)}
+                            onChange={(e) => setModerationNote(e.target.value)}
                             placeholder={
                               review.status === 'flagged'
                                 ? 'Enter resolution notes'
                                 : 'Enter reason for rejection'
                             }
-                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-full rounded-md border border-gray-300 p-2 focus:border-indigo-500 focus:ring-indigo-500"
                             rows={3}
                           />
                         </div>
@@ -341,17 +341,17 @@ export default function AdminReviewsPage() {
                           <>
                             <Button
                               variant="outline"
-                              className="text-red-600 border-red-300 hover:bg-red-50"
+                              className="border-red-300 text-red-600 hover:bg-red-50"
                               onClick={() => {
                                 setSelectedReview(review);
                                 setModerationNote('');
                               }}
                             >
-                              <Icons.XCircleIcon className="h-4 w-4 mr-1" />
+                              <Icons.XCircleIcon className="mr-1 h-4 w-4" />
                               Reject
                             </Button>
                             <Button onClick={() => handleApproveReview(review.id)}>
-                              <Icons.CheckCircleIcon className="h-4 w-4 mr-1" />
+                              <Icons.CheckCircleIcon className="mr-1 h-4 w-4" />
                               Approve
                             </Button>
                           </>
@@ -360,13 +360,13 @@ export default function AdminReviewsPage() {
                           <>
                             <Button
                               variant="outline"
-                              className="text-red-600 border-red-300 hover:bg-red-50"
+                              className="border-red-300 text-red-600 hover:bg-red-50"
                               onClick={() => {
                                 setSelectedReview(review);
                                 setModerationNote('');
                               }}
                             >
-                              <Icons.XCircleIcon className="h-4 w-4 mr-1" />
+                              <Icons.XCircleIcon className="mr-1 h-4 w-4" />
                               Reject
                             </Button>
                             <Button
@@ -375,7 +375,7 @@ export default function AdminReviewsPage() {
                                 setModerationNote('');
                               }}
                             >
-                              <Icons.CheckCircleIcon className="h-4 w-4 mr-1" />
+                              <Icons.CheckCircleIcon className="mr-1 h-4 w-4" />
                               Resolve & Approve
                             </Button>
                           </>

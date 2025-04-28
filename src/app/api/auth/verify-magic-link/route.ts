@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
         provider: 'magic-link',
       },
       JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '7d' },
     );
 
     // Set the session cookie

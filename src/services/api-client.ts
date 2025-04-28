@@ -48,83 +48,7 @@ export interface RequestOptions<TData = unknown> {
 /**
  * API client for making HTTP requests
  */
-export const apiClient = {
-  /**
-   * Make a GET request
-   */
-  async get<TResponse>(
-    path: string,
-    config: ApiClientConfig = {}
-  ): Promise<ApiResponse<TResponse>> {
-    return makeRequest<never, TResponse>({
-      method: HttpMethod.GET,
-      path,
-      config,
-    });
-  },
-
-  /**
-   * Make a POST request
-   */
-  async post<TData, TResponse>(
-    path: string,
-    data?: TData,
-    config: ApiClientConfig = {}
-  ): Promise<ApiResponse<TResponse>> {
-    return makeRequest<TData, TResponse>({
-      method: HttpMethod.POST,
-      path,
-      data,
-      config,
-    });
-  },
-
-  /**
-   * Make a PUT request
-   */
-  async put<TData, TResponse>(
-    path: string,
-    data?: TData,
-    config: ApiClientConfig = {}
-  ): Promise<ApiResponse<TResponse>> {
-    return makeRequest<TData, TResponse>({
-      method: HttpMethod.PUT,
-      path,
-      data,
-      config,
-    });
-  },
-
-  /**
-   * Make a DELETE request
-   */
-  async delete<TResponse>(
-    path: string,
-    config: ApiClientConfig = {}
-  ): Promise<ApiResponse<TResponse>> {
-    return makeRequest<never, TResponse>({
-      method: HttpMethod.DELETE,
-      path,
-      config,
-    });
-  },
-
-  /**
-   * Make a PATCH request
-   */
-  async patch<TData, TResponse>(
-    path: string,
-    data?: TData,
-    config: ApiClientConfig = {}
-  ): Promise<ApiResponse<TResponse>> {
-    return makeRequest<TData, TResponse>({
-      method: HttpMethod.PATCH,
-      path,
-      data,
-      config,
-    });
-  },
-};
+export {};
 
 /**
  * Helper function to make HTTP requests
@@ -170,7 +94,7 @@ async function makeRequest<TData, TResponse>({
       errorMessage = 'Invalid response format';
       console.error(
         'Response parsing error:',
-        error instanceof Error ? error.message : 'Unknown error'
+        error instanceof Error ? error.message : 'Unknown error',
       );
     }
 

@@ -1,4 +1,4 @@
-/**
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping *//**
  * Tests for the booking service
  */
 import { http, HttpResponse } from 'msw';
@@ -67,7 +67,7 @@ describe('Booking Service', () => {
       server.use(
         http.get('/api/bookings', () => {
           return HttpResponse.json(mockBookings);
-        })
+        }),
       );
 
       // Execute the service call
@@ -94,7 +94,7 @@ describe('Booking Service', () => {
           }
 
           return HttpResponse.json(mockBookings);
-        })
+        }),
       );
 
       // Execute with filters
@@ -117,7 +117,7 @@ describe('Booking Service', () => {
             status: 500,
             statusText: 'Internal Server Error',
           });
-        })
+        }),
       );
 
       // Execute the service call
@@ -136,7 +136,7 @@ describe('Booking Service', () => {
       server.use(
         http.get('/api/bookings/1', () => {
           return HttpResponse.json(sampleBooking);
-        })
+        }),
       );
 
       // Execute the service call
@@ -155,7 +155,7 @@ describe('Booking Service', () => {
           return new HttpResponse(JSON.stringify({ message: 'Booking not found' }), {
             status: 404,
           });
-        })
+        }),
       );
 
       // Execute the service call
@@ -211,7 +211,7 @@ describe('Booking Service', () => {
           }
 
           return HttpResponse.json(createdBooking);
-        })
+        }),
       );
 
       // Execute the service call
@@ -239,9 +239,9 @@ describe('Booking Service', () => {
               message: 'Validation failed',
               errors: ['providerId is required', 'date is required'],
             }),
-            { status: 400 }
+            { status: 400 },
           );
-        })
+        }),
       );
 
       // Execute the service call
@@ -283,7 +283,7 @@ describe('Booking Service', () => {
           }
 
           return HttpResponse.json(updatedBooking);
-        })
+        }),
       );
 
       // Execute the service call
@@ -317,7 +317,7 @@ describe('Booking Service', () => {
             ...cancelledBooking,
             notes: reason,
           });
-        })
+        }),
       );
 
       // Execute the service call
@@ -343,7 +343,7 @@ describe('Booking Service', () => {
       server.use(
         http.put('/api/bookings/1/complete', () => {
           return HttpResponse.json(completedBooking);
-        })
+        }),
       );
 
       // Execute the service call
@@ -361,7 +361,7 @@ describe('Booking Service', () => {
       server.use(
         http.delete('/api/bookings/1', () => {
           return new HttpResponse(null, { status: 204 });
-        })
+        }),
       );
 
       // Execute the service call
@@ -379,7 +379,7 @@ describe('Booking Service', () => {
           return new HttpResponse(JSON.stringify({ message: 'Booking not found' }), {
             status: 404,
           });
-        })
+        }),
       );
 
       // Execute the service call

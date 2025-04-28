@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { Button } from '../base/Button/Button';
@@ -24,7 +23,7 @@ describe('Accessibility Tests', () => {
       const { container } = render(
         <Button disabled aria-disabled="true">
           Disabled button
-        </Button>
+        </Button>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -36,7 +35,7 @@ describe('Accessibility Tests', () => {
       const { container } = render(
         <Card>
           <CardContent>Simple card content</CardContent>
-        </Card>
+        </Card>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -55,7 +54,7 @@ describe('Accessibility Tests', () => {
           <CardFooter>
             <p>Footer content</p>
           </CardFooter>
-        </Card>
+        </Card>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -70,7 +69,7 @@ describe('Accessibility Tests', () => {
           <CardContent>
             <Button>Action Button</Button>
           </CardContent>
-        </Card>
+        </Card>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -85,7 +84,7 @@ describe('Accessibility Tests', () => {
           <CardContent>
             <p>Collapsible content</p>
           </CardContent>
-        </Card>
+        </Card>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -109,7 +108,7 @@ describe('Accessibility Tests', () => {
           <CardFooter>
             <Button variant="ghost">Footer Action</Button>
           </CardFooter>
-        </Card>
+        </Card>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -128,7 +127,7 @@ describe('Accessibility Tests', () => {
               <Button type="submit">Submit</Button>
             </form>
           </CardContent>
-        </Card>
+        </Card>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();

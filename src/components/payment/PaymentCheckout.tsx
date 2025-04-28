@@ -1,8 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { PaymentFormWrapper } from './PaymentForm';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/Card';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -95,7 +102,7 @@ export function PaymentCheckout({
   const handlePaymentError = (error: any) => {
     setPaymentStatus('failed');
     setError(error.message || 'Payment processing failed');
-    
+
     toast({
       title: 'Payment Failed',
       description: error.message || 'There was an error processing your payment.',
@@ -107,14 +114,12 @@ export function PaymentCheckout({
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="mx-auto w-full max-w-md">
       <CardHeader>
         <CardTitle>Complete Your Payment</CardTitle>
-        <CardDescription>
-          {description}
-        </CardDescription>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
-      
+
       <CardContent>
         {error && (
           <Alert variant="destructive" className="mb-4">
@@ -124,7 +129,7 @@ export function PaymentCheckout({
         )}
 
         {paymentStatus === 'succeeded' && (
-          <Alert className="mb-4 bg-green-50 border-green-200">
+          <Alert className="mb-4 border-green-200 bg-green-50">
             <AlertTitle>Payment Successful</AlertTitle>
             <AlertDescription>
               Your payment has been processed successfully.
@@ -134,16 +139,16 @@ export function PaymentCheckout({
         )}
 
         {showSummary && (
-          <div className="mb-6 p-4 bg-secondary/20 rounded-lg">
-            <div className="text-sm font-medium mb-2">Payment Summary</div>
-            <div className="flex justify-between mb-2">
+          <div className="bg-secondary/20 mb-6 rounded-lg p-4">
+            <div className="mb-2 text-sm font-medium">Payment Summary</div>
+            <div className="mb-2 flex justify-between">
               <span>Amount:</span>
               <span className="font-semibold">
                 {new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount)}
               </span>
             </div>
             {metadata['itemName'] && (
-              <div className="flex justify-between mb-2">
+              <div className="mb-2 flex justify-between">
                 <span>Item:</span>
                 <span>{metadata['itemName']}</span>
               </div>
@@ -152,11 +157,7 @@ export function PaymentCheckout({
         )}
 
         {!clientSecret && paymentStatus === 'idle' && (
-          <Button 
-            onClick={createPaymentIntent} 
-            disabled={isLoading}
-            className="w-full"
-          >
+          <Button onClick={createPaymentIntent} disabled={isLoading} className="w-full">
             {isLoading ? 'Initializing...' : buttonText}
           </Button>
         )}
@@ -174,11 +175,7 @@ export function PaymentCheckout({
 
       {paymentStatus === 'succeeded' && redirectUrl && (
         <CardFooter>
-          <Button 
-            variant="outline" 
-            onClick={() => router.push(redirectUrl)}
-            className="w-full"
-          >
+          <Button variant="outline" onClick={() => router.push(redirectUrl)} className="w-full">
             Continue
           </Button>
         </CardFooter>
@@ -187,4 +184,4 @@ export function PaymentCheckout({
   );
 }
 
-export default PaymentCheckout; 
+export default PaymentCheckout;

@@ -1,111 +1,114 @@
-import React from 'react';
 import { render, RenderOptions } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { axe, toHaveNoViolations } from 'jest-axe';
 import { ThemeProvider } from '@/components/theme-provider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { expect } from '@jest/globals';
-
-// Extend Jest matchers
-expect.extend(toHaveNoViolations);
+import { TEST_CONFIG } from '../config/test-config';
 
 // Create a custom render function that includes providers
-const createTestQueryClient = () => new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      cacheTime: 0,
+function customRender(ui: React.ReactElement, options?: Omit<RenderOptions, 'wrapper'>) {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        cacheTime: 0,
+      },
     },
-  },
-});
+  });
 
-interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
-  route?: string;
-  initialState?: Record<string, unknown>;
+  return render(ui, {
+    wrapper: ({ children }) => (
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
+      </QueryClientProvider>
+    ),
+    ...options,
+  });
 }
 
-export const createWrapper = () => {
-  const queryClient = createTestQueryClient();
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="light" storageKey="vibe-theme">
-        {children}
-      </ThemeProvider>
-    </QueryClientProvider>
-  );
+// Helper to wait for a specific timeout
+const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Helper to generate random test data
+const generateTestId = () => Math.random().toString(36).substring(7);
+
+// Helper to mock API responses
+const mockApiResponse = (status: number, data: any) => {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
 };
 
-export const renderWithProviders = (
-  ui: React.ReactElement,
-  options: CustomRenderOptions = {}
-) => {
-  const wrapper = createWrapper();
-  return {
-    ...render(ui, { wrapper, ...options }),
-    user: userEvent.setup(),
+// Helper to simulate user events with delay
+const simulateUserAction = async (action: () => void, delay = TEST_CONFIG.ANIMATION_TIMEOUT) => {
+  action();
+  await wait(delay);
+};
+
+// Helper to clear all mocks and localStorage
+const cleanupTest = () => {
+  localStorage.clear();
+  sessionStorage.clear();
+  jest.clearAllMocks();
+};
+
+// Helper to mock window location
+const mockWindowLocation = (url: string) => {
+  const originalLocation = window.location;
+  delete (window as any).location;
+  window.location = new URL(url) as any;
+  return () => {
+    window.location = originalLocation;
   };
 };
 
-// Accessibility testing helper
-export const testAccessibility = async (ui: React.ReactElement) => {
-  const { container } = renderWithProviders(ui);
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
+// Helper to mock intersection observer
+const mockIntersectionObserver = () => {
+  const observe = jest.fn();
+  const unobserve = jest.fn();
+  const disconnect = jest.fn();
+
+  beforeEach(() => {
+    (window as any).IntersectionObserver = jest.fn(() => ({
+      observe,
+      unobserve,
+      disconnect,
+    }));
+  });
+
+  return { observe, unobserve, disconnect };
 };
 
-// Performance testing helper
-export const measurePerformance = async (
-  component: React.ReactElement,
-  iterations = 100
-) => {
-  const times: number[] = [];
-  for (let i = 0; i < iterations; i++) {
-    const start = performance.now();
-    renderWithProviders(component);
-    const end = performance.now();
-    times.push(end - start);
-  }
+// Helper to mock resize observer
+const mockResizeObserver = () => {
+  const observe = jest.fn();
+  const unobserve = jest.fn();
+  const disconnect = jest.fn();
 
-  return {
-    average: times.reduce((a, b) => a + b, 0) / times.length,
-    min: Math.min(...times),
-    max: Math.max(...times),
-  };
+  beforeEach(() => {
+    (window as any).ResizeObserver = jest.fn(() => ({
+      observe,
+      unobserve,
+      disconnect,
+    }));
+  });
+
+  return { observe, unobserve, disconnect };
 };
 
-// Mock data generator helper
-export const createMockData = <T extends Record<string, unknown>>(
-  template: T,
-  overrides?: Partial<T>
-): T => {
-  return {
-    ...template,
-    ...overrides,
-  };
-};
+// Helper to create test IDs
+const createTestId = (component: string, element: string) => `${component}-${element}`;
 
-// Event simulation helpers
-export const simulateNetworkCondition = (condition: 'slow' | 'offline' | 'fast') => {
-  if (condition === 'offline') {
-    // @ts-ignore - mock service worker property
-    window.navigator.onLine = false;
-    window.dispatchEvent(new Event('offline'));
-  } else {
-    // @ts-ignore - mock service worker property
-    window.navigator.onLine = true;
-    window.dispatchEvent(new Event('online'));
-  }
-};
-
-// Form testing helpers
-export const fillForm = async (user: ReturnType<typeof userEvent.setup>, formData: Record<string, string>) => {
-  for (const [fieldName, value] of Object.entries(formData)) {
-    const input = document.querySelector(`[name="${fieldName}"]`);
-    if (input) {
-      await user.type(input as HTMLElement, value);
-    }
-  }
-};
-
-export * from '@testing-library/react';
-export { userEvent }; 
+export {
+  customRender as render,
+  wait,
+  generateTestId,
+  mockApiResponse,
+  simulateUserAction,
+  cleanupTest,
+  mockWindowLocation,
+  mockIntersectionObserver,
+  mockResizeObserver,
+  createTestId,
+}; 

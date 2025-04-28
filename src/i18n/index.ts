@@ -54,24 +54,11 @@ export const changeLanguage = async (language: string) => {
     document.documentElement.dir = isRtl(language) ? 'rtl' : 'ltr';
 
     // Ensure translations are loaded
-    await Promise.all(namespaces.map(ns => i18n.loadNamespaces(ns)));
+    await Promise.all(namespaces.map((ns) => i18n.loadNamespaces(ns)));
   }
 };
 
 // Helper function to load translations dynamically
-export const loadTranslations = async (language: string, ns: string = 'common') => {
-  if (!supportedLanguages.includes(language)) {
-    console.warn(`Language ${language} is not supported`);
-    language = fallbackLng;
-  }
-
-  try {
-    await i18n.loadNamespaces(ns);
-  } catch (error) {
-    console.error(`Failed to load translations for ${language}/${ns}:`, error);
-    // Don't throw, fallback to default language
-    await i18n.loadNamespaces(ns);
-  }
-};
+export {};
 
 export default i18n;

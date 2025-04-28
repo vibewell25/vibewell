@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { ProductService } from '@/services/product-service';
 import { useAuth } from '@/hooks/use-unified-auth';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle, ArrowLeft, Camera, Share2 } from 'lucide-react';
@@ -15,7 +15,6 @@ import { FeedbackDialog } from '@/components/try-on/feedback-dialog';
 
 export default function TryOnPage() {
   const { id } = useParams();
-  const router = useRouter();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -90,7 +89,7 @@ export default function TryOnPage() {
           .completeSession(sessionId, user.id, {
             duration_seconds: durationSeconds,
           })
-          .catch(err => {
+          .catch((err) => {
             console.error('Error completing try-on session:', err);
           });
       }
@@ -150,7 +149,7 @@ export default function TryOnPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-4">
           <Link href="/products">
-            <Button variant="ghost" className="pl-0 flex items-center gap-2">
+            <Button variant="ghost" className="flex items-center gap-2 pl-0">
               <ArrowLeft className="h-4 w-4" />
               Back to Products
             </Button>
@@ -164,7 +163,7 @@ export default function TryOnPage() {
         </Alert>
 
         <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Explore Other AR-Ready Products</h2>
+          <h2 className="mb-4 text-2xl font-semibold">Explore Other AR-Ready Products</h2>
           <ProductRecommendations limit={4} />
         </div>
       </div>
@@ -175,16 +174,16 @@ export default function TryOnPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-4">
         <Link href={`/products/${id}`}>
-          <Button variant="ghost" className="pl-0 flex items-center gap-2">
+          <Button variant="ghost" className="flex items-center gap-2 pl-0">
             <ArrowLeft className="h-4 w-4" />
             Back to Product
           </Button>
         </Link>
       </div>
 
-      <h1 className="text-3xl font-bold mb-6">Virtual Try-On</h1>
+      <h1 className="mb-6 text-3xl font-bold">Virtual Try-On</h1>
 
-      <div className="bg-muted rounded-lg overflow-hidden relative">
+      <div className="relative overflow-hidden rounded-lg bg-muted">
         {loading ? (
           <div className="aspect-video w-full">
             <Skeleton className="h-full w-full" />
@@ -192,9 +191,9 @@ export default function TryOnPage() {
         ) : (
           <>
             {/* This would be replaced with an actual AR component */}
-            <div className="aspect-video w-full bg-gradient-to-r from-purple-500/30 to-blue-500/30 flex items-center justify-center">
+            <div className="flex aspect-video w-full items-center justify-center bg-gradient-to-r from-purple-500/30 to-blue-500/30">
               <div className="text-center">
-                <h2 className="text-2xl font-semibold mb-2">AR Experience Ready</h2>
+                <h2 className="mb-2 text-2xl font-semibold">AR Experience Ready</h2>
                 <p className="mb-4 text-muted-foreground">
                   Use your device camera to see this product on you
                 </p>
@@ -218,9 +217,9 @@ export default function TryOnPage() {
         )}
       </div>
 
-      <div className="mt-6 text-center max-w-xl mx-auto">
-        <h2 className="text-xl font-semibold mb-2">How to Use</h2>
-        <ol className="text-left space-y-2 text-muted-foreground">
+      <div className="mx-auto mt-6 max-w-xl text-center">
+        <h2 className="mb-2 text-xl font-semibold">How to Use</h2>
+        <ol className="space-y-2 text-left text-muted-foreground">
           <li className="flex gap-2">
             <span className="font-semibold text-foreground">1.</span>
             <span>Click "Start AR Experience" to activate your camera</span>
@@ -241,7 +240,7 @@ export default function TryOnPage() {
       </div>
 
       <div className="mt-16">
-        <h2 className="text-2xl font-semibold mb-4">Similar Products to Try</h2>
+        <h2 className="mb-4 text-2xl font-semibold">Similar Products to Try</h2>
         <ProductRecommendations productId={Array.isArray(id) ? id[0] : id} showTabs={false} />
       </div>
 

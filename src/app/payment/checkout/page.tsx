@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { PaymentCheckout } from '@/components/payment/PaymentCheckout';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/use-toast';
 
 export default function CheckoutPage() {
@@ -21,16 +21,14 @@ export default function CheckoutPage() {
 
   return (
     <div className="container mx-auto py-12">
-      <h1 className="text-3xl font-bold mb-8 text-center">Checkout</h1>
-      
+      <h1 className="mb-8 text-center text-3xl font-bold">Checkout</h1>
+
       {!showPayment ? (
-        <div className="max-w-md mx-auto text-center">
+        <div className="mx-auto max-w-md text-center">
           <p className="mb-6">
             Ready to complete your purchase? Click the button below to proceed to payment.
           </p>
-          <Button onClick={() => setShowPayment(true)}>
-            Proceed to Checkout
-          </Button>
+          <Button onClick={() => setShowPayment(true)}>Proceed to Checkout</Button>
         </div>
       ) : (
         <PaymentCheckout
@@ -40,7 +38,7 @@ export default function CheckoutPage() {
           metadata={{
             itemName: 'Premium Membership',
             itemId: 'membership-premium-monthly',
-            planType: 'monthly'
+            planType: 'monthly',
           }}
           onPaymentSuccess={handlePaymentSuccess}
           onPaymentError={handlePaymentError}
@@ -51,4 +49,4 @@ export default function CheckoutPage() {
       )}
     </div>
   );
-} 
+}

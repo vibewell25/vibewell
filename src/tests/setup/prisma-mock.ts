@@ -22,68 +22,19 @@ jest.mock('@/lib/database/client', () => ({
  */
 
 // Create a mock user
-export const createMockUser = (overrides = {}) => ({
-  id: 'user-id-123',
-  email: 'test@example.com',
-  name: 'Test User',
-  role: 'USER',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  ...overrides,
-});
+export {};
 
 // Create a mock service
-export const createMockService = (overrides = {}) => ({
-  id: 'service-id-123',
-  name: 'Test Service',
-  description: 'A test service',
-  price: 99.99,
-  duration: 60,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  ...overrides,
-});
+export {};
 
 // Create a mock booking
-export const createMockBooking = (overrides = {}) => ({
-  id: 'booking-id-123',
-  userId: 'user-id-123',
-  providerId: 'provider-id-123',
-  serviceId: 'service-id-123',
-  date: new Date(),
-  time: '14:00',
-  status: 'PENDING',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  ...overrides,
-});
+export {};
 
 // Create a mock review
-export const createMockReview = (overrides = {}) => ({
-  id: 'review-id-123',
-  userId: 'user-id-123',
-  serviceId: 'service-id-123',
-  bookingId: 'booking-id-123',
-  rating: 5,
-  comment: 'Great service!',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  ...overrides,
-});
+export {};
 
 // Create a mock payment intent
-export const createMockPaymentIntent = (overrides = {}) => ({
-  id: 'pi_123456789',
-  userId: 'user-id-123',
-  amount: 9999,
-  currency: 'usd',
-  status: 'succeeded',
-  bookingId: 'booking-id-123',
-  serviceId: 'service-id-123',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  ...overrides,
-});
+export {};
 
 /**
  * Example usage in tests:

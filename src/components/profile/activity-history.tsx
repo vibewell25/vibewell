@@ -1,7 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Activity, AlertTriangle, CheckCircle2, Clock, Globe, User } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 
 interface ActivityEvent {
@@ -84,7 +84,7 @@ export function ActivityHistory() {
         <CardDescription>View your recent account activity and events.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {events.map(event => (
+        {events.map((event) => (
           <div key={event.id} className="flex items-start space-x-4 rounded-lg border p-4">
             <div className="mt-1">{event.icon}</div>
             <div className="flex-1 space-y-2">

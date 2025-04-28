@@ -82,7 +82,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     if (!result.success) {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

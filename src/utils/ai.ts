@@ -108,7 +108,7 @@ export class AIUtils {
     if (!ai) throw new Error('AI service not initialized');
 
     const config = this.manager.getServiceConfig('ai') as AIConfig;
-    
+
     if (config.caching?.enabled) {
       const cacheKey = this.getCacheKey('completion', request);
       const cached = this.cache.get(cacheKey);
@@ -125,11 +125,11 @@ export class AIUtils {
             temperature: request.temperature || config.temperature,
             top_p: request.topP,
             stop: request.stop,
-            stream: request.stream
+            stream: request.stream,
           });
 
           const result = completion.choices[0].text;
-          
+
           if (config.caching?.enabled) {
             const cacheKey = this.getCacheKey('completion', request);
             this.cache.set(cacheKey, result);
@@ -146,11 +146,11 @@ export class AIUtils {
             max_tokens: request.maxTokens || config.maxTokens,
             temperature: request.temperature || config.temperature,
             stop_sequences: request.stop,
-            stream: request.stream
+            stream: request.stream,
           });
 
           const result = response.generations[0].text;
-          
+
           if (config.caching?.enabled) {
             const cacheKey = this.getCacheKey('completion', request);
             this.cache.set(cacheKey, result);
@@ -166,11 +166,11 @@ export class AIUtils {
             model: request.model || config.models[0],
             max_tokens_to_sample: request.maxTokens || config.maxTokens,
             temperature: request.temperature || config.temperature,
-            stop_sequences: request.stop
+            stop_sequences: request.stop,
           });
 
           const result = completion.completion;
-          
+
           if (config.caching?.enabled) {
             const cacheKey = this.getCacheKey('completion', request);
             this.cache.set(cacheKey, result);
@@ -194,7 +194,7 @@ export class AIUtils {
     if (!ai) throw new Error('AI service not initialized');
 
     const config = this.manager.getServiceConfig('ai') as AIConfig;
-    
+
     if (config.caching?.enabled) {
       const cacheKey = this.getCacheKey('chat', request);
       const cached = this.cache.get(cacheKey);
@@ -211,11 +211,11 @@ export class AIUtils {
             temperature: request.temperature || config.temperature,
             top_p: request.topP,
             stop: request.stop,
-            stream: request.stream
+            stream: request.stream,
           });
 
           const result = completion.choices[0].message.content;
-          
+
           if (config.caching?.enabled) {
             const cacheKey = this.getCacheKey('chat', request);
             this.cache.set(cacheKey, result);
@@ -226,9 +226,9 @@ export class AIUtils {
         }
 
         case 'anthropic': {
-          const messages = request.messages.map(msg => ({
+          const messages = request.messages.map((msg) => ({
             role: msg.role,
-            content: msg.content
+            content: msg.content,
           }));
 
           const completion = await ai.messages.create({
@@ -236,11 +236,11 @@ export class AIUtils {
             messages,
             max_tokens: request.maxTokens || config.maxTokens,
             temperature: request.temperature || config.temperature,
-            stop_sequences: request.stop
+            stop_sequences: request.stop,
           });
 
           const result = completion.content[0].text;
-          
+
           if (config.caching?.enabled) {
             const cacheKey = this.getCacheKey('chat', request);
             this.cache.set(cacheKey, result);
@@ -264,7 +264,7 @@ export class AIUtils {
     if (!ai) throw new Error('AI service not initialized');
 
     const config = this.manager.getServiceConfig('ai') as AIConfig;
-    
+
     if (config.caching?.enabled) {
       const cacheKey = this.getCacheKey('embedding', request);
       const cached = this.cache.get(cacheKey);
@@ -276,11 +276,11 @@ export class AIUtils {
         case 'openai': {
           const response = await ai.embeddings.create({
             model: request.model || 'text-embedding-ada-002',
-            input: request.input
+            input: request.input,
           });
 
-          const result = response.data.map(item => item.embedding);
-          
+          const result = response.data.map((item) => item.embedding);
+
           if (config.caching?.enabled) {
             const cacheKey = this.getCacheKey('embedding', request);
             this.cache.set(cacheKey, result);
@@ -293,11 +293,11 @@ export class AIUtils {
         case 'cohere': {
           const response = await ai.embed({
             model: request.model || config.models[0],
-            texts: Array.isArray(request.input) ? request.input : [request.input]
+            texts: Array.isArray(request.input) ? request.input : [request.input],
           });
 
           const result = response.embeddings;
-          
+
           if (config.caching?.enabled) {
             const cacheKey = this.getCacheKey('embedding', request);
             this.cache.set(cacheKey, result);
@@ -330,11 +330,11 @@ export class AIUtils {
             prompt: request.prompt,
             n: request.n || 1,
             size: request.size || '1024x1024',
-            response_format: request.responseFormat || 'url'
+            response_format: request.responseFormat || 'url',
           });
 
-          return response.data.map(item => 
-            request.responseFormat === 'b64_json' ? item.b64_json : item.url
+          return response.data.map((item) =>
+            request.responseFormat === 'b64_json' ? item.b64_json : item.url,
           );
         }
 
@@ -358,7 +358,7 @@ export class AIUtils {
         case 'openai': {
           const response = await ai.moderations.create({
             input: request.input,
-            model: request.model || 'text-moderation-latest'
+            model: request.model || 'text-moderation-latest',
           });
 
           const result = response.results[0];
@@ -370,7 +370,7 @@ export class AIUtils {
               selfHarm: result.categories['self-harm'],
               sexual: result.categories.sexual,
               violence: result.categories.violence,
-              graphic: result.categories.graphic
+              graphic: result.categories.graphic,
             },
             scores: {
               hate: result.category_scores.hate,
@@ -378,8 +378,8 @@ export class AIUtils {
               selfHarm: result.category_scores['self-harm'],
               sexual: result.category_scores.sexual,
               violence: result.category_scores.violence,
-              graphic: result.category_scores.graphic
-            }
+              graphic: result.category_scores.graphic,
+            },
           };
         }
 
@@ -413,8 +413,8 @@ export class AIUtils {
             hyperparameters: {
               n_epochs: request.epochs,
               batch_size: request.batchSize,
-              learning_rate_multiplier: request.learningRate
-            }
+              learning_rate_multiplier: request.learningRate,
+            },
           });
 
           return fineTune.id;
@@ -439,7 +439,7 @@ export class AIUtils {
       switch (config.service) {
         case 'openai': {
           const job = await ai.fineTuning.jobs.retrieve(fineTuneId);
-          
+
           return {
             id: job.id,
             status: job.status as 'pending' | 'running' | 'succeeded' | 'failed',
@@ -447,7 +447,7 @@ export class AIUtils {
             createdAt: new Date(job.created_at * 1000),
             finishedAt: job.finished_at ? new Date(job.finished_at * 1000) : undefined,
             trainingLoss: job.training_metrics?.training_loss,
-            validationLoss: job.training_metrics?.validation_loss
+            validationLoss: job.training_metrics?.validation_loss,
           };
         }
 
@@ -470,41 +470,41 @@ export class AIUtils {
       switch (config.service) {
         case 'openai': {
           const models = await ai.models.list();
-          
-          return models.data.map(model => ({
+
+          return models.data.map((model) => ({
             id: model.id,
             name: model.id,
             type: model.id.startsWith('ft:') ? 'fine-tuned' : 'base',
             provider: 'openai',
             capabilities: this.getModelCapabilities(model.id),
             maxTokens: model.context_window || 4096,
-            createdAt: new Date(model.created * 1000)
+            createdAt: new Date(model.created * 1000),
           }));
         }
 
         case 'anthropic': {
-          return config.models.map(modelId => ({
+          return config.models.map((modelId) => ({
             id: modelId,
             name: modelId,
             type: 'base',
             provider: 'anthropic',
             capabilities: this.getModelCapabilities(modelId),
             maxTokens: 100000, // Claude models typically support very long contexts
-            createdAt: new Date()
+            createdAt: new Date(),
           }));
         }
 
         case 'cohere': {
           const models = await ai.listModels();
-          
-          return models.map(model => ({
+
+          return models.map((model) => ({
             id: model.id,
             name: model.name,
             type: 'base',
             provider: 'cohere',
             capabilities: this.getModelCapabilities(model.id),
             maxTokens: model.max_tokens || 4096,
-            createdAt: new Date()
+            createdAt: new Date(),
           }));
         }
 
@@ -519,23 +519,23 @@ export class AIUtils {
 
   private static getModelCapabilities(modelId: string): string[] {
     const capabilities: string[] = ['text-generation'];
-    
+
     if (modelId.includes('gpt-4') || modelId.includes('claude')) {
       capabilities.push('advanced-reasoning', 'code-generation');
     }
-    
+
     if (modelId.includes('vision')) {
       capabilities.push('image-understanding');
     }
-    
+
     if (modelId.includes('embedding')) {
       capabilities.push('embeddings');
     }
-    
+
     if (modelId.includes('dall-e')) {
       capabilities.push('image-generation');
     }
 
     return capabilities;
   }
-} 
+}

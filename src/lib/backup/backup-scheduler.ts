@@ -33,7 +33,7 @@ export class BackupScheduler {
         } catch (error: unknown) {
           logger.error(
             'Error during scheduled full backup:',
-            error instanceof Error ? error.message : String(error)
+            error instanceof Error ? error.message : String(error),
           );
         }
       });
@@ -48,7 +48,7 @@ export class BackupScheduler {
         } catch (error: unknown) {
           logger.error(
             'Error during scheduled incremental backup:',
-            error instanceof Error ? error.message : String(error)
+            error instanceof Error ? error.message : String(error),
           );
         }
       });
@@ -62,7 +62,7 @@ export class BackupScheduler {
         } catch (error: unknown) {
           logger.error(
             'Error during scheduled backup cleanup:',
-            error instanceof Error ? error.message : String(error)
+            error instanceof Error ? error.message : String(error),
           );
         }
       });
@@ -71,7 +71,7 @@ export class BackupScheduler {
     } catch (error: unknown) {
       logger.error(
         'Error starting backup scheduler:',
-        error instanceof Error ? error.message : String(error)
+        error instanceof Error ? error.message : String(error),
       );
       throw error;
     }

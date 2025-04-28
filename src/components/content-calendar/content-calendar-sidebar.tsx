@@ -3,10 +3,10 @@
 import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { ContentPlatform, ContentTeamMember } from '@/types/content-calendar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ColorPicker } from '@/components/ui/color-picker';
@@ -44,8 +44,8 @@ export function ContentCalendarSidebar({
     <div className="w-64 space-y-6">
       {/* Platforms Section */}
       <Card>
-        <CardHeader className="py-3 px-4">
-          <div className="flex justify-between items-center">
+        <CardHeader className="px-4 py-3">
+          <div className="flex items-center justify-between">
             <CardTitle className="text-sm font-medium">Platforms</CardTitle>
             <Button
               variant="ghost"
@@ -61,10 +61,10 @@ export function ContentCalendarSidebar({
           <CardContent className="p-3 pt-0">
             <ScrollArea className="h-40 pr-3">
               <ul className="space-y-2">
-                {platforms.map(platform => (
+                {platforms.map((platform) => (
                   <li key={platform.id} className="flex items-center">
                     <div
-                      className="w-3 h-3 rounded-full mr-2"
+                      className="mr-2 h-3 w-3 rounded-full"
                       style={{ backgroundColor: platform.color }}
                     ></div>
                     <span className="text-sm">{platform.name}</span>
@@ -72,13 +72,13 @@ export function ContentCalendarSidebar({
                 ))}
               </ul>
             </ScrollArea>
-            <div className="mt-3 pt-3 border-t space-y-2">
+            <div className="mt-3 space-y-2 border-t pt-3">
               <div className="flex space-x-2">
                 <div className="flex-1">
                   <Input
                     placeholder="New platform"
                     value={newPlatformName}
-                    onChange={e => setNewPlatformName(e.target.value)}
+                    onChange={(e) => setNewPlatformName(e.target.value)}
                     className="h-8 text-sm"
                   />
                 </div>
@@ -86,11 +86,11 @@ export function ContentCalendarSidebar({
               </div>
               <Button
                 size="sm"
-                className="w-full h-8"
+                className="h-8 w-full"
                 onClick={handleAddPlatform}
                 disabled={!newPlatformName.trim()}
               >
-                <Icons.PlusIcon className="h-4 w-4 mr-1" />
+                <Icons.PlusIcon className="mr-1 h-4 w-4" />
                 Add Platform
               </Button>
             </div>
@@ -99,8 +99,8 @@ export function ContentCalendarSidebar({
       </Card>
       {/* Team Members Section */}
       <Card>
-        <CardHeader className="py-3 px-4">
-          <div className="flex justify-between items-center">
+        <CardHeader className="px-4 py-3">
+          <div className="flex items-center justify-between">
             <CardTitle className="text-sm font-medium">Team</CardTitle>
             <Button
               variant="ghost"
@@ -116,15 +116,15 @@ export function ContentCalendarSidebar({
           <CardContent className="p-3 pt-0">
             <ScrollArea className="h-40 pr-3">
               <ul className="space-y-2">
-                {teamMembers.map(member => (
+                {teamMembers.map((member) => (
                   <li key={member.id} className="flex items-center">
-                    <Avatar className="h-6 w-6 mr-2">
+                    <Avatar className="mr-2 h-6 w-6">
                       <AvatarImage src={member.avatar} alt={member.name} />
                       <AvatarFallback>{member.name.slice(0, 2).toUpperCase()}</AvatarFallback>
                     </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm truncate">{member.name}</p>
-                      <p className="text-xs text-muted-foreground truncate">{member.role}</p>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm">{member.name}</p>
+                      <p className="truncate text-xs text-muted-foreground">{member.role}</p>
                     </div>
                   </li>
                 ))}
@@ -133,13 +133,13 @@ export function ContentCalendarSidebar({
             <Button
               variant="outline"
               size="sm"
-              className="w-full mt-3 h-8"
+              className="mt-3 h-8 w-full"
               onClick={() => {
                 // In a real app, this would open a modal to add a team member
                 alert('Team member management will be implemented in the next phase');
               }}
             >
-              <Icons.PlusIcon className="h-4 w-4 mr-1" />
+              <Icons.PlusIcon className="mr-1 h-4 w-4" />
               Add Team Member
             </Button>
           </CardContent>
@@ -147,12 +147,12 @@ export function ContentCalendarSidebar({
       </Card>
       {/* Content Types Filter */}
       <Card>
-        <CardHeader className="py-3 px-4">
+        <CardHeader className="px-4 py-3">
           <CardTitle className="text-sm font-medium">Content Types</CardTitle>
         </CardHeader>
         <CardContent className="p-3 pt-0">
           <div className="space-y-2">
-            {['Blog', 'Social', 'Email', 'Video', 'Promotion'].map(type => (
+            {['Blog', 'Social', 'Email', 'Video', 'Promotion'].map((type) => (
               <div key={type} className="flex items-center">
                 <input type="checkbox" id={`type-${type}`} className="mr-2" />
                 <Label htmlFor={`type-${type}`} className="text-sm">
@@ -165,14 +165,14 @@ export function ContentCalendarSidebar({
       </Card>
       {/* Tags Filter */}
       <Card>
-        <CardHeader className="py-3 px-4">
+        <CardHeader className="px-4 py-3">
           <CardTitle className="text-sm font-medium">Popular Tags</CardTitle>
         </CardHeader>
-        <CardContent className="p-3 pt-0 flex flex-wrap gap-1">
-          {['spring', 'summer', 'promotion', 'wellness', 'tips', 'product'].map(tag => (
+        <CardContent className="flex flex-wrap gap-1 p-3 pt-0">
+          {['spring', 'summer', 'promotion', 'wellness', 'tips', 'product'].map((tag) => (
             <div
               key={tag}
-              className="px-2 py-1 text-xs rounded-full bg-secondary cursor-pointer hover:bg-secondary/80"
+              className="bg-secondary hover:bg-secondary/80 cursor-pointer rounded-full px-2 py-1 text-xs"
             >
               {tag}
             </div>

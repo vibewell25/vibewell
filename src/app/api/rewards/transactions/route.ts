@@ -22,7 +22,7 @@ export async function GET() {
     });
 
     return NextResponse.json({
-      transactions: transactions.map(transaction => ({
+      transactions: transactions.map((transaction) => ({
         id: transaction.id,
         type: transaction.type,
         points: transaction.points,

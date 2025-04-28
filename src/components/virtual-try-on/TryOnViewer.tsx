@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Fallback } from '@/components/ui/fallback';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import {
   Camera,
   RotateCcw,
@@ -44,7 +44,7 @@ export function TryOnViewer({
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [selectedVariant, setSelectedVariant] = useState(initialVariant || '');
   const [variants, setVariants] = useState<Array<{ id: string; name: string; imageUrl: string }>>(
-    []
+    [],
   );
   const [currentFilter, setCurrentFilter] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
@@ -99,7 +99,7 @@ export function TryOnViewer({
     return () => {
       if (videoRef.current && videoRef.current.srcObject) {
         const stream = videoRef.current.srcObject as MediaStream;
-        stream.getTracks().forEach(track => track.stop());
+        stream.getTracks().forEach((track) => track.stop());
       }
     };
   }, [productType, selectedVariant]);
@@ -179,11 +179,11 @@ export function TryOnViewer({
 
   // Handle zoom controls
   const handleZoomIn = () => {
-    setZoomLevel(prev => Math.min(prev + 0.1, 2));
+    setZoomLevel((prev) => Math.min(prev + 0.1, 2));
   };
 
   const handleZoomOut = () => {
-    setZoomLevel(prev => Math.max(prev - 0.1, 0.5));
+    setZoomLevel((prev) => Math.max(prev - 0.1, 0.5));
   };
 
   // Handle reset (clear captured image)
@@ -203,22 +203,22 @@ export function TryOnViewer({
   };
 
   return (
-    <ErrorBoundary>
-      <div className="flex flex-col h-full w-full">
+    (<ErrorBoundary>
+      <div className="flex h-full w-full flex-col">
         {/* Back button */}
         {onBack && (
-          <Button variant="ghost" className="self-start mb-4" onClick={onBack}>
-            <ArrowLeft className="h-4 w-4 mr-2" /> Back to products
+          <Button variant="ghost" className="mb-4 self-start" onClick={onBack}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to products
           </Button>
         )}
 
         {/* Product name and variant selector */}
         <div className="mb-4">
           <h2 className="text-xl font-bold">{productName} - Virtual Try-On</h2>
-          <p className="text-gray-500 mb-2">Select a variant to try on:</p>
+          <p className="mb-2 text-gray-500">Select a variant to try on:</p>
 
           <div className="flex space-x-2 overflow-x-auto pb-2">
-            {variants.map(variant => (
+            {variants.map((variant) => (
               <Button
                 key={variant.id}
                 variant={selectedVariant === variant.id ? 'default' : 'outline'}
@@ -232,37 +232,37 @@ export function TryOnViewer({
         </div>
 
         {/* Camera or captured image display */}
-        <div className="relative bg-black rounded-lg overflow-hidden flex-grow">
+        <div className="relative flex-grow overflow-hidden rounded-lg bg-black">
           {isLoading ? (
             <Fallback className="h-full" message="Preparing virtual try-on experience..." />
           ) : error ? (
-            <div className="flex flex-col items-center justify-center h-full p-4 text-center">
-              <p className="text-red-500 mb-2">{error}</p>
+            <div className="flex h-full flex-col items-center justify-center p-4 text-center">
+              <p className="mb-2 text-red-500">{error}</p>
               <Button onClick={() => window.location.reload()}>Try Again</Button>
             </div>
           ) : (
             <>
               {!capturedImage ? (
                 // Live camera view
-                <div className="relative h-full">
+                (<div className="relative h-full">
                   <video
                     ref={videoRef}
                     autoPlay
                     playsInline
                     muted
-                    className="w-full h-full object-cover"
+                    className="h-full w-full object-cover"
                     style={{ transform: `scale(${zoomLevel})` }}
                     onCanPlay={() => setIsLoading(false)}
                   />
                   {currentFilter && (
-                    <div className="absolute top-2 left-2 bg-black/50 text-white px-2 py-1 rounded text-sm">
+                    <div className="absolute left-2 top-2 rounded bg-black/50 px-2 py-1 text-sm text-white">
                       Filter: {currentFilter}
                     </div>
                   )}
-                </div>
+                </div>)
               ) : (
                 // Captured image view
-                <div className="relative h-full">
+                (<div className="relative h-full">
                   <Image
                     src={capturedImage}
                     alt="Captured try-on"
@@ -271,7 +271,7 @@ export function TryOnViewer({
                     sizes="(max-width: 768px) 100vw, 50vw"
                     priority
                   />
-                </div>
+                </div>)
               )}
 
               {/* Hidden canvas for capture */}
@@ -281,16 +281,16 @@ export function TryOnViewer({
         </div>
 
         {/* Controls */}
-        <div className="mt-4 flex justify-between items-center">
+        <div className="mt-4 flex items-center justify-between">
           <div className="flex space-x-2">
             {!capturedImage ? (
               <>
                 <Button
                   onClick={handleCapture}
                   disabled={isLoading || isCapturing || !hasPermission}
-                  className="bg-red-500 hover:bg-red-600 text-white"
+                  className="bg-red-500 text-white hover:bg-red-600"
                 >
-                  <Camera className="h-4 w-4 mr-2" />
+                  <Camera className="mr-2 h-4 w-4" />
                   Capture
                 </Button>
                 <Button
@@ -314,16 +314,16 @@ export function TryOnViewer({
             ) : (
               <>
                 <Button onClick={handleReset} variant="outline">
-                  <RotateCcw className="h-4 w-4 mr-2" />
+                  <RotateCcw className="mr-2 h-4 w-4" />
                   Try Again
                 </Button>
                 <Button onClick={handleDownload}>
-                  <Download className="h-4 w-4 mr-2" />
+                  <Download className="mr-2 h-4 w-4" />
                   Download
                 </Button>
                 {onShare && (
                   <Button onClick={handleShare} variant="outline">
-                    <Share2 className="h-4 w-4 mr-2" />
+                    <Share2 className="mr-2 h-4 w-4" />
                     Share
                   </Button>
                 )}
@@ -332,12 +332,12 @@ export function TryOnViewer({
           </div>
 
           {/* Variant navigation for smaller screens */}
-          <div className="sm:hidden flex space-x-2">
+          <div className="flex space-x-2 sm:hidden">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => {
-                const currentIndex = variants.findIndex(v => v.id === selectedVariant);
+                const currentIndex = variants.findIndex((v) => v.id === selectedVariant);
                 const prevIndex = (currentIndex - 1 + variants.length) % variants.length;
                 handleVariantChange(variants[prevIndex].id);
               }}
@@ -349,7 +349,7 @@ export function TryOnViewer({
               variant="ghost"
               size="icon"
               onClick={() => {
-                const currentIndex = variants.findIndex(v => v.id === selectedVariant);
+                const currentIndex = variants.findIndex((v) => v.id === selectedVariant);
                 const nextIndex = (currentIndex + 1) % variants.length;
                 handleVariantChange(variants[nextIndex].id);
               }}
@@ -361,9 +361,9 @@ export function TryOnViewer({
         </div>
 
         {/* Product information */}
-        <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+        <div className="mt-4 rounded-lg bg-gray-50 p-4">
           <h3 className="font-semibold">About this {productType}</h3>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="mt-1 text-sm text-gray-600">
             Try on this {productType} virtually to see how it looks on you before purchasing.
             {productType === 'glasses' &&
               ' Our AR technology ensures accurate fit and style representation.'}
@@ -376,6 +376,6 @@ export function TryOnViewer({
           </p>
         </div>
       </div>
-    </ErrorBoundary>
+    </ErrorBoundary>)
   );
 }

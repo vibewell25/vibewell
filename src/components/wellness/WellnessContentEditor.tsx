@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ContentTypeSelector, type ContentType } from './ContentTypeSelector';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
@@ -72,7 +72,7 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -80,7 +80,7 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
 
   // Handle select changes
   const handleSelectChange = (name: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -88,8 +88,8 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
 
   // Handle tags input
   const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const tags = e.target.value.split(',').map(tag => tag.trim());
-    setFormData(prev => ({
+    const tags = e.target.value.split(',').map((tag) => tag.trim());
+    setFormData((prev) => ({
       ...prev,
       tags,
     }));
@@ -134,13 +134,13 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
         <Label htmlFor="category">Category *</Label>
         <Select
           value={formData.category}
-          onValueChange={value => handleSelectChange('category', value)}
+          onValueChange={(value) => handleSelectChange('category', value)}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select category" />
           </SelectTrigger>
           <SelectContent>
-            {categories.map(category => (
+            {categories.map((category) => (
               <SelectItem key={category.id} value={category.id}>
                 {category.name}
               </SelectItem>
@@ -165,12 +165,15 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
       {/* Level */}
       <div className="space-y-2">
         <Label htmlFor="level">Level *</Label>
-        <Select value={formData.level} onValueChange={value => handleSelectChange('level', value)}>
+        <Select
+          value={formData.level}
+          onValueChange={(value) => handleSelectChange('level', value)}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Select level" />
           </SelectTrigger>
           <SelectContent>
-            {levels.map(level => (
+            {levels.map((level) => (
               <SelectItem key={level.id} value={level.id}>
                 {level.name}
               </SelectItem>
@@ -183,7 +186,7 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
       <div className="space-y-2">
         <ContentTypeSelector
           value={formData.contentType}
-          onChange={value => handleSelectChange('contentType', value)}
+          onChange={(value) => handleSelectChange('contentType', value)}
           label="Content Type *"
         />
       </div>

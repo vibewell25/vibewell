@@ -35,4 +35,4 @@ export type RecommendationProgress = {
   completionDate?: Date;
   notes?: string;
   effectiveness?: number; // 1-5 rating
-}; 
+};

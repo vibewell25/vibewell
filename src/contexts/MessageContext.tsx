@@ -16,7 +16,7 @@ interface MessageContextType {
   startNewConversation: (
     recipientId: string,
     recipientName: string,
-    content: string
+    content: string,
   ) => Promise<string | null>;
 }
 
@@ -66,23 +66,23 @@ export function MessageProvider({ children }: { children: ReactNode }) {
 
     try {
       // Update optimistically
-      setConversations(prev =>
-        prev.map(conv => {
+      setConversations((prev) =>
+        prev.map((conv) => {
           if (conv.id === conversationId) {
             const updatedConv = {
               ...conv,
-              messages: conv.messages.map(msg => ({ ...msg, read: true })),
+              messages: conv.messages.map((msg) => ({ ...msg, read: true })),
               unreadCount: 0,
             };
             return updatedConv;
           }
           return conv;
-        })
+        }),
       );
 
       // Update unread count
       setUnreadCount(
-        prev => prev - (conversations.find(c => c.id === conversationId)?.unreadCount || 0)
+        (prev) => prev - (conversations.find((c) => c.id === conversationId)?.unreadCount || 0),
       );
 
       // Call API to update
@@ -106,11 +106,11 @@ export function MessageProvider({ children }: { children: ReactNode }) {
     try {
       // Get the unread count to update total
       const conversationUnreadCount =
-        conversations.find(c => c.id === conversationId)?.unreadCount || 0;
+        conversations.find((c) => c.id === conversationId)?.unreadCount || 0;
 
       // Update optimistically
-      setConversations(prev => prev.filter(c => c.id !== conversationId));
-      setUnreadCount(prev => prev - conversationUnreadCount);
+      setConversations((prev) => prev.filter((c) => c.id !== conversationId));
+      setUnreadCount((prev) => prev - conversationUnreadCount);
 
       // Call API to delete
       const response = await fetch(`/api/messages/${conversationId}`, {
@@ -132,11 +132,11 @@ export function MessageProvider({ children }: { children: ReactNode }) {
 
     try {
       // Get the conversation
-      const conversation = conversations.find(c => c.id === conversationId);
+      const conversation = conversations.find((c) => c.id === conversationId);
       if (!conversation) return;
 
       // Get the recipient
-      const recipient = conversation.participants.find(p => p.id !== user.id);
+      const recipient = conversation.participants.find((p) => p.id !== user.id);
       if (!recipient) return;
 
       // Add optimistic update
@@ -148,8 +148,8 @@ export function MessageProvider({ children }: { children: ReactNode }) {
         read: false,
       };
 
-      setConversations(prev =>
-        prev.map(conv => {
+      setConversations((prev) =>
+        prev.map((conv) => {
           if (conv.id === conversationId) {
             return {
               ...conv,
@@ -157,7 +157,7 @@ export function MessageProvider({ children }: { children: ReactNode }) {
             };
           }
           return conv;
-        })
+        }),
       );
 
       // Send to API
@@ -189,7 +189,7 @@ export function MessageProvider({ children }: { children: ReactNode }) {
   const startNewConversation = async (
     recipientId: string,
     recipientName: string,
-    content: string
+    content: string,
   ) => {
     if (!user || !content.trim()) return null;
 

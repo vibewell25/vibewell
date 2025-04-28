@@ -62,7 +62,7 @@ export class APICache {
     // Sort keys to ensure consistent hash for same params in different order
     const sortedParamKeys = Object.keys(params).sort();
     const paramString = sortedParamKeys
-      .map(key => `${key}=${JSON.stringify(params[key])}`)
+      .map((key) => `${key}=${JSON.stringify(params[key])}`)
       .join('&');
 
     return `${baseKey}?${paramString}`;
@@ -156,7 +156,7 @@ export class APICache {
     }
 
     // Remove keys (separate from the loop to avoid issues with changing length)
-    keysToRemove.forEach(key => this.storage.removeItem(key));
+    keysToRemove.forEach((key) => this.storage.removeItem(key));
   }
 
   /**
@@ -208,7 +208,7 @@ export async function cachedFetch<T>(
     ttl?: number;
     params?: Record<string, any>;
     bypassCache?: boolean;
-  }
+  },
 ): Promise<T> {
   const { ttl, params, bypassCache, ...fetchOptions } = options || {};
 

@@ -47,18 +47,18 @@ export function optimizeHandTracking(session: XRSession): void {
 
 function updateMetrics(): void {
   const now = performance.now();
-  
+
   // Calculate FPS
   if (lastFrameTime > 0) {
     const delta = now - lastFrameTime;
     frameCount++;
-    
+
     if (frameCount >= FPS_SAMPLE_SIZE) {
       metrics.fps = 1000 / (delta / FPS_SAMPLE_SIZE);
       frameCount = 0;
     }
   }
-  
+
   lastFrameTime = now;
 }
 
@@ -69,7 +69,7 @@ export function processHandData(hands: Map<XRHandedness, XRHand>): HandTrackingS
 
   hands.forEach((hand, handedness) => {
     const jointPositions = new Map<string, HandJointPosition>();
-    
+
     hand.joints.forEach((joint, name) => {
       const position = {
         x: joint.position.x,
@@ -77,12 +77,12 @@ export function processHandData(hands: Map<XRHandedness, XRHand>): HandTrackingS
         z: joint.position.z,
         confidence: joint.trackingConfidence,
       };
-      
+
       jointPositions.set(name, position);
       totalConfidence += joint.trackingConfidence;
       jointCount++;
     });
-    
+
     positions.set(handedness, jointPositions);
   });
 
@@ -98,15 +98,16 @@ export function processHandData(hands: Map<XRHandedness, XRHand>): HandTrackingS
 
 export function detectGestures(handState: HandTrackingState): HandGesture[] {
   const gestures: HandGesture[] = [];
-  
+
   handState.hands.forEach((hand, handedness) => {
     // Check for pinch gesture
     const thumb = hand.joints.get('thumb-tip');
     const index = hand.joints.get('index-finger-tip');
-    
+
     if (thumb && index) {
       const distance = calculateDistance(thumb.position, index.position);
-      if (distance < 0.02) { // 2cm threshold
+      if (distance < 0.02) {
+        // 2cm threshold
         gestures.push({
           name: 'pinch',
           confidence: Math.min(thumb.trackingConfidence, index.trackingConfidence),
@@ -114,13 +115,13 @@ export function detectGestures(handState: HandTrackingState): HandGesture[] {
         });
       }
     }
-    
+
     // Add more gesture detection as needed
   });
 
   // Update metrics
   metrics.gestures = gestures;
-  
+
   return gestures;
 }
 
@@ -150,8 +151,8 @@ export function calibrateHandTracking(session: XRSession): Promise<void> {
       let frameConfidence = 0;
       let jointCount = 0;
 
-      hands.forEach(hand => {
-        hand.joints.forEach(joint => {
+      hands.forEach((hand) => {
+        hand.joints.forEach((joint) => {
           frameConfidence += joint.trackingConfidence;
           jointCount++;
         });
@@ -174,4 +175,4 @@ export function calibrateHandTracking(session: XRSession): Promise<void> {
 
     session.addEventListener('frame', onFrame);
   });
-} 
+}

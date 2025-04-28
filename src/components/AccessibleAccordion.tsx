@@ -26,11 +26,11 @@ export const AccessibleAccordion: React.FC<AccessibleAccordionProps> = ({
   const itemRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
   const handleItemClick = (itemId: string) => {
-    setExpandedItems(prev => {
+    setExpandedItems((prev) => {
       const isExpanded = prev.includes(itemId);
       const newExpandedItems = allowMultiple
         ? isExpanded
-          ? prev.filter(id => id !== itemId)
+          ? prev.filter((id) => id !== itemId)
           : [...prev, itemId]
         : isExpanded
           ? []
@@ -42,7 +42,7 @@ export const AccessibleAccordion: React.FC<AccessibleAccordionProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, itemId: string) => {
-    const itemIndex = items.findIndex(item => item.id === itemId);
+    const itemIndex = items.findIndex((item) => item.id === itemId);
 
     switch (e.key) {
       case 'Enter':
@@ -66,14 +66,14 @@ export const AccessibleAccordion: React.FC<AccessibleAccordionProps> = ({
         break;
       case 'Home':
         e.preventDefault();
-        const firstItem = items.find(item => !item.disabled);
+        const firstItem = items.find((item) => !item.disabled);
         if (firstItem) {
           itemRefs.current[firstItem.id]?.focus();
         }
         break;
       case 'End':
         e.preventDefault();
-        const lastItem = [...items].reverse().find(item => !item.disabled);
+        const lastItem = [...items].reverse().find((item) => !item.disabled);
         if (lastItem) {
           itemRefs.current[lastItem.id]?.focus();
         }
@@ -83,14 +83,14 @@ export const AccessibleAccordion: React.FC<AccessibleAccordionProps> = ({
 
   return (
     <div className={className}>
-      {items.map(item => {
+      {items.map((item) => {
         const isExpanded = expandedItems.includes(item.id);
 
         return (
           <div key={item.id} className="border-b border-gray-200">
             <h3>
               <button
-                ref={el => {
+                ref={(el) => {
                   itemRefs.current[item.id] = el;
                 }}
                 id={`accordion-${item.id}-header`}
@@ -98,21 +98,13 @@ export const AccessibleAccordion: React.FC<AccessibleAccordionProps> = ({
                 aria-controls={`accordion-${item.id}-panel`}
                 aria-disabled={item.disabled}
                 disabled={item.disabled}
-                className={`
-                  w-full px-4 py-3 text-left font-medium
-                  ${isExpanded ? 'text-primary' : 'text-gray-700'}
-                  ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-50'}
-                  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
-                `}
+                className={`w-full px-4 py-3 text-left font-medium ${isExpanded ? 'text-primary' : 'text-gray-700'} ${item.disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-50'} focus:ring-primary focus:outline-none focus:ring-2 focus:ring-offset-2`}
                 onClick={() => handleItemClick(item.id)}
-                onKeyDown={e => handleKeyDown(e, item.id)}
+                onKeyDown={(e) => handleKeyDown(e, item.id)}
               >
                 {item.title}
                 <span
-                  className={`
-                    float-right transform transition-transform duration-200
-                    ${isExpanded ? 'rotate-180' : ''}
-                  `}
+                  className={`float-right transform transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''} `}
                   aria-hidden="true"
                 >
                   ▼
@@ -123,10 +115,7 @@ export const AccessibleAccordion: React.FC<AccessibleAccordionProps> = ({
               id={`accordion-${item.id}-panel`}
               role="region"
               aria-labelledby={`accordion-${item.id}-header`}
-              className={`
-                overflow-hidden transition-all duration-200
-                ${isExpanded ? 'max-h-screen' : 'max-h-0'}
-              `}
+              className={`overflow-hidden transition-all duration-200 ${isExpanded ? 'max-h-screen' : 'max-h-0'} `}
             >
               <div className="px-4 py-3">{item.content}</div>
             </div>

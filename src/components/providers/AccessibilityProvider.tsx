@@ -13,7 +13,7 @@ interface AccessibilityContextType {
   preferences: AccessibilityPreferences;
   updatePreference: <K extends keyof AccessibilityPreferences>(
     key: K,
-    value: AccessibilityPreferences[K]
+    value: AccessibilityPreferences[K],
   ) => void;
   resetPreferences: () => void;
 }
@@ -48,28 +48,30 @@ export function AccessibilityProvider({
   });
 
   // Update a single preference
-  const updatePreference = useCallback(<K extends keyof AccessibilityPreferences>(
-    key: K,
-    value: AccessibilityPreferences[K]
-  ) => {
-    setPreferences(prev => ({ ...prev, [key]: value }));
-    
-    // Save to localStorage
-    try {
-      const savedPreferences = JSON.parse(localStorage.getItem('accessibility-preferences') || '{}');
-      localStorage.setItem(
-        'accessibility-preferences',
-        JSON.stringify({ ...savedPreferences, [key]: value })
-      );
-    } catch (e) {
-      console.error('Failed to save accessibility preferences:', e);
-    }
-  }, []);
+  const updatePreference = useCallback(
+    <K extends keyof AccessibilityPreferences>(key: K, value: AccessibilityPreferences[K]) => {
+      setPreferences((prev) => ({ ...prev, [key]: value }));
+
+      // Save to localStorage
+      try {
+        const savedPreferences = JSON.parse(
+          localStorage.getItem('accessibility-preferences') || '{}',
+        );
+        localStorage.setItem(
+          'accessibility-preferences',
+          JSON.stringify({ ...savedPreferences, [key]: value }),
+        );
+      } catch (e) {
+        console.error('Failed to save accessibility preferences:', e);
+      }
+    },
+    [],
+  );
 
   // Reset all preferences to defaults
   const resetPreferences = useCallback(() => {
     setPreferences(defaultPreferences);
-    
+
     // Remove from localStorage
     try {
       localStorage.removeItem('accessibility-preferences');
@@ -83,7 +85,7 @@ export function AccessibilityProvider({
     try {
       const savedPreferences = localStorage.getItem('accessibility-preferences');
       if (savedPreferences) {
-        setPreferences(prev => ({
+        setPreferences((prev) => ({
           ...prev,
           ...JSON.parse(savedPreferences),
         }));
@@ -143,11 +145,11 @@ export function AccessibilityProvider({
 // Custom hook to use accessibility context
 export function useAccessibility() {
   const context = useContext(AccessibilityContext);
-  
+
   if (!context) {
     throw new Error('useAccessibility must be used within an AccessibilityProvider');
   }
-  
+
   return context;
 }
 
@@ -158,56 +160,56 @@ export function useSystemAccessibilityPreferences() {
     prefersHighContrast: false,
     prefersLargeText: false,
   });
-  
+
   useEffect(() => {
     // Check for reduced motion preference
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setSystemPreferences(prev => ({
+    setSystemPreferences((prev) => ({
       ...prev,
       prefersReducedMotion: motionQuery.matches,
     }));
-    
+
     // Check for high contrast preference
     const contrastQuery = window.matchMedia('(prefers-contrast: more)');
-    setSystemPreferences(prev => ({
+    setSystemPreferences((prev) => ({
       ...prev,
       prefersHighContrast: contrastQuery.matches,
     }));
-    
+
     // Check for large text preference (no standard media query, approximate with font size)
     const largeTextQuery = window.matchMedia('(min-resolution: 200dpi)');
-    setSystemPreferences(prev => ({
+    setSystemPreferences((prev) => ({
       ...prev,
       prefersLargeText: largeTextQuery.matches,
     }));
-    
+
     // Set up listeners for changes
     const motionListener = (e: MediaQueryListEvent) => {
-      setSystemPreferences(prev => ({
+      setSystemPreferences((prev) => ({
         ...prev,
         prefersReducedMotion: e.matches,
       }));
     };
-    
+
     const contrastListener = (e: MediaQueryListEvent) => {
-      setSystemPreferences(prev => ({
+      setSystemPreferences((prev) => ({
         ...prev,
         prefersHighContrast: e.matches,
       }));
     };
-    
+
     const largeTextListener = (e: MediaQueryListEvent) => {
-      setSystemPreferences(prev => ({
+      setSystemPreferences((prev) => ({
         ...prev,
         prefersLargeText: e.matches,
       }));
     };
-    
+
     // Add listeners
     motionQuery.addEventListener('change', motionListener);
     contrastQuery.addEventListener('change', contrastListener);
     largeTextQuery.addEventListener('change', largeTextListener);
-    
+
     // Clean up
     return () => {
       motionQuery.removeEventListener('change', motionListener);
@@ -215,8 +217,8 @@ export function useSystemAccessibilityPreferences() {
       largeTextQuery.removeEventListener('change', largeTextListener);
     };
   }, []);
-  
+
   return systemPreferences;
 }
 
-export default AccessibilityProvider; 
+export default AccessibilityProvider;

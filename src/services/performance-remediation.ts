@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import performanceMonitor from '../utils/performanceMonitor.tsx';
+import performanceMonitor from '../utils/performanceMonitor.tsxx';
 import { logEvent } from '../utils/analytics.tsx';
 
 // Add type to define performance monitor with event emitter functionality
@@ -126,7 +126,7 @@ class PerformanceRemediationService extends EventEmitter {
         if (this.enabled) {
           this.handlePerformanceIssue(issue);
         }
-      }
+      },
     );
   }
 
@@ -143,7 +143,7 @@ class PerformanceRemediationService extends EventEmitter {
    */
   public addRule(rule: RemediationRule): void {
     // Check if rule with this ID already exists
-    const existingRuleIndex = this.rules.findIndex(r => r.id === rule.id);
+    const existingRuleIndex = this.rules.findIndex((r) => r.id === rule.id);
     if (existingRuleIndex >= 0) {
       this.rules[existingRuleIndex] = rule;
     } else {
@@ -156,7 +156,7 @@ class PerformanceRemediationService extends EventEmitter {
    */
   public removeRule(ruleId: string): boolean {
     const initialLength = this.rules.length;
-    this.rules = this.rules.filter(rule => rule.id !== ruleId);
+    this.rules = this.rules.filter((rule) => rule.id !== ruleId);
     return this.rules.length < initialLength;
   }
 
@@ -256,7 +256,7 @@ class PerformanceRemediationService extends EventEmitter {
    * Find rules that apply to a performance issue
    */
   private findApplicableRules(issue: PerformanceIssue): RemediationRule[] {
-    return this.rules.filter(rule => {
+    return this.rules.filter((rule) => {
       // Check if rule is enabled
       if (!rule.enabled) return false;
 
@@ -325,7 +325,7 @@ class PerformanceRemediationService extends EventEmitter {
       window.dispatchEvent(
         new CustomEvent('enhanced-caching-enabled', {
           detail: { type: issue.type, name: issue.name },
-        })
+        }),
       );
     }
 
@@ -347,7 +347,7 @@ class PerformanceRemediationService extends EventEmitter {
       window.dispatchEvent(
         new CustomEvent('enhanced-throttling-enabled', {
           detail: { type: issue.type, name: issue.name },
-        })
+        }),
       );
     }
 
@@ -369,7 +369,7 @@ class PerformanceRemediationService extends EventEmitter {
       window.dispatchEvent(
         new CustomEvent('enhanced-lazy-loading-enabled', {
           detail: { type: issue.type, name: issue.name },
-        })
+        }),
       );
     }
 
@@ -391,7 +391,7 @@ class PerformanceRemediationService extends EventEmitter {
       window.dispatchEvent(
         new CustomEvent('reduced-quality-enabled', {
           detail: { type: issue.type, name: issue.name },
-        })
+        }),
       );
     }
 
@@ -413,7 +413,7 @@ class PerformanceRemediationService extends EventEmitter {
       window.dispatchEvent(
         new CustomEvent('circuit-breaker-enabled', {
           detail: { type: issue.type, name: issue.name },
-        })
+        }),
       );
     }
 
@@ -433,7 +433,7 @@ class PerformanceRemediationService extends EventEmitter {
     };
 
     // Count statistics
-    this.attempts.forEach(attempt => {
+    this.attempts.forEach((attempt) => {
       if (attempt.successful) {
         stats.successfulAttempts++;
       }

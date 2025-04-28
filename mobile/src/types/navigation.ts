@@ -1,5 +1,11 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { Booking } from './booking';
+import { InventoryItem } from './inventory';
+import { EquipmentItem } from './equipment';
+import { Post, CommunityEvent } from './community';
+import { PayrollRecord } from './payroll';
+import { BenefitClaim } from './benefits';
 
 // Define interfaces for data models
 export interface Provider {
@@ -103,6 +109,24 @@ export interface SkinAnalysisResult {
   spots: number;
 }
 
+// Inventory model interface
+export interface InventoryItem {
+  id: string;
+  name: string;
+  description: string;
+  quantity: number;
+  price: number;
+}
+
+// Equipment model interface
+export interface EquipmentItem {
+  id: string;
+  name: string;
+  description: string;
+  quantity: number;
+  price: number;
+}
+
 // Main Stack Navigator Param List
 export type RootStackParamList = {
   // Auth Stack
@@ -152,6 +176,36 @@ export type RootStackParamList = {
   Subscriptions: undefined;
   Referral: undefined;
   Analytics: undefined;
+  StaffSchedules: undefined;
+  Attendance: undefined;
+  TrainingModules: undefined;
+  TrainingProgress: undefined;
+  Promotions: undefined;
+  EmailCampaigns: undefined;
+  Notifications: undefined;
+  FormList: undefined;
+  FormDetail: { id: string };
+  PostList: undefined;
+  PostDetail: { id: string };
+  PostForm: { post?: Post };
+  EventList: undefined;
+  EventDetail: { id: string };
+  EventForm: { event?: CommunityEvent };
+  InventoryList: undefined;
+  InventoryDetail: { id: string };
+  InventoryForm: { item?: InventoryItem };
+  EquipmentList: undefined;
+  EquipmentDetail: { id: string };
+  EquipmentForm: { item?: EquipmentItem };
+  Calendar: undefined;
+  BookingDetail: { booking: Booking };
+  NewBooking: undefined;
+  PayrollList: undefined;
+  PayrollDetail: { id: string };
+  PayrollForm: { record?: PayrollRecord };
+  BenefitList: undefined;
+  BenefitDetail: { id: string };
+  BenefitForm: { claim?: BenefitClaim };
 };
 
 // Navigation prop types for each screen
@@ -196,6 +250,36 @@ export type MembershipNavigationProp = StackNavigationProp<RootStackParamList, '
 export type SubscriptionsNavigationProp = StackNavigationProp<RootStackParamList, 'Subscriptions'>;
 export type ReferralNavigationProp = StackNavigationProp<RootStackParamList, 'Referral'>;
 export type AnalyticsNavigationProp = StackNavigationProp<RootStackParamList, 'Analytics'>;
+export type StaffSchedulesNavigationProp = StackNavigationProp<RootStackParamList, 'StaffSchedules'>;
+export type AttendanceNavigationProp = StackNavigationProp<RootStackParamList, 'Attendance'>;
+export type TrainingModulesNavigationProp = StackNavigationProp<RootStackParamList, 'TrainingModules'>;
+export type TrainingProgressNavigationProp = StackNavigationProp<RootStackParamList, 'TrainingProgress'>;
+export type PromotionsNavigationProp = StackNavigationProp<RootStackParamList, 'Promotions'>;
+export type EmailCampaignsNavigationProp = StackNavigationProp<RootStackParamList, 'EmailCampaigns'>;
+export type NotificationsNavigationProp = StackNavigationProp<RootStackParamList, 'Notifications'>;
+export type FormListNavigationProp = StackNavigationProp<RootStackParamList, 'FormList'>;
+export type FormDetailNavigationProp = StackNavigationProp<RootStackParamList, 'FormDetail'>;
+export type PostListNavigationProp = StackNavigationProp<RootStackParamList, 'PostList'>;
+export type PostDetailNavigationProp = StackNavigationProp<RootStackParamList, 'PostDetail'>;
+export type PostFormNavigationProp = StackNavigationProp<RootStackParamList, 'PostForm'>;
+export type EventListNavigationProp = StackNavigationProp<RootStackParamList, 'EventList'>;
+export type EventDetailNavigationProp = StackNavigationProp<RootStackParamList, 'EventDetail'>;
+export type EventFormNavigationProp = StackNavigationProp<RootStackParamList, 'EventForm'>;
+export type InventoryListNavigationProp = StackNavigationProp<RootStackParamList, 'InventoryList'>;
+export type InventoryDetailNavigationProp = StackNavigationProp<RootStackParamList, 'InventoryDetail'>;
+export type InventoryFormNavigationProp = StackNavigationProp<RootStackParamList, 'InventoryForm'>;
+export type EquipmentListNavigationProp = StackNavigationProp<RootStackParamList, 'EquipmentList'>;
+export type EquipmentDetailNavigationProp = StackNavigationProp<RootStackParamList, 'EquipmentDetail'>;
+export type EquipmentFormNavigationProp = StackNavigationProp<RootStackParamList, 'EquipmentForm'>;
+export type CalendarNavigationProp = StackNavigationProp<RootStackParamList, 'Calendar'>;
+export type BookingDetailNavigationProp = StackNavigationProp<RootStackParamList, 'BookingDetail'>;
+export type NewBookingNavigationProp = StackNavigationProp<RootStackParamList, 'NewBooking'>;
+export type PayrollListNavigationProp = StackNavigationProp<RootStackParamList, 'PayrollList'>;
+export type PayrollDetailNavigationProp = StackNavigationProp<RootStackParamList, 'PayrollDetail'>;
+export type PayrollFormNavigationProp = StackNavigationProp<RootStackParamList, 'PayrollForm'>;
+export type BenefitListNavigationProp = StackNavigationProp<RootStackParamList, 'BenefitList'>;
+export type BenefitDetailNavigationProp = StackNavigationProp<RootStackParamList, 'BenefitDetail'>;
+export type BenefitFormNavigationProp = StackNavigationProp<RootStackParamList, 'BenefitForm'>;
 
 // Route prop types for screens that receive params
 export type BeautyServiceDetailRouteProp = RouteProp<RootStackParamList, 'BeautyServiceDetail'>;
@@ -222,3 +306,33 @@ export type MembershipRouteProp = RouteProp<RootStackParamList, 'Membership'>;
 export type SubscriptionsRouteProp = RouteProp<RootStackParamList, 'Subscriptions'>;
 export type ReferralRouteProp = RouteProp<RootStackParamList, 'Referral'>;
 export type AnalyticsRouteProp = RouteProp<RootStackParamList, 'Analytics'>;
+export type StaffSchedulesRouteProp = RouteProp<RootStackParamList, 'StaffSchedules'>;
+export type AttendanceRouteProp = RouteProp<RootStackParamList, 'Attendance'>;
+export type TrainingModulesRouteProp = RouteProp<RootStackParamList, 'TrainingModules'>;
+export type TrainingProgressRouteProp = RouteProp<RootStackParamList, 'TrainingProgress'>;
+export type PromotionsRouteProp = RouteProp<RootStackParamList, 'Promotions'>;
+export type EmailCampaignsRouteProp = RouteProp<RootStackParamList, 'EmailCampaigns'>;
+export type NotificationsRouteProp = RouteProp<RootStackParamList, 'Notifications'>;
+export type FormListRouteProp = RouteProp<RootStackParamList, 'FormList'>;
+export type FormDetailRouteProp = RouteProp<RootStackParamList, 'FormDetail'>;
+export type PostListRouteProp = RouteProp<RootStackParamList, 'PostList'>;
+export type PostDetailRouteProp = RouteProp<RootStackParamList, 'PostDetail'>;
+export type PostFormRouteProp = RouteProp<RootStackParamList, 'PostForm'>;
+export type EventListRouteProp = RouteProp<RootStackParamList, 'EventList'>;
+export type EventDetailRouteProp = RouteProp<RootStackParamList, 'EventDetail'>;
+export type EventFormRouteProp = RouteProp<RootStackParamList, 'EventForm'>;
+export type InventoryListRouteProp = RouteProp<RootStackParamList, 'InventoryList'>;
+export type InventoryDetailRouteProp = RouteProp<RootStackParamList, 'InventoryDetail'>;
+export type InventoryFormRouteProp = RouteProp<RootStackParamList, 'InventoryForm'>;
+export type EquipmentListRouteProp = RouteProp<RootStackParamList, 'EquipmentList'>;
+export type EquipmentDetailRouteProp = RouteProp<RootStackParamList, 'EquipmentDetail'>;
+export type EquipmentFormRouteProp = RouteProp<RootStackParamList, 'EquipmentForm'>;
+export type CalendarRouteProp = RouteProp<RootStackParamList, 'Calendar'>;
+export type BookingDetailRouteProp = RouteProp<RootStackParamList, 'BookingDetail'>;
+export type NewBookingRouteProp = RouteProp<RootStackParamList, 'NewBooking'>;
+export type PayrollListRouteProp = RouteProp<RootStackParamList, 'PayrollList'>;
+export type PayrollDetailRouteProp = RouteProp<RootStackParamList, 'PayrollDetail'>;
+export type PayrollFormRouteProp = RouteProp<RootStackParamList, 'PayrollForm'>;
+export type BenefitListRouteProp = RouteProp<RootStackParamList, 'BenefitList'>;
+export type BenefitDetailRouteProp = RouteProp<RootStackParamList, 'BenefitDetail'>;
+export type BenefitFormRouteProp = RouteProp<RootStackParamList, 'BenefitForm'>;

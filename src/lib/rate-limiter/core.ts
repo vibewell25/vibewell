@@ -31,7 +31,7 @@ if (typeof setInterval !== 'undefined') {
 export async function checkRateLimit(
   identifier: string,
   options: RateLimitOptions,
-  useRedis: boolean = false
+  useRedis: boolean = false,
 ): Promise<RateLimitResult> {
   const windowMs = options.windowMs || DEFAULT_OPTIONS.windowMs!;
   const max = options.max || DEFAULT_OPTIONS.max!;
@@ -163,7 +163,7 @@ export async function logRateLimitEvent(
   method: string,
   limiterType: string,
   result: RateLimitResult,
-  userId?: string
+  userId?: string,
 ): Promise<void> {
   try {
     // Get IP from identifier (assuming prefix format)
@@ -217,7 +217,7 @@ export async function logRateLimitEvent(
           remaining: result.remaining,
           limit: result.limit,
           limiterType,
-        }
+        },
       );
     }
   } catch (error) {

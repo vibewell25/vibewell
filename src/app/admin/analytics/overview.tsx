@@ -1,127 +1,15 @@
-'use client';
-
+'use client';;
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { StatCard } from './stat-card';
 import {
   BarChart as BarChartIcon,
   LineChart as LineChartIcon,
   Users,
   DollarSign,
-  Calendar,
   Activity,
   CreditCard,
 } from 'lucide-react';
-import { Bar, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-const data = [
-  { name: 'Jan', total: 1500 },
-  { name: 'Feb', total: 2300 },
-  { name: 'Mar', total: 3200 },
-  { name: 'Apr', total: 4300 },
-  { name: 'May', total: 3800 },
-  { name: 'Jun', total: 5900 },
-  { name: 'Jul', total: 6800 },
-  { name: 'Aug', total: 6300 },
-  { name: 'Sep', total: 7500 },
-  { name: 'Oct', total: 8100 },
-  { name: 'Nov', total: 7300 },
-  { name: 'Dec', total: 9200 },
-];
-
-const revenueData = [
-  { name: 'Jan', value: 2400 },
-  { name: 'Feb', value: 1398 },
-  { name: 'Mar', value: 9800 },
-  { name: 'Apr', value: 3908 },
-  { name: 'May', value: 4800 },
-  { name: 'Jun', value: 3800 },
-  { name: 'Jul', value: 4300 },
-];
-
-const bookingsData = [
-  { name: 'Jan', value: 40 },
-  { name: 'Feb', value: 30 },
-  { name: 'Mar', value: 60 },
-  { name: 'Apr', value: 80 },
-  { name: 'May', value: 70 },
-  { name: 'Jun', value: 90 },
-  { name: 'Jul', value: 100 },
-];
-
-const usersData = [
-  { name: 'Jan', value: 100 },
-  { name: 'Feb', value: 200 },
-  { name: 'Mar', value: 300 },
-  { name: 'Apr', value: 400 },
-  { name: 'May', value: 500 },
-  { name: 'Jun', value: 600 },
-  { name: 'Jul', value: 700 },
-];
-
-const overviewData = [
-  {
-    name: 'Jan',
-    bookings: 65,
-    revenue: 3200,
-  },
-  {
-    name: 'Feb',
-    bookings: 59,
-    revenue: 2900,
-  },
-  {
-    name: 'Mar',
-    bookings: 80,
-    revenue: 4100,
-  },
-  {
-    name: 'Apr',
-    bookings: 81,
-    revenue: 4300,
-  },
-  {
-    name: 'May',
-    bookings: 75,
-    revenue: 3850,
-  },
-  {
-    name: 'Jun',
-    bookings: 82,
-    revenue: 4250,
-  },
-  {
-    name: 'Jul',
-    bookings: 91,
-    revenue: 4800,
-  },
-  {
-    name: 'Aug',
-    bookings: 87,
-    revenue: 4500,
-  },
-  {
-    name: 'Sep',
-    bookings: 94,
-    revenue: 5000,
-  },
-  {
-    name: 'Oct',
-    bookings: 88,
-    revenue: 4600,
-  },
-  {
-    name: 'Nov',
-    bookings: 70,
-    revenue: 3600,
-  },
-  {
-    name: 'Dec',
-    bookings: 78,
-    revenue: 4000,
-  },
-];
 
 interface AnalyticsCard {
   title: string;
@@ -172,7 +60,7 @@ export function AnalyticsOverview() {
             <CardDescription>View your top traffic acquisition channels</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+            <div className="flex h-[300px] items-center justify-center text-muted-foreground">
               Traffic source chart visualization
             </div>
           </CardContent>
@@ -183,7 +71,7 @@ export function AnalyticsOverview() {
             <CardDescription>Daily active users over the past 30 days</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+            <div className="flex h-[300px] items-center justify-center text-muted-foreground">
               User engagement chart visualization
             </div>
           </CardContent>
@@ -226,7 +114,7 @@ export function Overview() {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      {analyticsCards.map(card => (
+      {analyticsCards.map((card) => (
         <Card key={card.title}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{card.title}</CardTitle>

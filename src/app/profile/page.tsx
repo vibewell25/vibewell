@@ -1,17 +1,17 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { useAuth } from '@/hooks/use-unified-auth';
 import { ProfileForm } from '@/components/user/ProfileForm';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import {
   Select,
   SelectContent,
@@ -91,14 +91,14 @@ function ProfileContent() {
   }, [loading, user, router]);
 
   const handleNotificationToggle = (id: string, type: 'email' | 'push' | 'inApp') => {
-    setNotificationPreferences(prev =>
-      prev.map(pref => (pref.id === id ? { ...pref, [type]: !pref[type] } : pref))
+    setNotificationPreferences((prev) =>
+      prev.map((pref) => (pref.id === id ? { ...pref, [type]: !pref[type] } : pref)),
     );
     toast.success('Notification preferences updated');
   };
 
   const handleDisconnectAccount = (id: string) => {
-    setConnectedAccounts(prev => prev.filter(account => account.id !== id));
+    setConnectedAccounts((prev) => prev.filter((account) => account.id !== id));
     toast.success('Account disconnected');
   };
 
@@ -112,7 +112,7 @@ function ProfileContent() {
     setIsDeletingAccount(true);
     try {
       // Add account deletion logic here
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
       toast.success('Account deleted successfully');
       router.push('/');
     } catch (error) {
@@ -127,11 +127,11 @@ function ProfileContent() {
       <Layout>
         <div className="container-app py-12">
           <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+            <div className="h-8 w-1/4 rounded bg-gray-200"></div>
             <div className="space-y-4">
-              <div className="h-32 bg-gray-200 rounded"></div>
-              <div className="h-32 bg-gray-200 rounded"></div>
-              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 rounded bg-gray-200"></div>
+              <div className="h-32 rounded bg-gray-200"></div>
+              <div className="h-32 rounded bg-gray-200"></div>
             </div>
           </div>
         </div>
@@ -147,7 +147,7 @@ function ProfileContent() {
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Profile Settings</h1>
+          <h1 className="mb-2 text-3xl font-bold">Profile Settings</h1>
           <p className="text-muted-foreground">Manage your account information and preferences</p>
         </div>
 
@@ -181,14 +181,14 @@ function ProfileContent() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center gap-4 mb-6">
+                  <div className="mb-6 flex items-center gap-4">
                     <Avatar className="h-20 w-20">
                       <AvatarImage src={user.avatar} alt={user.name} />
                       <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
                       <Button variant="outline">Change Photo</Button>
-                      <p className="text-sm text-muted-foreground mt-2">
+                      <p className="mt-2 text-sm text-muted-foreground">
                         JPG, GIF or PNG. Max size of 800K
                       </p>
                     </div>
@@ -204,13 +204,13 @@ function ProfileContent() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {connectedAccounts.map(account => (
+                    {connectedAccounts.map((account) => (
                       <div
                         key={account.id}
-                        className="flex items-center justify-between p-4 border rounded-lg"
+                        className="flex items-center justify-between rounded-lg border p-4"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
                             <GlobeIcon className="h-5 w-5 text-gray-500" />
                           </div>
                           <div>
@@ -249,7 +249,7 @@ function ProfileContent() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {notificationPreferences.map(preference => (
+                  {notificationPreferences.map((preference) => (
                     <div key={preference.id} className="space-y-4">
                       <div className="flex items-center justify-between">
                         <div>
@@ -301,7 +301,7 @@ function ProfileContent() {
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
                     <div>
-                      <h3 className="font-medium mb-2">Change Password</h3>
+                      <h3 className="mb-2 font-medium">Change Password</h3>
                       <div className="grid gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="currentPassword">Current Password</Label>
@@ -322,7 +322,7 @@ function ProfileContent() {
                     <Separator />
 
                     <div>
-                      <h3 className="font-medium mb-2">Two-Factor Authentication</h3>
+                      <h3 className="mb-2 font-medium">Two-Factor Authentication</h3>
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-sm text-muted-foreground">
@@ -336,9 +336,9 @@ function ProfileContent() {
                     <Separator />
 
                     <div>
-                      <h3 className="font-medium mb-2">Active Sessions</h3>
+                      <h3 className="mb-2 font-medium">Active Sessions</h3>
                       <div className="space-y-4">
-                        <div className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="flex items-center justify-between rounded-lg border p-4">
                           <div>
                             <p className="font-medium">Chrome on macOS</p>
                             <p className="text-sm text-muted-foreground">

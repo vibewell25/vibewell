@@ -7,7 +7,7 @@ import { applyRateLimit, adminRateLimiter } from '@/lib/rate-limiter';
 async function listFiles(dirPath: string) {
   try {
     const files = await fs.promises.readdir(dirPath);
-    return files.filter(file => file.endsWith('.json') || file.endsWith('.html'));
+    return files.filter((file) => file.endsWith('.json') || file.endsWith('.html'));
   } catch (error) {
     console.error('Error reading directory:', error);
     return [];
@@ -92,7 +92,7 @@ export async function GET(req: NextRequest) {
         }
         return groups;
       },
-      {} as Record<string, string[]>
+      {} as Record<string, string[]>,
     );
 
     return NextResponse.json({

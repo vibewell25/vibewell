@@ -58,39 +58,10 @@ export const availability = pgTable('availability', {
 });
 
 // Relations
-export const providerRelations = relations(providers, ({ many }) => ({
-  services: many(services),
-  appointments: many(appointments),
-  availability: many(availability),
-}));
+export {};
 
-export const serviceRelations = relations(services, ({ one, many }) => ({
-  provider: one(providers, {
-    fields: [services.providerId],
-    references: [providers.id],
-  }),
-  appointments: many(appointments),
-}));
+export {};
 
-export const appointmentRelations = relations(appointments, ({ one, many }) => ({
-  provider: one(providers, {
-    fields: [appointments.providerId],
-    references: [providers.id],
-  }),
-  service: one(services, {
-    fields: [appointments.serviceId],
-    references: [services.id],
-  }),
-  availability: many(availability),
-}));
+export {};
 
-export const availabilityRelations = relations(availability, ({ one }) => ({
-  provider: one(providers, {
-    fields: [availability.providerId],
-    references: [providers.id],
-  }),
-  appointment: one(appointments, {
-    fields: [availability.appointmentId],
-    references: [appointments.id],
-  }),
-}));
+export {};

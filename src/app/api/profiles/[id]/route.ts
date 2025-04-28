@@ -26,7 +26,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     if (!isAdmin && !isOwnProfile) {
       return NextResponse.json(
         { error: 'Forbidden: You do not have permission to access this profile' },
-        { status: 403 }
+        { status: 403 },
       );
     }
 

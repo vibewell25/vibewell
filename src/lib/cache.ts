@@ -32,7 +32,7 @@ class ARModelCache {
       return new Promise((resolve, reject) => {
         const request = indexedDB.open(this.dbName, 1);
 
-        request.onupgradeneeded = event => {
+        request.onupgradeneeded = (event) => {
           const db = (event.target as IDBOpenDBRequest).result;
 
           // Create object store for models if it doesn't exist
@@ -43,12 +43,12 @@ class ARModelCache {
           }
         };
 
-        request.onsuccess = event => {
+        request.onsuccess = (event) => {
           this.db = (event.target as IDBOpenDBRequest).result;
           resolve();
         };
 
-        request.onerror = event => {
+        request.onerror = (event) => {
           console.error('Error opening AR model cache database:', event);
           reject(new Error('Failed to open database'));
         };
@@ -300,7 +300,7 @@ class ARModelCache {
 
       const models: Array<{ url: string; size: number; timestamp: number }> = [];
 
-      request.onsuccess = event => {
+      request.onsuccess = (event) => {
         const cursor = (event.target as IDBRequest).result as IDBCursorWithValue;
 
         if (cursor) {
@@ -417,4 +417,4 @@ class ARModelCache {
 }
 
 // Export singleton instance
-export const arModelCache = new ARModelCache();
+export {};

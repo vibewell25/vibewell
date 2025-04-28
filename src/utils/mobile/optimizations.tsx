@@ -1,12 +1,7 @@
 /**
  * Mobile optimization implementation functions
  */
-import { DevicePerformanceProfile, MobileOptimizationOptions } from './types';
-import {
-  detectDevicePerformanceProfile,
-  isMobileDevice,
-  applyDeviceClasses,
-} from './deviceDetection';
+import { DevicePerformanceProfile } from './types';
 
 /**
  * Apply lazy loading to all images based on device capabilities
@@ -15,14 +10,14 @@ import {
  */
 export function applyLazyLoading(
   maxImageWidth: number,
-  deviceProfile: DevicePerformanceProfile
+  deviceProfile: DevicePerformanceProfile,
 ): void {
   if (typeof document === 'undefined') return;
 
   // Find all images that don't have loading="lazy" already applied
   const images = document.querySelectorAll('img:not([loading="lazy"])');
 
-  images.forEach(img => {
+  images.forEach((img) => {
     // Cast to HTMLImageElement to access src property
     const imgElement = img as HTMLImageElement;
 
@@ -59,7 +54,7 @@ export function applyLazyLoading(
 
   // Create preconnect links for common image domains found in the source
   const html = document.documentElement.innerHTML;
-  imageDomains.forEach(domain => {
+  imageDomains.forEach((domain) => {
     if (
       html.includes(domain) &&
       !document.querySelector(`link[rel="preconnect"][href*="${domain}"]`)
@@ -81,7 +76,7 @@ export function applyLazyLoading(
  */
 export function throttle<T extends (...args: any[]) => any>(
   func: T,
-  limit: number
+  limit: number,
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
   let lastFunc: ReturnType<typeof setTimeout>;
@@ -105,7 +100,7 @@ export function throttle<T extends (...args: any[]) => any>(
             lastRan = Date.now();
           }
         },
-        limit - (Date.now() - lastRan)
+        limit - (Date.now() - lastRan),
       );
     }
   };
@@ -132,7 +127,7 @@ export function applyEventThrottling(deviceProfile: DevicePerformanceProfile): v
   EventTarget.prototype.addEventListener = function (
     type: string,
     listener: EventListenerOrEventListenerObject,
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
   ) {
     if (eventTypes.includes(type)) {
       let throttledListener: EventListenerOrEventListenerObject;
@@ -171,7 +166,7 @@ export function generateOptimizedImageUrl(originalUrl: string, maxWidth: number)
     } else if (url.hostname === 'res.cloudinary.com') {
       // Handle Cloudinary URLs
       const parts = url.pathname.split('/');
-      const uploadIndex = parts.findIndex(p => p === 'upload');
+      const uploadIndex = parts.findIndex((p) => p === 'upload');
 
       if (uploadIndex !== -1) {
         parts.splice(uploadIndex + 1, 0, `w_${maxWidth},q_auto:eco`);

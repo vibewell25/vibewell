@@ -1,9 +1,9 @@
 'use client';
 
-import React, { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { MobileLayout } from '@/components/layout/MobileLayout';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -38,8 +38,8 @@ function ProfileMobileContent() {
   if (loading) {
     return (
       <MobileLayout>
-        <div className="flex justify-center items-center min-h-screen">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"></div>
         </div>
       </MobileLayout>
     );
@@ -51,21 +51,21 @@ function ProfileMobileContent() {
 
   return (
     <MobileLayout>
-      <div className="bg-background min-h-screen pb-16">
+      <div className="min-h-screen bg-background pb-16">
         {/* Profile Header */}
-        <div className="bg-card pt-6 pb-4 px-4 flex flex-col items-center border-b border-border">
-          <Avatar className="w-20 h-20 mb-3">
+        <div className="flex flex-col items-center border-b border-border bg-card px-4 pb-4 pt-6">
+          <Avatar className="mb-3 h-20 w-20">
             <AvatarImage src={user.avatarUrl || ''} alt={user.fullName || 'User'} />
             <AvatarFallback>{user.fullName?.charAt(0) || 'U'}</AvatarFallback>
           </Avatar>
-          <h1 className="text-xl font-semibold mb-1">{user.fullName || 'User'}</h1>
-          <p className="text-sm text-muted-foreground mb-3">{user.email}</p>
+          <h1 className="mb-1 text-xl font-semibold">{user.fullName || 'User'}</h1>
+          <p className="mb-3 text-sm text-muted-foreground">{user.email}</p>
 
-          <div className="flex space-x-2 mb-3">
-            <Badge variant="outline" className="text-xs px-2 py-1">
+          <div className="mb-3 flex space-x-2">
+            <Badge variant="outline" className="px-2 py-1 text-xs">
               {user.role || 'Customer'}
             </Badge>
-            <Badge variant="outline" className="text-xs px-2 py-1">
+            <Badge variant="outline" className="px-2 py-1 text-xs">
               Member since {format(new Date(user.createdAt || Date.now()), 'MMM yyyy')}
             </Badge>
           </div>
@@ -77,33 +77,33 @@ function ProfileMobileContent() {
 
         {/* Profile Tabs */}
         <Tabs defaultValue={activeTab} onValueChange={handleTabChange}>
-          <TabsList className="grid grid-cols-3 sticky top-0 z-10 bg-background">
+          <TabsList className="sticky top-0 z-10 grid grid-cols-3 bg-background">
             <TabsTrigger value="activity">Activity</TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="favorites">Favorites</TabsTrigger>
           </TabsList>
 
           <TabsContent value="activity" className="p-4">
-            <h2 className="text-lg font-medium mb-4">Recent Activity</h2>
+            <h2 className="mb-4 text-lg font-medium">Recent Activity</h2>
             <div className="space-y-4">
-              <div className="bg-card p-4 rounded-lg border border-border">
-                <div className="flex items-center justify-between mb-2">
+              <div className="rounded-lg border border-border bg-card p-4">
+                <div className="mb-2 flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">3 days ago</span>
                   <Badge>New Review</Badge>
                 </div>
                 <p className="text-sm">You reviewed "The Wellness Spa" (⭐⭐⭐⭐⭐)</p>
               </div>
 
-              <div className="bg-card p-4 rounded-lg border border-border">
-                <div className="flex items-center justify-between mb-2">
+              <div className="rounded-lg border border-border bg-card p-4">
+                <div className="mb-2 flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">1 week ago</span>
                   <Badge>Booking Completed</Badge>
                 </div>
                 <p className="text-sm">Swedish Massage with Sarah at Serenity Spa</p>
               </div>
 
-              <div className="bg-card p-4 rounded-lg border border-border">
-                <div className="flex items-center justify-between mb-2">
+              <div className="rounded-lg border border-border bg-card p-4">
+                <div className="mb-2 flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">2 weeks ago</span>
                   <Badge variant="outline">Profile Update</Badge>
                 </div>
@@ -113,17 +113,17 @@ function ProfileMobileContent() {
           </TabsContent>
 
           <TabsContent value="bookings" className="p-4">
-            <h2 className="text-lg font-medium mb-4">Your Bookings</h2>
+            <h2 className="mb-4 text-lg font-medium">Your Bookings</h2>
             <div className="space-y-4">
-              <div className="bg-card p-4 rounded-lg border border-border">
-                <div className="flex justify-between items-start mb-2">
+              <div className="rounded-lg border border-border bg-card p-4">
+                <div className="mb-2 flex items-start justify-between">
                   <div>
                     <h3 className="font-medium">Haircut and Style</h3>
                     <p className="text-sm text-muted-foreground">Modern Cuts Salon</p>
                   </div>
                   <Badge variant="outline">Upcoming</Badge>
                 </div>
-                <p className="text-sm mb-3">June 15, 2023 • 2:00 PM</p>
+                <p className="mb-3 text-sm">June 15, 2023 • 2:00 PM</p>
                 <div className="flex space-x-2">
                   <Button size="sm" variant="outline">
                     Reschedule
@@ -134,15 +134,15 @@ function ProfileMobileContent() {
                 </div>
               </div>
 
-              <div className="bg-card p-4 rounded-lg border border-border">
-                <div className="flex justify-between items-start mb-2">
+              <div className="rounded-lg border border-border bg-card p-4">
+                <div className="mb-2 flex items-start justify-between">
                   <div>
                     <h3 className="font-medium">Swedish Massage</h3>
                     <p className="text-sm text-muted-foreground">Serenity Spa</p>
                   </div>
                   <Badge variant="secondary">Completed</Badge>
                 </div>
-                <p className="text-sm mb-3">May 28, 2023 • 11:00 AM</p>
+                <p className="mb-3 text-sm">May 28, 2023 • 11:00 AM</p>
                 <div className="flex space-x-2">
                   <Button size="sm" variant="outline">
                     Book Again
@@ -156,44 +156,44 @@ function ProfileMobileContent() {
           </TabsContent>
 
           <TabsContent value="favorites" className="p-4">
-            <h2 className="text-lg font-medium mb-4">Your Favorites</h2>
+            <h2 className="mb-4 text-lg font-medium">Your Favorites</h2>
             <div className="grid grid-cols-1 gap-4">
-              <div className="bg-card p-4 rounded-lg border border-border">
+              <div className="rounded-lg border border-border bg-card p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-16 h-16 rounded-md bg-gray-200"></div>
+                  <div className="h-16 w-16 rounded-md bg-gray-200"></div>
                   <div>
                     <h3 className="font-medium">Serenity Spa</h3>
                     <p className="text-sm text-muted-foreground">Massage, Facials</p>
-                    <div className="flex items-center mt-1">
-                      <span className="text-sm mr-1">4.8</span>
+                    <div className="mt-1 flex items-center">
+                      <span className="mr-1 text-sm">4.8</span>
                       <span className="text-yellow-500">★★★★★</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-card p-4 rounded-lg border border-border">
+              <div className="rounded-lg border border-border bg-card p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-16 h-16 rounded-md bg-gray-200"></div>
+                  <div className="h-16 w-16 rounded-md bg-gray-200"></div>
                   <div>
                     <h3 className="font-medium">Modern Cuts Salon</h3>
                     <p className="text-sm text-muted-foreground">Haircuts, Styling</p>
-                    <div className="flex items-center mt-1">
-                      <span className="text-sm mr-1">4.6</span>
+                    <div className="mt-1 flex items-center">
+                      <span className="mr-1 text-sm">4.6</span>
                       <span className="text-yellow-500">★★★★★</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-card p-4 rounded-lg border border-border">
+              <div className="rounded-lg border border-border bg-card p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-16 h-16 rounded-md bg-gray-200"></div>
+                  <div className="h-16 w-16 rounded-md bg-gray-200"></div>
                   <div>
                     <h3 className="font-medium">Glow Beauty Lounge</h3>
                     <p className="text-sm text-muted-foreground">Facials, Makeup</p>
-                    <div className="flex items-center mt-1">
-                      <span className="text-sm mr-1">4.7</span>
+                    <div className="mt-1 flex items-center">
+                      <span className="mr-1 text-sm">4.7</span>
                       <span className="text-yellow-500">★★★★★</span>
                     </div>
                   </div>
@@ -212,7 +212,7 @@ export default function ProfileMobilePage() {
     <Suspense
       fallback={
         <MobileLayout>
-          <div className="flex justify-center items-center min-h-screen">Loading profile...</div>
+          <div className="flex min-h-screen items-center justify-center">Loading profile...</div>
         </MobileLayout>
       }
     >

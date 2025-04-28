@@ -33,49 +33,6 @@ const defaultState: MeditationState = {
 
 const MeditationContext = createContext<MeditationContextType | undefined>(undefined);
 
-export const useMeditation = () => {
-  const context = useContext(MeditationContext);
-  if (!context) {
-    throw new Error('useMeditation must be used within a MeditationProvider');
-  }
-  return context;
-};
+export {};
 
-export const MeditationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState<MeditationState>(defaultState);
-
-  const startSession = useCallback(() => {
-    setState(prev => ({ ...prev, isActive: true, isPaused: false }));
-  }, []);
-
-  const pauseSession = useCallback(() => {
-    setState(prev => ({ ...prev, isPaused: true }));
-  }, []);
-
-  const resumeSession = useCallback(() => {
-    setState(prev => ({ ...prev, isPaused: false }));
-  }, []);
-
-  const endSession = useCallback(() => {
-    setState(prev => ({ ...prev, isActive: false, isPaused: false }));
-  }, []);
-
-  const updateSettings = useCallback((settings: Partial<MeditationState>) => {
-    setState(prev => ({ ...prev, ...settings }));
-  }, []);
-
-  return (
-    <MeditationContext.Provider
-      value={{
-        state,
-        startSession,
-        pauseSession,
-        resumeSession,
-        endSession,
-        updateSettings,
-      }}
-    >
-      {children}
-    </MeditationContext.Provider>
-  );
-};
+export {};

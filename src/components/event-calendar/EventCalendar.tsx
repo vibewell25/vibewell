@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   format,
   addMonths,
@@ -11,10 +11,9 @@ import {
   isSameMonth,
   isToday,
   isEqual,
-  parse,
 } from 'date-fns';
-import { Button } from '@/components/ui/button';
-import { Calendar, Calendar as CalendarIcon } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Calendar as CalendarIcon } from 'lucide-react';
 
 interface Event {
   id: string;
@@ -51,11 +50,11 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
 
   // Get events for a specific date
   const getEventsForDay = (day: Date) => {
-    return events.filter(event =>
+    return events.filter((event) =>
       isEqual(
         new Date(event.date.getFullYear(), event.date.getMonth(), event.date.getDate()),
-        new Date(day.getFullYear(), day.getMonth(), day.getDate())
-      )
+        new Date(day.getFullYear(), day.getMonth(), day.getDate()),
+      ),
     );
   };
 
@@ -71,8 +70,8 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
   const selectedDateEvents = getEventsForDay(selectedDate);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-4">
-      <div className="flex justify-between items-center mb-6">
+    <div className="rounded-lg bg-white p-4 shadow-lg">
+      <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold">{format(currentMonth, 'MMMM yyyy')}</h2>
         <div className="flex space-x-2">
           <Button variant="outline" size="sm" onClick={prevMonth}>
@@ -88,14 +87,14 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
       </div>
 
       {/* Calendar Grid */}
-      <div className="grid grid-cols-7 gap-1 mb-6">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-          <div key={day} className="text-center font-medium p-2">
+      <div className="mb-6 grid grid-cols-7 gap-1">
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+          <div key={day} className="p-2 text-center font-medium">
             {day}
           </div>
         ))}
 
-        {monthDays.map(day => {
+        {monthDays.map((day) => {
           const dayEvents = getEventsForDay(day);
           const isCurrentMonth = isSameMonth(day, currentMonth);
           const isSelected = isEqual(day, selectedDate);
@@ -103,25 +102,16 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
           return (
             <div
               key={day.toISOString()}
-              className={`p-2 min-h-[80px] border rounded-md cursor-pointer transition-colors
-                ${isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-400'}
-                ${isToday(day) ? 'border-blue-500' : 'border-gray-200'}
-                ${isSelected ? 'bg-blue-50 border-blue-500' : ''}
-                hover:bg-blue-50`}
+              className={`min-h-[80px] cursor-pointer rounded-md border p-2 transition-colors ${isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-400'} ${isToday(day) ? 'border-blue-500' : 'border-gray-200'} ${isSelected ? 'border-blue-500 bg-blue-50' : ''} hover:bg-blue-50`}
               onClick={() => handleDateClick(day)}
             >
-              <div className="text-right mb-1">{format(day, 'd')}</div>
+              <div className="mb-1 text-right">{format(day, 'd')}</div>
               <div className="space-y-1">
-                {dayEvents.slice(0, 2).map(event => (
+                {dayEvents.slice(0, 2).map((event) => (
                   <div
                     key={event.id}
-                    className={`px-1 py-0.5 text-xs rounded truncate
-                      ${event.type === 'appointment' ? 'bg-pink-100 text-pink-800' : ''}
-                      ${event.type === 'class' ? 'bg-green-100 text-green-800' : ''}
-                      ${event.type === 'meeting' ? 'bg-blue-100 text-blue-800' : ''}
-                      ${event.type === 'personal' ? 'bg-purple-100 text-purple-800' : ''}
-                    `}
-                    onClick={e => {
+                    className={`truncate rounded px-1 py-0.5 text-xs ${event.type === 'appointment' ? 'bg-pink-100 text-pink-800' : ''} ${event.type === 'class' ? 'bg-green-100 text-green-800' : ''} ${event.type === 'meeting' ? 'bg-blue-100 text-blue-800' : ''} ${event.type === 'personal' ? 'bg-purple-100 text-purple-800' : ''} `}
+                    onClick={(e) => {
                       e.stopPropagation();
                       onEventClick && onEventClick(event);
                     }}
@@ -131,7 +121,7 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
                   </div>
                 ))}
                 {dayEvents.length > 2 && (
-                  <div className="text-xs text-gray-500 pl-1">+{dayEvents.length - 2} more</div>
+                  <div className="pl-1 text-xs text-gray-500">+{dayEvents.length - 2} more</div>
                 )}
               </div>
             </div>
@@ -142,15 +132,15 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
       {/* Selected Date Events */}
       {selectedDateEvents.length > 0 && (
         <div className="border-t pt-4">
-          <h3 className="font-medium mb-3 flex items-center">
-            <CalendarIcon className="h-4 w-4 mr-2" />
+          <h3 className="mb-3 flex items-center font-medium">
+            <CalendarIcon className="mr-2 h-4 w-4" />
             Events for {format(selectedDate, 'MMMM d, yyyy')}
           </h3>
           <div className="space-y-2">
-            {selectedDateEvents.map(event => (
+            {selectedDateEvents.map((event) => (
               <div
                 key={event.id}
-                className="p-3 border rounded-md hover:bg-gray-50 cursor-pointer"
+                className="cursor-pointer rounded-md border p-3 hover:bg-gray-50"
                 onClick={() => onEventClick && onEventClick(event)}
               >
                 <div className="flex justify-between">
@@ -158,15 +148,10 @@ export default function EventCalendar({ events, onEventClick, onDateSelect }: Ev
                   {event.time && <span className="text-gray-500">{event.time}</span>}
                 </div>
                 {event.description && (
-                  <p className="text-gray-600 text-sm mt-1">{event.description}</p>
+                  <p className="mt-1 text-sm text-gray-600">{event.description}</p>
                 )}
                 <div
-                  className={`inline-block px-2 py-0.5 text-xs rounded mt-2
-                  ${event.type === 'appointment' ? 'bg-pink-100 text-pink-800' : ''}
-                  ${event.type === 'class' ? 'bg-green-100 text-green-800' : ''}
-                  ${event.type === 'meeting' ? 'bg-blue-100 text-blue-800' : ''}
-                  ${event.type === 'personal' ? 'bg-purple-100 text-purple-800' : ''}
-                `}
+                  className={`mt-2 inline-block rounded px-2 py-0.5 text-xs ${event.type === 'appointment' ? 'bg-pink-100 text-pink-800' : ''} ${event.type === 'class' ? 'bg-green-100 text-green-800' : ''} ${event.type === 'meeting' ? 'bg-blue-100 text-blue-800' : ''} ${event.type === 'personal' ? 'bg-purple-100 text-purple-800' : ''} `}
                 >
                   {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
                 </div>

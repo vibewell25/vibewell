@@ -1,7 +1,6 @@
-'use client';
+'use client';;
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
-import { GoalProgressCard } from '@/components/wellness/GoalProgressCard';
 import { ProgressCharts } from '@/components/wellness/ProgressCharts';
 import { HabitTracker } from '@/components/wellness/HabitTracker';
 import { ProgressSummaryCard } from '@/components/wellness/ProgressSummaryCard';
@@ -9,11 +8,13 @@ import { GoalCreationModal } from '@/components/wellness/GoalCreationModal';
 import { GoalList } from '@/components/wellness/GoalList';
 import { DeleteConfirmationModal } from '@/components/wellness/DeleteConfirmationModal';
 import { useWellnessData } from '@/hooks/useWellnessData';
-import { GoalType, Goal } from '@/types/progress';
+import { Goal } from '@/types/progress';
 import { useAuth } from '@/hooks/use-unified-auth';
 import { Icons } from '@/components/icons';
 export default function ProgressPage() {
-  const { user, loading: authLoading } = useAuth();
+  const {
+    user
+  } = useAuth();
   const {
     goals,
     habitLogs,
@@ -58,7 +59,7 @@ export default function ProgressPage() {
   };
   // Handle deleting a goal
   const handleDeleteGoal = (goalId: string) => {
-    const goal = goals.find(g => g.id === goalId);
+    const goal = goals.find((g) => g.id === goalId);
     if (goal) {
       setGoalToDelete({ id: goal.id, title: goal.title });
     }
@@ -79,7 +80,7 @@ export default function ProgressPage() {
     return (
       <Layout>
         <div className="container-app py-12">
-          <div className="flex justify-center items-center h-[60vh]">
+          <div className="flex h-[60vh] items-center justify-center">
             <p className="text-muted-foreground">Loading...</p>
           </div>
         </div>
@@ -90,9 +91,9 @@ export default function ProgressPage() {
     return (
       <Layout>
         <div className="container-app py-12">
-          <div className="flex flex-col justify-center items-center h-[60vh]">
-            <h1 className="text-2xl font-bold mb-4">Sign in to track your progress</h1>
-            <p className="text-muted-foreground mb-6">
+          <div className="flex h-[60vh] flex-col items-center justify-center">
+            <h1 className="mb-4 text-2xl font-bold">Sign in to track your progress</h1>
+            <p className="mb-6 text-muted-foreground">
               You need to be logged in to access your wellness progress tracking.
             </p>
             <a href="/auth/signin" className="btn-primary">
@@ -106,9 +107,9 @@ export default function ProgressPage() {
   return (
     <Layout>
       <div className="container-app py-12">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Wellness Progress</h1>
+            <h1 className="mb-2 text-3xl font-bold">Wellness Progress</h1>
             <p className="text-muted-foreground">
               Track your goals and habits to improve your wellness journey
             </p>
@@ -124,11 +125,11 @@ export default function ProgressPage() {
           </div>
         </div>
         {/* View selector tabs */}
-        <div className="flex border-b border-border mb-8">
+        <div className="mb-8 flex border-b border-border">
           <button
-            className={`pb-2 px-4 font-medium ${
+            className={`px-4 pb-2 font-medium ${
               activeView === 'summary'
-                ? 'text-primary border-b-2 border-primary'
+                ? 'text-primary border-primary border-b-2'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
             onClick={() => setActiveView('summary')}
@@ -136,9 +137,9 @@ export default function ProgressPage() {
             Summary
           </button>
           <button
-            className={`pb-2 px-4 font-medium ${
+            className={`px-4 pb-2 font-medium ${
               activeView === 'charts'
-                ? 'text-primary border-b-2 border-primary'
+                ? 'text-primary border-primary border-b-2'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
             onClick={() => setActiveView('charts')}
@@ -146,9 +147,9 @@ export default function ProgressPage() {
             Charts
           </button>
           <button
-            className={`pb-2 px-4 font-medium ${
+            className={`px-4 pb-2 font-medium ${
               activeView === 'tracker'
-                ? 'text-primary border-b-2 border-primary'
+                ? 'text-primary border-primary border-b-2'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
             onClick={() => setActiveView('tracker')}
@@ -179,7 +180,7 @@ export default function ProgressPage() {
             {/* Chart type selector */}
             <div className="mb-6 flex flex-wrap gap-3">
               <button
-                className={`px-3 py-1.5 rounded-full text-sm ${
+                className={`rounded-full px-3 py-1.5 text-sm ${
                   selectedType === 'meditation'
                     ? 'bg-purple-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -189,7 +190,7 @@ export default function ProgressPage() {
                 Meditation
               </button>
               <button
-                className={`px-3 py-1.5 rounded-full text-sm ${
+                className={`rounded-full px-3 py-1.5 text-sm ${
                   selectedType === 'workout'
                     ? 'bg-pink-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -199,7 +200,7 @@ export default function ProgressPage() {
                 Workout
               </button>
               <button
-                className={`px-3 py-1.5 rounded-full text-sm ${
+                className={`rounded-full px-3 py-1.5 text-sm ${
                   selectedType === 'water'
                     ? 'bg-blue-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -209,7 +210,7 @@ export default function ProgressPage() {
                 Water
               </button>
               <button
-                className={`px-3 py-1.5 rounded-full text-sm ${
+                className={`rounded-full px-3 py-1.5 text-sm ${
                   selectedType === 'sleep'
                     ? 'bg-indigo-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -219,7 +220,7 @@ export default function ProgressPage() {
                 Sleep
               </button>
               <button
-                className={`px-3 py-1.5 rounded-full text-sm ${
+                className={`rounded-full px-3 py-1.5 text-sm ${
                   selectedType === 'steps'
                     ? 'bg-green-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -232,7 +233,7 @@ export default function ProgressPage() {
             {/* Time range selector */}
             <div className="mb-6 flex gap-2">
               <button
-                className={`px-3 py-1 rounded-md text-sm ${
+                className={`rounded-md px-3 py-1 text-sm ${
                   timeRange === '7d'
                     ? 'bg-primary text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -242,7 +243,7 @@ export default function ProgressPage() {
                 7 Days
               </button>
               <button
-                className={`px-3 py-1 rounded-md text-sm ${
+                className={`rounded-md px-3 py-1 text-sm ${
                   timeRange === '30d'
                     ? 'bg-primary text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -252,7 +253,7 @@ export default function ProgressPage() {
                 30 Days
               </button>
               <button
-                className={`px-3 py-1 rounded-md text-sm ${
+                className={`rounded-md px-3 py-1 text-sm ${
                   timeRange === '90d'
                     ? 'bg-primary text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -277,12 +278,12 @@ export default function ProgressPage() {
             <HabitTracker goals={goals} habitLogs={habitLogs} onLogHabit={handleLogProgress} />
             {/* Quick Stats */}
             {summary && (
-              <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-4">
                 <div className="card bg-gradient-to-br from-purple-500/10 to-purple-500/5">
                   <div className="text-center">
-                    <span className="text-xl block mb-1">🧘‍♂️</span>
+                    <span className="mb-1 block text-xl">🧘‍♂️</span>
                     <p className="font-medium">Meditation</p>
-                    <p className="text-2xl font-bold mt-1">
+                    <p className="mt-1 text-2xl font-bold">
                       {summary.thisWeekProgress.meditation} min
                     </p>
                     <p className="text-xs text-muted-foreground">
@@ -293,9 +294,9 @@ export default function ProgressPage() {
                 </div>
                 <div className="card bg-gradient-to-br from-pink-500/10 to-pink-500/5">
                   <div className="text-center">
-                    <span className="text-xl block mb-1">🏋️‍♂️</span>
+                    <span className="mb-1 block text-xl">🏋️‍♂️</span>
                     <p className="font-medium">Workout</p>
-                    <p className="text-2xl font-bold mt-1">
+                    <p className="mt-1 text-2xl font-bold">
                       {summary.thisWeekProgress.workout} min
                     </p>
                     <p className="text-xs text-muted-foreground">
@@ -306,9 +307,9 @@ export default function ProgressPage() {
                 </div>
                 <div className="card bg-gradient-to-br from-blue-500/10 to-blue-500/5">
                   <div className="text-center">
-                    <span className="text-xl block mb-1">💧</span>
+                    <span className="mb-1 block text-xl">💧</span>
                     <p className="font-medium">Water</p>
-                    <p className="text-2xl font-bold mt-1">
+                    <p className="mt-1 text-2xl font-bold">
                       {summary.thisWeekProgress.water} glasses
                     </p>
                     <p className="text-xs text-muted-foreground">
@@ -319,9 +320,9 @@ export default function ProgressPage() {
                 </div>
                 <div className="card bg-gradient-to-br from-indigo-500/10 to-indigo-500/5">
                   <div className="text-center">
-                    <span className="text-xl block mb-1">😴</span>
+                    <span className="mb-1 block text-xl">😴</span>
                     <p className="font-medium">Sleep</p>
-                    <p className="text-2xl font-bold mt-1">
+                    <p className="mt-1 text-2xl font-bold">
                       {summary.thisWeekProgress.sleep.toFixed(1)} hrs
                     </p>
                     <p className="text-xs text-muted-foreground">

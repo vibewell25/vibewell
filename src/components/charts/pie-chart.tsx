@@ -28,7 +28,7 @@ export default function PieChart({
 }: PieChartProps) {
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-muted-foreground">
+      <div className="flex h-full items-center justify-center text-muted-foreground">
         No data available
       </div>
     );
@@ -85,7 +85,7 @@ export default function PieChart({
           ))}
         </Pie>
         <Tooltip
-          formatter={value => [`${value}`, 'Value']}
+          formatter={(value) => [`${value}`, 'Value']}
           contentStyle={{
             borderRadius: '8px',
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',

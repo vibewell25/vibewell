@@ -23,7 +23,7 @@ import { useAccessibilityContext } from '@/contexts/AccessibilityContext';
 
 function MyComponent() {
   const { preferences, setHighContrast } = useAccessibilityContext();
-  
+
   return (
     <div>
       <p>High contrast is {preferences.highContrast ? 'enabled' : 'disabled'}</p>
@@ -64,5 +64,6 @@ src/
 ## Documentation
 
 For more detailed information, see:
+
 - [Comprehensive Accessibility Guide](./ACCESSIBILITY.md)
-- [Web Content Accessibility Guidelines (WCAG)](https://www.w3.org/WAI/standards-guidelines/wcag/) 
+- [Web Content Accessibility Guidelines (WCAG)](https://www.w3.org/WAI/standards-guidelines/wcag/)

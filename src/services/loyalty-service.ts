@@ -9,9 +9,7 @@ import {
   Reward,
   LoyaltyTransaction,
 } from '../models/LoyaltyProgram';
-import { PrismaClient, Program, Member, Tier, Reward as PrismaReward } from '@prisma/client';
-
-const prismaClient = new PrismaClient();
+import { PrismaClient } from '@prisma/client';
 
 export interface CreateLoyaltyProgramParams {
   businessId: string;
@@ -269,7 +267,7 @@ export class LoyaltyService {
    * Calculate points for a booking
    */
   private calculateBookingPoints(amount: number, currentTier: string): number {
-    const tier = this.LOYALTY_TIERS.find(t => t.name === currentTier);
+    const tier = this.LOYALTY_TIERS.find((t) => t.name === currentTier);
     const basePoints = Math.floor(amount * 10); // $1 = 10 points
     return Math.floor(basePoints * (tier?.pointMultiplier || 1));
   }
@@ -303,7 +301,7 @@ export class LoyaltyService {
 
     // Check for tier upgrade
     const newTier = this.LOYALTY_TIERS.filter(
-      tier => tier.minimumPoints <= member.lifetimePoints
+      (tier) => tier.minimumPoints <= member.lifetimePoints,
     ).sort((a, b) => b.minimumPoints - a.minimumPoints)[0];
 
     if (newTier.name !== member.currentTier) {
@@ -328,7 +326,7 @@ export class LoyaltyService {
       throw new Error('Loyalty member not found');
     }
 
-    const reward = this.REWARDS_CATALOG.find(r => r.id === rewardId);
+    const reward = this.REWARDS_CATALOG.find((r) => r.id === rewardId);
 
     if (!reward) {
       throw new Error('Reward not found');
@@ -382,7 +380,7 @@ export class LoyaltyService {
    * Check if current tier meets minimum tier requirement
    */
   private isEligibleForTier(currentTier: string, minimumTier: string): boolean {
-    const tierLevels = this.LOYALTY_TIERS.map(t => t.name);
+    const tierLevels = this.LOYALTY_TIERS.map((t) => t.name);
     return tierLevels.indexOf(currentTier) >= tierLevels.indexOf(minimumTier);
   }
 
@@ -396,8 +394,8 @@ export class LoyaltyService {
       throw new Error('Loyalty member not found');
     }
 
-    const currentTier = this.LOYALTY_TIERS.find(t => t.name === member.currentTier);
-    const nextTier = this.LOYALTY_TIERS.find(t => t.minimumPoints > member.lifetimePoints);
+    const currentTier = this.LOYALTY_TIERS.find((t) => t.name === member.currentTier);
+    const nextTier = this.LOYALTY_TIERS.find((t) => t.minimumPoints > member.lifetimePoints);
 
     return {
       currentPoints: member.currentPoints,
@@ -422,7 +420,7 @@ export class LoyaltyService {
       throw new Error('Loyalty member not found');
     }
 
-    return this.REWARDS_CATALOG.filter(reward => {
+    return this.REWARDS_CATALOG.filter((reward) => {
       const isActive = reward.isActive;
       const hasEnoughPoints = member.currentPoints >= reward.pointsCost;
       const meetsMinimumTier =
@@ -627,7 +625,7 @@ export class LoyaltyService {
 
   async createProgram(businessId: string, data: LoyaltyProgramInput) {
     try {
-      const program = await prisma.$transaction(async tx => {
+      const program = await prisma.$transaction(async (tx) => {
         // Create the program
         const program = await tx.program.create({
           data: {
@@ -660,7 +658,7 @@ export class LoyaltyService {
 
   async createTier(programId: string, data: LoyaltyTierInput) {
     try {
-      const tier = await prisma.$transaction(async tx => {
+      const tier = await prisma.$transaction(async (tx) => {
         return tx.tier.create({
           data: {
             ...data,
@@ -679,7 +677,7 @@ export class LoyaltyService {
 
   async enrollMember(userId: string, programId: string) {
     try {
-      const member = await prisma.$transaction(async tx => {
+      const member = await prisma.$transaction(async (tx) => {
         // Get the base tier
         const baseTier = await tx.tier.findFirst({
           where: {
@@ -714,10 +712,10 @@ export class LoyaltyService {
     memberId: string,
     points: number,
     source: string,
-    sourceId?: string
+    sourceId?: string,
   ): Promise<void> {
     try {
-      await prisma.$transaction(async tx => {
+      await prisma.$transaction(async (tx) => {
         // Update member points
         const member = await tx.member.update({
           where: { id: memberId },
@@ -777,10 +775,10 @@ export class LoyaltyService {
       startDate: Date;
       endDate: Date;
       conditions?: Record<string, any>;
-    }
+    },
   ) {
     try {
-      const event = await prisma.$transaction(async tx => {
+      const event = await prisma.$transaction(async (tx) => {
         return tx.pointsMultiplierEvent.create({
           data: {
             ...data,
@@ -803,10 +801,10 @@ export class LoyaltyService {
       referrerPoints: number;
       refereePoints: number;
       maxReferrals?: number;
-    }
+    },
   ) {
     try {
-      const referralProgram = await prisma.$transaction(async tx => {
+      const referralProgram = await prisma.$transaction(async (tx) => {
         return tx.referralProgram.create({
           data: {
             ...data,
@@ -826,7 +824,7 @@ export class LoyaltyService {
   async createReferral(programId: string, referrerId: string, refereeId: string) {
     try {
       // Check if referrer has reached max referrals
-      const referralProgram = await prisma.$transaction(async tx => {
+      const referralProgram = await prisma.$transaction(async (tx) => {
         const referralProgram = await tx.referralProgram.findUnique({
           where: { programId },
           include: {
@@ -869,7 +867,7 @@ export class LoyaltyService {
 
   async completeReferral(referralId: string) {
     try {
-      await prisma.$transaction(async tx => {
+      await prisma.$transaction(async (tx) => {
         const referral = await tx.referral.update({
           where: { id: referralId },
           data: {
@@ -901,7 +899,7 @@ export class LoyaltyService {
             referrerMember.id,
             referral.program.referrerPoints,
             'REFERRAL',
-            referralId
+            referralId,
           );
         }
 
@@ -910,7 +908,7 @@ export class LoyaltyService {
             refereeMember.id,
             referral.program.refereePoints,
             'REFERRAL',
-            referralId
+            referralId,
           );
         }
       });
@@ -925,10 +923,10 @@ export class LoyaltyService {
   async awardSocialEngagementPoints(
     userId: string,
     action: 'POST' | 'COMMENT' | 'REACTION',
-    contentId: string
+    contentId: string,
   ): Promise<void> {
     try {
-      const member = await prisma.$transaction(async tx => {
+      const member = await prisma.$transaction(async (tx) => {
         // Get user's loyalty membership
         const member = await tx.member.findFirst({
           where: { userId },
@@ -969,7 +967,7 @@ export class LoyaltyService {
     try {
       const today = new Date();
 
-      await prisma.$transaction(async tx => {
+      await prisma.$transaction(async (tx) => {
         // Find users with birthdays today
         const birthdayUsers = await tx.user.findMany({
           where: {
@@ -1015,7 +1013,7 @@ export class LoyaltyService {
 
   private async awardBirthdayReward(memberId: string): Promise<void> {
     try {
-      await prisma.$transaction(async tx => {
+      await prisma.$transaction(async (tx) => {
         // Award birthday points
         await this.awardPoints(memberId, 500, 'BIRTHDAY_REWARD');
 
@@ -1053,7 +1051,7 @@ export class LoyaltyService {
 
   private async awardAnniversaryReward(memberId: string): Promise<void> {
     try {
-      await prisma.$transaction(async tx => {
+      await prisma.$transaction(async (tx) => {
         // Get membership duration in years
         const member = await tx.member.findUnique({
           where: { id: memberId },
@@ -1062,7 +1060,7 @@ export class LoyaltyService {
         if (!member) throw new Error('Member not found');
 
         const yearsSinceJoining = Math.floor(
-          (new Date().getTime() - member.createdAt.getTime()) / (1000 * 60 * 60 * 24 * 365)
+          (new Date().getTime() - member.createdAt.getTime()) / (1000 * 60 * 60 * 24 * 365),
         );
 
         // Award anniversary points (increases with years)

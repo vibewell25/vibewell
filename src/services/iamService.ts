@@ -101,7 +101,7 @@ export class IAMService {
       const roles = await this.getUserRoles(userId);
 
       for (const role of roles) {
-        const hasPermission = role.permissions.some(p => {
+        const hasPermission = role.permissions.some((p) => {
           const [resource, action] = p.split(':');
           return (
             (resource === '*' || resource === permission.resource) &&

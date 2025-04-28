@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { Button } from '@/components/Button';
@@ -29,10 +28,10 @@ describe('Component Accessibility', () => {
     it('button with icon should have proper aria-label', async () => {
       const { container } = render(
         <Button aria-label="Add item">
-          <svg className="w-4 h-4" viewBox="0 0 24 24">
+          <svg className="h-4 w-4" viewBox="0 0 24 24">
             <path d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
-        </Button>
+        </Button>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -46,7 +45,7 @@ describe('Component Accessibility', () => {
           <Card.Header>Accessible Header</Card.Header>
           <Card.Body>Accessible Content</Card.Body>
           <Card.Footer>Accessible Footer</Card.Footer>
-        </Card>
+        </Card>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -56,7 +55,7 @@ describe('Component Accessibility', () => {
       const { container } = render(
         <Card clickable onClick={() => {}} aria-label="Interactive card">
           <Card.Body>Clickable Content</Card.Body>
-        </Card>
+        </Card>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -67,7 +66,7 @@ describe('Component Accessibility', () => {
         <Card>
           <Card.Image src="/test-image.jpg" alt="Descriptive alt text" />
           <Card.Body>Content with Image</Card.Body>
-        </Card>
+        </Card>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -77,7 +76,7 @@ describe('Component Accessibility', () => {
       const { container } = render(
         <Card loading aria-label="Loading content">
           <Card.Body>This content is hidden while loading</Card.Body>
-        </Card>
+        </Card>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -100,7 +99,7 @@ describe('Component Accessibility', () => {
           <Card.Footer>
             <Button variant="outline">Cancel</Button>
           </Card.Footer>
-        </Card>
+        </Card>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -131,7 +130,7 @@ describe('Component Accessibility', () => {
               </div>
             </div>
           </Card.Body>
-        </Card>
+        </Card>,
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();

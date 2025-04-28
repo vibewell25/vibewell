@@ -32,6 +32,22 @@ model User {
   referrals         User[]   @relation("Referrals")
   analyticsEvents   AnalyticsEvent[]
   paymentTransactions PaymentTransaction[]
+  trainingProgress  TrainingProgress[]
+  googleCalendarToken GoogleCalendarToken?
+  outlookCalendarToken OutlookCalendarToken?
+  assignments EquipmentAssignment[]
+  socialPosts         SocialPost[]
+  postComments        PostComment[]
+  eventRegistrations  EventRegistration[]
+  forumThreads        ForumThread[]
+  forumPosts          ForumPost[]
+  benefitClaims       BenefitClaim[]
+  payrollRecords      PayrollRecord[]
+  bookings            Booking[]
+  posts               Post[]
+  comments            Comment[]
+  twoFactorAuth       TwoFactorAuth?
+  webAuthnCredentials WebAuthnCredential[]
 }
 
 model Provider {
@@ -55,6 +71,7 @@ model Service {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   paymentTransactions PaymentTransaction[]
+  bookings    Booking[]
 }
 
 model Business {
@@ -91,6 +108,46 @@ model Staff {
   phone      String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+  schedules  StaffSchedule[]
+}
+
+model StaffSchedule {
+  id          String           @id @default(uuid())
+  staff       Staff            @relation(fields: [staffId], references: [id])
+  staffId     String
+  date        DateTime
+  startTime   DateTime
+  endTime     DateTime
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  attendanceRecords AttendanceRecord[]
+}
+
+model AttendanceRecord {
+  id         String           @id @default(uuid())
+  schedule   StaffSchedule    @relation(fields: [scheduleId], references: [id])
+  scheduleId String
+  status     String
+  timestamp  DateTime         @default(now())
+}
+
+model TrainingModule {
+  id          String           @id @default(uuid())
+  title       String
+  description String?
+  contentUrl  String
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  trainingProgress TrainingProgress[]
+}
+
+model TrainingProgress {
+  id          String           @id @default(uuid())
+  user        User             @relation(fields: [userId], references: [id])
+  userId      String
+  module      TrainingModule   @relation(fields: [moduleId], references: [id])
+  moduleId    String
+  completedAt DateTime         @default(now())
 }
 
 // Loyalty: tiers and transactions
@@ -154,4 +211,275 @@ model PaymentTransaction {
   createdAt DateTime @default(now())
   service   Service? @relation(fields: [serviceId], references: [id])
   serviceId String?
+}
+
+model PromotionCode {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  description String?
+  discount    Float
+  validFrom   DateTime
+  validTo     DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model EmailCampaign {
+  id          String   @id @default(uuid())
+  name        String
+  subject     String
+  body        String
+  scheduledAt DateTime?
+  sent        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  userId     String
+  title      String
+  message    String
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// Google Calendar integration tokens
+model GoogleCalendarToken {
+  id           String   @id @default(uuid())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String   @unique
+  accessToken  String
+  refreshToken String
+  scope        String?
+  tokenType    String?
+  expiryDate   DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+}
+
+// Outlook Calendar integration tokens
+model OutlookCalendarToken {
+  id           String   @id @default(uuid())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String   @unique
+  accessToken  String
+  refreshToken String
+  scope        String?
+  tokenType    String?
+  expiryDate   DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+}
+
+// Ops Features: Forms & Docs
+model FormDefinition {
+  id          String   @id @default(uuid())
+  name        String
+  fields      Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  submissions FormSubmission[]
+}
+
+model FormSubmission {
+  id            String          @id @default(uuid())
+  definition    FormDefinition  @relation(fields: [definitionId], references: [id])
+  definitionId  String
+  data          Json
+  submittedAt   DateTime        @default(now())
+  documents     Document[]
+}
+
+model Document {
+  id           String          @id @default(uuid())
+  url          String
+  type         String
+  submission   FormSubmission? @relation(fields: [submissionId], references: [id])
+  submissionId String?
+  createdAt    DateTime        @default(now())
+}
+
+// Ops Features: Inventory & Equipment
+model InventoryItem {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  quantity    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model EquipmentItem {
+  id           String                  @id @default(cuid())
+  name         String
+  description  String?
+  serialNumber String?
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  assignments  EquipmentAssignment[]
+}
+
+model EquipmentAssignment {
+  id           String         @id @default(cuid())
+  equipment    EquipmentItem  @relation(fields: [equipmentId], references: [id])
+  equipmentId  String
+  assignedTo   String
+  assignedToUser User         @relation(fields: [assignedTo], references: [id])
+  assignedAt   DateTime       @default(now())
+  returnedAt   DateTime?
+}
+
+// Community & Social features
+model Post {
+  id         String     @id @default(cuid())
+  authorId   String
+  author     User       @relation(fields: [authorId], references: [id])
+  content    String
+  createdAt  DateTime   @default(now())
+  comments   Comment[]
+}
+
+model Comment {
+  id         String     @id @default(cuid())
+  postId     String
+  post       Post       @relation(fields: [postId], references: [id])
+  authorId   String
+  author     User       @relation(fields: [authorId], references: [id])
+  content    String
+  createdAt  DateTime   @default(now())
+}
+
+model CommunityEvent {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  startAt     DateTime
+  endAt       DateTime?
+  location    String?
+  createdAt   DateTime  @default(now())
+}
+
+model SocialPost {
+  id         String        @id @default(uuid())
+  author     User          @relation(fields: [authorId], references: [id])
+  authorId   String
+  content    String
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  comments   PostComment[]
+}
+
+model PostComment {
+  id         String      @id @default(uuid())
+  post       SocialPost  @relation(fields: [postId], references: [id])
+  postId     String
+  author     User        @relation(fields: [authorId], references: [id])
+  authorId   String
+  content    String
+  createdAt  DateTime    @default(now())
+}
+
+model Event {
+  id          String             @id @default(uuid())
+  title       String
+  description String?
+  date        DateTime
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  registrations EventRegistration[]
+}
+
+model EventRegistration {
+  id           String   @id @default(uuid())
+  event        Event    @relation(fields: [eventId], references: [id])
+  eventId      String
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  registeredAt DateTime @default(now())
+}
+
+model ForumThread {
+  id         String       @id @default(uuid())
+  title      String
+  author     User         @relation(fields: [authorId], references: [id])
+  authorId   String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  posts      ForumPost[]
+}
+
+model ForumPost {
+  id         String       @id @default(uuid())
+  thread     ForumThread  @relation(fields: [threadId], references: [id])
+  threadId   String
+  author     User         @relation(fields: [authorId], references: [id])
+  authorId   String
+  content    String
+  createdAt  DateTime     @default(now())
+}
+
+// Payroll & Benefits features
+model BenefitClaim {
+  id           String      @id @default(uuid())
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String
+  type         String
+  status       String
+  amount       Float?
+  requestedAt  DateTime    @default(now())
+  processedAt  DateTime?
+}
+
+model PayrollRecord {
+  id           String      @id @default(uuid())
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String
+  salary       Float
+  periodStart  DateTime
+  periodEnd    DateTime
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+// Booking model: store user appointments with services
+model Booking {
+  id              String   @id @default(uuid())
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String
+  service         Service  @relation(fields: [serviceId], references: [id])
+  serviceId       String
+  appointmentDate DateTime
+  duration        Int      // in minutes
+  specialRequests String?
+  status          String   @default("pending")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  googleEventId   String?
+  outlookEventId  String?
+}
+
+// Two-Factor Authentication (TOTP)
+model TwoFactorAuth {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  secret    String
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// WebAuthn credentials storage
+model WebAuthnCredential {
+  id           String   @id @default(uuid())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  credentialId String   @unique
+  publicKey    String
+  counter      Int
+  transports   String[] @default([])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

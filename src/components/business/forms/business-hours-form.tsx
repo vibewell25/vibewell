@@ -2,11 +2,11 @@
 
 import { UseFormReturn } from 'react-hook-form';
 import { BusinessProfileFormValues } from '@/components/business/business-profile-wizard';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Clock } from 'lucide-react';
 
 interface BusinessHoursFormProps {
@@ -88,12 +88,12 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="mb-6 flex items-center gap-2">
         <Clock className="h-5 w-5 text-muted-foreground" />
         <h2 className="text-xl font-semibold">Business Hours</h2>
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="mb-6 flex flex-wrap gap-2">
         <Button type="button" variant="outline" onClick={setStandardHours}>
           Standard Hours
         </Button>
@@ -112,19 +112,19 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {days.map(day => {
+            {days.map((day) => {
               const dayData = form.watch(`businessHours.${day.id}`);
               return (
                 <div
                   key={day.id}
-                  className="grid grid-cols-6 items-center gap-4 py-2 border-b last:border-0"
+                  className="grid grid-cols-6 items-center gap-4 border-b py-2 last:border-0"
                 >
                   <div className="col-span-2">
                     <div className="flex items-center space-x-2">
                       <Switch
                         id={`is-open-${day.id}`}
                         checked={dayData?.isOpen}
-                        onCheckedChange={checked => toggleDay(day.id, checked)}
+                        onCheckedChange={(checked) => toggleDay(day.id, checked)}
                       />
                       <Label htmlFor={`is-open-${day.id}`} className="font-medium">
                         {day.label}
@@ -146,7 +146,7 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
                             id={`open-time-${day.id}`}
                             type="time"
                             value={dayData.openTime || ''}
-                            onChange={e =>
+                            onChange={(e) =>
                               form.setValue(`businessHours.${day.id}.openTime`, e.target.value, {
                                 shouldValidate: true,
                               })
@@ -167,7 +167,7 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
                             id={`close-time-${day.id}`}
                             type="time"
                             value={dayData.closeTime || ''}
-                            onChange={e =>
+                            onChange={(e) =>
                               form.setValue(`businessHours.${day.id}.closeTime`, e.target.value, {
                                 shouldValidate: true,
                               })
@@ -186,8 +186,8 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
         </CardContent>
       </Card>
 
-      <div className="bg-muted/50 rounded-lg p-4 text-sm">
-        <p className="font-medium mb-2">Note:</p>
+      <div className="rounded-lg bg-muted/50 p-4 text-sm">
+        <p className="mb-2 font-medium">Note:</p>
         <p>
           These hours will be displayed to customers and used to determine available appointment
           slots.

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Event } from '@/types/events';
@@ -30,13 +30,13 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
 
     // Column headers
     const data = [['Name', 'User ID', 'Check-in Time']];
-    
+
     // Add each participant as a row
-    event.checkedInParticipants.forEach(participant => {
+    event.checkedInParticipants.forEach((participant) => {
       const checkInTime = format(parseISO(participant.checkedInAt), 'MM/dd/yyyy h:mm a');
       data.push([participant.name, participant.userId, checkInTime]);
     });
-    
+
     return data;
   };
 
@@ -48,13 +48,13 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
 
     // Column headers
     const data = [['User ID', 'Rating', 'Comment', 'Submission Time']];
-    
+
     // Add each feedback as a row
-    event.feedback.forEach(item => {
+    event.feedback.forEach((item) => {
       const submissionTime = format(parseISO(item.submittedAt), 'MM/dd/yyyy h:mm a');
       data.push([item.userId, item.rating.toString(), item.comment, submissionTime]);
     });
-    
+
     return data;
   };
 
@@ -68,31 +68,28 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="mb-6">
               <TabsTrigger value="overview">
-                <Icons.activity className="h-4 w-4 mr-2" />
+                <Icons.activity className="mr-2 h-4 w-4" />
                 Overview
               </TabsTrigger>
               <TabsTrigger value="check-ins">
-                <Icons.checkCircle className="h-4 w-4 mr-2" />
+                <Icons.checkCircle className="mr-2 h-4 w-4" />
                 Check-ins
               </TabsTrigger>
               <TabsTrigger value="feedback">
-                <Icons.star className="h-4 w-4 mr-2" />
+                <Icons.star className="mr-2 h-4 w-4" />
                 Feedback
               </TabsTrigger>
             </TabsList>
 
             {/* Overview Tab */}
             <TabsContent value="overview">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 <Card>
                   <CardContent className="pt-6">
                     <div className="text-2xl font-bold">{registrations}</div>
                     <div className="text-sm text-muted-foreground">Total Registrations</div>
                     {event.capacity && (
-                      <Progress 
-                        value={(registrations / event.capacity) * 100} 
-                        className="mt-2" 
-                      />
+                      <Progress value={(registrations / event.capacity) * 100} className="mt-2" />
                     )}
                   </CardContent>
                 </Card>
@@ -116,22 +113,22 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
               </div>
 
               <div className="mt-6">
-                <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <h3 className="mb-4 text-lg font-semibold">Quick Actions</h3>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <Card>
                     <CardContent className="pt-6">
-                      <h4 className="font-semibold mb-2">Check-in Code</h4>
-                      <div className="flex items-center justify-between p-2 border rounded-md">
-                        <code className="bg-gray-100 p-1 rounded text-sm font-mono">
+                      <h4 className="mb-2 font-semibold">Check-in Code</h4>
+                      <div className="flex items-center justify-between rounded-md border p-2">
+                        <code className="rounded bg-gray-100 p-1 font-mono text-sm">
                           {event.checkInCode || 'No code set'}
                         </code>
-                        <Button 
-                          variant="outline" 
+                        <Button
+                          variant="outline"
                           size="sm"
                           onClick={() => navigator.clipboard.writeText(event.checkInCode || '')}
                           disabled={!event.checkInCode}
                         >
-                          <Icons.copy className="h-4 w-4 mr-2" />
+                          <Icons.copy className="mr-2 h-4 w-4" />
                           Copy
                         </Button>
                       </div>
@@ -139,14 +136,14 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
                   </Card>
                   <Card>
                     <CardContent className="pt-6">
-                      <h4 className="font-semibold mb-2">Export Data</h4>
+                      <h4 className="mb-2 font-semibold">Export Data</h4>
                       <div className="flex flex-col space-y-2">
-                        <CSVDownload 
+                        <CSVDownload
                           data={prepareCheckInData()}
                           filename={`${event.title}-check-ins.csv`}
                           buttonText="Export Check-ins"
                         />
-                        <CSVDownload 
+                        <CSVDownload
                           data={prepareFeedbackData()}
                           filename={`${event.title}-feedback.csv`}
                           buttonText="Export Feedback"
@@ -160,11 +157,11 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
 
             {/* Check-ins Tab */}
             <TabsContent value="check-ins">
-              <div className="flex justify-between items-center mb-4">
+              <div className="mb-4 flex items-center justify-between">
                 <h3 className="text-lg font-semibold">
                   Checked-in Participants ({checkIns}/{registrations})
                 </h3>
-                <CSVDownload 
+                <CSVDownload
                   data={prepareCheckInData()}
                   filename={`${event.title}-check-ins.csv`}
                   buttonText="Export as CSV"
@@ -173,10 +170,10 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
 
               {checkIns > 0 ? (
                 <div className="space-y-4">
-                  {event.checkedInParticipants?.map(participant => (
+                  {event.checkedInParticipants?.map((participant) => (
                     <div
                       key={participant.userId}
-                      className="flex items-center justify-between p-4 border rounded-lg"
+                      className="flex items-center justify-between rounded-lg border p-4"
                     >
                       <div className="flex items-center gap-3">
                         <div className="relative h-10 w-10">
@@ -191,7 +188,8 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
                         <div>
                           <p className="font-medium">{participant.name}</p>
                           <p className="text-sm text-muted-foreground">
-                            Checked in at {format(parseISO(participant.checkedInAt), 'h:mm a, MMM d, yyyy')}
+                            Checked in at{' '}
+                            {format(parseISO(participant.checkedInAt), 'h:mm a, MMM d, yyyy')}
                           </p>
                         </div>
                       </div>
@@ -200,10 +198,10 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-10 border rounded-lg bg-gray-50">
-                  <Icons.checkCircle className="mx-auto h-10 w-10 text-gray-400 mb-2" />
+                <div className="rounded-lg border bg-gray-50 py-10 text-center">
+                  <Icons.checkCircle className="mx-auto mb-2 h-10 w-10 text-gray-400" />
                   <h3 className="text-lg font-medium text-gray-900">No check-ins yet</h3>
-                  <p className="text-gray-500 mt-1">
+                  <p className="mt-1 text-gray-500">
                     Share your check-in code with attendees to see them here.
                   </p>
                 </div>
@@ -212,11 +210,9 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
 
             {/* Feedback Tab */}
             <TabsContent value="feedback">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">
-                  Feedback ({event.feedback?.length || 0})
-                </h3>
-                <CSVDownload 
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Feedback ({event.feedback?.length || 0})</h3>
+                <CSVDownload
                   data={prepareFeedbackData()}
                   filename={`${event.title}-feedback.csv`}
                   buttonText="Export as CSV"
@@ -226,8 +222,8 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
               {event.feedback && event.feedback.length > 0 ? (
                 <div className="space-y-4">
                   {event.feedback.map((item, index) => (
-                    <div key={index} className="p-4 border rounded-lg">
-                      <div className="flex justify-between mb-2">
+                    <div key={index} className="rounded-lg border p-4">
+                      <div className="mb-2 flex justify-between">
                         <div className="flex items-center">
                           {[...Array(5)].map((_, i) => (
                             <Icons.star
@@ -247,10 +243,10 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-10 border rounded-lg bg-gray-50">
-                  <Icons.star className="mx-auto h-10 w-10 text-gray-400 mb-2" />
+                <div className="rounded-lg border bg-gray-50 py-10 text-center">
+                  <Icons.star className="mx-auto mb-2 h-10 w-10 text-gray-400" />
                   <h3 className="text-lg font-medium text-gray-900">No feedback yet</h3>
-                  <p className="text-gray-500 mt-1">
+                  <p className="mt-1 text-gray-500">
                     Encourage attendees to leave feedback after the event.
                   </p>
                 </div>
@@ -261,4 +257,4 @@ export function EventOrganizerDashboard({ event }: EventOrganizerDashboardProps)
       </Card>
     </div>
   );
-} 
+}

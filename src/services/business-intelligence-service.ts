@@ -69,7 +69,7 @@ export class BusinessIntelligenceService {
         metrics,
         trends,
         competitors,
-        segments
+        segments,
       );
 
       // Save analytics
@@ -96,7 +96,7 @@ export class BusinessIntelligenceService {
   private async calculateMetrics(
     businessId: string,
     period: string,
-    date: Date
+    date: Date,
   ): Promise<AnalyticsMetrics> {
     const [startDate, endDate] = this.getDateRange(period, date);
 
@@ -130,14 +130,14 @@ export class BusinessIntelligenceService {
       // Save trends
       const trends = [...marketTrends, ...internalTrends];
       await Promise.all(
-        trends.map(trend =>
+        trends.map((trend) =>
           prisma.marketTrend.create({
             data: {
               businessId,
               ...trend,
             },
-          })
-        )
+          }),
+        ),
       );
 
       return trends;
@@ -161,7 +161,7 @@ export class BusinessIntelligenceService {
 
       // Analyze each competitor
       const competitorData = await Promise.all(
-        competitors.map(async competitor => {
+        competitors.map(async (competitor) => {
           const services = await this.getCompetitorServices(competitor.id);
           const ratings = await this.getCompetitorRatings(competitor.id);
 
@@ -172,7 +172,7 @@ export class BusinessIntelligenceService {
             reviews: ratings.count,
             location: competitor.address,
           };
-        })
+        }),
       );
 
       return competitorData;
@@ -211,7 +211,7 @@ export class BusinessIntelligenceService {
 
       // Save segments
       await Promise.all(
-        segments.map(segment =>
+        segments.map((segment) =>
           prisma.customerSegment.create({
             data: {
               businessId,
@@ -221,8 +221,8 @@ export class BusinessIntelligenceService {
               size: segment.size,
               value: segment.value,
             },
-          })
-        )
+          }),
+        ),
       );
 
       return segments;
@@ -237,7 +237,7 @@ export class BusinessIntelligenceService {
     metrics: AnalyticsMetrics,
     trends: TrendData[],
     competitors: CompetitorData[],
-    segments: CustomerSegmentData[]
+    segments: CustomerSegmentData[],
   ): Promise<Record<string, any>> {
     try {
       const prompt = `Based on the following business data, provide strategic recommendations:
@@ -288,7 +288,7 @@ export class BusinessIntelligenceService {
   private async calculateRevenue(
     businessId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<number> {
     const result = await prisma.payment.aggregate({
       where: {
@@ -310,7 +310,7 @@ export class BusinessIntelligenceService {
   private async calculateBookings(
     businessId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<number> {
     return prisma.booking.count({
       where: {
@@ -327,7 +327,7 @@ export class BusinessIntelligenceService {
   private async calculateUniqueCustomers(
     businessId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<number> {
     const result = await prisma.booking.groupBy({
       by: ['userId'],
@@ -346,7 +346,7 @@ export class BusinessIntelligenceService {
   private async calculateAverageTicket(
     businessId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<number> {
     const revenue = await this.calculateRevenue(businessId, startDate, endDate);
     const bookings = await this.calculateBookings(businessId, startDate, endDate);
@@ -356,7 +356,7 @@ export class BusinessIntelligenceService {
   private async calculateRetention(
     businessId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<number> {
     // Calculate retention rate based on repeat customers
     const totalCustomers = await this.calculateUniqueCustomers(businessId, startDate, endDate);
@@ -388,7 +388,7 @@ export class BusinessIntelligenceService {
   private async calculateUtilization(
     businessId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<number> {
     // Calculate service utilization rate
     const totalSlots = await this.calculateTotalTimeSlots(businessId, startDate, endDate);
@@ -429,7 +429,7 @@ export class BusinessIntelligenceService {
 
   private async analyzeInternalTrends(
     businessId: string,
-    metrics: AnalyticsMetrics
+    metrics: AnalyticsMetrics,
   ): Promise<TrendData[]> {
     // Analyze internal data for trends
     // Placeholder implementation
@@ -449,7 +449,7 @@ export class BusinessIntelligenceService {
   }
 
   private async getCompetitorRatings(
-    competitorId: string
+    competitorId: string,
   ): Promise<{ average: number; count: number }> {
     // This would fetch competitor ratings from review platforms
     // Placeholder implementation
@@ -465,7 +465,7 @@ export class BusinessIntelligenceService {
   private async calculateTotalTimeSlots(
     businessId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<number> {
     // Calculate total available time slots based on business hours
     // Placeholder implementation
@@ -475,7 +475,7 @@ export class BusinessIntelligenceService {
   private async calculateBookedTimeSlots(
     businessId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): Promise<number> {
     // Calculate number of booked time slots
     // Placeholder implementation

@@ -75,7 +75,7 @@ interface UserPreferencesContextType {
   isSaving: boolean;
   updatePreference: <K extends keyof UserPreferences>(
     key: K,
-    value: UserPreferences[K]
+    value: UserPreferences[K],
   ) => Promise<void>;
   updatePreferences: (newPreferences: Partial<UserPreferences>) => Promise<void>;
   resetPreferences: () => Promise<void>;
@@ -94,7 +94,7 @@ const UserPreferencesContext = createContext<UserPreferencesContextType>({
 /**
  * Custom hook to use user preferences
  */
-export const useUserPreferences = () => useContext(UserPreferencesContext);
+export {};
 
 /**
  * User preferences provider component
@@ -103,13 +103,13 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
   const { user, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  
+
   // Store preferences in localStorage as a fallback
   const [localPreferences, setLocalPreferences] = useLocalStorage<UserPreferences>(
     'user-preferences',
-    defaultPreferences
+    defaultPreferences,
   );
-  
+
   // State to hold merged preferences (API + local)
   const [preferences, setPreferences] = useState<UserPreferences>(localPreferences);
 
@@ -124,7 +124,7 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
     try {
       setIsLoading(true);
       const response = await fetch('/api/user/preferences');
-      
+
       if (response.ok) {
         const data = await response.json();
         // Merge API preferences with defaults for any missing properties
@@ -149,43 +149,46 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
   }, [isAuthenticated, user, localPreferences, setLocalPreferences]);
 
   // Save preferences to API and localStorage
-  const savePreferences = useCallback(async (newPreferences: UserPreferences) => {
-    setLocalPreferences(newPreferences);
-    
-    if (!isAuthenticated || !user) {
-      return;
-    }
+  const savePreferences = useCallback(
+    async (newPreferences: UserPreferences) => {
+      setLocalPreferences(newPreferences);
 
-    try {
-      setIsSaving(true);
-      const response = await fetch('/api/user/preferences', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ preferences: newPreferences }),
-      });
-
-      if (!response.ok) {
-        console.error('Failed to save preferences to API');
+      if (!isAuthenticated || !user) {
+        return;
       }
-    } catch (error) {
-      console.error('Error saving preferences:', error);
-    } finally {
-      setIsSaving(false);
-    }
-  }, [isAuthenticated, user, setLocalPreferences]);
+
+      try {
+        setIsSaving(true);
+        const response = await fetch('/api/user/preferences', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ preferences: newPreferences }),
+        });
+
+        if (!response.ok) {
+          console.error('Failed to save preferences to API');
+        }
+      } catch (error) {
+        console.error('Error saving preferences:', error);
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [isAuthenticated, user, setLocalPreferences],
+  );
 
   // Update a single preference
   const updatePreference = async <K extends keyof UserPreferences>(
     key: K,
-    value: UserPreferences[K]
+    value: UserPreferences[K],
   ) => {
     const newPreferences = {
       ...preferences,
       [key]: value,
     };
-    
+
     setPreferences(newPreferences);
     await savePreferences(newPreferences);
   };
@@ -196,7 +199,7 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
       ...preferences,
       ...newPrefs,
     };
-    
+
     setPreferences(newPreferences);
     await savePreferences(newPreferences);
   };
@@ -255,4 +258,4 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
       {children}
     </UserPreferencesContext.Provider>
   );
-} 
+}

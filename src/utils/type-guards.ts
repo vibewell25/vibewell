@@ -75,7 +75,7 @@ export function isError(value: unknown): value is Error {
  */
 export function safeAccess<T, K extends keyof T>(
   obj: T | null | undefined,
-  key: K
+  key: K,
 ): T[K] | undefined {
   return exists(obj) ? obj[key] : undefined;
 }
@@ -88,7 +88,7 @@ export function safeAccess<T, K extends keyof T>(
  */
 export function hasProperty<T extends object, K extends PropertyKey>(
   obj: T,
-  prop: K
+  prop: K,
 ): obj is T & Record<K, unknown> {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }

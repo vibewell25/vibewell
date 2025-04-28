@@ -57,27 +57,27 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-background border-t border-border">
+    <footer className="border-t border-border bg-background">
       <div className="container-app py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div>
-            <Link href="/" className="flex items-center mb-4">
-              <span className="text-2xl font-bold text-primary">Vibewell</span>
+            <Link href="/" className="mb-4 flex items-center">
+              <span className="text-primary text-2xl font-bold">Vibewell</span>
             </Link>
-            <p className="text-muted-foreground max-w-xs">
+            <p className="max-w-xs text-muted-foreground">
               Personalized wellness experiences connecting you with experts and content tailored to
               your wellness journey.
             </p>
           </div>
 
           <div>
-            <h3 className="text-foreground font-semibold mb-4">Quick Links</h3>
+            <h3 className="mb-4 font-semibold text-foreground">Quick Links</h3>
             <ul className="space-y-3">
-              {footerNavigation.main.map(item => (
+              {footerNavigation.main.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-muted-foreground hover:text-primary transition-colors"
+                    className="hover:text-primary text-muted-foreground transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -87,13 +87,13 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-foreground font-semibold mb-4">Legal</h3>
+            <h3 className="mb-4 font-semibold text-foreground">Legal</h3>
             <ul className="space-y-3">
-              {footerNavigation.legal.map(item => (
+              {footerNavigation.legal.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-muted-foreground hover:text-primary transition-colors"
+                    className="hover:text-primary text-muted-foreground transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -101,15 +101,15 @@ export function Footer() {
               ))}
             </ul>
 
-            <h3 className="text-foreground font-semibold mt-6 mb-4">Follow Us</h3>
+            <h3 className="mb-4 mt-6 font-semibold text-foreground">Follow Us</h3>
             <div className="flex space-x-4">
-              {footerNavigation.social.map(item => (
+              {footerNavigation.social.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary"
+                  className="hover:text-primary text-muted-foreground"
                 >
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="h-6 w-6" aria-hidden="true" />
@@ -119,8 +119,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-border text-center">
-          <p className="text-muted-foreground text-sm">
+        <div className="mt-12 border-t border-border pt-8 text-center">
+          <p className="text-sm text-muted-foreground">
             &copy; {currentYear} Vibewell. All rights reserved.
           </p>
         </div>

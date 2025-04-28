@@ -1,11 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import {
   LogIn,
-  LogOut,
   User,
   Shield,
   Key,
@@ -127,9 +126,9 @@ export function ActivityLog() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-4">
-          {activities.map(activity => (
+          {activities.map((activity) => (
             <div key={activity.id} className="flex items-start gap-4 rounded-lg border p-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-full">
                 {activity.icon}
               </div>
               <div className="flex-1 space-y-1">

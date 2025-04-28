@@ -26,22 +26,22 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
   // Announce a message to screen readers
   const announce = useCallback((message: string, politeness: 'polite' | 'assertive' = 'polite') => {
     if (!message) return;
-    
-    setIdCounter(prevId => {
+
+    setIdCounter((prevId) => {
       const newId = prevId + 1;
-      setAnnouncements(prevAnnouncements => [
+      setAnnouncements((prevAnnouncements) => [
         ...prevAnnouncements,
-        { message, politeness, id: newId }
+        { message, politeness, id: newId },
       ]);
       return newId;
     });
-    
+
     // Clean up announcements after they've been read
     // Most screen readers will stop reading when content changes,
     // so we maintain announcements for a short period to ensure they're read
     setTimeout(() => {
-      setAnnouncements(prevAnnouncements => 
-        prevAnnouncements.filter(a => a.message !== message)
+      setAnnouncements((prevAnnouncements) =>
+        prevAnnouncements.filter((a) => a.message !== message),
       );
     }, 10000);
   }, []);
@@ -54,7 +54,7 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
   return (
     <LiveAnnouncerContext.Provider value={{ announce, clear }}>
       {children}
-      
+
       {/* Polite announcements */}
       <div
         role="status"
@@ -73,12 +73,12 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
         }}
       >
         {announcements
-          .filter(a => a.politeness === 'polite')
-          .map(a => (
+          .filter((a) => a.politeness === 'polite')
+          .map((a) => (
             <div key={a.id}>{a.message}</div>
           ))}
       </div>
-      
+
       {/* Assertive announcements */}
       <div
         role="alert"
@@ -97,8 +97,8 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
         }}
       >
         {announcements
-          .filter(a => a.politeness === 'assertive')
-          .map(a => (
+          .filter((a) => a.politeness === 'assertive')
+          .map((a) => (
             <div key={a.id}>{a.message}</div>
           ))}
       </div>
@@ -111,19 +111,19 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
  */
 export function useLiveAnnouncer() {
   const context = useContext(LiveAnnouncerContext);
-  
+
   if (!context) {
     throw new Error('useLiveAnnouncer must be used within a LiveAnnouncerProvider');
   }
-  
+
   return context;
 }
 
 /**
  * Component that announces content changes to screen readers
  */
-export function Announce({ 
-  message, 
+export function Announce({
+  message,
   politeness = 'polite',
   children,
 }: {
@@ -132,28 +132,28 @@ export function Announce({
   children?: React.ReactNode;
 }) {
   const { announce } = useLiveAnnouncer();
-  
+
   useEffect(() => {
     if (message) {
       announce(message, politeness);
     }
   }, [message, politeness, announce]);
-  
+
   return <>{children}</>;
 }
 
 /**
  * Component that announces form errors to screen readers
  */
-export function AnnounceFormErrors({ 
-  errors, 
-  politeness = 'assertive' 
+export function AnnounceFormErrors({
+  errors,
+  politeness = 'assertive',
 }: {
   errors: Record<string, string> | null | undefined;
   politeness?: 'polite' | 'assertive';
 }) {
   const { announce } = useLiveAnnouncer();
-  
+
   useEffect(() => {
     if (errors && Object.keys(errors).length > 0) {
       const errorMessages = Object.values(errors).join('. ');
@@ -161,17 +161,17 @@ export function AnnounceFormErrors({
       announce(announcement, politeness);
     }
   }, [errors, announce, politeness]);
-  
+
   return null;
 }
 
 /**
  * Component that announces loading states to screen readers
  */
-export function AnnounceLoadingState({ 
+export function AnnounceLoadingState({
   isLoading,
   loadingMessage = 'Loading content',
-  completedMessage = 'Content loaded', 
+  completedMessage = 'Content loaded',
 }: {
   isLoading: boolean;
   loadingMessage?: string;
@@ -179,7 +179,7 @@ export function AnnounceLoadingState({
 }) {
   const { announce } = useLiveAnnouncer();
   const [wasLoading, setWasLoading] = useState(false);
-  
+
   useEffect(() => {
     if (isLoading) {
       announce(loadingMessage, 'polite');
@@ -189,8 +189,8 @@ export function AnnounceLoadingState({
       setWasLoading(false);
     }
   }, [isLoading, loadingMessage, completedMessage, announce, wasLoading]);
-  
+
   return null;
 }
 
-export default LiveAnnouncerProvider; 
+export default LiveAnnouncerProvider;

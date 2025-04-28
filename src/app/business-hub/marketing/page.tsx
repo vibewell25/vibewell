@@ -1,12 +1,11 @@
-'use client';
+'use client';;
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Icons } from '@/components/icons';
-import { Search, Download, Sparkles, Star, Megaphone } from 'lucide-react';
+import { Search, Download, Sparkles, Star } from 'lucide-react';
 
 // Define the interface for marketing resources
 interface MarketingResource {
@@ -105,7 +104,7 @@ export default function MarketingResourcesPage() {
     },
   ];
   // Filter resources based on category and search
-  const filteredResources = marketingResources.filter(resource => {
+  const filteredResources = marketingResources.filter((resource) => {
     const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
     const matchesSearch =
       !searchQuery ||
@@ -116,23 +115,23 @@ export default function MarketingResourcesPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-pink-100 to-purple-100 rounded-xl p-8 mb-12">
+      <div className="mb-12 rounded-xl bg-gradient-to-r from-pink-100 to-purple-100 p-8">
         <div className="max-w-3xl">
-          <h1 className="text-3xl font-bold mb-4">Marketing Resources</h1>
-          <p className="text-lg mb-6">
+          <h1 className="mb-4 text-3xl font-bold">Marketing Resources</h1>
+          <p className="mb-6 text-lg">
             Grow your beauty or wellness business with our practical marketing tools, templates, and
             guides. From social media and email campaigns to local marketing strategies, find
             everything you need to attract and retain clients.
           </p>
-          <div className="relative w-full max-w-lg mb-6">
+          <div className="relative mb-6 w-full max-w-lg">
             <Input
               type="text"
               placeholder="Search marketing resources..."
               value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="pr-10"
             />
-            <button className="absolute inset-y-0 right-0 px-3 flex items-center">
+            <button className="absolute inset-y-0 right-0 flex items-center px-3">
               <Search className="h-5 w-5 text-gray-400" />
             </button>
           </div>
@@ -140,7 +139,7 @@ export default function MarketingResourcesPage() {
       </div>
       {/* Category Filters */}
       <div className="mb-8">
-        <h2 className="text-lg font-semibold mb-4">Browse by Category</h2>
+        <h2 className="mb-4 text-lg font-semibold">Browse by Category</h2>
         <div className="flex flex-wrap gap-3">
           <Button
             variant={selectedCategory === 'all' ? 'default' : 'outline'}
@@ -191,30 +190,30 @@ export default function MarketingResourcesPage() {
         </div>
       </div>
       {/* Marketing Resources */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        {filteredResources.map(resource => (
+      <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {filteredResources.map((resource) => (
           <div
             key={resource.id}
-            className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100"
+            className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
           >
             <div className="relative h-48">
               <Image src={resource.image} alt={resource.title} fill className="object-cover" />
               {resource.premium && (
-                <div className="absolute top-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded-full">
+                <div className="absolute right-2 top-2 rounded-full bg-purple-600 px-2 py-1 text-xs text-white">
                   Premium
                 </div>
               )}
-              <div className="absolute bottom-2 left-2 bg-white px-2 py-1 rounded text-xs font-medium capitalize">
+              <div className="absolute bottom-2 left-2 rounded bg-white px-2 py-1 text-xs font-medium capitalize">
                 {resource.category.replace('-', ' ')}
               </div>
             </div>
             <div className="p-5">
-              <h3 className="text-lg font-semibold mb-2">{resource.title}</h3>
-              <p className="text-gray-600 text-sm mb-4">{resource.description}</p>
-              <div className="flex justify-between items-center">
+              <h3 className="mb-2 text-lg font-semibold">{resource.title}</h3>
+              <p className="mb-4 text-sm text-gray-600">{resource.description}</p>
+              <div className="flex items-center justify-between">
                 {resource.downloadable ? (
                   <div className="flex items-center text-xs text-green-600">
-                    <Download className="h-4 w-4 mr-1" />
+                    <Download className="mr-1 h-4 w-4" />
                     <span>Downloadable</span>
                   </div>
                 ) : (
@@ -234,30 +233,30 @@ export default function MarketingResourcesPage() {
         ))}
       </div>
       {/* Marketing Services Spotlight */}
-      <div className="mb-12 bg-white rounded-xl shadow-md p-8 border border-gray-200">
+      <div className="mb-12 rounded-xl border border-gray-200 bg-white p-8 shadow-md">
         <div className="flex flex-col md:flex-row">
           <div className="md:w-2/3 md:pr-8">
-            <h2 className="text-2xl font-bold mb-4 flex items-center">
-              <Sparkles className="h-6 w-6 text-yellow-400 mr-2" />
+            <h2 className="mb-4 flex items-center text-2xl font-bold">
+              <Sparkles className="mr-2 h-6 w-6 text-yellow-400" />
               Marketing Services Spotlight
             </h2>
-            <p className="text-gray-700 mb-6">
+            <p className="mb-6 text-gray-700">
               Need help implementing your marketing strategy? Our network of vetted marketing
               professionals specialize in beauty and wellness businesses and can help you get
               results fast.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="border border-gray-200 rounded-lg p-4">
-                <h3 className="font-semibold mb-2">Social Media Management</h3>
-                <p className="text-sm text-gray-600 mb-3">
+            <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="rounded-lg border border-gray-200 p-4">
+                <h3 className="mb-2 font-semibold">Social Media Management</h3>
+                <p className="mb-3 text-sm text-gray-600">
                   Professional content creation and engagement strategies tailored for beauty
                   businesses.
                 </p>
                 <Badge className="bg-green-100 text-green-800">From $399/month</Badge>
               </div>
-              <div className="border border-gray-200 rounded-lg p-4">
-                <h3 className="font-semibold mb-2">Email Marketing Setup</h3>
-                <p className="text-sm text-gray-600 mb-3">
+              <div className="rounded-lg border border-gray-200 p-4">
+                <h3 className="mb-2 font-semibold">Email Marketing Setup</h3>
+                <p className="mb-3 text-sm text-gray-600">
                   Custom email sequences and templates to nurture leads and retain clients.
                 </p>
                 <Badge className="bg-green-100 text-green-800">From $299 one-time</Badge>
@@ -267,10 +266,10 @@ export default function MarketingResourcesPage() {
               Browse All Marketing Services
             </Button>
           </div>
-          <div className="md:w-1/3 mt-6 md:mt-0">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="font-semibold mb-3">Client Success Story</h3>
-              <div className="flex items-center mb-3">
+          <div className="mt-6 md:mt-0 md:w-1/3">
+            <div className="rounded-lg bg-gray-50 p-4">
+              <h3 className="mb-3 font-semibold">Client Success Story</h3>
+              <div className="mb-3 flex items-center">
                 <div className="mr-3">
                   <Image
                     src="https://images.unsplash.com/photo-1548142813-c348350df52b"
@@ -291,7 +290,7 @@ export default function MarketingResourcesPage() {
                   </div>
                 </div>
               </div>
-              <p className="text-sm italic mb-3">
+              <p className="mb-3 text-sm italic">
                 "Using the social media templates and email sequences, we increased our bookings by
                 32% in just two months!"
               </p>
@@ -306,11 +305,11 @@ export default function MarketingResourcesPage() {
       </div>
       {/* Marketing Quick Tips */}
       <div className="mb-12">
-        <h2 className="text-2xl font-bold mb-6">Marketing Quick Tips</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
-            <h3 className="text-lg font-semibold mb-3">Maximize Social Media Engagement</h3>
-            <p className="text-gray-600 mb-4">
+        <h2 className="mb-6 text-2xl font-bold">Marketing Quick Tips</h2>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-md">
+            <h3 className="mb-3 text-lg font-semibold">Maximize Social Media Engagement</h3>
+            <p className="mb-4 text-gray-600">
               Post during peak times (typically 7-9am and 6-8pm) and use at least one image or video
               in every post to increase engagement by up to 150%.
             </p>
@@ -320,9 +319,9 @@ export default function MarketingResourcesPage() {
               </Button>
             </Link>
           </div>
-          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
-            <h3 className="text-lg font-semibold mb-3">Create Irresistible Promotions</h3>
-            <p className="text-gray-600 mb-4">
+          <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-md">
+            <h3 className="mb-3 text-lg font-semibold">Create Irresistible Promotions</h3>
+            <p className="mb-4 text-gray-600">
               Add scarcity (limited time) and exclusivity (for select clients) to your promotions to
               create urgency and increase conversion rates.
             </p>
@@ -332,9 +331,9 @@ export default function MarketingResourcesPage() {
               </Button>
             </Link>
           </div>
-          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
-            <h3 className="text-lg font-semibold mb-3">Leverage Client Testimonials</h3>
-            <p className="text-gray-600 mb-4">
+          <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-md">
+            <h3 className="mb-3 text-lg font-semibold">Leverage Client Testimonials</h3>
+            <p className="mb-4 text-gray-600">
               Regularly collect and share client testimonials with before/after photos to build
               trust and showcase your expertise.
             </p>
@@ -347,18 +346,18 @@ export default function MarketingResourcesPage() {
         </div>
       </div>
       {/* Marketing Workshop CTA */}
-      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl overflow-hidden">
+      <div className="overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600">
         <div className="flex flex-col md:flex-row">
-          <div className="md:w-2/3 p-8 text-white">
-            <h2 className="text-2xl font-bold mb-4">Free Marketing Workshop</h2>
+          <div className="p-8 text-white md:w-2/3">
+            <h2 className="mb-4 text-2xl font-bold">Free Marketing Workshop</h2>
             <p className="mb-6">
               Join our free online workshop: "5 Marketing Strategies That Are Working Right Now for
               Beauty Businesses" and learn practical tactics you can implement immediately.
             </p>
-            <ul className="space-y-2 mb-6">
+            <ul className="mb-6 space-y-2">
               <li className="flex items-center">
                 <svg
-                  className="h-5 w-5 mr-2 text-purple-200"
+                  className="mr-2 h-5 w-5 text-purple-200"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -372,7 +371,7 @@ export default function MarketingResourcesPage() {
               </li>
               <li className="flex items-center">
                 <svg
-                  className="h-5 w-5 mr-2 text-purple-200"
+                  className="mr-2 h-5 w-5 text-purple-200"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -386,7 +385,7 @@ export default function MarketingResourcesPage() {
               </li>
               <li className="flex items-center">
                 <svg
-                  className="h-5 w-5 mr-2 text-purple-200"
+                  className="mr-2 h-5 w-5 text-purple-200"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -403,7 +402,7 @@ export default function MarketingResourcesPage() {
               Reserve Your Spot
             </Button>
           </div>
-          <div className="md:w-1/3 relative">
+          <div className="relative md:w-1/3">
             <div className="h-64 md:h-full">
               <Image
                 src="https://images.unsplash.com/photo-1551836022-d5d88e9218df"

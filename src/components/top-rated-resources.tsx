@@ -33,7 +33,7 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
       // We need to fetch item details for these items
       // In a real app, this would be an API call
       // For now, we'll use mock data
-      const items: TopResourceItem[] = highestRated.map(rating => ({
+      const items: TopResourceItem[] = highestRated.map((rating) => ({
         id: rating.id,
         type: rating.type,
         title: getMockTitle(rating.id, rating.type),
@@ -69,15 +69,15 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
   };
   if (loading) {
     return (
-      <div className="p-4 bg-white shadow-sm rounded-lg">
-        <h3 className="text-lg font-medium mb-4">Top Rated Resources</h3>
+      <div className="rounded-lg bg-white p-4 shadow-sm">
+        <h3 className="mb-4 text-lg font-medium">Top Rated Resources</h3>
         <div className="space-y-4">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="animate-pulse flex items-start">
-              <div className="h-10 w-10 rounded-full bg-gray-200 mr-3"></div>
+            <div key={i} className="flex animate-pulse items-start">
+              <div className="mr-3 h-10 w-10 rounded-full bg-gray-200"></div>
               <div className="flex-1">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                <div className="mb-2 h-4 w-3/4 rounded bg-gray-200"></div>
+                <div className="h-3 w-1/2 rounded bg-gray-200"></div>
               </div>
             </div>
           ))}
@@ -87,19 +87,19 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
   }
   if (resources.length === 0) {
     return (
-      <div className="p-4 bg-white shadow-sm rounded-lg">
-        <h3 className="text-lg font-medium mb-4">Top Rated Resources</h3>
-        <p className="text-gray-500 text-sm">
+      <div className="rounded-lg bg-white p-4 shadow-sm">
+        <h3 className="mb-4 text-lg font-medium">Top Rated Resources</h3>
+        <p className="text-sm text-gray-500">
           No rated resources yet. Rate resources to see them appear here.
         </p>
       </div>
     );
   }
   return (
-    <div className="p-4 bg-white shadow-sm rounded-lg">
-      <h3 className="text-lg font-medium mb-4">Top Rated Resources</h3>
+    <div className="rounded-lg bg-white p-4 shadow-sm">
+      <h3 className="mb-4 text-lg font-medium">Top Rated Resources</h3>
       <div className="space-y-4">
-        {resources.map(resource => (
+        {resources.map((resource) => (
           <div key={`${resource.type}-${resource.id}`} className="flex items-start">
             <div className="mr-3 mt-1">{renderTypeIcon(resource.type)}</div>
             <div className="flex-1">

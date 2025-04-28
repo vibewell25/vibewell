@@ -45,7 +45,7 @@ export function useErrorBoundary(options: UseErrorBoundaryOptions = {}) {
  */
 export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
-  options: UseErrorBoundaryOptions = {}
+  options: UseErrorBoundaryOptions = {},
 ) {
   const { fallback, onError } = options;
 

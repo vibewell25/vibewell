@@ -1,5 +1,3 @@
-import '@testing-library/jest-dom';
-
 // Extend Jest's expect
 declare global {
   namespace jest {

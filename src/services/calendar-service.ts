@@ -1,6 +1,5 @@
 import { google } from 'googleapis';
 import { Client } from '@microsoft/microsoft-graph-client';
-import { ClientSecretCredential } from '@azure/identity';
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
 import type {
@@ -11,7 +10,6 @@ import type {
   CalendarConnection,
   CalendarEvent,
 } from '@prisma/client';
-import { Prisma } from '@prisma/client';
 
 interface BookingWithRelations extends Booking {
   service: BeautyService;
@@ -28,9 +26,6 @@ interface CalendarEventWithRelations extends CalendarEvent {
   user: User;
   connection: CalendarConnectionWithUser;
 }
-
-const GOOGLE_CALENDAR_SCOPES = ['https://www.googleapis.com/auth/calendar'];
-const MICROSOFT_GRAPH_SCOPES = ['https://graph.microsoft.com/.default'];
 
 type CalendarEventCreateInput = {
   userId: string;
@@ -56,14 +51,14 @@ export class CalendarService {
     const oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
-      process.env.GOOGLE_REDIRECT_URI
+      process.env.GOOGLE_REDIRECT_URI,
     );
     return oauth2Client;
   }
 
   private async getOutlookClient(accessToken: string): Promise<Client> {
     return Client.init({
-      authProvider: done => {
+      authProvider: (done) => {
         done(null, accessToken);
       },
     });
@@ -151,7 +146,7 @@ export class CalendarService {
 
   private async syncWithGoogleCalendar(
     booking: BookingWithRelations,
-    connection: CalendarConnectionWithUser
+    connection: CalendarConnectionWithUser,
   ): Promise<void> {
     try {
       const oauth2Client = await this.getOAuth2Client();
@@ -196,7 +191,7 @@ export class CalendarService {
 
   private async syncWithOutlookCalendar(
     booking: BookingWithRelations,
-    connection: CalendarConnectionWithUser
+    connection: CalendarConnectionWithUser,
   ): Promise<void> {
     try {
       const client = await this.getOutlookClient(connection.accessToken);
@@ -238,7 +233,7 @@ export class CalendarService {
 
   private async syncWithAppleCalendar(
     booking: BookingWithRelations,
-    connection: CalendarConnectionWithUser
+    connection: CalendarConnectionWithUser,
   ): Promise<void> {
     if (Platform.OS !== 'ios') {
       logger.warn('Apple Calendar sync is only available on iOS devices');
@@ -259,7 +254,7 @@ export class CalendarService {
         booking.startTime,
         booking.endTime,
         booking.service.description,
-        booking.business.address
+        booking.business.address,
       );
 
       await prisma.calendarEvent.create({
@@ -425,7 +420,7 @@ export class CalendarService {
         booking.startTime,
         booking.endTime,
         booking.service.description,
-        booking.business.address
+        booking.business.address,
       );
     } catch (error) {
       logger.error('Error updating Apple Calendar event:', error);

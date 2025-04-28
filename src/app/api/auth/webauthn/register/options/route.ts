@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 // In a real application, these would be environment variables
 const rpName = 'WebAuthn Demo';
 const rpID = 'localhost';
-const origin = `http://${rpID}:3000`;
 
 export async function POST(request: Request) {
   try {

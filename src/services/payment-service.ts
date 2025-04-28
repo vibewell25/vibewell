@@ -1,4 +1,4 @@
-import { PrismaClient, PaymentStatus, ServiceBooking } from '@prisma/client';
+import { PrismaClient, PaymentStatus } from '@prisma/client';
 import Stripe from 'stripe';
 import { NotificationService } from './notification-service';
 import { logger } from '@/lib/logger';
@@ -287,8 +287,8 @@ export class PaymentService {
       });
 
       const totalSpent = payments.reduce((sum, payment) => sum + payment.amount, 0);
-      const completedPayments = payments.filter(p => p.status === PaymentStatus.COMPLETED).length;
-      const failedPayments = payments.filter(p => p.status === PaymentStatus.FAILED).length;
+      const completedPayments = payments.filter((p) => p.status === PaymentStatus.COMPLETED).length;
+      const failedPayments = payments.filter((p) => p.status === PaymentStatus.FAILED).length;
 
       return {
         totalSpent,
@@ -521,11 +521,13 @@ export class PaymentService {
         return sum;
       }, 0);
 
-      const successfulPayments = payments.filter(p => p.status === PaymentStatus.COMPLETED).length;
+      const successfulPayments = payments.filter(
+        (p) => p.status === PaymentStatus.COMPLETED,
+      ).length;
 
-      const failedPayments = payments.filter(p => p.status === PaymentStatus.FAILED).length;
+      const failedPayments = payments.filter((p) => p.status === PaymentStatus.FAILED).length;
 
-      const refundedPayments = payments.filter(p => p.status === PaymentStatus.REFUNDED).length;
+      const refundedPayments = payments.filter((p) => p.status === PaymentStatus.REFUNDED).length;
 
       const revenueByService = await prisma.bookingService.groupBy({
         by: ['serviceId'],
@@ -585,4 +587,4 @@ export class PaymentService {
   }
 }
 
-export const paymentService = new PaymentService();
+export {};

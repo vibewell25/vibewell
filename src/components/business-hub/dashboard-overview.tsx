@@ -1,6 +1,5 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
+'use client';;
+import { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -8,10 +7,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+} from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { AnalyticsService, ProductMetrics } from '@/services/analytics-service';
-import { FeedbackService, FeedbackStats } from '@/services/feedback-service';
+import { FeedbackService } from '@/services/feedback-service';
 import { ProductService } from '@/services/product-service';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
@@ -27,18 +26,7 @@ import {
   Cell,
 } from 'recharts';
 import { format, subWeeks } from 'date-fns';
-import Link from 'next/link';
-import {
-  ArrowRight,
-  ArrowUp,
-  ArrowDown,
-  Users,
-  Eye,
-  Star,
-  BarChart3,
-  Download,
-  FileText,
-} from 'lucide-react';
+import { Users, Eye, Star, BarChart3, FileText } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -52,15 +40,15 @@ const exportToCSV = (data: any[], filename: string) => {
   let csvContent = '';
 
   // Get all possible keys from all objects
-  const allKeys = Array.from(new Set(data.flatMap(item => Object.keys(item))));
+  const allKeys = Array.from(new Set(data.flatMap((item) => Object.keys(item))));
 
   // Create header row
   csvContent += allKeys.join(',') + '\n';
 
   // Add each data row
-  data.forEach(item => {
+  data.forEach((item) => {
     const row = allKeys
-      .map(key => {
+      .map((key) => {
         const value = item[key] === undefined ? '' : item[key];
         // Escape commas and quotes in values
         const escapedValue = typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value;
@@ -207,7 +195,7 @@ export default function DashboardOverview() {
           generatedAt: new Date().toISOString(),
           dateRange: `${format(subWeeks(new Date(), 4), 'yyyy-MM-dd')} to ${format(new Date(), 'yyyy-MM-dd')}`,
           totalProducts: products.length,
-          totalCategories: new Set(products.map(p => p.category)).size,
+          totalCategories: new Set(products.map((p) => p.category)).size,
           totalProductViews: totalViews,
           totalUniqueVisitors: totalUniqueViews,
           totalTryOns: totalTryOns,
@@ -216,7 +204,7 @@ export default function DashboardOverview() {
       ];
 
       // Product metrics data
-      const productMetricsReport = products.map(product => {
+      const productMetricsReport = products.map((product) => {
         const metrics = productMetricsData[product.id] || {
           totalViews: 0,
           uniqueViews: 0,
@@ -247,7 +235,7 @@ export default function DashboardOverview() {
       });
 
       // Prepare rating distribution data
-      const ratingDistribution = prepareRatingDistributionData().map(item => ({
+      const ratingDistribution = prepareRatingDistributionData().map((item) => ({
         reportSection: 'Rating Distribution',
         rating: item.rating,
         count: item.count,
@@ -259,7 +247,7 @@ export default function DashboardOverview() {
       // Export to CSV
       exportToCSV(
         reportData,
-        `vibewell-product-analytics-report-${format(new Date(), 'yyyy-MM-dd')}.csv`
+        `vibewell-product-analytics-report-${format(new Date(), 'yyyy-MM-dd')}.csv`,
       );
     } catch (err) {
       console.error('Error generating report:', err);
@@ -275,7 +263,7 @@ export default function DashboardOverview() {
     let totalRating = 0;
     let totalProducts = 0;
 
-    Object.values(feedbackStats).forEach(stats => {
+    Object.values(feedbackStats).forEach((stats) => {
       if (stats.totalRatings > 0) {
         totalRating += stats.averageRating;
         totalProducts++;
@@ -297,7 +285,7 @@ export default function DashboardOverview() {
       '5': 0,
     };
 
-    Object.values(feedbackStats).forEach(stats => {
+    Object.values(feedbackStats).forEach((stats) => {
       Object.entries(stats.ratingDistribution).forEach(([rating, count]) => {
         distribution[rating] += count;
       });
@@ -312,7 +300,7 @@ export default function DashboardOverview() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <Card key={i}>
               <CardHeader className="pb-2">
@@ -325,7 +313,7 @@ export default function DashboardOverview() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <Card>
             <CardHeader>
               <Skeleton className="h-6 w-40" />
@@ -369,7 +357,7 @@ export default function DashboardOverview() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-2xl font-bold">Dashboard Overview</h2>
 
         <Button
@@ -389,10 +377,10 @@ export default function DashboardOverview() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center">
+            <CardTitle className="flex items-center text-sm font-medium">
               <Eye className="mr-2 h-4 w-4" />
               Total Product Views
             </CardTitle>
@@ -407,7 +395,7 @@ export default function DashboardOverview() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center">
+            <CardTitle className="flex items-center text-sm font-medium">
               <Users className="mr-2 h-4 w-4" />
               Virtual Try-Ons
             </CardTitle>
@@ -422,7 +410,7 @@ export default function DashboardOverview() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center">
+            <CardTitle className="flex items-center text-sm font-medium">
               <Star className="mr-2 h-4 w-4" />
               Average Product Rating
             </CardTitle>
@@ -435,7 +423,7 @@ export default function DashboardOverview() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center">
+            <CardTitle className="flex items-center text-sm font-medium">
               <BarChart3 className="mr-2 h-4 w-4" />
               Total Products
             </CardTitle>
@@ -443,13 +431,13 @@ export default function DashboardOverview() {
           <CardContent>
             <div className="text-2xl font-bold">{products.length}</div>
             <p className="text-xs text-muted-foreground">
-              Across {new Set(products.map(p => p.category)).size} categories
+              Across {new Set(products.map((p) => p.category)).size} categories
             </p>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -463,7 +451,7 @@ export default function DashboardOverview() {
                 onClick={() =>
                   exportToCSV(
                     topProducts,
-                    `vibewell-top-products-${format(new Date(), 'yyyy-MM-dd')}.csv`
+                    `vibewell-top-products-${format(new Date(), 'yyyy-MM-dd')}.csv`,
                   )
                 }
               >
@@ -486,13 +474,13 @@ export default function DashboardOverview() {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
                     dataKey="name"
-                    tickFormatter={str => {
+                    tickFormatter={(str) => {
                       return str.length > 10 ? `${str.slice(0, 10)}...` : str;
                     }}
                   />
                   <YAxis />
                   <Tooltip
-                    labelFormatter={value => {
+                    labelFormatter={(value) => {
                       return `Views: ${value}`;
                     }}
                   />
@@ -516,7 +504,7 @@ export default function DashboardOverview() {
                 onClick={() =>
                   exportToCSV(
                     ratingDistributionData,
-                    `vibewell-rating-distribution-${format(new Date(), 'yyyy-MM-dd')}.csv`
+                    `vibewell-rating-distribution-${format(new Date(), 'yyyy-MM-dd')}.csv`,
                   )
                 }
               >
@@ -542,7 +530,7 @@ export default function DashboardOverview() {
                     ))}
                   </Pie>
                   <Tooltip
-                    labelFormatter={value => {
+                    labelFormatter={(value) => {
                       return `${value} products`;
                     }}
                   />

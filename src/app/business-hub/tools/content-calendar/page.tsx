@@ -4,14 +4,9 @@ import { Layout } from '@/components/layout';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
 import { ContentCalendarBoard } from '@/components/content-calendar/content-calendar-board';
 import { ContentCalendarSidebar } from '@/components/content-calendar/content-calendar-sidebar';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  ContentItem,
-  ContentPlatform,
-  ContentStatus,
-  ContentTeamMember,
-} from '@/types/content-calendar';
+import { ContentItem, ContentStatus } from '@/types/content-calendar';
 import { ContentCalendarCalendar } from '@/components/content-calendar/content-calendar-calendar';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -124,30 +119,30 @@ export default function ContentCalendarPage() {
   }, []);
   // Handle drag and drop between columns
   const handleDragAndDrop = (itemId: string, newStatus: string) => {
-    setContentItems(prevItems =>
-      prevItems.map(item => (item.id === itemId ? { ...item, status: newStatus } : item))
+    setContentItems((prevItems) =>
+      prevItems.map((item) => (item.id === itemId ? { ...item, status: newStatus } : item)),
     );
   };
   // Handle creating a new content item
   const handleCreateContentItem = (item: ContentItem) => {
-    setContentItems(prevItems => [...prevItems, item]);
+    setContentItems((prevItems) => [...prevItems, item]);
   };
   // Handle editing a content item
   const handleEditContentItem = (updatedItem: ContentItem) => {
-    setContentItems(prevItems =>
-      prevItems.map(item => (item.id === updatedItem.id ? updatedItem : item))
+    setContentItems((prevItems) =>
+      prevItems.map((item) => (item.id === updatedItem.id ? updatedItem : item)),
     );
   };
   // Handle deleting a content item
   const handleDeleteContentItem = (itemId: string) => {
-    setContentItems(prevItems => prevItems.filter(item => item.id !== itemId));
+    setContentItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
   };
   return (
     <Layout>
-      <div className="bg-background min-h-screen">
+      <div className="min-h-screen bg-background">
         <BusinessHubNavigation />
-        <div className="container mx-auto py-6 px-4 space-y-6">
-          <div className="flex justify-between items-center mb-8">
+        <div className="container mx-auto space-y-6 px-4 py-6">
+          <div className="mb-8 flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold">Content Calendar</h1>
               <p className="text-muted-foreground">
@@ -176,7 +171,7 @@ export default function ContentCalendarPage() {
                   });
                 }}
               >
-                <Icons.PlusIcon className="w-5 h-5 mr-2" />
+                <Icons.PlusIcon className="mr-2 h-5 w-5" />
                 Create Content
               </Button>
             </div>
@@ -187,17 +182,17 @@ export default function ContentCalendarPage() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full max-w-md grid-cols-3 mb-8">
+            <TabsList className="mb-8 grid w-full max-w-md grid-cols-3">
               <TabsTrigger value="board">
-                <Icons.ListBulletIcon className="w-5 h-5 mr-2" />
+                <Icons.ListBulletIcon className="mr-2 h-5 w-5" />
                 Board
               </TabsTrigger>
               <TabsTrigger value="calendar">
-                <Icons.CalendarDaysIcon className="w-5 h-5 mr-2" />
+                <Icons.CalendarDaysIcon className="mr-2 h-5 w-5" />
                 Calendar
               </TabsTrigger>
               <TabsTrigger value="team">
-                <Icons.UsersIcon className="w-5 h-5 mr-2" />
+                <Icons.UsersIcon className="mr-2 h-5 w-5" />
                 Team
               </TabsTrigger>
             </TabsList>
@@ -206,10 +201,10 @@ export default function ContentCalendarPage() {
                 <ContentCalendarSidebar
                   platforms={platforms}
                   teamMembers={teamMembers}
-                  onAddPlatform={platform => setPlatforms([...platforms, platform])}
-                  onAddTeamMember={member => setTeamMembers([...teamMembers, member])}
+                  onAddPlatform={(platform) => setPlatforms([...platforms, platform])}
+                  onAddTeamMember={(member) => setTeamMembers([...teamMembers, member])}
                 />
-                <div className="flex-1 ml-6">
+                <div className="ml-6 flex-1">
                   <ContentCalendarBoard
                     contentItems={contentItems}
                     statuses={statuses}
@@ -227,10 +222,10 @@ export default function ContentCalendarPage() {
                 <ContentCalendarSidebar
                   platforms={platforms}
                   teamMembers={teamMembers}
-                  onAddPlatform={platform => setPlatforms([...platforms, platform])}
-                  onAddTeamMember={member => setTeamMembers([...teamMembers, member])}
+                  onAddPlatform={(platform) => setPlatforms([...platforms, platform])}
+                  onAddTeamMember={(member) => setTeamMembers([...teamMembers, member])}
                 />
-                <div className="flex-1 ml-6">
+                <div className="ml-6 flex-1">
                   <ContentCalendarCalendar
                     contentItems={contentItems}
                     statuses={statuses}
@@ -247,17 +242,17 @@ export default function ContentCalendarPage() {
                 <ContentCalendarSidebar
                   platforms={platforms}
                   teamMembers={teamMembers}
-                  onAddPlatform={platform => setPlatforms([...platforms, platform])}
-                  onAddTeamMember={member => setTeamMembers([...teamMembers, member])}
+                  onAddPlatform={(platform) => setPlatforms([...platforms, platform])}
+                  onAddTeamMember={(member) => setTeamMembers([...teamMembers, member])}
                 />
-                <div className="flex-1 ml-6">
-                  <div className="bg-card rounded-lg border shadow-sm p-6">
-                    <h2 className="text-xl font-semibold mb-4">Team Overview</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {teamMembers.map(member => (
+                <div className="ml-6 flex-1">
+                  <div className="rounded-lg border bg-card p-6 shadow-sm">
+                    <h2 className="mb-4 text-xl font-semibold">Team Overview</h2>
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                      {teamMembers.map((member) => (
                         <div
                           key={member.id}
-                          className="flex items-start space-x-4 p-4 border rounded-md"
+                          className="flex items-start space-x-4 rounded-md border p-4"
                         >
                           <Avatar className="h-12 w-12">
                             <AvatarImage src={member.avatar} alt={member.name} />
@@ -271,13 +266,16 @@ export default function ContentCalendarPage() {
                             <div className="mt-2">
                               <p className="text-sm">
                                 Assigned Items:{' '}
-                                {contentItems.filter(item => item.assignedTo === member.id).length}
+                                {
+                                  contentItems.filter((item) => item.assignedTo === member.id)
+                                    .length
+                                }
                               </p>
-                              <div className="flex gap-1 mt-1">
-                                {statuses.map(status => {
+                              <div className="mt-1 flex gap-1">
+                                {statuses.map((status) => {
                                   const count = contentItems.filter(
-                                    item =>
-                                      item.assignedTo === member.id && item.status === status.id
+                                    (item) =>
+                                      item.assignedTo === member.id && item.status === status.id,
                                   ).length;
                                   if (count > 0) {
                                     return (

@@ -1,4 +1,4 @@
-/**
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping *//**
  * @vitest-environment jsdom
  */
 import { renderHookWithProviders, testHookUpdates } from '../../test-utils/hook-testing';
@@ -69,19 +69,19 @@ describe('useLocalStorage', () => {
       () => useLocalStorage('testKey', 'initialValue'),
       [
         {
-          act: result => {
+          act: (result) => {
             const setValue = result.result.current[1];
             setValue('newValue');
           },
-          assert: result => {
+          assert: (result) => {
             expect(localStorageMock.setItem).toHaveBeenCalledWith(
               'testKey',
-              JSON.stringify('newValue')
+              JSON.stringify('newValue'),
             );
             expect(result.result.current[0]).toBe('newValue');
           },
         },
-      ]
+      ],
     );
   });
 
@@ -94,16 +94,16 @@ describe('useLocalStorage', () => {
       () => useLocalStorage<number>('counterKey', 1),
       [
         {
-          act: result => {
+          act: (result) => {
             const setValue = result.result.current[1];
             setValue((prev: number) => prev + 1);
           },
-          assert: result => {
+          assert: (result) => {
             expect(localStorageMock.setItem).toHaveBeenCalledWith('counterKey', JSON.stringify(2));
             expect(result.result.current[0]).toBe(2);
           },
         },
-      ]
+      ],
     );
   });
 
@@ -142,7 +142,7 @@ describe('useLocalStorage', () => {
       () => useLocalStorage('testKey', 'initialValue'),
       [
         {
-          act: result => {
+          act: (result) => {
             const setValue = result.result.current[1];
             setValue('newValue');
           },
@@ -150,7 +150,7 @@ describe('useLocalStorage', () => {
             expect(console.warn).toHaveBeenCalled();
           },
         },
-      ]
+      ],
     );
 
     // Cleanup

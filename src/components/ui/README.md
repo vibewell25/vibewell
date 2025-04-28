@@ -67,7 +67,7 @@ export function SearchInput({ onSearch, ...props }: SearchInputProps) {
       placeholder="Search..."
       leftIcon={<SearchIcon />}
       wrapperClassName="w-full max-w-md"
-      onChange={e => onSearch(e.target.value)}
+      onChange={(e) => onSearch(e.target.value)}
       {...props}
     />
   );

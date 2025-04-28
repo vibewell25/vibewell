@@ -1,5 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Calendar } from '@/components/ui/calendar';
 import { useState } from 'react';
 import { format } from 'date-fns';
@@ -25,7 +24,7 @@ export function AvailabilityCalendar({ providerId }: AvailabilityCalendarProps) 
       const availabilityService = AvailabilityService.getInstance();
       const slots = await availabilityService.getAvailability(
         providerId,
-        format(selectedDate, 'yyyy-MM-dd')
+        format(selectedDate, 'yyyy-MM-dd'),
       );
       setTimeSlots(slots);
     } catch (error) {
@@ -58,7 +57,7 @@ export function AvailabilityCalendar({ providerId }: AvailabilityCalendarProps) 
         <CardContent>
           {loading ? (
             <div className="flex items-center justify-center py-8">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+              <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
             </div>
           ) : date ? (
             <TimeSlotList

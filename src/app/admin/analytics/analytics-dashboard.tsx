@@ -3,7 +3,7 @@
 import { Icons } from '@/components/icons';
 import { StatCard } from './stat-card';
 import { Overview } from './overview';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export function AnalyticsDashboard() {
@@ -73,10 +73,10 @@ export function AnalyticsDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-8">
-                  {[1, 2, 3].map(i => (
+                  {[1, 2, 3].map((i) => (
                     <div className="flex items-center" key={i}>
-                      <div className="mr-4 rounded-full bg-primary/10 p-2">
-                        <Icons.activity className="h-4 w-4 text-primary" />
+                      <div className="bg-primary/10 mr-4 rounded-full p-2">
+                        <Icons.activity className="text-primary h-4 w-4" />
                       </div>
                       <div className="space-y-1">
                         <p className="text-sm font-medium leading-none">

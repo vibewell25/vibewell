@@ -15,7 +15,7 @@ export async function GET(request: Request) {
 
     const analytics = await getSkinConditionAnalytics(
       session.user.id,
-      days ? parseInt(days, 10) : undefined
+      days ? parseInt(days, 10) : undefined,
     );
 
     return NextResponse.json(analytics);
@@ -23,7 +23,7 @@ export async function GET(request: Request) {
     console.error('Error in GET /api/skincare/analytics:', error);
     return NextResponse.json(
       { error: 'Failed to fetch skin condition analytics' },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

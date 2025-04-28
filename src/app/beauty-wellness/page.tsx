@@ -1,14 +1,13 @@
-'use client';
+'use client';;
 import { useState, useMemo, Suspense, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import Link from 'next/link';
 import { lazyLoad } from '@/utils/dynamic-import';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
@@ -16,15 +15,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { useTranslation } from 'react-i18next';
-// Import types
-import type {
-  CardProps,
-  BadgeProps,
-  TabsProps,
-  AvatarProps,
-  TooltipProps,
-  ProgressProps,
-} from '@/components/ui/types';
 // Enhanced type definitions
 interface UserProgress {
   wellnessStreak: number;
@@ -47,22 +37,13 @@ interface ServiceItem extends ImportedServiceItem {
 }
 // Dynamically import components with proper typing
 const DynamicCard = lazyLoad<CardProps>(() =>
-  import('@/components/ui/card').then(mod => ({ default: mod.Card }))
+  import('@/components/ui/Card').then((mod) => ({ default: mod.Card })),
 );
 const DynamicBadge = lazyLoad<BadgeProps>(() =>
-  import('@/components/ui/badge').then(mod => ({ default: mod.Badge }))
+  import('@/components/ui/badge').then((mod) => ({ default: mod.Badge })),
 );
 const DynamicTabs = lazyLoad<TabsProps>(() =>
-  import('@/components/ui/tabs').then(mod => ({ default: mod.Tabs }))
-);
-const DynamicAvatar = lazyLoad<AvatarProps>(() =>
-  import('@/components/ui/avatar').then(mod => ({ default: mod.Avatar }))
-);
-const DynamicTooltip = lazyLoad<TooltipProps>(() =>
-  import('@/components/ui/tooltip').then(mod => ({ default: mod.Tooltip }))
-);
-const DynamicProgress = lazyLoad<ProgressProps>(() =>
-  import('@/components/ui/progress').then(mod => ({ default: mod.Progress }))
+  import('@/components/ui/tabs').then((mod) => ({ default: mod.Tabs })),
 );
 // Import categories and content from separate files
 import { categories } from '@/data/beauty-wellness/categories';
@@ -120,7 +101,7 @@ function BeautyWellnessContent(): JSX.Element {
   }, []);
   // Memoize handlers and computed values
   const filterContent = useMemo(() => {
-    return content.filter(item => {
+    return content.filter((item) => {
       const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
       const matchesSearch =
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -136,25 +117,6 @@ function BeautyWellnessContent(): JSX.Element {
     });
   }, [selectedCategory, searchQuery, filters]);
   const filteredContent = useMemo(() => filterContent, [filterContent]);
-  // Memoize category icons
-  const CategoryIcon = useMemo(() => {
-    const category = categories.find(c => c.id === selectedCategory);
-    return category?.icon || null;
-  }, [selectedCategory]);
-  // Memoize handlers
-  const handleCategoryChange = useMemo(
-    () => (category: string) => setSelectedCategory(category),
-    []
-  );
-  const handleSearchChange = useMemo(
-    () => (event: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(event.target.value),
-    []
-  );
-  const handleFilterChange = useMemo(
-    () => (filterUpdate: Partial<typeof filters>) =>
-      setFilters(prev => ({ ...prev, ...filterUpdate })),
-    []
-  );
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -167,7 +129,7 @@ function BeautyWellnessContent(): JSX.Element {
         {/* Enhanced Header Section */}
         <Suspense fallback={<Skeleton className="h-24" />}>
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2">{t('welcome')}</h1>
+            <h1 className="mb-2 text-4xl font-bold">{t('welcome')}</h1>
             <p className="text-xl text-muted-foreground">
               Your journey to self-care and well-being starts here
             </p>
@@ -176,7 +138,7 @@ function BeautyWellnessContent(): JSX.Element {
         {/* Quick Action Cards */}
         <Suspense
           fallback={
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
               {[...Array(4)].map((_, i) => (
                 <Skeleton key={i} className="h-48" />
               ))}
@@ -184,7 +146,7 @@ function BeautyWellnessContent(): JSX.Element {
           }
         >
           <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
+            className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4"
             role="region"
             aria-label="Quick Actions"
           >
@@ -332,7 +294,7 @@ function BeautyWellnessContent(): JSX.Element {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <TabsTrigger value="discover">
-                    <Icons.SparklesIcon className="h-5 w-5 mr-2" />
+                    <Icons.SparklesIcon className="mr-2 h-5 w-5" />
                     Discover
                   </TabsTrigger>
                 </TooltipTrigger>
@@ -345,7 +307,7 @@ function BeautyWellnessContent(): JSX.Element {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <TabsTrigger value="progress">
-                    <Icons.ChartBarIcon className="h-5 w-5 mr-2" />
+                    <Icons.ChartBarIcon className="mr-2 h-5 w-5" />
                     My Progress
                   </TabsTrigger>
                 </TooltipTrigger>
@@ -358,7 +320,7 @@ function BeautyWellnessContent(): JSX.Element {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <TabsTrigger value="bookmarks">
-                    <Icons.BookmarkIcon className="h-5 w-5 mr-2" />
+                    <Icons.BookmarkIcon className="mr-2 h-5 w-5" />
                     Bookmarks
                   </TabsTrigger>
                 </TooltipTrigger>
@@ -371,7 +333,7 @@ function BeautyWellnessContent(): JSX.Element {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <TabsTrigger value="recommended">
-                    <Icons.StarIcon className="h-5 w-5 mr-2" />
+                    <Icons.StarIcon className="mr-2 h-5 w-5" />
                     Recommended
                   </TabsTrigger>
                 </TooltipTrigger>
@@ -384,20 +346,20 @@ function BeautyWellnessContent(): JSX.Element {
         </DynamicTabs>
         {/* Enhanced Search and Filters */}
         <div
-          className="flex flex-col md:flex-row gap-4 mb-8"
+          className="mb-8 flex flex-col gap-4 md:flex-row"
           role="search"
           aria-label="Service Search"
         >
           <div className="flex-1">
             <div className="relative">
               <Icons.MagnifyingGlassIcon
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground"
+                className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-muted-foreground"
                 aria-hidden="true"
               />
               <Input
                 placeholder="Search services, providers, or content..."
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
                 aria-label="Search services, providers, or content"
               />
@@ -409,24 +371,24 @@ function BeautyWellnessContent(): JSX.Element {
             aria-controls="filters-panel"
             onClick={() => setShowFilters(!showFilters)}
           >
-            <Icons.AdjustmentsHorizontalIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+            <Icons.AdjustmentsHorizontalIcon className="mr-2 h-5 w-5" aria-hidden="true" />
             Filters
           </Button>
         </div>
         {/* Category Grid */}
         <Suspense fallback={<Skeleton className="h-32" />}>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-8">
-            {categories.map(category => (
+          <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8">
+            {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`p-4 rounded-lg text-center transition-all ${
+                className={`rounded-lg p-4 text-center transition-all ${
                   selectedCategory === category.id
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-gradient-to-br ' + category.color
                 }`}
               >
-                {category.icon && <category.icon className="w-6 h-6 mx-auto mb-2" />}
+                {category.icon && <category.icon className="mx-auto mb-2 h-6 w-6" />}
                 <span className="text-sm font-medium">{category.name}</span>
               </button>
             ))}
@@ -449,12 +411,12 @@ function BeautyWellnessContent(): JSX.Element {
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-48 object-cover rounded-t-lg"
+                    className="h-48 w-full rounded-t-lg object-cover"
                   />
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <DynamicBadge variant="secondary" className="absolute top-2 right-2">
+                        <DynamicBadge variant="secondary" className="absolute right-2 top-2">
                           {item.availableSlots} slots left
                         </DynamicBadge>
                       </TooltipTrigger>
@@ -465,12 +427,12 @@ function BeautyWellnessContent(): JSX.Element {
                   </TooltipProvider>
                 </div>
                 <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-4">
+                  <div className="mb-4 flex items-start justify-between">
                     <div>
-                      <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground mb-2">{item.description}</p>
-                      <div className="flex gap-2 mb-4">
-                        {item.tags.map(tag => (
+                      <h3 className="mb-1 text-lg font-semibold">{item.title}</h3>
+                      <p className="mb-2 text-sm text-muted-foreground">{item.description}</p>
+                      <div className="mb-4 flex gap-2">
+                        {item.tags.map((tag) => (
                           <TooltipProvider key={tag}>
                             <Tooltip>
                               <TooltipTrigger asChild>
@@ -612,11 +574,11 @@ function BeautyWellnessSkeleton(): JSX.Element {
     <Layout>
       <div className="container-app py-12">
         <div className="animate-pulse">
-          <div className="h-10 w-72 bg-gray-200 rounded mb-4"></div>
-          <div className="h-6 w-96 bg-gray-200 rounded mb-8"></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map(i => (
-              <div key={i} className="h-64 bg-gray-200 rounded"></div>
+          <div className="mb-4 h-10 w-72 rounded bg-gray-200"></div>
+          <div className="mb-8 h-6 w-96 rounded bg-gray-200"></div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="h-64 rounded bg-gray-200"></div>
             ))}
           </div>
         </div>
@@ -625,36 +587,6 @@ function BeautyWellnessSkeleton(): JSX.Element {
   );
 }
 BeautyWellnessSkeleton.displayName = 'BeautyWellnessSkeleton';
-const ServiceCard = ({ service }: { service: ServiceItem }) => {
-  return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-      <p className="text-gray-600 mb-4">{service.description}</p>
-      <div className="flex justify-between items-center mb-4">
-        <span className="text-lg font-bold">{service.price}</span>
-        <span className="text-sm text-gray-500">{service.duration}</span>
-      </div>
-      <div className="mb-4">
-        <h4 className="font-medium mb-2">Provider</h4>
-        <div className="flex items-center">
-          <div className="ml-3">
-            <p className="font-medium">{service.provider.name}</p>
-            {service.provider.specialization && (
-              <p className="text-sm text-gray-500">{service.provider.specialization}</p>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="flex justify-between items-center">
-        <span className="text-sm text-gray-500">Level: {service.level}</span>
-        <span className="text-sm text-gray-500">{service.availableSlots} slots available</span>
-      </div>
-      <button className="mt-4 w-full bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition-colors">
-        Book Now
-      </button>
-    </div>
-  );
-};
 /**
  * @swagger
  * /api/users:

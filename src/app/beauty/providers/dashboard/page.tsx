@@ -1,12 +1,9 @@
-'use client';
-
+'use client';;
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Icons } from '@/components/icons';
 import {
   CalendarIcon,
   ChartBarIcon,
@@ -118,7 +115,7 @@ export default function DashboardPage() {
   return (
     <Layout>
       <div className="container mx-auto py-6">
-        <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+        <h1 className="mb-6 text-3xl font-bold">Dashboard</h1>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           <Card>
@@ -154,9 +151,7 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.clients.total}</div>
-              <p className="text-xs text-muted-foreground">
-                {stats.clients.new} new this month
-              </p>
+              <p className="text-xs text-muted-foreground">{stats.clients.new} new this month</p>
             </CardContent>
           </Card>
 
@@ -184,7 +179,7 @@ export default function DashboardPage() {
                 {appointments.map((appointment) => (
                   <div
                     key={appointment.id}
-                    className="flex items-center justify-between p-4 border rounded-lg"
+                    className="flex items-center justify-between rounded-lg border p-4"
                   >
                     <div className="flex items-center gap-4">
                       <Avatar>
@@ -204,20 +199,18 @@ export default function DashboardPage() {
                     <div className="flex items-center gap-4">
                       <div className="text-right">
                         <div className="flex items-center">
-                          <ClockIcon className="h-4 w-4 mr-1" />
+                          <ClockIcon className="mr-1 h-4 w-4" />
                           {appointment.time}
                         </div>
-                        <div className="text-sm text-gray-500">
-                          {appointment.duration} min
-                        </div>
+                        <div className="text-sm text-gray-500">{appointment.duration} min</div>
                       </div>
                       <Badge
                         variant={
                           appointment.status === 'confirmed'
                             ? 'success'
                             : appointment.status === 'pending'
-                            ? 'warning'
-                            : 'destructive'
+                              ? 'warning'
+                              : 'destructive'
                         }
                       >
                         {appointment.status}

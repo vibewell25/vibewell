@@ -11,7 +11,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import Image from 'next/image';
 import { BADGES } from '@/services/engagement-service';
@@ -27,12 +27,12 @@ export function BadgesDisplay({ showUnlocked = true, maxDisplay }: BadgesDisplay
   const [selectedBadge, setSelectedBadge] = useState<BadgeType | null>(null);
 
   // Get earned badge IDs
-  const earnedBadgeIds = badges.map(badge => badge.badgeId);
+  const earnedBadgeIds = badges.map((badge) => badge.badgeId);
 
   // Filter badges to show
   const badgesToShow = showUnlocked
     ? BADGES // Show all badges
-    : BADGES.filter(badge => earnedBadgeIds.includes(badge.id)); // Only earned badges
+    : BADGES.filter((badge) => earnedBadgeIds.includes(badge.id)); // Only earned badges
 
   // Limit if maxDisplay is provided
   const displayBadges = maxDisplay ? badgesToShow.slice(0, maxDisplay) : badgesToShow;
@@ -43,9 +43,9 @@ export function BadgesDisplay({ showUnlocked = true, maxDisplay }: BadgesDisplay
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 animate-pulse">
+      <div className="grid animate-pulse grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-5">
         {[...Array(6)].map((_, i) => (
-          <div key={i} className="h-16 w-16 bg-gray-200 rounded-full mx-auto" />
+          <div key={i} className="mx-auto h-16 w-16 rounded-full bg-gray-200" />
         ))}
       </div>
     );
@@ -53,8 +53,8 @@ export function BadgesDisplay({ showUnlocked = true, maxDisplay }: BadgesDisplay
 
   return (
     <>
-      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {displayBadges.map(badge => {
+      <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-5">
+        {displayBadges.map((badge) => {
           const isEarned = earnedBadgeIds.includes(badge.id);
 
           return (
@@ -63,11 +63,11 @@ export function BadgesDisplay({ showUnlocked = true, maxDisplay }: BadgesDisplay
                 <TooltipTrigger asChild>
                   <button
                     onClick={() => handleBadgeClick(badge)}
-                    className={`relative flex flex-col items-center justify-center p-2 rounded-lg transition-all ${
+                    className={`relative flex flex-col items-center justify-center rounded-lg p-2 transition-all ${
                       isEarned ? 'hover:bg-primary/10' : 'opacity-50 hover:opacity-60'
                     }`}
                   >
-                    <div className="relative h-16 w-16 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+                    <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-muted">
                       {badge.image ? (
                         <Image
                           src={isEarned ? badge.image : '/badges/locked.svg'}
@@ -77,16 +77,16 @@ export function BadgesDisplay({ showUnlocked = true, maxDisplay }: BadgesDisplay
                           className={`object-cover ${!isEarned && 'grayscale'}`}
                         />
                       ) : (
-                        <div className="flex items-center justify-center w-full h-full">
+                        <div className="flex h-full w-full items-center justify-center">
                           {isEarned ? (
-                            <Trophy className="h-8 w-8 text-primary" />
+                            <Trophy className="text-primary h-8 w-8" />
                           ) : (
                             <Lock className="h-8 w-8 text-muted-foreground" />
                           )}
                         </div>
                       )}
                     </div>
-                    <span className="mt-2 text-xs font-medium truncate max-w-full">
+                    <span className="mt-2 max-w-full truncate text-xs font-medium">
                       {badge.name}
                     </span>
                   </button>
@@ -102,7 +102,7 @@ export function BadgesDisplay({ showUnlocked = true, maxDisplay }: BadgesDisplay
 
       {/* Badge details dialog */}
       {selectedBadge && (
-        <Dialog open={!!selectedBadge} onOpenChange={open => !open && setSelectedBadge(null)}>
+        <Dialog open={!!selectedBadge} onOpenChange={(open) => !open && setSelectedBadge(null)}>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>{selectedBadge.name}</DialogTitle>
@@ -110,7 +110,7 @@ export function BadgesDisplay({ showUnlocked = true, maxDisplay }: BadgesDisplay
             </DialogHeader>
 
             <div className="flex flex-col items-center py-4">
-              <div className="relative h-32 w-32 rounded-full bg-muted flex items-center justify-center overflow-hidden mb-4">
+              <div className="relative mb-4 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-muted">
                 {selectedBadge.image ? (
                   <Image
                     src={
@@ -124,9 +124,9 @@ export function BadgesDisplay({ showUnlocked = true, maxDisplay }: BadgesDisplay
                     className={`object-cover ${!earnedBadgeIds.includes(selectedBadge.id) && 'grayscale'}`}
                   />
                 ) : (
-                  <div className="flex items-center justify-center w-full h-full">
+                  <div className="flex h-full w-full items-center justify-center">
                     {earnedBadgeIds.includes(selectedBadge.id) ? (
-                      <Trophy className="h-16 w-16 text-primary" />
+                      <Trophy className="text-primary h-16 w-16" />
                     ) : (
                       <Lock className="h-16 w-16 text-muted-foreground" />
                     )}
@@ -134,7 +134,7 @@ export function BadgesDisplay({ showUnlocked = true, maxDisplay }: BadgesDisplay
                 )}
               </div>
 
-              <div className="text-center space-y-2">
+              <div className="space-y-2 text-center">
                 <div className="font-medium">
                   {earnedBadgeIds.includes(selectedBadge.id) ? (
                     <span className="text-green-600">Earned!</span>

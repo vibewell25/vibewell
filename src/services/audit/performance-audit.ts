@@ -1,6 +1,5 @@
 import auditService, { AuditCategory, AuditSeverity } from '../audit-service';
 import { logEvent } from '../../utils/analytics';
-import { MetricType } from '../performance-remediation';
 
 /**
  * Performance metric interface
@@ -208,7 +207,7 @@ class PerformanceAuditService {
         AuditCategory.PERFORMANCE,
         severity,
         `Load Test Performance Issues (${result.userCount} users)`,
-        `The load test with ${result.userCount} concurrent users exceeded performance thresholds for: ${issues.map(i => i.metric).join(', ')}`,
+        `The load test with ${result.userCount} concurrent users exceeded performance thresholds for: ${issues.map((i) => i.metric).join(', ')}`,
         {
           component: 'Load Testing',
           metadata: {
@@ -218,7 +217,7 @@ class PerformanceAuditService {
             duration: result.duration,
             timestamp: result.endTime,
           },
-        }
+        },
       );
     }
 
@@ -300,7 +299,7 @@ class PerformanceAuditService {
         AuditCategory.PERFORMANCE,
         severity,
         `Mobile Performance Issues (${metrics.deviceType})`,
-        `Mobile performance thresholds exceeded for: ${issues.map(i => i.metric).join(', ')}`,
+        `Mobile performance thresholds exceeded for: ${issues.map((i) => i.metric).join(', ')}`,
         {
           component: 'Mobile App',
           metadata: {
@@ -309,7 +308,7 @@ class PerformanceAuditService {
             appVersion: metrics.appVersion,
             timestamp: metrics.timestamp,
           },
-        }
+        },
       );
     }
 
@@ -374,7 +373,7 @@ class PerformanceAuditService {
             cacheHit: metrics.cacheHit,
             timestamp: metrics.timestamp,
           },
-        }
+        },
       );
     }
 
@@ -455,7 +454,7 @@ class PerformanceAuditService {
         AuditCategory.PERFORMANCE,
         severity,
         `Frontend Performance Issues (${metrics.deviceType})`,
-        `Web Vitals thresholds exceeded for: ${issues.map(i => i.metric).join(', ')}`,
+        `Web Vitals thresholds exceeded for: ${issues.map((i) => i.metric).join(', ')}`,
         {
           component: 'Frontend',
           metadata: {
@@ -465,7 +464,7 @@ class PerformanceAuditService {
             userAgent: metrics.userAgent,
             timestamp: metrics.timestamp,
           },
-        }
+        },
       );
     }
 
@@ -511,17 +510,17 @@ class PerformanceAuditService {
     const loadTests = Array.from(this.loadTestResults.values());
 
     // Generate mobile metrics summary
-    const deviceTypes = [...new Set(this.mobileMetrics.map(m => m.deviceType))];
+    const deviceTypes = [...new Set(this.mobileMetrics.map((m) => m.deviceType))];
     const mobileAverages = {
-      startupTime: this.calculateAverage(this.mobileMetrics, m => m.startupTime.value),
-      memoryUsage: this.calculateAverage(this.mobileMetrics, m => m.memoryUsage.value),
-      batteryImpact: this.calculateAverage(this.mobileMetrics, m => m.batteryImpact.value),
-      frameRate: this.calculateAverage(this.mobileMetrics, m => m.frameRate.value),
+      startupTime: this.calculateAverage(this.mobileMetrics, (m) => m.startupTime.value),
+      memoryUsage: this.calculateAverage(this.mobileMetrics, (m) => m.memoryUsage.value),
+      batteryImpact: this.calculateAverage(this.mobileMetrics, (m) => m.batteryImpact.value),
+      frameRate: this.calculateAverage(this.mobileMetrics, (m) => m.frameRate.value),
     };
 
     // Generate database metrics summary
     const queryTypes: Record<string, number> = {};
-    this.databaseMetrics.forEach(m => {
+    this.databaseMetrics.forEach((m) => {
       const key = `${m.queryType}-${m.operationType}`;
       queryTypes[key] = (queryTypes[key] || 0) + 1;
     });
@@ -536,7 +535,7 @@ class PerformanceAuditService {
       }
     >();
 
-    this.databaseMetrics.forEach(m => {
+    this.databaseMetrics.forEach((m) => {
       const key = m.operationType;
       const current = operationsMap.get(key) || { totalTime: 0, maxTime: 0, count: 0 };
 
@@ -559,16 +558,16 @@ class PerformanceAuditService {
 
     // Generate frontend metrics summary
     const frontendAverages = {
-      lcp: this.calculateAverage(this.frontendMetrics, m => m.lcp.value),
-      fid: this.calculateAverage(this.frontendMetrics, m => m.fid.value),
-      cls: this.calculateAverage(this.frontendMetrics, m => m.cls.value),
-      ttfb: this.calculateAverage(this.frontendMetrics, m => m.ttfb.value),
-      fcp: this.calculateAverage(this.frontendMetrics, m => m.fcp.value),
+      lcp: this.calculateAverage(this.frontendMetrics, (m) => m.lcp.value),
+      fid: this.calculateAverage(this.frontendMetrics, (m) => m.fid.value),
+      cls: this.calculateAverage(this.frontendMetrics, (m) => m.cls.value),
+      ttfb: this.calculateAverage(this.frontendMetrics, (m) => m.ttfb.value),
+      fcp: this.calculateAverage(this.frontendMetrics, (m) => m.fcp.value),
     };
 
     // Calculate device breakdown
     const deviceBreakdown: Record<string, number> = {};
-    this.frontendMetrics.forEach(m => {
+    this.frontendMetrics.forEach((m) => {
       deviceBreakdown[m.deviceType] = (deviceBreakdown[m.deviceType] || 0) + 1;
     });
 
@@ -579,10 +578,13 @@ class PerformanceAuditService {
         deviceTypes,
         averages: mobileAverages,
         percentiles: {
-          startupTime: this.calculatePercentiles(this.mobileMetrics, m => m.startupTime.value),
-          memoryUsage: this.calculatePercentiles(this.mobileMetrics, m => m.memoryUsage.value),
-          batteryImpact: this.calculatePercentiles(this.mobileMetrics, m => m.batteryImpact.value),
-          frameRate: this.calculatePercentiles(this.mobileMetrics, m => m.frameRate.value),
+          startupTime: this.calculatePercentiles(this.mobileMetrics, (m) => m.startupTime.value),
+          memoryUsage: this.calculatePercentiles(this.mobileMetrics, (m) => m.memoryUsage.value),
+          batteryImpact: this.calculatePercentiles(
+            this.mobileMetrics,
+            (m) => m.batteryImpact.value,
+          ),
+          frameRate: this.calculatePercentiles(this.mobileMetrics, (m) => m.frameRate.value),
         },
       },
       databaseMetricsSummary: {
@@ -592,11 +594,11 @@ class PerformanceAuditService {
       frontendMetricsSummary: {
         averages: frontendAverages,
         percentiles: {
-          lcp: this.calculatePercentiles(this.frontendMetrics, m => m.lcp.value),
-          fid: this.calculatePercentiles(this.frontendMetrics, m => m.fid.value),
-          cls: this.calculatePercentiles(this.frontendMetrics, m => m.cls.value),
-          ttfb: this.calculatePercentiles(this.frontendMetrics, m => m.ttfb.value),
-          fcp: this.calculatePercentiles(this.frontendMetrics, m => m.fcp.value),
+          lcp: this.calculatePercentiles(this.frontendMetrics, (m) => m.lcp.value),
+          fid: this.calculatePercentiles(this.frontendMetrics, (m) => m.fid.value),
+          cls: this.calculatePercentiles(this.frontendMetrics, (m) => m.cls.value),
+          ttfb: this.calculatePercentiles(this.frontendMetrics, (m) => m.ttfb.value),
+          fcp: this.calculatePercentiles(this.frontendMetrics, (m) => m.fcp.value),
         },
         deviceBreakdown,
       },
@@ -617,7 +619,7 @@ class PerformanceAuditService {
    */
   private calculatePercentiles<T>(
     items: T[],
-    valueAccessor: (item: T) => number
+    valueAccessor: (item: T) => number,
   ): Record<string, number> {
     if (items.length === 0) {
       return {

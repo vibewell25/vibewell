@@ -2,13 +2,12 @@
 import { Layout } from '@/components/layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BreadcrumbExample } from '@/components/examples/BreadcrumbExample';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useState, Suspense } from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@/components/ui/breadcrumb';
 import { useSearchParams } from 'next/navigation';
 function BreadcrumbDocumentationContent() {
   const [copied, setCopied] = useState(false);
-  const searchParams = useSearchParams();
   const copyToClipboard = (code: string) => {
     navigator.clipboard.writeText(code);
     setCopied(true);
@@ -67,9 +66,9 @@ export function MyBreadcrumb() {
             <span className="text-sm font-medium">Breadcrumb</span>
           </BreadcrumbItem>
         </Breadcrumb>
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+        <div className="mb-8 flex flex-col items-start justify-between md:flex-row md:items-center">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Breadcrumb</h1>
+            <h1 className="mb-2 text-3xl font-bold">Breadcrumb</h1>
             <p className="text-muted-foreground">
               A navigation component that helps users understand the hierarchy of a website.
             </p>
@@ -81,7 +80,7 @@ export function MyBreadcrumb() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Icons.CodeBracketIcon className="h-4 w-4 mr-2" />
+                <Icons.CodeBracketIcon className="mr-2 h-4 w-4" />
                 View Source
               </a>
             </Button>
@@ -94,15 +93,15 @@ export function MyBreadcrumb() {
             <TabsTrigger value="api">API</TabsTrigger>
           </TabsList>
           <TabsContent value="overview">
-            <div className="bg-card border rounded-lg p-6 mb-8">
-              <h2 className="text-xl font-semibold mb-4">Preview</h2>
-              <div className="p-4 border rounded-md bg-background">
+            <div className="mb-8 rounded-lg border bg-card p-6">
+              <h2 className="mb-4 text-xl font-semibold">Preview</h2>
+              <div className="rounded-md border bg-background p-4">
                 <BreadcrumbExample />
               </div>
             </div>
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-semibold mb-2">About</h2>
+                <h2 className="mb-2 text-xl font-semibold">About</h2>
                 <p className="text-muted-foreground">
                   Breadcrumbs are navigation aids that help users understand their current location
                   within a website's hierarchy. They provide a trail of links that show the path
@@ -111,8 +110,8 @@ export function MyBreadcrumb() {
                 </p>
               </div>
               <div>
-                <h2 className="text-xl font-semibold mb-2">Features</h2>
-                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                <h2 className="mb-2 text-xl font-semibold">Features</h2>
+                <ul className="list-inside list-disc space-y-1 text-muted-foreground">
                   <li>Responsive and accessible breadcrumb navigation</li>
                   <li>Support for custom icons and styling</li>
                   <li>Proper ARIA attributes for improved accessibility</li>
@@ -121,8 +120,8 @@ export function MyBreadcrumb() {
                 </ul>
               </div>
               <div>
-                <h2 className="text-xl font-semibold mb-2">Accessibility</h2>
-                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                <h2 className="mb-2 text-xl font-semibold">Accessibility</h2>
+                <ul className="list-inside list-disc space-y-1 text-muted-foreground">
                   <li>
                     Uses proper <code>nav</code> and <code>ol</code> elements for semantic structure
                   </li>
@@ -140,9 +139,9 @@ export function MyBreadcrumb() {
           <TabsContent value="usage">
             <div className="space-y-8">
               <div>
-                <h2 className="text-xl font-semibold mb-4">Basic Usage</h2>
-                <div className="bg-card border rounded-lg mb-4">
-                  <div className="flex justify-between items-center p-4 border-b">
+                <h2 className="mb-4 text-xl font-semibold">Basic Usage</h2>
+                <div className="mb-4 rounded-lg border bg-card">
+                  <div className="flex items-center justify-between border-b p-4">
                     <h3 className="text-sm font-medium">Example</h3>
                     <Button
                       variant="ghost"
@@ -163,10 +162,10 @@ export function MyBreadcrumb() {
                       )}
                     </Button>
                   </div>
-                  <div className="p-4 border-b bg-muted">
-                    <pre className="text-sm overflow-auto">{basicUsageCode}</pre>
+                  <div className="border-b bg-muted p-4">
+                    <pre className="overflow-auto text-sm">{basicUsageCode}</pre>
                   </div>
-                  <div className="p-4 bg-background">
+                  <div className="bg-background p-4">
                     <Breadcrumb>
                       <BreadcrumbItem isFirstItem>
                         <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -188,9 +187,9 @@ export function MyBreadcrumb() {
                 </p>
               </div>
               <div>
-                <h2 className="text-xl font-semibold mb-4">Custom Styling</h2>
-                <div className="bg-card border rounded-lg mb-4">
-                  <div className="flex justify-between items-center p-4 border-b">
+                <h2 className="mb-4 text-xl font-semibold">Custom Styling</h2>
+                <div className="mb-4 rounded-lg border bg-card">
+                  <div className="flex items-center justify-between border-b p-4">
                     <h3 className="text-sm font-medium">Example</h3>
                     <Button
                       variant="ghost"
@@ -211,17 +210,17 @@ export function MyBreadcrumb() {
                       )}
                     </Button>
                   </div>
-                  <div className="p-4 border-b bg-muted">
-                    <pre className="text-sm overflow-auto">{customStylingCode}</pre>
+                  <div className="border-b bg-muted p-4">
+                    <pre className="overflow-auto text-sm">{customStylingCode}</pre>
                   </div>
-                  <div className="p-4 bg-background">
-                    <Breadcrumb className="bg-muted p-2 rounded-md">
+                  <div className="bg-background p-4">
+                    <Breadcrumb className="rounded-md bg-muted p-2">
                       <BreadcrumbItem isFirstItem>
                         <BreadcrumbLink
                           href="/"
                           className="text-primary hover:text-primary/80 flex items-center"
                         >
-                          <Icons.HomeIcon className="h-4 w-4 mr-1" />
+                          <Icons.HomeIcon className="mr-1 h-4 w-4" />
                           Home
                         </BreadcrumbLink>
                       </BreadcrumbItem>
@@ -245,31 +244,31 @@ export function MyBreadcrumb() {
           <TabsContent value="api">
             <div className="space-y-8">
               <div>
-                <h2 className="text-xl font-semibold mb-4">Components</h2>
-                <p className="text-muted-foreground mb-6">
+                <h2 className="mb-4 text-xl font-semibold">Components</h2>
+                <p className="mb-6 text-muted-foreground">
                   The breadcrumb component consists of three main parts:
                 </p>
                 <div className="space-y-6">
-                  <div className="bg-card border rounded-lg p-6">
-                    <h3 className="text-lg font-semibold mb-3">Breadcrumb</h3>
-                    <p className="text-muted-foreground mb-4">
+                  <div className="rounded-lg border bg-card p-6">
+                    <h3 className="mb-3 text-lg font-semibold">Breadcrumb</h3>
+                    <p className="mb-4 text-muted-foreground">
                       The main container that wraps the breadcrumb navigation.
                     </p>
-                    <h4 className="text-sm font-semibold mb-2">Props</h4>
-                    <div className="border rounded-md overflow-hidden">
+                    <h4 className="mb-2 text-sm font-semibold">Props</h4>
+                    <div className="overflow-hidden rounded-md border">
                       <table className="min-w-full divide-y">
                         <thead className="bg-muted">
                           <tr>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium tracking-wider text-muted-foreground">
                               Prop
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium tracking-wider text-muted-foreground">
                               Type
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium tracking-wider text-muted-foreground">
                               Default
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium tracking-wider text-muted-foreground">
                               Description
                             </th>
                           </tr>
@@ -291,26 +290,26 @@ export function MyBreadcrumb() {
                       </table>
                     </div>
                   </div>
-                  <div className="bg-card border rounded-lg p-6">
-                    <h3 className="text-lg font-semibold mb-3">BreadcrumbItem</h3>
-                    <p className="text-muted-foreground mb-4">
+                  <div className="rounded-lg border bg-card p-6">
+                    <h3 className="mb-3 text-lg font-semibold">BreadcrumbItem</h3>
+                    <p className="mb-4 text-muted-foreground">
                       Represents a single item in the breadcrumb trail.
                     </p>
-                    <h4 className="text-sm font-semibold mb-2">Props</h4>
-                    <div className="border rounded-md overflow-hidden">
+                    <h4 className="mb-2 text-sm font-semibold">Props</h4>
+                    <div className="overflow-hidden rounded-md border">
                       <table className="min-w-full divide-y">
                         <thead className="bg-muted">
                           <tr>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium tracking-wider text-muted-foreground">
                               Prop
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium tracking-wider text-muted-foreground">
                               Type
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium tracking-wider text-muted-foreground">
                               Default
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium tracking-wider text-muted-foreground">
                               Description
                             </th>
                           </tr>
@@ -348,26 +347,26 @@ export function MyBreadcrumb() {
                       </table>
                     </div>
                   </div>
-                  <div className="bg-card border rounded-lg p-6">
-                    <h3 className="text-lg font-semibold mb-3">BreadcrumbLink</h3>
-                    <p className="text-muted-foreground mb-4">
+                  <div className="rounded-lg border bg-card p-6">
+                    <h3 className="mb-3 text-lg font-semibold">BreadcrumbLink</h3>
+                    <p className="mb-4 text-muted-foreground">
                       Represents a link within a breadcrumb item.
                     </p>
-                    <h4 className="text-sm font-semibold mb-2">Props</h4>
-                    <div className="border rounded-md overflow-hidden">
+                    <h4 className="mb-2 text-sm font-semibold">Props</h4>
+                    <div className="overflow-hidden rounded-md border">
                       <table className="min-w-full divide-y">
                         <thead className="bg-muted">
                           <tr>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium tracking-wider text-muted-foreground">
                               Prop
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium tracking-wider text-muted-foreground">
                               Type
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium tracking-wider text-muted-foreground">
                               Default
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium tracking-wider text-muted-foreground">
                               Description
                             </th>
                           </tr>
@@ -413,7 +412,7 @@ export function MyBreadcrumb() {
 export default function BreadcrumbDocumentation() {
   return (
     <Suspense
-      fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}
+      fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}
     >
       <BreadcrumbDocumentationContent />
     </Suspense>

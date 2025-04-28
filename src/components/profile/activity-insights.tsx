@@ -1,6 +1,6 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertCircle, CheckCircle2, Info, Lightbulb, Shield, Users } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Info, Lightbulb, Shield, Users } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 interface Insight {
   id: string;
@@ -76,7 +76,7 @@ export function ActivityInsights() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {insights.map(insight => (
+        {insights.map((insight) => (
           <div key={insight.id} className="flex items-start space-x-4 rounded-lg border p-4">
             <div className={`mt-1 ${getInsightColor(insight.type)}`}>{insight.icon}</div>
             <div className="flex-1 space-y-2">

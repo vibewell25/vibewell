@@ -66,20 +66,20 @@ export function AdminNavigation({ className = '' }: AdminNavigationProps) {
 
   return (
     <nav className={`${className} p-4`}>
-      <div className="flex items-center mb-6">
-        <Shield className="h-5 w-5 text-primary mr-2" />
+      <div className="mb-6 flex items-center">
+        <Shield className="text-primary mr-2 h-5 w-5" />
         <h2 className="text-lg font-semibold">Admin Dashboard</h2>
       </div>
 
       <ul className="space-y-2">
-        {navigationItems.map(item => {
+        {navigationItems.map((item) => {
           const isActive = pathname === item.href;
 
           return (
             <li key={item.name}>
               <Link
                 href={item.href}
-                className={`flex items-center px-3 py-2 rounded-md transition-colors ${
+                className={`flex items-center rounded-md px-3 py-2 transition-colors ${
                   isActive ? 'bg-primary/10 text-primary' : 'hover:bg-muted'
                 }`}
               >

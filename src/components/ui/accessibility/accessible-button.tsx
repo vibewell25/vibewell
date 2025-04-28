@@ -54,22 +54,13 @@ export function AccessibleButton({
       if (buttonRef.current && !disabled && !isLoading) {
         buttonRef.current.click();
       }
-    }
+    },
   );
 
   return (
     <button
       ref={buttonRef}
-      className={`
-        inline-flex items-center justify-center
-        rounded-md font-medium
-        transition-colors duration-200
-        disabled:opacity-50 disabled:cursor-not-allowed
-        focus:outline-none
-        ${variantStyles[variant]}
-        ${sizeStyles[size]}
-        ${className}
-      `}
+      className={`inline-flex items-center justify-center rounded-md font-medium transition-colors duration-200 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${variantStyles[variant]} ${sizeStyles[size]} ${className} `}
       disabled={disabled || isLoading}
       aria-busy={isLoading}
       aria-describedby={description ? 'button-description' : undefined}

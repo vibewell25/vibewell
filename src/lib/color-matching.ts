@@ -1,4 +1,4 @@
-import { ColorSpaces, ColorUtils } from '@/utils/color-utils';
+import { ColorUtils } from '@/utils/color-utils';
 
 interface ColorMatch {
   matchScore: number;
@@ -53,7 +53,7 @@ export class ColorMatchingService {
   public async matchFoundation(
     skinTone: keyof typeof ColorMatchingService.SKIN_TONE_RANGES,
     undertone: string,
-    availableShades: string[]
+    availableShades: string[],
   ): Promise<ColorMatch[]> {
     const matches: ColorMatch[] = [];
 
@@ -77,7 +77,7 @@ export class ColorMatchingService {
   public async blendColors(
     baseColor: string,
     makeupColor: string,
-    opacity: number
+    opacity: number,
   ): Promise<string> {
     const base = await ColorUtils.hexToRgb(baseColor);
     const makeup = await ColorUtils.hexToRgb(makeupColor);
@@ -94,7 +94,7 @@ export class ColorMatchingService {
   private calculateMatchScore(
     skinTone: keyof typeof ColorMatchingService.SKIN_TONE_RANGES,
     undertone: string,
-    lab: { L: number; a: number; b: number }
+    lab: { L: number; a: number; b: number },
   ): number {
     const range = ColorMatchingService.SKIN_TONE_RANGES[skinTone];
     const lightnessDiff = Math.abs((range.maxL + range.minL) / 2 - lab.L);

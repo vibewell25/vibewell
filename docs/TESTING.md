@@ -301,4 +301,7 @@ jobs:
 - [Cypress Guides](https://docs.cypress.io/guides/overview/why-cypress)
 - [Three.js Testing](https://threejs.org/docs/#manual/en/introduction/How-to-run-things-locally)
 - [Performance Testing Guide](./PERFORMANCE-TESTING.md)
-- [Security Testing Guide](./SECURITY-TESTING.md) 
+- [Security Testing Guide](./SECURITY-TESTING.md)
+
+---
+*Other TESTING-*.md variants have been consolidated into this guide and removed.*

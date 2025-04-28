@@ -57,6 +57,40 @@ This guide outlines security best practices for developing, deploying, and maint
 - Implement proper CORS policies
 - Use HSTS headers for HTTPS enforcement
 
+## Security Scanning
+
+- **Automated CI/CD scans**: npm audit, ESLint security rules, Snyk, OWASP ZAP on pushes, PRs, and schedules.
+- **Middleware checks**: CSP, XSS, rate limiting, clickjacking protections via `src/middleware/security`.
+
+## Security Standardization
+
+- **Authentication**: unified auth context and RBAC (`src/contexts/unified-auth-context.tsx`, `src/hooks/use-unified-auth.ts`).
+- **CSRF Protection**: custom HMAC-SHA256 tokens (`src/middleware/security/csrf.ts`).
+- **Rate Limiting**: IP-based limits and headers (`src/middleware/security/index.ts`).
+- **Security Headers**: CSP, HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy.
+- **Input Validation & Encryption**: Zod schemas, AES-256-CBC field-level encryption.
+
+## Security Testing
+
+- **Scope**: auth flows, RBAC, input validation, APIs, client-side, AR components.
+- **Tools**: ESLint security plugins, SonarQube, OWASP ZAP, Burp Suite.
+- **Checklist**: CSRF tokens, rate limiting, header presence, SQL/NoSQL injection, XSS, dependency scans.
+
+## Recent Security Updates
+
+- **Web3 Removal**: replaced `@walletconnect/web3-provider` with `ethers.js`.
+- **HTTP Client Migration**: `node-fetch` → `axios` in tests.
+- **Redis Mock**: improved ioredis-mock coverage.
+- **Custom CSRF**: integrated secure CSRF tokens middleware.
+- **Dependencies**: all vulnerabilities fixed via `npm audit fix`.
+
+## API Security
+
+- **JWT**: auth flows, refresh tokens, expiration, secure signing.
+- **Rate Limiting**: 100 req/min default, burst protection, headers.
+- **Validation**: input sanitization, size limits, error formats.
+- **Headers**: CSP, X-Frame-Options, HSTS, Referrer-Policy, Permissions-Policy.
+
 ## Code Security
 
 ### Secure Development Practices
@@ -171,5 +205,6 @@ This guide outlines security best practices for developing, deploying, and maint
 - Document security testing results and remediation
 
 ---
+*Other SECURITY-*.md variants have been consolidated into this guide and removed.*
 
 This guide should be reviewed and updated regularly as security best practices evolve. All team members should be familiar with these guidelines and apply them consistently throughout the development and maintenance of the VibeWell platform. 

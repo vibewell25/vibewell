@@ -2,6 +2,36 @@
 
 This guide provides instructions for migrating from previous authentication and database systems to the current implementation.
 
+## Migration Plan
+
+- **Icon Standardization**: replace direct heroicon imports with centralized `Icons` component across all components.
+- **Supabase → Prisma**: finalize Prisma schema, migrate remaining services, update imports, remove Supabase code.
+- **TypeScript**: address TS errors in profit calculator and icon imports.
+- **Authentication**: Clerk → Auth0 migration steps completed above.
+
+## Migration Checklist
+
+Use this checklist to track migration progress:
+
+- [ ] Complete Prisma model mapping (`npx prisma db pull`, `npx prisma generate`)
+- [ ] Migrate remaining Supabase services and remove legacy code
+- [ ] Remove Supabase environment variables and dependencies
+- [ ] Update all components to use centralized `Icons`
+- [ ] Refactor Auth0 flows and verify in dev/staging/production
+- [ ] Fix any remaining TypeScript errors (`npm run type-check`)
+
+## Migration Summary
+
+This guide now covers all migration efforts:
+
+- Authentication (Clerk → Auth0)
+- Database (Supabase → Prisma)
+- Icon Standardization
+- TypeScript fixes
+- Performance optimizations integration
+
+**Next Steps**: testing & verification, documentation updates, cleanup of legacy files.
+
 ## Authentication Migration: Clerk to Auth0
 
 VibeWell has migrated from Clerk to Auth0 for authentication. Here's what you need to know:
@@ -123,3 +153,6 @@ If you encounter issues during migration:
 5. Verify Auth0 configuration is correct
 
 For detailed information on API changes, refer to the API documentation. 
+
+---
+*Other MIGRATION-*.md variants have been consolidated into this guide and removed.*

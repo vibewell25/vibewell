@@ -12,8 +12,9 @@
 8. [Reviews and Ratings](#reviews-and-ratings)
 9. [Loyalty Program](#loyalty-program)
 10. [Mobile App Features](#mobile-app-features)
-11. [Troubleshooting](#troubleshooting)
-12. [Contact Support](#contact-support)
+11. [Security and Analytics](#security-and-analytics)
+12. [Troubleshooting](#troubleshooting)
+13. [Contact Support](#contact-support)
 
 ## Getting Started
 
@@ -432,89 +433,53 @@ Find services near you:
 4. Find current deals nearby
 5. Check wait times
 
-## Payments and Billing
+## Security and Analytics
 
-### Payment Methods
+### Security Features
 
-Manage your payment options:
+Our platform offers robust security to protect your account and data.
 
-1. Add payment methods:
-   - Credit/debit cards
-   - Digital wallets
-   - Bank transfers
-2. Set default payment method
-3. Enable auto-pay for subscriptions
-4. View payment history
+#### Two-Factor Authentication (2FA)
+Two-factor authentication adds an extra layer of security by requiring:
+1. Your password
+2. A time-based one-time password (TOTP) from an authenticator app (e.g., Google Authenticator, Authy)
 
-### Digital Wallet
+#### Setting Up 2FA
+1. Install an authenticator app and sign in to your Vibewell account.
+2. Navigate to **Profile > Security Settings** and click **Enable Two-Factor Authentication**.
+3. Scan the QR code with your app and enter the 6-digit code.
+4. Save the backup codes securely offline.
 
-Use Vibewell Wallet for convenience:
+#### Using Backup Codes
+On the 2FA prompt, click **Use backup code** and enter one of your saved codes.
 
-1. Add funds to your wallet
-2. Earn cashback rewards
-3. Pay for services instantly
-4. Transfer rewards points
-5. View transaction history
+#### Managing Trusted Devices
+View or remove trusted devices in **Profile > Security Settings**.
 
-### Subscriptions
+### Analytics Dashboard
+Track and analyze your activity with real-time metrics and custom reports.
 
-Manage your wellness subscriptions:
+#### Dashboard Features
+1. View key metrics: bookings, revenue, user engagement
+2. Create and export custom reports
+3. Set up alerts for trends and anomalies
+4. Analyze historical performance over time
 
-1. View active subscriptions
-2. Change subscription plans
-3. Pause or cancel subscriptions
-4. Set up auto-renewals
-5. Get subscription perks
+*Specialized user guide variants have been consolidated and removed.*
 
-## Security and Privacy
+## Troubleshooting
 
-### Account Security
+### Common Issues
 
-Keep your account safe:
+1. Forgotten password: Use the "Forgot Password" feature on the login screen.
+2. App crashes: Restart the app or check for updates.
+3. Payment issues: Contact our support team for assistance.
 
-1. Enable two-factor authentication
-2. Set up biometric login
-3. Review login history
-4. Manage connected devices
-5. Set up security questions
+### Reporting Issues
 
-### Data Privacy
-
-Control your data:
-
-1. Review privacy settings
-2. Manage data sharing
-3. Download your data
-4. Delete account data
-5. Review third-party access
-
-## Support and Help
-
-### Getting Help
-
-Multiple ways to get assistance:
-
-1. In-app chat support
-2. Email support
-3. Phone support
-4. Help center articles
-5. Community forums
-
-### Feedback and Suggestions
-
-Help us improve:
-
-1. Submit feedback
-2. Report issues
-3. Suggest features
-4. Participate in surveys
-5. Join beta testing
-
-## Updates and Changes
-
-This guide is regularly updated to reflect new features and changes. Last updated: March 2024.
-
-For the latest information, visit our [Help Center](https://help.vibewell.com).
+1. Go to "Profile" → "Send Feedback"
+2. Describe the issue and provide screenshots (if applicable)
+3. Our support team will respond promptly
 
 ## Contact Support
 

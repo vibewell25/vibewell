@@ -426,6 +426,18 @@ For more detailed information on the migration process, refer to:
 - When you need help migrating complex Supabase queries to Prisma
 - If you need to restore data from a Supabase backup
 
+## Redis Rate Limiting Troubleshooting
+
+- **Connection Issues**: verify Redis service status, network connectivity, configuration and authentication settings.
+- **Rate Limiting Not Working**: check RATE_LIMIT and REDIS_ENABLED env vars, inspect `vibewell:ratelimit:*` keys, review middleware config, and test with rapid curl requests.
+- **Performance Issues**: use `redis-cli info`, `redis-cli latency`, and `redis-cli info commandstats` to diagnose latency and CPU bottlenecks.
+- **Memory Issues**: inspect memory via `redis-cli info memory`, verify eviction policy and memory limits, and check for memory leaks.
+- **High 429 Responses**: adjust rate limit thresholds or clear old limit keys (`redis-cli keys "vibewell:ratelimit:*" | xargs redis-cli del`).
+- **Persistence & Data Loss**: verify AOF/RDB persistence settings and disk space; check appendonly and save directives.
+- **Monitoring & Alerts**: integrate Redis metrics in monitoring stack and configure alerts for key performance indicators.
+
+*Other troubleshooting variants have been consolidated into this guide and removed.*
+
 ## General Troubleshooting Steps
 
 1. **Check Logs**: Always check console logs, network requests, and server logs for specific error messages

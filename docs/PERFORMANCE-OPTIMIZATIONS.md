@@ -2,6 +2,47 @@
 
 This guide outlines performance improvements needed for the VibeWell application, focusing on 3D/AR components, bundle size reduction, and mobile optimization.
 
+## Optimization Plan
+
+- **Phase 1: Optimize 3D/AR Components**
+  - Implement OptimizedModelLoader
+  - Create model compression pipeline
+  - Properly use ARResourceMonitor in all AR components
+
+- **Phase 2: Reduce Bundle Size**
+  - Implement route-based code splitting
+  - Tree-shake Three.js
+  - Optimize webpack configuration
+
+- **Phase 3: Enhance Mobile Experience**
+  - Implement device capability detection
+  - Create adaptive components
+  - Increase touch target sizes for mobile
+
+- **Phase 4: Add Power-Aware Features**
+  - Implement battery-aware rendering
+  - Add power-saving mode for low battery
+
+- **Phase 5: Implement Progressive Loading**
+  - Create progressive loading system
+  - Implement resource hints
+  - Optimize critical rendering path
+
+## Monitoring & Metrics
+
+- **Core Web Vitals**: LCP < 2.5s, FID < 100ms, CLS < 0.1
+- **API**: p95 response time < 200ms, error rate < 0.1%
+- **AR Components**: Model load time < 3s, FPS ≥ 30
+- **Mobile**: JS execution time, bundle size, battery impact
+
+## Testing & Validation
+
+- **Real User Monitoring**: PerformanceObserver for Web Vitals
+- **Synthetic Monitoring**: Puppeteer + Lighthouse CI scripts
+- **Load Testing**: Autocannon for API endpoints
+- **AR Performance Tests**: ARPerformanceTest suite for model load & FPS
+- **API Performance**: perf_hooks middleware metrics
+
 ## 1. 3D/AR Component Optimization
 
 ### Current Issues
@@ -516,33 +557,7 @@ export function usePowerAwareRendering() {
 }
 ```
 
-## 4. Implementation Plan
-
-1. **Phase 1: Optimize 3D/AR Components**
-   - Implement OptimizedModelLoader
-   - Create model compression pipeline
-   - Properly use ARResourceMonitor in all AR components
-
-2. **Phase 2: Reduce Bundle Size**
-   - Implement route-based code splitting
-   - Tree-shake Three.js
-   - Optimize webpack configuration
-
-3. **Phase 3: Enhance Mobile Experience**
-   - Implement device capability detection
-   - Create adaptive components
-   - Increase touch target sizes for mobile
-
-4. **Phase 4: Add Power-Aware Features**
-   - Implement battery-aware rendering
-   - Add power-saving mode for low battery
-
-5. **Phase 5: Implement Progressive Loading**
-   - Create progressive loading system
-   - Implement resource hints
-   - Optimize critical rendering path
-
-## 5. Key Performance Metrics to Track
+## Key Performance Metrics to Track
 
 - First Contentful Paint (FCP): target under 1.8s
 - Largest Contentful Paint (LCP): target under 2.5s
@@ -551,4 +566,4 @@ export function usePowerAwareRendering() {
 - Time to Interactive (TTI): target under 3.5s
 - Frame rate in AR/3D experiences: target 30+ FPS on mobile, 60+ FPS on desktop
 - Battery usage: reduce current consumption by 30%
-- Bundle size: reduce by 40% through code splitting and tree-shaking 
+- Bundle size: reduce by 40% through code splitting and tree-shaking

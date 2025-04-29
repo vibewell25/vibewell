@@ -1,6 +1,7 @@
 import { render, RenderOptions } from '@testing-library/react';
 import { ReactElement } from 'react';
 import { axe, toHaveNoViolations } from 'jest-axe';
+import { RenderResult } from '@testing-library/react';
 
 // Extend Jest matchers
 expect.extend(toHaveNoViolations);
@@ -67,24 +68,31 @@ export const mockResizeObserver = () => {
   });
 };
 
-export const suppressConsoleErrors = () => {
-  const originalError = console.error;
-  beforeAll(() => {
-    console.error = (...args: any[]) => {
-      if (
-        typeof args[0] === 'string' &&
-        args[0].includes('Warning: ReactDOM.render is no longer supported')
-      ) {
-        return;
-      }
-      originalError.call(console, ...args);
-    };
-  });
+interface MockAPIOptions {
+  method?: string;
+  status?: number;
+  delay?: number;
+}
 
-  afterAll(() => {
-    console.error = originalError;
-  });
-};
+interface MockServiceOptions {
+  implementation: (...args: unknown[]) => unknown;
+  name: string;
+}
+
+type ErrorCallback = (message: string, ...args: unknown[]) => void;
+
+// Override console.error to prevent React error logging during tests
+const originalError = console.error;
+console.error = ((message: string, ...args: unknown[]) => {
+  if (
+    typeof message === 'string' &&
+    (message.includes('Warning: ReactDOM.render is no longer supported') ||
+      message.includes('Warning: React.createElement: type is invalid'))
+  ) {
+    return;
+  }
+  originalError(message, ...args);
+}) as ErrorCallback;
 
 // Setup all mocks
 export {};

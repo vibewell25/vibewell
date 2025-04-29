@@ -107,7 +107,7 @@
       "allowTypedFunctionExpressions": true,
       "allowHigherOrderFunctions": true
     }],
-    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-unsafe-assignment": "error",
     "@typescript-eslint/no-unsafe-call": "error",
     "@typescript-eslint/no-unsafe-member-access": "error",
@@ -117,7 +117,12 @@
       "allowBoolean": true,
       "allowNullish": true
     }],
-    "@typescript-eslint/strict-boolean-expressions": "error",
+    "@typescript-eslint/strict-boolean-expressions": ["error", {
+      "allowString": false,
+      "allowNumber": false,
+      "allowNullableObject": false,
+      "allowNullableBoolean": false
+    }],
     "@typescript-eslint/no-unused-vars": ["warn", {
       "argsIgnorePattern": "^_",
       "varsIgnorePattern": "^_",

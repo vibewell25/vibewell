@@ -1,6 +1,18 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, BookingStatus, Prisma } from '@prisma/client';
+import type { 
+  BusinessProfile, 
+  BeautyService, 
+  Booking, 
+  Payment,
+  Business,
+  PricingRule,
+  ServiceBooking,
+  ServiceReview
+} from '@prisma/client';
 import { NotificationService } from './notification-service';
 import { logger } from '@/lib/logger';
+import { Period } from '../types/analytics';
+import type { BusinessAnalyticsData, TrendData } from '../types/analytics';
 
 const prisma = new PrismaClient();
 
@@ -69,22 +81,6 @@ interface SelfServicePortalConfig {
   };
 }
 
-interface PricingRule {
-  serviceId: string;
-  basePrice: number;
-  peakMultiplier?: number;
-  offPeakDiscount?: number;
-  bulkDiscount?: {
-    minServices: number;
-    discountPercentage: number;
-  };
-  seasonalPricing?: {
-    startDate: Date;
-    endDate: Date;
-    multiplier: number;
-  }[];
-}
-
 interface VerificationDocument {
   type: 'BUSINESS_LICENSE' | 'INSURANCE' | 'CERTIFICATION';
   file: File;
@@ -118,34 +114,89 @@ export interface BusinessVerificationDTO {
   }>;
 }
 
+interface SeasonalPricing {
+  startDate: Date;
+  endDate: Date;
+  multiplier: number;
+  name: string;
+}
+
+interface BookingTrend {
+  period: string;
+  count: number;
+  change: number;
+}
+
+interface RevenueTrend {
+  period: string;
+  amount: number;
+  change: number;
+  currency: string;
+}
+
+interface TrendPoint {
+  timestamp: Date;
+  count: number;
+}
+
+interface AnalyticsData {
+  totalBookings: number;
+  totalRevenue: number;
+  averageRating: number;
+  popularServices: Array<{
+    serviceId: string;
+    name: string;
+    count: number;
+  }>;
+  bookingTrends: TrendPoint[];
+  revenueTrends: TrendPoint[];
+}
+
+interface BusinessProfileUpdateData {
+  name?: string;
+  description?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+  isActive?: boolean;
+}
+
+interface BookingWithRelations extends ServiceBooking {
+  payment: Payment | null;
+  review: ServiceReview | null;
+  service: BeautyService;
+}
+
+interface BeautyServiceWithBookings extends BeautyService {
+  bookings: ServiceBooking[];
+  _count?: {
+    bookings: number;
+  };
+}
+
 export class BusinessService {
   private notificationService: NotificationService;
+  private prisma: PrismaClient;
 
-  constructor(notificationService: NotificationService) {
-    this.notificationService = notificationService;
+  constructor() {
+    this.prisma = new PrismaClient();
+    this.notificationService = new NotificationService();
   }
 
   /**
    * Create a business profile
    */
-  async createBusinessProfile(data: CreateBusinessProfileDTO) {
+  async createBusinessProfile(data: Prisma.BusinessProfileCreateInput): Promise<BusinessProfile> {
     try {
-      const profile = await prisma.businessProfile.create({
-        data: {
-          userId: data.userId,
-          businessName: data.businessName,
-          description: data.description,
-          address: data.address,
-          phone: data.phone,
-          email: data.email,
-          website: data.website,
-        },
+      const profile = await this.prisma.businessProfile.create({
+        data
       });
 
-      logger.info('Created business profile', { profileId: profile.id });
+      logger.info(`Created business profile ${profile.id}`);
       return profile;
     } catch (error) {
-      logger.error('Error creating business profile:', error);
+      logger.error(`Error creating business profile: ${error instanceof Error ? error.message : String(error)}`);
       throw error;
     }
   }
@@ -153,104 +204,125 @@ export class BusinessService {
   /**
    * Update business profile
    */
-  async updateBusinessProfile(id: string, data: Partial<BusinessProfileData>) {
-    try {
-      const profile = await prisma.businessProfile.update({
-        where: { id },
-        data: {
-          ...data,
-          updatedAt: new Date(),
-        },
-      });
+  async updateBusinessProfile(
+    id: string, 
+    data: Partial<Omit<BusinessProfile, 'id' | 'createdAt' | 'updatedAt'>>
+  ): Promise<BusinessProfile> {
+    const updateData: Prisma.BusinessProfileUpdateInput = {
+      ...(data.name && { name: data.name }),
+      ...(data.description && { description: data.description }),
+      ...(data.address && { address: data.address }),
+      ...(data.phone && { phone: data.phone }),
+      ...(data.email && { email: data.email }),
+      ...(data.website && { website: data.website }),
+      ...(typeof data.isActive === 'boolean' && { isActive: data.isActive })
+    };
 
-      return profile;
-    } catch (error) {
-      logger.error('Error updating business profile', error);
-      throw error;
-    }
+    return this.prisma.businessProfile.update({
+      where: { id },
+      data: updateData
+    });
+  }
+
+  /**
+   * Delete business profile
+   */
+  async deleteBusinessProfile(id: string): Promise<BusinessProfile> {
+    return this.prisma.businessProfile.delete({
+      where: { id }
+    });
   }
 
   /**
    * Get business analytics
    */
-  async getBusinessAnalytics(
-    businessId: string,
-    startDate: Date,
-    endDate: Date,
-  ): Promise<BusinessAnalytics> {
+  async getBusinessAnalytics(businessId: string, period: { startDate: Date; endDate: Date }): Promise<AnalyticsData> {
     try {
-      const [bookings, reviews, revenue] = await Promise.all([
-        // Get booking analytics
-        prisma.serviceBooking.findMany({
-          where: {
-            business: { id: businessId },
-            startTime: {
-              gte: startDate,
-              lte: endDate,
-            },
-          },
-          include: {
-            services: true,
-            payment: true,
-          },
-        }),
-
-        // Get review analytics
-        prisma.serviceReview.findMany({
-          where: {
-            businessId,
-            createdAt: {
-              gte: startDate,
-              lte: endDate,
-            },
-          },
-        }),
-
-        // Get revenue analytics
-        prisma.payment.findMany({
-          where: {
-            booking: {
-              business: { id: businessId },
-            },
-            createdAt: {
-              gte: startDate,
-              lte: endDate,
-            },
-            status: 'COMPLETED',
-          },
-        }),
-      ]);
-
-      // Calculate metrics
-      const totalBookings = bookings.length;
-      const totalRevenue = revenue.reduce((sum, payment) => sum + payment.amount, 0);
-      const averageRating =
-        reviews.length > 0
-          ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
-          : 0;
-
-      // Calculate service popularity
-      const servicePopularity = bookings.reduce(
-        (acc, booking) => {
-          booking.services.forEach((service) => {
-            acc[service.serviceId] = (acc[service.serviceId] || 0) + 1;
-          });
-          return acc;
+      // Get bookings with their services and payments
+      const bookings = await this.prisma.serviceBooking.findMany({
+        where: {
+          providerId: businessId,
+          createdAt: {
+            gte: period.startDate,
+            lte: period.endDate
+          }
         },
-        {} as Record<string, number>,
+        include: {
+          service: true,
+          payment: true,
+          services: {
+            include: {
+              service: true
+            }
+          }
+        }
+      });
+
+      // Get reviews for the period
+      const reviews = await this.prisma.serviceReview.findMany({
+        where: {
+          businessId,
+          createdAt: {
+            gte: period.startDate,
+            lte: period.endDate
+          }
+        }
+      });
+
+      const totalBookings = bookings.length;
+      
+      // Calculate total revenue from completed payments
+      const totalRevenue = bookings.reduce((sum, booking) => 
+        sum + (booking.payment?.amount ?? 0), 0
       );
+      
+      // Calculate average rating from reviews
+      const ratings = reviews.map(review => review.rating);
+      const averageRating = ratings.length > 0 
+        ? ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length 
+        : 0;
+
+      // Get popular services by counting bookings per service
+      const serviceBookings = bookings.reduce<Record<string, { serviceId: string; name: string; count: number }>>(
+        (acc, booking) => {
+          const service = booking.service;
+          if (!service?.id || !service?.name) return acc;
+          
+          if (!acc[service.id]) {
+            acc[service.id] = {
+              serviceId: service.id,
+              name: service.name,
+              count: 0
+            };
+          }
+          acc[service.id].count++;
+          return acc;
+        }, 
+        {}
+      );
+
+      const popularServices = Object.values(serviceBookings)
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 5);
+
+      const bookingTrends: TrendPoint[] = [
+        { timestamp: period.startDate, count: totalBookings }
+      ];
+
+      const revenueTrends: TrendPoint[] = [
+        { timestamp: period.startDate, count: totalRevenue }
+      ];
 
       return {
         totalBookings,
         totalRevenue,
         averageRating,
-        servicePopularity,
-        recentReviews: reviews.slice(0, 5), // Last 5 reviews
-        bookingTrend: this.calculateBookingTrend(bookings),
-        revenueTrend: this.calculateRevenueTrend(revenue),
+        popularServices,
+        bookingTrends,
+        revenueTrends
       };
     } catch (error) {
-      logger.error('Error getting business analytics', error);
+      logger.error(`Failed to get business analytics: ${error instanceof Error ? error.message : String(error)}`);
       throw error;
     }
   }
@@ -281,31 +353,49 @@ export class BusinessService {
    * Get popular services
    */
   private async getPopularServices(businessId: string) {
-    const services = await prisma.booking.groupBy({
-      by: ['serviceId'],
+    const bookings = await this.prisma.serviceBooking.findMany({
       where: {
-        businessId,
+        providerId: businessId,
         createdAt: {
           gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // Last 30 days
         },
+        status: 'COMPLETED'
       },
-      _count: true,
-      orderBy: {
-        _count: {
-          serviceId: 'desc',
-        },
-      },
-      take: 5,
+      include: {
+        service: true
+      }
     });
 
-    return services;
+    // Group bookings by service and count them
+    const serviceBookings = bookings.reduce<Record<string, { serviceId: string; count: number; name: string }>>(
+      (acc, booking) => {
+        const service = booking.service;
+        if (!service?.id || !service?.name) return acc;
+        
+        const serviceId = service.id;
+        if (!acc[serviceId]) {
+          acc[serviceId] = {
+            serviceId,
+            count: 0,
+            name: service.name
+          };
+        }
+        acc[serviceId].count++;
+        return acc;
+      }, 
+      {}
+    );
+
+    return Object.values(serviceBookings)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
   }
 
   /**
    * Get peak hours
    */
   private async getPeakHours(businessId: string) {
-    const bookings = await prisma.booking.findMany({
+    const bookings = await this.prisma.booking.findMany({
       where: {
         businessId,
         createdAt: {
@@ -333,7 +423,7 @@ export class BusinessService {
    * Get customer retention
    */
   private async getCustomerRetention(businessId: string) {
-    const customers = await prisma.booking.groupBy({
+    const customers = await this.prisma.booking.groupBy({
       by: ['userId'],
       where: {
         businessId,
@@ -362,9 +452,37 @@ export class BusinessService {
   /**
    * Configure self-service portal
    */
-  async configureSelfServicePortal(businessId: string, config: SelfServicePortalConfig) {
+  async configureSelfServicePortal(businessId: string, config: SelfServicePortalConfig): Promise<BusinessProfile> {
     try {
-      const business = await prisma.businessProfile.findUnique({
+      const updatedProfile = await this.prisma.businessProfile.update({
+        where: { id: businessId },
+        data: {
+          config: config as unknown as Prisma.JsonValue
+        }
+      });
+
+      logger.info('Updated self-service portal config', { businessId });
+      return updatedProfile;
+    } catch (error) {
+      logger.error('Error configuring self-service portal:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Create default communication templates
+   */
+  async createDefaultTemplates(businessId: string) {
+    throw new Error('Method not implemented');
+  }
+
+  /**
+   * Get portal analytics
+   */
+  async getPortalAnalytics(businessId: string, startDate: Date, endDate: Date) {
+    throw new Error('Method not implemented');
+    try {
+      const business = await this.prisma.businessProfile.findUnique({
         where: { id: businessId },
       });
 
@@ -373,7 +491,7 @@ export class BusinessService {
       }
 
       // Update business profile with portal configuration
-      const updatedBusiness = await prisma.businessProfile.update({
+      const updatedBusiness = await this.prisma.businessProfile.update({
         where: { id: businessId },
         data: {
           selfServiceConfig: config,
@@ -414,7 +532,7 @@ export class BusinessService {
     ];
 
     for (const template of templates) {
-      await prisma.communicationTemplate.create({
+      await this.prisma.communicationTemplate.create({
         data: {
           businessId,
           ...template,
@@ -431,7 +549,7 @@ export class BusinessService {
   async getPortalAnalytics(businessId: string, startDate: Date, endDate: Date) {
     try {
       const [selfServiceBookings, totalBookings] = await Promise.all([
-        prisma.booking.count({
+        this.prisma.booking.count({
           where: {
             businessId,
             createdAt: {
@@ -441,7 +559,7 @@ export class BusinessService {
             isCreatedThroughPortal: true,
           },
         }),
-        prisma.booking.count({
+        this.prisma.booking.count({
           where: {
             businessId,
             createdAt: {
@@ -465,7 +583,7 @@ export class BusinessService {
 
   async updatePricingRules(businessId: string, rules: PricingRule[]): Promise<void> {
     try {
-      await prisma.$transaction(async (tx) => {
+      await this.prisma.$transaction(async (tx) => {
         // Delete existing pricing rules
         await tx.pricingRule.deleteMany({
           where: { businessId },
@@ -473,7 +591,7 @@ export class BusinessService {
 
         // Create new pricing rules
         for (const rule of rules) {
-          await tx.pricingRule.create({
+          await tx.prisma.pricingRule.create({
             data: {
               businessId,
               serviceId: rule.serviceId,
@@ -495,7 +613,7 @@ export class BusinessService {
 
   async calculatePrice(serviceId: string, date: Date, quantity: number = 1): Promise<number> {
     try {
-      const service = await prisma.beautyService.findUnique({
+      const service = await this.prisma.beautyService.findUnique({
         where: { id: serviceId },
         include: {
           business: {
@@ -568,7 +686,7 @@ export class BusinessService {
     try {
       const documents = await Promise.all(
         data.documents.map((doc) =>
-          prisma.businessDocument.create({
+          this.prisma.businessDocument.create({
             data: {
               businessId: data.businessId,
               type: doc.type,
@@ -595,14 +713,14 @@ export class BusinessService {
   async verifyBusiness(businessId: string, verifiedBy: string) {
     try {
       const [profile, documents] = await Promise.all([
-        prisma.businessProfile.update({
+        this.prisma.businessProfile.update({
           where: { id: businessId },
           data: {
             isVerified: true,
             verificationDate: new Date(),
           },
         }),
-        prisma.businessDocument.updateMany({
+        this.prisma.businessDocument.updateMany({
           where: { businessId },
           data: {
             status: 'VERIFIED',
@@ -627,7 +745,7 @@ export class BusinessService {
 
   async createCustomPricing(businessId: string, data: CustomPricingDTO) {
     try {
-      const pricing = await prisma.customPricing.create({
+      const pricing = await this.prisma.customPricing.create({
         data: {
           businessId,
           serviceId: data.serviceId,
@@ -649,7 +767,7 @@ export class BusinessService {
 
   async searchBusinesses(query: string, filters: Record<string, any> = {}) {
     try {
-      const businesses = await prisma.businessProfile.findMany({
+      const businesses = await this.prisma.businessProfile.findMany({
         where: {
           OR: [
             { businessName: { contains: query, mode: 'insensitive' } },
@@ -671,36 +789,24 @@ export class BusinessService {
     }
   }
 
-  private calculateBookingTrend(bookings: any[]) {
-    // Group bookings by day and calculate daily totals
-    const dailyBookings = bookings.reduce(
-      (acc, booking) => {
-        const date = booking.startTime.toISOString().split('T')[0];
-        acc[date] = (acc[date] || 0) + 1;
-        return acc;
-      },
-      {} as Record<string, number>,
-    );
-
-    return Object.entries(dailyBookings)
-      .sort(([dateA], [dateB]) => dateA.localeCompare(dateB))
-      .map(([date, count]) => ({ date, count }));
+  async getServicesByIds(serviceIds: string[]): Promise<BeautyService[]> {
+    return this.prisma.beautyService.findMany({
+      where: {
+        id: {
+          in: serviceIds
+        }
+      }
+    });
   }
 
-  private calculateRevenueTrend(payments: any[]) {
-    // Group payments by day and calculate daily totals
-    const dailyRevenue = payments.reduce(
-      (acc, payment) => {
-        const date = payment.createdAt.toISOString().split('T')[0];
-        acc[date] = (acc[date] || 0) + payment.amount;
-        return acc;
-      },
-      {} as Record<string, number>,
-    );
-
-    return Object.entries(dailyRevenue)
-      .sort(([dateA], [dateB]) => dateA.localeCompare(dateB))
-      .map(([date, amount]) => ({ date, amount }));
+  async getBusinessProfile(id: string): Promise<BusinessProfile | null> {
+    return this.prisma.businessProfile.findUnique({
+      where: { id },
+      include: {
+        services: true,
+        practitioners: true
+      }
+    });
   }
 }
 

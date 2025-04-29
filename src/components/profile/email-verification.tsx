@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/Card';
 import { Mail, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
+import { useSession } from 'next-auth/react';
 
 interface EmailVerificationProps {
   email: string;
@@ -20,18 +21,26 @@ export function EmailVerification({ email, onSuccess }: EmailVerificationProps) 
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { data: session } = useSession();
 
   const handleSendVerification = async () => {
     try {
       setSending(true);
       setError(null);
 
-      // Send verification email via Supabase Auth
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/verify-email`,
+      const response = await fetch('/api/auth/verify-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: session?.user?.id }),
       });
 
-      if (error) throw error;
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send verification email');
+      }
 
       setSent(true);
       toast({

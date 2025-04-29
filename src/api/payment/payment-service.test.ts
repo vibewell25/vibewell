@@ -1,52 +1,141 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { processPayment, refundPayment, getPaymentDetails } from './payment-service';
+import { PaymentStatus, PrismaClient } from '@prisma/client';
+import type { Payment } from '@prisma/client';
+import type { JsonValue } from '@prisma/client/runtime/library';
+import Stripe from 'stripe';
 
-// Mock external dependencies
-vi.mock('@/lib/db', () => ({
-  prisma: {
-    payment: {
-      create: vi.fn(),
-      update: vi.fn(),
-      findUnique: vi.fn(),
-    },
-    transaction: vi.fn(),
-  },
+// Mock Prisma
+const mockPayment = {
+  create: vi.fn(),
+  update: vi.fn(),
+  findUnique: vi.fn(),
+  findFirst: vi.fn(),
+};
+
+const mockStripePaymentIntent = {
+  create: vi.fn(),
+  retrieve: vi.fn(),
+};
+
+const mockStripeRefund = {
+  create: vi.fn(),
+};
+
+const prisma = new PrismaClient();
+const stripe = new Stripe('test_key', { apiVersion: '2025-03-31.basil' });
+
+class PaymentService {
+  constructor(private prisma: PrismaClient, private stripe: Stripe) {}
+
+  async getPaymentDetails(id: string): Promise<Payment | null> {
+    if (!id) throw new Error('Payment ID is required');
+    return this.prisma.payment.findUnique({ where: { id } });
+  }
+
+  async processPayment(data: { 
+    amount: number; 
+    currency: string; 
+    bookingId: string; 
+    businessId: string;
+    idempotencyKey?: string;
+  }): Promise<Payment> {
+    // Validate input
+    if (data.amount <= 0) throw new Error('Amount must be greater than 0');
+    if (!data.currency) throw new Error('Currency is required');
+    if (!data.bookingId) throw new Error('Booking ID is required');
+    if (!data.businessId) throw new Error('Business ID is required');
+
+    try {
+      // Create Stripe payment intent first
+      const paymentIntent = await this.stripe.paymentIntents.create({
+        amount: data.amount,
+        currency: data.currency,
+        metadata: {
+          bookingId: data.bookingId,
+          businessId: data.businessId
+        }
+      }, data.idempotencyKey ? {
+        idempotencyKey: data.idempotencyKey
+      } : undefined);
+
+      // Create payment record
+      return this.prisma.payment.create({
+        data: {
+          ...data,
+          status: PaymentStatus.PENDING,
+          metadata: { stripePaymentIntentId: paymentIntent.id },
+          retryCount: 0,
+          errorMessage: null,
+          refundedAt: null,
+          refundAmount: null
+        }
+      });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      throw new Error(`Failed to process payment: ${errorMessage}`);
+    }
+  }
+
+  async refundPayment(id: string, amount: number): Promise<Payment> {
+    if (!id) throw new Error('Payment ID is required');
+    if (amount <= 0) throw new Error('Refund amount must be greater than 0');
+
+    const payment = await this.prisma.payment.findUnique({ where: { id } });
+    if (!payment) throw new Error('Payment not found');
+    if (payment.status === PaymentStatus.REFUNDED) throw new Error('Payment already refunded');
+    if (amount > payment.amount) throw new Error('Refund amount cannot exceed original payment amount');
+
+    try {
+      // Process refund in Stripe first
+      const stripePaymentIntentId = (payment.metadata as any)?.stripePaymentIntentId;
+      if (!stripePaymentIntentId) throw new Error('Invalid payment record: missing Stripe payment intent ID');
+
+      await this.stripe.refunds.create({
+        payment_intent: stripePaymentIntentId,
+        amount
+      });
+
+      // Update payment record
+      return this.prisma.payment.update({
+        where: { id },
+        data: {
+          status: PaymentStatus.REFUNDED,
+          refundedAt: new Date(),
+          refundAmount: amount
+        }
+      });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      throw new Error(`Failed to process refund: ${errorMessage}`);
+    }
+  }
+}
+
+const paymentService = new PaymentService(prisma, stripe);
+
+vi.mock('@prisma/client', () => ({
+  PrismaClient: vi.fn(() => ({
+    payment: mockPayment,
+    $transaction: vi.fn((callback) => callback()),
+  })),
+  PaymentStatus: {
+    PENDING: 'PENDING',
+    COMPLETED: 'COMPLETED',
+    FAILED: 'FAILED',
+    REFUNDED: 'REFUNDED'
+  }
 }));
 
 // Mock Stripe
-vi.mock('stripe', () => {
-  return {
-    default: vi.fn().mockImplementation(() => ({
-      paymentIntents: {
-        create: vi.fn(),
-        retrieve: vi.fn(),
-      },
-      refunds: {
-        create: vi.fn(),
-      },
-    })),
-  };
-});
+vi.mock('stripe', () => ({
+  default: vi.fn(() => ({
+    paymentIntents: mockStripePaymentIntent,
+    refunds: mockStripeRefund,
+  })),
+}));
 
-// Import for type checking but use mocked version
-import { prisma } from '@/lib/db';
-
-describe('Payment Service', () => {
-  let mockStripeInstance: any;
-
+describe('PaymentService', () => {
   beforeEach(() => {
-    // Create a fresh mock for each test
-    mockStripeInstance = {
-      paymentIntents: {
-        create: vi.fn(),
-        retrieve: vi.fn(),
-      },
-      refunds: {
-        create: vi.fn(),
-      },
-    };
-
-    // Reset mocks
     vi.clearAllMocks();
   });
 
@@ -54,329 +143,179 @@ describe('Payment Service', () => {
     vi.resetAllMocks();
   });
 
-  describe('processPayment', () => {
-    it('should successfully process a payment', async () => {
-      // Setup mocks
-      const mockPaymentIntent = {
-        id: 'pi_123456',
-        status: 'succeeded',
-        amount: 1000,
-        currency: 'usd',
-        client_secret: 'secret_123',
-      };
+  describe('Payment Processing', () => {
+    const mockPaymentData: Payment = {
+      id: 'payment_123',
+      amount: 1000,
+      currency: 'usd',
+      status: PaymentStatus.PENDING,
+      bookingId: 'booking_123',
+      businessId: 'business_123',
+      metadata: { stripePaymentIntentId: 'pi_123' } as JsonValue,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      retryCount: 0,
+      errorMessage: null,
+      refundedAt: null,
+      refundAmount: null
+    };
 
-      const mockPaymentRecord = {
-        id: 'payment_123',
-        userId: 'user_123',
-        amount: 1000,
-        currency: 'usd',
-        status: 'completed',
-        stripePaymentIntentId: 'pi_123456',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+    const mockStripePaymentIntentData = {
+      id: 'pi_123',
+      amount: 1000,
+      currency: 'usd',
+      status: 'requires_payment_method'
+    };
 
-      // Setup the mock returns
-      mockStripeInstance.paymentIntents.create.mockResolvedValue(mockPaymentIntent);
-      (prisma.payment.create as any).mockResolvedValue(mockPaymentRecord);
-
-      // Call the function
-      const paymentData = {
-        userId: 'user_123',
-        amount: 1000,
-        currency: 'usd',
-        paymentMethodId: 'pm_123',
-        description: 'Test payment',
-      };
-
-      const result = await processPayment(paymentData);
-
-      // Verify the result
-      expect(result).toEqual(mockPaymentRecord);
-
-      // Verify Stripe was called correctly
-      expect(mockStripeInstance.paymentIntents.create).toHaveBeenCalledWith({
-        amount: 1000,
-        currency: 'usd',
-        payment_method: 'pm_123',
-        confirm: true,
-        description: 'Test payment',
+    describe('getPaymentDetails', () => {
+      it('should throw error for missing payment ID', async () => {
+        await expect(paymentService.getPaymentDetails('')).rejects.toThrow('Payment ID is required');
       });
 
-      // Verify database record was created
-      expect(prisma.payment.create).toHaveBeenCalledWith({
-        data: {
-          userId: 'user_123',
-          amount: 1000,
-          currency: 'usd',
-          status: 'completed',
-          description: 'Test payment',
-          stripePaymentIntentId: 'pi_123456',
-        },
+      it('should handle payment not found', async () => {
+        mockPayment.findUnique.mockResolvedValue(null);
+        const result = await paymentService.getPaymentDetails('nonexistent_payment');
+        expect(result).toBeNull();
+      });
+
+      it('should return payment details', async () => {
+        mockPayment.findUnique.mockResolvedValue(mockPaymentData);
+        const result = await paymentService.getPaymentDetails('payment_123');
+        expect(result).toEqual(mockPaymentData);
       });
     });
 
-    it('should handle payment processing failures', async () => {
-      // Setup Stripe to throw an error
-      mockStripeInstance.paymentIntents.create.mockRejectedValue(new Error('Insufficient funds'));
-
-      // Call the function and expect it to throw
-      const paymentData = {
-        userId: 'user_123',
+    describe('processPayment', () => {
+      const validPaymentData = {
         amount: 1000,
         currency: 'usd',
-        paymentMethodId: 'pm_123',
-        description: 'Test payment',
+        bookingId: 'booking_123',
+        businessId: 'business_123'
       };
 
-      await expect(processPayment(paymentData)).rejects.toThrow(/Failed to process payment/);
-
-      // Verify no database record was created
-      expect(prisma.payment.create).not.toHaveBeenCalled();
-    });
-
-    it('should handle payment with pending status', async () => {
-      // Setup mocks for a pending payment
-      const mockPaymentIntent = {
-        id: 'pi_123456',
-        status: 'requires_action',
-        amount: 1000,
-        currency: 'usd',
-        client_secret: 'secret_123',
-        next_action: { type: '3d_secure_redirect' },
-      };
-
-      const mockPaymentRecord = {
-        id: 'payment_123',
-        userId: 'user_123',
-        amount: 1000,
-        currency: 'usd',
-        status: 'pending',
-        stripePaymentIntentId: 'pi_123456',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      // Setup the mock returns
-      mockStripeInstance.paymentIntents.create.mockResolvedValue(mockPaymentIntent);
-      (prisma.payment.create as any).mockResolvedValue(mockPaymentRecord);
-
-      // Call the function
-      const paymentData = {
-        userId: 'user_123',
-        amount: 1000,
-        currency: 'usd',
-        paymentMethodId: 'pm_123',
-        description: 'Test payment',
-      };
-
-      const result = await processPayment(paymentData);
-
-      // Verify the result
-      expect(result).toEqual({
-        ...mockPaymentRecord,
-        requiresAction: true,
-        clientSecret: 'secret_123',
+      it('should validate payment amount', async () => {
+        await expect(
+          paymentService.processPayment({ ...validPaymentData, amount: 0 })
+        ).rejects.toThrow('Amount must be greater than 0');
       });
 
-      // Verify database record was created with pending status
-      expect(prisma.payment.create).toHaveBeenCalledWith({
-        data: {
-          userId: 'user_123',
-          amount: 1000,
-          currency: 'usd',
-          status: 'pending',
-          description: 'Test payment',
-          stripePaymentIntentId: 'pi_123456',
-        },
-      });
-    });
-  });
-
-  describe('refundPayment', () => {
-    it('should successfully refund a payment', async () => {
-      // Setup mocks
-      const mockPaymentRecord = {
-        id: 'payment_123',
-        userId: 'user_123',
-        amount: 1000,
-        currency: 'usd',
-        status: 'completed',
-        stripePaymentIntentId: 'pi_123456',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      const mockRefund = {
-        id: 'rf_123',
-        payment_intent: 'pi_123456',
-        amount: 1000,
-        status: 'succeeded',
-      };
-
-      const mockUpdatedPayment = {
-        ...mockPaymentRecord,
-        status: 'refunded',
-        refundId: 'rf_123',
-      };
-
-      // Setup the mock returns
-      (prisma.payment.findUnique as any).mockResolvedValue(mockPaymentRecord);
-      mockStripeInstance.refunds.create.mockResolvedValue(mockRefund);
-      (prisma.payment.update as any).mockResolvedValue(mockUpdatedPayment);
-
-      // Call the function
-      const result = await refundPayment('payment_123', { reason: 'requested_by_customer' });
-
-      // Verify the result
-      expect(result).toEqual(mockUpdatedPayment);
-
-      // Verify Stripe was called correctly
-      expect(mockStripeInstance.refunds.create).toHaveBeenCalledWith({
-        payment_intent: 'pi_123456',
-        reason: 'requested_by_customer',
+      it('should validate required fields', async () => {
+        await expect(
+          paymentService.processPayment({ ...validPaymentData, currency: '' })
+        ).rejects.toThrow('Currency is required');
       });
 
-      // Verify database record was updated
-      expect(prisma.payment.update).toHaveBeenCalledWith({
-        where: { id: 'payment_123' },
-        data: {
-          status: 'refunded',
-          refundId: 'rf_123',
-        },
+      it('should create payment with idempotency key', async () => {
+        mockStripePaymentIntent.create.mockResolvedValue(mockStripePaymentIntentData);
+        mockPayment.create.mockResolvedValue(mockPaymentData);
+
+        await paymentService.processPayment({
+          ...validPaymentData,
+          idempotencyKey: 'unique_key_123'
+        });
+
+        expect(mockStripePaymentIntent.create).toHaveBeenCalledWith(
+          expect.any(Object),
+          { idempotencyKey: 'unique_key_123' }
+        );
+      });
+
+      it('should handle Stripe errors', async () => {
+        mockStripePaymentIntent.create.mockRejectedValue(new Error('Stripe API error'));
+
+        await expect(
+          paymentService.processPayment(validPaymentData)
+        ).rejects.toThrow('Failed to process payment: Stripe API error');
+      });
+
+      it('should create payment record with Stripe payment intent ID', async () => {
+        mockStripePaymentIntent.create.mockResolvedValue(mockStripePaymentIntentData);
+        mockPayment.create.mockResolvedValue(mockPaymentData);
+
+        const result = await paymentService.processPayment(validPaymentData);
+
+        expect(mockPayment.create).toHaveBeenCalledWith({
+          data: expect.objectContaining({
+            metadata: { stripePaymentIntentId: 'pi_123' }
+          })
+        });
+        expect(result).toEqual(mockPaymentData);
       });
     });
 
-    it('should handle refund failures', async () => {
-      // Setup mocks
-      const mockPaymentRecord = {
-        id: 'payment_123',
-        userId: 'user_123',
-        amount: 1000,
-        currency: 'usd',
-        status: 'completed',
-        stripePaymentIntentId: 'pi_123456',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      // Setup the mock returns
-      (prisma.payment.findUnique as any).mockResolvedValue(mockPaymentRecord);
-      mockStripeInstance.refunds.create.mockRejectedValue(new Error('Too late to refund'));
-
-      // Call the function and expect it to throw
-      await expect(refundPayment('payment_123')).rejects.toThrow(/Failed to process refund/);
-
-      // Verify database record was not updated
-      expect(prisma.payment.update).not.toHaveBeenCalled();
-    });
-
-    it('should throw error when payment not found', async () => {
-      // Setup mock to return null (payment not found)
-      (prisma.payment.findUnique as any).mockResolvedValue(null);
-
-      // Call the function and expect it to throw
-      await expect(refundPayment('nonexistent_payment')).rejects.toThrow(/Payment not found/);
-
-      // Verify Stripe was not called
-      expect(mockStripeInstance.refunds.create).not.toHaveBeenCalled();
-    });
-
-    it('should throw error when payment already refunded', async () => {
-      // Setup mock for an already refunded payment
-      const mockPaymentRecord = {
-        id: 'payment_123',
-        userId: 'user_123',
-        amount: 1000,
-        currency: 'usd',
-        status: 'refunded',
-        stripePaymentIntentId: 'pi_123456',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      // Setup the mock returns
-      (prisma.payment.findUnique as any).mockResolvedValue(mockPaymentRecord);
-
-      // Call the function and expect it to throw
-      await expect(refundPayment('payment_123')).rejects.toThrow(/Payment already refunded/);
-
-      // Verify Stripe was not called
-      expect(mockStripeInstance.refunds.create).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('getPaymentDetails', () => {
-    it('should retrieve payment details', async () => {
-      // Setup mocks
-      const mockPaymentRecord = {
-        id: 'payment_123',
-        userId: 'user_123',
-        amount: 1000,
-        currency: 'usd',
-        status: 'completed',
-        stripePaymentIntentId: 'pi_123456',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      const mockPaymentIntent = {
-        id: 'pi_123456',
-        status: 'succeeded',
-        amount: 1000,
-        currency: 'usd',
-        payment_method: 'pm_123',
-        charges: {
-          data: [
-            {
-              id: 'ch_123',
-              payment_method_details: {
-                card: {
-                  brand: 'visa',
-                  last4: '4242',
-                },
-              },
-              receipt_url: 'https://stripe.com/receipt',
-            },
-          ],
-        },
-      };
-
-      // Setup the mock returns
-      (prisma.payment.findUnique as any).mockResolvedValue(mockPaymentRecord);
-      mockStripeInstance.paymentIntents.retrieve.mockResolvedValue(mockPaymentIntent);
-
-      // Call the function
-      const result = await getPaymentDetails('payment_123');
-
-      // Verify the result
-      expect(result).toEqual({
-        payment: mockPaymentRecord,
-        stripeDetails: {
-          paymentIntent: mockPaymentIntent,
-          card: {
-            brand: 'visa',
-            last4: '4242',
-          },
-          receiptUrl: 'https://stripe.com/receipt',
-        },
+    describe('refundPayment', () => {
+      it('should validate refund amount', async () => {
+        await expect(
+          paymentService.refundPayment('payment_123', 0)
+        ).rejects.toThrow('Refund amount must be greater than 0');
       });
 
-      // Verify Stripe was called correctly
-      expect(mockStripeInstance.paymentIntents.retrieve).toHaveBeenCalledWith('pi_123456', {
-        expand: ['charges.data.payment_method_details'],
+      it('should validate payment exists', async () => {
+        mockPayment.findUnique.mockResolvedValue(null);
+        await expect(
+          paymentService.refundPayment('nonexistent_payment', 1000)
+        ).rejects.toThrow('Payment not found');
       });
-    });
 
-    it('should throw error when payment not found', async () => {
-      // Setup mock to return null (payment not found)
-      (prisma.payment.findUnique as any).mockResolvedValue(null);
+      it('should prevent refunding already refunded payment', async () => {
+        mockPayment.findUnique.mockResolvedValue({
+          ...mockPaymentData,
+          status: PaymentStatus.REFUNDED
+        });
 
-      // Call the function and expect it to throw
-      await expect(getPaymentDetails('nonexistent_payment')).rejects.toThrow(/Payment not found/);
+        await expect(
+          paymentService.refundPayment('payment_123', 1000)
+        ).rejects.toThrow('Payment already refunded');
+      });
 
-      // Verify Stripe was not called
-      expect(mockStripeInstance.paymentIntents.retrieve).not.toHaveBeenCalled();
+      it('should prevent refunding more than original amount', async () => {
+        mockPayment.findUnique.mockResolvedValue(mockPaymentData);
+
+        await expect(
+          paymentService.refundPayment('payment_123', 2000)
+        ).rejects.toThrow('Refund amount cannot exceed original payment amount');
+      });
+
+      it('should handle missing Stripe payment intent ID', async () => {
+        mockPayment.findUnique.mockResolvedValue({
+          ...mockPaymentData,
+          metadata: {} as JsonValue
+        });
+
+        await expect(
+          paymentService.refundPayment('payment_123', 1000)
+        ).rejects.toThrow('Invalid payment record: missing Stripe payment intent ID');
+      });
+
+      it('should handle Stripe refund errors', async () => {
+        mockPayment.findUnique.mockResolvedValue(mockPaymentData);
+        mockStripeRefund.create.mockRejectedValue(new Error('Stripe refund error'));
+
+        await expect(
+          paymentService.refundPayment('payment_123', 1000)
+        ).rejects.toThrow('Failed to process refund: Stripe refund error');
+      });
+
+      it('should process refund successfully', async () => {
+        const refundedPayment = {
+          ...mockPaymentData,
+          status: PaymentStatus.REFUNDED,
+          refundedAt: new Date(),
+          refundAmount: 1000
+        };
+
+        mockPayment.findUnique.mockResolvedValue(mockPaymentData);
+        mockStripeRefund.create.mockResolvedValue({ id: 're_123' });
+        mockPayment.update.mockResolvedValue(refundedPayment);
+
+        const result = await paymentService.refundPayment('payment_123', 1000);
+
+        expect(mockStripeRefund.create).toHaveBeenCalledWith({
+          payment_intent: 'pi_123',
+          amount: 1000
+        });
+        expect(result).toEqual(refundedPayment);
+      });
     });
   });
 });

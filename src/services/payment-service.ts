@@ -1,11 +1,13 @@
-import { PrismaClient, PaymentStatus } from '@prisma/client';
-import Stripe from 'stripe';
-import { NotificationService } from './notification-service';
+import { PrismaClient, PaymentStatus, Prisma, NotificationType } from '@prisma/client';
+import type { Booking, Payment, User, Service, BookingService } from '@prisma/client';
+import { Stripe } from 'stripe';
+import { createHash } from 'crypto';
 import { logger } from '@/lib/logger';
+import { NotificationService } from './notification-service';
+import { env } from '@/config/env';
 
-const prisma = new PrismaClient();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
+  apiVersion: env.STRIPE_API_VERSION as Stripe.LatestApiVersion
 });
 
 interface CreatePaymentIntentDTO {
@@ -19,122 +21,201 @@ interface ProcessRefundDTO {
   amount: number;
 }
 
-interface ProcessDepositDTO {
-  bookingId: string;
-  amount: number;
-  currency: string;
-  isRefundable: boolean;
-  validUntil?: Date;
-}
-
 interface PaymentIntent {
   bookingId: string;
-  amount: number;
-  currency: string;
   customerId?: string;
+  currency: string;
 }
 
 interface RefundParams {
   paymentId: string;
   amount: number;
   reason?: string;
+  idempotencyKey?: string;
 }
+
+interface PaymentAnalytics {
+  totalAmount: number;
+  currency: string;
+  count: number;
+  averageAmount: number;
+  successRate: number;
+}
+
+interface PaymentsByPeriod {
+  daily: PaymentAnalytics[];
+  weekly: PaymentAnalytics[];
+  monthly: PaymentAnalytics[];
+}
+
+interface CurrencyGroup {
+  currency: string;
+  payments: Payment[];
+  total: number;
+  count: number;
+}
+
+type BookingWithDetails = Prisma.BookingGetPayload<{
+  include: {
+    bookingServices: {
+      include: {
+        service: true;
+      };
+    };
+    user: true;
+  };
+}>;
 
 export class PaymentService {
   private notificationService: NotificationService;
+  private readonly prisma: PrismaClient;
+  private readonly stripe: Stripe;
 
-  constructor() {
-    this.notificationService = new NotificationService();
+  constructor(prisma: PrismaClient, stripe: Stripe, notificationService: NotificationService) {
+    this.prisma = prisma;
+    this.stripe = stripe;
+    this.notificationService = notificationService;
+  }
+
+  private generateIdempotencyKey(data: Record<string, unknown>): string {
+    const stringified = JSON.stringify(data);
+    return createHash('sha256').update(stringified).digest('hex');
+  }
+
+  private async findExistingPayment(idempotencyKey: string): Promise<Payment | null> {
+    return await this.prisma.payment.findFirst({
+      where: {
+        metadata: {
+          path: ['idempotencyKey'],
+          equals: idempotencyKey
+        }
+      }
+    });
   }
 
   /**
-   * Create a payment intent
+   * Create a payment intent with idempotency
    */
   async createPaymentIntent(params: PaymentIntent) {
+    const idempotencyKey = createHash('sha256')
+      .update(`${params.bookingId}_${Date.now()}`)
+      .digest('hex');
+
     try {
-      const booking = await prisma.serviceBooking.findUnique({
+      const booking = await this.prisma.booking.findUnique({
         where: { id: params.bookingId },
         include: {
-          services: true,
+          bookingServices: {
+            include: {
+              service: true
+            }
+          },
           user: true,
         },
-      });
+      }) as BookingWithDetails | null;
 
       if (!booking) {
         throw new Error('Booking not found');
       }
 
-      // Calculate total amount from all services
-      const totalAmount = booking.services.reduce((sum, service) => sum + service.price, 0);
+      const totalAmount = booking.bookingServices.reduce((sum, bs) => 
+        sum + bs.service.price, 0);
 
-      // Create or retrieve Stripe customer
       let customerId = params.customerId;
-      if (!customerId) {
-        const customer = await stripe.customers.create({
-          email: booking.user.email || undefined,
+      if (!customerId && booking.user?.email) {
+        const customer = await this.stripe.customers.create({
+          email: booking.user.email,
           metadata: {
-            userId: booking.userId,
+            userId: booking.user.id,
           },
+        }, {
+          idempotencyKey: `customer_${booking.user.id}_${idempotencyKey}`
         });
         customerId = customer.id;
 
-        // Save customer ID for future use
-        await prisma.user.update({
-          where: { id: booking.userId },
-          data: { stripeCustomerId: customerId },
+        await this.prisma.user.update({
+          where: { id: booking.user.id },
+          data: { stripeCustomerId: customer.id },
         });
       }
 
-      // Create payment intent
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(totalAmount * 100), // Convert to cents
+      const paymentIntentParams: Stripe.PaymentIntentCreateParams = {
+        amount: Math.round(totalAmount * 100),
         currency: params.currency.toLowerCase(),
-        customer: customerId,
+        ...(customerId && { customer: customerId }),
         metadata: {
           bookingId: booking.id,
-          userId: booking.userId,
+          userId: booking.user.id,
+          idempotencyKey
         },
         automatic_payment_methods: {
           enabled: true,
         },
-      });
+      };
 
-      // Create payment record
-      await prisma.payment.create({
+      const paymentIntent = await this.stripe.paymentIntents.create(
+        paymentIntentParams,
+        { idempotencyKey }
+      );
+
+      const payment = await this.prisma.payment.create({
         data: {
           id: paymentIntent.id,
           amount: totalAmount,
           currency: params.currency,
           status: PaymentStatus.PENDING,
+          booking: { connect: { id: booking.id } },
+          business: { connect: { id: booking.businessId } },
+          metadata: paymentIntent.metadata as Prisma.JsonObject
+        }
+      });
+
+      await this.notificationService.create({
+        type: NotificationType.PAYMENT_PENDING,
+        userId: booking.user.id,
+        data: {
+          paymentId: payment.id,
           bookingId: booking.id,
-          userId: booking.userId,
-          stripePaymentIntentId: paymentIntent.id,
-        },
+          amount: totalAmount
+        }
       });
 
       return paymentIntent;
     } catch (error) {
-      logger.error('Error creating payment intent:', error);
+      logger.error('Error creating payment intent:', error instanceof Error ? error.message : String(error));
       throw error;
     }
   }
 
   /**
-   * Process payment
+   * Process payment with idempotency
    */
   async processPayment(paymentIntentId: string) {
+    const idempotencyKey = this.generateIdempotencyKey({
+      type: 'process_payment',
+      paymentIntentId,
+      timestamp: new Date().toISOString()
+    });
+
     try {
+      // Check for existing processed payment
+      const existingPayment = await this.findExistingPayment(idempotencyKey);
+      if (existingPayment && existingPayment.status !== PaymentStatus.PENDING) {
+        logger.info(`Payment already processed for idempotency key: ${idempotencyKey}`);
+        return existingPayment;
+      }
+
       // Get payment intent from Stripe
-      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+      const paymentIntent = await this.stripe.paymentIntents.retrieve(paymentIntentId);
 
       // Get payment record
-      const payment = await prisma.payment.findFirst({
+      const payment = await this.prisma.payment.findFirst({
         where: { stripeId: paymentIntentId },
         include: {
           booking: {
             include: {
               user: true,
-              service: true,
+              services: true,
             },
           },
         },
@@ -145,18 +226,22 @@ export class PaymentService {
       }
 
       // Update payment status
-      const updatedPayment = await prisma.payment.update({
+      const updatedPayment = await this.prisma.payment.update({
         where: { id: payment.id },
         data: {
-          status:
-            paymentIntent.status === 'succeeded' ? PaymentStatus.COMPLETED : PaymentStatus.FAILED,
+          status: paymentIntent.status === 'succeeded' ? PaymentStatus.COMPLETED : PaymentStatus.FAILED,
           updatedAt: new Date(),
+          metadata: {
+            ...(payment.metadata as Record<string, unknown>),
+            idempotencyKey,
+            processedAt: new Date().toISOString()
+          }
         },
         include: {
           booking: {
             include: {
               user: true,
-              service: true,
+              services: true,
             },
           },
         },
@@ -167,29 +252,47 @@ export class PaymentService {
         await this.notificationService.notifyUser(payment.booking.userId, {
           type: 'PAYMENT',
           title: 'Payment Successful',
-          message: `Payment for ${payment.booking.service.name} has been processed successfully`,
+          message: `Payment for ${payment.booking.services[0]?.name || 'service'} has been processed successfully`,
         });
       } else {
         await this.notificationService.notifyUser(payment.booking.userId, {
           type: 'PAYMENT',
           title: 'Payment Failed',
-          message: `Payment for ${payment.booking.service.name} has failed. Please try again.`,
+          message: `Payment for ${payment.booking.services[0]?.name || 'service'} has failed. Please try again.`,
         });
       }
 
       return updatedPayment;
     } catch (error) {
-      logger.error('Error processing payment', error);
+      logger.error('Error processing payment:', error);
       throw error;
     }
   }
 
   /**
-   * Process refund
+   * Process refund with idempotency
    */
   async processRefund(params: RefundParams) {
+    const idempotencyKey = params.idempotencyKey || this.generateIdempotencyKey({
+      type: 'refund',
+      paymentId: params.paymentId,
+      amount: params.amount,
+      timestamp: new Date().toISOString()
+    });
+
     try {
-      const payment = await prisma.payment.findUnique({
+      // Check for existing refund
+      const existingPayment = await this.findExistingPayment(idempotencyKey);
+      if (existingPayment && existingPayment.status === PaymentStatus.REFUNDED) {
+        logger.info(`Refund already processed for idempotency key: ${idempotencyKey}`);
+        return {
+          id: existingPayment.refundId!,
+          amount: existingPayment.refundAmount!,
+          status: 'succeeded'
+        };
+      }
+
+      const payment = await this.prisma.payment.findUnique({
         where: { id: params.paymentId },
         include: {
           booking: {
@@ -208,26 +311,36 @@ export class PaymentService {
         throw new Error('Payment cannot be refunded - invalid status');
       }
 
-      // Create refund in Stripe
-      const refund = await stripe.refunds.create({
-        payment_intent: payment.stripePaymentIntentId,
+      // Create refund in Stripe with idempotency
+      const refund = await this.stripe.refunds.create({
+        payment_intent: payment.stripeId,
         amount: Math.round(params.amount * 100), // Convert to cents
         reason: (params.reason as Stripe.RefundCreateParams.Reason) || 'requested_by_customer',
+        metadata: {
+          idempotencyKey
+        }
+      }, {
+        idempotencyKey
       });
 
       // Update payment record
-      await prisma.payment.update({
+      await this.prisma.payment.update({
         where: { id: payment.id },
         data: {
           status: PaymentStatus.REFUNDED,
           refundId: refund.id,
           refundAmount: params.amount,
           refundReason: params.reason,
+          metadata: {
+            ...payment.metadata,
+            idempotencyKey,
+            refundedAt: new Date().toISOString()
+          }
         },
       });
 
       // Update booking status
-      await prisma.serviceBooking.update({
+      await this.prisma.serviceBooking.update({
         where: { id: payment.bookingId },
         data: {
           status: 'CANCELLED',
@@ -246,7 +359,7 @@ export class PaymentService {
    */
   async getPaymentHistory(userId: string) {
     try {
-      return await prisma.payment.findMany({
+      return await this.prisma.payment.findMany({
         where: {
           booking: {
             userId,
@@ -274,7 +387,7 @@ export class PaymentService {
    */
   async getPaymentStatistics(userId: string, startDate: Date, endDate: Date) {
     try {
-      const payments = await prisma.payment.findMany({
+      const payments = await this.prisma.payment.findMany({
         where: {
           booking: {
             userId,
@@ -304,12 +417,31 @@ export class PaymentService {
   }
 
   /**
-   * Process deposit payment
+   * Process deposit payment with idempotency
    */
   async processDeposit(data: ProcessDepositDTO) {
+    const idempotencyKey = data.idempotencyKey || this.generateIdempotencyKey({
+      type: 'deposit',
+      bookingId: data.bookingId,
+      amount: data.amount,
+      currency: data.currency,
+      timestamp: new Date().toISOString()
+    });
+
     try {
+      // Check for existing deposit
+      const existingPayment = await this.findExistingPayment(idempotencyKey);
+      if (existingPayment) {
+        logger.info(`Deposit already processed for idempotency key: ${idempotencyKey}`);
+        return {
+          depositId: existingPayment.id,
+          clientSecret: await this.stripe.paymentIntents.retrieve(existingPayment.stripeId).then(pi => pi.client_secret),
+          validUntil: existingPayment.validUntil
+        };
+      }
+
       // Get booking details
-      const booking = await prisma.booking.findUnique({
+      const booking = await this.prisma.booking.findUnique({
         where: { id: data.bookingId },
         include: {
           user: true,
@@ -321,8 +453,8 @@ export class PaymentService {
         throw new Error('Booking not found');
       }
 
-      // Create Stripe payment intent for deposit
-      const paymentIntent = await stripe.paymentIntents.create({
+      // Create Stripe payment intent for deposit with idempotency
+      const paymentIntent = await this.stripe.paymentIntents.create({
         amount: Math.round(data.amount * 100), // Convert to cents
         currency: data.currency,
         customer: booking.user.stripeCustomerId,
@@ -332,12 +464,15 @@ export class PaymentService {
           userId: booking.userId,
           isDeposit: 'true',
           isRefundable: data.isRefundable.toString(),
+          idempotencyKey
         },
         capture_method: 'manual', // This allows us to authorize now and capture later
+      }, {
+        idempotencyKey
       });
 
       // Create deposit record
-      const deposit = await prisma.payment.create({
+      const deposit = await this.prisma.payment.create({
         data: {
           bookingId: booking.id,
           amount: data.amount,
@@ -348,6 +483,9 @@ export class PaymentService {
           isRefundable: data.isRefundable,
           validUntil: data.validUntil || new Date(Date.now() + 24 * 60 * 60 * 1000), // Default 24 hours
           businessId: booking.businessId,
+          metadata: {
+            idempotencyKey
+          }
         },
       });
 
@@ -364,7 +502,7 @@ export class PaymentService {
         validUntil: deposit.validUntil,
       };
     } catch (error) {
-      logger.error('Error processing deposit', error);
+      logger.error('Error processing deposit:', error);
       throw error;
     }
   }
@@ -374,7 +512,7 @@ export class PaymentService {
    */
   async applyDepositToPayment(depositId: string, finalPaymentId: string) {
     try {
-      const deposit = await prisma.payment.findUnique({
+      const deposit = await this.prisma.payment.findUnique({
         where: { id: depositId },
         include: {
           booking: true,
@@ -385,7 +523,7 @@ export class PaymentService {
         throw new Error('Deposit not found');
       }
 
-      const finalPayment = await prisma.payment.findUnique({
+      const finalPayment = await this.prisma.payment.findUnique({
         where: { id: finalPaymentId },
       });
 
@@ -394,7 +532,7 @@ export class PaymentService {
       }
 
       // Update final payment amount
-      await prisma.payment.update({
+      await this.prisma.payment.update({
         where: { id: finalPaymentId },
         data: {
           amount: finalPayment.amount - deposit.amount,
@@ -403,7 +541,7 @@ export class PaymentService {
       });
 
       // Mark deposit as applied
-      await prisma.payment.update({
+      await this.prisma.payment.update({
         where: { id: depositId },
         data: {
           status: PaymentStatus.COMPLETED,
@@ -433,7 +571,7 @@ export class PaymentService {
    */
   async refundDeposit(depositId: string, reason?: string) {
     try {
-      const deposit = await prisma.payment.findUnique({
+      const deposit = await this.prisma.payment.findUnique({
         where: { id: depositId },
         include: {
           booking: {
@@ -458,13 +596,13 @@ export class PaymentService {
       }
 
       // Process refund through Stripe
-      const refund = await stripe.refunds.create({
+      const refund = await this.stripe.refunds.create({
         payment_intent: deposit.stripeId,
         amount: Math.round(deposit.amount * 100), // Convert to cents
       });
 
       // Update deposit status
-      const updatedDeposit = await prisma.payment.update({
+      const updatedDeposit = await this.prisma.payment.update({
         where: { id: depositId },
         data: {
           status: PaymentStatus.REFUNDED,
@@ -491,7 +629,7 @@ export class PaymentService {
 
   async getPaymentAnalytics(startDate: Date, endDate: Date) {
     try {
-      const payments = await prisma.payment.findMany({
+      const payments = await this.prisma.payment.findMany({
         where: {
           createdAt: {
             gte: startDate,
@@ -529,7 +667,7 @@ export class PaymentService {
 
       const refundedPayments = payments.filter((p) => p.status === PaymentStatus.REFUNDED).length;
 
-      const revenueByService = await prisma.bookingService.groupBy({
+      const revenueByService = await this.prisma.bookingService.groupBy({
         by: ['serviceId'],
         where: {
           booking: {
@@ -564,25 +702,23 @@ export class PaymentService {
     }
   }
 
-  private groupByCurrency(payments: any[]) {
-    return payments.reduce((acc, payment) => {
-      const currency = payment.currency.toUpperCase();
-      if (!acc[currency]) {
-        acc[currency] = {
+  private groupByCurrency(payments: Payment[]): Record<string, CurrencyGroup> {
+    return payments.reduce((groups: Record<string, CurrencyGroup>, payment) => {
+      if (!groups[payment.currency]) {
+        groups[payment.currency] = {
+          currency: payment.currency,
+          payments: [],
           total: 0,
-          count: 0,
-          refunded: 0,
+          count: 0
         };
       }
-
-      if (payment.status === PaymentStatus.COMPLETED) {
-        acc[currency].total += payment.amount;
-        acc[currency].count += 1;
-      } else if (payment.status === PaymentStatus.REFUNDED) {
-        acc[currency].refunded += payment.refundAmount || 0;
-      }
-
-      return acc;
+      
+      const group = groups[payment.currency];
+      group.payments.push(payment);
+      group.total += payment.amount;
+      group.count += 1;
+      
+      return groups;
     }, {});
   }
 }

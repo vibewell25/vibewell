@@ -1,19 +1,33 @@
 import { Redis } from 'ioredis';
+import { env } from '@/config/env';
 
-let redis: Redis | null = null;
-
-if (typeof window === 'undefined') {
-  // Server-side only
-  redis = new Redis({
-    host: process.env.REDIS_HOST || 'localhost',
-    port: parseInt(process.env.REDIS_PORT || '6379'),
-    password: process.env.REDIS_PASSWORD,
-    tls: process.env.REDIS_TLS === 'true' ? {} : undefined,
-  });
-
-  redis.on('error', (err) => {
-    console.error('Redis Client Error:', err);
-  });
+if (!env.REDIS_URL) {
+  throw new Error('REDIS_URL environment variable is not defined');
 }
+
+// Create Redis client with retry strategy
+export const redis = new Redis(env.REDIS_URL, {
+  maxRetriesPerRequest: 3,
+  retryStrategy(times) {
+    const delay = Math.min(times * 50, 2000);
+    return delay;
+  },
+  reconnectOnError(err) {
+    const targetError = 'READONLY';
+    if (err.message.includes(targetError)) {
+      // Only reconnect if error includes specific message
+      return true;
+    }
+    return false;
+  },
+});
+
+redis.on('error', (error) => {
+  console.error('Redis Client Error:', error);
+});
+
+redis.on('connect', () => {
+  console.log('Redis Client Connected');
+});
 
 export default redis;

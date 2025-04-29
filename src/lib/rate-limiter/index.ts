@@ -18,3 +18,5 @@ export * from './presets';
 
 // Core implementation
 export * from './core';
+
+export { rateLimit } from './http';

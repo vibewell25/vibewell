@@ -1,85 +1,71 @@
-import { RateLimiter } from 'limiter';
-import Redis from 'ioredis';
+import { Redis } from 'ioredis';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-const REDIS_URL = process.env.REDIS_URL;
+const redis = new Redis(process.env['REDIS_URL'] || 'redis://localhost:6379');
 
-class RateLimitService {
-  private redis: Redis | null = null;
-  private limiters: Map<string, RateLimiter> = new Map();
-
-  constructor() {
-    if (REDIS_URL) {
-      this.redis = new Redis(REDIS_URL);
-    }
-  }
-
-  private getLimiter(key: string): RateLimiter {
-    let limiter = this.limiters.get(key);
-    if (!limiter) {
-      limiter = new RateLimiter({
-        tokensPerInterval: 100,
-        interval: 'minute',
-      });
-      this.limiters.set(key, limiter);
-    }
-    return limiter;
-  }
-
-  async checkRateLimit(key: string): Promise<{
-    success: boolean;
-    remaining: number;
-    resetTime: number;
-  }> {
-    try {
-      if (this.redis) {
-        // Use Redis-based rate limiting
-        const [tokens, resetTime] = await Promise.all([
-          this.redis.get(`ratelimit:${key}:tokens`),
-          this.redis.get(`ratelimit:${key}:reset`),
-        ]);
-
-        const now = Date.now();
-        const reset = parseInt(resetTime || '0', 10);
-
-        if (now > reset) {
-          // Reset tokens if expired
-          await Promise.all([
-            this.redis.set(`ratelimit:${key}:tokens`, '100'),
-            this.redis.set(`ratelimit:${key}:reset`, String(now + 60000)),
-          ]);
-          return { success: true, remaining: 99, resetTime: now + 60000 };
-        }
-
-        const remaining = parseInt(tokens || '0', 10);
-        if (remaining <= 0) {
-          return { success: false, remaining: 0, resetTime: reset };
-        }
-
-        await this.redis.set(`ratelimit:${key}:tokens`, String(remaining - 1));
-        return { success: true, remaining: remaining - 1, resetTime: reset };
-      } else {
-        // Use in-memory rate limiting
-        const limiter = this.getLimiter(key);
-        const remainingTokens = await limiter.tryRemoveTokens(1);
-        const success = remainingTokens >= 0;
-        return {
-          success,
-          remaining: Math.max(0, remainingTokens),
-          resetTime: Date.now() + 60000,
-        };
-      }
-    } catch (error) {
-      console.error('Rate limit error:', error);
-      // Fail open if rate limiting fails
-      return { success: true, remaining: 1, resetTime: Date.now() + 60000 };
-    }
-  }
-
-  async close() {
-    if (this.redis) {
-      await this.redis.quit();
-    }
-  }
+interface RateLimitConfig {
+  windowMs: number;  // Time window in milliseconds
+  max: number;       // Max number of requests in the window
+  keyPrefix?: string; // Prefix for Redis keys
 }
 
-export {};
+export async function rateLimit(
+  req: NextRequest,
+  config: RateLimitConfig = {
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // 5 requests per window
+    keyPrefix: 'rl_webauthn'
+  }
+) {
+  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  const key = `${config.keyPrefix}:${ip}`;
+
+  const multi = redis.multi();
+  multi.incr(key);
+  multi.pttl(key);
+
+  const results = await multi.exec();
+  if (!results) {
+    // If Redis command failed, fail open
+    return null;
+  }
+
+  // Ensure results[0] and results[1] exist and have valid values
+  if (!Array.isArray(results[0]) || !Array.isArray(results[1])) {
+    return null;
+  }
+
+  const count = typeof results[0][1] === 'number' ? results[0][1] : 0;
+  const ttl = typeof results[1][1] === 'number' ? results[1][1] : 0;
+
+  // If this is the first request, set the expiry
+  if (count === 1) {
+    await redis.pexpire(key, config.windowMs);
+  }
+
+  // Check if the request exceeds the rate limit
+  if (count > config.max) {
+    const retryAfter = Math.ceil(ttl / 1000);
+    const resetTime = Date.now() + ttl;
+
+    return NextResponse.json(
+      {
+        error: 'Too many requests',
+        retryAfter,
+      },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(retryAfter),
+          'X-RateLimit-Limit': String(config.max),
+          'X-RateLimit-Remaining': '0',
+          'X-RateLimit-Reset': String(resetTime),
+        },
+      }
+    );
+  }
+
+  // Return null to allow the request to proceed
+  return null;
+}

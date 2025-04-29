@@ -18,6 +18,7 @@ import userEvent, { UserEvent } from '@testing-library/user-event';
 import { startComponentRender, endComponentRender } from '../utils/performanceMonitor';
 import React, { ReactElement, ReactNode, ComponentType } from 'react';
 import { DefaultWrapper, RouterWrapper, AuthWrapper } from './components/TestWrappers';
+import { AxeResults } from 'axe-core';
 
 // Types for jest-axe from the declaration file
 interface CustomMatcherResult {
@@ -126,6 +127,50 @@ interface TestRunnerContext {
   mockAPI: (url: string, response: any, options?: MockAPIOptions) => void;
   mockService: (serviceName: string, mockImplementation: any) => void;
   createMock: (value: any) => jest.Mock;
+}
+
+interface TestRunnerOptions {
+  queries?: Record<string, unknown>;
+  axeConfig?: Record<string, unknown>;
+  mockUser?: User;
+}
+
+interface MockFunction<T = unknown> {
+  (...args: unknown[]): T;
+  mock: {
+    calls: unknown[][];
+    results: { type: 'return' | 'throw'; value: unknown }[];
+  };
+}
+
+interface RenderOptions extends TestRunnerOptions {
+  route?: string;
+  initialState?: Record<string, unknown>;
+}
+
+export interface TestRunner {
+  renderWithA11y: (
+    ui: ReactElement,
+    options?: TestRunnerOptions
+  ) => Promise<RenderResult & { axeResults: AxeResults }>;
+  
+  renderWithAuth: (
+    ui: ReactElement,
+    options?: RenderOptions & { user?: User }
+  ) => RenderResult;
+  
+  mockAPI: (
+    url: string,
+    response: unknown,
+    options?: MockAPIOptions
+  ) => void;
+  
+  mockService: (
+    serviceName: string,
+    implementation: (...args: unknown[]) => unknown
+  ) => void;
+  
+  createMock: <T>(value: T) => MockFunction<T>;
 }
 
 /**

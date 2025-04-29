@@ -1,57 +1,135 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { headers } from 'next/headers';
+import { env } from '@/config/env';
+import { prisma } from '@/lib/prisma';
+import { redis } from '@/lib/redis';
+import { PaymentStatus, PaymentProcessingStatus } from '@prisma/client';
 
 // Initialize Stripe
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2023-10-16',
 });
 
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+const WEBHOOK_SECRET = env.STRIPE_WEBHOOK_SECRET;
+
+// Idempotency key TTL in seconds (24 hours)
+const IDEMPOTENCY_TTL = 86400;
+
+async function updatePaymentStatus(
+  paymentIntentId: string,
+  status: PaymentStatus,
+  processingStatus: PaymentProcessingStatus,
+  errorMessage?: string
+) {
+  try {
+    await prisma.payment.update({
+      where: { stripeId: paymentIntentId },
+      data: {
+        status,
+        processingStatus,
+        errorMessage,
+        updatedAt: new Date(),
+      },
+    });
+  } catch (error) {
+    console.error('Failed to update payment status:', error);
+    throw error;
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.text();
-    const signature = headers().get('stripe-signature') || '';
+    const signature = headers().get('stripe-signature');
 
-    if (!endpointSecret) {
-      console.warn('STRIPE_WEBHOOK_SECRET is not set. Webhook verification is disabled.');
-      return NextResponse.json({ error: 'Webhook secret is not configured' }, { status: 500 });
+    if (!signature) {
+      return new NextResponse('Missing stripe-signature header', { status: 400 });
     }
 
+    // Verify webhook signature
     let event: Stripe.Event;
-
     try {
-      event = stripe.webhooks.constructEvent(body, signature, endpointSecret);
-    } catch (err: any) {
-      console.error(`Webhook signature verification failed: ${err.message}`);
-      return NextResponse.json(
-        { error: `Webhook signature verification failed: ${err.message}` },
-        { status: 400 },
-      );
+      event = stripe.webhooks.constructEvent(body, signature, WEBHOOK_SECRET);
+    } catch (err) {
+      console.error('Webhook signature verification failed:', err);
+      return new NextResponse('Invalid signature', { status: 400 });
     }
 
-    // Handle the event based on its type
+    // Check idempotency
+    const idempotencyKey = `stripe:webhook:${event.id}`;
+    const processed = await redis.get(idempotencyKey);
+    if (processed) {
+      return new NextResponse('Event already processed', { status: 200 });
+    }
+
+    // Process the event
     switch (event.type) {
-      case 'payment_intent.succeeded':
-        await handlePaymentIntentSucceeded(event.data.object as Stripe.PaymentIntent);
+      case 'payment_intent.succeeded': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        await updatePaymentStatus(
+          paymentIntent.id,
+          PaymentStatus.COMPLETED,
+          PaymentProcessingStatus.CAPTURED
+        );
         break;
-      case 'payment_intent.payment_failed':
-        await handlePaymentIntentFailed(event.data.object as Stripe.PaymentIntent);
+      }
+
+      case 'payment_intent.payment_failed': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        const error = paymentIntent.last_payment_error;
+        await updatePaymentStatus(
+          paymentIntent.id,
+          PaymentStatus.FAILED,
+          PaymentProcessingStatus.FAILED,
+          error?.message
+        );
         break;
-      case 'checkout.session.completed':
-        await handleCheckoutSessionCompleted(event.data.object as Stripe.Checkout.Session);
+      }
+
+      case 'payment_intent.requires_action': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        await updatePaymentStatus(
+          paymentIntent.id,
+          PaymentStatus.PENDING,
+          PaymentProcessingStatus.REQUIRES_ACTION
+        );
         break;
-      // Add more event handlers as needed
-      default:
-        console.log(`Unhandled event type: ${event.type}`);
+      }
+
+      case 'charge.dispute.created': {
+        const dispute = event.data.object as Stripe.Dispute;
+        const paymentIntent = await stripe.paymentIntents.retrieve(dispute.payment_intent as string);
+        await updatePaymentStatus(
+          paymentIntent.id,
+          PaymentStatus.DISPUTED,
+          PaymentProcessingStatus.FAILED,
+          dispute.reason
+        );
+        break;
+      }
+
+      case 'charge.refunded': {
+        const charge = event.data.object as Stripe.Charge;
+        const paymentIntent = await stripe.paymentIntents.retrieve(charge.payment_intent as string);
+        const isPartialRefund = charge.amount_refunded < charge.amount;
+        
+        await updatePaymentStatus(
+          paymentIntent.id,
+          isPartialRefund ? PaymentStatus.PARTIALLY_REFUNDED : PaymentStatus.REFUNDED,
+          PaymentProcessingStatus.CAPTURED
+        );
+        break;
+      }
     }
 
-    // Return a success response
-    return NextResponse.json({ received: true });
+    // Mark event as processed
+    await redis.setex(idempotencyKey, IDEMPOTENCY_TTL, 'true');
+
+    return new NextResponse('Webhook processed successfully', { status: 200 });
   } catch (error) {
-    console.error('Error processing webhook:', error);
-    return NextResponse.json({ error: 'Webhook handler failed' }, { status: 500 });
+    console.error('Webhook processing failed:', error);
+    return new NextResponse('Webhook processing failed', { status: 500 });
   }
 }
 

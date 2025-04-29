@@ -6,7 +6,8 @@
  */
 
 import { createHash } from 'crypto';
-import winston, { LogEntry } from 'winston';
+import type { Logger as WinstonLogger, LogEntry as WinstonLogEntry } from 'winston';
+import type { Logger as PinoLogger } from 'pino';
 
 // Define types for log levels and events
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
@@ -156,6 +157,24 @@ interface LoggerOptions {
   metadata?: Record<string, any>;
 }
 
+interface LogEntry {
+  timestamp: string;
+  level: LogLevel;
+  message: string;
+  context?: string | undefined;
+  data?: Record<string, unknown>;
+  error?: Error;
+  module?: string;
+  metadata?: Record<string, unknown>;
+}
+
+interface LogMetadata {
+  module?: string;
+  context?: string;
+  data?: Record<string, unknown>;
+  error?: Error;
+}
+
 class Logger {
   private static instance: Logger;
   private logLevel: LogLevel = 'info';
@@ -163,7 +182,7 @@ class Logger {
 
   private constructor() {
     // Set log level from environment variable
-    const envLogLevel = process.env.LOG_LEVEL?.toLowerCase() as LogLevel;
+    const envLogLevel = process.env['LOG_LEVEL']?.toLowerCase() as LogLevel;
     if (envLogLevel && ['debug', 'info', 'warn', 'error'].includes(envLogLevel)) {
       this.logLevel = envLogLevel;
     }
@@ -264,9 +283,8 @@ class Logger {
   }
 
   private async sendToLoggingService(entry: LogEntry): Promise<void> {
-    // Implementation would depend on your logging service (e.g., Sentry, LogRocket, etc.)
     try {
-      if (process.env.SENTRY_DSN && entry.level === 'error') {
+      if (process.env['SENTRY_DSN'] && entry.level === 'error') {
         // Example: Send to Sentry
         const Sentry = await import('@sentry/node');
         Sentry.captureException(entry.error || entry.message, {
@@ -282,19 +300,19 @@ class Logger {
     }
   }
 
-  public debug(message: string, context?: string, data?: any): void {
+  public debug(message: string, context?: string, data?: Record<string, unknown>): void {
     this.log(this.createLogEntry('debug', message, context, data));
   }
 
-  public info(message: string, context?: string, data?: any): void {
+  public info(message: string, context?: string, data?: Record<string, unknown>): void {
     this.log(this.createLogEntry('info', message, context, data));
   }
 
-  public warn(message: string, context?: string, data?: any): void {
+  public warn(message: string, context?: string, data?: Record<string, unknown>): void {
     this.log(this.createLogEntry('warn', message, context, data));
   }
 
-  public error(message: string, context?: string, data?: any, error?: Error): void {
+  public error(message: string, context?: string, data?: Record<string, unknown>, error?: Error): void {
     this.log(this.createLogEntry('error', message, context, data, error));
   }
 
@@ -425,3 +443,13 @@ class Logger {
 
 // Export a singleton instance
 export const logger = Logger.getInstance();
+
+export const pinoLogger = pino({
+  level: process.env.LOG_LEVEL || 'info',
+  formatters: {
+    level: (label) => {
+      return { level: label };
+    },
+  },
+  timestamp: () => `,"time":"${new Date().toISOString()}"`,
+});

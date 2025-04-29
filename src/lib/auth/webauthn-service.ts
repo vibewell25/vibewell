@@ -4,26 +4,35 @@ import {
   generateAuthenticationOptions,
   verifyRegistrationResponse,
   verifyAuthenticationResponse,
-  type RegistrationResponseJSON,
-  type AuthenticationResponseJSON,
-  type AuthenticatorTransportFuture,
 } from '@simplewebauthn/server';
+import type { 
+  PublicKeyCredentialCreationOptionsJSON,
+  PublicKeyCredentialRequestOptionsJSON,
+  AuthenticatorTransport,
+  PublicKeyCredentialDescriptorJSON,
+  RegistrationResponseJSON,
+  AuthenticationResponseJSON,
+} from '@simplewebauthn/typescript-types';
 import { prisma } from '@/lib/prisma';
 import { nanoid } from 'nanoid';
+import { NextRequest, NextResponse } from 'next/server';
+import { rateLimit } from '../rate-limiter/http';
 
-interface WebAuthnAuthenticator {
+interface WebAuthnDevice {
   id: string;
   userId: string;
   credentialId: string;
-  credentialPublicKey: string;
+  publicKey: string;
   counter: number;
-  transports: AuthenticatorTransportFuture[];
+  transports?: AuthenticatorTransport[];
+  lastUsedAt: Date;
+  createdAt: Date;
 }
 
-interface UserWithAuthenticators {
+interface UserWithWebAuthnDevices {
   id: string;
   email: string;
-  authenticators: WebAuthnAuthenticator[];
+  webAuthnDevices: WebAuthnDevice[];
 }
 
 export class WebAuthnError extends Error {
@@ -38,43 +47,57 @@ export class WebAuthnError extends Error {
 
 export class WebAuthnService {
   private static rpName = 'Vibewell';
-  private static rpID = process.env.WEBAUTHN_RP_ID || 'localhost';
-  private static origin = process.env.WEBAUTHN_ORIGIN || `https://${this.rpID}`;
+  private static rpID = process.env['WEBAUTHN_RP_ID'] || 'localhost';
+  private static origin = process.env['WEBAUTHN_ORIGIN'] || `https://${this.rpID}`;
 
   constructor(private prisma: PrismaClient) {}
 
-  static async startRegistration(userId: string) {
-    const user = await prisma.user.findUnique({
+  async startRegistration(request: NextRequest, userId: string): Promise<PublicKeyCredentialCreationOptionsJSON | NextResponse> {
+    // Rate limit check
+    const rateLimitResult = await rateLimit(request);
+    if (rateLimitResult) {
+      return rateLimitResult;
+    }
+
+    const rpID = process.env['WEBAUTHN_RP_ID'];
+    if (!rpID) {
+      throw new Error('WEBAUTHN_RP_ID environment variable is not set');
+    }
+
+    const user = await this.prisma.user.findUnique({
       where: { id: userId },
-      include: { authenticators: true },
+      include: {
+        webAuthnDevices: true
+      }
     });
 
-    if (!user) throw new Error('User not found');
+    if (!user || !user.email) {
+      throw new Error('User not found or email missing');
+    }
 
     const options = await generateRegistrationOptions({
-      rpName: this.rpName,
-      rpID: this.rpID,
-      userID: user.id,
+      rpName: 'VibeWell',
+      rpID,
+      userID: userId,
       userName: user.email,
       attestationType: 'none',
       authenticatorSelection: {
-        authenticatorAttachment: 'platform',
-        userVerification: 'preferred',
         residentKey: 'preferred',
+        userVerification: 'preferred',
+        authenticatorAttachment: 'platform'
       },
-      excludeCredentials: user.authenticators.map((authenticator) => ({
-        id: Buffer.from(authenticator.credentialID, 'base64'),
+      excludeCredentials: user.webAuthnDevices.map(device => ({
+        id: Buffer.from(device.credentialId, 'base64'),
         type: 'public-key',
-        transports: authenticator.transports as AuthenticatorTransport[],
-      })),
+        transports: []
+      }))
     });
 
-    await prisma.challenge.create({
+    await this.prisma.challenge.create({
       data: {
-        id: nanoid(),
         challenge: options.challenge,
-        userId: user.id,
-      },
+        userId,
+      }
     });
 
     return options;
@@ -105,12 +128,13 @@ export class WebAuthnService {
 
     const { credentialID, credentialPublicKey, counter } = registrationInfo;
 
-    await prisma.authenticator.create({
+    await prisma.webAuthnDevice.create({
       data: {
-        credentialID: Buffer.from(credentialID).toString('base64'),
-        credentialPublicKey: Buffer.from(credentialPublicKey).toString('base64'),
+        credentialId: Buffer.from(credentialID).toString('base64'),
+        publicKey: Buffer.from(credentialPublicKey).toString('base64'),
         counter,
         userId: user.id,
+        lastUsedAt: new Date(),
       },
     });
 
@@ -122,17 +146,17 @@ export class WebAuthnService {
   static async startAuthentication(userId: string) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      include: { authenticators: true },
+      include: { webAuthnDevices: true },
     });
 
     if (!user) throw new Error('User not found');
 
     const options = await generateAuthenticationOptions({
       rpID: this.rpID,
-      allowCredentials: user.authenticators.map((authenticator) => ({
-        id: Buffer.from(authenticator.credentialID, 'base64'),
+      allowCredentials: user.webAuthnDevices.map((device) => ({
+        id: Buffer.from(device.credentialId, 'base64'),
         type: 'public-key',
-        transports: authenticator.transports as AuthenticatorTransport[],
+        transports: []
       })),
       userVerification: 'preferred',
     });
@@ -151,7 +175,7 @@ export class WebAuthnService {
   static async verifyAuthentication(userId: string, response: AuthenticationResponseJSON) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      include: { authenticators: true, challenges: true },
+      include: { webAuthnDevices: true, challenges: true },
     });
 
     if (!user) throw new Error('User not found');
@@ -159,11 +183,11 @@ export class WebAuthnService {
     const challenge = user.challenges[0];
     if (!challenge) throw new Error('Challenge not found');
 
-    const authenticator = user.authenticators.find(
-      (auth) => auth.credentialID === Buffer.from(response.id, 'base64').toString('base64'),
+    const device = user.webAuthnDevices.find(
+      (dev) => dev.credentialId === Buffer.from(response.id, 'base64').toString('base64'),
     );
 
-    if (!authenticator) throw new Error('Authenticator not found');
+    if (!device) throw new Error('WebAuthn device not found');
 
     const verification = await verifyAuthenticationResponse({
       response,
@@ -171,22 +195,24 @@ export class WebAuthnService {
       expectedOrigin: this.origin,
       expectedRPID: this.rpID,
       authenticator: {
-        credentialID: Buffer.from(authenticator.credentialID, 'base64'),
-        credentialPublicKey: Buffer.from(authenticator.credentialPublicKey, 'base64'),
-        counter: authenticator.counter,
+        credentialID: Buffer.from(device.credentialId, 'base64'),
+        credentialPublicKey: Buffer.from(device.publicKey, 'base64'),
+        counter: device.counter,
       },
     });
 
-    const { verified, authenticationInfo } = verification;
-    if (!verified) throw new Error('Verification failed');
+    if (verification.verified) {
+      await prisma.webAuthnDevice.update({
+        where: { id: device.id },
+        data: {
+          counter: verification.authenticationInfo.newCounter,
+          lastUsedAt: new Date(),
+        },
+      });
 
-    await prisma.authenticator.update({
-      where: { id: authenticator.id },
-      data: { counter: authenticationInfo.newCounter },
-    });
+      await prisma.challenge.delete({ where: { id: challenge.id } });
+    }
 
-    await prisma.challenge.delete({ where: { id: challenge.id } });
-
-    return verified;
+    return verification.verified;
   }
 }

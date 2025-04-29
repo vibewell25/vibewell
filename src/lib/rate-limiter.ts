@@ -10,6 +10,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GraphQLError } from 'graphql';
 import { logger } from '@/lib/logger';
 import redisClient from '@/lib/redis-client';
+import { Redis } from 'ioredis';
+import { env } from '@/config/env';
 
 // Common interfaces
 export interface RateLimitOptions {
@@ -807,3 +809,28 @@ export {};
 export {};
 export {};
 export {};
+
+export class RateLimiter {
+  private redis: Redis;
+
+  constructor() {
+    this.redis = new Redis(env.REDIS_URL);
+  }
+
+  async checkLimit(key: string, limit: number, windowInSeconds: number): Promise<void> {
+    const current = await this.redis.incr(key);
+    
+    // Set expiry on first request
+    if (current === 1) {
+      await this.redis.expire(key, windowInSeconds);
+    }
+
+    if (current > limit) {
+      throw new Error('Rate limit exceeded');
+    }
+  }
+
+  async reset(key: string): Promise<void> {
+    await this.redis.del(key);
+  }
+}

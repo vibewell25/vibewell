@@ -1,42 +1,98 @@
-import { redirect } from 'next/navigation';
-import { prisma } from '@/lib/database/client';
+'use client';
 
-export default async function VerifyEmail({ searchParams }: { searchParams: { token?: string } }) {
-  const { token } = searchParams;
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from '@/components/ui/Button';
+import { useToast } from '@/components/ui/use-toast';
+import { Loader2 } from 'lucide-react';
 
-  if (!token) {
-    redirect('/login?error=missing_token');
-  }
+export default function VerifyEmailPage() {
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { toast } = useToast();
 
-  try {
-    const verification = await prisma.emailVerification.findUnique({
-      where: { token },
-      include: { user: true },
-    });
+  useEffect(() => {
+    const verifyEmail = async () => {
+      const token = searchParams?.get('token');
+      
+      if (!token) {
+        toast({
+          title: 'Error',
+          description: 'Verification token is missing',
+          variant: 'destructive',
+        });
+        router.push('/auth/login?error=missing_token');
+        return;
+      }
 
-    if (!verification) {
-      redirect('/login?error=invalid_token');
-    }
+      try {
+        setIsVerifying(true);
+        const response = await fetch(`/api/auth/verify-email?token=${token}`);
+        const data = await response.json();
 
-    if (verification.expiresAt < new Date()) {
-      await prisma.emailVerification.delete({
-        where: { token },
-      });
-      redirect('/login?error=expired_token');
-    }
+        if (!response.ok) {
+          throw new Error(data.error || 'Verification failed');
+        }
 
-    await prisma.user.update({
-      where: { id: verification.userId },
-      data: { emailVerified: true },
-    });
+        setIsSuccess(true);
+        toast({
+          title: 'Success',
+          description: 'Your email has been verified successfully',
+        });
+        
+        // Redirect to dashboard after a short delay
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 2000);
+      } catch (error) {
+        console.error('Error verifying email:', error);
+        toast({
+          title: 'Error',
+          description: error instanceof Error ? error.message : 'Failed to verify email',
+          variant: 'destructive',
+        });
+        router.push('/auth/login?error=verification_failed');
+      } finally {
+        setIsVerifying(false);
+      }
+    };
 
-    await prisma.emailVerification.delete({
-      where: { token },
-    });
+    verifyEmail();
+  }, [searchParams, router, toast]);
 
-    redirect('/login?success=email_verified');
-  } catch (error) {
-    console.error('Error verifying email:', error);
-    redirect('/login?error=verification_failed');
-  }
+  return (
+    <div className="container flex h-screen w-screen flex-col items-center justify-center">
+      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+        <div className="flex flex-col space-y-2 text-center">
+          <h1 className="text-2xl font-semibold tracking-tight">Email Verification</h1>
+          {isVerifying ? (
+            <div className="flex flex-col items-center space-y-4">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="text-sm text-muted-foreground">
+                Verifying your email address...
+              </p>
+            </div>
+          ) : isSuccess ? (
+            <div className="flex flex-col items-center space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Your email has been verified successfully. Redirecting to dashboard...
+              </p>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center space-y-4">
+              <p className="text-sm text-muted-foreground">
+                There was an error verifying your email.
+              </p>
+              <Link href="/auth/login">
+                <Button variant="outline">Return to Login</Button>
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }

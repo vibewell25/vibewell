@@ -18,7 +18,7 @@ export default function AuthButton({
   loginRedirectUrl = '/dashboard',
   logoutRedirectUrl = '/',
 }: AuthButtonProps) {
-  const { user, isLoading } = useUser();
+  const { user, isLoading, error } = useUser();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   // Handle login/logout click with debounce
@@ -27,6 +27,17 @@ export default function AuthButton({
     // Re-enable the button after a short delay
     setTimeout(() => setIsButtonDisabled(false), 2000);
   };
+
+  if (error) {
+    return (
+      <button
+        className={`inline-flex items-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white ${className}`}
+        disabled
+      >
+        Error
+      </button>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -57,7 +68,7 @@ export default function AuthButton({
   if (user) {
     return (
       <Link
-        href={`/api/auth/logout?returnTo=${encodeURIComponent(logoutRedirectUrl)}`}
+        href="/api/auth/logout"
         onClick={handleAuthClick}
         className={`inline-flex items-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 ${className}`}
         aria-disabled={isButtonDisabled}
@@ -69,7 +80,7 @@ export default function AuthButton({
 
   return (
     <Link
-      href={`/api/auth/login?returnTo=${encodeURIComponent(loginRedirectUrl)}`}
+      href="/api/auth/login"
       onClick={handleAuthClick}
       className={`inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 ${className}`}
       aria-disabled={isButtonDisabled}

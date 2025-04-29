@@ -1,5 +1,6 @@
-import { handleAuth, handleLogin, handleCallback } from '@auth0/nextjs-auth0';
+import { handlers } from '@/lib/auth0';
 
-export {};
+export const { GET, POST } = handlers;
 
-export {};
+// Enable edge runtime for better performance
+export const runtime = 'edge';

@@ -1,28 +1,12 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { auth } from '@/lib/auth0';
 
-export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-  // Allow API auth routes, 2FA page, Next.js internals, and static assets
-  if (
-    pathname.startsWith('/api/auth') ||
-    pathname === '/2fa' ||
-    pathname.startsWith('/_next/') ||
-    pathname.startsWith('/static/') ||
-    pathname.includes('.')
-  ) {
-    return NextResponse.next();
-  }
+// Export the auth middleware directly
+export const { auth: middleware } = auth;
 
-  // Check for Auth0 session cookie and 2FA verification flag
-  const isAuthenticated = !!req.cookies.get('appSession')?.value;
-  const twoF = req.cookies.get('twoFactorVerified')?.value;
-
-  if (isAuthenticated && twoF !== 'true') {
-    const url = req.nextUrl.clone();
-    url.pathname = '/2fa';
-    return NextResponse.redirect(url);
-  }
-
-  return NextResponse.next();
-}
+// Don't run middleware on these paths
+export const config = {
+  matcher: [
+    // Skip auth check for public routes and static files
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+  ],
+};

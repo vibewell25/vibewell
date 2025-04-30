@@ -18,13 +18,39 @@ updates:
       prefix-development: "chore(dev)"
       include: "scope"
     versioning-strategy: "auto"
-    allow:
-      - dependency-type: "direct"
-      - dependency-type: "indirect"
+    groups:
+      # Group production dependencies
+      production-dependencies:
+        dependency-type: "production"
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@types/*"
+          - "eslint*"
+          - "prettier"
+          - "jest*"
+      # Group development dependencies
+      development-dependencies:
+        dependency-type: "development"
+        patterns:
+          - "*"
+      # Group type definitions
+      types:
+        patterns:
+          - "@types/*"
     ignore:
-      # Ignore major version updates for these packages
+      # Ignore major version updates for these packages to prevent breaking changes
       - dependency-name: "@types/*"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+    reviewers:
+      - "vibewell25/developers"
+    security-updates-only: false
 
   # GitHub Actions
   - package-ecosystem: "github-actions"
@@ -38,9 +64,17 @@ updates:
     labels:
       - "dependencies"
       - "github-actions"
+      - "security"
     commit-message:
       prefix: "ci"
       include: "scope"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    reviewers:
+      - "vibewell25/developers"
+    security-updates-only: false
 
   # Docker dependencies
   - package-ecosystem: "docker"
@@ -54,6 +88,12 @@ updates:
     labels:
       - "dependencies"
       - "docker"
+      - "security"
     commit-message:
       prefix: "docker"
-      include: "scope" 
+      include: "scope"
+    groups:
+      docker-updates:
+        patterns:
+          - "*"
+    security-updates-only: false 

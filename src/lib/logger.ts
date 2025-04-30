@@ -8,6 +8,7 @@
 import { createHash } from 'crypto';
 import type { Logger as WinstonLogger, LogEntry as WinstonLogEntry } from 'winston';
 import type { Logger as PinoLogger } from 'pino';
+import winston from 'winston';
 
 // Define types for log levels and events
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
@@ -199,19 +200,35 @@ class Logger {
           return `[${info.timestamp}] [${info.level.toUpperCase()}]${moduleStr}: ${info.message}${metadataStr}`;
         }),
       ),
+      defaultMeta: { service: 'vibewell-api' },
       transports: [
         new winston.transports.Console({
-          format: winston.format.colorize({ all: this.logLevel === 'debug' }),
+          format: winston.format.combine(
+            winston.format.colorize(),
+            winston.format.simple()
+          ),
         }),
-        // Add file transport in production
-        ...(this.logLevel === 'info'
-          ? [
-              new winston.transports.File({ filename: 'error.log', level: 'error' }),
-              new winston.transports.File({ filename: 'combined.log' }),
-            ]
-          : []),
       ],
     });
+
+    // Add file transport in production
+    if (process.env.NODE_ENV === 'production') {
+      this.logger.add(
+        new winston.transports.File({
+          filename: 'logs/error.log',
+          level: 'error',
+          maxsize: 5242880, // 5MB
+          maxFiles: 5,
+        })
+      );
+      this.logger.add(
+        new winston.transports.File({
+          filename: 'logs/combined.log',
+          maxsize: 5242880, // 5MB
+          maxFiles: 5,
+        })
+      );
+    }
   }
 
   public static getInstance(): Logger {
@@ -453,3 +470,21 @@ export const pinoLogger = pino({
   },
   timestamp: () => `,"time":"${new Date().toISOString()}"`,
 });
+
+// Extend the logger to handle metadata
+const extendedLogger = {
+  error: (message: string | undefined, meta?: string | Record<string, unknown>) => {
+    logger.error(message || 'Unknown error', { metadata: meta });
+  },
+  warn: (message: string | undefined, meta?: string | Record<string, unknown>) => {
+    logger.warn(message || 'Warning', { metadata: meta });
+  },
+  info: (message: string | undefined, meta?: string | Record<string, unknown>) => {
+    logger.info(message || 'Info', { metadata: meta });
+  },
+  debug: (message: string | undefined, meta?: string | Record<string, unknown>) => {
+    logger.debug(message || 'Debug', { metadata: meta });
+  },
+};
+
+export { extendedLogger as logger };

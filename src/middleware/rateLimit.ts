@@ -1,91 +1,147 @@
 import { NextResponse } from 'next/server';
 import { Redis } from 'ioredis';
 import { getClientIp } from 'request-ip';
+import { logger } from '@/lib/logger';
 
-const redis = new Redis(process.env.REDIS_URL);
+// Initialize Redis with error handling
+const initRedis = () => {
+  const redis = new Redis(process.env['REDIS_URL'] || '');
+  
+  redis.on('error', (err: Error) => {
+    logger.error('Redis connection error', { error: err.message });
+  });
+
+  redis.on('connect', () => {
+    logger.info('Redis connected successfully');
+  });
+
+  return redis;
+};
+
+const redis = initRedis();
 
 interface RateLimitConfig {
   windowMs: number;
   max: number;
   message?: string;
   statusCode?: number;
+  keyPrefix?: string;
 }
 
-const defaultConfig: RateLimitConfig = {
+const defaultConfig: Required<RateLimitConfig> = {
   windowMs: 60 * 1000, // 1 minute
   max: 100, // 100 requests per minute
   message: 'Too many requests, please try again later.',
   statusCode: 429,
+  keyPrefix: 'rate-limit',
 };
 
 export async function rateLimit(
   req: Request,
   config: Partial<RateLimitConfig> = {},
 ): Promise<NextResponse | null> {
-  const finalConfig = { ...defaultConfig, ...config };
-  const ip = getClientIp(req);
-  const key = `rate-limit:${ip}`;
+  const finalConfig: Required<RateLimitConfig> = { ...defaultConfig, ...config };
+  const ip = getClientIp({ headers: Object.fromEntries([...req.headers]) }) || 'unknown';
+  const key = `${finalConfig.keyPrefix}:${ip}`;
 
   try {
-    const current = await redis.incr(key);
+    const [current, ttl] = await Promise.all([
+      redis.incr(key),
+      redis.ttl(key),
+    ]);
+
+    // Set expiry only if this is the first request in the window
     if (current === 1) {
       await redis.expire(key, finalConfig.windowMs / 1000);
     }
 
+    // Add rate limit headers
+    const headers = new Headers({
+      'X-RateLimit-Limit': String(finalConfig.max),
+      'X-RateLimit-Remaining': String(Math.max(0, finalConfig.max - current)),
+      'X-RateLimit-Reset': String(Date.now() + ((ttl < 0 ? 0 : ttl) * 1000)),
+    });
+
     if (current > finalConfig.max) {
-      return NextResponse.json({ error: finalConfig.message }, { status: finalConfig.statusCode });
+      logger.warn('Rate limit exceeded', `IP: ${ip}, Key: ${key}`);
+      return NextResponse.json(
+        { error: finalConfig.message },
+        { 
+          status: finalConfig.statusCode,
+          headers,
+        }
+      );
     }
 
     return null;
   } catch (error) {
-    console.error('Rate limit error:', error);
+    logger.error('Rate limit error', `Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    // Fail open - allow request but log the error
     return null;
   }
 }
 
 export async function validateRequest(req: Request): Promise<NextResponse | null> {
-  // Validate content type
-  const contentType = req.headers.get('content-type');
-  if (contentType && !contentType.includes('application/json')) {
-    return NextResponse.json(
-      { error: 'Invalid content type. Expected application/json' },
-      { status: 415 },
-    );
+  // Validate content type for non-GET requests
+  if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
+    const contentType = req.headers.get('content-type');
+    if (!contentType?.includes('application/json')) {
+      return NextResponse.json(
+        { error: 'Invalid content type. Expected application/json' },
+        { status: 415 }
+      );
+    }
   }
 
   // Validate request size
   const contentLength = req.headers.get('content-length');
   if (contentLength && parseInt(contentLength) > 1024 * 1024) {
     // 1MB limit
-    return NextResponse.json({ error: 'Request body too large' }, { status: 413 });
+    return NextResponse.json(
+      { error: 'Request body too large' },
+      { status: 413 }
+    );
   }
 
   // Validate HTTP method
-  const method = req.method;
-  if (!['GET', 'POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
-    return NextResponse.json({ error: 'Invalid HTTP method' }, { status: 405 });
+  if (!['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'].includes(req.method)) {
+    return NextResponse.json(
+      { error: 'Invalid HTTP method' },
+      { status: 405 }
+    );
   }
 
   return null;
 }
 
-export async function sanitizeInput(input: any): Promise<any> {
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
+
+export async function sanitizeInput(input: unknown): Promise<unknown> {
   if (typeof input !== 'object' || input === null) {
     return input;
   }
 
-  const sanitized: any = Array.isArray(input) ? [] : {};
+  if (Array.isArray(input)) {
+    const sanitizedArray: JsonValue[] = [];
+    for (const item of input) {
+      sanitizedArray.push(await sanitizeInput(item) as JsonValue);
+    }
+    return sanitizedArray;
+  }
 
-  for (const [key, value] of Object.entries(input)) {
+  const sanitized: Record<string, JsonValue> = {};
+  for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
     if (typeof value === 'string') {
       sanitized[key] = value
-        .replace(/[<>]/g, '') // Remove < and >
+        .replace(/<[^>]*>/g, '') // Remove HTML tags
         .replace(/javascript:/gi, '') // Remove javascript: protocol
-        .replace(/data:/gi, ''); // Remove data: protocol
+        .replace(/data:/gi, '') // Remove data: protocol
+        .replace(/on\w+=/gi, '') // Remove inline event handlers
+        .trim();
     } else if (typeof value === 'object' && value !== null) {
-      sanitized[key] = await sanitizeInput(value);
-    } else {
-      sanitized[key] = value;
+      sanitized[key] = await sanitizeInput(value) as JsonValue;
+    } else if (['number', 'boolean'].includes(typeof value) || value === null) {
+      sanitized[key] = value as JsonValue;
     }
   }
 
@@ -94,28 +150,31 @@ export async function sanitizeInput(input: any): Promise<any> {
 
 export async function validateAndSanitizeRequest(
   req: Request,
-): Promise<{ error: NextResponse | null; data: any }> {
-  // Validate request
-  const validationError = await validateRequest(req);
-  if (validationError) {
-    return { error: validationError, data: null };
-  }
-
+): Promise<{ error: NextResponse | null; data: unknown }> {
   // Apply rate limiting
   const rateLimitError = await rateLimit(req);
   if (rateLimitError) {
     return { error: rateLimitError, data: null };
   }
 
+  // Validate request
+  const validationError = await validateRequest(req);
+  if (validationError) {
+    return { error: validationError, data: null };
+  }
+
   // Parse and sanitize request body
   let data = null;
-  if (req.method !== 'GET') {
+  if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
     try {
-      data = await req.json();
-      data = await sanitizeInput(data);
+      const body = await req.json();
+      data = await sanitizeInput(body);
     } catch (error) {
       return {
-        error: NextResponse.json({ error: 'Invalid JSON in request body' }, { status: 400 }),
+        error: NextResponse.json(
+          { error: 'Invalid JSON in request body' },
+          { status: 400 }
+        ),
         data: null,
       };
     }

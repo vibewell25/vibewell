@@ -1,43 +1,12 @@
 {
   "name": "VibeWell",
   "short_name": "VibeWell",
-  "description": "Wellness, simplified.",
+  "description": "Your beauty and wellness companion",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#4CAF50",
-  "orientation": "portrait",
+  "theme_color": "#ec4899",
   "icons": [
-    {
-      "src": "/icons/icon-72x72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-128x128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-152x152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
     {
       "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
@@ -47,59 +16,14 @@
     {
       "src": "/icons/icon-384x384.png",
       "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
       "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ],
-  "shortcuts": [
-    {
-      "name": "Book Appointment",
-      "short_name": "Book",
-      "description": "Book a new appointment",
-      "url": "/booking/new",
-      "icons": [{ "src": "/icons/booking.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "My Appointments",
-      "short_name": "Appointments",
-      "description": "View my appointments",
-      "url": "/booking/my-appointments",
-      "icons": [{ "src": "/icons/calendar.png", "sizes": "192x192" }]
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshots/home.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "platform": "narrow",
-      "label": "VibeWell Home Screen"
-    },
-    {
-      "src": "/screenshots/booking.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "platform": "narrow",
-      "label": "Booking Screen"
-    }
-  ],
-  "related_applications": [
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.vibewell.app",
-      "id": "com.vibewell.app"
-    },
-    {
-      "platform": "itunes",
-      "url": "https://apps.apple.com/app/vibewell/id123456789"
-    }
-  ],
-  "prefer_related_applications": false,
-  "categories": ["health", "wellness", "lifestyle"]
+  "orientation": "portrait",
+  "prefer_related_applications": false
 }

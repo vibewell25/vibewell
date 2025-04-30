@@ -1,3 +1,5 @@
+import type { NextApiRequest as BaseNextApiRequest, NextApiResponse as BaseNextApiResponse } from 'next';
+
 export enum ApiVersion {
   V1 = 'v1',
   V2 = 'v2',
@@ -9,7 +11,7 @@ export interface ApiError {
   details?: Record<string, unknown>;
 }
 
-export interface ApiResponse<T> {
+export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
   error?: ApiError;
@@ -125,3 +127,15 @@ export type {
   XRHand,
   XRFrame
 };
+
+export interface NextApiRequest extends BaseNextApiRequest {
+  user?: {
+    id: string;
+    email: string;
+    roles?: string[];
+  };
+}
+
+export interface NextApiResponse<T = any> extends BaseNextApiResponse<T> {
+  // Add any custom response properties here
+}

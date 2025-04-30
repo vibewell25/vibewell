@@ -17,6 +17,25 @@ const nextConfig = {
     );
     return config;
   },
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: '/:path*',
+          has: [
+            {
+              type: 'host',
+              value: 'app.getvibewell.com',
+            },
+          ],
+          destination: '/app/:path*',
+        },
+      ],
+    }
+  },
+  images: {
+    domains: ['images.unsplash.com'],
+  },
 };
 
 module.exports = nextConfig;

@@ -1,10 +1,15 @@
 import { doubleCsrf } from 'csrf-csrf';
-import { NextApiRequest, NextApiResponse } from '@/types/api';
-import { Request } from 'express';
+import type { NextRequest } from 'next/server';
 
 // CSRF Protection Configuration
 const { generateToken, doubleCsrfProtection } = doubleCsrf({
-  getSecret: () => process.env.CSRF_SECRET || 'PLEASE_USE_ENVIRONMENT_VARIABLE',
+  getSecret: () => {
+    const secret = process.env['CSRF_SECRET'];
+    if (!secret) {
+      throw new Error('CSRF_SECRET environment variable is required');
+    }
+    return secret;
+  },
   cookieName: '__Host-psifi.csrf-token',
   cookieOptions: {
     httpOnly: true,
@@ -14,14 +19,21 @@ const { generateToken, doubleCsrfProtection } = doubleCsrf({
   },
   size: 64,
   ignoredMethods: ['GET', 'HEAD', 'OPTIONS'],
-  getTokenFromRequest: (req: Request) => req.headers['x-csrf-token'] as string,
+  getTokenFromRequest: (req) => req.headers['x-csrf-token'] as string,
 });
 
-// Middleware to generate CSRF token
-export {};
-
-// Middleware to protect routes from CSRF
-export {};
+// Middleware to validate CSRF token
+export async function validateCsrfToken(req: NextRequest): Promise<boolean> {
+  try {
+    await doubleCsrfProtection(req as any);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
 
 // Export config for Next.js middleware
-export {};
+export const csrfConfig = {
+  generateToken,
+  validateCsrfToken,
+};

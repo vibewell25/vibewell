@@ -1,0 +1,50 @@
+name: Force Dependabot Updates
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 1"  # Run every Monday at midnight
+
+jobs:
+  force-dependabot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Force Dependabot check
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            
+            // Get all open Dependabot alerts
+            const alerts = await github.rest.dependabot.listAlertsForRepo({
+              owner,
+              repo,
+              state: 'open'
+            });
+            
+            console.log(`Found ${alerts.data.length} open Dependabot alerts`);
+            
+            // Create security updates for each alert
+            for (const alert of alerts.data) {
+              try {
+                await github.rest.dependabot.createRepositorySecurityUpdate({
+                  owner,
+                  repo,
+                  alert_number: alert.number
+                });
+                console.log(`Created security update for alert #${alert.number}`);
+              } catch (error) {
+                if (!error.message.includes('already exists')) {
+                  console.error(`Error creating security update for alert #${alert.number}:`, error);
+                }
+              }
+            } 

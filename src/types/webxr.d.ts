@@ -42,6 +42,7 @@ interface XRFrame {
   getJointPose?(joint: XRJointSpace, baseSpace: XRSpace): XRJointPose | null;
   getHitTestResults(hitTestSource: XRHitTestSource): XRHitTestResult[];
   getHitTestResultsForTransientInput(hitTestSource: XRTransientInputHitTestSource): XRTransientInputHitTestResult[];
+  getLightEstimate(lightProbe: XRLightProbe): XRLightEstimate | null;
 }
 
 /**
@@ -228,4 +229,81 @@ interface Navigator {
 declare let XRSystem: {
   prototype: XRSystem;
   new(): XRSystem;
-}; 
+};
+
+declare interface XRSystem {
+  isSessionSupported(mode: XRSessionMode): Promise<boolean>;
+  requestSession(mode: XRSessionMode, options?: XRSessionInit): Promise<XRSession>;
+}
+
+declare type XRSessionMode = 'immersive-ar' | 'immersive-vr' | 'inline';
+
+declare interface XRSessionInit {
+  optionalFeatures?: string[];
+  requiredFeatures?: string[];
+}
+
+declare interface XRSession extends EventTarget {
+  requestReferenceSpace(type: XRReferenceSpaceType): Promise<XRReferenceSpace>;
+  requestAnimationFrame(callback: XRFrameRequestCallback): number;
+  end(): Promise<void>;
+  updateRenderState(renderStateInit: XRRenderStateInit): Promise<void>;
+  requestHitTestSource(options: XRHitTestOptionsInit): Promise<XRHitTestSource>;
+}
+
+declare type XRReferenceSpaceType = 'viewer' | 'local' | 'local-floor' | 'bounded-floor' | 'unbounded';
+
+declare interface XRReferenceSpace extends EventTarget {
+  getOffsetReferenceSpace(originOffset: XRRigidTransform): XRReferenceSpace;
+}
+
+declare interface XRFrame {
+  session: XRSession;
+  getViewerPose(referenceSpace: XRReferenceSpace): XRViewerPose | null;
+  getPose(space: XRSpace, baseSpace: XRSpace): XRPose | null;
+  getHitTestResults(hitTestSource: XRHitTestSource): XRHitTestResult[];
+  getLightEstimate(lightProbe: XRLightProbe): XRLightEstimate | null;
+}
+
+declare interface XRViewerPose extends XRPose {
+  views: XRView[];
+}
+
+declare interface XRView {
+  eye: XREye;
+  projectionMatrix: Float32Array;
+  transform: XRRigidTransform;
+}
+
+declare type XREye = 'left' | 'right' | 'none';
+
+declare interface XRHitTestOptionsInit {
+  space: XRSpace;
+  entityTypes?: XRHitTestTrackableType[];
+  offsetRay?: XRRay;
+}
+
+declare type XRHitTestTrackableType = 'point' | 'plane' | 'mesh';
+
+declare interface XRHitTestResult {
+  getPose(baseSpace: XRSpace): XRPose | null;
+}
+
+declare interface XRHitTestSource {
+  cancel(): void;
+}
+
+declare interface XRLightProbe extends EventTarget {
+  probeSpace: XRSpace;
+  addEventListener(type: string, listener: EventListener): void;
+  removeEventListener(type: string, listener: EventListener): void;
+}
+
+declare interface XRLightEstimate {
+  primaryLightDirection: DOMPointReadOnly;
+  primaryLightIntensity: DOMPointReadOnly;
+}
+
+declare interface Window {
+  xr?: XRSystem;
+} 

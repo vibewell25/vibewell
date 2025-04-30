@@ -1,15 +1,11 @@
 import type { AppProps } from 'next/app';
-import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
+import { ChatProvider } from '@/contexts/ChatContext';
+import '@/styles/globals.css';
 
-function MyApp({ Component, pageProps, router }: AppProps) {
-  // Wrap the component with Suspense for smooth loading transitions
+export default function App({ Component, pageProps }: AppProps) {
   return (
-    <Suspense fallback={<LoadingSpinner />}>
+    <ChatProvider>
       <Component {...pageProps} />
-    </Suspense>
+    </ChatProvider>
   );
 }
-
-export default MyApp;

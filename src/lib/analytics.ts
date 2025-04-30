@@ -6,6 +6,103 @@
  */
 
 import { format, subDays } from 'date-fns';
+import { ChatMessage } from './openai';
+
+interface ChatAnalytics {
+  messageCount: number;
+  averageResponseTime: number;
+  topicDistribution: Record<string, number>;
+  errorRate: number;
+  userSatisfaction: number;
+}
+
+class AnalyticsService {
+  private static instance: AnalyticsService;
+  private analytics: ChatAnalytics = {
+    messageCount: 0,
+    averageResponseTime: 0,
+    topicDistribution: {},
+    errorRate: 0,
+    userSatisfaction: 0,
+  };
+
+  private constructor() {}
+
+  static getInstance(): AnalyticsService {
+    if (!AnalyticsService.instance) {
+      AnalyticsService.instance = new AnalyticsService();
+    }
+    return AnalyticsService.instance;
+  }
+
+  trackMessage(message: ChatMessage, responseTime?: number) {
+    this.analytics.messageCount++;
+    
+    if (responseTime) {
+      const currentTotal = this.analytics.averageResponseTime * (this.analytics.messageCount - 1);
+      this.analytics.averageResponseTime = (currentTotal + responseTime) / this.analytics.messageCount;
+    }
+
+    // Track topics based on keywords
+    const topics = this.extractTopics(message.content);
+    topics.forEach(topic => {
+      this.analytics.topicDistribution[topic] = (this.analytics.topicDistribution[topic] || 0) + 1;
+    });
+
+    // Log to monitoring service
+    console.log('[Chat Analytics]', {
+      type: 'message',
+      role: message.role,
+      topics,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
+  trackError(error: Error) {
+    this.analytics.errorRate = (this.analytics.messageCount === 0) 
+      ? 1 
+      : (this.analytics.errorRate * (this.analytics.messageCount - 1) + 1) / this.analytics.messageCount;
+
+    // Log to monitoring service
+    console.error('[Chat Analytics] Error:', {
+      type: 'error',
+      message: error.message,
+      stack: error.stack,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
+  updateUserSatisfaction(rating: number) {
+    this.analytics.userSatisfaction = (
+      this.analytics.userSatisfaction * this.analytics.messageCount + rating
+    ) / (this.analytics.messageCount + 1);
+  }
+
+  getAnalytics(): ChatAnalytics {
+    return { ...this.analytics };
+  }
+
+  private extractTopics(content: string): string[] {
+    const topics = new Set<string>();
+    const keywords = {
+      skincare: ['skin', 'moisturizer', 'cleanser', 'routine'],
+      makeup: ['makeup', 'lipstick', 'foundation', 'cosmetics'],
+      arTryOn: ['ar', 'try-on', 'virtual', 'try on'],
+      technical: ['error', 'problem', 'issue', 'help'],
+      consultation: ['book', 'appointment', 'consultation', 'session'],
+    };
+
+    Object.entries(keywords).forEach(([topic, words]) => {
+      if (words.some(word => content.toLowerCase().includes(word))) {
+        topics.add(topic);
+      }
+    });
+
+    return Array.from(topics);
+  }
+}
+
+export const analytics = AnalyticsService.getInstance();
 
 /**
  * Fetch analytics data for a given time period

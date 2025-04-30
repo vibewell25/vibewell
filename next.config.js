@@ -1,41 +1,43 @@
 /** @type {import('next').NextConfig} */
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const path = require('path');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === 'development'
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  env: {
-    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-  },
-  eslint: { ignoreDuringBuilds: true },
-  typescript: { ignoreBuildErrors: true },
-  webpack(config) {
-    config.resolve.plugins = config.resolve.plugins || [];
-    config.resolve.plugins.push(
-      new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, 'tsconfig.json') })
-    );
-    return config;
-  },
-  async rewrites() {
-    return {
-      beforeFiles: [
-        {
-          source: '/:path*',
-          has: [
-            {
-              type: 'host',
-              value: 'app.getvibewell.com',
-            },
-          ],
-          destination: '/app/:path*',
-        },
-      ],
-    }
-  },
+  swcMinify: true,
   images: {
-    domains: ['images.unsplash.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.getvibewell.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
+  webpack: (config, { isServer }) => {
+    // Fixes npm packages that depend on `fs` module
+    if (!isServer) {
+      config.resolve.fallback = {
+        fs: false,
+        path: false,
+        crypto: false,
+      };
+    }
+
+    return config;
   },
 };
 
-module.exports = nextConfig;
+// Combine the configs
+module.exports = withBundleAnalyzer(withPWA(nextConfig));

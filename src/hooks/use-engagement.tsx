@@ -1,14 +1,9 @@
 'use client';
 
 import { useState, useEffect, createContext, useContext } from 'react';
-import { useSession } from 'next-auth/react';
-import {
-  EngagementService,
-  UserBadge,
-  UserPoints,
-  Badge,
-  BADGES,
-} from '@/services/engagement-service';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import type { UserBadge, UserPoints, Badge } from '@/services/engagement-service';
+import { EngagementService, BADGES } from '@/services/engagement-service';
 import { useToast } from '@/components/ui/use-toast';
 
 interface EngagementContextType {
@@ -26,47 +21,112 @@ interface EngagementContextType {
 
 const EngagementContext = createContext<EngagementContextType | undefined>(undefined);
 
+interface EngagementMetrics {
+  lastActive: Date | null;
+  sessionDuration: number;
+  pageViews: number;
+  interactions: number;
+}
+
 export function EngagementProvider({ children }: { children: React.ReactNode }) {
-  const userId = session?.user?.id;
+  const { user, isLoading: authLoading } = useUser();
   const { toast } = useToast();
+  const [loading, setLoading] = useState(true);
 
   const [badges, setBadges] = useState<UserBadge[]>([]);
   const [points, setPoints] = useState<UserPoints | null>(null);
   const [newBadges, setNewBadges] = useState<Badge[]>([]);
   const [recommendations, setRecommendations] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isChecking, setIsChecking] = useState(false);
   const [engagementService] = useState(() => new EngagementService());
+  const [metrics, setMetrics] = useState<EngagementMetrics>({
+    lastActive: null,
+    sessionDuration: 0,
+    pageViews: 0,
+    interactions: 0,
+  });
 
   // Load initial badges and points
   useEffect(() => {
-    if (!userId) return;
+    if (!user) return;
 
     const loadEngagementData = async () => {
-      setIsLoading(true);
+      setLoading(true);
       try {
         // Load badges
-        const userBadges = await engagementService.getUserBadges(userId);
+        const userBadges = await engagementService.getUserBadges(user.sub);
         setBadges(userBadges);
 
         // Load points
-        const userPoints = await engagementService.getUserPoints(userId);
+        const userPoints = await engagementService.getUserPoints(user.sub);
         setPoints(userPoints);
 
         // Get recommendations
-        const recs = await engagementService.getPersonalizedRecommendations(userId, 5);
+        const recs = await engagementService.getPersonalizedRecommendations(user.sub, 5);
         setRecommendations(recs);
       } catch (error) {
         console.error('Error loading engagement data:', error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
     loadEngagementData();
-  }, [userId, engagementService]);
+  }, [user, engagementService]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    // Initialize session start time
+    const sessionStart = new Date();
+    let pageViewCount = 0;
+    let interactionCount = 0;
+    let lastActivityTime = new Date();
+
+    // Track page views
+    const handleRouteChange = () => {
+      pageViewCount++;
+      updateMetrics();
+    };
+
+    // Track user interactions
+    const handleUserInteraction = () => {
+      interactionCount++;
+      lastActivityTime = new Date();
+      updateMetrics();
+    };
+
+    // Update metrics state
+    const updateMetrics = () => {
+      const currentTime = new Date();
+      const sessionDuration = Math.floor((currentTime.getTime() - sessionStart.getTime()) / 1000);
+
+      setMetrics({
+        lastActive: lastActivityTime,
+        sessionDuration,
+        pageViews: pageViewCount,
+        interactions: interactionCount,
+      });
+    };
+
+    // Set up event listeners
+    window.addEventListener('click', handleUserInteraction);
+    window.addEventListener('keypress', handleUserInteraction);
+    window.addEventListener('scroll', handleUserInteraction);
+    window.addEventListener('mousemove', handleUserInteraction);
+
+    // Clean up
+    return () => {
+      window.removeEventListener('click', handleUserInteraction);
+      window.removeEventListener('keypress', handleUserInteraction);
+      window.removeEventListener('scroll', handleUserInteraction);
+      window.removeEventListener('mousemove', handleUserInteraction);
+    };
+  }, [user]);
 
   const showBadgeNotification = (badge: Badge) => {
+    if (!badge) return;
+    
     toast({
       title: `🏆 New Badge: ${badge.name}`,
       description: badge.description,
@@ -79,28 +139,28 @@ export function EngagementProvider({ children }: { children: React.ReactNode }) 
   };
 
   const checkForNewAchievements = async () => {
-    if (!userId || isChecking) return;
+    if (!user || isChecking) return;
 
     setIsChecking(true);
     try {
       // Check for new badges
-      const newBadgeIds = await engagementService.checkBadgeEligibility(userId);
+      const newBadgeIds = await engagementService.checkBadgeEligibility(user.sub);
 
       if (newBadgeIds.length > 0) {
         // Get badge details
         const earnedBadges = newBadgeIds
           .map((id) => BADGES.find((badge) => badge.id === id))
-          .filter(Boolean) as Badge[];
+          .filter((badge): badge is Badge => badge !== undefined);
 
         // Update state
         setNewBadges((prev) => [...prev, ...earnedBadges]);
 
         // Refresh user badges
-        const updatedBadges = await engagementService.getUserBadges(userId);
+        const updatedBadges = await engagementService.getUserBadges(user.sub);
         setBadges(updatedBadges);
 
         // Refresh points
-        const updatedPoints = await engagementService.getUserPoints(userId);
+        const updatedPoints = await engagementService.getUserPoints(user.sub);
         setPoints(updatedPoints);
 
         // Show notification for the first badge
@@ -116,10 +176,10 @@ export function EngagementProvider({ children }: { children: React.ReactNode }) 
   };
 
   const trackAchievement = async (type: string, count: number = 1) => {
-    if (!userId) return;
+    if (!user) return;
 
     try {
-      await engagementService.trackAchievement(userId, type, count);
+      await engagementService.trackAchievement(user.sub, type, count);
       await checkForNewAchievements();
     } catch (error) {
       console.error(`Error tracking achievement ${type}:`, error);
@@ -133,7 +193,7 @@ export function EngagementProvider({ children }: { children: React.ReactNode }) 
         points,
         newBadges,
         recommendations,
-        isLoading,
+        isLoading: loading || authLoading,
         isChecking,
         showBadgeNotification,
         checkForNewAchievements,

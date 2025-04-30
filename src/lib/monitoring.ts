@@ -1,37 +1,68 @@
-import { NodeSDK } from '@opentelemetry/sdk-node';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
-import { Resource } from '@opentelemetry/resources';
-import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
-import { PrismaInstrumentation } from '@prisma/instrumentation';
-
-const sdk = new NodeSDK({
-  resource: new Resource({
-    [SemanticResourceAttributes.SERVICE_NAME]: 'vibewell-app',
-    [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: process.env.NODE_ENV || 'development',
-  }),
-  traceExporter: new OTLPTraceExporter({
-    url: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
-    headers: {
-      'api-key': process.env.OTEL_EXPORTER_OTLP_HEADERS_API_KEY,
-    },
-  }),
-  instrumentations: [getNodeAutoInstrumentations(), new PrismaInstrumentation()],
-});
+import type { Event } from '@sentry/types';
+import * as Sentry from '@sentry/nextjs';
+import { ProfilingIntegration } from '@sentry/profiling-node';
 
 export function initializeMonitoring() {
-  if (process.env.NODE_ENV === 'production') {
-    sdk
-      .start()
-      .then(() => console.log('Monitoring initialized'))
-      .catch((error) => console.error('Error initializing monitoring:', error));
+  if (process.env['NEXT_PUBLIC_VERCEL_ENV'] !== 'development') {
+    Sentry.init({
+      dsn: process.env['SENTRY_DSN'],
+      environment: process.env['NEXT_PUBLIC_VERCEL_ENV'],
+      integrations: [
+        new ProfilingIntegration(),
+      ],
+      tracesSampleRate: 1.0,
+      profilesSampleRate: 1.0,
+      
+      // Performance monitoring
+      enableTracing: true,
+      
+      // Only send errors in production
+      beforeSend(event: Event): Event | null {
+        if (process.env['NEXT_PUBLIC_VERCEL_ENV'] === 'production') {
+          return event;
+        }
+        return null;
+      },
+      
+      // Ignore specific errors
+      ignoreErrors: [
+        'ResizeObserver loop limit exceeded',
+        'Network request failed',
+      ],
+    });
   }
 }
 
-process.on('SIGTERM', () => {
-  sdk
-    .shutdown()
-    .then(() => console.log('Monitoring shut down'))
-    .catch((error) => console.error('Error shutting down monitoring:', error))
-    .finally(() => process.exit(0));
-});
+export function captureException(error: Error, context?: Record<string, any>) {
+  if (process.env['NEXT_PUBLIC_VERCEL_ENV'] !== 'development') {
+    Sentry.captureException(error, {
+      extra: context,
+    });
+  }
+  console.error('Error:', error, context);
+}
+
+export function setUserContext(user: { id: string; email?: string }) {
+  if (process.env['NEXT_PUBLIC_VERCEL_ENV'] !== 'development') {
+    Sentry.setUser({
+      id: user.id,
+      email: user.email,
+    });
+  }
+}
+
+export function clearUserContext() {
+  if (process.env['NEXT_PUBLIC_VERCEL_ENV'] !== 'development') {
+    Sentry.setUser(null);
+  }
+}
+
+export function startTransaction(name: string, op: string) {
+  if (process.env['NEXT_PUBLIC_VERCEL_ENV'] !== 'development') {
+    return Sentry.startTransaction({
+      name,
+      op,
+    });
+  }
+  return null;
+}

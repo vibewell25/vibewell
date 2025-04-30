@@ -1,10 +1,10 @@
 import React from 'react';
-import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { FaGoogle, FaFacebook, FaTwitter, FaLinkedin, FaGithub } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import { cn } from '@/lib/utils';
 
-export type SocialProvider = 'google' | 'facebook' | 'twitter' | 'linkedin' | 'github';
+export type SocialProvider = 'google-oauth2' | 'facebook' | 'github';
 
 interface SocialLoginProviderConfig {
   id: SocialProvider;
@@ -47,94 +47,31 @@ const providers: Record<SocialProvider, SocialLoginProviderConfig> = {
   },
 };
 
-export interface SocialButtonProps {
-  providerId: SocialProvider;
-  className?: string;
-  buttonText?: string;
-  onSuccess?: () => void;
-  onError?: (error: Error) => void;
-  callbackUrl?: string;
+export interface SocialLoginProps {
+  provider: SocialProvider;
+  label: string;
+  icon: React.ReactNode;
 }
 
-export const SocialButton: React.FC<SocialButtonProps> = ({
-  providerId,
-  className,
-  buttonText,
-  onSuccess,
-  onError,
-  callbackUrl = window.location.origin,
-}) => {
-  const provider = providers[providerId];
-  const Icon = provider.icon;
-  const displayText = buttonText || `Sign in with ${provider.name}`;
-
-  const handleSignIn = async () => {
-    try {
-      const result = await signIn(providerId, {
-        callbackUrl,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        onError?.(new Error(result.error));
-      } else if (result?.url && onSuccess) {
-        onSuccess();
-      }
-    } catch (error) {
-      onError?.(error instanceof Error ? error : new Error('An unknown error occurred'));
-    }
+export default function SocialLogin({ provider, label, icon }: SocialLoginProps) {
+  const router = useRouter();
+  
+  const handleLogin = async () => {
+    const searchParams = new URLSearchParams({
+      connection: provider,
+      returnTo: window.location.origin + (router.query['returnTo'] || '/'),
+    });
+    
+    window.location.href = `/api/auth/login?${searchParams.toString()}`;
   };
 
   return (
     <button
-      type="button"
-      onClick={handleSignIn}
-      className={cn(
-        'flex items-center justify-center gap-2 rounded-md px-4 py-2 font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-        provider.className,
-        className,
-      )}
-      aria-label={`Sign in with ${provider.name}`}
+      onClick={handleLogin}
+      className="flex items-center justify-center gap-2 w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors"
     >
-      <Icon aria-hidden="true" className="h-5 w-5" />
-      <span>{displayText}</span>
+      {icon}
+      <span>Continue with {label}</span>
     </button>
   );
-};
-
-export interface SocialLoginProps {
-  providers?: SocialProvider[];
-  className?: string;
-  buttonClassName?: string;
-  vertical?: boolean;
-  onSuccess?: () => void;
-  onError?: (error: Error) => void;
-  callbackUrl?: string;
 }
-
-export const SocialLogin: React.FC<SocialLoginProps> = ({
-  providers: selectedProviders = ['google', 'facebook', 'github'],
-  className,
-  buttonClassName,
-  vertical = false,
-  onSuccess,
-  onError,
-  callbackUrl,
-}) => {
-  return (
-    <div className={cn('flex gap-3', vertical ? 'flex-col' : 'flex-row flex-wrap', className)}>
-      {selectedProviders.map((providerId) => (
-        <SocialButton
-          key={providerId}
-          providerId={providerId}
-          className={buttonClassName}
-          onSuccess={onSuccess}
-          onError={onError}
-          callbackUrl={callbackUrl}
-        />
-      ))}
-    </div>
-  );
-};
-
-export default SocialLogin;

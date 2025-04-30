@@ -1,143 +1,162 @@
 # Vibewell AR & Skin Analysis
 
-A modern web application that provides AR try-on capabilities and AI-powered skin analysis.
+A modern web application for virtual try-on and skin analysis using augmented reality and machine learning.
 
 ## Features
 
-### Skin Analysis
-- Real-time skin condition analysis
-- ML-based detection of:
-  - Acne
-  - Dryness
-  - Oiliness
-  - Pigmentation
-  - Sensitivity
-  - Aging signs
-- Personalized skincare recommendations
-- Secure image processing
-
 ### AR Try-On
-- Virtual product try-on
-- Real-time face tracking
-- Support for:
-  - Makeup products
-  - Accessories
-  - Skincare visualization
-- Adjustable intensity and placement
-- Performance optimization
-- Mobile-first design
+- Real-time facial tracking and mesh generation
+- 3D model overlay with accurate positioning
+- Product visualization with customizable transformations
+- Support for makeup and accessories
+
+### Skin Analysis
+- Advanced skin condition detection
+- Personalized recommendations
+- Progress tracking
+- Detailed analytics
 
 ## Technology Stack
 
-- **Frontend Framework**: Next.js 13
-- **3D Rendering**: Three.js, React Three Fiber
-- **AR/VR**: WebXR API
-- **Face Detection**: TensorFlow.js, Face-API.js
-- **UI Components**: Material-UI
-- **State Management**: Zustand
+- **Frontend**: Next.js 14, React 18, Three.js
+- **Backend**: Next.js API Routes, Prisma ORM
+- **Database**: PostgreSQL
+- **Authentication**: NextAuth.js
+- **AR/ML**: TensorFlow.js, Face-API.js
 - **Testing**: Jest, React Testing Library
+- **Deployment**: Vercel
 
 ## Prerequisites
 
-- Node.js 18+
-- Modern browser with WebGL and WebXR support
-- Camera access for AR features
-- Gyroscope for device orientation
+- Node.js 18.0.0 or higher
+- PostgreSQL 14.0 or higher
+- Modern browser with WebGL and camera support
+- Device with gyroscope (for mobile AR features)
 
 ## Installation
 
 1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/vibewell.git
-cd vibewell
-```
+   ```bash
+   git clone https://github.com/yourusername/vibewell.git
+   cd vibewell
+   ```
 
 2. Install dependencies:
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
-3. Create a `.env.local` file:
-```env
-NEXT_PUBLIC_API_URL=your_api_url
-NEXT_PUBLIC_STORAGE_URL=your_storage_url
-```
+3. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+   Fill in the required environment variables in `.env`
 
-4. Start the development server:
-```bash
-npm run dev
-```
+4. Set up the database:
+   ```bash
+   npx prisma migrate dev
+   ```
 
-## Usage
-
-### Skin Analysis
-
-1. Navigate to the skin analysis page
-2. Grant camera access when prompted
-3. Position your face in the frame
-4. Click "Analyze Skin" to start the analysis
-5. View results and recommendations
-
-### AR Try-On
-
-1. Browse available products
-2. Select a product to try on
-3. Grant camera access
-4. Adjust product placement and intensity
-5. Capture and share your look
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
 ## Development
+
+### Code Structure
+```
+src/
+├── app/              # Next.js 14 App Router
+├── components/       # React components
+│   ├── ar/          # AR-related components
+│   └── ui/          # Common UI components
+├── contexts/        # React contexts
+├── hooks/           # Custom hooks
+├── lib/             # Utility functions
+├── types/           # TypeScript types
+└── tests/           # Test files
+```
 
 ### Testing
 ```bash
 # Run all tests
 npm test
 
-# Run tests with coverage
-npm run test:coverage
-
-# Watch mode
+# Run tests in watch mode
 npm run test:watch
+
+# Generate coverage report
+npm run test:coverage
 ```
 
 ### Linting
 ```bash
+# Run ESLint
 npm run lint
-```
-
-### Building for Production
-```bash
-npm run build
 ```
 
 ## Performance Optimization
 
-The application includes several performance optimization features:
-
-- Lazy loading of 3D models
-- Texture compression
-- Memory management
-- Frame rate optimization
-- Network request batching
-- Asset caching
+- Lazy loading of AR and ML models
+- WebGL context management
+- Asset optimization
+- Caching strategies
+- Rate limiting
 
 ## Security Measures
 
-- Secure image processing
-- Data sanitization
+- HTTPS enforcement
+- CSP headers
+- Rate limiting
 - Input validation
-- Resource cleanup
-- Error handling
-- Privacy protection
+- Authentication checks
+- CORS configuration
 
 ## Browser Support
 
-- Chrome 90+
-- Firefox 89+
-- Safari 15+
-- Edge 90+
-- Chrome for Android 90+
-- Safari iOS 15+
+- Chrome (latest 2 versions)
+- Firefox (latest 2 versions)
+- Safari (latest 2 versions)
+- Edge (latest 2 versions)
+
+Mobile browsers:
+- iOS Safari
+- Chrome for Android
+
+## Deployment
+
+### Vercel Deployment
+
+1. Install Vercel CLI:
+   ```bash
+   npm i -g vercel
+   ```
+
+2. Deploy:
+   ```bash
+   vercel
+   ```
+
+### Environment Variables
+
+Required environment variables for production:
+- `DATABASE_URL`
+- `NEXTAUTH_URL`
+- `NEXTAUTH_SECRET`
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_REGION`
+- `AWS_BUCKET_NAME`
+- `REDIS_URL`
+
+### Database Migration
+
+```bash
+npx prisma migrate deploy
+```
 
 ## Contributing
 
@@ -153,4 +172,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-For support, email support@vibewell.com or join our Slack channel.
+For support, please contact:
+- Email: support@vibewell.com
+- Discord: [Vibewell Community](https://discord.gg/vibewell)
+- Twitter: [@vibewell](https://twitter.com/vibewell)

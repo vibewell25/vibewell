@@ -1,132 +1,64 @@
+import { useUser } from '@auth0/nextjs-auth0/client';
 import { useState } from 'react';
-import { Button } from '@/components/ui/Button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from '@/components/ui/Card';
-import { Mail, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
-import { useSession } from 'next-auth/react';
 
-interface EmailVerificationProps {
-  email: string;
-  onSuccess?: () => void;
-}
+export default function EmailVerification() {
+  const { user, isLoading } = useUser();
+  const [isSending, setIsSending] = useState(false);
+  const [message, setMessage] = useState('');
 
-export function EmailVerification({ email, onSuccess }: EmailVerificationProps) {
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const { data: session } = useSession();
-
-  const handleSendVerification = async () => {
+  const sendVerificationEmail = async () => {
+    setIsSending(true);
     try {
-      setSending(true);
-      setError(null);
-
       const response = await fetch('/api/auth/verify-email', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId: session?.user?.id }),
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to send verification email');
+      
+      if (response.ok) {
+        setMessage('Verification email sent! Please check your inbox.');
+      } else {
+        const data = await response.json();
+        setMessage(data.error || 'Failed to send verification email');
       }
-
-      setSent(true);
-      toast({
-        title: 'Verification Email Sent',
-        description: 'Please check your inbox for the verification link',
-      });
-
-      if (onSuccess) {
-        onSuccess();
-      }
-    } catch (err: any) {
-      console.error('Error sending verification email:', err);
-      setError(err.message || 'Failed to send verification email');
-      toast({
-        title: 'Error',
-        description: 'Failed to send verification email',
-        variant: 'destructive',
-      });
+    } catch (error) {
+      setMessage('An error occurred while sending the verification email');
     } finally {
-      setSending(false);
+      setIsSending(false);
     }
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user || user.email_verified) {
+    return null;
+  }
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Mail className="h-5 w-5" />
-          Email Verification
-        </CardTitle>
-        <CardDescription>Verify your email address to ensure account security</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col items-center space-y-4 py-4">
-        {sent ? (
-          <div className="flex flex-col items-center space-y-4 text-center">
-            <CheckCircle className="h-16 w-16 text-green-500" />
-            <div>
-              <h3 className="text-lg font-medium">Verification Email Sent</h3>
-              <p className="mt-1 text-muted-foreground">
-                We've sent a verification email to <span className="font-medium">{email}</span>.
-                Please check your inbox and click on the verification link.
-              </p>
-            </div>
-          </div>
-        ) : error ? (
-          <div className="flex flex-col items-center space-y-4 text-center">
-            <AlertCircle className="h-16 w-16 text-red-500" />
-            <div>
-              <h3 className="text-lg font-medium">Verification Failed</h3>
-              <p className="mt-1 text-muted-foreground">{error}</p>
-            </div>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center space-y-4 text-center">
-            <Mail className="text-primary h-16 w-16" />
-            <div>
-              <h3 className="text-lg font-medium">Verify Your Email</h3>
-              <p className="mt-1 text-muted-foreground">
-                Click the button below to send a verification email to{' '}
-                <span className="font-medium">{email}</span>
-              </p>
-            </div>
-          </div>
-        )}
-      </CardContent>
-      <CardFooter className="flex justify-center">
-        {!sent ? (
-          <Button onClick={handleSendVerification} disabled={sending} className="w-full sm:w-auto">
-            {sending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Sending...
-              </>
-            ) : (
-              <>
-                <Mail className="mr-2 h-4 w-4" />
-                Send Verification Email
-              </>
+    <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+      <div className="flex">
+        <div className="flex-shrink-0">
+          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <div className="ml-3">
+          <p className="text-sm text-yellow-700">
+            Please verify your email address.
+            {!isSending && (
+              <button
+                onClick={sendVerificationEmail}
+                className="ml-2 font-medium text-yellow-700 underline hover:text-yellow-600"
+              >
+                Resend verification email
+              </button>
             )}
-          </Button>
-        ) : (
-          <Button variant="outline" onClick={handleSendVerification} className="w-full sm:w-auto">
-            Resend Verification Email
-          </Button>
-        )}
-      </CardFooter>
-    </Card>
+          </p>
+          {message && (
+            <p className="mt-2 text-sm text-yellow-700">{message}</p>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

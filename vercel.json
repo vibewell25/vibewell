@@ -1,15 +1,83 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "builds": [
+  "regions": ["iad1"],
+  "functions": {
+    "api/**/*.ts": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
+  "headers": [
     {
-      "src": "package.json",
-      "use": "@vercel/next"
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.vercel-insights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.amazonaws.com; font-src 'self' data:; connect-src 'self' https://*.vercel.app https://*.vercel.com https://*.amazonaws.com https://*.auth0.com; frame-ancestors 'none'; upgrade-insecure-requests"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
     }
   ],
   "env": {
-    "PRISMA_CLIENT_ENGINE_TYPE": "dataproxy"
-  }
+    "NEXTAUTH_URL": "https://vibewell.vercel.app",
+    "NEXTAUTH_SECRET": "@nextauth_secret",
+    "DATABASE_URL": "@database_url",
+    "GOOGLE_CLIENT_ID": "@google_client_id",
+    "GOOGLE_CLIENT_SECRET": "@google_client_secret",
+    "AWS_ACCESS_KEY_ID": "@aws_access_key_id",
+    "AWS_SECRET_ACCESS_KEY": "@aws_secret_access_key",
+    "AWS_REGION": "@aws_region",
+    "AWS_BUCKET_NAME": "@aws_bucket_name",
+    "REDIS_URL": "@redis_url",
+    "RATE_LIMIT_WINDOW": "60000",
+    "RATE_LIMIT_MAX_REQUESTS": "100",
+    "CORS_ORIGINS": "https://vibewell.vercel.app",
+    "CSP_CONNECT_SOURCES": "'self' https://storage.googleapis.com https://*.amazonaws.com https://*.auth0.com",
+    "CSP_IMG_SOURCES": "'self' data: blob: https://*.amazonaws.com",
+    "CSP_MEDIA_SOURCES": "'self' https://*.amazonaws.com"
+  },
+  "crons": [
+    {
+      "path": "/api/cron/health-check",
+      "schedule": "*/15 * * * *"
+    }
+  ]
 } 

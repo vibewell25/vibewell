@@ -1,54 +1,74 @@
-# Use Node.js v18 LTS as base image
-FROM node:23-alpine AS base
-
-# Install dependencies only when needed
-FROM base AS deps
+# Stage 1: Dependencies
+FROM node:18-alpine AS deps
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json package-lock.json* ./
+# Install dependencies required for building
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    git
+
+# Install dependencies with cache optimization
+COPY package*.json ./
+COPY prisma ./prisma
 RUN npm ci
 
-# Rebuild the source code only when needed
-FROM base AS builder
+# Stage 2: Builder
+FROM node:18-alpine AS builder
 WORKDIR /app
+
+# Copy deps from previous stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY --from=deps /app/package*.json ./
 
-# Environment variables must be present at build time
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
-ARG NEXT_PUBLIC_API_URL
-ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+# Copy necessary files
+COPY next.config.js .
+COPY tsconfig.json .
+COPY prisma ./prisma
+COPY public ./public
+COPY src ./src
 
-# Next.js collects anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line if you want to disable telemetry during the build.
-ENV NEXT_TELEMETRY_DISABLED 1
-
-# Build Next.js based on the preferred package manager
+# Generate Prisma client and build
+RUN npx prisma generate
 RUN npm run build
 
-# Production image, copy all the files and run next
-FROM base AS runner
+# Stage 3: Runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+# Install production dependencies only
+COPY --from=builder /app/package*.json ./
+RUN npm ci --only=production && \
+    # Clean npm cache
+    npm cache clean --force && \
+    # Add non-root user for security
+    addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs && \
+    # Set correct permissions
+    chown -R nextjs:nodejs /app
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Copy necessary files from builder
+COPY --from=builder --chown=nextjs:nodejs /app/next.config.js .
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
 
-COPY --from=builder /app/public ./public
+# Set environment variables
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
 
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
+# Switch to non-root user
 USER nextjs
 
+# Expose port
 EXPOSE 3000
 
-ENV PORT 3000
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
 
-CMD ["node", "server.js"] 
+# Start production server
+CMD ["npm", "start"] 

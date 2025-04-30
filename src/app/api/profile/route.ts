@@ -1,60 +1,71 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { prisma } from '@/lib/database/client';
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAuth, getUserId } from '@/lib/auth-helpers';
+import { prisma } from '@/lib/prisma';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const session = await requireAuth(req);
+  if (session instanceof NextResponse) {
+    return session;
+  }
+
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const profile = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: {
-        fullName: true,
-        phone: true,
-        avatarUrl: true,
-        emailVerified: true,
-        role: true,
+    const userId = getUserId(session);
+    const profile = await prisma.userProfile.findUnique({
+      where: { userId },
+      include: {
+        preferences: true,
+        settings: true,
       },
     });
 
     if (!profile) {
-      return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
+      return new NextResponse(
+        JSON.stringify({ error: 'Profile not found' }),
+        { status: 404, headers: { 'Content-Type': 'application/json' } }
+      );
     }
 
-    return NextResponse.json(profile);
+    return new NextResponse(
+      JSON.stringify(profile),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
   } catch (error) {
     console.error('Error fetching profile:', error);
-    return NextResponse.json({ error: 'Failed to fetch profile' }, { status: 500 });
+    return new NextResponse(
+      JSON.stringify({ error: 'Internal Server Error' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 }
 
-export async function PUT(request: Request) {
+export async function PUT(req: NextRequest) {
+  const session = await requireAuth(req);
+  if (session instanceof NextResponse) {
+    return session;
+  }
+
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const userId = getUserId(session);
+    const data = await req.json();
 
-    const data = await request.json();
-    const { fullName, phone, avatarUrl } = data;
-
-    const updatedProfile = await prisma.user.update({
-      where: { id: session.user.id },
-      data: {
-        fullName,
-        phone,
-        avatarUrl,
-        updatedAt: new Date(),
+    const updatedProfile = await prisma.userProfile.update({
+      where: { userId },
+      data,
+      include: {
+        preferences: true,
+        settings: true,
       },
     });
 
-    return NextResponse.json(updatedProfile);
+    return new NextResponse(
+      JSON.stringify(updatedProfile),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
   } catch (error) {
     console.error('Error updating profile:', error);
-    return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 });
+    return new NextResponse(
+      JSON.stringify({ error: 'Internal Server Error' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 }

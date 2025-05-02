@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content ### **Incorporating These Principles into the Project**
+
+For the **Vibewell** app, these principles can be applied as follows:
+
+1. **KISS and YAGNI**: Keep all features simple and add only those necessary for your current needs. Don't over-engineer.
+2. **DRY and SOLID**: Avoid code duplication by using components, functions, and services. Follow SOLID principles to design flexible, easy-to-maintain code.
+3. **Security**: Implement strong authentication (e.g., JWT tokens), use environment variables for sensitive data, and protect routes and APIs with role-based access control.
+4. **TDD**: Write tests for your features before implementing them, ensuring your app is robust and secure.
+5. **CI/CD**: Set up a continuous integration pipeline to automate testing and deployment, ensuring that only secure, well-tested code gets deployed.
+6. **Design for Change**: Keep your system flexible, modular, and easy to update, ensuring you can handle future requirements or security patches.
+
+By applying these principles, you’ll ensure that the app is not only high-quality but also secure, scalable, and maintainable in the long run. 

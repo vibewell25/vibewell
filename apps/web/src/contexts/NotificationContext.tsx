@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 
 // Notification type definitions
 export type NotificationType = 'like' | 'comment' | 'follow' | 'message' | 'system';

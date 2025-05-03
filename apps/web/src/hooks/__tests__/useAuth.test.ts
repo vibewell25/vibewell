@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { useAuth } from '../useAuth';
+import { useAuth } from '../use-auth';
 import { useAuth0 } from '@auth0/auth0-react';
 
 // Mock Auth0 hook

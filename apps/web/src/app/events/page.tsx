@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
 import { Event, EventCategory } from '@/types/events';
 import { getEvents, registerForEvent } from '@/lib/api/events';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 import { EventRecommendations } from '@/components/event-recommendations';
 import { CommunityEventsSection } from '@/components/community-events-section';

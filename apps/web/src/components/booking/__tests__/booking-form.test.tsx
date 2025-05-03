@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BookingForm } from '@/components/booking/booking-form';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 
 // Mock authentication context
 jest?.mock('@/contexts/auth-context', () => ({

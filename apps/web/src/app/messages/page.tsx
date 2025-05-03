@@ -1,7 +1,7 @@
 'use client';;
 import { useState, useEffect, Suspense } from 'react';
 import { Layout } from '@/components/layout';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { useSearchParams } from 'next/navigation';
 import { Messaging, type Conversation as UIConversation } from '@/components/messaging';
 import { toast, Toaster } from 'react-hot-toast';

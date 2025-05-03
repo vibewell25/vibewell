@@ -1,3 +1,3 @@
-import { Loader2 } from 'lucide-react';
+import * as Icons from 'lucide-react';
 
-export {};
+export { Icons };

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { SafeHeader } from '../SafeHeader';
 import { Header } from '../Header';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { axe } from 'jest-axe';
 
 // Mock the auth hook

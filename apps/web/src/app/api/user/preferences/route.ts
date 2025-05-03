@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
-import { isAuthenticated, getAuthState } from '@/hooks/use-unified-auth';
+import { isAuthenticated, getAuthState } from '@/hooks/useAuth';
 
 import { prisma } from '@/lib/prisma';
 

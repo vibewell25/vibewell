@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { ReactionType } from '@/components/post-reaction';
 import { Post } from '@/components/post';
 import { UserAvatar } from '@/components/user-avatar';

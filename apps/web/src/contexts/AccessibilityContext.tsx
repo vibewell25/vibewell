@@ -1,5 +1,5 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useAccessibility, AccessibilityPreferences, LanguageOption } from '../hooks/useAccessibility';
+import { useAccessibility, AccessibilityPreferences, LanguageOption } from '../hooks/use-accessibility';
 
 interface AccessibilityContextType {
   preferences: AccessibilityPreferences;

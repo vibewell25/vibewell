@@ -10,22 +10,20 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '^@components/(.*)$': '<rootDir>/src/components/$1',
-    '^@lib/(.*)$': '<rootDir>/src/lib/$1',
-    '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
-    '^@contexts/(.*)$': '<rootDir>/src/contexts/$1',
-    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
-    '^@types/(.*)$': '<rootDir>/src/types/$1',
-    '^@styles/(.*)$': '<rootDir>/src/styles/$1',
-    '^@public/(.*)$': '<rootDir>/public/$1',
+    '^@/(.*)$': '<rootDir>/apps/web/src/$1',
+    '^ui/(.*)$': '<rootDir>/packages/ui/$1',
+    '^services/(.*)$': '<rootDir>/packages/services/$1',
+    '^types/(.*)$': '<rootDir>/packages/types/$1',
+    '^config/(.*)$': '<rootDir>/packages/config/$1',
+    '^test-utils/(.*)$': '<rootDir>/packages/test-utils/$1',
+    '^public/(.*)$': '<rootDir>/public/$1',
   },
   testMatch: [
-    '<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
-    '<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}',
+    '<rootDir>/apps/web/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
+    '<rootDir>/apps/web/src/**/*.{spec,test}.{js,jsx,ts,tsx}',
   ],
   collectCoverageFrom: [
-    'src/**/*.{js,jsx,ts,tsx}',
+    'apps/web/src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',
     '!src/types/**/*',
     '!src/**/*.stories.{js,jsx,ts,tsx}',
@@ -60,4 +58,4 @@ const customJestConfig = {
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
-module?.exports = createJestConfig(customJestConfig);
+module.exports = createJestConfig(customJestConfig);

@@ -2,7 +2,7 @@ import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import { Event } from '@/types/events';
 import { getEvents } from '@/lib/api/events';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { EventShareCard } from './event-share-card';
 import { parseISO } from 'date-fns';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';

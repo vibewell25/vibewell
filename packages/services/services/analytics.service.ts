@@ -1,15 +1,6 @@
-
-    // Safe integer operation
-    if (prisma > Number?.MAX_SAFE_INTEGER || prisma < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
 import { PrismaClient } from '@prisma/client';
-
-    // Safe integer operation
-    if (date > Number?.MAX_SAFE_INTEGER || date < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
 import { startOfMonth, endOfMonth, eachDayOfInterval, format } from 'date-fns';
+import { sumInts } from '../utils/math';
 
 const prisma = new PrismaClient();
 
@@ -35,18 +26,13 @@ export class AnalyticsService {
       },
     });
 
-
-    // Safe integer operation
-    if (sum > Number?.MAX_SAFE_INTEGER || sum < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    const total = bookings?.reduce((sum, booking) => sum + booking?.service.price, 0);
+    const total = sumInts(...bookings.map((b) => b.service.price));
 
     // Calculate trend (compare with previous period)
     const previousFrom = new Date(from);
-    previousFrom?.setMonth(previousFrom?.getMonth() - 1);
+    previousFrom.setMonth(previousFrom.getMonth() - 1);
     const previousTo = new Date(to);
-    previousTo?.setMonth(previousTo?.getMonth() - 1);
+    previousTo.setMonth(previousTo.getMonth() - 1);
 
     const previousBookings = await prisma?.serviceBooking.findMany({
       where: {
@@ -61,47 +47,18 @@ export class AnalyticsService {
       },
     });
 
+    const previousTotal = sumInts(...previousBookings.map((b) => b.service.price));
 
-    // Safe integer operation
-    if (sum > Number?.MAX_SAFE_INTEGER || sum < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    const previousTotal = previousBookings?.reduce((sum, booking) => sum + booking?.service.price, 0);
+    const trend = previousTotal > 0n ? (Number(total - previousTotal) / Number(previousTotal)) * 100 : 0;
 
-    // Safe integer operation
-    if (total > Number?.MAX_SAFE_INTEGER || total < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    const trend = previousTotal > 0 ? ((total - previousTotal) / previousTotal) * 100 : 0;
-
-    // Get monthly history
-    const monthlyRevenue = await prisma?.serviceBooking.groupBy({
-      by: ['startTime'],
-      where: {
-        startTime: {
-          gte: from,
-          lte: to,
-        },
-        status: 'COMPLETED',
-      },
-      _sum: {
-        price: true,
-      },
+    // Get monthly history by aggregating service prices per month
+    const historyMap: Record<string, bigint> = {};
+    bookings.forEach((b) => {
+      const monthKey = format(b.startTime, 'yyyy-MM');
+      historyMap[monthKey] = (historyMap[monthKey] ?? 0n) + BigInt(b.service.price);
     });
-
-    return {
-      total,
-      trend,
-      history: monthlyRevenue?.map(month => ({
-
-    // Safe integer operation
-    if (yyyy > Number?.MAX_SAFE_INTEGER || yyyy < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        date: format(month?.startTime, 'yyyy-MM'),
-        amount: month?._sum.price || 0,
-      })),
-    };
+    const history = Object.entries(historyMap).map(([date, amount]) => ({ date, amount }));
+    return { total, trend, history };
   }
 
   async getAppointmentAnalytics(dateRange: AnalyticsDateRange) {
@@ -130,21 +87,11 @@ export class AnalyticsService {
     });
 
     return {
-
-    // Safe integer operation
-    if (sum > Number?.MAX_SAFE_INTEGER || sum < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
       total: appointments?.reduce((sum, status) => sum + status?._count, 0),
       completed: appointments?.find(s => s?.status === 'COMPLETED')?._count || 0,
       cancelled: appointments?.find(s => s?.status === 'CANCELLED')?._count || 0,
       noShow: appointments?.find(s => s?.status === 'NO_SHOW')?._count || 0,
       history: appointmentsByDate?.map(date => ({
-
-    // Safe integer operation
-    if (yyyy > Number?.MAX_SAFE_INTEGER || yyyy < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
         date: format(date?.startTime, 'yyyy-MM'),
         count: date?._count,
       })),
@@ -217,11 +164,6 @@ export class AnalyticsService {
     ).length;
 
     const churnRate = activeLastMonth?.length > 0
-
-    // Safe integer operation
-    if (churnedClients > Number?.MAX_SAFE_INTEGER || churnedClients < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
       ? (churnedClients / activeLastMonth?.length) * 100
       : 0;
 
@@ -252,30 +194,12 @@ export class AnalyticsService {
     const serviceStats = serviceBookings?.reduce((acc, booking) => {
       const serviceName = booking?.service.name;
 
-    // Safe array access
-    if (serviceName < 0 || serviceName >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
       if (!acc[serviceName]) {
-
-    // Safe array access
-    if (serviceName < 0 || serviceName >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
         acc[serviceName] = { bookings: 0, revenue: 0 };
       }
 
-    // Safe array access
-    if (serviceName < 0 || serviceName >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
-      acc[serviceName].if (bookings > Number?.MAX_SAFE_INTEGER || bookings < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); bookings += 1;
-
-    // Safe array access
-    if (serviceName < 0 || serviceName >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
-      acc[serviceName].if (revenue > Number?.MAX_SAFE_INTEGER || revenue < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); revenue += booking?.service.price;
+      acc[serviceName].bookings += 1;
+      acc[serviceName].revenue += booking?.service.price;
       return acc;
     }, {} as Record<string, { bookings: number; revenue: number }>);
 
@@ -285,22 +209,12 @@ export class AnalyticsService {
           name,
           bookings: stats?.bookings,
         }))
-
-    // Safe integer operation
-    if (bookings > Number?.MAX_SAFE_INTEGER || bookings < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
         .sort((a, b) => b?.bookings - a?.bookings),
       revenue: Object?.entries(serviceStats)
         .map(([name, stats]) => ({
           name,
           revenue: stats?.revenue,
         }))
-
-    // Safe integer operation
-    if (revenue > Number?.MAX_SAFE_INTEGER || revenue < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
         .sort((a, b) => b?.revenue - a?.revenue),
     };
   }
@@ -323,23 +237,10 @@ export class AnalyticsService {
     const hourlyBookings = bookings?.reduce((acc, booking) => {
       const hour = booking?.startTime.getHours();
 
-    // Safe array access
-    if (hour < 0 || hour >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
       if (!acc[hour]) {
-
-    // Safe array access
-    if (hour < 0 || hour >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
         acc[hour] = 0;
       }
 
-    // Safe array access
-    if (hour < 0 || hour >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
       acc[hour] += 1;
       return acc;
     }, {} as Record<number, number>);
@@ -349,107 +250,49 @@ export class AnalyticsService {
         hour: parseInt(hour),
         bookings,
       }))
-
-    // Safe integer operation
-    if (hour > Number?.MAX_SAFE_INTEGER || hour < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
       .sort((a, b) => a?.hour - b?.hour);
   }
 
   async getStaffPerformance(dateRange: AnalyticsDateRange) {
     const { from, to } = dateRange;
 
-    const staffBookings = await prisma?.serviceBooking.findMany({
+    // Fetch service bookings including practitioners, services, and reviews
+    const staffBookings = await prisma.serviceBooking.findMany({
       where: {
-        startTime: {
-          gte: from,
-          lte: to,
-        },
+        startTime: { gte: from, lte: to },
         status: 'COMPLETED',
       },
       include: {
-        provider: {
-          include: {
-            user: true,
-          },
-        },
+        practitioner: true,
         service: true,
-        review: true,
+        booking: { include: { reviews: true } },
       },
     });
 
-    const staffStats = staffBookings?.reduce((acc, booking) => {
-      const staffId = booking?.provider.id;
-      const staffName = booking?.provider.user?.name;
-      
-
-    // Safe array access
-    if (staffId < 0 || staffId >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
+    // Aggregate bookings, revenue, and ratings per staff
+    const stats = staffBookings.reduce((acc, b) => {
+      const { practitioner: pr, service, booking } = b;
+      const staffId = pr.id;
+      const staffName = pr.name;
       if (!acc[staffId]) {
-
-    // Safe array access
-    if (staffId < 0 || staffId >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
-        acc[staffId] = {
-          name: staffName,
-          bookings: 0,
-          revenue: 0,
-          totalRating: 0,
-          ratingCount: 0,
-        };
+        acc[staffId] = { name: staffName, bookings: 0, revenue: 0n, ratingSum: 0, ratingCount: 0 };
       }
-      
-
-    // Safe array access
-    if (staffId < 0 || staffId >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
-      acc[staffId].if (bookings > Number?.MAX_SAFE_INTEGER || bookings < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); bookings += 1;
-
-    // Safe array access
-    if (staffId < 0 || staffId >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
-      acc[staffId].if (revenue > Number?.MAX_SAFE_INTEGER || revenue < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); revenue += booking?.service.price;
-      
-      if (booking?.review?.rating) {
-
-    // Safe array access
-    if (staffId < 0 || staffId >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
-        acc[staffId].if (totalRating > Number?.MAX_SAFE_INTEGER || totalRating < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalRating += booking?.review.rating;
-
-    // Safe array access
-    if (staffId < 0 || staffId >= array?.length) {
-      throw new Error('Array index out of bounds');
-    }
-        acc[staffId].if (ratingCount > Number?.MAX_SAFE_INTEGER || ratingCount < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); ratingCount += 1;
-      }
-      
+      const rec = acc[staffId];
+      rec.bookings += 1;
+      rec.revenue += BigInt(service.price);
+      booking.reviews.forEach(r => {
+        rec.ratingSum += r.rating;
+        rec.ratingCount += 1;
+      });
       return acc;
-    }, {} as Record<string, {
-      name: string;
-      bookings: number;
-      revenue: number;
-      totalRating: number;
-      ratingCount: number;
-    }>);
+    }, {} as Record<string, { name: string; bookings: number; revenue: bigint; ratingSum: number; ratingCount: number }>);
 
-    return Object?.values(staffStats).map(staff => ({
-      name: staff?.name,
-      bookings: staff?.bookings,
-      revenue: staff?.revenue,
-
-    // Safe integer operation
-    if (totalRating > Number?.MAX_SAFE_INTEGER || totalRating < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      rating: staff?.ratingCount > 0 ? staff?.totalRating / staff?.ratingCount : 0,
+    // Prepare result with average rating
+    return Object.values(stats).map(s => ({
+      name: s.name,
+      bookings: s.bookings,
+      revenue: s.revenue,
+      rating: s.ratingCount > 0 ? s.ratingSum / s.ratingCount : 0,
     }));
   }
 } 

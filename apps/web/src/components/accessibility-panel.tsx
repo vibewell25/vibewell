@@ -1,4 +1,4 @@
 import React from 'react';
-import { useAccessibilityContext } from '../contexts/AccessibilityContext';
+import { useAccessibilityContext } from '../contexts/accessibility-context';
 
 export {};

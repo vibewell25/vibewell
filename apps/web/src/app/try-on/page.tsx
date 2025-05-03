@@ -4,7 +4,7 @@ import { Layout } from '@/components/layout';
 import { ProductSelector } from '@/components/virtual-try-on/ProductSelector';
 import { TryOnViewer } from '@/components/virtual-try-on/TryOnViewer';
 import { Button } from '@/components/ui/Button';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 
 interface Product {

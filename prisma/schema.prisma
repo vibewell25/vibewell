@@ -355,7 +355,7 @@ model BookingService {
   id        String  @id @default(cuid())
   bookingId String
   serviceId String
-  price     Float
+  price     Int
   booking   Booking @relation(fields: [bookingId], references: [id])
   service   Service @relation(fields: [serviceId], references: [id])
 
@@ -409,7 +409,7 @@ model Service {
   name                 String
   description          String?
   duration             Int // in minutes
-  price                Float
+  price                Int
   subcategory          String? // Optional subcategory
   isActive             Boolean  @default(true)
   images               String[] // Service images

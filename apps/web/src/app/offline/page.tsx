@@ -5,11 +5,6 @@ import Link from 'next/link';
 import { FiWifiOff, FiCalendar, FiRefreshCw, FiHome } from 'react-icons/fi';
 import { Button } from '@/components/ui/Button';
 
-export const metadata = {
-  title: 'Offline - VibeWell',
-  description: 'You are currently offline. Please check your internet connection.',
-};
-
 interface CachedBooking {
   id: string;
   serviceName: string;

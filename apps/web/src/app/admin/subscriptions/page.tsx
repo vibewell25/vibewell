@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { DataTable, Column } from '@/components/ui/data-table';
 import { useSubscriptions, Subscription } from '@/hooks/use-subscriptions';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { trackEvent } from '@/lib/monitoring/analytics';
 import { formatCurrency } from '@/lib/utils';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { AnalyticsAlertService } from '@/services/analytics-alert-service';
 import { Alert } from '@/services/analytics-alert-service';
 import { AlertDialog } from '@/components/alerts/alert-dialog';

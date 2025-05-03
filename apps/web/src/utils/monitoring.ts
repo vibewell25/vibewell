@@ -8,8 +8,8 @@ export function reportWebVitals(metric: NextWebVitalsMetric) {
     id: metric.id,
     startTime: metric.startTime,
     // Include additional fields only if they exist
-    ...(metric as any).rating !== undefined && { rating: (metric as any).rating },
-    ...(metric as any).delta !== undefined && { delta: (metric as any).delta },
+    ...((metric as any).rating !== undefined && { rating: (metric as any).rating }),
+    ...((metric as any).delta !== undefined && { delta: (metric as any).delta }),
   };
 
   // Send to analytics endpoint

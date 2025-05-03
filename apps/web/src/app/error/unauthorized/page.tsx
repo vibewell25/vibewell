@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/Card';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function UnauthorizedPage() {
   const router = useRouter();

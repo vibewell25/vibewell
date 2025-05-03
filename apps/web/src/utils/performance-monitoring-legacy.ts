@@ -6,7 +6,7 @@
  * This file re-exports functions from both performance monitoring systems to ensure
  * backward compatibility while we transition to the new system.
  */
-import performanceMonitor from './performanceMonitor';
+import performanceMonitor from './performance-monitor';
 import {
   startComponentRender,
   endComponentRender,

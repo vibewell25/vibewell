@@ -2,7 +2,7 @@ import { Icons } from '@/components/icons';
 ('use client');
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 export function MessageNotificationBadge() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);

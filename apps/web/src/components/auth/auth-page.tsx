@@ -1,9 +1,9 @@
 import React from 'react';
-import { OAuthButton } from './OAuthButton';
-import { MagicLinkForm } from './MagicLinkForm';
-import { WebAuthnButton } from '../WebAuthnButton';
+import { OAuthButton } from './oauth-button';
+import { MagicLinkForm } from './magic-link-form';
+import { WebAuthnButton } from '../web-authn-button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/Card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Separator } from '../ui/separator';
 import { SupportedOAuthProvider } from '../../services/auth/oauth-service';
 

@@ -2,8 +2,8 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./build",
-    "typeRoots": ["node_modules/@types", "src/types"]
+    "typeRoots": ["node_modules/@types", "packages/types"]
   },
-  "include": ["src/**/*", "src/types/**/*.d.ts"],
-  "exclude": ["**/__tests__/**", "**/*.test.ts", "**/*.test.tsx", "src/test-utils/**", "src/tests/**"]
+  "include": ["apps/web/src/**/*", "packages/types/**/*.d.ts"],
+  "exclude": ["apps/web/src/__tests__/**", "apps/web/src/**/*.test.ts", "apps/web/src/**/*.test.tsx", "apps/web/src/test-utils/**"]
 }

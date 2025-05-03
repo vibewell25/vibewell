@@ -26,7 +26,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 
 
-import * as authHooks from '@/hooks/use-unified-auth';
+import * as authHooks from '@/hooks/useAuth';
 import {
   GET as getUserPreferencesRoute,
   PUT as updateUserPreferencesRoute,
@@ -42,7 +42,7 @@ import { UserRole } from '@/contexts/unified-auth-context';
 // Mock the auth hooks
 
 
-vi?.mock('@/hooks/use-unified-auth', () => ({
+vi?.mock('@/hooks/useAuth', () => ({
   isAuthenticated: vi?.fn(),
   getAuthState: vi?.fn(),
 }));

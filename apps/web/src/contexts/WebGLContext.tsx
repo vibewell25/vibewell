@@ -9,6 +9,10 @@ interface WebGLContextType {
 
 const WebGLContext = createContext<WebGLContextType | undefined>(undefined);
 
-export {};
-
-export {};
+export function useWebGL() {
+  const context = useContext(WebGLContext);
+  if (!context) {
+    throw new Error('useWebGL must be used within a WebGLContext provider');
+  }
+  return context;
+}

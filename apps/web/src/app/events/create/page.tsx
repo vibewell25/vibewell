@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { EventCategory } from '@/types/events';
 import { createEvent } from '@/lib/api/events';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 import { format, addHours } from 'date-fns';
 import { Icons } from '@/components/icons';

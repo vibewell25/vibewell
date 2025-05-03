@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import type { Notification, NotificationState, NotificationAction } from '../types';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 
 // Initial state
 const initialState: NotificationState = {

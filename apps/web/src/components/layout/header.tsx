@@ -1,7 +1,7 @@
 'use client';;
 import Link from 'next/link';
 import { NotificationIndicator } from '@/components/notifications/NotificationIndicator';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { UserMenu } from '@/components/user-menu';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '../ui/Button';
+import { Button } from '../ui/button';
 import { SupportedOAuthProvider } from '../../services/auth/oauth-service';
 import { Apple, Facebook, Twitter, Loader2 } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';

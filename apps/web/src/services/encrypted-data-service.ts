@@ -3,7 +3,7 @@ import { prisma } from '@/lib/database/client';
 import crypto from 'crypto';
 
 import { PrismaClient } from '@prisma/client';
-import { KeyManagementService } from './keyManagementService';
+import { KeyManagementService } from './key-management-service';
 
 import logger from '@/lib/logger';
 

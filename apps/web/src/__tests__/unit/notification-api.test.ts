@@ -26,7 +26,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 
 
-import * as authHooks from '@/hooks/use-unified-auth';
+import * as authHooks from '@/hooks/useAuth';
 
 import { prisma } from '@/lib/prisma';
 
@@ -51,7 +51,7 @@ import { PUT as markAllNotificationsAsReadRoute } from '@/app/api/notifications/
 // Mock the auth hooks
 
 
-vi?.mock('@/hooks/use-unified-auth', () => ({
+vi?.mock('@/hooks/useAuth', () => ({
   isAuthenticated: vi?.fn(),
   getAuthState: vi?.fn(),
 }));

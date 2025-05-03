@@ -9,7 +9,7 @@ import { GoalList } from '@/components/wellness/GoalList';
 import { DeleteConfirmationModal } from '@/components/wellness/DeleteConfirmationModal';
 import { useWellnessData } from '@/hooks/useWellnessData';
 import { Goal } from '@/types/progress';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { Icons } from '@/components/icons';
 export default function ProgressPage() {
   const {

@@ -1,5 +1,21 @@
 {
   "extends": "./tsconfig.base.json",
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", ".next"]
+  "include": [
+    "apps/web/src/**/*",
+    "packages/ui/**/*",
+    "packages/services/**/*",
+    "packages/types/**/*",
+    "packages/config/**/*",
+    "packages/test-utils/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".next",
+    "apps/mobile",
+    "apps/server",
+    "tools",
+    "infrastructure",
+    "archive"
+  ]
 } 

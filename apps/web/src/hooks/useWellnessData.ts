@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Goal, HabitLog, WellnessDay } from '@/types/progress';
 
 
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 
 
 import * as wellnessAPI from '@/lib/api/wellness';

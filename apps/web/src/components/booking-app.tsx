@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { BookingList } from './BookingList';
-import { BookingDetail } from './BookingDetail';
+import { BookingList } from './booking-list';
+import { BookingDetail } from './booking-detail';
 import { Booking, BookingStatus } from '../services/booking-service';
 import { ErrorHandlerProvider } from '../utils/error-handler';
 

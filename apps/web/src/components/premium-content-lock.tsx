@@ -3,7 +3,7 @@
 import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 
 interface PremiumContentLockProps {

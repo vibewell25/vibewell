@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useLocalStorage } from '../hooks/use-local-storage';
 
 interface RecentSearchesProps {
   maxSearches?: number;

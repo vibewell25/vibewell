@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { Icons } from '@/components/icons';
 import { ROUTES } from '@/constants/routes';
 import { AuthForm, AuthFormInput, AuthSubmitButton } from '@/components/auth/auth-form';

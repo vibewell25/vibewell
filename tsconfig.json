@@ -7,14 +7,12 @@
     "incremental": true,
     "typeRoots": [
       "./node_modules/@types",
-      "./src/types",
-      "./types"
+      "packages/types"
     ],
     "types": [
       "react",
       "react-dom",
       "jest",
-      "jest-axe",
       "node",
       "webgl2"
     ],
@@ -28,19 +26,21 @@
   },
   "include": [
     "next-env.d.ts",
-    "src/**/*.{ts,tsx,js,jsx}",
-    "src/types/**/*.d.ts",
+    "apps/web/src/**/*.{ts,tsx,js,jsx}",
+    "packages/ui/**/*",
+    "packages/services/**/*",
+    "packages/config/**/*",
+    "packages/types/**/*.d.ts",
     ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
     "cypress",
     "docs",
-    "docs-legacy",
     "implementation-files",
     "scripts",
-    "server",
-    "mobile",
+    "apps/server",
+    "apps/mobile",
     "**/*.spec.ts",
     "**/*.test.ts",
     "**/*.spec.tsx",
@@ -48,6 +48,7 @@
     "coverage",
     "dist",
     ".next",
-    "src/utils"
+    "apps/web/src/utils",
+    "packages/test-utils"
   ]
 }

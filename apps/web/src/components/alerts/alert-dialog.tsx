@@ -6,7 +6,7 @@ import {
   AnalyticsAlertService,
 } from '@/services/analytics-alert-service';
 import { ProductService } from '@/services/product-service';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 import {
   Dialog,

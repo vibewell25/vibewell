@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { WebAuthnService } from '../services/webauthn?.service';
 
-import { validateRequest } from '../middleware/validateRequest';
+import { validateRequest } from '../middleware/validate-request';
 
 import { isAuthenticated } from '../middleware/auth';
 

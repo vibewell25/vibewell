@@ -15,7 +15,21 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["apps/web/src/*"],
+      "@components/*": ["apps/web/src/components/*"],
+      "@hooks/*": ["apps/web/src/hooks/*"],
+      "ui/*": ["packages/ui/*"],
+      "services/*": ["packages/services/*"],
+      "types/*": ["packages/types/*"],
+      "config/*": ["packages/config/*"],
+      "test-utils/*": ["packages/test-utils/*"]
     }
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "cypress",
+    "docs",
+    "implementation-files",
+    "scripts"
+  ]
 }

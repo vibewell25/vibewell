@@ -5,7 +5,7 @@ import { Avatar } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/Input';
 import { Icons } from '@/components/ui/icons';
 import { toast } from '@/components/ui/use-toast';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 
 interface Post {
   id: string;

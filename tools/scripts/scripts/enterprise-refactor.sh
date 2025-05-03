@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Do not exit on errors to allow moving legacy files without halting
-set -uo pipefail
+# Exit immediately on errors for long-term fixes
+set -euo pipefail
 
 ROOT_DIR="$(pwd)"
 
@@ -8,12 +8,6 @@ echo "Starting enterprise-grade refactoring..."
 
 # Prepare legacy-review directories
 mkdir -p legacy-review/services legacy-review/components legacy-review/utils
-
-# Move Next.js pages directory to legacy-review to avoid conflict with app router
-if [[ -d "pages" ]]; then
-  echo "Moving Next.js 'pages/' directory to legacy-review/pages"
-  git mv pages legacy-review/pages
-fi
 
 # Move src/pages directory to legacy-review to avoid conflict with app router
 if [[ -d "src/pages" ]]; then
@@ -131,18 +125,18 @@ for DIR in src/services src/components src/utils; do
   done
 done
 
-# Note: Automated import path updates are currently disabled due to syntax issues.
-# Please run a codemod or update import paths manually to align with the new kebab-case filenames.
+# Step 3: Update import paths via jscodeshift codemod
+echo "=== Step 3: Updating import paths to kebab-case filenames via codemod ==="
+npx jscodeshift -t scripts/update-import-paths.js src --extensions=ts,tsx --parser=ts
 
-# Step 4: Validate project integrity
-echo "=== Step 4: Running type-check, lint, and build ==="
+echo "=== Step 4: Validate project integrity ==="
 npm run type-check
-npm run lint || echo "Warning: lint errors detected, please review manually."
+npm run lint
 npm run build
 
 # Final commit
 echo "=== Step 5: Commit all changes ==="
 git add .
-git commit -m "refactor: consolidated duplicates and normalized file naming to kebab-case across services, components, and utils"
+git commit -m "refactor: updated import paths via codemod and normalized file naming to kebab-case; moved legacy modules to legacy-review"
 
 echo "Enterprise-grade refactoring complete." 

@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
-import { ServiceService } from '../services/beautyService?.service';
+import { ServiceService } from '../services/beauty-service?.service';
 
-import { validateRequest } from '../middleware/validateRequest';
+import { validateRequest } from '../middleware/validate-request';
 
 import { createServiceSchema } from '../schemas/service?.schema';
 

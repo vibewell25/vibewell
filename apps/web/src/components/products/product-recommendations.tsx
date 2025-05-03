@@ -6,7 +6,7 @@ import { Product } from '@/services/product-service';
 import { ProductCard } from './product-card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 
 interface ProductRecommendationsProps {
   productId?: string; // Optional product ID for item-based recommendations

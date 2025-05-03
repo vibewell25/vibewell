@@ -8,7 +8,7 @@ import {
   detectDevicePerformanceProfile,
   isMobileDevice,
   applyDeviceClasses,
-} from './deviceDetection';
+} from './device-detection';
 import {
   applyLazyLoading,
   applyEventThrottling,

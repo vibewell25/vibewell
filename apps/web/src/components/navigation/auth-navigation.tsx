@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button } from '../ui/Button';
-import { WebAuthnButton } from '../WebAuthnButton';
+import { Button } from '../ui/button';
+import { WebAuthnButton } from '../web-authn-button';
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -8,15 +8,15 @@
     "esModuleInterop": true
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.js",
-    "src/**/*.jsx",
-    "src/**/__tests__/**/*",
-    "src/**/*.test.ts",
-    "src/**/*.test.tsx",
-    "src/**/*.spec.ts",
-    "src/**/*.spec.tsx"
+    "apps/web/src/**/*.ts",
+    "apps/web/src/**/*.tsx",
+    "apps/web/src/**/*.js",
+    "apps/web/src/**/*.jsx",
+    "apps/web/src/**/__tests__/**/*",
+    "apps/web/src/**/*.test.ts",
+    "apps/web/src/**/*.test.tsx",
+    "apps/web/src/**/*.spec.ts",
+    "apps/web/src/**/*.spec.tsx"
   ],
   "exclude": ["node_modules"]
 } 

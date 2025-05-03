@@ -2,11 +2,11 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { UserPreferencesProvider, useUserPreferences } from '@/contexts/UserPreferencesContext';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 // Mocking modules
-vi?.mock('@/hooks/use-unified-auth', () => ({
+vi?.mock('@/hooks/useAuth', () => ({
   useAuth: vi?.fn(),
 }));
 

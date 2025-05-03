@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { z } from 'zod';
 
-import { TwoFactorService } from '../services/twoFactor?.service';
+import { TwoFactorService } from '../services/two-factor?.service';
 
-import { validateRequest } from '../middleware/validateRequest';
+import { validateRequest } from '../middleware/validate-request';
 
 import { isAuthenticated } from '../middleware/auth';
 

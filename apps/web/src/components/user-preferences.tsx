@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useLocalStorage } from '../hooks/use-local-storage';
 
 /**
  * Define the preferences interface

@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from '@/components/ui/Card';
 import Link from 'next/link';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from '@/components/ui/spinner';
 import { Icons } from '@/components/icons';
 function DeveloperContent() {

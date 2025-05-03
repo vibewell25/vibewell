@@ -1,7 +1,7 @@
 import { Icons } from '@/components/icons';
 import { useState, useEffect } from 'react';
 import { getUpcomingEvents, registerForEvent, cancelEventRegistration } from '@/lib/api/events';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { format, parseISO } from 'date-fns';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';

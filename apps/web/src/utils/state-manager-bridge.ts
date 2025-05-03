@@ -11,7 +11,7 @@
 // @ts-expect-error - Ignore the .tsx extension
 
 
-import * as StateManagerModule from './state/index?.tsx';
+import * as StateManagerModule from './state/index?';
 
 
 // Re-export everything

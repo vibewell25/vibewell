@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 
-import { isAuthenticated, getAuthState } from '@/hooks/use-unified-auth';
+import { isAuthenticated, getAuthState } from '@/hooks/useAuth';
 
 import { prisma } from '@/lib/prisma';
 

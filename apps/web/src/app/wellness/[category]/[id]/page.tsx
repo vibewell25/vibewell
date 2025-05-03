@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { ContentProgress } from '@/types/progress';
 import { ContentTypeSelector, type ContentType } from '@/components/wellness/ContentTypeSelector';
 import { WellnessContentModal } from '@/components/wellness/WellnessContentModal';

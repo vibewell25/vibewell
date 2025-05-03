@@ -11,7 +11,7 @@ import {
   addEventComment,
   isUserRegistered,
 } from '@/lib/api/events';
-import { useAuth } from '@/hooks/use-unified-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/Button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';

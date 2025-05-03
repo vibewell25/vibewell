@@ -1,6 +1,6 @@
 import React, { ComponentType } from 'react';
 import { renderToString, renderToNodeStream } from 'react-dom/server';
-import { CacheManager } from './caching/CacheManager';
+import { CacheManager } from './caching/cache-manager';
 import { PerformanceMonitor } from './performance-monitoring';
 
 interface SSRConfig {

@@ -6,4 +6,5 @@
 *.tsbuildinfo
 
 env files
-.env 
+.env /apps/web/.next/
+/temp_backup/

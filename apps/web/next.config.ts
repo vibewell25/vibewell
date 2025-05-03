@@ -25,6 +25,15 @@ const nextConfig: NextConfig = {
       config.resolve.alias = {};
     }
     config.resolve.alias['@'] = path.resolve(__dirname, 'src');
+    // Alias for components and hooks directories
+    config.resolve.alias['@components'] = path.resolve(__dirname, 'src/components');
+    config.resolve.alias['@hooks'] = path.resolve(__dirname, 'src/hooks');
+    // Aliases for shared packages
+    config.resolve.alias['ui'] = path.resolve(__dirname, '../../packages/ui');
+    config.resolve.alias['services'] = path.resolve(__dirname, '../../packages/services');
+    config.resolve.alias['types'] = path.resolve(__dirname, '../../packages/types');
+    config.resolve.alias['config'] = path.resolve(__dirname, '../../packages/config');
+    config.resolve.alias['test-utils'] = path.resolve(__dirname, '../../packages/test-utils');
     if (!config.resolve.plugins) {
       config.resolve.plugins = [];
     }

@@ -1,8 +1,8 @@
-# Vibewell Implementation Guide
+# VibeWell Implementation Guide
 
 ## Overview
 
-This document provides comprehensive guidelines for implementing and extending features in the Vibewell platform. It serves as the consolidated reference for developers working on the codebase, superseding previous implementation guides.
+This document provides comprehensive guidelines for implementing and extending features in the VibeWell platform. It serves as the consolidated reference for developers working on the codebase, superseding previous implementation guides.
 
 ## Getting Started
 

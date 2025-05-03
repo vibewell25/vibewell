@@ -1,10 +1,10 @@
-# Vibewell Backup and Monitoring System
+# VibeWell Backup and Monitoring System
 
-This document provides detailed information about the Vibewell backup and monitoring system, including its architecture, configuration, and usage.
+This document provides detailed information about the VibeWell backup and monitoring system, including its architecture, configuration, and usage.
 
 ## Overview
 
-The Vibewell backup system provides automated database backups, retention management, and monitoring to ensure data safety and compliance. It includes:
+The VibeWell backup system provides automated database backups, retention management, and monitoring to ensure data safety and compliance. It includes:
 
 - Scheduled full and incremental backups
 - Data encryption and compression
@@ -130,7 +130,7 @@ npm run backup:init
 
 ## Alerting and Notifications
 
-The system integrates with the Vibewell notification service to send alerts through:
+The system integrates with the VibeWell notification service to send alerts through:
 
 - In-app notifications to system administrators
 - Email notifications for critical issues

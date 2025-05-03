@@ -1,6 +1,6 @@
-# Vibewell Feature Walkthroughs
+# VibeWell Feature Walkthroughs
 
-This document provides detailed step-by-step walkthroughs for the main features of the Vibewell platform.
+This document provides detailed step-by-step walkthroughs for the main features of the VibeWell platform.
 
 ## Table of Contents
 - [Virtual Try-On](#virtual-try-on)
@@ -16,7 +16,7 @@ This document provides detailed step-by-step walkthroughs for the main features 
 The Virtual Try-On feature allows you to visualize different beauty services before booking an appointment.
 
 ### Step 1: Access the Virtual Try-On Feature
-1. Log in to your Vibewell account
+1. Log in to your VibeWell account
 2. Click on "Virtual Try-On" in the main navigation menu
 3. You'll see the Virtual Try-On dashboard with different categories: Makeup, Hairstyle, and Accessories
 

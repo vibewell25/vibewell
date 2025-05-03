@@ -1,4 +1,4 @@
-# Vibewell Platform
+# VibeWell Platform
 
 A comprehensive beauty and wellness booking platform that seamlessly connects beauty professionals, wellness practitioners, and clients. Our AI-powered platform enhances the experience for both beauty services (skincare, hair, makeup, nail care, esthetics, spa treatments) and wellness services (fitness, meditation, nutrition, therapy, holistic healing).
 
@@ -323,4 +323,4 @@ For support:
 
 ---
 
-Built with ❤️ by the Vibewell team
+Built with ❤️ by the VibeWell team

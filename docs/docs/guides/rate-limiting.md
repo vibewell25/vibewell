@@ -1,6 +1,6 @@
-# Rate Limiting in Vibewell
+# Rate Limiting in VibeWell
 
-This document outlines the rate limiting system implemented in the Vibewell application, which provides protection against abuse, brute force attacks, and denial of service attempts.
+This document outlines the rate limiting system implemented in the VibeWell application, which provides protection against abuse, brute force attacks, and denial of service attempts.
 
 ## Table of Contents
 

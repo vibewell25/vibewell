@@ -1,6 +1,6 @@
-# Vibewell State Management Guide
+# VibeWell State Management Guide
 
-This document provides a comprehensive overview of the state management patterns and decisions used in the Vibewell application.
+This document provides a comprehensive overview of the state management patterns and decisions used in the VibeWell application.
 
 ## Table of Contents
 
@@ -18,7 +18,7 @@ This document provides a comprehensive overview of the state management patterns
 
 ## State Management Approach
 
-Vibewell employs a hybrid state management approach with a unified API that supports multiple state management solutions, allowing different parts of the application to use the most appropriate pattern while maintaining a consistent interface.
+VibeWell employs a hybrid state management approach with a unified API that supports multiple state management solutions, allowing different parts of the application to use the most appropriate pattern while maintaining a consistent interface.
 
 ### Key Principles
 

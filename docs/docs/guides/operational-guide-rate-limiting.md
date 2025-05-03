@@ -1,6 +1,6 @@
 # Operational Guide: Monitoring Rate Limiting in Production
 
-This guide provides comprehensive instructions for monitoring and managing the rate limiting system in the Vibewell production environment.
+This guide provides comprehensive instructions for monitoring and managing the rate limiting system in the VibeWell production environment.
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@ This guide provides comprehensive instructions for monitoring and managing the r
 
 ## Overview
 
-Vibewell's rate limiting system uses Redis as a backend for storing rate limit counters and events. The system is designed to:
+VibeWell's rate limiting system uses Redis as a backend for storing rate limit counters and events. The system is designed to:
 
 - Protect sensitive API endpoints from abuse
 - Prevent brute force attacks on authentication systems

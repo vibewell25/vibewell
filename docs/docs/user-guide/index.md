@@ -2,12 +2,12 @@
 title: User Guide
 ---
 
-Welcome to the Vibewell User Guide! Here you'll find everything you need to get started, including how to use the app, manage your profile, and explore key features.
+Welcome to the VibeWell User Guide! Here you'll find everything you need to get started, including how to use the app, manage your profile, and explore key features.
 
 - [Developer Guide](user-guide/developer-guide)
 - [FAQ](../guides/faq)
 
-# Vibewell User Guide
+# VibeWell User Guide
 
 ## Table of Contents
 
@@ -27,9 +27,9 @@ Welcome to the Vibewell User Guide! Here you'll find everything you need to get 
 
 ## Getting Started
 
-### Welcome to Vibewell
+### Welcome to VibeWell
 
-Vibewell is your all-in-one platform for beauty and wellness services. Whether you're looking to book a salon appointment, try on a new hairstyle with augmented reality, or access wellness content, Vibewell brings these services together in one seamless experience.
+VibeWell is your all-in-one platform for beauty and wellness services. Whether you're looking to book a salon appointment, try on a new hairstyle with augmented reality, or access wellness content, VibeWell brings these services together in one seamless experience.
 
 ### System Requirements
 
@@ -48,7 +48,7 @@ Vibewell is your all-in-one platform for beauty and wellness services. Whether y
 
 ### Registration Process
 
-1. Visit [vibewell.com](https://vibewell.com) or download the Vibewell app from the App Store or Google Play Store
+1. Visit [vibewell.com](https://vibewell.com) or download the VibeWell app from the App Store or Google Play Store
 2. Click/tap the "Sign Up" button
 3. Choose to register with your email or continue with Google/Apple/Facebook
 4. If registering with email:
@@ -57,7 +57,7 @@ Vibewell is your all-in-one platform for beauty and wellness services. Whether y
    - Verify your email by clicking the link in the verification email
 5. Complete your profile with basic information
 6. Accept the Terms and Conditions and Privacy Policy
-7. You're ready to use Vibewell!
+7. You're ready to use VibeWell!
 
 ## Account Management
 
@@ -297,7 +297,7 @@ Manage your payment options:
 
 ### Digital Wallet
 
-Use Vibewell Wallet for convenience:
+Use VibeWell Wallet for convenience:
 
 1. Add funds to your wallet
 2. Earn cashback rewards
@@ -360,7 +360,7 @@ Change your review if needed:
 
 ### How Points Work
 
-Earn rewards as you use Vibewell:
+Earn rewards as you use VibeWell:
 
 1. Earn points for:
    - Completing bookings (10 points per $1 spent)
@@ -385,7 +385,7 @@ Use your points for benefits:
 
 ### Reward Tiers
 
-Unlock more benefits as you use Vibewell:
+Unlock more benefits as you use VibeWell:
 
 1. **Bronze**: New members (0-1000 points)
    - Basic rewards redemption
@@ -454,7 +454,7 @@ Two-factor authentication adds an extra layer of security by requiring:
 2. A time-based one-time password (TOTP) from an authenticator app (e.g., Google Authenticator, Authy)
 
 #### Setting Up 2FA
-1. Install an authenticator app and sign in to your Vibewell account.
+1. Install an authenticator app and sign in to your VibeWell account.
 2. Navigate to **Profile > Security Settings** and click **Enable Two-Factor Authentication**.
 3. Scan the QR code with your app and enter the 6-digit code.
 4. Save the backup codes securely offline.
@@ -523,4 +523,4 @@ Help us improve:
 
 ---
 
-Thank you for choosing Vibewell for your beauty and wellness journey. This guide will be updated regularly as new features are added to the platform. 
+Thank you for choosing VibeWell for your beauty and wellness journey. This guide will be updated regularly as new features are added to the platform. 

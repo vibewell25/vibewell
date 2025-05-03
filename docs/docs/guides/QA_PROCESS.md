@@ -1,4 +1,4 @@
-# Vibewell Quality Assurance Process
+# VibeWell Quality Assurance Process
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -14,7 +14,7 @@
 
 ## Introduction
 
-This document outlines the Quality Assurance process for the Vibewell application, with a focus on the AR try-on feature, analytics tracking, and admin dashboard. It defines the testing procedures, quality standards, and review processes that must be completed before deployment to production.
+This document outlines the Quality Assurance process for the VibeWell application, with a focus on the AR try-on feature, analytics tracking, and admin dashboard. It defines the testing procedures, quality standards, and review processes that must be completed before deployment to production.
 
 ## Testing Analytics Tracking
 

@@ -1,7 +1,7 @@
 # Form Components
 
 ## Overview
-Form components provide a consistent and accessible way to collect user input in the Vibewell application.
+Form components provide a consistent and accessible way to collect user input in the VibeWell application.
 
 ## Components
 

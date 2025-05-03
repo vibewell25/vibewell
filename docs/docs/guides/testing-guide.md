@@ -1,6 +1,6 @@
-# Vibewell Testing Guide
+# VibeWell Testing Guide
 
-This guide provides comprehensive instructions for writing high-quality tests for the Vibewell application. Following these guidelines will help us reach our goal of 100% test coverage, especially for critical business flows.
+This guide provides comprehensive instructions for writing high-quality tests for the VibeWell application. Following these guidelines will help us reach our goal of 100% test coverage, especially for critical business flows.
 
 ## Table of Contents
 1. [Testing Philosophy](#testing-philosophy)

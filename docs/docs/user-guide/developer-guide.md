@@ -1,4 +1,4 @@
-# Vibewell Developer Guide
+# VibeWell Developer Guide
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@
 
 ## Architecture Overview
 
-Vibewell follows a modern web application architecture with the following key elements:
+VibeWell follows a modern web application architecture with the following key elements:
 
 - **Frontend**: Next.js-based Single Page Application (SPA)
 - **Backend**: RESTful API services with Node.js and Express
@@ -126,7 +126,7 @@ vibewell/
 
 ## Key Technologies
 
-The Vibewell platform utilizes the following core technologies:
+The VibeWell platform utilizes the following core technologies:
 
 ### Frontend
 - **React**: UI library
@@ -204,7 +204,7 @@ Types:
 
 ### RESTful API Structure
 
-Vibewell API follows RESTful conventions:
+VibeWell API follows RESTful conventions:
 
 | Method | Purpose                               |
 |--------|---------------------------------------|
@@ -250,7 +250,7 @@ For detailed API documentation, see the Swagger UI at `/api-docs` in development
 
 ## Component Library
 
-Vibewell provides a comprehensive UI component library in `src/components/ui` to maintain consistency:
+VibeWell provides a comprehensive UI component library in `src/components/ui` to maintain consistency:
 
 ### Core Components
 

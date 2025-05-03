@@ -1,13 +1,13 @@
-# Vibewell Utilities
+# VibeWell Utilities
 
-This directory contains utility functions and helpers used throughout the Vibewell application.
+This directory contains utility functions and helpers used throughout the VibeWell application.
 
 ## Form Validation
 
 ### Zod-based Form Validation (Recommended)
 
 The `form-validation-zod.ts` file contains our standardized form validation utilities based on Zod.
-This is the **recommended approach** for all new form validation in the Vibewell platform.
+This is the **recommended approach** for all new form validation in the VibeWell platform.
 
 #### Key Features:
 

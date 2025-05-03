@@ -1,10 +1,10 @@
-# Vibewell CI/CD Pipeline Integration Guide
+# VibeWell CI/CD Pipeline Integration Guide
 
 This document provides step-by-step instructions for integrating the GitHub Actions workflow with your CI/CD pipeline and configuring the necessary environment variables and secrets.
 
 ## Overview
 
-The Vibewell CI/CD pipeline is implemented using GitHub Actions and includes the following stages:
+The VibeWell CI/CD pipeline is implemented using GitHub Actions and includes the following stages:
 - Linting and type checking
 - Building and unit testing
 - End-to-end testing
@@ -14,7 +14,7 @@ The Vibewell CI/CD pipeline is implemented using GitHub Actions and includes the
 
 ## Prerequisites
 
-1. GitHub repository with your Vibewell codebase
+1. GitHub repository with your VibeWell codebase
 2. Administrator access to the repository settings
 3. Vercel account for hosting the application
 4. New Relic account for monitoring (optional, but recommended)
@@ -300,6 +300,6 @@ For additional support with CI/CD integration, contact the DevOps team.
 
 ## Conclusion
 
-You've now successfully integrated and configured the GitHub Actions workflow for the Vibewell CI/CD pipeline. The pipeline will automatically lint, test, build, and deploy your application whenever changes are pushed to the `develop` or `main` branches.
+You've now successfully integrated and configured the GitHub Actions workflow for the VibeWell CI/CD pipeline. The pipeline will automatically lint, test, build, and deploy your application whenever changes are pushed to the `develop` or `main` branches.
 
 Remember to regularly review and update your CI/CD pipeline as requirements change or new features are added to the codebase. 

@@ -1,12 +1,12 @@
 # Rate Limiting Load Testing
 
-This directory contains load testing scripts for Redis-based rate limiting in the Vibewell API.
+This directory contains load testing scripts for Redis-based rate limiting in the VibeWell API.
 
 ## Prerequisites
 
 - [k6](https://k6.io/docs/getting-started/installation/)
 - Running Redis server (for production mode tests)
-- Running Vibewell API server
+- Running VibeWell API server
 
 ## Test API Routes
 
@@ -84,7 +84,7 @@ After running the tests, check:
 
 1. Redis logs for rate limiting entries
 2. Rate limiting events in the Redis database
-3. The built-in Vibewell admin dashboard for rate limit analytics
+3. The built-in VibeWell admin dashboard for rate limit analytics
 
 ## Troubleshooting
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the process for consolidating conflicting project documentation in the Vibewell project. Multiple status documents, implementation guides, and plan files have led to confusion about the current state of the project.
+This document outlines the process for consolidating conflicting project documentation in the VibeWell project. Multiple status documents, implementation guides, and plan files have led to confusion about the current state of the project.
 
 ## Documentation Issues
 

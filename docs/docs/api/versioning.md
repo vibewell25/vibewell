@@ -1,6 +1,6 @@
 # API Versioning Strategy
 
-Vibewell implements a robust API versioning strategy to ensure backward compatibility while allowing for API evolution. This document outlines our approach to API versioning and how clients should interact with different API versions.
+VibeWell implements a robust API versioning strategy to ensure backward compatibility while allowing for API evolution. This document outlines our approach to API versioning and how clients should interact with different API versions.
 
 ## Versioning Scheme
 

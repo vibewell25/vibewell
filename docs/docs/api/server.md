@@ -1,7 +1,7 @@
-# Vibewell Server
+# VibeWell Server
 
 ## Overview
-This is the backend server for the Vibewell platform. It provides endpoints for authentication, calendar integration, reporting, virtual try-on, security features (2FA, WebAuthn, CSRF), and more.
+This is the backend server for the VibeWell platform. It provides endpoints for authentication, calendar integration, reporting, virtual try-on, security features (2FA, WebAuthn, CSRF), and more.
 
 ## Environment Variables
 | Name | Description |

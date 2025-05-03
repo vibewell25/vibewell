@@ -1,6 +1,6 @@
 # Accessibility Testing Guide
 
-This guide outlines the process for comprehensive accessibility testing of the Vibewell application, focusing on screen readers, keyboard navigation, and mobile compatibility.
+This guide outlines the process for comprehensive accessibility testing of the VibeWell application, focusing on screen readers, keyboard navigation, and mobile compatibility.
 
 ## Screen Reader Testing
 
@@ -16,7 +16,7 @@ This guide outlines the process for comprehensive accessibility testing of the V
 #### 1. Basic Navigation Test
 
 1. Launch the screen reader before opening the application
-2. Navigate to the Vibewell application
+2. Navigate to the VibeWell application
 3. Verify the screen reader announces:
    - Page title
    - Navigation elements

@@ -1,7 +1,7 @@
-# Vibewell Component Library Documentation
+# VibeWell Component Library Documentation
 
 ## Overview
-This documentation covers all reusable components in the Vibewell application, including their props, usage examples, and best practices.
+This documentation covers all reusable components in the VibeWell application, including their props, usage examples, and best practices.
 
 ## Table of Contents
 1. [Getting Started](#getting-started)

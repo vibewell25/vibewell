@@ -120,7 +120,7 @@ chmod +x scripts/load-testing.sh
 ./scripts/load-testing.sh
 ``` # K6 Load Testing for Redis Rate Limiting
 
-This document provides instructions on how to set up and run load tests for the Redis-based rate limiting system in the Vibewell application.
+This document provides instructions on how to set up and run load tests for the Redis-based rate limiting system in the VibeWell application.
 
 ## Overview
 
@@ -130,7 +130,7 @@ The load testing suite uses [k6](https://k6.io), a modern load testing tool, to 
 
 - [k6](https://k6.io/docs/getting-started/installation/) installed on your system
 - Redis server running (for production mode tests)
-- Vibewell application running locally
+- VibeWell application running locally
 
 ## Installation
 
@@ -370,13 +370,13 @@ To stop the Redis server when you're done, you can use the following command:
 ./redis-stable/src/redis-cli shutdown
 ``` # k6 Testing Guide for Rate Limiting
 
-This guide explains how to use k6 to test the rate limiting functionality in the Vibewell application, covering both Redis and in-memory rate limiting implementations.
+This guide explains how to use k6 to test the rate limiting functionality in the VibeWell application, covering both Redis and in-memory rate limiting implementations.
 
 ## Prerequisites
 
 - [k6](https://k6.io/docs/getting-started/installation/) installed locally
 - Node.js 16+ installed
-- Access to the Vibewell application (local or deployed)
+- Access to the VibeWell application (local or deployed)
 - Redis server (for Redis-based rate limiting tests)
 
 ## Overview

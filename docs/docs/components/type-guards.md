@@ -1,6 +1,6 @@
-# Type Guards in Vibewell
+# Type Guards in VibeWell
 
-This documentation explains the type guard system implemented in the Vibewell codebase to handle TypeScript errors related to type mismatches, particularly for `undefined` or `null` values.
+This documentation explains the type guard system implemented in the VibeWell codebase to handle TypeScript errors related to type mismatches, particularly for `undefined` or `null` values.
 
 ## Overview
 

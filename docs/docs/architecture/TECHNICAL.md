@@ -1,4 +1,4 @@
-# Vibewell Technical Documentation
+# VibeWell Technical Documentation
 
 ## 🏗️ Architecture Overview
 

@@ -1,4 +1,4 @@
-# Vibewell Project Setup Guide
+# VibeWell Project Setup Guide
 
 ## Table of Contents
 1. [Prerequisites](#prerequisites)

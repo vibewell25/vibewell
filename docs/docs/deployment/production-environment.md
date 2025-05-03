@@ -1,12 +1,12 @@
-# Vibewell Production Environment
+# VibeWell Production Environment
 
-This document describes the production environment setup for the Vibewell application, including infrastructure, security measures, and operational procedures.
+This document describes the production environment setup for the VibeWell application, including infrastructure, security measures, and operational procedures.
 
 ## Infrastructure
 
 ### Hosting Environment
 
-The Vibewell application is deployed in a production environment with the following components:
+The VibeWell application is deployed in a production environment with the following components:
 
 - **Web Application Server**: Node.js application running on Docker containers
 - **Reverse Proxy**: Nginx for handling request routing, SSL termination, and rate limiting

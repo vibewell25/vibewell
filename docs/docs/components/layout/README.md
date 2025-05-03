@@ -1,7 +1,7 @@
 # Layout Components
 
 ## Overview
-Layout components provide the structural foundation for the Vibewell application, handling responsive design, spacing, and content organization.
+Layout components provide the structural foundation for the VibeWell application, handling responsive design, spacing, and content organization.
 
 ## Components
 

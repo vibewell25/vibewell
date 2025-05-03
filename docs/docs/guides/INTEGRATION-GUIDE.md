@@ -1,4 +1,4 @@
-# Vibewell Integration Guide
+# VibeWell Integration Guide
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -12,7 +12,7 @@
 
 ## Overview
 
-This guide provides comprehensive instructions for integrating with the Vibewell platform. Our platform offers various integration points for different use cases:
+This guide provides comprehensive instructions for integrating with the VibeWell platform. Our platform offers various integration points for different use cases:
 
 - REST API for direct integration
 - WebSocket for real-time features
@@ -25,13 +25,13 @@ This guide provides comprehensive instructions for integrating with the Vibewell
 ### Prerequisites
 - Node.js 18 or higher
 - npm or yarn
-- A Vibewell account
+- A VibeWell account
 - API credentials
 
 ### Installation
 
 ```bash
-# Install the Vibewell SDK
+# Install the VibeWell SDK
 npm install @vibewell/sdk
 
 # Install optional dependencies
@@ -42,9 +42,9 @@ npm install @vibewell/analytics # For analytics
 ### Basic Setup
 
 ```typescript
-import { VibewellClient } from '@vibewell/sdk';
+import { VibeWellClient } from '@vibewell/sdk';
 
-const client = new VibewellClient({
+const client = new VibeWellClient({
   apiKey: 'your-api-key',
   environment: 'production', // or 'sandbox' for testing
   debug: true // Enable debug logging
@@ -55,7 +55,7 @@ const client = new VibewellClient({
 
 ### OAuth2 Flow
 
-1. Register your application in the Vibewell Developer Console
+1. Register your application in the VibeWell Developer Console
 2. Implement the OAuth2 flow:
 
 ```typescript
@@ -81,7 +81,7 @@ async function handleCallback(code: string) {
 For server-to-server integrations, use API key authentication:
 
 ```typescript
-const client = new VibewellClient({
+const client = new VibeWellClient({
   apiKey: 'your-api-key'
 });
 ```

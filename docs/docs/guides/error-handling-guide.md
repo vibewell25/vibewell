@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide outlines the standardized approach to error handling across the Vibewell platform. Consistent error handling improves code quality, enhances user experience, and facilitates debugging and maintenance.
+This guide outlines the standardized approach to error handling across the VibeWell platform. Consistent error handling improves code quality, enhances user experience, and facilitates debugging and maintenance.
 
 ## Table of Contents
 
@@ -27,7 +27,7 @@ This guide outlines the standardized approach to error handling across the Vibew
 
 ## Error Handler Utility
 
-The Vibewell platform uses a centralized error handling utility located at `src/utils/error-handler.ts`. This utility provides a consistent interface for capturing, logging, and displaying errors throughout the application.
+The VibeWell platform uses a centralized error handling utility located at `src/utils/error-handler.ts`. This utility provides a consistent interface for capturing, logging, and displaying errors throughout the application.
 
 ### Basic Usage
 
@@ -419,7 +419,7 @@ test('displays error message when API fails', async () => {
 
 ## Conclusion
 
-Consistent error handling is crucial for maintaining a robust application. By following these guidelines, the Vibewell platform can provide a better user experience while facilitating debugging and maintenance for developers.
+Consistent error handling is crucial for maintaining a robust application. By following these guidelines, the VibeWell platform can provide a better user experience while facilitating debugging and maintenance for developers.
 
 ## Related Documentation
 

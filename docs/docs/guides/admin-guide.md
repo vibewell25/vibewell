@@ -1,4 +1,4 @@
-# Vibewell Admin Guide
+# VibeWell Admin Guide
 
 ## Table of Contents
 
@@ -18,11 +18,11 @@
 
 ## Introduction
 
-This guide provides comprehensive instructions for administering the Vibewell platform. It covers all aspects of system administration, including user management, content moderation, system configuration, maintenance procedures, and troubleshooting common issues.
+This guide provides comprehensive instructions for administering the VibeWell platform. It covers all aspects of system administration, including user management, content moderation, system configuration, maintenance procedures, and troubleshooting common issues.
 
 ### Admin Roles and Permissions
 
-Vibewell supports multiple admin roles with different permission levels:
+VibeWell supports multiple admin roles with different permission levels:
 
 | Role | Description | Permissions |
 |------|-------------|-------------|

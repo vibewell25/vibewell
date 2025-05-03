@@ -1,6 +1,6 @@
 # Component Documentation Template
 
-This template provides a standardized format for documenting UI components in the Vibewell platform. Use this template when creating or updating component documentation to ensure consistency across the codebase.
+This template provides a standardized format for documenting UI components in the VibeWell platform. Use this template when creating or updating component documentation to ensure consistency across the codebase.
 
 ## JSDoc Template
 

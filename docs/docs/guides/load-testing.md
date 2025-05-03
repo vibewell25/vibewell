@@ -1,6 +1,6 @@
 # Load Testing Guide
 
-This guide covers load testing for the Vibewell application, with a focus on performance monitoring. Load tests help ensure the application can handle expected traffic and identify performance bottlenecks before they impact users.
+This guide covers load testing for the VibeWell application, with a focus on performance monitoring. Load tests help ensure the application can handle expected traffic and identify performance bottlenecks before they impact users.
 
 ## Overview
 

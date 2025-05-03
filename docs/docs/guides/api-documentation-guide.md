@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides a comprehensive reference for the Vibewell API, including authentication methods, available endpoints, request/response formats, and best practices for API consumption.
+This guide provides a comprehensive reference for the VibeWell API, including authentication methods, available endpoints, request/response formats, and best practices for API consumption.
 
 ## Base URL
 

@@ -1,4 +1,4 @@
-# Vibewell Documentation Index
+# VibeWell Documentation Index
 
 ## Getting Started
 - [Setup Guide](../SETUP.md)

@@ -1,17 +1,17 @@
-# Vibewell Terms and Conditions
+# VibeWell Terms and Conditions
 
 **Last Updated: [Current Date]**
 
 ## 1. Introduction
 
-Welcome to Vibewell. These Terms and Conditions ("Terms") govern your access to and use of the Vibewell platform, including our website, mobile applications, and services (collectively, the "Service"). By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the Terms, you may not access the Service.
+Welcome to VibeWell. These Terms and Conditions ("Terms") govern your access to and use of the VibeWell platform, including our website, mobile applications, and services (collectively, the "Service"). By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the Terms, you may not access the Service.
 
 ### 1.1 Definitions
 
-- "Vibewell," "we," "us," and "our" refer to Vibewell, Inc., the company that operates the Service.
+- "VibeWell," "we," "us," and "our" refer to VibeWell, Inc., the company that operates the Service.
 - "You" and "your" refer to the individual or entity accessing or using the Service.
-- "Providers" refers to beauty and wellness service providers who offer services through the Vibewell platform.
-- "Customers" refers to users who book services from Providers through the Vibewell platform.
+- "Providers" refers to beauty and wellness service providers who offer services through the VibeWell platform.
+- "Customers" refers to users who book services from Providers through the VibeWell platform.
 - "Content" refers to text, images, photos, audio, video, and all other forms of data or communication posted on or transmitted through the Service.
 
 ## 2. Account Registration and Requirements
@@ -67,11 +67,11 @@ Cancellation and rescheduling policies are set by individual Providers. You agre
 
 ### 5.1 Fees
 
-The fees for services booked through the Service are set by Providers. Vibewell charges service fees for facilitating bookings, processing payments, and maintaining the Service. All applicable fees will be disclosed before you complete a booking.
+The fees for services booked through the Service are set by Providers. VibeWell charges service fees for facilitating bookings, processing payments, and maintaining the Service. All applicable fees will be disclosed before you complete a booking.
 
 ### 5.2 Payment Processing
 
-Payment processing services for users on Vibewell are provided by our third-party payment processors. By using the Service, you agree to be bound by the payment processor's terms of service and privacy policy.
+Payment processing services for users on VibeWell are provided by our third-party payment processors. By using the Service, you agree to be bound by the payment processor's terms of service and privacy policy.
 
 ### 5.3 Refunds
 
@@ -118,13 +118,13 @@ We have the right, but not the obligation, to monitor and edit or remove any con
 
 ## 8. Intellectual Property
 
-### 8.1 Vibewell Intellectual Property
+### 8.1 VibeWell Intellectual Property
 
-The Service and its original content (excluding content provided by users), features, and functionality are and will remain the exclusive property of Vibewell and its licensors. The Service is protected by copyright, trademark, and other laws.
+The Service and its original content (excluding content provided by users), features, and functionality are and will remain the exclusive property of VibeWell and its licensors. The Service is protected by copyright, trademark, and other laws.
 
 ### 8.2 Trademarks
 
-All trademarks, logos, service marks, and trade names displayed on the Service are either the property of Vibewell or third parties. You may not use these without the prior written permission of Vibewell or the third party that owns the marks.
+All trademarks, logos, service marks, and trade names displayed on the Service are either the property of VibeWell or third parties. You may not use these without the prior written permission of VibeWell or the third party that owns the marks.
 
 ## 9. Privacy
 
@@ -170,21 +170,21 @@ The Service does not provide medical advice, diagnosis, or treatment. Any inform
 
 ### 12.3 Third-Party Services
 
-The Service may contain links to third-party websites or services that are not owned or controlled by Vibewell. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party websites or services.
+The Service may contain links to third-party websites or services that are not owned or controlled by VibeWell. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party websites or services.
 
 ## 13. Limitation of Liability
 
-In no event shall Vibewell, its directors, employees, partners, agents, suppliers, or affiliates be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from:
+In no event shall VibeWell, its directors, employees, partners, agents, suppliers, or affiliates be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from:
 - Your access to or use of or inability to access or use the Service
 - Any conduct or content of any third party on the Service
 - Any content obtained from the Service
 - Unauthorized access, use, or alteration of your transmissions or content
 
-The total liability of Vibewell, whether in contract, warranty, tort (including negligence), or any other theory, shall not exceed the amount you have paid to Vibewell in the past six months, or $100 if you have not made any payments to Vibewell.
+The total liability of VibeWell, whether in contract, warranty, tort (including negligence), or any other theory, shall not exceed the amount you have paid to VibeWell in the past six months, or $100 if you have not made any payments to VibeWell.
 
 ## 14. Indemnification
 
-You agree to defend, indemnify, and hold harmless Vibewell and its licensees and licensors, and their employees, contractors, agents, officers, and directors, from and against any and all claims, damages, obligations, losses, liabilities, costs or debt, and expenses (including but not limited to attorney's fees), resulting from or arising out of:
+You agree to defend, indemnify, and hold harmless VibeWell and its licensees and licensors, and their employees, contractors, agents, officers, and directors, from and against any and all claims, damages, obligations, losses, liabilities, costs or debt, and expenses (including but not limited to attorney's fees), resulting from or arising out of:
 - Your use and access of the Service
 - Your violation of any term of these Terms
 - Your violation of any third-party right, including without limitation any copyright, property, or privacy right
@@ -192,7 +192,7 @@ You agree to defend, indemnify, and hold harmless Vibewell and its licensees and
 
 ## 15. Governing Law
 
-These Terms shall be governed by and defined following the laws of [Jurisdiction]. Vibewell and yourself irrevocably consent that the courts of [Jurisdiction] shall have exclusive jurisdiction to resolve any dispute which may arise in connection with these Terms.
+These Terms shall be governed by and defined following the laws of [Jurisdiction]. VibeWell and yourself irrevocably consent that the courts of [Jurisdiction] shall have exclusive jurisdiction to resolve any dispute which may arise in connection with these Terms.
 
 ## 16. Changes to Terms
 
@@ -210,4 +210,4 @@ If you have any questions about these Terms, please contact us at:
 
 ---
 
-By using the Vibewell platform, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions. 
+By using the VibeWell platform, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions. 

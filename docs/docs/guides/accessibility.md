@@ -1,6 +1,6 @@
-# Vibewell Accessibility Implementation
+# VibeWell Accessibility Implementation
 
-This directory contains components, fixes, and scripts to improve the accessibility of the Vibewell platform according to the recommendations in the accessibility audit.
+This directory contains components, fixes, and scripts to improve the accessibility of the VibeWell platform according to the recommendations in the accessibility audit.
 
 ## Components
 

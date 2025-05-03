@@ -1,6 +1,6 @@
 # Component Documentation Style Guide
 
-This guide provides standards for documenting components in the Vibewell project. Consistent documentation improves code maintainability and developer onboarding.
+This guide provides standards for documenting components in the VibeWell project. Consistent documentation improves code maintainability and developer onboarding.
 
 ## Documentation Format
 

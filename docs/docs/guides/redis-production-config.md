@@ -1,10 +1,10 @@
 # Redis Production Configuration Guide
 
-This document provides a comprehensive guide for configuring Redis for production use within the Vibewell platform, particularly for rate limiting and caching features.
+This document provides a comprehensive guide for configuring Redis for production use within the VibeWell platform, particularly for rate limiting and caching features.
 
 ## Overview
 
-Redis is used in the Vibewell platform for several critical functions:
+Redis is used in the VibeWell platform for several critical functions:
 
 1. **Rate Limiting**: Preventing abuse of API endpoints
 2. **Distributed Caching**: Improving performance by caching frequently accessed data

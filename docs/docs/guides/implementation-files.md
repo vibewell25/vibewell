@@ -1,4 +1,4 @@
-# Vibewell Implementation Guide
+# VibeWell Implementation Guide
 
 This directory contains all the implementation files needed to complete the requested tasks. To apply these changes to your project, follow these steps:
 

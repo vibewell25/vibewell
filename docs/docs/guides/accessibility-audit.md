@@ -1,12 +1,12 @@
-# Accessibility Audit for Vibewell Platform
+# Accessibility Audit for VibeWell Platform
 
 ## Executive Summary
 
-This accessibility audit examines the Vibewell platform's compliance with the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA standards. The audit identifies current accessibility strengths, areas for improvement, and provides specific recommendations to enhance the platform's accessibility for all users, including those with disabilities.
+This accessibility audit examines the VibeWell platform's compliance with the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA standards. The audit identifies current accessibility strengths, areas for improvement, and provides specific recommendations to enhance the platform's accessibility for all users, including those with disabilities.
 
 ## Scope
 
-The audit covers the following areas of the Vibewell platform:
+The audit covers the following areas of the VibeWell platform:
 - User interface components
 - Navigation and wayfinding
 - Forms and input mechanisms
@@ -297,9 +297,9 @@ theme: {
 
 ## Conclusion
 
-The Vibewell platform currently achieves partial compliance with WCAG 2.1 Level AA standards. While many foundations are in place, significant improvements are needed in keyboard navigation, screen reader support, and color contrast to achieve full compliance.
+The VibeWell platform currently achieves partial compliance with WCAG 2.1 Level AA standards. While many foundations are in place, significant improvements are needed in keyboard navigation, screen reader support, and color contrast to achieve full compliance.
 
-By implementing the recommendations in this audit, Vibewell can create a more inclusive experience for all users, including those with disabilities, while also meeting legal requirements for digital accessibility.
+By implementing the recommendations in this audit, VibeWell can create a more inclusive experience for all users, including those with disabilities, while also meeting legal requirements for digital accessibility.
 
 ## Appendix: Testing Tools Used
 

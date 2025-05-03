@@ -1,6 +1,6 @@
 # K6 Load Testing for Redis Rate Limiting
 
-This document provides instructions for setting up and running [k6](https://k6.io/) load tests to evaluate the Redis rate limiting implementation in the Vibewell API.
+This document provides instructions for setting up and running [k6](https://k6.io/) load tests to evaluate the Redis rate limiting implementation in the VibeWell API.
 
 ## Overview
 
@@ -104,7 +104,7 @@ Test results are stored in the `./load-test-results/` directory:
 
 ### View Results in the Application
 
-You can view load test results in the Vibewell admin dashboard at `/api/load-test-results` or programmatically via:
+You can view load test results in the VibeWell admin dashboard at `/api/load-test-results` or programmatically via:
 
 ```bash
 curl http://localhost:3000/api/load-test-results
@@ -155,6 +155,6 @@ When running load tests against production-like environments:
 For additional assistance:
 
 - Consult the [k6 documentation](https://k6.io/docs/)
-- Check the Redis dashboard in the Vibewell admin interface
+- Check the Redis dashboard in the VibeWell admin interface
 - Review Redis logs for any connection issues
 - See additional logging in the API server console output 

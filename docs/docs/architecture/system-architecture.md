@@ -1,8 +1,8 @@
-# Vibewell System Architecture
+# VibeWell System Architecture
 
 ## Overview
 
-This document outlines the system architecture of the Vibewell platform, a beauty and wellness booking solution with advanced AI features. The architecture is designed to be scalable, performant, and maintainable while supporting the platform's diverse features.
+This document outlines the system architecture of the VibeWell platform, a beauty and wellness booking solution with advanced AI features. The architecture is designed to be scalable, performant, and maintainable while supporting the platform's diverse features.
 
 ## Architecture Principles
 
@@ -15,7 +15,7 @@ This document outlines the system architecture of the Vibewell platform, a beaut
 
 ## High-Level Architecture
 
-The Vibewell platform follows a modern web application architecture with the following main components:
+The VibeWell platform follows a modern web application architecture with the following main components:
 
 ```
 ┌─────────────────────────────────────┐

@@ -1,6 +1,6 @@
 # Notification System Guide
 
-This guide explains how to use and implement the notification system in the Vibewell platform.
+This guide explains how to use and implement the notification system in the VibeWell platform.
 
 ## Table of Contents
 
@@ -13,7 +13,7 @@ This guide explains how to use and implement the notification system in the Vibe
 
 ## Overview
 
-The Vibewell notification system provides a way to communicate important information to users through the application interface. Notifications can be related to bookings, loyalty programs, marketing campaigns, or general system messages.
+The VibeWell notification system provides a way to communicate important information to users through the application interface. Notifications can be related to bookings, loyalty programs, marketing campaigns, or general system messages.
 
 Key features:
 - Real-time notification badge with unread count
@@ -223,7 +223,7 @@ import { NotificationBadge } from '@/components/NotificationBadge';
 export function CustomHeader() {
   return (
     <header className="flex justify-between items-center p-4 border-b">
-      <div className="logo">Vibewell</div>
+      <div className="logo">VibeWell</div>
       <nav className="flex items-center gap-4">
         {/* Other navigation items */}
         <NotificationBadge onClick={() => router.push('/notifications')} />

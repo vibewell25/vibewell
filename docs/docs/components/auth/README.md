@@ -1,7 +1,7 @@
 # Authentication Components
 
 ## Overview
-Authentication components handle user authentication, registration, and security features in the Vibewell application.
+Authentication components handle user authentication, registration, and security features in the VibeWell application.
 
 ## Components
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides comprehensive standards and implementations for form validation across the Vibewell platform. Consistent validation improves user experience, enhances accessibility, and maintains data integrity.
+This guide provides comprehensive standards and implementations for form validation across the VibeWell platform. Consistent validation improves user experience, enhances accessibility, and maintains data integrity.
 
 ## Core Principles
 
@@ -13,7 +13,7 @@ This guide provides comprehensive standards and implementations for form validat
 
 ## Validation Library
 
-Vibewell uses [Zod](https://github.com/colinhacks/zod) for schema validation, combined with custom utilities for form handling.
+VibeWell uses [Zod](https://github.com/colinhacks/zod) for schema validation, combined with custom utilities for form handling.
 
 ### Basic Schema Example
 

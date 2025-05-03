@@ -1,4 +1,4 @@
-# Vibewell API Documentation
+# VibeWell API Documentation
 
 ## 🔑 Authentication
 

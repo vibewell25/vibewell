@@ -1,6 +1,6 @@
 # 3D Mock Files for Testing
 
-This document provides an overview of the mock files created for testing Three.js and React Three Fiber components in the Vibewell project.
+This document provides an overview of the mock files created for testing Three.js and React Three Fiber components in the VibeWell project.
 
 ## Core Three.js Mocks
 

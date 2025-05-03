@@ -1,8 +1,8 @@
-# Vibewell Admin Guide
+# VibeWell Admin Guide
 
 ## Overview
 
-This guide provides comprehensive documentation for Vibewell administrators on managing the platform, users, and business operations.
+This guide provides comprehensive documentation for VibeWell administrators on managing the platform, users, and business operations.
 
 ## Table of Contents
 

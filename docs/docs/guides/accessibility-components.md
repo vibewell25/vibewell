@@ -1,10 +1,10 @@
 # Accessibility Components
 
-This document provides information about the accessibility components available in the Vibewell UI library and how to use them.
+This document provides information about the accessibility components available in the VibeWell UI library and how to use them.
 
 ## Overview
 
-Accessibility is a key part of the Vibewell platform. These components help make your application more accessible to users with disabilities, including those using screen readers, keyboard navigation, and other assistive technologies.
+Accessibility is a key part of the VibeWell platform. These components help make your application more accessible to users with disabilities, including those using screen readers, keyboard navigation, and other assistive technologies.
 
 ## Available Components
 

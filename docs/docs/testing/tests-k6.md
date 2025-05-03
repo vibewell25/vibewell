@@ -1,6 +1,6 @@
 # k6 Load Testing for Redis Rate Limiting
 
-This directory contains load testing scripts for evaluating the performance of Redis-based rate limiting in the Vibewell application.
+This directory contains load testing scripts for evaluating the performance of Redis-based rate limiting in the VibeWell application.
 
 ## Quick Start
 
@@ -85,5 +85,5 @@ If tests fail to run:
 ## Further Reading
 
 - [k6 Documentation](https://k6.io/docs/)
-- [Vibewell Rate Limiting Guide](../../docs/rate-limiting.md)
+- [VibeWell Rate Limiting Guide](../../docs/rate-limiting.md)
 - [Load Testing Guide](../../docs/load-testing.md) 

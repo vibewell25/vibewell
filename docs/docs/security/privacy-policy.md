@@ -1,10 +1,10 @@
-# Vibewell Privacy Policy
+# VibeWell Privacy Policy
 
 **Last Updated: [Current Date]**
 
 ## 1. Introduction
 
-Vibewell, Inc. ("Vibewell," "we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website, mobile application, and services (collectively, the "Service").
+VibeWell, Inc. ("VibeWell," "we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website, mobile application, and services (collectively, the "Service").
 
 Please read this Privacy Policy carefully. By accessing or using the Service, you acknowledge that you have read, understood, and agree to be bound by the terms of this Privacy Policy. If you do not agree with our policies and practices, please do not use the Service.
 
@@ -122,7 +122,7 @@ When you book a service, we share relevant information:
 
 ### 5.3 Business Transfers
 
-If Vibewell is involved in a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction.
+If VibeWell is involved in a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction.
 
 ### 5.4 Legal Requirements
 
@@ -197,7 +197,7 @@ If you are in the European Economic Area (EEA), United Kingdom, or Switzerland, 
 
 ## 11. Third-Party Services and Links
 
-Our Service may contain links to third-party websites, services, or advertisements that are not owned or controlled by Vibewell. We are not responsible for the privacy practices of these third parties. We encourage you to review the privacy policies of any third-party sites you visit.
+Our Service may contain links to third-party websites, services, or advertisements that are not owned or controlled by VibeWell. We are not responsible for the privacy practices of these third parties. We encourage you to review the privacy policies of any third-party sites you visit.
 
 ## 12. Changes to This Privacy Policy
 
@@ -234,7 +234,7 @@ You have the right to lodge a complaint with a supervisory authority if you beli
 If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:
 
 - **Email**: privacy@vibewell.com
-- **Mail**: Vibewell, Inc., [Physical Address]
+- **Mail**: VibeWell, Inc., [Physical Address]
 - **Phone**: [Phone Number]
 
 For data subjects in the EU, we have appointed a data protection representative:

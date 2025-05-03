@@ -1,10 +1,10 @@
-# Integrating Analytics in the Vibewell Platform
+# Integrating Analytics in the VibeWell Platform
 
-This guide explains how to correctly integrate analytics tracking throughout the Vibewell application to ensure consistent data collection and reporting.
+This guide explains how to correctly integrate analytics tracking throughout the VibeWell application to ensure consistent data collection and reporting.
 
 ## Overview
 
-The Vibewell platform includes a centralized analytics utility that provides standardized interfaces for tracking user behavior, application performance, and business metrics. Using this utility consistently ensures that:
+The VibeWell platform includes a centralized analytics utility that provides standardized interfaces for tracking user behavior, application performance, and business metrics. Using this utility consistently ensures that:
 
 1. All event data follows a standard format
 2. Events are appropriately categorized
@@ -495,4 +495,4 @@ export const logEvent = (eventName, properties) => {
 
 ## Conclusion
 
-Following these guidelines ensures that analytics data is consistently collected and formatted across the Vibewell platform. This consistency makes it easier to analyze data, identify patterns, and make data-driven decisions to improve the application. 
+Following these guidelines ensures that analytics data is consistently collected and formatted across the VibeWell platform. This consistency makes it easier to analyze data, identify patterns, and make data-driven decisions to improve the application. 

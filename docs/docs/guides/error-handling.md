@@ -1,6 +1,6 @@
 # Error Handling Guide
 
-This guide explains the error handling approach used in the Vibewell application, including error boundaries, fallback UI components, best practices, and the error handling system.
+This guide explains the error handling approach used in the VibeWell application, including error boundaries, fallback UI components, best practices, and the error handling system.
 
 ## Error Boundaries
 
@@ -87,7 +87,7 @@ function LoadingState() {
 
 ## Error Handling System
 
-The Vibewell error handling system provides a standardized way to manage errors throughout the application. It offers:
+The VibeWell error handling system provides a standardized way to manage errors throughout the application. It offers:
 - **Standardized Error Structure**: A consistent format for all errors
 - **Centralized Error Logging**: A unified approach to capturing and recording errors
 - **Contextual Error Display**: Appropriate error messages for users based on error severity

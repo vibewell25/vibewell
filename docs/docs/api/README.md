@@ -1,7 +1,7 @@
-# Vibewell API Documentation
+# VibeWell API Documentation
 
 ## Overview
-This documentation covers all API endpoints, authentication methods, and data models used in the Vibewell application.
+This documentation covers all API endpoints, authentication methods, and data models used in the VibeWell application.
 
 ## Base URL
 ```

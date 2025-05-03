@@ -1,8 +1,8 @@
-# Vibewell Monitoring and Logging Configuration
+# VibeWell Monitoring and Logging Configuration
 
 ## Overview
 
-This document outlines the monitoring and logging strategy for the Vibewell platform, ensuring reliable operations, quick problem detection, and comprehensive visibility into system performance and user behavior.
+This document outlines the monitoring and logging strategy for the VibeWell platform, ensuring reliable operations, quick problem detection, and comprehensive visibility into system performance and user behavior.
 
 ## Monitoring Architecture
 
@@ -63,7 +63,7 @@ core_metrics:
 - AWS/ElastiCache
 - AWS/ApiGateway
 - AWS/ApplicationELB
-- Custom/Vibewell
+- Custom/VibeWell
 
 #### CloudWatch Alarms
 
@@ -86,7 +86,7 @@ core_metrics:
 newrelic.config.js:
 
 exports.config = {
-  app_name: ['Vibewell-Production'],
+  app_name: ['VibeWell-Production'],
   license_key: '${NEW_RELIC_LICENSE_KEY}',
   distributed_tracing: {
     enabled: true

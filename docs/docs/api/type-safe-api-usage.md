@@ -1,6 +1,6 @@
 # Type-Safe API Usage Guide
 
-This guide explains how to use the type-safe API utilities and services in the Vibewell application, with a focus on the booking service as an example.
+This guide explains how to use the type-safe API utilities and services in the VibeWell application, with a focus on the booking service as an example.
 
 ## Overview
 

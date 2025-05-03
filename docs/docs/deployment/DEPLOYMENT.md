@@ -1,4 +1,4 @@
-# Vibewell Deployment Guide
+# VibeWell Deployment Guide
 
 ## Prerequisites
 

@@ -1,6 +1,6 @@
-# Project Improvements for Vibewell
+# Project Improvements for VibeWell
 
-This document outlines the major improvements implemented in the Vibewell project to address issues identified in the audit.
+This document outlines the major improvements implemented in the VibeWell project to address issues identified in the audit.
 
 ## Table of Contents
 1. [Component Refactoring](#component-refactoring)

@@ -1,6 +1,6 @@
-# Vibewell Project Tasks
+# VibeWell Project Tasks
 
-This document contains detailed specifications for the remaining tasks in the Vibewell project. Each task includes specific requirements, acceptance criteria, and additional notes to guide implementation.
+This document contains detailed specifications for the remaining tasks in the VibeWell project. Each task includes specific requirements, acceptance criteria, and additional notes to guide implementation.
 
 ## Phase 1: Core Feature Completion
 

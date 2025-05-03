@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide serves as the single source of truth for implementing features in the Vibewell platform. It consolidates information from various implementation guides and provides a unified approach to development.
+This guide serves as the single source of truth for implementing features in the VibeWell platform. It consolidates information from various implementation guides and provides a unified approach to development.
 
 ## Table of Contents
 
@@ -40,7 +40,7 @@ Before you begin implementing features, ensure you have:
 
 ### Using Standardized Components
 
-Vibewell has standardized UI components located in `src/components/ui/`. Always use these components rather than creating duplicates. Key components include:
+VibeWell has standardized UI components located in `src/components/ui/`. Always use these components rather than creating duplicates. Key components include:
 
 - `Button`: Use for all actionable elements
 - `Form`: Use for all forms and form elements
@@ -100,7 +100,7 @@ When creating new components:
 
 ### State Categories
 
-In Vibewell, we categorize state into four main types:
+In VibeWell, we categorize state into four main types:
 
 1. **Server State**: Data fetched from APIs (users, bookings, services)
 2. **UI State**: Visual state (modal visibility, active tabs, form inputs)
@@ -233,7 +233,7 @@ function Counter() {
 
 ### Using Form Validation Utility
 
-Vibewell uses a standard form validation utility based on Zod:
+VibeWell uses a standard form validation utility based on Zod:
 
 ```tsx
 import { z } from 'zod';
@@ -686,7 +686,7 @@ NEXT_PUBLIC_AUTH_DOMAIN=auth.vibewell.com
 
 ## Conclusion
 
-This consolidated guide provides a unified approach to implementing features in the Vibewell platform. Always refer to this guide when developing new features or modifying existing ones.
+This consolidated guide provides a unified approach to implementing features in the VibeWell platform. Always refer to this guide when developing new features or modifying existing ones.
 
 ## Related Documents
 

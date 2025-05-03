@@ -135,7 +135,7 @@ The application had performance issues, particularly in 3D/AR components:
    - Implement full responsive design # Code Consolidation Plan
 
 ## Overview
-This document outlines the approach for consolidating duplicate code implementations in the Vibewell project, with a focus on auth hooks, form validation utilities, and other core functionality.
+This document outlines the approach for consolidating duplicate code implementations in the VibeWell project, with a focus on auth hooks, form validation utilities, and other core functionality.
 
 ## 1. Auth Hook Consolidation
 
@@ -450,9 +450,9 @@ To monitor and prevent code redundancy, we've established:
 
 4. **Performance Monitoring**
    - Track bundle size and load times
-   - Identify performance bottlenecks caused by duplication # Vibewell Code Style Guide
+   - Identify performance bottlenecks caused by duplication # VibeWell Code Style Guide
 
-This guide establishes coding standards for the Vibewell project. Consistent code style improves readability, maintainability, and collaboration efficiency.
+This guide establishes coding standards for the VibeWell project. Consistent code style improves readability, maintainability, and collaboration efficiency.
 
 ## File Structure & Organization
 

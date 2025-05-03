@@ -1,4 +1,4 @@
-# Vibewell Frequently Asked Questions
+# VibeWell Frequently Asked Questions
 
 ## Table of Contents
 - [Account & Registration](#account--registration)
@@ -14,11 +14,11 @@
 
 ## Account & Registration
 
-### How do I create a Vibewell account?
+### How do I create a VibeWell account?
 You can create an account by clicking "Sign Up" on the homepage. Enter your email address, create a password, and follow the verification steps. You can also sign up using your Google, Facebook, or Apple account for faster registration.
 
-### Is my Vibewell account free?
-Yes, creating and maintaining a Vibewell account is completely free. You only pay for services booked through the platform.
+### Is my VibeWell account free?
+Yes, creating and maintaining a VibeWell account is completely free. You only pay for services booked through the platform.
 
 ### How do I verify my email address?
 After registering, we send a verification link to your email. Click on this link to verify your account. If you haven't received the email, check your spam folder or request a new verification email from your account settings.
@@ -90,13 +90,13 @@ All providers undergo a verification process that includes license verification,
 Yes, if a provider has multiple staff members, you can request a specific person during the booking process, subject to their availability.
 
 ### How do I message a provider?
-On the provider's profile, click "Contact Provider" to send a message. All communication happens within the Vibewell platform for your security.
+On the provider's profile, click "Contact Provider" to send a message. All communication happens within the VibeWell platform for your security.
 
 ### What if I have special requirements?
 During the booking process, there's a field for special requirements or notes. Make sure to include any important information there.
 
 ### Are providers' prices fixed?
-Prices shown on Vibewell are set by the providers and should be accurate. However, additional services requested during your appointment may incur extra charges.
+Prices shown on VibeWell are set by the providers and should be accurate. However, additional services requested during your appointment may incur extra charges.
 
 ### Can I see a provider's portfolio before booking?
 Yes, provider profiles include a portfolio section where they showcase their work. You can browse these to assess their style and expertise.
@@ -191,8 +191,8 @@ Error messages may appear if the time slot is no longer available, if there are 
 If you received a confirmation email but don't see the booking in your account, try refreshing the page or logging out and back in. If it still doesn't appear, contact customer support with your confirmation number.
 
 ### How do I enable notifications on my mobile device?
-For iOS: Go to Settings > Notifications > Vibewell > Allow Notifications.
-For Android: Go to Settings > Apps > Vibewell > Notifications > Show notifications.
+For iOS: Go to Settings > Notifications > VibeWell > Allow Notifications.
+For Android: Go to Settings > Apps > VibeWell > Notifications > Show notifications.
 
 ### The Virtual Try-On feature is lagging on my device. How can I fix this?
 Try closing other apps running in the background, ensure you have a strong internet connection, and make sure your device meets the minimum requirements for AR features. Using the app in a well-lit environment also helps improve performance.
@@ -211,10 +211,10 @@ Only you and the providers you've booked with can see your booking history. Your
 ### How do I report suspicious activity?
 If you notice suspicious activity on your account, contact our support team immediately and change your password.
 
-### Does Vibewell use cookies?
+### Does VibeWell use cookies?
 Yes, we use cookies to enhance your browsing experience, analyze site traffic, and personalize content. You can manage cookie preferences in your browser settings.
 
-### How long does Vibewell keep my data?
+### How long does VibeWell keep my data?
 We retain your account data as long as your account remains active. Certain transaction records may be kept longer for legal and financial compliance. You can request data deletion through your account settings.
 
 ### Is my location data collected?
@@ -228,17 +228,17 @@ Each provider sets their own cancellation policy, which is displayed during the 
 ### How do I report inappropriate behavior?
 For any concerning behavior from providers or other users, use the "Report" function on their profile or contact our Trust & Safety team directly via the Help Center.
 
-### Can I use Vibewell in any country?
-Vibewell is currently available in the United States, Canada, United Kingdom, Australia, and New Zealand. We're continuously expanding to new regions.
+### Can I use VibeWell in any country?
+VibeWell is currently available in the United States, Canada, United Kingdom, Australia, and New Zealand. We're continuously expanding to new regions.
 
 ### What happens if a provider cancels my appointment?
 If a provider cancels, you'll receive an immediate notification with options to reschedule or receive a full refund. In some cases, we offer compensation in loyalty points for the inconvenience.
 
-### Are there age restrictions for using Vibewell?
+### Are there age restrictions for using VibeWell?
 Users must be at least 18 years old to create an account and book services independently. Parents or guardians can book services for minors where appropriate.
 
 ### What is your refund policy for unsatisfactory service?
 While we encourage resolving issues directly with providers, we offer a Satisfaction Guarantee for certain bookings. Contact support within 48 hours of your appointment to report quality issues.
 
 ### How do I provide general feedback about the platform?
-We welcome your feedback! Go to "Help & Support" > "Give Feedback" to share your thoughts, suggestions, or concerns about any aspect of the Vibewell platform. 
+We welcome your feedback! Go to "Help & Support" > "Give Feedback" to share your thoughts, suggestions, or concerns about any aspect of the VibeWell platform. 

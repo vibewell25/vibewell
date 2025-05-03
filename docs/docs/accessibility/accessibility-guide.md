@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide outlines the accessibility standards, practices, and implementation guidelines for the Vibewell platform. Ensuring our application is accessible to all users, including those with disabilities, is not only a legal requirement but aligns with our core values of inclusivity and excellent user experience.
+This guide outlines the accessibility standards, practices, and implementation guidelines for the VibeWell platform. Ensuring our application is accessible to all users, including those with disabilities, is not only a legal requirement but aligns with our core values of inclusivity and excellent user experience.
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ This guide outlines the accessibility standards, practices, and implementation g
 
 ## Accessibility Standards
 
-Vibewell follows the Web Content Accessibility Guidelines (WCAG) 2.1 at the AA level. These guidelines are organized around four principles:
+VibeWell follows the Web Content Accessibility Guidelines (WCAG) 2.1 at the AA level. These guidelines are organized around four principles:
 
 1. **Perceivable**: Information and user interface components must be presentable to users in ways they can perceive.
 2. **Operable**: User interface components and navigation must be operable.
@@ -471,7 +471,7 @@ Use this checklist for every component and page:
 
 ## Conclusion
 
-Accessibility is an ongoing process that should be integrated into our development workflow. By following these guidelines, we ensure that Vibewell is usable by everyone, regardless of ability or disability.
+Accessibility is an ongoing process that should be integrated into our development workflow. By following these guidelines, we ensure that VibeWell is usable by everyone, regardless of ability or disability.
 
 ## Related Documents
 

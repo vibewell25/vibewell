@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide outlines the standardization process for authentication hooks in the Vibewell platform. The codebase currently contains multiple authentication hook implementations, which has led to inconsistencies, code duplication, and maintenance challenges. This guide aims to establish a clear standard and migration path to a unified authentication approach.
+This guide outlines the standardization process for authentication hooks in the VibeWell platform. The codebase currently contains multiple authentication hook implementations, which has led to inconsistencies, code duplication, and maintenance challenges. This guide aims to establish a clear standard and migration path to a unified authentication approach.
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ This guide outlines the standardization process for authentication hooks in the 
 
 ## Current State
 
-The Vibewell codebase currently contains several authentication-related hooks and implementations:
+The VibeWell codebase currently contains several authentication-related hooks and implementations:
 
 1. **Legacy auth hooks**:
    - `src/hooks/useAuth.ts` (deprecated)
@@ -414,7 +414,7 @@ function SocialLogin() {
 
 ## Conclusion
 
-Standardizing authentication hooks across the Vibewell platform is a critical step in improving code quality, maintainability, and security. By following this guide, developers can ensure consistent auth implementation that works reliably across web and mobile platforms.
+Standardizing authentication hooks across the VibeWell platform is a critical step in improving code quality, maintainability, and security. By following this guide, developers can ensure consistent auth implementation that works reliably across web and mobile platforms.
 
 For assistance with the migration process or questions about the standardized auth hook, please contact the platform architecture team.
 

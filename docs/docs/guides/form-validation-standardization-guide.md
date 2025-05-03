@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide outlines the standardization process for form validation in the Vibewell platform. The codebase currently contains multiple form validation implementations, which has led to inconsistencies, code duplication, and maintenance challenges. This guide aims to establish a clear standard and migration path to a unified form validation approach using Zod.
+This guide outlines the standardization process for form validation in the VibeWell platform. The codebase currently contains multiple form validation implementations, which has led to inconsistencies, code duplication, and maintenance challenges. This guide aims to establish a clear standard and migration path to a unified form validation approach using Zod.
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ This guide outlines the standardization process for form validation in the Vibew
 
 ## Current State
 
-The Vibewell codebase currently contains several form validation implementations:
+The VibeWell codebase currently contains several form validation implementations:
 
 1. **Legacy custom validation**:
    - In-component validation logic
@@ -515,7 +515,7 @@ const addressSchema = z.object({
 
 ## Conclusion
 
-Standardizing form validation with Zod provides a more robust, type-safe and consistent approach across the Vibewell platform. By following these guidelines, all forms will have consistent validation behavior, error messages, and accessibility features.
+Standardizing form validation with Zod provides a more robust, type-safe and consistent approach across the VibeWell platform. By following these guidelines, all forms will have consistent validation behavior, error messages, and accessibility features.
 
 ## Related Documents
 

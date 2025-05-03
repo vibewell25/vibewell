@@ -1,7 +1,7 @@
 # Monitoring and Alerting Setup
 
 ## Overview
-This document outlines the monitoring and alerting infrastructure for the Vibewell application, including metrics collection, visualization, and alerting configuration.
+This document outlines the monitoring and alerting infrastructure for the VibeWell application, including metrics collection, visualization, and alerting configuration.
 
 ## Infrastructure
 
@@ -86,7 +86,7 @@ scrape_configs:
 ```json
 {
   "dashboard": {
-    "title": "Vibewell Overview",
+    "title": "VibeWell Overview",
     "panels": [
       {
         "title": "Request Rate",

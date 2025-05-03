@@ -1,0 +1,32 @@
+name: Docs CI
+on:
+  push:
+    branches: [main]
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: |
+          cd docs
+          npm ci
+      - name: Build Docusaurus site
+        run: |
+          cd docs
+          npm run build
+      - name: Deploy to GitHub Pages
+        run: |
+          cd docs
+          npm run deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload archive
+        uses: actions/upload-artifact@v3
+        with:
+          name: docs-build
+          path: docs/build 

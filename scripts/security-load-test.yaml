@@ -1,0 +1,316 @@
+config:
+  target: "{{ $processEnvironment.API_BASE_URL }}"
+  phases:
+    - duration: "{{ $processEnvironment.DURATION }}"
+      arrivalRate: "{{ $processEnvironment.RATE_MULTIPLIER }}"
+      rampTo: "{{ Math.floor($processEnvironment.RATE_MULTIPLIER * 2) }}"
+      name: "Warm up phase"
+    - duration: "{{ $processEnvironment.DURATION }}"
+      arrivalRate: "{{ Math.floor($processEnvironment.RATE_MULTIPLIER * 2) }}"
+      rampTo: "{{ Math.floor($processEnvironment.RATE_MULTIPLIER * 5) }}"
+      name: "Ramp up load"
+    - duration: "{{ $processEnvironment.DURATION }}"
+      arrivalRate: "{{ Math.floor($processEnvironment.RATE_MULTIPLIER * 5) }}"
+      name: "Sustained load"
+  processor: "../scripts/load-test-functions.js"
+  http:
+    timeout: 10
+    pool: 10
+  plugins:
+    metrics-by-endpoint: {}
+    expect: {}
+  environments:
+    development:
+      target: "http://localhost:3000/api"
+      phases:
+        - duration: "{{ $processEnvironment.DURATION }}"
+          arrivalRate: 2
+          rampTo: 5
+          name: "Development testing - moderate load"
+    staging:
+      target: "https://staging-api.example.com/api"
+      phases:
+        - duration: "{{ $processEnvironment.DURATION }}"
+          arrivalRate: 5
+          rampTo: 20
+          name: "Staging testing - increased load"
+    production:
+      target: "https://api.example.com/api"
+      phases:
+        - duration: "{{ $processEnvironment.DURATION }}"
+          arrivalRate: 10
+          rampTo: 50
+          name: "Production simulation - high load"
+
+scenarios:
+  - name: auth-rate-limit
+    weight: 5
+    flow:
+      - function: "checkRedisStatus"
+      - function: "generateRandomUser"
+      - log: "Testing authentication rate limiting with user {{ email }}"
+      - loop:
+        - post:
+            url: "/auth/login"
+            json:
+              email: "{{ email }}"
+              password: "incorrect-password-{{ $loopCount }}"
+            expect:
+              - statusCode:
+                  - 401
+                  - 429
+        - function: "trackOperationCount"
+          with:
+            operation: "login-attempt"
+            success: "{{ $loopElement.response.statusCode !== 429 }}"
+            isRateLimited: "{{ $loopElement.response.statusCode === 429 }}"
+        count: 20
+      - think: 2
+      - function: "printStats"
+        with:
+          scenario: "auth-rate-limit"
+
+  - name: user-verification
+    weight: 3
+    flow:
+      - function: "generateRandomUser"
+      - log: "Testing user verification flow for {{ email }}"
+      - post:
+          url: "/auth/signup"
+          json:
+            name: "{{ name }}"
+            email: "{{ email }}"
+            password: "SecurePassword123!"
+          capture:
+            - json: "$.userId"
+              as: "userId"
+          expect:
+            - statusCode: 201
+      - function: "trackOperationCount"
+        with:
+          operation: "user-registration"
+          success: "{{ userId !== undefined }}"
+      - think: 1
+      # Simulate verification token check
+      - get:
+          url: "/auth/verify/invalid-token-test"
+          expect:
+            - statusCode: 400
+      - function: "trackOperationCount"
+        with:
+          operation: "token-verification"
+          success: false
+      # Test account lockout after multiple verification attempts
+      - loop:
+        - get:
+            url: "/auth/verify/invalid-token-{{ $loopCount }}"
+            expect:
+              - statusCode:
+                  - 400
+                  - 429
+        - function: "trackOperationCount"
+          with:
+            operation: "token-verification-lockout"
+            success: "{{ $loopElement.response.statusCode !== 429 }}"
+            isRateLimited: "{{ $loopElement.response.statusCode === 429 }}"
+        count: 10
+      - function: "printStats"
+        with:
+          scenario: "user-verification"
+
+  - name: payment-processing
+    weight: 4
+    flow:
+      - function: "generateRandomUser"
+      - function: "generateAuthToken"
+      - function: "generatePaymentInfo"
+      - log: "Testing payment processing with {{ cardType }}"
+      - post:
+          url: "/payments/process"
+          headers:
+            Authorization: "Bearer {{ token }}"
+          json:
+            amount: "{{ amount }}"
+            currency: "{{ currency }}"
+            cardNumber: "{{ cardNumber }}"
+            cardExpiry: "{{ cardExpiry }}"
+            cardCvc: "{{ cardCvc }}"
+            billingAddress: "{{ billingAddress }}"
+          capture:
+            - json: "$.paymentId"
+              as: "paymentId"
+          expect:
+            - statusCode: 
+                - 200
+                - 201
+                - 402
+      - function: "trackOperationCount"
+        with:
+          operation: "payment-processing"
+          success: "{{ paymentId !== undefined }}"
+      # Test payment verification (if success)
+      - get:
+          url: "/payments/{{ paymentId }}"
+          headers:
+            Authorization: "Bearer {{ token }}"
+          capture:
+            - json: "$.status"
+              as: "paymentStatus"
+          expect:
+            - statusCode: 200
+          when: "{{ paymentId !== undefined }}"
+      - function: "trackOperationCount"
+        with:
+          operation: "payment-verification"
+          success: "{{ paymentStatus === 'succeeded' || paymentStatus === 'processing' }}"
+          when: "{{ paymentId !== undefined }}"
+      - function: "printStats"
+        with:
+          scenario: "payment-processing"
+
+  - name: web3-payment
+    weight: 3
+    flow:
+      - function: "generateRandomUser"
+      - function: "generateAuthToken"
+      - log: "Testing web3 payment flow"
+      # Test wallet connection simulation
+      - post:
+          url: "/payments/web3/connect-wallet"
+          headers:
+            Authorization: "Bearer {{ token }}"
+          json:
+            walletAddress: "0x{{ $randomString(40, 'hex') }}"
+          capture:
+            - json: "$.connected"
+              as: "walletConnected"
+          expect:
+            - statusCode: 200
+      - function: "trackOperationCount"
+        with:
+          operation: "wallet-connection"
+          success: "{{ walletConnected === true }}"
+      # Test payment methods retrieval
+      - get:
+          url: "/payments/web3/methods"
+          headers:
+            Authorization: "Bearer {{ token }}"
+          capture:
+            - json: "$"
+              as: "paymentMethods"
+          expect:
+            - statusCode: 200
+      - function: "trackOperationCount"
+        with:
+          operation: "payment-methods-retrieval"
+          success: "{{ paymentMethods.length > 0 }}"
+      # Test payment processing
+      - post:
+          url: "/payments/web3/process"
+          headers:
+            Authorization: "Bearer {{ token }}"
+          json:
+            amount: "{{ Math.floor(Math.random() * 1000) / 100 }}"
+            currency: "ETH"
+            walletAddress: "0x{{ $randomString(40, 'hex') }}"
+            network: "ethereum"
+          capture:
+            - json: "$.transactionId"
+              as: "transactionId"
+          expect:
+            - statusCode: 
+                - 200
+                - 201
+                - 202
+      - function: "trackOperationCount"
+        with:
+          operation: "web3-payment-processing"
+          success: "{{ transactionId !== undefined }}"
+      - function: "printStats"
+        with:
+          scenario: "web3-payment"
+
+  - name: sensitive-data
+    weight: 2
+    flow:
+      - function: "generateRandomUser"
+      - function: "generateAuthToken"
+      - log: "Testing sensitive data protection"
+      # Test accessing user profile data
+      - get:
+          url: "/users/profile"
+          headers:
+            Authorization: "Bearer {{ token }}"
+          capture:
+            - json: "$.user"
+              as: "userProfile"
+          expect:
+            - statusCode: 200
+      - function: "trackOperationCount"
+        with:
+          operation: "profile-retrieval"
+          success: "{{ userProfile !== undefined }}"
+      # Attempt to access sensitive data with manipulated token
+      - get:
+          url: "/users/profile"
+          headers:
+            Authorization: "Bearer {{ token }}manipulated"
+          expect:
+            - statusCode: 401
+      - function: "trackOperationCount"
+        with:
+          operation: "invalid-token-access"
+          success: "{{ $loopElement.response.statusCode === 401 }}"
+      # Test accessing sensitive data without proper permissions
+      - get:
+          url: "/admin/users"
+          headers:
+            Authorization: "Bearer {{ token }}"
+          expect:
+            - statusCode: 403
+      - function: "trackOperationCount"
+        with:
+          operation: "unauthorized-access"
+          success: "{{ $loopElement.response.statusCode === 403 }}"
+      - function: "printStats"
+        with:
+          scenario: "sensitive-data"
+
+  - name: api-rate-limit
+    weight: 3
+    flow:
+      - function: "generateRandomUser"
+      - function: "generateAuthToken"
+      - log: "Testing API rate limiting"
+      # Test rapid API access
+      - loop:
+        - get:
+            url: "/users/profile"
+            headers:
+              Authorization: "Bearer {{ token }}"
+            expect:
+              - statusCode:
+                  - 200
+                  - 429
+        - function: "trackOperationCount"
+          with:
+            operation: "rapid-api-access"
+            success: "{{ $loopElement.response.statusCode !== 429 }}"
+            isRateLimited: "{{ $loopElement.response.statusCode === 429 }}"
+        count: 50
+      - think: 1
+      # Test recovery after rate limit
+      - think: 5
+      - get:
+          url: "/users/profile"
+          headers:
+            Authorization: "Bearer {{ token }}"
+          expect:
+            - statusCode: 200
+      - function: "trackOperationCount"
+        with:
+          operation: "rate-limit-recovery"
+          success: "{{ $loopElement.response.statusCode === 200 }}"
+      - function: "printStats"
+        with:
+          scenario: "api-rate-limit" 

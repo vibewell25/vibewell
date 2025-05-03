@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "personalInfo": "Personal Information",
+    "preferences": "Preferences",
+    "security": "Security",
+    "notifications": "Notifications",
+    "payments": "Payment Methods"
+  },
+  "fields": {
+    "name": "Full Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "address": "Address",
+    "bio": "Bio",
+    "avatar": "Profile Picture"
+  },
+  "security": {
+    "changePassword": "Change Password",
+    "twoFactor": "Two-Factor Authentication",
+    "sessions": "Active Sessions"
+  },
+  "notifications": {
+    "email": "Email Notifications",
+    "push": "Push Notifications",
+    "sms": "SMS Notifications"
+  },
+  "actions": {
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete Account"
+  }
+} 

@@ -1,0 +1,97 @@
+{
+  "cli": {
+    "version": ">= 3.0.0",
+    "requireCommit": true,
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://localhost:3000/api",
+        "EXPO_PUBLIC_ENV": "development"
+      },
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "simulator": true
+      },
+      "channel": "development"
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://staging-api.vibewell.com",
+        "EXPO_PUBLIC_ENV": "staging"
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "channel": "preview"
+    },
+    "production": {
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://api.vibewell.com",
+        "EXPO_PUBLIC_ENV": "production"
+      },
+      "channel": "production"
+    },
+    "test": {
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://test-api.vibewell.com",
+        "EXPO_PUBLIC_ENV": "test"
+      },
+      "android": {
+        "gradleCommand": ":app:assembleRelease :app:assembleAndroidTest -DtestBuildType=release",
+        "withoutCredentials": true
+      },
+      "ios": {
+        "simulator": true
+      },
+      "channel": "test"
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./google-service-account.json",
+        "track": "production"
+      },
+      "ios": {
+        "appleId": "ios@vibewell.com",
+        "ascAppId": "1234567890",
+        "appleTeamId": "AB12CD34EF"
+      }
+    },
+    "beta": {
+      "extends": "production",
+      "android": {
+        "track": "beta"
+      },
+      "ios": {
+        "betaGroups": ["Testers", "Developers", "Stakeholders"]
+      }
+    }
+  },
+  "update": {
+    "development": {
+      "channel": "development"
+    },
+    "preview": {
+      "channel": "preview"
+    },
+    "production": {
+      "channel": "production"
+    },
+    "rollout": {
+      "channel": "rollout",
+      "autoOutOfRange": true,
+      "runtimeVersions": ["default"],
+      "awaitingDeviceRuntimeVersionMaxAge": 86400
+    }
+  }
+} 

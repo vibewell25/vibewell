@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="10.377">
+  <testsuite name="CalendarService" errors="0" failures="0" skipped="0" timestamp="2025-04-20T21:43:33" time="4.176" tests="5">
+    <testcase classname="CalendarService Google Calendar Integration should connect to Google Calendar" name="CalendarService Google Calendar Integration should connect to Google Calendar" time="0.008">
+    </testcase>
+    <testcase classname="CalendarService Google Calendar Integration should sync booking with Google Calendar" name="CalendarService Google Calendar Integration should sync booking with Google Calendar" time="0.003">
+    </testcase>
+    <testcase classname="CalendarService Outlook Calendar Integration should sync booking with Outlook Calendar" name="CalendarService Outlook Calendar Integration should sync booking with Outlook Calendar" time="0.003">
+    </testcase>
+    <testcase classname="CalendarService Calendar Event Management should update calendar events" name="CalendarService Calendar Event Management should update calendar events" time="0.004">
+    </testcase>
+    <testcase classname="CalendarService Calendar Event Management should delete calendar events" name="CalendarService Calendar Event Management should delete calendar events" time="0.003">
+    </testcase>
+  </testsuite>
+</testsuites>

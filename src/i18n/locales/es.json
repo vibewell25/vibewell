@@ -1,0 +1,152 @@
+{
+  "common": {
+    "header": {
+      "home": "Inicio",
+      "dashboard": "Panel de Control",
+      "services": "Servicios",
+      "bookings": "Reservas",
+      "profile": "Perfil",
+      "messages": "Mensajes",
+      "settings": "Configuración",
+      "logout": "Cerrar Sesión",
+      "login": "Iniciar Sesión",
+      "register": "Registrarse"
+    },
+    "footer": {
+      "about": "Sobre Nosotros",
+      "contact": "Contacto",
+      "terms": "Términos de Servicio",
+      "privacy": "Política de Privacidad",
+      "copyright": "© 2023 Vibewell. Todos los derechos reservados."
+    },
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "submit": "Enviar",
+      "confirm": "Confirmar",
+      "back": "Atrás",
+      "next": "Siguiente",
+      "viewAll": "Ver Todo",
+      "search": "Buscar",
+      "filter": "Filtrar"
+    },
+    "notifications": {
+      "success": "¡Éxito!",
+      "error": "¡Error!",
+      "warning": "¡Advertencia!",
+      "info": "Información",
+      "loading": "Cargando...",
+      "notFound": "No Encontrado"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Inicia sesión en tu cuenta",
+      "emailLabel": "Correo electrónico",
+      "passwordLabel": "Contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "noAccount": "¿No tienes una cuenta?",
+      "signUp": "Regístrate",
+      "loginButton": "Iniciar Sesión",
+      "emailRequired": "El correo electrónico es obligatorio",
+      "passwordRequired": "La contraseña es obligatoria"
+    },
+    "register": {
+      "title": "Crea una cuenta",
+      "nameLabel": "Nombre Completo",
+      "emailLabel": "Correo electrónico",
+      "passwordLabel": "Contraseña",
+      "confirmPasswordLabel": "Confirmar Contraseña",
+      "hasAccount": "¿Ya tienes una cuenta?",
+      "signIn": "Inicia sesión",
+      "registerButton": "Registrarse",
+      "nameRequired": "El nombre es obligatorio",
+      "emailRequired": "El correo electrónico es obligatorio",
+      "passwordRequired": "La contraseña es obligatoria",
+      "passwordMatch": "Las contraseñas deben coincidir"
+    }
+  },
+  "dashboard": {
+    "welcome": "¡Bienvenido, {{name}}!",
+    "upcomingBookings": "Próximas Reservas",
+    "noBookings": "No tienes reservas próximas",
+    "recentActivity": "Actividad Reciente",
+    "analyticsTitle": "Análisis de Rendimiento",
+    "quickActions": "Acciones Rápidas",
+    "newsAndUpdates": "Noticias y Actualizaciones"
+  },
+  "profile": {
+    "personalInfo": "Información Personal",
+    "preferences": "Preferencias",
+    "notifications": "Configuración de Notificaciones",
+    "security": "Seguridad y Privacidad",
+    "darkMode": "Modo Oscuro",
+    "language": "Idioma",
+    "paymentMethods": "Métodos de Pago",
+    "addresses": "Direcciones",
+    "activityHistory": "Historial de Actividad"
+  },
+  "bookings": {
+    "upcomingTitle": "Próximas Reservas",
+    "pastTitle": "Reservas Pasadas",
+    "noBookings": "No se encontraron reservas",
+    "status": {
+      "confirmed": "Confirmada",
+      "pending": "Pendiente",
+      "cancelled": "Cancelada",
+      "completed": "Completada"
+    },
+    "actions": {
+      "reschedule": "Reprogramar",
+      "cancel": "Cancelar Reserva",
+      "viewDetails": "Ver Detalles",
+      "bookAgain": "Reservar Nuevamente",
+      "leaveReview": "Dejar una Reseña"
+    }
+  },
+  "services": {
+    "categories": "Categorías",
+    "featured": "Servicios Destacados",
+    "popular": "Servicios Populares",
+    "searchPlaceholder": "Buscar servicios...",
+    "priceRange": "Rango de Precio",
+    "availability": "Disponibilidad",
+    "location": "Ubicación",
+    "ratings": "Calificaciones"
+  },
+  "reviews": {
+    "writeReview": "Escribir una Reseña",
+    "yourRating": "Tu Calificación",
+    "reviewTitle": "Título",
+    "reviewContent": "Reseña",
+    "submitReview": "Enviar Reseña",
+    "editReview": "Editar Reseña",
+    "deleteReview": "Eliminar Reseña",
+    "recentReviews": "Reseñas Recientes",
+    "noReviews": "Aún no hay reseñas. ¡Sé el primero en dejar una reseña!",
+    "reviewsCount": "{{count}} Reseñas"
+  },
+  "settings": {
+    "theme": {
+      "title": "Configuración de Tema",
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Predeterminado del Sistema"
+    },
+    "accessibility": {
+      "title": "Accesibilidad",
+      "fontSize": "Tamaño de Fuente",
+      "contrastMode": "Modo de Alto Contraste",
+      "reduceMotion": "Reducir Movimiento"
+    }
+  },
+  "errors": {
+    "pageNotFound": "Página No Encontrada",
+    "goHome": "Ir a la Página Principal",
+    "somethingWrong": "Algo salió mal",
+    "tryAgain": "Inténtalo Nuevamente",
+    "contactSupport": "Contactar Soporte"
+  }
+}

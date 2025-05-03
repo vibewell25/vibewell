@@ -1,0 +1,38 @@
+{
+  "welcome": "مرحباً بكم في Vibewell",
+  "app": {
+    "name": "ڤايب ويل",
+    "description": "رحلة العافية تبدأ هنا"
+  },
+  "navigation": {
+    "home": "الرئيسية",
+    "dashboard": "لوحة التحكم",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "actions": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "confirm": "تأكيد",
+    "back": "رجوع",
+    "next": "التالي"
+  },
+  "messages": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "success": "تم بنجاح!",
+    "confirmDelete": "هل أنت متأكد أنك تريد حذف هذا؟",
+    "required": "هذا الحقل مطلوب",
+    "invalid": "إدخال غير صحيح"
+  },
+  "accessibility": {
+    "skipToMain": "انتقل إلى المحتوى الرئيسي",
+    "menuButton": "فتح/إغلاق القائمة",
+    "closeButton": "إغلاق",
+    "searchInput": "بحث",
+    "languageSelector": "اختر اللغة"
+  }
+} 

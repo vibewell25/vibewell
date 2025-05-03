@@ -1,0 +1,16 @@
+{
+  "errorTracking": {
+    "enabled": true,
+    "logLevel": "info",
+    "maxLogSize": "100MB",
+    "retentionDays": 30,
+    "alertThresholds": {
+      "critical": 5,
+      "warning": 10
+    },
+    "notifications": {
+      "email": true,
+      "slack": true
+    }
+  }
+}

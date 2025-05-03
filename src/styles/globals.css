@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: 56, 62, 58;
+  --background: 235, 232, 225;
+  --card: 255, 255, 255;
+  --card-foreground: 56, 62, 58;
+  --popover: 255, 255, 255;
+  --popover-foreground: 56, 62, 58;
+  --primary-50: 230, 237, 233;
+  --primary-100: 204, 219, 211;
+  --primary-200: 178, 200, 189;
+  --primary-300: 143, 173, 159;
+  --primary-400: 107, 146, 130;
+  --primary-500: 71, 119, 101;
+  --primary-600: 57, 95, 81;
+  --primary-700: 42, 71, 61;
+  --primary-800: 28, 48, 40;
+  --primary-900: 14, 24, 20;
+  --primary-950: 7, 12, 10;
+  --secondary: 217, 176, 140;
+  --secondary-foreground: 56, 62, 58;
+  --accent: 208, 161, 119;
+  --accent-foreground: 56, 62, 58;
+  --muted: 228, 225, 220;
+  --muted-foreground: 113, 119, 115;
+  --destructive: 234, 113, 91;
+  --destructive-foreground: 255, 255, 255;
+  --border: 204, 209, 202;
+  --input: 204, 209, 202;
+  --ring: 71, 119, 101;
+  --radius: 1rem;
+}
+
+/* Safe area insets for iOS and Android devices */
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+}
+
+/* Safe area utility classes */
+.pt-safe-top {
+  padding-top: var(--sat);
+}
+
+.pr-safe-right {
+  padding-right: var(--sar);
+}
+
+.pb-safe-bottom {
+  padding-bottom: var(--sab);
+}
+
+.pl-safe-left {
+  padding-left: var(--sal);
+}
+
+.m-safe {
+  margin: var(--sat) var(--sar) var(--sab) var(--sal);
+}
+
+.p-safe {
+  padding: var(--sat) var(--sar) var(--sab) var(--sal);
+}
+
+/* Touch optimization for mobile devices */
+@media (pointer: coarse) {
+  /* Increase tap targets */
+  button, 
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improve spacing for better touch */
+  li, 
+  .touch-target {
+    padding: 0.5rem 0;
+  }
+
+  /* Add touch manipulation for better scroll/pan behavior */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+}
+
+/* Disable pull-to-refresh on iOS by default */
+html {
+  overscroll-behavior-y: contain;
+}
+
+/* Apply touch-friendly styles */
+body {
+  @apply touch-manipulation antialiased;
+  text-rendering: optimizeSpeed;
+}
+
+/* Improve form interactions on mobile */
+input, 
+select, 
+textarea {
+  font-size: 16px; /* Prevents zoom on iOS */
+}
+
+/* Custom styles for the app */
+.app-card {
+  @apply rounded-3xl border border-border bg-card p-5 shadow-sm;
+}
+
+.app-container {
+  @apply mx-auto max-w-md px-4;
+}
+
+.app-button {
+  @apply rounded-full bg-primary-600 px-6 py-3 font-medium text-white shadow-sm transition-colors hover:bg-primary-700;
+}
+
+.app-button-secondary {
+  @apply rounded-full bg-secondary px-6 py-3 font-medium text-secondary-foreground shadow-sm transition-colors hover:bg-secondary/90;
+}
+
+.app-input {
+  @apply rounded-full border-input bg-card px-4 py-2 text-foreground focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600;
+}
+
+.app-heading {
+  @apply text-2xl font-bold text-foreground;
+}
+
+.app-subheading {
+  @apply text-lg font-medium text-foreground;
+}
+
+.app-text {
+  @apply text-sm text-muted-foreground;
+}
+
+.app-icon-button {
+  @apply rounded-full p-2 text-foreground hover:bg-muted/50;
+}
+
+.app-avatar {
+  @apply rounded-full object-cover;
+}
+
+.app-rating {
+  @apply flex text-accent;
+} 

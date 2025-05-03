@@ -1,0 +1,4068 @@
+{
+  "timestamp": "2025-04-30T23:56:26.955Z",
+  "totalFiles": 1126,
+  "filesWithIssues": 1015,
+  "totalIssues": 12945,
+  "fixes": [
+    {
+      "file": ".next/static/chunks/polyfills.js",
+      "issueCount": 421
+    },
+    {
+      "file": ".storybook/main.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "__mocks__/@react-three/drei.js",
+      "issueCount": 25
+    },
+    {
+      "file": "__mocks__/@react-three/fiber.js",
+      "issueCount": 5
+    },
+    {
+      "file": "__mocks__/@testing-library/user-event.js",
+      "issueCount": 3
+    },
+    {
+      "file": "__mocks__/EXRLoader.js",
+      "issueCount": 2
+    },
+    {
+      "file": "__mocks__/FBXLoader.js",
+      "issueCount": 3
+    },
+    {
+      "file": "__mocks__/GLTFLoader.js",
+      "issueCount": 1
+    },
+    {
+      "file": "__mocks__/HDRCubeTextureLoader.js",
+      "issueCount": 4
+    },
+    {
+      "file": "__mocks__/KTX2Loader.js",
+      "issueCount": 2
+    },
+    {
+      "file": "__mocks__/OBJLoader.js",
+      "issueCount": 8
+    },
+    {
+      "file": "__mocks__/RGBELoader.js",
+      "issueCount": 4
+    },
+    {
+      "file": "__mocks__/SVGLoader.js",
+      "issueCount": 3
+    },
+    {
+      "file": "__mocks__/TextureLoader.js",
+      "issueCount": 4
+    },
+    {
+      "file": "__mocks__/exporter-prometheus.js",
+      "issueCount": 1
+    },
+    {
+      "file": "__mocks__/fileMock.js",
+      "issueCount": 1
+    },
+    {
+      "file": "__mocks__/handlers.js",
+      "issueCount": 15
+    },
+    {
+      "file": "__mocks__/ioredis.js",
+      "issueCount": 5
+    },
+    {
+      "file": "__mocks__/jose.js",
+      "issueCount": 3
+    },
+    {
+      "file": "__mocks__/msw/handlers.js",
+      "issueCount": 1
+    },
+    {
+      "file": "__mocks__/msw/node.js",
+      "issueCount": 1
+    },
+    {
+      "file": "__mocks__/msw/server.js",
+      "issueCount": 1
+    },
+    {
+      "file": "__mocks__/next/image.js",
+      "issueCount": 4
+    },
+    {
+      "file": "__mocks__/next/link.js",
+      "issueCount": 4
+    },
+    {
+      "file": "__mocks__/next/router.js",
+      "issueCount": 1
+    },
+    {
+      "file": "__mocks__/next/server.js",
+      "issueCount": 3
+    },
+    {
+      "file": "__mocks__/next-auth/index.js",
+      "issueCount": 3
+    },
+    {
+      "file": "__mocks__/next-auth/react.js",
+      "issueCount": 5
+    },
+    {
+      "file": "__mocks__/opentelemetry-metrics.js",
+      "issueCount": 1
+    },
+    {
+      "file": "__mocks__/react-three/drei.js",
+      "issueCount": 29
+    },
+    {
+      "file": "__mocks__/react-three/fiber.js",
+      "issueCount": 5
+    },
+    {
+      "file": "__mocks__/react-three/xr.js",
+      "issueCount": 17
+    },
+    {
+      "file": "__mocks__/server.js",
+      "issueCount": 1
+    },
+    {
+      "file": "__mocks__/three.js",
+      "issueCount": 1
+    },
+    {
+      "file": "__mocks__/web3modal/index.js",
+      "issueCount": 11
+    },
+    {
+      "file": "__tests__/hooks/use-ar-cache.test.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "__tests__/security/urlSanitization.test.ts",
+      "issueCount": 38
+    },
+    {
+      "file": "accessibility/fixes/fix-color-contrast.js",
+      "issueCount": 1
+    },
+    {
+      "file": "accessibility/fixes/test-color-contrast.js",
+      "issueCount": 18
+    },
+    {
+      "file": "accessibility/implement-fixes.js",
+      "issueCount": 31
+    },
+    {
+      "file": "accessibility/tests/keyboard-test.js",
+      "issueCount": 22
+    },
+    {
+      "file": "accessibility/tests/nvda-test.js",
+      "issueCount": 22
+    },
+    {
+      "file": "accessibility/tests/touch-target-test.js",
+      "issueCount": 22
+    },
+    {
+      "file": "accessibility/tests/voiceover-test.js",
+      "issueCount": 25
+    },
+    {
+      "file": "app/api/analytics/route.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "app/api/auth/register/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "app/api/auth/webauthn/generate-registration/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "app/api/health/route.ts",
+      "issueCount": 14
+    },
+    {
+      "file": "app/utils/dateUtils.js",
+      "issueCount": 84
+    },
+    {
+      "file": "app/utils/imageOptimization.js",
+      "issueCount": 12
+    },
+    {
+      "file": "app/utils/numberUtils.js",
+      "issueCount": 43
+    },
+    {
+      "file": "app/utils/performance.js",
+      "issueCount": 7
+    },
+    {
+      "file": "app/utils/stringUtils.js",
+      "issueCount": 46
+    },
+    {
+      "file": "app/utils/validation.js",
+      "issueCount": 19
+    },
+    {
+      "file": "backend/src/controllers/SocialAuthController.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "backend/src/controllers/auth/socialAuthController.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "backend/src/index.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "backend/src/middleware/auth.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "backend/src/middleware/rateLimit.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "backend/src/middleware/validateSocialToken.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "backend/src/middleware/validation.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "backend/src/models/User.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "backend/src/models/__tests__/User.test.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "backend/src/routes/auth/socialAuth.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "backend/src/routes/auth/twoFactorRoutes.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "backend/src/routes/index.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "backend/src/services/AuthService.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "backend/src/services/__tests__/AnalyticsService.test.ts",
+      "issueCount": 19
+    },
+    {
+      "file": "backend/src/services/__tests__/CRMService.test.ts",
+      "issueCount": 31
+    },
+    {
+      "file": "backend/src/services/__tests__/CalendarService.test.ts",
+      "issueCount": 27
+    },
+    {
+      "file": "backend/src/services/__tests__/RedisService.test.ts",
+      "issueCount": 19
+    },
+    {
+      "file": "backend/src/services/__tests__/twoFactorService.test.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "backend/src/services/analytics/AnalyticsService.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "backend/src/services/auth/socialAuth.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "backend/src/services/calendar/CalendarService.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "backend/src/services/crm/CRMService.ts",
+      "issueCount": 15
+    },
+    {
+      "file": "backend/src/services/redis/RedisService.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "backend/src/services/redisBenchmark.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "backend/src/services/redisReplication.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "backend/src/services/redisService.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "backend/src/services/redisTLS.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "backend/src/services/twoFactorService.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "cypress/e2e/beauty-features.cy.ts",
+      "issueCount": 83
+    },
+    {
+      "file": "cypress/e2e/booking-flow.cy.ts",
+      "issueCount": 72
+    },
+    {
+      "file": "cypress/e2e/business-profile-creation.cy.ts",
+      "issueCount": 112
+    },
+    {
+      "file": "cypress/e2e/payment-processing.cy.ts",
+      "issueCount": 47
+    },
+    {
+      "file": "cypress/e2e/performance-testing.cy.ts",
+      "issueCount": 28
+    },
+    {
+      "file": "cypress/e2e/virtual-try-on.cy.ts",
+      "issueCount": 15
+    },
+    {
+      "file": "cypress/e2e/visual-regression/appointment-list.cy.ts",
+      "issueCount": 14
+    },
+    {
+      "file": "cypress/e2e/visual-regression/beauty-products.cy.ts",
+      "issueCount": 53
+    },
+    {
+      "file": "cypress/support/commands.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "cypress/support/e2e.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "cypress/support/types.d.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "cypress.config.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "cypress.d.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "e2e/booking-flow.spec.ts",
+      "issueCount": 21
+    },
+    {
+      "file": "e2e/payment-flow.spec.ts",
+      "issueCount": 172
+    },
+    {
+      "file": "frontend/src/utils/imageOptimization.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "implementation-files/appointments-create-logic.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "implementation-files/backup-settings-update.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "implementation-files/redis-tls-support.js",
+      "issueCount": 2
+    },
+    {
+      "file": "implementation-files/wellness-content-update.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "jest-config/moduleMappers.js",
+      "issueCount": 9
+    },
+    {
+      "file": "jest-config/setup/node.setup.js",
+      "issueCount": 1
+    },
+    {
+      "file": "jest-config/smoke.config.js",
+      "issueCount": 7
+    },
+    {
+      "file": "jest-config/transforms.js",
+      "issueCount": 1
+    },
+    {
+      "file": "jest.config.js",
+      "issueCount": 4
+    },
+    {
+      "file": "jest.node.setup.js",
+      "issueCount": 4
+    },
+    {
+      "file": "jest.setup.js",
+      "issueCount": 7
+    },
+    {
+      "file": "jest.setup.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "lib/prisma.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "middleware/security.ts",
+      "issueCount": 46
+    },
+    {
+      "file": "middleware.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "mobile/babel.config.js",
+      "issueCount": 3
+    },
+    {
+      "file": "mobile/e2e/firstTest.e2e.js",
+      "issueCount": 13
+    },
+    {
+      "file": "mobile/global.d.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "mobile/jest.config.js",
+      "issueCount": 23
+    },
+    {
+      "file": "mobile/src/ar/MyARScene.js",
+      "issueCount": 1
+    },
+    {
+      "file": "mobile/src/ar/modelConfig.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "mobile/src/config/auth.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "mobile/src/config.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "mobile/src/hooks/__tests__/useOfflineData.test.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "mobile/src/hooks/useOfflineData.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "mobile/src/i18n/index.ts",
+      "issueCount": 24
+    },
+    {
+      "file": "mobile/src/i18n/translations/de.ts",
+      "issueCount": 14
+    },
+    {
+      "file": "mobile/src/i18n/translations/fr.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "mobile/src/services/__tests__/emailCampaignService.test.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "mobile/src/services/__tests__/notificationsApiService.test.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "mobile/src/services/__tests__/promotionService.test.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "mobile/src/services/__tests__/push-notification.test.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "mobile/src/services/analyticsService.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "mobile/src/services/api.ts",
+      "issueCount": 36
+    },
+    {
+      "file": "mobile/src/services/attendanceService.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "mobile/src/services/auth/twoFactorService.ts",
+      "issueCount": 17
+    },
+    {
+      "file": "mobile/src/services/beautyService.ts",
+      "issueCount": 21
+    },
+    {
+      "file": "mobile/src/services/benefitsService.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "mobile/src/services/bookingService.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "mobile/src/services/businessHourService.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "mobile/src/services/businessService.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "mobile/src/services/calendarService.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "mobile/src/services/communityService.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "mobile/src/services/emailCampaignService.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "mobile/src/services/equipmentService.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "mobile/src/services/formsService.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "mobile/src/services/inventoryService.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "mobile/src/services/notificationService.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "mobile/src/services/notificationsApiService.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "mobile/src/services/offline-storage.ts",
+      "issueCount": 44
+    },
+    {
+      "file": "mobile/src/services/paymentService.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "mobile/src/services/payrollService.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "mobile/src/services/promotionService.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "mobile/src/services/providerService.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "mobile/src/services/push-notification.ts",
+      "issueCount": 20
+    },
+    {
+      "file": "mobile/src/services/push-notifications.ts",
+      "issueCount": 29
+    },
+    {
+      "file": "mobile/src/services/serviceService.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "mobile/src/services/skinAnalysisService.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "mobile/src/services/staffScheduleService.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "mobile/src/services/staffService.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "mobile/src/services/third-party-manager.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "mobile/src/services/trainingModuleService.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "mobile/src/services/trainingProgressService.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "mobile/src/styles/theme.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "mobile/src/tests/network-monitor.test.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "mobile/src/tests/offline-storage.test.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "mobile/src/tests/services/offline-storage.test.ts",
+      "issueCount": 46
+    },
+    {
+      "file": "mobile/src/tests/sync-queue.test.ts",
+      "issueCount": 15
+    },
+    {
+      "file": "mobile/src/types/forms.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "mobile/src/types/navigation.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "mobile/src/types/shims.d.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "mobile/src/utils/authStorage.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "mobile/src/utils/calendarIntegration.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "mobile/src/utils/form-validation.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "mobile/src/utils/gestureHandlers.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "mobile/src/utils/notificationService.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "mobile/src/utils/notifications.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "mobile/src/utils/offline-storage.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "mobile/src/utils/offlineStorage.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "mobile/tests/performance/performanceTests.js",
+      "issueCount": 2
+    },
+    {
+      "file": "next-env.d.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "next-i18next.config.js",
+      "issueCount": 1
+    },
+    {
+      "file": "next.config.js",
+      "issueCount": 9
+    },
+    {
+      "file": "next.config.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "pages/api/auth/[...auth0].ts",
+      "issueCount": 1
+    },
+    {
+      "file": "playwright.config.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "public/service-worker.js",
+      "issueCount": 7
+    },
+    {
+      "file": "public/sw.js",
+      "issueCount": 17
+    },
+    {
+      "file": "redis-stable/utils/reply_schema_linter.js",
+      "issueCount": 4
+    },
+    {
+      "file": "scripts/analyze-bundle.js",
+      "issueCount": 129
+    },
+    {
+      "file": "scripts/analyze-components.js",
+      "issueCount": 6
+    },
+    {
+      "file": "scripts/check-translations.js",
+      "issueCount": 3
+    },
+    {
+      "file": "scripts/clean-env.js",
+      "issueCount": 8
+    },
+    {
+      "file": "scripts/cleanup-auth-routes.js",
+      "issueCount": 22
+    },
+    {
+      "file": "scripts/cleanup-supabase.js",
+      "issueCount": 10
+    },
+    {
+      "file": "scripts/create-test-notification.js",
+      "issueCount": 2
+    },
+    {
+      "file": "scripts/find-duplicate-files.js",
+      "issueCount": 17
+    },
+    {
+      "file": "scripts/find-untested-components.js",
+      "issueCount": 14
+    },
+    {
+      "file": "scripts/fix-auth-imports.js",
+      "issueCount": 11
+    },
+    {
+      "file": "scripts/fix-integer-overflow.js",
+      "issueCount": 21
+    },
+    {
+      "file": "scripts/fix-prisma-imports.js",
+      "issueCount": 8
+    },
+    {
+      "file": "scripts/frontend-performance.js",
+      "issueCount": 65
+    },
+    {
+      "file": "scripts/full-audit-report.js",
+      "issueCount": 123
+    },
+    {
+      "file": "scripts/generate-audit-report.ts",
+      "issueCount": 54
+    },
+    {
+      "file": "scripts/generate-component-docs.js",
+      "issueCount": 14
+    },
+    {
+      "file": "scripts/generate-load-test-report.js",
+      "issueCount": 75
+    },
+    {
+      "file": "scripts/generate-report.js",
+      "issueCount": 81
+    },
+    {
+      "file": "scripts/generate-tests.js",
+      "issueCount": 21
+    },
+    {
+      "file": "scripts/health-check.js",
+      "issueCount": 2
+    },
+    {
+      "file": "scripts/identify-untested-components.js",
+      "issueCount": 15
+    },
+    {
+      "file": "scripts/implement-lazy-loading.js",
+      "issueCount": 34
+    },
+    {
+      "file": "scripts/k6-report.js",
+      "issueCount": 117
+    },
+    {
+      "file": "scripts/k6-test.js",
+      "issueCount": 42
+    },
+    {
+      "file": "scripts/lint-codebase.js",
+      "issueCount": 15
+    },
+    {
+      "file": "scripts/load-test-config.js",
+      "issueCount": 18
+    },
+    {
+      "file": "scripts/load-test-functions.js",
+      "issueCount": 17
+    },
+    {
+      "file": "scripts/load-test.js",
+      "issueCount": 8
+    },
+    {
+      "file": "scripts/load-testing.js",
+      "issueCount": 23
+    },
+    {
+      "file": "scripts/load-tests/admin-api.js",
+      "issueCount": 5
+    },
+    {
+      "file": "scripts/load-tests/all-tests.js",
+      "issueCount": 20
+    },
+    {
+      "file": "scripts/load-tests/auth-api.js",
+      "issueCount": 4
+    },
+    {
+      "file": "scripts/load-tests/general-api.js",
+      "issueCount": 4
+    },
+    {
+      "file": "scripts/load-tests/rate-limit-test.js",
+      "issueCount": 20
+    },
+    {
+      "file": "scripts/load-tests/sensitive-api.js",
+      "issueCount": 5
+    },
+    {
+      "file": "scripts/migrate-from-supabase.js",
+      "issueCount": 20
+    },
+    {
+      "file": "scripts/migrate-rate-limiter-imports.js",
+      "issueCount": 16
+    },
+    {
+      "file": "scripts/monitor-deployment.js",
+      "issueCount": 5
+    },
+    {
+      "file": "scripts/monitor-resources.js",
+      "issueCount": 1
+    },
+    {
+      "file": "scripts/performance-monitor.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "scripts/performance-testing.js",
+      "issueCount": 28
+    },
+    {
+      "file": "scripts/preview.js",
+      "issueCount": 1
+    },
+    {
+      "file": "scripts/rate-limit-load-test.js",
+      "issueCount": 15
+    },
+    {
+      "file": "scripts/remove-clerk.js",
+      "issueCount": 5
+    },
+    {
+      "file": "scripts/run-accessibility-tests.js",
+      "issueCount": 41
+    },
+    {
+      "file": "scripts/run-load-test.js",
+      "issueCount": 21
+    },
+    {
+      "file": "scripts/run-security-load-test.js",
+      "issueCount": 21
+    },
+    {
+      "file": "scripts/security-audit-rate-limiting.js",
+      "issueCount": 70
+    },
+    {
+      "file": "scripts/security-audit.js",
+      "issueCount": 28
+    },
+    {
+      "file": "scripts/security-monitor.js",
+      "issueCount": 11
+    },
+    {
+      "file": "scripts/security-monitor.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "scripts/security-test.js",
+      "issueCount": 7
+    },
+    {
+      "file": "scripts/seed-demo-data.js",
+      "issueCount": 64
+    },
+    {
+      "file": "scripts/setup-database.js",
+      "issueCount": 3
+    },
+    {
+      "file": "scripts/setup-s3.js",
+      "issueCount": 8
+    },
+    {
+      "file": "scripts/setup-stripe.js",
+      "issueCount": 2
+    },
+    {
+      "file": "scripts/setup-test-db.js",
+      "issueCount": 10
+    },
+    {
+      "file": "scripts/standardize-icons.js",
+      "issueCount": 8
+    },
+    {
+      "file": "scripts/test-ar-optimizations.js",
+      "issueCount": 92
+    },
+    {
+      "file": "scripts/test-auth-flows.js",
+      "issueCount": 9
+    },
+    {
+      "file": "scripts/test-email.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "scripts/test-notification.js",
+      "issueCount": 3
+    },
+    {
+      "file": "scripts/test-package-updates.js",
+      "issueCount": 17
+    },
+    {
+      "file": "scripts/test-prisma.js",
+      "issueCount": 3
+    },
+    {
+      "file": "scripts/test-redis-persistence.js",
+      "issueCount": 9
+    },
+    {
+      "file": "scripts/update-dependencies.js",
+      "issueCount": 25
+    },
+    {
+      "file": "scripts/update-imports.js",
+      "issueCount": 37
+    },
+    {
+      "file": "scripts/update-jest-configs.js",
+      "issueCount": 16
+    },
+    {
+      "file": "scripts/update-ts-comments.js",
+      "issueCount": 28
+    },
+    {
+      "file": "scripts/validate-env.js",
+      "issueCount": 6
+    },
+    {
+      "file": "sentry.client.config.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "sentry.server.config.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "server/config/passport.js",
+      "issueCount": 4
+    },
+    {
+      "file": "server/index.js",
+      "issueCount": 7
+    },
+    {
+      "file": "server/jest.config.js",
+      "issueCount": 2
+    },
+    {
+      "file": "server/jest.config.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "server/prisma/seed.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "server/routes/analytics.js",
+      "issueCount": 47
+    },
+    {
+      "file": "server/routes/api-docs.js",
+      "issueCount": 18
+    },
+    {
+      "file": "server/routes/auth.js",
+      "issueCount": 4
+    },
+    {
+      "file": "server/routes/benefits.js",
+      "issueCount": 1
+    },
+    {
+      "file": "server/routes/calendar.js",
+      "issueCount": 17
+    },
+    {
+      "file": "server/routes/calendarStub.js",
+      "issueCount": 8
+    },
+    {
+      "file": "server/routes/comments.js",
+      "issueCount": 1
+    },
+    {
+      "file": "server/routes/community/events.js",
+      "issueCount": 1
+    },
+    {
+      "file": "server/routes/community/posts.js",
+      "issueCount": 4
+    },
+    {
+      "file": "server/routes/community/threads.js",
+      "issueCount": 3
+    },
+    {
+      "file": "server/routes/equipment.js",
+      "issueCount": 3
+    },
+    {
+      "file": "server/routes/forms.js",
+      "issueCount": 3
+    },
+    {
+      "file": "server/routes/index.js",
+      "issueCount": 5
+    },
+    {
+      "file": "server/routes/inventory.js",
+      "issueCount": 1
+    },
+    {
+      "file": "server/routes/outlook.js",
+      "issueCount": 19
+    },
+    {
+      "file": "server/routes/payroll.js",
+      "issueCount": 1
+    },
+    {
+      "file": "server/routes/posts.js",
+      "issueCount": 1
+    },
+    {
+      "file": "server/routes/skinAnalysis.js",
+      "issueCount": 2
+    },
+    {
+      "file": "server/routes/uploads.js",
+      "issueCount": 1
+    },
+    {
+      "file": "server/routes/users.js",
+      "issueCount": 3
+    },
+    {
+      "file": "server/src/__tests__/skinAnalysis.test.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "server/src/__tests__/stripe.test.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "server/src/cache/ssrCache.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "server/src/config/swagger.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/index.ts",
+      "issueCount": 80
+    },
+    {
+      "file": "server/src/middleware/auth.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/middleware/cache.ts",
+      "issueCount": 20
+    },
+    {
+      "file": "server/src/prismaClient.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/__tests__/analytics.test.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "server/src/routes/analytics.ts",
+      "issueCount": 24
+    },
+    {
+      "file": "server/src/routes/attendance.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/auth.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "server/src/routes/benefitClaims.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/bookings.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "server/src/routes/businessHours.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/businesses.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/calendarAuth.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "server/src/routes/calendarICS.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "server/src/routes/documents.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/emailCampaigns.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/equipment.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/eventRegistrations.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/events.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/formDefinitions.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/formSubmissions.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/inventory.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/loyalty.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "server/src/routes/notifications.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/payrollRecords.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/postComments.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/promotionCodes.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/providers.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/referrals.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/reports.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "server/src/routes/security.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "server/src/routes/services.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/socialPosts.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/staff.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/staffSchedules.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/stripe.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "server/src/routes/trainingModules.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/trainingProgress.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/routes/users.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "server/src/routes/virtualTryOn.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "server/src/services/expoPushService.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "server/src/ssr.ts",
+      "issueCount": 19
+    },
+    {
+      "file": "server/src/tests/e2e/bookings.e2e.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "server/src/tests/e2e/calendar.e2e.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "server/src/tests/e2e/calendarICS.e2e.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "server/src/tests/e2e/csrf.e2e.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "server/src/tests/e2e/security.e2e.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "server/src/types/express/index.d.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "server/src/types/global.d.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "server/src/types/modules.d.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "services/analytics.service.ts",
+      "issueCount": 26
+    },
+    {
+      "file": "setupTests.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "src/@types/auth0Modules.d.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/@types/awsModules.d.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/@types/jest-dom.d.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/@types/lib.d.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/@types/stripeModules.d.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/__tests__/audit/audit-service.test.ts",
+      "issueCount": 47
+    },
+    {
+      "file": "src/__tests__/integration/api-health.test.ts",
+      "issueCount": 28
+    },
+    {
+      "file": "src/__tests__/integration/api-login.test.ts",
+      "issueCount": 58
+    },
+    {
+      "file": "src/__tests__/integration/api-user-preferences.test.ts",
+      "issueCount": 51
+    },
+    {
+      "file": "src/__tests__/integration/login.test.ts",
+      "issueCount": 49
+    },
+    {
+      "file": "src/__tests__/security/swagger-security.test.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "src/__tests__/unit/notification-api.test.ts",
+      "issueCount": 74
+    },
+    {
+      "file": "src/__tests__/unit/user-preferences-api.test.ts",
+      "issueCount": 60
+    },
+    {
+      "file": "src/api/payment/payment-service.test.ts",
+      "issueCount": 27
+    },
+    {
+      "file": "src/app/api/__tests__/ar-settings.test.ts",
+      "issueCount": 33
+    },
+    {
+      "file": "src/app/api/__tests__/products.test.ts",
+      "issueCount": 19
+    },
+    {
+      "file": "src/app/api/admin/rate-limits/route.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/app/api/admin/test/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/appointments/sync/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/ar-settings/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/auth/2fa/backup-codes/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/auth/2fa/recovery/route.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/app/api/auth/2fa/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/auth/2fa/verify/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/auth/[...auth0]/route.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/app/api/auth/[auth0]/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/auth/[provider]/callback/route.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/app/api/auth/login/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/auth/me/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/auth/mfa/enroll/route.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/app/api/auth/mfa/verify/route.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/app/api/auth/middleware.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/auth/password-reset/route.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/app/api/auth/rate-limit-middleware.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/auth/signup/route.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/app/api/auth/test/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/auth/trusted-devices/route.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/app/api/auth/verify-email/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/auth/verify-magic-link/route.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/app/api/auth/webauthn/auth-options/route.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/app/api/auth/webauthn/authenticate/options/route.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/app/api/auth/webauthn/authenticate/route.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/app/api/auth/webauthn/authenticate/verify/route.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/app/api/auth/webauthn/authenticators/route.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/app/api/auth/webauthn/login/route.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/app/api/auth/webauthn/register/options/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/auth/webauthn/register/route.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/app/api/auth/webauthn/register/verify/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/auth/webauthn/register-options/route.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/app/api/auth/webauthn/register.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/auth/webauthn/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/auth/webauthn/verify/route.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/app/api/auth/webauthn/verify-authentication/route.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/app/api/auth/webauthn/verify-registration/route.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/app/api/availability/route.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/app/api/backup/init/route.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/app/api/beauty/appointments/upcoming/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/beauty/providers/route.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/app/api/beauty/services/availability/route.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/app/api/beauty/services/booking/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/beauty/services/reviews/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/beauty/services/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/bookings/[id]/confirm/route.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/app/api/bookings/[id]/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/bookings/[id]/tip/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/bookings/availability/route.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/app/api/bookings/route.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/app/api/business/[businessId]/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/business/[businessId]/tips/route.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/app/api/business/forms/[formId]/versions/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/business/forms/route.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/app/api/business/hours/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/business/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/business/stats/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/create-payment-intent/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/dashboard/activities/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/events/[id]/register/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/events/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/graphql/route.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/app/api/health/route.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/app/api/load-test-results/route.ts",
+      "issueCount": 14
+    },
+    {
+      "file": "src/app/api/messages/[id]/route.ts",
+      "issueCount": 15
+    },
+    {
+      "file": "src/app/api/messages/route.ts",
+      "issueCount": 15
+    },
+    {
+      "file": "src/app/api/modules/[moduleId]/content/[contentId]/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/notifications/[id]/read/route.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/app/api/notifications/[id]/route.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/app/api/notifications/count/route.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/app/api/notifications/read-all/route.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/app/api/notifications/route.ts",
+      "issueCount": 19
+    },
+    {
+      "file": "src/app/api/notifications/subscribe/route.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/app/api/notifications/unread-count/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/payments/intent/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/payments/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/performance/config/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/performance/metrics/route.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/app/api/products/route.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/app/api/profile/avatar/route.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/app/api/profile/route.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/app/api/profiles/[id]/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/profiles/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/profiles/search/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/provider/profile/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/reviews/[id]/route.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/app/api/reviews/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/rewards/catalog/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/rewards/points/route.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/app/api/rewards/redeem/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/rewards/transactions/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/services/sync/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/share/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/skincare/analytics/route.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/app/api/skincare/recommendations/route.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/app/api/social/posts/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/stripe/connect/route.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/app/api/stripe/create-subscription/route.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/app/api/stripe/test-connection/route.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/app/api/stripe/webhook/route.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/app/api/subscriptions/current/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/subscriptions/me/cancel/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/subscriptions/me/reactivate/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/subscriptions/me/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/api/test/admin/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/test/auth/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/test/authentication/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/test/general/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/test/sensitive/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/test-db/route.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/app/api/training/module/[moduleId]/content/route.ts",
+      "issueCount": 17
+    },
+    {
+      "file": "src/app/api/translations/[lng]/[ns]/route.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/app/api/upload/route.ts",
+      "issueCount": 16
+    },
+    {
+      "file": "src/app/api/user/preferences/route.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/app/api/user/profile/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/user/role/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/users/admins/route.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/app/api/webhooks/stripe/route.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/app/api/wellness/progress/route.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/app/service-worker.ts",
+      "issueCount": 17
+    },
+    {
+      "file": "src/app.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/components/dynamic.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/components/messaging/utils.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/components/ui/touch-handler/use-touch-events.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/components/ui/types.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/components/ui/use-toast.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/config/api.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/config/ar-features.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/config/auth.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/config/bundling.ts",
+      "issueCount": 14
+    },
+    {
+      "file": "src/config/cache.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/config/index.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/config/performance-monitoring.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/config/redis-benchmark.ts",
+      "issueCount": 17
+    },
+    {
+      "file": "src/config/redis-pool.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/config/redis-replication.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/config/redis-tls.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/config/redis.ts",
+      "issueCount": 32
+    },
+    {
+      "file": "src/config/socialAuth.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/config/third-party.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/constants/routes.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/controllers/audit-controller.ts",
+      "issueCount": 36
+    },
+    {
+      "file": "src/controllers/bookingController.js",
+      "issueCount": 13
+    },
+    {
+      "file": "src/controllers/reviewController.js",
+      "issueCount": 32
+    },
+    {
+      "file": "src/cron/redis-metrics-job.ts",
+      "issueCount": 19
+    },
+    {
+      "file": "src/data/beauty-wellness/categories.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/features/notifications/index.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/graphql/context.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/graphql/schema.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/graphql/types/index.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/hooks/__tests__/useLocalStorage.test.ts",
+      "issueCount": 34
+    },
+    {
+      "file": "src/hooks/use-analytics.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/hooks/use-ar-cache.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/hooks/use-cache.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/hooks/use-notifications.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "src/hooks/use-subscriptions.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/hooks/useARResourceManager.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/hooks/useAccessibility.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/hooks/useAdaptiveQuality.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/hooks/useAuth.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/hooks/useAuth0Client.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/hooks/useDeviceCapabilities.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/hooks/useLocalStorage.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/hooks/useModuleContent.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/hooks/usePerformanceMonitor.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/hooks/usePerformanceMonitoring.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/hooks/useProductTransform.ts",
+      "issueCount": 19
+    },
+    {
+      "file": "src/hooks/useProviderReviews.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/hooks/useResponsive.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/hooks/useServiceWorker.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/hooks/useWebAuthn.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "src/hooks/useWebXR.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/hooks/useWellnessData.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/i18n/index.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/lib/2fa.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/lib/analytics/track.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/lib/analytics.ts",
+      "issueCount": 25
+    },
+    {
+      "file": "src/lib/api/__tests__/events-checkin.test.ts",
+      "issueCount": 71
+    },
+    {
+      "file": "src/lib/api/beauty.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/lib/api/business.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/lib/api/cache.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/lib/api/client.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/lib/api/errors.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/lib/api/events.ts",
+      "issueCount": 51
+    },
+    {
+      "file": "src/lib/api/interceptors.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/api/messages.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/lib/api/rate-limiter.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/lib/api/share.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/lib/api/skincare/services.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/lib/api/skincare.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/lib/api/social.ts",
+      "issueCount": 19
+    },
+    {
+      "file": "src/lib/api/testing.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/lib/api/training/moduleContent.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/lib/api/training-admin.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/lib/api/training.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/api/wellness.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/lib/api-docs.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/lib/api.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/ar/asset-optimizer.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/lib/ar/cache.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "src/lib/ar/model-cache.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/ar-utils.ts",
+      "issueCount": 19
+    },
+    {
+      "file": "src/lib/auth/audit-log.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/lib/auth/auth-options.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/lib/auth/auth-service.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "src/lib/auth/auth0-helpers.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/lib/auth/backup-codes.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/auth/cleanup-service.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/lib/auth/device-management.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/auth/rate-limit.ts",
+      "issueCount": 19
+    },
+    {
+      "file": "src/lib/auth/two-factor-service.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/lib/auth/two-factor.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/lib/auth/webauthn-service.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/lib/auth/webauthn-types.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/lib/auth/webauthn.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "src/lib/auth-helpers.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/lib/auth0-config.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/lib/auth0.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/lib/availability-service.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/lib/aws/s3.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/backup/backup-scheduler.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/lib/bookmarks.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/cache/api-cache.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/lib/cache/ar-cache.ts",
+      "issueCount": 45
+    },
+    {
+      "file": "src/lib/cache/index.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/lib/cache.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/lib/circuit-breaker.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/lib/collections.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/lib/color-matching.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/lib/database/client.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/lib/db/index.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/db/schema.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/email.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/lib/error-tracking.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/lib/graphql/rate-limiter.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/lib/graphql/schema.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/lib/group-booking.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/hair-try-on.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/lib/image-processing.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/lambda.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/logger.ts",
+      "issueCount": 17
+    },
+    {
+      "file": "src/lib/middleware/rate-limit.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/lib/mock-prisma.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/lib/monitoring/analytics.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/lib/monitoring/index.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/lib/monitoring.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/lib/openai.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/lib/payment/__tests__/stripe-provider.test.ts",
+      "issueCount": 23
+    },
+    {
+      "file": "src/lib/payment/payment-provider.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/lib/payment/payment-service.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/payment/stripe-provider.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/lib/pdf-generator.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/lib/predictive-booking.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/lib/prisma.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/rate-limiter/__tests__/rate-limiter.test.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "src/lib/rate-limiter/core.ts",
+      "issueCount": 28
+    },
+    {
+      "file": "src/lib/rate-limiter/graphql.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/lib/rate-limiter/http.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "src/lib/rate-limiter/index.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/lib/rate-limiter/presets.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/lib/rate-limiter/types-compat.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/lib/rate-limiter/websocket.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/lib/rate-limiter.ts",
+      "issueCount": 46
+    },
+    {
+      "file": "src/lib/ratings.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/lib/recommendation-service.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/lib/redis/redis-metrics.ts",
+      "issueCount": 31
+    },
+    {
+      "file": "src/lib/redis/redis-tls-support.js",
+      "issueCount": 2
+    },
+    {
+      "file": "src/lib/redis-client.ts",
+      "issueCount": 20
+    },
+    {
+      "file": "src/lib/redis-rate-limiter.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/lib/redis.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/lib/routes.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/lib/s3.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/lib/sanitization.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/lib/security/api-key-manager.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/lib/security/imageProcessing.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/lib/security/rate-limit-config.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/lib/security/security-monitor.ts",
+      "issueCount": 16
+    },
+    {
+      "file": "src/lib/security/waf.ts",
+      "issueCount": 16
+    },
+    {
+      "file": "src/lib/sentiment-analysis.ts",
+      "issueCount": 16
+    },
+    {
+      "file": "src/lib/services/analytics.service.ts",
+      "issueCount": 26
+    },
+    {
+      "file": "src/lib/services/booking.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/lib/services/offline-sync.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/lib/services/payment.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/lib/skin-analysis.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/lib/social-sharing.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/lib/swagger.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/lib/testing/mock-factory.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/totp.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/lib/utils/admin.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/lib/utils/base64.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/lib/utils.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "src/lib/web-push.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/webauthn.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/lib/websocket/rate-limiter.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/lib/websocket-server.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/middleware/csrf.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/middleware/error-handler.ts",
+      "issueCount": 21
+    },
+    {
+      "file": "src/middleware/errorHandler.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/middleware/mfaMiddleware.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/middleware/rate-limiter.ts",
+      "issueCount": 14
+    },
+    {
+      "file": "src/middleware/rateLimit.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "src/middleware/rateLimitMiddleware.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/middleware/security/csrf.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "src/middleware/security/index.ts",
+      "issueCount": 37
+    },
+    {
+      "file": "src/middleware/security.ts",
+      "issueCount": 122
+    },
+    {
+      "file": "src/middleware/securityHeaders.ts",
+      "issueCount": 61
+    },
+    {
+      "file": "src/middleware.ts",
+      "issueCount": 43
+    },
+    {
+      "file": "src/mocks/handlers.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/mocks/practitionerData.ts",
+      "issueCount": 33
+    },
+    {
+      "file": "src/mocks/server.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/models/Booking.js",
+      "issueCount": 2
+    },
+    {
+      "file": "src/models/Certification.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/models/ClientPreferences.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/models/CustomerProfile.js",
+      "issueCount": 9
+    },
+    {
+      "file": "src/models/PerformanceReview.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/models/ProviderProfile.js",
+      "issueCount": 7
+    },
+    {
+      "file": "src/models/Review.js",
+      "issueCount": 1
+    },
+    {
+      "file": "src/models/Service.js",
+      "issueCount": 3
+    },
+    {
+      "file": "src/models/ServiceBundle.js",
+      "issueCount": 4
+    },
+    {
+      "file": "src/models/User.js",
+      "issueCount": 2
+    },
+    {
+      "file": "src/pages/api/admin/activity-log.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/pages/api/admin/security-notifications.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/pages/api/ai-chat.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/pages/api/audit/index.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/pages/api/audit.ts",
+      "issueCount": 16
+    },
+    {
+      "file": "src/pages/api/auth/mfa/setup.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/pages/api/auth/mfa/verify.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/pages/api/beauty-services/[id].ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/pages/api/beauty-services/index.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/pages/api/chat.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/pages/api/example/secure-endpoint.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/pages/api/practitioners/[id].ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/pages/api/practitioners/index.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/pages/api/virtual-try-on/[id].ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/pages/api/virtual-try-on/index.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/pages/api/webhooks/payment.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/pages/api/websocket.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/routes/2fa.routes.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/routes/beautyService.routes.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/routes/bookingRoutes.js",
+      "issueCount": 5
+    },
+    {
+      "file": "src/routes/reviewRoutes.js",
+      "issueCount": 6
+    },
+    {
+      "file": "src/routes/reviews.js",
+      "issueCount": 2
+    },
+    {
+      "file": "src/routes/webauthn.routes.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/schemas/service.schema.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/scripts/backup-scheduler.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/scripts/generate-analytics-report.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/scripts/monitor-backups.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/scripts/redis-benchmark.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/scripts/run-icon-tests.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/scripts/securityScan.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "src/scripts/test-business-profile-wizard.ts",
+      "issueCount": 21
+    },
+    {
+      "file": "src/server/websocket/analytics-server.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/services/__tests__/api-client.test.ts",
+      "issueCount": 36
+    },
+    {
+      "file": "src/services/__tests__/booking-service.e2e.test.ts",
+      "issueCount": 36
+    },
+    {
+      "file": "src/services/__tests__/booking-service.test.ts",
+      "issueCount": 86
+    },
+    {
+      "file": "src/services/__tests__/calendar-service.test.ts",
+      "issueCount": 59
+    },
+    {
+      "file": "src/services/__tests__/notification-service.test.ts",
+      "issueCount": 36
+    },
+    {
+      "file": "src/services/advanced-booking-service.ts",
+      "issueCount": 15
+    },
+    {
+      "file": "src/services/ai-service.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/services/alert-service.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/services/analytics/real-time-analytics.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/services/analytics-service.ts",
+      "issueCount": 54
+    },
+    {
+      "file": "src/services/analytics.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/services/api-client.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/services/audit/booking-audit.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/services/audit/compliance-audit.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "src/services/audit/index.ts",
+      "issueCount": 15
+    },
+    {
+      "file": "src/services/audit/performance-audit.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/services/audit/security-audit.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/services/audit/ux-audit.ts",
+      "issueCount": 26
+    },
+    {
+      "file": "src/services/audit-service.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/services/auditLogging.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/services/auth/authService.ts",
+      "issueCount": 15
+    },
+    {
+      "file": "src/services/auth/magic-link-service.ts",
+      "issueCount": 25
+    },
+    {
+      "file": "src/services/auth/oauth-service.ts",
+      "issueCount": 32
+    },
+    {
+      "file": "src/services/auth/unified-auth-service.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/services/auth-service.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/services/beauty-service.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/services/beautyService.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/services/booking-service.test.ts",
+      "issueCount": 48
+    },
+    {
+      "file": "src/services/booking-service.ts",
+      "issueCount": 36
+    },
+    {
+      "file": "src/services/business-intelligence-service.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/services/business-service.ts",
+      "issueCount": 23
+    },
+    {
+      "file": "src/services/calendar-service.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/services/calendarSync.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/services/certification-service.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/services/client-management.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "src/services/client-preferences-service.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/services/complianceService.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/services/crm.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/services/deploymentService.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/services/devSecOps.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/services/email-verification.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/services/encryptedDataService.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/services/encryption.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/services/engagement-service.ts",
+      "issueCount": 28
+    },
+    {
+      "file": "src/services/face-api-service.ts",
+      "issueCount": 17
+    },
+    {
+      "file": "src/services/fieldEncryption.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/services/file-upload-service.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/services/fraudDetection.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/services/health.test.ts",
+      "issueCount": 26
+    },
+    {
+      "file": "src/services/health.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/services/honeypot.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/services/hsmKeyManagement.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/services/hsmService.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/services/iamService.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/services/imageOptimization.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/services/inventory-management.ts",
+      "issueCount": 24
+    },
+    {
+      "file": "src/services/inventory-prediction.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/services/jobs/JobQueue.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/services/loyalty-service.ts",
+      "issueCount": 16
+    },
+    {
+      "file": "src/services/marketing-service.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/services/mediapipe-service.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/services/mfaService.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/services/monitoring/AlertingSystemImpl.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/services/monitoring/MonitoringServiceImpl.ts",
+      "issueCount": 14
+    },
+    {
+      "file": "src/services/monitoring/PerformanceMetricsImpl.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/services/monitoring/PerformanceMonitorImpl.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/services/notification-service.test.ts",
+      "issueCount": 49
+    },
+    {
+      "file": "src/services/notification-service.ts",
+      "issueCount": 14
+    },
+    {
+      "file": "src/services/offline-service.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/services/payment-retry-service.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/services/payment-service.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "src/services/performance-monitoring.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/services/performance-remediation.ts",
+      "issueCount": 21
+    },
+    {
+      "file": "src/services/performance-review-service.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/services/practitioner.service.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/services/predictive-analytics.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/services/product-catalog.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/services/product-service.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/services/profile-service.test.ts",
+      "issueCount": 41
+    },
+    {
+      "file": "src/services/profile-service.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/services/provider-service.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/services/rateLimiting.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/services/recommendation-service.ts",
+      "issueCount": 24
+    },
+    {
+      "file": "src/services/recovery-code-service.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/services/redis/RedisManager.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/services/redisService.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/services/review-service.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/services/security-monitoring.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/services/securityEducation.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/services/securityMonitoring.ts",
+      "issueCount": 33
+    },
+    {
+      "file": "src/services/service.service.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/services/service.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/services/sharing-service.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/services/siemIntegration.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/services/social-integration-service.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/services/social-service.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/services/staff-management.ts",
+      "issueCount": 28
+    },
+    {
+      "file": "src/services/supplier-integration.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/services/third-party-manager.ts",
+      "issueCount": 25
+    },
+    {
+      "file": "src/services/trusted-device-service.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/services/try-on-service.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "src/services/twoFactor.service.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/services/virtual-try-on-service.ts",
+      "issueCount": 52
+    },
+    {
+      "file": "src/services/virtualTryOn.service.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/services/waitlist-service.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/services/webauthn.service.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/setupTests.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/store/store.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/styles/chat-theme.ts",
+      "issueCount": 15
+    },
+    {
+      "file": "src/test-utils/.eslintrc.js",
+      "issueCount": 12
+    },
+    {
+      "file": "src/test-utils/.eslintrc.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/test-utils/accessibility-testing.ts",
+      "issueCount": 14
+    },
+    {
+      "file": "src/test-utils/api-testing.js",
+      "issueCount": 35
+    },
+    {
+      "file": "src/test-utils/ar-test-utils-fixed.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/test-utils/ar-test-utils.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/test-utils/component-testing.js",
+      "issueCount": 31
+    },
+    {
+      "file": "src/test-utils/custom-testing-types.d.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/test-utils/index.js",
+      "issueCount": 21
+    },
+    {
+      "file": "src/test-utils/index.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "src/test-utils/mock-utils.js",
+      "issueCount": 24
+    },
+    {
+      "file": "src/test-utils/patterns/component.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/test-utils/patterns/hook.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/test-utils/performance-testing.js",
+      "issueCount": 40
+    },
+    {
+      "file": "src/test-utils/performance-testing.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/test-utils/server.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/test-utils/setup.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/test-utils/standardized-test-patterns.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/test-utils/test-config.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/test-utils/test-data.js",
+      "issueCount": 55
+    },
+    {
+      "file": "src/test-utils/test-runner.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/test-utils/test-setup.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/test-utils/testing-library.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/test-utils/visual-regression.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/tests/api/endpoints.test.ts",
+      "issueCount": 59
+    },
+    {
+      "file": "src/tests/caching/CacheManager.test.ts",
+      "issueCount": 59
+    },
+    {
+      "file": "src/tests/chaos/payment-chaos.test.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/tests/db-replica-manager.test.ts",
+      "issueCount": 26
+    },
+    {
+      "file": "src/tests/factories/payment.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/tests/forms/validation.test.ts",
+      "issueCount": 32
+    },
+    {
+      "file": "src/tests/helpers/auth0-mock.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/tests/image-optimizer.test.ts",
+      "issueCount": 26
+    },
+    {
+      "file": "src/tests/performance/load-testing.test.ts",
+      "issueCount": 39
+    },
+    {
+      "file": "src/tests/performance/payment-benchmarks.test.ts",
+      "issueCount": 16
+    },
+    {
+      "file": "src/tests/performance/performanceMonitor.test.ts",
+      "issueCount": 26
+    },
+    {
+      "file": "src/tests/performance/performanceTest.ts",
+      "issueCount": 65
+    },
+    {
+      "file": "src/tests/performance/regressionTest.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/tests/redis-benchmark.test.ts",
+      "issueCount": 27
+    },
+    {
+      "file": "src/tests/redis-cache.test.ts",
+      "issueCount": 35
+    },
+    {
+      "file": "src/tests/redis-manager.test.ts",
+      "issueCount": 29
+    },
+    {
+      "file": "src/tests/redis-pubsub.test.ts",
+      "issueCount": 51
+    },
+    {
+      "file": "src/tests/redis-replication.test.ts",
+      "issueCount": 27
+    },
+    {
+      "file": "src/tests/redis.test.ts",
+      "issueCount": 30
+    },
+    {
+      "file": "src/tests/security/auth.test.ts",
+      "issueCount": 25
+    },
+    {
+      "file": "src/tests/security/security.test.ts",
+      "issueCount": 34
+    },
+    {
+      "file": "src/tests/setup/prisma-mock.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/tests/setup.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/tests/ssr-optimizer.test.ts",
+      "issueCount": 31
+    },
+    {
+      "file": "src/tests/utils/db-optimization.test.ts",
+      "issueCount": 29
+    },
+    {
+      "file": "src/types/additional-types.d.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/types/booking.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/types/custom-jest.d.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/types/custom-types.d.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/types/events.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/types/face-api.d.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/types/global.d.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/types/jest-axe.d.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/types/jest-matchers-extensions.d.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/types/native-modules.d.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/types/next-routes.d.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/types/offscreencanvas.d.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/types/optimization.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/types/performance.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/types/prisma.d.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/types/progress.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/types/service.types.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/types/tensorflow.d.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/types/testing.d.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/types/third-party.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/types/user-event.d.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/types/webxr.d.ts",
+      "issueCount": 27
+    },
+    {
+      "file": "src/types/xss-clean.d.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/utils/__tests__/e2e-performance-suite.test.ts",
+      "issueCount": 33
+    },
+    {
+      "file": "src/utils/__tests__/form-validation-zod.test.ts",
+      "issueCount": 32
+    },
+    {
+      "file": "src/utils/__tests__/form-validation.test.ts",
+      "issueCount": 28
+    },
+    {
+      "file": "src/utils/__tests__/performance-monitoring.test.ts",
+      "issueCount": 43
+    },
+    {
+      "file": "src/utils/__tests__/performance-test-utils.test.ts",
+      "issueCount": 23
+    },
+    {
+      "file": "src/utils/accessibility-audit.ts",
+      "issueCount": 44
+    },
+    {
+      "file": "src/utils/accessibility-checks.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "src/utils/ai.ts",
+      "issueCount": 33
+    },
+    {
+      "file": "src/utils/alerting.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/utils/analytics.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "src/utils/api-optimization.ts",
+      "issueCount": 14
+    },
+    {
+      "file": "src/utils/ar-security.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/utils/auth-helpers.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/utils/bundle-optimization.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/utils/cache.js",
+      "issueCount": 4
+    },
+    {
+      "file": "src/utils/caching/CacheManager.ts",
+      "issueCount": 20
+    },
+    {
+      "file": "src/utils/caching.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/utils/color-utils.ts",
+      "issueCount": 71
+    },
+    {
+      "file": "src/utils/component-audit.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/utils/component-refactoring-plan.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/utils/critical-css.ts",
+      "issueCount": 25
+    },
+    {
+      "file": "src/utils/cross-platform-monitoring.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "src/utils/crypto.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/utils/csrf.ts",
+      "issueCount": 28
+    },
+    {
+      "file": "src/utils/date-formatter.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/utils/db/ConnectionPool.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/utils/db-indexing.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/utils/db-optimization.ts",
+      "issueCount": 25
+    },
+    {
+      "file": "src/utils/db-replica-manager.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/utils/device-capability.ts",
+      "issueCount": 20
+    },
+    {
+      "file": "src/utils/dynamic-import.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/utils/dynamicImport.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/utils/e2e-performance-suite.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/utils/error-handler.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/utils/error-types.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/utils/font-loading.ts",
+      "issueCount": 46
+    },
+    {
+      "file": "src/utils/form-validation-zod.ts",
+      "issueCount": 24
+    },
+    {
+      "file": "src/utils/form-validation.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/utils/image-optimization.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/utils/imageOptimization.js",
+      "issueCount": 17
+    },
+    {
+      "file": "src/utils/imageProcessing.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/utils/job-processing.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/utils/logger.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "src/utils/messaging.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/utils/mobile/deviceDetection.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/utils/mobile/index.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/utils/mobile/types.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/utils/mobile-optimization.ts",
+      "issueCount": 13
+    },
+    {
+      "file": "src/utils/mobile-optimizations.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "src/utils/monitoring.ts",
+      "issueCount": 20
+    },
+    {
+      "file": "src/utils/offline-support.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/utils/optimization/ComponentSplitter.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/utils/optimization/TreeShaker.ts",
+      "issueCount": 17
+    },
+    {
+      "file": "src/utils/payment.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "src/utils/performance-metric-utils.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/utils/performance-monitoring-legacy.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/utils/performance-monitoring.ts",
+      "issueCount": 19
+    },
+    {
+      "file": "src/utils/performance-test-utils.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/utils/performance-testing.ts",
+      "issueCount": 14
+    },
+    {
+      "file": "src/utils/push-notifications.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "src/utils/redis-benchmark.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/utils/redis-cache.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "src/utils/redis-pubsub.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "src/utils/redis-tls-support.js",
+      "issueCount": 2
+    },
+    {
+      "file": "src/utils/responsive-checker.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/utils/responsive.ts",
+      "issueCount": 25
+    },
+    {
+      "file": "src/utils/security.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "src/utils/server-performance.ts",
+      "issueCount": 25
+    },
+    {
+      "file": "src/utils/serviceWorkerRegistration.ts",
+      "issueCount": 10
+    },
+    {
+      "file": "src/utils/ssr-optimization.ts",
+      "issueCount": 14
+    },
+    {
+      "file": "src/utils/state-manager-bridge.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "src/utils/state-manager-compat.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/utils/state-manager.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "src/utils/storage.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "src/utils/test-runner.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "src/utils/three-minimal.ts",
+      "issueCount": 6
+    },
+    {
+      "file": "src/utils/type-guards.ts",
+      "issueCount": 23
+    },
+    {
+      "file": "src/utils/webxr-depth-sensing.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "src/utils/webxr-hand-tracking.ts",
+      "issueCount": 18
+    },
+    {
+      "file": "tailwind.config.ts",
+      "issueCount": 48
+    },
+    {
+      "file": "test-prisma-models.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "tests/auth/auth.test.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "tests/booking/booking.test.ts",
+      "issueCount": 11
+    },
+    {
+      "file": "tests/config/test-config.ts",
+      "issueCount": 12
+    },
+    {
+      "file": "tests/e2e/browser-compatibility.test.ts",
+      "issueCount": 67
+    },
+    {
+      "file": "tests/e2e/profile-settings.test.ts",
+      "issueCount": 72
+    },
+    {
+      "file": "tests/factories/test-factory.test.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "tests/factories/test-factory.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "tests/global-setup.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "tests/global-teardown.ts",
+      "issueCount": 8
+    },
+    {
+      "file": "tests/integration/backup-recovery.test.ts",
+      "issueCount": 42
+    },
+    {
+      "file": "tests/integration/performance-integration.test.ts",
+      "issueCount": 25
+    },
+    {
+      "file": "tests/integration/setup.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "tests/k6/redis-rate-limit-test.js",
+      "issueCount": 12
+    },
+    {
+      "file": "tests/load-testing/performance-monitoring.test.js",
+      "issueCount": 13
+    },
+    {
+      "file": "tests/load-testing/redis-rate-limiting.js",
+      "issueCount": 26
+    },
+    {
+      "file": "tests/load-tests/main.js",
+      "issueCount": 4
+    },
+    {
+      "file": "tests/mocks/handlers.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "tests/mocks/server.ts",
+      "issueCount": 1
+    },
+    {
+      "file": "tests/post-deploy/api-endpoints.test.ts",
+      "issueCount": 19
+    },
+    {
+      "file": "tests/post-deploy/business-profile-creation.test.ts",
+      "issueCount": 22
+    },
+    {
+      "file": "tests/post-deploy/critical-paths.test.ts",
+      "issueCount": 4
+    },
+    {
+      "file": "tests/rate-limiting/basic-rate-limiting.test.ts",
+      "issueCount": 34
+    },
+    {
+      "file": "tests/rate-limiting/k6-scripts/admin.js",
+      "issueCount": 18
+    },
+    {
+      "file": "tests/rate-limiting/k6-scripts/auth.js",
+      "issueCount": 15
+    },
+    {
+      "file": "tests/rate-limiting/k6-scripts/general.js",
+      "issueCount": 14
+    },
+    {
+      "file": "tests/rate-limiting/k6-scripts/sensitive.js",
+      "issueCount": 17
+    },
+    {
+      "file": "tests/rate-limiting/load-test.js",
+      "issueCount": 26
+    },
+    {
+      "file": "tests/redis-client.test.ts",
+      "issueCount": 15
+    },
+    {
+      "file": "tests/redis-connection-resilience.test.ts",
+      "issueCount": 29
+    },
+    {
+      "file": "tests/security/csrf-protection.test.ts",
+      "issueCount": 39
+    },
+    {
+      "file": "tests/security/sql-injection.test.ts",
+      "issueCount": 16
+    },
+    {
+      "file": "tests/security/xss-protection.test.ts",
+      "issueCount": 45
+    },
+    {
+      "file": "tests/setup/setupE2ETests.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "tests/smoke/home.test.ts",
+      "issueCount": 9
+    },
+    {
+      "file": "tests/unit/service-worker.test.ts",
+      "issueCount": 3
+    },
+    {
+      "file": "tests/unit/state-manager.test.ts",
+      "issueCount": 48
+    },
+    {
+      "file": "tests/unit/test-runner.test.ts",
+      "issueCount": 5
+    },
+    {
+      "file": "tests/unit/webxr-compatibility.test.ts",
+      "issueCount": 42
+    },
+    {
+      "file": "tests/utils/test-helpers.ts",
+      "issueCount": 2
+    },
+    {
+      "file": "tests/visual/components.visual.test.ts",
+      "issueCount": 51
+    },
+    {
+      "file": "tests/visual/visual.test.ts",
+      "issueCount": 7
+    },
+    {
+      "file": "update-icons.js",
+      "issueCount": 8
+    },
+    {
+      "file": "vitest-shim.js",
+      "issueCount": 1
+    },
+    {
+      "file": "vitest.config.ts",
+      "issueCount": 4
+    }
+  ]
+}

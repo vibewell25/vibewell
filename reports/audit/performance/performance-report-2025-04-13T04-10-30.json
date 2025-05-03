@@ -1,0 +1,92 @@
+{
+  "id": "performance_report_1744517430409",
+  "timestamp": 1744517430409,
+  "category": "performance",
+  "issues": [
+    {
+      "id": "8867fdb88c565008cf4ef2186187e26a9a50b0ca29edaea40f6a5e27c8d148cf",
+      "category": "performance",
+      "severity": "medium",
+      "title": "Load Test Performance Issues (10000 users)",
+      "description": "The load test with 10000 concurrent users exceeded performance thresholds for: Response Time, Memory Usage",
+      "component": "Load Testing",
+      "datestamp": 1744517430370,
+      "status": "open",
+      "metadata": {
+        "issues": [
+          {
+            "metric": "Response Time",
+            "value": "250ms",
+            "threshold": "200ms"
+          },
+          {
+            "metric": "Memory Usage",
+            "value": "85%",
+            "threshold": "80%"
+          }
+        ],
+        "testId": "load-test-1",
+        "userCount": 10000,
+        "duration": 3600000,
+        "timestamp": 1744517430370
+      }
+    },
+    {
+      "id": "864c96464c9919b79bfeabb048a0a81aed45f3695e1fb287e456039cf1f2b3ba",
+      "category": "performance",
+      "severity": "medium",
+      "title": "Mobile Performance Issues (iOS)",
+      "description": "Mobile performance thresholds exceeded for: Startup Time",
+      "component": "Mobile App",
+      "datestamp": 1744517430374,
+      "status": "open",
+      "metadata": {
+        "issues": [
+          {
+            "metric": "Startup Time",
+            "value": "2200ms",
+            "threshold": "2000ms"
+          }
+        ],
+        "deviceType": "iOS",
+        "appVersion": "2.1.0",
+        "timestamp": 1744517430373
+      }
+    },
+    {
+      "id": "9c81d4c77c67ff60285391154ec3be671d71b67d79023eda8a6c4e04f4a69ecc",
+      "category": "performance",
+      "severity": "medium",
+      "title": "Mobile Performance Issues (Android)",
+      "description": "Mobile performance thresholds exceeded for: Startup Time, Battery Impact",
+      "component": "Mobile App",
+      "datestamp": 1744517430375,
+      "status": "open",
+      "metadata": {
+        "issues": [
+          {
+            "metric": "Startup Time",
+            "value": "2500ms",
+            "threshold": "2000ms"
+          },
+          {
+            "metric": "Battery Impact",
+            "value": "5.1%/hr",
+            "threshold": "5%/hr"
+          }
+        ],
+        "deviceType": "Android",
+        "appVersion": "2.1.0",
+        "timestamp": 1744517430375
+      }
+    }
+  ],
+  "summary": {
+    "critical": 0,
+    "high": 0,
+    "medium": 3,
+    "low": 0,
+    "info": 0,
+    "total": 3
+  }
+}

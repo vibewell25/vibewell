@@ -1,0 +1,28 @@
+{
+  "dashboard": {
+    "refreshInterval": 60,
+    "metrics": {
+      "responseTime": {
+        "enabled": true,
+        "threshold": 1000
+      },
+      "memoryUsage": {
+        "enabled": true,
+        "threshold": 80
+      },
+      "cpuUsage": {
+        "enabled": true,
+        "threshold": 70
+      },
+      "networkLatency": {
+        "enabled": true,
+        "threshold": 200
+      }
+    },
+    "alerts": {
+      "email": true,
+      "slack": true,
+      "threshold": 80
+    }
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "app": {
+    "name": "VibeWell",
+    "description": "Votre voyage bien-être commence ici",
+    "tagline": "Transformez votre vie, un pas à la fois"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "dashboard": "Tableau de Bord",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "workouts": "Entraînements",
+    "nutrition": "Nutrition",
+    "meditation": "Méditation",
+    "progress": "Progrès",
+    "community": "Communauté"
+  },
+  "actions": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "start": "Commencer",
+    "finish": "Terminer",
+    "continue": "Continuer",
+    "skip": "Passer",
+    "search": "Rechercher"
+  },
+  "messages": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "success": "Opération réussie !",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ceci ?",
+    "noResults": "Aucun résultat trouvé",
+    "welcome": "Bienvenue sur VibeWell !",
+    "sessionExpired": "Votre session a expiré",
+    "pleaseLogin": "Veuillez vous connecter",
+    "saveChanges": "Voulez-vous enregistrer les modifications ?"
+  },
+  "auth": {
+    "login": "Se Connecter",
+    "logout": "Se Déconnecter",
+    "register": "S'inscrire",
+    "forgotPassword": "Mot de passe oublié ?",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "username": "Nom d'utilisateur"
+  },
+  "profile": {
+    "personalInfo": "Informations Personnelles",
+    "preferences": "Préférences",
+    "goals": "Objectifs",
+    "achievements": "Réalisations",
+    "stats": "Statistiques",
+    "history": "Historique"
+  },
+  "settings": {
+    "general": "Général",
+    "notifications": "Notifications",
+    "privacy": "Confidentialité",
+    "language": "Langue",
+    "theme": "Thème",
+    "sound": "Son",
+    "units": "Unités"
+  },
+  "accessibility": {
+    "skipToMain": "Passer au contenu principal",
+    "menuButton": "Bouton menu",
+    "closeButton": "Bouton fermer",
+    "searchInput": "Champ de recherche",
+    "languageSelector": "Sélecteur de langue",
+    "darkMode": "Mode sombre",
+    "lightMode": "Mode clair"
+  },
+  "errors": {
+    "required": "Ce champ est obligatoire",
+    "invalidEmail": "E-mail invalide",
+    "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "networkError": "Erreur de connexion",
+    "unauthorized": "Non autorisé",
+    "notFound": "Non trouvé",
+    "serverError": "Erreur serveur"
+  },
+  "time": {
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
+    "tomorrow": "Demain",
+    "days": "jours",
+    "weeks": "semaines",
+    "months": "mois",
+    "years": "ans"
+  },
+  "metrics": {
+    "weight": "Poids",
+    "height": "Taille",
+    "distance": "Distance",
+    "duration": "Durée",
+    "calories": "Calories",
+    "steps": "Pas",
+    "heartRate": "Fréquence Cardiaque"
+  },
+  "welcome": "Bienvenue sur Vibewell",
+  "meditation": {
+    "start": "Commencer la méditation",
+    "stop": "Arrêter la méditation",
+    "themes": {
+      "forest": "Forêt",
+      "beach": "Plage",
+      "mountain": "Montagne",
+      "zenGarden": "Jardin Zen"
+    },
+    "sounds": {
+      "rain": "Pluie",
+      "oceanWaves": "Vagues de l'océan",
+      "gentleWind": "Vent doux",
+      "birdSongs": "Chants d'oiseaux",
+      "silence": "Silence"
+    }
+  }
+} 

@@ -1,0 +1,103 @@
+{
+  "timestamp": 1744517430400,
+  "summary": {
+    "issuesByCategory": {
+      "security": 2,
+      "performance": 3,
+      "ux": 6,
+      "scalability": 0,
+      "compliance": 4,
+      "financial": 0,
+      "booking": 7
+    },
+    "issuesBySeverity": {
+      "critical": 4,
+      "high": 9,
+      "medium": 8,
+      "low": 1,
+      "info": 0
+    },
+    "totalIssues": 22
+  },
+  "security": {
+    "vulnerabilities": {
+      "critical": 4,
+      "high": 9,
+      "medium": 8,
+      "low": 1
+    },
+    "pciStatus": "unknown",
+    "dataProtectionStatus": "unknown",
+    "socialMediaStatus": "vulnerable"
+  },
+  "performance": {
+    "loadTestResults": {
+      "maxUserCount": 10000,
+      "p95ResponseTime": 250,
+      "errorRate": 0.8
+    },
+    "mobilePerformance": {
+      "averageStartupTime": 2350,
+      "averageMemoryUsage": 132.5,
+      "averageFrameRate": 55
+    },
+    "databasePerformance": {
+      "averageQueryTime": 0,
+      "slowQueryCount": 0
+    },
+    "frontendPerformance": {
+      "averageLCP": 0,
+      "averageFID": 0,
+      "averageCLS": 0
+    }
+  },
+  "ux": {
+    "userFlows": {
+      "averageCompletionRate": 60,
+      "problematicFlowCount": 1
+    },
+    "accessibility": {
+      "criticalViolationCount": 1,
+      "seriousViolationCount": 1,
+      "totalViolationCount": 2
+    },
+    "bookingUX": {
+      "averageConversionRate": 68,
+      "averageUserSatisfaction": 3.7
+    },
+    "responsiveness": {
+      "totalIssueCount": 0,
+      "issuesByDevice": {}
+    }
+  },
+  "compliance": {
+    "gdprStatus": "partially_compliant",
+    "ccpaStatus": "unknown",
+    "dataRetention": {
+      "compliantTypesCount": 0,
+      "nonCompliantTypesCount": 1
+    },
+    "userConsent": {
+      "averageCoverage": 0,
+      "missingTypesCount": 0
+    }
+  },
+  "booking": {
+    "integrity": {
+      "successRate": 0,
+      "doubleBookingCount": 1
+    },
+    "notifications": {
+      "averageDeliveryRate": 99.34,
+      "commonIssues": [
+        "Invalid email address",
+        "Mailbox full",
+        "Temporary server failure"
+      ]
+    },
+    "performance": {
+      "conversionRate": 72,
+      "errorRate": 1.8
+    }
+  }
+}

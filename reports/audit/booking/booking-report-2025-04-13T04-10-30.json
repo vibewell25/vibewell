@@ -1,0 +1,171 @@
+{
+  "id": "booking_report_1744517430421",
+  "timestamp": 1744517430421,
+  "category": "booking",
+  "issues": [
+    {
+      "id": "e7d9baead1250920434b235cc29e36a4b9160e6caeca32d472774d5d0e19d902",
+      "category": "booking",
+      "severity": "critical",
+      "title": "Double Booking Detected: Double Booking Prevention",
+      "description": "The booking integrity test \"Double Booking Prevention\" detected 1 double booking issues",
+      "component": "Booking System",
+      "datestamp": 1744517430394,
+      "remediation": "Immediately review affected bookings and implement stronger concurrency control in the booking system.",
+      "status": "open",
+      "metadata": {
+        "testId": "integrity-test-1",
+        "testName": "Double Booking Prevention",
+        "issues": [
+          {
+            "type": "double_booking",
+            "description": "Two bookings for the same time slot with provider #123",
+            "bookingIds": [
+              "booking-789",
+              "booking-456"
+            ],
+            "resourceId": "provider-123"
+          }
+        ],
+        "timestamp": 1744517430393
+      }
+    },
+    {
+      "id": "6f46dd0386ee2ca64b849d3e9d2678842aabf1adafe7cfd8f37d832326004268",
+      "category": "booking",
+      "severity": "high",
+      "title": "Availability Sync Issues: Double Booking Prevention",
+      "description": "The booking integrity test \"Double Booking Prevention\" detected 1 availability synchronization issues",
+      "component": "Booking System",
+      "datestamp": 1744517430394,
+      "remediation": "Review and synchronize availability data across all systems.",
+      "status": "open",
+      "metadata": {
+        "testId": "integrity-test-1",
+        "testName": "Double Booking Prevention",
+        "issues": [
+          {
+            "type": "availability_sync",
+            "description": "Provider calendar shows different availability than booking system",
+            "resourceId": "provider-456"
+          }
+        ],
+        "timestamp": 1744517430393
+      }
+    },
+    {
+      "id": "dfb4a5348f7b80b94ee977ce6c106e975b14989c175bf7dce003bcb213c9837a",
+      "category": "booking",
+      "severity": "medium",
+      "title": "Low Notification Delivery Rate: booking_confirmation",
+      "description": "The delivery rate for booking_confirmation notifications is 99.34%, which is below the minimum threshold of 99.9%",
+      "component": "Notification System",
+      "datestamp": 1744517430396,
+      "remediation": "Address the following issues: Invalid email address, Mailbox full, Temporary server failure",
+      "status": "open",
+      "metadata": {
+        "notificationType": "booking_confirmation",
+        "deliveryRate": 99.34,
+        "threshold": 99.9,
+        "totalSent": 5280,
+        "delivered": 5245,
+        "failed": 35,
+        "issues": [
+          {
+            "reason": "Invalid email address",
+            "count": 18,
+            "examples": [
+              "user123@examp.le",
+              "test@@domain.com"
+            ]
+          },
+          {
+            "reason": "Mailbox full",
+            "count": 7,
+            "examples": [
+              "user456@example.com"
+            ]
+          },
+          {
+            "reason": "Temporary server failure",
+            "count": 10,
+            "examples": [
+              "user789@example.net"
+            ]
+          }
+        ],
+        "timestamp": 1744517430396
+      }
+    },
+    {
+      "id": "5b24dd1fa522e2ffaf41910e354099698520b01d1bf0a842ce0c17a0e3096c73",
+      "category": "booking",
+      "severity": "critical",
+      "title": "Low Booking Conversion Rate",
+      "description": "The booking conversion rate is 72.00%, which is below the target of 95%",
+      "component": "Booking System",
+      "datestamp": 1744517430397,
+      "status": "open",
+      "metadata": {
+        "conversionRate": 72,
+        "targetRate": 95,
+        "abandonmentRate": 28,
+        "timestamp": 1744517430397
+      }
+    },
+    {
+      "id": "ad779a6b40304a686948a2378433f0378d4e4711d5b3a9826cfcb8a9c872fa95",
+      "category": "booking",
+      "severity": "medium",
+      "title": "Slow Booking Process",
+      "description": "The average booking time is 95000ms, which exceeds the maximum target of 5000ms",
+      "component": "Booking System",
+      "datestamp": 1744517430397,
+      "status": "open",
+      "metadata": {
+        "averageBookingTime": 95000,
+        "targetTime": 5000,
+        "timestamp": 1744517430397
+      }
+    },
+    {
+      "id": "e169b07cb4fd1f07fe1e697813ea565a7a1437efef09136ceb1e2bece8bac188",
+      "category": "booking",
+      "severity": "high",
+      "title": "Insufficient Booking Capacity",
+      "description": "The maximum concurrent bookings handled was 850, which is below the minimum target of 1000",
+      "component": "Booking System",
+      "datestamp": 1744517430398,
+      "remediation": "Scale up the booking system infrastructure to handle higher concurrent load.",
+      "status": "open",
+      "metadata": {
+        "maxConcurrentBookings": 850,
+        "minTarget": 1000,
+        "timestamp": 1744431030397
+      }
+    },
+    {
+      "id": "f928c4cfbb9a375e806ba191694f55733dafe7773a6e82d01ff73a74b6ead0a7",
+      "category": "booking",
+      "severity": "low",
+      "title": "High Booking Error Rate",
+      "description": "The booking system has an error rate of 1.80%, which exceeds acceptable limits",
+      "component": "Booking System",
+      "datestamp": 1744517430399,
+      "remediation": "Investigate error logs to identify and fix the most common errors.",
+      "status": "open",
+      "metadata": {
+        "errorRate": 1.8,
+        "timestamp": 1744517430397
+      }
+    }
+  ],
+  "summary": {
+    "critical": 2,
+    "high": 2,
+    "medium": 2,
+    "low": 1,
+    "info": 0,
+    "total": 7
+  }
+}

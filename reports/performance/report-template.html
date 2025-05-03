@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibewell Performance Report</title>
+  <style>
+    :root {
+      --primary-color: #4f46e5;
+      --secondary-color: #6366f1;
+      --accent-color: #818cf8;
+      --text-color: #1f2937;
+      --light-gray: #f3f4f6;
+      --border-color: #e5e7eb;
+      --success-color: #10b981;
+      --warning-color: #f59e0b;
+      --danger-color: #ef4444;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f9fafb;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+    }
+    
+    .logo {
+      height: 40px;
+    }
+    
+    .report-meta {
+      text-align: right;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+    
+    h1, h2, h3, h4 {
+      color: var(--primary-color);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin-top: 0;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    
+    h3 {
+      font-size: 1.2rem;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+    }
+    
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    
+    .metric {
+      background-color: var(--light-gray);
+      border-radius: 0.5rem;
+      padding: 1.25rem;
+      position: relative;
+    }
+    
+    .metric-title {
+      color: #4b5563;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    
+    .metric-value {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .metric-badge {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+    }
+    
+    .badge-success {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success-color);
+    }
+    
+    .badge-warning {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: var(--warning-color);
+    }
+    
+    .badge-danger {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--danger-color);
+    }
+    
+    .chart-container {
+      height: 300px;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+    
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    th {
+      background-color: var(--light-gray);
+      font-weight: 500;
+    }
+    
+    tr:hover {
+      background-color: var(--light-gray);
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+    
+    .text-muted {
+      color: #6b7280;
+    }
+    
+    .resource-bar {
+      height: 8px;
+      border-radius: 4px;
+      background-color: var(--light-gray);
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    
+    .resource-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+    }
+    
+    .resource-bar-js {
+      background-color: var(--primary-color);
+    }
+    
+    .resource-bar-css {
+      background-color: var(--secondary-color);
+    }
+    
+    .resource-bar-img {
+      background-color: var(--accent-color);
+    }
+    
+    .resource-bar-font {
+      background-color: var(--warning-color);
+    }
+    
+    .resource-bar-other {
+      background-color: var(--danger-color);
+    }
+    
+    .flex-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .flex-grid-item {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .browser-icon {
+      height: 24px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">Vibewell</div>
+      <div class="report-meta">
+        <div><strong>Report Generated:</strong> {{generated_date}}</div>
+        <div><strong>System:</strong> {{system_info.os}}</div>
+        <div><strong>Node.js:</strong> {{system_info.node_version}}</div>
+      </div>
+    </header>
+
+    <h1>{{report_title}}</h1>
+    
+    <div class="card">
+      <h2>Performance Summary</h2>
+      <p>{{summary_text}}</p>
+      
+      <div class="metrics-grid">
+        <div class="metric">
+          <div class="metric-title">Avg Response Time</div>
+          <div class="metric-value">{{metrics_summary.avg_response_time}}ms</div>
+          <span class="metric-badge badge-success">Good</span>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">P95 Response Time</div>
+          <div class="metric-value">{{metrics_summary.p95_response_time}}ms</div>
+          <span class="metric-badge badge-warning">Medium</span>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">First Contentful Paint</div>
+          <div class="metric-value">{{metrics_summary.fcp}}ms</div>
+          <span class="metric-badge badge-success">Good</span>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">Largest Contentful Paint</div>
+          <div class="metric-value">{{metrics_summary.lcp}}ms</div>
+          <span class="metric-badge badge-warning">Medium</span>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">Time to Interactive</div>
+          <div class="metric-value">{{metrics_summary.tti}}ms</div>
+          <span class="metric-badge badge-success">Good</span>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">Cumulative Layout Shift</div>
+          <div class="metric-value">{{metrics_summary.cls}}</div>
+          <span class="metric-badge badge-success">Good</span>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">Total Blocking Time</div>
+          <div class="metric-value">{{metrics_summary.tbt}}ms</div>
+          <span class="metric-badge badge-warning">Medium</span>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">Time to First Byte</div>
+          <div class="metric-value">{{metrics_summary.ttfb}}ms</div>
+          <span class="metric-badge badge-success">Good</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Performance Over Time</h2>
+      <div class="chart-container">
+        <canvas id="performanceChart"></canvas>
+      </div>
+      <p class="text-muted">Performance metrics tracked over time. Lower values are better.</p>
+    </div>
+
+    <div class="card">
+      <h2>Resource Size Breakdown</h2>
+      <div class="flex-grid">
+        <div class="flex-grid-item">
+          <div class="metric-title">JavaScript ({{resources_summary.js_size}} KB)</div>
+          <div class="resource-bar">
+            <div class="resource-bar-fill resource-bar-js" style="width: {{js_percentage}}%"></div>
+          </div>
+        </div>
+        <div class="flex-grid-item">
+          <div class="metric-title">CSS ({{resources_summary.css_size}} KB)</div>
+          <div class="resource-bar">
+            <div class="resource-bar-fill resource-bar-css" style="width: {{css_percentage}}%"></div>
+          </div>
+        </div>
+        <div class="flex-grid-item">
+          <div class="metric-title">Images ({{resources_summary.img_size}} KB)</div>
+          <div class="resource-bar">
+            <div class="resource-bar-fill resource-bar-img" style="width: {{img_percentage}}%"></div>
+          </div>
+        </div>
+        <div class="flex-grid-item">
+          <div class="metric-title">Fonts ({{resources_summary.font_size}} KB)</div>
+          <div class="resource-bar">
+            <div class="resource-bar-fill resource-bar-font" style="width: {{font_percentage}}%"></div>
+          </div>
+        </div>
+        <div class="flex-grid-item">
+          <div class="metric-title">Other ({{resources_summary.doc_size}} KB)</div>
+          <div class="resource-bar">
+            <div class="resource-bar-fill resource-bar-other" style="width: {{doc_percentage}}%"></div>
+          </div>
+        </div>
+      </div>
+      
+      <p class="text-muted">Total resource size: {{total_resource_size}} KB with {{resources_summary.request_count}} requests.</p>
+      
+      <div class="chart-container">
+        <canvas id="resourceChart"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Browser Comparison</h2>
+      <div class="chart-container">
+        <canvas id="browserChart"></canvas>
+      </div>
+      <p class="text-muted">Performance comparison across different browsers. Tested browsers: {{system_info.browser_versions}}</p>
+    </div>
+
+    <div class="card">
+      <h2>Recommendations</h2>
+      <ul>
+        <li>Consider optimizing JavaScript bundles by implementing code splitting to improve initial load time.</li>
+        <li>Optimize image loading with lazy loading and responsive images to reduce initial page weight.</li>
+        <li>Implement font display swap to improve perceived performance during font loading.</li>
+        <li>Consider using a CDN for static assets to improve TTFB across different geographic regions.</li>
+        <li>Improve Time to Interactive by deferring non-critical JavaScript execution.</li>
+      </ul>
+    </div>
+
+    <footer>
+      <p>© {{current_year}} Vibewell. All rights reserved.</p>
+      <p>This report is generated automatically and is intended for internal use only.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Sample data for charts - these would be replaced with actual data
+    document.addEventListener('DOMContentLoaded', function() {
+      // Performance Chart
+      new Chart(document.getElementById('performanceChart'), {
+        type: 'line',
+        data: {{performance_chart_data}},
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Time (ms)'
+              }
+            }
+          }
+        }
+      });
+
+      // Resource Chart
+      new Chart(document.getElementById('resourceChart'), {
+        type: 'pie',
+        data: {{resource_chart_data}},
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+            }
+          }
+        }
+      });
+
+      // Browser Chart
+      new Chart(document.getElementById('browserChart'), {
+        type: 'bar',
+        data: {{browser_chart_data}},
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Load Time (ms)'
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

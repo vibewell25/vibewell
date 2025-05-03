@@ -1,0 +1,39 @@
+{
+  "name": "vibewell-backend",
+  "version": "1.0.0",
+  "description": "Backend server for Vibewell app",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "jsonwebtoken": "^9.0.2",
+    "speakeasy": "^2.0.0",
+    "qrcode": "^1.5.3",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "compression": "^1.7.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/mongoose": "^5.11.97",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/speakeasy": "^2.0.7",
+    "@types/qrcode": "^1.5.1",
+    "@types/cors": "^2.8.13",
+    "@types/compression": "^1.7.2",
+    "@types/node": "^20.5.7",
+    "@types/jest": "^29.5.4",
+    "typescript": "^5.2.2",
+    "ts-node": "^10.9.1",
+    "nodemon": "^3.0.1",
+    "jest": "^29.6.4",
+    "ts-jest": "^29.1.1"
+  }
+} 

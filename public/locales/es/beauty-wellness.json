@@ -1,0 +1,30 @@
+{
+  "categories": {
+    "beauty": "Servicios de Belleza",
+    "wellness": "Servicios de Bienestar",
+    "spa": "Tratamientos de Spa",
+    "massage": "Terapia de Masaje",
+    "hair": "Peluquería",
+    "nails": "Cuidado de Uñas",
+    "skincare": "Cuidado de la Piel"
+  },
+  "services": {
+    "featured": "Servicios Destacados",
+    "popular": "Servicios Populares",
+    "new": "Nuevos Servicios",
+    "trending": "Tendencias"
+  },
+  "booking": {
+    "selectService": "Seleccionar Servicio",
+    "selectProvider": "Seleccionar Proveedor",
+    "selectDateTime": "Seleccionar Fecha y Hora",
+    "duration": "Duración",
+    "price": "Precio"
+  },
+  "filters": {
+    "priceRange": "Rango de Precio",
+    "availability": "Disponibilidad",
+    "rating": "Calificación",
+    "location": "Ubicación"
+  }
+} 

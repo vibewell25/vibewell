@@ -1,0 +1,22 @@
+{
+  "Button": {
+    "usages": [],
+    "importPaths": []
+  },
+  "Input": {
+    "usages": [],
+    "importPaths": []
+  },
+  "Card": {
+    "usages": [],
+    "importPaths": []
+  },
+  "Checkbox": {
+    "usages": [],
+    "importPaths": []
+  },
+  "Select": {
+    "usages": [],
+    "importPaths": []
+  }
+}

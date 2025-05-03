@@ -1,0 +1,10 @@
+*** Begin Patch
+*** Update File: node_modules/expo/Expo.podspec
+@@
+-compiler_flags = get_folly_config()[:compiler_flags]
++begin
++  compiler_flags = get_folly_config()[:compiler_flags]
++rescue NoMethodError, NameError
++  compiler_flags = []
++end
+*** End Patch 

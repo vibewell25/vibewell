@@ -1,0 +1,9 @@
+# Ignore node modules and Next.js build artifacts
+/node_modules/
+/.next/
+
+# Ignore TypeScript build info
+*.tsbuildinfo
+
+env files
+.env 

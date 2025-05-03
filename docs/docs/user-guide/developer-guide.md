@@ -23,7 +23,7 @@
 VibeWell follows a modern web application architecture with the following key elements:
 
 - **Frontend**: Next.js-based Single Page Application (SPA)
-- **Backend**: RESTful API services with Node.js and Express
+- **Backend**: RESTful API services with Node.js (%NODE_VERSION%)
 - **Database**: MongoDB for main data storage, Redis for caching
 - **Authentication**: JWT-based auth system with role-based access control
 - **File Storage**: AWS S3 for user-generated content and assets
@@ -42,7 +42,7 @@ The application uses a microservices architecture for key components:
 
 ### Prerequisites
 
-- Node.js (v16.x or higher)
+- Node.js (%NODE_VERSION%)
 - npm (v8.x or higher)
 - Git
 - MongoDB (local or accessible instance)
@@ -140,7 +140,7 @@ The VibeWell platform utilizes the following core technologies:
 - **Zustand**: State management
 
 ### Backend
-- **Node.js**: JavaScript runtime
+- **Node.js**: JavaScript runtime (v18.x or later)
 - **Express**: Web framework
 - **MongoDB**: NoSQL database
 - **Redis**: In-memory data structure store

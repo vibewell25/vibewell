@@ -1,6 +1,6 @@
 # VibeWell Platform
 
-A comprehensive beauty and wellness booking platform that seamlessly connects beauty professionals, wellness practitioners, and clients. Our AI-powered platform enhances the experience for both beauty services (skincare, hair, makeup, nail care, esthetics, spa treatments) and wellness services (fitness, meditation, nutrition, therapy, holistic healing).
+A comprehensive beauty and wellness booking platform offering a 55-to-45 balance between beauty and wellness services that seamlessly connects beauty professionals, wellness practitioners, and clients. Our AI-powered platform enhances the experience for both beauty services (skincare, hair, makeup, nail care, esthetics, spa treatments) and wellness services (fitness, meditation, nutrition, therapy, holistic healing).
 
 ## ✨ Core Features
 
@@ -38,7 +38,7 @@ A comprehensive beauty and wellness booking platform that seamlessly connects be
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 15.3, React 18.3, TypeScript
-- **Backend**: Node.js (≥18.0.0)
+- **Backend**: RESTful API services with Node.js (%NODE_VERSION%)
 - **Database**: PostgreSQL with Prisma ORM
 - **Authentication**: Auth0, JWT
 - **State Management**: Recoil, React Query
@@ -56,7 +56,7 @@ A comprehensive beauty and wellness booking platform that seamlessly connects be
 
 ### Prerequisites
 
-- Node.js ≥18.0.0
+- Node.js (%NODE_VERSION%)
 - PostgreSQL
 - Redis
 - pnpm, yarn, or npm

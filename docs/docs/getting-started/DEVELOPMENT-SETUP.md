@@ -5,7 +5,7 @@ This guide provides step-by-step instructions for setting up a development envir
 ## System Requirements
 
 - **Operating System**: Windows 10/11, macOS 10.15+, or Linux (Ubuntu 20.04+ recommended)
-- **Node.js**: Version 16.x or higher
+- **Node.js**: JavaScript runtime (v18.x or later)
 - **NPM**: Version 8.x or higher
 - **Git**: Latest version recommended
 - **Storage**: At least 10GB free disk space

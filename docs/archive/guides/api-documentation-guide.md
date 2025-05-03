@@ -7,7 +7,7 @@ This guide provides a comprehensive reference for the VibeWell API, including au
 ## Base URL
 
 ```
-Production: https://api.vibewell.com/v1
+Production: %API_BASE_URL%
 Development: http://localhost:3000/api/v1
 ```
 

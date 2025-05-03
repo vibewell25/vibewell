@@ -375,7 +375,7 @@ This guide explains how to use k6 to test the rate limiting functionality in the
 ## Prerequisites
 
 - [k6](https://k6.io/docs/getting-started/installation/) installed locally
-- Node.js 16+ installed
+- Node.js (%NODE_VERSION%)
 - Access to the VibeWell application (local or deployed)
 - Redis server (for Redis-based rate limiting tests)
 

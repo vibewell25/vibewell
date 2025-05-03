@@ -23,7 +23,7 @@ This guide provides comprehensive instructions for integrating with the VibeWell
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18 or higher
+- Node.js (%NODE_VERSION%)
 - npm or yarn
 - A VibeWell account
 - API credentials

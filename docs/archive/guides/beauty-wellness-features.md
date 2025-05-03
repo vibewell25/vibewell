@@ -1,6 +1,6 @@
 # Beauty & Wellness Features
 
-The VibeWell platform offers comprehensive beauty and wellness services to help users look and feel their best. This document outlines the beauty and wellness features implemented in the platform.
+The VibeWell platform offers comprehensive beauty and wellness services with a 55-to-45 balance between beauty and wellness offerings to help users look and feel their best. This document outlines the beauty and wellness features implemented in the platform.
 
 ## Core Beauty & Wellness Features
 

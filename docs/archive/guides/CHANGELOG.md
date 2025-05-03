@@ -1490,7 +1490,6 @@ Please upgrade to bunyan 0.20.0.
   serializers are inherited. Streams can't be removed as part of the child
   creation. The child doesn't own the parent's streams (so can't close them).
 - Clean up Logger creation. The goal here was to ensure `log.child` usage
-  is fast. TODO: measure that.
 - Add `Logger.stdSerializers.err` serializer which is necessary to get good
   Error object logging with node 0.6 (where core Error object properties
   are non-enumerable).

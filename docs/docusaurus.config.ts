@@ -5,14 +5,21 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Vibewell Documentation',
-  tagline: 'Docs for the Vibewell beauty & wellness platform',
+  title: 'VibeWell Documentation',
+  tagline: 'Documentation for the VibeWell Beauty & Wellness Platform with a 55-to-45 focus on beauty vs wellness',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
   url: 'https://yourusername.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   baseUrl: '/vibewell/',
+
+  // Custom fields for dynamic version constants in docs
+  customFields: {
+    nodeVersion: '18.x',
+    apiVersion: 'latest',
+    apiBaseUrl: 'https://api.vibewell.com/latest',
+  },
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -36,6 +43,7 @@ const config: Config = {
       {
         docs: {
           path: '.',
+          exclude: ['archive/**'],
           routeBasePath: 'docs',
           sidebarPath: require.resolve('./sidebars.ts'),
           editUrl: 'https://github.com/yourusername/vibewell/edit/main/docs/',
@@ -66,7 +74,7 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'Vibewell Docs',
+      title: 'VibeWell Docs',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
@@ -77,6 +85,12 @@ const config: Config = {
           sidebarId: 'docs',
           position: 'left',
           label: 'Docs',
+        },
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+          // disable active Class so dropdown can be used even when on docs page
+          dropdownActiveClassDisabled: true,
         },
         {
           href: 'https://github.com/yourusername/vibewell',

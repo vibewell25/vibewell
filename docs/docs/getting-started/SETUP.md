@@ -15,7 +15,7 @@
 ## Prerequisites
 
 ### Required Software
-- Node.js (v18.x or later)
+- Node.js (%NODE_VERSION%)
 - npm (v9.x or later)
 - Redis (v7.x or later)
 - Git

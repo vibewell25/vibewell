@@ -4,7 +4,7 @@
 
 ### Tech Stack
 - **Frontend**: Next.js 14, React, TypeScript
-- **Backend**: Node.js, Express
+- **Backend**: RESTful API services with Node.js (%NODE_VERSION%)
 - **Database**: PostgreSQL
 - **Cache**: Redis
 - **Search**: Elasticsearch
@@ -33,7 +33,7 @@
 ## 🔧 Development Setup
 
 ### Prerequisites
-- Node.js v18+
+- Node.js (%NODE_VERSION%)
 - Docker & Docker Compose
 - PostgreSQL 15+
 - Redis 7+

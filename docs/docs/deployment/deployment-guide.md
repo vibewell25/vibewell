@@ -6,7 +6,7 @@ This guide provides detailed instructions for deploying the VibeWell platform to
 
 Before deployment, ensure you have the following:
 
-- Node.js (version 16.x or later)
+- Node.js (%NODE_VERSION%)
 - NPM (version 8.x or later)
 - Vercel CLI installed (`npm i -g vercel`)
 - Access to VibeWell GitHub repository
@@ -147,7 +147,7 @@ If you need to manually deploy to production:
 Prerequisites:
 - Auth0 account
 - Access to the VibeWell production environment
-- Node.js and npm
+- Node.js (%NODE_VERSION%)
 
 1. Log in to Auth0 Dashboard and create a Regular Web Application named “VibeWell”.
 2. Configure Application Settings:
@@ -171,7 +171,7 @@ Prerequisites:
 Prerequisites:
 - Stripe account
 - Access to the VibeWell production environment
-- Node.js and npm
+- Node.js (%NODE_VERSION%)
 
 1. Create and verify a Stripe account; switch to Live mode.
 2. Obtain API Keys (Publishable & Secret) from Developers > API Keys.
@@ -186,7 +186,7 @@ Prerequisites:
 Prerequisites:
 - AWS account with administrative access
 - Access to the VibeWell production environment
-- Node.js and npm
+- Node.js (%NODE_VERSION%)
 
 1. In AWS Console > IAM, create an access key with S3 permissions.
 2. Update production environment variables:

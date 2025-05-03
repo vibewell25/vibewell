@@ -49,7 +49,7 @@ The VibeWell backup system provides automated database backups, retention manage
 
 ### Prerequisites
 
-- Node.js 16+ and npm
+- Node.js (%NODE_VERSION%)
 - Access to a Supabase project with storage enabled
 - Environment variables for Supabase credentials
 - Sufficient storage for backups

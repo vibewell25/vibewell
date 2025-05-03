@@ -11,7 +11,7 @@ Authorization: Bearer <your_jwt_token>
 ## 🌐 Base URL
 
 ```
-Production: https://api.vibewell.com/v1
+Production: %API_BASE_URL%
 Development: http://localhost:3000/api/v1
 ```
 

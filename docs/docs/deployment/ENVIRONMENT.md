@@ -29,7 +29,7 @@
 # API Configuration
 NODE_ENV=development
 PORT=3000
-API_VERSION=v1
+API_VERSION=%API_VERSION%
 
 # Database
 DB_HOST=localhost
@@ -53,7 +53,7 @@ AWS_SECRET_ACCESS_KEY=your_aws_secret
 ```bash
 # API Configuration
 EXPO_PUBLIC_API_URL=http://localhost:3000/api
-EXPO_PUBLIC_API_VERSION=v1
+EXPO_PUBLIC_API_VERSION=%API_VERSION%
 
 # External Services
 EXPO_PUBLIC_SENTRY_DSN=your_sentry_dsn
@@ -70,7 +70,7 @@ EXPO_PUBLIC_ENABLE_ANALYTICS=true
 # API Configuration
 NODE_ENV=testing
 PORT=3001
-API_VERSION=v1
+API_VERSION=%API_VERSION%
 
 # Test Database
 TEST_DB_HOST=localhost
@@ -89,7 +89,7 @@ TEST_JWT_SECRET=test_jwt_secret
 # API Configuration
 NODE_ENV=production
 PORT=80
-API_VERSION=v1
+API_VERSION=%API_VERSION%
 
 # Database
 DB_HOST=your_production_host

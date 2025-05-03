@@ -39,7 +39,6 @@ The VibeWell project has made significant progress but several inconsistencies a
    - Fix existing test imports to use the correct hooks and utilities
 
 4. **Service Implementation**
-   - Complete TODOs in notification services, security monitoring, and auth systems
    - Implement email sending functionality in relevant services
    - Complete MFA middleware implementation
 
@@ -48,7 +47,6 @@ The VibeWell project has made significant progress but several inconsistencies a
 1. **Immediate (This Sprint)**
    - Run duplicate file detection and consolidation
    - Update all imports to use standardized hooks and utilities
-   - Fix critical TODOs in security and authentication services
 
 2. **Short-term (1-2 Weeks)**
    - Finish component standardization for high-priority components
@@ -56,7 +54,6 @@ The VibeWell project has made significant progress but several inconsistencies a
    - Complete documentation consolidation
 
 3. **Medium-term (1 Month)**
-   - Implement remaining service TODOs
    - Reach 40% test coverage
    - Complete accessibility implementation
 

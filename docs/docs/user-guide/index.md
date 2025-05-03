@@ -29,7 +29,7 @@ Welcome to the VibeWell User Guide! Here you'll find everything you need to get 
 
 ### Welcome to VibeWell
 
-VibeWell is your all-in-one platform for beauty and wellness services. Whether you're looking to book a salon appointment, try on a new hairstyle with augmented reality, or access wellness content, VibeWell brings these services together in one seamless experience.
+VibeWell is your all-in-one platform for beauty and wellness services, with a distinct 55-to-45 ratio favoring beauty services to wellness services. Whether you're looking to book a salon appointment, try on a new hairstyle with augmented reality, or access wellness content, VibeWell brings these services together in one seamless experience.
 
 ### System Requirements
 

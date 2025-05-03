@@ -26,7 +26,7 @@ This document outlines the implementation plan for the VibeWell platform, includ
 ## Setup Instructions
 
 ### Prerequisites
-- Node.js v18+
+- Node.js (%NODE_VERSION%)
 - npm or yarn
 - PostgreSQL database
 - AWS account with S3 and Lambda access

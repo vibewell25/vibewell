@@ -6,7 +6,7 @@ This document provides comprehensive documentation for the VibeWell API, includi
 
 The VibeWell API is a RESTful API that allows developers to interact with the VibeWell platform programmatically. The API enables access to user data, wellness activities, progress tracking, and more.
 
-**Base URL**: `https://api.vibewell.com/v1`
+**Base URL**: `%API_BASE_URL%`
 
 ## Authentication
 
@@ -760,7 +760,7 @@ Pagination details are included in the response:
 
 ## Versioning
 
-The API is versioned through the URL path (e.g., `/v1/users`). When breaking changes are introduced, a new version will be released, and the previous version will be maintained for a deprecation period.
+The API is versioned through the URL path (e.g., `/latest/users`). When breaking changes are introduced, a new version will be released, and the previous version will be maintained for a deprecation period.
 
 ## SDK and Client Libraries
 

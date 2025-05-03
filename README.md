@@ -1,6 +1,6 @@
-# VibeWell Wellness App
+# VibeWell Beauty & Wellness Platform
 
-VibeWell is a comprehensive wellness platform designed to help users find, book, and manage wellness services including massage, facials, hair styling, and nail treatments.
+VibeWell is a comprehensive beauty and wellness platform offering a 55-to-45 ratio of beauty to wellness services. It helps users find, book, and manage beauty and wellness services including hair styling, nail treatments, makeup application, massage, facials, and more.
 
 ## Features
 
@@ -91,3 +91,15 @@ npm test
 ## License
 
 This project is licensed under the MIT License
+
+## Documentation
+
+All project documentation is maintained in the `docs/` folder and published via Docusaurus.
+
+- View locally:
+```bash
+cd docs && npm run start
+```
+- Live site: https://yourusername.github.io/vibewell/docs
+
+---

@@ -29,4 +29,10 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: docs-build
-          path: docs/build 
+          path: docs/build
+      - name: Check for TODOs in docs
+        run: |
+          if grep -R "TODO" docs; then
+            echo "Error: Found TODOs in docs";
+            exit 1;
+          fi 

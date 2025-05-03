@@ -5,8 +5,8 @@ This documentation covers all API endpoints, authentication methods, and data mo
 
 ## Base URL
 ```
-Production: https://api.vibewell.com/v1
-Development: http://localhost:3000/v1
+Production: %API_BASE_URL%
+Development: %API_BASE_URL%
 ```
 
 ## Authentication
@@ -240,7 +240,7 @@ Official SDKs are available for:
 5. Cache responses when appropriate
 
 ## Versioning
-API versioning is handled through the URL path. The current version is v1.
+API versioning is handled through the URL path. The current version is latest.
 Breaking changes will result in a new version number.
 
 ## Support

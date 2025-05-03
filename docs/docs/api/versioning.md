@@ -11,7 +11,7 @@ We use a path-based versioning scheme with the following structure:
 ```
 
 For example:
-- `/api/v1/users/profile`
+- `/api/latest/users/profile`
 - `/api/v2/bookings/upcoming`
 
 ## Available Versions

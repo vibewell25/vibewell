@@ -128,7 +128,7 @@ Copy the following values from your Auth0 dashboard to your `.env.local` file:
 1. Navigate to the Lambda service.
 2. Create a new function:
    - Name: `vibewell-image-resize`
-   - Runtime: Node.js 18.x
+   - Runtime: Node.js (%NODE_VERSION%)
    - Role: Create a new role with basic Lambda permissions
 3. Add S3 permissions to the role:
    - Navigate to the IAM service

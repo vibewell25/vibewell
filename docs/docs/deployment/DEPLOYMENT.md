@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Node.js (v18 or later)
+- Node.js (%NODE_VERSION%)
 - Expo CLI (`npm install -g expo-cli`)
 - EAS CLI (`npm install -g eas-cli`)
 - Apple Developer Account (for iOS)

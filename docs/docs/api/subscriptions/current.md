@@ -79,14 +79,14 @@ No body required.
 
 ```bash
 curl -X GET \
-  'https://api.vibewell.com/v1/subscriptions/current' \
+  '%API_BASE_URL%/subscriptions/current' \
   -H 'Authorization: Bearer YOUR_TOKEN'
 ```
 
 ### JavaScript
 
 ```javascript
-const response = await fetch('https://api.vibewell.com/v1/subscriptions/current', {
+const response = await fetch('%API_BASE_URL%/subscriptions/current', {
   headers: {
     'Authorization': `Bearer ${token}`
   }
@@ -100,7 +100,7 @@ const data = await response.json();
 import requests
 
 response = requests.get(
-    'https://api.vibewell.com/v1/subscriptions/current',
+    '%API_BASE_URL%/subscriptions/current',
     headers={'Authorization': f'Bearer {token}'}
 )
 data = response.json()

@@ -15,7 +15,7 @@ The load testing framework is designed to:
 
 ### Prerequisites
 
-- Node.js and npm (for running the API server)
+- Node.js (%NODE_VERSION%)
 - Redis server (for production-mode tests)
 - [k6](https://k6.io/docs/getting-started/installation/) load testing tool
 

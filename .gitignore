@@ -5,6 +5,11 @@
 # Ignore TypeScript build info
 *.tsbuildinfo
 
-env files
-.env /apps/web/.next/
+# Env files
+.env
+
+# Ignore nested Next.js build in apps/web
+/apps/web/.next/
+
+# Ignore temporary backup folder
 /temp_backup/

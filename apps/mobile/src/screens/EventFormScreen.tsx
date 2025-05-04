@@ -16,7 +16,9 @@ const EventFormScreen: React.FC = () => {
   const [endAt, setEndAt] = useState(event.endAt || '');
   const [location, setLocation] = useState(event.location || '');
 
-  const handleSubmit = async () => {
+  const handleSubmit = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       if (event) {
         await communityApi.updateEvent(event.id, { title, description, startAt, endAt, location });

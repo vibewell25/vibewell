@@ -38,7 +38,9 @@ const LoyaltyTiersScreen: React.FC = () => {
     })();
   }, []);
 
-  const redeemTier = async (tierId: string, points: number) => {
+  const redeemTier = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');tierId: string, points: number) => {
     if (!(await isOnline())) {
       await addToSyncQueue('/api/loyalty/redeem', 'POST', { tierId });
       Alert.alert('Offline', 'Redemption queued and will complete when online');

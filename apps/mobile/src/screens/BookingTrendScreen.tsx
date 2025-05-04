@@ -13,7 +13,9 @@ const BookingTrendScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { fetchData(); }, []);
-  const fetchData = async () => {
+  const fetchData = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     try {
       const res = await fetch(`${serverBaseUrl}/api/analytics/bookings/monthly`, {

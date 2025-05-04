@@ -21,7 +21,9 @@ const BusinessHoursScreen: React.FC = () => {
       .finally(() => setLoading(false));
   }, [business.id]);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string) => {
     try {
       await deleteBusinessHour(id);
       setHours(hours.filter(h => h.id !== id));

@@ -45,7 +45,9 @@ const PrivacySettingsScreen: React.FC = () => {
     loadPreferences();
   }, []);
 
-  const loadPreferences = async () => {
+  const loadPreferences = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const saved = await AsyncStorage.getItem('@vibewell/privacy_preferences');
       if (saved) {
@@ -59,7 +61,9 @@ const PrivacySettingsScreen: React.FC = () => {
     }
   };
 
-  const savePreferences = async (newPreferences: PrivacyPreferences) => {
+  const savePreferences = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');newPreferences: PrivacyPreferences) => {
     try {
       await AsyncStorage.setItem(
         '@vibewell/privacy_preferences',

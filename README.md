@@ -1,6 +1,6 @@
 # VibeWell Beauty & Wellness Platform
 
-VibeWell is a comprehensive beauty and wellness platform that combines service booking with social networking features. It helps users find, book, and manage beauty and wellness services while connecting with providers and other users through a modern social media experience.
+VibeWell is a comprehensive beauty and wellness platform offering a 55-to-45 ratio of beauty to wellness services. It helps users find, book, and manage beauty and wellness services including hair styling, nail treatments, makeup application, massage, facials, and more.
 
 ## Features
 
@@ -8,24 +8,16 @@ VibeWell is a comprehensive beauty and wellness platform that combines service b
 - **Modern UI/UX**: Clean, intuitive interface with a mobile-first design
 - **Theme System**: Custom theme with natural green/beige color palette
 - **Authentication**: User registration and login functionality
-- **Service Booking**: Browse and book beauty and wellness services
+- **Service Booking**: Browse and book wellness services
 - **Personalized Profiles**: User profiles with preferences and history
-- **Social Networking**: Instagram/TikTok-style social feed with modern features
 
 ### Pages & Functionality
 - **Home (/spa)**: Featured services, categories, search, and upcoming appointments
 - **Services (/spa/services)**: Browse services with category filtering
 - **Service Detail (/spa/services/[id])**: View service details and book appointments
 - **Bookings (/spa/bookings)**: Manage upcoming and past appointments
-- **Social Feed (/spa/social)**: 
-  - Instagram/TikTok-style feed with video and photo posts
-  - Stories and Reels feature
-  - Like, comment, and share functionality
-  - User and provider tagging
-  - Direct messaging
-  - Content discovery and trending
+- **Social Feed (/spa/social)**: User-generated content, stories, and community engagement
 - **Profile (/spa/profile)**: Personal information, preferences, and payment methods
-- **Chat (/spa/chat)**: Direct messaging with providers and other users
 
 ### UI Components
 - **Bottom Navigation**: Mobile-friendly navigation with notification indicators
@@ -33,13 +25,6 @@ VibeWell is a comprehensive beauty and wellness platform that combines service b
 - **Notification System**: Toast notifications for user feedback
 - **Service Cards**: Consistent display of service information
 - **Category Filters**: Interactive filtering for service types
-- **Social Components**:
-  - Post creation with media upload
-  - Story/Reel viewer
-  - Comment section with reactions
-  - Direct message interface
-  - User tagging system
-  - Content sharing options
 
 ## Technology Stack
 

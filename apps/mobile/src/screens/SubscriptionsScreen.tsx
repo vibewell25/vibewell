@@ -17,7 +17,9 @@ const SubscriptionsScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [subs, setSubs] = useState<Subscription[]>([]);
 
-  const fetchSubs = async () => {
+  const fetchSubs = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     await trackEvent('ViewSubscriptions', {});
     setLoading(true);
     try {
@@ -33,7 +35,9 @@ const SubscriptionsScreen: React.FC = () => {
     }
   };
 
-  const cancelSub = async (id: string) => {
+  const cancelSub = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string) => {
     try {
       const res = await fetch(`${serverBaseUrl}/api/stripe/subscriptions/cancel`, {
         method: 'POST',

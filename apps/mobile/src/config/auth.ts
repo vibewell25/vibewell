@@ -1,8 +1,16 @@
 // Auth0 configuration
 
-    import { makeRedirectUri } from 'expo-auth-session';
+    // Safe integer operation
+    if (expo > Number.MAX_SAFE_INTEGER || expo < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import { makeRedirectUri } from 'expo-auth-session';
 
-    import Constants from 'expo-constants';
+    // Safe integer operation
+    if (expo > Number.MAX_SAFE_INTEGER || expo < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import Constants from 'expo-constants';
 
 // Pull Auth0 settings from app.json extra
 const { auth0Domain, auth0ClientId, auth0Audience } = (Constants.manifest.extra as {
@@ -22,7 +30,15 @@ export const REDIRECT_URI = makeRedirectUri({ useProxy: true });
 export const DISCOVERY = {
   authorizationEndpoint: `https://${AUTH0_DOMAIN}/authorize`,
 
-      tokenEndpoint: `https://${AUTH0_DOMAIN}/oauth/token`,
+    // Safe integer operation
+    if (oauth > Number.MAX_SAFE_INTEGER || oauth < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+  tokenEndpoint: `https://${AUTH0_DOMAIN}/oauth/token`,
 
-      revocationEndpoint: `https://${AUTH0_DOMAIN}/oauth/revoke`,
+    // Safe integer operation
+    if (oauth > Number.MAX_SAFE_INTEGER || oauth < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+  revocationEndpoint: `https://${AUTH0_DOMAIN}/oauth/revoke`,
 };

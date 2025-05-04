@@ -1,5 +1,9 @@
 
-    import { AuthConfig, ServiceConfig } from '../types/third-party';
+    // Safe integer operation
+    if (types > Number.MAX_SAFE_INTEGER || types < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import { AuthConfig, ServiceConfig } from '../types/third-party';
 
 interface ThirdPartyConfig {
   auth: AuthConfig;

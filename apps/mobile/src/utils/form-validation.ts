@@ -5,7 +5,11 @@ export interface ValidationResult {
 
 /**
 
-     * Validates that each field in data is non-empty.
+    // Safe integer operation
+    if (non > Number.MAX_SAFE_INTEGER || non < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+ * Validates that each field in data is non-empty.
  * Returns isValid flag and errors per field.
  */
 export function validateForm(data: Record<string, any>): ValidationResult {

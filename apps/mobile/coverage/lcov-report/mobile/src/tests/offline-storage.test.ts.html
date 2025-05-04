@@ -143,19 +143,7 @@
 <a name='L78'></a><a href='#L78'>78</a>
 <a name='L79'></a><a href='#L79'>79</a>
 <a name='L80'></a><a href='#L80'>80</a>
-<a name='L81'></a><a href='#L81'>81</a>
-<a name='L82'></a><a href='#L82'>82</a>
-<a name='L83'></a><a href='#L83'>83</a>
-<a name='L84'></a><a href='#L84'>84</a>
-<a name='L85'></a><a href='#L85'>85</a>
-<a name='L86'></a><a href='#L86'>86</a>
-<a name='L87'></a><a href='#L87'>87</a>
-<a name='L88'></a><a href='#L88'>88</a>
-<a name='L89'></a><a href='#L89'>89</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L81'></a><a href='#L81'>81</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -168,7 +156,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -179,13 +166,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,7 +182,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -239,12 +223,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
-    
-    
-    import AsyncStorage from '@react-native-async-storage/async-storage';
-&nbsp;
-    import OfflineStorage from '../utils/offline-storage';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import AsyncStorage from '@react-native-async-storage/async-storage';
+import OfflineStorage from '../utils/offline-storage';
 &nbsp;
 <span class="cstat-no" title="statement not covered" >describe('OfflineStorage', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
   let storage: OfflineStorage;
@@ -256,8 +236,7 @@
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  it('should store and retrieve data correctly', <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
     const testData = <span class="cstat-no" title="statement not covered" >{ name: 'Test User', age: 25 };</span>
-&nbsp;
-        const key = <span class="cstat-no" title="statement not covered" >process.env['KEY'];</span>
+    const key = <span class="cstat-no" title="statement not covered" >'test-key';</span>
 &nbsp;
     const storeResult = <span class="cstat-no" title="statement not covered" >await storage.storeData(key, testData);</span>
 <span class="cstat-no" title="statement not covered" >    expect(storeResult).toBe(true);</span>
@@ -266,15 +245,13 @@
 <span class="cstat-no" title="statement not covered" >    expect(retrievedData).toEqual(testData);</span>
   });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      it('should handle non-existent keys', <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-&nbsp;
-        const data = <span class="cstat-no" title="statement not covered" >await storage.getData('non-existent-key');</span>
+<span class="cstat-no" title="statement not covered" >  it('should handle non-existent keys', <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+    const data = <span class="cstat-no" title="statement not covered" >await storage.getData('non-existent-key');</span>
 <span class="cstat-no" title="statement not covered" >    expect(data).toBeNull();</span>
   });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  it('should remove data correctly', <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-&nbsp;
-        const key = <span class="cstat-no" title="statement not covered" >process.env['KEY'];</span>
+    const key = <span class="cstat-no" title="statement not covered" >'test-key';</span>
 <span class="cstat-no" title="statement not covered" >    await storage.storeData(key, 'test data');</span>
     
     const removeResult = <span class="cstat-no" title="statement not covered" >await storage.removeData(key);</span>
@@ -285,8 +262,7 @@
   });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  it('should manage sync status correctly', <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-&nbsp;
-        const key = <span class="cstat-no" title="statement not covered" >process.env['KEY'];</span>
+    const key = <span class="cstat-no" title="statement not covered" >'test-key';</span>
 <span class="cstat-no" title="statement not covered" >    await storage.storeData(key, 'test data');</span>
 &nbsp;
     let syncStatus = <span class="cstat-no" title="statement not covered" >await storage.getSyncStatus(key);</span>
@@ -334,7 +310,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T18:37:52.932Z
+                at 2025-04-25T21:08:58.925Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

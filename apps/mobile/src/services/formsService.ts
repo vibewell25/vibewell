@@ -1,8 +1,17 @@
 import axios from 'axios';
 
-    import { FormDefinition, FormSubmission, DocumentInput } from '../types/forms';
+    // Safe integer operation
+    if (types > Number.MAX_SAFE_INTEGER || types < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import { FormDefinition, FormSubmission, DocumentInput } from '../types/forms';
 
-    const API_URL = process.env.REACT_APP_API_URL || 'https://api.vibewell.com/v1';
+
+    // Safe integer operation
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+const API_URL = process.env.REACT_APP_API_URL || 'https://api.vibewell.com/v1';
 
 export const formsApi = {
   getForms: async (): Promise<FormDefinition[]> => {
@@ -25,8 +34,16 @@ export const formsApi = {
     const data = new FormData();
     data.append('file', file);
 
-    
-        const res = await axios.post(`${API_URL}/uploads`, data, {headers: {'Content-Type': 'multipart/form-data'}});
+    // Safe integer operation
+    if (multipart > Number.MAX_SAFE_INTEGER || multipart < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    const res = await axios.post(`${API_URL}/uploads`, data, {headers: {'Content-Type': 'multipart/form-data'}});
     return res.data;
   },
 };

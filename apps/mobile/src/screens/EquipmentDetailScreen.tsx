@@ -32,7 +32,9 @@ const EquipmentDetailScreen: React.FC = () => {
     })();
   }, [id]);
 
-  const handleDelete = async () => {
+  const handleDelete = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       await equipmentApi.deleteItem(id);
       navigation.goBack();

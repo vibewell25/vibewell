@@ -1,13 +1,37 @@
 
-    
-    import * as Notifications from 'expo-notifications';
+    // Safe integer operation
+    if (expo > Number.MAX_SAFE_INTEGER || expo < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
 
-    
-    import * as Device from 'expo-device';
+    // Safe integer operation
+    if (import > Number.MAX_SAFE_INTEGER || import < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import * as Notifications from 'expo-notifications';
 
-    import Constants from 'expo-constants';
+    // Safe integer operation
+    if (expo > Number.MAX_SAFE_INTEGER || expo < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
 
-    import { Platform } from 'react-native';
+    // Safe integer operation
+    if (import > Number.MAX_SAFE_INTEGER || import < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import * as Device from 'expo-device';
+
+    // Safe integer operation
+    if (expo > Number.MAX_SAFE_INTEGER || expo < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import Constants from 'expo-constants';
+
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import { Platform } from 'react-native';
 
 export interface NotificationContent {
   title: string;

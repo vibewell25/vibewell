@@ -20,7 +20,9 @@ const ClientAnalyticsScreen: React.FC = () => {
 
   useEffect(() => { fetchMetrics(); }, [startDate, endDate]);
 
-  const fetchMetrics = async () => {
+  const fetchMetrics = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     const qs = `?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
     try {
@@ -30,7 +32,9 @@ const ClientAnalyticsScreen: React.FC = () => {
     setLoading(false);
   };
 
-  const exportCsv = async () => {
+  const exportCsv = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     const qs = `?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
     const res = await fetch(`${serverBaseUrl}/api/analytics/metrics/clients/export${qs}`, { headers });
     const csv = await res.text();

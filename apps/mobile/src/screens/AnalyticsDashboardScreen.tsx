@@ -27,7 +27,9 @@ const AnalyticsDashboardScreen: React.FC = () => {
   const [breakdown, setBreakdown] = useState<{ date: string; total: number }[]>([]);
 
   useEffect(() => { fetchMetrics(); }, [startDate, endDate]);
-  const fetchMetrics = async () => {
+  const fetchMetrics = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     const qs = `?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
     try {
@@ -47,7 +49,9 @@ const AnalyticsDashboardScreen: React.FC = () => {
     setLoading(false);
   };
 
-  const exportCsv = async (type: string) => {
+  const exportCsv = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');type: string) => {
     try {
       const qs = `?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
       const res = await fetch(`${serverBaseUrl}/api/analytics/metrics/${type}/export${qs}`, { headers });

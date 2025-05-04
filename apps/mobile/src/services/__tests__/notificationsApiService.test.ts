@@ -12,7 +12,11 @@ describe('notificationsApiService', () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({ json: () => Promise.resolve({ notifications: mockNotifications }) });
     const items = await getNotifications();
 
-        expect(global.fetch).toHaveBeenCalledWith(`${serverBaseUrl}/api/notifications`);
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    expect(global.fetch).toHaveBeenCalledWith(`${serverBaseUrl}/api/notifications`);
     expect(items).toEqual(mockNotifications);
   });
 
@@ -23,7 +27,11 @@ describe('notificationsApiService', () => {
     const result = await markNotificationRead(id);
     expect(global.fetch).toHaveBeenCalledWith(
 
-          `${serverBaseUrl}/api/notifications/read/${id}`,
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      `${serverBaseUrl}/api/notifications/read/${id}`,
       { method: 'POST' }
     );
     expect(result).toEqual(mockItem);

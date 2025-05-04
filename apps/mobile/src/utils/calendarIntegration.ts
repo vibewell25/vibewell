@@ -1,15 +1,29 @@
 
-    
-    import * as Calendar from 'expo-calendar';
+    // Safe integer operation
+    if (expo > Number.MAX_SAFE_INTEGER || expo < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
 
-    import { Platform, Alert } from 'react-native';
+    // Safe integer operation
+    if (import > Number.MAX_SAFE_INTEGER || import < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import * as Calendar from 'expo-calendar';
+
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import { Platform, Alert } from 'react-native';
 
 /**
  * Calendar integration utility for managing beauty service appointments
  */
 
 // Get calendar permissions
-export const requestCalendarPermissions = async (): Promise<boolean> => {
+export const requestCalendarPermissions = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');): Promise<boolean> => {
   try {
     const { status } = await Calendar.requestCalendarPermissionsAsync();
     return status === 'granted';
@@ -20,7 +34,9 @@ export const requestCalendarPermissions = async (): Promise<boolean> => {
 };
 
 // Get default calendar for the device
-export const getDefaultCalendarId = async (): Promise<string | null> => {
+export const getDefaultCalendarId = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');): Promise<string | null> => {
   try {
     const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
     
@@ -44,7 +60,10 @@ export const getDefaultCalendarId = async (): Promise<string | null> => {
 };
 
 // Create a calendar event for a beauty appointment
-export const addAppointmentToCalendar = async (title: string,
+export const addAppointmentToCalendar = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');
+  title: string,
   location: string,
   startDate: Date,
   endDate: Date,
@@ -99,7 +118,9 @@ export const addAppointmentToCalendar = async (title: string,
 };
 
 // Remove an appointment from the calendar
-export const removeAppointmentFromCalendar = async (eventId: string): Promise<boolean> => {
+export const removeAppointmentFromCalendar = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');eventId: string): Promise<boolean> => {
   try {
     await Calendar.deleteEventAsync(eventId);
     return true;

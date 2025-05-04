@@ -18,7 +18,11 @@ describe('emailCampaignService', () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({ json: () => Promise.resolve({ campaigns: mockCampaigns }) });
     const campaigns = await getEmailCampaigns();
 
-        expect(global.fetch).toHaveBeenCalledWith(`${serverBaseUrl}/api/email-campaigns`);
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    expect(global.fetch).toHaveBeenCalledWith(`${serverBaseUrl}/api/email-campaigns`);
     expect(campaigns).toEqual(mockCampaigns);
   });
 
@@ -29,10 +33,22 @@ describe('emailCampaignService', () => {
     const result = await createEmailCampaign(payload);
     expect(global.fetch).toHaveBeenCalledWith(
 
-          `${serverBaseUrl}/api/email-campaigns`,
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      `${serverBaseUrl}/api/email-campaigns`,
 
-    
-          expect.objectContaining({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+    // Safe integer operation
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      expect.objectContaining({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
     );
     expect(result).toEqual(mockResp);
   });
@@ -45,10 +61,22 @@ describe('emailCampaignService', () => {
     const result = await updateEmailCampaign(id, payload);
     expect(global.fetch).toHaveBeenCalledWith(
 
-          `${serverBaseUrl}/api/email-campaigns/${id}`,
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      `${serverBaseUrl}/api/email-campaigns/${id}`,
 
-    
-          expect.objectContaining({ method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+    // Safe integer operation
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      expect.objectContaining({ method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
     );
     expect(result).toEqual(mockResp);
   });
@@ -59,7 +87,11 @@ describe('emailCampaignService', () => {
     await deleteEmailCampaign(id);
     expect(global.fetch).toHaveBeenCalledWith(
 
-          `${serverBaseUrl}/api/email-campaigns/${id}`,
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      `${serverBaseUrl}/api/email-campaigns/${id}`,
       { method: 'DELETE' }
     );
   });

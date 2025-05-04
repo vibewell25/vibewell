@@ -38,7 +38,9 @@ const FormDetailScreen: React.FC = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handlePick = async () => {
+  const handlePick = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     const result = await DocumentPicker.getDocumentAsync({ type: '*/*' });
     if (result.type === 'success') {
       const file = { uri: result.uri, name: result.name, type: result.mimeType || 'application/octet-stream' };
@@ -52,7 +54,9 @@ const FormDetailScreen: React.FC = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setSubmitting(true);
     try {
       await formsApi.submitForm(formId, formData, attachments);

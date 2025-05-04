@@ -38,7 +38,9 @@ const BeautyScreen: React.FC = () => {
   const [filters, setFilters] = useState<BeautyFilter>({});
   
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchCategories = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const categoriesData = await getBeautyCategories();
         setCategories(categoriesData);
@@ -47,7 +49,9 @@ const BeautyScreen: React.FC = () => {
       }
     };
     
-    const fetchFeaturedServices = async () => {
+    const fetchFeaturedServices = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const featuredData = await getFeaturedBeautyServices();
         setFeaturedServices(featuredData);
@@ -61,7 +65,9 @@ const BeautyScreen: React.FC = () => {
   }, []);
   
   useEffect(() => {
-    const fetchServices = async () => {
+    const fetchServices = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       setLoading(true);
       try {
         // Combine category selection with other filters

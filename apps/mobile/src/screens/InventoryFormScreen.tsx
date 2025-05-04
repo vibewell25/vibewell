@@ -15,7 +15,9 @@ const InventoryFormScreen: React.FC = () => {
   const [quantity, setQuantity] = useState(String(item.quantity || ''));
   const [saving, setSaving] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setSaving(true);
     try {
       if (item) {

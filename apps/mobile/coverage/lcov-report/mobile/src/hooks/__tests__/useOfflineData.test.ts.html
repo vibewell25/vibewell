@@ -168,18 +168,7 @@
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
 <a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a>
-<a name='L108'></a><a href='#L108'>108</a>
-<a name='L109'></a><a href='#L109'>109</a>
-<a name='L110'></a><a href='#L110'>110</a>
-<a name='L111'></a><a href='#L111'>111</a>
-<a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a>
-<a name='L114'></a><a href='#L114'>114</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L106'></a><a href='#L106'>106</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -212,7 +201,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -229,7 +217,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -245,7 +232,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -263,7 +249,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -278,7 +263,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -289,14 +273,11 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
-    
-    import { renderHook, act } from '@testing-library/react-hooks';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { renderHook, act } from '@testing-library/react-hooks';
 import { useOfflineData } from '../useOfflineData';
+import OfflineStorage from '../../utils/offline-storage';
 &nbsp;
-    import OfflineStorage from '../../utils/offline-storage';
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    jest.mock('../../utils/offline-storage');</span>
+<span class="cstat-no" title="statement not covered" >jest.mock('../../utils/offline-storage');</span>
 &nbsp;
 const mockOfflineStorage = <span class="cstat-no" title="statement not covered" >{</span>
   getData: jest.fn(),
@@ -325,8 +306,7 @@ const mockOfflineStorage = <span class="cstat-no" title="statement not covered" 
 <span class="cstat-no" title="statement not covered" >    mockOfflineStorage.getInstance().getSyncStatus.mockReturnValueOnce('synced');</span>
 &nbsp;
     const { result, waitForNextUpdate } = <span class="cstat-no" title="statement not covered" >renderHook(<span class="fstat-no" title="function not covered" >()</span> =&gt;</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >          useOfflineData({ key: 'test-key' })</span>
+<span class="cstat-no" title="statement not covered" >      useOfflineData({ key: 'test-key' })</span>
     );
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    expect(result.current.isLoading).toBe(true);</span>
@@ -342,15 +322,14 @@ const mockOfflineStorage = <span class="cstat-no" title="statement not covered" 
     const onSync = <span class="cstat-no" title="statement not covered" >jest.fn();</span>
     
     const { result } = <span class="cstat-no" title="statement not covered" >renderHook(<span class="fstat-no" title="function not covered" >()</span> =&gt;</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >          useOfflineData({ key: 'test-key', onSync })</span>
+<span class="cstat-no" title="statement not covered" >      useOfflineData({ key: 'test-key', onSync })</span>
     );
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    await act(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      await result.current.saveData(mockData);</span>
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        expect(mockOfflineStorage.getInstance().storeData).toHaveBeenCalledWith('test-key', mockData);</span>
+<span class="cstat-no" title="statement not covered" >    expect(mockOfflineStorage.getInstance().storeData).toHaveBeenCalledWith('test-key', mockData);</span>
 <span class="cstat-no" title="statement not covered" >    expect(onSync).toHaveBeenCalledWith(mockData);</span>
 <span class="cstat-no" title="statement not covered" >    expect(result.current.data).toEqual(mockData);</span>
 <span class="cstat-no" title="statement not covered" >    expect(result.current.syncStatus).toBe('synced');</span>
@@ -358,15 +337,14 @@ const mockOfflineStorage = <span class="cstat-no" title="statement not covered" 
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  it('should remove data successfully', <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
     const { result } = <span class="cstat-no" title="statement not covered" >renderHook(<span class="fstat-no" title="function not covered" >()</span> =&gt;</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >          useOfflineData({ key: 'test-key' })</span>
+<span class="cstat-no" title="statement not covered" >      useOfflineData({ key: 'test-key' })</span>
     );
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    await act(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      await result.current.removeData();</span>
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        expect(mockOfflineStorage.getInstance().removeData).toHaveBeenCalledWith('test-key');</span>
+<span class="cstat-no" title="statement not covered" >    expect(mockOfflineStorage.getInstance().removeData).toHaveBeenCalledWith('test-key');</span>
 <span class="cstat-no" title="statement not covered" >    expect(result.current.data).toBeNull();</span>
 <span class="cstat-no" title="statement not covered" >    expect(result.current.syncStatus).toBeNull();</span>
   });
@@ -376,8 +354,7 @@ const mockOfflineStorage = <span class="cstat-no" title="statement not covered" 
 <span class="cstat-no" title="statement not covered" >    mockOfflineStorage.getInstance().getData.mockRejectedValueOnce(error);</span>
 &nbsp;
     const { result, waitForNextUpdate } = <span class="cstat-no" title="statement not covered" >renderHook(<span class="fstat-no" title="function not covered" >()</span> =&gt;</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >          useOfflineData({ key: 'test-key' })</span>
+<span class="cstat-no" title="statement not covered" >      useOfflineData({ key: 'test-key' })</span>
     );
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    await waitForNextUpdate();</span>
@@ -391,8 +368,7 @@ const mockOfflineStorage = <span class="cstat-no" title="statement not covered" 
 <span class="cstat-no" title="statement not covered" >    mockOfflineStorage.getInstance().storeData.mockRejectedValueOnce(error);</span>
 &nbsp;
     const { result } = <span class="cstat-no" title="statement not covered" >renderHook(<span class="fstat-no" title="function not covered" >()</span> =&gt;</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >          useOfflineData({ key: 'test-key' })</span>
+<span class="cstat-no" title="statement not covered" >      useOfflineData({ key: 'test-key' })</span>
     );
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    await act(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
@@ -409,7 +385,7 @@ const mockOfflineStorage = <span class="cstat-no" title="statement not covered" 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T18:37:52.932Z
+                at 2025-04-25T21:08:58.925Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

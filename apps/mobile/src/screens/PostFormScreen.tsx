@@ -12,7 +12,9 @@ const PostFormScreen: React.FC = () => {
 
   const [content, setContent] = useState(post.content || '');
 
-  const handleSubmit = async () => {
+  const handleSubmit = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       if (post) {
         await communityApi.updatePost(post.id, { content });

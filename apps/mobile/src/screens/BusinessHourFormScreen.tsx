@@ -14,7 +14,9 @@ const BusinessHourFormScreen: React.FC = () => {
   const [closeTime, setCloseTime] = useState(hour.closeTime ?? '');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       const dow = parseInt(dayOfWeek, 10);

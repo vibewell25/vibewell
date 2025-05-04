@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/30</span>
+                <span class='fraction'>0/23</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/29</span>
+                <span class='fraction'>0/22</span>
             </div>
         
             
@@ -128,16 +128,7 @@
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
 <a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L66'></a><a href='#L66'>66</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -186,15 +177,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -213,7 +195,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from 'react';
 import { SafeAreaView, FlatList, ActivityIndicator, View, Text, StyleSheet, TextInput, Button } from 'react-native';
-import { getTrainingProgress, TrainingProgress, markTrainingProgress, deleteTrainingProgress } from '../services/trainingProgressService';
+import { getTrainingProgress, TrainingProgress, markTrainingProgress } from '../services/trainingProgressService';
 import { useTheme } from '../contexts/ThemeContext';
 &nbsp;
 const TrainingProgressScreen: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
@@ -262,15 +244,6 @@ const TrainingProgressScreen: React.FC = <span class="cstat-no" title="statement
         renderItem={<span class="fstat-no" title="function not covered" >({</span> item }) =&gt; (
 <span class="cstat-no" title="statement not covered" >          &lt;View style={styles.item}&gt;</span>
             &lt;Text style={{ color: colors.text }}&gt;Module {item.moduleId} completed at {new Date(item.completedAt).toLocaleString()}&lt;/Text&gt;
-            &lt;Button title="Delete" color={colors.notification} onPress={<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {
-<span class="cstat-no" title="statement not covered" >              setLoading(true);</span>
-<span class="cstat-no" title="statement not covered" >              try {</span>
-<span class="cstat-no" title="statement not covered" >                await deleteTrainingProgress(item.id);</span>
-                const data = <span class="cstat-no" title="statement not covered" >await getTrainingProgress();</span>
-<span class="cstat-no" title="statement not covered" >                setProgress(data);</span>
-              } catch (err) { <span class="cstat-no" title="statement not covered" >console.error(err); </span>}
-<span class="cstat-no" title="statement not covered" >              setLoading(false);</span>
-            }} /&gt;
           &lt;/View&gt;
         )}
       /&gt;
@@ -292,7 +265,7 @@ export default TrainingProgressScreen;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T18:37:52.932Z
+                at 2025-04-25T21:08:58.925Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

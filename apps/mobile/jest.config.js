@@ -4,7 +4,6 @@ module.exports = {
   setupFiles: ['@react-native-async-storage/async-storage/jest/async-storage-mock'],
   testPathIgnorePatterns: [
     '/node_modules/',
-    '<rootDir>/src/services/',
     '/src/hooks/',
     '/src/tests/',
     '/tests/',
@@ -25,11 +24,8 @@ module.exports = {
     '!**/node_modules/**',
     '!**/babel.config.js',
     '!**/jest.setup.js',
-    '!**/src/contexts/**',
-    '!**/src/services/**'
+    '!**/src/contexts/**'
   ],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
-  verbose: true,
-  modulePathIgnorePatterns: ['<rootDir>/src/services/'],
-  coveragePathIgnorePatterns: ['<rootDir>/src/services/']
+  verbose: true
 };

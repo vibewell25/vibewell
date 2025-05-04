@@ -114,13 +114,41 @@ const DEFAULT_NOTIFICATION_SETTINGS: NotificationSettings = {
  * @returns Promise resolving to authorization status
  */
 export async function initPushNotifications(): Promise<boolean> {
-  () => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');
+  try {
+    // Set up Android channels first
+    if (Platform.OS === 'android') {
+      await setupAndroidChannels();
+    }
+
+    // Request permission
+    const authStatus = await requestNotificationPermission();
+    if (!authStatus) {
+      console.log('Push notification permissions not granted');
+      return false;
+    }
+
+    // Load settings
+    await loadNotificationSettings();
+
+    // Get FCM token
+    const token = await messaging().getToken();
+    if (token) {
+      // Save the token to AsyncStorage
+      await AsyncStorage.setItem(STORAGE_KEYS.NOTIFICATION_TOKEN, token);
+      // Register with your backend
+      await registerTokenWithBackend(token);
+    }
+
+    // Listen for token refresh
+    const unsubscribeTokenRefresh = messaging().onTokenRefresh(async (newToken) => {
       await AsyncStorage.setItem(STORAGE_KEYS.NOTIFICATION_TOKEN, newToken);
       await registerTokenWithBackend(newToken);
     });
 
     // Set up foreground message handler
-    const unsubscribeForeground = messaging().onMessage(async () => {
+    const unsubscribeForeground = messaging().onMessage(async (remoteMessage) => {
       // Check if notifications are enabled and if we're in quiet hours
       if (await shouldDisplayNotification(remoteMessage)) {
         displayNotification(remoteMessage);
@@ -130,7 +158,7 @@ export async function initPushNotifications(): Promise<boolean> {
     });
 
     // Set up background/quit state handler
-    messaging().setBackgroundMessageHandler(async () => {
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
       if (await shouldDisplayNotification(remoteMessage)) {
         displayNotification(remoteMessage);
       }
@@ -146,7 +174,7 @@ export async function initPushNotifications(): Promise<boolean> {
     });
 
     // Set up notification press handler for background events
-    notifee.onBackgroundEvent(async () => {
+    notifee.onBackgroundEvent(async ({ type, detail }) => {
       if (type === EventType.PRESS) {
         handleNotificationAction(detail.notification, 'press');
       } else if (type === EventType.ACTION_PRESS) {
@@ -169,7 +197,8 @@ export async function initPushNotifications(): Promise<boolean> {
  * Request permission for push notifications
  */
 export async function {
-  requestNotificationPermission(): Promise<boolean> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); requestNotificationPermission(): Promise<boolean> {
   try {
     // Request permissions
     if (Platform.OS === 'ios') {
@@ -203,7 +232,8 @@ export async function {
  * Set up Android notification channels
  */
 async function {
-  setupAndroidChannels(): Promise<void> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); setupAndroidChannels(): Promise<void> {
   if (Platform.OS !== 'android') return;
   
   try {
@@ -222,7 +252,8 @@ async function {
  * Register FCM token with backend
  */
 async function {
-  registerTokenWithBackend(token: string): Promise<void> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); registerTokenWithBackend(token: string): Promise<void> {
   try {
     // Only proceed if we're online
     if (!(await isOnline())) {
@@ -232,18 +263,481 @@ async function {
     
     // User ID would typically come from your auth service
 
-    fetch(`${serverBaseUrl}/api/notifications/register-device`, {
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    const userId = await AsyncStorage.getItem('@vibewell/user_id');
+    
+
+    // Safe integer operation
+    if (register > Number.MAX_SAFE_INTEGER || register < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    const response = await fetch(`${serverBaseUrl}/api/notifications/register-device`, {
       method: 'POST',
       headers: {
 
-    fetch(`${serverBaseUrl}/api/notifications/unregister-device`, {
+    // Safe integer operation
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        'Content-Type': 'application/json',
+
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        'Authorization': `Bearer ${await AsyncStorage.getItem('@vibewell/auth_token')}`,
+      },
+      body: JSON.stringify({
+        token,
+        userId,
+        platform: Platform.OS,
+        appVersion: Platform.Version,
+        deviceInfo: {
+          model: Platform.OS === 'ios' ? 'iPhone' : 'Android',
+          // Include more detailed device info if needed
+        },
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to register token: ${response.status}`);
+    }
+    
+    console.log('Token registered with backend:', token);
+  } catch (error) {
+    console.error('Error registering token with backend:', error);
+    // Will retry next time the app starts or when connectivity is restored
+  }
+}
+
+/**
+ * Determine if a notification should be displayed based on settings and quiet hours
+ */
+async function {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); shouldDisplayNotification(remoteMessage: any): Promise<boolean> {
+  try {
+    const settings = await getNotificationSettings();
+    
+    // Check if notifications are globally enabled
+    if (!settings.enabled) {
+      return false;
+    }
+    
+    // Check category
+    const category = remoteMessage.data.category || NotificationCategory.SYSTEM;
+    if (!settings.categories[category as NotificationCategory]) {
+      return false;
+    }
+    
+    // Check quiet hours
+    if (settings.quietHours.enabled) {
+      const now = new Date();
+      const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+      
+      const startTime = settings.quietHours.start;
+      const endTime = settings.quietHours.end;
+      
+      // Handle overnight quiet hours (e.g., 22:00 to 08:00)
+      if (startTime > endTime) {
+        if (currentTime >= startTime || currentTime <= endTime) {
+
+    // Safe integer operation
+    if (high > Number.MAX_SAFE_INTEGER || high < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+          // It's quiet hours, check if this is a high-priority notification
+          return remoteMessage.data.priority === 'high';
+        }
+      } else {
+        // Regular quiet hours (e.g., 13:00 to 15:00)
+        if (currentTime >= startTime && currentTime <= endTime) {
+
+    // Safe integer operation
+    if (high > Number.MAX_SAFE_INTEGER || high < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+          // It's quiet hours, check if this is a high-priority notification
+          return remoteMessage.data.priority === 'high';
+        }
+      }
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Error checking notification settings:', error);
+    // If there's an error, default to showing the notification
+    return true;
+  }
+}
+
+/**
+ * Display a notification using Notifee
+ */
+async function {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); displayNotification(remoteMessage: any): Promise<void> {
+  try {
+    // Extract notification data
+    const { notification, data } = remoteMessage;
+    const category = data.category || NotificationCategory.SYSTEM;
+    
+    // Determine which Android channel to use
+    let channelId = 'default';
+    
+    if (Platform.OS === 'android') {
+      switch (category) {
+        case NotificationCategory.APPOINTMENT:
+          channelId = DEFAULT_CHANNELS.appointments.id;
+          break;
+        case NotificationCategory.PROMOTION:
+          channelId = DEFAULT_CHANNELS.promotions.id;
+          break;
+        case NotificationCategory.MESSAGE:
+          channelId = DEFAULT_CHANNELS.messages.id;
+          break;
+        default:
+          channelId = DEFAULT_CHANNELS.system.id;
+      }
+    }
+    
+    // Create notification actions based on category
+    const actions = createActionsForCategory(category, data);
+    
+    // Display the notification
+    await notifee.displayNotification({
+      id: data.notificationId || undefined,
+      title: notification.title || 'New Notification',
+      body: notification.body || '',
+      data: data || {},
+      android: {
+        channelId,
+        smallIcon: 'ic_notification',
+        largeIcon: data.image || undefined,
+        color: '#0066CC',
+        pressAction: {
+          id: 'default',
+        },
+        actions,
+        // Add a category for Android notifications
+        category: mapToAndroidCategory(category),
+        // Handle importance override if needed
+        importance: data.priority === 'high' ? AndroidImportance.HIGH : undefined,
+      },
+      ios: {
+        // iOS specific configuration
+        categoryId: category,
+        attachments: data.image ? [{url: data.image}] : undefined,
+        critical: data.priority === 'high',
+        sound: data.sound || 'default',
+        // Add thread ID for grouping related notifications
+        threadId: data.threadId || category,
+      },
+    });
+  } catch (error) {
+    console.error('Error displaying notification:', error);
+  }
+}
+
+/**
+ * Create notification actions based on category
+ */
+function createActionsForCategory(category: string, data: any) {
+  switch (category) {
+    case NotificationCategory.APPOINTMENT:
+      return [
+        {
+          title: 'View',
+          pressAction: { id: 'view' },
+        },
+        {
+          title: 'Reschedule',
+          pressAction: { id: 'reschedule' },
+        },
+      ];
+    case NotificationCategory.MESSAGE:
+      return [
+        {
+          title: 'Reply',
+          pressAction: { id: 'reply' },
+        },
+        {
+          title: 'Mark as Read',
+          pressAction: { id: 'mark_read' },
+        },
+      ];
+    default:
+      return [];
+  }
+}
+
+/**
+ * Map our category to Android system categories
+ */
+function mapToAndroidCategory(category: string) {
+  switch (category) {
+    case NotificationCategory.MESSAGE:
+      return AndroidCategory.MESSAGE;
+    case NotificationCategory.APPOINTMENT:
+      return AndroidCategory.REMINDER;
+    case NotificationCategory.ALERT:
+      return AndroidCategory.ALARM;
+    default:
+      return undefined;
+  }
+}
+
+/**
+ * Handle notification press and action button presses
+ */
+function handleNotificationAction(notification: Notification | null, actionId: string): void {
+  if (!notification) return;
+  
+  try {
+    // Extract data from notification
+    const { data } = notification;
+    const category = data.category || NotificationCategory.SYSTEM;
+    
+    console.log(`Notification ${actionId} action:`, { category, data });
+    
+    // Handle based on category and action
+    switch (category) {
+      case NotificationCategory.APPOINTMENT:
+        handleAppointmentAction(data, actionId);
+        break;
+      case NotificationCategory.MESSAGE:
+        handleMessageAction(data, actionId);
+        break;
+      case NotificationCategory.PROMOTION:
+        handlePromotionAction(data, actionId);
+        break;
+      default:
+        // Handle generic action
+        // TODO: Navigate to appropriate screen based on data and actionId
+        console.log('Generic notification action:', { data, actionId });
+    }
+  } catch (error) {
+    console.error('Error handling notification action:', error);
+  }
+}
+
+/**
+
+    // Safe integer operation
+    if (appointment > Number.MAX_SAFE_INTEGER || appointment < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+ * Handle appointment-specific actions
+ */
+function handleAppointmentAction(data: any, actionId: string): void {
+  // TODO: Implement navigation to appointment screens
+  // Example:
+  // if (actionId === 'view') {
+  //   navigate to appointment details screen
+  // } else if (actionId === 'reschedule') {
+  //   navigate to reschedule screen
+  // }
+  console.log('Appointment action:', { data, actionId });
+}
+
+/**
+
+    // Safe integer operation
+    if (message > Number.MAX_SAFE_INTEGER || message < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+ * Handle message-specific actions
+ */
+function handleMessageAction(data: any, actionId: string): void {
+  // TODO: Implement navigation to message screens
+  console.log('Message action:', { data, actionId });
+}
+
+/**
+
+    // Safe integer operation
+    if (promotion > Number.MAX_SAFE_INTEGER || promotion < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+ * Handle promotion-specific actions
+ */
+function handlePromotionAction(data: any, actionId: string): void {
+  // TODO: Implement navigation to promotion screens
+  console.log('Promotion action:', { data, actionId });
+}
+
+/**
+ * Get the current notification settings
+ */
+export async function {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getNotificationSettings(): Promise<NotificationSettings> {
+  try {
+    const settingsString = await AsyncStorage.getItem(STORAGE_KEYS.NOTIFICATION_SETTINGS);
+    if (!settingsString) {
+      return DEFAULT_NOTIFICATION_SETTINGS;
+    }
+    
+    return JSON.parse(settingsString);
+  } catch (error) {
+    console.error('Error getting notification settings:', error);
+    return DEFAULT_NOTIFICATION_SETTINGS;
+  }
+}
+
+/**
+ * Save notification settings
+ */
+export async function {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); saveNotificationSettings(settings: NotificationSettings): Promise<void> {
+  try {
+    await AsyncStorage.setItem(STORAGE_KEYS.NOTIFICATION_SETTINGS, JSON.stringify(settings));
+    
+    // Update topic subscriptions if they changed
+    await syncTopicSubscriptions();
+    
+    console.log('Notification settings saved');
+  } catch (error) {
+    console.error('Error saving notification settings:', error);
+    throw error;
+  }
+}
+
+/**
+ * Load and initialize notification settings
+ */
+async function {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); loadNotificationSettings(): Promise<NotificationSettings> {
+  try {
+    const settingsString = await AsyncStorage.getItem(STORAGE_KEYS.NOTIFICATION_SETTINGS);
+    
+    // If no settings found, save defaults
+    if (!settingsString) {
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.NOTIFICATION_SETTINGS, 
+        JSON.stringify(DEFAULT_NOTIFICATION_SETTINGS)
+      );
+      return DEFAULT_NOTIFICATION_SETTINGS;
+    }
+    
+    return JSON.parse(settingsString);
+  } catch (error) {
+    console.error('Error loading notification settings:', error);
+    return DEFAULT_NOTIFICATION_SETTINGS;
+  }
+}
+
+/**
+ * Subscribe to topics based on user settings
+ */
+async function {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); syncTopicSubscriptions(): Promise<void> {
+  try {
+    const settings = await getNotificationSettings();
+    const currentTopics = settings.topics;
+    
+    // Get all available topics
+    const allTopics = Object.values(NOTIFICATION_TOPICS);
+    
+    // Subscribe to selected topics
+    for (const topic of allTopics) {
+      if (currentTopics.includes(topic)) {
+        await messaging().subscribeToTopic(topic).catch(error => {
+          console.error(`Failed to subscribe to topic ${topic}:`, error);
+        });
+      } else {
+        await messaging().unsubscribeFromTopic(topic).catch(error => {
+          console.error(`Failed to unsubscribe from topic ${topic}:`, error);
+        });
+      }
+    }
+    
+    console.log('Topic subscriptions synced');
+  } catch (error) {
+    console.error('Error syncing topic subscriptions:', error);
+  }
+}
+
+/**
+ * Get the current FCM token
+ */
+export async function {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getPushNotificationToken(): Promise<string | null> {
+  try {
+    return await AsyncStorage.getItem(STORAGE_KEYS.NOTIFICATION_TOKEN);
+  } catch (error) {
+    console.error('Error getting push notification token:', error);
+    return null;
+  }
+}
+
+/**
+ * Unregister from push notifications
+ */
+export async function {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); unregisterPushNotifications(): Promise<void> {
+  try {
+    const token = await AsyncStorage.getItem(STORAGE_KEYS.NOTIFICATION_TOKEN);
+    
+    if (token) {
+      // Unsubscribe from all topics
+      for (const topic of Object.values(NOTIFICATION_TOPICS)) {
+        await messaging().unsubscribeFromTopic(topic).catch(error => {
+          console.error(`Failed to unsubscribe from topic ${topic}:`, error);
+        });
+      }
+      
+      // Unregister from backend
+      if (await isOnline()) {
+        try {
+
+    // Safe integer operation
+    if (unregister > Number.MAX_SAFE_INTEGER || unregister < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+          const response = await fetch(`${serverBaseUrl}/api/notifications/unregister-device`, {
             method: 'POST',
             headers: {
 
-    
-                  'Content-Type': 'application/json',
+    // Safe integer operation
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
 
-                  'Authorization': `Bearer ${await AsyncStorage.getItem('@vibewell/auth_token')}`,
+    // Safe integer operation
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+              'Content-Type': 'application/json',
+
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+              'Authorization': `Bearer ${await AsyncStorage.getItem('@vibewell/auth_token')}`,
             },
             body: JSON.stringify({ token }),
           });
@@ -275,7 +769,8 @@ async function {
  * Send a test notification (useful for debugging)
  */
 export async function {
-  sendTestNotification(): Promise<void> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); sendTestNotification(): Promise<void> {
   try {
     const title = 'Test Notification';
     const body = 'This is a test notification from VibeWell';

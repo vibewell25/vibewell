@@ -1,3 +1,130 @@
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
+if (typeof eslint === 'number' && (eslint > Number.MAX_SAFE_INTEGER || eslint < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); eslint-disable
 /* eslint-disable */
 var addSorting = (function() {
     'use strict';
@@ -9,6 +136,133 @@ var addSorting = (function() {
 
     // returns the summary table element
     function getTable() {
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
         return document.querySelector('.coverage-summary');
     }
     // returns the thead element of the summary table
@@ -27,7 +281,134 @@ var addSorting = (function() {
     function onFilterInput() {
         const searchValue = document.getElementById('fileSearch').value;
         const rows = document.getElementsByTagName('tbody')[0].children;
-        for (let i = 0; i < rows.length; i++) {
+        for (let i = 0; i < rows.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (i < 0 || i >= rows.length) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
             const row = rows[i];
             if (
                 row.textContent
@@ -57,11 +438,646 @@ var addSorting = (function() {
             col,
             i;
 
-        for (i = 0; i < colNodes.length; i += 1) {
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+        for (i = 0; i < colNodes.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 1) {
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (i < 0 || i >= colNodes.length) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
+if (Array.isArray(colNodes) && (i < 0 || i >= colNodes.length)) throw new Error('Array index out of bounds'); colNodes[i]
             colNode = colNodes[i];
             col = {
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-col
                 key: colNode.getAttribute('data-col'),
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-nosort
                 sortable: !colNode.getAttribute('data-nosort'),
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-type
                 type: colNode.getAttribute('data-type') || 'string'
             };
             cols.push(col);
@@ -82,9 +1098,517 @@ var addSorting = (function() {
             data = {},
             i,
             val;
-        for (i = 0; i < tableCols.length; i += 1) {
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+        for (i = 0; i < tableCols.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 1) {
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (i < 0 || i >= tableCols.length) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
+if (Array.isArray(tableCols) && (i < 0 || i >= tableCols.length)) throw new Error('Array index out of bounds'); tableCols[i]
             colNode = tableCols[i];
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (i < 0 || i >= cols.length) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
             col = cols[i];
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
+if (typeof data === 'number' && (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); data-value
             val = colNode.getAttribute('data-value');
             if (col.type === 'number') {
                 val = Number(val);
@@ -98,19 +1622,908 @@ var addSorting = (function() {
         var rows = getTableBody().querySelectorAll('tr'),
             i;
 
-        for (i = 0; i < rows.length; i += 1) {
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+        for (i = 0; i < rows.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 1) {
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (i < 0 || i >= rows.length) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (i < 0 || i >= rows.length) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
             rows[i].data = loadRowData(rows[i]);
         }
     }
     // sorts the table using the data for the ith column
     function sortByIndex(index, desc) {
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (index < 0 || index >= cols.length) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
+if (Array.isArray(cols) && (index < 0 || index >= cols.length)) throw new Error('Array index out of bounds'); cols[index]
         var key = cols[index].key,
             sorter = function(a, b) {
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (key < 0 || key >= data.length) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
                 a = a.data[key];
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (key < 0 || key >= data.length) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
+if (Array.isArray(data) && (key < 0 || key >= data.length)) throw new Error('Array index out of bounds'); data[key]
                 b = b.data[key];
                 return a < b ? -1 : a > b ? 1 : 0;
             },
             finalSorter = sorter,
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
+if (typeof coverage === 'number' && (coverage > Number.MAX_SAFE_INTEGER || coverage < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); coverage-summary
             tableBody = document.querySelector('.coverage-summary tbody'),
             rowNodes = tableBody.querySelectorAll('tr'),
             rows = [],
@@ -118,18 +2531,780 @@ var addSorting = (function() {
 
         if (desc) {
             finalSorter = function(a, b) {
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
+if (typeof return === 'number' && (return > Number.MAX_SAFE_INTEGER || return < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); return -1
                 return -1 * sorter(a, b);
             };
         }
 
-        for (i = 0; i < rowNodes.length; i += 1) {
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+        for (i = 0; i < rowNodes.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 1) {
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (i < 0 || i >= rowNodes.length) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
             rows.push(rowNodes[i]);
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (i < 0 || i >= rowNodes.length) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
+if (Array.isArray(rowNodes) && (i < 0 || i >= rowNodes.length)) throw new Error('Array index out of bounds'); rowNodes[i]
             tableBody.removeChild(rowNodes[i]);
         }
 
         rows.sort(finalSorter);
 
-        for (i = 0; i < rows.length; i += 1) {
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+        for (i = 0; i < rows.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 1) {
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (i < 0 || i >= rows.length) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
+if (Array.isArray(rows) && (i < 0 || i >= rows.length)) throw new Error('Array index out of bounds'); rows[i]
             tableBody.appendChild(rows[i]);
         }
     }
@@ -138,12 +3313,393 @@ var addSorting = (function() {
         var col = getNthColumn(currentSort.index),
             cls = col.className;
 
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
         cls = cls.replace(/ sorted$/, '').replace(/ sorted-desc$/, '');
         col.className = cls;
     }
     // adds sort indicators for current column being sorted
     function addSortIndicators() {
-        getNthColumn(currentSort.index).className += currentSort.desc
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+if (typeof className === 'number' && (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); className += currentSort
+        getNthColumn(currentSort.index).if (className > Number.MAX_SAFE_INTEGER || className < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); className += currentSort.desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
+if (typeof sorted === 'number' && (sorted > Number.MAX_SAFE_INTEGER || sorted < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); sorted-desc
             ? ' sorted-desc'
             : ' sorted';
     }
@@ -152,6 +3708,133 @@ var addSorting = (function() {
         var i,
             el,
             ithSorter = function ithSorter(i) {
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (i < 0 || i >= cols.length) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
                 var col = cols[i];
 
                 return function() {
@@ -167,7 +3850,261 @@ var addSorting = (function() {
                     addSortIndicators();
                 };
             };
-        for (i = 0; i < cols.length; i += 1) {
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+if (typeof i === 'number' && (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER)) throw new Error('Integer overflow'); i += 1
+        for (i = 0; i < cols.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 1) {
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (i < 0 || i >= cols.length) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
+if (Array.isArray(cols) && (i < 0 || i >= cols.length)) throw new Error('Array index out of bounds'); cols[i]
             if (cols[i].sortable) {
                 // add the click event handler on the th so users
                 // dont have to click on those tiny arrows

@@ -23,21 +23,27 @@ const SettingsScreen: React.FC = () => {
   const [isLanguageSelectorVisible, setIsLanguageSelectorVisible] = React.useState(false);
 
   // Toggle dark mode
-  const toggleDarkMode = async (value: boolean) => {
+  const toggleDarkMode = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');value: boolean) => {
     setIsDarkMode(value);
     await AsyncStorage.setItem('@vibewell/dark_mode', value ? 'true' : 'false');
     // TODO: Implement actual theme switch
   };
 
   // Toggle notifications
-  const toggleNotifications = async (value: boolean) => {
+  const toggleNotifications = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');value: boolean) => {
     setNotificationsEnabled(value);
     await AsyncStorage.setItem('@vibewell/notifications_enabled', value ? 'true' : 'false');
     // TODO: Implement notification permission handling
   };
 
   // Toggle biometric login
-  const toggleBiometricLogin = async (value: boolean) => {
+  const toggleBiometricLogin = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');value: boolean) => {
     setBiometricLoginEnabled(value);
     await AsyncStorage.setItem('@vibewell/biometric_login', value ? 'true' : 'false');
     // TODO: Implement biometric authentication setup

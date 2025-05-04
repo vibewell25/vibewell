@@ -48,7 +48,9 @@ const BeautyServiceDetailScreen: React.FC = () => {
     fetchServiceDetails();
   }, [serviceId]);
   
-  const fetchServiceDetails = async () => {
+  const fetchServiceDetails = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     try {
       const serviceData = await getBeautyServiceById(serviceId);
@@ -92,7 +94,9 @@ const BeautyServiceDetailScreen: React.FC = () => {
     }
   };
   
-  const handleRefresh = async () => {
+  const handleRefresh = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setRefreshing(true);
     await fetchServiceDetails();
     setRefreshing(false);

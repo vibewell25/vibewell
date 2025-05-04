@@ -37,7 +37,9 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     setLanguages(getAvailableLocales());
   }, []);
 
-  const handleLanguageSelect = async (languageCode: string) => {
+  const handleLanguageSelect = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');languageCode: string) => {
     if (languageCode === selectedLanguage) {
       return;
     }

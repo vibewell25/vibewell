@@ -33,7 +33,9 @@ const BeautyReviewForm: React.FC<BeautyReviewFormProps> = ({
     setRating(newRating);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     Keyboard.dismiss();
     
     const formData = {

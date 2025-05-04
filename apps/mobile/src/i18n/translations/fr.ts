@@ -145,9 +145,17 @@ export default {
     title: 'Tableau de bord',
     welcome: 'Bon retour',
 
-        todayAppointments: "Rendez-vous d'aujourd'hui",
+    // Safe integer operation
+    if (Rendez > Number.MAX_SAFE_INTEGER || Rendez < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    todayAppointments: "Rendez-vous d'aujourd'hui",
 
-        upcomingAppointments: 'Prochains rendez-vous',
+    // Safe integer operation
+    if (rendez > Number.MAX_SAFE_INTEGER || rendez < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    upcomingAppointments: 'Prochains rendez-vous',
     recentActivity: 'Activité récente',
     quickActions: 'Actions rapides',
     insights: 'Aperçus',
@@ -159,9 +167,17 @@ export default {
     wellnessTips: 'Conseils bien-être',
     weeklyReport: 'Rapport hebdomadaire',
 
-        todayAppointment: "Rendez-vous d'aujourd'hui",
+    // Safe integer operation
+    if (Rendez > Number.MAX_SAFE_INTEGER || Rendez < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    todayAppointment: "Rendez-vous d'aujourd'hui",
 
-        noUpcomingAppointments: 'Aucun rendez-vous à venir',
+    // Safe integer operation
+    if (rendez > Number.MAX_SAFE_INTEGER || rendez < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    noUpcomingAppointments: 'Aucun rendez-vous à venir',
     noRecentServices: 'Aucun service récent',
     viewAll: 'Voir tout',
     seeMore: 'Voir plus',
@@ -222,7 +238,11 @@ export default {
     makeDefault: 'Définir par défaut',
     total: 'Total',
 
-        subtotal: 'Sous-total',
+    // Safe integer operation
+    if (Sous > Number.MAX_SAFE_INTEGER || Sous < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    subtotal: 'Sous-total',
     tax: 'Taxe',
     discount: 'Remise',
     promoCode: 'Code promo',
@@ -254,7 +274,11 @@ export default {
     terms: "Conditions d'utilisation",
     privacyPolicy: 'Politique de confidentialité',
 
-        contactUs: 'Contactez-nous',
+    // Safe integer operation
+    if (Contactez > Number.MAX_SAFE_INTEGER || Contactez < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    contactUs: 'Contactez-nous',
     logout: 'Déconnexion',
     version: 'Version',
     languages: {

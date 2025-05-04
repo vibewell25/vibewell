@@ -44,7 +44,9 @@ const TwoFactorSetupScreen: React.FC = () => {
     generateSecretKey();
   }, []);
 
-  const generateSecretKey = async () => {
+  const generateSecretKey = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       const response = await twoFactorService.generateSecretKey();
@@ -62,7 +64,9 @@ const TwoFactorSetupScreen: React.FC = () => {
     }
   };
 
-  const generateBackupCodes = async () => {
+  const generateBackupCodes = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const response = await twoFactorService.generateBackupCodes();
       
@@ -81,7 +85,9 @@ const TwoFactorSetupScreen: React.FC = () => {
     Alert.alert('Copied', 'Secret key copied to clipboard');
   };
 
-  const handleShareBackupCodes = async () => {
+  const handleShareBackupCodes = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const message = 'Your 2FA Backup Codes:\n\n' + 
         backupCodes.join('\n') + 
@@ -96,7 +102,9 @@ const TwoFactorSetupScreen: React.FC = () => {
     }
   };
 
-  const handleVerifyCode = async (values: TwoFactorForm) => {
+  const handleVerifyCode = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');values: TwoFactorForm) => {
     setLoading(true);
     try {
       const verifyResponse = await twoFactorService.verifyCode(values.verificationCode);
@@ -114,7 +122,9 @@ const TwoFactorSetupScreen: React.FC = () => {
     }
   };
 
-  const handleFinish = async () => {
+  const handleFinish = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     try {
       const response = await twoFactorService.enable2FA();

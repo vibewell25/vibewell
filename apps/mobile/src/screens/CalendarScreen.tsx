@@ -25,19 +25,25 @@ const CalendarScreen: React.FC = () => {
       .catch(console.error);
   }, []);
 
-  const handleEnable = async () => {
+  const handleEnable = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     const granted = await requestCalendarPermissions();
     setHasPermission(granted);
   };
 
-  const handleDetectCalendar = async () => {
+  const handleDetectCalendar = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const id = await getDefaultCalendarId();
       setCalendarId(id);
     } catch (err) { console.error(err); }
   };
 
-  const handleLoadEvents = async () => {
+  const handleLoadEvents = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!calendarId) {
       await handleDetectCalendar();
     }
@@ -52,7 +58,9 @@ const CalendarScreen: React.FC = () => {
     setLoading(false);
   };
 
-  const handleGoogleConnect = async () => {
+  const handleGoogleConnect = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setGoogleLoading(true);
       const { url } = await calendarApi.getAuthUrl();
@@ -70,7 +78,9 @@ const CalendarScreen: React.FC = () => {
     }
   };
 
-  const handleOutlookConnect = async () => {
+  const handleOutlookConnect = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setOutlookLoading(true);
       const { url } = await calendarApi.getOutlookAuthUrl();
@@ -89,7 +99,9 @@ const CalendarScreen: React.FC = () => {
   };
 
   // Demo: remove synced booking event from server (by bookingId)
-  const handleDeleteEvent = async (bookingId: string) => {
+  const handleDeleteEvent = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');bookingId: string) => {
     try {
       await calendarApi.deleteEventFromCalendar(bookingId);
       Alert.alert('✅ Removed from calendar');

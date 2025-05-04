@@ -1,11 +1,32 @@
 
-    
-    import NetInfo from '@react-native-community/netinfo';
+    // Safe integer operation
+    if (community > Number.MAX_SAFE_INTEGER || community < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
 
-    import OfflineStorage from '../utils/offline-storage';
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import NetInfo from '@react-native-community/netinfo';
 
-    
-    jest.mock('@react-native-community/netinfo', () => ({
+    // Safe integer operation
+    if (utils > Number.MAX_SAFE_INTEGER || utils < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import OfflineStorage from '../utils/offline-storage';
+
+
+    // Safe integer operation
+    if (community > Number.MAX_SAFE_INTEGER || community < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+jest.mock('@react-native-community/netinfo', () => ({
   addEventListener: jest.fn(),
   fetch: jest.fn()
 }));
@@ -33,7 +54,11 @@ describe('Network Monitoring', () => {
     
     // Store some data while offline
 
-        await storage.storeData('test-key', { data: 'test' });
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    await storage.storeData('test-key', { data: 'test' });
     
     // Mock coming back online
     netInfoCallback({ isConnected: true });
@@ -43,7 +68,11 @@ describe('Network Monitoring', () => {
     
     // Verify sync was attempted
 
-        const syncStatus = await storage.getSyncStatus('test-key');
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    const syncStatus = await storage.getSyncStatus('test-key');
     expect(syncStatus).toBe(true);
   });
 
@@ -54,16 +83,28 @@ describe('Network Monitoring', () => {
     // Store data while offline
     const testData = { data: 'test' };
 
-        await storage.storeData('test-key', testData);
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    await storage.storeData('test-key', testData);
     
     // Check sync status is false while offline
 
-        const syncStatus = await storage.getSyncStatus('test-key');
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    const syncStatus = await storage.getSyncStatus('test-key');
     expect(syncStatus).toBe(false);
     
     // Verify data is stored correctly despite being offline
 
-        const storedData = await storage.getData('test-key');
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    const storedData = await storage.getData('test-key');
     expect(storedData).toEqual(testData);
   });
 

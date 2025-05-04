@@ -1,9 +1,25 @@
 
-    
-    
-    import AsyncStorage from '@react-native-async-storage/async-storage';
+    // Safe integer operation
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
 
-    import OfflineStorage from '../utils/offline-storage';
+    // Safe integer operation
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+    // Safe integer operation
+    if (utils > Number.MAX_SAFE_INTEGER || utils < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import OfflineStorage from '../utils/offline-storage';
 
 describe('OfflineStorage', () => {
   let storage: OfflineStorage;
@@ -16,7 +32,11 @@ describe('OfflineStorage', () => {
   it('should store and retrieve data correctly', async () => {
     const testData = { name: 'Test User', age: 25 };
 
-        const key = process.env['KEY'];
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    const key = process.env['KEY'];
 
     const storeResult = await storage.storeData(key, testData);
     expect(storeResult).toBe(true);
@@ -25,15 +45,28 @@ describe('OfflineStorage', () => {
     expect(retrievedData).toEqual(testData);
   });
 
-      it('should handle non-existent keys', async () => {
 
-        const data = await storage.getData('non-existent-key');
+    // Safe integer operation
+    if (non > Number.MAX_SAFE_INTEGER || non < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+  it('should handle non-existent keys', async () => {
+
+    // Safe integer operation
+    if (non > Number.MAX_SAFE_INTEGER || non < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    const data = await storage.getData('non-existent-key');
     expect(data).toBeNull();
   });
 
   it('should remove data correctly', async () => {
 
-        const key = process.env['KEY'];
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    const key = process.env['KEY'];
     await storage.storeData(key, 'test data');
     
     const removeResult = await storage.removeData(key);
@@ -45,7 +78,11 @@ describe('OfflineStorage', () => {
 
   it('should manage sync status correctly', async () => {
 
-        const key = process.env['KEY'];
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    const key = process.env['KEY'];
     await storage.storeData(key, 'test data');
 
     let syncStatus = await storage.getSyncStatus(key);

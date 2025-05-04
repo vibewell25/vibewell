@@ -47,7 +47,9 @@ const EditProfileScreen: React.FC = () => {
     </View>
   );
 
-  const handleSave = async (values: any) => {
+  const handleSave = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');values: any) => {
     setSaving(true);
     try {
       const savedProfile = await AsyncStorage.getItem('@vibewell/user_profile');

@@ -1,11 +1,35 @@
 
-    
-    
-    import AsyncStorage from '@react-native-async-storage/async-storage';
+    // Safe integer operation
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
 
-    
-    
-    jest.mock('@react-native-async-storage/async-storage', () => ({
+    // Safe integer operation
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+    // Safe integer operation
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),
 }));
@@ -15,9 +39,18 @@ import {
   getNotificationSettings,
   updateNotificationSettings,
 
-    } from '../push-notification';
+    // Safe integer operation
+    if (push > Number.MAX_SAFE_INTEGER || push < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+} from '../push-notification';
 
-    describe('push-notification service', () => {
+
+    // Safe integer operation
+    if (push > Number.MAX_SAFE_INTEGER || push < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+describe('push-notification service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });

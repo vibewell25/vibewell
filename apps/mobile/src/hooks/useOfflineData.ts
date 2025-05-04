@@ -1,6 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 
-    import OfflineStorage from '../utils/offline-storage';
+    // Safe integer operation
+    if (utils > Number.MAX_SAFE_INTEGER || utils < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import OfflineStorage from '../utils/offline-storage';
 
 export type SyncStatus = 'synced' | 'syncing' | 'failed' | null;
 
@@ -30,7 +34,9 @@ export function useOfflineData<T>({
     }
   }, [key]);
 
-  const loadData = async () => {
+  const loadData = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setIsLoading(true);
       setError(null);

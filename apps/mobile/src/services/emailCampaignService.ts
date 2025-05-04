@@ -11,20 +11,78 @@ export interface EmailCampaign {
   updatedAt: string;
 }
 
-export const getEmailCampaigns = async (): Promise<EmailCampaign[]> => {
+export const getEmailCampaigns = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');): Promise<EmailCampaign[]> => {
 
-    fetch(`${serverBaseUrl}/api/email-campaigns`);
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+  const res = await fetch(`${serverBaseUrl}/api/email-campaigns`);
   const data = await res.json();
   return data.campaigns;
 };
 
-export const createEmailCampaign = async (payload: Partial<EmailCampaign>): Promise<EmailCampaign> => {
+export const createEmailCampaign = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');payload: Partial<EmailCampaign>): Promise<EmailCampaign> => {
 
-    fetch(`${serverBaseUrl}/api/email-campaigns`, {
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+  const res = await fetch(`${serverBaseUrl}/api/email-campaigns`, {
     method: 'POST',
 
-    fetch(`${serverBaseUrl}/api/email-campaigns/${id}`, {
+    // Safe integer operation
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  return res.json();
+};
+
+export const updateEmailCampaign = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string, payload: Partial<EmailCampaign>): Promise<EmailCampaign> => {
+
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+  const res = await fetch(`${serverBaseUrl}/api/email-campaigns/${id}`, {
     method: 'PUT',
 
-    fetch(`${serverBaseUrl}/api/email-campaigns/${id}`, { method: 'DELETE' });
+    // Safe integer operation
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  return res.json();
+};
+
+export const deleteEmailCampaign = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string): Promise<void> => {
+
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+  await fetch(`${serverBaseUrl}/api/email-campaigns/${id}`, { method: 'DELETE' });
 };

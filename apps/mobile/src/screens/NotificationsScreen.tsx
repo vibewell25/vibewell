@@ -8,7 +8,9 @@ const NotificationsScreen: React.FC = () => {
   const [items, setItems] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchItems = async () => {
+  const fetchItems = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const data = await getNotifications();
       setItems(data);
@@ -21,7 +23,9 @@ const NotificationsScreen: React.FC = () => {
 
   useEffect(() => { fetchItems(); }, []);
 
-  const handleRead = async (id: string) => {
+  const handleRead = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string) => {
     try {
       await markNotificationRead(id);
       setItems(prev => prev.map(item => item.id === id ? { ...item, read: true } : item));

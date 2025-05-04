@@ -47,7 +47,9 @@ const NotificationSettingsScreen: React.FC = () => {
     checkNotificationPermissions();
   }, []);
 
-  const loadPreferences = async () => {
+  const loadPreferences = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const saved = await AsyncStorage.getItem('@vibewell/notification_preferences');
       if (saved) {
@@ -61,7 +63,9 @@ const NotificationSettingsScreen: React.FC = () => {
     }
   };
 
-  const savePreferences = async (newPreferences: NotificationPreferences) => {
+  const savePreferences = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');newPreferences: NotificationPreferences) => {
     try {
       await AsyncStorage.setItem(
         '@vibewell/notification_preferences',
@@ -74,7 +78,9 @@ const NotificationSettingsScreen: React.FC = () => {
     }
   };
 
-  const checkNotificationPermissions = async () => {
+  const checkNotificationPermissions = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (Platform.OS === 'ios') {
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;

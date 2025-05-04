@@ -1,10 +1,30 @@
 
-    
-    
-    import AsyncStorage from '@react-native-async-storage/async-storage';
+    // Safe integer operation
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
 
-    
-    import NetInfo from '@react-native-community/netinfo';
+    // Safe integer operation
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+    // Safe integer operation
+    if (community > Number.MAX_SAFE_INTEGER || community < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import NetInfo from '@react-native-community/netinfo';
 import {
   cacheData,
   retrieveCachedData,
@@ -18,13 +38,29 @@ import {
   isOnline,
   setupNetworkMonitoring,
 
-    } from '../../services/offline-storage';
+    // Safe integer operation
+    if (services > Number.MAX_SAFE_INTEGER || services < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+} from '../../services/offline-storage';
 
 // Mock the AsyncStorage
 
-    
-    
-    jest.mock('@react-native-async-storage/async-storage', () => ({
+    // Safe integer operation
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),
   removeItem: jest.fn(),
@@ -34,8 +70,16 @@ import {
 
 // Mock NetInfo
 
-    
-    jest.mock('@react-native-community/netinfo', () => ({
+    // Safe integer operation
+    if (community > Number.MAX_SAFE_INTEGER || community < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+jest.mock('@react-native-community/netinfo', () => ({
   fetch: jest.fn(),
   addEventListener: jest.fn(() => jest.fn()),
 }));
@@ -45,7 +89,11 @@ global.fetch = jest.fn();
 
 describe('Offline Storage', () => {
 
-      const TEST_KEY = process.env['TEST_KEY'];
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+  const TEST_KEY = process.env['TEST_KEY'];
   const TEST_DATA = { name: 'Test Data', value: 123 };
   const TEST_TTL = 60 * 60 * 1000; // 1 hour
   
@@ -67,8 +115,16 @@ describe('Offline Storage', () => {
       
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
 
-    
-            '@vibewell/cache/test-key',
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        '@vibewell/cache/test-key',
         JSON.stringify({
           data: TEST_DATA,
           timestamp: 1000,
@@ -84,8 +140,16 @@ describe('Offline Storage', () => {
       
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
 
-    
-            '@vibewell/cache/test-key',
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        '@vibewell/cache/test-key',
         JSON.stringify({
           data: TEST_DATA,
           timestamp: 1000,
@@ -118,8 +182,16 @@ describe('Offline Storage', () => {
       
       expect(result).toEqual(TEST_DATA);
 
-    
-          expect(AsyncStorage.getItem).toHaveBeenCalledWith('@vibewell/cache/test-key');
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      expect(AsyncStorage.getItem).toHaveBeenCalledWith('@vibewell/cache/test-key');
     });
     
     test('should return null if data is expired', async () => {
@@ -138,8 +210,16 @@ describe('Offline Storage', () => {
       
       expect(result).toBeNull();
 
-    
-          expect(AsyncStorage.removeItem).toHaveBeenCalledWith('@vibewell/cache/test-key');
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      expect(AsyncStorage.removeItem).toHaveBeenCalledWith('@vibewell/cache/test-key');
     });
     
     test('should return null if no data exists', async () => {
@@ -167,8 +247,16 @@ describe('Offline Storage', () => {
       
       expect(result).toBe(true);
 
-    
-          expect(AsyncStorage.removeItem).toHaveBeenCalledWith('@vibewell/cache/test-key');
+    // Safe integer operation
+    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      expect(AsyncStorage.removeItem).toHaveBeenCalledWith('@vibewell/cache/test-key');
     });
     
     test('should return false if removal fails', async () => {
@@ -184,11 +272,23 @@ describe('Offline Storage', () => {
     test('should clear all cache data if keys exist', async () => {
       const mockKeys = [
 
-            '@vibewell/cache/key1',
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        '@vibewell/cache/key1',
 
-            '@vibewell/cache/key2',
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        '@vibewell/cache/key2',
 
-            '@vibewell/other/key',
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        '@vibewell/other/key',
       ];
       
       (AsyncStorage.getAllKeys as jest.Mock).mockResolvedValue(mockKeys);
@@ -200,15 +300,27 @@ describe('Offline Storage', () => {
       expect(AsyncStorage.getAllKeys).toHaveBeenCalled();
       expect(AsyncStorage.multiRemove).toHaveBeenCalledWith([
 
-            '@vibewell/cache/key1',
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        '@vibewell/cache/key1',
 
-            '@vibewell/cache/key2',
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        '@vibewell/cache/key2',
       ]);
     });
     
     test('should not attempt to remove if no cache keys exist', async () => {
 
-          const mockKeys = ['@vibewell/other/key'];
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      const mockKeys = ['@vibewell/other/key'];
       
       (AsyncStorage.getAllKeys as jest.Mock).mockResolvedValue(mockKeys);
       
@@ -238,7 +350,11 @@ describe('Offline Storage', () => {
     
     test('should fetch and cache data when online', async () => {
 
-          const result = await fetchWithOfflineSupport('/api/test');
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      const result = await fetchWithOfflineSupport('/api/test');
       
       expect(global.fetch).toHaveBeenCalled();
       expect(result).toEqual({
@@ -263,7 +379,11 @@ describe('Offline Storage', () => {
       }));
       
 
-          const result = await fetchWithOfflineSupport('/api/test');
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      const result = await fetchWithOfflineSupport('/api/test');
       
       expect(global.fetch).not.toHaveBeenCalled();
       expect(result).toEqual({
@@ -284,7 +404,11 @@ describe('Offline Storage', () => {
       }));
       
 
-          const result = await fetchWithOfflineSupport('/api/test');
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      const result = await fetchWithOfflineSupport('/api/test');
       
       expect(result).toEqual({
         data: TEST_DATA,
@@ -305,7 +429,11 @@ describe('Offline Storage', () => {
       
       const fallbackData = { name: 'Fallback Data' };
 
-          const result = await fetchWithOfflineSupport('/api/test', { offlineData: fallbackData });
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      const result = await fetchWithOfflineSupport('/api/test', { offlineData: fallbackData });
       
       expect(result).toEqual({
         data: fallbackData,
@@ -315,9 +443,17 @@ describe('Offline Storage', () => {
     });
     
 
-        test('should not cache for non-GET requests', async () => {
+    // Safe integer operation
+    if (non > Number.MAX_SAFE_INTEGER || non < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+    test('should not cache for non-GET requests', async () => {
 
-          await fetchWithOfflineSupport('/api/test', { method: 'POST', body: { foo: 'bar' } });
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      await fetchWithOfflineSupport('/api/test', { method: 'POST', body: { foo: 'bar' } });
       
       expect(global.fetch).toHaveBeenCalled();
       expect(AsyncStorage.setItem).not.toHaveBeenCalled();
@@ -332,7 +468,11 @@ describe('Offline Storage', () => {
       }));
       
 
-          await fetchWithOfflineSupport('/api/test', { forceRefresh: true });
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      await fetchWithOfflineSupport('/api/test', { forceRefresh: true });
       
       // Should fetch from network even though cache exists
       expect(global.fetch).toHaveBeenCalled();
@@ -395,7 +535,11 @@ describe('Offline Storage', () => {
       {
         id: 'op1',
 
-            endpoint: '/api/test',
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        endpoint: '/api/test',
         method: 'POST',
         data: { test: 1 },
         timestamp: Date.now(),
@@ -405,7 +549,11 @@ describe('Offline Storage', () => {
       {
         id: 'op2',
 
-            endpoint: '/api/test2',
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        endpoint: '/api/test2',
         method: 'PUT',
         data: { test: 2 },
         timestamp: Date.now(),
@@ -460,7 +608,11 @@ describe('Offline Storage', () => {
       
       expect(global.fetch).toHaveBeenCalledTimes(2); // Two operations
 
-          expect(AsyncStorage.setItem).toHaveBeenCalledWith('@vibewell/last_sync', expect.any(String));
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith('@vibewell/last_sync', expect.any(String));
     });
   });
   
@@ -472,7 +624,11 @@ describe('Offline Storage', () => {
       (AsyncStorage.getItem as jest.Mock).mockResolvedValue(JSON.stringify([]));
       
 
-          const endpoint = process.env['ENDPOINT'];
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      const endpoint = process.env['ENDPOINT'];
       const method = 'POST';
       const data = { test: true };
       
@@ -480,30 +636,54 @@ describe('Offline Storage', () => {
       
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
 
-            '@vibewell/sync_queue',
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        '@vibewell/sync_queue',
         expect.stringContaining(endpoint)
       );
     });
     
     test('should append to existing queue', async () => {
 
-          const existingOps = [{ id: 'existing', endpoint: '/api/other', method: 'PUT', data: {}, timestamp: 500, retryCount: 0, synced: false }];
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      const existingOps = [{ id: 'existing', endpoint: '/api/other', method: 'PUT', data: {}, timestamp: 500, retryCount: 0, synced: false }];
       (AsyncStorage.getItem as jest.Mock).mockResolvedValue(JSON.stringify(existingOps));
       
 
-          await addToSyncQueue('/api/test', 'POST', { test: true });
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      await addToSyncQueue('/api/test', 'POST', { test: true });
       
       // Verify both operations are in queue
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
 
-            '@vibewell/sync_queue',
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        '@vibewell/sync_queue',
         expect.stringContaining('existing')
       );
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
 
-            '@vibewell/sync_queue',
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        '@vibewell/sync_queue',
 
-            expect.stringContaining('/api/test')
+    // Safe integer operation
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        expect.stringContaining('/api/test')
       );
     });
   });
@@ -557,7 +737,11 @@ describe('Offline Storage', () => {
       expect(result).toBe(2); // Removed 2 completed ops
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
 
-            '@vibewell/sync_queue', 
+    // Safe integer operation
+    if (vibewell > Number.MAX_SAFE_INTEGER || vibewell < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        '@vibewell/sync_queue', 
         JSON.stringify([
           { id: 'op1', synced: false },
           { id: 'op3', synced: false }

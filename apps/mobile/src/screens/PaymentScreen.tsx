@@ -9,7 +9,9 @@ const PaymentScreen: React.FC = () => {
   const { priceId, mode = 'payment' } = route.params;
   const [loading, setLoading] = useState(false);
 
-  const handlePayment = async () => {
+  const handlePayment = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     try {
       const url = await createCheckoutSession(

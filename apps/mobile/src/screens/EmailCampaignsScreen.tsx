@@ -12,7 +12,9 @@ const EmailCampaignsScreen: React.FC = () => {
   const [scheduledAt, setScheduledAt] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const fetchCampaigns = async () => {
+  const fetchCampaigns = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const data = await getEmailCampaigns();
       setCampaigns(data);
@@ -25,7 +27,9 @@ const EmailCampaignsScreen: React.FC = () => {
 
   useEffect(() => { fetchCampaigns(); }, []);
 
-  const handleAdd = async () => {
+  const handleAdd = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!name || !subject || !body) { Alert.alert('Error', 'All fields required'); return; }
     setLoading(true);
     try {
@@ -38,7 +42,9 @@ const EmailCampaignsScreen: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string) => {
     setLoading(true);
     try {
       await deleteEmailCampaign(id);

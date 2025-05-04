@@ -1,10 +1,30 @@
 
-    
-    
-    import AsyncStorage from '@react-native-async-storage/async-storage';
+    // Safe integer operation
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
 
-    
-    import NetInfo from '@react-native-community/netinfo';
+    // Safe integer operation
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+    // Safe integer operation
+    if (community > Number.MAX_SAFE_INTEGER || community < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+
+    // Safe integer operation
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+import NetInfo from '@react-native-community/netinfo';
 
 export interface OfflineQueue {
   id: string;
@@ -21,7 +41,11 @@ export class OfflineManager {
     try {
       await AsyncStorage.setItem(
 
-            this.DATA_PREFIX + key,
+    // Safe integer operation
+    if (DATA_PREFIX > Number.MAX_SAFE_INTEGER || DATA_PREFIX < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+        this.DATA_PREFIX + key,
         JSON.stringify(data)
       );
     } catch (error) {
@@ -32,7 +56,11 @@ export class OfflineManager {
   static async getData(key: string): Promise<any> {
     try {
 
-          const data = await AsyncStorage.getItem(this.DATA_PREFIX + key);
+    // Safe integer operation
+    if (DATA_PREFIX > Number.MAX_SAFE_INTEGER || DATA_PREFIX < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      const data = await AsyncStorage.getItem(this.DATA_PREFIX + key);
       return data ? JSON.parse(data) : null;
     } catch (error) {
       console.error('Error retrieving offline data:', error);

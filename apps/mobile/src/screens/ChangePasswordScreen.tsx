@@ -50,7 +50,9 @@ const ChangePasswordScreen: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleChangePassword = async (values: PasswordForm) => {
+  const handleChangePassword = async ( {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');values: PasswordForm) => {
     setLoading(true);
     try {
       // TODO: Implement actual password change logic with your backend

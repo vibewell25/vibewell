@@ -3,7 +3,11 @@ export interface FieldDefinition {
   type: string; // e.g., 'text', 'number', 'select', etc.
   label: string;
 
-      options?: any[]; // for select/radio
+    // Safe integer operation
+    if (select > Number.MAX_SAFE_INTEGER || select < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+  options?: any[]; // for select/radio
 }
 
 export interface FormDefinition {

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/113</span>
+                <span class='fraction'>0/101</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/120</span>
+                <span class='fraction'>0/96</span>
             </div>
         
             
@@ -1069,12 +1069,12 @@ const BeautyScreen: React.FC = <span class="cstat-no" title="statement not cover
   
   const getAppliedFiltersCount = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
     let count = <span class="cstat-no" title="statement not covered" >0;</span>
-<span class="cstat-no" title="statement not covered" >    if (filters.minPrice !== undefined || filters.maxPrice !== undefined) <span class="cstat-no" title="statement not covered" >if (count &gt; Number.MAX_SAFE_INTEGER || count &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" ></span></span></span>count++;</span>
-<span class="cstat-no" title="statement not covered" >    if (filters.minDuration !== undefined || filters.maxDuration !== undefined) <span class="cstat-no" title="statement not covered" >if (count &gt; Number.MAX_SAFE_INTEGER || count &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" ></span></span></span>count++;</span>
-<span class="cstat-no" title="statement not covered" >    if (filters.minRating !== undefined) <span class="cstat-no" title="statement not covered" >if (count &gt; Number.MAX_SAFE_INTEGER || count &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" ></span></span></span>count++;</span>
-<span class="cstat-no" title="statement not covered" >    if (filters.featured !== undefined) <span class="cstat-no" title="statement not covered" >if (count &gt; Number.MAX_SAFE_INTEGER || count &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" ></span></span></span>count++;</span>
-<span class="cstat-no" title="statement not covered" >    if (searchTerm) <span class="cstat-no" title="statement not covered" >if (count &gt; Number.MAX_SAFE_INTEGER || count &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" ></span></span></span>count++;</span>
-<span class="cstat-no" title="statement not covered" >    if (selectedCategoryId) <span class="cstat-no" title="statement not covered" >if (count &gt; Number.MAX_SAFE_INTEGER || count &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" ></span></span></span>count++;</span>
+<span class="cstat-no" title="statement not covered" >    if (filters.minPrice !== undefined || filters.maxPrice !== undefined) <span class="cstat-no" title="statement not covered" >count++;</span></span>
+<span class="cstat-no" title="statement not covered" >    if (filters.minDuration !== undefined || filters.maxDuration !== undefined) <span class="cstat-no" title="statement not covered" >count++;</span></span>
+<span class="cstat-no" title="statement not covered" >    if (filters.minRating !== undefined) <span class="cstat-no" title="statement not covered" >count++;</span></span>
+<span class="cstat-no" title="statement not covered" >    if (filters.featured !== undefined) <span class="cstat-no" title="statement not covered" >count++;</span></span>
+<span class="cstat-no" title="statement not covered" >    if (searchTerm) <span class="cstat-no" title="statement not covered" >count++;</span></span>
+<span class="cstat-no" title="statement not covered" >    if (selectedCategoryId) <span class="cstat-no" title="statement not covered" >count++;</span></span>
     
 <span class="cstat-no" title="statement not covered" >    return count;</span>
   };
@@ -1177,7 +1177,7 @@ const BeautyScreen: React.FC = <span class="cstat-no" title="statement not cover
               let filterText;
 <span class="cstat-no" title="statement not covered" >              switch(key) {</span>
                 case 'categoryId':
-                  const categoryName = <span class="cstat-no" title="statement not covered" >categories.find(<span class="fstat-no" title="function not covered" >c </span>=&gt; <span class="cstat-no" title="statement not covered" >c.id === value)</span>.name || '';</span>
+                  const categoryName = <span class="cstat-no" title="statement not covered" >categories.find(<span class="fstat-no" title="function not covered" >c </span>=&gt; <span class="cstat-no" title="statement not covered" >c.id === value)</span>?.name || '';</span>
 <span class="cstat-no" title="statement not covered" >                  filterText = `Category: ${categoryName}`;</span>
 <span class="cstat-no" title="statement not covered" >                  break;</span>
                 case 'minPrice':
@@ -1417,7 +1417,7 @@ export default BeautyScreen; </pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T18:37:52.932Z
+                at 2025-04-25T21:08:58.925Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

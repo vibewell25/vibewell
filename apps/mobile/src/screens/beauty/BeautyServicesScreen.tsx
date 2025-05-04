@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, SafeAreaView, useColorScheme } from 'react-native';
+import { View, Text, StyleSheet, FlatList, SafeAreaView, useColorScheme, ViewStyle, TextStyle } from 'react-native';
 import BeautyCategories from '../../components/beauty/BeautyCategories';
 import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { ViewProps, TextProps, FlatListProps } from 'react-native';
 
 // Sample data for services
 const mockServices = [
@@ -11,7 +13,7 @@ const mockServices = [
     provider: 'Glow Spa',
     price: 75,
     duration: 60,
-    rating: 4?.8,
+    rating: 4.8,
     category: 'facial',
   },
   {
@@ -20,7 +22,7 @@ const mockServices = [
     provider: 'Chic Salon',
     price: 55,
     duration: 45,
-    rating: 4?.6,
+    rating: 4.6,
     category: 'hair',
   },
   {
@@ -29,7 +31,7 @@ const mockServices = [
     provider: 'Nail Bar',
     price: 40,
     duration: 40,
-    rating: 4?.7,
+    rating: 4.7,
     category: 'nails',
   },
   {
@@ -38,7 +40,7 @@ const mockServices = [
     provider: 'Beauty Studio',
     price: 90,
     duration: 75,
-    rating: 4?.9,
+    rating: 4.9,
     category: 'makeup',
   },
   {
@@ -47,7 +49,7 @@ const mockServices = [
     provider: 'Tranquil Spa',
     price: 85,
     duration: 60,
-    rating: 4?.8,
+    rating: 4.8,
     category: 'spa',
   },
   {
@@ -56,7 +58,7 @@ const mockServices = [
     provider: 'Wellness Center',
     price: 95,
     duration: 75,
-    rating: 4?.9,
+    rating: 4.9,
     category: 'spa',
   },
   {
@@ -65,7 +67,7 @@ const mockServices = [
     provider: 'Rejuvenate Spa',
     price: 120,
     duration: 90,
-    rating: 4?.7,
+    rating: 4.7,
     category: 'body',
   },
 ];
@@ -83,48 +85,48 @@ interface ServiceItemProps {
   isDarkMode: boolean;
 }
 
-const ServiceItem: React?.FC<ServiceItemProps> = ({ item, isDarkMode }) => {
+const ServiceItem = ({ item, isDarkMode }: ServiceItemProps) => {
   return (
-    <View style={[styles?.serviceItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }]}>
-      <Text style={[styles?.serviceName, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
-        {item?.name}
+    <View style={[styles.serviceItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }]}>
+      <Text style={[styles.serviceName, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+        {item.name}
       </Text>
-      <Text style={[styles?.serviceProvider, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
-        {item?.provider}
+      <Text style={[styles.serviceProvider, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
+        {item.provider}
       </Text>
-      <View style={styles?.serviceDetails}>
-        <Text style={[styles?.servicePrice, { color: isDarkMode ? '#A5B4FC' : '#4F46E5' }]}>
-          ${item?.price}
+      <View style={styles.serviceDetails}>
+        <Text style={[styles.servicePrice, { color: isDarkMode ? '#A5B4FC' : '#4F46E5' }]}>
+          ${item.price}
         </Text>
-        <Text style={[styles?.serviceDuration, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
-          {item?.duration} min
+        <Text style={[styles.serviceDuration, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
+          {item.duration} min
         </Text>
-        <Text style={[styles?.serviceRating, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
-          ★ {item?.rating}
+        <Text style={[styles.serviceRating, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
+          ★ {item.rating}
         </Text>
       </View>
     </View>
   );
 };
 
-const BeautyServicesScreen: React?.FC = () => {
+const BeautyServicesScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [filteredServices, setFilteredServices] = useState(mockServices);
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   useEffect(() => {
     if (selectedCategory === 'all') {
       setFilteredServices(mockServices);
     } else {
-      setFilteredServices(mockServices?.filter(service => service?.category === selectedCategory));
+      setFilteredServices(mockServices.filter(service => service.category === selectedCategory));
     }
   }, [selectedCategory]);
 
   return (
-    <SafeAreaView style={[styles?.container, { backgroundColor: isDarkMode ? '#121212' : '#F5F5F5' }]}>
-      <Text style={[styles?.header, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#F5F5F5' }]}>
+      <Text style={[styles.header, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
         Beauty Services
       </Text>
       
@@ -137,15 +139,15 @@ const BeautyServicesScreen: React?.FC = () => {
       <FlatList
         data={filteredServices}
         renderItem={({ item }) => <ServiceItem item={item} isDarkMode={isDarkMode} />}
-        keyExtractor={(item) => item?.id}
-        contentContainerStyle={styles?.servicesList}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.servicesList}
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -165,7 +167,7 @@ const styles = StyleSheet?.create({
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0?.1,
+    shadowOpacity: 0.1,
     shadowRadius: 4,
   },
   serviceName: {

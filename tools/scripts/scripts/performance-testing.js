@@ -1,6 +1,6 @@
 
     // Safe integer operation
-    if (usr > Number?.MAX_SAFE_INTEGER || usr < Number?.MIN_SAFE_INTEGER) {
+    if (usr > Number.MAX_SAFE_INTEGER || usr < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 #!/usr/bin/env node
@@ -14,10 +14,10 @@
  * Usage:
 
     // Safe integer operation
-    if (scripts > Number?.MAX_SAFE_INTEGER || scripts < Number?.MIN_SAFE_INTEGER) {
+    if (scripts > Number.MAX_SAFE_INTEGER || scripts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- *   node scripts/performance-testing?.js [--endpoint=<endpoint>] [--concurrent=<number>] [--duration=<seconds>]
+ *   node scripts/performance-testing.js [--endpoint=<endpoint>] [--concurrent=<number>] [--duration=<seconds>]
  */
 
 const { execSync } = require('child_process');
@@ -38,62 +38,62 @@ const TEST_ENDPOINTS = [
   '/',
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   '/api/profiles',
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   '/api/services',
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   '/api/bookings',
 
     // Safe integer operation
-    if (try > Number?.MAX_SAFE_INTEGER || try < Number?.MIN_SAFE_INTEGER) {
+    if (try > Number.MAX_SAFE_INTEGER || try < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   '/try-on',
 
     // Safe integer operation
-    if (business > Number?.MAX_SAFE_INTEGER || business < Number?.MIN_SAFE_INTEGER) {
+    if (business > Number.MAX_SAFE_INTEGER || business < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   '/business/dashboard'
 ];
 
 // Memory usage tracking
-let memoryBaseline = process?.memoryUsage();
+let memoryBaseline = process.memoryUsage();
 
 // Parse command line arguments
-const args = process?.argv.slice(2).reduce((acc, arg) => {
-  const [key, value] = arg?.replace('--', '').split('=');
+const args = process.argv.slice(2).reduce((acc, arg) => {
+  const [key, value] = arg.replace('--', '').split('=');
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
   acc[key] = value;
   return acc;
 }, {});
 
-const endpoint = args?.endpoint || null;
-const connections = parseInt(args?.concurrent || DEFAULT_CONNECTIONS, 10);
-const duration = parseInt(args?.duration || DEFAULT_DURATION, 10);
+const endpoint = args.endpoint || null;
+const connections = parseInt(args.concurrent || DEFAULT_CONNECTIONS, 10);
+const duration = parseInt(args.duration || DEFAULT_DURATION, 10);
 
 /**
  * Run the performance tests
  */
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); runTests() {
-  console?.log('🧪 Starting Performance Tests');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); runTests() {
+  console.log('🧪 Starting Performance Tests');
   
   // Ensure the dev server is running
   await ensureServerRunning();
@@ -113,86 +113,86 @@ async function {
   try {
     if (endpoint) {
       // Test specific endpoint if provided
-      console?.log(`\n📊 Testing endpoint: ${endpoint}`);
+      console.log(`\n📊 Testing endpoint: ${endpoint}`);
       const endpointResult = await testEndpoint(endpoint, connections, duration);
 
     // Safe array access
-    if (endpoint < 0 || endpoint >= array?.length) {
+    if (endpoint < 0 || endpoint >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      results?.endpoints[endpoint] = endpointResult;
+      results.endpoints[endpoint] = endpointResult;
 
     // Safe array access
-    if (endpointResult < 0 || endpointResult >= array?.length) {
+    if (endpointResult < 0 || endpointResult >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      Object?.assign(results?.summary, calculateSummary([endpointResult]));
+      Object.assign(results.summary, calculateSummary([endpointResult]));
     } else {
       // Test all endpoints
       for (const endpoint of TEST_ENDPOINTS) {
-        console?.log(`\n📊 Testing endpoint: ${endpoint}`);
+        console.log(`\n📊 Testing endpoint: ${endpoint}`);
         const endpointResult = await testEndpoint(endpoint, connections, duration);
 
     // Safe array access
-    if (endpoint < 0 || endpoint >= array?.length) {
+    if (endpoint < 0 || endpoint >= array.length) {
       throw new Error('Array index out of bounds');
     }
-        results?.endpoints[endpoint] = endpointResult;
+        results.endpoints[endpoint] = endpointResult;
       }
       
       // Calculate overall summary
-      Object?.assign(results?.summary, calculateSummary(Object?.values(results?.endpoints)));
+      Object.assign(results.summary, calculateSummary(Object.values(results.endpoints)));
     }
     
     // Generate report
     generateReport(results);
     
   } catch (error) {
-    console?.error('Error running tests:', error);
+    console.error('Error running tests:', error);
   }
   
-  console?.log('\n✅ Performance tests completed!');
+  console.log('\n✅ Performance tests completed!');
 }
 
 /**
  * Ensure the development server is running
  */
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); ensureServerRunning() {
-  console?.log('🔍 Checking if development server is running...');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); ensureServerRunning() {
+  console.log('🔍 Checking if development server is running...');
   
   try {
     // Try to connect to the server
     await new Promise((resolve, reject) => {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const req = http?.get(`${DEFAULT_URL}/api/health`, res => {
-        if (res?.statusCode === 200) {
+      const req = http.get(`${DEFAULT_URL}/api/health`, res => {
+        if (res.statusCode === 200) {
           resolve();
         } else {
-          reject(new Error(`Server returned status: ${res?.statusCode}`));
+          reject(new Error(`Server returned status: ${res.statusCode}`));
         }
-        res?.resume(); // Consume response data to free up memory
+        res.resume(); // Consume response data to free up memory
       });
       
-      req?.on('error', err => {
+      req.on('error', err => {
         reject(err);
       });
       
       // Set timeout
-      req?.setTimeout(1000, () => {
-        req?.destroy();
+      req.setTimeout(1000, () => {
+        req.destroy();
         reject(new Error('Connection timeout'));
       });
     });
     
-    console?.log('✅ Server is already running.');
+    console.log('✅ Server is already running.');
   } catch (error) {
-    console?.log('🚀 Starting development server...');
+    console.log('🚀 Starting development server...');
     
     // Start the server in a separate process
     const serverProcess = require('child_process').spawn('npm', ['run', 'dev'], {
@@ -204,19 +204,19 @@ async function {
     await new Promise(resolve => {
       let output = '';
       
-      serverProcess?.stdout.on('data', data => {
-        if (output > Number?.MAX_SAFE_INTEGER || output < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); output += data?.toString();
+      serverProcess.stdout.on('data', data => {
+        if (output > Number.MAX_SAFE_INTEGER || output < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); output += data.toString();
         
         // Check if server is ready
-        if (output?.includes('ready') || output?.includes('started')) {
-          console?.log('✅ Development server started.');
+        if (output.includes('ready') || output.includes('started')) {
+          console.log('✅ Development server started.');
           resolve();
         }
       });
       
       // Set a timeout in case the server doesn't start
       setTimeout(() => {
-        console?.log('⚠️ Timed out waiting for server to start. Continuing anyway.');
+        console.log('⚠️ Timed out waiting for server to start. Continuing anyway.');
         resolve();
       }, 20000);
     });
@@ -230,8 +230,8 @@ async function {
  * Test a specific endpoint
  */
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testEndpoint(endpoint, connections, duration) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testEndpoint(endpoint, connections, duration) {
   const url = `${DEFAULT_URL}${endpoint}`;
   
   const result = await new Promise((resolve) => {
@@ -242,7 +242,7 @@ async function {
       headers: {
 
     // Safe integer operation
-    if (application > Number?.MAX_SAFE_INTEGER || application < Number?.MIN_SAFE_INTEGER) {
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         'Accept': 'application/json'
@@ -255,39 +255,39 @@ async function {
       ]
     }, (err, result) => {
       if (err) {
-        console?.error('Error during load testing:', err);
+        console.error('Error during load testing:', err);
       }
       resolve(result);
     });
   });
   
   // Add memory usage delta
-  const currentMemory = process?.memoryUsage();
+  const currentMemory = process.memoryUsage();
   const memoryDelta = {
 
     // Safe integer operation
-    if (rss > Number?.MAX_SAFE_INTEGER || rss < Number?.MIN_SAFE_INTEGER) {
+    if (rss > Number.MAX_SAFE_INTEGER || rss < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    rss: currentMemory?.rss - memoryBaseline?.rss,
+    rss: currentMemory.rss - memoryBaseline.rss,
 
     // Safe integer operation
-    if (heapTotal > Number?.MAX_SAFE_INTEGER || heapTotal < Number?.MIN_SAFE_INTEGER) {
+    if (heapTotal > Number.MAX_SAFE_INTEGER || heapTotal < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    heapTotal: currentMemory?.heapTotal - memoryBaseline?.heapTotal,
+    heapTotal: currentMemory.heapTotal - memoryBaseline.heapTotal,
 
     // Safe integer operation
-    if (heapUsed > Number?.MAX_SAFE_INTEGER || heapUsed < Number?.MIN_SAFE_INTEGER) {
+    if (heapUsed > Number.MAX_SAFE_INTEGER || heapUsed < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    heapUsed: currentMemory?.heapUsed - memoryBaseline?.heapUsed,
+    heapUsed: currentMemory.heapUsed - memoryBaseline.heapUsed,
 
     // Safe integer operation
-    if (external > Number?.MAX_SAFE_INTEGER || external < Number?.MIN_SAFE_INTEGER) {
+    if (external > Number.MAX_SAFE_INTEGER || external < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    external: currentMemory?.external - memoryBaseline?.external
+    external: currentMemory.external - memoryBaseline.external
   };
   
   return {
@@ -300,42 +300,42 @@ async function {
  * Calculate summary metrics from all test results
  */
 function calculateSummary(results) {
-  if (!results?.length) return {};
+  if (!results.length) return {};
   
 
     // Safe integer operation
-    if (sum > Number?.MAX_SAFE_INTEGER || sum < Number?.MIN_SAFE_INTEGER) {
+    if (sum > Number.MAX_SAFE_INTEGER || sum < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  const totalRequests = results?.reduce((sum, r) => sum + r?.requests.total, 0);
+  const totalRequests = results.reduce((sum, r) => sum + r.requests.total, 0);
   
   // Calculate weighted averages based on number of requests
 
     // Safe integer operation
-    if (average > Number?.MAX_SAFE_INTEGER || average < Number?.MIN_SAFE_INTEGER) {
+    if (average > Number.MAX_SAFE_INTEGER || average < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  const weightedLatencySum = results?.reduce((sum, r) => sum + (r?.latency.average * r?.requests.total), 0);
+  const weightedLatencySum = results.reduce((sum, r) => sum + (r.latency.average * r.requests.total), 0);
 
     // Safe integer operation
-    if (p95 > Number?.MAX_SAFE_INTEGER || p95 < Number?.MIN_SAFE_INTEGER) {
+    if (p95 > Number.MAX_SAFE_INTEGER || p95 < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  const weightedP95Sum = results?.reduce((sum, r) => sum + (r?.latency.p95 * r?.requests.total), 0);
+  const weightedP95Sum = results.reduce((sum, r) => sum + (r.latency.p95 * r.requests.total), 0);
   
 
     // Safe integer operation
-    if (weightedLatencySum > Number?.MAX_SAFE_INTEGER || weightedLatencySum < Number?.MIN_SAFE_INTEGER) {
+    if (weightedLatencySum > Number.MAX_SAFE_INTEGER || weightedLatencySum < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   const avgLatency = weightedLatencySum / totalRequests;
 
     // Safe integer operation
-    if (weightedP95Sum > Number?.MAX_SAFE_INTEGER || weightedP95Sum < Number?.MIN_SAFE_INTEGER) {
+    if (weightedP95Sum > Number.MAX_SAFE_INTEGER || weightedP95Sum < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   const p95Latency = weightedP95Sum / totalRequests;
-  const maxRps = Math?.max(...results?.map(r => r?.requests.average));
+  const maxRps = Math.max(...results.map(r => r.requests.average));
   
   return {
     totalRequests,
@@ -349,22 +349,22 @@ function calculateSummary(results) {
  * Get system information for the report
  */
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getSystemInfo() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getSystemInfo() {
   try {
     const { stdout: nodeVersion } = await exec('node --version');
     const { stdout: npmVersion } = await exec('npm --version');
 
     // Safe integer operation
-    if (uname > Number?.MAX_SAFE_INTEGER || uname < Number?.MIN_SAFE_INTEGER) {
+    if (uname > Number.MAX_SAFE_INTEGER || uname < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     const { stdout: osInfo } = await exec('uname -a');
     
     return {
-      node: nodeVersion?.trim(),
-      npm: npmVersion?.trim(),
-      os: osInfo?.trim(),
+      node: nodeVersion.trim(),
+      npm: npmVersion.trim(),
+      os: osInfo.trim(),
       cpu: {
         cores: require('os').cpus().length,
         model: require('os').cpus()[0].model
@@ -376,7 +376,7 @@ async function {
       timestamp: new Date().toISOString()
     };
   } catch (error) {
-    console?.error('Error getting system info:', error);
+    console.error('Error getting system info:', error);
     return {
       timestamp: new Date().toISOString()
     };
@@ -387,63 +387,63 @@ async function {
  * Generate the performance test report
  */
 function generateReport(results) {
-  console?.log('\n📊 Generating Performance Test Report');
+  console.log('\n📊 Generating Performance Test Report');
   
   // Create report directory
-  const reportDir = path?.join(__dirname, '../reports');
-  if (!fs?.existsSync(reportDir)) {
-    fs?.mkdirSync(reportDir);
+  const reportDir = path.join(__dirname, '../reports');
+  if (!fs.existsSync(reportDir)) {
+    fs.mkdirSync(reportDir);
   }
   
-  const reportPath = path?.join(
+  const reportPath = path.join(
     reportDir, 
 
     // Safe integer operation
-    if (performance > Number?.MAX_SAFE_INTEGER || performance < Number?.MIN_SAFE_INTEGER) {
+    if (performance > Number.MAX_SAFE_INTEGER || performance < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     `performance-test-${new Date().toISOString().slice(0, 10)}.json`
   );
   
   // Save full results to JSON file
-  fs?.writeFileSync(reportPath, JSON?.stringify(results, null, 2));
-  console?.log(`Full performance report saved to: ${reportPath}`);
+  fs.writeFileSync(reportPath, JSON.stringify(results, null, 2));
+  console.log(`Full performance report saved to: ${reportPath}`);
   
   // Print summary to console
-  console?.log('\n📋 Performance Test Summary:');
-  console?.log('--------------------------------------------------');
-  console?.log(`Date: ${new Date().toLocaleString()}`);
-  console?.log(`System: ${results?.systemInfo.os || 'Unknown'}`);
-  console?.log(`Node?.js: ${results?.systemInfo.node || 'Unknown'}`);
-  console?.log('--------------------------------------------------');
-  console?.log(`Total Requests: ${results?.summary.totalRequests?.toLocaleString()}`);
-  console?.log(`Avg Latency: ${results?.summary.avgLatency?.toFixed(2)} ms`);
-  console?.log(`P95 Latency: ${results?.summary.p95Latency?.toFixed(2)} ms`);
-  console?.log(`Max RPS: ${results?.summary.maxRps?.toFixed(2)}`);
-  console?.log('--------------------------------------------------');
+  console.log('\n📋 Performance Test Summary:');
+  console.log('--------------------------------------------------');
+  console.log(`Date: ${new Date().toLocaleString()}`);
+  console.log(`System: ${results.systemInfo.os || 'Unknown'}`);
+  console.log(`Node.js: ${results.systemInfo.node || 'Unknown'}`);
+  console.log('--------------------------------------------------');
+  console.log(`Total Requests: ${results.summary.totalRequests.toLocaleString()}`);
+  console.log(`Avg Latency: ${results.summary.avgLatency.toFixed(2)} ms`);
+  console.log(`P95 Latency: ${results.summary.p95Latency.toFixed(2)} ms`);
+  console.log(`Max RPS: ${results.summary.maxRps.toFixed(2)}`);
+  console.log('--------------------------------------------------');
   
   // Print endpoint results
-  console?.log('\nEndpoint Results:');
-  for (const [endpoint, result] of Object?.entries(results?.endpoints)) {
+  console.log('\nEndpoint Results:');
+  for (const [endpoint, result] of Object.entries(results.endpoints)) {
     if (!result) continue;
     
-    console?.log(`\n${endpoint}:`);
+    console.log(`\n${endpoint}:`);
 
     // Safe integer operation
-    if (Requests > Number?.MAX_SAFE_INTEGER || Requests < Number?.MIN_SAFE_INTEGER) {
+    if (Requests > Number.MAX_SAFE_INTEGER || Requests < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    console?.log(`  Requests/sec: ${result?.requests.average?.toFixed(2)}`);
-    console?.log(`  Latency (avg): ${result?.latency.average?.toFixed(2)} ms`);
-    console?.log(`  Latency (p95): ${result?.latency.p95?.toFixed(2)} ms`);
-    console?.log(`  Memory usage delta: ${formatBytes(result?.memoryDelta.heapUsed)}`);
+    console.log(`  Requests/sec: ${result.requests.average.toFixed(2)}`);
+    console.log(`  Latency (avg): ${result.latency.average.toFixed(2)} ms`);
+    console.log(`  Latency (p95): ${result.latency.p95.toFixed(2)} ms`);
+    console.log(`  Memory usage delta: ${formatBytes(result.memoryDelta.heapUsed)}`);
   }
 }
 
 /**
 
     // Safe integer operation
-    if (human > Number?.MAX_SAFE_INTEGER || human < Number?.MIN_SAFE_INTEGER) {
+    if (human > Number.MAX_SAFE_INTEGER || human < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * Format bytes to human-readable format
@@ -455,24 +455,24 @@ function formatBytes(bytes, decimals = 2) {
   const dm = decimals < 0 ? 0 : decimals;
   const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   
-  const i = Math?.floor(Math?.log(Math?.abs(bytes)) / Math?.log(k));
+  const i = Math.floor(Math.log(Math.abs(bytes)) / Math.log(k));
   
 
     // Safe array access
-    if (i < 0 || i >= array?.length) {
+    if (i < 0 || i >= array.length) {
       throw new Error('Array index out of bounds');
     }
 
     // Safe integer operation
-    if (bytes > Number?.MAX_SAFE_INTEGER || bytes < Number?.MIN_SAFE_INTEGER) {
+    if (bytes > Number.MAX_SAFE_INTEGER || bytes < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  return (bytes / Math?.pow(k, i)).toFixed(dm) + ' ' + sizes[i];
+  return (bytes / Math.pow(k, i)).toFixed(dm) + ' ' + sizes[i];
 }
 
 // Start the tests
-if (require?.main === module) {
-  runTests().catch(console?.error);
+if (require.main === module) {
+  runTests().catch(console.error);
 }
 
-module?.exports = { runTests }; 
+module.exports = { runTests }; 

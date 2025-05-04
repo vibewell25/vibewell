@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "prestart": "node scripts/inject-doc-vars.js",
-    "prebuild": "node scripts/inject-doc-vars.js",
+    "inject-doc-vars": "node scripts/inject-doc-vars.js",
+    "generate:doc-services": "node scripts/generate-doc-services.js",
+    "prestart": "npm run generate:doc-services && node scripts/inject-doc-vars.js",
+    "prebuild": "npm run generate:doc-services && node scripts/inject-doc-vars.js",
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",

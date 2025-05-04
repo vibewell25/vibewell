@@ -1,13 +1,13 @@
 
     // Safe integer operation
-    if (k6 > Number?.MAX_SAFE_INTEGER || k6 < Number?.MIN_SAFE_INTEGER) {
+    if (k6 > Number.MAX_SAFE_INTEGER || k6 < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
     // Safe integer operation
-    if (k6 > Number?.MAX_SAFE_INTEGER || k6 < Number?.MIN_SAFE_INTEGER) {
+    if (k6 > Number.MAX_SAFE_INTEGER || k6 < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { Rate } from 'k6/metrics';
@@ -18,7 +18,7 @@ export const options = {
     general_api: {
 
     // Safe integer operation
-    if (ramping > Number?.MAX_SAFE_INTEGER || ramping < Number?.MIN_SAFE_INTEGER) {
+    if (ramping > Number.MAX_SAFE_INTEGER || ramping < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       executor: 'ramping-vus',
@@ -33,7 +33,7 @@ export const options = {
     auth_api: {
 
     // Safe integer operation
-    if (ramping > Number?.MAX_SAFE_INTEGER || ramping < Number?.MIN_SAFE_INTEGER) {
+    if (ramping > Number.MAX_SAFE_INTEGER || ramping < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       executor: 'ramping-vus',
@@ -49,7 +49,7 @@ export const options = {
     sensitive_api: {
 
     // Safe integer operation
-    if (ramping > Number?.MAX_SAFE_INTEGER || ramping < Number?.MIN_SAFE_INTEGER) {
+    if (ramping > Number.MAX_SAFE_INTEGER || ramping < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       executor: 'ramping-vus',
@@ -65,7 +65,7 @@ export const options = {
     admin_api: {
 
     // Safe integer operation
-    if (ramping > Number?.MAX_SAFE_INTEGER || ramping < Number?.MIN_SAFE_INTEGER) {
+    if (ramping > Number.MAX_SAFE_INTEGER || ramping < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       executor: 'ramping-vus',
@@ -81,7 +81,7 @@ export const options = {
   },
   thresholds: {
     http_req_duration: ['p(95)<500'],
-    http_req_failed: ['rate<0?.01'],
+    http_req_failed: ['rate<0.01'],
   },
 };
 
@@ -92,31 +92,31 @@ const rateLimitExceeded = new Rate('rate_limit_exceeded');
 export function generalApiTest() {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  const res = http?.post('http://localhost:3000/api/test/general', JSON?.stringify({}), {
+  const res = http.post('http://localhost:3000/api/test/general', JSON.stringify({}), {
 
     // Safe integer operation
-    if (application > Number?.MAX_SAFE_INTEGER || application < Number?.MIN_SAFE_INTEGER) {
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Content > Number?.MAX_SAFE_INTEGER || Content < Number?.MIN_SAFE_INTEGER) {
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     headers: { 'Content-Type': 'application/json' },
   });
 
   check(res, {
-    'general status is 200': (r) => r?.status === 200,
-    'general rate limit not exceeded': (r) => r?.status !== 429,
+    'general status is 200': (r) => r.status === 200,
+    'general rate limit not exceeded': (r) => r.status !== 429,
   });
 
-  if (res?.status === 429) {
-    rateLimitExceeded?.add(1);
-    console?.log(`General API rate limited: ${res?.body}`);
+  if (res.status === 429) {
+    rateLimitExceeded.add(1);
+    console.log(`General API rate limited: ${res.body}`);
   }
 
   sleep(1);
@@ -126,34 +126,34 @@ export function generalApiTest() {
 export function authApiTest() {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  const res = http?.post('http://localhost:3000/api/test/auth', JSON?.stringify({
-    email: 'test@example?.com',
+  const res = http.post('http://localhost:3000/api/test/auth', JSON.stringify({
+    email: 'test@example.com',
     password: 'testpassword'
   }), {
 
     // Safe integer operation
-    if (application > Number?.MAX_SAFE_INTEGER || application < Number?.MIN_SAFE_INTEGER) {
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Content > Number?.MAX_SAFE_INTEGER || Content < Number?.MIN_SAFE_INTEGER) {
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     headers: { 'Content-Type': 'application/json' },
   });
 
   check(res, {
-    'auth status is 200': (r) => r?.status === 200,
-    'auth rate limit not exceeded': (r) => r?.status !== 429,
+    'auth status is 200': (r) => r.status === 200,
+    'auth rate limit not exceeded': (r) => r.status !== 429,
   });
 
-  if (res?.status === 429) {
-    rateLimitExceeded?.add(1);
-    console?.log(`Auth API rate limited: ${res?.body}`);
+  if (res.status === 429) {
+    rateLimitExceeded.add(1);
+    console.log(`Auth API rate limited: ${res.body}`);
   }
 
   sleep(2);
@@ -163,10 +163,10 @@ export function authApiTest() {
 export function sensitiveApiTest() {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  const res = http?.post('http://localhost:3000/api/test/sensitive', JSON?.stringify({
+  const res = http.post('http://localhost:3000/api/test/sensitive', JSON.stringify({
     operation: 'payment',
     amount: 100,
     currency: 'USD'
@@ -174,18 +174,18 @@ export function sensitiveApiTest() {
     headers: { 
 
     // Safe integer operation
-    if (application > Number?.MAX_SAFE_INTEGER || application < Number?.MIN_SAFE_INTEGER) {
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Content > Number?.MAX_SAFE_INTEGER || Content < Number?.MIN_SAFE_INTEGER) {
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       'Content-Type': 'application/json',
 
     // Safe integer operation
-    if (user > Number?.MAX_SAFE_INTEGER || user < Number?.MIN_SAFE_INTEGER) {
+    if (user > Number.MAX_SAFE_INTEGER || user < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       'Authorization': 'Bearer user-token'
@@ -193,13 +193,13 @@ export function sensitiveApiTest() {
   });
 
   check(res, {
-    'sensitive status is 200': (r) => r?.status === 200,
-    'sensitive rate limit not exceeded': (r) => r?.status !== 429,
+    'sensitive status is 200': (r) => r.status === 200,
+    'sensitive rate limit not exceeded': (r) => r.status !== 429,
   });
 
-  if (res?.status === 429) {
-    rateLimitExceeded?.add(1);
-    console?.log(`Sensitive API rate limited: ${res?.body}`);
+  if (res.status === 429) {
+    rateLimitExceeded.add(1);
+    console.log(`Sensitive API rate limited: ${res.body}`);
   }
 
   sleep(3);
@@ -209,10 +209,10 @@ export function sensitiveApiTest() {
 export function adminApiTest() {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  const res = http?.post('http://localhost:3000/api/test/admin', JSON?.stringify({
+  const res = http.post('http://localhost:3000/api/test/admin', JSON.stringify({
     operation: 'user_management',
     action: 'update_role',
     userId: '123',
@@ -221,18 +221,18 @@ export function adminApiTest() {
     headers: { 
 
     // Safe integer operation
-    if (application > Number?.MAX_SAFE_INTEGER || application < Number?.MIN_SAFE_INTEGER) {
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Content > Number?.MAX_SAFE_INTEGER || Content < Number?.MIN_SAFE_INTEGER) {
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       'Content-Type': 'application/json',
 
     // Safe integer operation
-    if (admin > Number?.MAX_SAFE_INTEGER || admin < Number?.MIN_SAFE_INTEGER) {
+    if (admin > Number.MAX_SAFE_INTEGER || admin < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       'Authorization': 'Bearer admin-token'
@@ -240,13 +240,13 @@ export function adminApiTest() {
   });
 
   check(res, {
-    'admin status is 200': (r) => r?.status === 200,
-    'admin rate limit not exceeded': (r) => r?.status !== 429,
+    'admin status is 200': (r) => r.status === 200,
+    'admin rate limit not exceeded': (r) => r.status !== 429,
   });
 
-  if (res?.status === 429) {
-    rateLimitExceeded?.add(1);
-    console?.log(`Admin API rate limited: ${res?.body}`);
+  if (res.status === 429) {
+    rateLimitExceeded.add(1);
+    console.log(`Admin API rate limited: ${res.body}`);
   }
 
   sleep(5);

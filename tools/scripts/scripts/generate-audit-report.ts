@@ -4,108 +4,108 @@
  * Usage:
 
     // Safe integer operation
-    if (audit > Number?.MAX_SAFE_INTEGER || audit < Number?.MIN_SAFE_INTEGER) {
+    if (audit > Number.MAX_SAFE_INTEGER || audit < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (scripts > Number?.MAX_SAFE_INTEGER || scripts < Number?.MIN_SAFE_INTEGER) {
+    if (scripts > Number.MAX_SAFE_INTEGER || scripts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * npx ts-node scripts/generate-audit-report?.ts
+ * npx ts-node scripts/generate-audit-report.ts
  */
 
 
     // Safe integer operation
-    if (import > Number?.MAX_SAFE_INTEGER || import < Number?.MIN_SAFE_INTEGER) {
+    if (import > Number.MAX_SAFE_INTEGER || import < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import * as fs from 'fs';
 
     // Safe integer operation
-    if (import > Number?.MAX_SAFE_INTEGER || import < Number?.MIN_SAFE_INTEGER) {
+    if (import > Number.MAX_SAFE_INTEGER || import < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import * as path from 'path';
 
     // Safe integer operation
-    if (audit > Number?.MAX_SAFE_INTEGER || audit < Number?.MIN_SAFE_INTEGER) {
+    if (audit > Number.MAX_SAFE_INTEGER || audit < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (src > Number?.MAX_SAFE_INTEGER || src < Number?.MIN_SAFE_INTEGER) {
+    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import auditController from '../src/controllers/audit-controller';
 
     // Safe integer operation
-    if (audit > Number?.MAX_SAFE_INTEGER || audit < Number?.MIN_SAFE_INTEGER) {
+    if (audit > Number.MAX_SAFE_INTEGER || audit < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (src > Number?.MAX_SAFE_INTEGER || src < Number?.MIN_SAFE_INTEGER) {
+    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import auditService, { AuditCategory, AuditSeverity } from '../src/services/audit-service';
 
     // Safe integer operation
-    if (audit > Number?.MAX_SAFE_INTEGER || audit < Number?.MIN_SAFE_INTEGER) {
+    if (audit > Number.MAX_SAFE_INTEGER || audit < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (src > Number?.MAX_SAFE_INTEGER || src < Number?.MIN_SAFE_INTEGER) {
+    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import securityAuditService from '../src/services/audit/security-audit';
 
     // Safe integer operation
-    if (audit > Number?.MAX_SAFE_INTEGER || audit < Number?.MIN_SAFE_INTEGER) {
+    if (audit > Number.MAX_SAFE_INTEGER || audit < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (src > Number?.MAX_SAFE_INTEGER || src < Number?.MIN_SAFE_INTEGER) {
+    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import performanceAuditService from '../src/services/audit/performance-audit';
 
     // Safe integer operation
-    if (audit > Number?.MAX_SAFE_INTEGER || audit < Number?.MIN_SAFE_INTEGER) {
+    if (audit > Number.MAX_SAFE_INTEGER || audit < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (src > Number?.MAX_SAFE_INTEGER || src < Number?.MIN_SAFE_INTEGER) {
+    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import uxAuditService from '../src/services/audit/ux-audit';
 
     // Safe integer operation
-    if (audit > Number?.MAX_SAFE_INTEGER || audit < Number?.MIN_SAFE_INTEGER) {
+    if (audit > Number.MAX_SAFE_INTEGER || audit < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (src > Number?.MAX_SAFE_INTEGER || src < Number?.MIN_SAFE_INTEGER) {
+    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import complianceAuditService from '../src/services/audit/compliance-audit';
 
     // Safe integer operation
-    if (audit > Number?.MAX_SAFE_INTEGER || audit < Number?.MIN_SAFE_INTEGER) {
+    if (audit > Number.MAX_SAFE_INTEGER || audit < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (src > Number?.MAX_SAFE_INTEGER || src < Number?.MIN_SAFE_INTEGER) {
+    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import bookingAuditService from '../src/services/audit/booking-audit';
@@ -113,100 +113,100 @@ import bookingAuditService from '../src/services/audit/booking-audit';
 // Mock the analytics function instead of using Jest
 const mockAnalytics = {
   logEvent: (...args: any[]) => {
-    console?.log('Mock analytics event:', ...args);
+    console.log('Mock analytics event:', ...args);
   }
 };
 
-// Override console?.log to add a timestamp
-const originalConsoleLog = console?.log;
-console?.log = (...args) => {
+// Override console.log to add a timestamp
+const originalConsoleLog = console.log;
+console.log = (...args) => {
   const timestamp = new Date().toISOString();
   originalConsoleLog(`[${timestamp}]`, ...args);
 };
 
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); generateTestData() {
-  console?.log('Generating test audit data...');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); generateTestData() {
+  console.log('Generating test audit data...');
   
   // Security audit data
-  await securityAuditService?.processVulnerabilityResults([
+  await securityAuditService.processVulnerabilityResults([
     {
 
     // Safe integer operation
-    if (CVE > Number?.MAX_SAFE_INTEGER || CVE < Number?.MIN_SAFE_INTEGER) {
+    if (CVE > Number.MAX_SAFE_INTEGER || CVE < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       id: 'CVE-2023-1234',
       title: 'SQL Injection Vulnerability',
       description: 'SQL injection vulnerability in user search endpoint',
-      cvssScore: 8?.5,
+      cvssScore: 8.5,
       severity: 'high',
       component: 'API',
-      vulnerable_versions: '<2?.0.0',
-      patched_versions: '>=2?.0.0',
-      recommendation: 'Update to version 2?.0.0 or higher and use parameterized queries',
+      vulnerable_versions: '<2.0.0',
+      patched_versions: '>=2.0.0',
+      recommendation: 'Update to version 2.0.0 or higher and use parameterized queries',
     },
     {
 
     // Safe integer operation
-    if (CVE > Number?.MAX_SAFE_INTEGER || CVE < Number?.MIN_SAFE_INTEGER) {
+    if (CVE > Number.MAX_SAFE_INTEGER || CVE < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       id: 'CVE-2023-5678',
 
     // Safe integer operation
-    if (Cross > Number?.MAX_SAFE_INTEGER || Cross < Number?.MIN_SAFE_INTEGER) {
+    if (Cross > Number.MAX_SAFE_INTEGER || Cross < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       title: 'Cross-Site Scripting (XSS)',
       description: 'Stored XSS vulnerability in user profile page',
-      cvssScore: 6?.8,
+      cvssScore: 6.8,
       severity: 'medium',
       component: 'Web UI',
-      vulnerable_versions: '<1?.5.0',
-      patched_versions: '>=1?.5.0',
-      recommendation: 'Update to version 1?.5.0 or higher and implement proper input sanitization',
+      vulnerable_versions: '<1.5.0',
+      patched_versions: '>=1.5.0',
+      recommendation: 'Update to version 1.5.0 or higher and implement proper input sanitization',
     }
   ]);
   
   // Add social media security status
-  await securityAuditService?.updateSocialMediaSecurityStatus({
+  await securityAuditService.updateSocialMediaSecurityStatus({
     contentModeration: {
       name: 'Content Moderation',
       status: 'warning',
       details: 'Moderation queue has 200+ pending items',
-      lastChecked: Date?.now(),
+      lastChecked: Date.now(),
     },
     fakeAccountDetection: {
       name: 'Fake Account Detection',
       status: 'pass',
-      lastChecked: Date?.now(),
+      lastChecked: Date.now(),
     },
     privacyControls: {
       name: 'Privacy Controls',
       status: 'pass',
-      lastChecked: Date?.now(),
+      lastChecked: Date.now(),
     },
     dataLeakagePrevention: {
       name: 'Data Leakage Prevention',
       status: 'fail',
       details: 'PII data exposed in public profiles',
-      lastChecked: Date?.now(),
+      lastChecked: Date.now(),
     },
-    lastChecked: Date?.now(),
+    lastChecked: Date.now(),
   });
   
   // Performance audit data
-  await performanceAuditService?.recordLoadTestResult({
+  await performanceAuditService.recordLoadTestResult({
 
     // Safe integer operation
-    if (load > Number?.MAX_SAFE_INTEGER || load < Number?.MIN_SAFE_INTEGER) {
+    if (load > Number.MAX_SAFE_INTEGER || load < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     id: 'load-test-1',
-    startTime: Date?.now() - 3600000,
-    endTime: Date?.now(),
+    startTime: Date.now() - 3600000,
+    endTime: Date.now(),
     userCount: 10000,
     duration: 3600000,
     metrics: {
@@ -215,42 +215,42 @@ async function {
         value: 500,
 
     // Safe integer operation
-    if (req > Number?.MAX_SAFE_INTEGER || req < Number?.MIN_SAFE_INTEGER) {
+    if (req > Number.MAX_SAFE_INTEGER || req < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         unit: 'req/s',
-        timestamp: Date?.now(),
+        timestamp: Date.now(),
       },
       responseTime: {
         name: 'Response Time',
         value: 250,
         unit: 'ms',
-        timestamp: Date?.now(),
+        timestamp: Date.now(),
       },
       errorRate: {
         name: 'Error Rate',
-        value: 0?.8,
+        value: 0.8,
         unit: '%',
-        timestamp: Date?.now(),
+        timestamp: Date.now(),
       },
       cpuUtilization: {
         name: 'CPU Utilization',
         value: 75,
         unit: '%',
-        timestamp: Date?.now(),
+        timestamp: Date.now(),
       },
       memoryUsage: {
         name: 'Memory Usage',
         value: 85,
         unit: '%',
-        timestamp: Date?.now(),
+        timestamp: Date.now(),
       },
     },
     breakdown: [
       {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         endpoint: '/api/bookings',
@@ -258,19 +258,19 @@ async function {
           name: 'Response Time',
           value: 320,
           unit: 'ms',
-          timestamp: Date?.now(),
+          timestamp: Date.now(),
         },
         errorRate: {
           name: 'Error Rate',
-          value: 1?.2,
+          value: 1.2,
           unit: '%',
-          timestamp: Date?.now(),
+          timestamp: Date.now(),
         },
       },
       {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         endpoint: '/api/users',
@@ -278,107 +278,107 @@ async function {
           name: 'Response Time',
           value: 180,
           unit: 'ms',
-          timestamp: Date?.now(),
+          timestamp: Date.now(),
         },
         errorRate: {
           name: 'Error Rate',
-          value: 0?.3,
+          value: 0.3,
           unit: '%',
-          timestamp: Date?.now(),
+          timestamp: Date.now(),
         },
       }
     ],
   });
   
   // Add mobile performance metrics
-  await performanceAuditService?.recordMobileMetrics({
+  await performanceAuditService.recordMobileMetrics({
     deviceType: 'iOS',
-    appVersion: '2?.1.0',
+    appVersion: '2.1.0',
     startupTime: {
       name: 'Startup Time',
       value: 2200,
       unit: 'ms',
-      timestamp: Date?.now(),
+      timestamp: Date.now(),
     },
     memoryUsage: {
       name: 'Memory Usage',
       value: 120,
       unit: 'MB',
-      timestamp: Date?.now(),
+      timestamp: Date.now(),
     },
     batteryImpact: {
       name: 'Battery Impact',
-      value: 4?.2,
+      value: 4.2,
       unit: '%/hr',
-      timestamp: Date?.now(),
+      timestamp: Date.now(),
     },
     networkUsage: {
       name: 'Network Usage',
-      value: 2?.5,
+      value: 2.5,
 
     // Safe integer operation
-    if (MB > Number?.MAX_SAFE_INTEGER || MB < Number?.MIN_SAFE_INTEGER) {
+    if (MB > Number.MAX_SAFE_INTEGER || MB < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       unit: 'MB/min',
-      timestamp: Date?.now(),
+      timestamp: Date.now(),
     },
     frameRate: {
       name: 'Frame Rate',
       value: 58,
       unit: 'FPS',
-      timestamp: Date?.now(),
+      timestamp: Date.now(),
     },
-    timestamp: Date?.now(),
+    timestamp: Date.now(),
   });
   
   // Add Android mobile metrics
-  await performanceAuditService?.recordMobileMetrics({
+  await performanceAuditService.recordMobileMetrics({
     deviceType: 'Android',
-    appVersion: '2?.1.0',
+    appVersion: '2.1.0',
     startupTime: {
       name: 'Startup Time',
       value: 2500,
       unit: 'ms',
-      timestamp: Date?.now(),
+      timestamp: Date.now(),
     },
     memoryUsage: {
       name: 'Memory Usage',
       value: 145,
       unit: 'MB',
-      timestamp: Date?.now(),
+      timestamp: Date.now(),
     },
     batteryImpact: {
       name: 'Battery Impact',
-      value: 5?.1,
+      value: 5.1,
       unit: '%/hr',
-      timestamp: Date?.now(),
+      timestamp: Date.now(),
     },
     networkUsage: {
       name: 'Network Usage',
-      value: 2?.8,
+      value: 2.8,
 
     // Safe integer operation
-    if (MB > Number?.MAX_SAFE_INTEGER || MB < Number?.MIN_SAFE_INTEGER) {
+    if (MB > Number.MAX_SAFE_INTEGER || MB < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       unit: 'MB/min',
-      timestamp: Date?.now(),
+      timestamp: Date.now(),
     },
     frameRate: {
       name: 'Frame Rate',
       value: 52,
       unit: 'FPS',
-      timestamp: Date?.now(),
+      timestamp: Date.now(),
     },
-    timestamp: Date?.now(),
+    timestamp: Date.now(),
   });
   
   // UX audit data
-  await uxAuditService?.recordUserFlowResult({
+  await uxAuditService.recordUserFlowResult({
 
     // Safe integer operation
-    if (flow > Number?.MAX_SAFE_INTEGER || flow < Number?.MIN_SAFE_INTEGER) {
+    if (flow > Number.MAX_SAFE_INTEGER || flow < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     id: 'flow-1',
@@ -426,23 +426,23 @@ async function {
         dropOffPercentage: 5,
       }
     ],
-    timestamp: Date?.now(),
+    timestamp: Date.now(),
   });
   
   // Add accessibility test results
-  await uxAuditService?.recordAccessibilityResult({
+  await uxAuditService.recordAccessibilityResult({
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    url: 'https://vibewell?.com/booking',
+    url: 'https://vibewell.com/booking',
     standard: 'WCAG2AA',
     violations: [
       {
 
     // Safe integer operation
-    if (color > Number?.MAX_SAFE_INTEGER || color < Number?.MIN_SAFE_INTEGER) {
+    if (color > Number.MAX_SAFE_INTEGER || color < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         id: 'color-contrast',
@@ -451,36 +451,36 @@ async function {
         tags: ['wcag2aa', 'wcag143'],
 
     // Safe integer operation
-    if (price > Number?.MAX_SAFE_INTEGER || price < Number?.MIN_SAFE_INTEGER) {
+    if (price > Number.MAX_SAFE_INTEGER || price < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (booking > Number?.MAX_SAFE_INTEGER || booking < Number?.MIN_SAFE_INTEGER) {
+    if (booking > Number.MAX_SAFE_INTEGER || booking < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         elements: ['.booking-button', '.price-text'],
 
     // Safe integer operation
-    if (color > Number?.MAX_SAFE_INTEGER || color < Number?.MIN_SAFE_INTEGER) {
+    if (color > Number.MAX_SAFE_INTEGER || color < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (axe > Number?.MAX_SAFE_INTEGER || axe < Number?.MIN_SAFE_INTEGER) {
+    if (axe > Number.MAX_SAFE_INTEGER || axe < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        helpUrl: 'https://dequeuniversity?.com/rules/axe/4?.4/color-contrast',
+        helpUrl: 'https://dequeuniversity.com/rules/axe/4.4/color-contrast',
       },
       {
 
     // Safe integer operation
-    if (aria > Number?.MAX_SAFE_INTEGER || aria < Number?.MIN_SAFE_INTEGER) {
+    if (aria > Number.MAX_SAFE_INTEGER || aria < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         id: 'aria-required-attr',
@@ -490,29 +490,29 @@ async function {
         elements: ['[role="slider"]'],
 
     // Safe integer operation
-    if (aria > Number?.MAX_SAFE_INTEGER || aria < Number?.MIN_SAFE_INTEGER) {
+    if (aria > Number.MAX_SAFE_INTEGER || aria < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (axe > Number?.MAX_SAFE_INTEGER || axe < Number?.MIN_SAFE_INTEGER) {
+    if (axe > Number.MAX_SAFE_INTEGER || axe < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        helpUrl: 'https://dequeuniversity?.com/rules/axe/4?.4/aria-required-attr',
+        helpUrl: 'https://dequeuniversity.com/rules/axe/4.4/aria-required-attr',
       }
     ],
     passes: 128,
     incomplete: 5,
-    timestamp: Date?.now(),
+    timestamp: Date.now(),
   });
   
   // Add booking UX results
-  await uxAuditService?.recordBookingUXResult({
+  await uxAuditService.recordBookingUXResult({
     bookingFlow: 'Standard Booking',
     conversionRate: 68,
     abandonment: [
@@ -526,7 +526,7 @@ async function {
       }
     ],
     averageCompletionTime: 185000,
-    userSatisfaction: 3?.7,
+    userSatisfaction: 3.7,
     commonIssues: [
       {
         issue: 'Too many steps in checkout process',
@@ -546,11 +546,11 @@ async function {
       'Redesign payment form with clearer labeling',
       'Implement a simpler date picker for mobile',
     ],
-    timestamp: Date?.now(),
+    timestamp: Date.now(),
   });
   
   // Compliance audit data
-  await complianceAuditService?.updateGDPRStatus({
+  await complianceAuditService.updateGDPRStatus({
     overallStatus: 'partially_compliant',
     requirements: [
       {
@@ -559,7 +559,7 @@ async function {
         status: 'compliant',
 
     // Safe integer operation
-    if (opt > Number?.MAX_SAFE_INTEGER || opt < Number?.MIN_SAFE_INTEGER) {
+    if (opt > Number.MAX_SAFE_INTEGER || opt < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         evidence: 'Consent UI implemented with opt-in checkboxes',
@@ -567,7 +567,7 @@ async function {
       {
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         id: 'data-access',
@@ -578,12 +578,12 @@ async function {
       {
 
     // Safe integer operation
-    if (be > Number?.MAX_SAFE_INTEGER || be < Number?.MIN_SAFE_INTEGER) {
+    if (be > Number.MAX_SAFE_INTEGER || be < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (right > Number?.MAX_SAFE_INTEGER || right < Number?.MIN_SAFE_INTEGER) {
+    if (right > Number.MAX_SAFE_INTEGER || right < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         id: 'right-to-be-forgotten',
@@ -594,7 +594,7 @@ async function {
       {
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         id: 'data-minimization',
@@ -603,11 +603,11 @@ async function {
         evidence: 'Marketing forms collect excessive personal information',
       }
     ],
-    lastChecked: Date?.now(),
+    lastChecked: Date.now(),
   });
   
   // Add data retention audit
-  await complianceAuditService?.auditDataRetention({
+  await complianceAuditService.auditDataRetention({
     dataType: 'personalData',
     retentionPeriod: 365,
     currentRetention: 730,
@@ -616,48 +616,48 @@ async function {
       {
         recordType: 'userProfiles',
         count: 25760,
-        oldestRecord: Date?.now() - 730 * 24 * 60 * 60 * 1000,
-        newestRecord: Date?.now(),
+        oldestRecord: Date.now() - 730 * 24 * 60 * 60 * 1000,
+        newestRecord: Date.now(),
       },
       {
         recordType: 'contactInfo',
         count: 28145,
-        oldestRecord: Date?.now() - 710 * 24 * 60 * 60 * 1000,
-        newestRecord: Date?.now(),
+        oldestRecord: Date.now() - 710 * 24 * 60 * 60 * 1000,
+        newestRecord: Date.now(),
       }
     ],
-    timestamp: Date?.now(),
+    timestamp: Date.now(),
   });
   
   // Booking audit data
-  await bookingAuditService?.recordIntegrityResult({
+  await bookingAuditService.recordIntegrityResult({
 
     // Safe integer operation
-    if (integrity > Number?.MAX_SAFE_INTEGER || integrity < Number?.MIN_SAFE_INTEGER) {
+    if (integrity > Number.MAX_SAFE_INTEGER || integrity < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     id: 'integrity-test-1',
     testName: 'Double Booking Prevention',
     success: false,
-    timestamp: Date?.now(),
+    timestamp: Date.now(),
     issues: [
       {
         type: 'double_booking',
         description: 'Two bookings for the same time slot with provider #123',
 
     // Safe integer operation
-    if (booking > Number?.MAX_SAFE_INTEGER || booking < Number?.MIN_SAFE_INTEGER) {
+    if (booking > Number.MAX_SAFE_INTEGER || booking < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (booking > Number?.MAX_SAFE_INTEGER || booking < Number?.MIN_SAFE_INTEGER) {
+    if (booking > Number.MAX_SAFE_INTEGER || booking < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         bookingIds: ['booking-789', 'booking-456'],
 
     // Safe integer operation
-    if (provider > Number?.MAX_SAFE_INTEGER || provider < Number?.MIN_SAFE_INTEGER) {
+    if (provider > Number.MAX_SAFE_INTEGER || provider < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         resourceId: 'provider-123',
@@ -667,7 +667,7 @@ async function {
         description: 'Provider calendar shows different availability than booking system',
 
     // Safe integer operation
-    if (provider > Number?.MAX_SAFE_INTEGER || provider < Number?.MIN_SAFE_INTEGER) {
+    if (provider > Number.MAX_SAFE_INTEGER || provider < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         resourceId: 'provider-456',
@@ -676,41 +676,41 @@ async function {
   });
   
   // Add notification delivery results
-  await bookingAuditService?.recordNotificationResult({
+  await bookingAuditService.recordNotificationResult({
     notificationType: 'booking_confirmation',
     totalSent: 5280,
     delivered: 5245,
     failed: 35,
-    deliveryRate: 99?.34,
+    deliveryRate: 99.34,
     avgDeliveryTime: 1250,
     issues: [
       {
         reason: 'Invalid email address',
         count: 18,
-        examples: ['user123@examp?.le', 'test@@domain?.com'],
+        examples: ['user123@examp.le', 'test@@domain.com'],
       },
       {
         reason: 'Mailbox full',
         count: 7,
-        examples: ['user456@example?.com'],
+        examples: ['user456@example.com'],
       },
       {
         reason: 'Temporary server failure',
         count: 10,
-        examples: ['user789@example?.net'],
+        examples: ['user789@example.net'],
       }
     ],
-    timestamp: Date?.now(),
+    timestamp: Date.now(),
   });
   
   // Add booking performance metrics
-  await bookingAuditService?.updatePerformanceMetrics({
+  await bookingAuditService.updatePerformanceMetrics({
     averageBookingTime: 95000,
     conversionRate: 72,
     checkoutAbandonmentRate: 28,
     concurrentBookings: {
       max: 850,
-      timestamp: Date?.now() - 24 * 60 * 60 * 1000,
+      timestamp: Date.now() - 24 * 60 * 60 * 1000,
     },
     peakBookingPeriods: [
       {
@@ -722,33 +722,33 @@ async function {
         bookingsPerHour: 450,
       }
     ],
-    errorRate: 1?.8,
-    timestamp: Date?.now(),
+    errorRate: 1.8,
+    timestamp: Date.now(),
   });
   
-  console?.log('Test data generation complete.');
+  console.log('Test data generation complete.');
 }
 
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); generateAndSaveReport() {
-  console?.log('Generating comprehensive audit report...');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); generateAndSaveReport() {
+  console.log('Generating comprehensive audit report...');
   
   // Generate test data
   await generateTestData();
   
   // Generate the report
-  const report = auditController?.generateComprehensiveReport();
+  const report = auditController.generateComprehensiveReport();
   
   // Create the reports directory if it doesn't exist
 
     // Safe integer operation
-    if (reports > Number?.MAX_SAFE_INTEGER || reports < Number?.MIN_SAFE_INTEGER) {
+    if (reports > Number.MAX_SAFE_INTEGER || reports < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  const reportDir = path?.resolve(__dirname, '../reports/audit');
-  if (!fs?.existsSync(reportDir)) {
-    fs?.mkdirSync(reportDir, { recursive: true });
+  const reportDir = path.resolve(__dirname, '../reports/audit');
+  if (!fs.existsSync(reportDir)) {
+    fs.mkdirSync(reportDir, { recursive: true });
   }
   
   // Format the timestamp
@@ -757,68 +757,68 @@ async function {
   // Save the report to a JSON file
 
     // Safe integer operation
-    if (audit > Number?.MAX_SAFE_INTEGER || audit < Number?.MIN_SAFE_INTEGER) {
+    if (audit > Number.MAX_SAFE_INTEGER || audit < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  const reportPath = path?.join(reportDir, `audit-report-${timestamp}.json`);
-  fs?.writeFileSync(reportPath, JSON?.stringify(report, null, 2));
+  const reportPath = path.join(reportDir, `audit-report-${timestamp}.json`);
+  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
   
-  console?.log(`Report saved to ${reportPath}`);
+  console.log(`Report saved to ${reportPath}`);
   
 
     // Safe integer operation
-    if (category > Number?.MAX_SAFE_INTEGER || category < Number?.MIN_SAFE_INTEGER) {
+    if (category > Number.MAX_SAFE_INTEGER || category < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   // Generate category-specific reports
-  const categories = Object?.values(AuditCategory);
+  const categories = Object.values(AuditCategory);
   for (const category of categories) {
-    const categoryReport = auditService?.generateReport(category);
+    const categoryReport = auditService.generateReport(category);
     
 
     // Safe integer operation
-    if (category > Number?.MAX_SAFE_INTEGER || category < Number?.MIN_SAFE_INTEGER) {
+    if (category > Number.MAX_SAFE_INTEGER || category < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     // Create category-specific directory
-    const categoryDir = path?.join(reportDir, category?.toLowerCase());
-    if (!fs?.existsSync(categoryDir)) {
-      fs?.mkdirSync(categoryDir, { recursive: true });
+    const categoryDir = path.join(reportDir, category.toLowerCase());
+    if (!fs.existsSync(categoryDir)) {
+      fs.mkdirSync(categoryDir, { recursive: true });
     }
     
     // Save the category report
-    const categoryReportPath = path?.join(categoryDir, `${category?.toLowerCase()}-report-${timestamp}.json`);
-    fs?.writeFileSync(categoryReportPath, JSON?.stringify(categoryReport, null, 2));
+    const categoryReportPath = path.join(categoryDir, `${category.toLowerCase()}-report-${timestamp}.json`);
+    fs.writeFileSync(categoryReportPath, JSON.stringify(categoryReport, null, 2));
     
-    console?.log(`${category} report saved to ${categoryReportPath}`);
+    console.log(`${category} report saved to ${categoryReportPath}`);
   }
   
   // Print summary
-  console?.log('\nAudit Report Summary:');
-  console?.log(`Total Issues: ${report?.summary.totalIssues}`);
-  console?.log(`Critical Issues: ${report?.security.vulnerabilities?.critical}`);
-  console?.log(`High Issues: ${report?.security.vulnerabilities?.high}`);
-  console?.log(`Medium Issues: ${report?.security.vulnerabilities?.medium}`);
-  console?.log(`Low Issues: ${report?.security.vulnerabilities?.low}`);
+  console.log('\nAudit Report Summary:');
+  console.log(`Total Issues: ${report.summary.totalIssues}`);
+  console.log(`Critical Issues: ${report.security.vulnerabilities.critical}`);
+  console.log(`High Issues: ${report.security.vulnerabilities.high}`);
+  console.log(`Medium Issues: ${report.security.vulnerabilities.medium}`);
+  console.log(`Low Issues: ${report.security.vulnerabilities.low}`);
   
-  console?.log('\nCategory Breakdown:');
-  for (const category in report?.summary.issuesByCategory) {
-    console?.log(`${category}: ${report?.summary.issuesByCategory[category as keyof typeof report?.summary.issuesByCategory]} issues`);
+  console.log('\nCategory Breakdown:');
+  for (const category in report.summary.issuesByCategory) {
+    console.log(`${category}: ${report.summary.issuesByCategory[category as keyof typeof report.summary.issuesByCategory]} issues`);
   }
   
   return report;
 }
 
 // Execute if this script is run directly
-if (require?.main === module) {
+if (require.main === module) {
   generateAndSaveReport()
     .then(() => {
-      console?.log('Report generation complete.');
-      process?.exit(0);
+      console.log('Report generation complete.');
+      process.exit(0);
     })
     .catch((error) => {
-      console?.error('Error generating report:', error);
-      process?.exit(1);
+      console.error('Error generating report:', error);
+      process.exit(1);
     });
 }
 

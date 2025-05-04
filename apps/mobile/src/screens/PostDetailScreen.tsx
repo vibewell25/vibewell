@@ -15,9 +15,7 @@ const PostDetailScreen: React.FC = () => {
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const loadData = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const loadData = async () => {
     setLoading(true);
     try {
       const data = await communityApi.getPostById(id);
@@ -34,9 +32,7 @@ const PostDetailScreen: React.FC = () => {
 
   useEffect(() => { loadData(); }, [id]);
 
-  const handleAddComment = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleAddComment = async () => {
     if (!newComment.trim()) return;
     try {
       await communityApi.addComment(id, newComment.trim());
@@ -48,9 +44,7 @@ const PostDetailScreen: React.FC = () => {
     }
   };
 
-  const handleDelete = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleDelete = async () => {
     try {
       await communityApi.deletePost(id);
       navigation.goBack();

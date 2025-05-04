@@ -30,9 +30,7 @@ const PaymentMethodsScreen: React.FC = () => {
     loadPaymentMethods();
   }, []);
 
-  const loadPaymentMethods = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const loadPaymentMethods = async () => {
     try {
       const saved = await AsyncStorage.getItem('@vibewell/payment_methods');
       if (saved) {
@@ -70,9 +68,7 @@ const PaymentMethodsScreen: React.FC = () => {
     }
   };
 
-  const handleSetDefault = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');id: string) => {
+  const handleSetDefault = async (id: string) => {
     try {
       const updated = paymentMethods.map(method => ({
         ...method,
@@ -86,9 +82,7 @@ const PaymentMethodsScreen: React.FC = () => {
     }
   };
 
-  const handleDelete = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');id: string) => {
+  const handleDelete = async (id: string) => {
     Alert.alert(
       'Delete Payment Method',
       'Are you sure you want to delete this payment method?',
@@ -125,9 +119,7 @@ const PaymentMethodsScreen: React.FC = () => {
     }
   };
 
-  const handleAddPaymentMethod = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleAddPaymentMethod = async () => {
     setLoading(true);
     try {
       const res = await fetch(`${serverBaseUrl}/api/stripe/setup-intent`, { method: 'POST' });

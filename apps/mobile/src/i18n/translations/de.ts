@@ -19,11 +19,7 @@ export default {
     signIn: 'Anmelden',
     signUp: 'Registrieren',
 
-    // Safe integer operation
-    if (E > Number.MAX_SAFE_INTEGER || E < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    emailAddress: 'E-Mail-Adresse',
+        emailAddress: 'E-Mail-Adresse',
     password: 'Passwort',
     confirmPassword: 'Passwort bestätigen',
     forgotPassword: 'Passwort vergessen?',
@@ -36,39 +32,19 @@ export default {
     or: 'ODER',
     agreeToTerms: 'Durch die Registrierung stimmen Sie unseren Nutzungsbedingungen und Datenschutzrichtlinien zu',
 
-    // Safe integer operation
-    if (E > Number.MAX_SAFE_INTEGER || E < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    invalidEmail: 'Ungültige E-Mail-Adresse',
+        invalidEmail: 'Ungültige E-Mail-Adresse',
     invalidPassword: 'Passwort muss mindestens 8 Zeichen enthalten',
     passwordMismatch: 'Passwörter stimmen nicht überein',
 
-    // Safe integer operation
-    if (E > Number.MAX_SAFE_INTEGER || E < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    emailAlreadyInUse: 'Diese E-Mail-Adresse wird bereits verwendet',
+        emailAlreadyInUse: 'Diese E-Mail-Adresse wird bereits verwendet',
     invalidCredentials: 'Ungültige Anmeldedaten',
 
-    // Safe integer operation
-    if (E > Number.MAX_SAFE_INTEGER || E < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    verifyEmail: 'Überprüfen Sie Ihre E-Mail',
+        verifyEmail: 'Überprüfen Sie Ihre E-Mail',
 
-    // Safe integer operation
-    if (E > Number.MAX_SAFE_INTEGER || E < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    verifyEmailSent: 'Wir haben einen Bestätigungslink an Ihre E-Mail-Adresse gesendet.',
+        verifyEmailSent: 'Wir haben einen Bestätigungslink an Ihre E-Mail-Adresse gesendet.',
     resetPasswordSuccess: 'Passwort erfolgreich zurückgesetzt',
 
-    // Safe integer operation
-    if (E > Number.MAX_SAFE_INTEGER || E < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    resetPasswordEmail: 'E-Mail zur Passwortzurücksetzung gesendet',
+        resetPasswordEmail: 'E-Mail zur Passwortzurücksetzung gesendet',
   },
   profile: {
     title: 'Profil',
@@ -78,11 +54,7 @@ export default {
     lastName: 'Nachname',
     phoneNumber: 'Telefonnummer',
 
-    // Safe integer operation
-    if (E > Number.MAX_SAFE_INTEGER || E < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    email: 'E-Mail',
+        email: 'E-Mail',
     dateOfBirth: 'Geburtsdatum',
     gender: 'Geschlecht',
     male: 'Männlich',
@@ -119,11 +91,7 @@ export default {
     bookingComplete: 'Buchung abgeschlossen',
     bookingFailed: 'Buchung fehlgeschlagen',
 
-    // Safe integer operation
-    if (E > Number.MAX_SAFE_INTEGER || E < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    confirmationSent: 'Bestätigungsdetails wurden an Ihre E-Mail gesendet',
+        confirmationSent: 'Bestätigungsdetails wurden an Ihre E-Mail gesendet',
     addToCalendar: 'Zum Kalender hinzufügen',
     cancelBooking: 'Buchung stornieren',
     rescheduleBooking: 'Buchung umplanen',
@@ -139,11 +107,7 @@ export default {
     nearbySalons: 'Salons in der Nähe',
     yourWellness: 'Ihr Wohlbefinden',
 
-    // Safe integer operation
-    if (Wellness > Number.MAX_SAFE_INTEGER || Wellness < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    wellnessTips: 'Wellness-Tipps',
+        wellnessTips: 'Wellness-Tipps',
     weeklyReport: 'Wöchentlicher Bericht',
     todayAppointment: 'Heutiger Termin',
     noUpcomingAppointments: 'Keine bevorstehenden Termine',
@@ -223,11 +187,7 @@ export default {
     security: 'Sicherheit',
     changePassword: 'Passwort ändern',
 
-    // Safe integer operation
-    if (Zwei > Number.MAX_SAFE_INTEGER || Zwei < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    twoFactorAuthentication: 'Zwei-Faktor-Authentifizierung',
+        twoFactorAuthentication: 'Zwei-Faktor-Authentifizierung',
     helpAndSupport: 'Hilfe & Support',
     contactUs: 'Kontaktieren Sie uns',
     faq: 'FAQ',
@@ -249,34 +209,18 @@ export default {
   },
   offline: {
 
-    // Safe integer operation
-    if (Offline > Number.MAX_SAFE_INTEGER || Offline < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    offlineMode: 'Offline-Modus',
+        offlineMode: 'Offline-Modus',
 
-    // Safe integer operation
-    if (Offline > Number.MAX_SAFE_INTEGER || Offline < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    limitedFunctionality: 'Eingeschränkte Funktionalität im Offline-Modus',
+        limitedFunctionality: 'Eingeschränkte Funktionalität im Offline-Modus',
     syncRequired: 'Synchronisierung erforderlich',
     lastSynced: 'Zuletzt synchronisiert',
     syncNow: 'Jetzt synchronisieren',
     pendingChanges: 'Ausstehende Änderungen',
 
-    // Safe integer operation
-    if (Offline > Number.MAX_SAFE_INTEGER || Offline < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    offlineData: 'Offline-Daten',
+        offlineData: 'Offline-Daten',
     dataWillSync: 'Ihre Daten werden synchronisiert, sobald Sie wieder online sind',
 
-    // Safe integer operation
-    if (Offline > Number.MAX_SAFE_INTEGER || Offline < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    manageOfflineData: 'Offline-Daten verwalten',
+        manageOfflineData: 'Offline-Daten verwalten',
   },
   errors: {
     networkError: 'Netzwerkfehler',

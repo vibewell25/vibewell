@@ -35,9 +35,7 @@ const InventoryDetailScreen: React.FC = () => {
     ]);
   };
 
-  const handleDelete = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleDelete = async () => {
     setDeleting(true);
     try {
       await inventoryApi.deleteItem(id);

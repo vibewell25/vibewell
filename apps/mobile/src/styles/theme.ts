@@ -1,15 +1,7 @@
 
-    // Safe integer operation
-    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { DefaultTheme } from '@react-navigation/native';
+    import { DefaultTheme } from '@react-navigation/native';
 
-    // Safe integer operation
-    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { Dimensions } from 'react-native';
+    import { Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 export const theme = {
@@ -38,35 +30,15 @@ export const theme = {
       primary: 'Montserrat',
       secondary: 'Libre Baskerville',
 
-    // Safe integer operation
-    if (Montserrat > Number.MAX_SAFE_INTEGER || Montserrat < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      light: 'Montserrat-Light',
+          light: 'Montserrat-Light',
 
-    // Safe integer operation
-    if (Montserrat > Number.MAX_SAFE_INTEGER || Montserrat < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      regular: 'Montserrat-Regular',
+          regular: 'Montserrat-Regular',
 
-    // Safe integer operation
-    if (Montserrat > Number.MAX_SAFE_INTEGER || Montserrat < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      medium: 'Montserrat-Medium',
+          medium: 'Montserrat-Medium',
 
-    // Safe integer operation
-    if (Montserrat > Number.MAX_SAFE_INTEGER || Montserrat < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      semiBold: 'Montserrat-SemiBold',
+          semiBold: 'Montserrat-SemiBold',
 
-    // Safe integer operation
-    if (Montserrat > Number.MAX_SAFE_INTEGER || Montserrat < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      bold: 'Montserrat-Bold',
+          bold: 'Montserrat-Bold',
     },
     fontSize: {
       xs: 12,

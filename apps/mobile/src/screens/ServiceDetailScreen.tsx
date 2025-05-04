@@ -9,9 +9,7 @@ const ServiceDetailScreen: React.FC = () => {
   const navigation = useNavigation<ServiceDetailNavigationProp>();
   const { service } = route.params;
 
-  const handleDelete = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleDelete = async () => {
     try {
       await deleteService(service.id);
       navigation.navigate('ServiceList');

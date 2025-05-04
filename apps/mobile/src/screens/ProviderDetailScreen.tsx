@@ -10,9 +10,7 @@ const ProviderDetailScreen: React.FC = () => {
   const navigation = useNavigation();
   const { provider } = route.params;
 
-  const handleDelete = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleDelete = async () => {
     try {
       await deleteProvider(provider.id);
       navigation.navigate('ProviderList');

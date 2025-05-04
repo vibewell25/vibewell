@@ -11,9 +11,7 @@ const ThreadFormScreen: React.FC = () => {
   const { thread } = route.params || {};
   const [title, setTitle] = useState(thread.title || '');
 
-  const handleSubmit = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleSubmit = async () => {
     try {
       if (thread) {
         await communityApi.updateThread(thread.id, { title });

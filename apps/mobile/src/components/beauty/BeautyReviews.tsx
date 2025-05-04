@@ -27,9 +27,7 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmitReview = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleSubmitReview = async () => {
     if (!comment.trim()) {
       Alert.alert('Error', 'Please add a comment to your review');
       return;

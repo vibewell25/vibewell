@@ -11,9 +11,7 @@ const PromotionsScreen: React.FC = () => {
   const [discount, setDiscount] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const fetchCodes = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const fetchCodes = async () => {
     try {
       const data = await getPromotionCodes();
       setCodes(data);
@@ -26,9 +24,7 @@ const PromotionsScreen: React.FC = () => {
 
   useEffect(() => { fetchCodes(); }, []);
 
-  const handleAdd = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleAdd = async () => {
     if (!code || !discount) { Alert.alert('Error', 'Code and discount required'); return; }
     setLoading(true);
     try {
@@ -41,9 +37,7 @@ const PromotionsScreen: React.FC = () => {
     }
   };
 
-  const handleDelete = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');id: string) => {
+  const handleDelete = async (id: string) => {
     setLoading(true);
     try {
       await deletePromotionCode(id);

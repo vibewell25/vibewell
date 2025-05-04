@@ -29,9 +29,7 @@ const ReferralScreen: React.FC = () => {
     Alert.alert('Copied', 'Referral code copied to clipboard');
   };
 
-  const handleApply = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleApply = async () => {
     try {
       if (!(await isOnline())) {
         await addToSyncQueue('/api/referrals/apply', 'POST', { code: input });

@@ -13,9 +13,7 @@ const ServiceFormScreen: React.FC = () => {
   const [duration, setDuration] = useState(existing.duration.toString() ?? '');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleSubmit = async () => {
     try {
       setLoading(true);
       const priceNum = parseFloat(price);

@@ -90,9 +90,7 @@ const BeautyBookingScreen: React.FC = () => {
   };
   
   // Handle booking submission
-  const handleBookingSubmit = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleBookingSubmit = async () => {
     // Validate form
     if (!selectedTimeSlot) {
       Alert.alert('Error', 'Please select a time slot');
@@ -168,9 +166,7 @@ const BeautyBookingScreen: React.FC = () => {
   
   // Fetch real-time availability when date changes
   useEffect(() => {
-    const fetchAvailability = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    const fetchAvailability = async () => {
       setAvailabilityLoading(true);
       try {
         const formatted = getSelectedDateObj().formattedDate;

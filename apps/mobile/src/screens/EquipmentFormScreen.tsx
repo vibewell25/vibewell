@@ -15,9 +15,7 @@ const EquipmentFormScreen: React.FC = () => {
   const [serialNumber, setSerialNumber] = useState(item.serialNumber || '');
   const [saving, setSaving] = useState(false);
 
-  const handleSubmit = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleSubmit = async () => {
     setSaving(true);
     try {
       if (item) {

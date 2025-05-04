@@ -1,42 +1,13 @@
 
-    // Safe integer operation
-    if (utils > Number.MAX_SAFE_INTEGER || utils < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import OfflineStorage from '../utils/offline-storage';
+    import OfflineStorage from '../utils/offline-storage';
 
-    // Safe integer operation
-    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
+    
+    
+    import AsyncStorage from '@react-native-async-storage/async-storage';
 
-    // Safe integer operation
-    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
-    // Safe integer operation
-    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-jest.mock('@react-native-async-storage/async-storage', () => ({
+    
+    
+    jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
   getItem: jest.fn(),
   getAllKeys: jest.fn(),
@@ -62,20 +33,12 @@ describe('Sync Queue', () => {
 
     // Store data
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    await storage.storeData('test-key', 'test');
+        await storage.storeData('test-key', 'test');
 
     // Verify item was added to storage with correct sync status
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      'test-key',
+          'test-key',
       expect.stringContaining('"synced":false')
     );
   });
@@ -109,19 +72,11 @@ describe('Sync Queue', () => {
 
     // Attempt to sync
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    await storage.storeData('test-key', 'test');
+        await storage.storeData('test-key', 'test');
     
     // Verify error was handled and item remains in queue
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    const syncStatus = await storage.getSyncStatus('test-key');
+        const syncStatus = await storage.getSyncStatus('test-key');
     expect(syncStatus).toBe(false);
   });
 
@@ -135,11 +90,7 @@ describe('Sync Queue', () => {
 
     // First attempt
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    await storage.storeData('test-key', 'test');
+        await storage.storeData('test-key', 'test');
     
     // Trigger retry
     await storage['processSyncQueue']();
@@ -147,11 +98,7 @@ describe('Sync Queue', () => {
     // Verify item was eventually synced
     expect(AsyncStorage.setItem).toHaveBeenCalledTimes(2);
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    const syncStatus = await storage.getSyncStatus('test-key');
+        const syncStatus = await storage.getSyncStatus('test-key');
     expect(syncStatus).toBe(true);
   });
 
@@ -166,21 +113,13 @@ describe('Sync Queue', () => {
       storage.storeData('key2', 'data2'),
       storage.removeData('key1'),
 
-    // Safe integer operation
-    if (updated > Number.MAX_SAFE_INTEGER || updated < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      storage.storeData('key2', 'updated-data2')
+          storage.storeData('key2', 'updated-data2')
     ]);
 
     // Verify final state is consistent
     const data = await storage.getData('key2');
 
-    // Safe integer operation
-    if (updated > Number.MAX_SAFE_INTEGER || updated < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    expect(data).toBe('updated-data2');
+        expect(data).toBe('updated-data2');
     const key1Exists = await storage.getData('key1');
     expect(key1Exists).toBeNull();
   });

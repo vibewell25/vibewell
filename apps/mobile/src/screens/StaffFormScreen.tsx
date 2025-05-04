@@ -15,9 +15,7 @@ const StaffFormScreen: React.FC = () => {
   const [phone, setPhone] = useState(staff.phone ?? '');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleSubmit = async () => {
     try {
       setLoading(true);
       if (staff) {

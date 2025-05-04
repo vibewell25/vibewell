@@ -9,9 +9,7 @@ const AttendanceScreen: React.FC = () => {
   const [scheduleId, setScheduleId] = useState<string>('');
   const [loading, setLoading] = useState(true);
 
-  const fetchRecords = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const fetchRecords = async () => {
     setLoading(true);
     try {
       const data = scheduleId.trim()

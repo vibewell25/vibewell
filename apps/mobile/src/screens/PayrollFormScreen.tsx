@@ -16,9 +16,7 @@ const PayrollFormScreen: React.FC = () => {
   const [periodEnd, setPeriodEnd] = useState<string>(record.periodEnd.split('T')[0] || '');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleSubmit = async () => {
     if (!salary.trim() || !periodStart.trim() || !periodEnd.trim()) {
       Alert.alert('Error', 'All fields are required');
       return;

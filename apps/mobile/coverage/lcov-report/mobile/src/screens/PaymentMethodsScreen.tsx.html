@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/32</span>
+                <span class='fraction'>0/34</span>
             </div>
         
             
@@ -391,20 +391,7 @@
 <a name='L326'></a><a href='#L326'>326</a>
 <a name='L327'></a><a href='#L327'>327</a>
 <a name='L328'></a><a href='#L328'>328</a>
-<a name='L329'></a><a href='#L329'>329</a>
-<a name='L330'></a><a href='#L330'>330</a>
-<a name='L331'></a><a href='#L331'>331</a>
-<a name='L332'></a><a href='#L332'>332</a>
-<a name='L333'></a><a href='#L333'>333</a>
-<a name='L334'></a><a href='#L334'>334</a>
-<a name='L335'></a><a href='#L335'>335</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L329'></a><a href='#L329'>329</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -574,6 +561,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -732,16 +720,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  Image
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -846,16 +827,16 @@ const PaymentMethodsScreen: React.FC = <span class="cstat-no" title="statement n
     );
   };
 &nbsp;
-  const getCardImage = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(b</span>rand?: string) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    switch (brand?.toLowerCase()) {</span>
+  const getCardIconName = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(b</span>rand?: string) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    switch (brand.toLowerCase()) {</span>
       case 'visa':
-<span class="cstat-no" title="statement not covered" >        return require('../assets/visa.png');</span>
+<span class="cstat-no" title="statement not covered" >        return 'cc-visa';</span>
       case 'mastercard':
-<span class="cstat-no" title="statement not covered" >        return require('../assets/mastercard.png');</span>
+<span class="cstat-no" title="statement not covered" >        return 'cc-mastercard';</span>
       case 'amex':
-<span class="cstat-no" title="statement not covered" >        return require('../assets/amex.png');</span>
+<span class="cstat-no" title="statement not covered" >        return 'cc-amex';</span>
       default:
-<span class="cstat-no" title="statement not covered" >        return require('../assets/generic-card.png');</span>
+<span class="cstat-no" title="statement not covered" >        return 'credit-card';</span>
     }
   };
 &nbsp;
@@ -915,10 +896,11 @@ const PaymentMethodsScreen: React.FC = <span class="cstat-no" title="statement n
             ]}
           &gt;
             &lt;View style={styles.cardHeader}&gt;
-              &lt;Image
-                source={getCardImage(method.brand)}
+              &lt;FontAwesome
+                name={getCardIconName(method.brand)}
+                size={40}
+                color={isDarkMode ? '#FFFFFF' : '#000000'}
                 style={styles.cardImage}
-                resizeMode="contain"
               /&gt;
               {method.isDefault &amp;&amp; (
                 &lt;View style={styles.defaultBadge}&gt;
@@ -1072,7 +1054,7 @@ export default PaymentMethodsScreen; </pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-25T21:08:58.925Z
+                at 2025-05-04T18:37:52.932Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

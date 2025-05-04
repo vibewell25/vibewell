@@ -120,7 +120,7 @@
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
     "critters": "^0.0.23",
-    "csrf-csrf": "4.0.0",
+    "csrf-csrf": "^4.0.0",
     "eslint-plugin-sonarjs": "^3.0.2",
     "express": "5.1.0",
     "face-api.js": "^0.20.1",

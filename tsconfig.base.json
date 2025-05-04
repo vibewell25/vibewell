@@ -22,7 +22,8 @@
       "services/*": ["packages/services/*"],
       "types/*": ["packages/types/*"],
       "config/*": ["packages/config/*"],
-      "test-utils/*": ["packages/test-utils/*"]
+      "test-utils/*": ["packages/test-utils/*"],
+      "@vibewell/services-types": ["packages/services-types/src"]
     }
   },
   "exclude": [

@@ -2,12 +2,18 @@ const nextJest = require('next/jest');
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
-  dir: './',
+  dir: './apps/web',
 });
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  moduleDirectories: ['node_modules', '<rootDir>/../node_modules'],
+  // Polyfill fetch for Node environment
+  setupFiles: ['cross-fetch/polyfill'],
+
+  // Load our global test utilities and polyfills
+  setupFilesAfterEnv: ['<rootDir>/apps/web/src/setupTests.ts'],
+
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/apps/web/src/$1',
@@ -15,7 +21,7 @@ const customJestConfig = {
     '^services/(.*)$': '<rootDir>/packages/services/$1',
     '^types/(.*)$': '<rootDir>/packages/types/$1',
     '^config/(.*)$': '<rootDir>/packages/config/$1',
-    '^test-utils/(.*)$': '<rootDir>/packages/test-utils/$1',
+    '^test-utils/(.*)$': '<rootDir>/apps/web/src/test-utils/$1',
     '^public/(.*)$': '<rootDir>/public/$1',
   },
   testMatch: [
@@ -24,11 +30,11 @@ const customJestConfig = {
   ],
   collectCoverageFrom: [
     'apps/web/src/**/*.{js,jsx,ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/types/**/*',
-    '!src/**/*.stories.{js,jsx,ts,tsx}',
-    '!src/pages/_app.tsx',
-    '!src/pages/_document.tsx',
+    '!apps/web/src/**/*.d.ts',
+    '!apps/web/src/types/**/*',
+    '!apps/web/src/**/*.stories.{js,jsx,ts,tsx}',
+    '!apps/web/src/pages/_app.tsx',
+    '!apps/web/src/pages/_document.tsx',
   ],
   coverageThreshold: {
     global: {
@@ -39,7 +45,8 @@ const customJestConfig = {
     },
   },
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+    // Use babel-jest with TypeScript preset for JS/TS files
+    '^.+\\.[jt]sx?$': ['babel-jest', { presets: ['next/babel', '@babel/preset-typescript'] }],
   },
   transformIgnorePatterns: [
     '/node_modules/',

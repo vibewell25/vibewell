@@ -28,6 +28,13 @@ enum PaymentProcessingStatus {
   REQUIRES_PAYMENT_METHOD
 }
 
+enum ReviewStatus {
+  PENDING      // New reviews awaiting moderation
+  APPROVED     // Reviews that have been approved
+  REJECTED     // Reviews rejected by admin
+  FLAGGED      // Reviews flagged by users or providers
+}
+
 model User {
   id               String    @id @default(cuid())
   auth0Id          String?   @unique
@@ -373,6 +380,8 @@ model ServiceReview {
   comment    String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  status     ReviewStatus   @default(PENDING)
+  moderationNotes String?
 
   // Relations
   service   Service          @relation("ServiceReviews", fields: [serviceId], references: [id])
@@ -2501,16 +2510,26 @@ model Provider {
 }
 
 model WebAuthnDevice {
-  id           String   @id @default(cuid())
-  credentialID String   @unique
-  publicKey    String
-  counter      Int
-  userId       String
-  user         User     @relation(fields: [userId], references: [id])
-  createdAt    DateTime @default(now())
-  lastUsedAt   DateTime @updatedAt
+  id          String    @id @default(cuid())
+  userId      String
+  deviceId    String    @unique
+  deviceName  String
+  browserInfo String?
+  osInfo      String?
+  ipAddress   String?
+  lastUsed    DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime?
+  isRevoked   Boolean   @default(false)
+  revokedAt   DateTime?
+  publicKey     String    // Stored credential public key (base64url)
+  signatureCount Int       @default(0)  // Stores the authenticator counter
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([deviceId])
+  @@map("webauthn_devices")
 }
 
 model EmailVerification {
